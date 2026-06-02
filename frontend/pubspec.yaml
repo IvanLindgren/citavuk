@@ -1,0 +1,59 @@
+name: srbski_read
+description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  file_picker: ^8.0.0
+  syncfusion_flutter_pdf: ^25.1.37
+  archive: ^3.6.1
+  xml: ^6.5.0
+  sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.0
+  path_provider: ^2.1.2
+  path: ^1.9.0
+  http: ^1.2.0
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
+
+# path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
+# под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
+dependency_overrides:
+  path_provider_android: '>=2.2.0 <2.3.0'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/lexicon.db
+    - assets/test_story.docx
+    - assets/test_story.pdf
+    - assets/imgs/
+
+  fonts:
+    - family: NotoSerif
+      fonts:
+        - asset: assets/fonts/NotoSerif-Regular.ttf
+        - asset: assets/fonts/NotoSerif-Bold.ttf
+          weight: 700
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/NotoSans-Regular.ttf
+        - asset: assets/fonts/NotoSans-Bold.ttf
+          weight: 700
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/Lora-Regular.ttf
+        - asset: assets/fonts/Lora-Bold.ttf
+          weight: 700
