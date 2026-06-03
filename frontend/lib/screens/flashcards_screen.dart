@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../services/grammar_engine.dart';
 import '../services/user_db.dart';
+import '../widgets/animated_widgets.dart';
 import '../widgets/wolf_mascot.dart';
 
 class FlashcardsScreen extends StatefulWidget {
@@ -81,12 +82,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const WolfAvatar(size: 96, asset: Wolf.povtor),
+            const WolfSticker(asset: Wolf.povtor, size: 150),
             const SizedBox(height: 16),
             Text(
               _reviewed == 0
                   ? 'На сегодня карточек нет.\nДобавляй слова из книги — и возвращайся!'
-                  : 'Готово! Повторено карточек: $_reviewed 🎉',
+                  : 'Готово! Повторено карточек: $_reviewed ',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, color: scheme.onSurface),
             ),
@@ -122,7 +123,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         child: Column(
           children: [
             Expanded(
-              child: GestureDetector(
+              child: PressableScale(
                 onTap: () => setState(() => _revealed = true),
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -181,7 +182,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                             Text(
                               [
                                 if (pos.isNotEmpty) GrammarEngine.posShort(pos),
-                                if (lemma.isNotEmpty) 'лемма: $lemma',
+                                if (lemma.isNotEmpty) 'основа: $lemma',
                               ].join('  ·  '),
                               style: TextStyle(
                                   fontSize: 13,
@@ -253,10 +254,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   static const _memoryTips = [
-    'Придумай яркий зрительный образ к слову — мозг любит картинки.',
-    'Свяжи слово с эмоцией или личным воспоминанием — так оно закрепится.',
+    'Подумай, как бы ты изобразил это слово в голове? Может, оно вызывает смех... или наоборот тревожность?',
+    'Придумай в голове историю с этим словом, и тебе будет легче!',
     'Прочувствуй слово: представь ситуацию, где ты его используешь.',
-    'Найди созвучие с русским словом и склей их в смешную ассоциацию.',
+    'Я укушу тебя, если ты не запомнишь это слово!!!',
   ];
 
   Widget _associationTip(ColorScheme scheme, String tip) {

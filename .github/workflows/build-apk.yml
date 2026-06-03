@@ -1,0 +1,38 @@
+name: Build APK
+
+on:
+  workflow_dispatch: # Позволяет запускать сборку вручную по кнопке
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x' 
+          channel: 'stable'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: ./frontend
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-release-apk
+          path: frontend/build/app/outputs/flutter-apk/app-release.apk

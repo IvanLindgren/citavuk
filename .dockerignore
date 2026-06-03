@@ -1,0 +1,11 @@
+frontend/
+data/
+__pycache__/
+*.pyc
+.git/
+.vscode/
+.idea/
+.gemini/
+*.mp4
+*.mkv
+classla_models/

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../services/card_io.dart';
 import '../services/grammar_engine.dart';
 import '../services/user_db.dart';
+import '../widgets/animated_widgets.dart';
 import 'flashcards_screen.dart';
 
 class VocabularyScreen extends StatefulWidget {
@@ -58,6 +60,48 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     _loadVocab();
   }
 
+  Future<void> _export() async {
+    try {
+      final path =
+          await CardsIo.export(vocab: _vocabItems, source: widget.bookTitle);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(path == null
+            ? 'Экспорт отменён'
+            : 'Карточки сохранены в .md: $path'),
+      ));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Ошибка экспорта: $e')));
+      }
+    }
+  }
+
+  Future<void> _import() async {
+    try {
+      final r = await CardsIo.import(bookId: widget.bookId);
+      if (!mounted) return;
+      if (r == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Импорт отменён')));
+        return;
+      }
+      await _loadVocab();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(r.found == 0
+            ? 'В файле не нашлось карточек'
+            : 'Импортировано: ${r.added} новых из ${r.found}'),
+      ));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -73,6 +117,33 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
               _dueCount > 0 ? 'Карточки ($_dueCount)' : 'Карточки',
               style: const TextStyle(color: Colors.white),
             ),
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            tooltip: 'Импорт / экспорт',
+            onSelected: (v) {
+              if (v == 'export') _export();
+              if (v == 'import') _import();
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                value: 'export',
+                enabled: _vocabItems.isNotEmpty,
+                child: const ListTile(
+                  leading: Icon(Icons.upload_file_outlined),
+                  title: Text('Экспорт в .md'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'import',
+                child: ListTile(
+                  leading: Icon(Icons.download_outlined),
+                  title: Text('Импорт из .md'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -109,7 +180,9 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                       forms = jsonDecode(item['forms'] as String);
                     } catch (_) {}
 
-                    return Card(
+                    return FadeSlideIn(
+                      delay: Duration(milliseconds: 24 * (index.clamp(0, 10))),
+                      child: Card(
                       margin: const EdgeInsets.only(bottom: 12),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -189,7 +262,8 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                           ],
                         ),
                       ),
-                    );
+                    ),
+                  );
                   },
                 ),
     );

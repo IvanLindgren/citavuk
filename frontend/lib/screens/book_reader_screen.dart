@@ -6,9 +6,13 @@ import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
 import '../services/grammar_engine.dart';
+import '../services/radio_service.dart';
 import '../services/user_db.dart';
 import '../state/app_settings.dart';
 import '../utils/tokenizer.dart';
+import '../widgets/animated_widgets.dart';
+import '../widgets/grammar_widgets.dart';
+import '../widgets/radio_sheet.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
 import 'grammar_screen.dart';
@@ -61,6 +65,15 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         if (mounted) setState(() => _resumeHintVisible = false);
       });
     }
+    // Музыка для чтения: восстанавливаем выбор станции и при первом заходе
+    // спрашиваем, любит ли пользователь читать под музыку.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final s = context.read<AppSettings>();
+      RadioService.instance
+          .configure(stationIndex: s.musicStation, volume: s.musicVolume);
+      if (!s.musicPrompted) showMusicPrompt(context);
+    });
   }
 
   void _goToPage(int delta) {
@@ -219,6 +232,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         title: Text('${widget.title}  ($pageNum/${_pages.length})',
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
         actions: [
+          const RadioAppBarButton(),
           IconButton(
             tooltip: _phraseMode ? 'Режим фразы: вкл' : 'Режим фразы: выкл',
             icon: Icon(_phraseMode ? Icons.short_text : Icons.notes),
@@ -291,7 +305,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   if (pageIndex == _startPage && _resumeHintVisible)
-                                    _resumeHint(scheme),
+                                    _resumeHint(scheme, settings.fontSize),
                                   ...List.generate(paras.length, (pIndex) {
                                     final isSel = _selPage == pageIndex &&
                                         _selPara == pIndex;
@@ -330,22 +344,50 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     );
   }
 
-  Widget _resumeHint(ColorScheme scheme) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+  Widget _resumeHint(ColorScheme scheme, double fontSize) {
+    // Лапка масштабируется вместе с текстом и «покачивается», указывая на
+    // абзац, с которого продолжаем читать.
+    final pawH = (fontSize * 2.6).clamp(46.0, 96.0);
+    return FadeSlideIn(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.fromLTRB(6, 6, 16, 6),
+        decoration: BoxDecoration(
+          color: scheme.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: scheme.primary.withValues(alpha: 0.30)),
+        ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(Wolf.ukaz, height: 40),
-            const SizedBox(width: 8),
+            FloatingBob(
+              amplitude: 5,
+              child: Image.asset(Wolf.ukaz, height: pawH),
+            ),
+            const SizedBox(width: 4),
             Flexible(
-              child: Text('Вы остановились здесь',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: scheme.primary,
-                      fontWeight: FontWeight.w600)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Вы остановились здесь',
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: scheme.primary,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700)),
+                  Text('Продолжаем с этого абзаца',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: scheme.onSurface.withValues(alpha: 0.6))),
+                ],
+              ),
             ),
           ],
         ),
-      );
+      ),
+    );
+  }
 
   Widget _buildArrow(ColorScheme scheme, {required bool left}) => Positioned(
         left: left ? 6 : null,
@@ -700,8 +742,17 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
           final isOffline = data.isOffline;
           final isPhrase = data.isPhrase;
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
+          // Авто-подсказка: если это предлог (или фраза, начинающаяся с
+          // предлога) — показываем, каким падежом он управляет. Для не-предлогов
+          // список пустой, и карточка не появляется.
+          final prepWord = isPhrase
+              ? surface.trim().split(RegExp(r'\s+')).first
+              : surface;
+          final government = GrammarEngine.prepositionGovernment(prepWord);
+
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
@@ -746,7 +797,7 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                       color: Colors.white)),
                             ),
                             if (!isPhrase)
-                              Text('лемма: $lemma',
+                              Text('основа: $lemma',
                                   style: TextStyle(
                                       color: scheme.onSurface.withValues(alpha: 0.6),
                                       fontSize: 13)),
@@ -771,6 +822,11 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
               ),
               const SizedBox(height: 18),
               WolfBubble(title: 'Перевод', text: translation, asset: Wolf.gram),
+              if (government.isNotEmpty) ...[
+                const SizedBox(height: 14),
+                PrepositionGovernmentCard(
+                    preposition: prepWord, government: government),
+              ],
               if (!isPhrase &&
                   const {'NOUN', 'PROPN', 'ADJ', 'VERB', 'AUX', 'PRON'}
                       .contains(upos)) ...[
@@ -821,8 +877,9 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
               ],
               const SizedBox(height: 8),
             ],
-          );
-        },
+          ),
+        );
+      },
       ),
     );
   }

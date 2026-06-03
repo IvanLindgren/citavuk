@@ -10,6 +10,10 @@ class AppSettings extends ChangeNotifier {
   static const _kNotify = 'notify_enabled';
   static const _kHour = 'notify_hour';
   static const _kMinute = 'notify_minute';
+  static const _kMusicPrompted = 'music_prompted';
+  static const _kMusicEnabled = 'music_enabled';
+  static const _kMusicStation = 'music_station';
+  static const _kMusicVolume = 'music_volume';
 
   ReaderSettings _reader = const ReaderSettings();
   ReaderSettings get reader => _reader;
@@ -21,6 +25,16 @@ class AppSettings extends ChangeNotifier {
   int get reminderHour => _reminderHour;
   int get reminderMinute => _reminderMinute;
 
+  // Радио/музыка для чтения.
+  bool _musicPrompted = false; // спрашивали ли уже «любишь читать с музыкой?»
+  bool _musicEnabled = false;
+  int _musicStation = 0;
+  double _musicVolume = 0.45;
+  bool get musicPrompted => _musicPrompted;
+  bool get musicEnabled => _musicEnabled;
+  int get musicStation => _musicStation;
+  double get musicVolume => _musicVolume;
+
   Future<void> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -31,6 +45,10 @@ class AppSettings extends ChangeNotifier {
       _notificationsEnabled = prefs.getBool(_kNotify) ?? false;
       _reminderHour = prefs.getInt(_kHour) ?? 19;
       _reminderMinute = prefs.getInt(_kMinute) ?? 0;
+      _musicPrompted = prefs.getBool(_kMusicPrompted) ?? false;
+      _musicEnabled = prefs.getBool(_kMusicEnabled) ?? false;
+      _musicStation = prefs.getInt(_kMusicStation) ?? 0;
+      _musicVolume = prefs.getDouble(_kMusicVolume) ?? 0.45;
     } catch (_) {
       // Повреждённые настройки — откатываемся к дефолтам.
     }
@@ -56,6 +74,29 @@ class AppSettings extends ChangeNotifier {
       await prefs.setBool(_kNotify, _notificationsEnabled);
       await prefs.setInt(_kHour, _reminderHour);
       await prefs.setInt(_kMinute, _reminderMinute);
+    } catch (_) {}
+  }
+
+  /// Помечаем, что уже спросили про музыку (чтобы не спрашивать повторно).
+  Future<void> setMusicPrompted(bool v) async {
+    _musicPrompted = v;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_kMusicPrompted, v);
+    } catch (_) {}
+  }
+
+  Future<void> setMusic({bool? enabled, int? station, double? volume}) async {
+    if (enabled != null) _musicEnabled = enabled;
+    if (station != null) _musicStation = station;
+    if (volume != null) _musicVolume = volume;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_kMusicEnabled, _musicEnabled);
+      await prefs.setInt(_kMusicStation, _musicStation);
+      await prefs.setDouble(_kMusicVolume, _musicVolume);
     } catch (_) {}
   }
 }

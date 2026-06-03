@@ -162,6 +162,27 @@ class UserDb {
         where: 'book_id = ?', whereArgs: [bookId], orderBy: 'added_at DESC');
   }
 
+  /// Все слова из всех книг (для экспорта в Markdown).
+  Future<List<Map<String, dynamic>>> getAllVocabulary() async {
+    final db = await database;
+    return db.query('vocabulary', orderBy: 'added_at DESC');
+  }
+
+  /// Находит книгу с таким названием или создаёт пустую (приёмник для импорта
+  /// карточек из .md). Возвращает её id.
+  Future<int> ensureBook(String title) async {
+    final db = await database;
+    final existing = await db.query('books',
+        where: 'title = ?', whereArgs: [title], limit: 1);
+    if (existing.isNotEmpty) return existing.first['id'] as int;
+    return db.insert('books', {
+      'title': title,
+      'filepath': title,
+      'content': jsonEncode(<String>[]),
+      'last_para': 0,
+    });
+  }
+
   /// Недавно добавленные слова (для приветствия на главной).
   Future<List<String>> getRecentWords(int limit) async {
     final db = await database;

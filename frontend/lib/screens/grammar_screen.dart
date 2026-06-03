@@ -4,6 +4,7 @@ import '../models/grammar.dart';
 import '../services/grammar_engine.dart';
 import '../services/lexicon_db.dart';
 import '../utils/transliteration.dart';
+import '../widgets/grammar_widgets.dart';
 import '../widgets/serbian_ornament.dart';
 import '../widgets/wolf_mascot.dart';
 
@@ -12,7 +13,9 @@ class _GrammarData {
   final List<ParadigmTable> tables;
   final String? currentCase; // UD-значение: Nom/Gen/...
   final bool showCases;
-  _GrammarData(this.info, this.tables, this.currentCase, this.showCases);
+  final List<PrepositionGovernment> government; // если слово — предлог
+  _GrammarData(this.info, this.tables, this.currentCase, this.showCases,
+      this.government);
 }
 
 class GrammarScreen extends StatefulWidget {
@@ -62,8 +65,12 @@ class _GrammarScreenState extends State<GrammarScreen> {
       surface: widget.word,
     );
     const declinable = {'NOUN', 'PROPN', 'ADJ', 'PRON', 'DET'};
-    return _GrammarData(
-        info, tables, feats['Case'], declinable.contains(widget.upos));
+    final government = (widget.upos == 'ADP' ||
+            GrammarEngine.isKnownPreposition(widget.word))
+        ? GrammarEngine.prepositionGovernment(widget.word)
+        : const <PrepositionGovernment>[];
+    return _GrammarData(info, tables, feats['Case'],
+        declinable.contains(widget.upos), government);
   }
 
   @override
@@ -99,6 +106,12 @@ class _GrammarScreenState extends State<GrammarScreen> {
                     _header(scheme, data.info),
                     const SizedBox(height: 16),
                     WolfBubble(title: 'Разбор', text: data.info.why, asset: Wolf.rule),
+                    if (data.government.isNotEmpty) ...[
+                      const SizedBox(height: 14),
+                      PrepositionGovernmentCard(
+                          preposition: widget.word,
+                          government: data.government),
+                    ],
                     if (data.showCases) ...[
                       const SizedBox(height: 14),
                       _CasesCheatsheet(currentCase: data.currentCase),
@@ -171,7 +184,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
               children: [
                 _pill(info.posLabel, scheme.primary, Colors.white),
                 if (widget.lemma.isNotEmpty)
-                  Text('лемма: ${widget.lemma}',
+                  Text('основа: ${widget.lemma}',
                       style: TextStyle(
                           color: scheme.onSurface.withValues(alpha: 0.65),
                           fontSize: 14)),
@@ -209,7 +222,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
       );
 }
 
-/// Интерактивная шпаргалка: все 7 падежей, текущий подсвечен.
+
 class _CasesCheatsheet extends StatelessWidget {
   final String? currentCase;
   const _CasesCheatsheet({this.currentCase});
@@ -226,48 +239,98 @@ class _CasesCheatsheet extends StatelessWidget {
           collapsedShape: const Border(),
           initiallyExpanded: false,
           leading: const Text('🐺', style: TextStyle(fontSize: 22)),
-          title: const Text('Падежи сербского — зачем нужны',
+          title: const Text('Падежи сербского',
               style: TextStyle(fontWeight: FontWeight.bold)),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
           children: cases.map((c) {
             final active = c.key == currentCase;
+            final cc = caseColor(c.key);
             return Container(
-              margin: const EdgeInsets.symmetric(vertical: 3),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: active
-                    ? scheme.primary.withValues(alpha: 0.14)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-                border: active ? Border.all(color: scheme.primary) : null,
-              ),
-              child: Column(
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 10, 10),
+                  decoration: BoxDecoration(
+                    color: active
+                        ? cc.withValues(alpha: 0.12)
+                        : scheme.onSurface.withValues(alpha: 0.03),
+                    border: Border(
+                      left: BorderSide(color: cc, width: 4),
+                      top: BorderSide(
+                          color: active ? cc : Colors.transparent, width: 1),
+                      right: BorderSide(
+                          color: active ? cc : Colors.transparent, width: 1),
+                      bottom: BorderSide(
+                          color: active ? cc : Colors.transparent, width: 1),
+                    ),
+                  ),
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Text(c.name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: active ? scheme.primary : scheme.onSurface)),
-                      if (active) ...[
-                        const SizedBox(width: 6),
-                        Text('← эта форма',
+                      Expanded(
+                        child: Text(c.name,
                             style: TextStyle(
-                                fontSize: 11,
-                                color: scheme.primary,
-                                fontWeight: FontWeight.w600)),
-                      ],
+                                fontWeight: FontWeight.bold,
+                                color: active ? cc : scheme.onSurface)),
+                      ),
+                      if (active)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: cc,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text('эта форма',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
                     ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 3),
                   Text(c.use,
                       style: TextStyle(
                           fontSize: 13,
-                          color: scheme.onSurface.withValues(alpha: 0.7))),
+                          height: 1.3,
+                          color: scheme.onSurface.withValues(alpha: 0.75))),
+                  if (c.preps.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        Text('Предлоги:',
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: scheme.onSurface.withValues(alpha: 0.5))),
+                        ...c.preps.take(12).map((p) => Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: cc.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(6),
+                                border:
+                                    Border.all(color: cc.withValues(alpha: 0.35)),
+                              ),
+                              child: Text(p,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: cc)),
+                            )),
+                      ],
+                    ),
+                  ],
                 ],
               ),
-            );
+            ),
+          );
           }).toList(),
         ),
       ),
@@ -327,10 +390,10 @@ class _ParadigmCard extends StatelessWidget {
                 ),
               ),
             ],
-            ...table.rows.map((c) => _row(context, c, scheme)),
+            _buildTable(context, scheme),
             if (table.hasGenerated)
               Padding(
-                padding: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 10),
                 child: Text(
                     '≈ — форма достроена правилом (уточняется по мере роста словаря)',
                     style: TextStyle(
@@ -344,59 +407,120 @@ class _ParadigmCard extends StatelessWidget {
     );
   }
 
-  Widget _row(BuildContext context, ParadigmCell c, ColorScheme scheme) {
+  /// Парадигма как настоящая таблица: столбец «форма» | столбец «слово».
+  /// Окончание подчёркнуто и выделено цветом падежа — видно, что меняется.
+  Widget _buildTable(BuildContext context, ColorScheme scheme) {
+    final splits = table.highlightEndings
+        ? GrammarEngine.splitStemEndings(
+            table.rows.map((r) => r.form).toList())
+        : null;
+    return Table(
+      columnWidths: const {
+        0: IntrinsicColumnWidth(),
+        1: FlexColumnWidth(),
+      },
+      border: TableBorder(
+        horizontalInside:
+            BorderSide(color: scheme.onSurface.withValues(alpha: 0.08)),
+      ),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: [
+        for (var i = 0; i < table.rows.length; i++)
+          _tableRow(context, scheme, table.rows[i], splits?[i]),
+      ],
+    );
+  }
+
+  TableRow _tableRow(BuildContext context, ColorScheme scheme, ParadigmCell c,
+      ({String stem, String ending})? split) {
     final highlight = c.current;
     final hasForm = c.form != '—';
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: hasForm
-          ? () {
-              Clipboard.setData(ClipboardData(text: c.form));
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(
-                  content: Text('«${c.form}» скопировано'),
-                  duration: const Duration(seconds: 1),
-                ));
-            }
-          : null,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 2),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color:
-              highlight ? scheme.primary.withValues(alpha: 0.15) : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          border: highlight ? Border.all(color: scheme.primary) : null,
-        ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 116,
-              child: Text(c.label,
+    final accent = c.caseKey != null ? caseColor(c.caseKey!) : scheme.secondary;
+
+    Widget formWidget;
+    if (!hasForm) {
+      formWidget = Text('—',
+          style: TextStyle(
+              fontSize: 16, color: scheme.onSurface.withValues(alpha: 0.35)));
+    } else if (split != null && split.ending.isNotEmpty) {
+      formWidget = EndingText(
+        stem: split.stem,
+        ending: split.ending,
+        color: accent,
+        bold: highlight,
+      );
+    } else {
+      formWidget = Text(c.form,
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'NotoSerif',
+            fontWeight: highlight ? FontWeight.bold : FontWeight.w500,
+            color: scheme.onSurface,
+          ));
+    }
+
+    return TableRow(
+      decoration: BoxDecoration(
+        color: highlight ? accent.withValues(alpha: 0.14) : null,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 10, 14, 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 7,
+                height: 7,
+                margin: const EdgeInsets.only(right: 8),
+                decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+              ),
+              Text(c.label,
                   style: TextStyle(
                       fontSize: 13,
-                      color: scheme.onSurface.withValues(alpha: 0.7))),
-            ),
-            Expanded(
-              child: Text(
-                c.generated && hasForm ? '${c.form} ≈' : c.form,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'NotoSerif',
-                  fontWeight: highlight ? FontWeight.bold : FontWeight.w500,
-                  color: hasForm
-                      ? scheme.onSurface
-                      : scheme.onSurface.withValues(alpha: 0.35),
-                ),
-              ),
-            ),
-            if (hasForm)
-              Icon(Icons.copy_rounded,
-                  size: 15, color: scheme.onSurface.withValues(alpha: 0.3)),
-          ],
+                      fontWeight:
+                          highlight ? FontWeight.w700 : FontWeight.normal,
+                      color: highlight
+                          ? accent
+                          : scheme.onSurface.withValues(alpha: 0.75))),
+            ],
+          ),
         ),
-      ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: hasForm
+              ? () {
+                  Clipboard.setData(ClipboardData(text: c.form));
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      content: Text('«${c.form}» скопировано'),
+                      duration: const Duration(seconds: 1),
+                    ));
+                }
+              : null,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 9),
+            child: Row(
+              children: [
+                Expanded(child: formWidget),
+                if (c.generated && hasForm)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: Text('≈',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: scheme.onSurface.withValues(alpha: 0.45))),
+                  ),
+                if (hasForm)
+                  Icon(Icons.copy_rounded,
+                      size: 15,
+                      color: scheme.onSurface.withValues(alpha: 0.3)),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

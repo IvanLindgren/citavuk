@@ -26,12 +26,14 @@ class ParadigmCell {
   final String form; // словоформа ('—' если неизвестна)
   final bool current; // совпадает с разбираемой формой
   final bool generated; // сгенерировано правилом (приблизительно)
+  final String? caseKey; // UD-код падежа для цветовой метки (если применимо)
 
   const ParadigmCell({
     required this.label,
     required this.form,
     this.current = false,
     this.generated = false,
+    this.caseKey,
   });
 }
 
@@ -41,7 +43,30 @@ class ParadigmTable {
   final String? subtitle;
   final List<ParadigmCell> rows;
 
-  const ParadigmTable({required this.title, this.subtitle, required this.rows});
+  /// Подсвечивать ли окончания: для склонения и презента формы — одиночные
+  /// слова с общей основой, поэтому окончание можно выделить. Для перфекта/
+  /// футура формы составные (вспом. глагол + причастие/инфинитив) — выключено.
+  final bool highlightEndings;
+
+  const ParadigmTable({
+    required this.title,
+    this.subtitle,
+    required this.rows,
+    this.highlightEndings = false,
+  });
 
   bool get hasGenerated => rows.any((r) => r.generated && r.form != '—');
+}
+
+/// Управление предлога падежом: на какой падеж он ставит слово и в каком смысле.
+class PrepositionGovernment {
+  final String caseKey; // UD-код падежа: Gen/Dat/Acc/Ins/Loc
+  final String caseName; // русское название
+  final String meaning; // когда/в каком значении используется
+
+  const PrepositionGovernment({
+    required this.caseKey,
+    required this.caseName,
+    required this.meaning,
+  });
 }

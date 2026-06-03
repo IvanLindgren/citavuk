@@ -7,15 +7,20 @@ import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'services/user_db.dart';
+import 'services/card_io.dart';
 import 'services/document_parser.dart';
 import 'services/notification_service.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
+import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
 import 'state/app_settings.dart';
 import 'theme/app_theme.dart';
+import 'widgets/animated_widgets.dart';
+import 'widgets/radio_sheet.dart';
 import 'widgets/serbian_ornament.dart';
 import 'widgets/wolf_mascot.dart';
+import 'utils/language_detector.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,12 +70,29 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Map<String, dynamic>> _books = [];
   List<String> _recentWords = [];
+  List<String> _libraryAssets = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _initAndLoad();
+    _loadLibraryAssets();
+  }
+
+  Future<void> _loadLibraryAssets() async {
+    try {
+      final manifestContent = await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+      final pdfs = manifestMap.keys
+          .where((k) => k.startsWith('assets/library/') && (k.endsWith('.pdf') || k.endsWith('.docx')))
+          .toList();
+      setState(() {
+        _libraryAssets = pdfs;
+      });
+    } catch (e) {
+      // no library folder or manifest error
+    }
   }
 
   Future<void> _initAndLoad() async {
@@ -118,9 +140,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       await UserDb.instance.insertBook(name, path, paragraphs);
       await _loadBooks();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Книга «$name» импортирована")),
-        );
+        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
+          _showNonSerbianWarning();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Книга «$name» импортирована")),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -129,6 +155,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
       setState(() => _isLoading = false);
     }
+  }
+
+  void _showNonSerbianWarning() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Похоже, это не сербский'),
+        content: const Text(
+          'Текст не распознан как сербский язык. Приложение предназначено для чтения на сербском — разбор грамматики и словарные формы могут работать некорректно. Будет доступен только автоматический перевод.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Понятно'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _loadTestStory(String assetPath, String title) async {
@@ -143,10 +187,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       await UserDb.instance.insertBook(title, assetPath, paragraphs);
       await _loadBooks();
+      
+      if (mounted) {
+        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
+          _showNonSerbianWarning();
+        }
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка загрузки теста: $e')));
+      }
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loadLibraryStory(String assetPath, String title) async {
+    setState(() => _isLoading = true);
+    try {
+      final data = await rootBundle.load(assetPath);
+      final bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      final paragraphs = assetPath.endsWith('.pdf')
+          ? DocumentParser.parsePdf(bytes)
+          : DocumentParser.parseDocx(bytes);
+
+      final id = await UserDb.instance.insertBook(title, assetPath, paragraphs);
+      await UserDb.instance.setBookFolder(id, 'Бесплатная библиотека');
+      await _loadBooks();
+      
+      if (mounted) {
+        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
+          _showNonSerbianWarning();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Книга «$title» добавлена в библиотеку")),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Ошибка загрузки: $e')));
       }
       setState(() => _isLoading = false);
     }
@@ -294,6 +376,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         actions: [
+          const RadioAppBarButton(),
           IconButton(
             tooltip: 'Грамматика — карточки',
             icon: const Icon(Icons.school_outlined),
@@ -311,7 +394,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
             onPressed: _toggleTheme,
           ),
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadBooks),
+          PopupMenuButton<String>(
+            tooltip: 'Карточки и обновление',
+            icon: const Icon(Icons.more_vert),
+            onSelected: (v) {
+              if (v == 'import') _importCards();
+              if (v == 'export') _exportAllCards();
+              if (v == 'refresh') _loadBooks();
+              if (v == 'about') {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutScreen()));
+              }
+            },
+            itemBuilder: (_) => const [
+              PopupMenuItem(
+                value: 'about',
+                child: ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('О приложении'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'import',
+                child: ListTile(
+                  leading: Icon(Icons.download_outlined),
+                  title: Text('Импорт карточек (.md)'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'export',
+                child: ListTile(
+                  leading: Icon(Icons.upload_file_outlined),
+                  title: Text('Экспорт всех карточек'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'refresh',
+                child: ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Обновить'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       body: Column(
@@ -350,7 +478,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               asset: Wolf.zdravo,
             ),
             const SizedBox(height: 28),
-            Wrap(
+            FadeSlideIn(
+              delay: const Duration(milliseconds: 260),
+              child: Wrap(
               spacing: 12,
               runSpacing: 12,
               alignment: WrapAlignment.center,
@@ -373,7 +503,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       _loadTestStory('assets/test_story.pdf', 'Тестовая история (PDF)'),
                 ),
               ],
+              ),
             ),
+            const SizedBox(height: 32),
+            _buildFreeLibrary(scheme),
           ],
         ),
       ),
@@ -393,7 +526,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
               asset: Wolf.zdravo,
             ),
           ),
+        _buildFreeLibrary(scheme),
         Expanded(child: _booksList(scheme)),
+      ],
+    );
+  }
+
+  Widget _buildFreeLibrary(ColorScheme scheme) {
+    if (_libraryAssets.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, 8),
+          child: Text('Бесплатная библиотека', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        ),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: _libraryAssets.length,
+            itemBuilder: (ctx, i) {
+              final path = _libraryAssets[i];
+              final filename = path.split('/').last;
+              final name = filename.replaceAll('.pdf', '').replaceAll('.docx', '').replaceAll('_', ' ');
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                child: InkWell(
+                  onTap: () {
+                    if (_books.any((b) => ((b['folder'] as String?) ?? '').trim() == 'Бесплатная библиотека' && b['title'] == name)) {
+                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Книга уже добавлена')));
+                       return;
+                    }
+                    _loadLibraryStory(path, name);
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: 110,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(path.endsWith('.pdf') ? Icons.picture_as_pdf : Icons.text_snippet, color: scheme.primary, size: 32),
+                        const SizedBox(height: 8),
+                        Text(name, maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
@@ -409,13 +594,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final order = [...folders, if (groups.containsKey('')) ''];
 
     final items = <Widget>[];
+    var cardIndex = 0;
     for (final f in order) {
       if (showHeaders) {
         items.add(_sectionHeader(
             scheme, f.isEmpty ? 'Без папки' : f, groups[f]!.length));
       }
       for (final b in groups[f]!) {
-        items.add(_bookCard(scheme, b));
+        items.add(FadeSlideIn(
+          delay: Duration(milliseconds: 28 * (cardIndex.clamp(0, 12))),
+          child: _bookCard(scheme, b),
+        ));
+        cardIndex++;
       }
     }
     return ListView(padding: const EdgeInsets.all(16), children: items);
@@ -624,5 +814,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context,
       MaterialPageRoute(builder: (_) => const GrammarCardsScreen()),
     );
+  }
+
+  Future<void> _exportAllCards() async {
+    try {
+      final vocab = await UserDb.instance.getAllVocabulary();
+      if (!mounted) return;
+      if (vocab.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Пока нет слов для экспорта — добавь их из книги')));
+        return;
+      }
+      final path = await CardsIo.export(vocab: vocab, source: 'все книги');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(path == null
+            ? 'Экспорт отменён'
+            : 'Все карточки сохранены: $path'),
+      ));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Ошибка экспорта: $e')));
+      }
+    }
+  }
+
+  Future<void> _importCards() async {
+    try {
+      final bookId =
+          await UserDb.instance.ensureBook('📋 Импортированные карточки');
+      final r = await CardsIo.import(bookId: bookId);
+      if (!mounted) return;
+      if (r == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Импорт отменён')));
+        return;
+      }
+      await _loadBooks();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(r.found == 0
+            ? 'В файле не нашлось карточек'
+            : 'Импортировано: ${r.added} новых из ${r.found}. '
+                'Ищи их в книге «Импортированные карточки».'),
+      ));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
+      }
+    }
   }
 }

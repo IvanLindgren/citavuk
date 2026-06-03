@@ -9,14 +9,37 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+import threading
+import time
+import urllib.request
+
 # Global NLP pipeline (loaded once on startup via lifespan)
 nlp = None
 nlp_active = False
+
+def ping_self():
+    space_host = os.environ.get("SPACE_HOST")
+    if not space_host:
+        logging.info("No SPACE_HOST env var found, self-ping disabled.")
+        return
+    
+    url = f"https://{space_host}/health"
+    logging.info(f"Started self-ping thread for {url} every 12 hours.")
+    while True:
+        # Sleep for 12 hours
+        time.sleep(12 * 3600)
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Chitavuk-KeepAlive/1.0"})
+            with urllib.request.urlopen(req, timeout=10):
+                logging.info(f"Self-ping successful: {url}")
+        except Exception as e:
+            logging.error(f"Self-ping failed: {e}")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global nlp, nlp_active
+    threading.Thread(target=ping_self, daemon=True).start()
     try:
         import classla
         logging.info("Downloading/verifying Serbian models...")
@@ -50,6 +73,15 @@ DB_PATH = "lexicon.db"
 if not os.path.exists(DB_PATH):
     # Fallback to parent dir if run from backend/
     DB_PATH = "../lexicon.db"
+
+# Global read-only connection
+_db_conn = None
+
+def get_db():
+    global _db_conn
+    if _db_conn is None and os.path.exists(DB_PATH):
+        _db_conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+    return _db_conn
 
 # Transliteration mappings
 CYR_TO_LAT = {
@@ -91,28 +123,25 @@ def _parse_feats(s: str) -> Dict[str, str]:
 
 def query_local_lexicon(word_latin: str) -> list:
     """Returns lexicon rows (lemma, upos, feats, msd) for a word form."""
-    if not os.path.exists(DB_PATH):
+    conn = get_db()
+    if not conn:
         return []
-    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
         "SELECT lemma, upos, feats, msd FROM lexicon WHERE form = ?",
         (word_latin.lower(),),
     )
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
+    return cursor.fetchall()
 
 def get_forms_from_lexicon(lemma: str, upos: str) -> Dict[str, str]:
     """Retrieves standard forms for a lemma using UD feats from local DB."""
     forms: Dict[str, str] = {}
-    if not os.path.exists(DB_PATH):
+    conn = get_db()
+    if not conn:
         return forms
-    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT form, feats FROM lexicon WHERE lemma = ?", (lemma.lower(),))
     rows = cursor.fetchall()
-    conn.close()
 
     for form, feats_str in rows:
         f = _parse_feats(feats_str)
@@ -140,22 +169,20 @@ def get_forms_from_lexicon(lemma: str, upos: str) -> Dict[str, str]:
 
 def get_dictionary_translation(word: str, lemma: str) -> Optional[str]:
     """Looks up translation in SQLite database."""
-    if not os.path.exists(DB_PATH):
+    conn = get_db()
+    if not conn:
         return None
-    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     # Try exact word
     cursor.execute("SELECT translation FROM dictionary WHERE word = ?", (word.lower(),))
     row = cursor.fetchone()
     if row:
-        conn.close()
         return row[0]
         
     # Try lemma
     cursor.execute("SELECT translation FROM dictionary WHERE word = ?", (lemma.lower(),))
     row = cursor.fetchone()
-    conn.close()
     if row:
         return row[0]
     return None

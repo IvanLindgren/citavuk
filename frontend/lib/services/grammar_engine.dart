@@ -35,19 +35,34 @@ class GrammarEngine {
     'Loc': 'Предложный/Местный (lokativ)',
   };
   static const _caseUse = {
-    'Nom': 'Кто/что делает действие — подлежащее. Вопрос: ко? шта? '
+    'Nom': 'Это основной падеж любого языка. Выражает неизменную форму слова. Вопрос: ко? шта? '
         'Пример: «Pas spava» — пёс спит.',
-    'Gen': 'Чей, чего, откуда, «нет чего». Вопрос: кога? чега? '
+    'Gen': 'Падеж принадлежности и отрицания. Вопрос: кога? чега? '
         'После предлогов iz/od/do/bez и при отрицании. Пример: «nema vremena» — нет времени.',
-    'Dat': 'Кому, к кому — адресат и направление к кому-то. Вопрос: коме? чему? '
+    'Dat': 'Падеж направления, а также указания. Вопрос: коме? чему? '
         'Пример: «dajem prijatelju» — даю другу.',
-    'Acc': 'Кого/что — прямой объект; направление с u/na. Вопрос: кога? шта? '
-        'Пример: «vidim grad» — вижу город.',
-    'Voc': 'Обращение, зов. Пример: «Marko!», «prijatelju!».',
-    'Ins': 'Кем/чем — орудие или «с кем/чем». Вопрос: ким? чим? '
+    'Acc': 'Падеж любви :))))))) Используется после глаголов действий. Вопрос: кога? шта? '
+        'Пример: «volim Denisa» — я люблю Дениса.',
+    'Voc': 'Падеж для обращения. Пример: «Marko!», «prijatelju!».',
+    'Ins': 'Падеж указания инстрмента, авторства. Вопрос: ким? чим? '
         'После предлога s/sa. Пример: «pišem olovkom» — пишу карандашом.',
-    'Loc': 'Где, о ком/о чём — употребляется ТОЛЬКО с предлогами (u, na, o, po). '
-        'Вопрос: о коме? о чему? где? Пример: «u školi» — в школе.',
+    'Loc': 'Падеж местоположения и некоторых предлогов. Вопрос: о коме? о чему? где? '
+        'Пример: «u školi» — в школе.',
+  };
+
+  /// Типичные предлоги, требующие данного падежа (смысловая нагрузка падежа).
+  static const _casePreps = {
+    'Nom': <String>[],
+    'Gen': [
+      'od', 'do', 'iz', 'sa', 'bez', 'kod', 'oko', 'posle', 'pre', 'protiv',
+      'zbog', 'radi', 'preko', 'ispod', 'iznad', 'ispred', 'iza', 'pored',
+      'umesto', 'tokom', 'blizu', 'između'
+    ],
+    'Dat': ['k', 'ka', 'prema', 'nasuprot', 'uprkos'],
+    'Acc': ['u', 'na', 'kroz', 'niz', 'uz', 'za', 'po', 'o', 'pod', 'pred', 'nad'],
+    'Voc': <String>[],
+    'Ins': ['s', 'sa', 'nad', 'pod', 'pred', 'među', 'za'],
+    'Loc': ['u', 'na', 'o', 'po', 'pri', 'prema'],
   };
   static const _numberRu = {'Sing': 'единственное', 'Plur': 'множественное'};
   static const _genderRu = {'Masc': 'мужской', 'Fem': 'женский', 'Neut': 'средний'};
@@ -61,6 +76,141 @@ class GrammarEngine {
   static const _persons = ['ja', 'ti', 'on/ona', 'mi', 'vi', 'oni/one'];
   static const _perfAux = ['sam', 'si', 'je', 'smo', 'ste', 'su'];
   static const _futClitic = ['ću', 'ćeš', 'će', 'ćemo', 'ćete', 'će'];
+
+  // ---------------------------------------------------------------------------
+  // Управление предлогов падежами (с каким падежом работает предлог).
+  // Ключ — предлог латиницей в нижнем регистре. Значение — список пар
+  // (падеж, значение). У «двусторонних» предлогов (u/na/o/za/pod/pred/nad/među)
+  // несколько падежей — разводим по смыслу (движение → акузатив, место → локатив/
+  // инструментал).
+  // ---------------------------------------------------------------------------
+  static const Map<String, List<(String, String)>> _prepGov = {
+    // Генитив
+    'od': [('Gen', 'от / из / у (откуда, от кого)')],
+    'do': [('Gen', 'до (предела, места)')],
+    'iz': [('Gen', 'из (изнутри)')],
+    'bez': [('Gen', 'без чего-либо')],
+    'kod': [('Gen', 'у / возле (kod doktora — у врача)')],
+    'oko': [('Gen', 'вокруг / около')],
+    'posle': [('Gen', 'после (во времени)')],
+    'pre': [('Gen', 'до / перед (во времени)')],
+    'protiv': [('Gen', 'против')],
+    'zbog': [('Gen', 'из-за (причина)')],
+    'radi': [('Gen', 'ради / для')],
+    'preko': [('Gen', 'через / поверх / свыше')],
+    'ispod': [('Gen', 'под (ниже чего-либо)')],
+    'iznad': [('Gen', 'над (выше чего-либо)')],
+    'ispred': [('Gen', 'перед (впереди чего-либо)')],
+    'iza': [('Gen', 'за / позади')],
+    'pored': [('Gen', 'рядом / возле')],
+    'pokraj': [('Gen', 'рядом / возле')],
+    'umesto': [('Gen', 'вместо')],
+    'tokom': [('Gen', 'в течение')],
+    'blizu': [('Gen', 'близко от')],
+    'van': [('Gen', 'вне / снаружи')],
+    'izvan': [('Gen', 'вне / снаружи')],
+    'unutar': [('Gen', 'внутри')],
+    // Датив
+    'k': [('Dat', 'к (направление к кому/чему)')],
+    'ka': [('Dat', 'к (направление к кому/чему)')],
+    'nasuprot': [('Dat', 'напротив')],
+    'uprkos': [('Dat', 'вопреки')],
+    'prema': [
+      ('Dat', 'к / по направлению к; согласно'),
+      ('Loc', 'по / согласно (prema dogovoru)')
+    ],
+    // Двусторонние и прочие
+    'u': [('Acc', 'в (куда — движение): u grad'), ('Loc', 'в (где — место): u gradu')],
+    'na': [('Acc', 'на (куда — движение): na sto'), ('Loc', 'на (где — место): na stolu')],
+    'o': [('Loc', 'о / об (о ком, о чём): o ljubavi'), ('Acc', 'обо (удар обо что)')],
+    'po': [('Loc', 'по (по чему, после): po gradu'), ('Acc', 'за (сходить за чем-то)')],
+    'pri': [('Loc', 'при / возле / в процессе')],
+    's': [('Ins', 'с (с кем/чем — вместе): s prijateljem')],
+    'sa': [
+      ('Ins', 'с (с кем/чем — вместе): sa drugom'),
+      ('Gen', 'с / со (откуда: sa stola)')
+    ],
+    'nad': [('Ins', 'над (где): nad gradom'), ('Acc', 'над (куда)')],
+    'pod': [('Ins', 'под (где): pod stolom'), ('Acc', 'под (куда): pod sto')],
+    'pred': [('Ins', 'перед (где): pred kućom'), ('Acc', 'перед (куда)')],
+    'među': [('Ins', 'между / среди')],
+    'za': [
+      ('Acc', 'за / для (uzeti za ruku; za tebe)'),
+      ('Ins', 'за (следовать за, позади)'),
+      ('Gen', 'во время (za vreme rata)')
+    ],
+    'kroz': [('Acc', 'сквозь / через')],
+    'niz': [('Acc', 'вниз по')],
+    'uz': [('Acc', 'вверх по / вдоль / рядом с')],
+    'između': [('Gen', 'между')],
+  };
+
+  /// С каким падежом (падежами) работает предлог. Пусто — если не предлог
+  /// или предлог неизвестен. Принимает кириллицу/латиницу в любом регистре.
+  static List<PrepositionGovernment> prepositionGovernment(String word) {
+    final p = SerbianTransliteration.toLatin(word)
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-zšđžčć]'), '')
+        .trim();
+    final entries = _prepGov[p];
+    if (entries == null) return const [];
+    return entries
+        .map((e) => PrepositionGovernment(
+            caseKey: e.$1, caseName: _caseRu[e.$1] ?? e.$1, meaning: e.$2))
+        .toList();
+  }
+
+  /// Известный ли это предлог (для авто-подсказки при выделении слова/фразы).
+  static bool isKnownPreposition(String word) =>
+      prepositionGovernment(word).isNotEmpty;
+
+  /// Короткое имя падежа («Генитив»), без латинского дубля — для чипов.
+  static String caseShort(String caseKey) =>
+      const {
+        'Nom': 'Номинатив',
+        'Gen': 'Генитив',
+        'Dat': 'Датив',
+        'Acc': 'Акузатив',
+        'Voc': 'Вокатив',
+        'Ins': 'Инструментал',
+        'Loc': 'Локатив',
+      }[caseKey] ??
+      caseKey;
+
+  /// Наибольший общий префикс двух строк.
+  static String _commonPrefix(String a, String b) {
+    final n = a.length < b.length ? a.length : b.length;
+    var i = 0;
+    while (i < n && a[i] == b[i]) {
+      i++;
+    }
+    return a.substring(0, i);
+  }
+
+  /// Делит набор словоформ на (основу, окончание) по общему префиксу, чтобы в
+  /// таблице подчёркивать именно меняющееся окончание. Пустые формы и «—»
+  /// возвращаются как есть.
+  static List<({String stem, String ending})> splitStemEndings(
+      List<String> forms) {
+    final real = forms.where((f) => f.isNotEmpty && f != '—').toList();
+    if (real.length < 2) {
+      return forms.map((f) => (stem: f, ending: '')).toList();
+    }
+    var prefix = real.first;
+    for (final f in real.skip(1)) {
+      prefix = _commonPrefix(prefix, f);
+      if (prefix.isEmpty) break;
+    }
+    return forms.map((f) {
+      if (f.isEmpty || f == '—' || prefix.length >= f.length) {
+        return (stem: f, ending: '');
+      }
+      return (
+        stem: f.substring(0, prefix.length),
+        ending: f.substring(prefix.length),
+      );
+    }).toList();
+  }
 
   // ---------------------------------------------------------------------------
   // Разбор MSD (схема lexicon.db — подмножество MULTEXT-East).
@@ -170,17 +320,29 @@ class GrammarEngine {
   static List<GrammarFact> humanFacts(String upos, Map<String, String> feats) =>
       describe(upos, feats).facts;
 
-  /// Справочник падежей (для интерактивной шпаргалки).
-  static List<({String key, String name, String use})> casesReference() =>
-      _caseOrder
-          .map((c) => (key: c, name: _caseRu[c]!, use: _caseUse[c]!))
+  /// Справочник падежей (для интерактивной шпаргалки): название, для чего
+  /// нужен и типичные предлоги этого падежа.
+  static List<({String key, String name, String use, List<String> preps})>
+      casesReference() => _caseOrder
+          .map((c) => (
+                key: c,
+                name: _caseRu[c]!,
+                use: _caseUse[c]!,
+                preps: _casePreps[c] ?? const <String>[],
+              ))
           .toList();
 
   /// Карточки грамматики для запоминания: 7 падежей + 3 времени.
   static List<({String front, String back, String tag})> ruleCards() {
     final cards = <({String front, String back, String tag})>[
       for (final c in casesReference())
-        (front: c.name, back: c.use, tag: 'Падеж'),
+        (
+          front: c.name,
+          back: c.preps.isEmpty
+              ? c.use
+              : '${c.use}\n\nПредлоги: ${c.preps.join(', ')}.',
+          tag: 'Падеж'
+        ),
       (
         front: 'Презент (prezent) — настоящее время',
         back: 'Действие происходит сейчас. Основа глагола + личные окончания: '
@@ -190,14 +352,14 @@ class GrammarEngine {
       ),
       (
         front: 'Перфекат (perfekat) — прошедшее время',
-        back: 'Вспомогательный глагол biti (sam/si/je/smo/ste/su) + причастие '
+        back: 'Аналогично прошедшему времени в русском, но строится как Present Perfect в английском. Вспомогательный глагол biti (sam/si/je/smo/ste/su) + причастие '
             'на -o/-la/-lo (по роду и числу).\nПример: radio sam, radila si, '
             'radili smo.',
         tag: 'Время',
       ),
       (
         front: 'Футур I (futur) — будущее время',
-        back: 'Клитика hteti (ću/ćeš/će/ćemo/ćete/će) + инфинитив.\n'
+        back: 'Аналогично будущему времени в русском, но вместо глагола быть глагол хотеть. Глагол hteti (ću/ćeš/će/ćemo/ćete/će) + инфинитив.\n'
             'Пример: radiću / ću raditi, čitaćeš / ćeš čitati.',
         tag: 'Время',
       ),
@@ -218,9 +380,12 @@ class GrammarEngine {
     final tense = feats['Tense'];
     final person = feats['Person'];
     final verbForm = feats['VerbForm'];
+    final mood = feats['Mood'];
 
     if (gcase != null) facts.add(GrammarFact('Падеж', _caseRu[gcase] ?? gcase));
     if (tense != null) facts.add(GrammarFact('Время', _tenseRu[tense] ?? tense));
+    if (mood == 'Imp') facts.add(const GrammarFact('Наклонение', 'повелительное (императив)'));
+    if (mood == 'Cnd') facts.add(const GrammarFact('Наклонение', 'условное (потенцијал)'));
     if (person != null) facts.add(GrammarFact('Лицо', _personRu[person] ?? person));
     if (number != null) facts.add(GrammarFact('Число', _numberRu[number] ?? number));
     if (gender != null) facts.add(GrammarFact('Род', _genderRu[gender] ?? gender));
@@ -229,6 +394,8 @@ class GrammarEngine {
     final summaryParts = [
       if (gcase != null) (_caseRu[gcase] ?? gcase).toLowerCase(),
       if (tense != null) (_tenseRu[tense] ?? tense),
+      if (mood == 'Imp') 'повелительное наклонение',
+      if (mood == 'Cnd') 'условное наклонение',
       if (person != null) _personRu[person],
       if (number != null) _numberRu[number],
       if (gender != null) 'род: $gender',
@@ -249,8 +416,18 @@ class GrammarEngine {
             '${_personRu[person] ?? ''}, ${_numberRu[number] ?? ''} число.\n\n'
             'Ниже — спряжение во всех трёх сербских временах.';
       }
+    } else if (mood == 'Imp') {
+      why = 'Это повелительное наклонение (императив) — выражает приказ или просьбу '
+          '(${_personRu[person] ?? ''}, ${_numberRu[number] ?? ''} число).\n\n'
+          'Ниже — спряжение этого глагола в основных временах.';
+    } else if (mood == 'Cnd') {
+      why = 'Это условное наклонение (потенцијал) — выражает возможность или условие '
+          '(бы, если бы).\n\n'
+          'Ниже — спряжение этого глагола в основных временах.';
+    } else if (feats.isNotEmpty) {
+      why = 'Это $posLabel. Базовые грамматические признаки указаны выше.';
     } else {
-      why = 'Базовый разбор: $posLabel. Полный разбор формы доступен при '
+      why = 'Базовый разбор: $posLabel. Полный разбор формы (падежи, лица) доступен при '
           'подключённом сервере (CLASSLA) или для слов из словаря.';
     }
 
@@ -340,11 +517,13 @@ class GrammarEngine {
           form: form ?? '—',
           generated: generated,
           current: form != null && form == surface,
+          caseKey: c,
         ));
       }
       tables.add(ParadigmTable(
         title: 'Склонение — ${_numberRu[number]} число',
         rows: rows,
+        highlightEndings: true,
       ));
     }
     return tables;
@@ -370,6 +549,7 @@ class GrammarEngine {
       ParadigmTable(
         title: 'Именительный падеж',
         subtitle: 'по родам и числам',
+        highlightEndings: true,
         rows: [
           cell('муж. ед.', 'Masc', 'Sing'),
           cell('жен. ед.', 'Fem', 'Sing'),
@@ -482,15 +662,18 @@ class GrammarEngine {
     );
 
     return [
-      ParadigmTable(title: 'Презент (настоящее)', rows: prezRows),
+      ParadigmTable(
+          title: 'Презент (настоящее)',
+          rows: prezRows,
+          highlightEndings: true),
       ParadigmTable(
         title: 'Перфекат (прошедшее)',
-        subtitle: 'biti + причастие (здесь — муж. род; ж.р.: -la, ср.р.: -lo)',
+        subtitle: 'глагол biti + причастие (здесь — муж. род; ж.р.: -la, ср.р.: -lo)',
         rows: perfRows,
       ),
       ParadigmTable(
         title: 'Футур I (будущее)',
-        subtitle: 'клитика hteti + инфинитив',
+        subtitle: 'глагол hteti + инфинитив',
         rows: futRows,
       ),
     ];
