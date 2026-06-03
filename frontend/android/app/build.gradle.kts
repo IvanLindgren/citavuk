@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.srbskiread.srbski_read"
-    compileSdk = 35
+    // Новые транзитивные AndroidX (core 1.17, browser 1.9) требуют compileSdk 36.
+    compileSdk = 36
     // Плагины (audioplayers, file_picker, path_provider и др.) требуют NDK 25.1+.
     // Берём заведомо более высокую версию — они обратно совместимы.
     ndkVersion = "27.0.12077973"
