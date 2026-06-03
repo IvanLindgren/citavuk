@@ -330,7 +330,8 @@ class _CasesCheatsheet extends StatelessWidget {
                 ],
               ),
             ),
-          );
+          ),
+        );
           }).toList(),
         ),
       ),

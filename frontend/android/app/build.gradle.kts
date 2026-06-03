@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "com.srbskiread.srbski_read"
     compileSdk = 35
-    ndkVersion = flutter.ndkVersion
+    // Плагины (audioplayers, file_picker, path_provider и др.) требуют NDK 25.1+.
+    // Берём заведомо более высокую версию — они обратно совместимы.
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -21,7 +23,8 @@ android {
         applicationId = "com.srbskiread.srbski_read"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // audioplayers требует minSdk 23 — берём максимум с дефолтом Flutter.
+        minSdk = maxOf(flutter.minSdkVersion, 23)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

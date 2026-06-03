@@ -18,9 +18,12 @@ jobs:
           java-version: '17'
 
       - name: Setup Flutter
+        # Версия должна совпадать с локальной (см. AGENTS.md): проект использует
+        # API Flutter 3.27+ (Color.withValues / Color.toARGB32 / CardThemeData),
+        # которых нет в 3.24.x — на них и падала сборка.
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x' 
+          flutter-version: '3.44.x'
           channel: 'stable'
 
       - name: Install dependencies
