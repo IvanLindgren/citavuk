@@ -36,8 +36,19 @@ jobs:
         working-directory: ./frontend
         run: dart run flutter_launcher_icons
 
+      - name: Decode Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          echo $KEYSTORE_BASE64 | base64 --decode > ./frontend/android/app/release-keystore.p12
+
       - name: Build APK
         working-directory: ./frontend
+        env:
+          KEYSTORE_FILE: release-keystore.p12
+          KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: flutter build apk --release
 
       - name: Upload APK artifact
