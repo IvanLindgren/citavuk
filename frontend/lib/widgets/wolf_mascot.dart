@@ -35,7 +35,13 @@ class WolfSticker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = Wolf.hasDarkBackground(asset);
-    final image = Image.asset(asset, fit: BoxFit.contain);
+    // Арты волка — крупные PNG (~2 МБ). Декодируем под размер показа, а не в
+    // полное разрешение, иначе зря тратим память/CPU (бывают подвисания).
+    final image = Image.asset(
+      asset,
+      fit: BoxFit.contain,
+      cacheWidth: (size * 3).round(),
+    );
 
     Widget sticker = frame
         ? Container(
@@ -94,7 +100,11 @@ class WolfAvatar extends StatelessWidget {
     return SizedBox(
       width: size,
       height: size,
-      child: Image.asset(asset!, fit: BoxFit.contain),
+      child: Image.asset(
+        asset!,
+        fit: BoxFit.contain,
+        cacheWidth: (size * 3).round(),
+      ),
     );
   }
 }

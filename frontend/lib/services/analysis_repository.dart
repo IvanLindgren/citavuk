@@ -22,6 +22,12 @@ class AnalysisRepository {
     required String tokenText,
     String? backendUrl,
   }) async {
+    // Фразы (несколько слов) не отправляем на пословный сервер разбора — он
+    // для одиночных токенов и на фразе только тормозит. Сразу идём в перевод.
+    if (tokenText.trim().contains(' ')) {
+      return _offlineOrOnline(tokenText);
+    }
+
     // Авто-починка «битых» букв (š/č/ć/ž/đ, ставшие закорючками при извлечении).
     final repaired = await LexiconDb.instance.repair(tokenText);
     final token = repaired ?? tokenText;

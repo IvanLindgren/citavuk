@@ -29,31 +29,31 @@ class RadioService extends ChangeNotifier {
   static const stations = <RadioStation>[
     RadioStation(
       name: 'Groove Salad',
-      genre: 'спокойный чилл',
+      genre: 'Спокойный',
       emoji: '🌿',
       url: 'https://ice1.somafm.com/groovesalad-128-mp3',
     ),
     RadioStation(
       name: 'Fluid',
-      genre: 'lo-fi / future soul',
+      genre: 'Lo-fi',
       emoji: '🎧',
       url: 'https://ice1.somafm.com/fluid-128-mp3',
     ),
     RadioStation(
       name: 'Beat Blender',
-      genre: 'мягкий даунтемпо',
+      genre: 'Мягкий',
       emoji: '🌊',
       url: 'https://ice1.somafm.com/beatblender-128-mp3',
     ),
     RadioStation(
       name: 'Drone Zone',
-      genre: 'тихий эмбиент',
+      genre: 'Эмбиент',
       emoji: '🌌',
       url: 'https://ice1.somafm.com/dronezone-128-mp3',
     ),
     RadioStation(
       name: 'Deep Space One',
-      genre: 'космический эмбиент',
+      genre: 'Космический эмбиент',
       emoji: '🚀',
       url: 'https://ice1.somafm.com/deepspaceone-128-mp3',
     ),

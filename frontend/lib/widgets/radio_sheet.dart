@@ -156,7 +156,7 @@ class RadioControlSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 4),
-              Text('Лёгкая lo-fi/чилл-музыка тихим фоном — помогает войти в ритм.',
+              Text('Может быть, с музыкой вам будет легче сосредоточиться? Здесь можно выбрать станцию с lo-fi и эмбиентом и отрегулировать громкость.',
                   style: TextStyle(
                       fontSize: 13,
                       color: scheme.onSurface.withValues(alpha: 0.65))),

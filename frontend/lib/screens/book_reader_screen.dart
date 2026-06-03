@@ -183,10 +183,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      // Фон рисует сама панель (реактивно к теме) — иначе при переключении
+      // тёмной темы фон оставался светлым, а текст становился невидимым.
+      backgroundColor: Colors.transparent,
       builder: (_) => WordAnalysisSheet(
         bookId: widget.bookId,
         sentence: sentence,
@@ -199,10 +198,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (_) => const ReaderSettingsSheet(),
     );
   }
@@ -421,6 +417,40 @@ class _DragScrollBehavior extends MaterialScrollBehavior {
       };
 }
 
+/// Верхняя полоса нижней панели: «ручка» по центру + явный крестик «закрыть»
+/// справа (на жестовой навигации Pixel свайпом закрыть бывает неочевидно).
+Widget _sheetHandleBar(BuildContext context, ColorScheme scheme) {
+  return SizedBox(
+    height: 44,
+    child: Stack(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: const EdgeInsets.only(top: 8),
+            width: 42,
+            height: 4,
+            decoration: BoxDecoration(
+              color: scheme.onSurface.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            tooltip: 'Закрыть',
+            visualDensity: VisualDensity.compact,
+            icon: Icon(Icons.close,
+                color: scheme.onSurface.withValues(alpha: 0.65)),
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 /// Нижняя панель настроек чтения: шрифт, размер, межстрочный, трекинг,
 /// bionic-режим и тема. Меняет глобальные настройки в реальном времени.
 class ReaderSettingsSheet extends StatelessWidget {
@@ -434,24 +464,20 @@ class ReaderSettingsSheet extends StatelessWidget {
 
     void set(ReaderSettings next) => context.read<AppSettings>().update(next);
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+    return Container(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Padding(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
       child: SingleChildScrollView(
         child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: scheme.onSurface.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
+          _sheetHandleBar(context, scheme),
+          const SizedBox(height: 8),
           Text('Настройки чтения',
               style: TextStyle(
                   fontSize: 18, fontWeight: FontWeight.bold, color: scheme.onSurface)),
@@ -581,6 +607,7 @@ class ReaderSettingsSheet extends StatelessWidget {
         ],
         ),
       ),
+    ),
     );
   }
 
@@ -706,14 +733,24 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Padding(
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
-        top: 16,
+        top: 8,
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
-      child: FutureBuilder<WordAnalysis>(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _sheetHandleBar(context, scheme),
+          Flexible(
+            child: FutureBuilder<WordAnalysis>(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -755,17 +792,7 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
               mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: scheme.onSurface.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 4),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -880,7 +907,11 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
           ),
         );
       },
+            ),
+          ),
+        ],
       ),
+    ),
     );
   }
 
