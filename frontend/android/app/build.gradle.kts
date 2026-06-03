@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.srbskiread.srbski_read"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

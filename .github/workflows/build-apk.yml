@@ -25,7 +25,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: flutter pub get
+        run: |
+          sed -i '/dependency_overrides:/,+1d' pubspec.yaml
+          flutter pub get
 
       - name: Build APK
         working-directory: ./frontend
