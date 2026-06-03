@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/word_analysis.dart';
 import '../utils/transliteration.dart';
 import 'lexicon_db.dart';
+import 'user_db.dart';
 
 /// Разбор слова/фразы: сначала онлайн (CLASSLA-сервер), при недоступности —
 /// офлайн по локальному лексикону (LexiconDb).
@@ -42,13 +43,20 @@ class AnalysisRepository {
               'token_text': token,
             }),
           )
-          .timeout(const Duration(milliseconds: 2500));
+          // Hugging Face Space на бесплатном тарифе может «просыпаться». Даём
+          // ему 5 c, иначе быстро откатываемся на мгновенный онлайн-перевод
+          // (Google) или офлайн-кэш — чтобы не зависать на каждом слове.
+          .timeout(const Duration(milliseconds: 5000));
       if (resp.statusCode == 200) {
-        return WordAnalysis.fromServer(
+        final result = WordAnalysis.fromServer(
             jsonDecode(resp.body) as Map<String, dynamic>, token);
+        if (result.translation.trim().isNotEmpty) {
+          UserDb.instance.cacheTranslation(token, result.translation);
+        }
+        return result;
       }
     } catch (_) {
-      // локальный сервер недоступен — идём в офлайн/онлайн-перевод
+      // сервер недоступен — идём в офлайн/онлайн-перевод
     }
     return _offlineOrOnline(token);
   }
@@ -59,15 +67,21 @@ class AnalysisRepository {
   }
 
   Future<WordAnalysis> _offlineOrOnline(String tokenText) async {
-    // Фразы: морфология не нужна — только перевод (по интернету).
+    // Фразы: морфология не нужна — только перевод. Сначала кэш (офлайн),
+    // потом сеть; удачный перевод кэшируем.
     if (tokenText.trim().contains(' ')) {
-      final tr = await _translateOnline(tokenText);
+      var tr = await UserDb.instance.getCachedTranslation(tokenText);
+      final cached = tr != null;
+      if (tr == null) {
+        tr = await _translateOnline(tokenText);
+        if (tr != null) await UserDb.instance.cacheTranslation(tokenText, tr);
+      }
       return WordAnalysis(
         surface: tokenText,
         lemma: tokenText.toLowerCase(),
         upos: 'PHRASE',
         translation: tr ?? '[Перевод доступен только онлайн]',
-        isOffline: tr == null,
+        isOffline: tr == null || cached,
         isPhrase: true,
       );
     }
@@ -88,12 +102,15 @@ class AnalysisRepository {
     final lemmaRows = await LexiconDb.instance.getLexiconRowsForLemma(lemma);
     final forms = _baseForms(upos, lemmaRows);
 
-    // Перевод: сначала локальный словарь, иначе — онлайн (нужен только интернет).
+    // Перевод: локальный словарь → кэш онлайн-переводов → сеть.
+    // Удачный сетевой перевод кэшируем, чтобы слово работало и офлайн.
     var translation = await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
+    translation ??= await UserDb.instance.getCachedTranslation(tokenText);
     var online = false;
     if (translation == null) {
       translation = await _translateOnline(tokenText);
       online = translation != null;
+      if (online) await UserDb.instance.cacheTranslation(tokenText, translation!);
     }
 
     return WordAnalysis(

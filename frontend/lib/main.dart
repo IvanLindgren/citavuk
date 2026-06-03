@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'services/user_db.dart';
 import 'services/card_io.dart';
+import 'services/analysis_repository.dart';
 import 'services/document_parser.dart';
 import 'services/notification_service.dart';
+import 'widgets/welcome_dialog.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
 import 'screens/about_screen.dart';
@@ -19,6 +21,7 @@ import 'theme/app_theme.dart';
 import 'widgets/animated_widgets.dart';
 import 'widgets/radio_sheet.dart';
 import 'widgets/serbian_ornament.dart';
+import 'widgets/server_settings_sheet.dart';
 import 'widgets/wolf_mascot.dart';
 import 'utils/language_detector.dart';
 
@@ -31,6 +34,9 @@ Future<void> main() async {
 
   final settings = AppSettings();
   await settings.load();
+
+  // Сервер разбора/перевода — из настроек (по умолчанию публичный HF Space).
+  AnalysisRepository.baseUrl = settings.backendUrl;
 
   await NotificationService.instance.init();
   if (settings.notificationsEnabled) {
@@ -78,6 +84,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     _initAndLoad();
     _loadLibraryAssets();
+    // Приветствие при первом запуске: объясняем онлайн/офлайн и предлагаем
+    // скачать словарь.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!context.read<AppSettings>().firstRunDone) {
+        showWelcomeDialog(context);
+      }
+    });
   }
 
   Future<void> _loadLibraryAssets() async {
@@ -401,6 +415,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (v == 'import') _importCards();
               if (v == 'export') _exportAllCards();
               if (v == 'refresh') _loadBooks();
+              if (v == 'server') _openServerSettings();
               if (v == 'about') {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutScreen()));
               }
@@ -411,6 +426,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: ListTile(
                   leading: Icon(Icons.info_outline),
                   title: Text('О приложении'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'server',
+                child: ListTile(
+                  leading: Icon(Icons.cloud_outlined),
+                  title: Text('Сервер и словарь'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -814,6 +837,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context,
       MaterialPageRoute(builder: (_) => const GrammarCardsScreen()),
     );
+  }
+
+  void _openServerSettings() {
+    showServerSettings(context);
   }
 
   Future<void> _exportAllCards() async {

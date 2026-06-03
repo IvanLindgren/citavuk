@@ -32,6 +32,10 @@ jobs:
           sed -i '/dependency_overrides:/,+1d' pubspec.yaml
           flutter pub get
 
+      - name: Generate App Icon
+        working-directory: ./frontend
+        run: dart run flutter_launcher_icons
+
       - name: Build APK
         working-directory: ./frontend
         run: flutter build apk --release

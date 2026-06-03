@@ -56,6 +56,15 @@ class UserDb {
         last_reviewed INTEGER
       )
     ''');
+    // Кэш онлайн-переводов: слова, переведённые в сети, становятся доступны
+    // офлайн. Пополняет «офлайн-словарь» по мере использования приложения.
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS translation_cache (
+        word TEXT PRIMARY KEY,
+        translation TEXT NOT NULL,
+        added_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    ''');
     await db.execute('''
       INSERT INTO reviews (vocab_id, due_at)
       SELECT id, 0 FROM vocabulary
@@ -166,6 +175,44 @@ class UserDb {
   Future<List<Map<String, dynamic>>> getAllVocabulary() async {
     final db = await database;
     return db.query('vocabulary', orderBy: 'added_at DESC');
+  }
+
+  // --- Кэш онлайн-переводов (офлайн-доступ к уже переведённым словам) ---
+
+  Future<void> cacheTranslation(String word, String translation) async {
+    final w = word.trim().toLowerCase();
+    if (w.isEmpty || translation.trim().isEmpty) return;
+    try {
+      final db = await database;
+      await db.insert(
+        'translation_cache',
+        {'word': w, 'translation': translation.trim()},
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (_) {}
+  }
+
+  Future<String?> getCachedTranslation(String word) async {
+    final w = word.trim().toLowerCase();
+    if (w.isEmpty) return null;
+    try {
+      final db = await database;
+      final r = await db.query('translation_cache',
+          columns: ['translation'], where: 'word = ?', whereArgs: [w], limit: 1);
+      if (r.isNotEmpty) return r.first['translation'] as String;
+    } catch (_) {}
+    return null;
+  }
+
+  Future<int> cachedTranslationCount() async {
+    try {
+      final db = await database;
+      final r =
+          await db.rawQuery('SELECT COUNT(*) AS c FROM translation_cache');
+      return (r.first['c'] as int?) ?? 0;
+    } catch (_) {
+      return 0;
+    }
   }
 
   /// Находит книгу с таким названием или создаёт пустую (приёмник для импорта

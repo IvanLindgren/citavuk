@@ -14,6 +14,19 @@ class AppSettings extends ChangeNotifier {
   static const _kMusicEnabled = 'music_enabled';
   static const _kMusicStation = 'music_station';
   static const _kMusicVolume = 'music_volume';
+  static const _kBackendUrl = 'backend_url';
+  static const _kFirstRunDone = 'first_run_done';
+
+  /// Сервер разбора/перевода по умолчанию — твой Hugging Face Space.
+  /// На реальном телефоне localhost (10.0.2.2/127.0.0.1) недоступен, поэтому
+  /// нужен публичный адрес.
+  static const defaultBackendUrl =
+      'https://ivanessalingren-citavukspace.hf.space';
+
+  /// Прямая ссылка на файл словаря в репозитории Space (можно заменить более
+  /// полным словарём, загрузив его в Space).
+  static const defaultDictionaryUrl =
+      'https://huggingface.co/spaces/ivanessalingren/citavukspace/resolve/main/lexicon.db';
 
   ReaderSettings _reader = const ReaderSettings();
   ReaderSettings get reader => _reader;
@@ -35,6 +48,12 @@ class AppSettings extends ChangeNotifier {
   int get musicStation => _musicStation;
   double get musicVolume => _musicVolume;
 
+  // Сервер перевода/разбора и первый запуск.
+  String _backendUrl = defaultBackendUrl;
+  bool _firstRunDone = false;
+  String get backendUrl => _backendUrl;
+  bool get firstRunDone => _firstRunDone;
+
   Future<void> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -49,6 +68,11 @@ class AppSettings extends ChangeNotifier {
       _musicEnabled = prefs.getBool(_kMusicEnabled) ?? false;
       _musicStation = prefs.getInt(_kMusicStation) ?? 0;
       _musicVolume = prefs.getDouble(_kMusicVolume) ?? 0.45;
+      final savedBackend = prefs.getString(_kBackendUrl);
+      if (savedBackend != null && savedBackend.trim().isNotEmpty) {
+        _backendUrl = savedBackend.trim();
+      }
+      _firstRunDone = prefs.getBool(_kFirstRunDone) ?? false;
     } catch (_) {
       // Повреждённые настройки — откатываемся к дефолтам.
     }
@@ -97,6 +121,24 @@ class AppSettings extends ChangeNotifier {
       await prefs.setBool(_kMusicEnabled, _musicEnabled);
       await prefs.setInt(_kMusicStation, _musicStation);
       await prefs.setDouble(_kMusicVolume, _musicVolume);
+    } catch (_) {}
+  }
+
+  Future<void> setBackendUrl(String url) async {
+    _backendUrl = url.trim().isEmpty ? defaultBackendUrl : url.trim();
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_kBackendUrl, _backendUrl);
+    } catch (_) {}
+  }
+
+  Future<void> setFirstRunDone(bool v) async {
+    _firstRunDone = v;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_kFirstRunDone, v);
     } catch (_) {}
   }
 }
