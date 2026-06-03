@@ -19,7 +19,9 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.3.2" apply false
+    // AGP 8.6.0 — минимум для Flutter 3.27+ и для compileSdk 35; совместим с
+    // Gradle 8.7 и Kotlin 1.9.x (без необходимости поднимать их ещё выше).
+    id("com.android.application") version "8.6.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.22" apply false
 }
 
