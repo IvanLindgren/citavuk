@@ -30,7 +30,7 @@ class DocumentParser {
     void Function(double progress) onProgress,
   ) async {
     if (kIsWeb) {
-      return _parsePdfCore(bytes, onProgress); // веб — без изолята
+      return _parsePdfCoreWeb(bytes, onProgress); // веб — асинхронный разбор
     }
     final receivePort = ReceivePort();
     final isolate = await Isolate.spawn(
@@ -59,7 +59,7 @@ class DocumentParser {
     void Function(double progress) onProgress,
   ) async {
     if (kIsWeb) {
-      return _parseDocxCore(bytes, onProgress);
+      return _parseDocxCoreWeb(bytes, onProgress); // веб — асинхронный разбор
     }
     final receivePort = ReceivePort();
     final isolate = await Isolate.spawn(
@@ -162,6 +162,91 @@ class DocumentParser {
     final pElements = xmlDocument.findAllElements('w:p').toList();
     final total = pElements.length;
     for (var i = 0; i < total; i++) {
+      final p = pElements[i];
+      final buffer = StringBuffer();
+      for (final r in p.findAllElements('w:r')) {
+        for (final t in r.findAllElements('w:t')) {
+          buffer.write(t.innerText);
+        }
+      }
+      final pText = buffer.toString().trim();
+      if (pText.isNotEmpty) paragraphs.add(pText);
+      if (total > 0 && (i % 50 == 0 || i == total - 1)) {
+        onProgress(0.5 + (i / total) * 0.45);
+      }
+    }
+    if (paragraphs.isEmpty) {
+      paragraphs.add('[Пустой DOCX документ]');
+    }
+    return _splitLong(paragraphs);
+  }
+
+  static Future<List<String>> _parsePdfCoreWeb(
+      Uint8List bytes, void Function(double) onProgress) async {
+    final List<String> paragraphs = [];
+    PdfDocument? document;
+    try {
+      document = PdfDocument(inputBytes: bytes);
+      final extractor = PdfTextExtractor(document);
+      final pageCount = document.pages.count;
+      final current = StringBuffer();
+      for (var i = 0; i < pageCount; i++) {
+        // Уступаем поток браузеру каждые 2 страницы, чтобы обновить UI и не зависнуть
+        if (i % 2 == 0) {
+          await Future.delayed(Duration.zero);
+        }
+        final pageText = extractor.extractText(
+          startPageIndex: i,
+          endPageIndex: i,
+          layoutText: true,
+        );
+        for (final line in pageText.split('\n')) {
+          final clean = line.trim();
+          if (clean.isEmpty) {
+            if (current.isNotEmpty) {
+              paragraphs.add(current.toString());
+              current.clear();
+            }
+          } else {
+            if (current.isNotEmpty) current.write(' ');
+            current.write(clean);
+          }
+        }
+        if (pageCount > 0) onProgress((i + 1) / pageCount);
+      }
+      if (current.isNotEmpty) paragraphs.add(current.toString());
+    } finally {
+      document?.dispose();
+    }
+    if (paragraphs.isEmpty) {
+      paragraphs.add('[Пустой документ или отсутствует текстовый слой]');
+    }
+    return _splitLong(paragraphs);
+  }
+
+  static Future<List<String>> _parseDocxCoreWeb(
+      Uint8List bytes, void Function(double) onProgress) async {
+    final List<String> paragraphs = [];
+    onProgress(0.1);
+    await Future.delayed(Duration.zero);
+    final archive = ZipDecoder().decodeBytes(bytes);
+    final file = archive.findFile('word/document.xml');
+    if (file == null) {
+      return ['[Ошибка: Файл word/document.xml не найден в DOCX]'];
+    }
+    onProgress(0.3);
+    await Future.delayed(Duration.zero);
+    final xmlString = utf8.decode(file.content as List<int>);
+    onProgress(0.5);
+    await Future.delayed(Duration.zero);
+    final xmlDocument = xml.XmlDocument.parse(xmlString);
+    final pElements = xmlDocument.findAllElements('w:p').toList();
+    final total = pElements.length;
+    for (var i = 0; i < total; i++) {
+      // Периодически уступаем поток браузеру на больших файлах
+      if (i % 100 == 0) {
+        await Future.delayed(Duration.zero);
+      }
       final p = pElements[i];
       final buffer = StringBuffer();
       for (final r in p.findAllElements('w:r')) {
