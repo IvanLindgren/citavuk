@@ -284,12 +284,29 @@ def analyze_token(req: AnalyzeRequest):
     if not translation:
         translation = fetch_online_translation(req.token_text)
         
+    # Contextual translation logic
+    contextual_translation = None
+    if req.sentence and req.start_offset is not None and req.end_offset is not None:
+        try:
+            start = req.start_offset
+            end = req.end_offset
+            if 0 <= start <= len(req.sentence) and 0 <= end <= len(req.sentence) and start < end:
+                tagged_sentence = req.sentence[:start] + f"<w>{req.token_text}</w>" + req.sentence[end:]
+                translated_sentence = fetch_online_translation(tagged_sentence)
+                import re
+                match = re.search(r"<w[^>]*>(.*?)</w>", translated_sentence, re.IGNORECASE | re.DOTALL)
+                if match:
+                    contextual_translation = match.group(1).strip()
+        except Exception as e:
+            logging.error(f"Contextual translation failed: {e}")
+
     return {
         "lemma": lemma,
         "upos": upos,
         "feats": feats,
         "forms": forms,
-        "translation": translation
+        "translation": translation,
+        "contextual_translation": contextual_translation
     }
 
 import urllib.parse
@@ -364,6 +381,213 @@ def fetch_wiktionary_lemma(word: str) -> Optional[tuple[str, str]]:
     except Exception as e:
         logging.error(f"Wiktionary lookup failed: {e}")
     return None
+
+# ---------------------------------------------------------------------------
+# Новости/статьи на сербском: RSS-ленты по темам + извлечение полного текста.
+# Парсинг идёт на сервере (нет CORS, надёжные библиотеки), приложение зовёт
+# /news и /article. Ленты можно править под себя.
+# ---------------------------------------------------------------------------
+import calendar
+
+# Ленты проверены (отдают статьи). Темы агрегируют несколько СМИ; дубли по
+# ссылке отсекаются, сортировка — по дате.
+NEWS_FEEDS = {
+    "general": [
+        "https://n1info.rs/feed/",
+        "https://www.danas.rs/feed/",
+        "https://nova.rs/feed/",
+    ],
+    "politics": [
+        "https://n1info.rs/vesti/feed/",
+        "https://nova.rs/vesti/politika/feed/",
+    ],
+    "culture": [
+        "https://www.blic.rs/rss/Kultura",
+        "https://nova.rs/kultura/feed/",
+        "https://n1info.rs/kultura/feed/",
+    ],
+    "trending": [  # «лента дня» — самое читаемое сегодня (Blic) + свежее
+        "https://www.blic.rs/rss/danasnji-najcitaniji",
+        "https://nova.rs/feed/",
+        "https://n1info.rs/feed/",
+    ],
+    "science": [
+        "https://naukakrozprice.rs/feed/",
+        "https://nova.rs/it/feed/",
+        "https://www.blic.rs/rss/IT",
+    ],
+}
+
+# Кэш ленты по теме (чтобы не дёргать RSS на каждый заход).
+_NEWS_CACHE = {}
+_NEWS_TTL = 300  # 5 минут
+
+
+def _clean_summary(html: str) -> str:
+    text = re.sub(r"<[^>]+>", "", html or "")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:300]
+
+
+def _entry_timestamp(e) -> int:
+    for key in ("published_parsed", "updated_parsed"):
+        val = e.get(key)
+        if val:
+            try:
+                return calendar.timegm(val)
+            except Exception:
+                pass
+    return 0
+
+
+def _entry_image(e) -> Optional[str]:
+    # media:content / media:thumbnail
+    for key in ("media_content", "media_thumbnail"):
+        media = e.get(key)
+        if media:
+            for m in media:
+                if m.get("url"):
+                    return m["url"]
+    # enclosure-картинки
+    for link in e.get("links", []):
+        if link.get("rel") == "enclosure" and str(link.get("type", "")).startswith("image"):
+            return link.get("href")
+    # первый <img> в summary/content
+    html = e.get("summary", "") or ""
+    if e.get("content"):
+        try:
+            html += e["content"][0].get("value", "")
+        except Exception:
+            pass
+    m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', html)
+    if m:
+        return m.group(1)
+    return None
+
+
+@app.get("/news")
+def news(topic: str = "general", limit: int = 25):
+    import feedparser
+    # Кэш: отдаём свежий результat, не дёргая RSS чаще раза в 5 минут.
+    now = time.time()
+    cached = _NEWS_CACHE.get(topic)
+    if cached and now - cached[0] < _NEWS_TTL:
+        return {"topic": topic, "items": cached[1][:limit], "cached": True}
+
+    feeds = NEWS_FEEDS.get(topic, NEWS_FEEDS["general"])
+    items = []
+    seen = set()
+    for feed_url in feeds:
+        try:
+            d = feedparser.parse(feed_url)
+            source = ""
+            try:
+                source = d.feed.get("title", "")
+            except Exception:
+                pass
+            for e in d.entries:
+                link = e.get("link", "")
+                if not link or link in seen:
+                    continue
+                seen.add(link)
+                items.append({
+                    "title": (e.get("title", "") or "").strip(),
+                    "summary": _clean_summary(e.get("summary", "")),
+                    "image": _entry_image(e),
+                    "source": source,
+                    "link": link,
+                    "published": e.get("published", "") or e.get("updated", ""),
+                    "published_ts": _entry_timestamp(e),
+                })
+        except Exception as ex:
+            logging.error(f"RSS feed failed ({feed_url}): {ex}")
+    items.sort(key=lambda x: x.get("published_ts", 0), reverse=True)
+    _NEWS_CACHE[topic] = (now, items)
+    return {"topic": topic, "items": items[:limit]}
+
+
+@app.get("/translate")
+def translate(q: str, sl: str = "sr", tl: str = "ru"):
+    """Перевод текста (для веба, где прямой запрос к Google блокируется CORS)."""
+    try:
+        from deep_translator import GoogleTranslator
+        out = GoogleTranslator(source=sl, target=tl).translate(q)
+        return {"translation": out or ""}
+    except Exception as ex:
+        logging.error(f"/translate failed: {ex}")
+        return {"translation": ""}
+
+
+@app.get("/img")
+def img_proxy(url: str):
+    """Прокси картинок: грузим на сервере и отдаём приложению — чтобы новостные
+    изображения работали и в вебе (нет CORS)."""
+    from fastapi.responses import Response
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            content = r.read()
+            ctype = r.headers.get("Content-Type", "image/jpeg")
+            return Response(content=content, media_type=ctype)
+    except Exception as ex:
+        logging.error(f"Image proxy failed ({url}): {ex}")
+        from fastapi.responses import Response as _R
+        return _R(status_code=404)
+
+
+@app.get("/article")
+def article(url: str):
+    """Извлекает основной текст статьи и заглавную картинку по ссылке."""
+    try:
+        import trafilatura
+        # Use urllib request to avoid python signal errors inside threads
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            downloaded = r.read()
+        if not downloaded:
+            return {"error": "fetch_failed"}
+        from trafilatura.settings import use_config
+        newconfig = use_config()
+        newconfig.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
+        result = trafilatura.extract(
+            downloaded,
+            output_format="json",
+            with_metadata=True,
+            include_comments=False,
+            include_images=False,
+            favor_recall=True,
+            config=newconfig,
+        )
+        if not result:
+            return {"error": "extract_failed"}
+        data = json.loads(result)
+        text = data.get("text", "") or ""
+        paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+        image = data.get("image")
+        # запасной поиск og:image. downloaded — bytes (urllib), декодируем для
+        # regex; ошибка здесь не должна ронять всю статью.
+        if not image:
+            try:
+                html_str = downloaded.decode("utf-8", "ignore") \
+                    if isinstance(downloaded, (bytes, bytearray)) else downloaded
+                m = re.search(
+                    r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+                    html_str, re.IGNORECASE)
+                if m:
+                    image = m.group(1)
+            except Exception:
+                pass
+        return {
+            "title": data.get("title", "") or "",
+            "image": image,
+            "source": data.get("sitename") or data.get("hostname", "") or "",
+            "date": data.get("date", "") or "",
+            "paragraphs": paragraphs,
+        }
+    except Exception as ex:
+        logging.error(f"Article extraction failed ({url}): {ex}")
+        return {"error": str(ex)}
+
 
 if __name__ == "__main__":
     import uvicorn

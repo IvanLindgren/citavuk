@@ -16,6 +16,12 @@ dependencies:
   xml: ^6.5.0
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0
+  # БД в вебе (sqlite3 wasm + IndexedDB).
+  sqflite_common_ffi_web: ^0.4.0
+  # Версия sqlite3 ЗАФИКСИРОВАНА под web/sqlite3.wasm (релиз sqlite3-3.3.2).
+  # Если меняешь её — обнови и web/sqlite3.wasm с того же релиза, иначе на вебе
+  # будет «WebAssembly.instantiate: Import env» (несовпадение ABI).
+  sqlite3: 3.3.2
   path_provider: ^2.1.2
   path: ^1.9.0
   http: ^1.2.0
@@ -35,11 +41,19 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
   flutter_launcher_icons: ^0.13.1
+  inno_bundle: ^0.4.0
 
 flutter_launcher_icons:
+  image_path: "assets/imgs/citavuk_icon.png"
   android: true
   ios: false
-  image_path: "assets/imgs/citavuk_icon.png"
+  web:
+    generate: true
+    background_color: "#F3E9D2"
+    theme_color: "#9E2B25"
+  windows:
+    generate: true
+    icon_size: 256
 
 
 flutter:
@@ -68,3 +82,11 @@ flutter:
         - asset: assets/fonts/Lora-Regular.ttf
         - asset: assets/fonts/Lora-Bold.ttf
           weight: 700
+
+inno_bundle:
+  id: a2cc5770-60d4-11f1-bfd5-31efbcab4b3e
+  name: Citavuk
+  version: 1.0.0
+  publisher: Denis Kornilov
+  executable: build/windows/x64/runner/Release/Citavuk.exe
+  icon: assets/imgs/citavuk_icon.png

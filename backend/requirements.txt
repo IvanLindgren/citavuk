@@ -3,3 +3,5 @@ uvicorn
 classla
 pydantic
 deep-translator
+feedparser
+trafilatura

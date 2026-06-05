@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.srbskiread" "\0"
-            VALUE "FileDescription", "srbski_read" "\0"
+            VALUE "FileDescription", "Citavuk" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "srbski_read" "\0"
+            VALUE "InternalName", "Citavuk" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.srbskiread. All rights reserved." "\0"
-            VALUE "OriginalFilename", "srbski_read.exe" "\0"
-            VALUE "ProductName", "srbski_read" "\0"
+            VALUE "OriginalFilename", "Citavuk.exe" "\0"
+            VALUE "ProductName", "Citavuk" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

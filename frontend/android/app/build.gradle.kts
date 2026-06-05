@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -6,6 +9,12 @@ plugins {
 }
 
 android {
+    val keystorePropertiesFile = rootProject.file("key.properties")
+    val keystoreProperties = Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    }
+
     namespace = "com.srbskiread.srbski_read"
     // Новые транзитивные AndroidX (core 1.17, browser 1.9) требуют compileSdk 36.
     compileSdk = 36
@@ -33,12 +42,12 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreFile = System.getenv("KEYSTORE_FILE")
-            if (keystoreFile != null && file(keystoreFile).exists()) {
-                storeFile = file(keystoreFile)
-                storePassword = System.getenv("KEYSTORE_PASSWORD")
-                keyAlias = System.getenv("KEY_ALIAS")
-                keyPassword = System.getenv("KEY_PASSWORD")
+            if (keystoreProperties.containsKey("storeFile")) {
+                val propFile = keystoreProperties.getProperty("storeFile")
+                storeFile = file(propFile)
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
             } else {
                 // Фоллбэк на дебаг-ключ для локальной сборки
                 storeFile = signingConfigs.getByName("debug").storeFile

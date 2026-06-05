@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'services/db_init.dart';
 import 'services/user_db.dart';
 import 'services/card_io.dart';
 import 'services/analysis_repository.dart';
@@ -14,6 +13,7 @@ import 'services/notification_service.dart';
 import 'widgets/welcome_dialog.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
+import 'screens/news_screen.dart';
 import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
 import 'state/app_settings.dart';
@@ -27,10 +27,9 @@ import 'utils/language_detector.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  }
+  // Кросс-платформенная инициализация БД (десктоп — ffi, веб — wasm/IndexedDB,
+  // мобильные — штатная фабрика).
+  initDatabaseFactory();
 
   final settings = AppSettings();
   await settings.load();
@@ -78,6 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<String> _recentWords = [];
   List<String> _libraryAssets = [];
   bool _isLoading = true;
+  double _loadProgress = 0.0;
 
   @override
   void initState() {
@@ -96,9 +96,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _loadLibraryAssets() async {
     try {
-      final manifestContent = await rootBundle.loadString('AssetManifest.json');
-      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-      final pdfs = manifestMap.keys
+      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      final pdfs = manifest.listAssets()
           .where((k) => k.startsWith('assets/library/') && (k.endsWith('.pdf') || k.endsWith('.docx')))
           .toList();
       setState(() {
@@ -139,14 +138,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (bytes == null) return;
 
       final name = file.name;
-      final path = file.path ?? name;
-      setState(() => _isLoading = true);
+      // На вебе file.path недоступен (кидает исключение) — используем имя.
+      final path = kIsWeb ? name : (file.path ?? name);
+      setState(() {
+        _isLoading = true;
+        _loadProgress = 0.0;
+      });
 
       List<String> paragraphs;
       if (name.toLowerCase().endsWith('.pdf')) {
-        paragraphs = DocumentParser.parsePdf(bytes);
+        paragraphs = await DocumentParser.parsePdfWithProgress(
+            bytes, (p) => setState(() => _loadProgress = p));
       } else if (name.toLowerCase().endsWith('.docx')) {
-        paragraphs = DocumentParser.parseDocx(bytes);
+        paragraphs = await DocumentParser.parseDocxWithProgress(
+            bytes, (p) => setState(() => _loadProgress = p));
       } else {
         throw Exception('Неподдерживаемый формат');
       }
@@ -190,18 +195,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadTestStory(String assetPath, String title) async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadProgress = 0.0;
+    });
     try {
       final data = await rootBundle.load(assetPath);
       final bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       final paragraphs = assetPath.endsWith('.pdf')
-          ? DocumentParser.parsePdf(bytes)
-          : DocumentParser.parseDocx(bytes);
+          ? await DocumentParser.parsePdfWithProgress(
+              bytes, (p) => setState(() => _loadProgress = p))
+          : await DocumentParser.parseDocxWithProgress(
+              bytes, (p) => setState(() => _loadProgress = p));
 
       await UserDb.instance.insertBook(title, assetPath, paragraphs);
       await _loadBooks();
-      
+
       if (mounted) {
         if (!LanguageDetector.isLikelySerbian(paragraphs)) {
           _showNonSerbianWarning();
@@ -217,14 +227,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _loadLibraryStory(String assetPath, String title) async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadProgress = 0.0;
+    });
     try {
       final data = await rootBundle.load(assetPath);
       final bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       final paragraphs = assetPath.endsWith('.pdf')
-          ? DocumentParser.parsePdf(bytes)
-          : DocumentParser.parseDocx(bytes);
+          ? await DocumentParser.parsePdfWithProgress(
+              bytes, (p) => setState(() => _loadProgress = p))
+          : await DocumentParser.parseDocxWithProgress(
+              bytes, (p) => setState(() => _loadProgress = p));
 
       final id = await UserDb.instance.insertBook(title, assetPath, paragraphs);
       await UserDb.instance.setBookFolder(id, 'Бесплатная библиотека');
@@ -392,6 +407,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           const RadioAppBarButton(),
           IconButton(
+            tooltip: 'Новости на сербском',
+            icon: const Icon(Icons.newspaper_outlined),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const NewsScreen())),
+          ),
+          IconButton(
             tooltip: 'Грамматика — карточки',
             icon: const Icon(Icons.school_outlined),
             onPressed: _openGrammarCards,
@@ -470,7 +491,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const OrnamentDivider(height: 22),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          value: _loadProgress > 0 ? _loadProgress : null,
+                        ),
+                        if (_loadProgress > 0) ...[
+                          const SizedBox(height: 16),
+                          Text(
+                            'Импорт и разметка: ${(_loadProgress * 100).round()}%',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: scheme.primary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  )
                 : _books.isEmpty
                     ? _buildEmpty(scheme)
                     : _buildList(scheme),

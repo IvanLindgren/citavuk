@@ -6,6 +6,7 @@ class WordAnalysis {
   final Map<String, String> feats;
   final Map<String, String> forms;
   final String translation;
+  final String? contextualTranslation;
   final bool isOffline;
   final bool isPhrase;
 
@@ -16,6 +17,7 @@ class WordAnalysis {
     this.feats = const {},
     this.forms = const {},
     this.translation = '',
+    this.contextualTranslation,
     this.isOffline = false,
     this.isPhrase = false,
   });
@@ -43,6 +45,7 @@ class WordAnalysis {
       feats: strMap(j['feats']),
       forms: strMap(j['forms']),
       translation: (j['translation'] ?? '').toString(),
+      contextualTranslation: j['contextual_translation']?.toString(),
       isOffline: false,
       isPhrase: upos == 'PHRASE',
     );

@@ -1,10 +1,7 @@
-import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../utils/transliteration.dart';
+import 'lexicon_fs.dart';
 
 /// Read-only словарь, поставляемый с приложением (assets/lexicon.db).
 ///
@@ -19,25 +16,19 @@ class LexiconDb {
   static const _version = 3;
   Database? _db;
 
-  Future<Database> get _database async {
-    if (_db != null) return _db!;
-    final dir = await getApplicationSupportDirectory();
-    final path = join(dir.path, 'chitavuk_lexicon_v$_version.db');
-    if (!await File(path).exists()) {
-      final data = await rootBundle.load(_asset);
-      await File(path).writeAsBytes(
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-        flush: true,
-      );
-    }
+  /// БД словаря или null, если недоступна (веб — офлайн-словарь там не работает,
+  /// разбор идёт через бэкенд).
+  Future<Database?> get _database async {
+    if (_db != null) return _db;
+    final path = await ensureLexiconFile(_version, _asset);
+    if (path == null) return null;
     _db = await openReadOnlyDatabase(path);
-    return _db!;
+    return _db;
   }
 
   /// Скачивает словарь (lexicon.db) по [url] и подменяет локальную копию —
   /// если на сервере (например, твоём HF Space) лежит более полный словарь.
-  /// Скачивает во временный файл, проверяет, что это валидная БД с таблицей
-  /// `lexicon`, и только тогда заменяет рабочий файл. Возвращает true при успехе.
+  /// Валидация и подмена — в [replaceLexiconFromBytes] (на вебе — no-op).
   Future<bool> downloadDictionary(String url) async {
     try {
       final resp =
@@ -46,37 +37,12 @@ class LexiconDb {
       if (resp.statusCode != 200 || resp.bodyBytes.length < 100000) {
         return false;
       }
-      final dir = await getApplicationSupportDirectory();
-      final tmp = File(join(dir.path, 'chitavuk_lexicon_dl.tmp'));
-      await tmp.writeAsBytes(resp.bodyBytes, flush: true);
-
-      // Проверяем, что скачанный файл — корректная SQLite-БД с таблицей lexicon.
-      bool valid = false;
-      try {
-        final test = await openReadOnlyDatabase(tmp.path);
-        final rows = await test.rawQuery(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name='lexicon'");
-        valid = rows.isNotEmpty;
-        await test.close();
-      } catch (_) {
-        valid = false;
+      final ok = await replaceLexiconFromBytes(_version, resp.bodyBytes);
+      if (ok) {
+        await _db?.close();
+        _db = null;
       }
-      if (!valid) {
-        try {
-          await tmp.delete();
-        } catch (_) {}
-        return false;
-      }
-
-      // Подменяем рабочий файл.
-      await _db?.close();
-      _db = null;
-      final target = File(join(dir.path, 'chitavuk_lexicon_v$_version.db'));
-      await tmp.copy(target.path);
-      try {
-        await tmp.delete();
-      } catch (_) {}
-      return true;
+      return ok;
     } catch (_) {
       return false;
     }
@@ -89,6 +55,7 @@ class LexiconDb {
   Future<List<Map<String, dynamic>>> lookupForm(String form) async {
     try {
       final db = await _database;
+      if (db == null) return [];
       return await db.query(
         'lexicon',
         columns: ['lemma', 'upos', 'feats', 'msd'],
@@ -104,6 +71,7 @@ class LexiconDb {
   Future<List<Map<String, dynamic>>> getLexiconRowsForLemma(String lemma) async {
     try {
       final db = await _database;
+      if (db == null) return [];
       return await db.query(
         'lexicon',
         columns: ['form', 'upos', 'feats', 'msd'],
@@ -118,6 +86,7 @@ class LexiconDb {
   Future<String?> getOfflineTranslation(String word, String lemma) async {
     try {
       final db = await _database;
+      if (db == null) return null;
       for (final key in {_lat(word), _lat(lemma)}) {
         final r = await db.query('dictionary',
             columns: ['translation'], where: 'word = ?', whereArgs: [key]);
@@ -136,6 +105,7 @@ class LexiconDb {
     if (candidates.isEmpty) return null;
     try {
       final db = await _database;
+      if (db == null) return null;
       final placeholders = List.filled(candidates.length, '?').join(',');
       final rows = await db.query(
         'lexicon',

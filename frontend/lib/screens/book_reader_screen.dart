@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,12 +25,17 @@ class BookReaderScreen extends StatefulWidget {
   final List<String> paragraphs;
   final int initialParagraph;
 
+  /// Заглавная картинка (для новостных статей) — показывается над текстом на
+  /// первой странице. Для обычных книг null.
+  final String? leadImageUrl;
+
   const BookReaderScreen({
     super.key,
     required this.bookId,
     required this.title,
     required this.paragraphs,
     required this.initialParagraph,
+    this.leadImageUrl,
   });
 
   @override
@@ -41,7 +47,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   final List<List<String>> _pages = [];
   final FocusNode _kbFocus = FocusNode();
 
-  bool _phraseMode = false;
   int _startPage = 0;
   bool _resumeHintVisible = false;
 
@@ -130,45 +135,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
 
   void _onTapWord(int pageIndex, int pIndex, int tokenIndex, Token token,
       List<Token> tokens) {
-    if (_phraseMode &&
-        _selStart != null &&
-        _selEnd == null &&
-        _selPage == pageIndex &&
-        _selPara == pIndex) {
-      // Второй тап — закрываем фразу.
-      var start = _selStart!;
-      var end = tokenIndex;
-      if (start > end) {
-        final t = start;
-        start = end;
-        end = t;
-      }
-      final phrase = tokens.sublist(start, end + 1).map((t) => t.text).join();
-      setState(() {
-        _selStart = start;
-        _selEnd = end;
-      });
-      _showAnalysisSheet(
-        Token(text: phrase, start: tokens[start].start, end: tokens[end].end, isWord: true),
-        _pages[pageIndex][pIndex],
-      );
-      return;
-    }
-
-    if (_phraseMode) {
-      // Первый тап фразы — ждём второй.
-      setState(() {
-        _selPage = pageIndex;
-        _selPara = pIndex;
-        _selStart = tokenIndex;
-        _selEnd = null;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Тапни на последнее слово фразы'), duration: Duration(seconds: 2)),
-      );
-      return;
-    }
-
     // Обычный режим — одно слово.
     setState(() {
       _selPage = pageIndex;
@@ -177,6 +143,69 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       _selEnd = tokenIndex;
     });
     _showAnalysisSheet(token, _pages[pageIndex][pIndex]);
+  }
+
+  void _onPhraseSelectionStart(int pageIndex, int pIndex, int tokenIndex) {
+    HapticFeedback.mediumImpact();
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.linear_scale, color: Colors.white),
+            SizedBox(width: 8),
+            Text('Выделение фразы...'),
+          ],
+        ),
+        duration: Duration(milliseconds: 1500),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    setState(() {
+      _selPage = pageIndex;
+      _selPara = pIndex;
+      _selStart = tokenIndex;
+      _selEnd = tokenIndex;
+    });
+  }
+
+  void _onPhraseSelectionUpdate(int pageIndex, int pIndex, int tokenIndex) {
+    if (_selPage == pageIndex && _selPara == pIndex) {
+      if (_selEnd != tokenIndex) {
+        setState(() {
+          _selEnd = tokenIndex;
+        });
+      }
+    }
+  }
+
+  void _onPhraseSelectionEnd() {
+    if (_selPage != null && _selPara != null && _selStart != null && _selEnd != null) {
+      final pageIndex = _selPage!;
+      final pIndex = _selPara!;
+      var start = _selStart!;
+      var end = _selEnd!;
+      if (start > end) {
+        final t = start;
+        start = end;
+        end = t;
+      }
+      final tokens = SerbianTokenizer.tokenize(_pages[pageIndex][pIndex]);
+      final phrase = tokens.sublist(start, end + 1).map((t) => t.text).join();
+      _showAnalysisSheet(
+        Token(
+          text: phrase,
+          start: tokens[start].start,
+          end: tokens[end].end,
+          isWord: true,
+        ),
+        _pages[pageIndex][pIndex],
+      );
+    }
+  }
+
+  void _onPhraseSelectionCancel() {
+    _clearSelection();
   }
 
   void _showAnalysisSheet(Token token, String sentence) {
@@ -208,6 +237,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     final scheme = Theme.of(context).colorScheme;
     final settings = context.watch<AppSettings>().reader;
 
+    // На десктопе/вебе нет «долгого нажатия» мышью, а drag конфликтует с
+    // листанием. Поэтому там выделяем фразу обычным «зажать и вести» мышью
+    // (страницы листаются кнопками/клавишами/колесом), а на телефоне —
+    // долгим нажатием с протягиванием.
+    final platform = Theme.of(context).platform;
+    final dragToSelect = kIsWeb ||
+        platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+
     // Пользовательский фон чтения (если выбран) + контрастный цвет текста.
     final customBg = settings.bgColor != 0 ? Color(settings.bgColor) : null;
     final textColor = customBg != null
@@ -229,23 +268,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
         actions: [
           const RadioAppBarButton(),
-          IconButton(
-            tooltip: _phraseMode ? 'Режим фразы: вкл' : 'Режим фразы: выкл',
-            icon: Icon(_phraseMode ? Icons.short_text : Icons.notes),
-            color: _phraseMode ? scheme.tertiary : Colors.white,
-            onPressed: () {
-              setState(() => _phraseMode = !_phraseMode);
-              _clearSelection();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(_phraseMode
-                      ? 'Режим фразы: тапни первое и последнее слово'
-                      : 'Режим одного слова'),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
           IconButton(
             tooltip: 'Настройки чтения',
             icon: const Icon(Icons.text_fields),
@@ -300,6 +322,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  if (pageIndex == 0 && widget.leadImageUrl != null)
+                                    _leadImage(),
                                   if (pageIndex == _startPage && _resumeHintVisible)
                                     _resumeHint(scheme, settings.fontSize),
                                   ...List.generate(paras.length, (pIndex) {
@@ -318,9 +342,20 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                         selEnd: isSel ? _selEnd : null,
                                         justify: settings.justify,
                                         firstLineIndent: settings.firstLineIndent,
+                                        dragToSelect: dragToSelect,
                                         onTapWord: (ti, token, tokens) =>
                                             _onTapWord(
                                                 pageIndex, pIndex, ti, token, tokens),
+                                        onPhraseSelectionStart: (ti) =>
+                                            _onPhraseSelectionStart(
+                                                pageIndex, pIndex, ti),
+                                        onPhraseSelectionUpdate: (ti) =>
+                                            _onPhraseSelectionUpdate(
+                                                pageIndex, pIndex, ti),
+                                        onPhraseSelectionEnd:
+                                            _onPhraseSelectionEnd,
+                                        onPhraseSelectionCancel:
+                                            _onPhraseSelectionCancel,
                                       ),
                                     );
                                   }),
@@ -337,6 +372,30 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 ],
               ),
             ),
+    );
+  }
+
+  Widget _leadImage() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 18),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Image.network(
+          widget.leadImageUrl!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          loadingBuilder: (context, child, progress) {
+            if (progress == null) return child;
+            return Container(
+              height: 200,
+              alignment: Alignment.center,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              child: const CircularProgressIndicator(),
+            );
+          },
+          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+        ),
+      ),
     );
   }
 
@@ -405,16 +464,28 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       );
 }
 
-/// Позволяет листать PageView мышью (на десктопе по умолчанию нельзя).
+/// Прокрутка/листание читалки.
+///
+/// На телефоне листаем пальцем (touch). На десктопе/вебе НЕ листаем мышью и
+/// трекпадом drag-ом — этот жест отдан под выделение фразы «зажать и вести»;
+/// страницы там листаются кнопками/клавишами, а текст крутится колесом.
 class _DragScrollBehavior extends MaterialScrollBehavior {
   const _DragScrollBehavior();
   @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.trackpad,
-        PointerDeviceKind.stylus,
-      };
+  Set<PointerDeviceKind> get dragDevices {
+    final desktop = kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.windows ||
+        defaultTargetPlatform == TargetPlatform.linux ||
+        defaultTargetPlatform == TargetPlatform.macOS;
+    if (desktop) {
+      return {PointerDeviceKind.touch, PointerDeviceKind.stylus};
+    }
+    return {
+      PointerDeviceKind.touch,
+      PointerDeviceKind.stylus,
+      PointerDeviceKind.trackpad,
+    };
+  }
 }
 
 /// Верхняя полоса нижней панели: «ручка» по центру + явный крестик «закрыть»
@@ -719,12 +790,19 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
   }
 
   Future<void> _save(WordAnalysis data) async {
+    String translation = data.translation;
+    final ctx = data.contextualTranslation?.trim();
+    final gen = data.translation.trim();
+    if (ctx != null && ctx.isNotEmpty && ctx.toLowerCase() != gen.toLowerCase()) {
+      translation = 'В тексте: $ctx\nВ общем: $gen';
+    }
+
     await UserDb.instance.addVocabulary(
       bookId: widget.bookId,
       word: data.surface,
       lemma: data.lemma,
       pos: data.upos,
-      translation: data.translation,
+      translation: translation,
       forms: data.forms,
     );
     setState(() => _isSaved = true);
@@ -778,6 +856,16 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
           final translation = data.translation;
           final isOffline = data.isOffline;
           final isPhrase = data.isPhrase;
+
+          // Контекстный перевод (для этого предложения) — главный; «общий»
+          // перевод слова показываем мельче ниже, если он отличается.
+          final ctx = data.contextualTranslation?.trim();
+          final gen = translation.trim();
+          final hasContext = ctx != null &&
+              ctx.isNotEmpty &&
+              ctx.toLowerCase() != gen.toLowerCase();
+          final primaryTranslation =
+              hasContext ? ctx : (gen.isNotEmpty ? gen : translation);
 
           // Авто-подсказка: если это предлог (или фраза, начинающаяся с
           // предлога) — показываем, каким падежом он управляет. Для не-предлогов
@@ -848,7 +936,15 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                 ],
               ),
               const SizedBox(height: 18),
-              WolfBubble(title: 'Перевод', text: translation, asset: Wolf.gram),
+              WolfBubble(
+                title: hasContext ? 'В этом тексте' : 'Перевод',
+                text: primaryTranslation,
+                asset: Wolf.gram,
+              ),
+              if (hasContext) ...[
+                const SizedBox(height: 10),
+                _generalTranslationCard(scheme, gen),
+              ],
               if (government.isNotEmpty) ...[
                 const SizedBox(height: 14),
                 PrepositionGovernmentCard(
@@ -912,6 +1008,59 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
         ],
       ),
     ),
+    );
+  }
+
+  /// «Общий» (внеконтекстный) перевод слова + пометка, что значение зависит
+  /// от контекста. Показывается под основным (контекстным) переводом.
+  Widget _generalTranslationCard(ColorScheme scheme, String general) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.onSurface.withValues(alpha: 0.10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.public,
+                  size: 14, color: scheme.onSurface.withValues(alpha: 0.5)),
+              const SizedBox(width: 6),
+              Text('В общем (вне контекста)',
+                  style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: scheme.onSurface.withValues(alpha: 0.55))),
+            ],
+          ),
+          const SizedBox(height: 3),
+          Text(general,
+              style: TextStyle(
+                  fontSize: 15, color: scheme.onSurface.withValues(alpha: 0.85))),
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.info_outline, size: 13, color: scheme.tertiary),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Точное значение зависит от контекста — выше перевод именно '
+                  'для этого предложения.',
+                  style: TextStyle(
+                      fontSize: 11.5,
+                      fontStyle: FontStyle.italic,
+                      color: scheme.onSurface.withValues(alpha: 0.6)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

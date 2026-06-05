@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -12,14 +13,27 @@ class UserDb {
 
   Future<Database> get database async {
     if (_db != null) return _db!;
-    final dir = await getApplicationDocumentsDirectory();
-    final path = join(dir.path, 'chitavuk_user.db');
-    _db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, _) => _create(db),
-      onOpen: _create,
-    );
+    String path;
+    if (kIsWeb) {
+      // Веб: имя БД (хранится в IndexedDB), файловой системы нет.
+      path = 'chitavuk_user.db';
+    } else {
+      final dir = await getApplicationDocumentsDirectory();
+      path = join(dir.path, 'chitavuk_user.db');
+    }
+    try {
+      _db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (db, _) => _create(db),
+        onOpen: _create,
+      );
+    } catch (e, stack) {
+      print("=== DATABASE OPEN EXCEPTION ===");
+      print("Error: $e");
+      print("Stack: $stack");
+      rethrow;
+    }
     return _db!;
   }
 
@@ -213,6 +227,41 @@ class UserDb {
     } catch (_) {
       return 0;
     }
+  }
+
+  /// Вставляет/обновляет книгу по уникальному [filepath] (например, ссылке на
+  /// новость) — без дублей при повторном открытии. Возвращает id.
+  Future<int> upsertBook(
+    String title,
+    String filepath,
+    List<String> paragraphs, {
+    String folder = '',
+  }) async {
+    final db = await database;
+    final existing = await db.query('books',
+        where: 'filepath = ?', whereArgs: [filepath], limit: 1);
+    if (existing.isNotEmpty) {
+      final id = existing.first['id'] as int;
+      await db.update(
+        'books',
+        {
+          'title': title,
+          'content': jsonEncode(paragraphs),
+          if (folder.isNotEmpty) 'folder': folder,
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      return id;
+    }
+    final id = await db.insert('books', {
+      'title': title,
+      'filepath': filepath,
+      'content': jsonEncode(paragraphs),
+      'last_para': 0,
+    });
+    if (folder.isNotEmpty) await setBookFolder(id, folder);
+    return id;
   }
 
   /// Находит книгу с таким названием или создаёт пустую (приёмник для импорта

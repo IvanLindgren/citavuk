@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:file_picker/file_picker.dart';
+import 'file_save.dart';
 import 'markdown_cards.dart';
 import 'user_db.dart';
 
@@ -26,8 +27,13 @@ class CardsIo {
     if (path == null) return null;
     final p = path.toLowerCase().endsWith('.md') ? path : '$path.md';
     // На десктопе saveFile только возвращает путь — записываем файл сами.
-    if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
-      await File(p).writeAsString(md);
+    // На вебе/мобильных saveFile(bytes:) уже сохранил/скачал файл.
+    final isDesktop = !kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.windows ||
+            defaultTargetPlatform == TargetPlatform.linux ||
+            defaultTargetPlatform == TargetPlatform.macOS);
+    if (isDesktop) {
+      await writeStringFile(p, md);
     }
     return p;
   }

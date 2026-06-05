@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import '../models/word_analysis.dart';
@@ -64,7 +63,7 @@ class AnalysisRepository {
     } catch (_) {
       // сервер недоступен — идём в офлайн/онлайн-перевод
     }
-    return _offlineOrOnline(token);
+    return _offlineOrOnline(token, sentence: sent, startOffset: startOffset, endOffset: end);
   }
 
   String _splice(String s, int start, int end, String repl) {
@@ -72,7 +71,12 @@ class AnalysisRepository {
     return s.substring(0, start) + repl + s.substring(end);
   }
 
-  Future<WordAnalysis> _offlineOrOnline(String tokenText) async {
+  Future<WordAnalysis> _offlineOrOnline(
+    String tokenText, {
+    String? sentence,
+    int? startOffset,
+    int? endOffset,
+  }) async {
     // Фразы: морфология не нужна — только перевод. Сначала кэш (офлайн),
     // потом сеть; удачный перевод кэшируем.
     if (tokenText.trim().contains(' ')) {
@@ -108,16 +112,37 @@ class AnalysisRepository {
     final lemmaRows = await LexiconDb.instance.getLexiconRowsForLemma(lemma);
     final forms = _baseForms(upos, lemmaRows);
 
-    // Перевод: локальный словарь → кэш онлайн-переводов → сеть.
-    // Удачный сетевой перевод кэшируем, чтобы слово работало и офлайн.
-    var translation = await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
-    translation ??= await UserDb.instance.getCachedTranslation(tokenText);
-    var online = false;
-    if (translation == null) {
-      translation = await _translateOnline(tokenText);
-      online = translation != null;
-      if (online) await UserDb.instance.cacheTranslation(tokenText, translation!);
+    // Перевод: «общий» (слово отдельно: словарь → кэш → сеть) и «в этом тексте»
+    // (контекстный, по предложению). Оба сетевых запроса пускаем ПАРАЛЛЕЛЬНО,
+    // чтобы не ждать дважды.
+    var general = await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
+    general ??= await UserDb.instance.getCachedTranslation(tokenText);
+
+    final needGeneralOnline = general == null;
+    final wantContext =
+        sentence != null && startOffset != null && endOffset != null;
+
+    final results = await Future.wait<String?>([
+      needGeneralOnline
+          ? _translateOnline(tokenText)
+          : Future<String?>.value(general),
+      wantContext
+          ? _translateContextualOnline(
+              sentence: sentence,
+              startOffset: startOffset,
+              endOffset: endOffset,
+              tokenText: tokenText,
+            )
+          : Future<String?>.value(null),
+    ]);
+
+    final generalNet = needGeneralOnline ? results[0] : null; // из сети
+    final contextual = results[1];
+    if (generalNet != null) {
+      await UserDb.instance.cacheTranslation(tokenText, generalNet);
     }
+    final generalFinal = general ?? generalNet;
+    final online = generalNet != null || contextual != null;
 
     return WordAnalysis(
       surface: tokenText,
@@ -125,14 +150,90 @@ class AnalysisRepository {
       upos: upos,
       feats: feats,
       forms: forms,
-      translation: translation ?? '[Перевод недоступен — нет интернета]',
+      translation: generalFinal ?? '[Перевод недоступен — нет интернета]',
+      contextualTranslation: contextual,
       isOffline: !online,
     );
   }
 
-  /// Прямой sr→ru перевод без локального сервера (Google web endpoint).
+  /// Прямой контекстный sr→ru перевод через разметку предложения.
+  Future<String?> _translateContextualOnline({
+    required String sentence,
+    required int startOffset,
+    required int endOffset,
+    required String tokenText,
+  }) async {
+    try {
+      if (startOffset < 0 || endOffset > sentence.length || startOffset > endOffset) {
+        return null;
+      }
+      // Берём только предложение вокруг слова: короче контекст — стабильнее тег
+      // и быстрее ответ.
+      final w = _sentenceWindow(sentence, startOffset, endOffset);
+      final tagged =
+          '${w.text.substring(0, w.start)}<w>$tokenText</w>${w.text.substring(w.end)}';
+      final translated = await _translateOnline(tagged);
+      if (translated != null) {
+        final reg = RegExp(r'<w[^>]*>(.*?)</w>', caseSensitive: false, dotAll: true);
+        final match = reg.firstMatch(translated);
+        if (match != null) {
+          final inner = match.group(1)?.trim();
+          // Иногда Google теряет тег и переводит «<w>» как слово — отсекаем мусор.
+          if (inner != null && inner.isNotEmpty && !inner.contains('<')) {
+            return inner;
+          }
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  /// Вырезает предложение вокруг [start..end] из [text] и возвращает текст окна
+  /// с пересчитанными смещениями слова внутри него.
+  ({String text, int start, int end}) _sentenceWindow(
+      String text, int start, int end) {
+    const enders = '.!?…\n';
+    var ws = 0;
+    for (var i = start - 1; i >= 0; i--) {
+      if (enders.contains(text[i])) {
+        ws = i + 1;
+        break;
+      }
+    }
+    while (ws < start && (text[ws] == ' ' || text[ws] == '\n')) {
+      ws++;
+    }
+    var we = text.length;
+    for (var i = end; i < text.length; i++) {
+      if (enders.contains(text[i])) {
+        we = i + 1;
+        break;
+      }
+    }
+    // Подстраховка от слишком длинного «предложения».
+    if (we - ws > 600) {
+      ws = (start - 200) < 0 ? 0 : start - 200;
+      we = (end + 200) > text.length ? text.length : end + 200;
+    }
+    return (text: text.substring(ws, we), start: start - ws, end: end - ws);
+  }
+
+  /// sr→ru перевод. Нативно — напрямую через Google web endpoint (быстро).
+  /// В вебе прямой запрос к Google блокируется CORS, поэтому идём через бэкенд.
   Future<String?> _translateOnline(String text) async {
     try {
+      if (kIsWeb) {
+        final uri = Uri.parse(
+            '$baseUrl/translate?q=${Uri.encodeComponent(text)}');
+        final resp = await http.get(uri).timeout(const Duration(seconds: 8));
+        if (resp.statusCode == 200) {
+          final data =
+              jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+          final out = (data['translation'] ?? '').toString().trim();
+          return out.isEmpty ? null : out;
+        }
+        return null;
+      }
       final uri = Uri.parse(
           'https://translate.googleapis.com/translate_a/single?client=gtx&sl=sr&tl=ru&dt=t&q=${Uri.encodeComponent(text)}');
       final resp = await http.get(uri).timeout(const Duration(seconds: 4));

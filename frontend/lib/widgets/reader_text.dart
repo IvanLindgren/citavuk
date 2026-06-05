@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../models/reader_settings.dart';
 import '../utils/tokenizer.dart';
 
@@ -27,6 +28,14 @@ class ReaderParagraph extends StatefulWidget {
   final double firstLineIndent;
 
   final void Function(int tokenIndex, Token token, List<Token> tokens) onTapWord;
+  final void Function(int tokenIndex)? onPhraseSelectionStart;
+  final void Function(int tokenIndex)? onPhraseSelectionUpdate;
+  final void Function()? onPhraseSelectionEnd;
+  final void Function()? onPhraseSelectionCancel;
+
+  /// true на десктопе/вебе: фразу выделяем обычным «зажать и вести» мышью
+  /// (pan). false на телефоне: выделяем долгим нажатием с протягиванием.
+  final bool dragToSelect;
 
   const ReaderParagraph({
     super.key,
@@ -36,6 +45,11 @@ class ReaderParagraph extends StatefulWidget {
     required this.highlightColor,
     required this.highlightTextColor,
     required this.onTapWord,
+    this.onPhraseSelectionStart,
+    this.onPhraseSelectionUpdate,
+    this.onPhraseSelectionEnd,
+    this.onPhraseSelectionCancel,
+    this.dragToSelect = false,
     this.selStart,
     this.selEnd,
     this.justify = false,
@@ -49,6 +63,7 @@ class ReaderParagraph extends StatefulWidget {
 class _ReaderParagraphState extends State<ReaderParagraph> {
   late List<Token> _tokens;
   final Map<int, TapGestureRecognizer> _recognizers = {};
+  final GlobalKey _textKey = GlobalKey();
 
   @override
   void initState() {
@@ -87,11 +102,33 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
     super.dispose();
   }
 
-  bool _isSelected(int i) =>
-      widget.selStart != null &&
-      widget.selEnd != null &&
-      i >= widget.selStart! &&
-      i <= widget.selEnd!;
+  bool _isSelected(int i) {
+    if (widget.selStart == null || widget.selEnd == null) return false;
+    final start = widget.selStart!;
+    final end = widget.selEnd!;
+    final minIdx = start < end ? start : end;
+    final maxIdx = start > end ? start : end;
+    return i >= minIdx && i <= maxIdx;
+  }
+
+  int? _getTokenIndexAtOffset(Offset localOffset) {
+    final renderBox = _textKey.currentContext?.findRenderObject() as RenderParagraph?;
+    if (renderBox == null) return null;
+    try {
+      final textPosition = renderBox.getPositionForOffset(localOffset);
+      final charIndex = textPosition.offset;
+      for (var i = 0; i < _tokens.length; i++) {
+        final t = _tokens[i];
+        if (charIndex >= t.start && charIndex < t.end) {
+          return i;
+        }
+      }
+      if (_tokens.isNotEmpty && charIndex >= _tokens.last.end) {
+        return _tokens.length - 1;
+      }
+    } catch (_) {}
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,9 +189,50 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
       }
     }
 
-    return Text.rich(
-      TextSpan(children: spans),
-      textAlign: widget.justify ? TextAlign.justify : TextAlign.left,
+    final dts = widget.dragToSelect;
+    return GestureDetector(
+      // Десктоп/веб: «зажать и вести» мышью (pan). Одиночный клик по слову
+      // ловит TapGestureRecognizer самого слова — обычный разбор слова.
+      onPanStart: dts
+          ? (d) {
+              final idx = _getTokenIndexAtOffset(d.localPosition);
+              if (idx != null && _tokens[idx].isWord) {
+                widget.onPhraseSelectionStart?.call(idx);
+              }
+            }
+          : null,
+      onPanUpdate: dts
+          ? (d) {
+              final idx = _getTokenIndexAtOffset(d.localPosition);
+              if (idx != null) widget.onPhraseSelectionUpdate?.call(idx);
+            }
+          : null,
+      onPanEnd: dts ? (_) => widget.onPhraseSelectionEnd?.call() : null,
+      onPanCancel: dts ? () => widget.onPhraseSelectionCancel?.call() : null,
+      // Телефон: долгое нажатие + протягивание.
+      onLongPressStart: dts
+          ? null
+          : (details) {
+              final idx = _getTokenIndexAtOffset(details.localPosition);
+              if (idx != null && _tokens[idx].isWord) {
+                widget.onPhraseSelectionStart?.call(idx);
+              }
+            },
+      onLongPressMoveUpdate: dts
+          ? null
+          : (details) {
+              final idx = _getTokenIndexAtOffset(details.localPosition);
+              if (idx != null) widget.onPhraseSelectionUpdate?.call(idx);
+            },
+      onLongPressEnd:
+          dts ? null : (_) => widget.onPhraseSelectionEnd?.call(),
+      onLongPressCancel:
+          dts ? null : () => widget.onPhraseSelectionCancel?.call(),
+      child: Text.rich(
+        key: _textKey,
+        TextSpan(children: spans),
+        textAlign: widget.justify ? TextAlign.justify : TextAlign.left,
+      ),
     );
   }
 }
