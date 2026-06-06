@@ -236,7 +236,14 @@ class DocumentParser {
     }
     onProgress(0.3);
     await Future.delayed(Duration.zero);
-    final xmlString = utf8.decode(file.content as List<int>);
+    // Веб собран в WASM: у пакета archive `file.content` дёргает inflateBuffer,
+    // который через условный импорт требует dart:io ИЛИ dart:html — в WASM нет
+    // ни того, ни другого («inflateBuffer requires html or io»). Поэтому
+    // распаковываем через OutputStream: с переданным выводом decompress() идёт
+    // по ветке Inflate.stream — это чистый Dart, работает везде.
+    final out = OutputStream();
+    file.decompress(out);
+    final xmlString = utf8.decode(out.getBytes());
     onProgress(0.5);
     await Future.delayed(Duration.zero);
     final xmlDocument = xml.XmlDocument.parse(xmlString);

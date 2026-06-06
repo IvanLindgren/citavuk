@@ -91,6 +91,27 @@ class UserDb {
     } catch (_) {
       // колонка уже есть
     }
+    // Миграция: число абзацев книги. Нужно, чтобы список книг на главной НЕ
+    // тянул в память тяжёлую колонку content (полный текст КАЖДОЙ книги). ALTER
+    // выбросит исключение, если колонка уже есть, — тогда разовый бэкфилл ниже
+    // не выполняется (он нужен только один раз, при добавлении колонки).
+    try {
+      await db.execute(
+          'ALTER TABLE books ADD COLUMN para_count INTEGER NOT NULL DEFAULT 0');
+      // Разовый бэкфилл para_count для существующих книг: читаем content
+      // построчно (не держим всё в памяти разом) и записываем длину.
+      final rows = await db.query('books', columns: ['id', 'content']);
+      for (final r in rows) {
+        var count = 0;
+        try {
+          count = (jsonDecode(r['content'] as String) as List).length;
+        } catch (_) {}
+        await db.update('books', {'para_count': count},
+            where: 'id = ?', whereArgs: [r['id']]);
+      }
+    } catch (_) {
+      // колонка уже есть — бэкфилл не нужен
+    }
   }
 
   // --- Книги ---
@@ -101,13 +122,40 @@ class UserDb {
       'title': title,
       'filepath': filepath,
       'content': jsonEncode(paragraphs),
+      'para_count': paragraphs.length,
       'last_para': 0,
     });
   }
 
+  /// Список книг для главной — БЕЗ колонки content (полный текст). Иначе на вебе
+  /// при каждом заходе в память браузера тянется текст ВСЕХ книг сразу. Контент
+  /// грузим по требованию при открытии книги — см. [getBookContent].
   Future<List<Map<String, dynamic>>> getBooks() async {
     final db = await database;
-    return db.query('books', orderBy: 'added_at DESC');
+    return db.query('books',
+        columns: [
+          'id',
+          'title',
+          'filepath',
+          'last_para',
+          'folder',
+          'para_count',
+          'added_at',
+        ],
+        orderBy: 'added_at DESC');
+  }
+
+  /// Текст книги (список абзацев) — грузится только когда книгу открывают.
+  Future<List<String>> getBookContent(int bookId) async {
+    final db = await database;
+    final rows = await db.query('books',
+        columns: ['content'], where: 'id = ?', whereArgs: [bookId], limit: 1);
+    if (rows.isEmpty) return [];
+    try {
+      return List<String>.from(jsonDecode(rows.first['content'] as String));
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<void> updateBookProgress(int bookId, int lastPara) async {
@@ -247,6 +295,7 @@ class UserDb {
         {
           'title': title,
           'content': jsonEncode(paragraphs),
+          'para_count': paragraphs.length,
           if (folder.isNotEmpty) 'folder': folder,
         },
         where: 'id = ?',
@@ -258,6 +307,7 @@ class UserDb {
       'title': title,
       'filepath': filepath,
       'content': jsonEncode(paragraphs),
+      'para_count': paragraphs.length,
       'last_para': 0,
     });
     if (folder.isNotEmpty) await setBookFolder(id, folder);
@@ -275,6 +325,7 @@ class UserDb {
       'title': title,
       'filepath': title,
       'content': jsonEncode(<String>[]),
+      'para_count': 0,
       'last_para': 0,
     });
   }

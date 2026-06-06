@@ -184,7 +184,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
               children: [
                 _pill(info.posLabel, scheme.primary, Colors.white),
                 if (widget.lemma.isNotEmpty)
-                  Text('основа: ${widget.lemma}',
+                  Text('нач. форма: ${widget.lemma}',
                       style: TextStyle(
                           color: scheme.onSurface.withValues(alpha: 0.65),
                           fontSize: 14)),

@@ -70,6 +70,8 @@ class GrammarEngine {
     'Pres': 'настоящее (prezent)',
     'Past': 'прошедшее (perfekat)',
     'Fut': 'будущее (futur)',
+    'Imp': 'имперфект (imperfekat)',
+    'Pqp': 'плусквамперфект (pluskvamperfekat)',
   };
   static const _personRu = {'1': '1-е лицо', '2': '2-е лицо', '3': '3-е лицо'};
 
@@ -363,8 +365,76 @@ class GrammarEngine {
             'Пример: radiću / ću raditi, čitaćeš / ćeš čitati.',
         tag: 'Время',
       ),
+      (
+        front: 'А сколько всего времён в сербском?',
+        back: 'Презент, перфекат и футур I — три самых употребительных, на них '
+            'держится повседневная речь. Но всего времён больше: ещё аорист и '
+            'имперфекат (прошедшее, чаще в книгах и на письме), плусквамперфекат '
+            '(давнопрошедшее) и футур II. Сначала уверенно освой первые три — '
+            'остальные узнаешь по мере чтения.',
+        tag: 'Время',
+      ),
     ];
     return cards;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Распознавание времени глагола, включая аорист и имперфект.
+  //
+  // CLASSLA/UD кодирует их так:
+  //  • имперфект           → Tense=Imp;
+  //  • аорист              → Tense=Past + VerbForm=Fin (финитная форма);
+  //  • перфекат            → Tense=Past + VerbForm=Part (радни глаг. придев -o/-la);
+  //  • плусквамперфект     → Tense=Pqp.
+  // Так аорист отличается от перфеката: первый — простая (синтетическая) форма,
+  // второй — составная (biti + причастие).
+  // ---------------------------------------------------------------------------
+  static String? _verbTenseLabel(Map<String, String> feats) {
+    final tense = feats['Tense'];
+    if (tense == null) return null;
+    switch (tense) {
+      case 'Pres':
+        return 'настоящее (prezent)';
+      case 'Fut':
+        return 'будущее (futur)';
+      case 'Imp':
+        return 'имперфект (imperfekat) — прошедшее';
+      case 'Pqp':
+        return 'плусквамперфект (pluskvamperfekat) — давнопрошедшее';
+      case 'Past':
+        // Финитная форма прошедшего в изъявительном наклонении — аорист.
+        // (Mood=Cnd + Fin — это bih/bi/bismo, аорист biti для потенцијала; его
+        // разбирает ветка условного наклонения, тут не маркируем как аорист.)
+        final mood = feats['Mood'];
+        return (feats['VerbForm'] == 'Fin' && (mood == null || mood == 'Ind'))
+            ? 'аорист (aorist) — прошедшее'
+            : 'прошедшее (perfekat)';
+      default:
+        return _tenseRu[tense] ?? tense;
+    }
+  }
+
+  /// Короткое пояснение для редких/синтетических времён (аорист, имперфект,
+  /// плусквамперфект) — добавляется к разбору, когда они распознаны.
+  static String _tenseExplain(Map<String, String> feats) {
+    final tense = feats['Tense'];
+    final verbForm = feats['VerbForm'];
+    if (tense == 'Imp') {
+      return 'Имперфект — простое (синтетическое) прошедшее время для длительного '
+          'или повторяющегося действия в прошлом. В современной речи редок, '
+          'встречается в литературе. Пример: govoraše (от govoriti).';
+    }
+    if (tense == 'Past' && verbForm == 'Fin') {
+      return 'Аорист — простое (синтетическое) прошедшее время для завершённого '
+          'действия. Часто в повествовании и живой речи. Пример: rekoh, reče, '
+          'rekosmo (от reći). Отличается от перфеката тем, что это одна форма, '
+          'без вспомогательного глагола.';
+    }
+    if (tense == 'Pqp') {
+      return 'Плусквамперфект — давнопрошедшее: действие, случившееся раньше '
+          'другого прошедшего. Строится как biti в прошедшем + причастие.';
+    }
+    return '';
   }
 
   // ---------------------------------------------------------------------------
@@ -383,7 +453,9 @@ class GrammarEngine {
     final mood = feats['Mood'];
 
     if (gcase != null) facts.add(GrammarFact('Падеж', _caseRu[gcase] ?? gcase));
-    if (tense != null) facts.add(GrammarFact('Время', _tenseRu[tense] ?? tense));
+    if (tense != null) {
+      facts.add(GrammarFact('Время', _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense));
+    }
     if (mood == 'Imp') facts.add(const GrammarFact('Наклонение', 'повелительное (императив)'));
     if (mood == 'Cnd') facts.add(const GrammarFact('Наклонение', 'условное (потенцијал)'));
     if (person != null) facts.add(GrammarFact('Лицо', _personRu[person] ?? person));
@@ -393,7 +465,7 @@ class GrammarEngine {
 
     final summaryParts = [
       if (gcase != null) (_caseRu[gcase] ?? gcase).toLowerCase(),
-      if (tense != null) (_tenseRu[tense] ?? tense),
+      if (tense != null) (_verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense),
       if (mood == 'Imp') 'повелительное наклонение',
       if (mood == 'Cnd') 'условное наклонение',
       if (person != null) _personRu[person],
@@ -407,14 +479,21 @@ class GrammarEngine {
           'падеж», ${_numberRu[number] ?? ''} число'
           '${gender != null ? ', ${_genderRu[gender]} род' : ''}.\n\n'
           'Зачем нужен этот падеж: ${_caseUse[gcase] ?? '—'}.';
-    } else if (tense != null || verbForm == 'Inf') {
+    } else if (verbForm == 'Inf' ||
+        (tense != null && mood != 'Imp' && mood != 'Cnd')) {
       if (verbForm == 'Inf') {
         why = 'Это инфинитив — начальная форма глагола (отвечает на «что делать?»). '
             'От неё образуются все времена.';
       } else {
-        why = 'Глагол в форме «${_tenseRu[tense] ?? tense}», '
-            '${_personRu[person] ?? ''}, ${_numberRu[number] ?? ''} число.\n\n'
-            'Ниже — спряжение во всех трёх сербских временах.';
+        final label = _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense;
+        final explain = _tenseExplain(feats);
+        why = 'Глагол в форме «$label», '
+            '${_personRu[person] ?? ''}, ${_numberRu[number] ?? ''} число.'
+            '${explain.isNotEmpty ? '\n\n$explain' : ''}'
+            '\n\nНиже — спряжение в трёх самых употребительных временах: презент, '
+            'перфекат, футур I. В сербском есть и другие времена (аорист, '
+            'имперфекат, плусквамперфекат, футур II), но в живой речи чаще всего '
+            'используются эти три.';
       }
     } else if (mood == 'Imp') {
       why = 'Это повелительное наклонение (императив) — выражает приказ или просьбу '

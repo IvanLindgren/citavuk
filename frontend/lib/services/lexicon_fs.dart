@@ -1,3 +1,3 @@
 // Файловые операции словаря — условный импорт: на нативных платформах работа с
 // файлами (dart:io), на вебе заглушки (офлайн-словарь там недоступен).
-export 'lexicon_fs_io.dart' if (dart.library.html) 'lexicon_fs_web.dart';
+export 'lexicon_fs_io.dart' if (dart.library.js_interop) 'lexicon_fs_web.dart';

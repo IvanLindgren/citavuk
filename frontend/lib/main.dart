@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -272,14 +271,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _openBook(Map<String, dynamic> book) {
+  Future<void> _openBook(Map<String, dynamic> book) async {
     final id = book['id'] as int;
     final title = book['title'] as String;
     final lastPara = book['last_para'] as int? ?? 0;
-    List<String> paragraphs = [];
-    try {
-      paragraphs = List<String>.from(jsonDecode(book['content'] as String));
-    } catch (_) {}
+    // Текст книги грузим по требованию (в списке его нет — экономим память).
+    final paragraphs = await UserDb.instance.getBookContent(id);
+    if (!mounted) return;
 
     Navigator.push(
       context,
@@ -697,12 +695,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final title = book['title'] as String;
     final lastPara = book['last_para'] as int? ?? 0;
     final isPdf = title.toLowerCase().endsWith('.pdf');
-    List<String> paragraphs = [];
-    try {
-      paragraphs = List<String>.from(jsonDecode(book['content'] as String));
-    } catch (_) {}
-    final progress =
-        paragraphs.isEmpty ? 0.0 : (lastPara + 1) / paragraphs.length;
+    // Число абзацев берём из лёгкой колонки para_count — НЕ декодируем весь текст
+    // книги ради прогресс-бара (раньше это грузило все книги в память).
+    final paraCount = book['para_count'] as int? ?? 0;
+    final progress = paraCount == 0 ? 0.0 : (lastPara + 1) / paraCount;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -732,7 +728,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  '${(progress * 100).round()}% · стр. ${lastPara + 1} из ${paragraphs.length}',
+                  '${(progress * 100).round()}% · стр. ${lastPara + 1} из $paraCount',
                   style: TextStyle(
                       fontSize: 12,
                       color: scheme.onSurface.withValues(alpha: 0.6))),

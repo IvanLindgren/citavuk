@@ -115,8 +115,12 @@ class AnalysisRepository {
     // Перевод: «общий» (слово отдельно: словарь → кэш → сеть) и «в этом тексте»
     // (контекстный, по предложению). Оба сетевых запроса пускаем ПАРАЛЛЕЛЬНО,
     // чтобы не ждать дважды.
+    // «Общий» перевод — это СЛОВАРНОЕ значение, поэтому переводим начальную
+    // форму (lemma), а не словоформу из текста. Иначе «očekivao» переводится как
+    // «ожидал», тогда как в словаре глагол — «ожидать» (očekivati). Конкретную
+    // форму из предложения показывает контекстный перевод «в этом тексте».
     var general = await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
-    general ??= await UserDb.instance.getCachedTranslation(tokenText);
+    general ??= await UserDb.instance.getCachedTranslation(lemma);
 
     final needGeneralOnline = general == null;
     final wantContext =
@@ -124,7 +128,7 @@ class AnalysisRepository {
 
     final results = await Future.wait<String?>([
       needGeneralOnline
-          ? _translateOnline(tokenText)
+          ? _translateOnline(lemma)
           : Future<String?>.value(general),
       wantContext
           ? _translateContextualOnline(
@@ -139,7 +143,8 @@ class AnalysisRepository {
     final generalNet = needGeneralOnline ? results[0] : null; // из сети
     final contextual = results[1];
     if (generalNet != null) {
-      await UserDb.instance.cacheTranslation(tokenText, generalNet);
+      // Кэшируем по начальной форме — это словарное значение (см. выше).
+      await UserDb.instance.cacheTranslation(lemma, generalNet);
     }
     final generalFinal = general ?? generalNet;
     final online = generalNet != null || contextual != null;

@@ -912,7 +912,7 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                       color: Colors.white)),
                             ),
                             if (!isPhrase)
-                              Text('основа: $lemma',
+                              Text('нач. форма: $lemma',
                                   style: TextStyle(
                                       color: scheme.onSurface.withValues(alpha: 0.6),
                                       fontSize: 13)),
