@@ -38,37 +38,75 @@ class GrammarEngine {
     'Loc': 'Предложный/Местный (lokativ)',
   };
   static const _caseUse = {
-    'Nom': 'Это основной падеж любого языка. Выражает неизменную форму слова. Вопрос: ко? шта? '
-        'Пример: «Pas spava» — пёс спит.',
+    'Nom':
+        'Это основной падеж любого языка. Выражает неизменную форму слова. Вопрос: ко? шта? '
+            'Пример: «Pas spava» — пёс спит.',
     'Gen': 'Падеж принадлежности и отрицания. Вопрос: кога? чега? '
         'После предлогов iz/od/do/bez и при отрицании. Пример: «nema vremena» — нет времени.',
     'Dat': 'Падеж направления, а также указания. Вопрос: коме? чему? '
         'Пример: «dajem prijatelju» — даю другу.',
-    'Acc': 'Падеж любви :))))))) Используется после глаголов действий. Вопрос: кога? шта? '
-        'Пример: «volim Denisa» — я люблю Дениса.',
+    'Acc':
+        'Падеж любви :))))))) Используется после глаголов действий. Вопрос: кога? шта? '
+            'Пример: «volim Denisa» — я люблю Дениса.',
     'Voc': 'Падеж для обращения. Пример: «Marko!», «prijatelju!».',
     'Ins': 'Падеж указания инстрмента, авторства. Вопрос: ким? чим? '
         'После предлога s/sa. Пример: «pišem olovkom» — пишу карандашом.',
-    'Loc': 'Падеж местоположения и некоторых предлогов. Вопрос: о коме? о чему? где? '
-        'Пример: «u školi» — в школе.',
+    'Loc':
+        'Падеж местоположения и некоторых предлогов. Вопрос: о коме? о чему? где? '
+            'Пример: «u školi» — в школе.',
   };
 
   /// Типичные предлоги, требующие данного падежа (смысловая нагрузка падежа).
   static const _casePreps = {
     'Nom': <String>[],
     'Gen': [
-      'od', 'do', 'iz', 'sa', 'bez', 'kod', 'oko', 'posle', 'pre', 'protiv',
-      'zbog', 'radi', 'preko', 'ispod', 'iznad', 'ispred', 'iza', 'pored',
-      'umesto', 'tokom', 'blizu', 'između'
+      'od',
+      'do',
+      'iz',
+      'sa',
+      'bez',
+      'kod',
+      'oko',
+      'posle',
+      'pre',
+      'protiv',
+      'zbog',
+      'radi',
+      'preko',
+      'ispod',
+      'iznad',
+      'ispred',
+      'iza',
+      'pored',
+      'umesto',
+      'tokom',
+      'blizu',
+      'između'
     ],
     'Dat': ['k', 'ka', 'prema', 'nasuprot', 'uprkos'],
-    'Acc': ['u', 'na', 'kroz', 'niz', 'uz', 'za', 'po', 'o', 'pod', 'pred', 'nad'],
+    'Acc': [
+      'u',
+      'na',
+      'kroz',
+      'niz',
+      'uz',
+      'za',
+      'po',
+      'o',
+      'pod',
+      'pred',
+      'nad'
+    ],
     'Voc': <String>[],
     'Ins': ['s', 'sa', 'nad', 'pod', 'pred', 'među', 'za'],
     'Loc': ['u', 'na', 'o', 'po', 'pri', 'prema'],
   };
   static const _numberRu = {'Sing': 'единственное', 'Plur': 'множественное'};
-  static const _genderRu = {'Masc': 'мужской', 'Fem': 'женский', 'Neut': 'средний'};
+  static const _genderRu = {
+    'Masc': 'мужской',
+    'Fem': 'женский',
+    'Neut': 'средний'
+  };
   static const _tenseRu = {
     'Pres': 'настоящее (prezent)',
     'Past': 'прошедшее (perfekat)',
@@ -125,10 +163,22 @@ class GrammarEngine {
       ('Loc', 'по / согласно (prema dogovoru)')
     ],
     // Двусторонние и прочие
-    'u': [('Acc', 'в (куда — движение): u grad'), ('Loc', 'в (где — место): u gradu')],
-    'na': [('Acc', 'на (куда — движение): na sto'), ('Loc', 'на (где — место): na stolu')],
-    'o': [('Loc', 'о / об (о ком, о чём): o ljubavi'), ('Acc', 'обо (удар обо что)')],
-    'po': [('Loc', 'по (по чему, после): po gradu'), ('Acc', 'за (сходить за чем-то)')],
+    'u': [
+      ('Acc', 'в (куда — движение): u grad'),
+      ('Loc', 'в (где — место): u gradu')
+    ],
+    'na': [
+      ('Acc', 'на (куда — движение): na sto'),
+      ('Loc', 'на (где — место): na stolu')
+    ],
+    'o': [
+      ('Loc', 'о / об (о ком, о чём): o ljubavi'),
+      ('Acc', 'обо (удар обо что)')
+    ],
+    'po': [
+      ('Loc', 'по (по чему, после): po gradu'),
+      ('Acc', 'за (сходить за чем-то)')
+    ],
     'pri': [('Loc', 'при / возле / в процессе')],
     's': [('Ins', 'с (с кем/чем — вместе): s prijateljem')],
     'sa': [
@@ -220,7 +270,8 @@ class GrammarEngine {
   // ---------------------------------------------------------------------------
   // Разбор MSD (схема lexicon.db — подмножество MULTEXT-East).
   // ---------------------------------------------------------------------------
-  static String? _g(String c) => const {'m': 'Masc', 'f': 'Fem', 'n': 'Neut'}[c];
+  static String? _g(String c) =>
+      const {'m': 'Masc', 'f': 'Fem', 'n': 'Neut'}[c];
   static String? _n(String c) => const {'s': 'Sing', 'p': 'Plur'}[c];
   static String? _c(String c) => const {
         'n': 'Nom',
@@ -355,8 +406,7 @@ class GrammarEngine {
         title: 'Падежи',
         subtitle: '7 падежей: шесть знакомых по русскому + звательный',
         tag: 'Падежи',
-        intro:
-            'В сербском 7 падежей: шесть соответствуют русским, седьмой — '
+        intro: 'В сербском 7 падежей: шесть соответствуют русским, седьмой — '
             'звательный (vokativ) для обращения («Marko!», «prijatelju!»). '
             'Lokativ соответствует русскому предложному и, как и в русском, '
             'употребляется только с предлогами. Логика употребления очень '
@@ -417,7 +467,8 @@ class GrammarEngine {
         cards: [
           (
             front: 'Презент (prezent) — настоящее время',
-            back: 'Действие происходит сейчас. Основа глагола + личные окончания: '
+            back:
+                'Действие происходит сейчас. Основа глагола + личные окончания: '
                 '-m, -š, -∅, -mo, -te, -(j)u.\nПример: radim, radiš, radi, radimo, '
                 'radite, rade.',
             tag: 'Время',
@@ -429,8 +480,7 @@ class GrammarEngine {
         title: 'Перфекат (perfekat)',
         subtitle: 'главное прошедшее время разговорной речи',
         tag: 'Время',
-        intro:
-            'Основное прошедшее время: в современной речи им выражают почти '
+        intro: 'Основное прошедшее время: в современной речи им выражают почти '
             'любое действие в прошлом. По смыслу соответствует русскому '
             'прошедшему, а по строению похоже на английский Present Perfect — '
             'это составная форма из вспомогательного глагола и причастия.',
@@ -540,7 +590,8 @@ class GrammarEngine {
         cards: [
           (
             front: 'Аорист (aorist) — простое прошедшее',
-            back: 'Одна форма без вспомогательного глагола; завершённое действие. '
+            back:
+                'Одна форма без вспомогательного глагола; завершённое действие. '
                 'Окончания: -h/-oh, -e, -e, -smo, -ste, -še.\n'
                 'Пример: rekoh, reče, rekosmo (от reći).\n'
                 'biti: bih, bi, bismo — они же в условном наклонении («бы»).',
@@ -553,8 +604,7 @@ class GrammarEngine {
         title: 'Имперфект (imperfekat)',
         subtitle: 'простое прошедшее длительное — почти только в книгах',
         tag: 'Время',
-        intro:
-            'Простое прошедшее время для длительного или повторяющегося '
+        intro: 'Простое прошедшее время для длительного или повторяющегося '
             'действия. В современной речи практически вышел из употребления — '
             'его место занял перфекат, — но в художественной литературе и '
             'старых текстах встречается регулярно. Образуется только от '
@@ -630,8 +680,7 @@ class GrammarEngine {
         title: 'Футур II (futur drugi)',
         subtitle: 'предбудущее — только в придаточных',
         tag: 'Время',
-        intro:
-            '«Предбудущее» время: употребляется только в придаточных '
+        intro: '«Предбудущее» время: употребляется только в придаточных '
             'предложениях условия и времени — там, где русский использует '
             'будущее («когда у меня БУДЕТ время…»). Самостоятельно, в главном '
             'предложении, не употребляется.',
@@ -737,13 +786,24 @@ class GrammarEngine {
 
     if (gcase != null) facts.add(GrammarFact('Падеж', _caseRu[gcase] ?? gcase));
     if (tense != null) {
-      facts.add(GrammarFact('Время', _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense));
+      facts.add(GrammarFact(
+          'Время', _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense));
     }
-    if (mood == 'Imp') facts.add(const GrammarFact('Наклонение', 'повелительное (императив)'));
-    if (mood == 'Cnd') facts.add(const GrammarFact('Наклонение', 'условное (потенцијал)'));
-    if (person != null) facts.add(GrammarFact('Лицо', _personRu[person] ?? person));
-    if (number != null) facts.add(GrammarFact('Число', _numberRu[number] ?? number));
-    if (gender != null) facts.add(GrammarFact('Род', _genderRu[gender] ?? gender));
+    if (mood == 'Imp') {
+      facts.add(const GrammarFact('Наклонение', 'повелительное (императив)'));
+    }
+    if (mood == 'Cnd') {
+      facts.add(const GrammarFact('Наклонение', 'условное (потенцијал)'));
+    }
+    if (person != null) {
+      facts.add(GrammarFact('Лицо', _personRu[person] ?? person));
+    }
+    if (number != null) {
+      facts.add(GrammarFact('Число', _numberRu[number] ?? number));
+    }
+    if (gender != null) {
+      facts.add(GrammarFact('Род', _genderRu[gender] ?? gender));
+    }
     if (verbForm == 'Inf') facts.add(const GrammarFact('Форма', 'инфинитив'));
 
     final summaryParts = [
@@ -765,7 +825,8 @@ class GrammarEngine {
     } else if (verbForm == 'Inf' ||
         (tense != null && mood != 'Imp' && mood != 'Cnd')) {
       if (verbForm == 'Inf') {
-        why = 'Это инфинитив — начальная форма глагола (отвечает на «что делать?»). '
+        why =
+            'Это инфинитив — начальная форма глагола (отвечает на «что делать?»). '
             'От неё образуются все времена.';
       } else {
         final label = _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense;
@@ -779,17 +840,20 @@ class GrammarEngine {
             'используются эти три.';
       }
     } else if (mood == 'Imp') {
-      why = 'Это повелительное наклонение (императив) — выражает приказ или просьбу '
+      why =
+          'Это повелительное наклонение (императив) — выражает приказ или просьбу '
           '(${_personRu[person] ?? ''}, ${_numberRu[number] ?? ''} число).\n\n'
           'Ниже — спряжение этого глагола в основных временах.';
     } else if (mood == 'Cnd') {
-      why = 'Это условное наклонение (потенцијал) — выражает возможность или условие '
+      why =
+          'Это условное наклонение (потенцијал) — выражает возможность или условие '
           '(бы, если бы).\n\n'
           'Ниже — спряжение этого глагола в основных временах.';
     } else if (feats.isNotEmpty) {
       why = 'Это $posLabel. Базовые грамматические признаки указаны выше.';
     } else {
-      why = 'Базовый разбор: $posLabel. Полный разбор формы (падежи, лица) доступен при '
+      why =
+          'Базовый разбор: $posLabel. Полный разбор формы (падежи, лица) доступен при '
           'подключённом сервере (CLASSLA) или для слов из словаря.';
     }
 
@@ -946,8 +1010,8 @@ class GrammarEngine {
     String surface,
   ) {
     ParadigmCell cell(String label, String g, String number) {
-      final form = fromLexicon(
-          (f) => f['Gender'] == g && f['Number'] == number && f['Case'] == 'Nom');
+      final form = fromLexicon((f) =>
+          f['Gender'] == g && f['Number'] == number && f['Case'] == 'Nom');
       return ParadigmCell(
         label: label,
         form: form ?? '—',
@@ -1018,8 +1082,10 @@ class GrammarEngine {
     for (var i = 0; i < 6; i++) {
       final person = '${(i % 3) + 1}';
       final number = i < 3 ? 'Sing' : 'Plur';
-      var form = fromLexicon(
-          (f) => f['Tense'] == 'Pres' && f['Person'] == person && f['Number'] == number);
+      var form = fromLexicon((f) =>
+          f['Tense'] == 'Pres' &&
+          f['Person'] == person &&
+          f['Number'] == number);
       var generated = false;
       if (form == null && present[i] != null) {
         form = present[i];
@@ -1075,12 +1141,19 @@ class GrammarEngine {
     final partNeutPl = lexPartNeutPl ?? rulePart?[5];
 
     final perfRows = <ParadigmCell>[];
-    ParadigmCell buildPerfCell(String label, String aux, String? part1, [String? part2]) {
-      final form = part1 == null ? '—' : (part2 == null ? '$aux $part1' : '$aux $part1 / $part2');
-      final isGen = part1 != null && rulePart != null && (
-        part1 == rulePart[0] || part1 == rulePart[1] || part1 == rulePart[2] ||
-        part1 == rulePart[3] || part1 == rulePart[4] || part1 == rulePart[5]
-      );
+    ParadigmCell buildPerfCell(String label, String aux, String? part1,
+        [String? part2]) {
+      final form = part1 == null
+          ? '—'
+          : (part2 == null ? '$aux $part1' : '$aux $part1 / $part2');
+      final isGen = part1 != null &&
+          rulePart != null &&
+          (part1 == rulePart[0] ||
+              part1 == rulePart[1] ||
+              part1 == rulePart[2] ||
+              part1 == rulePart[3] ||
+              part1 == rulePart[4] ||
+              part1 == rulePart[5]);
       return ParadigmCell(
         label: label,
         form: form,
@@ -1088,13 +1161,17 @@ class GrammarEngine {
       );
     }
 
-    perfRows.add(buildPerfCell('ja (м./ж.)', _perfAux[0], partMascSg, partFemSg));
-    perfRows.add(buildPerfCell('ti (м./ж.)', _perfAux[1], partMascSg, partFemSg));
+    perfRows
+        .add(buildPerfCell('ja (м./ж.)', _perfAux[0], partMascSg, partFemSg));
+    perfRows
+        .add(buildPerfCell('ti (м./ж.)', _perfAux[1], partMascSg, partFemSg));
     perfRows.add(buildPerfCell('on', _perfAux[2], partMascSg));
     perfRows.add(buildPerfCell('ona', _perfAux[2], partFemSg));
     perfRows.add(buildPerfCell('ono', _perfAux[2], partNeutSg));
-    perfRows.add(buildPerfCell('mi (м./ж.)', _perfAux[3], partMascPl, partFemPl));
-    perfRows.add(buildPerfCell('vi (м./ж.)', _perfAux[4], partMascPl, partFemPl));
+    perfRows
+        .add(buildPerfCell('mi (м./ж.)', _perfAux[3], partMascPl, partFemPl));
+    perfRows
+        .add(buildPerfCell('vi (м./ж.)', _perfAux[4], partMascPl, partFemPl));
     perfRows.add(buildPerfCell('oni', _perfAux[5], partMascPl));
     perfRows.add(buildPerfCell('one', _perfAux[5], partFemPl));
     perfRows.add(buildPerfCell('ona', _perfAux[5], partNeutPl));
@@ -1154,12 +1231,11 @@ class GrammarEngine {
 
     return [
       ParadigmTable(
-          title: 'Презент (настоящее)',
-          rows: prezRows,
-          highlightEndings: true),
+          title: 'Презент (настоящее)', rows: prezRows, highlightEndings: true),
       ParadigmTable(
         title: 'Перфекат (прошедшее)',
-        subtitle: 'глагол biti + причастие (здесь — муж. род; ж.р.: -la, ср.р.: -lo)',
+        subtitle:
+            'глагол biti + причастие (здесь — муж. род; ж.р.: -la, ср.р.: -lo)',
         rows: perfRows,
       ),
       ParadigmTable(
@@ -1205,7 +1281,14 @@ class GrammarEngine {
     'uzeti': ['uzmem', 'uzmeš', 'uzme', 'uzmemo', 'uzmete', 'uzmu'],
     'početi': ['počnem', 'počneš', 'počne', 'počnemo', 'počnete', 'počnu'],
     'umreti': ['umrem', 'umreš', 'umre', 'umremo', 'umrete', 'umru'],
-    'doneti': ['donesem', 'doneseš', 'donese', 'donesemo', 'donesete', 'donesu'],
+    'doneti': [
+      'donesem',
+      'doneseš',
+      'donese',
+      'donesemo',
+      'donesete',
+      'donesu'
+    ],
     'pisati': ['pišem', 'pišeš', 'piše', 'pišemo', 'pišete', 'pišu'],
     'kazati': ['kažem', 'kažeš', 'kaže', 'kažemo', 'kažete', 'kažu'],
     'vikati': ['vičem', 'vičeš', 'viče', 'vičemo', 'vičete', 'viču'],
@@ -1216,16 +1299,44 @@ class GrammarEngine {
     'prati': ['perem', 'pereš', 'pere', 'peremo', 'perete', 'peru'],
     'slati': ['šaljem', 'šalješ', 'šalje', 'šaljemo', 'šaljete', 'šalju'],
     'davati': ['dajem', 'daješ', 'daje', 'dajemo', 'dajete', 'daju'],
-    'prodavati': ['prodajem', 'prodaješ', 'prodaje', 'prodajemo', 'prodajete', 'prodaju'],
-    'poznavati': ['poznajem', 'poznaješ', 'poznaje', 'poznajemo', 'poznajete', 'poznaju'],
+    'prodavati': [
+      'prodajem',
+      'prodaješ',
+      'prodaje',
+      'prodajemo',
+      'prodajete',
+      'prodaju'
+    ],
+    'poznavati': [
+      'poznajem',
+      'poznaješ',
+      'poznaje',
+      'poznajemo',
+      'poznajete',
+      'poznaju'
+    ],
     'spavati': ['spavam', 'spavaš', 'spava', 'spavamo', 'spavate', 'spavaju'],
-    'očekivati': ['očekujem', 'očekuješ', 'očekuje', 'očekujemo', 'očekujete', 'očekuju'],
+    'očekivati': [
+      'očekujem',
+      'očekuješ',
+      'očekuje',
+      'očekujemo',
+      'očekujete',
+      'očekuju'
+    ],
     'plivati': ['plivam', 'plivaš', 'pliva', 'plivamo', 'plivate', 'plivaju'],
     'uživati': ['uživam', 'uživaš', 'uživa', 'uživamo', 'uživate', 'uživaju'],
     'dati': ['dam', 'daš', 'da', 'damo', 'date', 'daju'],
     'smeti': ['smem', 'smeš', 'sme', 'smemo', 'smete', 'smeju'],
     'umeti': ['umem', 'umeš', 'ume', 'umemo', 'umete', 'umeju'],
-    'razumeti': ['razumem', 'razumeš', 'razume', 'razumemo', 'razumete', 'razumeju'],
+    'razumeti': [
+      'razumem',
+      'razumeš',
+      'razume',
+      'razumemo',
+      'razumete',
+      'razumeju'
+    ],
     'smejati': ['smejem', 'smeješ', 'smeje', 'smejemo', 'smejete', 'smeju'],
     'stajati': ['stojim', 'stojiš', 'stoji', 'stojimo', 'stojite', 'stoje'],
   };
@@ -1285,9 +1396,25 @@ class GrammarEngine {
   /// имперфект правилом. Вид офлайн не определить, а имперфект от совершенного
   /// вида (pogledati → «pogledah») грамматически невозможен — не рискуем.
   static const Set<String> _knownImperfectiveAti = {
-    'gledati', 'čitati', 'slušati', 'pevati', 'igrati', 'čekati', 'pričati',
-    'spavati', 'plivati', 'kuvati', 'šetati', 'sanjati', 'padati', 'davati',
-    'imati', 'znati', 'pitati', 'trčati', 'plakati',
+    'gledati',
+    'čitati',
+    'slušati',
+    'pevati',
+    'igrati',
+    'čekati',
+    'pričati',
+    'spavati',
+    'plivati',
+    'kuvati',
+    'šetati',
+    'sanjati',
+    'padati',
+    'davati',
+    'imati',
+    'znati',
+    'pitati',
+    'trčati',
+    'plakati',
   };
 
   /// Имперфект по правилу — надёжно только для известных несовершенных на -ati
@@ -1353,7 +1480,8 @@ class GrammarEngine {
   static bool _softFinal(String s) =>
       s.endsWith('lj') ||
       s.endsWith('nj') ||
-      (s.isNotEmpty && const {'š', 'ž', 'č', 'ć', 'đ', 'j', 'c'}.contains(s[s.length - 1]));
+      (s.isNotEmpty &&
+          const {'š', 'ž', 'č', 'ć', 'đ', 'j', 'c'}.contains(s[s.length - 1]));
 
   /// Сибиларизация k/g/h → c/z/s перед -i/-ima (vojnik → vojnici, knjiga →
   /// knjizi). Блокируется после c/č/ć/z/s/š/đ (mačka → mački, а не «mačci»).
@@ -1369,21 +1497,63 @@ class GrammarEngine {
   /// Палатализация k/g/h → č/ž/š перед вокативным -e (čovek → čoveče, bog → bože).
   static String _palatalize(String stem) {
     if (stem.isEmpty) return stem;
-    final r = const {'k': 'č', 'g': 'ž', 'h': 'š', 'c': 'č'}[stem[stem.length - 1]];
+    final r =
+        const {'k': 'č', 'g': 'ž', 'h': 'š', 'c': 'č'}[stem[stem.length - 1]];
     return r == null ? stem : stem.substring(0, stem.length - 1) + r;
   }
 
   /// Супплетивное/нерегулярное множественное число частотных существительных
   /// (правилом не выводится: čovek → ljudi, dete → deca, brat → braća).
   static const Map<String, Map<String, String>> _irregularPlural = {
-    'čovek': {'Nom': 'ljudi', 'Gen': 'ljudi', 'Dat': 'ljudima', 'Acc': 'ljude', 'Voc': 'ljudi', 'Ins': 'ljudima', 'Loc': 'ljudima'},
-    'dete': {'Nom': 'deca', 'Gen': 'dece', 'Dat': 'deci', 'Acc': 'decu', 'Voc': 'deco', 'Ins': 'decom', 'Loc': 'deci'},
-    'brat': {'Nom': 'braća', 'Gen': 'braće', 'Dat': 'braći', 'Acc': 'braću', 'Voc': 'braćo', 'Ins': 'braćom', 'Loc': 'braći'},
-    'oko': {'Nom': 'oči', 'Gen': 'očiju', 'Dat': 'očima', 'Acc': 'oči', 'Voc': 'oči', 'Ins': 'očima', 'Loc': 'očima'},
-    'uho': {'Nom': 'uši', 'Gen': 'ušiju', 'Dat': 'ušima', 'Acc': 'uši', 'Voc': 'uši', 'Ins': 'ušima', 'Loc': 'ušima'},
+    'čovek': {
+      'Nom': 'ljudi',
+      'Gen': 'ljudi',
+      'Dat': 'ljudima',
+      'Acc': 'ljude',
+      'Voc': 'ljudi',
+      'Ins': 'ljudima',
+      'Loc': 'ljudima'
+    },
+    'dete': {
+      'Nom': 'deca',
+      'Gen': 'dece',
+      'Dat': 'deci',
+      'Acc': 'decu',
+      'Voc': 'deco',
+      'Ins': 'decom',
+      'Loc': 'deci'
+    },
+    'brat': {
+      'Nom': 'braća',
+      'Gen': 'braće',
+      'Dat': 'braći',
+      'Acc': 'braću',
+      'Voc': 'braćo',
+      'Ins': 'braćom',
+      'Loc': 'braći'
+    },
+    'oko': {
+      'Nom': 'oči',
+      'Gen': 'očiju',
+      'Dat': 'očima',
+      'Acc': 'oči',
+      'Voc': 'oči',
+      'Ins': 'očima',
+      'Loc': 'očima'
+    },
+    'uho': {
+      'Nom': 'uši',
+      'Gen': 'ušiju',
+      'Dat': 'ušima',
+      'Acc': 'uši',
+      'Voc': 'uši',
+      'Ins': 'ušima',
+      'Loc': 'ušima'
+    },
   };
 
-  static String? _declension(String lemma, String gender, String number, String c) {
+  static String? _declension(
+      String lemma, String gender, String number, String c) {
     if (number == 'Plur') {
       final irr = _irregularPlural[lemma];
       if (irr != null) return irr[c];
@@ -1392,19 +1562,33 @@ class GrammarEngine {
       final s = lemma.substring(0, lemma.length - 1);
       if (number == 'Sing') {
         switch (c) {
-          case 'Nom': return lemma;
-          case 'Gen': return '${s}e';
+          case 'Nom':
+            return lemma;
+          case 'Gen':
+            return '${s}e';
           // Датив/локатив -i с сибиларизацией: ruka → ruci, knjiga → knjizi
           // (но mačka → mački — см. блокираторы в _sibilarize).
           case 'Dat':
-          case 'Loc': return '${_sibilarize(s)}i';
-          case 'Acc': return '${s}u';
-          case 'Voc': return '${s}o';
-          case 'Ins': return '${s}om';
+          case 'Loc':
+            return '${_sibilarize(s)}i';
+          case 'Acc':
+            return '${s}u';
+          case 'Voc':
+            return '${s}o';
+          case 'Ins':
+            return '${s}om';
         }
         return null;
       }
-      const pl = {'Nom': 'e', 'Gen': 'a', 'Dat': 'ama', 'Acc': 'e', 'Voc': 'e', 'Ins': 'ama', 'Loc': 'ama'};
+      const pl = {
+        'Nom': 'e',
+        'Gen': 'a',
+        'Dat': 'ama',
+        'Acc': 'e',
+        'Voc': 'e',
+        'Ins': 'ama',
+        'Loc': 'ama'
+      };
       final suf = pl[c];
       return suf == null ? null : s + suf;
     }
@@ -1412,17 +1596,23 @@ class GrammarEngine {
       final soft = _softFinal(lemma);
       if (number == 'Sing') {
         switch (c) {
-          case 'Nom': return lemma;
-          case 'Gen': return '${lemma}a';
+          case 'Nom':
+            return lemma;
+          case 'Gen':
+            return '${lemma}a';
           case 'Dat':
-          case 'Loc': return '${lemma}u';
+          case 'Loc':
+            return '${lemma}u';
           // Акузатив зависит от одушевлённости: vidim grad (неодуш. = Ном.),
           // но vidim čoveka (одуш. = Ген.). Без словаря не угадать — даём оба.
-          case 'Acc': return '$lemma / ${lemma}a';
+          case 'Acc':
+            return '$lemma / ${lemma}a';
           // Вокатив: после мягкого финала -u (prijatelju), иначе -e с
           // палатализацией (čovek → čoveče, bog → bože).
-          case 'Voc': return soft ? '${lemma}u' : '${_palatalize(lemma)}e';
-          case 'Ins': return soft ? '${lemma}em' : '${lemma}om';
+          case 'Voc':
+            return soft ? '${lemma}u' : '${_palatalize(lemma)}e';
+          case 'Ins':
+            return soft ? '${lemma}em' : '${lemma}om';
         }
         return null;
       }
@@ -1431,19 +1621,39 @@ class GrammarEngine {
       final stem = lemma.length <= 4 ? lemma + (soft ? 'ev' : 'ov') : lemma;
       switch (c) {
         case 'Nom':
-        case 'Voc': return '${_sibilarize(stem)}i';
-        case 'Gen': return '${stem}a';
+        case 'Voc':
+          return '${_sibilarize(stem)}i';
+        case 'Gen':
+          return '${stem}a';
         case 'Dat':
         case 'Ins':
-        case 'Loc': return '${_sibilarize(stem)}ima';
-        case 'Acc': return '${stem}e';
+        case 'Loc':
+          return '${_sibilarize(stem)}ima';
+        case 'Acc':
+          return '${stem}e';
       }
       return null;
     }
     if (gender == 'Neut' && (lemma.endsWith('o') || lemma.endsWith('e'))) {
       final s = lemma.substring(0, lemma.length - 1);
-      const sg = {'Nom': '', 'Gen': 'a', 'Dat': 'u', 'Acc': '', 'Voc': '', 'Ins': 'om', 'Loc': 'u'};
-      const pl = {'Nom': 'a', 'Gen': 'a', 'Dat': 'ima', 'Acc': 'a', 'Voc': 'a', 'Ins': 'ima', 'Loc': 'ima'};
+      const sg = {
+        'Nom': '',
+        'Gen': 'a',
+        'Dat': 'u',
+        'Acc': '',
+        'Voc': '',
+        'Ins': 'om',
+        'Loc': 'u'
+      };
+      const pl = {
+        'Nom': 'a',
+        'Gen': 'a',
+        'Dat': 'ima',
+        'Acc': 'a',
+        'Voc': 'a',
+        'Ins': 'ima',
+        'Loc': 'ima'
+      };
       final suf = (number == 'Sing' ? sg : pl)[c];
       if (suf == null) return null;
       return suf.isEmpty ? lemma : s + suf;

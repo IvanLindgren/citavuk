@@ -99,7 +99,8 @@ class AnalysisRepository {
     } catch (_) {
       // сервер недоступен — идём в офлайн/онлайн-перевод
     }
-    return _offlineOrOnline(token, sentence: sent, startOffset: startOffset, endOffset: end);
+    return _offlineOrOnline(token,
+        sentence: sent, startOffset: startOffset, endOffset: end);
   }
 
   String _splice(String s, int start, int end, String repl) {
@@ -153,7 +154,8 @@ class AnalysisRepository {
     // форму (lemma), а не словоформу из текста. Иначе «očekivao» переводится как
     // «ожидал», тогда как в словаре глагол — «ожидать» (očekivati). Конкретную
     // форму из предложения показывает контекстный перевод «в этом тексте».
-    var general = await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
+    var general =
+        await LexiconDb.instance.getOfflineTranslation(tokenText, lemma);
     general ??= await UserDb.instance.getCachedTranslation(lemma);
     // Онлайн-разбор (сервер) кэширует перевод по словоформе — проверяем и её,
     // иначе переведённое онлайн слово «терялось» в офлайне.
@@ -206,7 +208,9 @@ class AnalysisRepository {
     required String tokenText,
   }) async {
     try {
-      if (startOffset < 0 || endOffset > sentence.length || startOffset > endOffset) {
+      if (startOffset < 0 ||
+          endOffset > sentence.length ||
+          startOffset > endOffset) {
         return null;
       }
       // Берём только предложение вокруг слова: короче контекст — стабильнее тег
@@ -216,7 +220,8 @@ class AnalysisRepository {
           '${w.text.substring(0, w.start)}<w>$tokenText</w>${w.text.substring(w.end)}';
       final translated = await _translateOnline(tagged);
       if (translated != null) {
-        final reg = RegExp(r'<w[^>]*>(.*?)</w>', caseSensitive: false, dotAll: true);
+        final reg =
+            RegExp(r'<w[^>]*>(.*?)</w>', caseSensitive: false, dotAll: true);
         final match = reg.firstMatch(translated);
         if (match != null) {
           final inner = match.group(1)?.trim();
@@ -265,8 +270,8 @@ class AnalysisRepository {
   Future<String?> _translateOnline(String text) async {
     try {
       if (kIsWeb) {
-        final uri = Uri.parse(
-            '$baseUrl/translate?q=${Uri.encodeComponent(text)}');
+        final uri =
+            Uri.parse('$baseUrl/translate?q=${Uri.encodeComponent(text)}');
         final resp = await http.get(uri).timeout(const Duration(seconds: 8));
         if (resp.statusCode == 200) {
           final data =
@@ -436,7 +441,8 @@ class AnalysisRepository {
       parts.add(GrammarFact(infinitive, 'инфинитив'));
     } else if (mergedFut != null) {
       title = 'Футур I — будущее время (слитная форма)';
-      parts.add(GrammarFact(mergedFut, 'инфинитив + клитика hteti (radiću = radi + ću)'));
+      parts.add(GrammarFact(
+          mergedFut, 'инфинитив + клитика hteti (radiću = radi + ću)'));
     }
 
     var hasClitics = false;
@@ -538,7 +544,8 @@ class AnalysisRepository {
       // Сервер знает часть речи, но признаков нет: берём строку лексикона,
       // СОГЛАСНУЮ с серверным разбором (та же лемма и часть речи), чтобы не
       // подменить контекстный разбор другой интерпретацией омонима.
-      final lat = SerbianTransliteration.toLatin(a.surface).trim().toLowerCase();
+      final lat =
+          SerbianTransliteration.toLatin(a.surface).trim().toLowerCase();
       final lemmaLat =
           SerbianTransliteration.toLatin(a.lemma).trim().toLowerCase();
       for (final r in await LexiconDb.instance.lookupForm(lat)) {
