@@ -5,3 +5,4 @@ pydantic
 deep-translator
 feedparser
 trafilatura
+gTTS

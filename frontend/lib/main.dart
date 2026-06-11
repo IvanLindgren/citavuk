@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +12,7 @@ import 'services/notification_service.dart';
 import 'widgets/welcome_dialog.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
+import 'screens/listening_screen.dart';
 import 'screens/news_screen.dart';
 import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
@@ -97,8 +97,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _loadLibraryAssets() async {
     try {
       final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-      final pdfs = manifest.listAssets()
-          .where((k) => k.startsWith('assets/library/') && (k.endsWith('.pdf') || k.endsWith('.docx')))
+      final pdfs = manifest
+          .listAssets()
+          .where((k) =>
+              k.startsWith('assets/library/') &&
+              (k.endsWith('.pdf') || k.endsWith('.docx')))
           .toList();
       setState(() {
         _libraryAssets = pdfs;
@@ -109,8 +112,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _initAndLoad() async {
-    await UserDb.instance.database;
-    await _loadBooks();
+    try {
+      await UserDb.instance.database;
+      await _loadBooks();
+    } catch (e) {
+      // Без catch ошибка открытия БД оставляла вечный спиннер на главной.
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Ошибка базы данных: $e')));
+    }
+  }
+
+  /// Обновление прогресса импорта; безопасно к уходу с экрана (без setState
+  /// после dispose — разбор PDF/DOCX продолжается в фоне).
+  void _onParseProgress(double p) {
+    if (mounted) setState(() => _loadProgress = p);
   }
 
   Future<void> _loadBooks() async {
@@ -147,11 +164,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       List<String> paragraphs;
       if (name.toLowerCase().endsWith('.pdf')) {
-        paragraphs = await DocumentParser.parsePdfWithProgress(
-            bytes, (p) => setState(() => _loadProgress = p));
+        paragraphs =
+            await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress);
       } else if (name.toLowerCase().endsWith('.docx')) {
-        paragraphs = await DocumentParser.parseDocxWithProgress(
-            bytes, (p) => setState(() => _loadProgress = p));
+        paragraphs =
+            await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
       } else {
         throw Exception('Неподдерживаемый формат');
       }
@@ -171,8 +188,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
+        setState(() => _isLoading = false);
       }
-      setState(() => _isLoading = false);
     }
   }
 
@@ -204,10 +221,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       final paragraphs = assetPath.endsWith('.pdf')
-          ? await DocumentParser.parsePdfWithProgress(
-              bytes, (p) => setState(() => _loadProgress = p))
-          : await DocumentParser.parseDocxWithProgress(
-              bytes, (p) => setState(() => _loadProgress = p));
+          ? await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress)
+          : await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
 
       await UserDb.instance.insertBook(title, assetPath, paragraphs);
       await _loadBooks();
@@ -221,8 +236,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка загрузки теста: $e')));
+        setState(() => _isLoading = false);
       }
-      setState(() => _isLoading = false);
     }
   }
 
@@ -236,15 +251,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       final paragraphs = assetPath.endsWith('.pdf')
-          ? await DocumentParser.parsePdfWithProgress(
-              bytes, (p) => setState(() => _loadProgress = p))
-          : await DocumentParser.parseDocxWithProgress(
-              bytes, (p) => setState(() => _loadProgress = p));
+          ? await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress)
+          : await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
 
       final id = await UserDb.instance.insertBook(title, assetPath, paragraphs);
       await UserDb.instance.setBookFolder(id, 'Бесплатная библиотека');
       await _loadBooks();
-      
+
       if (mounted) {
         if (!LanguageDetector.isLikelySerbian(paragraphs)) {
           _showNonSerbianWarning();
@@ -258,8 +271,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка загрузки: $e')));
+        setState(() => _isLoading = false);
       }
-      setState(() => _isLoading = false);
     }
   }
 
@@ -272,14 +285,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _openBook(Map<String, dynamic> book) {
+  Future<void> _openBook(Map<String, dynamic> book) async {
     final id = book['id'] as int;
     final title = book['title'] as String;
     final lastPara = book['last_para'] as int? ?? 0;
-    List<String> paragraphs = [];
-    try {
-      paragraphs = List<String>.from(jsonDecode(book['content'] as String));
-    } catch (_) {}
+    // Текст книги грузим по требованию (в списке его нет — экономим память).
+    final paragraphs = await UserDb.instance.getBookContent(id);
+    if (!mounted) return;
 
     Navigator.push(
       context,
@@ -346,7 +358,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     title: const Text('Напоминать повторять слова'),
                     value: enabled,
                     onChanged: (v) async {
-                      if (v) await NotificationService.instance.requestPermission();
+                      if (v) {
+                        await NotificationService.instance.requestPermission();
+                      }
                       await settings.setReminder(enabled: v);
                       await _applyReminder();
                       setLocal(() {});
@@ -393,7 +407,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final isDark = context.watch<AppSettings>().reader.themeMode == AppThemeMode.dark;
+    final settings = context.watch<AppSettings>();
+    final isDark = settings.reader.themeMode == AppThemeMode.dark;
+    final showActionLabels = MediaQuery.sizeOf(context).width >= 920;
 
     return Scaffold(
       appBar: AppBar(
@@ -405,21 +421,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         actions: [
-          const RadioAppBarButton(),
-          IconButton(
+          RadioAppBarButton(showLabel: showActionLabels),
+          _DashboardAction(
+            showLabel: showActionLabels,
+            label: 'Новости',
             tooltip: 'Новости на сербском',
-            icon: const Icon(Icons.newspaper_outlined),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const NewsScreen())),
+            icon: Icons.newspaper_outlined,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const NewsScreen()),
+            ),
           ),
-          IconButton(
-            tooltip: 'Грамматика — карточки',
-            icon: const Icon(Icons.school_outlined),
+          _DashboardAction(
+            showLabel: showActionLabels,
+            label: 'Аудирование',
+            tooltip: 'Аудирование (бета)',
+            icon: Icons.hearing_outlined,
+            highlighted: true,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ListeningScreen()),
+            ),
+          ),
+          _DashboardAction(
+            showLabel: showActionLabels,
+            label: 'Грамматика',
+            tooltip: 'Грамматика — темы и карточки',
+            icon: Icons.school_outlined,
             onPressed: _openGrammarCards,
           ),
           IconButton(
             tooltip: 'Напоминания о повторении',
-            icon: Icon(context.watch<AppSettings>().notificationsEnabled
+            icon: Icon(settings.notificationsEnabled
                 ? Icons.notifications_active
                 : Icons.notifications_none),
             onPressed: _openReminderDialog,
@@ -438,7 +471,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (v == 'refresh') _loadBooks();
               if (v == 'server') _openServerSettings();
               if (v == 'about') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const AboutScreen()));
               }
             },
             itemBuilder: (_) => const [
@@ -545,28 +579,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
             FadeSlideIn(
               delay: const Duration(milliseconds: 260),
               child: Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: WrapAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.add),
-                  label: const Text('Импорт PDF/DOCX'),
-                  onPressed: _importFile,
-                ),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.text_snippet_outlined),
-                  label: const Text('Тест DOCX'),
-                  onPressed: () =>
-                      _loadTestStory('assets/test_story.docx', 'Тестовая история (DOCX)'),
-                ),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.picture_as_pdf_outlined),
-                  label: const Text('Тест PDF'),
-                  onPressed: () =>
-                      _loadTestStory('assets/test_story.pdf', 'Тестовая история (PDF)'),
-                ),
-              ],
+                spacing: 12,
+                runSpacing: 12,
+                alignment: WrapAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.add),
+                    label: const Text('Импорт PDF/DOCX'),
+                    onPressed: _importFile,
+                  ),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.text_snippet_outlined),
+                    label: const Text('Тест DOCX'),
+                    onPressed: () => _loadTestStory(
+                        'assets/test_story.docx', 'Тестовая история (DOCX)'),
+                  ),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.picture_as_pdf_outlined),
+                    label: const Text('Тест PDF'),
+                    onPressed: () => _loadTestStory(
+                        'assets/test_story.pdf', 'Тестовая история (PDF)'),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 32),
@@ -603,7 +637,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         const Padding(
           padding: EdgeInsets.fromLTRB(16, 12, 16, 8),
-          child: Text('Бесплатная библиотека', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          child: Text('Бесплатная библиотека',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         ),
         SizedBox(
           height: 120,
@@ -614,14 +649,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
             itemBuilder: (ctx, i) {
               final path = _libraryAssets[i];
               final filename = path.split('/').last;
-              final name = filename.replaceAll('.pdf', '').replaceAll('.docx', '').replaceAll('_', ' ');
+              final name = filename
+                  .replaceAll('.pdf', '')
+                  .replaceAll('.docx', '')
+                  .replaceAll('_', ' ');
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 child: InkWell(
                   onTap: () {
-                    if (_books.any((b) => ((b['folder'] as String?) ?? '').trim() == 'Бесплатная библиотека' && b['title'] == name)) {
-                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Книга уже добавлена')));
-                       return;
+                    if (_books.any((b) =>
+                        ((b['folder'] as String?) ?? '').trim() ==
+                            'Бесплатная библиотека' &&
+                        b['title'] == name)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Книга уже добавлена')));
+                      return;
                     }
                     _loadLibraryStory(path, name);
                   },
@@ -632,9 +674,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(path.endsWith('.pdf') ? Icons.picture_as_pdf : Icons.text_snippet, color: scheme.primary, size: 32),
+                        Icon(
+                            path.endsWith('.pdf')
+                                ? Icons.picture_as_pdf
+                                : Icons.text_snippet,
+                            color: scheme.primary,
+                            size: 32),
                         const SizedBox(height: 8),
-                        Text(name, maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                        Text(name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
@@ -687,7 +739,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(width: 6),
             Text('($count)',
                 style: TextStyle(
-                    color: scheme.onSurface.withValues(alpha: 0.5), fontSize: 12)),
+                    color: scheme.onSurface.withValues(alpha: 0.5),
+                    fontSize: 12)),
           ],
         ),
       );
@@ -697,17 +750,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final title = book['title'] as String;
     final lastPara = book['last_para'] as int? ?? 0;
     final isPdf = title.toLowerCase().endsWith('.pdf');
-    List<String> paragraphs = [];
-    try {
-      paragraphs = List<String>.from(jsonDecode(book['content'] as String));
-    } catch (_) {}
-    final progress =
-        paragraphs.isEmpty ? 0.0 : (lastPara + 1) / paragraphs.length;
+    // Число абзацев берём из лёгкой колонки para_count — НЕ декодируем весь текст
+    // книги ради прогресс-бара (раньше это грузило все книги в память).
+    final paraCount = book['para_count'] as int? ?? 0;
+    final progress = paraCount == 0 ? 0.0 : (lastPara + 1) / paraCount;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         leading: Container(
           width: 46,
           height: 46,
@@ -732,7 +784,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  '${(progress * 100).round()}% · стр. ${lastPara + 1} из ${paragraphs.length}',
+                  '${(progress * 100).round()}% · стр. ${lastPara + 1} из $paraCount',
                   style: TextStyle(
                       fontSize: 12,
                       color: scheme.onSurface.withValues(alpha: 0.6))),
@@ -896,9 +948,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final path = await CardsIo.export(vocab: vocab, source: 'все книги');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(path == null
-            ? 'Экспорт отменён'
-            : 'Все карточки сохранены: $path'),
+        content: Text(
+            path == null ? 'Экспорт отменён' : 'Все карточки сохранены: $path'),
       ));
     } catch (e) {
       if (mounted) {
@@ -933,5 +984,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
             .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
       }
     }
+  }
+}
+
+class _DashboardAction extends StatelessWidget {
+  final bool showLabel;
+  final String label;
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback onPressed;
+  final bool highlighted;
+
+  const _DashboardAction({
+    required this.showLabel,
+    required this.label,
+    required this.tooltip,
+    required this.icon,
+    required this.onPressed,
+    this.highlighted = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    if (!showLabel) {
+      return IconButton(
+        tooltip: tooltip,
+        icon: Icon(icon),
+        onPressed: onPressed,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: TextButton.icon(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: highlighted
+              ? scheme.tertiary.withValues(alpha: 0.32)
+              : Colors.white.withValues(alpha: 0.12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0,
+          ),
+        ),
+        icon: Icon(icon, size: 18),
+        label: Text(label),
+      ),
+    );
   }
 }

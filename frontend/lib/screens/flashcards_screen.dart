@@ -182,7 +182,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                             Text(
                               [
                                 if (pos.isNotEmpty) GrammarEngine.posShort(pos),
-                                if (lemma.isNotEmpty) 'основа: $lemma',
+                                if (lemma.isNotEmpty) 'нач. форма: $lemma',
                               ].join('  ·  '),
                               style: TextStyle(
                                   fontSize: 13,

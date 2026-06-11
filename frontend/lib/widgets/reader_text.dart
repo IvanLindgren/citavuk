@@ -116,7 +116,11 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
     if (renderBox == null) return null;
     try {
       final textPosition = renderBox.getPositionForOffset(localOffset);
-      final charIndex = textPosition.offset;
+      // WidgetSpan-отступ красной строки занимает одну символьную позицию
+      // (placeholder) в начале RichText — без поправки выделение попадает в
+      // соседний токен (смещение на 1 относительно offsets токенизатора).
+      final charIndex =
+          textPosition.offset - (widget.firstLineIndent > 0 ? 1 : 0);
       for (var i = 0; i < _tokens.length; i++) {
         final t = _tokens[i];
         if (charIndex >= t.start && charIndex < t.end) {

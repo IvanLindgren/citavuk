@@ -22,9 +22,9 @@ class EqualizerBars extends StatefulWidget {
 
 class _EqualizerBarsState extends State<EqualizerBars>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _c =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 900))
-        ..repeat();
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 900))
+    ..repeat();
 
   @override
   void didUpdateWidget(covariant EqualizerBars old) {
@@ -54,7 +54,8 @@ class _EqualizerBarsState extends State<EqualizerBars>
               builder: (context, _) {
                 final t = (_c.value + p) % 1.0;
                 final wave = 0.35 + 0.65 * (0.5 - (t - 0.5).abs()) * 2;
-                final h = widget.active ? widget.height * wave : widget.height * 0.3;
+                final h =
+                    widget.active ? widget.height * wave : widget.height * 0.3;
                 return Container(
                   width: 3.5,
                   height: h.clamp(2.0, widget.height),
@@ -75,24 +76,57 @@ class _EqualizerBarsState extends State<EqualizerBars>
 
 /// Кнопка радио для AppBar: иконка отражает состояние, тап открывает панель.
 class RadioAppBarButton extends StatelessWidget {
-  const RadioAppBarButton({super.key});
+  final bool showLabel;
+
+  const RadioAppBarButton({super.key, this.showLabel = false});
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return ListenableBuilder(
       listenable: RadioService.instance,
       builder: (context, _) {
         final radio = RadioService.instance;
         final on = radio.playing;
-        return IconButton(
-          tooltip: 'Музыка для чтения',
-          onPressed: () => showRadioSheet(context),
-          icon: on
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2),
-                  child: EqualizerBars(color: Colors.white, height: 18),
-                )
-              : Icon(radio.loading ? Icons.hourglass_top : Icons.headphones),
+        final icon = on
+            ? const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2),
+                child: EqualizerBars(color: Colors.white, height: 18),
+              )
+            : Icon(
+                radio.loading ? Icons.hourglass_top : Icons.music_note_rounded);
+
+        if (!showLabel) {
+          return IconButton(
+            tooltip: 'Музыка для чтения',
+            onPressed: () => showRadioSheet(context),
+            icon: icon,
+          );
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: TextButton.icon(
+            onPressed: () => showRadioSheet(context),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: on
+                  ? scheme.tertiary.withValues(alpha: 0.32)
+                  : Colors.white.withValues(alpha: 0.12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
+              ),
+              textStyle: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0,
+              ),
+            ),
+            icon: icon,
+            label: const Text('Музыка'),
+          ),
         );
       },
     );
@@ -156,7 +190,8 @@ class RadioControlSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 4),
-              Text('Может быть, с музыкой вам будет легче сосредоточиться? Здесь можно выбрать станцию с lo-fi и эмбиентом и отрегулировать громкость.',
+              Text(
+                  'Может быть, с музыкой вам будет легче сосредоточиться? Здесь можно выбрать станцию с lo-fi и эмбиентом и отрегулировать громкость.',
                   style: TextStyle(
                       fontSize: 13,
                       color: scheme.onSurface.withValues(alpha: 0.65))),
@@ -168,8 +203,9 @@ class RadioControlSheet extends StatelessWidget {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    backgroundColor:
-                        radio.playing ? scheme.surfaceContainerHighest : scheme.primary,
+                    backgroundColor: radio.playing
+                        ? scheme.surfaceContainerHighest
+                        : scheme.primary,
                     foregroundColor:
                         radio.playing ? scheme.onSurface : scheme.onPrimary,
                   ),
@@ -178,7 +214,9 @@ class RadioControlSheet extends StatelessWidget {
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(strokeWidth: 2))
-                      : Icon(radio.playing ? Icons.stop_rounded : Icons.play_arrow_rounded),
+                      : Icon(radio.playing
+                          ? Icons.stop_rounded
+                          : Icons.play_arrow_rounded),
                   label: Text(radio.loading
                       ? 'Подключаюсь…'
                       : radio.playing
@@ -320,7 +358,8 @@ Future<void> showMusicPrompt(BuildContext context) async {
               'легче сосредоточиться. Включить можно и потом кнопкой 🎧 сверху (И поменять стиль музыки).',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 14, color: scheme.onSurface.withValues(alpha: 0.75)),
+                  fontSize: 14,
+                  color: scheme.onSurface.withValues(alpha: 0.75)),
             ),
           ],
         ),

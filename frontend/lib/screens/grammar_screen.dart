@@ -142,18 +142,21 @@ class _GrammarScreenState extends State<GrammarScreen> {
 
     final double width = MediaQuery.of(context).size.width;
     if (width >= 750 && tables.length > 1) {
+      // Wrap вместо Row: таблиц может быть до 5 (презент/перфекат/футур/
+      // аорист/имперфект) — в Row они сжимались до нечитаемых колонок.
+      final cols = width >= 1100 ? 3 : 2;
+      final itemWidth = (width - 36 - 8 * cols) / cols;
       return Padding(
         padding: const EdgeInsets.only(top: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: tables.map((t) {
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: _ParadigmCard(table: t),
-              ),
-            );
-          }).toList(),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 0,
+          children: tables
+              .map((t) => SizedBox(
+                    width: itemWidth,
+                    child: _ParadigmCard(table: t),
+                  ))
+              .toList(),
         ),
       );
     }
@@ -184,7 +187,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
               children: [
                 _pill(info.posLabel, scheme.primary, Colors.white),
                 if (widget.lemma.isNotEmpty)
-                  Text('основа: ${widget.lemma}',
+                  Text('нач. форма: ${widget.lemma}',
                       style: TextStyle(
                           color: scheme.onSurface.withValues(alpha: 0.65),
                           fontSize: 14)),

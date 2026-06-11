@@ -236,7 +236,18 @@ class DocumentParser {
     }
     onProgress(0.3);
     await Future.delayed(Duration.zero);
-    final xmlString = utf8.decode(file.content as List<int>);
+    // На вебе `file.content` дёргает inflateBuffer, который через условный импорт
+    // требует dart:io ИЛИ dart:html (в WASM нет ни того, ни другого —
+    // «inflateBuffer requires html or io»). Распаковываем сами через чистый
+    // Dart-Inflate по сырым байтам записи zip — так же, как это делает html-ветка
+    // самого пакета (Inflate(data).getBytes()). Работает и в JS, и в WASM.
+    // (decompress(OutputStream) тут не годится: если _content уже выставлен, он
+    // молча пишет 0 байт → XmlParserException «single root element at 1:1».)
+    final raw = file.rawContent!.toUint8List();
+    final content = file.compressionType == ArchiveFile.DEFLATE
+        ? Inflate(raw).getBytes()
+        : raw;
+    final xmlString = utf8.decode(content);
     onProgress(0.5);
     await Future.delayed(Duration.zero);
     final xmlDocument = xml.XmlDocument.parse(xmlString);

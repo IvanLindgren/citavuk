@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Optional
@@ -313,6 +313,7 @@ import urllib.parse
 import re
 import ssl
 import json
+import html as _html
 
 def fetch_wiktionary_lemma(word: str) -> Optional[tuple[str, str]]:
     try:
@@ -587,6 +588,345 @@ def article(url: str):
     except Exception as ex:
         logging.error(f"Article extraction failed ({url}): {ex}")
         return {"error": str(ex)}
+
+
+# ---------------------------------------------------------------------------
+# Аудирование (бета): TTS-озвучка предложений + курируемые уроки с субтитрами.
+# ---------------------------------------------------------------------------
+import hashlib
+import json as _json
+from fastapi.responses import Response, StreamingResponse
+
+_TTS_CACHE: Dict[str, bytes] = {}
+_TTS_CACHE_MAX = 600  # ~ десятки минут речи; примитивный FIFO достаточен
+
+
+@app.get("/audio/tts")
+def audio_tts(text: str, lang: str = "sr"):
+    """Озвучивает короткий текст (одно предложение) через gTTS, отдаёт mp3.
+
+    Клиент шлёт по одному предложению — так у него точные тайминги реплик
+    (каждая реплика = свой файл) для караоке-подсветки.
+    """
+    text = (text or "").strip()
+    if not text or len(text) > 400:
+        return Response(status_code=400)
+    key = hashlib.sha1(f"{lang}:{text}".encode("utf-8")).hexdigest()
+    data = _TTS_CACHE.get(key)
+    if data is None:
+        try:
+            from io import BytesIO
+            from gtts import gTTS
+            buf = BytesIO()
+            gTTS(text=text, lang=lang).write_to_fp(buf)
+            data = buf.getvalue()
+        except Exception as e:
+            logging.error(f"TTS failed: {e}")
+            return Response(status_code=502)
+        if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
+            _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
+        _TTS_CACHE[key] = data
+    return Response(
+        content=data,
+        media_type="audio/mpeg",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+# Подкасты на сербском с открытым RSS (прямые mp3 в enclosure).
+#  - Može Kafa: anchor-фид, проверен (46 эпизодов, mp3 с cloudfront);
+#  - Learn Serbian Podcast (serbianlanguagelessons.com): buzzsprout-фид из
+#    официального каталога iTunes.
+# Текст реплик берём из описания эпизода (у этих подкастов туда кладут
+# транскрипт/конспект на сербском) и растягиваем пропорционально длительности.
+PODCAST_FEEDS = [
+    ("learn-serbian", "Learn Serbian Podcast",
+     "https://rss.buzzsprout.com/1246415.rss"),
+    ("moze-kafa", "Može Kafa Podcast",
+     "https://anchor.fm/s/aef64434/podcast/rss"),
+]
+_PODCAST_CACHE: Dict[str, object] = {"ts": 0.0, "items": []}
+_PODCAST_TTL = 1800  # 30 минут
+_AUDIO_PROXY_HOSTS = {
+    "www.buzzsprout.com",
+    "buzzsprout.com",
+    "anchor.fm",
+    "audio.buzzsprout.com",
+}
+
+
+def _duration_seconds(raw) -> float:
+    """itunes:duration бывает '1234' или '00:23:55'."""
+    try:
+        s = str(raw or "").strip()
+        if not s:
+            return 0.0
+        if ":" in s:
+            parts = [int(p) for p in s.split(":")]
+            sec = 0
+            for p in parts:
+                sec = sec * 60 + p
+            return float(sec)
+        return float(s)
+    except Exception:
+        return 0.0
+
+
+def _split_sentences(text: str):
+    import re as _re
+    out = []
+    # Границы: конец предложения или перенос строки (из <br>/<p> разметки).
+    for s in _re.split(r"(?<=[.!?…])\s+|\n+", text):
+        s = s.strip()
+        if len(s) < 2:
+            continue
+        # очень длинные куски режем по запятой, чтобы реплики были обозримыми
+        while len(s) > 260:
+            cut = s.rfind(",", 0, 240)
+            if cut < 80:
+                cut = 240
+            out.append(s[: cut + 1].strip())
+            s = s[cut + 1:].strip()
+        if s:
+            out.append(s)
+    return out
+
+
+def _proportional_cues(sents, dur: float):
+    """Реплики с таймингами, растянутыми пропорционально длине текста."""
+    total_chars = sum(len(s) for s in sents) or 1
+    cues, t0 = [], 0.0
+    for s in sents:
+        if dur > 0:
+            t1 = t0 + dur * len(s) / total_chars
+            cues.append({"start": round(t0, 2), "end": round(t1, 2), "text": s})
+            t0 = t1
+        else:
+            cues.append({"text": s})
+    return cues
+
+
+def _extract_transcript_text(html_str: str) -> str:
+    """Достаёт читаемый текст страницы транскрипта без trafilatura.
+
+    trafilatura внутри FastAPI threadpool может падать с `signal only works in
+    main thread`, а Wix-страницы serbianlanguagelessons.com уже содержат текст
+    транскрипта в HTML. Поэтому здесь достаточно аккуратной stdlib-очистки.
+    """
+    text = re.sub(r"<script[^>]*>.*?</script>", " ", html_str,
+                  flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"<style[^>]*>.*?</style>", " ", text,
+                  flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"<(noscript|svg)[^>]*>.*?</\1>", " ", text,
+                  flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(
+        r"<\s*(br|/p|/div|/li|/h[1-6]|/section|/article)[^>]*>",
+        "\n",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = _html.unescape(text)
+    text = re.sub(
+        r"\\u([0-9a-fA-F]{4})",
+        lambda m: chr(int(m.group(1), 16)),
+        text,
+    )
+
+    boilerplate = re.compile(
+        r"(top of page|log in|free materials|plans & pricing|"
+        r"blog & transcripts|about the tutor|all posts|search|"
+        r"recent posts|comments|write a comment|bottom of page|"
+        r"privacy policy|terms|subscribe)",
+        re.IGNORECASE,
+    )
+    lines = []
+    for line in text.splitlines():
+        line = re.sub(r"\s+", " ", line).strip()
+        if len(line) < 2 or boilerplate.search(line):
+            continue
+        lines.append(line)
+
+    # Отрезаем шапку страницы до вероятного начала транскрипта, но не
+    # требуем строгого маркера: у разных выпусков начало оформлено по-разному.
+    start = 0
+    for i, line in enumerate(lines[:80]):
+        if re.search(r"\b(Zdravo|Dobro|Dobar|U redu|Hajde|Welcome)\b",
+                     line, re.IGNORECASE):
+            start = i
+            break
+    return "\n".join(lines[start:])[:60000]
+
+
+@app.get("/audio/proxy")
+def audio_proxy(url: str, request: Request):
+    """Прокси для web-аудио из RSS.
+
+    У части podcast/CDN-хостов финальный mp3/m4a не отдаёт CORS-заголовки или
+    режет запросы с Origin, из-за чего HTMLAudioElement получает HTML-ошибку
+    вместо аудио. Проксируем только известные podcast-хосты и пробрасываем Range.
+    """
+    parsed = urllib.parse.urlparse(url)
+    host = (parsed.hostname or "").lower()
+    if parsed.scheme not in {"https", "http"} or host not in _AUDIO_PROXY_HOSTS:
+        return Response(status_code=403)
+
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "*/*",
+    }
+    range_header = request.headers.get("range")
+    if range_header:
+        headers["Range"] = range_header
+    if host.endswith("buzzsprout.com"):
+        headers["Referer"] = "https://www.buzzsprout.com/"
+    elif host == "anchor.fm":
+        headers["Referer"] = "https://anchor.fm/"
+
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        upstream = urllib.request.urlopen(req, timeout=30)
+    except Exception as ex:
+        logging.error(f"Audio proxy failed ({url}): {ex}")
+        return Response(status_code=502)
+
+    status = getattr(upstream, "status", 200)
+    content_type = upstream.headers.get("Content-Type") or "application/octet-stream"
+    response_headers = {
+        "Content-Type": content_type,
+        "Accept-Ranges": upstream.headers.get("Accept-Ranges", "bytes"),
+        "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Accept-Ranges, Content-Length, Content-Range",
+    }
+    for name in ("Content-Length", "Content-Range"):
+        value = upstream.headers.get(name)
+        if value:
+            response_headers[name] = value
+
+    def body():
+        try:
+            while True:
+                chunk = upstream.read(64 * 1024)
+                if not chunk:
+                    break
+                yield chunk
+        finally:
+            upstream.close()
+
+    return StreamingResponse(body(), status_code=status, headers=response_headers)
+
+
+@app.get("/audio/transcript")
+def audio_transcript(url: str, duration: float = 0.0):
+    """Полный транскрипт эпизода со страницы подкаста.
+
+    Домен ограничен — это не открытый прокси.
+    """
+    if "serbianlanguagelessons.com" not in url:
+        return {"cues": []}
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        raw = urllib.request.urlopen(req, timeout=25).read()
+        html_str = raw.decode("utf-8", "ignore") if isinstance(
+            raw, (bytes, bytearray)) else raw
+        text = _extract_transcript_text(html_str)
+        sents = [
+            s for s in _split_sentences(text)
+            if "http" not in s and not s.startswith("#")
+        ]
+        return {"cues": _proportional_cues(sents, duration)}
+    except Exception as ex:
+        logging.error(f"Transcript extraction failed ({url}): {ex}")
+        return {"cues": []}
+
+
+def _podcast_lessons(limit_per_feed: int = 12):
+    import time as _t
+    now = _t.time()
+    if now - _PODCAST_CACHE["ts"] < _PODCAST_TTL and _PODCAST_CACHE["items"]:
+        return _PODCAST_CACHE["items"]
+    import feedparser
+    items = []
+    for fid, fname, url in PODCAST_FEEDS:
+        try:
+            feed = feedparser.parse(url)
+            for e in feed.entries[:limit_per_feed]:
+                audio = None
+                for l in e.get("links", []):
+                    if "audio" in (l.get("type") or ""):
+                        audio = l.get("href")
+                        break
+                if not audio and e.get("enclosures"):
+                    audio = e.enclosures[0].get("href")
+                if not audio:
+                    continue
+                # Полная очистка html (без усечения — _clean_summary режет
+                # до 300 симв., а тут транскрипты). <br>/<p> → границы фраз.
+                raw = e.get("summary", "") or ""
+                raw = re.sub(r"<\s*(br|/p|/div|/li)[^>]*>", "\n", raw)
+                text = re.sub(r"<[^>]+>", " ", raw)
+                text = _html.unescape(text)
+                text = re.sub(r"[ \t]+", " ", text)
+                text = "\n".join(
+                    ln.strip() for ln in text.splitlines() if ln.strip())
+                # buzzsprout добавляет мусорные строки («Send a text»,
+                # ссылка на транскрипт) — в реплики они не нужны.
+                sents = [
+                    s for s in _split_sentences(text)
+                    if "http" not in s and "Send a text" not in s
+                ]
+                if not sents:
+                    continue
+                dur = _duration_seconds(e.get("itunes_duration"))
+                cues = _proportional_cues(sents, dur)
+                mins = f" · {int(dur // 60)} мин" if dur > 0 else ""
+                item = {
+                    "id": f"{fid}-{e.get('id', e.get('title', ''))}"[:120],
+                    "title": e.get("title", "") or "Без названия",
+                    "subtitle": f"{fname}{mins}",
+                    "audio_url": audio,
+                    "cues": cues,
+                }
+                # У Learn Serbian Podcast в описании — ссылка на полный
+                # транскрипт на их сайте; клиент дотянет его лениво через
+                # /audio/transcript при открытии урока.
+                m = re.search(
+                    r"https://www\.serbianlanguagelessons\.com/post/[\w%().~-]+",
+                    _html.unescape(e.get("summary", "") or ""))
+                if m:
+                    item["transcript_url"] = m.group(0)
+                    item["duration"] = dur
+                items.append(item)
+        except Exception as ex:
+            logging.error(f"Podcast feed failed ({url}): {ex}")
+    if items:
+        _PODCAST_CACHE["ts"] = now
+        _PODCAST_CACHE["items"] = items
+    return items
+
+
+@app.get("/audio/lessons")
+def audio_lessons():
+    """Аудиоуроки: курируемый audio_lessons.json + эпизоды подкастов из RSS.
+
+    audio_lessons.json лежит рядом с main.py и редактируется прямо на Space
+    без пересборки приложения. Формат:
+    {"items": [{"id": "...", "title": "...", "subtitle": "...",
+                "audio_url": "https://...mp3",
+                "cues": [{"start": 0.0, "end": 4.2, "text": "..."}, ...]}]}
+    """
+    curated = []
+    for path in ("audio_lessons.json", "../audio_lessons.json"):
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = _json.load(f)
+                curated = data.get("items", [])
+            except Exception as e:
+                logging.error(f"audio_lessons.json parse failed: {e}")
+            break
+    return {"items": curated + _podcast_lessons()}
 
 
 if __name__ == "__main__":

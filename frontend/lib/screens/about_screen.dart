@@ -46,6 +46,29 @@ class AboutScreen extends StatelessWidget {
             style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            decoration: BoxDecoration(
+              color: scheme.primary.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Column(
+              children: [
+                const Text(
+                  'Следите за обновлениями в:',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.send),
+                  label: const Text('t.me/citavuk'),
+                  onPressed: () => _launchUrl('https://t.me/citavuk'),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 24),
           const OrnamentDivider(height: 20),
           const SizedBox(height: 24),

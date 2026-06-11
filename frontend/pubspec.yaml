@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.0.0+2
+version: 1.3.0+13
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -86,7 +86,10 @@ flutter:
 inno_bundle:
   id: a2cc5770-60d4-11f1-bfd5-31efbcab4b3e
   name: Citavuk
-  version: 1.0.0
+  version: 1.3.0
   publisher: Denis Kornilov
+  languages:
+    - english
+    - russian
   executable: build/windows/x64/runner/Release/Citavuk.exe
   icon: assets/imgs/citavuk_icon.png

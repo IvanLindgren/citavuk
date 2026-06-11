@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/grammar.dart';
 import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
@@ -45,6 +46,11 @@ class BookReaderScreen extends StatefulWidget {
 class _BookReaderScreenState extends State<BookReaderScreen> {
   late PageController _pageController;
   final List<List<String>> _pages = [];
+
+  /// Индекс первого абзаца каждой страницы. Прогресс сохраняем в АБЗАЦАХ
+  /// (last_para), а не в страницах: страница ~1500 символов и зависит от
+  /// разбивки, а абзац стабилен — и главная считает процент по para_count.
+  final List<int> _pageStartPara = [];
   final FocusNode _kbFocus = FocusNode();
 
   int _startPage = 0;
@@ -60,8 +66,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void initState() {
     super.initState();
     _chunkParagraphs();
-    var startPage = widget.initialParagraph;
-    if (startPage >= _pages.length) startPage = _pages.isNotEmpty ? _pages.length - 1 : 0;
+    // initialParagraph — индекс абзаца; находим страницу, содержащую его.
+    // (Старые сохранения хранили индекс страницы — он меньше либо равен
+    // индексу абзаца, поэтому в худшем случае откроемся чуть раньше.)
+    final startPage = _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
     _startPage = startPage;
     _pageController = PageController(initialPage: startPage);
     if (startPage > 0) {
@@ -103,18 +111,33 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
 
   void _chunkParagraphs() {
     List<String> current = [];
+    var currentStart = 0;
     int len = 0;
-    for (final p in widget.paragraphs) {
+    for (var i = 0; i < widget.paragraphs.length; i++) {
+      final p = widget.paragraphs[i];
       if (len + p.length > 1500 && current.isNotEmpty) {
         _pages.add(current);
+        _pageStartPara.add(currentStart);
         current = [p];
+        currentStart = i;
         len = p.length;
       } else {
         current.add(p);
         len += p.length;
       }
     }
-    if (current.isNotEmpty) _pages.add(current);
+    if (current.isNotEmpty) {
+      _pages.add(current);
+      _pageStartPara.add(currentStart);
+    }
+  }
+
+  /// Страница, содержащая абзац [para].
+  int _pageForPara(int para) {
+    for (var i = _pageStartPara.length - 1; i >= 0; i--) {
+      if (_pageStartPara[i] <= para) return i;
+    }
+    return 0;
   }
 
   @override
@@ -255,10 +278,12 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             : const Color(0xFFECE3D2))
         : scheme.onSurface;
 
+    // До первого layout контроллер ещё не привязан — берём стартовую страницу
+    // (а не initialParagraph: это индекс абзаца и он может превышать число страниц).
     final pageNum = _pages.isEmpty
         ? 0
         : ((_pageController.hasClients ? _pageController.page?.round() : null) ??
-                widget.initialParagraph) +
+                _startPage) +
             1;
 
     return Scaffold(
@@ -304,7 +329,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                       controller: _pageController,
                       itemCount: _pages.length,
                       onPageChanged: (i) {
-                        UserDb.instance.updateBookProgress(widget.bookId, i);
+                        // Сохраняем индекс ПЕРВОГО АБЗАЦА страницы (см. _pageStartPara).
+                        UserDb.instance.updateBookProgress(
+                            widget.bookId,
+                            i < _pageStartPara.length ? _pageStartPara[i] : 0);
                         _clearSelection();
                         setState(() {});
                       },
@@ -912,7 +940,7 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                       color: Colors.white)),
                             ),
                             if (!isPhrase)
-                              Text('основа: $lemma',
+                              Text('нач. форма: $lemma',
                                   style: TextStyle(
                                       color: scheme.onSurface.withValues(alpha: 0.6),
                                       fontSize: 13)),
@@ -944,6 +972,10 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
               if (hasContext) ...[
                 const SizedBox(height: 10),
                 _generalTranslationCard(scheme, gen),
+              ],
+              if (isPhrase && data.phraseInsight != null) ...[
+                const SizedBox(height: 14),
+                _phraseGrammarCard(scheme, data.phraseInsight!),
               ],
               if (government.isNotEmpty) ...[
                 const SizedBox(height: 14),
@@ -1008,6 +1040,71 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
         ],
       ),
     ),
+    );
+  }
+
+  /// Грамматика выделенной фразы: составное время (перфекат/футур/потенцијал)
+  /// и энклитики с объяснением порядка (закон Ваккернагеля).
+  Widget _phraseGrammarCard(ColorScheme scheme, PhraseInsight insight) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: scheme.secondary.withValues(alpha: 0.07),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.secondary.withValues(alpha: 0.25)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.account_tree_outlined,
+                  size: 16, color: scheme.secondary),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(insight.title,
+                    style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.bold,
+                        color: scheme.secondary)),
+              ),
+            ],
+          ),
+          if (insight.parts.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            ...insight.parts.map((p) => Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(p.label,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'NotoSerif',
+                              fontWeight: FontWeight.bold,
+                              color: scheme.primary)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text('— ${p.value}',
+                            style: TextStyle(
+                                fontSize: 13,
+                                color:
+                                    scheme.onSurface.withValues(alpha: 0.8))),
+                      ),
+                    ],
+                  ),
+                )),
+          ],
+          const SizedBox(height: 6),
+          Text(insight.note,
+              style: TextStyle(
+                  fontSize: 11.5,
+                  height: 1.35,
+                  fontStyle: FontStyle.italic,
+                  color: scheme.onSurface.withValues(alpha: 0.65))),
+        ],
+      ),
     );
   }
 

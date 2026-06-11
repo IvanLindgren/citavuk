@@ -58,6 +58,51 @@ class ParadigmTable {
   bool get hasGenerated => rows.any((r) => r.generated && r.form != '—');
 }
 
+/// Карточка-перевёртыш для запоминания правила (вопрос → объяснение).
+typedef RuleCard = ({String front, String back, String tag});
+
+/// Грамматический разбор ФРАЗЫ: составное время и/или энклитики
+/// («video sam ga» → перфекат + объяснение порядка кратких форм).
+class PhraseInsight {
+  final String title; // «Перфекат (прошедшее время)» / «Энклитики»
+  final List<GrammarFact> parts; // «video — причастие», «sam — всп. глагол…»
+  final String note; // пояснение (закон Ваккернагеля и т.п.)
+
+  const PhraseInsight({
+    required this.title,
+    this.parts = const [],
+    required this.note,
+  });
+}
+
+/// Раздел подробного объяснения внутри грамматической темы.
+class GrammarTopicSection {
+  final String title;
+  final String body;
+  const GrammarTopicSection(this.title, this.body);
+}
+
+/// Тема грамматического раздела: подробное правило + карточки для запоминания.
+class GrammarTopic {
+  final String id;
+  final String title; // «Аорист (aorist)»
+  final String subtitle; // короткая подпись в списке тем
+  final String tag; // «Падежи» / «Время»
+  final String intro; // вводное объяснение темы
+  final List<GrammarTopicSection> sections; // правило по шагам
+  final List<RuleCard> cards; // карточки этой темы
+
+  const GrammarTopic({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.tag,
+    required this.intro,
+    this.sections = const [],
+    this.cards = const [],
+  });
+}
+
 /// Управление предлога падежом: на какой падеж он ставит слово и в каком смысле.
 class PrepositionGovernment {
   final String caseKey; // UD-код падежа: Gen/Dat/Acc/Ins/Loc
