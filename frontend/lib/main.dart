@@ -409,29 +409,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final scheme = Theme.of(context).colorScheme;
     final settings = context.watch<AppSettings>();
     final isDark = settings.reader.themeMode == AppThemeMode.dark;
-    final showActionLabels = MediaQuery.sizeOf(context).width >= 920;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final compactAppBar = screenWidth < 600;
+    final showActionLabels = screenWidth >= 920;
 
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 8,
         title: const Row(
           children: [
-            Text('🐺', style: TextStyle(fontSize: 22)),
-            SizedBox(width: 8),
-            Text('Читавук'),
+            Text('🐺', style: TextStyle(fontSize: 20)),
+            SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                'Читавук',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+              ),
+            ),
           ],
         ),
         actions: [
           RadioAppBarButton(showLabel: showActionLabels),
-          _DashboardAction(
-            showLabel: showActionLabels,
-            label: 'Новости',
-            tooltip: 'Новости на сербском',
-            icon: Icons.newspaper_outlined,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const NewsScreen()),
+          if (!compactAppBar)
+            _DashboardAction(
+              showLabel: showActionLabels,
+              label: 'Новости',
+              tooltip: 'Новости на сербском',
+              icon: Icons.newspaper_outlined,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NewsScreen()),
+              ),
             ),
-          ),
           _DashboardAction(
             showLabel: showActionLabels,
             label: 'Аудирование',
@@ -443,29 +454,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
               MaterialPageRoute(builder: (_) => const ListeningScreen()),
             ),
           ),
-          _DashboardAction(
-            showLabel: showActionLabels,
-            label: 'Грамматика',
-            tooltip: 'Грамматика — темы и карточки',
-            icon: Icons.school_outlined,
-            onPressed: _openGrammarCards,
-          ),
-          IconButton(
-            tooltip: 'Напоминания о повторении',
-            icon: Icon(settings.notificationsEnabled
-                ? Icons.notifications_active
-                : Icons.notifications_none),
-            onPressed: _openReminderDialog,
-          ),
-          IconButton(
-            tooltip: 'Сменить тему',
-            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-            onPressed: _toggleTheme,
-          ),
+          if (!compactAppBar) ...[
+            _DashboardAction(
+              showLabel: showActionLabels,
+              label: 'Грамматика',
+              tooltip: 'Грамматика — темы и карточки',
+              icon: Icons.school_outlined,
+              onPressed: _openGrammarCards,
+            ),
+            IconButton(
+              tooltip: 'Напоминания о повторении',
+              icon: Icon(settings.notificationsEnabled
+                  ? Icons.notifications_active
+                  : Icons.notifications_none),
+              onPressed: _openReminderDialog,
+            ),
+            IconButton(
+              tooltip: 'Сменить тему',
+              icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+              onPressed: _toggleTheme,
+            ),
+          ],
           PopupMenuButton<String>(
             tooltip: 'Карточки и обновление',
             icon: const Icon(Icons.more_vert),
             onSelected: (v) {
+              if (v == 'news') {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const NewsScreen()));
+              }
+              if (v == 'grammar') _openGrammarCards();
+              if (v == 'reminders') _openReminderDialog();
+              if (v == 'theme') _toggleTheme();
               if (v == 'import') _importCards();
               if (v == 'export') _exportAllCards();
               if (v == 'refresh') _loadBooks();
@@ -475,8 +495,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     MaterialPageRoute(builder: (_) => const AboutScreen()));
               }
             },
-            itemBuilder: (_) => const [
-              PopupMenuItem(
+            itemBuilder: (_) => [
+              if (compactAppBar) ...[
+                const PopupMenuItem(
+                  value: 'news',
+                  child: ListTile(
+                    leading: Icon(Icons.newspaper_outlined),
+                    title: Text('Новости'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'grammar',
+                  child: ListTile(
+                    leading: Icon(Icons.school_outlined),
+                    title: Text('Грамматика'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'reminders',
+                  child: ListTile(
+                    leading: Icon(settings.notificationsEnabled
+                        ? Icons.notifications_active
+                        : Icons.notifications_none),
+                    title: const Text('Напоминания'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'theme',
+                  child: ListTile(
+                    leading: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                    title: Text(isDark ? 'Светлая тема' : 'Тёмная тема'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuDivider(height: 8),
+              ],
+              const PopupMenuItem(
                 value: 'about',
                 child: ListTile(
                   leading: Icon(Icons.info_outline),
@@ -484,7 +541,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'server',
                 child: ListTile(
                   leading: Icon(Icons.cloud_outlined),
@@ -492,7 +549,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'import',
                 child: ListTile(
                   leading: Icon(Icons.download_outlined),
@@ -500,7 +557,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'export',
                 child: ListTile(
                   leading: Icon(Icons.upload_file_outlined),
@@ -508,7 +565,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'refresh',
                 child: ListTile(
                   leading: Icon(Icons.refresh),
