@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/citavuk/server/internal/quiz"
@@ -19,10 +20,16 @@ const maxQuizSourceBytes = 1 << 20
 // excerptRunes — сколько символов материала показывается в списке.
 const excerptRunes = 220
 
+// maxMaterialKey — ключ документа из каталога материалов (короткий хеш адреса).
+const maxMaterialKey = 64
+
 type generateQuizRequest struct {
 	Text      string `json:"text"`
 	Title     string `json:"title"`
 	Questions int    `json:"questions"`
+	// MaterialKey — документ каталога, по которому составляется тест. Пусто,
+	// если материал пришёл откуда-то ещё.
+	MaterialKey string `json:"materialKey"`
 }
 
 type quizResponse struct {
@@ -70,7 +77,15 @@ func (s *Server) handleGenerateQuiz(w http.ResponseWriter, r *http.Request) {
 
 	user := userFrom(r.Context())
 	sha := quiz.SourceSHA(req.Text)
+	materialKey := trimField(req.MaterialKey, maxMaterialKey)
 
+	// Сначала документ каталога, потом содержимое: разборщик со временем
+	// меняется, и один и тот же файл может дать чуть другой текст — но тест по
+	// нему уже есть, и звать модель заново незачем.
+	if existing, err := s.store.FindQuizByMaterial(r.Context(), materialKey); err == nil {
+		writeJSON(w, http.StatusOK, quizResponse{Quiz: toQuizBody(existing), Fresh: false})
+		return
+	}
 	if existing, err := s.store.FindQuizBySource(r.Context(), sha); err == nil {
 		writeJSON(w, http.StatusOK, quizResponse{Quiz: toQuizBody(existing), Fresh: false})
 		return
@@ -101,7 +116,7 @@ func (s *Server) handleGenerateQuiz(w http.ResponseWriter, r *http.Request) {
 	}
 
 	title := result.Title
-	if custom := trimQuizTitle(req.Title); custom != "" {
+	if custom := trimField(req.Title, 120); custom != "" {
 		title = custom
 	}
 	questions, err := json.Marshal(result.Questions)
@@ -111,7 +126,7 @@ func (s *Server) handleGenerateQuiz(w http.ResponseWriter, r *http.Request) {
 	}
 
 	saved, err := s.store.SaveQuiz(
-		r.Context(), sha, title, result.Subject,
+		r.Context(), sha, materialKey, title, result.Subject,
 		quiz.Excerpt(req.Text, excerptRunes), questions, user.ID,
 	)
 	if err != nil {
@@ -121,10 +136,11 @@ func (s *Server) handleGenerateQuiz(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusCreated, quizResponse{Quiz: toQuizBody(saved), Fresh: true})
 }
 
-func trimQuizTitle(value string) string {
-	runes := []rune(value)
-	if len(runes) > 120 {
-		runes = runes[:120]
+// trimField обрезает строку от клиента до разумной длины.
+func trimField(value string, limit int) string {
+	runes := []rune(strings.TrimSpace(value))
+	if len(runes) > limit {
+		runes = runes[:limit]
 	}
 	return string(runes)
 }
@@ -148,10 +164,17 @@ func (s *Server) handleGetQuiz(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, quizResponse{Quiz: toQuizBody(found), Fresh: false})
 }
 
-// handleListQuizzes отдаёт общий список тестов.
-func (s *Server) handleListQuizzes(w http.ResponseWriter, r *http.Request) {
-	user := userFrom(r.Context())
-	list, err := s.store.ListQuizzes(r.Context(), user.ID, 60)
+// handleMaterialQuizzes сообщает, по каким документам каталога тест уже готов.
+//
+// Открыт и гостю: кнопка «решить тест» на странице материалов должна быть
+// видна до входа, иначе про раздел никто не узнает. Свои попытки при этом
+// показываются только вошедшему.
+func (s *Server) handleMaterialQuizzes(w http.ResponseWriter, r *http.Request) {
+	userID := uuid.Nil
+	if user := userFrom(r.Context()); user != nil {
+		userID = user.ID
+	}
+	list, err := s.store.ListMaterialQuizzes(r.Context(), userID)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, codeInternal, "База недоступна.")
 		return

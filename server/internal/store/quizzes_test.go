@@ -35,7 +35,9 @@ func TestQuizSavedOncePerMaterial(t *testing.T) {
 		`[{"question":"Вопрос","options":["а","б","в","г"],"answer":1,` +
 			`"explanation":"Потому что.","wrongHint":"Путают с другим."}]`)
 
-	first, err := s.SaveQuiz(ctx, sha, "Тема", "Предмет", "Начало текста", questions, author)
+	material := "material-" + uuid.NewString()
+
+	first, err := s.SaveQuiz(ctx, sha, material, "Тема", "Предмет", "Начало текста", questions, author)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,7 +46,7 @@ func TestQuizSavedOncePerMaterial(t *testing.T) {
 	})
 
 	// Второй человек с тем же материалом получает тот же тест, а не дубль.
-	second, err := s.SaveQuiz(ctx, sha, "Другое имя", "Предмет", "Начало", questions, author)
+	second, err := s.SaveQuiz(ctx, sha, material, "Другое имя", "Предмет", "Начало", questions, author)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,13 +54,28 @@ func TestQuizSavedOncePerMaterial(t *testing.T) {
 		t.Fatalf("тот же материал сохранён дважды: %s и %s", first.ID, second.ID)
 	}
 
+	// Тот же документ каталога, но текст разобрался иначе: ключ документа
+	// важнее содержимого, второго теста быть не должно.
+	third, err := s.SaveQuiz(ctx, "test-"+uuid.NewString(), material,
+		"Тема", "Предмет", "Другой разбор", questions, author)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if third.ID != first.ID {
+		t.Fatalf("документ каталога получил второй тест: %s и %s", first.ID, third.ID)
+	}
+
 	found, err := s.FindQuizBySource(ctx, sha)
 	if err != nil || found.ID != first.ID {
-		t.Fatalf("поиск по материалу не нашёл тест: %v", err)
+		t.Fatalf("поиск по содержимому не нашёл тест: %v", err)
+	}
+	byMaterial, err := s.FindQuizByMaterial(ctx, material)
+	if err != nil || byMaterial.ID != first.ID {
+		t.Fatalf("поиск по документу каталога не нашёл тест: %v", err)
 	}
 }
 
-func TestQuizListAndAttempts(t *testing.T) {
+func TestMaterialQuizListAndAttempts(t *testing.T) {
 	s := testStore(t)
 	ctx := context.Background()
 	if _, err := s.Migrate(ctx); err != nil {
@@ -73,7 +90,8 @@ func TestQuizListAndAttempts(t *testing.T) {
 			`{"question":"Второй","options":["а","б","в","г"],"answer":3,` +
 			`"explanation":"","wrongHint":""}]`)
 
-	quiz, err := s.SaveQuiz(ctx, sha, "Тема", "Предмет", "Выдержка", questions, author)
+	material := "material-" + uuid.NewString()
+	quiz, err := s.SaveQuiz(ctx, sha, material, "Тема", "Предмет", "Выдержка", questions, author)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,25 +103,36 @@ func TestQuizListAndAttempts(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	list, err := s.ListQuizzes(ctx, author, 60)
+	list, err := s.ListMaterialQuizzes(ctx, author)
 	if err != nil {
 		t.Fatal(err)
 	}
-	var mine *QuizSummary
+	var mine *MaterialQuiz
 	for i := range list {
-		if list[i].ID == quiz.ID {
+		if list[i].MaterialKey == material {
 			mine = &list[i]
 			break
 		}
 	}
 	if mine == nil {
-		t.Fatal("сохранённый тест не попал в список")
+		t.Fatal("сохранённый тест не попал в список по материалам")
 	}
-	if mine.Questions != 2 {
-		t.Fatalf("неверно посчитаны вопросы: %d", mine.Questions)
+	if mine.QuizID != quiz.ID || mine.Questions != 2 {
+		t.Fatalf("неверные данные теста: %+v", mine)
 	}
-	if !mine.Mine || mine.Attempts != 1 || mine.BestScore != 50 {
+	if mine.Attempts != 1 || mine.BestScore != 50 {
 		t.Fatalf("статистика в списке неверна: %+v", mine)
+	}
+
+	// Гость видит тест, но не чужие попытки.
+	guest, err := s.ListMaterialQuizzes(ctx, uuid.Nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, item := range guest {
+		if item.MaterialKey == material && item.Attempts != 0 {
+			t.Fatalf("гостю показаны чужие попытки: %+v", item)
+		}
 	}
 
 	attempts, err := s.ListAttempts(ctx, author, 10)

@@ -62,9 +62,9 @@ export function TestRun() {
     return (
       <main className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
         <ErrorNote>{error}</ErrorNote>
-        <Link to="/tests">
+        <Link to="/materials">
           <Button variant="secondary" className="mt-4">
-            К списку тестов
+            К материалам
           </Button>
         </Link>
       </main>
@@ -120,7 +120,7 @@ export function TestRun() {
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <Link to="/tests" className="text-sm text-[var(--text-muted)] hover:text-[var(--accent)]">
+        <Link to="/materials" className="text-sm text-[var(--text-muted)] hover:text-[var(--accent)]">
           ← {quiz.title}
         </Link>
         <span className="shrink-0 text-sm text-[var(--text-muted)]">
@@ -250,9 +250,9 @@ function Result({
                 : 'Материал стоит перечитать — тест вернётся завтра.'}
         </p>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-          <Link to="/tests">
+          <Link to="/materials">
             <Button variant="secondary" className="w-full sm:w-auto">
-              К списку тестов
+              К материалам
             </Button>
           </Link>
           <Button className="w-full sm:w-auto" onClick={() => window.location.reload()}>

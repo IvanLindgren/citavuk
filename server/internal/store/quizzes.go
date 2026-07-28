@@ -15,30 +15,30 @@ var ErrQuizNotFound = errors.New("тест не найден")
 
 // Quiz — тест вместе с вопросами.
 type Quiz struct {
-	ID        uuid.UUID       `json:"id"`
-	SourceSHA string          `json:"sourceSha"`
-	Title     string          `json:"title"`
-	Subject   string          `json:"subject"`
-	Excerpt   string          `json:"excerpt"`
-	Questions json.RawMessage `json:"questions"`
-	AuthorID  *uuid.UUID      `json:"-"`
-	CreatedAt time.Time       `json:"createdAt"`
+	ID          uuid.UUID       `json:"id"`
+	SourceSHA   string          `json:"sourceSha"`
+	MaterialKey string          `json:"materialKey"`
+	Title       string          `json:"title"`
+	Subject     string          `json:"subject"`
+	Excerpt     string          `json:"excerpt"`
+	Questions   json.RawMessage `json:"questions"`
+	AuthorID    *uuid.UUID      `json:"-"`
+	CreatedAt   time.Time       `json:"createdAt"`
 }
 
-// QuizSummary — строка общего списка тестов.
-type QuizSummary struct {
-	ID        uuid.UUID `json:"id"`
-	Title     string    `json:"title"`
-	Subject   string    `json:"subject"`
-	Excerpt   string    `json:"excerpt"`
-	Questions int       `json:"questions"`
-	CreatedAt time.Time `json:"createdAt"`
-	Mine      bool      `json:"mine"`
-	// Attempts и BestScore — по текущему пользователю, а не по всем: в списке
-	// человек ищет «что я уже решал», а не общую популярность.
-	Attempts  int        `json:"attempts"`
-	BestScore int        `json:"bestScore"`
-	LastTried *time.Time `json:"lastTried,omitempty"`
+// MaterialQuiz — что известно о тесте по документу каталога.
+//
+// Отдаётся списком на страницу материалов: по нему карточка решает, предложить
+// составить тест или сразу открыть готовый.
+type MaterialQuiz struct {
+	MaterialKey string    `json:"materialKey"`
+	QuizID      uuid.UUID `json:"quizId"`
+	Title       string    `json:"title"`
+	Questions   int       `json:"questions"`
+	// Attempts и BestScore — по текущему пользователю: в карточке важно «я это
+	// уже решал», а не общая популярность. У гостя оба нуля.
+	Attempts  int `json:"attempts"`
+	BestScore int `json:"bestScore"`
 }
 
 // QuizAttempt — одна попытка.
@@ -51,25 +51,35 @@ type QuizAttempt struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-// FindQuizBySource ищет готовый тест по адресу материала.
+const quizColumns = `id, source_sha, material_key, title, subject,
+                     excerpt, questions, author_id, created_at`
+
+// FindQuizBySource ищет готовый тест по содержимому материала.
 func (s *Store) FindQuizBySource(ctx context.Context, sha string) (*Quiz, error) {
-	return s.scanQuiz(ctx, `
-        SELECT id, source_sha, title, subject, excerpt, questions, author_id, created_at
-          FROM quizzes WHERE source_sha = $1`, sha)
+	return s.scanQuiz(ctx,
+		`SELECT `+quizColumns+` FROM quizzes WHERE source_sha = $1`, sha)
+}
+
+// FindQuizByMaterial ищет тест по документу каталога.
+func (s *Store) FindQuizByMaterial(ctx context.Context, key string) (*Quiz, error) {
+	if key == "" {
+		return nil, ErrQuizNotFound
+	}
+	return s.scanQuiz(ctx,
+		`SELECT `+quizColumns+` FROM quizzes WHERE material_key = $1`, key)
 }
 
 // GetQuiz читает тест по идентификатору.
 func (s *Store) GetQuiz(ctx context.Context, id uuid.UUID) (*Quiz, error) {
-	return s.scanQuiz(ctx, `
-        SELECT id, source_sha, title, subject, excerpt, questions, author_id, created_at
-          FROM quizzes WHERE id = $1`, id)
+	return s.scanQuiz(ctx,
+		`SELECT `+quizColumns+` FROM quizzes WHERE id = $1`, id)
 }
 
 func (s *Store) scanQuiz(ctx context.Context, query string, arg any) (*Quiz, error) {
 	var quiz Quiz
 	var questions []byte
 	err := s.Pool.QueryRow(ctx, query, arg).Scan(
-		&quiz.ID, &quiz.SourceSHA, &quiz.Title, &quiz.Subject,
+		&quiz.ID, &quiz.SourceSHA, &quiz.MaterialKey, &quiz.Title, &quiz.Subject,
 		&quiz.Excerpt, &questions, &quiz.AuthorID, &quiz.CreatedAt,
 	)
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -84,77 +94,78 @@ func (s *Store) scanQuiz(ctx context.Context, query string, arg any) (*Quiz, err
 
 // SaveQuiz сохраняет тест.
 //
-// Гонка двух человек с одним конспектом разрешается адресом материала: второй
+// Гонка двух человек с одним материалом разрешается его адресом: второй
 // получает уже сохранённый тест, а не дубль. Модель к этому моменту отработала
 // дважды — этого не избежать, зато в базе останется одна запись.
 func (s *Store) SaveQuiz(
 	ctx context.Context,
-	sha, title, subject, excerpt string,
+	sha, materialKey, title, subject, excerpt string,
 	questions json.RawMessage,
 	authorID uuid.UUID,
 ) (*Quiz, error) {
 	id := uuid.New()
 	var created time.Time
 	err := s.Pool.QueryRow(ctx, `
-        INSERT INTO quizzes (id, source_sha, title, subject, excerpt, questions, author_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO quizzes (id, source_sha, material_key, title, subject, excerpt, questions, author_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT (source_sha) DO NOTHING
         RETURNING id, created_at`,
-		id, sha, title, subject, excerpt, []byte(questions), authorID,
+		id, sha, materialKey, title, subject, excerpt, []byte(questions), authorID,
 	).Scan(&id, &created)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return s.FindQuizBySource(ctx, sha)
 	}
 	if err != nil {
+		// Тот же документ каталога мог разобраться в чуть иной текст (другая
+		// версия разборщика — другие пробелы), и тогда содержимое считается
+		// новым, а ключ документа занят. Это не ошибка: тест по документу уже
+		// есть, его и отдаём.
+		if found, findErr := s.FindQuizByMaterial(ctx, materialKey); findErr == nil {
+			return found, nil
+		}
 		return nil, err
 	}
 	return &Quiz{
-		ID: id, SourceSHA: sha, Title: title, Subject: subject,
-		Excerpt: excerpt, Questions: questions, AuthorID: &authorID,
-		CreatedAt: created,
+		ID: id, SourceSHA: sha, MaterialKey: materialKey, Title: title,
+		Subject: subject, Excerpt: excerpt, Questions: questions,
+		AuthorID: &authorID, CreatedAt: created,
 	}, nil
 }
 
-// ListQuizzes отдаёт общий список тестов вместе с успехами пользователя.
-func (s *Store) ListQuizzes(
+// ListMaterialQuizzes отдаёт все тесты по документам каталога.
+//
+// Список целиком, а не по запрошенным ключам: тестов по каталогу заведомо
+// немного (их составляют вручную), зато страница материалов делает один запрос
+// вместо адреса с сотней идентификаторов в строке.
+func (s *Store) ListMaterialQuizzes(
 	ctx context.Context,
 	userID uuid.UUID,
-	limit int,
-) ([]QuizSummary, error) {
-	if limit <= 0 || limit > 200 {
-		limit = 60
-	}
+) ([]MaterialQuiz, error) {
 	rows, err := s.Pool.Query(ctx, `
-        SELECT q.id, q.title, q.subject, q.excerpt,
+        SELECT q.material_key, q.id, q.title,
                jsonb_array_length(q.questions),
-               q.created_at,
-               q.author_id = $1 AS mine,
                count(a.id),
                coalesce(max(CASE WHEN a.total > 0
-                                 THEN a.correct * 100 / a.total END), 0),
-               max(a.created_at)
+                                 THEN a.correct * 100 / a.total END), 0)
           FROM quizzes q
           LEFT JOIN quiz_attempts a ON a.quiz_id = q.id AND a.user_id = $1
+         WHERE q.material_key <> ''
          GROUP BY q.id
-         ORDER BY max(a.created_at) DESC NULLS LAST, q.created_at DESC
-         LIMIT $2`, userID, limit)
+         ORDER BY q.created_at DESC`, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	list := make([]QuizSummary, 0, limit)
+	list := make([]MaterialQuiz, 0, 32)
 	for rows.Next() {
-		var item QuizSummary
-		var mine *bool
+		var item MaterialQuiz
 		if err := rows.Scan(
-			&item.ID, &item.Title, &item.Subject, &item.Excerpt,
-			&item.Questions, &item.CreatedAt, &mine,
-			&item.Attempts, &item.BestScore, &item.LastTried,
+			&item.MaterialKey, &item.QuizID, &item.Title,
+			&item.Questions, &item.Attempts, &item.BestScore,
 		); err != nil {
 			return nil, err
 		}
-		item.Mine = mine != nil && *mine
 		list = append(list, item)
 	}
 	return list, rows.Err()

@@ -180,9 +180,10 @@ func (s *Server) Handler() http.Handler {
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
 	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
 
-	// Тренажёр: тесты по учебным материалам. Аккаунт нужен везде — без него
-	// некому вести статистику, а генерация ещё и стоит денег.
-	mux.HandleFunc("GET /v1/quizzes", s.rateLimit(s.generalLimit, s.requireAuth(s.handleListQuizzes)))
+	// Тесты по материалам. Составление и попытки требуют аккаунта: без него
+	// некому вести статистику, а обращение к модели ещё и стоит денег. Список
+	// готовых тестов открыт всем — он нужен странице материалов до входа.
+	mux.HandleFunc("GET /v1/quizzes/materials", s.rateLimit(s.generalLimit, s.optionalAuth(s.handleMaterialQuizzes)))
 	mux.HandleFunc("POST /v1/quizzes", s.rateLimit(s.quizLimit, s.requireAuth(s.handleGenerateQuiz)))
 	mux.HandleFunc("GET /v1/quizzes/stats", s.rateLimit(s.generalLimit, s.requireAuth(s.handleQuizStats)))
 	mux.HandleFunc("GET /v1/quizzes/{id}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleGetQuiz)))

@@ -19,17 +19,15 @@ export interface Quiz {
   createdAt: string;
 }
 
-export interface QuizSummary {
-  id: string;
+/** Что известно о тесте по документу каталога материалов. */
+export interface MaterialQuiz {
+  materialKey: string;
+  quizId: string;
   title: string;
-  subject: string;
-  excerpt: string;
   questions: number;
-  createdAt: string;
-  mine: boolean;
+  /** Попытки и лучший результат — свои; у гостя нули. */
   attempts: number;
   bestScore: number;
-  lastTried?: string;
 }
 
 export interface RepeatItem {
@@ -65,9 +63,22 @@ export interface AttemptResult {
   wrong: number[];
 }
 
-export async function listQuizzes(signal?: AbortSignal): Promise<QuizSummary[]> {
-  const response = await request<{ items?: QuizSummary[] }>('/v1/quizzes', { signal });
-  return response.items ?? [];
+/**
+ * Тесты, уже составленные по документам каталога.
+ *
+ * Список приходит целиком, а не по запрошенным документам: тестов по каталогу
+ * немного, зато страница материалов обходится одним запросом вместо адреса с
+ * сотней идентификаторов.
+ */
+export async function listMaterialQuizzes(
+  signal?: AbortSignal,
+): Promise<Map<string, MaterialQuiz>> {
+  // Токен подставляется, если человек вошёл: тогда в ответе будут ещё и его
+  // попытки. Гостю сервер отдаёт тот же список без личной статистики.
+  const response = await request<{ items?: MaterialQuiz[] }>('/v1/quizzes/materials', {
+    signal,
+  });
+  return new Map((response.items ?? []).map((item) => [item.materialKey, item]));
 }
 
 export async function getQuiz(id: string, signal?: AbortSignal): Promise<Quiz> {
@@ -88,11 +99,12 @@ export async function generateQuiz(
   text: string,
   title: string,
   questions: number,
+  materialKey: string,
   signal?: AbortSignal,
 ): Promise<{ quiz: Quiz; fresh: boolean }> {
   return request<{ quiz: Quiz; fresh: boolean }>('/v1/quizzes', {
     method: 'POST',
-    body: { text, title, questions },
+    body: { text, title, questions, materialKey },
     // Модель на длинном конспекте думает долго — обычные 20 секунд ей мало.
     timeoutMs: 4 * 60_000,
     signal,

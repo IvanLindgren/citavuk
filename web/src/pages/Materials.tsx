@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Mascot } from '../components/Mascot';
 import { PdfPreview } from '../components/PdfPreview';
@@ -24,6 +24,13 @@ import {
   type MaterialDocument,
   type MaterialLevel,
 } from '../materials/catalog';
+import {
+  generateQuiz,
+  getQuizStats,
+  listMaterialQuizzes,
+  type MaterialQuiz,
+  type QuizStats,
+} from '../api/quizzes';
 import { Link, useParams, useQuery, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
@@ -85,6 +92,25 @@ export function Materials() {
             'Настоящие экзаменационные тесты, решения и пособия с сайтов сербских учреждений: приём в гимназии и вступительные на факультеты университетов Белграда, Нови-Сада, Ниша и Крагуеваца.',
         },
   );
+
+  // Готовые тесты по документам каталога. Запрашиваются один раз на страницу:
+  // список короткий, а знать про них надо до того, как человек нажмёт кнопку.
+  const [quizzes, setQuizzes] = useState<Map<string, MaterialQuiz>>(new Map());
+
+  useEffect(() => {
+    const controller = new AbortController();
+    listMaterialQuizzes(controller.signal)
+      .then(setQuizzes)
+      .catch(() => {
+        // Раздел тестов недоступен — каталог материалов от этого не страдает,
+        // карточки просто покажут кнопку «составить тест».
+      });
+    return () => controller.abort();
+  }, []);
+
+  const rememberQuiz = useCallback((item: MaterialQuiz) => {
+    setQuizzes((previous) => new Map(previous).set(item.materialKey, item));
+  }, []);
 
   const subjects = useMemo(() => subjectsForLevel(level), [level]);
   const found = useMemo(
@@ -261,6 +287,8 @@ export function Materials() {
           </Card>
         </Reveal>
 
+        <RepeatStrip />
+
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--text-muted)]">
           <span>
             {found.length > 0
@@ -293,6 +321,8 @@ export function Materials() {
                   key={document.id}
                   document={document}
                   index={index % PAGE_SIZE}
+                  quiz={quizzes.get(document.id) ?? null}
+                  onQuizCreated={rememberQuiz}
                 />
               ))}
             </AnimatePresence>
@@ -380,12 +410,68 @@ function Sources() {
   );
 }
 
+/**
+ * Напоминание о тестах, которые пора перерешать.
+ *
+ * Живёт здесь, а не на отдельной странице: тесты привязаны к материалам, и
+ * возвращаться к ним человек приходит сюда же. Пока ничего не просрочено —
+ * полоски нет вовсе, чтобы не занимать место над каталогом.
+ */
+function RepeatStrip() {
+  const { account } = useAuth();
+  const [stats, setStats] = useState<QuizStats | null>(null);
+
+  useEffect(() => {
+    if (!account) return;
+    const controller = new AbortController();
+    getQuizStats(controller.signal)
+      .then(setStats)
+      .catch(() => {
+        // Статистика — не то, ради чего открывают каталог: молча пропускаем.
+      });
+    return () => controller.abort();
+  }, [account]);
+
+  const due = stats?.repeat.filter((item) => item.overdue) ?? [];
+  if (due.length === 0) return null;
+
+  return (
+    <Card className="mb-6 p-4">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="font-display text-base font-bold">Пора повторить</h2>
+        <span className="text-sm text-[var(--text-muted)]">
+          верных ответов в среднем {stats?.accuracy}%
+        </span>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {due.map((item) => (
+          <Link key={item.quizId} to={`/tests/${item.quizId}`}>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-sunken)] px-3 py-1.5 text-sm transition-colors hover:border-[var(--accent)]">
+              <span className="max-w-[15rem] truncate">{item.title}</span>
+              <span className="shrink-0 text-xs text-[var(--text-muted)]">
+                {item.score}%
+              </span>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+/** Сколько вопросов просить у модели по документу каталога. */
+const QUIZ_QUESTIONS = 8;
+
 function MaterialCard({
   document,
   index,
+  quiz,
+  onQuizCreated,
 }: {
   document: MaterialDocument;
   index: number;
+  quiz: MaterialQuiz | null;
+  onQuizCreated: (item: MaterialQuiz) => void;
 }) {
   const { navigate } = useRouter();
   const { account } = useAuth();
@@ -393,8 +479,54 @@ function MaterialCard({
   const [stage, setStage] = useState<ImportStage | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [openedPage, setOpenedPage] = useState<number | null>(null);
+  const [makingQuiz, setMakingQuiz] = useState(false);
 
-  const busy = stage !== null;
+  const busy = stage !== null || makingQuiz;
+
+  /**
+   * Составляет тест по этому документу.
+   *
+   * Текст извлекается здесь же, в браузере, тем же разборщиком, что и для
+   * читалки: держать на сервере вторую копию разбора PDF незачем, а файл всё
+   * равно скачивается через наш же прокси документов.
+   *
+   * Готовый тест общий: составленный один раз, он открывается всем остальным
+   * сразу, поэтому модель по одному документу вызывается однажды.
+   */
+  async function makeQuiz() {
+    if (!account) {
+      navigate('/login');
+      return;
+    }
+    setError(null);
+    setMakingQuiz(true);
+    try {
+      const extracted = await extractDocumentFromUrl(document.url, setStage);
+      setStage(null);
+      const { quiz: created } = await generateQuiz(
+        extracted.text,
+        document.title,
+        QUIZ_QUESTIONS,
+        document.id,
+      );
+      onQuizCreated({
+        materialKey: document.id,
+        quizId: created.id,
+        title: created.title,
+        questions: created.questions.length,
+        attempts: 0,
+        bestScore: 0,
+      });
+      navigate(`/tests/${created.id}`);
+    } catch (caught) {
+      setError(
+        caught instanceof Error ? caught.message : 'Не удалось составить тест.',
+      );
+    } finally {
+      setStage(null);
+      setMakingQuiz(false);
+    }
+  }
 
   /**
    * Полный файл скачивается только по нажатию.
@@ -470,14 +602,40 @@ function MaterialCard({
           </div>
         )}
 
-        <div className="mt-auto flex gap-2 pt-4">
+        <div className="mt-auto pt-4">
+          {quiz ? (
+            <Link to={`/tests/${quiz.quizId}`} className="block">
+              <Button variant="secondary" size="sm" className="mb-2 w-full">
+                Потренироваться и решить тест на сайте
+                {quiz.attempts > 0 && ` · было ${quiz.bestScore}%`}
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              variant="secondary"
+              size="sm"
+              className="mb-2 w-full"
+              disabled={busy}
+              onClick={() => void makeQuiz()}
+            >
+              {makingQuiz ? (
+                <>
+                  <Spinner />
+                  {stage ? IMPORT_STAGE_LABELS[stage] : 'Составляем тест…'}
+                </>
+              ) : (
+                'Составить тест по этому материалу'
+              )}
+            </Button>
+          )}
+          <div className="flex gap-2">
           <Button
             size="sm"
             className="flex-1"
             disabled={busy}
             onClick={() => void addToLibrary()}
           >
-            {busy ? (
+            {stage !== null && !makingQuiz ? (
               <>
                 <Spinner />
                 {IMPORT_STAGE_LABELS[stage]}
@@ -495,6 +653,7 @@ function MaterialCard({
           >
             Оригинал
           </a>
+          </div>
         </div>
       </Card>
 

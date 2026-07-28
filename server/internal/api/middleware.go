@@ -25,6 +25,28 @@ func userFrom(ctx context.Context) *store.User {
 	return u
 }
 
+// optionalAuth узнаёт пользователя, если тот вошёл, и пропускает гостя дальше.
+//
+// Нужен там, где страница открыта всем, но вошедшему показывает больше:
+// страница материалов сообщает про готовый тест любому посетителю, а «вы уже
+// решали, было 80%» — только владельцу этих попыток. Негодный токен здесь не
+// ошибка, а просто «гость»: иначе истёкшая сессия ломала бы публичную страницу.
+func (s *Server) optionalAuth(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := auth.BearerToken(r.Header.Get("Authorization"))
+		if token == "" {
+			next(w, r)
+			return
+		}
+		user, err := s.store.SessionUser(r.Context(), auth.HashToken(token), s.cfg.SessionTTLDays)
+		if err != nil {
+			next(w, r)
+			return
+		}
+		next(w, r.WithContext(context.WithValue(r.Context(), userKey, user)))
+	}
+}
+
 // requireAuth пропускает только запросы с действующим токеном сессии.
 func (s *Server) requireAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
