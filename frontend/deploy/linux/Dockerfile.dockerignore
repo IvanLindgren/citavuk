@@ -1,0 +1,25 @@
+# Что не отправлять в контекст сборки.
+#
+# Без этого docker утащил бы пять гигабайт чужих артефактов: build/ и
+# .dart_tool/ весят больше, чем весь остальной репозиторий, и к сборке под Linux
+# отношения не имеют — там они собираются заново.
+build/
+.dart_tool/
+.gradle/
+android/.gradle/
+android/app/build/
+ios/Pods/
+macos/Pods/
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+
+# Ключи подписи и секреты в контейнер не попадают ни при каких условиях.
+*.jks
+*.keystore
+key.properties
+.env

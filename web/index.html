@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <title>Читавук: сербский через чтение и перевод слова в контексте</title>
+    <meta
+      name="description"
+      content="Читайте книги, новости и экзаменационные материалы на сербском. Нажмите на слово, и увидите перевод в этом предложении, разбор падежа и времени, объяснение по-русски. Карточки повторения, курс грамматики, аудирование. Бесплатно, в браузере и в приложении."
+    />
+
+    <!--
+      Канонический адрес обязателен: одностраничное приложение доступно и по
+      www, и по apex, и с любой строкой запроса. Без canonical поисковик считает
+      это разными страницами с одинаковым содержимым и делит вес между ними.
+      Точный адрес маршрута проставляет useSeo уже в браузере.
+    -->
+    <link rel="canonical" href="https://citavuk.ru/" />
+    <link rel="alternate" hreflang="ru" href="https://citavuk.ru/" />
+    <link rel="alternate" hreflang="x-default" href="https://citavuk.ru/" />
+
+    <meta name="theme-color" content="#F3E9D2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161310" media="(prefers-color-scheme: dark)" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Читавук" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/img/citavuk_icon@2x.webp" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Читавук" />
+    <meta property="og:url" content="https://citavuk.ru/" />
+    <meta property="og:title" content="Читавук: сербский через чтение" />
+    <meta
+      property="og:description"
+      content="Нажмите на слово, и увидите перевод в этом предложении, разбор формы и объяснение по-русски."
+    />
+    <meta property="og:image" content="https://citavuk.ru/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Читайте по-сербски. Слово за словом." />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Читавук: сербский через чтение" />
+    <meta
+      name="twitter:description"
+      content="Нажмите на слово, и увидите перевод в этом предложении, разбор формы и объяснение по-русски."
+    />
+    <meta name="twitter:image" content="https://citavuk.ru/og-image.png" />
+
+    <!--
+      Разметка для поисковиков. Три сущности разом: сам сайт, приложение и
+      краткий FAQ. Она не влияет на текст страницы, но даёт выдаче понять, что
+      это учебный продукт, а не просто набор статей.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://citavuk.ru/#website",
+            "url": "https://citavuk.ru/",
+            "name": "Читавук",
+            "description": "Сербский через чтение: перевод слова в контексте, разбор формы, карточки повторения.",
+            "inLanguage": "ru-RU"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Читавук",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web, Android, Windows",
+            "url": "https://citavuk.ru/",
+            "downloadUrl": "https://citavuk.ru/downloads",
+            "inLanguage": "ru-RU",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Чем перевод в Читавуке отличается от обычного словаря?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Слово переводится вместе со своим предложением, поэтому многозначные слова получают верное значение, а не первое из словаря. Дополнительно показывается разбор формы: падеж, число, род, время."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Нужен ли интернет?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Встроенный словарь на девять тысяч слов покрывает около трёх четвертей обычного текста и работает без сети. Перевод в контексте требует подключения."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Где взять материалы для поступления в сербский вуз?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "В разделе «Материалы» собраны настоящие экзаменационные тесты, решения и пособия с сайтов сербских государственных учреждений и факультетов четырёх университетов: Белграда, Нови-Сада, Ниша и Крагуеваца."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+    <!--
+      Тема выбирается до первой отрисовки. Если сделать это в React, между
+      показом страницы и загрузкой скрипта успеет мигнуть светлый фон — на
+      тёмной теме это заметно и неприятно.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('citavuk-theme');
+          var dark =
+            saved === 'dark' ||
+            (saved !== 'light' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          // localStorage недоступен в приватном режиме — остаётся светлая тема.
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--
+      Содержимое для тех, кто пришёл без JavaScript, — включая поисковых роботов,
+      которые не дожидаются отрисовки. Пустая страница читалась бы ими как сайт
+      ни о чём.
+    -->
+    <noscript>
+      <h1>Читавук: сербский через чтение</h1>
+      <p>
+        Откройте книгу, новость или экзаменационный тест на сербском и нажмите
+        любое слово: Читавук покажет перевод в этом предложении, разберёт
+        форму (падеж, число, род, время) и объяснит правило по-русски. Сохранённые
+        слова становятся карточками с интервальным повторением.
+      </p>
+      <p>Разделы: чтение, словарь и карточки, аудирование, курс грамматики,
+        материалы для поступления в сербские гимназии и университеты.</p>
+      <p>Для работы нужен включённый JavaScript.</p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

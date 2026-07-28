@@ -106,9 +106,7 @@ class EagleBubble extends StatelessWidget {
                   ],
                   Text(text,
                       style: TextStyle(
-                          fontSize: 15,
-                          height: 1.35,
-                          color: scheme.onSurface)),
+                          fontSize: 15, height: 1.35, color: scheme.onSurface)),
                 ],
               ),
             ),

@@ -10,14 +10,28 @@ class ListeningService {
   ListeningService._();
   static final ListeningService instance = ListeningService._();
 
-  String get _base => AnalysisRepository.baseUrl;
+  /// Аудио берётся с собственного сервера, а не со Space.
+  ///
+  /// Space засыпает и на первом запросе после сна отвечает дольше минуты — на
+  /// телефоне это выглядело так, будто подкастов нет вообще.
+  String get _base => AnalysisRepository.translationUrl;
 
-  /// Курируемые уроки (подкасты/записи с субтитрами) — audio_lessons.json
-  /// на Space, редактируется без обновления приложения.
+  /// Запасной адрес: если свой сервер не ответил, пробуем прежний Space.
+  String get _fallbackBase => AnalysisRepository.baseUrl;
+
+  /// Курируемые уроки (подкасты/записи с субтитрами).
   Future<List<AudioLesson>> getLessons() async {
+    try {
+      return await _lessonsFrom(_base);
+    } catch (_) {
+      return _lessonsFrom(_fallbackBase);
+    }
+  }
+
+  Future<List<AudioLesson>> _lessonsFrom(String base) async {
     final resp = await http
-        .get(Uri.parse('$_base/audio/lessons'))
-        .timeout(const Duration(seconds: 20));
+        .get(Uri.parse('$base/audio/lessons'))
+        .timeout(const Duration(seconds: 30));
     if (resp.statusCode != 200) {
       throw Exception('Сервер вернул ${resp.statusCode}');
     }

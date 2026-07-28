@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../services/update_service.dart';
+import '../state/app_settings.dart';
+import 'privacy_screen.dart';
 import '../widgets/serbian_ornament.dart';
+import '../widgets/update_dialog.dart';
 import '../widgets/wolf_mascot.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -29,11 +35,11 @@ class AboutScreen extends StatelessWidget {
             asset: Wolf.zdravo,
           ),
           const SizedBox(height: 24),
-          Text(
-            'Версия: 1.0.0',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: scheme.primary),
-            textAlign: TextAlign.center,
-          ),
+          const _VersionLine(),
+          if (UpdateService.supported) ...[
+            const SizedBox(height: 12),
+            const _UpdateSection(),
+          ],
           const SizedBox(height: 16),
           const Text(
             'Создатель: Денис Корнилов & Claude & ChatGPT Imagen 2',
@@ -106,11 +112,95 @@ class AboutScreen extends StatelessWidget {
           OutlinedButton.icon(
             icon: const Icon(Icons.code),
             label: const Text('GitHub Репозиторий'),
-            onPressed: () => _launchUrl('https://github.com/IvanLindgren/citavuk'),
+            onPressed: () =>
+                _launchUrl('https://github.com/IvanLindgren/citavuk'),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Чтение DjVu основано на djvu-rs (MIT, © 2026 Lev Matyushkin) — '
+            'реализации формата по открытой спецификации DjVu v3.',
+            style: TextStyle(
+                fontSize: 12,
+                color: scheme.onSurface.withValues(alpha: 0.6)),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          TextButton.icon(
+            icon: const Icon(Icons.privacy_tip_outlined, size: 18),
+            label: const Text('Политика конфиденциальности'),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const PrivacyScreen()),
+            ),
           ),
           const SizedBox(height: 24),
         ],
       ),
+    );
+  }
+}
+
+class _VersionLine extends StatelessWidget {
+  const _VersionLine();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) => Text(
+        'Версия: ${snapshot.data?.version ?? '…'}',
+        style: TextStyle(
+            fontSize: 16, fontWeight: FontWeight.bold, color: scheme.primary),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
+class _UpdateSection extends StatefulWidget {
+  const _UpdateSection();
+
+  @override
+  State<_UpdateSection> createState() => _UpdateSectionState();
+}
+
+class _UpdateSectionState extends State<_UpdateSection> {
+  bool _checking = false;
+
+  Future<void> _check() async {
+    setState(() => _checking = true);
+    await checkForUpdates(context, silent: false);
+    if (mounted) setState(() => _checking = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = context.watch<AppSettings>();
+    return Column(
+      children: [
+        OutlinedButton.icon(
+          icon: _checking
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.system_update_alt),
+          label: const Text('Проверить обновления'),
+          onPressed: _checking ? null : _check,
+        ),
+        SwitchListTile(
+          value: settings.autoUpdateCheck,
+          onChanged: settings.setAutoUpdateCheck,
+          title: const Text('Проверять при запуске'),
+          subtitle: const Text(
+            'Приложение сообщит, когда выйдет новая версия',
+            style: TextStyle(fontSize: 13),
+          ),
+          contentPadding: EdgeInsets.zero,
+        ),
+      ],
     );
   }
 }

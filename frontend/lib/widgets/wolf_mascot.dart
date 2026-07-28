@@ -4,11 +4,16 @@ import 'animated_widgets.dart';
 
 /// Пути к артам маскота-волка Читавука (assets/imgs) + сведения о фоне арта.
 class Wolf {
-  static const zdravo = 'assets/imgs/citavuk_zdravo.png'; // приветствие (тёмный фон)
-  static const povtor = 'assets/imgs/citavuk_povtor.png'; // карточки/повторение (светлый)
-  static const ukaz = 'assets/imgs/citavuk_ukaz.png'; // лапка-указатель (светлый)
-  static const gram = 'assets/imgs/citavuk_gram.png'; // перевод слова/фразы (тёмный фон)
-  static const rule = 'assets/imgs/citavuk_rule.png'; // грамматика, лупа (светлый)
+  static const zdravo =
+      'assets/imgs/citavuk_zdravo.png'; // приветствие (тёмный фон)
+  static const povtor =
+      'assets/imgs/citavuk_povtor.png'; // карточки/повторение (светлый)
+  static const ukaz =
+      'assets/imgs/citavuk_ukaz.png'; // лапка-указатель (светлый)
+  static const gram =
+      'assets/imgs/citavuk_gram.png'; // перевод слова/фразы (тёмный фон)
+  static const rule =
+      'assets/imgs/citavuk_rule.png'; // грамматика, лупа (светлый)
 
   /// Арты-стикеры, у которых фон вокруг волка тёмный (нарисован в самом PNG).
   /// Их красивее показывать в тёмной «рамке-стикере», светлые — в светлой.
@@ -75,7 +80,7 @@ class WolfSticker extends StatelessWidget {
   }
 }
 
-/// Маленький круглый аватар волка (для плотных списков). 
+/// Маленький круглый аватар волка (для плотных списков).
 /// Рамки убраны.
 class WolfAvatar extends StatelessWidget {
   final double size;
@@ -96,7 +101,7 @@ class WolfAvatar extends StatelessWidget {
         child: Text('🐺', style: TextStyle(fontSize: size * 0.5)),
       );
     }
-    
+
     return SizedBox(
       width: size,
       height: size,
@@ -145,8 +150,9 @@ class _WolfBubbleState extends State<WolfBubble> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    
-    final currentText = _isPetting ? 'Ой, спасибо! Я так тебя люблю! ❤️' : widget.text;
+
+    final currentText =
+        _isPetting ? 'Ой, спасибо! Я так тебя люблю! ❤️' : widget.text;
     final currentAsset = _isPetting ? Wolf.zdravo : widget.asset;
 
     return FadeSlideIn(
@@ -157,7 +163,8 @@ class _WolfBubbleState extends State<WolfBubble> {
             onTap: _petWolf,
             child: currentAsset == null
                 ? WolfAvatar(size: widget.wolfSize, asset: currentAsset)
-                : WolfSticker(asset: currentAsset, size: widget.wolfSize, frame: false),
+                : WolfSticker(
+                    asset: currentAsset, size: widget.wolfSize, frame: false),
           ),
           // Хвостик облачка, указывающий на волка.
           CustomPaint(
@@ -172,7 +179,8 @@ class _WolfBubbleState extends State<WolfBubble> {
               duration: const Duration(milliseconds: 300),
               child: Container(
                 key: ValueKey(_isPetting),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
                   color: scheme.surfaceContainerHighest,
                   borderRadius: const BorderRadius.only(

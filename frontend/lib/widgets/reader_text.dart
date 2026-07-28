@@ -27,7 +27,8 @@ class ReaderParagraph extends StatefulWidget {
   final bool justify;
   final double firstLineIndent;
 
-  final void Function(int tokenIndex, Token token, List<Token> tokens) onTapWord;
+  final void Function(int tokenIndex, Token token, List<Token> tokens)
+      onTapWord;
   final void Function(int tokenIndex)? onPhraseSelectionStart;
   final void Function(int tokenIndex)? onPhraseSelectionUpdate;
   final void Function()? onPhraseSelectionEnd;
@@ -112,7 +113,8 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
   }
 
   int? _getTokenIndexAtOffset(Offset localOffset) {
-    final renderBox = _textKey.currentContext?.findRenderObject() as RenderParagraph?;
+    final renderBox =
+        _textKey.currentContext?.findRenderObject() as RenderParagraph?;
     if (renderBox == null) return null;
     try {
       final textPosition = renderBox.getPositionForOffset(localOffset);
@@ -174,8 +176,7 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
           : base;
 
       if (ratio > 0 && t.text.length > 1) {
-        final headLen =
-            (t.text.length * ratio).ceil().clamp(1, t.text.length);
+        final headLen = (t.text.length * ratio).ceil().clamp(1, t.text.length);
         spans.add(TextSpan(
           text: t.text.substring(0, headLen),
           recognizer: rec,
@@ -228,8 +229,7 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
               final idx = _getTokenIndexAtOffset(details.localPosition);
               if (idx != null) widget.onPhraseSelectionUpdate?.call(idx);
             },
-      onLongPressEnd:
-          dts ? null : (_) => widget.onPhraseSelectionEnd?.call(),
+      onLongPressEnd: dts ? null : (_) => widget.onPhraseSelectionEnd?.call(),
       onLongPressCancel:
           dts ? null : () => widget.onPhraseSelectionCancel?.call(),
       child: Text.rich(

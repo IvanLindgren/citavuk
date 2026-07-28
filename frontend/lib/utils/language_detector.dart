@@ -28,8 +28,7 @@ class LanguageDetector {
     final serbCount = serbCyrillicCount + serbLatinCount;
 
     // Частые английские слова.
-    final englishWords = RegExp(
-        r'\b(the|and|is|are|you|that|it|of|in|to)\b',
+    final englishWords = RegExp(r'\b(the|and|is|are|you|that|it|of|in|to)\b',
         caseSensitive: false);
     final englishWordCount = englishWords.allMatches(text).length;
 

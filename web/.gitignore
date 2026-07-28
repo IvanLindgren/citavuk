@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.local
+.vite/
+
+# Готовые ассеты собираются из frontend/assets скриптом scripts/prepare-assets.py
+# и в репозитории не нужны: это производные файлы, которые легко пересоздать.
+public/img/
+public/fonts/
+# Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
+public/pdf.worker.js
+public/course/

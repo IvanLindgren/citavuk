@@ -1,0 +1,235 @@
+{
+  "id": "u_zamenice",
+  "title": "Часть 6. Прилагательные и местоимения: углубление",
+  "description": "Степени сравнения, указательные, притяжательные, вопросительные и относительные местоимения.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.3.3. Сравнительная и превосходная степень; 5.4. Местоимения • Zamenice",
+    "sourceAnchor": "md:3270-4606",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_poredjenje",
+      "title": "Степени сравнения",
+      "objectives": [
+        {"id": "obj_komparativ", "title": "Образовывать сравнительную и превосходную степень и строить сравнение"}
+      ],
+      "lessons": [
+        {
+          "id": "l_32",
+          "title": "Сравнительная и превосходная степени прилагательных и наречий",
+          "prerequisites": ["l_31"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Сравнительная степень образуется тремя суффиксами, а превосходная — одной приставкой *naj-*, которая просто добавляется к сравнительной. Вторая половина правила бесплатная."},
+              {"kind": "terms", "title": "СРАВНИТЕЛЬНАЯ СТЕПЕНЬ", "rows": [
+                {"term": "-iji (самый частый)", "gloss": "nov → noviji", "note": "star → stariji, pametan → pametniji"},
+                {"term": "-ji с чередованием", "gloss": "jak → jači", "note": "drag → draži, tih → tiši"},
+                {"term": "-ši (три слова)", "gloss": "lep → lepši", "note": "lak → lakši, mek → mekši"}
+              ]},
+              {"kind": "terms", "title": "НЕПРАВИЛЬНЫЕ", "rows": [
+                {"term": "dobar → bolji", "gloss": "хороший → лучше", "note": "najbolji"},
+                {"term": "loš → gori", "gloss": "плохой → хуже", "note": "najgori"},
+                {"term": "mali → manji", "gloss": "маленький → меньше", "note": "najmanji"},
+                {"term": "velik → veći", "gloss": "большой → больше", "note": "najveći"}
+              ]},
+              {"kind": "paragraph", "text": "Сравнение с кем-то строится двумя способами. Через предлог *od* с родительным падежом: *Marko je viši od Ane*. Или через союз *nego* с именительным: *Marko je viši nego Ana*. Первый вариант короче и встречается чаще."},
+              {"kind": "example", "serbian": "Ovaj grad je lepši od Beograda.", "russian": "Этот город красивее Белграда.", "highlight": "lepši od"},
+              {"kind": "tip", "text": "Наречия сравниваются теми же формами среднего рода: *dobro → bolje*, *loše → gore*, *mnogo → više*. «Govorim bolje nego pre» — говорю лучше, чем раньше."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как будет сравнительная степень от «nov»?", "explanation": "Noviji. Самый частый суффикс сравнительной степени — -iji.", "options": [{"id": "a", "text": "noviji", "correct": true}, {"id": "b", "text": "novši"}, {"id": "c", "text": "najnov"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте прилагательное со сравнительной степенью", "explanation": "Dobar, mali и velik образуют сравнительную степень не по правилу, их заучивают отдельно.", "leftLabel": "Прилагательное", "rightLabel": "Сравнительная степень", "pairs": [{"left": "dobar", "right": "bolji"}, {"left": "mali", "right": "manji"}, {"left": "velik", "right": "veći"}, {"left": "lep", "right": "lepši"}], "distractorsRight": ["dobriji"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Образуйте превосходную степень от «bolji»", "explanation": "Najbolji. Превосходная степень — это приставка naj- к сравнительной.", "segments": [{"kind": "text", "text": "Ovo je "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " film godine."}], "blanks": [{"id": "b1", "acceptedAnswers": ["najbolji"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Марко выше Аны»?", "explanation": "Marko je viši od Ane. Предлог od требует родительного падежа.", "options": [{"id": "a", "text": "Marko je viši od Ane.", "correct": true}, {"id": "b", "text": "Marko je viši od Ana.", "misconceptionId": "misc_komparativ_od_nominativ"}, {"id": "c", "text": "Marko je više od Ane."}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Этот город красивее Белграда»", "explanation": "Ovaj grad je lepši od Beograda. После od стоит родительный падеж.", "tokens": [{"id": "t1", "text": "Ovaj"}, {"id": "t2", "text": "grad"}, {"id": "t3", "text": "je"}, {"id": "t4", "text": "lepši"}, {"id": "t5", "text": "od"}, {"id": "t6", "text": "Beograda"}, {"id": "t7", "text": "."}], "distractorTokens": [{"id": "d1", "text": "Beograd"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте формы сравнительной и превосходной степени", "targetLabel": "сравнительная и превосходная степень", "translation": "Этот дом больше, но тот красивее. Самый старый дом стоит в центре.", "explanation": "Veća, lepša, najstarija — сравнительная и превосходная степень. Слово centru к прилагательным не относится.", "tokens": [{"id": "t1", "text": "Ova"}, {"id": "t2", "text": "kuća"}, {"id": "t3", "text": "je"}, {"id": "t4", "text": "veća", "correct": true, "tail": ","}, {"id": "t5", "text": "ali"}, {"id": "t6", "text": "je"}, {"id": "t7", "text": "ona"}, {"id": "t8", "text": "lepša", "correct": true, "tail": "."}, {"id": "t9", "text": "Najstarija", "correct": true}, {"id": "t10", "text": "kuća"}, {"id": "t11", "text": "je"}, {"id": "t12", "text": "u"}, {"id": "t13", "text": "centru", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_pokazne",
+      "title": "Указательные местоимения",
+      "objectives": [
+        {"id": "obj_pokazne_tri", "title": "Различать три степени удалённости: ovaj, taj, onaj"}
+      ],
+      "lessons": [
+        {
+          "id": "l_33",
+          "title": "Указательные местоимения",
+          "prerequisites": ["l_32"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "В русском указательных два: «этот» и «тот». В сербском их три, и различаются они не расстоянием вообще, а расстоянием **до кого**."},
+              {"kind": "terms", "title": "ТРИ СТЕПЕНИ", "rows": [
+                {"term": "ovaj, ova, ovo", "gloss": "этот — рядом со мной", "note": "Ova knjiga je moja."},
+                {"term": "taj, ta, to", "gloss": "тот — рядом с тобой", "note": "Daj mi tu knjigu."},
+                {"term": "onaj, ona, ono", "gloss": "тот — далеко от обоих", "note": "Onaj čovek tamo."}
+              ]},
+              {"kind": "paragraph", "text": "Указательные склоняются как прилагательные: *ovog*, *ovom*, *ovim*. Форма женского рода в винительном — *ovu*, *tu*, *onu*."},
+              {"kind": "terms", "title": "«ТАКОЙ» ТОЖЕ ТРОЙНОЙ", "rows": [
+                {"term": "ovakav", "gloss": "такой, как этот", "note": ""},
+                {"term": "takav", "gloss": "такой, как тот у тебя", "note": ""},
+                {"term": "onakav", "gloss": "такой, как тот вдалеке", "note": ""}
+              ]},
+              {"kind": "example", "serbian": "Ova knjiga je moja, a ta je tvoja.", "russian": "Эта книга моя, а та твоя.", "highlight": "ta"},
+              {"kind": "tip", "text": "Начиная разговор о чём-то новом, сербы почти всегда берут *ovaj*. Слово *to* при этом работает как безличное «это»: *To je moja sestra* — «Это моя сестра», независимо от рода."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Книга у вас в руках. Как о ней сказать?", "explanation": "Ova knjiga. Ovaj указывает на то, что рядом с говорящим.", "options": [{"id": "a", "text": "Ova knjiga", "correct": true}, {"id": "b", "text": "Ta knjiga"}, {"id": "c", "text": "Ona knjiga"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Книга у собеседника. Как попросить её?", "explanation": "Daj mi tu knjigu. Taj указывает на предмет рядом с собеседником, а в винительном женского рода это tu.", "options": [{"id": "a", "text": "Daj mi tu knjigu.", "correct": true}, {"id": "b", "text": "Daj mi ovu knjigu."}, {"id": "c", "text": "Daj mi onu knjigu."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение с расстоянием", "explanation": "Три степени: у меня, у тебя, далеко от обоих.", "leftLabel": "Местоимение", "rightLabel": "Где предмет", "pairs": [{"left": "ovaj", "right": "рядом со мной"}, {"left": "taj", "right": "рядом с тобой"}, {"left": "onaj", "right": "далеко от обоих"}], "distractorsRight": ["нигде"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте «to»: безличное «Это моя сестра»", "explanation": "To je moja sestra. Слово to работает как безличное «это» независимо от рода.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " je moja sestra."}], "blanks": [{"id": "b1", "acceptedAnswers": ["To", "to"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Эта книга моя, а та твоя»", "explanation": "Ova knjiga je moja, a ta je tvoja. Ova — рядом со мной, ta — рядом с собеседником.", "tokens": [{"id": "t1", "text": "Ova"}, {"id": "t2", "text": "knjiga"}, {"id": "t3", "text": "je"}, {"id": "t4", "text": "moja"}, {"id": "t5", "text": ","}, {"id": "t6", "text": "a"}, {"id": "t7", "text": "ta"}, {"id": "t8", "text": "je"}, {"id": "t9", "text": "tvoja"}, {"id": "t10", "text": "."}], "distractorTokens": [{"id": "d1", "text": "ona"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Чем сербская система указательных отличается от русской?", "explanation": "Степеней три, а не две, и точка отсчёта — не только говорящий, но и собеседник.", "options": [{"id": "a", "text": "Степеней три, и одна из них привязана к собеседнику", "correct": true}, {"id": "b", "text": "Указательные не склоняются"}, {"id": "c", "text": "Они не различаются по роду"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_prisvojni",
+      "title": "Притяжательность",
+      "objectives": [
+        {"id": "obj_prisvojni_pridevi", "title": "Образовывать притяжательные прилагательные на -ov, -ev, -in"},
+        {"id": "obj_prisvojne_zamenice", "title": "Употреблять притяжательные местоимения и слово svoj"}
+      ],
+      "lessons": [
+        {
+          "id": "l_34",
+          "title": "Притяжательные прилагательные",
+          "prerequisites": ["l_33"],
+          "objectives": ["obj_prisvojni_pridevi"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Там, где русский говорит «книга Марко» или «дом брата», сербский предпочитает прилагательное: *Markova knjiga*, *bratova kuća*. Такие прилагательные образуются от существительных, обозначающих людей."},
+              {"kind": "terms", "title": "КАК ОБРАЗУЕТСЯ", "rows": [
+                {"term": "м. р. → -ov", "gloss": "brat → bratov", "note": "Marko → Markov"},
+                {"term": "м. р. с мягкой основой → -ev", "gloss": "muž → mužev", "note": "Miloš → Miloševa"},
+                {"term": "ж. р. на -a → -in", "gloss": "sestra → sestrin", "note": "Ana → Anin"}
+              ]},
+              {"kind": "paragraph", "text": "Дальше слово ведёт себя как обычное прилагательное и согласуется с тем, чем владеют: *Markova knjiga*, *Markov auto*, *Markovo pismo*."},
+              {"kind": "example", "serbian": "Anina sestra živi u Nišu.", "russian": "Сестра Аны живёт в Нише.", "highlight": "Anina"},
+              {"kind": "tip", "text": "От собственных имён такое прилагательное пишется с большой буквы: *Markova*, *Anina*, *Miloševa*. От нарицательных — с маленькой: *bratova*, *sestrina*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «книга Марко»?", "explanation": "Markova knjiga. От мужского имени образуется прилагательное на -ov, оно согласуется со словом knjiga.", "options": [{"id": "a", "text": "Markova knjiga", "correct": true}, {"id": "b", "text": "Markov knjiga"}, {"id": "c", "text": "Markovo knjiga"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте имя с притяжательным прилагательным", "explanation": "Мужские имена берут -ov или -ev, женские на -a берут -in.", "leftLabel": "Имя", "rightLabel": "Прилагательное", "pairs": [{"left": "Marko", "right": "Markov"}, {"left": "Ana", "right": "Anin"}, {"left": "brat", "right": "bratov"}, {"left": "sestra", "right": "sestrin"}], "distractorsRight": ["Anov"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Образуйте прилагательное от «Ana»: «сестра Аны»", "explanation": "Anina sestra. Женские имена на -a дают суффикс -in, и слово пишется с большой буквы.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " sestra živi u Nišu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Anina"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как правильно: «дом брата»?", "explanation": "Bratova kuća. От нарицательного слова прилагательное пишется с маленькой буквы.", "options": [{"id": "a", "text": "bratova kuća", "correct": true}, {"id": "b", "text": "Bratova kuća"}, {"id": "c", "text": "bratov kuća"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я читаю книгу Марко»", "explanation": "Čitam Markovu knjigu. Прилагательное идёт в винительный падеж вместе с существительным.", "tokens": [{"id": "t1", "text": "Čitam"}, {"id": "t2", "text": "Markovu"}, {"id": "t3", "text": "knjigu"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "Markova"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «Miloševa knjiga», а не «Milošova»?", "explanation": "Основа оканчивается на мягкое š, поэтому вместо -ov берётся -ev.", "options": [{"id": "a", "text": "После мягкой основы вместо -ov идёт -ev", "correct": true}, {"id": "b", "text": "Потому что имя иностранное"}, {"id": "c", "text": "Оба варианта одинаково правильны"}]}
+          ]
+        },
+        {
+          "id": "l_35",
+          "title": "Притяжательные местоимения",
+          "prerequisites": ["l_34"],
+          "objectives": ["obj_prisvojne_zamenice"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Притяжательные местоимения склоняются как прилагательные и согласуются не с владельцем, а с тем, чем владеют: *moja knjiga*, *moj auto*, *moje pismo*."},
+              {"kind": "terms", "title": "ПРИТЯЖАТЕЛЬНЫЕ", "rows": [
+                {"term": "moj, moja, moje", "gloss": "мой", "note": ""},
+                {"term": "tvoj, tvoja, tvoje", "gloss": "твой", "note": ""},
+                {"term": "njegov", "gloss": "его", "note": "владелец мужчина"},
+                {"term": "njen", "gloss": "её", "note": "владелец женщина"},
+                {"term": "naš, vaš", "gloss": "наш, ваш", "note": ""},
+                {"term": "njihov", "gloss": "их", "note": ""}
+              ]},
+              {"kind": "paragraph", "text": "Отдельно стоит *svoj* — «свой». Оно указывает на владельца, который совпадает с подлежащим, и правило здесь строже русского. *Marko čita svoju knjigu* — свою собственную. *Marko čita njegovu knjigu* — чужую, кого-то другого."},
+              {"kind": "example", "serbian": "Marko čita svoju knjigu.", "russian": "Марко читает свою книгу.", "highlight": "svoju"},
+              {"kind": "tip", "text": "Разница между *njegov* и *svoj* меняет смысл целиком, а не оттенок. Если владелец — тот же, кто действует, нужно *svoj*, иначе получится, что человек взял чужое."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «моя книга»?", "explanation": "Moja knjiga. Местоимение согласуется с существительным женского рода.", "options": [{"id": "a", "text": "moja knjiga", "correct": true}, {"id": "b", "text": "moj knjiga"}, {"id": "c", "text": "moje knjiga"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение с переводом", "explanation": "Njegov — его, njen — её, njihov — их, naš — наш.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "njegov", "right": "его"}, {"left": "njen", "right": "её"}, {"left": "njihov", "right": "их"}, {"left": "naš", "right": "наш"}], "distractorsRight": ["ваш"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Марко читает собственную книгу. Как сказать?", "explanation": "Marko čita svoju knjigu. Владелец совпадает с подлежащим, значит нужно svoj.", "options": [{"id": "a", "text": "Marko čita svoju knjigu.", "correct": true}, {"id": "b", "text": "Marko čita njegovu knjigu.", "misconceptionId": "misc_svoj_njegov"}, {"id": "c", "text": "Marko čita moju knjigu."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте «njen»: «её брат»", "explanation": "Njen brat. Местоимение согласуется со словом brat в мужском роде.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " brat radi u školi."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Njen", "njen"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Что значит «Marko čita njegovu knjigu»?", "explanation": "Njegov указывает на другого человека. Если бы книга была самого Марко, нужно было бы svoju.", "options": [{"id": "a", "text": "Книга принадлежит кому-то другому", "correct": true}, {"id": "b", "text": "Книга принадлежит самому Марко"}, {"id": "c", "text": "Оба смысла возможны, различить нельзя"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте притяжательные местоимения", "targetLabel": "притяжательные местоимения", "translation": "Моя сестра читает свою книгу, а её друг ищет наш дом.", "explanation": "Moja, svoju, njen, naš — притяжательные. Слова sestra, knjigu, drug, kuću — существительные.", "tokens": [{"id": "t1", "text": "Moja", "correct": true}, {"id": "t2", "text": "sestra"}, {"id": "t3", "text": "čita"}, {"id": "t4", "text": "svoju", "correct": true}, {"id": "t5", "text": "knjigu", "tail": ","}, {"id": "t6", "text": "a"}, {"id": "t7", "text": "njen", "correct": true}, {"id": "t8", "text": "drug"}, {"id": "t9", "text": "traži"}, {"id": "t10", "text": "našu", "correct": true}, {"id": "t11", "text": "kuću", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_upitne_odnosne",
+      "title": "Вопросительные и относительные",
+      "objectives": [
+        {"id": "obj_upitne_koji", "title": "Выбирать между ko, šta, koji, čiji, kakav"},
+        {"id": "obj_odnosne_koji", "title": "Согласовывать относительное koji с антецедентом"}
+      ],
+      "lessons": [
+        {
+          "id": "l_36",
+          "title": "Вопросительные местоимения",
+          "prerequisites": ["l_35"],
+          "objectives": ["obj_upitne_koji"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Вопросительных местоимений пять, и каждое спрашивает о своём. Путаница обычно возникает между *koji* и *kakav*: первое спрашивает «который из», второе — «какого качества»."},
+              {"kind": "terms", "title": "ПЯТЬ ВОПРОСОВ", "rows": [
+                {"term": "ko", "gloss": "кто", "note": "только о людях"},
+                {"term": "šta", "gloss": "что", "note": "о предметах"},
+                {"term": "koji, koja, koje", "gloss": "который, какой из", "note": "Koji film gledaš?"},
+                {"term": "čiji, čija, čije", "gloss": "чей", "note": "Čija je ovo knjiga?"},
+                {"term": "kakav, kakva, kakvo", "gloss": "какой по качеству", "note": "Kakav je film?"}
+              ]},
+              {"kind": "paragraph", "text": "Местоимение *ko* склоняется: *ko — koga — kome — kim*. Местоимение *šta*: *šta — čega — čemu — čim*. Формы *koga* и *čega* совпадают с родительным и винительным."},
+              {"kind": "example", "serbian": "Kakav je film? — Dobar. Koji film? — Onaj novi.", "russian": "Какой фильм? — Хороший. Который фильм? — Тот новый.", "highlight": "Kakav"},
+              {"kind": "tip", "text": "Проверить себя просто. Если в ответе ждёте прилагательное («хороший», «длинный») — нужно *kakav*. Если ждёте указание на конкретный предмет («тот», «второй») — нужно *koji*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как спросить «Чья это книга?»", "explanation": "Čija je ovo knjiga? Местоимение čiji согласуется со словом knjiga в женском роде.", "options": [{"id": "a", "text": "Čija je ovo knjiga?", "correct": true}, {"id": "b", "text": "Čiji je ovo knjiga?"}, {"id": "c", "text": "Koja je ovo knjiga?"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Вы хотите узнать, хороший фильм или плохой. Что спросить?", "explanation": "Kakav je film? Вопрос о качестве требует kakav, а не koji.", "options": [{"id": "a", "text": "Kakav je film?", "correct": true}, {"id": "b", "text": "Koji je film?", "misconceptionId": "misc_koji_umesto_kakav"}, {"id": "c", "text": "Čiji je film?"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение с вопросом", "explanation": "Ko — о людях, šta — о предметах, koji — который из, čiji — чей.", "leftLabel": "Местоимение", "rightLabel": "О чём спрашивает", "pairs": [{"left": "ko", "right": "о человеке"}, {"left": "šta", "right": "о предмете"}, {"left": "koji", "right": "который из нескольких"}, {"left": "čiji", "right": "о владельце"}], "distractorsRight": ["о времени"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте форму «ko» в дательном падеже: «Кому ты пишешь?»", "explanation": "Kome pišeš? Дательный падеж местоимения ko — kome.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " pišeš?"}], "blanks": [{"id": "b1", "acceptedAnswers": ["Kome", "kome"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите вопрос: «Который фильм ты смотришь?»", "explanation": "Koji film gledaš? Koji спрашивает о выборе из нескольких.", "tokens": [{"id": "t1", "text": "Koji"}, {"id": "t2", "text": "film"}, {"id": "t3", "text": "gledaš"}, {"id": "t4", "text": "?"}], "distractorTokens": [{"id": "d1", "text": "Kakav"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какая форма у «ko» в винительном падеже?", "explanation": "Koga. Ko склоняется: ko — koga — kome — kim.", "options": [{"id": "a", "text": "koga", "correct": true}, {"id": "b", "text": "koje"}, {"id": "c", "text": "kome"}]}
+          ]
+        },
+        {
+          "id": "l_37",
+          "title": "Относительные местоимения",
+          "prerequisites": ["l_36"],
+          "objectives": ["obj_odnosne_koji"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Относительное *koji* соединяет главное предложение с придаточным. Русское «который» работает так же, и правило согласования у них общее, но именно здесь его чаще всего нарушают."},
+              {"kind": "paragraph", "text": "Род и число *koji* берёт у слова, к которому относится. Падеж — у своей роли в придаточном. Эти два источника независимы, и в этом весь фокус."},
+              {"kind": "terms", "title": "ДВА ИСТОЧНИКА ФОРМЫ", "rows": [
+                {"term": "род и число", "gloss": "от главного слова", "note": "knjiga → koja, film → koji"},
+                {"term": "падеж", "gloss": "от роли в придаточном", "note": "подлежащее → именительный"}
+              ]},
+              {"kind": "example", "serbian": "Ovo je knjiga koju sam kupio juče.", "russian": "Это книга, которую я купил вчера.", "highlight": "koju"},
+              {"kind": "example", "serbian": "Ovo je čovek koji radi sa mnom.", "russian": "Это человек, который работает со мной.", "highlight": "koji"},
+              {"kind": "paragraph", "text": "Есть и второе относительное — *što*. Оно неизменяемо и отсылает не к слову, а ко всему предложению: *Zakasnio je, što nije lepo* — «Он опоздал, что нехорошо»."},
+              {"kind": "tip", "text": "Проверять форму нужно в два шага. Сначала спросите «о чём речь» и возьмите род: *knjiga* — женский, значит *koja*. Потом спросите «чем она в придаточном»: дополнением, значит винительный — *koju*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "«Это человек, который работает со мной»", "explanation": "Čovek koji radi sa mnom. Мужской род от čovek, именительный падеж потому что koji здесь подлежащее.", "options": [{"id": "a", "text": "Ovo je čovek koji radi sa mnom.", "correct": true}, {"id": "b", "text": "Ovo je čovek koja radi sa mnom."}, {"id": "c", "text": "Ovo je čovek koje radi sa mnom."}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "«Это книга, которую я купил вчера»", "explanation": "Knjiga koju sam kupio. Женский род от knjiga, винительный падеж потому что это дополнение при kupio.", "options": [{"id": "a", "text": "Ovo je knjiga koju sam kupio juče.", "correct": true}, {"id": "b", "text": "Ovo je knjiga koja sam kupio juče.", "misconceptionId": "misc_odnosne_padez_od_antecedenta"}, {"id": "c", "text": "Ovo je knjiga koji sam kupio juče."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте форму «koji»: «фильм, который мы смотрели»", "explanation": "Film koji smo gledali. Мужской род от film, винительный неодушевлённый совпадает с именительным.", "segments": [{"kind": "text", "text": "Ovo je film "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " smo gledali."}], "blanks": [{"id": "b1", "acceptedAnswers": ["koji"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Откуда «koji» берёт падеж?", "explanation": "Род и число — от главного слова, падеж — от роли внутри придаточного. Это два независимых источника.", "options": [{"id": "a", "text": "От своей роли в придаточном предложении", "correct": true}, {"id": "b", "text": "От слова, к которому относится"}, {"id": "c", "text": "От глагола главного предложения"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Это дом, в котором я живу»", "explanation": "Ovo je kuća u kojoj živim. Женский род от kuća, предложный падеж после u при вопросе «где».", "tokens": [{"id": "t1", "text": "Ovo"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "kuća"}, {"id": "t4", "text": "u"}, {"id": "t5", "text": "kojoj"}, {"id": "t6", "text": "živim"}, {"id": "t7", "text": "."}], "distractorTokens": [{"id": "d1", "text": "koju"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Ovo je grad u kojem sam odrastao. Ulica koju vidiš vodi do škole u koju sam išao. Čovek koji tamo stoji je moj profesor.", "translation": "Это город, в котором я вырос. Улица, которую ты видишь, ведёт к школе, в которую я ходил. Человек, который там стоит, мой преподаватель.", "explanation": "Kojem — предложный после u при вопросе «где». Koju — винительный, дополнение. Koji — именительный, подлежащее.", "questions": [
+              {"id": "q1", "prompt": "Zašto je «koju vidiš», a ne «koja vidiš»?", "options": [{"id": "a", "text": "Zato što je u zavisnoj rečenici objekat, dakle akuzativ.", "correct": true}, {"id": "b", "text": "Zato što je «ulica» ženskog roda."}, {"id": "c", "text": "Zato što posle «koju» uvek ide glagol."}]},
+              {"id": "q2", "prompt": "Ko je čovek koji tamo stoji?", "options": [{"id": "a", "text": "Profesor.", "correct": true}, {"id": "b", "text": "Brat."}, {"id": "c", "text": "Komšija."}]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

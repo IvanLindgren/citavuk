@@ -1,0 +1,38 @@
+{
+  "name": "citavuk-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Веб-версия Citavuk: чтение на сербском с разбором слов",
+  "scripts": {
+    "dev": "npm run prepare:worker && vite",
+    "prepare:course": "node scripts/prepare-course-assets.mjs",
+    "build": "python scripts/build-sitemap.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare:worker": "node scripts/copy-pdf-worker.mjs"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "framer-motion": "^12.23.12",
+    "mammoth": "^1.12.0",
+    "pdfjs-dist": "^6.1.200",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "jsdom": "^26.1.0",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
+  }
+}

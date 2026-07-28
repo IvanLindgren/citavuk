@@ -1,0 +1,309 @@
+{
+  "id": "u_nacini",
+  "title": "Часть 7. Наклонения и причастия",
+  "description": "Вид глагола на новом витке, повелительное и условное наклонение, пассив, причастия и деепричастия, порядок слов целиком.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.6.3. Вид глагола; 5.6.4. Императив; 5.6.11. Кондиционал; 5.6.13–5.6.14. Причастия и деепричастия",
+    "sourceAnchor": "md:5563-7431",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_vid_2",
+      "title": "Вид: как строятся пары",
+      "objectives": [
+        {"id": "obj_vid_sufiksi", "title": "Узнавать видовые пары, образованные суффиксом, и двувидовые глаголы"}
+      ],
+      "lessons": [
+        {
+          "id": "l_38",
+          "title": "Вид глагола (продолжение)",
+          "prerequisites": ["l_37"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Раньше мы строили пары приставкой: *čitati → pročitati*. Но приставка меняет и смысл, поэтому язык пользуется вторым способом: от совершенного глагола образуют несовершенный **суффиксом**."},
+              {"kind": "terms", "title": "ПАРЫ ЧЕРЕЗ СУФФИКС", "rows": [
+                {"term": "kupiti → kupovati", "gloss": "купить → покупать", "note": "суффикс -ova-"},
+                {"term": "dati → davati", "gloss": "дать → давать", "note": "суффикс -va-"},
+                {"term": "zatvoriti → zatvarati", "gloss": "закрыть → закрывать", "note": "суффикс -a- с чередованием"},
+                {"term": "reći → govoriti", "gloss": "сказать → говорить", "note": "совсем разные основы"}
+              ]},
+              {"kind": "paragraph", "text": "Есть и глаголы без пары — двувидовые. *Telefonirati*, *ručati*, *večerati*, *organizovati* могут значить и процесс, и результат; различает их только контекст."},
+              {"kind": "example", "serbian": "Juče sam kupio hleb, a sada kupujem mleko.", "russian": "Вчера я купил хлеб, а сейчас покупаю молоко.", "highlight": "kupujem"},
+              {"kind": "tip", "text": "Суффиксальная пара узнаётся по длине: несовершенный глагол длиннее. *Kupiti* короче, чем *kupovati*; *dati* короче, чем *davati*. У приставочных пар всё наоборот."}
+            ]
+          },
+          "exercises": [
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте совершенный вид с несовершенным", "explanation": "Здесь пары строятся суффиксом, а не приставкой: kupiti — kupovati, dati — davati.", "leftLabel": "Совершенный", "rightLabel": "Несовершенный", "pairs": [{"left": "kupiti", "right": "kupovati"}, {"left": "dati", "right": "davati"}, {"left": "zatvoriti", "right": "zatvarati"}, {"left": "reći", "right": "govoriti"}], "distractorsRight": ["kupitovati"]},
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Какой глагол несовершенного вида?", "explanation": "Kupovati. Суффикс -ova- превращает совершенный kupiti в несовершенный.", "options": [{"id": "a", "text": "kupovati", "correct": true}, {"id": "b", "text": "kupiti"}, {"id": "c", "text": "dati"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте несовершенный вид: «Сейчас я покупаю молоко»", "explanation": "Sada kupujem mleko. Процесс требует несовершенного вида kupovati.", "segments": [{"kind": "text", "text": "Sada "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " mleko."}], "blanks": [{"id": "b1", "acceptedAnswers": ["kupujem"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Что такое двувидовой глагол?", "explanation": "Это глагол без пары: telefonirati, ručati, organizovati значат и процесс, и результат.", "options": [{"id": "a", "text": "Глагол без видовой пары, значение которого решает контекст", "correct": true}, {"id": "b", "text": "Глагол, у которого две приставки"}, {"id": "c", "text": "Глагол, который спрягается по двум типам"}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Как отличить суффиксальную пару от приставочной?", "explanation": "У суффиксальной пары длиннее несовершенный глагол (kupiti — kupovati), у приставочной длиннее совершенный (čitati — pročitati).", "options": [{"id": "a", "text": "По длине: в суффиксальной паре длиннее несовершенный", "correct": true}, {"id": "b", "text": "По ударению"}, {"id": "c", "text": "Никак, нужно смотреть в словарь"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте глаголы несовершенного вида", "targetLabel": "глаголы несовершенного вида", "translation": "Вчера я купил хлеб, а сейчас покупаю молоко и даю деньги продавцу.", "explanation": "Kupujem и dajem — несовершенный вид, kupio — совершенный.", "tokens": [{"id": "t1", "text": "Juče"}, {"id": "t2", "text": "sam"}, {"id": "t3", "text": "kupio"}, {"id": "t4", "text": "hleb", "tail": ","}, {"id": "t5", "text": "a"}, {"id": "t6", "text": "sada"}, {"id": "t7", "text": "kupujem", "correct": true}, {"id": "t8", "text": "mleko"}, {"id": "t9", "text": "i"}, {"id": "t10", "text": "dajem", "correct": true}, {"id": "t11", "text": "novac"}, {"id": "t12", "text": "prodavcu", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_imperativ",
+      "title": "Повелительное наклонение",
+      "objectives": [
+        {"id": "obj_imperativ_oblici", "title": "Образовывать императив и строить запрет через nemoj"}
+      ],
+      "lessons": [
+        {
+          "id": "l_39",
+          "title": "Повелительное наклонение",
+          "prerequisites": ["l_38"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Императив образуется не от инфинитива, а от формы **третьего лица множественного числа** настоящего времени. Отбрасываем окончание и добавляем своё."},
+              {"kind": "terms", "title": "КАК СТРОИТСЯ", "rows": [
+                {"term": "rade → radi", "gloss": "работай", "note": "radimo, radite"},
+                {"term": "čitaju → čitaj", "gloss": "читай", "note": "čitajmo, čitajte"},
+                {"term": "pišu → piši", "gloss": "пиши", "note": "pišimo, pišite"},
+                {"term": "idu → idi", "gloss": "иди", "note": "idimo, idite"}
+              ]},
+              {"kind": "paragraph", "text": "Форм три: «ты» (*radi*), «мы» (*radimo*) и «вы» (*radite*). Форма на *-te* работает и как вежливое обращение к одному человеку."},
+              {"kind": "paragraph", "text": "Запрет строится словом *nemoj*: *Nemoj to da radiš* или *Nemoj to raditi*. Форма на «вы» — *nemojte*. Вариант *ne radi* тоже существует, но звучит резче."},
+              {"kind": "example", "serbian": "Dođite sutra u deset.", "russian": "Приходите завтра в десять.", "highlight": "Dođite"},
+              {"kind": "tip", "text": "Несколько частых форм не выводятся по правилу и заучиваются: *biti → budi, budite*; *jesti → jedi*; *doći → dođi*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «читай»?", "explanation": "Čitaj. Основа берётся от третьего лица множественного числа čitaju.", "options": [{"id": "a", "text": "čitaj", "correct": true}, {"id": "b", "text": "čitati"}, {"id": "c", "text": "čitam"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте форму «они» с императивом", "explanation": "Императив строится от третьего лица множественного числа: rade → radi, pišu → piši.", "leftLabel": "Они", "rightLabel": "Императив «ты»", "pairs": [{"left": "rade", "right": "radi"}, {"left": "čitaju", "right": "čitaj"}, {"left": "pišu", "right": "piši"}, {"left": "idu", "right": "idi"}], "distractorsRight": ["raditi"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «doći» в вежливый императив: «Приходите завтра»", "explanation": "Dođite sutra. Форма на -te служит и множественным числом, и вежливым обращением.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " sutra u deset."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Dođite", "dođite"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как мягко сказать «не делай этого»?", "explanation": "Nemoj to da radiš. Запрет через nemoj звучит мягче прямого ne radi.", "options": [{"id": "a", "text": "Nemoj to da radiš.", "correct": true}, {"id": "b", "text": "Ne to radiš."}, {"id": "c", "text": "Nemoj to radiš."}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите просьбу: «Напишите мне письмо»", "explanation": "Napišite mi pismo. После императива идёт краткая форма mi, потом дополнение.", "tokens": [{"id": "t1", "text": "Napišite"}, {"id": "t2", "text": "mi"}, {"id": "t3", "text": "pismo"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "meni"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему императив строится от формы «они», а не от инфинитива?", "explanation": "В форме третьего лица множественного числа основа уже прошла все чередования: pisati даёт pišu, значит императив piši, а не «pisi».", "options": [{"id": "a", "text": "В этой форме основа уже прошла все чередования", "correct": true}, {"id": "b", "text": "Это случайная традиция без объяснения"}, {"id": "c", "text": "Инфинитив в сербском вообще не используется"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_vid_3",
+      "title": "Вид в наклонениях и после фазовых глаголов",
+      "objectives": [
+        {"id": "obj_vid_zabrana", "title": "Выбирать вид в запрете и после глаголов начала и конца действия"}
+      ],
+      "lessons": [
+        {
+          "id": "l_40",
+          "title": "Вид глагола (продолжение)",
+          "prerequisites": ["l_39"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Вид взаимодействует с наклонением, и в двух местах выбор не свободный, а обязательный. Ошибка здесь заметна носителю сразу."},
+              {"kind": "paragraph", "text": "**Запрет требует несовершенного вида.** *Ne zatvaraj vrata!* — «не закрывай дверь». Сказать *ne zatvori vrata* нельзя: запрещают не результат, а само действие."},
+              {"kind": "paragraph", "text": "**После глаголов начала, конца и продолжения — только несовершенный.** *Počeo sam da čitam*, *prestao je da puši*, *nastavlja da radi*. Логика прозрачная: начать можно лишь то, что длится."},
+              {"kind": "terms", "title": "ГЛАГОЛЫ, ПОСЛЕ КОТОРЫХ ТОЛЬКО НЕСОВЕРШЕННЫЙ", "rows": [
+                {"term": "početi", "gloss": "начать", "note": "Počinjem da učim."},
+                {"term": "prestati", "gloss": "перестать", "note": "Prestao je da puši."},
+                {"term": "nastaviti", "gloss": "продолжить", "note": "Nastavlja da radi."},
+                {"term": "voleti", "gloss": "любить (делать)", "note": "Volim da čitam."}
+              ]},
+              {"kind": "example", "serbian": "Nemoj zatvarati prozor, toplo je.", "russian": "Не закрывай окно, жарко.", "highlight": "zatvarati"},
+              {"kind": "tip", "text": "Сербский предпочитает конструкцию *da* с личной формой там, где русский ставит инфинитив: не «volim čitati», а *volim da čitam*. Инфинитив после таких глаголов возможен, но звучит книжно и чаще встречается в Хорватии."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Не закрывай дверь»?", "explanation": "Ne zatvaraj vrata. В запрете нужен несовершенный вид.", "options": [{"id": "a", "text": "Ne zatvaraj vrata.", "correct": true}, {"id": "b", "text": "Ne zatvori vrata.", "misconceptionId": "misc_vid_zabrana_svrseni"}, {"id": "c", "text": "Nemoj zatvori vrata."}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Я начал читать»?", "explanation": "Počeo sam da čitam. После početi идёт несовершенный вид.", "options": [{"id": "a", "text": "Počeo sam da čitam.", "correct": true}, {"id": "b", "text": "Počeo sam da pročitam.", "misconceptionId": "misc_vid_poceti_svrseni"}, {"id": "c", "text": "Počeo sam pročitati."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте нужный вид: «Он перестал курить»", "explanation": "Prestao je da puši. После prestati стоит несовершенный вид.", "segments": [{"kind": "text", "text": "Prestao je da "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["puši"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте глагол с переводом", "explanation": "После всех четырёх глаголов идёт конструкция da плюс несовершенный вид.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "početi", "right": "начать"}, {"left": "prestati", "right": "перестать"}, {"left": "nastaviti", "right": "продолжить"}, {"left": "voleti", "right": "любить"}], "distractorsRight": ["закончить"]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я люблю читать книги»", "explanation": "Volim da čitam knjige. Сербский предпочитает конструкцию da с личной формой вместо инфинитива.", "tokens": [{"id": "t1", "text": "Volim"}, {"id": "t2", "text": "da"}, {"id": "t3", "text": "čitam"}, {"id": "t4", "text": "knjige"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "čitati"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему после «početi» невозможен совершенный вид?", "explanation": "Начать можно только то, что длится. Совершенный вид обозначает завершённое действие, и «начать завершить» бессмысленно.", "options": [{"id": "a", "text": "Начать можно только длящееся действие", "correct": true}, {"id": "b", "text": "Это чисто формальный запрет без причины"}, {"id": "c", "text": "Совершенный вид вообще не сочетается с da"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_kondicional",
+      "title": "Условное наклонение",
+      "objectives": [
+        {"id": "obj_kondicional_bih", "title": "Строить условное наклонение и вежливую просьбу"}
+      ],
+      "lessons": [
+        {
+          "id": "l_41",
+          "title": "Условное наклонение",
+          "prerequisites": ["l_40"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Условное наклонение строится вспомогательным словом *bih* и тем же причастием на *-o / -la*, что и в прошедшем времени. Русское «бы» здесь меняется по лицам."},
+              {"kind": "terms", "title": "ВСПОМОГАТЕЛЬНОЕ СЛОВО", "rows": [
+                {"term": "ja bih", "gloss": "я бы", "note": "Ja bih radio."},
+                {"term": "ti bi", "gloss": "ты бы", "note": ""},
+                {"term": "on bi", "gloss": "он бы", "note": ""},
+                {"term": "mi bismo", "gloss": "мы бы", "note": ""},
+                {"term": "vi biste", "gloss": "вы бы", "note": ""},
+                {"term": "oni bi", "gloss": "они бы", "note": ""}
+              ]},
+              {"kind": "paragraph", "text": "Главное применение в повседневной речи — не условие, а вежливость. *Voleo bih*, *hteo bih*, *da li biste mogli* — так формулируют просьбу, чтобы она не прозвучала приказом."},
+              {"kind": "example", "serbian": "Da li biste mogli da mi pomognete?", "russian": "Не могли бы вы мне помочь?", "highlight": "biste mogli"},
+              {"kind": "example", "serbian": "Da imam vremena, došao bih.", "russian": "Если бы у меня было время, я бы пришёл.", "highlight": "došao bih"},
+              {"kind": "tip", "text": "Слово *bih* безударное и занимает то же второе место, что *sam* и *se*: *Ja bih to uradio*, *To bih uradio*, но не «Bih to uradio»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я бы работал»?", "explanation": "Ja bih radio. Форма bih относится к первому лицу единственного числа.", "options": [{"id": "a", "text": "Ja bih radio.", "correct": true}, {"id": "b", "text": "Ja bi radio."}, {"id": "c", "text": "Ja bismo radio."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение с формой", "explanation": "Bih — ja, bismo — mi, biste — vi, bi — остальные лица.", "leftLabel": "Местоимение", "rightLabel": "Форма", "pairs": [{"left": "ja", "right": "bih"}, {"left": "mi", "right": "bismo"}, {"left": "vi", "right": "biste"}, {"left": "on", "right": "bi"}], "distractorsRight": ["budem"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Постройте вежливую просьбу: «Я бы хотел кофе»", "explanation": "Voleo bih kafu. Оборот voleo bih — стандартная вежливая формула.", "segments": [{"kind": "text", "text": "Voleo "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " kafu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["bih"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как вежливо попросить о помощи?", "explanation": "Da li biste mogli da mi pomognete? Условное наклонение превращает требование в просьбу.", "options": [{"id": "a", "text": "Da li biste mogli da mi pomognete?", "correct": true}, {"id": "b", "text": "Pomozite mi odmah."}, {"id": "c", "text": "Vi mi pomažete?"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Если бы у меня было время, я бы пришёл»", "explanation": "Da imam vremena, došao bih. Придаточное с da, главное с условным наклонением.", "tokens": [{"id": "t1", "text": "Da"}, {"id": "t2", "text": "imam"}, {"id": "t3", "text": "vremena"}, {"id": "t4", "text": ","}, {"id": "t5", "text": "došao"}, {"id": "t6", "text": "bih"}, {"id": "t7", "text": "."}], "distractorTokens": [{"id": "d1", "text": "bi"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте формы условного наклонения", "targetLabel": "вспомогательные формы bih, bi, bismo, biste", "translation": "Я бы поехал в Нови-Сад, а вы бы могли поехать с нами.", "explanation": "Bih и biste — вспомогательные формы условного наклонения. Слова išao и mogli — причастия при них.", "tokens": [{"id": "t1", "text": "Ja"}, {"id": "t2", "text": "bih", "correct": true}, {"id": "t3", "text": "išao"}, {"id": "t4", "text": "u"}, {"id": "t5", "text": "Novi"}, {"id": "t6", "text": "Sad", "tail": ","}, {"id": "t7", "text": "a"}, {"id": "t8", "text": "vi"}, {"id": "t9", "text": "biste", "correct": true}, {"id": "t10", "text": "mogli"}, {"id": "t11", "text": "sa"}, {"id": "t12", "text": "nama", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_pasiv",
+      "title": "Пассивные конструкции",
+      "objectives": [
+        {"id": "obj_pasiv_dva_nacina", "title": "Строить пассив причастием и оборотом с se"}
+      ],
+      "lessons": [
+        {
+          "id": "l_42",
+          "title": "Вид глагола (продолжение). Пассивные конструкции",
+          "prerequisites": ["l_41"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Пассив в сербском строится двумя способами, и вид глагола решает, какой из них уместен."},
+              {"kind": "paragraph", "text": "**Причастный пассив**: *biti* плюс страдательное причастие. *Knjiga je pročitana* — книга прочитана. Совершенный вид даёт результат, состояние после действия."},
+              {"kind": "paragraph", "text": "**Пассив с se**: *Kuća se gradi* — дом строится. Здесь несовершенный вид и процесс, который идёт прямо сейчас."},
+              {"kind": "terms", "title": "СТРАДАТЕЛЬНОЕ ПРИЧАСТИЕ", "rows": [
+                {"term": "čitati → čitan", "gloss": "читаемый", "note": "суффикс -n"},
+                {"term": "pročitati → pročitan", "gloss": "прочитанный", "note": ""},
+                {"term": "otvoriti → otvoren", "gloss": "открытый", "note": "суффикс -en"},
+                {"term": "uzeti → uzet", "gloss": "взятый", "note": "суффикс -t"}
+              ]},
+              {"kind": "example", "serbian": "Prozor je otvoren, a kuća se gradi.", "russian": "Окно открыто, а дом строится.", "highlight": "otvoren"},
+              {"kind": "tip", "text": "Выбор между двумя пассивами почти механический. Готовый результат — причастие: *vrata su zatvorena*. Идущий процесс — *se*: *vrata se zatvaraju*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Книга прочитана»?", "explanation": "Knjiga je pročitana. Причастие согласуется с подлежащим в женском роде.", "options": [{"id": "a", "text": "Knjiga je pročitana.", "correct": true}, {"id": "b", "text": "Knjiga je pročitan."}, {"id": "c", "text": "Knjiga se pročita."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте глагол со страдательным причастием", "explanation": "Суффиксы страдательного причастия: -n, -en, -t.", "leftLabel": "Глагол", "rightLabel": "Причастие", "pairs": [{"left": "pročitati", "right": "pročitan"}, {"left": "otvoriti", "right": "otvoren"}, {"left": "uzeti", "right": "uzet"}, {"left": "napisati", "right": "napisan"}], "distractorsRight": ["otvorit"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "«Дом строится» — какой пассив?", "explanation": "Kuća se gradi. Идущий процесс выражается оборотом с se и несовершенным видом.", "options": [{"id": "a", "text": "Kuća se gradi.", "correct": true}, {"id": "b", "text": "Kuća je građena."}, {"id": "c", "text": "Kuća gradi se."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте причастие: «Окно открыто»", "explanation": "Prozor je otvoren. Причастие согласуется с prozor в мужском роде.", "segments": [{"kind": "text", "text": "Prozor je "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["otvoren"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "В чём разница между «vrata su zatvorena» и «vrata se zatvaraju»?", "explanation": "Первое — готовое состояние: дверь закрыта. Второе — идущий процесс: дверь закрывается.", "options": [{"id": "a", "text": "Первое результат, второе процесс", "correct": true}, {"id": "b", "text": "Первое разговорное, второе книжное"}, {"id": "c", "text": "Разницы нет"}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте объявление", "text": "Zgrada se renovira. Prvi sprat je već završen, a drugi se još radi. Ulaz je zatvoren, koristi se sporedni ulaz.", "translation": "Здание ремонтируется. Первый этаж уже закончен, а второй ещё делается. Вход закрыт, используется боковой вход.", "explanation": "Se renovira и se radi — процесс. Je završen и je zatvoren — результат.", "questions": [
+              {"id": "q1", "prompt": "Koji sprat je gotov?", "options": [{"id": "a", "text": "Prvi.", "correct": true}, {"id": "b", "text": "Drugi."}, {"id": "c", "text": "Nijedan."}]},
+              {"id": "q2", "prompt": "Zašto «je zatvoren», a ne «se zatvara»?", "options": [{"id": "a", "text": "Zato što je to gotovo stanje, a ne radnja u toku.", "correct": true}, {"id": "b", "text": "Zato što je «ulaz» muškog roda."}, {"id": "c", "text": "Zato što se «se» ne koristi u objavama."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_participi",
+      "title": "Причастия и деепричастия",
+      "objectives": [
+        {"id": "obj_participi_dva", "title": "Различать действительное и страдательное причастие"},
+        {"id": "obj_glagolski_prilozi", "title": "Образовывать деепричастия и понимать правило общего подлежащего"}
+      ],
+      "lessons": [
+        {
+          "id": "l_43",
+          "title": "Причастия",
+          "prerequisites": ["l_42"],
+          "objectives": ["obj_participi_dva"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Причастий в сербском два, и с одним мы уже работали, не называя его так."},
+              {"kind": "terms", "title": "ДВА ПРИЧАСТИЯ", "rows": [
+                {"term": "radni glagolski pridev", "gloss": "действительное: radio, radila", "note": "строит перфект, футур II и кондиционал"},
+                {"term": "trpni glagolski pridev", "gloss": "страдательное: pročitan, otvoren", "note": "строит пассив и работает как прилагательное"}
+              ]},
+              {"kind": "paragraph", "text": "Страдательное причастие ведёт себя как обычное прилагательное: склоняется, согласуется и может стоять прямо при существительном. *Pročitana knjiga*, *otvoren prozor*, *napisano pismo*."},
+              {"kind": "example", "serbian": "Na stolu leži pročitana knjiga.", "russian": "На столе лежит прочитанная книга.", "highlight": "pročitana"},
+              {"kind": "paragraph", "text": "Действительное причастие самостоятельно не употребляется. Оно всегда идёт со вспомогательным глаголом: *sam radio*, *bih radio*, *budem radio*. Форма *radio* сама по себе не предложение."},
+              {"kind": "tip", "text": "Различить их проще всего по вопросу. *Radio* отвечает «что делал», это про действующего. *Pročitan* отвечает «какой», это про того, над кем действие совершили."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Какое причастие в «Knjiga je pročitana»?", "explanation": "Страдательное: книга не действует, действие совершили над ней.", "options": [{"id": "a", "text": "Страдательное", "correct": true}, {"id": "b", "text": "Действительное"}, {"id": "c", "text": "Оба сразу"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте форму с типом причастия", "explanation": "Формы на -o и -la действительные, на -n, -en и -t страдательные, а неизменяемое -ći это уже деепричастие.", "leftLabel": "Форма", "rightLabel": "Тип", "pairs": [{"left": "radila", "right": "действительное причастие"}, {"left": "pročitan", "right": "страдательное причастие"}, {"left": "radeći", "right": "деепричастие"}], "distractorsRight": ["наречие"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте страдательное причастие: «прочитанная книга»", "explanation": "Pročitana knjiga. Причастие согласуется с существительным как прилагательное.", "segments": [{"kind": "text", "text": "Na stolu leži "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " knjiga."}], "blanks": [{"id": "b1", "acceptedAnswers": ["pročitana"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему форма «radio» не может стоять в предложении одна?", "explanation": "Действительное причастие всегда требует вспомогательного глагола: sam radio, bih radio, budem radio.", "options": [{"id": "a", "text": "Ему нужен вспомогательный глагол", "correct": true}, {"id": "b", "text": "Она бывает только в письменной речи"}, {"id": "c", "text": "Она совпадает со словом «радио» и вызывает путаницу"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Написанное письмо лежит на столе»", "explanation": "Napisano pismo leži na stolu. Страдательное причастие стоит при существительном как прилагательное.", "tokens": [{"id": "t1", "text": "Napisano"}, {"id": "t2", "text": "pismo"}, {"id": "t3", "text": "leži"}, {"id": "t4", "text": "na"}, {"id": "t5", "text": "stolu"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "Napisan"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте страдательные причастия", "targetLabel": "страдательные причастия", "translation": "Окно открыто, письмо написано, а книгу я читал вчера.", "explanation": "Otvoren и napisano — страдательные. Čitao — действительное причастие при вспомогательном sam.", "tokens": [{"id": "t1", "text": "Prozor"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "otvoren", "correct": true, "tail": ","}, {"id": "t4", "text": "pismo"}, {"id": "t5", "text": "je"}, {"id": "t6", "text": "napisano", "correct": true, "tail": ","}, {"id": "t7", "text": "a"}, {"id": "t8", "text": "knjigu"}, {"id": "t9", "text": "sam"}, {"id": "t10", "text": "čitao"}, {"id": "t11", "text": "juče", "tail": "."}]}
+          ]
+        },
+        {
+          "id": "l_44",
+          "title": "Деепричастия",
+          "prerequisites": ["l_43"],
+          "objectives": ["obj_glagolski_prilozi"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Деепричастие описывает второе, побочное действие. Оно не меняется ни по роду, ни по числу, ни по падежу: одна форма на все случаи."},
+              {"kind": "terms", "title": "ДВА ДЕЕПРИЧАСТИЯ", "rows": [
+                {"term": "настоящего времени: -ći", "gloss": "radeći, čitajući, idući", "note": "от формы «они» плюс -ći"},
+                {"term": "прошедшего времени: -vši", "gloss": "uradivši, pročitavši", "note": "от инфинитива, книжная форма"}
+              ]},
+              {"kind": "paragraph", "text": "Деепричастие настоящего времени образуется от третьего лица множественного числа: *rade → radeći*, *čitaju → čitajući*, *idu → idući*. Тот же приём, что и у императива."},
+              {"kind": "example", "serbian": "Radeći u Beogradu, naučio je srpski.", "russian": "Работая в Белграде, он выучил сербский.", "highlight": "Radeći"},
+              {"kind": "paragraph", "text": "Правило одно, и оно жёсткое: **действие деепричастия и действие глагола принадлежат одному лицу**. «Radeći u Beogradu, srpski je postao lak» неверно — работал человек, а лёгким стал язык."},
+              {"kind": "tip", "text": "Форма на *-vši* почти не встречается в разговоре. Её место — письменный текст, и в речи её заменяют придаточным: вместо *pročitavši knjigu* говорят *kada je pročitao knjigu*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как будет деепричастие от «raditi»?", "explanation": "Radeći. Берётся форма третьего лица множественного числа rade и добавляется -ći.", "options": [{"id": "a", "text": "radeći", "correct": true}, {"id": "b", "text": "raditi"}, {"id": "c", "text": "radivši"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте форму «они» с деепричастием", "explanation": "Деепричастие настоящего времени строится от третьего лица множественного числа плюс -ći.", "leftLabel": "Они", "rightLabel": "Деепричастие", "pairs": [{"left": "rade", "right": "radeći"}, {"left": "čitaju", "right": "čitajući"}, {"left": "idu", "right": "idući"}, {"left": "pišu", "right": "pišući"}], "distractorsRight": ["raditići"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Образуйте деепричастие от «čitati»", "explanation": "Čitajući knjigu, naučio je mnogo. От формы čitaju плюс -ći.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " knjigu, naučio je mnogo."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Čitajući", "čitajući"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «Radeći u Beogradu, srpski je postao lak» неверно?", "explanation": "Деепричастие и глагол должны относиться к одному лицу. Здесь работал человек, а лёгким стал язык.", "options": [{"id": "a", "text": "Деепричастие и глагол относятся к разным лицам", "correct": true}, {"id": "b", "text": "Деепричастие нельзя ставить первым"}, {"id": "c", "text": "Слово srpski нельзя использовать как подлежащее"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Работая в Белграде, он выучил сербский»", "explanation": "Radeći u Beogradu, naučio je srpski. Оба действия принадлежат одному человеку.", "tokens": [{"id": "t1", "text": "Radeći"}, {"id": "t2", "text": "u"}, {"id": "t3", "text": "Beogradu"}, {"id": "t4", "text": ","}, {"id": "t5", "text": "naučio"}, {"id": "t6", "text": "je"}, {"id": "t7", "text": "srpski"}, {"id": "t8", "text": "."}], "distractorTokens": [{"id": "d1", "text": "Radivši"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Чем деепричастие отличается от причастия?", "explanation": "Деепричастие неизменяемо, а причастие согласуется по роду, числу и падежу.", "options": [{"id": "a", "text": "Деепричастие не меняется по роду, числу и падежу", "correct": true}, {"id": "b", "text": "Деепричастие бывает только в прошедшем времени"}, {"id": "c", "text": "Деепричастие всегда стоит в конце предложения"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_red_reci_2",
+      "title": "Порядок слов целиком",
+      "objectives": [
+        {"id": "obj_klitike_redosled", "title": "Расставлять несколько безударных слов в правильном порядке"}
+      ],
+      "lessons": [
+        {
+          "id": "l_45",
+          "title": "Порядок слов в сербском предложении",
+          "prerequisites": ["l_44"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "В самом начале курса было простое правило: безударное слово занимает второе место. Теперь безударных слов стало много, и между собой они выстраиваются в жёсткой очереди."},
+              {"kind": "terms", "title": "ОЧЕРЕДЬ БЕЗУДАРНЫХ СЛОВ", "rows": [
+                {"term": "1. li", "gloss": "вопросительная частица", "note": "Da li si..."},
+                {"term": "2. ću, ćeš, bih, sam, si", "gloss": "вспомогательные глаголы", "note": "кроме je"},
+                {"term": "3. mi, ti, mu, joj, im", "gloss": "дательный падеж", "note": "Javio mi se."},
+                {"term": "4. me, te, ga, ih", "gloss": "винительный падеж", "note": "Dao mi ga je."},
+                {"term": "5. se", "gloss": "возвратное слово", "note": "идёт после местоимений"},
+                {"term": "6. je", "gloss": "третье лицо «есть»", "note": "уходит в самый конец очереди"}
+              ]},
+              {"kind": "example", "serbian": "Da li si mu se javio?", "russian": "Ты ему позвонил?", "highlight": "si mu se"},
+              {"kind": "paragraph", "text": "Форма *je* — единственная, которая выбивается из общего правила: она встаёт последней, после всех местоимений. *Dao mi ga je* — «он мне его дал»."},
+              {"kind": "paragraph", "text": "Ударные слова расставляются свободнее. Обычный порядок — подлежащее, сказуемое, дополнение, но всё, что нужно выделить, уходит в начало: *Knjigu sam kupio, ne olovku*."},
+              {"kind": "tip", "text": "Если сомневаетесь в очереди, произнесите фразу вслух одним куском без пауз. Верный порядок звучит слитно, неверный спотыкается — сербы и сами так проверяют."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как правильно: «Ты ему позвонил?»", "explanation": "Da li si mu se javio? Очередь: li, вспомогательный si, дательное mu и только потом se.", "options": [{"id": "a", "text": "Da li si mu se javio?", "correct": true}, {"id": "b", "text": "Da li se mu si javio?"}, {"id": "c", "text": "Da li mu si se javio?"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Где в очереди стоит «je»?", "explanation": "Форма je уходит в конец очереди, после всех местоимений: Dao mi ga je.", "options": [{"id": "a", "text": "В самом конце, после местоимений", "correct": true}, {"id": "b", "text": "Сразу после li"}, {"id": "c", "text": "Перед se"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Он мне его дал»", "explanation": "Dao mi ga je. Дательное mi, потом винительное ga, и je в самом конце.", "tokens": [{"id": "t1", "text": "Dao"}, {"id": "t2", "text": "mi"}, {"id": "t3", "text": "ga"}, {"id": "t4", "text": "je"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "meni"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте безударное слово с его местом в очереди", "explanation": "Очередь фиксированная: li, вспомогательный глагол, дательный, винительный, se, je.", "leftLabel": "Слово", "rightLabel": "Место в очереди", "pairs": [{"left": "li", "right": "первое"}, {"left": "sam", "right": "второе"}, {"left": "mu", "right": "третье"}, {"left": "je", "right": "последнее"}], "distractorsRight": ["не входит в очередь"]},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Поставьте «se» на место: «Ja ___ nisam javio»", "explanation": "Ja se nisam javio. Слово se идёт после первого ударного слова, перед отрицательной формой.", "segments": [{"kind": "text", "text": "Ja "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " nisam javio."}], "blanks": [{"id": "b1", "acceptedAnswers": ["se"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Что значит порядок «Knjigu sam kupio»?", "explanation": "Дополнение вынесено вперёд, чтобы его выделить: «книгу я купил», а не что-то другое.", "options": [{"id": "a", "text": "Выделено дополнение: купил именно книгу", "correct": true}, {"id": "b", "text": "Это ошибка, дополнение не может стоять первым"}, {"id": "c", "text": "Это вопросительное предложение"}]}
+          ]
+        }
+      ]
+    }
+  ]
+}

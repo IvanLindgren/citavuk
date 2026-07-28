@@ -172,7 +172,8 @@ class PrepositionGovernmentCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 3),
               child: Text(g.meaning,
                   style: TextStyle(
-                      fontSize: 13, color: scheme.onSurface.withValues(alpha: 0.85))),
+                      fontSize: 13,
+                      color: scheme.onSurface.withValues(alpha: 0.85))),
             ),
           ),
         ],

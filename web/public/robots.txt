@@ -1,0 +1,16 @@
+# Личные разделы закрыты не ради секретности — они и так пусты без входа, — а
+# чтобы поисковик не индексировал десяток одинаковых пустых экранов и не считал
+# сайт набором страниц ни о чём.
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /library
+Disallow: /cards
+Disallow: /palace
+Disallow: /reader/
+Disallow: /admin
+Disallow: /login
+Disallow: /verify-email
+Disallow: /auth/
+
+Sitemap: https://citavuk.ru/sitemap.xml

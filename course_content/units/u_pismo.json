@@ -1,0 +1,1505 @@
+{
+  "id": "u_pismo",
+  "title": "Урок 1. Сербский алфавит",
+  "description": "Две графики сербского языка, особые буквы и произношение. В конце — необязательный урок о том, один это язык с хорватским или разные.",
+  "skills": [
+    {
+      "id": "sk_dve_grafike",
+      "title": "Две графики",
+      "objectives": [
+        {
+          "id": "obj_grafike_dve",
+          "title": "Знать, что в сербском две равноправные графики"
+        },
+        {
+          "id": "obj_grafike_parovi",
+          "title": "Соотносить кириллические и латинские буквы"
+        },
+        {
+          "id": "obj_grafike_digrafi",
+          "title": "Понимать, что lj, nj, dž — одна буква"
+        },
+        {
+          "id": "obj_grafike_osobye",
+          "title": "Различать буквы, которых нет в русском"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "l_pismo_1",
+          "title": "Две азбуки",
+          "prerequisites": [],
+          "scriptLesson": true,
+          "intro": {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "В Сербии и Черногории используются две графики: кириллица (официальное письмо) и латиница. В Хорватии, Боснии и Герцеговине — латиница."
+              },
+              {
+                "kind": "tip",
+                "text": "Соответствие взаимно однозначное: каждой букве одной графики отвечает ровно одна буква другой. Выучив таблицу, вы читаете оба письма."
+              },
+              {
+                "kind": "terms",
+                "title": "БУКВЫ, КОТОРЫХ НЕТ В РУССКОМ",
+                "rows": [
+                  {
+                    "term": "ј",
+                    "gloss": "j",
+                    "note": "југ = jug «юг»"
+                  },
+                  {
+                    "term": "љ",
+                    "gloss": "lj",
+                    "note": "љубав = ljubav «любовь»"
+                  },
+                  {
+                    "term": "њ",
+                    "gloss": "nj",
+                    "note": "њушка = njuška «морда»"
+                  },
+                  {
+                    "term": "ћ",
+                    "gloss": "ć",
+                    "note": "ћерка = ćerka «дочка»"
+                  },
+                  {
+                    "term": "ђ",
+                    "gloss": "đ",
+                    "note": "ђак = đak «ученик»"
+                  },
+                  {
+                    "term": "џ",
+                    "gloss": "dž",
+                    "note": "џип = džip «джип»"
+                  }
+                ]
+              }
+            ],
+            "sourceRef": {
+              "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+              "sourceHeading": "Графика • Grafika",
+              "sourceAnchor": "md:318-380",
+              "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+              "contentVersion": "1.0.0",
+              "reviewStatus": "machine_checked",
+              "reviewedBy": null,
+              "supplemental": false
+            }
+          },
+          "exercises": [
+            {
+              "id": "ex_pismo_1_1",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_dve"
+              ],
+              "difficulty": 1,
+              "prompt": "Сколько систем письма используется в сербском языке?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "В сербском две равноправные графики: кириллица (официальное письмо) и латиница. Одному звуку соответствует одна буква в обеих системах.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Две: кириллица и латиница",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Одна, только кириллица",
+                  "correct": false,
+                  "misconceptionId": "misc_pismo_only_cyrillic",
+                  "feedbackKey": "fb_pismo_dve_grafike"
+                },
+                {
+                  "id": "o3",
+                  "text": "Одна, только латиница",
+                  "correct": false,
+                  "misconceptionId": "misc_pismo_only_latin",
+                  "feedbackKey": "fb_pismo_dve_grafike"
+                },
+                {
+                  "id": "o4",
+                  "text": "Три",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_1_2",
+              "type": "matching",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 1,
+              "prompt": "Для начала сопоставьте две буквы",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Соответствие букв взаимно однозначное: каждой кириллической букве отвечает ровно одна латинская буква или диграф.",
+              "hint": "В обеих латинских буквах есть «крышечка».",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "leftLabel": "Кириллица",
+              "rightLabel": "Латиница",
+              "pairs": [
+                {
+                  "left": "ж",
+                  "right": "ž"
+                },
+                {
+                  "left": "ш",
+                  "right": "š"
+                }
+              ],
+              "distractorsRight": [
+                "č",
+                "ć",
+                "c"
+              ]
+            },
+            {
+              "id": "ex_pismo_1_3",
+              "type": "matching",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 2,
+              "prompt": "Сопоставьте буквы, которых нет в русском алфавите",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Буквы ј, љ, њ, ћ, ђ, џ есть в сербской кириллице, но отсутствуют в русской. В латинице им отвечают j, lj, nj, ć, đ, dž.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "leftLabel": "Кириллица",
+              "rightLabel": "Латиница",
+              "pairs": [
+                {
+                  "left": "ј",
+                  "right": "j"
+                },
+                {
+                  "left": "љ",
+                  "right": "lj"
+                },
+                {
+                  "left": "њ",
+                  "right": "nj"
+                },
+                {
+                  "left": "џ",
+                  "right": "dž"
+                }
+              ],
+              "distractorsRight": [
+                "đ",
+                "ć"
+              ]
+            },
+            {
+              "id": "ex_pismo_1_4",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_digrafi"
+              ],
+              "difficulty": 2,
+              "prompt": "Сколько букв кириллицы соответствует латинскому «lj» в слове ljubav?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Латинские lj, nj, dž — диграфы: два латинских знака передают одну букву кириллицы. Ljubav пишется как љубав: љ — одна буква.",
+              "hint": "Посмотрите на кириллическую запись слова: љубав.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Одна: љ",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Две: л и ј",
+                  "correct": false,
+                  "misconceptionId": "misc_digraf_kak_dve_bukvy",
+                  "feedbackKey": "fb_digrafi"
+                },
+                {
+                  "id": "o3",
+                  "text": "Ни одной, такого звука в кириллице нет",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_1_5",
+              "type": "fill_blank",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 2,
+              "prompt": "Запишите латиницей кириллическое слово «срце» («сердце»)",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Кириллическое с — латинское s, р — r, ц — c, е — e. Получается srce.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "segments": [
+                {
+                  "kind": "text",
+                  "text": "срце = "
+                },
+                {
+                  "kind": "blank",
+                  "id": "b1"
+                },
+                {
+                  "kind": "text",
+                  "text": ""
+                }
+              ],
+              "blanks": [
+                {
+                  "id": "b1",
+                  "acceptedAnswers": [
+                    "srce"
+                  ],
+                  "caseSensitive": false
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_1_6",
+              "type": "fill_blank",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 3,
+              "prompt": "Запишите латиницей кириллическое слово «жена» («женщина»)",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Кириллическое ж передаётся латинским ž с крышечкой: žena. Простое z читалось бы как з.",
+              "hint": "Над первой буквой нужна крышечка.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "segments": [
+                {
+                  "kind": "text",
+                  "text": "жена = "
+                },
+                {
+                  "kind": "blank",
+                  "id": "b1"
+                }
+              ],
+              "blanks": [
+                {
+                  "id": "b1",
+                  "acceptedAnswers": [
+                    "žena"
+                  ],
+                  "caseSensitive": false
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_1_7",
+              "type": "letter_unscramble",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 3,
+              "prompt": "Соберите латиницей слово «шума» («лес»)",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Кириллическое ш — латинское š. Получается šuma.",
+              "hint": "Лишняя буква s здесь не нужна: нужна š.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "context": "Кириллицей это слово пишется «шума».",
+              "lemma": "šuma",
+              "targetFeats": "Case=Nom|Number=Sing",
+              "answer": "šuma",
+              "extraLetters": [
+                "s"
+              ],
+              "showLemma": false,
+              "highlightStem": "",
+              "digraphsAsUnits": false
+            },
+            {
+              "id": "ex_pismo_1_8",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_1",
+              "learningObjectiveIds": [
+                "obj_grafike_dve"
+              ],
+              "difficulty": 2,
+              "prompt": "Какая графика считается в Сербии официальной?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "В Сербии официальной графикой является кириллица, но латиница используется наравне с ней. В Хорватии и Боснии — латиница.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Кириллица",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Латиница",
+                  "correct": false,
+                  "misconceptionId": "misc_pismo_official_latin",
+                  "feedbackKey": "fb_pismo_official"
+                },
+                {
+                  "id": "o3",
+                  "text": "Обе одинаково официальны",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "l_pismo_2",
+          "title": "Особые буквы и звуки",
+          "prerequisites": [
+            "l_pismo_1"
+          ],
+          "scriptLesson": true,
+          "intro": {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Латинские *lj*, *nj*, *dž* — диграфы: два знака передают одну букву сербского алфавита. В кириллице им отвечают одиночные љ, њ, џ."
+              },
+              {
+                "kind": "example",
+                "serbian": "ljubav",
+                "russian": "любовь. Кириллицей — љубав: четыре буквы, а не пять.",
+                "highlight": "lj"
+              },
+              {
+                "kind": "tip",
+                "text": "Гласных в сербском пять: *a, e, i, o, u*. Зато согласный *r* умеет образовывать слог сам: *trg* «площадь», *krst* «крест»."
+              }
+            ],
+            "sourceRef": {
+              "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+              "sourceHeading": "Графика • Grafika — звуки и звонкость",
+              "sourceAnchor": "md:381-400",
+              "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+              "contentVersion": "1.0.0",
+              "reviewStatus": "machine_checked",
+              "reviewedBy": null,
+              "supplemental": false
+            }
+          },
+          "exercises": [
+            {
+              "id": "ex_pismo_2_1",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_osobye"
+              ],
+              "difficulty": 2,
+              "prompt": "Какая пара букв различается в сербском, но сливается у изучающих?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "č и ć — разные буквы и разные звуки: č твёрже (как русское ч), ć мягче. Их смешение меняет слово, поэтому крышечку и штрих нужно различать.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "č и ć",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "a и o",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o3",
+                  "text": "m и n",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_2_2",
+              "type": "matching",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_osobye"
+              ],
+              "difficulty": 3,
+              "prompt": "Сопоставьте букву с примером слова",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Каждая из особых букв встречается в частотных словах: ć — ćerka «дочка», đ — đak «ученик», dž — džip «джип», š — širok «широкий».",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "leftLabel": "Буква",
+              "rightLabel": "Пример",
+              "pairs": [
+                {
+                  "left": "ć",
+                  "right": "ćerka «дочка»"
+                },
+                {
+                  "left": "đ",
+                  "right": "đak «ученик»"
+                },
+                {
+                  "left": "dž",
+                  "right": "džip «джип»"
+                },
+                {
+                  "left": "š",
+                  "right": "širok «широкий»"
+                }
+              ],
+              "distractorsRight": [
+                "čas «час»"
+              ]
+            },
+            {
+              "id": "ex_pismo_2_3",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_digrafi"
+              ],
+              "difficulty": 3,
+              "prompt": "Сколько букв в латинском слове «džep» («карман»), если считать по-сербски?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Диграф dž — одна буква сербского алфавита. Поэтому в džep три буквы: dž, e, p — хотя латинских знаков четыре.",
+              "hint": "Кириллицей это слово пишется џеп — посчитайте буквы там.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Три: dž, e, p",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Четыре: d, ž, e, p",
+                  "correct": false,
+                  "misconceptionId": "misc_digraf_kak_dve_bukvy",
+                  "feedbackKey": "fb_digrafi"
+                },
+                {
+                  "id": "o3",
+                  "text": "Две",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_2_4",
+              "type": "letter_unscramble",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_digrafi"
+              ],
+              "difficulty": 3,
+              "prompt": "Соберите слово «ljubav» («любовь»), считая lj одной буквой",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "В этом упражнении диграф lj — одна плитка, как одна буква љ кириллицы.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "context": "Кириллицей: љубав.",
+              "lemma": "ljubav",
+              "targetFeats": "Case=Nom|Number=Sing",
+              "answer": "ljubav",
+              "extraLetters": [],
+              "showLemma": false,
+              "highlightStem": "",
+              "digraphsAsUnits": true
+            },
+            {
+              "id": "ex_pismo_2_5",
+              "type": "fill_blank",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_parovi"
+              ],
+              "difficulty": 3,
+              "prompt": "Запишите латиницей «ђак» («ученик»)",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Кириллическое ђ передаётся латинским đ — d с перечёркиванием. Это отдельная буква, а не d.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika",
+                "sourceAnchor": "md:318-380",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "segments": [
+                {
+                  "kind": "text",
+                  "text": "ђак = "
+                },
+                {
+                  "kind": "blank",
+                  "id": "b1"
+                }
+              ],
+              "blanks": [
+                {
+                  "id": "b1",
+                  "acceptedAnswers": [
+                    "đak"
+                  ],
+                  "caseSensitive": false
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_2_6",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_osobye"
+              ],
+              "difficulty": 2,
+              "prompt": "Сколько гласных звуков в сербском языке?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Гласных пять: a, e, i, o, u. Они произносятся примерно как соответствующие русские звуки.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Пять: a, e, i, o, u",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Шесть, как в русском",
+                  "correct": false,
+                  "misconceptionId": "misc_glasnye_kak_v_russkom",
+                  "feedbackKey": "fb_pyat_glasnyh"
+                },
+                {
+                  "id": "o3",
+                  "text": "Десять",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_2_7",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_osobye"
+              ],
+              "difficulty": 3,
+              "prompt": "Что необычного в слове «trg» («площадь»)?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "В сербском согласный r может быть слогообразующим — образовывать слог без гласной. Так устроены trg «площадь», krst «крест», rvač «борец».",
+              "hint": "Посмотрите, есть ли в слове хоть одна из букв a, e, i, o, u.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "В нём нет гласной: слог образует согласный r",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Оно читается с призвуком «ы»",
+                  "correct": false,
+                  "misconceptionId": "misc_slogovoe_r_kak_y",
+                  "feedbackKey": "fb_slogovoe_r"
+                },
+                {
+                  "id": "o3",
+                  "text": "Это заимствование, оно не склоняется",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_2_8",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_dve_grafike",
+              "lessonId": "l_pismo_2",
+              "learningObjectiveIds": [
+                "obj_grafike_osobye"
+              ],
+              "difficulty": 3,
+              "prompt": "В каком слове r является слогообразующим?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Слогообразующий r стоит между согласными и сам образует слог: krst. В ruka r стоит перед гласной и слогом не является.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "krst «крест»",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "ruka «рука»",
+                  "correct": false,
+                  "misconceptionId": "misc_slogovoe_r_pered_glasnoj",
+                  "feedbackKey": "fb_slogovoe_r"
+                },
+                {
+                  "id": "o3",
+                  "text": "srce «сердце»",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "l_bcms",
+          "title": "Сербский, хорватский, боснийский, черногорский: один язык или нет?",
+          "prerequisites": [
+            "l_pismo_1"
+          ],
+          "optional": true,
+          "sourceRef": {
+            "sourceBook": "Danko Šipka. Serbo-Croatian–English Colloquial Dictionary, введение; Устав Републике Србије, чл. 10; официальные грамматики BCMS",
+            "sourceHeading": "Авторский обзор: сербский, хорватский, боснийский и черногорский как стандарты одного языка",
+            "sourceAnchor": "authored",
+            "sourceEditionOrFileHash": "n/a",
+            "contentVersion": "2.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "intro": {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Урок по желанию. Его можно пройти сейчас, можно пропустить и вернуться позже: на остальной курс он не влияет."
+              },
+              {
+                "kind": "paragraph",
+                "text": "Лингвисты называют это одним языком с четырьмя стандартами, сокращённо BCMS. Люди из Белграда, Загреба, Сараева и Подгорицы понимают друг друга без словаря и без привыкания. Разница между ними меньше, чем между речью Москвы и деревни под Архангельском."
+              },
+              {
+                "kind": "paragraph",
+                "text": "При этом каждая страна признаёт свой стандарт отдельным языком, и это решение не лингвистическое, а государственное. Спорить с ним бессмысленно: обе стороны говорят о разном. Учёный смотрит на взаимопонимание, государство — на границу."
+              },
+              {
+                "kind": "terms",
+                "title": "ЧЕМ РЕАЛЬНО ОТЛИЧАЮТСЯ",
+                "rows": [
+                  {
+                    "term": "письменность",
+                    "gloss": "сербский обе, остальные латиница",
+                    "note": "сербский равноправно пишет и кириллицей, и латиницей"
+                  },
+                  {
+                    "term": "экавица и иекавица",
+                    "gloss": "mleko / mlijeko",
+                    "note": "Белград говорит mleko, Загреб и Сараево mlijeko"
+                  },
+                  {
+                    "term": "лексика",
+                    "gloss": "voz / vlak, hleb / kruh",
+                    "note": "несколько сотен слов, не тысячи"
+                  },
+                  {
+                    "term": "инфинитив",
+                    "gloss": "hoću da radim / hoću raditi",
+                    "note": "сербский предпочитает da, хорватский инфинитив"
+                  },
+                  {
+                    "term": "буквы",
+                    "gloss": "черногорский добавил ś и ź",
+                    "note": "на письме встречаются редко"
+                  }
+                ]
+              },
+              {
+                "kind": "example",
+                "serbian": "Hoću da radim. — Hoću raditi.",
+                "russian": "Хочу работать. Первый вариант сербский, второй хорватский.",
+                "highlight": "da radim"
+              },
+              {
+                "kind": "paragraph",
+                "text": "Для учащегося вывод простой. Выучив сербский, вы понимаете хорватский, боснийский и черногорский сразу, а разницу подхватываете за пару недель жизни на месте. Отдельно учить их не нужно."
+              },
+              {
+                "kind": "tip",
+                "text": "В Сербии тексты одинаково часто набирают латиницей и кириллицей, поэтому читать надо уметь обе. В Хорватии и Боснии кириллица в быту почти не встречается."
+              }
+            ]
+          },
+          "exercises": [
+            {
+              "type": "multiple_choice",
+              "difficulty": 1,
+              "prompt": "Понимают ли друг друга серб и хорват без переводчика?",
+              "explanation": "Да, полностью. Взаимопонимание почти стопроцентное, поэтому лингвисты и говорят об одном языке с четырьмя стандартами.",
+              "options": [
+                {
+                  "id": "a",
+                  "text": "Да, практически полностью",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Только на простые темы"
+                },
+                {
+                  "id": "c",
+                  "text": "Нет, нужен переводчик"
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "difficulty": 2,
+              "prompt": "Как по-хорватски будет сербское «mleko»?",
+              "explanation": "Mlijeko. Это различие экавицы и иекавицы, самое заметное между стандартами.",
+              "options": [
+                {
+                  "id": "a",
+                  "text": "mlijeko",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "mliko"
+                },
+                {
+                  "id": "c",
+                  "text": "mleko"
+                }
+              ]
+            },
+            {
+              "type": "matching",
+              "difficulty": 2,
+              "prompt": "Сопоставьте сербское слово с хорватским",
+              "explanation": "Расхождений в лексике несколько сотен, и почти все они бытовые.",
+              "leftLabel": "Сербский",
+              "rightLabel": "Хорватский",
+              "pairs": [
+                {
+                  "left": "voz",
+                  "right": "vlak"
+                },
+                {
+                  "left": "hleb",
+                  "right": "kruh"
+                },
+                {
+                  "left": "fudbal",
+                  "right": "nogomet"
+                },
+                {
+                  "left": "vazduh",
+                  "right": "zrak"
+                }
+              ],
+              "distractorsRight": [
+                "mlijeko"
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "difficulty": 1,
+              "prompt": "Какая письменность используется в Сербии?",
+              "explanation": "Обе равноправно. Кириллица официальная по Конституции, но латиница встречается в быту не реже.",
+              "options": [
+                {
+                  "id": "a",
+                  "text": "И кириллица, и латиница",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Только кириллица"
+                },
+                {
+                  "id": "c",
+                  "text": "Только латиница"
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "difficulty": 2,
+              "prompt": "Что означает сокращение BCMS?",
+              "explanation": "Bosnian, Croatian, Montenegrin, Serbian — четыре стандарта, которые лингвисты рассматривают вместе.",
+              "options": [
+                {
+                  "id": "a",
+                  "text": "Боснийский, хорватский, черногорский, сербский",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Балканский союз"
+                },
+                {
+                  "id": "c",
+                  "text": "Название реформы письменности"
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "difficulty": 2,
+              "prompt": "Нужно ли учить хорватский отдельно, если вы знаете сербский?",
+              "explanation": "Нет. Различия подхватываются за пару недель общения, отдельный курс не нужен.",
+              "options": [
+                {
+                  "id": "a",
+                  "text": "Нет, различия усваиваются по ходу",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Да, это разные языки с разной грамматикой"
+                },
+                {
+                  "id": "c",
+                  "text": "Да, у них разные падежные системы"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_izgovor",
+      "title": "Произношение",
+      "objectives": [
+        {
+          "id": "obj_izgovor_zvonkost",
+          "title": "Не оглушать звонкие согласные на конце слова"
+        },
+        {
+          "id": "obj_izgovor_slogovno_r",
+          "title": "Узнавать слогообразующий r"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "l_pismo_3",
+          "title": "Звонкие согласные и слоговое r",
+          "prerequisites": [
+            "l_pismo_2"
+          ],
+          "scriptLesson": true,
+          "intro": {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Самое частое произносительное отличие от русского: на конце слова звонкие согласные НЕ оглушаются."
+              },
+              {
+                "kind": "example",
+                "serbian": "zub",
+                "russian": "зуб. Произносится /zub/ со звонким b, а не «зуп», как по-русски.",
+                "highlight": "b"
+              },
+              {
+                "kind": "tip",
+                "text": "А вот внутри слова перед глухим согласным звонкий всё-таки оглушается: *poljubac* → *poljupci*."
+              }
+            ],
+            "sourceRef": {
+              "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+              "sourceHeading": "Графика • Grafika — звуки и звонкость",
+              "sourceAnchor": "md:381-400",
+              "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+              "contentVersion": "1.0.0",
+              "reviewStatus": "machine_checked",
+              "reviewedBy": null,
+              "supplemental": false
+            }
+          },
+          "exercises": [
+            {
+              "id": "ex_pismo_3_1",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_zvonkost"
+              ],
+              "difficulty": 2,
+              "prompt": "Как произносится конечный согласный в сербском слове zub «зуб»?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Главное отличие от русского: в конце слова звонкие согласные не оглушаются. Zub произносится со звонким b, а не как русское «зуп».",
+              "hint": "Вспомните, как вы произносите русское слово «зуб».",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Звонко: /zub/",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Глухо: /zup/, как в русском",
+                  "correct": false,
+                  "misconceptionId": "misc_oglushenie_kak_v_russkom",
+                  "feedbackKey": "fb_bez_oglusheniya"
+                },
+                {
+                  "id": "o3",
+                  "text": "Согласный не произносится",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_3_2",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_zvonkost"
+              ],
+              "difficulty": 3,
+              "prompt": "Что происходит со звонким согласным перед глухим?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Внутри слова перед глухим согласным звонкий оглушается: poljubac — poljupci (b → p). А вот на конце слова оглушения нет.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "Оглушается: poljubac → poljupci",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Остаётся звонким в любом положении",
+                  "correct": false,
+                  "misconceptionId": "misc_net_assimilyacii",
+                  "feedbackKey": "fb_assimilyaciya"
+                },
+                {
+                  "id": "o3",
+                  "text": "Выпадает",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_3_3",
+              "type": "fill_blank",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_zvonkost"
+              ],
+              "difficulty": 3,
+              "prompt": "Впишите форму множественного числа: poljubac → ___",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Перед глухим c звонкий b оглушается в p, а беглое a выпадает: poljubac → poljupci.",
+              "hint": "Два изменения сразу: b меняется, а гласный a исчезает.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "segments": [
+                {
+                  "kind": "text",
+                  "text": "poljubac «поцелуй» → "
+                },
+                {
+                  "kind": "blank",
+                  "id": "b1"
+                }
+              ],
+              "blanks": [
+                {
+                  "id": "b1",
+                  "acceptedAnswers": [
+                    "poljupci"
+                  ],
+                  "caseSensitive": false
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_3_4",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_zvonkost"
+              ],
+              "difficulty": 2,
+              "prompt": "Сербское слово «grad» на конце произносится…",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Конечный d остаётся звонким: /grad/. Русскоязычные по привычке говорят «грат» — это ошибка произношения.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "…звонко, /grad/",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "…глухо, /grat/",
+                  "correct": false,
+                  "misconceptionId": "misc_oglushenie_kak_v_russkom",
+                  "feedbackKey": "fb_bez_oglusheniya"
+                }
+              ]
+            },
+            {
+              "id": "ex_pismo_3_5",
+              "type": "letter_unscramble",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_slogovno_r"
+              ],
+              "difficulty": 3,
+              "prompt": "Соберите слово «rvač» («борец»)",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Слово начинается со слогообразующего r. Последняя буква — č с крышечкой.",
+              "hint": "Лишняя буква c не нужна — в конце стоит č.",
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "context": "Слово без единой гласной в первом слоге.",
+              "lemma": "rvač",
+              "targetFeats": "Case=Nom|Gender=Masc|Number=Sing",
+              "answer": "rvač",
+              "extraLetters": [
+                "c"
+              ],
+              "showLemma": false,
+              "highlightStem": "",
+              "digraphsAsUnits": false
+            },
+            {
+              "id": "ex_pismo_3_6",
+              "type": "matching",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_slogovno_r"
+              ],
+              "difficulty": 3,
+              "prompt": "Сопоставьте слово со слогообразующим r и его перевод",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "В этих словах r образует слог без помощи гласной.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "leftLabel": "Слово",
+              "rightLabel": "Перевод",
+              "pairs": [
+                {
+                  "left": "trg",
+                  "right": "площадь"
+                },
+                {
+                  "left": "krst",
+                  "right": "крест"
+                },
+                {
+                  "left": "rvač",
+                  "right": "борец"
+                }
+              ],
+              "distractorsRight": [
+                "рука"
+              ]
+            },
+            {
+              "id": "ex_pismo_3_7",
+              "type": "multiple_choice",
+              "unitId": "u_pismo",
+              "skillId": "sk_izgovor",
+              "lessonId": "l_pismo_3",
+              "learningObjectiveIds": [
+                "obj_izgovor_zvonkost",
+                "obj_grafike_dve"
+              ],
+              "difficulty": 4,
+              "prompt": "Русскоязычный читает сербское «Beograd» и произносит «Београт». В чём ошибка?",
+              "instructionLanguage": "ru",
+              "serbianScript": "both",
+              "explanation": "Перенесено русское оглушение на конце слова. В сербском конечный d остаётся звонким: /beograd/.",
+              "hint": null,
+              "sourceRef": {
+                "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+                "sourceHeading": "Графика • Grafika — звуки и звонкость",
+                "sourceAnchor": "md:381-400",
+                "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+                "contentVersion": "1.0.0",
+                "reviewStatus": "machine_checked",
+                "reviewedBy": null,
+                "supplemental": false
+              },
+              "contentReviewStatus": "machine_checked",
+              "multi": false,
+              "options": [
+                {
+                  "id": "o1",
+                  "text": "В сербском конечные звонкие не оглушаются",
+                  "correct": true,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                },
+                {
+                  "id": "o2",
+                  "text": "Ошибки нет, так и надо",
+                  "correct": false,
+                  "misconceptionId": "misc_oglushenie_kak_v_russkom",
+                  "feedbackKey": "fb_bez_oglusheniya"
+                },
+                {
+                  "id": "o3",
+                  "text": "Нужно читать «Београд» с ударением на последний слог",
+                  "correct": false,
+                  "misconceptionId": null,
+                  "feedbackKey": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Читавук
+GenericName=Сербский через чтение
+Comment=Перевод слова в контексте, разбор формы, карточки повторения
+# @PREFIX@ подставляет install.sh: куда распакуют архив, заранее неизвестно, а
+# ярлык обязан указывать на настоящий путь, иначе он просто ничего не запустит.
+Exec=@PREFIX@/srbski_read %U
+Icon=@PREFIX@/data/flutter_assets/assets/imgs/citavuk_icon.png
+Path=@PREFIX@
+Terminal=false
+StartupNotify=true
+Categories=Education;Languages;
+Keywords=serbian;srpski;сербский;reading;translation;

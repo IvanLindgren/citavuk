@@ -55,7 +55,8 @@ class MarkdownCards {
       final lemma = _cell(v['lemma']);
       final pos = GrammarEngine.posShort(_cell(v['pos']));
       final forms = _formsToText(v['forms']);
-      sb.writeln('| ${i + 1} | $word | $translation | $lemma | $pos | $forms |');
+      sb.writeln(
+          '| ${i + 1} | $word | $translation | $lemma | $pos | $forms |');
     }
 
     sb
@@ -172,7 +173,8 @@ class MarkdownCards {
       if (c == 'перевод' || c == 'translation' || c == 'значение') {
         idx['translation'] = i;
       }
-      if (c == 'лемма' || c == 'lemma') idx['lemma'] = i;
+      // «лемма» осталась ради уже сделанных файлов.
+      if (c == 'основа' || c == 'лемма' || c == 'lemma') idx['lemma'] = i;
       if (c == 'часть речи' || c == 'pos' || c == 'часть') idx['pos'] = i;
       if (c == 'формы' || c == 'forms') idx['forms'] = i;
     }

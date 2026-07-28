@@ -1,11 +1,20 @@
+import asyncio
+import io
 import os
 import sqlite3
+import hashlib
+from pathlib import Path
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Optional
 import logging
+
+try:
+    from .redis_cache import redis_cache
+except ImportError:
+    from redis_cache import redis_cache
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -40,6 +49,11 @@ def ping_self():
 async def lifespan(app: FastAPI):
     global nlp, nlp_active
     threading.Thread(target=ping_self, daemon=True).start()
+    if redis_cache.configured:
+        if redis_cache.ping():
+            logging.info("Redis cache connected.")
+        else:
+            logging.warning("Redis configured but unavailable; local caches remain active.")
     try:
         import classla
         logging.info("Downloading/verifying Serbian models...")
@@ -63,10 +77,185 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---------------------------------------------------------------------------
+# Извлечение документов. Обычные PDF и DOCX веб-клиент разбирает локально,
+# сюда попадают прежде всего PDF-сканы без текстового слоя.
+# ---------------------------------------------------------------------------
+
+_DOCUMENT_MAX_BYTES = 32 * 1024 * 1024
+_OCR_MAX_PAGES = 80
+_TESSDATA_DIR = Path(os.environ.get("CITAVUK_TESSDATA_DIR", "/tmp/citavuk-tessdata"))
+_TESSDATA_MODELS = ("srp", "srp_latn")
+_TESSDATA_BASE = (
+    "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main"
+)
+
+
+def _ensure_serbian_tessdata() -> Path:
+    """Загружает компактные официальные модели Tesseract при первом OCR."""
+    _TESSDATA_DIR.mkdir(parents=True, exist_ok=True)
+    for model in _TESSDATA_MODELS:
+        target = _TESSDATA_DIR / f"{model}.traineddata"
+        if target.exists() and target.stat().st_size > 100_000:
+            continue
+        temporary = target.with_suffix(".tmp")
+        urllib.request.urlretrieve(
+            f"{_TESSDATA_BASE}/{model}.traineddata",
+            temporary,
+        )
+        temporary.replace(target)
+    return _TESSDATA_DIR
+
+
+def _document_letter_count(text: str) -> int:
+    return sum(character.isalpha() for character in text)
+
+
+def _clean_document_text(text: str) -> str:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = re.sub(r"[ \t]+\n", "\n", text)
+    text = re.sub(r"\n[ \t]+", "\n", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return re.sub(r"\n{3,}", "\n\n", text).strip()
+
+
+def _extract_docx_bytes(data: bytes) -> dict:
+    from docx import Document
+
+    document = Document(io.BytesIO(data))
+    blocks = [paragraph.text.strip() for paragraph in document.paragraphs]
+    for table in document.tables:
+        for row in table.rows:
+            cells = [cell.text.strip() for cell in row.cells if cell.text.strip()]
+            if cells:
+                blocks.append(" | ".join(cells))
+    text = _clean_document_text("\n\n".join(block for block in blocks if block))
+    if not text:
+        raise ValueError("В DOCX не нашлось текста.")
+    return {
+        "text": text,
+        "pages": 0,
+        "scannedPages": 0,
+        "ocrUsed": False,
+    }
+
+
+def _ocr_pdf_page(page) -> str:
+    from PIL import ImageOps
+    import pytesseract
+
+    tessdata = _ensure_serbian_tessdata()
+    bitmap = page.render(scale=2.4)
+    try:
+        image = ImageOps.autocontrast(bitmap.to_pil().convert("L"))
+        return pytesseract.image_to_string(
+            image,
+            lang="srp+srp_latn",
+            config=f'--oem 1 --psm 6 --tessdata-dir "{tessdata}"',
+        )
+    finally:
+        bitmap.close()
+
+
+def _extract_pdf_bytes(data: bytes) -> dict:
+    import pypdfium2 as pdfium
+
+    document = pdfium.PdfDocument(data)
+    native_pages: list[str] = []
+    scanned_indexes: list[int] = []
+    try:
+        for index in range(len(document)):
+            page = document[index]
+            text_page = page.get_textpage()
+            try:
+                text = _clean_document_text(text_page.get_text_range())
+            finally:
+                text_page.close()
+                page.close()
+            native_pages.append(text)
+            if _document_letter_count(text) < 30:
+                scanned_indexes.append(index)
+
+        if len(scanned_indexes) > _OCR_MAX_PAGES:
+            raise ValueError(
+                "В PDF слишком много страниц-сканов для бесплатного OCR "
+                f"({len(scanned_indexes)}, максимум {_OCR_MAX_PAGES}). "
+                "Разделите файл на части."
+            )
+
+        for index in scanned_indexes:
+            page = document[index]
+            try:
+                native_pages[index] = _clean_document_text(_ocr_pdf_page(page))
+            finally:
+                page.close()
+    finally:
+        document.close()
+
+    text = _clean_document_text(
+        "\n\n".join(page for page in native_pages if page.strip())
+    )
+    if not text:
+        raise ValueError("Не удалось распознать текст в PDF.")
+    return {
+        "text": text,
+        "pages": len(native_pages),
+        "scannedPages": len(scanned_indexes),
+        "ocrUsed": bool(scanned_indexes),
+    }
+
+
+def _extract_document_bytes(filename: str, data: bytes) -> dict:
+    lowered = filename.lower()
+    if data.startswith(b"%PDF-") or lowered.endswith(".pdf"):
+        return _extract_pdf_bytes(data)
+    if data.startswith(b"PK") or lowered.endswith(".docx"):
+        return _extract_docx_bytes(data)
+    raise ValueError("Поддерживаются только PDF и DOCX.")
+
+
+@app.post("/documents/extract")
+async def extract_document(file: UploadFile = File(...)):
+    data = await file.read(_DOCUMENT_MAX_BYTES + 1)
+    if len(data) > _DOCUMENT_MAX_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail="Файл больше 32 МБ. Разделите его на несколько частей.",
+        )
+    if not data:
+        raise HTTPException(status_code=400, detail="Файл пуст.")
+
+    cache_key = hashlib.sha256(data).hexdigest()
+    cached = redis_cache.get_json(f"document:{cache_key}")
+    if isinstance(cached, dict) and cached.get("text"):
+        return cached
+
+    try:
+        result = await asyncio.to_thread(
+            _extract_document_bytes,
+            file.filename or "document",
+            data,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except Exception as error:
+        logging.exception("Document extraction failed")
+        raise HTTPException(
+            status_code=500,
+            detail="Не удалось извлечь текст из документа.",
+        ) from error
+
+    redis_cache.set_json(f"document:{cache_key}", result, 7 * 24 * 3600)
+    return result
+
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "nlp": nlp_active}
+    return {
+        "status": "ok",
+        "nlp": nlp_active,
+        "redis": redis_cache.ping() if redis_cache.configured else False,
+    }
 
 # DB path check
 DB_PATH = "lexicon.db"
@@ -199,18 +388,30 @@ def fetch_online_translation(word: str) -> str:
 
 @app.post("/analyze")
 def analyze_token(req: AnalyzeRequest):
+    analysis_key = hashlib.sha256(
+        (
+            f"{req.sentence}\0{req.start_offset}\0"
+            f"{req.end_offset}\0{req.token_text}"
+        ).encode("utf-8")
+    ).hexdigest()
+    cached_analysis = redis_cache.get_json(f"analysis:{analysis_key}")
+    if isinstance(cached_analysis, dict):
+        return cached_analysis
+
     word_lat = to_latin(req.token_text).strip()
     
     # Fast path for multi-word phrases
     if " " in word_lat:
         translation = fetch_online_translation(req.token_text)
-        return {
+        result = {
             "lemma": word_lat,
             "upos": "PHRASE",
             "feats": {},
             "forms": {},
             "translation": translation
         }
+        redis_cache.set_json(f"analysis:{analysis_key}", result, 24 * 3600)
+        return result
         
     lemma = word_lat.lower()
     upos = "UNKNOWN"
@@ -300,7 +501,7 @@ def analyze_token(req: AnalyzeRequest):
         except Exception as e:
             logging.error(f"Contextual translation failed: {e}")
 
-    return {
+    result = {
         "lemma": lemma,
         "upos": upos,
         "feats": feats,
@@ -308,6 +509,8 @@ def analyze_token(req: AnalyzeRequest):
         "translation": translation,
         "contextual_translation": contextual_translation
     }
+    redis_cache.set_json(f"analysis:{analysis_key}", result, 24 * 3600)
+    return result
 
 import urllib.parse
 import re
@@ -474,6 +677,10 @@ def news(topic: str = "general", limit: int = 25):
     cached = _NEWS_CACHE.get(topic)
     if cached and now - cached[0] < _NEWS_TTL:
         return {"topic": topic, "items": cached[1][:limit], "cached": True}
+    shared = redis_cache.get_json(f"news:{topic}")
+    if isinstance(shared, list):
+        _NEWS_CACHE[topic] = (now, shared)
+        return {"topic": topic, "items": shared[:limit], "cached": True}
 
     feeds = NEWS_FEEDS.get(topic, NEWS_FEEDS["general"])
     items = []
@@ -504,15 +711,24 @@ def news(topic: str = "general", limit: int = 25):
             logging.error(f"RSS feed failed ({feed_url}): {ex}")
     items.sort(key=lambda x: x.get("published_ts", 0), reverse=True)
     _NEWS_CACHE[topic] = (now, items)
+    redis_cache.set_json(f"news:{topic}", items, _NEWS_TTL)
     return {"topic": topic, "items": items[:limit]}
 
 
 @app.get("/translate")
 def translate(q: str, sl: str = "sr", tl: str = "ru"):
     """Перевод текста (для веба, где прямой запрос к Google блокируется CORS)."""
+    cache_key = hashlib.sha256(
+        f"{sl.strip().lower()}:{tl.strip().lower()}:{q.strip().lower()}".encode("utf-8")
+    ).hexdigest()
+    cached = redis_cache.get_text(f"translation:{cache_key}")
+    if cached is not None:
+        return {"translation": cached, "cached": True}
     try:
         from deep_translator import GoogleTranslator
         out = GoogleTranslator(source=sl, target=tl).translate(q)
+        if out:
+            redis_cache.set_text(f"translation:{cache_key}", out, 24 * 3600)
         return {"translation": out or ""}
     except Exception as ex:
         logging.error(f"/translate failed: {ex}")
@@ -539,6 +755,10 @@ def img_proxy(url: str):
 @app.get("/article")
 def article(url: str):
     """Извлекает основной текст статьи и заглавную картинку по ссылке."""
+    cache_key = hashlib.sha256(url.strip().encode("utf-8")).hexdigest()
+    cached = redis_cache.get_json(f"article:{cache_key}")
+    if isinstance(cached, dict) and isinstance(cached.get("paragraphs"), list):
+        return cached
     try:
         import trafilatura
         # Use urllib request to avoid python signal errors inside threads
@@ -578,13 +798,16 @@ def article(url: str):
                     image = m.group(1)
             except Exception:
                 pass
-        return {
+        result = {
             "title": data.get("title", "") or "",
             "image": image,
             "source": data.get("sitename") or data.get("hostname", "") or "",
             "date": data.get("date", "") or "",
             "paragraphs": paragraphs,
         }
+        if paragraphs:
+            redis_cache.set_json(f"article:{cache_key}", result, 6 * 3600)
+        return result
     except Exception as ex:
         logging.error(f"Article extraction failed ({url}): {ex}")
         return {"error": str(ex)}
@@ -593,7 +816,6 @@ def article(url: str):
 # ---------------------------------------------------------------------------
 # Аудирование (бета): TTS-озвучка предложений + курируемые уроки с субтитрами.
 # ---------------------------------------------------------------------------
-import hashlib
 import json as _json
 from fastapi.responses import Response, StreamingResponse
 
@@ -614,6 +836,8 @@ def audio_tts(text: str, lang: str = "sr"):
     key = hashlib.sha1(f"{lang}:{text}".encode("utf-8")).hexdigest()
     data = _TTS_CACHE.get(key)
     if data is None:
+        data = redis_cache.get_bytes(f"tts:{key}")
+    if data is None:
         try:
             from io import BytesIO
             from gtts import gTTS
@@ -623,6 +847,11 @@ def audio_tts(text: str, lang: str = "sr"):
         except Exception as e:
             logging.error(f"TTS failed: {e}")
             return Response(status_code=502)
+        if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
+            _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
+        _TTS_CACHE[key] = data
+        redis_cache.set_bytes(f"tts:{key}", data, 7 * 24 * 3600)
+    elif key not in _TTS_CACHE:
         if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
             _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
         _TTS_CACHE[key] = data
@@ -817,14 +1046,63 @@ def audio_proxy(url: str, request: Request):
     return StreamingResponse(body(), status_code=status, headers=response_headers)
 
 
+TRANSCRIPTS_BASE = "https://citavuk.ru/transcripts"
+_TRANSCRIPT_INDEX: Dict[str, object] = {"ts": 0.0, "map": {}}
+_TRANSCRIPT_INDEX_TTL = 3600
+
+
+def _transcript_index() -> dict:
+    """Карта «ссылка на аудио → имя файла с расшифровкой».
+
+    Файлы делает web/scripts/transcribe-podcasts.py и выкладывает вместе с
+    сайтом; здесь только индекс, чтобы не дёргать сеть на каждый эпизод.
+    """
+    import time as _t
+    now = _t.time()
+    if now - float(_TRANSCRIPT_INDEX["ts"]) < _TRANSCRIPT_INDEX_TTL:
+        return _TRANSCRIPT_INDEX["map"]  # type: ignore[return-value]
+    try:
+        req = urllib.request.Request(
+            f"{TRANSCRIPTS_BASE}/index.json",
+            headers={"User-Agent": "citavuk"})
+        data = json.loads(urllib.request.urlopen(req, timeout=15).read())
+        if isinstance(data, dict):
+            _TRANSCRIPT_INDEX["map"] = data
+            _TRANSCRIPT_INDEX["ts"] = now
+    except Exception as ex:
+        logging.warning(f"Transcript index unavailable: {ex}")
+        _TRANSCRIPT_INDEX["ts"] = now
+    return _TRANSCRIPT_INDEX["map"]  # type: ignore[return-value]
+
+
+def _own_transcript_url(audio_url: str) -> Optional[str]:
+    name = _transcript_index().get((audio_url or "").split("?")[0])
+    return f"{TRANSCRIPTS_BASE}/{name}" if name else None
+
+
 @app.get("/audio/transcript")
 def audio_transcript(url: str, duration: float = 0.0):
-    """Полный транскрипт эпизода со страницы подкаста.
+    """Полный транскрипт эпизода.
 
     Домен ограничен — это не открытый прокси.
     """
+    if url.startswith(TRANSCRIPTS_BASE):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "citavuk"})
+            data = json.loads(urllib.request.urlopen(req, timeout=25).read())
+            cues = data.get("cues")
+            return {"cues": cues if isinstance(cues, list) else []}
+        except Exception as ex:
+            logging.error(f"Own transcript failed ({url}): {ex}")
+            return {"cues": []}
     if "serbianlanguagelessons.com" not in url:
         return {"cues": []}
+    cache_key = hashlib.sha256(
+        f"{url.strip()}:{round(duration, 2)}".encode("utf-8")
+    ).hexdigest()
+    cached = redis_cache.get_json(f"transcript:{cache_key}")
+    if isinstance(cached, dict) and isinstance(cached.get("cues"), list):
+        return cached
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         raw = urllib.request.urlopen(req, timeout=25).read()
@@ -835,7 +1113,12 @@ def audio_transcript(url: str, duration: float = 0.0):
             s for s in _split_sentences(text)
             if "http" not in s and not s.startswith("#")
         ]
-        return {"cues": _proportional_cues(sents, duration)}
+        result = {"cues": _proportional_cues(sents, duration)}
+        if result["cues"]:
+            redis_cache.set_json(
+                f"transcript:{cache_key}", result, 24 * 3600
+            )
+        return result
     except Exception as ex:
         logging.error(f"Transcript extraction failed ({url}): {ex}")
         return {"cues": []}
@@ -846,6 +1129,11 @@ def _podcast_lessons(limit_per_feed: int = 12):
     now = _t.time()
     if now - _PODCAST_CACHE["ts"] < _PODCAST_TTL and _PODCAST_CACHE["items"]:
         return _PODCAST_CACHE["items"]
+    shared = redis_cache.get_json("podcasts")
+    if isinstance(shared, list) and shared:
+        _PODCAST_CACHE["ts"] = now
+        _PODCAST_CACHE["items"] = shared
+        return shared
     import feedparser
     items = []
     for fid, fname, url in PODCAST_FEEDS:
@@ -888,21 +1176,28 @@ def _podcast_lessons(limit_per_feed: int = 12):
                     "audio_url": audio,
                     "cues": cues,
                 }
-                # У Learn Serbian Podcast в описании — ссылка на полный
-                # транскрипт на их сайте; клиент дотянет его лениво через
-                # /audio/transcript при открытии урока.
-                m = re.search(
-                    r"https://www\.serbianlanguagelessons\.com/post/[\w%().~-]+",
-                    _html.unescape(e.get("summary", "") or ""))
-                if m:
-                    item["transcript_url"] = m.group(0)
+                # Расшифровка самого аудио, если она уже сделана: текст со
+                # страницы подкаста расходился с речью, а тайминги там были
+                # выдуманы пропорционально длительности.
+                own = _own_transcript_url(audio)
+                if own:
+                    item["transcript_url"] = own
                     item["duration"] = dur
+                else:
+                    # Запасной вариант — транскрипт со страницы автора.
+                    m = re.search(
+                        r"https://www\.serbianlanguagelessons\.com/post/[\w%().~-]+",
+                        _html.unescape(e.get("summary", "") or ""))
+                    if m:
+                        item["transcript_url"] = m.group(0)
+                        item["duration"] = dur
                 items.append(item)
         except Exception as ex:
             logging.error(f"Podcast feed failed ({url}): {ex}")
     if items:
         _PODCAST_CACHE["ts"] = now
         _PODCAST_CACHE["items"] = items
+        redis_cache.set_json("podcasts", items, _PODCAST_TTL)
     return items
 
 

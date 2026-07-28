@@ -1,0 +1,360 @@
+{
+  "id": "u_pridevi",
+  "title": "Часть 4. Прилагательные",
+  "description": "Согласование прилагательного с существительным во всех падежах, числительные и два словарных блока: жильё и еда.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.3. Прилагательные • Pridevi; 5.5. Числительные • Brojevi",
+    "sourceAnchor": "md:3061-3269",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_pridevi_osnove",
+      "title": "Прилагательное и его формы",
+      "objectives": [
+        {"id": "obj_pridev_slaganje", "title": "Согласовывать прилагательное по роду и числу и различать краткую и полную форму"}
+      ],
+      "lessons": [
+        {
+          "id": "l_17",
+          "title": "Прилагательные",
+          "prerequisites": ["l_16"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Прилагательное согласуется с существительным в роде, числе и падеже — как в русском. Новое здесь то, что у сербского прилагательного есть **две формы**, краткая и полная, и они не взаимозаменяемы."},
+              {"kind": "terms", "title": "ИМЕНИТЕЛЬНЫЙ ПАДЕЖ", "rows": [
+                {"term": "мужской", "gloss": "dobar / dobri", "note": "краткая / полная"},
+                {"term": "женский", "gloss": "dobra", "note": "формы совпадают"},
+                {"term": "средний", "gloss": "dobro", "note": "формы совпадают"},
+                {"term": "множественное", "gloss": "dobri, dobre, dobra", "note": "м. / ж. / ср."}
+              ]},
+              {"kind": "paragraph", "text": "Краткая форма стоит в сказуемом: *Grad je velik* — «город большой». Полная стоит при существительном: *veliki grad* — «большой город». Разница видна только в мужском роде, в остальных формы совпали."},
+              {"kind": "example", "serbian": "Beograd je velik, a Novi Sad je lep grad.", "russian": "Белград большой, а Нови-Сад красивый город.", "highlight": "velik"},
+              {"kind": "tip", "text": "У части прилагательных краткая форма теряет беглое *a*: *dobar → dobri*, *sladak → slatki*, *težak → teški*. Это то же самое беглое «о» в русском «крепок — крепкий»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «красивая книга»?", "explanation": "Lepa knjiga. Прилагательное принимает окончание женского рода -a.", "options": [{"id": "a", "text": "lepa knjiga", "correct": true}, {"id": "b", "text": "lep knjiga"}, {"id": "c", "text": "lepo knjiga"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте существительное с формой прилагательного «nov»", "explanation": "Прилагательное берёт род существительного: nov grad, nova knjiga, novo selo.", "leftLabel": "Существительное", "rightLabel": "Прилагательное", "pairs": [{"left": "grad", "right": "nov"}, {"left": "knjiga", "right": "nova"}, {"left": "selo", "right": "novo"}], "distractorsRight": ["novi"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Где нужна краткая форма: «Город большой»?", "explanation": "Grad je velik. В сказуемом после глагола biti стоит краткая форма.", "options": [{"id": "a", "text": "Grad je velik.", "correct": true}, {"id": "b", "text": "Grad je veliki.", "misconceptionId": "misc_pridev_duga_u_predikatu"}, {"id": "c", "text": "Grad je velika."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте прилагательное «veliki» при существительном", "explanation": "Ovo je veliki grad. При существительном стоит полная форма.", "segments": [{"kind": "text", "text": "Ovo je "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " grad."}], "blanks": [{"id": "b1", "acceptedAnswers": ["veliki"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Это новая книга»", "explanation": "Ovo je nova knjiga. Прилагательное согласуется с knjiga в женском роде.", "tokens": [{"id": "t1", "text": "Ovo"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "nova"}, {"id": "t4", "text": "knjiga"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "novo"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте прилагательные", "targetLabel": "прилагательные", "translation": "Белград большой город. Новый дом красивый, а старая улица узкая.", "explanation": "Прилагательные: velik, nova, lepa, stara, uska. Слова grad, kuća, ulica — существительные.", "tokens": [{"id": "t1", "text": "Beograd"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "velik", "correct": true}, {"id": "t4", "text": "grad", "tail": "."}, {"id": "t5", "text": "Nova", "correct": true}, {"id": "t6", "text": "kuća"}, {"id": "t7", "text": "je"}, {"id": "t8", "text": "lepa", "correct": true, "tail": ","}, {"id": "t9", "text": "a"}, {"id": "t10", "text": "stara", "correct": true}, {"id": "t11", "text": "ulica"}, {"id": "t12", "text": "je"}, {"id": "t13", "text": "uska", "correct": true, "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_stan",
+      "title": "Квартира и мебель",
+      "objectives": [
+        {"id": "obj_stan_recnik", "title": "Называть комнаты и мебель и описывать их прилагательными"}
+      ],
+      "lessons": [
+        {
+          "id": "l_18",
+          "title": "Слова на тему квартиры и мебели",
+          "prerequisites": ["l_17"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Словарный урок, но не список слов подряд: каждое слово сразу идёт с прилагательным, чтобы согласование закреплялось на живом материале."},
+              {"kind": "terms", "title": "КОМНАТЫ", "rows": [
+                {"term": "stan", "gloss": "квартира", "note": "м. р.: nov stan"},
+                {"term": "soba", "gloss": "комната", "note": "ж. р.: velika soba"},
+                {"term": "kuhinja", "gloss": "кухня", "note": "ж. р."},
+                {"term": "kupatilo", "gloss": "ванная", "note": "ср. р."},
+                {"term": "hodnik", "gloss": "коридор", "note": "м. р."},
+                {"term": "dnevna soba", "gloss": "гостиная", "note": "буквально «дневная комната»"}
+              ]},
+              {"kind": "terms", "title": "МЕБЕЛЬ", "rows": [
+                {"term": "sto", "gloss": "стол", "note": "мн. ч. stolovi"},
+                {"term": "stolica", "gloss": "стул", "note": "ж. р."},
+                {"term": "krevet", "gloss": "кровать", "note": "м. р., не женского"},
+                {"term": "orman", "gloss": "шкаф", "note": "м. р."},
+                {"term": "polica", "gloss": "полка", "note": "ж. р."},
+                {"term": "frižider", "gloss": "холодильник", "note": "м. р."},
+                {"term": "prozor", "gloss": "окно", "note": "м. р., не среднего"},
+                {"term": "vrata", "gloss": "дверь", "note": "ср. р., всегда множественное"}
+              ]},
+              {"kind": "tip", "text": "Два слова ловят почти всех. *Krevet* мужского рода, хотя русская «кровать» женского. *Prozor* мужского, хотя «окно» среднего. Прилагательное при них будет мужским: *velik krevet*, *mali prozor*."}
+            ]
+          },
+          "exercises": [
+            {"type": "matching", "difficulty": 1, "prompt": "Сопоставьте слово с переводом", "explanation": "Kuhinja — кухня, kupatilo — ванная, soba — комната, hodnik — коридор.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "kuhinja", "right": "кухня"}, {"left": "kupatilo", "right": "ванная"}, {"left": "soba", "right": "комната"}, {"left": "hodnik", "right": "коридор"}], "distractorsRight": ["квартира"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «большая кровать»?", "explanation": "Velik krevet. Слово krevet мужского рода, поэтому прилагательное тоже мужское.", "options": [{"id": "a", "text": "velik krevet", "correct": true}, {"id": "b", "text": "velika krevet", "misconceptionId": "misc_rod_krevet_zenski"}, {"id": "c", "text": "veliko krevet"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте прилагательное «mali» в нужной форме: «маленькое окно»", "explanation": "Mali prozor. Prozor мужского рода, поэтому не malo.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " prozor."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Mali", "mali"], "caseSensitive": false}]},
+            {"type": "letter_unscramble", "difficulty": 2, "prompt": "Соберите слово «холодильник»", "explanation": "Frižider. Слово мужского рода.", "context": "На кухне стоит...", "lemma": "frižider", "targetFeats": "Case=Nom|Number=Sing", "answer": "frižider", "extraLetters": [], "showLemma": false, "highlightStem": ""},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «В комнате большой стол»", "explanation": "U sobi je veliki sto. Слово sobi в предложном падеже отвечает на вопрос «где».", "tokens": [{"id": "t1", "text": "U"}, {"id": "t2", "text": "sobi"}, {"id": "t3", "text": "je"}, {"id": "t4", "text": "veliki"}, {"id": "t5", "text": "sto"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "sobu"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте описание квартиры", "text": "Naš stan je nov i nije velik. Ima dve sobe, kuhinju i kupatilo. U dnevnoj sobi je veliki sto i četiri stolice. Moja soba je mala, ali ima veliki prozor.", "translation": "Наша квартира новая и небольшая. В ней две комнаты, кухня и ванная. В гостиной большой стол и четыре стула. Моя комната маленькая, но с большим окном.", "explanation": "Nije velik — краткая форма в сказуемом. Veliki sto и veliki prozor — полная форма при существительном.", "questions": [
+              {"id": "q1", "prompt": "Koliko soba ima stan?", "options": [{"id": "a", "text": "Dve.", "correct": true}, {"id": "b", "text": "Četiri."}, {"id": "c", "text": "Jednu."}]},
+              {"id": "q2", "prompt": "Kakva je soba osobe koja priča?", "options": [{"id": "a", "text": "Mala, sa velikim prozorom.", "correct": true}, {"id": "b", "text": "Velika, bez prozora."}, {"id": "c", "text": "To se ne kaže."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_brojevi",
+      "title": "Количественные числительные",
+      "objectives": [
+        {"id": "obj_brojevi_do_deset", "title": "Считать до двадцати и знать род числительных jedan и dva"},
+        {"id": "obj_brojevi_padez", "title": "Ставить существительное после числительного в нужную форму"}
+      ],
+      "lessons": [
+        {
+          "id": "l_19",
+          "title": "Количественные числительные",
+          "prerequisites": ["l_18"],
+          "objectives": ["obj_brojevi_do_deset"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Счёт до десяти похож на русский настолько, что запоминается за один вечер. Внимания требуют только первые два числа: они меняются по роду."},
+              {"kind": "terms", "title": "ОТ ОДНОГО ДО ДЕСЯТИ", "rows": [
+                {"term": "jedan, jedna, jedno", "gloss": "один, одна, одно", "note": "меняется по роду"},
+                {"term": "dva / dve", "gloss": "два / две", "note": "dva grada, dve knjige"},
+                {"term": "tri, četiri", "gloss": "три, четыре", "note": "не меняются"},
+                {"term": "pet, šest, sedam", "gloss": "пять, шесть, семь", "note": ""},
+                {"term": "osam, devet, deset", "gloss": "восемь, девять, десять", "note": ""}
+              ]},
+              {"kind": "terms", "title": "ОТ ОДИННАДЦАТИ", "rows": [
+                {"term": "jedanaest, dvanaest", "gloss": "11, 12", "note": "-naest вместо русского -надцать"},
+                {"term": "dvadeset, trideset", "gloss": "20, 30", "note": ""},
+                {"term": "sto, hiljadu", "gloss": "100, 1000", "note": ""}
+              ]},
+              {"kind": "example", "serbian": "Imam dve sestre i jednog brata.", "russian": "У меня две сестры и один брат.", "highlight": "dve"},
+              {"kind": "tip", "text": "*Dva* и *dve* путают чаще всего. *Dva* идёт с мужским и средним родом, *dve* — только с женским: *dva stola*, но *dve stolice*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «две книги»?", "explanation": "Dve knjige. Knjiga женского рода, поэтому dve, а не dva.", "options": [{"id": "a", "text": "dve knjige", "correct": true}, {"id": "b", "text": "dva knjige", "misconceptionId": "misc_broj_dva_zenski"}, {"id": "c", "text": "dve knjiga"}]},
+            {"type": "matching", "difficulty": 1, "prompt": "Сопоставьте число с цифрой", "explanation": "Pet — 5, sedam — 7, devet — 9, dvanaest — 12.", "leftLabel": "Сербский", "rightLabel": "Цифра", "pairs": [{"left": "pet", "right": "5"}, {"left": "sedam", "right": "7"}, {"left": "devet", "right": "9"}, {"left": "dvanaest", "right": "12"}], "distractorsRight": ["11"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте «один» в нужной форме: «одна комната»", "explanation": "Jedna soba. Числительное jedan меняется по роду, как прилагательное.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " soba."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Jedna", "jedna"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как читается число 11?", "explanation": "Jedanaest. Сербское -naest соответствует русскому -надцать.", "options": [{"id": "a", "text": "jedanaest", "correct": true}, {"id": "b", "text": "jedandeset"}, {"id": "c", "text": "jedanest"}]},
+            {"type": "letter_unscramble", "difficulty": 2, "prompt": "Соберите число 20", "explanation": "Dvadeset. Десятки строятся так же, как в русском: dva + deset.", "context": "Число 20.", "lemma": "dvadeset", "targetFeats": "NumType=Card", "answer": "dvadeset", "extraLetters": [], "showLemma": false, "highlightStem": ""},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «У меня две сестры»", "explanation": "Imam dve sestre. Числительное dve требует женского рода и формы sestre.", "tokens": [{"id": "t1", "text": "Imam"}, {"id": "t2", "text": "dve"}, {"id": "t3", "text": "sestre"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "dva"}, {"id": "d2", "text": "sestra"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []}
+          ]
+        },
+        {
+          "id": "l_20",
+          "title": "Телефонный разговор. Числительные (продолжение)",
+          "prerequisites": ["l_19"],
+          "objectives": ["obj_brojevi_padez"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Главное правило числительных: форма существительного зависит от числа. Оно совпадает с русским, и именно поэтому его легко проверять на слух."},
+              {"kind": "terms", "title": "ЧИСЛО И ФОРМА СУЩЕСТВИТЕЛЬНОГО", "rows": [
+                {"term": "1", "gloss": "именительный единственного", "note": "jedan student"},
+                {"term": "2, 3, 4", "gloss": "особая счётная форма", "note": "dva studenta, tri knjige"},
+                {"term": "5 и больше", "gloss": "родительный множественного", "note": "pet studenata, deset knjiga"}
+              ]},
+              {"kind": "paragraph", "text": "Счётная форма после *dva, tri, četiri* внешне совпадает с родительным падежом единственного числа: *dva studenta*, *tri grada*. С пяти начинается родительный множественного: *pet studenata*, *pet gradova*."},
+              {"kind": "terms", "title": "ТЕЛЕФОННЫЙ РАЗГОВОР", "rows": [
+                {"term": "Halo?", "gloss": "Алло?", "note": ""},
+                {"term": "Molim?", "gloss": "Слушаю? Да?", "note": "стандартный ответ на звонок"},
+                {"term": "Da li je tu Marko?", "gloss": "Марко на месте?", "note": ""},
+                {"term": "Nije tu, javiće se kasnije.", "gloss": "Его нет, перезвонит позже.", "note": ""},
+                {"term": "Pogrešan broj.", "gloss": "Неправильный номер.", "note": ""},
+                {"term": "Moj broj je...", "gloss": "Мой номер...", "note": "цифры читают по одной"}
+              ]},
+              {"kind": "tip", "text": "Номер телефона в Сербии называют по одной цифре или парами, но никогда «шестьдесят три» вместо «шесть три», если только не диктуют явно двузначные группы. Слушайте, как делит собеседник, и повторяйте так же."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «пять студентов»?", "explanation": "Pet studenata. С пяти существительное идёт в родительном множественного.", "options": [{"id": "a", "text": "pet studenata", "correct": true}, {"id": "b", "text": "pet studenti"}, {"id": "c", "text": "pet studenta"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «два студента»?", "explanation": "Dva studenta. После 2, 3, 4 идёт счётная форма, совпадающая с родительным единственного.", "options": [{"id": "a", "text": "dva studenta", "correct": true}, {"id": "b", "text": "dva studenata"}, {"id": "c", "text": "dva studenti"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте фразу с ситуацией", "explanation": "Эти четыре фразы покрывают почти любой короткий телефонный разговор.", "leftLabel": "Фраза", "rightLabel": "Когда говорят", "pairs": [{"left": "Molim?", "right": "снимаете трубку"}, {"left": "Da li je tu Marko?", "right": "спрашиваете человека"}, {"left": "Nije tu.", "right": "его нет на месте"}, {"left": "Pogrešan broj.", "right": "ошиблись номером"}], "distractorsRight": ["прощаетесь"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «knjiga» после числа 10", "explanation": "Deset knjiga. С десяти идёт родительный множественного, у женского рода это форма без окончания.", "segments": [{"kind": "text", "text": "Imam deset "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["knjiga"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите вопрос: «Марко на месте?»", "explanation": "Da li je tu Marko? Вопрос без вопросительного слова начинается с da li.", "tokens": [{"id": "t1", "text": "Da li"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "tu"}, {"id": "t4", "text": "Marko"}, {"id": "t5", "text": "?"}], "distractorTokens": [{"id": "d1", "text": "li"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте телефонный разговор", "text": "— Halo, molim?\n— Dobar dan. Da li je tu Ana?\n— Nije tu. Vratiće se za dva sata.\n— Hvala. Moj broj je šest jedan dva, tri četiri pet.\n— U redu, reći ću joj.", "translation": "— Алло, слушаю? — Добрый день. Ана на месте? — Её нет. Вернётся через два часа. — Спасибо. Мой номер шесть один два, три четыре пять. — Хорошо, я ей передам.", "explanation": "Za dva sata — счётная форма после dva. Номер называют по цифрам.", "questions": [
+              {"id": "q1", "prompt": "Kada se Ana vraća?", "options": [{"id": "a", "text": "Za dva sata.", "correct": true}, {"id": "b", "text": "Sutra."}, {"id": "c", "text": "Ne vraća se."}]},
+              {"id": "q2", "prompt": "Zašto je «dva sata», a ne «dva sati»?", "options": [{"id": "a", "text": "Posle 2, 3, 4 ide brojna forma «sata».", "correct": true}, {"id": "b", "text": "Zato što je reč o vremenu."}, {"id": "c", "text": "Zato što je «sat» stranog porekla."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_pridevi_padezi_1",
+      "title": "Прилагательные в родительном и винительном",
+      "objectives": [
+        {"id": "obj_pridev_genitiv", "title": "Ставить прилагательное в родительный падеж"},
+        {"id": "obj_pridev_akuzativ", "title": "Ставить прилагательное в винительный падеж с учётом одушевлённости"}
+      ],
+      "lessons": [
+        {
+          "id": "l_21",
+          "title": "Прилагательные в родительном падеже",
+          "prerequisites": ["l_20"],
+          "objectives": ["obj_pridev_genitiv"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "У прилагательного свой набор окончаний, не такой, как у существительного. Их всего по одному на род, и запомнить это проще, чем кажется: прилагательное всегда длиннее существительного."},
+              {"kind": "terms", "title": "РОДИТЕЛЬНЫЙ ПАДЕЖ", "rows": [
+                {"term": "м. и ср. род → -og", "gloss": "dobar → dobrog", "note": "novog, velikog"},
+                {"term": "ж. род → -e", "gloss": "dobra → dobre", "note": "nove, velike"}
+              ]},
+              {"kind": "example", "serbian": "Nema dobrog hleba.", "russian": "Нет хорошего хлеба.", "highlight": "dobrog"},
+              {"kind": "example", "serbian": "Iz velike kuće.", "russian": "Из большого дома.", "highlight": "velike"},
+              {"kind": "paragraph", "text": "Существительное и прилагательное берут разные окончания одного падежа: *dobrog hleba*, а не «dobra hleba». Согласование в сербском идёт по падежу, а не по буквенному совпадению."},
+              {"kind": "tip", "text": "Окончание *-og* может удлиняться до *-oga*: *dobroga*, *velikoga*. Разницы в значении нет, длинная форма чуть книжнее и чаще встречается в текстах, чем в разговоре."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «нет хорошего хлеба»?", "explanation": "Nema dobrog hleba. Прилагательное мужского рода в родительном берёт -og.", "options": [{"id": "a", "text": "Nema dobrog hleba.", "correct": true}, {"id": "b", "text": "Nema dobra hleba."}, {"id": "c", "text": "Nema dobrom hleba."}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «из большого дома»", "explanation": "Iz velike kuće. Kuća женского рода, прилагательное берёт -e.", "wordClass": "noun", "contextSentence": "Iz ___ kuće.", "stem": "velik", "target": {"lemma": "velik", "case": "gen", "number": "sing", "gender": "fem"}, "fullForm": "velike", "options": [{"id": "e1", "text": "e", "correct": true}, {"id": "e2", "text": "og"}, {"id": "e3", "text": "oj"}], "preposition": "iz"},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «nov» в родительный падеж: «без нового телефона»", "explanation": "Bez novog telefona. Мужской род в родительном даёт -og.", "segments": [{"kind": "text", "text": "Bez "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " telefona."}], "blanks": [{"id": "b1", "acceptedAnswers": ["novog", "novoga"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте род с окончанием прилагательного в родительном падеже", "explanation": "Мужской и средний берут -og, женский -e, а во множественном числе все три рода дают -ih.", "leftLabel": "Род", "rightLabel": "Окончание", "pairs": [{"left": "мужской и средний", "right": "-og"}, {"left": "женский", "right": "-e"}, {"left": "множественное число", "right": "-ih"}], "distractorsRight": ["-om"]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я из маленького города»", "explanation": "Ja sam iz malog grada. Предлог iz требует родительного и у прилагательного, и у существительного.", "tokens": [{"id": "t1", "text": "Ja"}, {"id": "t2", "text": "sam"}, {"id": "t3", "text": "iz"}, {"id": "t4", "text": "malog"}, {"id": "t5", "text": "grada"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "mali"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте прилагательные в родительном падеже", "targetLabel": "прилагательные в родительном падеже", "translation": "Нет хорошего кофе. Ана из большого города, недалеко от старого моста.", "explanation": "Dobre, velikog, starog — все три стоят после слов, требующих родительного: nema, iz, od.", "tokens": [{"id": "t1", "text": "Nema"}, {"id": "t2", "text": "dobre", "correct": true}, {"id": "t3", "text": "kafe", "tail": "."}, {"id": "t4", "text": "Ana"}, {"id": "t5", "text": "je"}, {"id": "t6", "text": "iz"}, {"id": "t7", "text": "velikog", "correct": true}, {"id": "t8", "text": "grada", "tail": ","}, {"id": "t9", "text": "nedaleko"}, {"id": "t10", "text": "od"}, {"id": "t11", "text": "starog", "correct": true}, {"id": "t12", "text": "mosta", "tail": "."}]}
+          ]
+        },
+        {
+          "id": "l_22",
+          "title": "Прилагательные в винительном падеже",
+          "prerequisites": ["l_21"],
+          "objectives": ["obj_pridev_akuzativ"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "В винительном прилагательное ведёт себя ровно так же, как существительное: одушевлённость решает форму мужского рода."},
+              {"kind": "terms", "title": "ВИНИТЕЛЬНЫЙ ПАДЕЖ", "rows": [
+                {"term": "м. р. неодушевлённый", "gloss": "= именительный", "note": "Vidim veliki grad."},
+                {"term": "м. р. одушевлённый → -og", "gloss": "= родительный", "note": "Vidim dobrog studenta."},
+                {"term": "ж. род → -u", "gloss": "dobra → dobru", "note": "Čitam novu knjigu."},
+                {"term": "средний род", "gloss": "= именительный", "note": "Vidim malo selo."}
+              ]},
+              {"kind": "example", "serbian": "Čitam zanimljivu knjigu.", "russian": "Я читаю интересную книгу.", "highlight": "zanimljivu"},
+              {"kind": "tip", "text": "Проверять одушевлённость нужно у существительного, а прилагательное просто повторяет его выбор. *Vidim novi auto* — машина неодушевлённая. *Vidim novog kolegu* — коллега одушевлённый, и оба слова уходят в форму родительного."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я читаю новую книгу»?", "explanation": "Čitam novu knjigu. Женский род в винительном берёт -u и у прилагательного, и у существительного.", "options": [{"id": "a", "text": "Čitam novu knjigu.", "correct": true}, {"id": "b", "text": "Čitam nova knjiga."}, {"id": "c", "text": "Čitam nove knjige."}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Я вижу большой город»?", "explanation": "Vidim veliki grad. Grad неодушевлённый, поэтому винительный совпадает с именительным.", "options": [{"id": "a", "text": "Vidim veliki grad.", "correct": true}, {"id": "b", "text": "Vidim velikog grada.", "misconceptionId": "misc_akuzativ_nezivo_kao_zivo"}, {"id": "c", "text": "Vidim velikom gradu."}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Я вижу хорошего студента»", "explanation": "Dobrog studenta. Student одушевлённый, поэтому прилагательное берёт -og.", "wordClass": "noun", "contextSentence": "Vidim ___ studenta.", "stem": "dobr", "target": {"lemma": "dobar", "case": "acc", "number": "sing", "gender": "masc", "animacy": "anim"}, "fullForm": "dobrog", "options": [{"id": "e1", "text": "og", "correct": true}, {"id": "e2", "text": "i"}, {"id": "e3", "text": "u"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «velika» в винительный падеж: «Я вижу большую комнату»", "explanation": "Vidim veliku sobu. Женский род в винительном даёт -u.", "segments": [{"kind": "text", "text": "Vidim "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " sobu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["veliku"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я иду в новую школу»", "explanation": "Idem u novu školu. Движение требует винительного, поэтому и novu, и školu.", "tokens": [{"id": "t1", "text": "Idem"}, {"id": "t2", "text": "u"}, {"id": "t3", "text": "novu"}, {"id": "t4", "text": "školu"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "novoj"}, {"id": "d2", "text": "školi"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «Vidim novog kolegu», а не «Vidim novi kolega»?", "explanation": "Kolega обозначает человека, значит слово одушевлённое, и винительный совпадает с родительным у обоих слов.", "options": [{"id": "a", "text": "Kolega одушевлённый, поэтому винительный равен родительному", "correct": true}, {"id": "b", "text": "Потому что kolega оканчивается на -a"}, {"id": "c", "text": "Потому что это заимствованное слово"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_hrana",
+      "title": "Еда",
+      "objectives": [
+        {"id": "obj_hrana_recnik", "title": "Называть продукты и заказывать еду"}
+      ],
+      "lessons": [
+        {
+          "id": "l_23",
+          "title": "Слова на тему еды",
+          "prerequisites": ["l_22"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Еда — та тема, где винительный падеж отрабатывается сам собой: всё, что покупают, едят и заказывают, стоит в винительном."},
+              {"kind": "terms", "title": "ОСНОВНОЕ", "rows": [
+                {"term": "hleb", "gloss": "хлеб", "note": "м. р."},
+                {"term": "mleko", "gloss": "молоко", "note": "ср. р."},
+                {"term": "sir", "gloss": "сыр", "note": "м. р."},
+                {"term": "meso", "gloss": "мясо", "note": "ср. р."},
+                {"term": "riba", "gloss": "рыба", "note": "ж. р."},
+                {"term": "jaje", "gloss": "яйцо", "note": "ср. р., мн. ч. jaja"}
+              ]},
+              {"kind": "terms", "title": "ОВОЩИ, ФРУКТЫ, НАПИТКИ", "rows": [
+                {"term": "voće / povrće", "gloss": "фрукты / овощи", "note": "оба слова ср. р. и без множественного"},
+                {"term": "jabuka, kruška", "gloss": "яблоко, груша", "note": "ж. р."},
+                {"term": "paradajz, krompir", "gloss": "помидор, картофель", "note": "м. р."},
+                {"term": "voda, kafa, čaj", "gloss": "вода, кофе, чай", "note": "čaj м. р."},
+                {"term": "so, šećer, ulje", "gloss": "соль, сахар, масло", "note": "so ж. р."}
+              ]},
+              {"kind": "terms", "title": "В КАФЕ", "rows": [
+                {"term": "Molim vas...", "gloss": "Будьте добры...", "note": "начало любого заказа"},
+                {"term": "Jednu kafu, molim.", "gloss": "Один кофе, пожалуйста.", "note": "винительный падеж"},
+                {"term": "Račun, molim.", "gloss": "Счёт, пожалуйста.", "note": ""},
+                {"term": "Prijatno!", "gloss": "Приятного аппетита!", "note": ""}
+              ]},
+              {"kind": "tip", "text": "Заказ всегда идёт в винительном падеже, поэтому *kafa* превращается в *kafu*, а *voda* в *vodu*. Сказать «Jedna kafa, molim» можно, вас поймут, но правильная форма звучит «Jednu kafu»."}
+            ]
+          },
+          "exercises": [
+            {"type": "matching", "difficulty": 1, "prompt": "Сопоставьте слово с переводом", "explanation": "Hleb — хлеб, mleko — молоко, jabuka — яблоко, voda — вода.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "hleb", "right": "хлеб"}, {"left": "mleko", "right": "молоко"}, {"left": "jabuka", "right": "яблоко"}, {"left": "voda", "right": "вода"}], "distractorsRight": ["мясо"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как заказать один кофе?", "explanation": "Jednu kafu, molim. Заказ ставится в винительный падеж.", "options": [{"id": "a", "text": "Jednu kafu, molim.", "correct": true}, {"id": "b", "text": "Jedna kafa, molim.", "misconceptionId": "misc_akuzativ_nominativ_porudzbina"}, {"id": "c", "text": "Jedne kafe, molim."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «voda» в винительный падеж", "explanation": "Kupujem vodu. Женский род в винительном берёт -u.", "segments": [{"kind": "text", "text": "Kupujem "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " i hleb."}], "blanks": [{"id": "b1", "acceptedAnswers": ["vodu"], "caseSensitive": false}]},
+            {"type": "letter_unscramble", "difficulty": 2, "prompt": "Соберите слово «картофель»", "explanation": "Krompir. Слово мужского рода.", "context": "Овощ.", "lemma": "krompir", "targetFeats": "Case=Nom|Number=Sing", "answer": "krompir", "extraLetters": [], "showLemma": false, "highlightStem": ""},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я покупаю свежий хлеб»", "explanation": "Kupujem svež hleb. Hleb неодушевлённый, поэтому винительный совпадает с именительным.", "tokens": [{"id": "t1", "text": "Kupujem"}, {"id": "t2", "text": "svež"}, {"id": "t3", "text": "hleb"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "svežeg"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Ana ide u prodavnicu. Kupuje hleb, mleko i dva kilograma jabuka. Nema svežeg sira, pa uzima jaja. Posle toga pije kafu bez šećera.", "translation": "Ана идёт в магазин. Покупает хлеб, молоко и два килограмма яблок. Свежего сыра нет, поэтому она берёт яйца. Потом пьёт кофе без сахара.", "explanation": "Hleb, mleko, jaja, kafu — винительный. Svežeg sira после nema — родительный. Dva kilograma — счётная форма.", "questions": [
+              {"id": "q1", "prompt": "Šta Ana uzima umesto sira?", "options": [{"id": "a", "text": "Jaja.", "correct": true}, {"id": "b", "text": "Meso."}, {"id": "c", "text": "Ribu."}]},
+              {"id": "q2", "prompt": "U kom je padežu «svežeg sira»?", "options": [{"id": "a", "text": "U genitivu, jer stoji posle «nema».", "correct": true}, {"id": "b", "text": "U akuzativu, jer je to objekat."}, {"id": "c", "text": "U nominativu."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_pridevi_padezi_2",
+      "title": "Прилагательные в остальных падежах",
+      "objectives": [
+        {"id": "obj_pridev_dativ_lokativ", "title": "Ставить прилагательное в дательный и предложный падеж"},
+        {"id": "obj_pridev_instrumental", "title": "Ставить прилагательное в творительный падеж"}
+      ],
+      "lessons": [
+        {
+          "id": "l_24",
+          "title": "Дательный и предложный падеж прилагательных",
+          "prerequisites": ["l_23"],
+          "objectives": ["obj_pridev_dativ_lokativ"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "У прилагательного дательный и предложный совпали полностью — как и у существительного. Это единственная пара падежей, которую можно учить одной строчкой."},
+              {"kind": "terms", "title": "ДАТЕЛЬНЫЙ И ПРЕДЛОЖНЫЙ", "rows": [
+                {"term": "м. и ср. род → -om", "gloss": "dobar → dobrom", "note": "u novom stanu"},
+                {"term": "ж. род → -oj", "gloss": "dobra → dobroj", "note": "u novoj kući"}
+              ]},
+              {"kind": "example", "serbian": "Živim u novom stanu.", "russian": "Я живу в новой квартире.", "highlight": "novom"},
+              {"kind": "example", "serbian": "Govorim o dobroj knjizi.", "russian": "Я говорю о хорошей книге.", "highlight": "dobroj"},
+              {"kind": "tip", "text": "Окончание *-om* у прилагательного встречается в двух разных падежах: в дательном и предложном у мужского рода, и в творительном у женского. *U novom stanu* и *sa novom knjigom* — окончание одно, падежи разные, различает предлог."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «в новой квартире»?", "explanation": "U novom stanu. Stan мужского рода, поэтому прилагательное берёт -om.", "options": [{"id": "a", "text": "u novom stanu", "correct": true}, {"id": "b", "text": "u novoj stanu"}, {"id": "c", "text": "u novog stanu"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «в новой школе»", "explanation": "U novoj školi. Женский род в предложном берёт -oj.", "wordClass": "noun", "contextSentence": "U ___ školi.", "stem": "nov", "target": {"lemma": "nov", "case": "loc", "number": "sing", "gender": "fem"}, "fullForm": "novoj", "options": [{"id": "e1", "text": "oj", "correct": true}, {"id": "e2", "text": "om"}, {"id": "e3", "text": "e"}], "preposition": "u"},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «dobar» в дательный падеж: «хорошему другу»", "explanation": "Dobrom prijatelju. Мужской род в дательном берёт -om.", "segments": [{"kind": "text", "text": "Pišem "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " prijatelju."}], "blanks": [{"id": "b1", "acceptedAnswers": ["dobrom"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте словосочетание с падежом", "explanation": "После u при вопросе «где» стоит предложный, при вопросе «куда» — винительный.", "leftLabel": "Словосочетание", "rightLabel": "Падеж", "pairs": [{"left": "u novom stanu", "right": "предложный"}, {"left": "u novi stan", "right": "винительный"}, {"left": "iz novog stana", "right": "родительный"}], "distractorsRight": ["дательный"]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Мы говорим о старом городе»", "explanation": "Govorimo o starom gradu. Предлог o требует предложного падежа.", "tokens": [{"id": "t1", "text": "Govorimo"}, {"id": "t2", "text": "o"}, {"id": "t3", "text": "starom"}, {"id": "t4", "text": "gradu"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "starog"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте прилагательные в предложном падеже", "targetLabel": "прилагательные в предложном падеже", "translation": "Я живу в новой квартире. Мы говорим о хорошей книге и о старом фильме.", "explanation": "Novom, dobroj, starom стоят после предлогов u и o, которые здесь требуют предложного падежа.", "tokens": [{"id": "t1", "text": "Živim"}, {"id": "t2", "text": "u"}, {"id": "t3", "text": "novom", "correct": true}, {"id": "t4", "text": "stanu", "tail": "."}, {"id": "t5", "text": "Govorimo"}, {"id": "t6", "text": "o"}, {"id": "t7", "text": "dobroj", "correct": true}, {"id": "t8", "text": "knjizi"}, {"id": "t9", "text": "i"}, {"id": "t10", "text": "o"}, {"id": "t11", "text": "starom", "correct": true}, {"id": "t12", "text": "filmu", "tail": "."}]}
+          ]
+        },
+        {
+          "id": "l_25",
+          "title": "Творительный падеж прилагательных",
+          "prerequisites": ["l_24"],
+          "objectives": ["obj_pridev_instrumental"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Последний падеж прилагательного. Мужской и средний род берут *-im*, женский *-om*. Это единственное место, где прилагательное и существительное женского рода получают одно и то же окончание."},
+              {"kind": "terms", "title": "ТВОРИТЕЛЬНЫЙ ПАДЕЖ", "rows": [
+                {"term": "м. и ср. род → -im", "gloss": "dobar → dobrim", "note": "sa dobrim prijateljem"},
+                {"term": "ж. род → -om", "gloss": "dobra → dobrom", "note": "sa dobrom knjigom"}
+              ]},
+              {"kind": "example", "serbian": "Putujem sa dobrim prijateljem.", "russian": "Я еду с хорошим другом.", "highlight": "dobrim"},
+              {"kind": "paragraph", "text": "Соберём всё вместе для мужского рода: *nov* — *novog* — *novom* — *novim*. Родительный, дательный с предложным, творительный. Четыре формы покрывают шесть падежей."},
+              {"kind": "tip", "text": "Не путайте *novom* и *novim*. *U novom stanu* — предложный, «где». *Sa novim stanom* — творительный, «с чем». Гласная перед *-m* и есть весь различитель."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «с хорошим другом»?", "explanation": "Sa dobrim prijateljem. Мужской род в творительном берёт -im.", "options": [{"id": "a", "text": "sa dobrim prijateljem", "correct": true}, {"id": "b", "text": "sa dobrom prijateljem"}, {"id": "c", "text": "sa dobrog prijatelja"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «с новой книгой»", "explanation": "Sa novom knjigom. Женский род в творительном берёт -om.", "wordClass": "noun", "contextSentence": "Sa ___ knjigom.", "stem": "nov", "target": {"lemma": "nov", "case": "ins", "number": "sing", "gender": "fem"}, "fullForm": "novom", "options": [{"id": "e1", "text": "om", "correct": true}, {"id": "e2", "text": "im"}, {"id": "e3", "text": "oj"}], "preposition": "sa"},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «velik» в творительный падеж: «под большим столом»", "explanation": "Pod velikim stolom. Мужской род в творительном даёт -im.", "segments": [{"kind": "text", "text": "Pod "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " stolom."}], "blanks": [{"id": "b1", "acceptedAnswers": ["velikim"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 3, "prompt": "Сопоставьте форму прилагательного «nov» с падежом", "explanation": "Novog — родительный, novom — дательный и предложный, novim — творительный, novu — винительный женского рода.", "leftLabel": "Форма", "rightLabel": "Падеж", "pairs": [{"left": "novog", "right": "родительный"}, {"left": "novom", "right": "предложный"}, {"left": "novim", "right": "творительный"}, {"left": "novu", "right": "винительный (ж. р.)"}], "distractorsRight": ["звательный"]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Ана едет с младшей сестрой»", "explanation": "Ana putuje sa mlađom sestrom. Оба слова женского рода в творительном берут -om.", "tokens": [{"id": "t1", "text": "Ana"}, {"id": "t2", "text": "putuje"}, {"id": "t3", "text": "sa"}, {"id": "t4", "text": "mlađom"}, {"id": "t5", "text": "sestrom"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "mlađim"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Чем «u novom stanu» отличается от «sa novim stanom»?", "explanation": "Первое — предложный падеж, отвечает на «где». Второе — творительный, отвечает на «с чем». Различают их гласная перед -m и предлог.", "options": [{"id": "a", "text": "Первое предложный падеж, второе творительный", "correct": true}, {"id": "b", "text": "Ничем, это разговорный и книжный варианты"}, {"id": "c", "text": "Первое единственное число, второе множественное"}]}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,18 +1,32 @@
+import 'dart:async';
+
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'services/api_client.dart';
+import 'services/auth_service.dart';
 import 'services/db_init.dart';
+import 'services/sync_service.dart';
+import 'course/services/course_progress_store.dart';
+import 'course/services/course_content_loader.dart';
 import 'services/user_db.dart';
+import 'screens/account_screen.dart';
 import 'services/card_io.dart';
 import 'services/analysis_repository.dart';
 import 'services/document_parser.dart';
+import 'services/local_file.dart';
 import 'services/notification_service.dart';
-import 'widgets/welcome_dialog.dart';
+import 'widgets/update_dialog.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/all_cards_screen.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
-import 'screens/listening_screen.dart';
+import 'screens/home_shell.dart';
+import 'screens/materials_screen.dart';
 import 'screens/news_screen.dart';
 import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
@@ -24,9 +38,13 @@ import 'widgets/serbian_ornament.dart';
 import 'widgets/server_settings_sheet.dart';
 import 'widgets/wolf_mascot.dart';
 import 'utils/language_detector.dart';
+import 'utils/short_text.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Контент под системными панелями: на Android иначе остаётся серая полоса
+  // навигации, из-за которой приложение выглядит старым.
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   // Кросс-платформенная инициализация БД (десктоп — ffi, веб — wasm/IndexedDB,
   // мобильные — штатная фабрика).
   initDatabaseFactory();
@@ -36,6 +54,16 @@ Future<void> main() async {
 
   // Сервер разбора/перевода — из настроек (по умолчанию публичный HF Space).
   AnalysisRepository.baseUrl = settings.backendUrl;
+  AnalysisRepository.translationUrl = settings.syncUrl;
+
+  // Аккаунт и синхронизация. Сессия восстанавливается из локального хранилища
+  // без обращения к сети: приложение обязано открываться офлайн.
+  final api = ApiClient(baseUrl: settings.syncUrl);
+  final auth = AuthService(api: api);
+  await auth.load();
+  CourseProgressStore.configure(api: api, auth: auth);
+  CourseContentLoader.configure(api: api);
+  final sync = SyncService(api: api, auth: auth);
 
   await NotificationService.instance.init();
   if (settings.notificationsEnabled) {
@@ -43,8 +71,24 @@ Future<void> main() async {
         .scheduleDailyReminder(settings.reminderHour, settings.reminderMinute);
   }
 
+  // Первая синхронизация запускается фоном и не задерживает запуск.
+  if (auth.isSignedIn) {
+    unawaited(sync.sync().catchError((_) => false));
+  }
+
   runApp(
-    ChangeNotifierProvider.value(value: settings, child: const ChitavukApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: settings),
+        ChangeNotifierProvider.value(value: auth),
+        ChangeNotifierProvider.value(value: sync),
+        // Клиент нужен экранам, которые ходят на сервер напрямую (например,
+        // загрузка материалов через прокси документов), а не только через
+        // синхронизацию.
+        Provider<ApiClient>.value(value: api),
+      ],
+      child: const ChitavukApp(),
+    ),
   );
 }
 
@@ -60,7 +104,7 @@ class ChitavukApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: themeMode.material,
-      home: const DashboardScreen(),
+      home: const HomeShell(reading: DashboardScreen()),
     );
   }
 }
@@ -79,6 +123,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isLoading = true;
   double _loadProgress = 0.0;
 
+  /// Над окном держат файл — показываем, куда его можно бросить.
+  bool _dragging = false;
+
   @override
   void initState() {
     super.initState();
@@ -89,9 +136,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       if (!context.read<AppSettings>().firstRunDone) {
-        showWelcomeDialog(context);
+        _runFirstLaunch();
+        return;
+      }
+      if (context.read<AppSettings>().autoUpdateCheck) {
+        checkForUpdates(context);
       }
     });
+  }
+
+  /// Первый запуск: показываем знакомство и, если человек выбрал аккаунт,
+  /// сразу открываем вход — иначе про синхронизацию он узнаёт случайно.
+  Future<void> _runFirstLaunch() async {
+    final choice = await showOnboarding(context);
+    if (!mounted || choice != OnboardingChoice.account) return;
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AccountScreen()),
+    );
   }
 
   Future<void> _loadLibraryAssets() async {
@@ -142,54 +204,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _importFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: DocumentParser.supportedExtensions,
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+
+    final file = result.files.first;
+    final bytes = file.bytes;
+    if (bytes == null) return;
+
+    // На вебе file.path недоступен (кидает исключение) — используем имя.
+    await _importBytes(
+        file.name, kIsWeb ? file.name : (file.path ?? file.name), bytes);
+  }
+
+  /// Общий путь импорта: и выбор файла, и перетаскивание в окно.
+  Future<void> _importBytes(String name, String path, Uint8List bytes) async {
+    setState(() {
+      _isLoading = true;
+      _loadProgress = 0.0;
+    });
     try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf', 'docx'],
-        withData: true,
-      );
-      if (result == null || result.files.isEmpty) return;
-
-      final file = result.files.first;
-      final bytes = file.bytes;
-      if (bytes == null) return;
-
-      final name = file.name;
-      // На вебе file.path недоступен (кидает исключение) — используем имя.
-      final path = kIsWeb ? name : (file.path ?? name);
-      setState(() {
-        _isLoading = true;
-        _loadProgress = 0.0;
-      });
-
-      List<String> paragraphs;
-      if (name.toLowerCase().endsWith('.pdf')) {
-        paragraphs =
-            await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress);
-      } else if (name.toLowerCase().endsWith('.docx')) {
-        paragraphs =
-            await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
-      } else {
-        throw Exception('Неподдерживаемый формат');
-      }
-
+      final paragraphs =
+          await DocumentParser.parseAny(name, bytes, _onParseProgress);
       await UserDb.instance.insertBook(name, path, paragraphs);
       await _loadBooks();
-      if (mounted) {
-        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
-          _showNonSerbianWarning();
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Книга «$name» импортирована")),
-          );
-        }
+      if (!mounted) return;
+      if (!LanguageDetector.isLikelySerbian(paragraphs)) {
+        _showNonSerbianWarning();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Книга «$name» импортирована')),
+        );
       }
     } catch (e) {
       if (mounted) {
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
-        setState(() => _isLoading = false);
       }
+    }
+  }
+
+  /// Файлы, брошенные в окно приложения.
+  Future<void> _onFilesDropped(DropDoneDetails details) async {
+    setState(() => _dragging = false);
+    final files = details.files
+        .where((f) => DocumentParser.isSupported(f.name))
+        .toList();
+    if (files.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Открываются файлы: '
+            '${DocumentParser.supportedExtensions.join(', ')}'),
+      ));
+      return;
+    }
+    for (final file in files) {
+      final bytes = await file.readAsBytes();
+      if (!mounted) return;
+      await _importBytes(file.name, file.path, bytes);
     }
   }
 
@@ -285,12 +361,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  /// Разбирает исходный файл книги заново.
+  ///
+  /// Нужно после правок разбора: текст уже добавленных книг лежит в базе и сам
+  /// по себе не обновится.
+  Future<void> _reparseBook(Map<String, dynamic> book) async {
+    final id = book['id'] as int;
+    final title = book['title'] as String;
+    final path = (book['filepath'] as String?) ?? '';
+    if (!DocumentParser.isSupported(path)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Исходный файл книги неизвестен')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _loadProgress = 0.0;
+    });
+    try {
+      final Uint8List bytes;
+      if (path.startsWith('assets/')) {
+        final data = await rootBundle.load(path);
+        bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      } else {
+        final data = await readLocalFile(path);
+        if (data == null) throw Exception('файл не найден: $path');
+        bytes = data;
+      }
+
+      final paragraphs =
+          await DocumentParser.parseAny(path, bytes, _onParseProgress);
+      await UserDb.instance.replaceBookContent(id, paragraphs);
+      await _loadBooks();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Книга «$title» перечитана')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Не удалось перечитать: $e')),
+        );
+      }
+    }
+  }
+
   Future<void> _openBook(Map<String, dynamic> book) async {
     final id = book['id'] as int;
     final title = book['title'] as String;
     final lastPara = book['last_para'] as int? ?? 0;
     // Текст книги грузим по требованию (в списке его нет — экономим память).
-    final paragraphs = await UserDb.instance.getBookContent(id);
+    var paragraphs = await UserDb.instance.getBookContent(id);
+
+    // Книга пришла с другого устройства: метаданные синхронизировались, а текст
+    // весом в мегабайты качается только сейчас. Без этого читалка открывалась
+    // пустой с «Нет текста для отображения».
+    if (paragraphs.isEmpty && mounted) {
+      paragraphs = await _downloadBookText(id);
+    }
     if (!mounted) return;
 
     Navigator.push(
@@ -303,6 +435,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
           initialParagraph: lastPara,
         ),
       ),
+    ).then((_) => _loadBooks());
+  }
+
+  /// Качает текст книги с сервера и объясняет, если не вышло.
+  Future<List<String>> _downloadBookText(int id) async {
+    final auth = context.read<AuthService>();
+    if (!auth.isSignedIn) {
+      _snack('Текст этой книги остался на другом устройстве. '
+          'Войдите в аккаунт, чтобы скачать её.');
+      return const [];
+    }
+
+    setState(() => _isLoading = true);
+    final ok = await context.read<SyncService>().downloadContent(id);
+    if (!mounted) return const [];
+    setState(() => _isLoading = false);
+
+    if (!ok) {
+      _snack('Не удалось скачать текст книги. Проверьте интернет '
+          'и синхронизацию.');
+      return const [];
+    }
+    return UserDb.instance.getBookContent(id);
+  }
+
+  void _snack(String text) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  void _openAllCards() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AllCardsScreen()),
     ).then((_) => _loadBooks());
   }
 
@@ -413,13 +580,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final compactAppBar = screenWidth < 600;
     final showActionLabels = screenWidth >= 920;
 
-    return Scaffold(
+    final scaffold = Scaffold(
       appBar: AppBar(
         titleSpacing: 8,
         title: const Row(
           children: [
-            Text('🐺', style: TextStyle(fontSize: 20)),
-            SizedBox(width: 6),
+            // Сам Читавук, а не эмодзи чужого волка.
+            _AppLogo(),
+            SizedBox(width: 8),
             Expanded(
               child: Text(
                 'Читавук',
@@ -443,32 +611,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 MaterialPageRoute(builder: (_) => const NewsScreen()),
               ),
             ),
-          _DashboardAction(
-            showLabel: showActionLabels,
-            label: 'Аудирование',
-            tooltip: 'Аудирование (бета)',
-            icon: Icons.hearing_outlined,
-            highlighted: true,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ListeningScreen()),
-            ),
-          ),
+          // «Слушание» и «Курс сербского» живут в нижней навигации, поэтому
+          // в верхней панели их больше нет.
           if (!compactAppBar) ...[
             _DashboardAction(
               showLabel: showActionLabels,
-              label: 'Грамматика',
-              tooltip: 'Грамматика — темы и карточки',
+              label: 'Материалы',
+              tooltip: 'Материалы для поступления',
+              icon: Icons.assignment_outlined,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MaterialsScreen()),
+              ),
+            ),
+            _DashboardAction(
+              showLabel: showActionLabels,
+              label: 'Справочник',
+              tooltip: 'Справочник грамматических правил',
               icon: Icons.school_outlined,
-              onPressed: _openGrammarCards,
+              onPressed: _openGrammarReference,
             ),
-            IconButton(
-              tooltip: 'Напоминания о повторении',
-              icon: Icon(settings.notificationsEnabled
-                  ? Icons.notifications_active
-                  : Icons.notifications_none),
-              onPressed: _openReminderDialog,
-            ),
+            // Напоминания показываются только там, где они действительно
+            // работают: на десктопе плагин уведомлений отключён.
+            if (NotificationService.instance.supported)
+              IconButton(
+                tooltip: 'Напоминания о повторении',
+                icon: Icon(settings.notificationsEnabled
+                    ? Icons.notifications_active
+                    : Icons.notifications_none),
+                onPressed: _openReminderDialog,
+              ),
             IconButton(
               tooltip: 'Сменить тему',
               icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
@@ -483,13 +655,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const NewsScreen()));
               }
-              if (v == 'grammar') _openGrammarCards();
+              if (v == 'materials') {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const MaterialsScreen()));
+              }
+              if (v == 'video') _openVideoSite();
+              if (v == 'grammar') _openGrammarReference();
               if (v == 'reminders') _openReminderDialog();
               if (v == 'theme') _toggleTheme();
+              if (v == 'cards') _openAllCards();
               if (v == 'import') _importCards();
               if (v == 'export') _exportAllCards();
               if (v == 'refresh') _loadBooks();
               if (v == 'server') _openServerSettings();
+              if (v == 'account') {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const AccountScreen()));
+              }
               if (v == 'about') {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const AboutScreen()));
@@ -506,23 +688,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 const PopupMenuItem(
+                  value: 'materials',
+                  child: ListTile(
+                    leading: Icon(Icons.assignment_outlined),
+                    title: Text('Материалы для поступления'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuItem(
                   value: 'grammar',
                   child: ListTile(
                     leading: Icon(Icons.school_outlined),
-                    title: Text('Грамматика'),
+                    title: Text('Справочник правил'),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
-                PopupMenuItem(
-                  value: 'reminders',
-                  child: ListTile(
-                    leading: Icon(settings.notificationsEnabled
-                        ? Icons.notifications_active
-                        : Icons.notifications_none),
-                    title: const Text('Напоминания'),
-                    contentPadding: EdgeInsets.zero,
+                if (NotificationService.instance.supported)
+                  PopupMenuItem(
+                    value: 'reminders',
+                    child: ListTile(
+                      leading: Icon(settings.notificationsEnabled
+                          ? Icons.notifications_active
+                          : Icons.notifications_none),
+                      title: const Text('Напоминания'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
-                ),
                 PopupMenuItem(
                   value: 'theme',
                   child: ListTile(
@@ -533,6 +724,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const PopupMenuDivider(height: 8),
               ],
+              PopupMenuItem(
+                value: 'account',
+                child: ListTile(
+                  leading: Icon(context.watch<AuthService>().isSignedIn
+                      ? Icons.cloud_done_outlined
+                      : Icons.account_circle_outlined),
+                  title: Text(context.watch<AuthService>().isSignedIn
+                      ? 'Аккаунт и синхронизация'
+                      : 'Войти и синхронизировать'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'video',
+                child: ListTile(
+                  leading: Icon(Icons.smart_display_outlined),
+                  title: Text('Видео с субтитрами'),
+                  subtitle: Text('Откроется в браузере'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
               const PopupMenuItem(
                 value: 'about',
                 child: ListTile(
@@ -546,6 +758,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: ListTile(
                   leading: Icon(Icons.cloud_outlined),
                   title: Text('Сервер и словарь'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'cards',
+                child: ListTile(
+                  leading: Icon(Icons.style_outlined),
+                  title: Text('Все слова и карточки'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -617,7 +837,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
             )
           : null,
     );
+
+    // Перетаскивание работает на десктопе; на мобильных и в вебе DropTarget
+    // просто ничего не ловит, поэтому обёртку можно ставить безусловно.
+    return DropTarget(
+      onDragEntered: (_) => setState(() => _dragging = true),
+      onDragExited: (_) => setState(() => _dragging = false),
+      onDragDone: _onFilesDropped,
+      child: Stack(
+        children: [
+          scaffold,
+          if (_dragging) _dropOverlay(scheme),
+        ],
+      ),
+    );
   }
+
+  Widget _dropOverlay(ColorScheme scheme) => Positioned.fill(
+        child: IgnorePointer(
+          child: Container(
+            color: scheme.scrim.withValues(alpha: 0.45),
+            alignment: Alignment.center,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: scheme.primary, width: 2),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.file_download_outlined,
+                      size: 52, color: scheme.primary),
+                  const SizedBox(height: 12),
+                  Text('Отпустите файл — откроем книгу',
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 6),
+                  Text(DocumentParser.supportedExtensions.join(' · '),
+                      style: Theme.of(context).textTheme.bodySmall),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 
   Widget _buildEmpty(ColorScheme scheme) {
     return Center(
@@ -674,11 +938,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (_recentWords.isNotEmpty)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: WolfBubble(
-              title: 'Здраво! С возвращением',
-              text:
-                  'Недавно ты добавил: ${_recentWords.join(', ')}. Загляни в карточки и повтори!',
-              asset: Wolf.zdravo,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppTheme.radiusCard),
+              onTap: _openAllCards,
+              child: WolfBubble(
+                title: 'Здраво! С возвращением',
+                // В словарь попадают и длинные фразы: показываем начало, а
+                // целиком запись открывается в разделе слов.
+                text: 'Недавно ты добавил: '
+                    '${_recentWords.map((w) => shortPhrase(w)).join(', ')}. '
+                    'Нажми, чтобы открыть все слова.',
+                asset: Wolf.zdravo,
+              ),
             ),
           ),
         _buildFreeLibrary(scheme),
@@ -863,6 +1134,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _renameBook(book);
             } else if (v == 'move') {
               _moveBook(book);
+            } else if (v == 'reparse') {
+              _reparseBook(book);
             } else if (v == 'delete') {
               _deleteBook(id, title);
             }
@@ -878,6 +1151,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: ListTile(
                     leading: Icon(Icons.drive_file_move_outlined),
                     title: Text('В папку…'))),
+            PopupMenuItem(
+                value: 'reparse',
+                child: ListTile(
+                    leading: Icon(Icons.refresh),
+                    title: Text('Перечитать файл'))),
             PopupMenuItem(
                 value: 'delete',
                 child: ListTile(
@@ -982,7 +1260,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _openGrammarCards() {
+  /// Справочник грамматических правил. Сам курс живёт в отдельной вкладке
+  /// нижней навигации (master-prompt §26).
+  void _openGrammarReference() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const GrammarCardsScreen()),
@@ -991,6 +1271,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _openServerSettings() {
     showServerSettings(context);
+  }
+
+  /// Видео с сербскими субтитрами живут на отдельном сайте, поэтому открываются
+  /// в браузере, а не внутри приложения.
+  Future<void> _openVideoSite() async {
+    const url = 'https://serbiansubtitles.online/';
+    final opened = await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не удалось открыть $url')),
+      );
+    }
   }
 
   Future<void> _exportAllCards() async {
@@ -1044,13 +1339,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
+/// Значок приложения в шапке.
+class _AppLogo extends StatelessWidget {
+  const _AppLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(7),
+      child: Image.asset(
+        'assets/imgs/citavuk_icon.png',
+        width: 28,
+        height: 28,
+        filterQuality: FilterQuality.medium,
+      ),
+    );
+  }
+}
+
 class _DashboardAction extends StatelessWidget {
   final bool showLabel;
   final String label;
   final String tooltip;
   final IconData icon;
   final VoidCallback onPressed;
-  final bool highlighted;
 
   const _DashboardAction({
     required this.showLabel,
@@ -1058,7 +1370,6 @@ class _DashboardAction extends StatelessWidget {
     required this.tooltip,
     required this.icon,
     required this.onPressed,
-    this.highlighted = false,
   });
 
   @override
@@ -1077,14 +1388,12 @@ class _DashboardAction extends StatelessWidget {
       child: TextButton.icon(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: highlighted
-              ? scheme.tertiary.withValues(alpha: 0.32)
-              : Colors.white.withValues(alpha: 0.12),
+          foregroundColor: scheme.primary,
+          backgroundColor: scheme.primary.withValues(alpha: 0.08),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: scheme.primary.withValues(alpha: 0.25)),
           ),
           textStyle: const TextStyle(
             fontSize: 13,

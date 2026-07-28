@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../services/grammar_engine.dart';
 import '../services/user_db.dart';
 import '../widgets/animated_widgets.dart';
+import '../widgets/shortcuts_sheet.dart';
 import '../widgets/wolf_mascot.dart';
 
 class FlashcardsScreen extends StatefulWidget {
@@ -24,6 +26,67 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   bool _loading = true;
   bool _revealed = false;
   int _reviewed = 0;
+  final _keyboard = FocusNode();
+
+  @override
+  void dispose() {
+    _keyboard.dispose();
+    super.dispose();
+  }
+
+  /// Клавиши: пробел открывает ответ, цифры ставят оценку. Пока ответ скрыт,
+  /// оценивать нечего — цифры молчат.
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+    final key = event.logicalKey;
+
+    if (key == LogicalKeyboardKey.escape) {
+      Navigator.of(context).maybePop();
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.f1 || key == LogicalKeyboardKey.slash) {
+      showShortcutsSheet(context, ReaderShortcuts.flashcards);
+      return KeyEventResult.handled;
+    }
+    if (!_revealed) {
+      if (key == LogicalKeyboardKey.space ||
+          key == LogicalKeyboardKey.enter ||
+          key == LogicalKeyboardKey.numpadEnter) {
+        setState(() => _revealed = true);
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    }
+    final grades = {
+      LogicalKeyboardKey.digit1: 0,
+      LogicalKeyboardKey.numpad1: 0,
+      LogicalKeyboardKey.digit2: 1,
+      LogicalKeyboardKey.numpad2: 1,
+      LogicalKeyboardKey.digit3: 2,
+      LogicalKeyboardKey.numpad3: 2,
+    };
+    final grade = grades[key];
+    if (grade == null) return KeyEventResult.ignored;
+    _grade(grade);
+    return KeyEventResult.handled;
+  }
+
+  /// Свайпы: влево — «снова», вправо — «хорошо», вверх — «легко».
+  void _onSwipe(DragEndDetails details, {required bool horizontal}) {
+    if (!_revealed) {
+      setState(() => _revealed = true);
+      return;
+    }
+    final velocity = horizontal
+        ? details.velocity.pixelsPerSecond.dx
+        : details.velocity.pixelsPerSecond.dy;
+    if (velocity.abs() < 250) return;
+    if (horizontal) {
+      _grade(velocity < 0 ? 0 : 1);
+    } else if (velocity < 0) {
+      _grade(2);
+    }
+  }
 
   @override
   void initState() {
@@ -60,18 +123,34 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           if (!_loading && _queue.isNotEmpty)
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 8),
                 child: Text('осталось: ${_queue.length}',
                     style: const TextStyle(fontSize: 14)),
               ),
             ),
+          IconButton(
+            tooltip: 'Клавиши и жесты',
+            icon: const Icon(Icons.keyboard_outlined),
+            onPressed: () =>
+                showShortcutsSheet(context, ReaderShortcuts.flashcards),
+          ),
         ],
       ),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : _queue.isEmpty
-              ? _buildDone(scheme)
-              : _buildCard(scheme, _queue.first),
+      body: Focus(
+        focusNode: _keyboard,
+        autofocus: true,
+        onKeyEvent: _onKey,
+        child: GestureDetector(
+          onHorizontalDragEnd: (d) => _onSwipe(d, horizontal: true),
+          onVerticalDragEnd: (d) => _onSwipe(d, horizontal: false),
+          behavior: HitTestBehavior.opaque,
+          child: _loading
+              ? const Center(child: CircularProgressIndicator())
+              : _queue.isEmpty
+                  ? _buildDone(scheme)
+                  : _buildCard(scheme, _queue.first),
+        ),
+      ),
     );
   }
 
@@ -167,10 +246,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                             const SizedBox(height: 16),
                             Text('нажми, чтобы увидеть перевод',
                                 style: TextStyle(
-                                    color: scheme.onSurface.withValues(alpha: 0.5))),
+                                    color: scheme.onSurface
+                                        .withValues(alpha: 0.5))),
                           ] else ...[
                             const SizedBox(height: 16),
-                            Divider(color: scheme.primary.withValues(alpha: 0.3)),
+                            Divider(
+                                color: scheme.primary.withValues(alpha: 0.3)),
                             const SizedBox(height: 12),
                             Text(translation,
                                 textAlign: TextAlign.center,
@@ -186,7 +267,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                               ].join('  ·  '),
                               style: TextStyle(
                                   fontSize: 13,
-                                  color: scheme.onSurface.withValues(alpha: 0.6)),
+                                  color:
+                                      scheme.onSurface.withValues(alpha: 0.6)),
                             ),
                             if (forms.isNotEmpty) ...[
                               const SizedBox(height: 12),
@@ -198,7 +280,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                                     .map((e) => Chip(
                                           label: Text(
                                               '${GrammarEngine.formKeyRu(e.key)}: ${e.value}',
-                                              style: const TextStyle(fontSize: 12)),
+                                              style: const TextStyle(
+                                                  fontSize: 12)),
                                           backgroundColor:
                                               scheme.surfaceContainerHighest,
                                         ))
@@ -227,11 +310,13 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _gradeButton('Снова', Colors.redAccent, () => _grade(0)),
+                    child: _gradeButton(
+                        'Снова', Colors.redAccent, () => _grade(0)),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: _gradeButton('Хорошо', scheme.secondary, () => _grade(1)),
+                    child: _gradeButton(
+                        'Хорошо', scheme.secondary, () => _grade(1)),
                   ),
                   const SizedBox(width: 10),
                   Expanded(

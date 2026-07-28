@@ -8,6 +8,7 @@ import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
 import '../services/grammar_engine.dart';
+import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
 import '../services/user_db.dart';
 import '../state/app_settings.dart';
@@ -16,6 +17,7 @@ import '../widgets/animated_widgets.dart';
 import '../widgets/grammar_widgets.dart';
 import '../widgets/radio_sheet.dart';
 import '../widgets/reader_text.dart';
+import '../widgets/shortcuts_sheet.dart';
 import '../widgets/wolf_mascot.dart';
 import 'grammar_screen.dart';
 import 'vocabulary_screen.dart';
@@ -69,7 +71,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     // initialParagraph — индекс абзаца; находим страницу, содержащую его.
     // (Старые сохранения хранили индекс страницы — он меньше либо равен
     // индексу абзаца, поэтому в худшем случае откроемся чуть раньше.)
-    final startPage = _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
+    final startPage =
+        _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
     _startPage = startPage;
     _pageController = PageController(initialPage: startPage);
     if (startPage > 0) {
@@ -92,21 +95,61 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void _goToPage(int delta) {
     if (!_pageController.hasClients || _pages.isEmpty) return;
     final cur = _pageController.page?.round() ?? _startPage;
-    final target = (cur + delta).clamp(0, _pages.length - 1);
-    if (target != cur) {
-      _pageController.animateToPage(target,
-          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    }
+    _jumpTo(cur + delta);
   }
 
-  void _onKey(KeyEvent e) {
-    if (e is! KeyDownEvent) return;
+  void _jumpTo(int target) {
+    if (!_pageController.hasClients || _pages.isEmpty) return;
+    final cur = _pageController.page?.round() ?? _startPage;
+    final clamped = target.clamp(0, _pages.length - 1);
+    if (clamped == cur) return;
+    _pageController.animateToPage(clamped,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+  }
+
+  void _changeFontSize(double delta) {
+    final settings = context.read<AppSettings>();
+    final s = settings.reader;
+    settings.update(
+        s.copyWith(fontSize: (s.fontSize + delta).clamp(14.0, 32.0)));
+  }
+
+  KeyEventResult _onKey(FocusNode node, KeyEvent e) {
+    if (e is! KeyDownEvent) return KeyEventResult.ignored;
     final k = e.logicalKey;
-    if (k == LogicalKeyboardKey.arrowRight || k == LogicalKeyboardKey.pageDown) {
+    final shift = HardwareKeyboard.instance.isShiftPressed;
+
+    if (k == LogicalKeyboardKey.arrowRight ||
+        k == LogicalKeyboardKey.pageDown ||
+        (k == LogicalKeyboardKey.space && !shift)) {
       _goToPage(1);
-    } else if (k == LogicalKeyboardKey.arrowLeft || k == LogicalKeyboardKey.pageUp) {
+    } else if (k == LogicalKeyboardKey.arrowLeft ||
+        k == LogicalKeyboardKey.pageUp ||
+        (k == LogicalKeyboardKey.space && shift)) {
       _goToPage(-1);
+    } else if (k == LogicalKeyboardKey.home) {
+      _jumpTo(0);
+    } else if (k == LogicalKeyboardKey.end) {
+      _jumpTo(_pages.length - 1);
+    } else if (k == LogicalKeyboardKey.equal || k == LogicalKeyboardKey.add) {
+      _changeFontSize(1);
+    } else if (k == LogicalKeyboardKey.minus ||
+        k == LogicalKeyboardKey.numpadSubtract) {
+      _changeFontSize(-1);
+    } else if (k == LogicalKeyboardKey.keyS || k == LogicalKeyboardKey.f2) {
+      _openReaderSettings();
+    } else if (k == LogicalKeyboardKey.keyD) {
+      _openVocabulary();
+    } else if (k == LogicalKeyboardKey.f1 ||
+        k == LogicalKeyboardKey.slash ||
+        k == LogicalKeyboardKey.question) {
+      showShortcutsSheet(context, ReaderShortcuts.reader);
+    } else if (k == LogicalKeyboardKey.escape) {
+      Navigator.of(context).maybePop();
+    } else {
+      return KeyEventResult.ignored;
     }
+    return KeyEventResult.handled;
   }
 
   void _chunkParagraphs() {
@@ -203,7 +246,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   void _onPhraseSelectionEnd() {
-    if (_selPage != null && _selPara != null && _selStart != null && _selEnd != null) {
+    if (_selPage != null &&
+        _selPara != null &&
+        _selStart != null &&
+        _selEnd != null) {
       final pageIndex = _selPage!;
       final pIndex = _selPara!;
       var start = _selStart!;
@@ -246,6 +292,18 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     ).then((_) => _clearSelection());
   }
 
+  void _openVocabulary() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => VocabularyScreen(
+          bookId: widget.bookId,
+          bookTitle: widget.title,
+        ),
+      ),
+    );
+  }
+
   void _openReaderSettings() {
     showModalBottomSheet(
       context: context,
@@ -282,7 +340,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     // (а не initialParagraph: это индекс абзаца и он может превышать число страниц).
     final pageNum = _pages.isEmpty
         ? 0
-        : ((_pageController.hasClients ? _pageController.page?.round() : null) ??
+        : ((_pageController.hasClients
+                    ? _pageController.page?.round()
+                    : null) ??
                 _startPage) +
             1;
 
@@ -301,23 +361,19 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
           IconButton(
             tooltip: 'Словарь книги',
             icon: const Icon(Icons.folder_open),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => VocabularyScreen(
-                    bookId: widget.bookId,
-                    bookTitle: widget.title,
-                  ),
-                ),
-              );
-            },
+            onPressed: _openVocabulary,
+          ),
+          IconButton(
+            tooltip: 'Горячие клавиши и жесты (F1)',
+            icon: const Icon(Icons.keyboard_outlined),
+            onPressed: () =>
+                showShortcutsSheet(context, ReaderShortcuts.reader),
           ),
         ],
       ),
       body: _pages.isEmpty
           ? const Center(child: Text('Нет текста для отображения'))
-          : KeyboardListener(
+          : Focus(
               focusNode: _kbFocus,
               autofocus: true,
               onKeyEvent: _onKey,
@@ -330,9 +386,11 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                       itemCount: _pages.length,
                       onPageChanged: (i) {
                         // Сохраняем индекс ПЕРВОГО АБЗАЦА страницы (см. _pageStartPara).
-                        UserDb.instance.updateBookProgress(
-                            widget.bookId,
+                        UserDb.instance.updateBookProgress(widget.bookId,
                             i < _pageStartPara.length ? _pageStartPara[i] : 0);
+                        PageTurnSound.instance
+                          ..enabled = settings.pageTurnSound
+                          ..play();
                         _clearSelection();
                         setState(() {});
                       },
@@ -350,9 +408,11 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (pageIndex == 0 && widget.leadImageUrl != null)
+                                  if (pageIndex == 0 &&
+                                      widget.leadImageUrl != null)
                                     _leadImage(),
-                                  if (pageIndex == _startPage && _resumeHintVisible)
+                                  if (pageIndex == _startPage &&
+                                      _resumeHintVisible)
                                     _resumeHint(scheme, settings.fontSize),
                                   ...List.generate(paras.length, (pIndex) {
                                     final isSel = _selPage == pageIndex &&
@@ -369,11 +429,12 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                         selStart: isSel ? _selStart : null,
                                         selEnd: isSel ? _selEnd : null,
                                         justify: settings.justify,
-                                        firstLineIndent: settings.firstLineIndent,
+                                        firstLineIndent:
+                                            settings.firstLineIndent,
                                         dragToSelect: dragToSelect,
                                         onTapWord: (ti, token, tokens) =>
-                                            _onTapWord(
-                                                pageIndex, pIndex, ti, token, tokens),
+                                            _onTapWord(pageIndex, pIndex, ti,
+                                                token, tokens),
                                         onPhraseSelectionStart: (ti) =>
                                             _onPhraseSelectionStart(
                                                 pageIndex, pIndex, ti),
@@ -569,144 +630,148 @@ class ReaderSettingsSheet extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-      child: SingleChildScrollView(
-        child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _sheetHandleBar(context, scheme),
-          const SizedBox(height: 8),
-          Text('Настройки чтения',
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold, color: scheme.onSurface)),
-          const SizedBox(height: 16),
-
-          _label('Шрифт', scheme),
-          Wrap(
-            spacing: 8,
-            children: ReaderFont.values
-                .map((f) => ChoiceChip(
-                      label: Text(f.label),
-                      selected: s.font == f,
-                      onSelected: (_) => set(s.copyWith(font: f)),
-                    ))
-                .toList(),
-          ),
-          const SizedBox(height: 14),
-
-          _slider(
-            context,
-            'Размер: ${s.fontSize.round()}',
-            s.fontSize,
-            14,
-            32,
-            (v) => set(s.copyWith(fontSize: v)),
-          ),
-          _slider(
-            context,
-            'Межстрочный: ${s.lineHeight.toStringAsFixed(2)}',
-            s.lineHeight,
-            1.2,
-            2.4,
-            (v) => set(s.copyWith(lineHeight: v)),
-          ),
-          _slider(
-            context,
-            'Трекинг: ${s.letterSpacing.toStringAsFixed(1)}',
-            s.letterSpacing,
-            0,
-            3,
-            (v) => set(s.copyWith(letterSpacing: v)),
-          ),
-
-          const SizedBox(height: 6),
-          _label('Выделение основы слова (быстрое чтение)', scheme),
-          Wrap(
-            spacing: 8,
-            children: BionicLevel.values
-                .map((b) => ChoiceChip(
-                      label: Text(b.label),
-                      selected: s.bionic == b,
-                      onSelected: (_) => set(s.copyWith(bionic: b)),
-                    ))
-                .toList(),
-          ),
-          const SizedBox(height: 16),
-
-          _label('Тема', scheme),
-          Wrap(
-            spacing: 8,
-            children: AppThemeMode.values
-                .map((m) => ChoiceChip(
-                      label: Text(m.label),
-                      selected: s.themeMode == m,
-                      onSelected: (_) => set(s.copyWith(themeMode: m)),
-                    ))
-                .toList(),
-          ),
-          const SizedBox(height: 16),
-
-          _label('Вёрстка страницы', scheme),
-          _slider(
-            context,
-            s.fullWidth
-                ? 'Ширина колонки: вся ширина'
-                : 'Ширина колонки: ${s.maxWidth.round()}',
-            s.maxWidth,
-            360,
-            1100,
-            (v) => set(s.copyWith(maxWidth: v)),
-          ),
-          _slider(
-            context,
-            'Отступ между абзацами: ${s.paragraphSpacing.round()}',
-            s.paragraphSpacing,
-            4,
-            40,
-            (v) => set(s.copyWith(paragraphSpacing: v)),
-          ),
-          _slider(
-            context,
-            'Красная строка: ${s.firstLineIndent.round()}',
-            s.firstLineIndent,
-            0,
-            48,
-            (v) => set(s.copyWith(firstLineIndent: v)),
-          ),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Выравнивание по ширине'),
-            value: s.justify,
-            onChanged: (v) => set(s.copyWith(justify: v)),
-          ),
-          const SizedBox(height: 12),
-
-          _label('Фон страницы', scheme),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _bgSwatch(context, s, 0),
-              for (final c in _bgPresets) _bgSwatch(context, s, c),
+              _sheetHandleBar(context, scheme),
+              const SizedBox(height: 8),
+              Text('Настройки чтения',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: scheme.onSurface)),
+              const SizedBox(height: 16),
+              _label('Шрифт', scheme),
+              Wrap(
+                spacing: 8,
+                children: ReaderFont.values
+                    .map((f) => ChoiceChip(
+                          label: Text(f.label),
+                          selected: s.font == f,
+                          onSelected: (_) => set(s.copyWith(font: f)),
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 14),
+              _slider(
+                context,
+                'Размер: ${s.fontSize.round()}',
+                s.fontSize,
+                14,
+                32,
+                (v) => set(s.copyWith(fontSize: v)),
+              ),
+              _slider(
+                context,
+                'Межстрочный: ${s.lineHeight.toStringAsFixed(2)}',
+                s.lineHeight,
+                1.2,
+                2.4,
+                (v) => set(s.copyWith(lineHeight: v)),
+              ),
+              _slider(
+                context,
+                'Трекинг: ${s.letterSpacing.toStringAsFixed(1)}',
+                s.letterSpacing,
+                0,
+                3,
+                (v) => set(s.copyWith(letterSpacing: v)),
+              ),
+              const SizedBox(height: 6),
+              _label('Выделение основы слова (быстрое чтение)', scheme),
+              Wrap(
+                spacing: 8,
+                children: BionicLevel.values
+                    .map((b) => ChoiceChip(
+                          label: Text(b.label),
+                          selected: s.bionic == b,
+                          onSelected: (_) => set(s.copyWith(bionic: b)),
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 16),
+              _label('Тема', scheme),
+              Wrap(
+                spacing: 8,
+                children: AppThemeMode.values
+                    .map((m) => ChoiceChip(
+                          label: Text(m.label),
+                          selected: s.themeMode == m,
+                          onSelected: (_) => set(s.copyWith(themeMode: m)),
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 16),
+              _label('Вёрстка страницы', scheme),
+              _slider(
+                context,
+                s.fullWidth
+                    ? 'Ширина колонки: вся ширина'
+                    : 'Ширина колонки: ${s.maxWidth.round()}',
+                s.maxWidth,
+                360,
+                1100,
+                (v) => set(s.copyWith(maxWidth: v)),
+              ),
+              _slider(
+                context,
+                'Отступ между абзацами: ${s.paragraphSpacing.round()}',
+                s.paragraphSpacing,
+                4,
+                40,
+                (v) => set(s.copyWith(paragraphSpacing: v)),
+              ),
+              _slider(
+                context,
+                'Красная строка: ${s.firstLineIndent.round()}',
+                s.firstLineIndent,
+                0,
+                48,
+                (v) => set(s.copyWith(firstLineIndent: v)),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Выравнивание по ширине'),
+                value: s.justify,
+                onChanged: (v) => set(s.copyWith(justify: v)),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Шелест при перелистывании'),
+                value: s.pageTurnSound,
+                onChanged: (v) => set(s.copyWith(pageTurnSound: v)),
+              ),
+              const SizedBox(height: 12),
+              _label('Фон страницы', scheme),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  _bgSwatch(context, s, 0),
+                  for (final c in _bgPresets) _bgSwatch(context, s, c),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text('Свой оттенок',
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: scheme.onSurface.withValues(alpha: 0.7))),
+              Slider(
+                value: _hueOf(s.bgColor),
+                min: 0,
+                max: 360,
+                onChanged: (h) => set(s.copyWith(
+                    bgColor: HSVColor.fromAHSV(1, h, 0.16, 0.97)
+                        .toColor()
+                        .toARGB32())),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          Text('Свой оттенок',
-              style: TextStyle(
-                  fontSize: 13, color: scheme.onSurface.withValues(alpha: 0.7))),
-          Slider(
-            value: _hueOf(s.bgColor),
-            min: 0,
-            max: 360,
-            onChanged: (h) => set(s.copyWith(
-                bgColor:
-                    HSVColor.fromAHSV(1, h, 0.16, 0.97).toColor().toARGB32())),
-          ),
-        ],
         ),
       ),
-    ),
     );
   }
 
@@ -741,7 +806,9 @@ class ReaderSettingsSheet extends StatelessWidget {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            color: selected ? scheme.primary : scheme.onSurface.withValues(alpha: 0.2),
+            color: selected
+                ? scheme.primary
+                : scheme.onSurface.withValues(alpha: 0.2),
             width: selected ? 3 : 1,
           ),
         ),
@@ -821,7 +888,9 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
     String translation = data.translation;
     final ctx = data.contextualTranslation?.trim();
     final gen = data.translation.trim();
-    if (ctx != null && ctx.isNotEmpty && ctx.toLowerCase() != gen.toLowerCase()) {
+    if (ctx != null &&
+        ctx.isNotEmpty &&
+        ctx.toLowerCase() != gen.toLowerCase()) {
       translation = 'В тексте: $ctx\nВ общем: $gen';
     }
 
@@ -845,201 +914,226 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 8,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _sheetHandleBar(context, scheme),
-          Flexible(
-            child: FutureBuilder<WordAnalysis>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox(
-              height: 220,
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (snapshot.hasError || !snapshot.hasData) {
-            return SizedBox(
-              height: 180,
-              child: Center(
-                child: Text('Ошибка при анализе',
-                    style: TextStyle(color: scheme.error)),
-              ),
-            );
-          }
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 8,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _sheetHandleBar(context, scheme),
+            Flexible(
+              child: FutureBuilder<WordAnalysis>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox(
+                      height: 220,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return SizedBox(
+                      height: 180,
+                      child: Center(
+                        child: Text('Ошибка при анализе',
+                            style: TextStyle(color: scheme.error)),
+                      ),
+                    );
+                  }
 
-          final data = snapshot.data!;
-          final surface = data.surface;
-          final lemma = data.lemma;
-          final upos = data.upos;
-          final feats = data.feats;
-          final forms = data.forms;
-          final translation = data.translation;
-          final isOffline = data.isOffline;
-          final isPhrase = data.isPhrase;
+                  final data = snapshot.data!;
+                  final surface = data.surface;
+                  final lemma = data.lemma;
+                  final upos = data.upos;
+                  final feats = data.feats;
+                  final forms = data.forms;
+                  final translation = data.translation;
+                  final isOffline = data.isOffline;
+                  final isPhrase = data.isPhrase;
 
-          // Контекстный перевод (для этого предложения) — главный; «общий»
-          // перевод слова показываем мельче ниже, если он отличается.
-          final ctx = data.contextualTranslation?.trim();
-          final gen = translation.trim();
-          final hasContext = ctx != null &&
-              ctx.isNotEmpty &&
-              ctx.toLowerCase() != gen.toLowerCase();
-          final primaryTranslation =
-              hasContext ? ctx : (gen.isNotEmpty ? gen : translation);
+                  // Контекстный перевод (для этого предложения) — главный; «общий»
+                  // перевод слова показываем мельче ниже, если он отличается.
+                  final ctx = data.contextualTranslation?.trim();
+                  final gen = translation.trim();
+                  final hasContext = ctx != null &&
+                      ctx.isNotEmpty &&
+                      ctx.toLowerCase() != gen.toLowerCase();
+                  final primaryTranslation =
+                      hasContext ? ctx : (gen.isNotEmpty ? gen : translation);
 
-          // Авто-подсказка: если это предлог (или фраза, начинающаяся с
-          // предлога) — показываем, каким падежом он управляет. Для не-предлогов
-          // список пустой, и карточка не появляется.
-          final prepWord = isPhrase
-              ? surface.trim().split(RegExp(r'\s+')).first
-              : surface;
-          final government = GrammarEngine.prepositionGovernment(prepWord);
+                  // Авто-подсказка: если это предлог (или фраза, начинающаяся с
+                  // предлога) — показываем, каким падежом он управляет. Для не-предлогов
+                  // список пустой, и карточка не появляется.
+                  final prepWord = isPhrase
+                      ? surface.trim().split(RegExp(r'\s+')).first
+                      : surface;
+                  final government =
+                      GrammarEngine.prepositionGovernment(prepWord);
 
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
+                  return SingleChildScrollView(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(surface,
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: scheme.onSurface)),
-                        const SizedBox(height: 6),
-                        Wrap(
-                          spacing: 8,
-                          crossAxisAlignment: WrapCrossAlignment.center,
+                        const SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: isPhrase ? scheme.secondary : scheme.primary,
-                                borderRadius: BorderRadius.circular(6),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(surface,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: scheme.onSurface)),
+                                  const SizedBox(height: 6),
+                                  Wrap(
+                                    spacing: 8,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: isPhrase
+                                              ? scheme.secondary
+                                              : scheme.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                            isPhrase
+                                                ? 'фраза'
+                                                : GrammarEngine.posShort(upos),
+                                            style: const TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      if (!isPhrase)
+                                        Text('нач. форма: $lemma',
+                                            style: TextStyle(
+                                                color: scheme.onSurface
+                                                    .withValues(alpha: 0.6),
+                                                fontSize: 13)),
+                                      if (isOffline)
+                                        Icon(Icons.wifi_off,
+                                            size: 14,
+                                            color: scheme.onSurface
+                                                .withValues(alpha: 0.5)),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                  isPhrase ? 'фраза' : GrammarEngine.posShort(upos),
-                                  style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
                             ),
-                            if (!isPhrase)
-                              Text('нач. форма: $lemma',
-                                  style: TextStyle(
-                                      color: scheme.onSurface.withValues(alpha: 0.6),
-                                      fontSize: 13)),
-                            if (isOffline)
-                              Icon(Icons.wifi_off,
-                                  size: 14, color: scheme.onSurface.withValues(alpha: 0.5)),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _isSaved
+                                    ? scheme.surfaceContainerHighest
+                                    : scheme.primary,
+                                foregroundColor: _isSaved
+                                    ? scheme.onSurface
+                                    : scheme.onPrimary,
+                              ),
+                              icon: Icon(
+                                  _isSaved ? Icons.check : Icons.bookmark_add,
+                                  size: 18),
+                              label: Text(_isSaved ? 'В словаре' : 'В словарь'),
+                              onPressed: _isSaved ? null : () => _save(data),
+                            ),
                           ],
                         ),
+                        const SizedBox(height: 18),
+                        WolfBubble(
+                          title: hasContext ? 'В этом тексте' : 'Перевод',
+                          text: primaryTranslation,
+                          asset: Wolf.gram,
+                        ),
+                        if (hasContext) ...[
+                          const SizedBox(height: 10),
+                          _generalTranslationCard(scheme, gen),
+                        ],
+                        if (isPhrase && data.phraseInsight != null) ...[
+                          const SizedBox(height: 14),
+                          _phraseGrammarCard(scheme, data.phraseInsight!),
+                        ],
+                        if (government.isNotEmpty) ...[
+                          const SizedBox(height: 14),
+                          PrepositionGovernmentCard(
+                              preposition: prepWord, government: government),
+                        ],
+                        if (!isPhrase &&
+                            const {
+                              'NOUN',
+                              'PROPN',
+                              'ADJ',
+                              'VERB',
+                              'AUX',
+                              'PRON'
+                            }.contains(upos)) ...[
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: OutlinedButton.icon(
+                              icon: const Text('🐺',
+                                  style: TextStyle(fontSize: 16)),
+                              label: const Text('Почему так?'),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => GrammarScreen(
+                                      word: surface,
+                                      lemma: lemma,
+                                      upos: upos,
+                                      feats: feats,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                        if (feats.isNotEmpty && !isPhrase) ...[
+                          const SizedBox(height: 18),
+                          _section('Грамматика', scheme),
+                          const SizedBox(height: 6),
+                          _chips(
+                            GrammarEngine.humanFacts(upos, feats)
+                                .map((f) => '${f.label}: ${f.value}')
+                                .toList(),
+                            scheme,
+                            scheme.secondary,
+                          ),
+                        ],
+                        if (forms.isNotEmpty && !isPhrase) ...[
+                          const SizedBox(height: 18),
+                          _section('Основные формы', scheme),
+                          const SizedBox(height: 6),
+                          _chips(
+                            forms.entries
+                                .map((e) =>
+                                    '${GrammarEngine.formKeyRu(e.key)}: ${e.value}')
+                                .toList(),
+                            scheme,
+                            scheme.primary,
+                          ),
+                        ],
+                        const SizedBox(height: 8),
                       ],
                     ),
-                  ),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isSaved ? scheme.surfaceContainerHighest : scheme.primary,
-                      foregroundColor: _isSaved ? scheme.onSurface : scheme.onPrimary,
-                    ),
-                    icon: Icon(_isSaved ? Icons.check : Icons.bookmark_add, size: 18),
-                    label: Text(_isSaved ? 'В словаре' : 'В словарь'),
-                    onPressed: _isSaved ? null : () => _save(data),
-                  ),
-                ],
+                  );
+                },
               ),
-              const SizedBox(height: 18),
-              WolfBubble(
-                title: hasContext ? 'В этом тексте' : 'Перевод',
-                text: primaryTranslation,
-                asset: Wolf.gram,
-              ),
-              if (hasContext) ...[
-                const SizedBox(height: 10),
-                _generalTranslationCard(scheme, gen),
-              ],
-              if (isPhrase && data.phraseInsight != null) ...[
-                const SizedBox(height: 14),
-                _phraseGrammarCard(scheme, data.phraseInsight!),
-              ],
-              if (government.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                PrepositionGovernmentCard(
-                    preposition: prepWord, government: government),
-              ],
-              if (!isPhrase &&
-                  const {'NOUN', 'PROPN', 'ADJ', 'VERB', 'AUX', 'PRON'}
-                      .contains(upos)) ...[
-                const SizedBox(height: 12),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: OutlinedButton.icon(
-                    icon: const Text('🐺', style: TextStyle(fontSize: 16)),
-                    label: const Text('Почему так?'),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => GrammarScreen(
-                            word: surface,
-                            lemma: lemma,
-                            upos: upos,
-                            feats: feats,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-              if (feats.isNotEmpty && !isPhrase) ...[
-                const SizedBox(height: 18),
-                _section('Грамматика', scheme),
-                const SizedBox(height: 6),
-                _chips(
-                  GrammarEngine.humanFacts(upos, feats)
-                      .map((f) => '${f.label}: ${f.value}')
-                      .toList(),
-                  scheme,
-                  scheme.secondary,
-                ),
-              ],
-              if (forms.isNotEmpty && !isPhrase) ...[
-                const SizedBox(height: 18),
-                _section('Основные формы', scheme),
-                const SizedBox(height: 6),
-                _chips(
-                  forms.entries
-                      .map((e) => '${GrammarEngine.formKeyRu(e.key)}: ${e.value}')
-                      .toList(),
-                  scheme,
-                  scheme.primary,
-                ),
-              ],
-              const SizedBox(height: 8),
-            ],
-          ),
-        );
-      },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -1137,7 +1231,8 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
           const SizedBox(height: 3),
           Text(general,
               style: TextStyle(
-                  fontSize: 15, color: scheme.onSurface.withValues(alpha: 0.85))),
+                  fontSize: 15,
+                  color: scheme.onSurface.withValues(alpha: 0.85))),
           const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1172,7 +1267,8 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
         runSpacing: 6,
         children: items
             .map((t) => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: scheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(6),

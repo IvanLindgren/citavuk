@@ -33,6 +33,27 @@ frontend/ios/Flutter/ephemeral/
 frontend/android/.gradle/
 release
 
+# Секреты: ключи DeepL, пароль БД, Google OAuth client secrets.
+# Никогда не коммитить — файл существует только на машине разработчика и на
+# сервере. Шаблон без значений лежит в .env.example.
+.env
+.env.local
+.env.*.local
+server/.env
+
 # Keystores
 upload-keystore*
 generate_keystore.py
+# Листы визуальной проверки спрайтов — генерируются tools/sprite_build
+animations/qa/
+
+# Сборки сайта и веб-зависимости
+web/dist/
+web/node_modules/
+web/tsconfig.tsbuildinfo
+
+# Скомпилированные утилиты — пересобираются из исходников
+tools/course_build/*.exe
+
+# Исходники спрайтов (16 МБ psd/png): в сборку идут готовые webp из assets
+animations/source/

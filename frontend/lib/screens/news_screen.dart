@@ -32,8 +32,8 @@ class _NewsScreenState extends State<NewsScreen> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _load();
-    _timer = Timer.periodic(
-        const Duration(minutes: 5), (_) => _load(silent: true));
+    _timer =
+        Timer.periodic(const Duration(minutes: 5), (_) => _load(silent: true));
   }
 
   @override

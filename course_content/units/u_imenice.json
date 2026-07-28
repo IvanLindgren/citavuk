@@ -1,0 +1,322 @@
+{
+  "id": "u_imenice",
+  "title": "Часть 3. Существительные",
+  "description": "Род, число и все семь падежей существительного. Что делает каждый падеж и какой предлог его требует.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.2. Существительные • Imenice",
+    "sourceAnchor": "md:591-3060",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_rod",
+      "title": "Род существительных",
+      "objectives": [
+        {"id": "obj_rod_okoncanie", "title": "Определять род по окончанию и знать исключения"}
+      ],
+      "lessons": [
+        {
+          "id": "l_09",
+          "title": "Род существительных",
+          "prerequisites": ["l_08"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Родов три, как и в русском, и определяются они по последней букве словарной формы. Совпадение с русским почти полное, но именно «почти» и создаёт ошибки."},
+              {"kind": "terms", "title": "ТИПИЧНЫЕ ОКОНЧАНИЯ", "rows": [
+                {"term": "мужской", "gloss": "согласный", "note": "student, grad, prozor"},
+                {"term": "женский", "gloss": "-a", "note": "žena, knjiga, škola"},
+                {"term": "средний", "gloss": "-o, -e", "note": "selo, more, pitanje"}
+              ]},
+              {"kind": "terms", "title": "ГДЕ ОШИБАЮТСЯ", "rows": [
+                {"term": "tata, sudija, kolega", "gloss": "мужской род", "note": "оканчиваются на -a, но обозначают мужчин"},
+                {"term": "noć, ljubav, stvar", "gloss": "женский род", "note": "оканчиваются на согласный"},
+                {"term": "taksi, bife, meni", "gloss": "мужской род", "note": "заимствования, не средний"}
+              ]},
+              {"kind": "tip", "text": "Слово *ljubav* женского рода, как и в русском «любовь». А вот *bol* в сербском мужского рода: «jak bol», не «jaka bol». Такие расхождения проще проверять в словаре, чем угадывать по русскому."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Какого рода слово «knjiga»?", "explanation": "Оканчивается на -a, значит женский род.", "options": [{"id": "a", "text": "Женского", "correct": true}, {"id": "b", "text": "Мужского"}, {"id": "c", "text": "Среднего"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте слово с родом", "explanation": "Согласный — мужской, -a — женский, -o и -e — средний.", "leftLabel": "Слово", "rightLabel": "Род", "pairs": [{"left": "prozor", "right": "мужской"}, {"left": "škola", "right": "женский"}, {"left": "more", "right": "средний"}], "distractorsRight": ["общий"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Какого рода слово «tata»?", "explanation": "Мужского. Слово оканчивается на -a, но обозначает мужчину, и прилагательное при нём будет мужского рода: «dobar tata».", "options": [{"id": "a", "text": "Мужского", "correct": true}, {"id": "b", "text": "Женского", "misconceptionId": "misc_rod_tata_zenski"}, {"id": "c", "text": "Среднего"}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какое слово женского рода, несмотря на согласный на конце?", "explanation": "Noć — женского рода, как и ljubav, stvar, reč. Grad и prozor мужского.", "options": [{"id": "a", "text": "noć", "correct": true}, {"id": "b", "text": "grad"}, {"id": "c", "text": "prozor"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте существительные женского рода", "targetLabel": "существительные женского рода", "translation": "Книга лежит на столе. Школа рядом, а ночь тихая.", "explanation": "Женского рода здесь knjiga, škola и noć. Слово sto мужского рода, хотя стоит рядом.", "tokens": [{"id": "t1", "text": "Knjiga", "correct": true}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "na"}, {"id": "t4", "text": "stolu", "tail": "."}, {"id": "t5", "text": "Škola", "correct": true}, {"id": "t6", "text": "je"}, {"id": "t7", "text": "blizu", "tail": ","}, {"id": "t8", "text": "a"}, {"id": "t9", "text": "noć", "correct": true}, {"id": "t10", "text": "je"}, {"id": "t11", "text": "tiha", "tail": "."}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какого рода слово «taksi»?", "explanation": "Мужского. Заимствования на -i, -o, -e в сербском мужского рода, а не среднего, как подсказывает русское чутьё.", "options": [{"id": "a", "text": "Мужского", "correct": true}, {"id": "b", "text": "Среднего", "misconceptionId": "misc_rod_pozajmljenice_srednji"}, {"id": "c", "text": "Женского"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_nominativ_vokativ",
+      "title": "Именительный и звательный",
+      "objectives": [
+        {"id": "obj_nominativ_mnozina", "title": "Образовывать множественное число именительного падежа"},
+        {"id": "obj_vokativ_obracanje", "title": "Строить форму обращения"}
+      ],
+      "lessons": [
+        {
+          "id": "l_10",
+          "title": "Именительный падеж",
+          "prerequisites": ["l_09"],
+          "objectives": ["obj_nominativ_mnozina"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Именительный отвечает на *ko?* и *šta?* Это подлежащее и та форма, которая стоит в словаре. С неё начинается любой разбор: сначала находим именительный, потом смотрим, во что он превратился."},
+              {"kind": "terms", "title": "МНОЖЕСТВЕННОЕ ЧИСЛО", "rows": [
+                {"term": "мужской → -i", "gloss": "student → studenti", "note": "prozor → prozori"},
+                {"term": "односложные → -ovi", "gloss": "grad → gradovi", "note": "sto → stolovi"},
+                {"term": "после мягкой основы → -evi", "gloss": "muž → muževi", "note": "nož → noževi"},
+                {"term": "женский → -e", "gloss": "žena → žene", "note": "knjiga → knjige"},
+                {"term": "средний → -a", "gloss": "selo → sela", "note": "more → mora"}
+              ]},
+              {"kind": "paragraph", "text": "Перед окончанием *-i* заднеязычные меняются: *k → c*, *g → z*, *h → s*. Поэтому *radnik → radnici*, *geolog → geolozi*, *uspeh → uspesi*."},
+              {"kind": "example", "serbian": "Studenti čitaju knjige.", "russian": "Студенты читают книги.", "highlight": "Studenti"},
+              {"kind": "tip", "text": "Короткие мужские слова почти всегда берут *-ovi*: *grad → gradovi*, *voz → vozovi*, *most → mostovi*. Форма «gradi» звучит для серба так же странно, как «городы» для нас."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как будет множественное число от «student»?", "explanation": "Studenti. Многосложные мужские слова берут окончание -i.", "options": [{"id": "a", "text": "studenti", "correct": true}, {"id": "b", "text": "studentovi"}, {"id": "c", "text": "studenta"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как будет множественное число от «grad»?", "explanation": "Gradovi. Односложные мужские слова получают расширение -ovi.", "options": [{"id": "a", "text": "gradovi", "correct": true}, {"id": "b", "text": "gradi", "misconceptionId": "misc_mnozina_bez_ov"}, {"id": "c", "text": "grada"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте единственное число с множественным", "explanation": "Женские слова берут -e, средние -a, мужские -i или -ovi.", "leftLabel": "Один", "rightLabel": "Много", "pairs": [{"left": "žena", "right": "žene"}, {"left": "selo", "right": "sela"}, {"left": "prozor", "right": "prozori"}, {"left": "sto", "right": "stolovi"}], "distractorsRight": ["stoovi"]},
+            {"type": "letter_unscramble", "difficulty": 3, "prompt": "Соберите множественное число слова «radnik»", "explanation": "Radnici: перед -i заднеязычное k переходит в c.", "context": "На стройке много рабочих.", "lemma": "radnik", "targetFeats": "Case=Nom|Number=Plur", "answer": "radnici", "extraLetters": [], "showLemma": true, "highlightStem": "radn"},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Поставьте «knjiga» во множественное число", "explanation": "Knjige su na stolu. Женский род во множественном числе именительного берёт -e.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " su na stolu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Knjige", "knjige"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «geolog» даёт «geolozi», а не «geologi»?", "explanation": "Перед окончанием -i заднеязычные чередуются: k → c, g → z, h → s.", "options": [{"id": "a", "text": "Перед -i заднеязычное g переходит в z", "correct": true}, {"id": "b", "text": "Так проще произносить, правила тут нет"}, {"id": "c", "text": "Это исключение, которое нужно запомнить отдельно"}]}
+          ]
+        },
+        {
+          "id": "l_11",
+          "title": "Звательный падеж",
+          "prerequisites": ["l_10"],
+          "objectives": ["obj_vokativ_obracanje"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Звательный — форма обращения. В русском он почти исчез, остались обрывки вроде «боже» и «мам». В сербском это живой падеж, и обратиться к человеку именительным падежом звучит невежливо."},
+              {"kind": "terms", "title": "КАК ОБРАЗУЕТСЯ", "rows": [
+                {"term": "м. р. на согласный → -e", "gloss": "brat → brate", "note": "student → studente"},
+                {"term": "м. р. на -k, -g, -h → -če, -že, -še", "gloss": "junak → junače", "note": "Bog → Bože"},
+                {"term": "м. р. мягкая основа → -u", "gloss": "prijatelj → prijatelju", "note": "muž → mužu"},
+                {"term": "ж. р. на -a → -o", "gloss": "sestra → sestro", "note": "žena → ženo"},
+                {"term": "ж. р. на -ica → -ice", "gloss": "učiteljica → učiteljice", "note": ""},
+                {"term": "средний род", "gloss": "как именительный", "note": "dete → dete"}
+              ]},
+              {"kind": "example", "serbian": "Brate, gde si bio?", "russian": "Брат, где ты был?", "highlight": "Brate"},
+              {"kind": "tip", "text": "Личные имена ведут себя мягче правил. *Marko*, *Ana*, *Milica* в обращении чаще всего не меняются: «Marko, dođi!» Менять их по образцу *ženo* не нужно."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как обратиться к брату?", "explanation": "Brate! Мужские слова на согласный получают окончание -e.", "options": [{"id": "a", "text": "Brate!", "correct": true}, {"id": "b", "text": "Brat!"}, {"id": "c", "text": "Bratu!"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание для обращения к сестре", "explanation": "Sestro! Женские слова на -a в звательном падеже берут -o.", "wordClass": "noun", "contextSentence": "___, dođi ovamo!", "stem": "sestr", "target": {"lemma": "sestra", "case": "voc", "number": "sing", "gender": "fem"}, "fullForm": "sestro", "options": [{"id": "e1", "text": "o", "correct": true}, {"id": "e2", "text": "a"}, {"id": "e3", "text": "u"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте словарную форму с обращением", "explanation": "Мягкая основа даёт -u (prijatelju), твёрдая -e (studente), женский род -o (ženo), а -ica даёт -ice.", "leftLabel": "Словарная форма", "rightLabel": "Обращение", "pairs": [{"left": "student", "right": "studente"}, {"left": "prijatelj", "right": "prijatelju"}, {"left": "žena", "right": "ženo"}, {"left": "učiteljica", "right": "učiteljice"}], "distractorsRight": ["ženu"]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «junak» даёт «junače»?", "explanation": "Перед звательным -e заднеязычные чередуются: k → č, g → ž, h → š.", "options": [{"id": "a", "text": "Перед -e заднеязычное k переходит в č", "correct": true}, {"id": "b", "text": "Так короче произносить"}, {"id": "c", "text": "Никакого правила нет, это исключение"}]},
+            {"type": "letter_unscramble", "difficulty": 3, "prompt": "Соберите обращение к другу (prijatelj)", "explanation": "Prijatelju: мягкая основа требует окончания -u, а не -e.", "context": "Обращаемся к другу.", "lemma": "prijatelj", "targetFeats": "Case=Voc|Number=Sing", "answer": "prijatelju", "extraLetters": ["e"], "showLemma": true, "highlightStem": "prijatelj"},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите обращение: «Ана, где ты?»", "explanation": "Ana, gde si? Личные имена в обращении обычно не меняются.", "tokens": [{"id": "t1", "text": "Ana"}, {"id": "t2", "text": ","}, {"id": "t3", "text": "gde"}, {"id": "t4", "text": "si"}, {"id": "t5", "text": "?"}], "distractorTokens": [{"id": "d1", "text": "Ano"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_akuzativ_genitiv",
+      "title": "Винительный и родительный",
+      "objectives": [
+        {"id": "obj_akuzativ_zivo", "title": "Различать одушевлённый и неодушевлённый винительный"},
+        {"id": "obj_genitiv_predlozi", "title": "Знать предлоги, которые требуют родительного падежа"}
+      ],
+      "lessons": [
+        {
+          "id": "l_12",
+          "title": "Винительный падеж",
+          "prerequisites": ["l_11"],
+          "objectives": ["obj_akuzativ_zivo"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Винительный отвечает на *koga?* и *šta?* Это прямое дополнение: то, на что направлено действие. *Vidim knjigu* — вижу книгу."},
+              {"kind": "terms", "title": "ОКОНЧАНИЯ", "rows": [
+                {"term": "ж. р. -a → -u", "gloss": "knjiga → knjigu", "note": "žena → ženu"},
+                {"term": "м. р. неодушевлённый", "gloss": "как именительный", "note": "Vidim grad."},
+                {"term": "м. р. одушевлённый → -a", "gloss": "student → studenta", "note": "Vidim studenta."},
+                {"term": "средний род", "gloss": "как именительный", "note": "Vidim selo."}
+              ]},
+              {"kind": "paragraph", "text": "Одушевлённость решает всё в мужском роде. *Vidim grad* — город остаётся как есть, *vidim brata* — брат берёт окончание *-a*, совпадая с родительным падежом. Ровно то же правило действует в русском."},
+              {"kind": "terms", "title": "ПРЕДЛОГИ С ВИНИТЕЛЬНЫМ", "rows": [
+                {"term": "u, na", "gloss": "движение куда", "note": "Idem u školu."},
+                {"term": "kroz", "gloss": "сквозь, через", "note": "Idem kroz park."},
+                {"term": "za", "gloss": "за (при движении)", "note": "Sedam za sto."}
+              ]},
+              {"kind": "tip", "text": "Пара *u školi* и *u školu* различает место и направление. Первое отвечает на «где», второе на «куда», и разница только в окончании."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я вижу книгу»?", "explanation": "Vidim knjigu. Женский род в винительном падеже меняет -a на -u.", "options": [{"id": "a", "text": "Vidim knjigu.", "correct": true}, {"id": "b", "text": "Vidim knjiga."}, {"id": "c", "text": "Vidim knjige."}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Я вижу студента»", "explanation": "Studenta. Одушевлённые слова мужского рода в винительном берут -a.", "wordClass": "noun", "contextSentence": "Vidim ___.", "stem": "student", "target": {"lemma": "student", "case": "acc", "number": "sing", "gender": "masc", "animacy": "anim"}, "fullForm": "studenta", "options": [{"id": "e1", "text": "a", "correct": true}, {"id": "e2", "text": "u"}, {"id": "e3", "text": "om"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Я вижу город»?", "explanation": "Vidim grad. Неодушевлённые слова мужского рода в винительном совпадают с именительным.", "options": [{"id": "a", "text": "Vidim grad.", "correct": true}, {"id": "b", "text": "Vidim grada.", "misconceptionId": "misc_akuzativ_nezivo_kao_zivo"}, {"id": "c", "text": "Vidim gradu."}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Куда? Поставьте «škola» в нужную форму", "explanation": "Idem u školu. Движение требует винительного падежа: -a переходит в -u.", "segments": [{"kind": "text", "text": "Idem u "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["školu"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Марко покупает газету»", "explanation": "Marko kupuje novine. Слово novine во множественном числе и в винительном падеже не меняется.", "tokens": [{"id": "t1", "text": "Marko"}, {"id": "t2", "text": "kupuje"}, {"id": "t3", "text": "novine"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "novina"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте существительные в винительном падеже", "targetLabel": "существительные в винительном падеже", "translation": "Ана читает книгу и пишет письмо. Потом она идёт в школу.", "explanation": "Прямые дополнения knjigu и pismo, а также školu после предлога направления u — все в винительном.", "tokens": [{"id": "t1", "text": "Ana"}, {"id": "t2", "text": "čita"}, {"id": "t3", "text": "knjigu", "correct": true}, {"id": "t4", "text": "i"}, {"id": "t5", "text": "piše"}, {"id": "t6", "text": "pismo", "correct": true, "tail": "."}, {"id": "t7", "text": "Zatim"}, {"id": "t8", "text": "ide"}, {"id": "t9", "text": "u"}, {"id": "t10", "text": "školu", "correct": true, "tail": "."}]}
+          ]
+        },
+        {
+          "id": "l_13",
+          "title": "Родительный падеж",
+          "prerequisites": ["l_12"],
+          "objectives": ["obj_genitiv_predlozi"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Родительный отвечает на *koga?* и *čega?* Он показывает принадлежность, отсутствие, происхождение и работает с самым большим списком предлогов."},
+              {"kind": "terms", "title": "ОКОНЧАНИЯ", "rows": [
+                {"term": "м. и ср. род → -a", "gloss": "student → studenta", "note": "selo → sela"},
+                {"term": "ж. род на -a → -e", "gloss": "žena → žene", "note": "knjiga → knjige"}
+              ]},
+              {"kind": "terms", "title": "ПРЕДЛОГИ С РОДИТЕЛЬНЫМ", "rows": [
+                {"term": "iz", "gloss": "из", "note": "Ja sam iz Rusije."},
+                {"term": "od", "gloss": "от", "note": "Pismo od brata."},
+                {"term": "do", "gloss": "до", "note": "Idem do grada."},
+                {"term": "kod", "gloss": "у, около", "note": "Kod kuće."},
+                {"term": "bez", "gloss": "без", "note": "Kafa bez šećera."},
+                {"term": "posle, pre", "gloss": "после, до", "note": "Posle posla."},
+                {"term": "oko, ispred, iza", "gloss": "вокруг, перед, за", "note": "Ispred zgrade."}
+              ]},
+              {"kind": "paragraph", "text": "Отрицание существования тоже требует родительного: *nema* сочетается только с ним. *Nema hleba* — нет хлеба, *nema vremena* — нет времени."},
+              {"kind": "example", "serbian": "Ja sam iz Rusije.", "russian": "Я из России.", "highlight": "Rusije"},
+              {"kind": "tip", "text": "Слова *kod* и *do* не про принадлежность, но требуют того же падежа. Предлог запоминается вместе с падежом, отдельно от значения: *kod* + родительный, всегда."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я из России»?", "explanation": "Ja sam iz Rusije. Предлог iz требует родительного падежа, у женского рода это -e.", "options": [{"id": "a", "text": "Ja sam iz Rusije.", "correct": true}, {"id": "b", "text": "Ja sam iz Rusiju."}, {"id": "c", "text": "Ja sam iz Rusija."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте предлог с падежом, который он требует", "explanation": "Iz, bez, kod и do работают только с родительным падежом.", "leftLabel": "Предлог", "rightLabel": "Падеж", "pairs": [{"left": "iz", "right": "родительный"}, {"left": "bez", "right": "родительный"}, {"left": "kod", "right": "родительный"}, {"left": "u (куда?)", "right": "винительный"}], "distractorsRight": ["дательный"]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «кофе без сахара»", "explanation": "Bez šećera. Предлог bez требует родительного падежа, у мужского рода это -a.", "wordClass": "noun", "contextSentence": "Kafa bez ___.", "stem": "šećer", "target": {"lemma": "šećer", "case": "gen", "number": "sing", "gender": "masc"}, "fullForm": "šećera", "options": [{"id": "e1", "text": "a", "correct": true}, {"id": "e2", "text": "u"}, {"id": "e3", "text": "om"}], "preposition": "bez"},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «hleb» в нужную форму: «Хлеба нет»", "explanation": "Nema hleba. Слово nema всегда сочетается с родительным падежом.", "segments": [{"kind": "text", "text": "Nema "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["hleba"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какой падеж требует слово «nema»?", "explanation": "Родительный. «Nema hleba», «nema vremena» — так же, как в русском «нет хлеба».", "options": [{"id": "a", "text": "Родительный", "correct": true}, {"id": "b", "text": "Винительный"}, {"id": "c", "text": "Именительный"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте существительные в родительном падеже", "targetLabel": "существительные в родительном падеже", "translation": "После работы я иду домой. У меня дома нет кофе.", "explanation": "Posla после predloga posle, kuće после kod, kafe после nema — все три в родительном.", "tokens": [{"id": "t1", "text": "Posle"}, {"id": "t2", "text": "posla", "correct": true}, {"id": "t3", "text": "idem"}, {"id": "t4", "text": "kući", "tail": "."}, {"id": "t5", "text": "Kod"}, {"id": "t6", "text": "kuće", "correct": true}, {"id": "t7", "text": "nema"}, {"id": "t8", "text": "kafe", "correct": true, "tail": "."}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Marko je iz Kragujevca. Posle posla ide kod brata. Danas pije kafu bez šećera, jer kod kuće nema šećera.", "translation": "Марко из Крагуеваца. После работы он идёт к брату. Сегодня он пьёт кофе без сахара, потому что дома сахара нет.", "explanation": "Iz Kragujevca, posle posla, kod brata, bez šećera, nema šećera — родительный падеж в пяти разных ролях.", "questions": [
+              {"id": "q1", "prompt": "Odakle je Marko?", "options": [{"id": "a", "text": "Iz Kragujevca.", "correct": true}, {"id": "b", "text": "Iz Beograda."}, {"id": "c", "text": "Iz Niša."}]},
+              {"id": "q2", "prompt": "Zašto pije kafu bez šećera?", "options": [{"id": "a", "text": "Zato što kod kuće nema šećera.", "correct": true}, {"id": "b", "text": "Zato što ne voli šećer."}, {"id": "c", "text": "Zato što je kod brata."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_dativ_lokativ",
+      "title": "Дательный и предложный",
+      "objectives": [
+        {"id": "obj_dativ_komu", "title": "Употреблять дательный падеж адресата"},
+        {"id": "obj_lokativ_mesto", "title": "Различать место и направление после u и na"}
+      ],
+      "lessons": [
+        {
+          "id": "l_14",
+          "title": "Дательный падеж",
+          "prerequisites": ["l_13"],
+          "objectives": ["obj_dativ_komu"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Дательный отвечает на *kome?* — кому адресовано действие. *Dajem knjigu bratu* — даю книгу брату."},
+              {"kind": "terms", "title": "ОКОНЧАНИЯ", "rows": [
+                {"term": "м. и ср. род → -u", "gloss": "brat → bratu", "note": "selo → selu"},
+                {"term": "ж. род на -a → -i", "gloss": "žena → ženi", "note": "sestra → sestri"}
+              ]},
+              {"kind": "terms", "title": "ПРЕДЛОГИ С ДАТЕЛЬНЫМ", "rows": [
+                {"term": "k, ka", "gloss": "к", "note": "Idem ka gradu."},
+                {"term": "prema", "gloss": "по направлению к, по отношению к", "note": "Prema meni."}
+              ]},
+              {"kind": "paragraph", "text": "Форма женского рода на *-i* совпадает с предложным падежом: *ženi* — и «женщине», и «о женщине». Различает их предлог: без предлога это дательный, после *o*, *u*, *na* — предложный."},
+              {"kind": "example", "serbian": "Dajem knjigu sestri.", "russian": "Я даю книгу сестре.", "highlight": "sestri"},
+              {"kind": "tip", "text": "Предлог *ka* пишется перед словами на *k* и *g*, чтобы не столкнулись два одинаковых звука: *ka gradu*, но *k moru*. Правило чисто фонетическое."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я даю книгу брату»?", "explanation": "Dajem knjigu bratu. Мужской род в дательном падеже берёт -u.", "options": [{"id": "a", "text": "Dajem knjigu bratu.", "correct": true}, {"id": "b", "text": "Dajem knjigu brata."}, {"id": "c", "text": "Dajem knjigu bratom."}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Я пишу сестре»", "explanation": "Sestri. Женский род в дательном падеже берёт -i.", "wordClass": "noun", "contextSentence": "Pišem ___.", "stem": "sestr", "target": {"lemma": "sestra", "case": "dat", "number": "sing", "gender": "fem"}, "fullForm": "sestri", "options": [{"id": "e1", "text": "i", "correct": true}, {"id": "e2", "text": "u"}, {"id": "e3", "text": "e"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «prijatelj» в дательный падеж", "explanation": "Javljam se prijatelju. Мужской род в дательном берёт -u.", "segments": [{"kind": "text", "text": "Javljam se "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["prijatelju"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте предлог с падежом", "explanation": "Ka и prema требуют дательного, iz — родительного, kroz — винительного.", "leftLabel": "Предлог", "rightLabel": "Падеж", "pairs": [{"left": "ka", "right": "дательный"}, {"left": "prema", "right": "дательный"}, {"left": "iz", "right": "родительный"}, {"left": "kroz", "right": "винительный"}], "distractorsRight": ["звательный"]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Форма «sestri» может быть дательным или предложным. Что помогает различить?", "explanation": "Предлог. Без предлога это дательный (pišem sestri), после o, u, na — предложный (o sestri).", "options": [{"id": "a", "text": "Предлог перед словом", "correct": true}, {"id": "b", "text": "Ударение"}, {"id": "c", "text": "Ничто, эти падежи в сербском слились"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Марко идёт к городу»", "explanation": "Marko ide ka gradu. Перед словом на g предлог принимает форму ka.", "tokens": [{"id": "t1", "text": "Marko"}, {"id": "t2", "text": "ide"}, {"id": "t3", "text": "ka"}, {"id": "t4", "text": "gradu"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "grada"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []}
+          ]
+        },
+        {
+          "id": "l_15",
+          "title": "Предложный падеж",
+          "prerequisites": ["l_14"],
+          "objectives": ["obj_lokativ_mesto"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Предложный, он же локатив, отвечает на *o kome?* и *gde?* Он никогда не бывает без предлога — отсюда и название."},
+              {"kind": "terms", "title": "ОКОНЧАНИЯ", "rows": [
+                {"term": "м. и ср. род → -u", "gloss": "grad → gradu", "note": "selo → selu"},
+                {"term": "ж. род на -a → -i", "gloss": "škola → školi", "note": "kuća → kući"}
+              ]},
+              {"kind": "terms", "title": "ПРЕДЛОГИ С ПРЕДЛОЖНЫМ", "rows": [
+                {"term": "u", "gloss": "в (где)", "note": "Živim u Beogradu."},
+                {"term": "na", "gloss": "на (где)", "note": "Knjiga je na stolu."},
+                {"term": "o", "gloss": "о, про", "note": "Govorimo o filmu."},
+                {"term": "po", "gloss": "по", "note": "Šetamo po gradu."},
+                {"term": "pri", "gloss": "при", "note": "Pri radu."}
+              ]},
+              {"kind": "paragraph", "text": "Предлоги *u* и *na* работают с двумя падежами, и падеж решает смысл. Винительный — движение: *idem u školu*, «иду в школу». Предложный — место: *sam u školi*, «я в школе»."},
+              {"kind": "example", "serbian": "Živim u Novom Sadu.", "russian": "Я живу в Нови-Саде.", "highlight": "Sadu"},
+              {"kind": "tip", "text": "Задайте вопрос «куда» или «где». «Куда» даёт винительный, «где» — предложный. Это единственная проверка, которая нужна."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я живу в Белграде»?", "explanation": "Živim u Beogradu. Вопрос «где», значит предложный падеж с окончанием -u.", "options": [{"id": "a", "text": "Živim u Beogradu.", "correct": true}, {"id": "b", "text": "Živim u Beograd."}, {"id": "c", "text": "Živim u Beograda."}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "«Idem u školu» или «Idem u školi»?", "explanation": "Idem u školu: движение отвечает на вопрос «куда» и требует винительного падежа.", "options": [{"id": "a", "text": "Idem u školu", "correct": true}, {"id": "b", "text": "Idem u školi", "misconceptionId": "misc_lokativ_umesto_akuzativa"}, {"id": "c", "text": "Idem u škola"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Книга на столе»", "explanation": "Na stolu. Вопрос «где», значит предложный падеж: -u.", "wordClass": "noun", "contextSentence": "Knjiga je na ___.", "stem": "stol", "target": {"lemma": "sto", "case": "loc", "number": "sing", "gender": "masc"}, "fullForm": "stolu", "options": [{"id": "e1", "text": "u", "correct": true}, {"id": "e2", "text": "a"}, {"id": "e3", "text": "om"}], "preposition": "na"},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «škola» в нужную форму: «Я в школе»", "explanation": "Ja sam u školi. Вопрос «где», предложный падеж женского рода даёт -i.", "segments": [{"kind": "text", "text": "Ja sam u "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["školi"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 3, "prompt": "Сопоставьте вопрос с падежом", "explanation": "«Куда» даёт винительный, «где» — предложный, «кому» — дательный, «откуда» — родительный.", "leftLabel": "Вопрос", "rightLabel": "Падеж", "pairs": [{"left": "kuda? (куда)", "right": "винительный"}, {"left": "gde? (где)", "right": "предложный"}, {"left": "kome? (кому)", "right": "дательный"}, {"left": "odakle? (откуда)", "right": "родительный"}], "distractorsRight": ["творительный"]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте существительные в предложном падеже", "targetLabel": "существительные в предложном падеже", "translation": "Мы говорим о фильме. Ана в школе, а её книга на столе.", "explanation": "Filmu после o, školi после u, stolu после na — везде вопрос «где» или «о чём».", "tokens": [{"id": "t1", "text": "Govorimo"}, {"id": "t2", "text": "o"}, {"id": "t3", "text": "filmu", "correct": true, "tail": "."}, {"id": "t4", "text": "Ana"}, {"id": "t5", "text": "je"}, {"id": "t6", "text": "u"}, {"id": "t7", "text": "školi", "correct": true, "tail": ","}, {"id": "t8", "text": "a"}, {"id": "t9", "text": "njena"}, {"id": "t10", "text": "knjiga"}, {"id": "t11", "text": "je"}, {"id": "t12", "text": "na"}, {"id": "t13", "text": "stolu", "correct": true, "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_instrumental",
+      "title": "Творительный падеж",
+      "objectives": [
+        {"id": "obj_instrumental_om_em", "title": "Выбирать между окончаниями -om и -em"}
+      ],
+      "lessons": [
+        {
+          "id": "l_16",
+          "title": "Творительный падеж",
+          "prerequisites": ["l_15"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Творительный отвечает на *kim?* и *čim?* Он обозначает орудие (*pišem olovkom*), спутника (*sa bratom*) и положение в пространстве (*nad stolom*)."},
+              {"kind": "terms", "title": "ОКОНЧАНИЯ", "rows": [
+                {"term": "м. и ср. род → -om", "gloss": "student → studentom", "note": "selo → selom"},
+                {"term": "после мягкой основы → -em", "gloss": "muž → mužem", "note": "prijatelj → prijateljem"},
+                {"term": "ж. род на -a → -om", "gloss": "žena → ženom", "note": "olovka → olovkom"}
+              ]},
+              {"kind": "paragraph", "text": "Мягкие основы — те, что оканчиваются на *j, lj, nj, č, ć, ž, š, đ, dž, c*. После них вместо *-om* идёт *-em*: *nožem*, *mužem*, *prijateljem*."},
+              {"kind": "terms", "title": "ПРЕДЛОГИ С ТВОРИТЕЛЬНЫМ", "rows": [
+                {"term": "s, sa", "gloss": "с (вместе)", "note": "Idem sa bratom."},
+                {"term": "nad, pod", "gloss": "над, под", "note": "Lampa je nad stolom."},
+                {"term": "pred", "gloss": "перед", "note": "Pred kućom."},
+                {"term": "među", "gloss": "между", "note": "Među ljudima."},
+                {"term": "za", "gloss": "за (место)", "note": "Sedim za stolom."}
+              ]},
+              {"kind": "tip", "text": "Орудие идёт без предлога: *pišem olovkom*, «пишу ручкой». Добавить *sa* здесь — распространённая ошибка: *sa* нужен только когда речь о совместности, о человеке рядом."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я пишу ручкой»?", "explanation": "Pišem olovkom. Орудие ставится в творительный падеж без предлога.", "options": [{"id": "a", "text": "Pišem olovkom.", "correct": true}, {"id": "b", "text": "Pišem sa olovkom.", "misconceptionId": "misc_instrumental_visak_sa"}, {"id": "c", "text": "Pišem olovku."}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Я иду с братом»", "explanation": "Sa bratom. Твёрдая основа даёт окончание -om.", "wordClass": "noun", "contextSentence": "Idem sa ___.", "stem": "brat", "target": {"lemma": "brat", "case": "ins", "number": "sing", "gender": "masc"}, "fullForm": "bratom", "options": [{"id": "e1", "text": "om", "correct": true}, {"id": "e2", "text": "em"}, {"id": "e3", "text": "u"}], "preposition": "sa"},
+            {"type": "ending_picker", "difficulty": 3, "prompt": "Подберите окончание: «с другом» (prijatelj)", "explanation": "Sa prijateljem. Основа оканчивается на мягкое lj, поэтому не -om, а -em.", "wordClass": "noun", "contextSentence": "Idem sa ___.", "stem": "prijatelj", "target": {"lemma": "prijatelj", "case": "ins", "number": "sing", "gender": "masc"}, "fullForm": "prijateljem", "options": [{"id": "e1", "text": "em", "correct": true}, {"id": "e2", "text": "om", "misconceptionId": "misc_instrumental_om_posle_meke"}, {"id": "e3", "text": "im"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте предлог с падежом", "explanation": "Sa, nad, pod и pred требуют творительного падежа.", "leftLabel": "Предлог", "rightLabel": "Падеж", "pairs": [{"left": "sa", "right": "творительный"}, {"left": "nad", "right": "творительный"}, {"left": "bez", "right": "родительный"}, {"left": "ka", "right": "дательный"}], "distractorsRight": ["винительный"]},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Поставьте «nož» в творительный падеж", "explanation": "Sečem nožem. Основа на ž мягкая, поэтому окончание -em.", "segments": [{"kind": "text", "text": "Sečem hleb "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["nožem"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Когда после существительного нужен предлог «sa», а когда нет?", "explanation": "Sa нужен для совместности: sa bratom. Орудие идёт без предлога: olovkom, nožem, autobusom.", "options": [{"id": "a", "text": "Sa — при совместности; орудие идёт без предлога", "correct": true}, {"id": "b", "text": "Sa нужен всегда, когда есть творительный падеж"}, {"id": "c", "text": "Sa ставят только перед словами женского рода"}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Ana ide na posao autobusom. Danas putuje sa sestrom. Ispred zgrade ih čeka Marko sa psom.", "translation": "Ана едет на работу на автобусе. Сегодня она едет с сестрой. Перед зданием их ждёт Марко с собакой.", "explanation": "Autobusom — орудие, без предлога. Sa sestrom и sa psom — совместность, с предлогом. Ispred zgrade — родительный.", "questions": [
+              {"id": "q1", "prompt": "Čime Ana ide na posao?", "options": [{"id": "a", "text": "Autobusom.", "correct": true}, {"id": "b", "text": "Kolima."}, {"id": "c", "text": "Pešice."}]},
+              {"id": "q2", "prompt": "Zašto uz «autobusom» nema predloga «sa»?", "options": [{"id": "a", "text": "Zato što je to sredstvo, a ne društvo.", "correct": true}, {"id": "b", "text": "Zato što je reč muškog roda."}, {"id": "c", "text": "Zato što je predlog ispušten greškom."}]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -139,8 +139,10 @@ class _PressableScaleState extends State<PressableScale> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: widget.onTap == null ? null : (_) => setState(() => _down = true),
-      onTapUp: widget.onTap == null ? null : (_) => setState(() => _down = false),
+      onTapDown:
+          widget.onTap == null ? null : (_) => setState(() => _down = true),
+      onTapUp:
+          widget.onTap == null ? null : (_) => setState(() => _down = false),
       onTapCancel:
           widget.onTap == null ? null : () => setState(() => _down = false),
       onTap: widget.onTap,

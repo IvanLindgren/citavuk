@@ -45,14 +45,33 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "srbski_read");
+    gtk_header_bar_set_title(header_bar, "Читавук");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+
+    // Шапка окна в цвет шапки приложения: светло-серая полоса GTK над тёмно-
+    // красным AppBar читалась как две шапки подряд.
+    GtkCssProvider* css = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(css,
+        "headerbar {"
+        "  background: #9E2B25;"
+        "  border-bottom: none;"
+        "  box-shadow: none;"
+        "  color: #F3E9D2;"
+        "  min-height: 38px;"
+        "}"
+        "headerbar button { color: #F3E9D2; }",
+        -1, nullptr);
+    gtk_style_context_add_provider_for_screen(
+        gdk_screen_get_default(), GTK_STYLE_PROVIDER(css),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref(css);
   } else {
-    gtk_window_set_title(window, "srbski_read");
+    gtk_window_set_title(window, "Читавук");
   }
 
-  gtk_window_set_default_size(window, 1280, 720);
+  gtk_window_set_default_size(window, 1280, 800);
+  gtk_widget_set_size_request(GTK_WIDGET(window), 640, 560);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(

@@ -69,8 +69,10 @@ class ReaderSettings {
   final double paragraphSpacing; // отступ между абзацами
   final double firstLineIndent; // красная строка
   final bool justify; // выравнивание по ширине
-  final double maxWidth; // комфортная ширина колонки (>=1100 => без ограничения)
+  final double
+      maxWidth; // комфортная ширина колонки (>=1100 => без ограничения)
   final int bgColor; // 0 => фон из темы; иначе ARGB-значение цвета
+  final bool pageTurnSound; // шелест страницы при перелистывании
 
   const ReaderSettings({
     this.fontSize = 19,
@@ -84,6 +86,7 @@ class ReaderSettings {
     this.justify = true,
     this.maxWidth = 700,
     this.bgColor = 0,
+    this.pageTurnSound = true,
   });
 
   /// true, если ширина колонки не ограничена.
@@ -101,6 +104,7 @@ class ReaderSettings {
     bool? justify,
     double? maxWidth,
     int? bgColor,
+    bool? pageTurnSound,
   }) =>
       ReaderSettings(
         fontSize: fontSize ?? this.fontSize,
@@ -114,6 +118,7 @@ class ReaderSettings {
         justify: justify ?? this.justify,
         maxWidth: maxWidth ?? this.maxWidth,
         bgColor: bgColor ?? this.bgColor,
+        pageTurnSound: pageTurnSound ?? this.pageTurnSound,
       );
 
   Map<String, dynamic> toMap() => {
@@ -128,6 +133,7 @@ class ReaderSettings {
         'justify': justify,
         'maxWidth': maxWidth,
         'bgColor': bgColor,
+        'pageTurnSound': pageTurnSound,
       };
 
   factory ReaderSettings.fromMap(Map<String, dynamic> m) {
@@ -148,6 +154,7 @@ class ReaderSettings {
       justify: m['justify'] as bool? ?? true,
       maxWidth: (m['maxWidth'] as num?)?.toDouble() ?? 700,
       bgColor: (m['bgColor'] as num?)?.toInt() ?? 0,
+      pageTurnSound: m['pageTurnSound'] as bool? ?? true,
     );
   }
 }

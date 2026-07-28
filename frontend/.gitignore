@@ -10,6 +10,8 @@
 .history
 .svn/
 .swiftpm/
+*.apk
+
 migrate_working_dir/
 
 # IntelliJ related

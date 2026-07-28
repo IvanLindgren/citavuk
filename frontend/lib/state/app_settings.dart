@@ -15,7 +15,10 @@ class AppSettings extends ChangeNotifier {
   static const _kMusicStation = 'music_station';
   static const _kMusicVolume = 'music_volume';
   static const _kBackendUrl = 'backend_url';
+  static const _kSyncUrl = 'sync_url';
   static const _kFirstRunDone = 'first_run_done';
+  static const _kCourseSound = 'course_sound_enabled';
+  static const _kAutoUpdate = 'auto_update_check';
 
   /// Сервер разбора/перевода по умолчанию — твой Hugging Face Space.
   /// На реальном телефоне localhost (10.0.2.2/127.0.0.1) недоступен, поэтому
@@ -27,6 +30,13 @@ class AppSettings extends ChangeNotifier {
   /// полным словарём, загрузив его в Space).
   static const defaultDictionaryUrl =
       'https://huggingface.co/spaces/ivanessalingren/citavukspace/resolve/main/lexicon.db';
+
+  /// Сервер аккаунтов и синхронизации (Go-бэкенд на собственном сервере).
+  ///
+  /// Отделён от [defaultBackendUrl] намеренно: разбор слов и новости пока живут
+  /// на прежнем Python-сервисе, и переносить их можно по частям, не трогая
+  /// синхронизацию.
+  static const defaultSyncUrl = 'https://api.citavuk.ru';
 
   ReaderSettings _reader = const ReaderSettings();
   ReaderSettings get reader => _reader;
@@ -50,16 +60,42 @@ class AppSettings extends ChangeNotifier {
 
   // Сервер перевода/разбора и первый запуск.
   String _backendUrl = defaultBackendUrl;
+  String _syncUrl = defaultSyncUrl;
   bool _firstRunDone = false;
   String get backendUrl => _backendUrl;
+  String get syncUrl => _syncUrl;
   bool get firstRunDone => _firstRunDone;
+
+  /// Звук обратной связи в курсе. По умолчанию включён, но громкость низкая,
+  /// и радио он не прерывает (master-prompt §19).
+  bool _courseSoundEnabled = true;
+  bool get courseSoundEnabled => _courseSoundEnabled;
+
+  Future<void> setCourseSoundEnabled(bool value) async {
+    _courseSoundEnabled = value;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kCourseSound, value);
+  }
+
+  /// Проверять обновления при запуске (только Windows и Linux).
+  bool _autoUpdateCheck = true;
+  bool get autoUpdateCheck => _autoUpdateCheck;
+
+  Future<void> setAutoUpdateCheck(bool value) async {
+    _autoUpdateCheck = value;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kAutoUpdate, value);
+  }
 
   Future<void> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(_key);
       if (raw != null) {
-        _reader = ReaderSettings.fromMap(jsonDecode(raw) as Map<String, dynamic>);
+        _reader =
+            ReaderSettings.fromMap(jsonDecode(raw) as Map<String, dynamic>);
       }
       _notificationsEnabled = prefs.getBool(_kNotify) ?? false;
       _reminderHour = prefs.getInt(_kHour) ?? 19;
@@ -72,7 +108,13 @@ class AppSettings extends ChangeNotifier {
       if (savedBackend != null && savedBackend.trim().isNotEmpty) {
         _backendUrl = savedBackend.trim();
       }
+      final savedSync = prefs.getString(_kSyncUrl);
+      if (savedSync != null && savedSync.trim().isNotEmpty) {
+        _syncUrl = savedSync.trim();
+      }
       _firstRunDone = prefs.getBool(_kFirstRunDone) ?? false;
+      _courseSoundEnabled = prefs.getBool(_kCourseSound) ?? true;
+      _autoUpdateCheck = prefs.getBool(_kAutoUpdate) ?? true;
     } catch (_) {
       // Повреждённые настройки — откатываемся к дефолтам.
     }
@@ -130,6 +172,15 @@ class AppSettings extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_kBackendUrl, _backendUrl);
+    } catch (_) {}
+  }
+
+  Future<void> setSyncUrl(String url) async {
+    _syncUrl = url.trim().isEmpty ? defaultSyncUrl : url.trim();
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_kSyncUrl, _syncUrl);
     } catch (_) {}
   }
 

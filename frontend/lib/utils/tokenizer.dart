@@ -13,9 +13,8 @@ class Token {
 }
 
 class SerbianTokenizer {
-  static final RegExp _wordRegExp = RegExp(
-    r'[a-zA-ZžćčđšŽĆČĐŠа-яА-ЯёЁђјљњћџЂЈЉЊЋЏ]+'
-  );
+  static final RegExp _wordRegExp =
+      RegExp(r'[a-zA-ZžćčđšŽĆČĐŠа-яА-ЯёЁђјљњћџЂЈЉЊЋЏ]+');
 
   static List<Token> tokenize(String text) {
     final List<Token> tokens = [];
@@ -32,14 +31,14 @@ class SerbianTokenizer {
           isWord: false,
         ));
       }
-      
+
       tokens.add(Token(
         text: match.group(0)!,
         start: match.start,
         end: match.end,
         isWord: true,
       ));
-      
+
       lastIndex = match.end;
     }
 

@@ -34,8 +34,7 @@ class _ServerSettingsSheetState extends State<_ServerSettingsSheet> {
   @override
   void initState() {
     super.initState();
-    _ctrl = TextEditingController(
-        text: context.read<AppSettings>().backendUrl);
+    _ctrl = TextEditingController(text: context.read<AppSettings>().backendUrl);
     UserDb.instance.cachedTranslationCount().then((c) {
       if (mounted) setState(() => _cached = c);
     });
@@ -109,7 +108,8 @@ class _ServerSettingsSheetState extends State<_ServerSettingsSheet> {
               'Сервер используется для точного разбора и перевода слов. По '
               'умолчанию — публичный Hugging Face Space. Можно указать свой.',
               style: TextStyle(
-                  fontSize: 13, color: scheme.onSurface.withValues(alpha: 0.65)),
+                  fontSize: 13,
+                  color: scheme.onSurface.withValues(alpha: 0.65)),
             ),
             const SizedBox(height: 14),
             TextField(
@@ -147,7 +147,8 @@ class _ServerSettingsSheetState extends State<_ServerSettingsSheet> {
               'Скачивает словарь с сервера для перевода без интернета. Сейчас '
               'офлайн доступно слов (из кэша): $_cached.',
               style: TextStyle(
-                  fontSize: 13, color: scheme.onSurface.withValues(alpha: 0.65)),
+                  fontSize: 13,
+                  color: scheme.onSurface.withValues(alpha: 0.65)),
             ),
             const SizedBox(height: 10),
             SizedBox(

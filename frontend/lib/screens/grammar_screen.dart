@@ -65,10 +65,10 @@ class _GrammarScreenState extends State<GrammarScreen> {
       surface: widget.word,
     );
     const declinable = {'NOUN', 'PROPN', 'ADJ', 'PRON', 'DET'};
-    final government = (widget.upos == 'ADP' ||
-            GrammarEngine.isKnownPreposition(widget.word))
-        ? GrammarEngine.prepositionGovernment(widget.word)
-        : const <PrepositionGovernment>[];
+    final government =
+        (widget.upos == 'ADP' || GrammarEngine.isKnownPreposition(widget.word))
+            ? GrammarEngine.prepositionGovernment(widget.word)
+            : const <PrepositionGovernment>[];
     return _GrammarData(info, tables, feats['Case'],
         declinable.contains(widget.upos), government);
   }
@@ -105,7 +105,8 @@ class _GrammarScreenState extends State<GrammarScreen> {
                   children: [
                     _header(scheme, data.info),
                     const SizedBox(height: 16),
-                    WolfBubble(title: 'Разбор', text: data.info.why, asset: Wolf.rule),
+                    WolfBubble(
+                        title: 'Разбор', text: data.info.why, asset: Wolf.rule),
                     if (data.government.isNotEmpty) ...[
                       const SizedBox(height: 14),
                       PrepositionGovernmentCard(
@@ -129,7 +130,8 @@ class _GrammarScreenState extends State<GrammarScreen> {
     );
   }
 
-  Widget _buildParadigmsLayout(BuildContext context, List<ParadigmTable> tables, ColorScheme scheme) {
+  Widget _buildParadigmsLayout(
+      BuildContext context, List<ParadigmTable> tables, ColorScheme scheme) {
     if (tables.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 24),
@@ -221,10 +223,10 @@ class _GrammarScreenState extends State<GrammarScreen> {
               : null,
         ),
         child: Text(text,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: fg)),
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600, color: fg)),
       );
 }
-
 
 class _CasesCheatsheet extends StatelessWidget {
   final String? currentCase;
@@ -269,72 +271,73 @@ class _CasesCheatsheet extends StatelessWidget {
                     ),
                   ),
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(c.name,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: active ? cc : scheme.onSurface)),
-                      ),
-                      if (active)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: cc,
-                            borderRadius: BorderRadius.circular(20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(c.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: active ? cc : scheme.onSurface)),
                           ),
-                          child: const Text('эта форма',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
+                          if (active)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: cc,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text('эта форма',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 3),
+                      Text(c.use,
+                          style: TextStyle(
+                              fontSize: 13,
+                              height: 1.3,
+                              color: scheme.onSurface.withValues(alpha: 0.75))),
+                      if (c.preps.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: [
+                            Text('Предлоги:',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: scheme.onSurface
+                                        .withValues(alpha: 0.5))),
+                            ...c.preps.take(12).map((p) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 7, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: cc.withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                        color: cc.withValues(alpha: 0.35)),
+                                  ),
+                                  child: Text(p,
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: cc)),
+                                )),
+                          ],
                         ),
+                      ],
                     ],
                   ),
-                  const SizedBox(height: 3),
-                  Text(c.use,
-                      style: TextStyle(
-                          fontSize: 13,
-                          height: 1.3,
-                          color: scheme.onSurface.withValues(alpha: 0.75))),
-                  if (c.preps.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        Text('Предлоги:',
-                            style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: scheme.onSurface.withValues(alpha: 0.5))),
-                        ...c.preps.take(12).map((p) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 7, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: cc.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(6),
-                                border:
-                                    Border.all(color: cc.withValues(alpha: 0.35)),
-                              ),
-                              child: Text(p,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: cc)),
-                            )),
-                      ],
-                    ),
-                  ],
-                ],
+                ),
               ),
-            ),
-          ),
-        );
+            );
           }).toList(),
         ),
       ),
@@ -370,11 +373,13 @@ class _ParadigmCard extends StatelessWidget {
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                   color: scheme.secondary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: scheme.secondary.withValues(alpha: 0.2)),
+                  border: Border.all(
+                      color: scheme.secondary.withValues(alpha: 0.2)),
                 ),
                 child: Row(
                   children: [
@@ -415,8 +420,7 @@ class _ParadigmCard extends StatelessWidget {
   /// Окончание подчёркнуто и выделено цветом падежа — видно, что меняется.
   Widget _buildTable(BuildContext context, ColorScheme scheme) {
     final splits = table.highlightEndings
-        ? GrammarEngine.splitStemEndings(
-            table.rows.map((r) => r.form).toList())
+        ? GrammarEngine.splitStemEndings(table.rows.map((r) => r.form).toList())
         : null;
     return Table(
       columnWidths: const {
@@ -477,7 +481,8 @@ class _ParadigmCard extends StatelessWidget {
                 width: 7,
                 height: 7,
                 margin: const EdgeInsets.only(right: 8),
-                decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+                decoration:
+                    BoxDecoration(color: accent, shape: BoxShape.circle),
               ),
               Text(c.label,
                   style: TextStyle(
@@ -518,8 +523,7 @@ class _ParadigmCard extends StatelessWidget {
                   ),
                 if (hasForm)
                   Icon(Icons.copy_rounded,
-                      size: 15,
-                      color: scheme.onSurface.withValues(alpha: 0.3)),
+                      size: 15, color: scheme.onSurface.withValues(alpha: 0.3)),
               ],
             ),
           ),

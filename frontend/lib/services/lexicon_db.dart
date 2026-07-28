@@ -13,7 +13,7 @@ class LexiconDb {
   static final LexiconDb instance = LexiconDb._();
 
   static const _asset = 'assets/lexicon.db';
-  static const _version = 3;
+  static const _version = 4;
   Database? _db;
 
   /// БД словаря или null, если недоступна (веб — офлайн-словарь там не работает,
@@ -68,7 +68,8 @@ class LexiconDb {
   }
 
   /// Все формы леммы (для парадигм): form, upos, feats, msd.
-  Future<List<Map<String, dynamic>>> getLexiconRowsForLemma(String lemma) async {
+  Future<List<Map<String, dynamic>>> getLexiconRowsForLemma(
+      String lemma) async {
     try {
       final db = await _database;
       if (db == null) return [];

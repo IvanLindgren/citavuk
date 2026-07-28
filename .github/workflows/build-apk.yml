@@ -40,7 +40,18 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
         run: |
-          echo $KEYSTORE_BASE64 | base64 --decode > ./frontend/android/app/release-keystore.jks
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > ./frontend/android/app/release-keystore.jks
+
+      - name: Verify release signing certificate
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+        run: |
+          keytool -list -v \
+            -keystore ./frontend/android/app/release-keystore.jks \
+            -storepass "$KEYSTORE_PASSWORD" \
+            -alias "$KEY_ALIAS" \
+            | grep -E 'SHA1:|SHA256:'
 
       - name: Build APK
         working-directory: ./frontend

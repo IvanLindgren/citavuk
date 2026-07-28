@@ -56,7 +56,8 @@ class _CrossStitchPainter extends CustomPainter {
 
       // Крест/квадрат в центре
       final c = r * 0.34;
-      canvas.drawRect(Rect.fromCenter(center: Offset(cx, cy), width: c, height: c), fill);
+      canvas.drawRect(
+          Rect.fromCenter(center: Offset(cx, cy), width: c, height: c), fill);
 
       // Маленькие «стежки» между ромбами
       canvas.drawCircle(Offset(cx + step / 2, cy), 1.6, fill);

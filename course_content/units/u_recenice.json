@@ -1,0 +1,176 @@
+{
+  "id": "u_recenice",
+  "title": "Часть 1. Местоимения и предложение",
+  "description": "Кто действует и в каком порядке стоят слова: личные местоимения, глагол biti, простое повествовательное и вопросительное предложение.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.4. Местоимения • Zamenice; 5.6. Глаголы • Glagoli",
+    "sourceAnchor": "md:3578-3917",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_licne_zamenice",
+      "title": "Личные местоимения",
+      "objectives": [
+        {"id": "obj_licne_zamenice", "title": "Назвать личные местоимения и понимать, когда они опускаются"}
+      ],
+      "lessons": [
+        {
+          "id": "l_02",
+          "title": "Личные местоимения",
+          "prerequisites": ["l_pismo_1"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Личное местоимение в сербском обычно не произносят: окончание глагола уже говорит, кто действует. *Radim* — это «я работаю», и слово *ja* добавляют только тогда, когда на нём смысловое ударение: «*Ja* radim, a ti spavaš»."},
+              {"kind": "terms", "title": "ЛИЧНЫЕ МЕСТОИМЕНИЯ", "rows": [
+                {"term": "ja", "gloss": "я", "note": ""},
+                {"term": "ti", "gloss": "ты", "note": ""},
+                {"term": "on, ona, ono", "gloss": "он, она, оно", "note": "по роду существительного"},
+                {"term": "mi", "gloss": "мы", "note": ""},
+                {"term": "vi", "gloss": "вы", "note": "и вежливое «Вы», тогда с большой буквы"},
+                {"term": "oni, one, ona", "gloss": "они", "note": "мужской / женский / средний род"}
+              ]},
+              {"kind": "example", "serbian": "Ja radim, a ti se odmaraš.", "russian": "Я работаю, а ты отдыхаешь.", "highlight": "Ja"},
+              {"kind": "tip", "text": "«Они» в сербском три разных слова. *Oni* — о мужчинах или смешанной компании, *one* — только о женщинах, *ona* — о среднем роде. В русском для всех одно слово, и это первое, что забывают."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как по-сербски «мы»?", "explanation": "Mi — мы. Vi — вы, oni — они.", "options": [{"id": "a", "text": "mi", "correct": true}, {"id": "b", "text": "vi"}, {"id": "c", "text": "oni"}]},
+            {"type": "matching", "difficulty": 1, "prompt": "Сопоставьте местоимение с переводом", "explanation": "Формы единственного числа совпадают с русскими почти буквально: ja, ti, on.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "ja", "right": "я"}, {"left": "ti", "right": "ты"}, {"left": "mi", "right": "мы"}, {"left": "vi", "right": "вы"}], "distractorsRight": ["они"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "В комнате только девушки. Каким словом сказать «они»?", "explanation": "One — «они» о женщинах. Oni сказали бы о мужчинах или о смешанной компании.", "options": [{"id": "a", "text": "one", "correct": true}, {"id": "b", "text": "oni"}, {"id": "c", "text": "ona"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте местоимение: «Мы студенты»", "explanation": "Mi smo studenti. Форма smo — от глагола biti для «мы».", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " smo studenti."}], "blanks": [{"id": "b1", "acceptedAnswers": ["mi", "Mi"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 2, "prompt": "Соберите предложение: «Я учу сербский»", "explanation": "Ja učim srpski. Слово ja здесь можно и опустить: učim уже значит «я учу».", "tokens": [{"id": "t1", "text": "Ja"}, {"id": "t2", "text": "učim"}, {"id": "t3", "text": "srpski"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "uči"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте все личные местоимения", "targetLabel": "личные местоимения", "translation": "Он врач, а она учительница. Мы живём в Белграде.", "explanation": "Личные местоимения здесь: on, ona, mi. Слово Beogradu — существительное, lekar и učiteljica тоже.", "tokens": [{"id": "t1", "text": "On", "correct": true}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "lekar", "tail": ","}, {"id": "t4", "text": "a"}, {"id": "t5", "text": "ona", "correct": true}, {"id": "t6", "text": "je"}, {"id": "t7", "text": "učiteljica", "tail": "."}, {"id": "t8", "text": "Mi", "correct": true}, {"id": "t9", "text": "živimo"}, {"id": "t10", "text": "u"}, {"id": "t11", "text": "Beogradu", "tail": "."}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему в сербском обычно говорят «Radim», а не «Ja radim»?", "explanation": "Окончание -im само указывает на первое лицо. Местоимение добавляют для противопоставления: «Ja radim, a on spava».", "options": [{"id": "a", "text": "Окончание глагола уже показывает лицо", "correct": true}, {"id": "b", "text": "Местоимение ja в сербском считается грубым"}, {"id": "c", "text": "Местоимения ставятся только в конце предложения"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_biti",
+      "title": "Глагол biti «быть»",
+      "objectives": [
+        {"id": "obj_biti_forme", "title": "Различать краткие, полные и отрицательные формы глагола biti"}
+      ],
+      "lessons": [
+        {
+          "id": "l_03",
+          "title": "Глагол biti «быть»",
+          "prerequisites": ["l_02"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "В русском «я студент» обходится без глагола. В сербском глагол *biti* обязателен: *Ja sam student*. Пропустить его нельзя, предложение станет неграмматичным."},
+              {"kind": "terms", "title": "КРАТКАЯ ФОРМА (обычная)", "rows": [
+                {"term": "ja sam", "gloss": "я есть", "note": "Ja sam student."},
+                {"term": "ti si", "gloss": "ты есть", "note": "Ti si dobar."},
+                {"term": "on je", "gloss": "он есть", "note": "On je lekar."},
+                {"term": "mi smo", "gloss": "мы есть", "note": "Mi smo tu."},
+                {"term": "vi ste", "gloss": "вы есть", "note": "Vi ste u pravu."},
+                {"term": "oni su", "gloss": "они есть", "note": "Oni su kod kuće."}
+              ]},
+              {"kind": "terms", "title": "ОТРИЦАНИЕ — ОДНО СЛОВО", "rows": [
+                {"term": "nisam", "gloss": "я не", "note": "Nisam umoran."},
+                {"term": "nisi", "gloss": "ты не", "note": ""},
+                {"term": "nije", "gloss": "он не", "note": "Nije kod kuće."},
+                {"term": "nismo, niste, nisu", "gloss": "мы, вы, они не", "note": ""}
+              ]},
+              {"kind": "tip", "text": "Краткая форма не может открывать предложение. Нельзя «Sam student» — только *Ja sam student* или *Student sam*. Для ответа «да» существует полная форма: «Jesi li ti student?» — «*Jesam*»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Выберите верное: «Мы дома»", "explanation": "Mi smo kod kuće. Форма smo относится к «мы».", "options": [{"id": "a", "text": "Mi smo kod kuće.", "correct": true}, {"id": "b", "text": "Mi ste kod kuće."}, {"id": "c", "text": "Mi su kod kuće."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение с формой глагола biti", "explanation": "sam — ja, si — ti, je — on/ona, su — oni/one.", "leftLabel": "Местоимение", "rightLabel": "Форма biti", "pairs": [{"left": "ja", "right": "sam"}, {"left": "ti", "right": "si"}, {"left": "ona", "right": "je"}, {"left": "oni", "right": "su"}], "distractorsRight": ["smo", "ste"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте нужную форму: «Вы правы»", "explanation": "Vi ste u pravu. Ste — форма для «вы».", "segments": [{"kind": "text", "text": "Vi "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " u pravu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["ste"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Его нет дома»?", "explanation": "Отрицание biti — одно слово: nije. Разбить его на «ne je» нельзя.", "options": [{"id": "a", "text": "On nije kod kuće.", "correct": true}, {"id": "b", "text": "On ne je kod kuće.", "misconceptionId": "misc_biti_ne_je"}, {"id": "c", "text": "On je ne kod kuće."}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я не устал»", "explanation": "Ja nisam umoran. Отрицательная форма nisam уже содержит в себе «не».", "tokens": [{"id": "t1", "text": "Ja"}, {"id": "t2", "text": "nisam"}, {"id": "t3", "text": "umoran"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "ne"}, {"id": "d2", "text": "sam"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему нельзя начать предложение со слова «sam»?", "explanation": "Краткие формы безударны и всегда опираются на предыдущее слово. Поэтому говорят Ja sam student или Student sam, но не «Sam student».", "options": [{"id": "a", "text": "Краткие формы безударны и не могут стоять первыми", "correct": true}, {"id": "b", "text": "Sam значит «сам», и получится путаница"}, {"id": "c", "text": "Так можно, но только в письменной речи"}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте на вопросы", "text": "Zdravo! Ja sam Ana. Nisam iz Beograda, ja sam iz Niša. Moj brat je student, a ja sam lekar. Mi smo sada u Novom Sadu.", "translation": "Здравствуйте! Я Ана. Я не из Белграда, я из Ниша. Мой брат студент, а я врач. Мы сейчас в Нови-Саде.", "explanation": "Nisam iz Beograda — отрицание; ja sam lekar — Ана врач, а студент её брат.", "questions": [
+              {"id": "q1", "prompt": "Odakle je Ana?", "options": [{"id": "a", "text": "Iz Niša.", "correct": true}, {"id": "b", "text": "Iz Beograda."}, {"id": "c", "text": "Iz Novog Sada."}]},
+              {"id": "q2", "prompt": "Ko je student?", "options": [{"id": "a", "text": "Njen brat.", "correct": true}, {"id": "b", "text": "Ana."}, {"id": "c", "text": "Niko."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_red_reci",
+      "title": "Порядок слов",
+      "objectives": [
+        {"id": "obj_red_reci_drugo", "title": "Ставить безударные формы на второе место в предложении"}
+      ],
+      "lessons": [
+        {
+          "id": "l_04",
+          "title": "Простой порядок слов в предложении",
+          "prerequisites": ["l_03"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Обычный порядок такой же, как в русском: сначала кто, потом что делает, потом над чем. *Marko čita knjigu* — Марко читает книгу. Падежи показывают роли, поэтому порядок можно менять ради выделения."},
+              {"kind": "paragraph", "text": "Жёсткое правило одно, и оно про безударные словечки: *sam, si, je, smo, ste, su, se, me, te, ga*. Они занимают **второе место** в предложении, сразу после первого ударного слова."},
+              {"kind": "example", "serbian": "Marko je student.", "russian": "Марко студент.", "highlight": "je"},
+              {"kind": "example", "serbian": "Danas sam umoran.", "russian": "Сегодня я устал.", "highlight": "sam"},
+              {"kind": "tip", "text": "Проверка простая: если убрать безударное слово и предложение начинается нормально, оно стоит правильно. «Umoran sam» и «Ja sam umoran» верны, «Sam umoran» — нет."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Выберите предложение с правильным порядком слов", "explanation": "Безударное je идёт вторым, сразу после первого слова.", "options": [{"id": "a", "text": "Marko je student.", "correct": true}, {"id": "b", "text": "Je Marko student."}, {"id": "c", "text": "Marko student je."}]},
+            {"type": "sentence_builder", "difficulty": 2, "prompt": "Соберите предложение: «Сегодня я устал»", "explanation": "Danas sam umoran. Первое слово Danas, сразу за ним безударное sam.", "tokens": [{"id": "t1", "text": "Danas"}, {"id": "t2", "text": "sam"}, {"id": "t3", "text": "umoran"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "jesam"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "sentence_builder", "difficulty": 2, "prompt": "Соберите предложение: «Ана читает книгу»", "explanation": "Ana čita knjigu: кто, что делает, что именно.", "tokens": [{"id": "t1", "text": "Ana"}, {"id": "t2", "text": "čita"}, {"id": "t3", "text": "knjigu"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "knjiga"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Где ошибка: «Sutra je on kod kuće»?", "explanation": "Безударное je стоит верно, вторым. Ошибки нет: это правильное предложение.", "options": [{"id": "a", "text": "Ошибки нет", "correct": true}, {"id": "b", "text": "je должно стоять в конце"}, {"id": "c", "text": "on должно стоять первым"}]},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Поставьте «sam» на своё место: «Juče ___ bio u Beogradu»", "explanation": "Juče sam bio u Beogradu. После первого слова Juče идёт безударное sam.", "segments": [{"kind": "text", "text": "Juče "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " bio u Beogradu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["sam"], "caseSensitive": false}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте безударные формы, которые стоят на втором месте", "targetLabel": "безударные формы глагола biti", "translation": "Марко студент. Сегодня он дома, а завтра он в Нови-Саде.", "explanation": "Безударные формы здесь два раза je и один раз je во втором предложении: каждое стоит сразу после первого слова.", "tokens": [{"id": "t1", "text": "Marko"}, {"id": "t2", "text": "je", "correct": true, "tail": " "}, {"id": "t3", "text": "student", "tail": "."}, {"id": "t4", "text": "Danas"}, {"id": "t5", "text": "je", "correct": true}, {"id": "t6", "text": "kod"}, {"id": "t7", "text": "kuće", "tail": ","}, {"id": "t8", "text": "a"}, {"id": "t9", "text": "sutra"}, {"id": "t10", "text": "je", "correct": true}, {"id": "t11", "text": "u"}, {"id": "t12", "text": "Novom"}, {"id": "t13", "text": "Sadu", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_pitanja",
+      "title": "Вопросительные предложения",
+      "objectives": [
+        {"id": "obj_pitanja_da_li", "title": "Строить вопрос с da li, с li и с вопросительным словом"}
+      ],
+      "lessons": [
+        {
+          "id": "l_05",
+          "title": "Вопросительные предложения",
+          "prerequisites": ["l_04"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "В русском вопрос без вопросительного слова отличается от утверждения только интонацией. В сербском для этого есть служебная частица, и способов два."},
+              {"kind": "terms", "title": "ВОПРОС БЕЗ ВОПРОСИТЕЛЬНОГО СЛОВА", "rows": [
+                {"term": "Da li + глагол", "gloss": "нейтральный, самый частый", "note": "Da li ti radiš?"},
+                {"term": "глагол + li", "gloss": "чуть более книжный", "note": "Radiš li ti?"},
+                {"term": "Je li ...?", "gloss": "разговорный, часто просто «Je l'…»", "note": "Je li on kod kuće?"}
+              ]},
+              {"kind": "terms", "title": "ВОПРОСИТЕЛЬНЫЕ СЛОВА", "rows": [
+                {"term": "ko", "gloss": "кто", "note": "Ko je to?"},
+                {"term": "šta", "gloss": "что", "note": "Šta radiš?"},
+                {"term": "gde", "gloss": "где", "note": "Gde si?"},
+                {"term": "kada", "gloss": "когда", "note": "Kada dolaziš?"},
+                {"term": "kako", "gloss": "как", "note": "Kako si?"},
+                {"term": "zašto", "gloss": "почему", "note": "Zašto ćutiš?"}
+              ]},
+              {"kind": "tip", "text": "Отвечать «да» на вопрос с *da li* обычно принято полной формой глагола: «Da li si ti student?» — «*Jesam*». Короткое *da* тоже возможно, но полная форма звучит естественнее."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как спросить «Ты студент?»", "explanation": "Da li si ti student? Частица da li открывает вопрос, за ней идёт безударное si.", "options": [{"id": "a", "text": "Da li si ti student?", "correct": true}, {"id": "b", "text": "Ti si student li?"}, {"id": "c", "text": "Li si ti student?"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте вопросительное слово с переводом", "explanation": "Ko — кто, šta — что, gde — где, zašto — почему.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "ko", "right": "кто"}, {"left": "šta", "right": "что"}, {"left": "gde", "right": "где"}, {"left": "zašto", "right": "почему"}], "distractorsRight": ["когда"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте вопросительное слово: «___ si?» — «Dobro sam.»", "explanation": "Kako si? — «Как дела?» Ответ Dobro sam подсказывает, что спрашивали о состоянии.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " si? — Dobro sam."}], "blanks": [{"id": "b1", "acceptedAnswers": ["kako", "Kako"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 2, "prompt": "Соберите вопрос: «Где ты работаешь?»", "explanation": "Gde ti radiš? Вопросительное слово первое, глагол за ним.", "tokens": [{"id": "t1", "text": "Gde"}, {"id": "t2", "text": "ti"}, {"id": "t3", "text": "radiš"}, {"id": "t4", "text": "?"}], "distractorTokens": [{"id": "d1", "text": "da li"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": ["t2"]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какой ответ на «Da li si ti lekar?» звучит естественнее всего?", "explanation": "На вопрос с da li отвечают полной формой глагола: Jesam. Короткое da тоже понятно, но полная форма привычнее.", "options": [{"id": "a", "text": "Jesam.", "correct": true}, {"id": "b", "text": "Sam."}, {"id": "c", "text": "Je."}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте диалог и ответьте", "text": "— Zdravo, Marko! Kako si?\n— Dobro sam, hvala. A ti?\n— I ja sam dobro. Da li si ti sada u Beogradu?\n— Nisam, ja sam u Nišu. Sutra sam u Beogradu.", "translation": "— Привет, Марко! Как дела? — Хорошо, спасибо. А ты? — Я тоже хорошо. Ты сейчас в Белграде? — Нет, я в Нише. Завтра буду в Белграде.", "explanation": "Nisam отвечает на вопрос отрицательно; Sutra sam u Beogradu говорит, где он будет завтра.", "questions": [
+              {"id": "q1", "prompt": "Gde je Marko sada?", "options": [{"id": "a", "text": "U Nišu.", "correct": true}, {"id": "b", "text": "U Beogradu."}, {"id": "c", "text": "Kod kuće."}]},
+              {"id": "q2", "prompt": "Čime počinje pitanje bez upitne reči u ovom dijalogu?", "options": [{"id": "a", "text": "Rečcom «da li»", "correct": true}, {"id": "b", "text": "Rečcom «zašto»"}, {"id": "c", "text": "Glagolom «biti» na kraju"}]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -212,8 +212,7 @@ class _ListeningScreenState extends State<ListeningScreen> {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         leading: Container(
           width: 42,
           height: 42,

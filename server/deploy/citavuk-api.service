@@ -1,0 +1,56 @@
+[Unit]
+Description=Citavuk API (аккаунты, синхронизация, перевод)
+Documentation=https://github.com/IvanLindgren/citavuk
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=citavuk
+Group=citavuk
+WorkingDirectory=/opt/citavuk
+ExecStart=/opt/citavuk/citavukd -env /opt/citavuk/.env
+Restart=on-failure
+RestartSec=5s
+
+# Секреты приходят файлом, а не в командной строке: аргументы процесса видны
+# всем пользователям системы через /proc, а на этой машине есть и другие.
+EnvironmentFile=-/opt/citavuk/.env
+
+# Ограничение памяти. На машине 1,8 ГБ, и там же живут nginx, apache, mysql и
+# почта; без потолка утечка в этом сервисе утащила бы за собой чужие сайты.
+MemoryMax=256M
+MemoryHigh=192M
+
+# Одно ядро на всех — доля процессорного времени ограничена, чтобы всплеск
+# нагрузки на API не подвесил остальные сервисы.
+CPUQuota=70%
+
+# Изоляция. Сервису нужны только сеть и собственный каталог.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+# Единственный каталог, куда разрешена запись.
+ReadWritePaths=/opt/citavuk
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=citavuk-api
+
+[Install]
+WantedBy=multi-user.target

@@ -6,3 +6,9 @@ deep-translator
 feedparser
 trafilatura
 gTTS
+redis>=5.0,<7.0
+python-multipart
+python-docx
+pypdfium2
+pytesseract
+Pillow

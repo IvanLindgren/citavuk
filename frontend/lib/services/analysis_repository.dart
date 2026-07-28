@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import '../models/grammar.dart';
 import '../models/word_analysis.dart';
+import '../state/app_settings.dart';
+import 'translation_client.dart';
 import '../utils/transliteration.dart';
 import 'lexicon_db.dart';
 import 'user_db.dart';
@@ -14,6 +16,24 @@ class AnalysisRepository {
   static final AnalysisRepository instance = AnalysisRepository._();
 
   static String baseUrl = 'https://ivanessalingren-citavukspace.hf.space';
+
+  /// Сервер перевода Citavuk. Отделён от [baseUrl]: разбор слов пока живёт на
+  /// прежнем сервисе, а перевод уже переехал на собственный сервер с DeepL.
+  static String translationUrl = AppSettings.defaultSyncUrl;
+
+  /// Ленивый клиент перевода: создаётся при первом обращении и переживает смену
+  /// адреса сервера в настройках.
+  static TranslationClient? _translator;
+  static String _translatorUrl = '';
+
+  static TranslationClient get _translationClient {
+    if (_translator == null || _translatorUrl != translationUrl) {
+      _translator?.close();
+      _translator = TranslationClient(baseUrl: translationUrl);
+      _translatorUrl = translationUrl;
+    }
+    return _translator!;
+  }
 
   Future<WordAnalysis> analyzeToken({
     required String sentence,
@@ -216,6 +236,20 @@ class AnalysisRepository {
       // Берём только предложение вокруг слова: короче контекст — стабильнее тег
       // и быстрее ответ.
       final w = _sentenceWindow(sentence, startOffset, endOffset);
+
+      // Сначала сервер Citavuk: там слово переводится внутри фразы штатным
+      // выравниванием DeepL, а не подстановкой тега в надежде, что переводчик
+      // его сохранит. Разница заметная: «kuća» в контексте даёт «дом», а то же
+      // слово в отрыве от фразы — «собака».
+      final viaServer = await _translationClient.translateInContext(
+        sentence: w.text,
+        start: w.start,
+        end: w.end,
+      );
+      if (viaServer != null && viaServer.aligned && viaServer.text.isNotEmpty) {
+        return viaServer.text;
+      }
+
       final tagged =
           '${w.text.substring(0, w.start)}<w>$tokenText</w>${w.text.substring(w.end)}';
       final translated = await _translateOnline(tagged);
@@ -268,6 +302,14 @@ class AnalysisRepository {
   /// sr→ru перевод. Нативно — напрямую через Google web endpoint (быстро).
   /// В вебе прямой запрос к Google блокируется CORS, поэтому идём через бэкенд.
   Future<String?> _translateOnline(String text) async {
+    // Сервер Citavuk выбирает провайдера сам: связный текст уходит в DeepL,
+    // одиночное слово — в запасной, потому что на словах без контекста DeepL
+    // ненадёжен. Заодно работает общий кеш, экономящий квоту.
+    final viaServer = await _translationClient.translate(text);
+    if (viaServer != null && viaServer.text.isNotEmpty) {
+      return viaServer.text;
+    }
+
     try {
       if (kIsWeb) {
         final uri =

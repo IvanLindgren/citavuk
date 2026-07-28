@@ -1,0 +1,209 @@
+@import 'tailwindcss';
+
+/*
+  Тёмная тема переключается классом на <html>, а не только медиазапросом:
+  пользователь должен иметь возможность выбрать её вручную, независимо от
+  настройки системы.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Палитра повторяет приложение (frontend/lib/theme/app_theme.dart): сайт и
+  приложение — один продукт, и расхождение цветов сразу читается как небрежность.
+*/
+@theme {
+  --color-parchment: #f3e9d2;
+  --color-parchment-dark: #eadfc2;
+  --color-parchment-deep: #e0d3b0;
+
+  --color-serb-red: #9e2b25;
+  --color-serb-red-bright: #c23b33;
+  --color-serb-red-soft: #d97a72;
+
+  --color-indigo-deep: #2e3b5b;
+  --color-indigo-bright: #4a5b86;
+  --color-indigo-soft: #7d8db8;
+
+  --color-gold: #c9a24b;
+  --color-gold-bright: #e0bd6b;
+
+  --color-ink: #2b2118;
+  --color-ink-soft: #5a4a3a;
+
+  --color-night: #161310;
+  --color-night-surface: #221c16;
+  --color-night-surface-2: #2c241c;
+  --color-night-text: #ede2cc;
+  --color-night-muted: #a2937c;
+
+  --font-display: 'Lora', 'Noto Serif', Georgia, serif;
+  --font-sans: 'Noto Sans', 'Inter', system-ui, -apple-system, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('/fonts/NotoSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('/fonts/NotoSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    /* Семантические токены: компоненты обращаются к ним, а не к палитре
+       напрямую, поэтому тёмная тема описывается в одном месте. */
+    --bg: var(--color-parchment);
+    --bg-raised: #fbf6ea;
+    --bg-sunken: var(--color-parchment-dark);
+    --text: var(--color-ink);
+    --text-muted: var(--color-ink-soft);
+    --accent: var(--color-serb-red);
+    --accent-hover: var(--color-serb-red-bright);
+    --success: #2f7445;
+    --success-soft: rgb(47 116 69 / 0.12);
+    --error: var(--color-serb-red);
+    --error-soft: rgb(158 43 37 / 0.12);
+    --line: rgb(43 33 24 / 0.12);
+    --shadow-soft: 0 2px 8px rgb(43 33 24 / 0.06), 0 12px 32px rgb(43 33 24 / 0.08);
+    --shadow-lift: 0 4px 12px rgb(43 33 24 / 0.1), 0 20px 48px rgb(43 33 24 / 0.14);
+  }
+
+  .dark {
+    --bg: var(--color-night);
+    --bg-raised: var(--color-night-surface);
+    --bg-sunken: #100e0b;
+    --text: var(--color-night-text);
+    --text-muted: #a2937c;
+    --accent: var(--color-serb-red-bright);
+    --accent-hover: #d9554c;
+    --success: #78bd8b;
+    --success-soft: rgb(120 189 139 / 0.14);
+    --error: #ef7b73;
+    --error-soft: rgb(239 123 115 / 0.14);
+    --line: rgb(237 226 204 / 0.14);
+    --shadow-soft: 0 2px 8px rgb(0 0 0 / 0.3), 0 12px 32px rgb(0 0 0 / 0.35);
+    --shadow-lift: 0 4px 12px rgb(0 0 0 / 0.4), 0 20px 48px rgb(0 0 0 / 0.5);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Плавная прокрутка полезна для «якорей», но людям с вестибулярными
+       нарушениями она вредна — уважаем системную настройку. */
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* Видимая рамка фокуса обязательна: без неё сайтом нельзя пользоваться с
+     клавиатуры. Убирать её ради «чистоты» — прямая потеря доступности. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 45%, transparent);
+    color: var(--text);
+  }
+}
+
+@layer utilities {
+  /*
+    Слова в читалке интерактивны, но текст остаётся обычным DOM-текстом.
+    Явные свойства нужны мобильному Safari: без них долгое нажатие на элемент
+    с role=button открывает системное меню, но не всегда даёт протянуть маркеры.
+  */
+  .reader-selectable,
+  .reader-selectable * {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .reader-selectable {
+    touch-action: pan-y;
+    -webkit-touch-callout: default;
+  }
+
+  .reader-word {
+    cursor: text;
+  }
+
+  /* Пергаментная фактура: едва заметный шум, чтобы фон не выглядел
+     стерильной заливкой. Рисуется фильтром SVG — без картинки и без запроса. */
+  .paper-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dark .paper-grain::before {
+    opacity: 0.05;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Тёплая радиальная подсветка за героем. */
+  .glow-warm {
+    background: radial-gradient(
+      60% 50% at 50% 40%,
+      color-mix(in srgb, var(--color-gold) 22%, transparent) 0%,
+      transparent 70%
+    );
+  }
+}
+
+/*
+  Глобальное отключение анимаций по системной настройке. Каждый компонент
+  дополнительно спрашивает useReducedMotion, но правило ниже страхует то, что
+  анимировано средствами CSS.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

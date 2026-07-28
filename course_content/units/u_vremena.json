@@ -1,0 +1,269 @@
+{
+  "id": "u_vremena",
+  "title": "Часть 5. Времена глаголов",
+  "description": "Прошедшее и будущее время, безличные конструкции, склонение личных местоимений и умение назвать время на часах.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.6.5. Перфект • Perfekat; 5.6.6. Будущее время • Futur prvi",
+    "sourceAnchor": "md:5918-6613",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_bezlicne",
+      "title": "Безличные конструкции",
+      "objectives": [
+        {"id": "obj_bezlicno_se", "title": "Строить и понимать безличную конструкцию с se"}
+      ],
+      "lessons": [
+        {
+          "id": "l_26",
+          "title": "Безличная конструкция с возвратными формами",
+          "prerequisites": ["l_25"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Когда действующее лицо неважно или неизвестно, сербский ставит глагол в третье лицо и добавляет *se*. Русский в этом случае обходится множественным числом: «здесь говорят по-сербски»."},
+              {"kind": "terms", "title": "ЧАСТЫЕ ОБОРОТЫ", "rows": [
+                {"term": "Kako se kaže...?", "gloss": "Как сказать...?", "note": "самая полезная фраза для учащегося"},
+                {"term": "Ovde se govori srpski.", "gloss": "Здесь говорят по-сербски.", "note": ""},
+                {"term": "Ne sme se pušiti.", "gloss": "Курить нельзя.", "note": "запрет"},
+                {"term": "Ne može se ući.", "gloss": "Войти нельзя.", "note": "невозможность"},
+                {"term": "Kako se piše ta reč?", "gloss": "Как пишется это слово?", "note": ""},
+                {"term": "Vidi se more.", "gloss": "Видно море.", "note": "море здесь подлежащее"}
+              ]},
+              {"kind": "paragraph", "text": "Если у оборота есть подлежащее, глагол с ним согласуется: *vidi se more*, но *vide se planine*. Если подлежащего нет вовсе, глагол стоит в третьем лице единственного числа: *ovde se ne puši*."},
+              {"kind": "example", "serbian": "Kako se kaže «спасибо» na srpskom?", "russian": "Как по-сербски будет «спасибо»?", "highlight": "se"},
+              {"kind": "tip", "text": "Слово *se* и здесь остаётся безударным словом на втором месте: *Ovde se govori srpski*, а не «Ovde govori se srpski»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как спросить «Как это говорится?»", "explanation": "Kako se kaže? Слово se стоит вторым, сразу после вопросительного слова.", "options": [{"id": "a", "text": "Kako se kaže?", "correct": true}, {"id": "b", "text": "Kako kaže se?"}, {"id": "c", "text": "Se kako kaže?"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте оборот с переводом", "explanation": "Все четыре оборота безличные: действующее лицо в них не названо.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "Ovde se govori srpski.", "right": "Здесь говорят по-сербски."}, {"left": "Ne sme se pušiti.", "right": "Курить нельзя."}, {"left": "Kako se piše?", "right": "Как пишется?"}, {"left": "Vidi se more.", "right": "Видно море."}], "distractorsRight": ["Я говорю по-сербски."]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте se: «Ovde ___ ne puši»", "explanation": "Ovde se ne puši. Безударное se идёт после первого слова.", "segments": [{"kind": "text", "text": "Ovde "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " ne puši."}], "blanks": [{"id": "b1", "acceptedAnswers": ["se"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Как сказать «Видны горы» (planine)?", "explanation": "Vide se planine. Подлежащее во множественном числе, значит и глагол во множественном.", "options": [{"id": "a", "text": "Vide se planine.", "correct": true}, {"id": "b", "text": "Vidi se planine.", "misconceptionId": "misc_bezlicno_bez_slaganja"}, {"id": "c", "text": "Se vide planine."}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Здесь говорят по-сербски»", "explanation": "Ovde se govori srpski. Глагол в третьем лице единственного числа, действующее лицо не названо.", "tokens": [{"id": "t1", "text": "Ovde"}, {"id": "t2", "text": "se"}, {"id": "t3", "text": "govori"}, {"id": "t4", "text": "srpski"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "govore"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте объявление", "text": "U ovoj zgradi se ne puši. Ulaz se nalazi sa druge strane. Radno vreme: od devet do pet. Kod nas se govori srpski i engleski.", "translation": "В этом здании не курят. Вход находится с другой стороны. Часы работы: с девяти до пяти. У нас говорят по-сербски и по-английски.", "explanation": "Se ne puši — запрет без действующего лица. Ulaz se nalazi — se согласуется с подлежащим ulaz.", "questions": [
+              {"id": "q1", "prompt": "Da li se u zgradi sme pušiti?", "options": [{"id": "a", "text": "Ne sme.", "correct": true}, {"id": "b", "text": "Sme.", "misconceptionId": null}, {"id": "c", "text": "Sme samo posle pet."}]},
+              {"id": "q2", "prompt": "Zašto je «se nalazi», a ne «se nalaze»?", "options": [{"id": "a", "text": "Zato što je podmet «ulaz» u jednini.", "correct": true}, {"id": "b", "text": "Zato što posle «se» uvek ide jednina."}, {"id": "c", "text": "To je greška u tekstu."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_perfekat",
+      "title": "Прошедшее время",
+      "objectives": [
+        {"id": "obj_perfekat_slaganje", "title": "Строить перфект и согласовывать причастие по роду и числу"}
+      ],
+      "lessons": [
+        {
+          "id": "l_27",
+          "title": "Прошедшее время в сербском языке",
+          "prerequisites": ["l_26"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Прошедшее время — *perfekat* — состоит из двух частей: краткой формы глагола *biti* и особого причастия на *-o / -la / -lo*. Русское «я работал» устроено так же, только вспомогательный глагол мы потеряли."},
+              {"kind": "terms", "title": "КАК СТРОИТСЯ", "rows": [
+                {"term": "ja sam radio", "gloss": "я работал", "note": "мужчина о себе"},
+                {"term": "ja sam radila", "gloss": "я работала", "note": "женщина о себе"},
+                {"term": "on je radio", "gloss": "он работал", "note": ""},
+                {"term": "ona je radila", "gloss": "она работала", "note": ""},
+                {"term": "mi smo radili", "gloss": "мы работали", "note": "мужчины или смешанная группа"},
+                {"term": "one su radile", "gloss": "они работали", "note": "только женщины"}
+              ]},
+              {"kind": "paragraph", "text": "Причастие образуется от инфинитива: убираем *-ti*, добавляем *-o*, *-la*, *-lo*. *Raditi → radio*, *čitati → čitao*, *pisati → pisao*. Неправильных немного: *ići → išao, išla*; *jesti → jeo, jela*."},
+              {"kind": "paragraph", "text": "Главное здесь — двойное согласование. Вспомогательный глагол согласуется с **лицом** (sam, si, je), причастие — с **родом и числом** (radio, radila, radili)."},
+              {"kind": "example", "serbian": "Juče sam bila kod sestre.", "russian": "Вчера я была у сестры.", "highlight": "bila"},
+              {"kind": "tip", "text": "Отрицание строится отрицательной формой biti: *nisam radio*, *nije radila*. Отдельного слова «ne» здесь нет."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как женщина скажет «я работала»?", "explanation": "Ja sam radila. Причастие согласуется с говорящей по роду.", "options": [{"id": "a", "text": "Ja sam radila.", "correct": true}, {"id": "b", "text": "Ja sam radio."}, {"id": "c", "text": "Ja sam radile."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте инфинитив с причастием мужского рода", "explanation": "От инфинитива отбрасывается -ti и добавляется -o. Ići — неправильный: išao.", "leftLabel": "Инфинитив", "rightLabel": "Причастие", "pairs": [{"left": "raditi", "right": "radio"}, {"left": "čitati", "right": "čitao"}, {"left": "pisati", "right": "pisao"}, {"left": "ići", "right": "išao"}], "distractorsRight": ["ićio"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «čitati» в прошедшее время: «Ана читала книгу»", "explanation": "Ana je čitala knjigu. Причастие женского рода оканчивается на -la.", "segments": [{"kind": "text", "text": "Ana je "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " knjigu."}], "blanks": [{"id": "b1", "acceptedAnswers": ["čitala"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Я не работал»?", "explanation": "Nisam radio. Отрицание выражает сама форма nisam, отдельное ne не нужно.", "options": [{"id": "a", "text": "Nisam radio.", "correct": true}, {"id": "b", "text": "Ne sam radio.", "misconceptionId": "misc_perfekat_ne_sam"}, {"id": "c", "text": "Sam ne radio."}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Вчера мы были в Белграде»", "explanation": "Juče smo bili u Beogradu. После первого слова Juče идёт безударное smo, причастие во множественном числе.", "tokens": [{"id": "t1", "text": "Juče"}, {"id": "t2", "text": "smo"}, {"id": "t3", "text": "bili"}, {"id": "t4", "text": "u"}, {"id": "t5", "text": "Beogradu"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "bio"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте причастия прошедшего времени", "targetLabel": "причастия на -o, -la, -li", "translation": "Вчера Ана читала книгу, а Марко писал письмо. Потом они пошли домой.", "explanation": "Čitala, pisao, otišli — причастия. Слова je, su — вспомогательный глагол, а не причастие.", "tokens": [{"id": "t1", "text": "Juče"}, {"id": "t2", "text": "je"}, {"id": "t3", "text": "Ana"}, {"id": "t4", "text": "čitala", "correct": true}, {"id": "t5", "text": "knjigu", "tail": ","}, {"id": "t6", "text": "a"}, {"id": "t7", "text": "Marko"}, {"id": "t8", "text": "je"}, {"id": "t9", "text": "pisao", "correct": true}, {"id": "t10", "text": "pismo", "tail": "."}, {"id": "t11", "text": "Zatim"}, {"id": "t12", "text": "su"}, {"id": "t13", "text": "otišli", "correct": true}, {"id": "t14", "text": "kući", "tail": "."}]},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Prošle nedelje smo bili u Novom Sadu. Ana je videla staru tvrđavu, a ja sam pio kafu pored Dunava. Nismo dugo ostali, jer je padala kiša.", "translation": "На прошлой неделе мы были в Нови-Саде. Ана видела старую крепость, а я пил кофе у Дуная. Мы не задержались надолго, потому что шёл дождь.", "explanation": "Bili, videla, pio, ostali, padala — все причастия согласуются по роду и числу, а вспомогательный глагол по лицу.", "questions": [
+              {"id": "q1", "prompt": "Zašto nisu dugo ostali?", "options": [{"id": "a", "text": "Zato što je padala kiša.", "correct": true}, {"id": "b", "text": "Zato što nisu voleli grad."}, {"id": "c", "text": "Zato što nije bilo kafe."}]},
+              {"id": "q2", "prompt": "Zašto je «videla», a ne «video»?", "options": [{"id": "a", "text": "Zato što se particip slaže sa Anom u ženskom rodu.", "correct": true}, {"id": "b", "text": "Zato što je radnja bila duga."}, {"id": "c", "text": "Zato što posle «je» uvek ide -la."}]}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_zamenice_padezi",
+      "title": "Склонение личных местоимений",
+      "objectives": [
+        {"id": "obj_zamenice_kratke", "title": "Различать краткие и полные формы личных местоимений"}
+      ],
+      "lessons": [
+        {
+          "id": "l_28",
+          "title": "Склонение личных местоимений",
+          "prerequisites": ["l_27"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "У личных местоимений в сербском по две формы почти в каждом падеже: краткая безударная и полная ударная. Краткая используется постоянно, полная — после предлогов и при смысловом ударении."},
+              {"kind": "terms", "title": "ВИНИТЕЛЬНЫЙ: КОГО?", "rows": [
+                {"term": "me / mene", "gloss": "меня", "note": "Vidi me. → Vidi mene, ne njega."},
+                {"term": "te / tebe", "gloss": "тебя", "note": ""},
+                {"term": "ga / njega", "gloss": "его", "note": ""},
+                {"term": "je / nju", "gloss": "её", "note": ""},
+                {"term": "nas, vas", "gloss": "нас, вас", "note": "формы совпали"},
+                {"term": "ih / njih", "gloss": "их", "note": ""}
+              ]},
+              {"kind": "terms", "title": "ДАТЕЛЬНЫЙ: КОМУ?", "rows": [
+                {"term": "mi / meni", "gloss": "мне", "note": "Daj mi to."},
+                {"term": "ti / tebi", "gloss": "тебе", "note": ""},
+                {"term": "mu / njemu", "gloss": "ему", "note": ""},
+                {"term": "joj / njoj", "gloss": "ей", "note": ""},
+                {"term": "nam, vam", "gloss": "нам, вам", "note": ""},
+                {"term": "im / njima", "gloss": "им", "note": ""}
+              ]},
+              {"kind": "paragraph", "text": "После предлога всегда стоит полная форма: *sa mnom*, *kod mene*, *o njemu*. Краткая после предлога невозможна."},
+              {"kind": "example", "serbian": "Daj mi knjigu, molim te.", "russian": "Дай мне книгу, пожалуйста.", "highlight": "mi"},
+              {"kind": "tip", "text": "Краткие формы *mi* и *ti* совпадают по написанию с местоимениями «мы» и «ты». Различает их место: в *Daj mi to* слово *mi* стоит вторым и безударно, значит это «мне»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Дай мне книгу»?", "explanation": "Daj mi knjigu. Краткая форма mi значит «мне» и стоит на втором месте.", "options": [{"id": "a", "text": "Daj mi knjigu.", "correct": true}, {"id": "b", "text": "Daj mi knjiga.", "misconceptionId": "misc_akuzativ_nominativ"}, {"id": "c", "text": "Daj mene knjigu."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте краткую форму с полной", "explanation": "Краткая форма безударна, полная используется после предлогов и при выделении.", "leftLabel": "Краткая", "rightLabel": "Полная", "pairs": [{"left": "me", "right": "mene"}, {"left": "ga", "right": "njega"}, {"left": "joj", "right": "njoj"}, {"left": "im", "right": "njima"}], "distractorsRight": ["nas"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте местоимение: «Я иду с тобой»", "explanation": "Idem sa tobom. После предлога всегда полная форма.", "segments": [{"kind": "text", "text": "Idem sa "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["tobom"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему нельзя сказать «kod me»?", "explanation": "После предлога стоит только полная форма: kod mene. Краткие формы безударны и с предлогом не сочетаются.", "options": [{"id": "a", "text": "После предлога нужна полная форма: kod mene", "correct": true}, {"id": "b", "text": "Предлог kod вообще не сочетается с местоимениями"}, {"id": "c", "text": "Так можно, это разговорный вариант"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я его вчера видел»", "explanation": "Juče sam ga video. Два безударных слова идут подряд после первого: сначала sam, потом ga.", "tokens": [{"id": "t1", "text": "Juče"}, {"id": "t2", "text": "sam"}, {"id": "t3", "text": "ga"}, {"id": "t4", "text": "video"}, {"id": "t5", "text": "."}], "distractorTokens": [{"id": "d1", "text": "njega"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5"]], "optionalTokenIds": []},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте краткие формы местоимений", "targetLabel": "краткие безударные формы местоимений", "translation": "Дай мне книгу. Я видел его вчера, а ей позвоню завтра.", "explanation": "Mi, ga, joj — краткие формы. Njega здесь нет, а sam и ću — формы глаголов.", "tokens": [{"id": "t1", "text": "Daj"}, {"id": "t2", "text": "mi", "correct": true}, {"id": "t3", "text": "knjigu", "tail": "."}, {"id": "t4", "text": "Juče"}, {"id": "t5", "text": "sam"}, {"id": "t6", "text": "ga", "correct": true}, {"id": "t7", "text": "video", "tail": ","}, {"id": "t8", "text": "a"}, {"id": "t9", "text": "sutra"}, {"id": "t10", "text": "ću"}, {"id": "t11", "text": "joj", "correct": true}, {"id": "t12", "text": "javiti", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_futur",
+      "title": "Будущее время",
+      "objectives": [
+        {"id": "obj_futur_dva_oblika", "title": "Строить будущее время в обоих вариантах и отрицать его"}
+      ],
+      "lessons": [
+        {
+          "id": "l_29",
+          "title": "Будущее время в сербском языке",
+          "prerequisites": ["l_28"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Будущее строится вспомогательным глаголом *hteti* в краткой форме плюс инфинитив. Вспомогательный меняется по лицам, инфинитив не меняется вообще."},
+              {"kind": "terms", "title": "ВСПОМОГАТЕЛЬНЫЙ ГЛАГОЛ", "rows": [
+                {"term": "ću", "gloss": "я буду", "note": "Ja ću raditi."},
+                {"term": "ćeš", "gloss": "ты будешь", "note": ""},
+                {"term": "će", "gloss": "он будет и они будут", "note": "одна форма на два лица"},
+                {"term": "ćemo", "gloss": "мы будем", "note": ""},
+                {"term": "ćete", "gloss": "вы будете", "note": ""}
+              ]},
+              {"kind": "paragraph", "text": "Записать одно и то же можно двумя способами. Если предложение начинается не с глагола: *Ja ću raditi*. Если глагол идёт первым, вспомогательный присоединяется к нему, а *-i* инфинитива отпадает: *radiću*, *čitaću*, *pisaću*."},
+              {"kind": "example", "serbian": "Sutra ću raditi.", "russian": "Завтра я буду работать.", "highlight": "ću"},
+              {"kind": "example", "serbian": "Radiću sutra.", "russian": "Завтра я буду работать.", "highlight": "Radiću"},
+              {"kind": "paragraph", "text": "Отрицание берёт отдельную форму *neću, nećeš, neće, nećemo, nećete, neće*: *Neću raditi* — «я не буду работать». Слитная запись здесь невозможна."},
+              {"kind": "tip", "text": "Глаголы на *-ći* слитную форму не образуют: *ići* даёт только *ja ću ići*, а не «ićiću». Правило слияния работает лишь для инфинитивов на *-ti*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «Я буду работать»?", "explanation": "Ja ću raditi. Вспомогательный ću плюс неизменяемый инфинитив.", "options": [{"id": "a", "text": "Ja ću raditi.", "correct": true}, {"id": "b", "text": "Ja ću radim."}, {"id": "c", "text": "Ja budem raditi."}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте местоимение со вспомогательным глаголом", "explanation": "Ću — ja, ćeš — ti, ćemo — mi, će — on и oni.", "leftLabel": "Местоимение", "rightLabel": "Форма", "pairs": [{"left": "ja", "right": "ću"}, {"left": "ti", "right": "ćeš"}, {"left": "mi", "right": "ćemo"}, {"left": "vi", "right": "ćete"}], "distractorsRight": ["će"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как записать «Я буду работать» одним словом?", "explanation": "Radiću. Когда глагол идёт первым, -i инфинитива отпадает и вспомогательный приклеивается.", "options": [{"id": "a", "text": "Radiću", "correct": true}, {"id": "b", "text": "Raditiću"}, {"id": "c", "text": "Radimću"}]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте отрицание: «Я не буду работать»", "explanation": "Neću raditi. Отрицательная форма пишется одним словом и не сливается с инфинитивом.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " raditi sutra."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Neću", "neću"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Завтра мы поедем в Белград»", "explanation": "Sutra ćemo ići u Beograd. После первого слова идёт безударное ćemo, глаголы на -ći слитную форму не образуют.", "tokens": [{"id": "t1", "text": "Sutra"}, {"id": "t2", "text": "ćemo"}, {"id": "t3", "text": "ići"}, {"id": "t4", "text": "u"}, {"id": "t5", "text": "Beograd"}, {"id": "t6", "text": "."}], "distractorTokens": [{"id": "d1", "text": "ićiću"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Почему «ićiću» неверно?", "explanation": "Слияние работает только у инфинитивов на -ti. Глаголы на -ći сохраняют раздельную запись: ja ću ići.", "options": [{"id": "a", "text": "Слитная форма бывает только у инфинитивов на -ti", "correct": true}, {"id": "b", "text": "Глагол ići вообще не имеет будущего времени"}, {"id": "c", "text": "Нужно писать «ićiču» через č"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_redni_brojevi",
+      "title": "Порядковые числительные и часы",
+      "objectives": [
+        {"id": "obj_redni_kao_pridev", "title": "Склонять порядковые числительные как прилагательные"},
+        {"id": "obj_vreme_sati", "title": "Спрашивать и называть время"}
+      ],
+      "lessons": [
+        {
+          "id": "l_30",
+          "title": "Порядковые числительные. Музыка",
+          "prerequisites": ["l_29"],
+          "objectives": ["obj_redni_kao_pridev"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Порядковые числительные — это прилагательные и ведут себя как прилагательные: согласуются в роде, числе и падеже и склоняются по тому же образцу, что *dobri*."},
+              {"kind": "terms", "title": "ОТ ПЕРВОГО ДО ДЕСЯТОГО", "rows": [
+                {"term": "prvi, prva, prvo", "gloss": "первый", "note": ""},
+                {"term": "drugi", "gloss": "второй", "note": "то же слово значит «другой»"},
+                {"term": "treći", "gloss": "третий", "note": "мягкая основа"},
+                {"term": "četvrti, peti", "gloss": "четвёртый, пятый", "note": ""},
+                {"term": "šesti, sedmi, osmi", "gloss": "шестой, седьмой, восьмой", "note": ""},
+                {"term": "deveti, deseti", "gloss": "девятый, десятый", "note": ""}
+              ]},
+              {"kind": "terms", "title": "СЛОВА О МУЗЫКЕ", "rows": [
+                {"term": "pesma", "gloss": "песня", "note": "ж. р., мн. ч. pesme"},
+                {"term": "pevač / pevačica", "gloss": "певец / певица", "note": ""},
+                {"term": "bend, grupa", "gloss": "группа", "note": ""},
+                {"term": "koncert", "gloss": "концерт", "note": "м. р."},
+                {"term": "gitara, klavir", "gloss": "гитара, пианино", "note": "klavir м. р."},
+                {"term": "slušati muziku", "gloss": "слушать музыку", "note": "muziku в винительном"}
+              ]},
+              {"kind": "example", "serbian": "Ovo je moja treća pesma na ovom albumu.", "russian": "Это моя третья песня на этом альбоме.", "highlight": "treća"},
+              {"kind": "tip", "text": "В датах порядковое числительное стоит в родительном падеже: *prvog maja*, *desetog juna*. Отсюда и надпись на билетах: «15. juna» читается «petnaestog juna»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как сказать «первая песня»?", "explanation": "Prva pesma. Порядковое числительное согласуется с существительным женского рода.", "options": [{"id": "a", "text": "prva pesma", "correct": true}, {"id": "b", "text": "prvi pesma"}, {"id": "c", "text": "prvo pesma"}]},
+            {"type": "matching", "difficulty": 1, "prompt": "Сопоставьте порядковое числительное с номером", "explanation": "Prvi — 1, treći — 3, peti — 5, deseti — 10.", "leftLabel": "Сербский", "rightLabel": "Номер", "pairs": [{"left": "prvi", "right": "1"}, {"left": "treći", "right": "3"}, {"left": "peti", "right": "5"}, {"left": "deseti", "right": "10"}], "distractorsRight": ["2"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Поставьте «treći» в женский род: «третья гитара»", "explanation": "Treća gitara. Мягкая основа даёт -a в женском роде.", "segments": [{"kind": "blank", "id": "b1"}, {"kind": "text", "text": " gitara."}], "blanks": [{"id": "b1", "acceptedAnswers": ["Treća", "treća"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как читается дата «1. maja»?", "explanation": "Prvog maja. В датах порядковое числительное стоит в родительном падеже.", "options": [{"id": "a", "text": "prvog maja", "correct": true}, {"id": "b", "text": "prvi maja"}, {"id": "c", "text": "prvom maja"}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Я слушаю сербскую музыку»", "explanation": "Slušam srpsku muziku. Прямое дополнение в винительном падеже, поэтому оба слова на -u.", "tokens": [{"id": "t1", "text": "Slušam"}, {"id": "t2", "text": "srpsku"}, {"id": "t3", "text": "muziku"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "muzika"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте и ответьте", "text": "Koncert je petnaestog juna. To je treći koncert ovog benda u Beogradu. Prva pesma je bila najbolja, a poslednja mi se nije svidela.", "translation": "Концерт пятнадцатого июня. Это третий концерт этой группы в Белграде. Первая песня была лучшей, а последняя мне не понравилась.", "explanation": "Petnaestog juna — родительный падеж в дате. Treći koncert и prva pesma согласуются по роду.", "questions": [
+              {"id": "q1", "prompt": "Koji je to koncert ovog benda u Beogradu?", "options": [{"id": "a", "text": "Treći.", "correct": true}, {"id": "b", "text": "Prvi."}, {"id": "c", "text": "Petnaesti."}]},
+              {"id": "q2", "prompt": "Zašto je «petnaestog», a ne «petnaesti»?", "options": [{"id": "a", "text": "U datumima redni broj ide u genitivu.", "correct": true}, {"id": "b", "text": "Zato što je jun muškog roda."}, {"id": "c", "text": "To je razgovorni oblik."}]}
+            ]}
+          ]
+        },
+        {
+          "id": "l_31",
+          "title": "Время в сербском языке",
+          "prerequisites": ["l_30"],
+          "objectives": ["obj_vreme_sati"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "«Который час» по-сербски спрашивают буквально «сколько часов»: *Koliko je sati?* Ответ зависит от числа — работает то же правило счётной формы, что и с любыми существительными."},
+              {"kind": "terms", "title": "КОТОРЫЙ ЧАС", "rows": [
+                {"term": "Jedan je sat.", "gloss": "Час.", "note": "1 → единственное число"},
+                {"term": "Dva su sata.", "gloss": "Два часа.", "note": "2, 3, 4 → счётная форма sata"},
+                {"term": "Pet je sati.", "gloss": "Пять часов.", "note": "5 и больше → sati"},
+                {"term": "Pola tri.", "gloss": "Полтретьего, 14:30.", "note": "половина ТРЕТЬЕГО, а не второго"},
+                {"term": "Petnaest do pet.", "gloss": "Без пятнадцати пять.", "note": ""},
+                {"term": "Pet i petnaest.", "gloss": "Пятнадцать минут шестого.", "note": "буквально «пять и пятнадцать»"}
+              ]},
+              {"kind": "paragraph", "text": "Оборот *pola tri* устроен как русское «полтретьего»: назван час, к которому идёт время, а не тот, который прошёл. *Pola tri* — это 14:30, а не 15:30."},
+              {"kind": "example", "serbian": "U koliko sati počinje film? — U pola osam.", "russian": "Во сколько начинается фильм? — В половине восьмого.", "highlight": "pola osam"},
+              {"kind": "tip", "text": "Вопрос «во сколько» строится с предлогом: *u koliko sati*. Ответ тоже с предлогом: *u pet*, *u pola osam*, *u petnaest do devet*."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как спросить «Который час?»", "explanation": "Koliko je sati? Буквально «сколько часов».", "options": [{"id": "a", "text": "Koliko je sati?", "correct": true}, {"id": "b", "text": "Koji je sat?"}, {"id": "c", "text": "Kada je sat?"}]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Что означает «pola tri»?", "explanation": "14:30. Назван тот час, к которому идёт время, как в русском «полтретьего».", "options": [{"id": "a", "text": "14:30", "correct": true}, {"id": "b", "text": "15:30", "misconceptionId": "misc_vreme_pola_posle"}, {"id": "c", "text": "13:30"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте время с записью", "explanation": "Счётная форма зависит от числа: jedan sat, dva sata, pet sati.", "leftLabel": "Сербский", "rightLabel": "Время", "pairs": [{"left": "Jedan je sat.", "right": "13:00"}, {"left": "Dva su sata.", "right": "14:00"}, {"left": "Pet je sati.", "right": "17:00"}, {"left": "Pola šest.", "right": "17:30"}], "distractorsRight": ["18:30"]},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте счётную форму: «Два часа»", "explanation": "Dva su sata. После 2, 3, 4 идёт счётная форма sata.", "segments": [{"kind": "text", "text": "Dva su "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": "."}], "blanks": [{"id": "b1", "acceptedAnswers": ["sata"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите вопрос: «Во сколько начинается фильм?»", "explanation": "U koliko sati počinje film? Вопрос о времени начинается с предлога u.", "tokens": [{"id": "t1", "text": "U"}, {"id": "t2", "text": "koliko"}, {"id": "t3", "text": "sati"}, {"id": "t4", "text": "počinje"}, {"id": "t5", "text": "film"}, {"id": "t6", "text": "?"}], "distractorTokens": [{"id": "d1", "text": "sat"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6"]], "optionalTokenIds": []},
+            {"type": "reading_qa", "difficulty": 3, "prompt": "Прочитайте расписание", "text": "Voz za Novi Sad polazi u pola osam. Sledeći je u devet i petnaest, a poslednji u petnaest do jedanaest. Put traje sat i po.", "translation": "Поезд на Нови-Сад отправляется в половине восьмого. Следующий в девять пятнадцать, а последний без пятнадцати одиннадцать. Дорога занимает полтора часа.", "explanation": "Pola osam — 7:30. Devet i petnaest — 9:15. Petnaest do jedanaest — 10:45.", "questions": [
+              {"id": "q1", "prompt": "U koliko sati polazi prvi voz?", "options": [{"id": "a", "text": "U 7:30.", "correct": true}, {"id": "b", "text": "U 8:30."}, {"id": "c", "text": "U 8:00."}]},
+              {"id": "q2", "prompt": "Kada polazi poslednji voz?", "options": [{"id": "a", "text": "U 10:45.", "correct": true}, {"id": "b", "text": "U 11:15."}, {"id": "c", "text": "U 11:45."}]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

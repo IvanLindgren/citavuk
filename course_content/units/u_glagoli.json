@@ -1,0 +1,126 @@
+{
+  "id": "u_glagoli",
+  "title": "Часть 2. Глаголы",
+  "description": "Как глагол меняется по лицам, зачем сербскому две формы одного действия и почему «se» пишется отдельно.",
+  "sourceRef": {
+    "sourceBook": "Просвирина О.А., Авдюхина Е.Б., Колпакова Е.С. Сербский язык. Практическая грамматика с упражнениями и ключами. — ВКН, 2018",
+    "sourceHeading": "5.6.1. Настоящее время • Prezent; 5.6.3. Вид глагола • Vid glagola",
+    "sourceAnchor": "md:5138-5671",
+    "sourceEditionOrFileHash": "sha256:bf73a7494eac85e4223f9140df43696c01dec5cf9f29ef064a18e0dada993cd2",
+    "contentVersion": "2.0.0",
+    "reviewStatus": "machine_checked",
+    "reviewedBy": null,
+    "supplemental": false
+  },
+  "skills": [
+    {
+      "id": "sk_prezent",
+      "title": "Спряжение в настоящем времени",
+      "objectives": [
+        {"id": "obj_prezent_tri_tipa", "title": "Определять тип спряжения по форме «я» и спрягать глагол"}
+      ],
+      "lessons": [
+        {
+          "id": "l_06",
+          "title": "Спряжение глаголов сербского языка",
+          "prerequisites": ["l_05"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Все сербские глаголы в настоящем времени делятся на три типа. Тип узнаётся по форме «я»: она оканчивается на *-am*, *-im* или *-em*. Дальше окончания идут по одному образцу, и запоминать нужно ровно эти три строчки."},
+              {"kind": "terms", "title": "ТРИ ТИПА ПО ФОРМЕ «Я»", "rows": [
+                {"term": "-am", "gloss": "imati → imam", "note": "imaš, ima, imamo, imate, imaju"},
+                {"term": "-im", "gloss": "raditi → radim", "note": "radiš, radi, radimo, radite, rade"},
+                {"term": "-em", "gloss": "pisati → pišem", "note": "pišeš, piše, pišemo, pišete, pišu"}
+              ]},
+              {"kind": "paragraph", "text": "Обратите внимание на третье лицо множественного числа: у типа *-am* там *-aju*, у *-im* — *-e*, у *-em* — *-u*. Это единственное место, где три образца заметно расходятся."},
+              {"kind": "example", "serbian": "Oni rade, a mi pišemo.", "russian": "Они работают, а мы пишем.", "highlight": "rade"},
+              {"kind": "tip", "text": "Неопределённая форма не всегда подсказывает тип: *pisati* даёт *pišem*, а *raditi* — *radim*. Учить глагол надёжнее сразу парой: инфинитив и форма «я»."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как будет «я работаю»?", "explanation": "Raditi относится к типу на -im: radim.", "options": [{"id": "a", "text": "radim", "correct": true}, {"id": "b", "text": "radam"}, {"id": "c", "text": "radem"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Мы работаем каждый день»", "explanation": "Radimo. У типа на -im форма «мы» оканчивается на -imo.", "wordClass": "verb", "contextSentence": "Mi ___ svaki dan.", "stem": "rad", "target": {"lemma": "raditi", "person": 1, "number": "plur", "tense": "pres"}, "fullForm": "radimo", "options": [{"id": "e1", "text": "imo", "correct": true}, {"id": "e2", "text": "amo"}, {"id": "e3", "text": "emo"}]},
+            {"type": "ending_picker", "difficulty": 2, "prompt": "Подберите окончание: «Ты имеешь брата»", "explanation": "Imaš. Imati относится к типу на -am, форма «ты» — imaš.", "wordClass": "verb", "contextSentence": "Ti ___ brata.", "stem": "im", "target": {"lemma": "imati", "person": 2, "number": "sing", "tense": "pres"}, "fullForm": "imaš", "options": [{"id": "e1", "text": "aš", "correct": true}, {"id": "e2", "text": "iš"}, {"id": "e3", "text": "eš"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте инфинитив с формой «я»", "explanation": "Тип спряжения виден только по форме первого лица, поэтому её и заучивают вместе с инфинитивом.", "leftLabel": "Инфинитив", "rightLabel": "Форма «я»", "pairs": [{"left": "imati", "right": "imam"}, {"left": "raditi", "right": "radim"}, {"left": "pisati", "right": "pišem"}, {"left": "govoriti", "right": "govorim"}], "distractorsRight": ["pisam"]},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Поставьте глагол pisati в форму «они»", "explanation": "Oni pišu pismo. У типа на -em третье лицо множественного числа оканчивается на -u.", "segments": [{"kind": "text", "text": "Oni "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " pismo."}], "blanks": [{"id": "b1", "acceptedAnswers": ["pišu"], "caseSensitive": false}]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Какая форма «они» у глагола raditi?", "explanation": "Rade. У типа на -im третье лицо множественного числа оканчивается просто на -e, без -ju.", "options": [{"id": "a", "text": "rade", "correct": true}, {"id": "b", "text": "radaju", "misconceptionId": "misc_prezent_3pl_aju"}, {"id": "c", "text": "radu"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте глаголы в настоящем времени", "targetLabel": "глаголы в настоящем времени", "translation": "Ана работает в школе. Она хорошо говорит по-сербски и пишет письма.", "explanation": "Формы radi, govori, piše — настоящее время. Слова škola, srpski, pisma к глаголам не относятся.", "tokens": [{"id": "t1", "text": "Ana"}, {"id": "t2", "text": "radi", "correct": true}, {"id": "t3", "text": "u"}, {"id": "t4", "text": "školi", "tail": "."}, {"id": "t5", "text": "Ona"}, {"id": "t6", "text": "dobro"}, {"id": "t7", "text": "govori", "correct": true}, {"id": "t8", "text": "srpski"}, {"id": "t9", "text": "i"}, {"id": "t10", "text": "piše", "correct": true}, {"id": "t11", "text": "pisma", "tail": "."}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_vid",
+      "title": "Вид глагола",
+      "objectives": [
+        {"id": "obj_vid_par", "title": "Различать совершенный и несовершенный вид и понимать, что даёт приставка"}
+      ],
+      "lessons": [
+        {
+          "id": "l_07",
+          "title": "Виды глаголов",
+          "prerequisites": ["l_06"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Вид в сербском устроен так же, как в русском, и это тот редкий случай, когда родной язык помогает почти без оговорок. *Nesvršeni* вид — действие как процесс, *svršeni* — действие с результатом."},
+              {"kind": "terms", "title": "ВИДОВЫЕ ПАРЫ", "rows": [
+                {"term": "čitati → pročitati", "gloss": "читать → прочитать", "note": "приставка"},
+                {"term": "pisati → napisati", "gloss": "писать → написать", "note": "приставка"},
+                {"term": "kupovati → kupiti", "gloss": "покупать → купить", "note": "разные основы"},
+                {"term": "davati → dati", "gloss": "давать → дать", "note": "разные основы"}
+              ]},
+              {"kind": "paragraph", "text": "Одна вещь устроена не по-русски. Совершенный глагол в форме настоящего времени **не обозначает настоящее**. Сказать «*Pročitam knjigu*» как «я читаю книгу» нельзя: такая форма живёт внутри придаточного — «Kada pročitam knjigu, javiću ti se»."},
+              {"kind": "example", "serbian": "Svako veče čitam knjigu.", "russian": "Каждый вечер я читаю книгу.", "highlight": "čitam"},
+              {"kind": "tip", "text": "Проверка на слух: если действие можно повторять каждый день, нужен несовершенный вид. Если оно происходит один раз и заканчивается — совершенный."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Какой глагол совершенного вида?", "explanation": "Pročitati — совершенный: приставка pro- добавляет результат.", "options": [{"id": "a", "text": "pročitati", "correct": true}, {"id": "b", "text": "čitati"}, {"id": "c", "text": "raditi"}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте несовершенный вид с совершенным", "explanation": "Пара строится приставкой (čitati — pročitati) или другой основой (kupovati — kupiti).", "leftLabel": "Несовершенный", "rightLabel": "Совершенный", "pairs": [{"left": "čitati", "right": "pročitati"}, {"left": "pisati", "right": "napisati"}, {"left": "kupovati", "right": "kupiti"}, {"left": "davati", "right": "dati"}], "distractorsRight": ["raditi"]},
+            {"type": "multiple_choice", "difficulty": 2, "prompt": "Как сказать «Каждый вечер я читаю книгу»?", "explanation": "Повторяющееся действие требует несовершенного вида: čitam.", "options": [{"id": "a", "text": "Svako veče čitam knjigu.", "correct": true}, {"id": "b", "text": "Svako veče pročitam knjigu.", "misconceptionId": "misc_vid_svrseni_ponavljanje"}, {"id": "c", "text": "Svako veče pročitati knjigu."}]},
+            {"type": "fill_blank", "difficulty": 3, "prompt": "Вставьте нужный вид: «Вчера я написал письмо»", "explanation": "Juče sam napisao pismo: действие закончено, нужен совершенный вид napisati.", "segments": [{"kind": "text", "text": "Juče sam "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " pismo."}], "blanks": [{"id": "b1", "acceptedAnswers": ["napisao"], "caseSensitive": false}]},
+            {"type": "sentence_builder", "difficulty": 3, "prompt": "Соберите предложение: «Когда прочитаю книгу, позвоню тебе»", "explanation": "Kada pročitam knjigu, javiću ti se. Совершенный вид в настоящем времени работает именно так: внутри придаточного о будущем.", "tokens": [{"id": "t1", "text": "Kada"}, {"id": "t2", "text": "pročitam"}, {"id": "t3", "text": "knjigu"}, {"id": "t4", "text": ","}, {"id": "t5", "text": "javiću"}, {"id": "t6", "text": "ti"}, {"id": "t7", "text": "se"}, {"id": "t8", "text": "."}], "distractorTokens": [{"id": "d1", "text": "čitam"}], "acceptedOrders": [["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8"]], "optionalTokenIds": []},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Что означает форма «pročitam» сама по себе?", "explanation": "Совершенный вид в настоящем времени не обозначает происходящее сейчас. Он появляется в придаточном: «Kada pročitam...».", "options": [{"id": "a", "text": "Она не обозначает происходящее сейчас и живёт в придаточном", "correct": true}, {"id": "b", "text": "Я читаю прямо сейчас"}, {"id": "c", "text": "Я прочитал вчера"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sk_povratni",
+      "title": "Возвратные глаголы",
+      "objectives": [
+        {"id": "obj_povratni_se", "title": "Ставить отдельное слово se на правильное место"}
+      ],
+      "lessons": [
+        {
+          "id": "l_08",
+          "title": "Возвратные глаголы",
+          "prerequisites": ["l_07"],
+          "intro": {
+            "blocks": [
+              {"kind": "paragraph", "text": "Русское *-ся* приклеено к глаголу намертво. Сербское *se* — отдельное слово, и оно ведёт себя как безударные *sam*, *je*, *smo*: стремится на второе место в предложении."},
+              {"kind": "example", "serbian": "Kako se zoveš?", "russian": "Как тебя зовут?", "highlight": "se"},
+              {"kind": "example", "serbian": "Zovem se Ana.", "russian": "Меня зовут Ана.", "highlight": "se"},
+              {"kind": "terms", "title": "ЧАСТЫЕ ВОЗВРАТНЫЕ ГЛАГОЛЫ", "rows": [
+                {"term": "zvati se", "gloss": "зваться", "note": "Zovem se Marko."},
+                {"term": "osećati se", "gloss": "чувствовать себя", "note": "Osećam se dobro."},
+                {"term": "odmarati se", "gloss": "отдыхать", "note": "Odmaram se."},
+                {"term": "nalaziti se", "gloss": "находиться", "note": "Zgrada se nalazi tu."},
+                {"term": "vraćati se", "gloss": "возвращаться", "note": "Vraćam se kući."}
+              ]},
+              {"kind": "tip", "text": "Обратите внимание: в вопросе «Kako se zoveš?» слово *se* стоит вторым, а не рядом с глаголом. Именно поэтому его нельзя воспринимать как часть глагола."}
+            ]
+          },
+          "exercises": [
+            {"type": "multiple_choice", "difficulty": 1, "prompt": "Как спросить «Как тебя зовут?»", "explanation": "Kako se zoveš? Слово se стоит вторым, сразу после вопросительного слова.", "options": [{"id": "a", "text": "Kako se zoveš?", "correct": true}, {"id": "b", "text": "Kako zoveš se?"}, {"id": "c", "text": "Se kako zoveš?"}]},
+            {"type": "sentence_builder", "difficulty": 2, "prompt": "Соберите ответ: «Меня зовут Ана»", "explanation": "Zovem se Ana. Здесь первое слово — глагол, поэтому se идёт сразу за ним.", "tokens": [{"id": "t1", "text": "Zovem"}, {"id": "t2", "text": "se"}, {"id": "t3", "text": "Ana"}, {"id": "t4", "text": "."}], "distractorTokens": [{"id": "d1", "text": "sam"}], "acceptedOrders": [["t1", "t2", "t3", "t4"]], "optionalTokenIds": []},
+            {"type": "fill_blank", "difficulty": 2, "prompt": "Вставьте se: «Ja ___ osećam dobro»", "explanation": "Ja se osećam dobro. После первого слова Ja идёт безударное se.", "segments": [{"kind": "text", "text": "Ja "}, {"kind": "blank", "id": "b1"}, {"kind": "text", "text": " osećam dobro."}], "blanks": [{"id": "b1", "acceptedAnswers": ["se"], "caseSensitive": false}]},
+            {"type": "matching", "difficulty": 2, "prompt": "Сопоставьте глагол с переводом", "explanation": "Все эти глаголы требуют отдельного слова se.", "leftLabel": "Сербский", "rightLabel": "Русский", "pairs": [{"left": "odmarati se", "right": "отдыхать"}, {"left": "vraćati se", "right": "возвращаться"}, {"left": "osećati se", "right": "чувствовать себя"}, {"left": "nalaziti se", "right": "находиться"}], "distractorsRight": ["работать"]},
+            {"type": "multiple_choice", "difficulty": 3, "prompt": "Чем сербское «se» отличается от русского «-ся»?", "explanation": "Se — самостоятельное безударное слово, оно занимает второе место в предложении и может стоять далеко от глагола.", "options": [{"id": "a", "text": "Это отдельное слово, которое стремится на второе место", "correct": true}, {"id": "b", "text": "Ничем, это то же самое, только пишется через пробел"}, {"id": "c", "text": "Оно всегда стоит в конце предложения"}]},
+            {"type": "form_hunt", "difficulty": 3, "prompt": "Отметьте все слова se", "targetLabel": "возвратное слово se", "translation": "Как ты себя чувствуешь? Я отдыхаю дома, а вечером возвращаюсь на работу.", "explanation": "Se встречается трижды и каждый раз стоит после первого ударного слова своей части предложения.", "tokens": [{"id": "t1", "text": "Kako"}, {"id": "t2", "text": "se", "correct": true}, {"id": "t3", "text": "osećaš", "tail": "?"}, {"id": "t4", "text": "Ja"}, {"id": "t5", "text": "se", "correct": true}, {"id": "t6", "text": "odmaram"}, {"id": "t7", "text": "kod"}, {"id": "t8", "text": "kuće", "tail": ","}, {"id": "t9", "text": "a"}, {"id": "t10", "text": "uveče"}, {"id": "t11", "text": "se", "correct": true}, {"id": "t12", "text": "vraćam"}, {"id": "t13", "text": "na"}, {"id": "t14", "text": "posao", "tail": "."}]}
+          ]
+        }
+      ]
+    }
+  ]
+}

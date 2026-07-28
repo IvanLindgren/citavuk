@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "animations": [
+    {
+      "id": "citavuk_learning",
+      "asset": "assets/animations/generated/citavuk_learning.png",
+      "frameWidth": 451,
+      "frameHeight": 512,
+      "columns": 2,
+      "rows": 2,
+      "frames": 4,
+      "fps": 8,
+      "loop": true,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourceChecksum": "sha256:cf1be2ecb6d71c3f6955d30e33d1f7fff75a8f9361cad24f1b81b6068a98be93",
+      "states": [
+        "idle",
+        "thinking",
+        "hint",
+        "incorrect",
+        "encourage"
+      ]
+    },
+    {
+      "id": "citavuk_surprise",
+      "asset": "assets/animations/generated/citavuk_surprise.png",
+      "frameWidth": 400,
+      "frameHeight": 512,
+      "columns": 3,
+      "rows": 2,
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourceChecksum": "sha256:8184d364b395e2527c127cbbf3f910cc25bf3268769a9c1cf03ae57d1c57e1da",
+      "states": [
+        "correct",
+        "lessonComplete",
+        "checkpoint",
+        "finalCelebration"
+      ]
+    }
+  ]
+}

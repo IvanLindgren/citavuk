@@ -1,0 +1,33 @@
+{
+  "name": "Читавук — сербский через чтение",
+  "short_name": "Читавук",
+  "description": "Читайте по-сербски: перевод слова в контексте, разбор формы, карточки повторения.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "ru",
+  "background_color": "#F3E9D2",
+  "theme_color": "#9E2B25",
+  "icons": [
+    {
+      "src": "/img/citavuk_icon.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "/img/citavuk_icon@2x.webp",
+      "sizes": "384x384",
+      "type": "image/webp"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": [
+    "education",
+    "books"
+  ]
+}

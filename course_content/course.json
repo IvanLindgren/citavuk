@@ -1,0 +1,32 @@
+{
+  "courseId": "sr_grammar_prosvirina",
+  "courseVersion": "2.0.0",
+  "title": "Сербская грамматика: от азбуки до причастий",
+  "config": {
+    "defaultScript": "latin",
+    "acceptBothScripts": false,
+    "showTransliterationHint": true,
+    "passThreshold": 0.8,
+    "allowDraftContent": false
+  },
+  "units": [
+    "u_pismo",
+    "u_recenice",
+    "u_glagoli",
+    "u_imenice",
+    "u_pridevi",
+    "u_vremena",
+    "u_zamenice",
+    "u_nacini"
+  ],
+  "finalExam": {
+    "id": "exam_final",
+    "blueprint": [],
+    "requiredExerciseTypes": [
+      "sentence_builder",
+      "ending_picker",
+      "letter_unscramble"
+    ],
+    "cooldownHours": 24
+  }
+}

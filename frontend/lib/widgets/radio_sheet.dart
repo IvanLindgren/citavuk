@@ -89,9 +89,9 @@ class RadioAppBarButton extends StatelessWidget {
         final radio = RadioService.instance;
         final on = radio.playing;
         final icon = on
-            ? const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-                child: EqualizerBars(color: Colors.white, height: 18),
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: EqualizerBars(color: scheme.primary, height: 18),
               )
             : Icon(
                 radio.loading ? Icons.hourglass_top : Icons.music_note_rounded);
@@ -109,14 +109,17 @@ class RadioAppBarButton extends StatelessWidget {
           child: TextButton.icon(
             onPressed: () => showRadioSheet(context),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
+              foregroundColor: on ? scheme.onSurface : scheme.primary,
               backgroundColor: on
-                  ? scheme.tertiary.withValues(alpha: 0.32)
-                  : Colors.white.withValues(alpha: 0.12),
+                  ? scheme.tertiary.withValues(alpha: 0.22)
+                  : scheme.primary.withValues(alpha: 0.08),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(
+                  color: (on ? scheme.tertiary : scheme.primary)
+                      .withValues(alpha: 0.35),
+                ),
               ),
               textStyle: const TextStyle(
                 fontSize: 13,

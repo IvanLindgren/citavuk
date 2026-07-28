@@ -14,6 +14,29 @@ android {
     if (keystorePropertiesFile.exists()) {
         keystoreProperties.load(FileInputStream(keystorePropertiesFile))
     }
+    val signingStoreFile =
+        keystoreProperties.getProperty("storeFile") ?: System.getenv("KEYSTORE_FILE")
+    val signingStorePassword =
+        keystoreProperties.getProperty("storePassword") ?: System.getenv("KEYSTORE_PASSWORD")
+    val signingKeyAlias =
+        keystoreProperties.getProperty("keyAlias") ?: System.getenv("KEY_ALIAS")
+    val signingKeyPassword =
+        keystoreProperties.getProperty("keyPassword") ?: System.getenv("KEY_PASSWORD")
+    val signingValues = listOf(
+        signingStoreFile,
+        signingStorePassword,
+        signingKeyAlias,
+        signingKeyPassword,
+    )
+    if (signingValues.any { !it.isNullOrBlank() } &&
+        signingValues.any { it.isNullOrBlank() }
+    ) {
+        throw GradleException(
+            "Release signing is only partially configured. " +
+                "Set storeFile/storePassword/keyAlias/keyPassword in key.properties " +
+                "or KEYSTORE_FILE/KEYSTORE_PASSWORD/KEY_ALIAS/KEY_PASSWORD.",
+        )
+    }
 
     namespace = "com.srbskiread.srbski_read"
     // Новые транзитивные AndroidX (core 1.17, browser 1.9) требуют compileSdk 36.
@@ -42,12 +65,11 @@ android {
 
     signingConfigs {
         create("release") {
-            if (keystoreProperties.containsKey("storeFile")) {
-                val propFile = keystoreProperties.getProperty("storeFile")
-                storeFile = file(propFile)
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
+            if (!signingStoreFile.isNullOrBlank()) {
+                storeFile = file(signingStoreFile)
+                storePassword = signingStorePassword
+                keyAlias = signingKeyAlias
+                keyPassword = signingKeyPassword
             } else {
                 // Фоллбэк на дебаг-ключ для локальной сборки
                 storeFile = signingConfigs.getByName("debug").storeFile
