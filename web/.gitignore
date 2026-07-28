@@ -5,7 +5,11 @@ dist/
 
 # Готовые ассеты собираются из frontend/assets скриптом scripts/prepare-assets.py
 # и в репозитории не нужны: это производные файлы, которые легко пересоздать.
-public/img/
+# Каталог целиком не игнорируется: правило со звёздочкой позволяет вернуть
+# отдельные файлы, которые скриптом не создаются.
+public/img/*
+!public/img/denis.webp
+!public/img/denis@2x.webp
 public/fonts/
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
