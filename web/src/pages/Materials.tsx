@@ -561,8 +561,11 @@ function MaterialCard({
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.28, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Card className="flex h-full flex-col p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
-        <div className="mb-3 flex flex-wrap items-center gap-2">
+      {/* На телефоне карточки идут в один столбец, поэтому поля и отступы
+          заметно теснее: экономия в полсотни пикселей на карточку — это два
+          лишних документа на экран вместо прокрутки. */}
+      <Card className="flex h-full flex-col p-4 transition-all duration-300 sm:p-5 sm:hover:-translate-y-1 sm:hover:shadow-[var(--shadow-lift)]">
+        <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-3">
           <KindBadge kind={document.kindId} label={document.kind} />
           {document.year && (
             <span className="text-xs text-[var(--text-muted)]">{document.year}</span>
@@ -574,16 +577,16 @@ function MaterialCard({
           )}
         </div>
 
-        <h3 className="text-lg leading-snug">{document.subject}</h3>
-        <p className="mt-1 text-sm text-[var(--text-muted)]">
+        <h3 className="text-base leading-snug sm:text-lg">{document.subject}</h3>
+        <p className="mt-1 line-clamp-2 text-sm text-[var(--text-muted)]">
           {document.track ?? document.publisherShort}
         </p>
 
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <PdfStrip url={document.url} onOpen={setOpenedPage} />
         </div>
 
-        <p className="mt-3 text-xs leading-relaxed text-[var(--text-muted)]">
+        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--text-muted)] sm:mt-3">
           Источник:{' '}
           <a
             href={document.sourcePage}
@@ -602,10 +605,10 @@ function MaterialCard({
           </div>
         )}
 
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-3 sm:pt-4">
           {quiz ? (
             <Link to={`/tests/${quiz.quizId}`} className="block">
-              <Button variant="secondary" size="sm" className="mb-2 w-full">
+              <Button variant="secondary" size="sm" className="mb-2 w-full text-center">
                 Потренироваться и решить тест на сайте
                 {quiz.attempts > 0 && ` · было ${quiz.bestScore}%`}
               </Button>
@@ -614,7 +617,7 @@ function MaterialCard({
             <Button
               variant="secondary"
               size="sm"
-              className="mb-2 w-full"
+              className="mb-2 w-full text-center"
               disabled={busy}
               onClick={() => void makeQuiz()}
             >
@@ -629,30 +632,30 @@ function MaterialCard({
             </Button>
           )}
           <div className="flex gap-2">
-          <Button
-            size="sm"
-            className="flex-1"
-            disabled={busy}
-            onClick={() => void addToLibrary()}
-          >
-            {stage !== null && !makingQuiz ? (
-              <>
-                <Spinner />
-                {IMPORT_STAGE_LABELS[stage]}
-              </>
-            ) : (
-              'В библиотеку'
-            )}
-          </Button>
-          <a
-            href={document.url}
-            target="_blank"
-            rel="noreferrer noopener"
-            title="Открыть на сайте источника"
-            className="rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-          >
-            Оригинал
-          </a>
+            <Button
+              size="sm"
+              className="min-w-0 flex-1"
+              disabled={busy}
+              onClick={() => void addToLibrary()}
+            >
+              {stage !== null && !makingQuiz ? (
+                <>
+                  <Spinner />
+                  <span className="truncate">{IMPORT_STAGE_LABELS[stage]}</span>
+                </>
+              ) : (
+                'В библиотеку'
+              )}
+            </Button>
+            <a
+              href={document.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              title="Открыть на сайте источника"
+              className="flex shrink-0 items-center rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              Оригинал
+            </a>
           </div>
         </div>
       </Card>

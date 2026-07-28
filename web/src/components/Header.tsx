@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
+import { GooglePlayBadge, RuStoreBadge } from './StoreBadges';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useTheme } from '../state/theme';
@@ -114,6 +115,8 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      <StoreStrip />
 
       <AnimatePresence>
         {menuOpen && (
@@ -237,6 +240,36 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/**
+ * Полоса с магазинами под шапкой.
+ *
+ * Стоит на каждой странице: приложение только вышло, и человек, зашедший
+ * почитать про падежи, иначе про него не узнает. Полоса намеренно тонкая — это
+ * подпись под шапкой, а не баннер.
+ *
+ * На странице загрузок её нет: там магазины и так на видном месте, и вторая
+ * пара тех же значков выглядела бы навязчиво.
+ */
+function StoreStrip() {
+  const { path } = useRouter();
+  if (path.startsWith('/downloads')) return null;
+
+  return (
+    <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 overflow-x-auto px-5 py-1.5">
+        <span className="hidden shrink-0 text-xs font-semibold text-[var(--text-muted)] sm:block">
+          Читавук вышел в Google Play
+        </span>
+        <GooglePlayBadge height={30} />
+        <RuStoreBadge height={30} />
+        <span className="hidden shrink-0 text-[11px] text-[var(--text-muted)] md:block">
+          в RuStore пока старая версия
+        </span>
+      </div>
     </div>
   );
 }

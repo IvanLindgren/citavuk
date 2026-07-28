@@ -9,6 +9,22 @@ import {
 import { Spinner } from './ui';
 
 /**
+ * Высота полосы превью — одна и та же во всех состояниях.
+ *
+ * Иначе карточка меняет высоту трижды: ждём прокрутки, готовим страницы,
+ * показали. Соседние карточки при этом уезжают, и на телефоне, где колонка
+ * одна, весь список ползёт под пальцем. Постоянная высота лечит это надёжнее
+ * любой анимации.
+ *
+ * На телефоне полоса ниже: там карточки идут в один столбец, и каждая лишняя
+ * сотня пикселей — это ещё один экран прокрутки на четыре документа.
+ */
+const STRIP_HEIGHT = 'h-32 sm:h-44';
+
+/** Строка «показаны N из M»: место под неё занято всегда, даже когда её нет. */
+const CAPTION_HEIGHT = 'h-4';
+
+/**
  * Полоса первых страниц документа прямо в карточке каталога.
  *
  * Загружается сама, без нажатий, но только когда карточка доехала до экрана:
@@ -80,37 +96,35 @@ export function PdfStrip({
 
   if (error) {
     return (
-      <div
-        ref={box}
-        className="flex h-44 items-center justify-center rounded-2xl border border-dashed border-[var(--line)] px-4 text-center text-xs text-[var(--text-muted)]"
-      >
-        Превью недоступно — документ можно открыть на сайте источника
+      <div ref={box} className={STRIP_HEIGHT}>
+        <div className="flex h-full items-center justify-center rounded-2xl border border-dashed border-[var(--line)] px-4 text-center text-xs text-[var(--text-muted)]">
+          Превью недоступно — документ можно открыть на сайте источника
+        </div>
       </div>
     );
   }
 
   if (!preview) {
     return (
-      <div
-        ref={box}
-        className="flex h-44 items-center justify-center gap-2 rounded-2xl bg-[var(--bg-sunken)] text-xs text-[var(--text-muted)]"
-      >
-        <Spinner className="size-4" />
-        {near ? 'Готовим страницы…' : 'Превью загрузится при прокрутке'}
+      <div ref={box} className={STRIP_HEIGHT}>
+        <div className="flex h-full items-center justify-center gap-2 rounded-2xl bg-[var(--bg-sunken)] text-xs text-[var(--text-muted)]">
+          <Spinner className="size-4" />
+          {near ? 'Готовим страницы…' : 'Превью загрузится при прокрутке'}
+        </div>
       </div>
     );
   }
 
   return (
-    <div ref={box}>
-      <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2">
+    <div ref={box} className={`flex flex-col ${STRIP_HEIGHT}`}>
+      <div className="-mx-1 flex min-h-0 flex-1 snap-x gap-2 overflow-x-auto px-1">
         {preview.pages.map((page, index) => (
           <button
             key={page}
             type="button"
             onClick={() => onOpen(index)}
             title={`Страница ${index + 1} — открыть крупнее`}
-            className="group relative h-44 shrink-0 snap-start overflow-hidden rounded-xl border border-[var(--line)] bg-white transition-all hover:border-[var(--accent)] hover:shadow-[var(--shadow-soft)]"
+            className="group relative h-full shrink-0 snap-start overflow-hidden rounded-xl border border-[var(--line)] bg-white transition-all hover:border-[var(--accent)] hover:shadow-[var(--shadow-soft)]"
           >
             <img
               src={page}
@@ -124,11 +138,10 @@ export function PdfStrip({
           </button>
         ))}
       </div>
-      {preview.total > PREVIEW_PAGES && (
-        <p className="mt-1 text-[11px] text-[var(--text-muted)]">
-          Показаны {preview.pages.length} из {preview.total} страниц
-        </p>
-      )}
+      <p className={`${CAPTION_HEIGHT} shrink-0 text-[11px] leading-4 text-[var(--text-muted)]`}>
+        {preview.total > PREVIEW_PAGES &&
+          `Показаны ${preview.pages.length} из ${preview.total} страниц`}
+      </p>
     </div>
   );
 }

@@ -10,6 +10,10 @@ dist/
 public/img/*
 !public/img/denis.webp
 !public/img/denis@2x.webp
+# Официальный значок Google Play: их файл, скриптом не собирается.
+!public/img/google-play-badge.png
+# Значок RuStore, если его положить сюда из консоли разработчика.
+!public/img/rustore-badge.svg
 public/fonts/
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js

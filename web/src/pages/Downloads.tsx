@@ -1,13 +1,18 @@
 import { motion } from 'framer-motion';
 
 import { Mascot } from '../components/Mascot';
+import { GooglePlayBadge, RuStoreBadge } from '../components/StoreBadges';
 import { Card, Reveal } from '../components/ui';
 import { useSeo } from '../lib/seo';
 
 /**
- * Версия приложений. Сборки лежат под постоянными именами, поэтому ссылки не
+ * Версия сборок. Файлы лежат под постоянными именами, поэтому ссылки не
  * меняются от выпуска к выпуску, а номер указан отдельно — иначе непонятно,
  * что именно скачаешь.
+ *
+ * Номер общий, но у платформы может быть свой: Android обновляется чаще, потому
+ * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
+ * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
 const VERSION = '1.6.2';
 
@@ -18,6 +23,8 @@ type Platform = {
   description: string;
   /** Прямая ссылка. Пусто — сборки ещё нет. */
   href?: string;
+  /** Своя версия, если она обогнала общую. */
+  version?: string;
   size?: string;
   note?: string;
   /** Запасной способ скачать: портативная сборка вместо установщика. */
@@ -28,11 +35,12 @@ const PLATFORMS: Platform[] = [
   {
     id: 'android',
     title: 'Android',
-    subtitle: 'Android 7 и новее · APK',
+    subtitle: 'Android 7 и новее · Google Play или APK',
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
-    size: '85 МБ',
+    version: '1.6.3',
+    size: '86 МБ',
     note: 'Установка из файла: разрешите её для браузера в настройках Android.',
   },
   {
@@ -90,9 +98,8 @@ export function Downloads() {
             </p>
             <h1 className="mt-2 text-4xl sm:text-5xl">Читайте на любом устройстве</h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]">
-              Версия {VERSION}. Книги, словарь, карточки и прогресс курса
-              синхронизируются между приложениями и сайтом. Достаточно войти в
-              один и тот же аккаунт.
+              Книги, словарь, карточки и прогресс курса синхронизируются между
+              приложениями и сайтом. Достаточно войти в один и тот же аккаунт.
             </p>
           </motion.div>
           <motion.div
@@ -109,6 +116,8 @@ export function Downloads() {
             />
           </motion.div>
         </div>
+
+        <StoresSection />
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {PLATFORMS.map((platform, index) => (
@@ -141,6 +150,38 @@ export function Downloads() {
   );
 }
 
+/**
+ * Магазины приложений.
+ *
+ * Стоит выше карточек с файлами: установка из магазина обновляется сама и не
+ * требует разрешать установку из неизвестных источников, поэтому APK ниже —
+ * это запасной путь, а не основной.
+ */
+function StoresSection() {
+  return (
+    <Reveal>
+      <Card className="mt-8 p-5 sm:p-6">
+        <h2 className="text-xl">Установить из магазина</h2>
+        <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
+          <div>
+            <GooglePlayBadge />
+            <p className="mt-2 max-w-xs text-sm text-[var(--text-muted)]">
+              Свежая версия, обновляется само.
+            </p>
+          </div>
+          <div>
+            <RuStoreBadge />
+            <p className="mt-2 max-w-xs text-sm text-[var(--text-muted)]">
+              Сейчас скачивать не рекомендуем: там пока лежит старая версия
+              приложения. Обновим — уберём эту оговорку.
+            </p>
+          </div>
+        </div>
+      </Card>
+    </Reveal>
+  );
+}
+
 function PlatformCard({ platform }: { platform: Platform }) {
   const ready = Boolean(platform.href);
 
@@ -155,7 +196,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
               : 'rounded-full bg-[var(--bg-sunken)] px-3 py-1 text-xs font-bold text-[var(--text-muted)]'
           }
         >
-          {ready ? `Версия ${VERSION}` : 'Скоро'}
+          {ready ? `Версия ${platform.version ?? VERSION}` : 'Скоро'}
         </span>
       </div>
       <h2 className="mt-5 text-2xl">{platform.title}</h2>

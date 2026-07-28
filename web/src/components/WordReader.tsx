@@ -55,6 +55,10 @@ export function WordReader({
   // Куда ставить карточку: прямоугольник нажатого слова на экране.
   const [anchor, setAnchor] = useState<DOMRect | null>(null);
   const [selectedPhrase, setSelectedPhrase] = useState<string | null>(null);
+  // Где лежит выделенная фраза. Предложение перевести встаёт рядом с ней:
+  // внизу экрана оно оставалось незамеченным, а на длинной странице человек
+  // ещё и терял место, куда смотрел.
+  const [phraseAnchor, setPhraseAnchor] = useState<DOMRect | null>(null);
   const [activePhrase, setActivePhrase] = useState<string | null>(null);
   const [result, setResult] = useState<TranslationResult | null>(null);
   const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
@@ -73,9 +77,10 @@ export function WordReader({
     const updateSelection = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        setSelectedPhrase(
-          readerSelectionText(window.getSelection(), readerRef.current),
-        );
+        const selection = window.getSelection();
+        const phrase = readerSelectionText(selection, readerRef.current);
+        setSelectedPhrase(phrase);
+        setPhraseAnchor(phrase ? selectionRect(selection) : null);
       });
     };
 
@@ -136,13 +141,15 @@ export function WordReader({
     [paragraphs],
   );
 
-  const translatePhrase = useCallback(async (phrase: string) => {
+  const translatePhrase = useCallback(async (phrase: string, rect: DOMRect | null) => {
     pending.current?.abort();
     const controller = new AbortController();
     pending.current = controller;
 
     setSelected(null);
-    setAnchor(null);
+    // Карточка перевода встаёт там же, где стояло предложение перевести, —
+    // у самой фразы.
+    setAnchor(rect);
     setActivePhrase(phrase);
     setResult(null);
     setAnalysis(null);
@@ -210,7 +217,8 @@ export function WordReader({
           <PhraseSelectionBar
             key={selectedPhrase}
             phrase={selectedPhrase}
-            onTranslate={() => void translatePhrase(selectedPhrase)}
+            anchor={phraseAnchor}
+            onTranslate={() => void translatePhrase(selectedPhrase, phraseAnchor)}
           />
         )}
       </AnimatePresence>
@@ -225,7 +233,7 @@ export function WordReader({
             }
             word={activePhrase ?? selected!.token.text}
             kind={activePhrase ? 'phrase' : 'word'}
-            anchor={activePhrase ? null : anchor}
+            anchor={anchor}
             result={result}
             analysis={analysis}
             error={error}
@@ -382,12 +390,16 @@ export function readerSelectionText(
 
 function PhraseSelectionBar({
   phrase,
+  anchor,
   onTranslate,
 }: {
   phrase: string;
+  /** Прямоугольник выделения; null — панель встаёт внизу экрана. */
+  anchor: DOMRect | null;
   onTranslate: () => void;
 }) {
   const reduceMotion = useReducedMotion();
+  const placement = useToolbarPlacement(anchor);
   const tooLong = [...phrase].length > 4000;
   const preview =
     phrase.length > 72 ? `${phrase.slice(0, 69).trimEnd()}…` : phrase;
@@ -397,7 +409,12 @@ function PhraseSelectionBar({
       initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
-      className="fixed inset-x-3 bottom-5 z-40 mx-auto flex max-w-xl items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]"
+      className={[
+        'fixed z-40 flex items-center gap-3 rounded-2xl border border-[var(--line)]',
+        'bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]',
+        placement.floating ? '' : 'inset-x-3 bottom-5 mx-auto max-w-xl',
+      ].join(' ')}
+      style={placement.style}
       role="toolbar"
       aria-label="Действия с выделенной фразой"
     >
@@ -600,17 +617,13 @@ function WordCard({
 
 const CARD_WIDTH = 420;
 const CARD_GAP = 10;
+/** Ширина панели «перевести выделенное», когда она стоит у самой фразы. */
+const TOOLBAR_WIDTH = 380;
 /** Ниже этой ширины карточка встаёт листом снизу — рядом со словом ей тесно. */
 const FLOATING_MIN_WIDTH = 720;
 
-/**
- * Где показать карточку.
- *
- * На широком экране она встаёт вплотную к нажатому слову: читатель смотрит в
- * строку, и уводить его взгляд (а на длинной странице ещё и прокрутку) в низ
- * экрана незачем. На узком места рядом нет, поэтому остаётся нижний лист.
- */
-function useCardPlacement(anchor: DOMRect | null) {
+/** Экранные размеры с подпиской на изменение. */
+function useViewport() {
   const [viewport, setViewport] = useState(() => ({
     width: typeof window === 'undefined' ? 0 : window.innerWidth,
     height: typeof window === 'undefined' ? 0 : window.innerHeight,
@@ -622,6 +635,64 @@ function useCardPlacement(anchor: DOMRect | null) {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
+
+  return viewport;
+}
+
+/**
+ * Прямоугольник текущего выделения.
+ *
+ * Берутся клиентские прямоугольники диапазона, а не его общий bounding rect:
+ * фраза через несколько строк даёт коробку во всю ширину колонки, и панель,
+ * поставленная по её центру, оказывается неизвестно где. Первый прямоугольник —
+ * начало фразы, к нему и привязываемся.
+ */
+function selectionRect(selection: Selection | null): DOMRect | null {
+  if (!selection || selection.rangeCount === 0) return null;
+  const rects = selection.getRangeAt(0).getClientRects();
+  const first = rects[0];
+  if (!first || (first.width === 0 && first.height === 0)) return null;
+  return first;
+}
+
+/**
+ * Где показать панель «перевести выделенное».
+ *
+ * Над фразой, если сверху есть место: под выделением обычно продолжение текста,
+ * которое человек и читает. На узком экране панель остаётся нижней — рядом со
+ * строкой ей негде встать, а палец всё равно внизу.
+ */
+function useToolbarPlacement(anchor: DOMRect | null) {
+  const viewport = useViewport();
+
+  if (!anchor || viewport.width < FLOATING_MIN_WIDTH) {
+    return { floating: false, style: undefined as CSSProperties | undefined };
+  }
+
+  const left = Math.min(
+    Math.max(CARD_GAP, anchor.left + anchor.width / 2 - TOOLBAR_WIDTH / 2),
+    viewport.width - TOOLBAR_WIDTH - CARD_GAP,
+  );
+  const style: CSSProperties = { left, width: TOOLBAR_WIDTH };
+  // 96 пикселей — высота панели с запасом: точную высоту знать неоткуда, пока
+  // она не отрисована, а промах на десяток пикселей здесь ничего не решает.
+  if (anchor.top >= 96 + CARD_GAP) {
+    style.bottom = viewport.height - anchor.top + CARD_GAP;
+  } else {
+    style.top = anchor.bottom + CARD_GAP;
+  }
+  return { floating: true, style };
+}
+
+/**
+ * Где показать карточку.
+ *
+ * На широком экране она встаёт вплотную к нажатому слову: читатель смотрит в
+ * строку, и уводить его взгляд (а на длинной странице ещё и прокрутку) в низ
+ * экрана незачем. На узком места рядом нет, поэтому остаётся нижний лист.
+ */
+function useCardPlacement(anchor: DOMRect | null) {
+  const viewport = useViewport();
 
   if (!anchor || viewport.width < FLOATING_MIN_WIDTH) {
     return {
