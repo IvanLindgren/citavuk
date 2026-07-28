@@ -39,7 +39,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
-    version: '1.6.3',
+    version: '1.6.4',
     size: '86 МБ',
     note: 'Установка из файла: разрешите её для браузера в настройках Android.',
   },
