@@ -67,6 +67,80 @@ class _HarnessState extends State<_Harness> {
 }
 
 void main() {
+  group('reading_qa', () {
+    final exercise = Exercise.fromJson(_base('ex_rq', 'reading_qa')
+      ..addAll({
+        'prompt': 'Прочитайте и ответьте на вопросы',
+        'text': 'Zdravo! Ja sam Ana. Nisam iz Beograda, ja sam iz Niša.',
+        'translation': 'Здравствуйте! Я Ана. Я не из Белграда, я из Ниша.',
+        'questions': [
+          {
+            'id': 'q1',
+            'prompt': 'Odakle je Ana?',
+            'options': [
+              {'id': 'a', 'text': 'Iz Niša.', 'correct': true},
+              {'id': 'b', 'text': 'Iz Beograda.'},
+            ],
+          },
+          {
+            'id': 'q2',
+            'prompt': 'Ko je Ana?',
+            'options': [
+              {'id': 'a', 'text': 'Lekar.', 'correct': true},
+              {'id': 'b', 'text': 'Student.'},
+            ],
+          },
+        ],
+      }));
+
+    testWidgets('выбор первого варианта виден до ответа на все вопросы',
+        (tester) async {
+      Answer? last;
+      await tester
+          .pumpWidget(_Harness(exercise: exercise, onAnswer: (a) => last = a));
+
+      await tester.tap(find.text('Iz Niša.'));
+      await tester.pumpAndSettle();
+
+      // Наверх ответ ещё не уходит: задание не закончено.
+      expect(last, isNull);
+      // Но отметка обязана остаться на экране. Раньше выбор выводился из
+      // ответа, лежащего наверху, и первое нажатие пропадало бесследно —
+      // задание нельзя было пройти вовсе.
+      expect(find.byIcon(Icons.radio_button_checked), findsOneWidget);
+    });
+
+    testWidgets('после ответа на все вопросы ответ уходит наверх',
+        (tester) async {
+      Answer? last;
+      await tester
+          .pumpWidget(_Harness(exercise: exercise, onAnswer: (a) => last = a));
+
+      await tester.tap(find.text('Iz Niša.'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Lekar.'));
+      await tester.pumpAndSettle();
+
+      expect((last as PairsAnswer).assignments, {'q1': 'a', 'q2': 'a'});
+      expect(find.byIcon(Icons.radio_button_checked), findsNWidgets(2));
+    });
+
+    testWidgets('выбор можно поменять', (tester) async {
+      Answer? last;
+      await tester
+          .pumpWidget(_Harness(exercise: exercise, onAnswer: (a) => last = a));
+
+      await tester.tap(find.text('Iz Niša.'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Iz Beograda.'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Lekar.'));
+      await tester.pumpAndSettle();
+
+      expect((last as PairsAnswer).assignments, {'q1': 'b', 'q2': 'a'});
+    });
+  });
+
   group('sentence_builder', () {
     final exercise = Exercise.fromJson(_base('ex_sb', 'sentence_builder')
       ..addAll({

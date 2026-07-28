@@ -640,28 +640,35 @@ function useViewport() {
 }
 
 /**
- * Прямоугольник текущего выделения.
+ * Прямоугольник, под которым встаёт панель перевода.
  *
- * Берутся клиентские прямоугольники диапазона, а не его общий bounding rect:
- * фраза через несколько строк даёт коробку во всю ширину колонки, и панель,
- * поставленная по её центру, оказывается неизвестно где. Первый прямоугольник —
- * начало фразы, к нему и привязываемся.
+ * Берутся клиентские прямоугольники диапазона, а не общий bounding rect: фраза
+ * через несколько строк даёт коробку во всю ширину колонки, и панель по её
+ * центру оказывается неизвестно где. Нужен последний прямоугольник — конец
+ * фразы: панель показывается прямо под ней, а «под фразой» — это под её
+ * последней строкой, а не под первой.
  */
 function selectionRect(selection: Selection | null): DOMRect | null {
   if (!selection || selection.rangeCount === 0) return null;
   const rects = selection.getRangeAt(0).getClientRects();
-  const first = rects[0];
-  if (!first || (first.width === 0 && first.height === 0)) return null;
-  return first;
+  const last = rects[rects.length - 1];
+  if (!last || (last.width === 0 && last.height === 0)) return null;
+  return last;
 }
 
 /**
  * Где показать панель «перевести выделенное».
  *
- * Над фразой, если сверху есть место: под выделением обычно продолжение текста,
- * которое человек и читает. На узком экране панель остаётся нижней — рядом со
- * строкой ей негде встать, а палец всё равно внизу.
+ * Прямо под последней строкой фразы, вплотную. Панель — это ответ на действие
+ * пользователя, и искать её глазами он не должен: она появляется там, где он
+ * только что вёл пальцем или мышью.
+ *
+ * Вверх панель уходит только если снизу её было бы не видно целиком. На узком
+ * экране остаётся нижней: рядом со строкой ей негде встать, а палец всё равно
+ * внизу.
  */
+const TOOLBAR_HEIGHT = 76;
+
 function useToolbarPlacement(anchor: DOMRect | null) {
   const viewport = useViewport();
 
@@ -674,12 +681,11 @@ function useToolbarPlacement(anchor: DOMRect | null) {
     viewport.width - TOOLBAR_WIDTH - CARD_GAP,
   );
   const style: CSSProperties = { left, width: TOOLBAR_WIDTH };
-  // 96 пикселей — высота панели с запасом: точную высоту знать неоткуда, пока
-  // она не отрисована, а промах на десяток пикселей здесь ничего не решает.
-  if (anchor.top >= 96 + CARD_GAP) {
-    style.bottom = viewport.height - anchor.top + CARD_GAP;
-  } else {
+  const below = viewport.height - anchor.bottom;
+  if (below >= TOOLBAR_HEIGHT + CARD_GAP * 2) {
     style.top = anchor.bottom + CARD_GAP;
+  } else {
+    style.bottom = viewport.height - anchor.top + CARD_GAP;
   }
   return { floating: true, style };
 }
@@ -703,7 +709,10 @@ function useCardPlacement(anchor: DOMRect | null) {
   }
 
   const below = viewport.height - anchor.bottom;
-  const openDown = below >= viewport.height * 0.42 || below >= anchor.top;
+  // Вниз — только если снизу места действительно больше. Прежнее правило
+  // раскрывало карточку вниз почти всегда (хватало 42% высоты окна), и на
+  // невысоком окне она занимала весь низ экрана, уводя взгляд от строки.
+  const openDown = below >= anchor.top;
   const left = Math.min(
     Math.max(CARD_GAP, anchor.left + anchor.width / 2 - CARD_WIDTH / 2),
     viewport.width - CARD_WIDTH - CARD_GAP,
@@ -719,7 +728,7 @@ function useCardPlacement(anchor: DOMRect | null) {
   return {
     floating: true,
     style,
-    contentMaxHeight: `${Math.max(220, room - CARD_GAP * 3)}px`,
+    contentMaxHeight: `${Math.max(220, room - CARD_GAP * 2)}px`,
   };
 }
 

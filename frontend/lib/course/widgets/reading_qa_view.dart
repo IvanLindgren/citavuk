@@ -32,16 +32,36 @@ class ReadingQaView extends StatefulWidget {
 class _ReadingQaViewState extends State<ReadingQaView> {
   bool _showTranslation = false;
 
-  Map<String, String> get _chosen =>
-      (widget.answer as PairsAnswer?)?.assignments ?? const {};
+  /// Выбранные варианты. Хранятся здесь, а не выводятся из [widget.answer].
+  ///
+  /// Наверх ответ уходит только когда отвечены все вопросы — иначе кнопка
+  /// «Проверить» разблокировалась бы на половине задания. Пока задание не
+  /// закончено, наверху лежит null, и выводить из него отметки нельзя: первое
+  /// же нажатие возвращалось бы обратно пустым, кружки не загорались, а
+  /// «Проверить» не включалась никогда. Задания с двумя вопросами — а такие
+  /// все — из-за этого нельзя было пройти вовсе.
+  late Map<String, String> _chosen;
+
+  @override
+  void initState() {
+    super.initState();
+    _chosen = {...?(widget.answer as PairsAnswer?)?.assignments};
+  }
+
+  @override
+  void didUpdateWidget(ReadingQaView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Ответ сбросили снаружи — например, задание предложили пройти заново.
+    if (widget.answer == null && oldWidget.answer != null) {
+      _chosen = {};
+    }
+  }
 
   void _pick(String questionId, String optionId) {
     final next = Map<String, String>.of(_chosen)..[questionId] = optionId;
-    // Ответ считается данным только когда отвечены все вопросы: иначе кнопка
-    // «Проверить» разблокируется на половине задания.
     final complete = next.length == widget.exercise.questions.length;
     widget.onChanged(complete ? PairsAnswer(next) : null);
-    setState(() {});
+    setState(() => _chosen = next);
   }
 
   @override
