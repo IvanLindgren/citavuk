@@ -119,7 +119,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.6.2
+  version: 1.6.4
   publisher: Denis Kornilov
   languages:
     - english

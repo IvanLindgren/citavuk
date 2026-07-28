@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { createPortal } from 'react-dom';
 
 import {
   analyzeWord,
@@ -404,7 +405,7 @@ function PhraseSelectionBar({
   const preview =
     phrase.length > 72 ? `${phrase.slice(0, 69).trimEnd()}…` : phrase;
 
-  return (
+  const bar = (
     <motion.div
       initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -437,6 +438,12 @@ function PhraseSelectionBar({
       </button>
     </motion.div>
   );
+
+  // WordReader находится внутри анимированной страницы с CSS transform.
+  // Такой предок меняет систему координат position: fixed, и viewport-координаты
+  // выделения повторно смещались на положение листа. Portal выносит панель из
+  // transform-контейнера и возвращает ей настоящие координаты окна.
+  return typeof document === 'undefined' ? bar : createPortal(bar, document.body);
 }
 
 function WordCard({
@@ -466,7 +473,7 @@ function WordCard({
   const [saveError, setSaveError] = useState('');
   const placement = useCardPlacement(anchor);
 
-  return (
+  const card = (
     <motion.div
       initial={reduceMotion ? false : { opacity: 0, y: placement.floating ? 8 : 24 }}
       animate={{ opacity: 1, y: 0 }}
@@ -613,6 +620,8 @@ function WordCard({
       </div>
     </motion.div>
   );
+
+  return typeof document === 'undefined' ? card : createPortal(card, document.body);
 }
 
 const CARD_WIDTH = 420;

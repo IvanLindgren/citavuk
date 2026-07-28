@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.6.2';
+const VERSION = '1.6.4';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'ios';
@@ -39,8 +39,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
-    version: '1.6.4',
-    size: '86 МБ',
+    size: '88 МБ',
     note: 'Установка из файла: разрешите её для браузера в настройках Android.',
   },
   {
@@ -50,12 +49,12 @@ const PLATFORMS: Platform[] = [
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '58 МБ',
+    size: '31 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '61 МБ',
+      size: '34 МБ',
     },
   },
   {
@@ -65,7 +64,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
-    size: '59 МБ',
+    size: '31 МБ',
     note: 'Распакуйте архив и запустите ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1 — на обычном рабочем столе они уже стоят.',
   },
   {
