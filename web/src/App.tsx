@@ -40,6 +40,12 @@ const CourseLesson = lazy(() =>
 const Trainer = lazy(() =>
   import("./pages/Trainer").then((m) => ({ default: m.Trainer })),
 );
+const Tests = lazy(() =>
+  import("./pages/Tests").then((m) => ({ default: m.Tests })),
+);
+const TestRun = lazy(() =>
+  import("./pages/TestRun").then((m) => ({ default: m.TestRun })),
+);
 const Listening = lazy(() =>
   import("./pages/Listening").then((m) => ({ default: m.Listening })),
 );
@@ -90,6 +96,8 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/course", element: <Course /> },
   { pattern: "/course/lesson/:id", element: <CourseLesson /> },
   { pattern: "/trainer", element: <Trainer /> },
+  { pattern: "/tests", element: <Tests /> },
+  { pattern: "/tests/:id", element: <TestRun /> },
   { pattern: "/books", element: <Books /> },
   { pattern: "/materials", element: <Materials /> },
   { pattern: "/materials/:subject", element: <Materials /> },

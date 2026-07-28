@@ -1,5 +1,7 @@
 import { API_BASE } from '../api/client';
-import { reflowDocument } from './reflow';
+import { cleanLatexLayout } from './latexText';
+import { reflowDocumentWithLayout, type LayoutLine } from './reflow';
+import { fixSerbianDocument, fixSerbianText } from './serbianEncodingFix';
 
 export type ImportStage =
   | 'downloading'
@@ -49,6 +51,16 @@ export const IMPORT_STAGE_LABELS: Record<ImportStage, string> = {
 export async function extractDocument(
   file: File,
   onStage: (stage: ImportStage) => void = () => undefined,
+): Promise<ImportedDocument> {
+  const document = await readDocument(file, onStage);
+  // Испорченные шрифтом đ, č и ž чинятся на выходе, а не в каждом разборщике:
+  // поломка приходит из PDF, DOCX и FB2 одинаково.
+  return { ...document, text: fixSerbianText(document.text) };
+}
+
+async function readDocument(
+  file: File,
+  onStage: (stage: ImportStage) => void,
 ): Promise<ImportedDocument> {
   if (file.size > MAX_FILE_BYTES) {
     throw new Error('Файл больше 32 МБ. Разделите его на несколько частей.');
@@ -332,7 +344,7 @@ async function extractPdf(
   // Строки хранятся по страницам, а не одной кучей: только так видно
   // колонтитулы — строку, повторяющуюся на каждой странице, внутри одной
   // страницы от текста не отличить.
-  const pageLines: string[][] = [];
+  const pageLines: LayoutLine[][] = [];
   const pages: string[] = [];
   let pagesWithoutText = 0;
 
@@ -340,22 +352,44 @@ async function extractPdf(
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber++) {
       const page = await document.getPage(pageNumber);
       const content = await page.getTextContent();
-      const lines: string[] = [];
+      const lines: LayoutLine[] = [];
       let current = '';
+      // Границы строки копятся вместе с текстом: по ним дальше видно красную
+      // строку и недобранную последнюю строку абзаца.
+      let left = Number.POSITIVE_INFINITY;
+      let right = Number.NEGATIVE_INFINITY;
+
+      const flush = () => {
+        const text = current.trim();
+        if (text) {
+          lines.push({
+            text,
+            left: Number.isFinite(left) ? left : 0,
+            right: Number.isFinite(right) ? right : 0,
+          });
+        }
+        current = '';
+        left = Number.POSITIVE_INFINITY;
+        right = Number.NEGATIVE_INFINITY;
+      };
 
       for (const item of content.items) {
         if (!('str' in item)) continue;
+        if (item.str) {
+          const x = item.transform?.[4] ?? 0;
+          left = Math.min(left, x);
+          right = Math.max(right, x + (item.width ?? 0));
+        }
         current += item.str;
         if (item.hasEOL) {
-          if (current.trim()) lines.push(current.trim());
-          current = '';
+          flush();
         } else if (item.str && !/\s$/u.test(item.str)) {
           current += ' ';
         }
       }
-      if (current.trim()) lines.push(current.trim());
+      flush();
 
-      const text = cleanExtractedText(lines.join('\n'));
+      const text = cleanExtractedText(lines.map((line) => line.text).join('\n'));
       pageLines.push(lines);
       pages.push(text);
       if (letterCount(text) < 30) pagesWithoutText++;
@@ -368,7 +402,7 @@ async function extractPdf(
   // Абзацы восстанавливаются из строк, а не берутся как есть: PDF хранит
   // разбиение на строки страницы, а не на абзацы, и без сборки читалка
   // показывала целую страницу одним кирпичом текста.
-  const nativeText = reflowDocument(pageLines).join('\n\n');
+  const nativeText = assembleParagraphs(pageLines).join('\n\n');
   const mostlyScanned =
     pagesWithoutText > 0 &&
     (pagesWithoutText >= Math.ceil(pages.length / 2) ||
@@ -497,6 +531,18 @@ async function extractWithBrowserOcr(
     scannedPages: scannedIndexes.length,
     ocrUsed: true,
   };
+}
+
+/**
+ * Строки страниц → абзацы книги.
+ *
+ * Порядок важен: сначала лигатуры и диакритика (иначе строка «cˇasova» не
+ * совпадёт с колонтитулом на другой странице), потом сборка абзацев по
+ * геометрии, и только в конце — буквы, испорченные шрифтом, потому что решение
+ * принимается по всему тексту сразу.
+ */
+function assembleParagraphs(pages: LayoutLine[][]): string[] {
+  return fixSerbianDocument(reflowDocumentWithLayout(cleanLatexLayout(pages)));
 }
 
 function letterCount(text: string): number {

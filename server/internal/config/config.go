@@ -84,6 +84,13 @@ type Config struct {
 	// обойдёт ограничение частоты запросов.
 	TrustProxy bool
 
+	// QuizAPIKey, QuizModel и QuizURL — генератор тестов по учебным материалам.
+	// Протокол OpenAI-совместимый, поэтому провайдера можно сменить одной
+	// переменной окружения. Пустой ключ просто выключает раздел.
+	QuizAPIKey string
+	QuizModel  string
+	QuizURL    string
+
 	// AdminEmails — аккаунты, которым при старте выдаётся роль администратора.
 	// Список хранится в окружении, чтобы роль нельзя было получить регистрацией
 	// с особым именем или подменой клиентского запроса.
@@ -100,18 +107,24 @@ func Load(envPath string) (*Config, error) {
 	}
 
 	c := &Config{
-		Addr:                  envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
-		DatabaseURL:           firstEnv("DATABASE_URL", "DB_URL"),
-		RedisURL:              firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
-		RedisPrefix:           envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
-		RedisCacheTTL:         envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
-		DeepLKey:              firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
-		UpstreamURL:           envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
-		AllowedOrigins:        splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
-		SessionTTLDays:        envInt("CITAVUK_SESSION_TTL_DAYS", 90),
-		MaxBookBytes:          int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
-		TrustProxy:            envBool("CITAVUK_TRUST_PROXY", false),
-		AdminEmails:           splitList(os.Getenv("CITAVUK_ADMIN_EMAILS")),
+		Addr:           envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
+		DatabaseURL:    firstEnv("DATABASE_URL", "DB_URL"),
+		RedisURL:       firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
+		RedisPrefix:    envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
+		RedisCacheTTL:  envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
+		DeepLKey:       firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
+		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
+		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
+		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
+		MaxBookBytes:   int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
+		TrustProxy:     envBool("CITAVUK_TRUST_PROXY", false),
+		AdminEmails:    splitList(os.Getenv("CITAVUK_ADMIN_EMAILS")),
+		QuizAPIKey:     firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
+		QuizModel:      envOr("CITAVUK_QUIZ_MODEL", "google/gemma-4-31b-it"),
+		QuizURL: envOr(
+			"CITAVUK_QUIZ_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
 		GoogleClientIDs:       googleClientIDs(),
 		GoogleWebClientID:     strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID_WEB")),
 		GoogleDesktopClientID: strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID_DESKTOP")),

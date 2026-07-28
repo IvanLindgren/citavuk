@@ -158,7 +158,9 @@ func (s *Server) withLogging(next http.Handler) http.Handler {
 			if rec.status == 0 {
 				rec.status = http.StatusOK
 			}
-			if rec.status >= http.StatusInternalServerError {
+			// Инцидент заводится только на настоящую аварию. Если клиент успел
+			// отвалиться, любой код после этого — следствие обрыва, а не сбоя.
+			if rec.status >= http.StatusInternalServerError && r.Context().Err() == nil {
 				s.recordHTTPIncident(r, rec.status)
 			}
 			slog.Info("запрос",

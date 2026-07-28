@@ -75,6 +75,84 @@ export function reflowDocument(pages: string[][]): string[] {
   return splitLongParagraphs(reflowLines(lines));
 }
 
+/** Строка страницы вместе с её границами по горизонтали. */
+export interface LayoutLine {
+  text: string;
+  left: number;
+  right: number;
+}
+
+/**
+ * Насколько строка должна отступить вправо, чтобы счесть её красной строкой.
+ *
+ * Доля ширины колонки: в вёрстке абзацный отступ — это 1–2 кегля, то есть
+ * проценты от ширины, а не фиксированные пункты.
+ */
+const INDENT_SHARE = 0.012;
+
+/** Насколько строка должна не дойти до правого края, чтобы закрыть абзац. */
+const SHORT_TAIL_SHARE = 0.06;
+
+/**
+ * Собирает абзацы, зная, где строки начинаются и заканчиваются.
+ *
+ * Разбор по одному тексту не видит красной строки, а в книгах именно она —
+ * главный признак абзаца: строки выровнены по ширине и по длине не отличаются.
+ */
+export function reflowDocumentWithLayout(pages: LayoutLine[][]): string[] {
+  const lines: string[] = [];
+
+  for (const page of pages) {
+    const visible = page.filter((line) => {
+      const text = normalizeLine(line.text);
+      return text !== '' && !PAGE_NUMBER.test(text);
+    });
+    if (visible.length === 0) continue;
+
+    const lefts = visible.map((line) => line.left).sort((a, b) => a - b);
+    const rights = visible.map((line) => line.right).sort((a, b) => a - b);
+    const baseLeft = lefts[Math.floor(lefts.length / 2)]!;
+    const maxRight = rights[rights.length - 1]!;
+    const width = maxRight - baseLeft;
+    if (width <= 0) {
+      lines.push(...visible.map((line) => normalizeLine(line.text)));
+      continue;
+    }
+
+    if (lines.length > 0) lines.push('');
+    for (let i = 0; i < visible.length; i++) {
+      const line = visible[i]!;
+      const indented = line.left > baseLeft + width * INDENT_SHARE;
+      const previousShort =
+        i > 0 && visible[i - 1]!.right < maxRight - width * SHORT_TAIL_SHARE;
+
+      // Пустая строка — это разрыв для reflowLines: дальше он сам решит, как
+      // склеивать остальное.
+      if (i > 0 && (indented || previousShort)) lines.push('');
+      lines.push(normalizeLine(line.text));
+    }
+  }
+
+  return splitLongParagraphs(reflowLines(withoutRunningHeads(lines)));
+}
+
+/** Убирает колонтитулы из плоского списка строк. */
+function withoutRunningHeads(lines: string[]): string[] {
+  const counts = new Map<string, number>();
+  for (const line of lines) {
+    if (line === '') continue;
+    counts.set(line, (counts.get(line) ?? 0) + 1);
+  }
+  // Колонтитул повторяется столько же раз, сколько страниц; порог берём
+  // консервативно, чтобы не выкинуть повторяющуюся реплику диалога.
+  const repeated = new Set<string>();
+  for (const [line, count] of counts) {
+    if (count >= 4 && line.length < 90) repeated.add(line);
+  }
+  if (repeated.size === 0) return lines;
+  return lines.filter((line) => !repeated.has(line));
+}
+
 /** Собирает абзацы из плоского списка строк. Пустая строка — явный разрыв. */
 export function reflowLines(rawLines: string[]): string[] {
   const lines = rawLines.map(normalizeLine);

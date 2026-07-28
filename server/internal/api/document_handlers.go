@@ -18,6 +18,26 @@ import (
 
 const maxRemoteDocumentBytes = 32 << 20
 
+// documentUserAgent — представление скачивателя документов.
+const documentUserAgent = "Mozilla/5.0 (compatible; Citavuk/1.0; +https://citavuk.ru)"
+
+// remoteDocumentMessage объясняет отказ чужого сайта человеческими словами:
+// «ответил кодом 403» посетителю ничего не говорит.
+func remoteDocumentMessage(status int) string {
+	switch {
+	case status == http.StatusNotFound || status == http.StatusGone:
+		return "Документа по этой ссылке больше нет."
+	case status == http.StatusUnauthorized || status == http.StatusForbidden:
+		return "Сайт не отдаёт файл без входа. Скачайте его сами и добавьте файлом."
+	case status == http.StatusTooManyRequests:
+		return "Сайт ограничил скачивания. Попробуйте позже."
+	case status >= 500:
+		return "Сайт с документом сейчас недоступен."
+	default:
+		return "Сайт с документом ответил кодом " + strconv.Itoa(status) + "."
+	}
+}
+
 var blockedDocumentNetworks = []netip.Prefix{
 	netip.MustParsePrefix("0.0.0.0/8"),
 	netip.MustParsePrefix("10.0.0.0/8"),
@@ -102,25 +122,37 @@ func (s *Server) handleDocumentFetch(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Некорректная ссылка.")
 		return
 	}
+	// Accept намеренно всеядный: библиотеки и облачные хранилища отдают книги
+	// под самыми разными типами, а узкий список приводил к 406 на ровном месте.
 	req.Header.Set("Accept", strings.Join([]string{
 		"application/pdf",
 		"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 		"text/plain",
 		"text/markdown",
-		"application/octet-stream;q=0.5",
+		"*/*;q=0.8",
 	}, ", "))
-	req.Header.Set("User-Agent", "Citavuk/1.0 document importer")
+	// Собственный User-Agent половина сайтов считает роботом и отвечает 403,
+	// поэтому запрос идёт как обычный браузер, а кто мы — сказано в комментарии
+	// к продукту.
+	req.Header.Set("User-Agent", documentUserAgent)
+	req.Header.Set("Accept-Language", "sr,ru;q=0.9,en;q=0.8")
 
 	resp, err := s.documentHTTP.Do(req)
 	if err != nil {
-		writeError(w, http.StatusBadGateway, codeInternal,
+		if isClientGone(r, err) {
+			writeError(w, statusClientClosed, codeUpstream, "Запрос отменён.")
+			return
+		}
+		// Чужой сайт не ответил — это не авария Читавука, поэтому не 5xx:
+		// иначе каждая нерабочая ссылка от посетителя попадала в инциденты.
+		writeError(w, http.StatusFailedDependency, codeUpstream,
 			"Не удалось скачать документ по этой ссылке.")
 		return
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		writeError(w, http.StatusBadGateway, codeInternal,
-			"Сайт с документом ответил кодом "+strconv.Itoa(resp.StatusCode)+".")
+		writeError(w, http.StatusFailedDependency, codeUpstream,
+			remoteDocumentMessage(resp.StatusCode))
 		return
 	}
 	if resp.ContentLength > maxRemoteDocumentBytes {
@@ -138,7 +170,7 @@ func (s *Server) handleDocumentFetch(w http.ResponseWriter, r *http.Request) {
 	}
 	body, err := io.ReadAll(io.LimitReader(resp.Body, maxRemoteDocumentBytes+1))
 	if err != nil {
-		writeError(w, http.StatusBadGateway, codeInternal,
+		writeError(w, http.StatusFailedDependency, codeUpstream,
 			"Не удалось прочитать скачанный документ.")
 		return
 	}

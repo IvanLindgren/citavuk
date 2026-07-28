@@ -11,6 +11,7 @@ import (
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
 	"github.com/citavuk/server/internal/mailer"
+	"github.com/citavuk/server/internal/quiz"
 	"github.com/citavuk/server/internal/store"
 	"github.com/citavuk/server/internal/translate"
 )
@@ -31,10 +32,12 @@ type Server struct {
 	proxy        *httputil.ReverseProxy
 	redis        *rediscache.Redis
 	documentHTTP *http.Client
+	quiz         *quiz.Generator
 
 	authLimit      *limiter
 	translateLimit *limiter
 	generalLimit   *limiter
+	quizLimit      *limiter
 	stop           chan struct{}
 }
 
@@ -80,12 +83,16 @@ func New(
 		translator:   translate.NewService(deepl, translate.NewGoogle(), translationCache),
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
+		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit:      newLimiter("auth", 20, 10, redisClient),
 		translateLimit: newLimiter("translate", 120, 40, redisClient),
 		generalLimit:   newLimiter("general", 600, 120, redisClient),
-		stop:           make(chan struct{}),
+		// Каждый вызов модели стоит денег и занимает минуту, поэтому предел
+		// куда ниже общего: десяток новых тестов в час — это уже много.
+		quizLimit: newLimiter("quiz", 10, 3, redisClient),
+		stop:      make(chan struct{}),
 	}
 
 	if cfg.UpstreamURL != "" {
@@ -99,6 +106,7 @@ func New(
 	go s.authLimit.runCleanup(s.stop)
 	go s.translateLimit.runCleanup(s.stop)
 	go s.generalLimit.runCleanup(s.stop)
+	go s.quizLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
 
 	return s, nil
@@ -171,6 +179,14 @@ func (s *Server) Handler() http.Handler {
 
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
 	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
+
+	// Тренажёр: тесты по учебным материалам. Аккаунт нужен везде — без него
+	// некому вести статистику, а генерация ещё и стоит денег.
+	mux.HandleFunc("GET /v1/quizzes", s.rateLimit(s.generalLimit, s.requireAuth(s.handleListQuizzes)))
+	mux.HandleFunc("POST /v1/quizzes", s.rateLimit(s.quizLimit, s.requireAuth(s.handleGenerateQuiz)))
+	mux.HandleFunc("GET /v1/quizzes/stats", s.rateLimit(s.generalLimit, s.requireAuth(s.handleQuizStats)))
+	mux.HandleFunc("GET /v1/quizzes/{id}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleGetQuiz)))
+	mux.HandleFunc("POST /v1/quizzes/{id}/attempts", s.rateLimit(s.generalLimit, s.requireAuth(s.handleSaveAttempt)))
 
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
 	mux.HandleFunc("GET /v1/admin/overview", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminOverview)))
