@@ -14,6 +14,9 @@ set -euo pipefail
 # Адрес и ключ задаются окружением: в репозитории их быть не должно.
 HOST="${CITAVUK_HOST:?укажите CITAVUK_HOST, например root@example.com}"
 KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-ключу}"
+# Тильду в значении переменной оболочка не раскрывает — иначе ssh молча
+# ищет ключ в каталоге с именем «~».
+KEY="${KEY/#\~/$HOME}"
 REMOTE_DIR=/var/www/citavuk
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
@@ -86,8 +89,7 @@ echo "==> Проверка"
 # так уже ломался сайт после правки MIME для .mjs, и по кодам ответа это было
 # незаметно.
 check_type() {
-    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1"         | tr -d '
-' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
+    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1"         | tr -d '' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
     if [[ "$actual" != "$2" ]]; then
         echo "  $1 отдаётся как '$actual', ожидалось '$2'" >&2
         return 1

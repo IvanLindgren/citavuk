@@ -10,7 +10,7 @@ import { useSeo } from '../lib/seo';
  * страница не должна разваливаться из-за отсутствующего файла.
  */
 
-const PHOTO = '/img/denis.jpg';
+const PHOTO = '/img/denis.webp';
 const REPO = 'https://github.com/IvanLindgren/citavuk';
 
 const CONTACTS = [
@@ -130,12 +130,13 @@ function Photo() {
     <div className="mx-auto w-40 shrink-0 sm:mx-0 sm:w-48">
       <img
         src={failed ? '/img/citavuk_zdravo.webp' : PHOTO}
+        srcSet={failed ? undefined : `${PHOTO} 1x, /img/denis@2x.webp 2x`}
         alt="Денис Корнилов, разработчик Читавука"
         width={384}
-        height={384}
+        height={512}
         loading="lazy"
         onError={() => setFailed(true)}
-        className="w-full rounded-2xl border border-[var(--line)] object-cover"
+        className="w-full rounded-2xl border border-[var(--line)]"
       />
       <p className="mt-2 text-center text-sm text-[var(--text-muted)]">
         Денис Корнилов

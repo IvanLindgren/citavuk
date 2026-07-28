@@ -15,6 +15,9 @@ set -euo pipefail
 # Адрес и ключ задаются окружением: в репозитории их быть не должно.
 HOST="${CITAVUK_HOST:?укажите CITAVUK_HOST, например root@example.com}"
 KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-ключу}"
+# Тильду в значении переменной оболочка не раскрывает — иначе ssh молча
+# ищет ключ в каталоге с именем «~».
+KEY="${KEY/#\~/$HOME}"
 VERSION="${CITAVUK_VERSION:-$(git rev-parse --short HEAD 2>/dev/null || echo dev)}"
 REMOTE_DIR=/opt/citavuk
 

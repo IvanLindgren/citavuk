@@ -17,6 +17,9 @@ set -euo pipefail
 # Адрес и ключ задаются окружением: в репозитории их быть не должно.
 HOST="${CITAVUK_HOST:?укажите CITAVUK_HOST, например root@example.com}"
 KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-ключу}"
+# Тильду в значении переменной оболочка не раскрывает — иначе ssh молча
+# ищет ключ в каталоге с именем «~».
+KEY="${KEY/#\~/$HOME}"
 REMOTE_DIR=/var/www/citavuk-files
 FRONTEND="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../frontend" && pwd)"
 
