@@ -169,6 +169,44 @@ class Streak {
       );
 }
 
+class DialogueProgress {
+  final String dialogueId;
+  final String status;
+  final String currentNodeId;
+  final List<String> choices;
+  final DateTime updatedAt;
+
+  const DialogueProgress({
+    required this.dialogueId,
+    required this.status,
+    required this.currentNodeId,
+    required this.choices,
+    required this.updatedAt,
+  });
+
+  bool get isCompleted => status == 'completed';
+
+  Map<String, dynamic> toJson() => {
+        'dialogueId': dialogueId,
+        'status': status,
+        'currentNodeId': currentNodeId,
+        'choices': choices,
+        'updatedAt': updatedAt.toUtc().toIso8601String(),
+      };
+
+  factory DialogueProgress.fromJson(Map<String, dynamic> j) =>
+      DialogueProgress(
+        dialogueId: '${j['dialogueId'] ?? ''}',
+        status: '${j['status'] ?? 'notStarted'}',
+        currentNodeId: '${j['currentNodeId'] ?? ''}',
+        choices: ((j['choices'] as List?) ?? const [])
+            .map((value) => '$value')
+            .toList(growable: false),
+        updatedAt: DateTime.tryParse('${j['updatedAt']}') ??
+            DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      );
+}
+
 /// Полный прогресс пользователя по курсу.
 class CourseProgress {
   final String courseId;
@@ -177,6 +215,7 @@ class CourseProgress {
   final Map<String, ObjectiveMastery> mastery;
   final Streak streak;
   final int xp;
+  final Map<String, DialogueProgress> dialogues;
 
   /// Снимок незавершённого урока, если он есть.
   final Map<String, dynamic>? activeLesson;
@@ -188,6 +227,7 @@ class CourseProgress {
     this.mastery = const {},
     this.streak = const Streak(),
     this.xp = 0,
+    this.dialogues = const {},
     this.activeLesson,
   });
 
@@ -197,6 +237,7 @@ class CourseProgress {
     Map<String, ObjectiveMastery>? mastery,
     Streak? streak,
     int? xp,
+    Map<String, DialogueProgress>? dialogues,
     Map<String, dynamic>? activeLesson,
     bool clearActiveLesson = false,
   }) =>
@@ -207,6 +248,7 @@ class CourseProgress {
         mastery: mastery ?? this.mastery,
         streak: streak ?? this.streak,
         xp: xp ?? this.xp,
+        dialogues: dialogues ?? this.dialogues,
         activeLesson:
             clearActiveLesson ? null : (activeLesson ?? this.activeLesson),
       );
@@ -225,6 +267,7 @@ class CourseProgress {
         'mastery': mastery.map((k, v) => MapEntry(k, v.toJson())),
         'streak': streak.toJson(),
         'xp': xp,
+        'dialogues': dialogues.map((k, v) => MapEntry(k, v.toJson())),
         'activeLesson': activeLesson,
       };
 
@@ -242,6 +285,12 @@ class CourseProgress {
         streak: Streak.fromJson(
             ((j['streak'] as Map?) ?? const {}).cast<String, dynamic>()),
         xp: (j['xp'] as num?)?.toInt() ?? 0,
+        dialogues: ((j['dialogues'] as Map?) ?? const {}).map(
+          (k, v) => MapEntry(
+            '$k',
+            DialogueProgress.fromJson((v as Map).cast<String, dynamic>()),
+          ),
+        ),
         activeLesson: (j['activeLesson'] as Map?)?.cast<String, dynamic>(),
       );
 }

@@ -213,6 +213,15 @@ export interface CourseProgress {
     lastStudyDate: string | null;
   };
   activeLesson: Record<string, unknown> | null;
+  dialogues: Record<string, DialogueProgress>;
+}
+
+export interface DialogueProgress {
+  dialogueId: string;
+  status: 'notStarted' | 'inProgress' | 'completed';
+  currentNodeId: string;
+  choices: string[];
+  updatedAt: string;
 }
 
 export interface CourseLessonProgress {

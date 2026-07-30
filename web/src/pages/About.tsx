@@ -12,6 +12,7 @@ import { useSeo } from '../lib/seo';
 
 const PHOTO = '/img/denis.webp';
 const REPO = 'https://github.com/IvanLindgren/citavuk';
+const FUND_URL = 'https://yoomoney.ru/fundraise/1JBLJQ46SFR.260730';
 
 const CONTACTS = [
   { label: 'Телеграм', value: '@ivanlindgren', href: 'https://t.me/ivanlindgren' },
@@ -91,6 +92,25 @@ export function About() {
             <p className="mt-5 font-display text-lg">
               Сретно научите српски са Читавуком!
             </p>
+          </Card>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <Card className="mt-5 border-[var(--accent)]/35 p-6 sm:p-8">
+            <h2 className="text-2xl">Читавук остаётся бесплатным</h2>
+            <p className="mt-3 leading-relaxed text-[var(--text-muted)]">
+              Сервер, API и выпуск приложений требуют регулярных расходов.
+              Поддержка пользователей ускорит выход Читавука на iOS и macOS и
+              поможет развивать бесплатные функции.
+            </p>
+            <a
+              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+              href={FUND_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Поддержать развитие Читавука
+            </a>
           </Card>
         </Reveal>
 

@@ -145,6 +145,7 @@ export function Course() {
       </section>
 
       <div className="mx-auto max-w-5xl px-5 py-9">
+        <DialoguePromo status={progress.dialogues?.drinkit?.status} />
         {bundle.units.map((unit, unitIndex) => (
           <CourseUnitPath
             key={unit.id}
@@ -328,9 +329,43 @@ function CourseSignIn() {
               <Button size="lg" variant="secondary">Войти</Button>
             </Link>
           </div>
+          <Link
+            to="/dialogues"
+            className="mt-5 inline-flex items-center gap-3 rounded-2xl border border-[var(--accent)]/40 bg-[var(--accent)]/8 px-4 py-3 font-semibold text-[var(--accent)]"
+          >
+            <img
+              src="/img/marja-spilberic.png"
+              alt=""
+              className="size-9 rounded-xl object-cover object-top"
+            />
+            Открыть игровые диалоги
+          </Link>
         </div>
       </div>
     </main>
+  );
+}
+
+function DialoguePromo({ status }: { status?: string }) {
+  return (
+    <div className="mb-9">
+      <Link
+        to="/dialogues"
+        className="inline-flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--accent)]/35 bg-[var(--bg-raised)] px-4 py-2.5 font-semibold shadow-[var(--shadow-soft)] transition-colors hover:border-[var(--accent)]"
+      >
+        <img
+          src="/img/marja-spilberic.png"
+          alt=""
+          className="size-10 rounded-xl border border-[var(--line)] object-cover object-top"
+        />
+        <span>
+          Игровые диалоги
+          <span className="ml-2 text-sm text-[var(--accent)]">
+            {status === 'completed' ? 'Открыть' : status ? 'Продолжить' : 'Смотреть'} →
+          </span>
+        </span>
+      </Link>
+    </div>
   );
 }
 

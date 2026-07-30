@@ -41,6 +41,12 @@ const Course = lazy(() =>
 const CourseLesson = lazy(() =>
   import("./pages/CourseLesson").then((m) => ({ default: m.CourseLesson })),
 );
+const CourseDialogue = lazy(() =>
+  import("./pages/CourseDialogue").then((m) => ({ default: m.CourseDialogue })),
+);
+const Dialogues = lazy(() =>
+  import("./pages/Dialogues").then((m) => ({ default: m.Dialogues })),
+);
 const Trainer = lazy(() =>
   import("./pages/Trainer").then((m) => ({ default: m.Trainer })),
 );
@@ -80,6 +86,9 @@ const VerifyEmail = lazy(() =>
 const About = lazy(() =>
   import("./pages/About").then((m) => ({ default: m.About })),
 );
+const Support = lazy(() =>
+  import("./pages/Support").then((m) => ({ default: m.Support })),
+);
 const Privacy = lazy(() =>
   import("./pages/Privacy").then((m) => ({ default: m.Privacy })),
 );
@@ -100,6 +109,10 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/listening/:id", element: <ListeningPlayer /> },
   { pattern: "/course", element: <Course /> },
   { pattern: "/course/lesson/:id", element: <CourseLesson /> },
+  { pattern: "/dialogues", element: <Dialogues /> },
+  { pattern: "/dialogues/:id", element: <CourseDialogue /> },
+  // Старые сохранённые ссылки продолжают открываться после переноса раздела.
+  { pattern: "/course/dialogue/:id", element: <CourseDialogue /> },
   { pattern: "/trainer", element: <Trainer /> },
   { pattern: "/tests/:id", element: <TestRun /> },
   { pattern: "/shared/:token", element: <SharedBook /> },
@@ -110,6 +123,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/verify-email", element: <VerifyEmail /> },
   { pattern: "/privacy", element: <Privacy /> },
   { pattern: "/about", element: <About /> },
+  { pattern: "/support", element: <Support /> },
   { pattern: "/auth/yandex", element: <YandexCallback /> },
   { pattern: "/admin", element: <Admin /> },
   // Перехватывающий маршрут обязан быть последним.

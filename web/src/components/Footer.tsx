@@ -25,6 +25,7 @@ const COLUMNS = [
       { to: '/cards', label: 'Карточки' },
       { to: '/palace', label: 'Дворец памяти' },
       { to: '/listening', label: 'Слушание' },
+      { to: '/dialogues', label: 'Игровые диалоги' },
       { to: '/course', label: 'Курс грамматики' },
       { to: '/trainer', label: 'Тренажёрка по грамматике' },
     ],
@@ -41,6 +42,7 @@ const COLUMNS = [
     title: 'Приложение',
     links: [
       { to: '/downloads', label: 'Скачать' },
+      { to: '/support', label: 'Поддержать проект' },
       { to: '/account', label: 'Аккаунт' },
       { to: '/about', label: 'О разработчике' },
       { to: '/privacy', label: 'Политика конфиденциальности' },

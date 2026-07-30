@@ -42,8 +42,14 @@ class AboutScreen extends StatelessWidget {
           ],
           const SizedBox(height: 16),
           const Text(
-            'Создатель: Денис Корнилов & Claude & ChatGPT Imagen 2',
+            'Автор и разработчик: Денис Корнилов',
             style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Иллюстрации и отдельные части проекта создавались с помощью ИИ-инструментов.',
+            style: TextStyle(fontSize: 13),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -78,26 +84,54 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 24),
           const OrnamentDivider(height: 20),
           const SizedBox(height: 24),
-          const Text(
-            'Проект бесплатный и всегда будет бесплатным (естественно, никакой рекламы тоже не будет).',
-            style: TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          const Text(
-            'Если вы хотите отблагодарить автора финансово и помочь ему в будущих проектах, то тыкните на кнопку ниже (заодно скажите спасибо и Дарио Амодею :))',
-            style: TextStyle(fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.favorite),
-            label: const Text('Поддержать проект (CloudTips)'),
-            onPressed: () => _launchUrl('https://pay.cloudtips.ru/p/3f19f8cc'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: scheme.primary,
-              foregroundColor: scheme.onPrimary,
-              padding: const EdgeInsets.symmetric(vertical: 12),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: scheme.primary.withValues(alpha: 0.08),
+              border: Border.all(
+                color: scheme.primary.withValues(alpha: 0.28),
+              ),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Column(
+              children: [
+                const Text(
+                  'Дорогие другови!',
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 14),
+                const Text(
+                  'Проект Читавук является полностью бесплатным: я никогда не буду внедрять платные функции, разве что небольшую косметику для тех, кто пожертвует на сбор, и, может быть, если появится выкладывание книг, то я сделаю эту функцию за символическую плату, чтобы не приходилось модерировать выкладываемые книги.',
+                  style: TextStyle(fontSize: 15, height: 1.45),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Однако поддержание работы сервера и некоторые цели развития, такие как выход Читавука на iOS и macOS, плата за API и прочее, требуют достаточного количества денег, которых у автора проекта пока нет. Он, конечно, когда-то их соберёт и всё сделает, но с вашей помощью это будет кратно быстрее.',
+                  style: TextStyle(fontSize: 15, height: 1.45),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Если вам небезразлична судьба проекта и вам нравится его функционал, то вот виджет для сбора:',
+                  style: TextStyle(fontSize: 15, height: 1.45),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.favorite),
+                    label: const Text('Поддержать развитие Читавука'),
+                    onPressed: () => _launchUrl(
+                      'https://yoomoney.ru/fundraise/1JBLJQ46SFR.260730',
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: scheme.primary,
+                      foregroundColor: scheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 24),

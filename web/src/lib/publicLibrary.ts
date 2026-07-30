@@ -9,9 +9,14 @@ export interface PublicLibraryItem {
   summary: string;
   coverUrl: string;
   textUrl: string;
+  externalUrl?: string;
+  attribution?: string;
   sourceUrls: string[];
   license: string;
   characters: number;
+  coverSourceUrl?: string;
+  coverLicense?: string;
+  coverAuthor?: string;
 }
 
 interface PublicLibraryCatalog {
@@ -44,6 +49,7 @@ export async function loadPublicBook(
   item: PublicLibraryItem,
   signal?: AbortSignal,
 ): Promise<string> {
+  if (!item.textUrl) throw new Error('У этого материала нет локального текста.');
   const response = await fetch(item.textUrl, { signal });
   if (!response.ok) throw new Error('Не удалось загрузить текст.');
   return response.text();

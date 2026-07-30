@@ -28,6 +28,18 @@ class _PublicLibraryScreenState extends State<PublicLibraryScreen> {
   String? _busyId;
 
   Future<void> _open(PublicLibraryItem item) async {
+    if (item.isExternal) {
+      final opened = await launchUrl(
+        Uri.parse(item.externalUrl),
+        mode: LaunchMode.externalApplication,
+      );
+      if (!opened && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Не удалось открыть подборку')),
+        );
+      }
+      return;
+    }
     setState(() => _busyId = item.id);
     try {
       final source = 'public:${item.id}';
@@ -173,33 +185,46 @@ class _PublicLibraryScreenState extends State<PublicLibraryScreen> {
                   ),
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.all(16),
-                sliver: SliverGrid.builder(
-                  itemCount: visible.length,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 310,
-                    mainAxisExtent: 545,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 14,
-                  ),
-                  itemBuilder: (context, index) {
-                    final item = visible[index];
-                    return _PublicBookCard(
-                      item: item,
-                      busy: _busyId == item.id,
-                      disabled: _busyId != null,
-                      onOpen: () => _open(item),
-                      onDownload: () => _download(item),
-                      onSource: item.sourceUrls.isEmpty
-                          ? null
-                          : () => launchUrl(
-                                Uri.parse(item.sourceUrls.first),
-                                mode: LaunchMode.externalApplication,
-                              ),
-                    );
-                  },
-                ),
+              SliverLayoutBuilder(
+                builder: (context, constraints) {
+                  final singleColumn = constraints.crossAxisExtent < 700;
+                  final delegate = singleColumn
+                      ? const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisExtent: 650,
+                          mainAxisSpacing: 14,
+                        )
+                      : const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 340,
+                          mainAxisExtent: 560,
+                          crossAxisSpacing: 14,
+                          mainAxisSpacing: 14,
+                        );
+                  return SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: SliverGrid.builder(
+                      itemCount: visible.length,
+                      gridDelegate: delegate,
+                      itemBuilder: (context, index) {
+                        final item = visible[index];
+                        return _PublicBookCard(
+                          item: item,
+                          busy: _busyId == item.id,
+                          disabled: _busyId != null,
+                          onOpen: () => _open(item),
+                          onDownload:
+                              item.isExternal ? null : () => _download(item),
+                          onSource: item.sourceUrls.isEmpty
+                              ? null
+                              : () => launchUrl(
+                                    Uri.parse(item.sourceUrls.first),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           );
@@ -226,7 +251,7 @@ class _PublicBookCard extends StatelessWidget {
   final bool busy;
   final bool disabled;
   final VoidCallback onOpen;
-  final VoidCallback onDownload;
+  final VoidCallback? onDownload;
   final VoidCallback? onSource;
 
   @override
@@ -297,15 +322,18 @@ class _PublicBookCard extends StatelessWidget {
                                 child:
                                     CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : const Icon(Icons.menu_book_outlined),
-                        label: const Text('Читать'),
+                            : Icon(item.isExternal
+                                ? Icons.open_in_new
+                                : Icons.menu_book_outlined),
+                        label: Text(item.isExternal ? 'Открыть' : 'Читать'),
                       ),
                     ),
-                    IconButton(
-                      onPressed: onDownload,
-                      tooltip: 'Скачать TXT',
-                      icon: const Icon(Icons.download_outlined),
-                    ),
+                    if (onDownload != null)
+                      IconButton(
+                        onPressed: onDownload,
+                        tooltip: 'Скачать TXT',
+                        icon: const Icon(Icons.download_outlined),
+                      ),
                     if (onSource != null)
                       IconButton(
                         onPressed: onSource,

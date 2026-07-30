@@ -10,9 +10,14 @@ class PublicLibraryItem {
     required this.summary,
     required this.coverUrl,
     required this.textUrl,
+    required this.externalUrl,
+    required this.attribution,
     required this.sourceUrls,
     required this.license,
     required this.characters,
+    required this.coverSourceUrl,
+    required this.coverLicense,
+    required this.coverAuthor,
   });
 
   final String id;
@@ -25,9 +30,16 @@ class PublicLibraryItem {
   final String summary;
   final String coverUrl;
   final String textUrl;
+  final String externalUrl;
+  final String attribution;
   final List<String> sourceUrls;
   final String license;
   final int characters;
+  final String coverSourceUrl;
+  final String coverLicense;
+  final String coverAuthor;
+
+  bool get isExternal => externalUrl.isNotEmpty && textUrl.isEmpty;
 
   factory PublicLibraryItem.fromJson(Map<String, dynamic> json) {
     return PublicLibraryItem(
@@ -41,11 +53,16 @@ class PublicLibraryItem {
       summary: json['summary'] as String? ?? '',
       coverUrl: _absolute(json['coverUrl'] as String? ?? ''),
       textUrl: _absolute(json['textUrl'] as String? ?? ''),
+      externalUrl: json['externalUrl'] as String? ?? '',
+      attribution: json['attribution'] as String? ?? '',
       sourceUrls: (json['sourceUrls'] as List? ?? const [])
           .whereType<String>()
           .toList(growable: false),
       license: json['license'] as String? ?? '',
       characters: (json['characters'] as num?)?.toInt() ?? 0,
+      coverSourceUrl: json['coverSourceUrl'] as String? ?? '',
+      coverLicense: json['coverLicense'] as String? ?? '',
+      coverAuthor: json['coverAuthor'] as String? ?? '',
     );
   }
 

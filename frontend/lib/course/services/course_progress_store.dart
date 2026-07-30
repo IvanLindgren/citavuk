@@ -164,6 +164,13 @@ class CourseProgressStore {
     final longest = local.streak.longestDays > remote.streak.longestDays
         ? local.streak.longestDays
         : remote.streak.longestDays;
+    final dialogues = Map<String, DialogueProgress>.of(remote.dialogues);
+    for (final entry in local.dialogues.entries) {
+      final current = dialogues[entry.key];
+      if (current == null || entry.value.updatedAt.isAfter(current.updatedAt)) {
+        dialogues[entry.key] = entry.value;
+      }
+    }
 
     return CourseProgress(
       courseId: local.courseId,
@@ -176,6 +183,7 @@ class CourseProgressStore {
         lastStudyDate: latestStreak.lastStudyDate,
       ),
       xp: local.xp > remote.xp ? local.xp : remote.xp,
+      dialogues: dialogues,
       activeLesson: local.activeLesson ?? remote.activeLesson,
     );
   }

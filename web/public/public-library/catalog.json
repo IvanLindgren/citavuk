@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "generatedAt": "2026-07-30",
   "items": [
     {
@@ -17,7 +17,10 @@
         "https://sr.wikisource.org/wiki/%D0%92%D0%BE%D1%92%D0%B0"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 20601
+      "characters": 20601,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:First_page_of_%22The_Leader%22.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "First page of the short story \"The Leader\" by Radoje Domanović, published in 1901 in \"Zvezda\"."
     },
     {
       "id": "jazavac-pred-sudom",
@@ -34,7 +37,10 @@
         "https://sr.wikisource.org/wiki/%D0%88%D0%B0%D0%B7%D0%B0%D0%B2%D0%B0%D1%86_%D0%BF%D1%80%D0%B5%D0%B4_%D1%81%D1%83%D0%B4%D0%BE%D0%BC"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 42342
+      "characters": 42342,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Prva_strana_Jazavac_pred_sudom.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Wikimedia Commons"
     },
     {
       "id": "prvi-put-s-ocem",
@@ -51,7 +57,10 @@
         "https://sr.wikisource.org/wiki/%D0%9F%D1%80%D0%B2%D0%B8_%D0%BF%D1%83%D1%82_%D1%81_%D0%BE%D1%86%D0%B5%D0%BC_%D0%BD%D0%B0_%D1%98%D1%83%D1%82%D1%80%D0%B5%D1%9A%D0%B5"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 27098
+      "characters": 27098,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Laza_K._Lazarevic.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "See signatures"
     },
     {
       "id": "sumnjivo-lice",
@@ -70,7 +79,10 @@
         "https://sr.wikisource.org/wiki/%D0%A1%D1%83%D0%BC%D1%9A%D0%B8%D0%B2%D0%BE_%D0%BB%D0%B8%D1%86%D0%B5/%D0%A7%D0%B8%D0%BD_%D0%B4%D1%80%D1%83%D0%B3%D0%B8"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 89748
+      "characters": 89748,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Branislav_Nu%C5%A1i%C4%87_%22Sumnjivo_lice%22,_prvo_izdanje_na_kineskom_jeziku.jpg",
+      "coverLicense": "CC BY-SA 4.0",
+      "coverAuthor": "Momir Alvirović"
     },
     {
       "id": "sve-ce-to-narod-pozlatiti",
@@ -87,7 +99,10 @@
         "https://sr.wikisource.org/wiki/%D0%A1%D0%B2%D0%B5_%D1%9B%D0%B5_%D1%82%D0%BE_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4_%D0%BF%D0%BE%D0%B7%D0%BB%D0%B0%D1%82%D0%B8%D1%82%D0%B8"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 21918
+      "characters": 21918,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Naslovna_strana_Sve_%C4%87e_to_narod_pozlatiti.png",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Лаза Лазаревић\n\n(Животни вијек: 10. јануар 1891)"
     },
     {
       "id": "pilipenda",
@@ -104,7 +119,10 @@
         "https://sr.wikisource.org/wiki/%D0%9F%D0%B8%D0%BB%D0%B8%D0%BF%D0%B5%D0%BD%D0%B4%D0%B0"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 8977
+      "characters": 8977,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Simo_Matavulj.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Wikimedia Commons"
     },
     {
       "id": "cardak",
@@ -121,7 +139,214 @@
         "https://sr.wikisource.org/wiki/%D0%A7%D0%B0%D1%80%D0%B4%D0%B0%D0%BA_%D0%BD%D0%B8_%D0%BD%D0%B0_%D0%BD%D0%B5%D0%B1%D1%83_%D0%BD%D0%B8_%D0%BD%D0%B0_%D0%B7%D0%B5%D0%BC%D1%99%D0%B8"
       ],
       "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
-      "characters": 4765
+      "characters": 4765,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Herotaleslegends-petrovitch-p222-dragon-of-pavilion.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Woislav M. Petrovitch  1885?-1934"
+    },
+    {
+      "id": "stradija",
+      "title": "Страдија",
+      "author": "Радоје Домановић",
+      "year": "1902",
+      "kind": "Рассказ",
+      "genre": "Сатира",
+      "level": "B2",
+      "summary": "Путевые заметки из вымышленной страны, где громкие слова о свободе мирно уживаются с покорностью и страхом.",
+      "coverUrl": "/public-library/covers/stradija.webp",
+      "textUrl": "/public-library/texts/stradija.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%A1%D1%82%D1%80%D0%B0%D0%B4%D0%B8%D1%98%D0%B0",
+        "https://sr.wikisource.org/wiki/%D0%A1%D1%82%D1%80%D0%B0%D0%B4%D0%B8%D1%98%D0%B0/2",
+        "https://sr.wikisource.org/wiki/%D0%A1%D1%82%D1%80%D0%B0%D0%B4%D0%B8%D1%98%D0%B0/3"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 106423,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:RadojeD_Stradija_-_titlepage.png",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Radoje Domanović"
+    },
+    {
+      "id": "danga",
+      "title": "Данга",
+      "author": "Радоје Домановић",
+      "year": "1899",
+      "kind": "Рассказ",
+      "genre": "Сатира",
+      "level": "B2",
+      "summary": "Гротескный сон о гражданах, которые с готовностью принимают клеймо как знак порядка и благонадёжности.",
+      "coverUrl": "/public-library/covers/danga.webp",
+      "textUrl": "/public-library/texts/danga.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%94%D0%B0%D0%BD%D0%B3%D0%B0"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 13426,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Radoje_Domanovi%C4%87_(1).jpg",
+      "coverLicense": "CC BY-SA 4.0",
+      "coverAuthor": "Nter25"
+    },
+    {
+      "id": "mrtvo-more",
+      "title": "Мртво море",
+      "author": "Радоје Домановић",
+      "year": "1902",
+      "kind": "Рассказ",
+      "genre": "Сатира",
+      "level": "B2",
+      "summary": "Сатира о среде, которая отвергает всякого, кто решается думать, работать и выбиваться из привычного спокойствия.",
+      "coverUrl": "/public-library/covers/mrtvo-more.webp",
+      "textUrl": "/public-library/texts/mrtvo-more.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%9C%D1%80%D1%82%D0%B2%D0%BE_%D0%BC%D0%BE%D1%80%D0%B5"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 41327,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Rodna_ku%C4%87a_Radoja_Domanovi%C4%87a_u_Ovsi%C5%A1tu.jpg",
+      "coverLicense": "CC BY-SA 4.0",
+      "coverAuthor": "SladjanaTOP"
+    },
+    {
+      "id": "marko-medju-srbima",
+      "title": "Краљевић Марко по други пут међу Србима",
+      "author": "Радоје Домановић",
+      "year": "1901",
+      "kind": "Повесть",
+      "genre": "Сатира",
+      "level": "C1",
+      "summary": "Легендарный герой возвращается к народу, который веками звал его на помощь, и обнаруживает совсем не героическую действительность.",
+      "coverUrl": "/public-library/covers/marko-medju-srbima.webp",
+      "textUrl": "/public-library/texts/marko-medju-srbima.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%9A%D1%80%D0%B0%D1%99%D0%B5%D0%B2%D0%B8%D1%9B_%D0%9C%D0%B0%D1%80%D0%BA%D0%BE_%D0%BF%D0%BE_%D0%B4%D1%80%D1%83%D0%B3%D0%B8_%D0%BF%D1%83%D1%82_%D0%BC%D0%B5%D1%92%D1%83_%D0%A1%D1%80%D0%B1%D0%B8%D0%BC%D0%B0"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 39773,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Radoje_Domanovi%C4%87_1973_Yugoslavia_stamp.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Unknown authorUnknown author"
+    },
+    {
+      "id": "vetar",
+      "title": "Ветар",
+      "author": "Лаза Лазаревић",
+      "year": "1889",
+      "kind": "Рассказ",
+      "genre": "Реализм",
+      "level": "B2",
+      "summary": "Психологический рассказ о случайной встрече, нерешительности и жизни, которая проходит рядом с человеком.",
+      "coverUrl": "/public-library/covers/vetar.webp",
+      "textUrl": "/public-library/texts/vetar.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%92%D0%B5%D1%82%D0%B0%D1%80"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 46547,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:LazaLazarevicVetar.jpg",
+      "coverLicense": "CC0",
+      "coverAuthor": "Владан Ђорђевић"
+    },
+    {
+      "id": "svabica",
+      "title": "Швабица",
+      "author": "Лаза Лазаревић",
+      "year": "1876",
+      "kind": "Повесть",
+      "genre": "Реализм",
+      "level": "C1",
+      "summary": "История любви сербского студента в Берлине, рассказанная через письма и конфликт между чувством и ожиданиями среды.",
+      "coverUrl": "/public-library/covers/svabica.webp",
+      "textUrl": "/public-library/texts/svabica.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%A8%D0%B2%D0%B0%D0%B1%D0%B8%D1%86%D0%B0"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 73181,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:LazaL_Svabica.pdf",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Laza Lazarević"
+    },
+    {
+      "id": "mracajski-proto",
+      "title": "Мрачајски прото",
+      "author": "Петар Кочић",
+      "year": "1904",
+      "kind": "Рассказ",
+      "genre": "Реализм",
+      "level": "C1",
+      "summary": "Мрачный портрет одинокого священника и мира, в котором подозрение и пережитое насилие меняют человека.",
+      "coverUrl": "/public-library/covers/mracajski-proto.webp",
+      "textUrl": "/public-library/texts/mracajski-proto.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%9C%D1%80%D0%B0%D1%87%D0%B0%D1%98%D1%81%D0%BA%D0%B8_%D0%BF%D1%80%D0%BE%D1%82%D0%BE"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 13384,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Petar_Kocic,_ulje_na_drvetu._Autor_Spiro_Bocaric,_slikar.jpg",
+      "coverLicense": "CC BY 4.0",
+      "coverAuthor": "BoMaric"
+    },
+    {
+      "id": "kroz-mecavu",
+      "title": "Кроз мећаву",
+      "author": "Петар Кочић",
+      "year": "1907",
+      "kind": "Рассказ",
+      "genre": "Реализм",
+      "level": "B2",
+      "summary": "Старик и ребёнок возвращаются с рынка сквозь метель; короткая дорога превращается в тяжёлое испытание.",
+      "coverUrl": "/public-library/covers/kroz-mecavu.webp",
+      "textUrl": "/public-library/texts/kroz-mecavu.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%9A%D1%80%D0%BE%D0%B7_%D0%BC%D0%B5%D1%9B%D0%B0%D0%B2%D1%83"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 22504,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Petar_Ko%C4%8Di%C4%871.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Unknown authorUnknown author"
+    },
+    {
+      "id": "prva-brazda",
+      "title": "Прва бразда",
+      "author": "Милован Глишић",
+      "year": "1885",
+      "kind": "Рассказ",
+      "genre": "Реализм",
+      "level": "B1",
+      "summary": "Рассказ о вдове, её детях и первой борозде, которая становится знаком взросления и надежды.",
+      "coverUrl": "/public-library/covers/prva-brazda.webp",
+      "textUrl": "/public-library/texts/prva-brazda.txt",
+      "sourceUrls": [
+        "https://sr.wikisource.org/wiki/%D0%9F%D1%80%D0%B2%D0%B0_%D0%B1%D1%80%D0%B0%D0%B7%D0%B4%D0%B0"
+      ],
+      "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+      "characters": 10219,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Milovan_Gli%C5%A1i%C4%87_potrait.jpg",
+      "coverLicense": "Public domain",
+      "coverAuthor": "Unknown authorUnknown author"
+    },
+    {
+      "id": "darina-textbooks",
+      "title": "Учебники сербского языка",
+      "author": "Подборкой поделилась darina",
+      "year": "Современные материалы",
+      "kind": "Подборка",
+      "genre": "Учебники",
+      "level": "A1–C1",
+      "summary": "Внешняя подборка учебников и пособий по сербскому языку. Файлы остаются в Google Drive и открываются у первоисточника.",
+      "externalUrl": "https://drive.google.com/drive/folders/1igeVGjzlEfI1BndD8bnHFAV3FbrqgXus?usp=drive_link",
+      "attribution": "Подборкой поделилась девушка под ником darina",
+      "coverUrl": "/public-library/covers/darina-textbooks.webp",
+      "textUrl": "",
+      "sourceUrls": [
+        "https://drive.google.com/drive/folders/1igeVGjzlEfI1BndD8bnHFAV3FbrqgXus?usp=drive_link"
+      ],
+      "license": "Внешняя подборка; права на отдельные файлы указаны их авторами",
+      "characters": 0,
+      "coverSourceUrl": "https://commons.wikimedia.org/wiki/File:Univerzitetska_biblioteka_u_Beogradu_07.jpg",
+      "coverLicense": "CC BY-SA 4.0",
+      "coverAuthor": "Unknown authorUnknown author"
     }
   ]
 }

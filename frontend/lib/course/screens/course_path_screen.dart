@@ -22,6 +22,7 @@ import '../widgets/intro_blocks_view.dart';
 import '../widgets/mascot_view.dart';
 import '../widgets/path_node.dart';
 import 'lesson_screen.dart';
+import 'dialogue_screen.dart';
 import 'trainer_screen.dart';
 
 class CoursePathScreen extends StatefulWidget {
@@ -396,6 +397,8 @@ class _PathBody extends StatelessWidget {
     final rows = <WidgetBuilder>[
       (_) => _HeaderCard(controller: controller),
       (_) => const SizedBox(height: 20),
+      (_) => _DialogueCard(controller: controller),
+      (_) => const SizedBox(height: 24),
       for (var u = 0; u < course.units.length; u++) ...[
         (_) => _UnitBanner(unit: course.units[u], index: u),
         (_) => const SizedBox(height: 26),
@@ -423,6 +426,87 @@ class _PathBody extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           itemCount: rows.length,
           itemBuilder: (context, index) => rows[index](context),
+        ),
+      ),
+    );
+  }
+}
+
+class _DialogueCard extends StatelessWidget {
+  const _DialogueCard({required this.controller});
+
+  final CourseController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final progress = controller.dialogueProgress('drinkit');
+    final action = progress?.isCompleted == true
+        ? 'Пройти снова'
+        : progress == null
+            ? 'Начать'
+            : 'Продолжить';
+    return Material(
+      color: scheme.surfaceContainerHighest,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => DialogueScreen(controller: controller),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: scheme.primary.withValues(alpha: 0.32)),
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 54,
+                height: 54,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/imgs/marja_spilberic.png',
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ИГРОВОЙ ДИАЛОГ · БЕТА',
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Дорога к Дринкиту',
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
+                    ),
+                    Text('Put do Drinkita · доступен всем'),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                action,
+                style: TextStyle(
+                  color: scheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
         ),
       ),
     );

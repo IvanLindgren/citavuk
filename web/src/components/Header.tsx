@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { GooglePlayBadge, RuStoreBadge } from './StoreBadges';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useTheme } from '../state/theme';
@@ -18,8 +17,10 @@ const NAV = [
 
 /** Остальное живёт в «Ещё»: семь равноправных пунктов в строку не читались. */
 const MORE = [
+  { to: '/dialogues', label: 'Диалоги' },
   { to: '/books', label: 'Что читать' },
   { to: '/materials', label: 'Материалы' },
+  { to: '/support', label: 'Поддержать проект' },
   { to: '/downloads', label: 'Скачать' },
   { to: '/about', label: 'О разработчике' },
 ] as const;
@@ -117,7 +118,7 @@ export function Header() {
         </div>
       </div>
 
-      <StoreStrip />
+      <SupportStrip />
 
       <AnimatePresence>
         {menuOpen && (
@@ -245,31 +246,22 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
   );
 }
 
-/**
- * Полоса с магазинами под шапкой.
- *
- * Стоит на каждой странице: приложение только вышло, и человек, зашедший
- * почитать про падежи, иначе про него не узнает. Полоса намеренно тонкая — это
- * подпись под шапкой, а не баннер.
- *
- * На странице загрузок её нет: там магазины и так на видном месте, и вторая
- * пара тех же значков выглядела бы навязчиво.
- */
-function StoreStrip() {
+function SupportStrip() {
   const { path } = useRouter();
-  if (path.startsWith('/downloads')) return null;
+  if (path.startsWith('/support')) return null;
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 overflow-x-auto px-5 py-1.5">
-        <span className="hidden shrink-0 text-xs font-semibold text-[var(--text-muted)] sm:block">
-          Читавук вышел в Google Play
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-2">
+        <span className="min-w-0 text-xs font-semibold text-[var(--text-muted)] sm:text-sm">
+          Читавук остаётся бесплатным
         </span>
-        <GooglePlayBadge height={30} />
-        <RuStoreBadge height={30} />
-        <span className="hidden shrink-0 text-[11px] text-[var(--text-muted)] md:block">
-          в RuStore пока старая версия
-        </span>
+        <Link
+          to="/support"
+          className="shrink-0 rounded-xl bg-[var(--accent)] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[var(--accent-hover)] sm:text-sm"
+        >
+          Поддержать развитие
+        </Link>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ const output = join(root, 'public', 'course');
 
 const files = [
   ['course/course_bundle.json', 'course_bundle.json'],
+  ['course/dialogues/drinkit.json', 'dialogues/drinkit.json'],
   ['animations/generated/manifest.json', 'animations/manifest.json'],
   ['animations/generated/citavuk_learning.png', 'animations/citavuk_learning.png'],
   ['animations/generated/citavuk_surprise.png', 'animations/citavuk_surprise.png'],

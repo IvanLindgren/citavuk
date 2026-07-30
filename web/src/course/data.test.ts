@@ -5,6 +5,7 @@ import {
   evaluate,
   normalizeAnswer,
   randomizeExercises,
+  saveDialogueProgress,
   saveLessonProgress,
   splitLetters,
 } from './data';
@@ -97,6 +98,23 @@ describe('course answer rules', () => {
     const passed = saveLessonProgress(bundle, 'lesson', 0.75);
     expect(passed.lessons.lesson?.status).toBe('completed');
     expect(passed.lessons.lesson?.completedAt).not.toBeNull();
+  });
+
+  it('stores dialogue state without changing lesson progress', () => {
+    const bundle = courseBundle();
+    const saved = saveDialogueProgress(bundle, {
+      dialogueId: 'drinkit',
+      status: 'inProgress',
+      currentNodeId: 'bus',
+      choices: ['invent-directions', 'point-left'],
+      updatedAt: '2026-07-30T12:00:00.000Z',
+    });
+
+    expect(saved.dialogues.drinkit).toMatchObject({
+      status: 'inProgress',
+      currentNodeId: 'bus',
+    });
+    expect(saved.lessons).toEqual({});
   });
 });
 

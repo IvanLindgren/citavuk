@@ -37,6 +37,9 @@ STATIC = [
     ("/trainer", "0.8", "monthly"),
     ("/listening", "0.7", "weekly"),
     ("/downloads", "0.7", "monthly"),
+    ("/support", "0.7", "monthly"),
+    ("/dialogues", "0.8", "monthly"),
+    ("/dialogues/drinkit", "0.7", "monthly"),
 ]
 
 

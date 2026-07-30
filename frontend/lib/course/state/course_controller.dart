@@ -173,6 +173,22 @@ class CourseController extends ChangeNotifier {
     return done / lessons.length;
   }
 
+  DialogueProgress? dialogueProgress(String dialogueId) =>
+      _progress?.dialogues[dialogueId];
+
+  Future<void> saveDialogueProgress(DialogueProgress dialogue) async {
+    final progress = _progress;
+    if (progress == null) return;
+    _progress = progress.copyWith(
+      dialogues: {
+        ...progress.dialogues,
+        dialogue.dialogueId: dialogue,
+      },
+    );
+    await _store.save(_progress!);
+    notifyListeners();
+  }
+
   /// Сохраняет незавершённую попытку.
   Future<void> saveActiveLesson(Map<String, dynamic> snapshot) async {
     final progress = _progress;

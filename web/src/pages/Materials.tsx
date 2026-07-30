@@ -146,7 +146,7 @@ export function Materials() {
   });
 
   return (
-    <main className="px-5 py-10 sm:py-14">
+    <main className="overflow-x-hidden px-4 py-8 sm:px-5 sm:py-14">
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-8">
           <div className="flex flex-wrap items-start justify-between gap-6">
@@ -314,7 +314,7 @@ export function Materials() {
             </p>
           </Card>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {shown.map((document, index) => (
                 <MaterialCard
@@ -564,7 +564,7 @@ function MaterialCard({
       {/* На телефоне карточки идут в один столбец, поэтому поля и отступы
           заметно теснее: экономия в полсотни пикселей на карточку — это два
           лишних документа на экран вместо прокрутки. */}
-      <Card className="flex h-full flex-col p-4 transition-all duration-300 sm:p-5 sm:hover:-translate-y-1 sm:hover:shadow-[var(--shadow-lift)]">
+      <Card className="flex h-full min-w-0 flex-col overflow-hidden p-4 transition-all duration-300 sm:p-5 sm:hover:-translate-y-1 sm:hover:shadow-[var(--shadow-lift)]">
         <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-3">
           <KindBadge kind={document.kindId} label={document.kind} />
           {document.year && (
@@ -577,7 +577,9 @@ function MaterialCard({
           )}
         </div>
 
-        <h3 className="text-base leading-snug sm:text-lg">{document.subject}</h3>
+        <h3 className="break-words text-base leading-snug [overflow-wrap:anywhere] sm:text-lg">
+          {document.subject}
+        </h3>
         <p className="mt-1 line-clamp-2 text-sm text-[var(--text-muted)]">
           {document.track ?? document.publisherShort}
         </p>
@@ -631,7 +633,7 @@ function MaterialCard({
               )}
             </Button>
           )}
-          <div className="flex gap-2">
+          <div className="flex min-w-0 flex-col gap-2 min-[380px]:flex-row">
             <Button
               size="sm"
               className="min-w-0 flex-1"
@@ -652,7 +654,7 @@ function MaterialCard({
               target="_blank"
               rel="noreferrer noopener"
               title="Открыть на сайте источника"
-              className="flex shrink-0 items-center rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              className="flex shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
             >
               Оригинал
             </a>
@@ -698,11 +700,11 @@ function FilterRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-baseline gap-2">
+    <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-baseline">
       <span className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
         {label}
       </span>
-      <div className="flex flex-1 flex-wrap gap-1.5">{children}</div>
+      <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">{children}</div>
     </div>
   );
 }
@@ -721,7 +723,7 @@ function Chip({
       type="button"
       onClick={onClick}
       className={[
-        'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
+        'max-w-full rounded-full px-3 py-1.5 text-left text-sm font-semibold [overflow-wrap:anywhere] transition-colors',
         active
           ? 'bg-[var(--accent)] text-parchment'
           : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',

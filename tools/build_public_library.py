@@ -9,20 +9,21 @@ into memory. Sources are Serbian Wikisource pages whose authors died more than
 from __future__ import annotations
 
 import json
+import html
+import io
 import re
-import textwrap
+import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageOps
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "web" / "public" / "public-library"
-FONT_REGULAR = ROOT / "frontend" / "assets" / "fonts" / "NotoSerif-Regular.ttf"
-FONT_BOLD = ROOT / "frontend" / "assets" / "fonts" / "NotoSerif-Bold.ttf"
 API = "https://sr.wikisource.org/w/api.php"
+COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 
 BOOKS = [
     {
@@ -35,7 +36,7 @@ BOOKS = [
         "level": "B1",
         "summary": "Политическая сатира о людях, которые выбрали себе вождя и перестали смотреть, куда идут.",
         "pages": ["Вођа"],
-        "accent": "#A92C27",
+        "coverFile": 'First page of "The Leader".jpg',
     },
     {
         "id": "jazavac-pred-sudom",
@@ -47,7 +48,7 @@ BOOKS = [
         "level": "B2",
         "summary": "Крестьянин Давид Штрбац приводит барсука в суд и превращает разбирательство в острый разговор о власти.",
         "pages": ["Јазавац пред судом"],
-        "accent": "#315C55",
+        "coverFile": "Prva strana Jazavac pred sudom.jpg",
     },
     {
         "id": "prvi-put-s-ocem",
@@ -59,7 +60,7 @@ BOOKS = [
         "level": "B1",
         "summary": "Семейный рассказ о слабости, долге и возвращении человека к тем, кто его любит.",
         "pages": ["Први пут с оцем на јутрење"],
-        "accent": "#7D4F3B",
+        "coverFile": "Laza K. Lazarevic.jpg",
     },
     {
         "id": "sumnjivo-lice",
@@ -75,7 +76,7 @@ BOOKS = [
             "Сумњиво лице/Чин први",
             "Сумњиво лице/Чин други",
         ],
-        "accent": "#8B3154",
+        "coverFile": 'Branislav Nušić "Sumnjivo lice", prvo izdanje na kineskom jeziku.jpg',
     },
     {
         "id": "sve-ce-to-narod-pozlatiti",
@@ -87,7 +88,7 @@ BOOKS = [
         "level": "B2",
         "summary": "Тяжёлый рассказ о встрече отцов с сыновьями, вернувшимися с войны, и цене громких обещаний.",
         "pages": ["Све ће то народ позлатити"],
-        "accent": "#425B7A",
+        "coverFile": "Naslovna strana Sve će to narod pozlatiti.png",
     },
     {
         "id": "pilipenda",
@@ -99,7 +100,7 @@ BOOKS = [
         "level": "B2",
         "summary": "Короткий рассказ о бедности, достоинстве и упрямой верности собственному выбору.",
         "pages": ["Пилипенда"],
-        "accent": "#6C6231",
+        "coverFile": "Simo Matavulj.jpg",
     },
     {
         "id": "cardak",
@@ -111,7 +112,128 @@ BOOKS = [
         "level": "A2",
         "summary": "Сербская волшебная сказка о трёх братьях, похищенной царевне и замке между небом и землёй.",
         "pages": ["Чардак ни на небу ни на земљи"],
-        "accent": "#9A5725",
+        "coverFile": "Herotaleslegends-petrovitch-p222-dragon-of-pavilion.jpg",
+    },
+    {
+        "id": "stradija",
+        "title": "Страдија",
+        "author": "Радоје Домановић",
+        "year": "1902",
+        "kind": "Рассказ",
+        "genre": "Сатира",
+        "level": "B2",
+        "summary": "Путевые заметки из вымышленной страны, где громкие слова о свободе мирно уживаются с покорностью и страхом.",
+        "pages": ["Страдија", "Страдија/2", "Страдија/3"],
+        "coverFile": "RadojeD Stradija - titlepage.png",
+    },
+    {
+        "id": "danga",
+        "title": "Данга",
+        "author": "Радоје Домановић",
+        "year": "1899",
+        "kind": "Рассказ",
+        "genre": "Сатира",
+        "level": "B2",
+        "summary": "Гротескный сон о гражданах, которые с готовностью принимают клеймо как знак порядка и благонадёжности.",
+        "pages": ["Данга"],
+        "coverFile": "Radoje Domanović (1).jpg",
+    },
+    {
+        "id": "mrtvo-more",
+        "title": "Мртво море",
+        "author": "Радоје Домановић",
+        "year": "1902",
+        "kind": "Рассказ",
+        "genre": "Сатира",
+        "level": "B2",
+        "summary": "Сатира о среде, которая отвергает всякого, кто решается думать, работать и выбиваться из привычного спокойствия.",
+        "pages": ["Мртво море"],
+        "coverFile": "Rodna kuća Radoja Domanovića u Ovsištu.jpg",
+    },
+    {
+        "id": "marko-medju-srbima",
+        "title": "Краљевић Марко по други пут међу Србима",
+        "author": "Радоје Домановић",
+        "year": "1901",
+        "kind": "Повесть",
+        "genre": "Сатира",
+        "level": "C1",
+        "summary": "Легендарный герой возвращается к народу, который веками звал его на помощь, и обнаруживает совсем не героическую действительность.",
+        "pages": ["Краљевић Марко по други пут међу Србима"],
+        "coverFile": "Radoje Domanović 1973 Yugoslavia stamp.jpg",
+    },
+    {
+        "id": "vetar",
+        "title": "Ветар",
+        "author": "Лаза Лазаревић",
+        "year": "1889",
+        "kind": "Рассказ",
+        "genre": "Реализм",
+        "level": "B2",
+        "summary": "Психологический рассказ о случайной встрече, нерешительности и жизни, которая проходит рядом с человеком.",
+        "pages": ["Ветар"],
+        "coverFile": "LazaLazarevicVetar.jpg",
+    },
+    {
+        "id": "svabica",
+        "title": "Швабица",
+        "author": "Лаза Лазаревић",
+        "year": "1876",
+        "kind": "Повесть",
+        "genre": "Реализм",
+        "level": "C1",
+        "summary": "История любви сербского студента в Берлине, рассказанная через письма и конфликт между чувством и ожиданиями среды.",
+        "pages": ["Швабица"],
+        "coverFile": "LazaL Svabica.pdf",
+    },
+    {
+        "id": "mracajski-proto",
+        "title": "Мрачајски прото",
+        "author": "Петар Кочић",
+        "year": "1904",
+        "kind": "Рассказ",
+        "genre": "Реализм",
+        "level": "C1",
+        "summary": "Мрачный портрет одинокого священника и мира, в котором подозрение и пережитое насилие меняют человека.",
+        "pages": ["Мрачајски прото"],
+        "coverFile": "Petar Kocic, ulje na drvetu. Autor Spiro Bocaric, slikar.jpg",
+    },
+    {
+        "id": "kroz-mecavu",
+        "title": "Кроз мећаву",
+        "author": "Петар Кочић",
+        "year": "1907",
+        "kind": "Рассказ",
+        "genre": "Реализм",
+        "level": "B2",
+        "summary": "Старик и ребёнок возвращаются с рынка сквозь метель; короткая дорога превращается в тяжёлое испытание.",
+        "pages": ["Кроз мећаву"],
+        "coverFile": "Petar Kočić1.jpg",
+    },
+    {
+        "id": "prva-brazda",
+        "title": "Прва бразда",
+        "author": "Милован Глишић",
+        "year": "1885",
+        "kind": "Рассказ",
+        "genre": "Реализм",
+        "level": "B1",
+        "summary": "Рассказ о вдове, её детях и первой борозде, которая становится знаком взросления и надежды.",
+        "pages": ["Прва бразда"],
+        "coverFile": "Milovan Glišić potrait.jpg",
+    },
+    {
+        "id": "darina-textbooks",
+        "title": "Учебники сербского языка",
+        "author": "Подборкой поделилась darina",
+        "year": "Современные материалы",
+        "kind": "Подборка",
+        "genre": "Учебники",
+        "level": "A1–C1",
+        "summary": "Внешняя подборка учебников и пособий по сербскому языку. Файлы остаются в Google Drive и открываются у первоисточника.",
+        "externalUrl": "https://drive.google.com/drive/folders/1igeVGjzlEfI1BndD8bnHFAV3FbrqgXus?usp=drive_link",
+        "attribution": "Подборкой поделилась девушка под ником darina",
+        "coverFile": "Univerzitetska biblioteka u Beogradu 07.jpg",
     },
 ]
 
@@ -125,7 +247,24 @@ def api(params: dict[str, str]) -> dict:
         headers={"User-Agent": "CitavukPublicLibrary/1.0 (https://citavuk.ru)"},
     )
     with urllib.request.urlopen(request, timeout=45) as response:
-        return json.load(response)
+        result = json.load(response)
+    # Wikimedia asks bulk clients to avoid short request bursts.
+    time.sleep(0.2)
+    return result
+
+
+def commons_api(params: dict[str, str]) -> dict:
+    query = urllib.parse.urlencode(
+        {"format": "json", "formatversion": "2", **params}
+    )
+    request = urllib.request.Request(
+        f"{COMMONS_API}?{query}",
+        headers={"User-Agent": "CitavukPublicLibrary/1.0 (https://citavuk.ru)"},
+    )
+    with urllib.request.urlopen(request, timeout=45) as response:
+        result = json.load(response)
+    time.sleep(0.2)
+    return result
 
 
 def fetch_page(title: str) -> tuple[str, str]:
@@ -200,72 +339,60 @@ def clean_wikitext(text: str) -> str:
     return clean_extract(text)
 
 
-def make_cover(book: dict, path: Path) -> None:
-    width, height = 720, 1040
-    accent = book["accent"]
-    image = Image.new("RGB", (width, height), "#F3E9D2")
-    draw = ImageDraw.Draw(image)
-    title_font = ImageFont.truetype(str(FONT_BOLD), 62)
-    author_font = ImageFont.truetype(str(FONT_BOLD), 31)
-    meta_font = ImageFont.truetype(str(FONT_REGULAR), 25)
+def _plain_metadata(value: str) -> str:
+    return re.sub(r"<[^>]+>", "", html.unescape(value)).strip()
 
-    draw.rounded_rectangle(
-        (34, 34, width - 34, height - 34),
-        radius=24,
-        outline=accent,
-        width=5,
-    )
-    draw.rectangle((64, 64, width - 64, 84), fill=accent)
-    draw.rectangle((64, height - 84, width - 64, height - 64), fill=accent)
 
-    # Serbian cross with four firesteels, kept geometric so it remains crisp.
-    cx, cy = width // 2, 230
-    draw.rectangle((cx - 14, cy - 92, cx + 14, cy + 92), fill=accent)
-    draw.rectangle((cx - 92, cy - 14, cx + 92, cy + 14), fill=accent)
-    for sx in (-1, 1):
-        for sy in (-1, 1):
-            x, y = cx + sx * 58, cy + sy * 58
-            draw.arc((x - 20, y - 25, x + 20, y + 25), 70, 290, fill=accent, width=8)
+def make_cover(book: dict, path: Path) -> dict[str, str]:
+    """Download and crop a real Commons image, preserving its attribution."""
+    file_title = f"File:{book['coverFile']}"
+    data = commons_api(
+        {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url|extmetadata",
+            "iiurlwidth": "1000",
+            "titles": file_title,
+        }
+    )
+    page = data["query"]["pages"][0]
+    if page.get("missing") or not page.get("imageinfo"):
+        raise RuntimeError(f"Commons cover is missing: {file_title}")
+    info = page["imageinfo"][0]
+    image_url = info.get("thumburl") or info["url"]
+    request = urllib.request.Request(
+        image_url,
+        headers={"User-Agent": "CitavukPublicLibrary/1.0 (https://citavuk.ru)"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        raw = response.read()
 
-    title_lines = []
-    for paragraph in textwrap.wrap(book["title"], width=20):
-        title_lines.append(paragraph)
-    title_text = "\n".join(title_lines)
-    title_box = draw.multiline_textbbox(
-        (0, 0), title_text, font=title_font, spacing=12, align="center"
-    )
-    title_width = title_box[2] - title_box[0]
-    title_height = title_box[3] - title_box[1]
-    draw.multiline_text(
-        ((width - title_width) / 2, 430 - title_height / 2),
-        title_text,
-        font=title_font,
-        fill="#261A12",
-        spacing=12,
-        align="center",
-    )
+    with Image.open(io.BytesIO(raw)) as source:
+        source = ImageOps.exif_transpose(source)
+        if source.mode in {"RGBA", "LA"}:
+            background = Image.new("RGBA", source.size, "#F3E9D2")
+            background.alpha_composite(source.convert("RGBA"))
+            source = background
+        cover = ImageOps.fit(
+            source.convert("RGB"),
+            (720, 1040),
+            method=Image.Resampling.LANCZOS,
+            centering=book.get("coverFocus", (0.5, 0.5)),
+        )
+        cover.save(path, "WEBP", quality=88, method=6)
 
-    author_lines = "\n".join(textwrap.wrap(book["author"], width=34))
-    author_box = draw.multiline_textbbox(
-        (0, 0), author_lines, font=author_font, spacing=8, align="center"
-    )
-    draw.multiline_text(
-        ((width - (author_box[2] - author_box[0])) / 2, 650),
-        author_lines,
-        font=author_font,
-        fill=accent,
-        spacing=8,
-        align="center",
-    )
-    meta = f"{book['kind']}  •  {book['year']}  •  {book['level']}"
-    meta_box = draw.textbbox((0, 0), meta, font=meta_font)
-    draw.text(
-        ((width - (meta_box[2] - meta_box[0])) / 2, 855),
-        meta,
-        font=meta_font,
-        fill="#5A4738",
-    )
-    image.save(path, "WEBP", quality=86, method=6)
+    metadata = info.get("extmetadata") or {}
+
+    def field(name: str) -> str:
+        value = metadata.get(name) or {}
+        return _plain_metadata(str(value.get("value") or ""))
+
+    return {
+        "coverSourceUrl": info.get("descriptionurl")
+        or f"https://commons.wikimedia.org/wiki/{urllib.parse.quote(file_title)}",
+        "coverLicense": field("LicenseShortName") or "См. страницу файла",
+        "coverAuthor": field("Artist") or field("Credit") or "Wikimedia Commons",
+    }
 
 
 def main() -> None:
@@ -278,35 +405,50 @@ def main() -> None:
     for book in BOOKS:
         parts = []
         source_urls = []
-        for page in book["pages"]:
+        for page in book.get("pages", []):
             text, url = fetch_page(page)
             parts.append(text)
             source_urls.append(url)
-        full_text = "\n\n".join(parts).strip() + "\n"
-        text_path = texts / f"{book['id']}.txt"
-        text_path.write_text(full_text, encoding="utf-8")
-        make_cover(book, covers / f"{book['id']}.webp")
+        full_text = ("\n\n".join(parts).strip() + "\n") if parts else ""
+        text_url = ""
+        if full_text:
+            text_path = texts / f"{book['id']}.txt"
+            text_path.write_text(full_text, encoding="utf-8")
+            text_url = f"/public-library/texts/{book['id']}.txt"
+        elif book.get("externalUrl"):
+            source_urls.append(book["externalUrl"])
+        cover_metadata = make_cover(book, covers / f"{book['id']}.webp")
 
         catalog.append(
             {
                 key: value
                 for key, value in book.items()
-                if key not in {"pages", "accent"}
+                if key not in {"pages", "coverFile", "coverFocus"}
             }
             | {
                 "coverUrl": f"/public-library/covers/{book['id']}.webp",
-                "textUrl": f"/public-library/texts/{book['id']}.txt",
+                "textUrl": text_url,
                 "sourceUrls": source_urls,
-                "license": "Общественное достояние; разметка Викизворника — CC BY-SA 4.0",
+                "license": (
+                    "Общественное достояние; разметка Викизворника — CC BY-SA 4.0"
+                    if full_text
+                    else "Внешняя подборка; права на отдельные файлы указаны их авторами"
+                ),
                 "characters": len(full_text),
             }
+            | cover_metadata
         )
-        print(f"{book['id']}: {len(full_text):,} chars")
+        print(
+            f"{book['id']}: "
+            f"{len(full_text):,} chars"
+            if full_text
+            else f"{book['id']}: external collection"
+        )
 
     (OUT / "catalog.json").write_text(
         json.dumps(
             {
-                "version": 1,
+                "version": 2,
                 "generatedAt": "2026-07-30",
                 "items": catalog,
             },

@@ -170,6 +170,20 @@ Widget _app({ThemeData? theme, CourseController? controller}) => _wrap(
       theme: theme,
     );
 
+Future<void> _scrollToLesson(WidgetTester tester, String title) async {
+  final target = find.text(title);
+  if (target.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      target,
+      260,
+      scrollable: find.byType(Scrollable).first,
+    );
+  } else {
+    await tester.ensureVisible(target);
+  }
+  await tester.pumpAndSettle();
+}
+
 void main() {
   testWidgets('карта курса открывается и показывает разделы и уроки',
       (tester) async {
@@ -183,14 +197,18 @@ void main() {
     expect(find.text('Курс сербского'), findsOneWidget);
     expect(find.text('БЕТА'), findsOneWidget);
     expect(find.text('Сербская грамматика'), findsOneWidget);
+    await _scrollToLesson(tester, 'Падежи');
     expect(find.text('Падежи'), findsOneWidget);
+    await _scrollToLesson(tester, 'Семь падежей');
     expect(find.text('Семь падежей'), findsOneWidget);
+    await _scrollToLesson(tester, 'Вокатив');
     expect(find.text('Вокатив'), findsOneWidget);
   });
 
   testWidgets('первый урок доступен, второй закрыт', (tester) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
 
     // Пузырь «НАЧАТЬ» над текущим узлом, закрытый узел — с замком.
     expect(find.text('НАЧАТЬ'), findsOneWidget);
@@ -203,8 +221,7 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Вокатив'));
-    await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Вокатив');
     await tester.tap(find.text('Вокатив'));
     await tester.pumpAndSettle();
 
@@ -216,6 +233,7 @@ void main() {
   testWidgets('открывается урок и показывает первое задание', (tester) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
 
     // Узел → попап уровня → «Начать урок».
     await tester.tap(find.text('Семь падежей'));
@@ -237,6 +255,7 @@ void main() {
   testWidgets('ответ проверяется и показывает обратную связь', (tester) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
     await tester.tap(find.text('Семь падежей'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Начать урок'));
@@ -256,6 +275,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
     await tester.tap(find.text('Семь падежей'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Начать урок'));
@@ -283,6 +303,7 @@ void main() {
 
       await tester.pumpWidget(_app());
       await tester.pumpAndSettle();
+      await _scrollToLesson(tester, 'Семь падежей');
 
       final nodes = find.byType(PathNode);
       expect(nodes, findsWidgets);
@@ -304,6 +325,7 @@ void main() {
   testWidgets('карта строится в тёмной теме', (tester) async {
     await tester.pumpWidget(_app(theme: AppTheme.dark()));
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
     expect(find.text('Семь падежей'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -315,6 +337,7 @@ void main() {
 
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
 
     expect(find.text('Семь падежей'), findsOneWidget);
     expect(tester.takeException(), isNull, reason: 'нет overflow на 360dp');
@@ -333,6 +356,7 @@ void main() {
       textScale: 1.5,
     ));
     await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Семь падежей');
 
     expect(find.text('Семь падежей'), findsOneWidget);
     expect(tester.takeException(), isNull);

@@ -171,7 +171,7 @@ export function Library() {
   }, [reload]);
 
   return (
-    <main className="px-5 py-10 sm:py-14">
+    <main className="overflow-x-hidden px-4 py-8 sm:px-5 sm:py-14">
       <DropOverlay visible={dragging} />
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -294,7 +294,7 @@ export function Library() {
               </p>
             </Card>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <AnimatePresence mode="popLayout">
                 {shown.map((book, index) => (
                   <BookCard
@@ -418,7 +418,7 @@ function FolderChip({
       type="button"
       onClick={onClick}
       className={[
-        "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors",
+        "inline-flex max-w-full min-w-0 items-center gap-2 rounded-full px-3.5 py-1.5 text-left text-sm font-semibold [overflow-wrap:anywhere] transition-colors",
         active
           ? "bg-[var(--accent)] text-parchment"
           : "bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]",
@@ -465,10 +465,10 @@ function BookCard({
         ease: [0.22, 1, 0.36, 1],
       }}
     >
-      <Card className="group h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
-        <Link to={`/reader/${book.id}`} className="block p-5">
+      <Card className="group h-full min-w-0 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
+        <Link to={`/reader/${book.id}`} className="block min-w-0 p-5">
           <div className="flex items-start gap-2">
-            <h3 className="line-clamp-2 flex-1 text-xl leading-snug">
+            <h3 className="line-clamp-2 min-w-0 flex-1 break-words text-xl leading-snug [overflow-wrap:anywhere]">
               {book.title}
             </h3>
             {book.textMissing && (

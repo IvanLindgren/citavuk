@@ -382,15 +382,16 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
               ),
             ),
             const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Wrap(
+              alignment: WrapAlignment.end,
+              spacing: 4,
+              runSpacing: 4,
               children: [
                 TextButton.icon(
                   onPressed: () => _openOriginal(document.url),
                   icon: const Icon(Icons.open_in_new, size: 18),
                   label: const Text('Оригинал'),
                 ),
-                const SizedBox(width: 4),
                 FilledButton.icon(
                   onPressed: busy ? null : () => _addToLibrary(document),
                   icon: busy

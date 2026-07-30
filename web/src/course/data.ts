@@ -1,5 +1,6 @@
 import type {
   CourseBundle,
+  DialogueProgress,
   CourseLesson,
   CourseProgress,
   Exercise,
@@ -74,6 +75,7 @@ export function emptyProgress(bundle: CourseBundle): CourseProgress {
       lastStudyDate: null,
     },
     activeLesson: null,
+    dialogues: {},
   };
 }
 
@@ -177,6 +179,23 @@ export function saveLessonProgress(
   return next;
 }
 
+export function saveDialogueProgress(
+  bundle: CourseBundle,
+  dialogue: DialogueProgress,
+): CourseProgress {
+  const progress = loadProgress(bundle);
+  const next: CourseProgress = {
+    ...progress,
+    dialogues: {
+      ...(progress.dialogues ?? {}),
+      [dialogue.dialogueId]: dialogue,
+    },
+  };
+  storeProgress(next, Date.now());
+  window.dispatchEvent(new CustomEvent('citavuk-course-progress'));
+  return next;
+}
+
 export function lessonUnlocked(
   lesson: CourseLesson,
   progress: CourseProgress,
@@ -259,7 +278,10 @@ export async function syncCourseProgress(
   const local = loadStoredProgress(bundle);
   const remote = await getRemoteCourseProgress(bundle.courseId);
   if (!remote) {
-    if (Object.keys(local.payload.lessons).length > 0) {
+    if (
+      Object.keys(local.payload.lessons).length > 0 ||
+      Object.keys(local.payload.dialogues ?? {}).length > 0
+    ) {
       await putRemoteCourseProgress(
         bundle.courseId,
         local.payload,
@@ -326,6 +348,16 @@ function mergeProgress(
   const localStudy = local.streak?.lastStudyDate ?? '';
   const remoteStudy = remote.streak?.lastStudyDate ?? '';
   const streak = localStudy >= remoteStudy ? local.streak : remote.streak;
+  const dialogues = { ...(remote.dialogues ?? {}) };
+  for (const [id, candidate] of Object.entries(local.dialogues ?? {})) {
+    const current = dialogues[id];
+    if (
+      !current ||
+      Date.parse(candidate.updatedAt) >= Date.parse(current.updatedAt)
+    ) {
+      dialogues[id] = candidate;
+    }
+  }
   return {
     ...emptyProgress(bundle),
     ...remote,
@@ -341,6 +373,7 @@ function mergeProgress(
       ),
     },
     activeLesson: local.activeLesson ?? remote.activeLesson ?? null,
+    dialogues,
   };
 }
 

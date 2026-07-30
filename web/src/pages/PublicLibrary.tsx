@@ -1,6 +1,11 @@
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
-import { HiArrowDownTray, HiBookOpen, HiMagnifyingGlass } from 'react-icons/hi2';
+import {
+  HiArrowDownTray,
+  HiArrowTopRightOnSquare,
+  HiBookOpen,
+  HiMagnifyingGlass,
+} from 'react-icons/hi2';
 
 import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
 import { importText } from '../lib/books';
@@ -53,11 +58,13 @@ export function PublicLibrary() {
       (item) =>
         (genre === ALL || item.genre === genre) &&
         (!needle ||
-          `${item.title} ${item.author} ${item.kind}`
+          `${item.title} ${item.author} ${item.kind} ${item.attribution ?? ''}`
             .toLocaleLowerCase('ru')
             .includes(needle)),
     );
   }, [items, genre, query]);
+  const collections = visible.filter((item) => item.externalUrl);
+  const books = visible.filter((item) => !item.externalUrl);
 
   async function open(item: PublicLibraryItem) {
     setError('');
@@ -148,8 +155,12 @@ export function PublicLibrary() {
             <Spinner /> Открываем каталог…
           </div>
         ) : (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {visible.map((item, index) => (
+          <>
+            {collections.map((item) => (
+              <ExternalCollection key={item.id} item={item} />
+            ))}
+            <div className="mt-8 grid min-w-0 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {books.map((item, index) => (
               <motion.article
                 key={item.id}
                 initial={{ opacity: 0, y: 12 }}
@@ -217,13 +228,78 @@ export function PublicLibrary() {
                     >
                       Источник и лицензия
                     </a>
+                    {item.coverSourceUrl && (
+                      <a
+                        href={item.coverSourceUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        title={`${item.coverAuthor ?? 'Wikimedia Commons'} · ${item.coverLicense ?? ''}`}
+                        className="mt-1 text-[11px] text-[var(--text-muted)] underline-offset-2 hover:text-[var(--accent)] hover:underline"
+                      >
+                        Изображение: Wikimedia Commons
+                      </a>
+                    )}
                   </div>
                 </Card>
               </motion.article>
             ))}
           </div>
+          </>
         )}
       </div>
     </main>
+  );
+}
+
+function ExternalCollection({ item }: { item: PublicLibraryItem }) {
+  return (
+    <Reveal className="mt-8">
+      <Card className="overflow-hidden p-0">
+        <div className="grid md:grid-cols-[15rem_1fr]">
+          <img
+            src={item.coverUrl}
+            alt=""
+            width={720}
+            height={1040}
+            loading="lazy"
+            className="h-52 w-full object-cover md:h-full"
+          />
+          <div className="flex min-w-0 flex-col justify-center p-5 sm:p-7">
+            <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+              Внешняя подборка
+            </p>
+            <h2 className="mt-2 text-2xl">{item.title}</h2>
+            <p className="mt-2 font-semibold text-[var(--text-muted)]">
+              {item.attribution ?? item.author}
+            </p>
+            <p className="mt-4 max-w-2xl leading-relaxed text-[var(--text-muted)]">
+              {item.summary}
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <a
+                href={item.externalUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <Button>
+                  Открыть подборку
+                  <HiArrowTopRightOnSquare className="size-5" />
+                </Button>
+              </a>
+              {item.coverSourceUrl && (
+                <a
+                  href={item.coverSourceUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-xs text-[var(--text-muted)] underline-offset-2 hover:text-[var(--accent)] hover:underline"
+                >
+                  Изображение и лицензия
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </Card>
+    </Reveal>
   );
 }

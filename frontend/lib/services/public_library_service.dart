@@ -30,12 +30,17 @@ class PublicLibraryService {
         .whereType<Map>()
         .map((item) =>
             PublicLibraryItem.fromJson(Map<String, dynamic>.from(item)))
-        .where((item) => item.id.isNotEmpty && item.textUrl.isNotEmpty)
+        .where((item) =>
+            item.id.isNotEmpty &&
+            (item.textUrl.isNotEmpty || item.externalUrl.isNotEmpty))
         .toList(growable: false);
     return _cached!;
   }
 
   static Future<String> loadText(PublicLibraryItem item) async {
+    if (item.textUrl.isEmpty) {
+      throw Exception('У этого материала нет локального текста');
+    }
     final response = await http
         .get(Uri.parse(item.textUrl))
         .timeout(const Duration(seconds: 45));

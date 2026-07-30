@@ -1,0 +1,107 @@
+{
+  "id": "drinkit",
+  "title": "Дорога к Дринкиту",
+  "titleSr": "Put do Drinkita",
+  "participants": ["Čitavuk", "Marja Spilberić"],
+  "startNodeId": "start",
+  "nodes": [
+    {
+      "id": "start",
+      "speaker": "Marja Spilberić",
+      "text": "Preselila sam se u centar Beograda! Ovde je super: sve prodavnice su blizu, ima mnogo lepih zgrada, a mogu i da radim kao di-džej... Izvinite, da li ovde ima Drinkit?",
+      "choices": [
+        {
+          "id": "honest",
+          "label": "Ovde nema Drinkita, izvinite.",
+          "next": "honest-end"
+        },
+        {
+          "id": "invent-directions",
+          "label": "Hm, morate da idete levo 100 metara, pa desno...",
+          "next": "left-right"
+        }
+      ]
+    },
+    {
+      "id": "honest-end",
+      "speaker": "Marja Spilberić",
+      "text": "Pff! Vi jednostavno ne razumete centar grada!",
+      "end": true
+    },
+    {
+      "id": "left-right",
+      "speaker": "Marja Spilberić",
+      "text": "Ne razumem levo-desno! Pokažite rukom!",
+      "choices": [
+        {
+          "id": "cannot-show",
+          "label": "Ja... ja ne znam kako da pokažem rukom.",
+          "next": "cannot-show-end"
+        },
+        {
+          "id": "one-moment",
+          "label": "Samo trenutak...",
+          "next": "directions"
+        }
+      ]
+    },
+    {
+      "id": "cannot-show-end",
+      "speaker": "Marja Spilberić",
+      "text": "Pa dobro, hvala na pomoći. Doviđenja.",
+      "end": true
+    },
+    {
+      "id": "directions",
+      "speaker": "Narator",
+      "text": "Vidite tri smera koja možete da pokažete rukom. Izaberite jedan. To zapravo nije važno, jer ste već slagali da Drinkit postoji u Srbiji.",
+      "choices": [
+        {
+          "id": "point-left",
+          "label": "← Levo",
+          "next": "bus"
+        },
+        {
+          "id": "point-forward",
+          "label": "↑ Pravo",
+          "next": "bus"
+        },
+        {
+          "id": "point-right",
+          "label": "Desno →",
+          "next": "bus"
+        }
+      ]
+    },
+    {
+      "id": "bus",
+      "speaker": "Marja Spilberić",
+      "text": "A... to je nekako daleko. Mogu li da idem autobusom?",
+      "choices": [
+        {
+          "id": "walk",
+          "label": "Autobus putuje pola sata. Lakše je peške.",
+          "next": "walk"
+        }
+      ]
+    },
+    {
+      "id": "walk",
+      "speaker": "Marja Spilberić",
+      "text": "Da, stvarno ne želim da prljam papuče i pidžamu. Onda idem peške. Hvala Vam!",
+      "choices": [
+        {
+          "id": "later",
+          "label": "Kroz neko vreme...",
+          "next": "final"
+        }
+      ]
+    },
+    {
+      "id": "final",
+      "speaker": "Marja Spilberić",
+      "text": "Zašto ste me slagali, a? Ovde nema nikakvog Drinkita! Nema nikakve di-džej opreme! Ovde nema apsolutno ničega! Vi ste jedna sramota!",
+      "end": true
+    }
+  ]
+}
