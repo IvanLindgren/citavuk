@@ -154,4 +154,5 @@ python tools/make_page_turn.py      # звук перелистывания ст
 Телеграм [@ivanlindgren](https://t.me/ivanlindgren), ВКонтакте
 [vk.com/denkorni](https://vk.com/denkorni), почта denis.kornilov12@yandex.ru.
 
-Правила работы с кодом описаны в `AGENTS.md`.
+Правила работы с кодом описаны в `AGENTS.md`, порядок сборки и выкладки —
+в [docs/release.md](docs/release.md).
