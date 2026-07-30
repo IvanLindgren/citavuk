@@ -345,7 +345,14 @@ export function Reader() {
 
         {/* Перспектива нужна повороту страницы: без неё rotateY выглядит
             как обычное сжатие по горизонтали. */}
-        <div className="relative" style={{ perspective: 1600 }}>
+        <div
+          className="relative mx-auto"
+          style={{
+            perspective: 1600,
+            maxWidth:
+              settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
+          }}
+        >
           <AnimatePresence mode="wait" initial={false} custom={direction}>
             <motion.article
               key={page}
@@ -393,7 +400,7 @@ export function Reader() {
                     : 'Открыть обсуждение этой страницы'
                 }
                 title="Обсуждение этой страницы"
-                className="mx-auto mt-4 flex w-28 items-end justify-center rounded-2xl outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:absolute lg:-right-28 lg:bottom-2 lg:mt-0"
+                className="mx-auto mt-4 flex w-52 items-end justify-center rounded-2xl outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:absolute lg:-right-[19rem] lg:top-6 lg:mt-0 lg:w-72 xl:-right-[21rem] xl:w-80"
               >
                 <img
                   src="/img/citavuk_zadumch.png"
