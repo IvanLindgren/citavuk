@@ -1,0 +1,3265 @@
+{
+ "duration": 2138.85,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.44,
+   "end": 40.68,
+   "text": "We"
+  },
+  {
+   "start": 40.68,
+   "end": 47.9,
+   "text": "have,"
+  },
+  {
+   "start": 47.9,
+   "end": 52.66,
+   "text": "how do you call it, like a nickname, like you have a Serbian name,"
+  },
+  {
+   "start": 52.66,
+   "end": 56.6,
+   "text": "Ilya. Yeah, we just named you Ilya today."
+  },
+  {
+   "start": 57.34,
+   "end": 59.4,
+   "text": "Because it's too difficult, Ilya, it's like, yeah."
+  },
+  {
+   "start": 59.48,
+   "end": 61.38,
+   "text": "Ilya. It's just too difficult."
+  },
+  {
+   "start": 61.38,
+   "end": 66.52,
+   "text": "Hey, but we're not used to actually like several vowels at the same time."
+  },
+  {
+   "start": 66.92,
+   "end": 70.2,
+   "text": "So that's quite tricky, but also because of the way of writing."
+  },
+  {
+   "start": 71.4,
+   "end": 73.24,
+   "text": "So first of all, I should have told you."
+  },
+  {
+   "start": 73.24,
+   "end": 76.84,
+   "text": "Bonjour, bonsoir, comment ça va?"
+  },
+  {
+   "start": 78.98,
+   "end": 79.76,
+   "text": "Oui, comment ça va?"
+  },
+  {
+   "start": 79.84,
+   "end": 81.42,
+   "text": "Bah écoute, franchement, ça va hyper bien."
+  },
+  {
+   "start": 81.62,
+   "end": 82.44,
+   "text": "Ouais, ça va hyper bien."
+  },
+  {
+   "start": 82.96,
+   "end": 84.28,
+   "text": "Aujourd'hui, j'ai passé une super journée."
+  },
+  {
+   "start": 84.76,
+   "end": 86.86,
+   "text": "J'ai donné quelques cours."
+  },
+  {
+   "start": 87.22,
+   "end": 88.5,
+   "text": "J'ai fait les la vaisselles, tout ça."
+  },
+  {
+   "start": 88.5,
+   "end": 90.96,
+   "text": "so it's a very busy day, I'm very happy"
+  },
+  {
+   "start": 92.16,
+   "end": 100.0,
+   "text": "he was occupied, something like that yeah, you got it yeah,"
+  },
+  {
+   "start": 100.0,
+   "end": 100.42,
+   "text": "I'm good"
+  },
+  {
+   "start": 101.82,
+   "end": 105.94,
+   "text": "just to know, our followers, we're not going to have this in French oh,"
+  },
+  {
+   "start": 105.94,
+   "end": 106.34,
+   "text": "was just a..."
+  },
+  {
+   "start": 106.42,
+   "end": 108.6,
+   "text": "Oh, twice. Oh."
+  },
+  {
+   "start": 109.96,
+   "end": 111.66,
+   "text": "Neither in Serbian, unfortunately."
+  },
+  {
+   "start": 111.66,
+   "end": 115.18,
+   "text": "Not yet. But one day we will do it in Serbian."
+  },
+  {
+   "start": 115.28,
+   "end": 117.04,
+   "text": "Hey, maybe next time when we meet up"
+  },
+  {
+   "start": 117.04,
+   "end": 119.36,
+   "text": "and then we can all do it in Serbian"
+  },
+  {
+   "start": 119.36,
+   "end": 123.46,
+   "text": "because hopefully by that time, everyone's going to have a bit more, like just"
+  },
+  {
+   "start": 123.46,
+   "end": 125.54,
+   "text": "feel a bit more comfortable speaking in Serbian, right?"
+  },
+  {
+   "start": 126.36,
+   "end": 126.94,
+   "text": "But yeah."
+  },
+  {
+   "start": 126.94,
+   "end": 131.8,
+   "text": "But before I actually continue or restart asking questions, guys, if you don't know"
+  },
+  {
+   "start": 131.8,
+   "end": 132.02,
+   "text": "who this is,"
+  },
+  {
+   "start": 132.02,
+   "end": 136.46,
+   "text": "it's Elway. he is a french teacher as far as i know right this"
+  },
+  {
+   "start": 136.46,
+   "end": 139.4,
+   "text": "is at least one of the things that you do uh you're also a"
+  },
+  {
+   "start": 139.4,
+   "end": 143.32,
+   "text": "youtuber uh i would say you're a comedian as well because i think this"
+  },
+  {
+   "start": 143.32,
+   "end": 143.48,
+   "text": "specialty in your videos and also i want to say he is a husband"
+  },
+  {
+   "start": 143.48,
+   "end": 143.78,
+   "text": "is your"
+  },
+  {
+   "start": 148.26,
+   "end": 155.6,
+   "text": "so exactly you believe that right yeah congratulations thank"
+  },
+  {
+   "start": 155.6,
+   "end": 156.1,
+   "text": "you so much"
+  },
+  {
+   "start": 158.96,
+   "end": 162.8,
+   "text": "okay guys we have a lot of questions and i before we so we"
+  },
+  {
+   "start": 162.8,
+   "end": 163.7,
+   "text": "kind of like introduced you"
+  },
+  {
+   "start": 163.7,
+   "end": 168.0,
+   "text": "right now but we would like to you to kind of give us um"
+  },
+  {
+   "start": 168.0,
+   "end": 173.28,
+   "text": "maybe the introduction of yourself or like how your story before you came to"
+  },
+  {
+   "start": 173.28,
+   "end": 178.86,
+   "text": "serbia how how did it you know i'm asking that myself yes"
+  },
+  {
+   "start": 180.34,
+   "end": 185.74,
+   "text": "every day so i was born in france right at the beginning uh so"
+  },
+  {
+   "start": 185.74,
+   "end": 191.4,
+   "text": "yeah i'm french i'm uh i was studying something totally different i was not"
+  },
+  {
+   "start": 191.4,
+   "end": 196.62,
+   "text": "studying how to teach french but somehow uh yeah i was teaching how to"
+  },
+  {
+   "start": 196.62,
+   "end": 200.8,
+   "text": "manage non-profit organization basically and yeah and i"
+  },
+  {
+   "start": 200.8,
+   "end": 206.0,
+   "text": "came in serbia for a contract of 10 months with maladies like it's a"
+  },
+  {
+   "start": 206.0,
+   "end": 211.34,
+   "text": "non-profitable organization How did you find them?"
+  },
+  {
+   "start": 212.3,
+   "end": 214.9,
+   "text": "It was a European Volontary Service."
+  },
+  {
+   "start": 216.0,
+   "end": 218.02,
+   "text": "Or Evropský Volontárský Servis."
+  },
+  {
+   "start": 218.34,
+   "end": 218.65,
+   "text": "It's only a"
+  },
+  {
+   "start": 218.65,
+   "end": 220.19,
+   "text": "English. Razumeyu."
+  },
+  {
+   "start": 220.19,
+   "end": 223.85,
+   "text": "But I think in English, it's European Voluntary Service."
+  },
+  {
+   "start": 225.07,
+   "end": 228.51,
+   "text": "So you can work for the NGO in any country of European Union."
+  },
+  {
+   "start": 228.51,
+   "end": 232.15,
+   "text": "And some country like Serbia, Turkey, Russia, like a few countries."
+  },
+  {
+   "start": 232.15,
+   "end": 233.05,
+   "text": "And the dots."
+  },
+  {
+   "start": 233.79,
+   "end": 235.07,
+   "text": "Oh, yeah. So Turkey also."
+  },
+  {
+   "start": 235.13,
+   "end": 236.85,
+   "text": "I think Turkey is part of the program also."
+  },
+  {
+   "start": 237.91,
+   "end": 239.43,
+   "text": "And yeah, so I did that for 10 months."
+  },
+  {
+   "start": 239.99,
+   "end": 242.45,
+   "text": "And I met my now wife."
+  },
+  {
+   "start": 242.93,
+   "end": 245.85,
+   "text": "so then I decided to stay and obviously here I cannot"
+  },
+  {
+   "start": 245.85,
+   "end": 247.73,
+   "text": "rework in management of"
+  },
+  {
+   "start": 247.73,
+   "end": 249.95,
+   "text": "organization because I will need to speak Serbian"
+  },
+  {
+   "start": 249.95,
+   "end": 251.89,
+   "text": "so when my"
+  },
+  {
+   "start": 251.89,
+   "end": 253.87,
+   "text": "contract ended and I was thinking what to do"
+  },
+  {
+   "start": 253.87,
+   "end": 255.87,
+   "text": "with my life in Serbia and I"
+  },
+  {
+   "start": 255.87,
+   "end": 257.91,
+   "text": "speak French, that's the skills I"
+  },
+  {
+   "start": 257.91,
+   "end": 261.81,
+   "text": "have that I can use easily so yeah then I passed a diploma to"
+  },
+  {
+   "start": 261.81,
+   "end": 262.07,
+   "text": "French and now I'm teaching in"
+  },
+  {
+   "start": 262.07,
+   "end": 262.27,
+   "text": "teach"
+  },
+  {
+   "start": 263.25,
+   "end": 267.75,
+   "text": "some schools in Belgrade and yeah it's doing fine and yeah"
+  },
+  {
+   "start": 267.75,
+   "end": 269.77,
+   "text": "I made some videos on"
+  },
+  {
+   "start": 269.77,
+   "end": 270.95,
+   "text": "YouTube and somehow"
+  },
+  {
+   "start": 272.35,
+   "end": 277.23,
+   "text": "few people watched it so no yeah so a lot of people watched it"
+  },
+  {
+   "start": 277.23,
+   "end": 278.37,
+   "text": "i mean it depends on the video"
+  },
+  {
+   "start": 278.37,
+   "end": 283.07,
+   "text": "but i mean yeah i got really surprised and since i like everything that"
+  },
+  {
+   "start": 283.07,
+   "end": 284.39,
+   "text": "is like editing and writing"
+  },
+  {
+   "start": 284.39,
+   "end": 288.35,
+   "text": "and shooting like behind the camera then i continue i don't really like to"
+  },
+  {
+   "start": 288.35,
+   "end": 288.53,
+   "text": "be in front of"
+  },
+  {
+   "start": 288.53,
+   "end": 292.73,
+   "text": "the camera but uh no i have to so but i also kind of"
+  },
+  {
+   "start": 292.73,
+   "end": 295.41,
+   "text": "train myself you know to to be in front of the"
+  },
+  {
+   "start": 295.41,
+   "end": 298.83,
+   "text": "camera so it's quite fun but yeah what i prefer is mostly like to"
+  },
+  {
+   "start": 298.83,
+   "end": 299.99,
+   "text": "write and to do the editing"
+  },
+  {
+   "start": 301.27,
+   "end": 305.35,
+   "text": "and yeah that's it now I do those videos even though I'm not very"
+  },
+  {
+   "start": 305.35,
+   "end": 305.83,
+   "text": "productive at the moment"
+  },
+  {
+   "start": 305.83,
+   "end": 312.77,
+   "text": "but I will be and teaching French I think that's yeah that's me so"
+  },
+  {
+   "start": 312.77,
+   "end": 313.97,
+   "text": "how many years are we talking"
+  },
+  {
+   "start": 313.97,
+   "end": 318.07,
+   "text": "about when was the last the first time that you came here for this"
+  },
+  {
+   "start": 318.07,
+   "end": 319.61,
+   "text": "project and how long has it"
+  },
+  {
+   "start": 319.61,
+   "end": 325.03,
+   "text": "been since then so it was in 2016 then I came back to France"
+  },
+  {
+   "start": 325.03,
+   "end": 329.29,
+   "text": "for like about a year and I came back in 2018 and then I"
+  },
+  {
+   "start": 329.29,
+   "end": 329.41,
+   "text": "was like okay"
+  },
+  {
+   "start": 329.41,
+   "end": 334.01,
+   "text": "shit I need to learn Serbian because my job was in English before so"
+  },
+  {
+   "start": 334.01,
+   "end": 335.29,
+   "text": "now I came back I don't have"
+  },
+  {
+   "start": 335.29,
+   "end": 340.29,
+   "text": "a job and I need to make friends and everything and to speak with"
+  },
+  {
+   "start": 340.29,
+   "end": 341.85,
+   "text": "the family of Lara so then I"
+  },
+  {
+   "start": 341.85,
+   "end": 346.89,
+   "text": "had to I mean I had I wanted to learn Serbian and yeah I"
+  },
+  {
+   "start": 346.89,
+   "end": 351.91,
+   "text": "started in 2018 even though I could already say like dobardan farah and yeah"
+  },
+  {
+   "start": 351.91,
+   "end": 357.57,
+   "text": "and those kind of things but i really like learn much more that's good"
+  },
+  {
+   "start": 357.57,
+   "end": 361.91,
+   "text": "i mean in a short time you you conquered a lot your your long"
+  },
+  {
+   "start": 361.91,
+   "end": 362.77,
+   "text": "videos are all in serbian"
+  },
+  {
+   "start": 362.77,
+   "end": 367.19,
+   "text": "yeah but you don't see all the editing behind it and all the cutting"
+  },
+  {
+   "start": 368.47,
+   "end": 372.01,
+   "text": "but hey even the whale just for it to be in in serbian is"
+  },
+  {
+   "start": 372.01,
+   "end": 377.95,
+   "text": "quite a lot actually so but you see what what love does look at"
+  },
+  {
+   "start": 377.95,
+   "end": 383.05,
+   "text": "him you know i had a i had a whole list of questions and"
+  },
+  {
+   "start": 383.05,
+   "end": 386.83,
+   "text": "then i thought of this one question and i talked to maki so i'm gonna ask you"
+  },
+  {
+   "start": 386.83,
+   "end": 388.27,
+   "text": "now which is like what do actually"
+  },
+  {
+   "start": 388.27,
+   "end": 395.29,
+   "text": "serbs know about france and french people do they what is"
+  },
+  {
+   "start": 395.29,
+   "end": 396.45,
+   "text": "like the stereotype for that or like what"
+  },
+  {
+   "start": 396.45,
+   "end": 400.41,
+   "text": "do they think of like i actually i know some people that don't even"
+  },
+  {
+   "start": 400.41,
+   "end": 405.41,
+   "text": "know the capital of france So, yeah, was it something that was surprising for"
+  },
+  {
+   "start": 405.41,
+   "end": 409.17,
+   "text": "you? It's only fair enough because a lot of French people probably don't know"
+  },
+  {
+   "start": 409.17,
+   "end": 410.25,
+   "text": "the capital of Serbia."
+  },
+  {
+   "start": 412.93,
+   "end": 417.09,
+   "text": "But I mean, I guess here the stereotype and crucial, the same that the"
+  },
+  {
+   "start": 417.09,
+   "end": 420.33,
+   "text": "American half, for example, a lot of people have, like that we are very"
+  },
+  {
+   "start": 420.33,
+   "end": 426.17,
+   "text": "rude, even though we are much more polite than Serbs."
+  },
+  {
+   "start": 428.25,
+   "end": 431.93,
+   "text": "Okay. No, Serbian people are very nice, but when it comes to politeness, like"
+  },
+  {
+   "start": 431.93,
+   "end": 434.79,
+   "text": "Molim, it doesn't exist here."
+  },
+  {
+   "start": 435.99,
+   "end": 436.9,
+   "text": "Daimika-fa."
+  },
+  {
+   "start": 436.9,
+   "end": 445.78,
+   "text": "not like so but it's not a problem but yeah but"
+  },
+  {
+   "start": 445.78,
+   "end": 448.32,
+   "text": "it's funny because like when i ask my student for example what do you"
+  },
+  {
+   "start": 448.32,
+   "end": 451.4,
+   "text": "think about serbia they think we're rude people but when i told them like"
+  },
+  {
+   "start": 451.4,
+   "end": 451.7,
+   "text": "i mean"
+  },
+  {
+   "start": 451.7,
+   "end": 455.08,
+   "text": "come on like how do you order a cafe for example and they're like"
+  },
+  {
+   "start": 455.08,
+   "end": 459.92,
+   "text": "oh but i mean i mean so i thought the same thing actually yeah"
+  },
+  {
+   "start": 459.92,
+   "end": 465.84,
+   "text": "so yeah they think like wheat escargot like pougevy uh snails oh yeah"
+  },
+  {
+   "start": 465.84,
+   "end": 470.22,
+   "text": "like and which is sometimes true like me i just tried it two times"
+  },
+  {
+   "start": 470.22,
+   "end": 472.66,
+   "text": "it's quite yeah i mean all the"
+  },
+  {
+   "start": 472.66,
+   "end": 480.98,
+   "text": "typical cliche like yeah like baguette fromage like cheese the fact that um but"
+  },
+  {
+   "start": 480.98,
+   "end": 481.32,
+   "text": "also one thing"
+  },
+  {
+   "start": 481.32,
+   "end": 486.02,
+   "text": "because here like serbian people they love history and like they know so much"
+  },
+  {
+   "start": 486.02,
+   "end": 488.5,
+   "text": "for example about the fact that France helped during the First"
+  },
+  {
+   "start": 488.5,
+   "end": 490.5,
+   "text": "World War, Serbia, which I"
+  },
+  {
+   "start": 490.5,
+   "end": 492.52,
+   "text": "didn't know, so now I learned a lot about"
+  },
+  {
+   "start": 492.52,
+   "end": 496.68,
+   "text": "history here. They really know a lot"
+  },
+  {
+   "start": 496.68,
+   "end": 498.54,
+   "text": "and France and Serbia used to be very close"
+  },
+  {
+   "start": 498.54,
+   "end": 500.6,
+   "text": "nation, especially before the Second"
+  },
+  {
+   "start": 500.6,
+   "end": 501.44,
+   "text": "World War."
+  },
+  {
+   "start": 503.36,
+   "end": 504.44,
+   "text": "I think"
+  },
+  {
+   "start": 504.44,
+   "end": 506.7,
+   "text": "a lot of people like French"
+  },
+  {
+   "start": 506.7,
+   "end": 510.5,
+   "text": "culture because of this, but then we were part of NATO and everything, so"
+  },
+  {
+   "start": 510.5,
+   "end": 510.8,
+   "text": "also have a lot of people that don't like"
+  },
+  {
+   "start": 510.8,
+   "end": 510.96,
+   "text": "you"
+  },
+  {
+   "start": 512.38,
+   "end": 514.6,
+   "text": "what France represents, so it's"
+  },
+  {
+   "start": 514.6,
+   "end": 515.74,
+   "text": "a bit mixed."
+  },
+  {
+   "start": 517.12,
+   "end": 522.82,
+   "text": "it's always a polarity in Serbia I feel like and um so also one"
+  },
+  {
+   "start": 522.82,
+   "end": 524.6,
+   "text": "of the things that that was kind of"
+  },
+  {
+   "start": 524.6,
+   "end": 529.96,
+   "text": "um interesting is that Zaz the group the group was very famous in Serbia"
+  },
+  {
+   "start": 529.96,
+   "end": 531.4,
+   "text": "actually yeah I don't know"
+  },
+  {
+   "start": 531.4,
+   "end": 535.64,
+   "text": "there was even uh yeah there was even the cafe Zaz I mean I"
+  },
+  {
+   "start": 535.64,
+   "end": 537.56,
+   "text": "think it's closed I don't know"
+  },
+  {
+   "start": 537.56,
+   "end": 540.82,
+   "text": "but yeah when I saw that I mean I was like literally like this"
+  },
+  {
+   "start": 540.82,
+   "end": 544.2,
+   "text": "because Zaz is not so popular in France."
+  },
+  {
+   "start": 544.2,
+   "end": 545.42,
+   "text": "I mean, I cannot judge"
+  },
+  {
+   "start": 545.42,
+   "end": 545.58,
+   "text": "I heard that. cannot judge. because"
+  },
+  {
+   "start": 545.58,
+   "end": 547.66,
+   "text": "Because I only know one song."
+  },
+  {
+   "start": 548.48,
+   "end": 548.64,
+   "text": "But we heard it all the time. Yeah."
+  },
+  {
+   "start": 550.44,
+   "end": 551.56,
+   "text": "So we don't really like it."
+  },
+  {
+   "start": 551.56,
+   "end": 553.8,
+   "text": "Yeah, I think most of people just know."
+  },
+  {
+   "start": 553.8,
+   "end": 555.3,
+   "text": "Je veux de la joie, blah, blah, blah."
+  },
+  {
+   "start": 555.76,
+   "end": 558.74,
+   "text": "Yeah. But yeah, somehow she's very popular in Serbia."
+  },
+  {
+   "start": 558.76,
+   "end": 559.74,
+   "text": "I don't know why."
+  },
+  {
+   "start": 560.76,
+   "end": 562.08,
+   "text": "Yeah, even I knew the song."
+  },
+  {
+   "start": 563.28,
+   "end": 566.04,
+   "text": "And so now we already kind of talked about stereotypes."
+  },
+  {
+   "start": 566.04,
+   "end": 570.0,
+   "text": "But can you tell us then what stereotypes are correct about French people now"
+  },
+  {
+   "start": 570.0,
+   "end": 571.74,
+   "text": "that you already mentioned some of them."
+  },
+  {
+   "start": 572.54,
+   "end": 575.42,
+   "text": "Yes, yes. For example, for the cheese, it's totally correct."
+  },
+  {
+   "start": 575.42,
+   "end": 576.76,
+   "text": "Like, we eat cheese all the time."
+  },
+  {
+   "start": 576.76,
+   "end": 577.68,
+   "text": "We have actually more than..."
+  },
+  {
+   "start": 577.68,
+   "end": 579.16,
+   "text": "I didn't know that."
+  },
+  {
+   "start": 579.16,
+   "end": 581.52,
+   "text": "We have more than a thousand type of cheese."
+  },
+  {
+   "start": 582.34,
+   "end": 583.94,
+   "text": "Wow. We don't have that."
+  },
+  {
+   "start": 584.32,
+   "end": 587.54,
+   "text": "Yeah. Recently, a guy made a world record."
+  },
+  {
+   "start": 588.0,
+   "end": 589.18,
+   "text": "A world record, yeah."
+  },
+  {
+   "start": 590.08,
+   "end": 593.3,
+   "text": "He made a pizza, but like a normal-sized pizza, you know, with more than"
+  },
+  {
+   "start": 593.3,
+   "end": 594.3,
+   "text": "a thousand type of cheese."
+  },
+  {
+   "start": 594.5,
+   "end": 596.74,
+   "text": "So he only used two grams of each cheese."
+  },
+  {
+   "start": 597.1,
+   "end": 600.88,
+   "text": "it's like more than two kilos of cheese and one little pizza oh my"
+  },
+  {
+   "start": 600.88,
+   "end": 601.06,
+   "text": "we do love our cheese and we do love our bread i would i"
+  },
+  {
+   "start": 601.06,
+   "end": 601.24,
+   "text": "god"
+  },
+  {
+   "start": 607.48,
+   "end": 608.42,
+   "text": "would say that that's the only two"
+  },
+  {
+   "start": 608.42,
+   "end": 611.66,
+   "text": "things i miss when i'm in serbia it's bread and cheese what about pan"
+  },
+  {
+   "start": 611.66,
+   "end": 613.42,
+   "text": "au chocolat no pan au chocolat"
+  },
+  {
+   "start": 613.42,
+   "end": 619.74,
+   "text": "yeah croissant that's also i think how do you find the croissant here because"
+  },
+  {
+   "start": 619.74,
+   "end": 624.9,
+   "text": "in every bakery you see croissant like something like croissant maybe we have kiflet"
+  },
+  {
+   "start": 624.9,
+   "end": 625.92,
+   "text": "though like the crof"
+  },
+  {
+   "start": 625.92,
+   "end": 632.68,
+   "text": "we have that but that's not like with the type of like phyllo dough"
+  },
+  {
+   "start": 632.68,
+   "end": 636.9,
+   "text": "like this very i don't know it's a bit different but you do have"
+  },
+  {
+   "start": 636.9,
+   "end": 637.6,
+   "text": "croissant only"
+  },
+  {
+   "start": 637.6,
+   "end": 642.58,
+   "text": "you usually put something inside and for us it's like a sacrilege it's like"
+  },
+  {
+   "start": 642.58,
+   "end": 643.8,
+   "text": "a heresy it."
+  },
+  {
+   "start": 643.8,
+   "end": 649.6,
+   "text": "So wait, croissant without anything, pan au chocolat with"
+  },
+  {
+   "start": 649.6,
+   "end": 651.94,
+   "text": "chocolat, right? Yes."
+  },
+  {
+   "start": 651.94,
+   "end": 653.32,
+   "text": "What else do you then have?"
+  },
+  {
+   "start": 653.32,
+   "end": 653.64,
+   "text": "other types of like fillings? Do you have"
+  },
+  {
+   "start": 656.35,
+   "end": 658.17,
+   "text": "Yeah, you can do it with apple."
+  },
+  {
+   "start": 659.95,
+   "end": 660.87,
+   "text": "How do you call that one?"
+  },
+  {
+   "start": 662.01,
+   "end": 662.77,
+   "text": "That's a good question."
+  },
+  {
+   "start": 663.53,
+   "end": 664.33,
+   "text": "It's been a long time."
+  },
+  {
+   "start": 664.33,
+   "end": 665.73,
+   "text": "I haven't been to a French bakery."
+  },
+  {
+   "start": 666.41,
+   "end": 670.65,
+   "text": "I think it's croissant au pan, probably."
+  },
+  {
+   "start": 672.35,
+   "end": 673.65,
+   "text": "Croissant, no."
+  },
+  {
+   "start": 676.49,
+   "end": 677.77,
+   "text": "And the fact that we're rude,"
+  },
+  {
+   "start": 677.77,
+   "end": 681.99,
+   "text": "I would say it's mostly like a European thing compared to the US because"
+  },
+  {
+   "start": 681.99,
+   "end": 682.63,
+   "text": "it's mostly like a"
+  },
+  {
+   "start": 682.63,
+   "end": 687.15,
+   "text": "cliche from the US that I mean if they go to Paris and of"
+  },
+  {
+   "start": 687.15,
+   "end": 688.15,
+   "text": "course we don't have like the tip culture"
+  },
+  {
+   "start": 688.15,
+   "end": 692.87,
+   "text": "so we're not smiling all the time so they think we're rude but I"
+  },
+  {
+   "start": 692.87,
+   "end": 694.27,
+   "text": "think that there is no difference"
+  },
+  {
+   "start": 694.27,
+   "end": 698.59,
+   "text": "between France and Spain and Serbia and a lot of countries in that regard"
+  },
+  {
+   "start": 698.59,
+   "end": 705.37,
+   "text": "so yeah I don't think this cliche is very true and yeah um you"
+  },
+  {
+   "start": 705.37,
+   "end": 707.99,
+   "text": "said rude okay uh are you picky with your food"
+  },
+  {
+   "start": 707.99,
+   "end": 714.71,
+   "text": "if i'm picky with my food yeah french people if they're french people yes"
+  },
+  {
+   "start": 714.71,
+   "end": 715.35,
+   "text": "yes i mean not as much"
+  },
+  {
+   "start": 715.35,
+   "end": 720.49,
+   "text": "as italian for example which are very picky but we know we eat of"
+  },
+  {
+   "start": 720.49,
+   "end": 721.53,
+   "text": "everything and we accept everything"
+  },
+  {
+   "start": 721.53,
+   "end": 727.03,
+   "text": "um just some things were a bit picky like for example putting ketchup on"
+  },
+  {
+   "start": 727.03,
+   "end": 727.31,
+   "text": "pizza"
+  },
+  {
+   "start": 728.85,
+   "end": 733.37,
+   "text": "so i mean for me for example it's okay like to break spaghetti in"
+  },
+  {
+   "start": 733.37,
+   "end": 733.85,
+   "text": "half like i do that"
+  },
+  {
+   "start": 733.85,
+   "end": 737.71,
+   "text": "yeah but to put pizza and ketchup for me it's like an insult it's"
+  },
+  {
+   "start": 737.71,
+   "end": 738.33,
+   "text": "like you're saying to the"
+  },
+  {
+   "start": 738.33,
+   "end": 743.49,
+   "text": "guy your pizza is shit and i need something to to put taste but"
+  },
+  {
+   "start": 743.49,
+   "end": 744.17,
+   "text": "this i would say that french"
+  },
+  {
+   "start": 744.17,
+   "end": 747.63,
+   "text": "should be picky for this kind of thing if you do that in front"
+  },
+  {
+   "start": 747.63,
+   "end": 748.59,
+   "text": "of them but otherwise no we"
+  },
+  {
+   "start": 748.59,
+   "end": 754.51,
+   "text": "we are not we eat everything how do you find the cheese in serbia"
+  },
+  {
+   "start": 754.51,
+   "end": 757.35,
+   "text": "as you are kind of an expert of Cheese."
+  },
+  {
+   "start": 757.35,
+   "end": 759.13,
+   "text": "Oh, an expert."
+  },
+  {
+   "start": 759.13,
+   "end": 760.03,
+   "text": "No, I love it."
+  },
+  {
+   "start": 760.03,
+   "end": 766.89,
+   "text": "Because here you have two things kaczkavaille and belisir, let's say, like white cheese."
+  },
+  {
+   "start": 767.83,
+   "end": 771.79,
+   "text": "When it comes to white cheese, Serbia, like it's, I mean, Greek and Serbian"
+  },
+  {
+   "start": 771.79,
+   "end": 772.67,
+   "text": "cheese are the best."
+  },
+  {
+   "start": 772.67,
+   "end": 773.71,
+   "text": "Like it's awesome."
+  },
+  {
+   "start": 773.87,
+   "end": 775.57,
+   "text": "Like every cheese, I have so much taste."
+  },
+  {
+   "start": 775.57,
+   "end": 776.11,
+   "text": "And we don't have this in France. I love it."
+  },
+  {
+   "start": 777.37,
+   "end": 778.49,
+   "text": "It's not a thing."
+  },
+  {
+   "start": 779.17,
+   "end": 784.47,
+   "text": "But when it comes to kaczkavaille, I mean, no country can compare to France."
+  },
+  {
+   "start": 784.47,
+   "end": 787.39,
+   "text": "Sorry, if I'm very patriotic here."
+  },
+  {
+   "start": 787.39,
+   "end": 792.27,
+   "text": "but I would I mean, it makes sense because you really like if you"
+  },
+  {
+   "start": 792.27,
+   "end": 793.39,
+   "text": "have 1000 types of cheese,"
+  },
+  {
+   "start": 793.39,
+   "end": 795.93,
+   "text": "I mean, you really perfected your craft."
+  },
+  {
+   "start": 795.93,
+   "end": 799.37,
+   "text": "So I think, yeah, I think we can give that one to you."
+  },
+  {
+   "start": 799.87,
+   "end": 800.97,
+   "text": "No, you have a great food."
+  },
+  {
+   "start": 800.97,
+   "end": 803.15,
+   "text": "But when it comes to cheese, I mean, to catch cabal specifically,"
+  },
+  {
+   "start": 803.15,
+   "end": 807.45,
+   "text": "you have good ones, you have a very good cheese."
+  },
+  {
+   "start": 807.45,
+   "end": 807.61,
+   "text": "listen, being realistic is totally fine."
+  },
+  {
+   "start": 807.61,
+   "end": 807.89,
+   "text": "But I mean,"
+  },
+  {
+   "start": 813.31,
+   "end": 816.71,
+   "text": "What about French people being romantic?"
+  },
+  {
+   "start": 819.19,
+   "end": 821.71,
+   "text": "well me for example i'm the least romantic person in the planet i believe"
+  },
+  {
+   "start": 821.71,
+   "end": 828.51,
+   "text": "what about you what does your wife say oh she totally agree on this"
+  },
+  {
+   "start": 828.51,
+   "end": 829.33,
+   "text": "yeah okay perfect"
+  },
+  {
+   "start": 829.33,
+   "end": 836.33,
+   "text": "but she's not romantic also so we are a non-romantic couple but uh i"
+  },
+  {
+   "start": 836.33,
+   "end": 836.81,
+   "text": "i mean for us it's more italian italian for us they are very romantic don't know if"
+  },
+  {
+   "start": 841.05,
+   "end": 841.85,
+   "text": "it's like the country of"
+  },
+  {
+   "start": 841.85,
+   "end": 845.39,
+   "text": "love and everything but uh now that i came to syria i heard that"
+  },
+  {
+   "start": 845.39,
+   "end": 847.47,
+   "text": "we are the country of love so I don't know."
+  },
+  {
+   "start": 847.65,
+   "end": 848.11,
+   "text": "Exactly."
+  },
+  {
+   "start": 848.11,
+   "end": 852.71,
+   "text": "I think I would say France is like a country of love and Italy"
+  },
+  {
+   "start": 852.71,
+   "end": 853.89,
+   "text": "is the country of desire,"
+  },
+  {
+   "start": 853.89,
+   "end": 854.79,
+   "text": "maybe."
+  },
+  {
+   "start": 854.79,
+   "end": 855.79,
+   "text": "I don't know how to explain it."
+  },
+  {
+   "start": 855.79,
+   "end": 861.21,
+   "text": "Like, because they always like kind of, you know, like, oh, Bella, like, you"
+  },
+  {
+   "start": 861.21,
+   "end": 861.45,
+   "text": "know, pretty"
+  },
+  {
+   "start": 861.45,
+   "end": 863.05,
+   "text": "looking good or something like that."
+  },
+  {
+   "start": 863.05,
+   "end": 867.51,
+   "text": "So like, like to conquer in a way, you know, but, but this is"
+  },
+  {
+   "start": 867.51,
+   "end": 868.47,
+   "text": "a stereotype because I, it's"
+  },
+  {
+   "start": 868.47,
+   "end": 873.8,
+   "text": "not like I went to France and I had people being very romantic around."
+  },
+  {
+   "start": 873.8,
+   "end": 878.8,
+   "text": "me so this is just like the stereotypes that are right yeah maybe i"
+  },
+  {
+   "start": 878.8,
+   "end": 880.5,
+   "text": "mean i agree but yeah for me"
+  },
+  {
+   "start": 880.5,
+   "end": 884.44,
+   "text": "we are not especially romantic let's say but i guess there is the image"
+  },
+  {
+   "start": 884.44,
+   "end": 891.38,
+   "text": "of the french language probably the romantism like i mean maybe the writer i"
+  },
+  {
+   "start": 891.38,
+   "end": 892.76,
+   "text": "don't know i don't know where does it"
+  },
+  {
+   "start": 892.76,
+   "end": 898.56,
+   "text": "come from but i don't think we're any more romantic than other people i"
+  },
+  {
+   "start": 898.56,
+   "end": 904.48,
+   "text": "have one uh request please one of my friends is fangirling that you like"
+  },
+  {
+   "start": 904.48,
+   "end": 908.68,
+   "text": "would uh how do you say uh respond like on my"
+  },
+  {
+   "start": 908.68,
+   "end": 915.16,
+   "text": "stories or whatever can you just say can you repeat sorry can you just"
+  },
+  {
+   "start": 915.16,
+   "end": 915.24,
+   "text": "say you"
+  },
+  {
+   "start": 915.24,
+   "end": 922.3,
+   "text": "she loves you just"
+  },
+  {
+   "start": 922.3,
+   "end": 925.56,
+   "text": "so you know she loves you i just thought of that so she's gonna"
+  },
+  {
+   "start": 925.56,
+   "end": 928.76,
+   "text": "love this didn't tell her that i have a that i'm talking to you"
+  },
+  {
+   "start": 928.76,
+   "end": 931.68,
+   "text": "so she's gonna love it okay the last one"
+  },
+  {
+   "start": 931.68,
+   "end": 938.94,
+   "text": "she oh hey my wife is not i'm joking uh"
+  },
+  {
+   "start": 938.94,
+   "end": 941.64,
+   "text": "she's uh she's about 27 i think something like that"
+  },
+  {
+   "start": 941.64,
+   "end": 945.64,
+   "text": "but she's uh she knows also she loves french so this is one of"
+  },
+  {
+   "start": 945.64,
+   "end": 946.48,
+   "text": "the reasons why she also loves you"
+  },
+  {
+   "start": 946.48,
+   "end": 950.76,
+   "text": "and she loves your videos she loves your sense of humor um she probably"
+  },
+  {
+   "start": 950.76,
+   "end": 954.06,
+   "text": "just gets you completely and that's why she was like oh you know and"
+  },
+  {
+   "start": 954.06,
+   "end": 956.32,
+   "text": "you are learning serbian like her language so she's"
+  },
+  {
+   "start": 956.32,
+   "end": 962.16,
+   "text": "like yes um okay so the last one is that french people are artistic"
+  },
+  {
+   "start": 962.16,
+   "end": 964.5,
+   "text": "slash intellectuals oh very"
+  },
+  {
+   "start": 964.5,
+   "end": 967.2,
+   "text": "very intellectual yes is it true"
+  },
+  {
+   "start": 971.12,
+   "end": 974.64,
+   "text": "again it's hard for me to general because i met a lot of artistic"
+  },
+  {
+   "start": 974.64,
+   "end": 976.96,
+   "text": "and intellectual people in Serbia."
+  },
+  {
+   "start": 976.96,
+   "end": 982.5,
+   "text": "So it's hard to say for the whole country that people are like that."
+  },
+  {
+   "start": 982.56,
+   "end": 988.5,
+   "text": "but it is true that we have a lot of famous people in art,"
+  },
+  {
+   "start": 988.5,
+   "end": 991.06,
+   "text": "in cinema, in painting, in writing."
+  },
+  {
+   "start": 993.74,
+   "end": 997.12,
+   "text": "Yeah, I would say, I mean, again, it's a generalization."
+  },
+  {
+   "start": 997.12,
+   "end": 1000.36,
+   "text": "It's hard to say French people are more intellectual than others."
+  },
+  {
+   "start": 1000.36,
+   "end": 1001.52,
+   "text": "I cannot say that."
+  },
+  {
+   "start": 1002.22,
+   "end": 1008.02,
+   "text": "yeah they're all these are all very stereotypical generalizations so we we are all"
+  },
+  {
+   "start": 1008.02,
+   "end": 1008.52,
+   "text": "we all know that"
+  },
+  {
+   "start": 1008.52,
+   "end": 1012.36,
+   "text": "this it's but but but for once it's a nice stereotype so we'll take"
+  },
+  {
+   "start": 1012.36,
+   "end": 1012.76,
+   "text": "it i will say oh yeah"
+  },
+  {
+   "start": 1012.76,
+   "end": 1019.94,
+   "text": "okay that's patriarchism comes so hey if it's me why not"
+  },
+  {
+   "start": 1019.94,
+   "end": 1020.72,
+   "text": "okay yes"
+  },
+  {
+   "start": 1020.72,
+   "end": 1026.18,
+   "text": "um do you want to make some questions because i feel like i took"
+  },
+  {
+   "start": 1026.18,
+   "end": 1031.32,
+   "text": "over with my french stereotype type uh yeah now i want to ask about"
+  },
+  {
+   "start": 1031.32,
+   "end": 1038.32,
+   "text": "serbians to you let's talk about like uh stereotypes for serbs okay for"
+  },
+  {
+   "start": 1038.32,
+   "end": 1041.68,
+   "text": "example and be careful about what you say because your wife is serbian as"
+  },
+  {
+   "start": 1041.68,
+   "end": 1041.88,
+   "text": "yes you have lots of followers as well but i think they're all open"
+  },
+  {
+   "start": 1041.88,
+   "end": 1042.08,
+   "text": "well"
+  },
+  {
+   "start": 1046.56,
+   "end": 1052.1,
+   "text": "to your criticism anyway yeah i think they're used to it before we continue"
+  },
+  {
+   "start": 1052.1,
+   "end": 1054.02,
+   "text": "with the show here's a quick reminder."
+  },
+  {
+   "start": 1054.02,
+   "end": 1058.0,
+   "text": "This podcast is free for everyone and supported by listeners like you."
+  },
+  {
+   "start": 1058.0,
+   "end": 1058.64,
+   "text": "We hope that this"
+  },
+  {
+   "start": 1058.64,
+   "end": 1061.4,
+   "text": "podcast is useful and companion to you."
+  },
+  {
+   "start": 1061.4,
+   "end": 1063.68,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 1063.68,
+   "end": 1064.58,
+   "text": "To help us continue"
+  },
+  {
+   "start": 1064.58,
+   "end": 1068.58,
+   "text": "creating useful content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 1068.58,
+   "end": 1069.62,
+   "text": "If you have the means,"
+  },
+  {
+   "start": 1069.62,
+   "end": 1072.0,
+   "text": "you can support us in different ways."
+  },
+  {
+   "start": 1072.0,
+   "end": 1078.5,
+   "text": "You may just go to buymeacoffee.com slash mosekafapodcast and send us some cups of"
+  },
+  {
+   "start": 1078.5,
+   "end": 1083.86,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozda"
+  },
+  {
+   "start": 1083.86,
+   "end": 1087.82,
+   "text": "cafe podcast and get extra benefits like bonus content,"
+  },
+  {
+   "start": 1087.82,
+   "end": 1091.62,
+   "text": "full transcripts of the show in Serbian, or even join us on the show."
+  },
+  {
+   "start": 1092.3,
+   "end": 1096.42,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1096.42,
+   "end": 1098.94,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1099.26,
+   "end": 1101.1,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1101.64,
+   "end": 1103.26,
+   "text": "Serbs drink a lot."
+  },
+  {
+   "start": 1104.24,
+   "end": 1105.9,
+   "text": "Yes, yes, that's totally true."
+  },
+  {
+   "start": 1106.5,
+   "end": 1109.84,
+   "text": "And your drink increased since you came here."
+  },
+  {
+   "start": 1110.44,
+   "end": 1111.84,
+   "text": "Actually, maybe it's not so true."
+  },
+  {
+   "start": 1111.84,
+   "end": 1118.96,
+   "text": "I think French people drink more, but Serbs drink more early, I would say."
+  },
+  {
+   "start": 1120.14,
+   "end": 1122.68,
+   "text": "Interesting. How early? Like in the morning."
+  },
+  {
+   "start": 1123.06,
+   "end": 1125.5,
+   "text": "Like Yeah, coffee and raki."
+  },
+  {
+   "start": 1126.28,
+   "end": 1129.04,
+   "text": "Like when I compared, I mean, in France, it's totally normal to have a"
+  },
+  {
+   "start": 1129.04,
+   "end": 1131.42,
+   "text": "glass of wine when you eat the lunch at noon."
+  },
+  {
+   "start": 1131.9,
+   "end": 1133.1,
+   "text": "Like it's the most normal thing."
+  },
+  {
+   "start": 1133.9,
+   "end": 1138.34,
+   "text": "And I never see anybody like drinking alcohol for lunch, for example, in Serbia."
+  },
+  {
+   "start": 1138.34,
+   "end": 1139.9,
+   "text": "and we also drink quite a lot"
+  },
+  {
+   "start": 1139.9,
+   "end": 1141.92,
+   "text": "wine and beer in the evening"
+  },
+  {
+   "start": 1141.92,
+   "end": 1143.92,
+   "text": "so we do"
+  },
+  {
+   "start": 1143.92,
+   "end": 1146.14,
+   "text": "drink actually quite too much maybe"
+  },
+  {
+   "start": 1146.14,
+   "end": 1147.94,
+   "text": "but Serbs"
+  },
+  {
+   "start": 1147.94,
+   "end": 1150.14,
+   "text": "they drink more pure"
+  },
+  {
+   "start": 1150.14,
+   "end": 1154.12,
+   "text": "alcohol like rakija stronger ones it's not popular in France"
+  },
+  {
+   "start": 1154.12,
+   "end": 1157.76,
+   "text": "like rakija, rum, vodka"
+  },
+  {
+   "start": 1157.76,
+   "end": 1159.52,
+   "text": "I mean it is for young people but"
+  },
+  {
+   "start": 1159.52,
+   "end": 1161.5,
+   "text": "it's not so popular, it's mostly like"
+  },
+  {
+   "start": 1161.5,
+   "end": 1165.18,
+   "text": "wine and beer so I would say that Serbs maybe"
+  },
+  {
+   "start": 1165.18,
+   "end": 1171.26,
+   "text": "drink yeah for example if you drink a raki in the morning in france"
+  },
+  {
+   "start": 1171.26,
+   "end": 1172.26,
+   "text": "they will call like i don't know"
+  },
+  {
+   "start": 1172.26,
+   "end": 1176.6,
+   "text": "they will think you have a problem that you you're depressed"
+  },
+  {
+   "start": 1176.6,
+   "end": 1183.18,
+   "text": "yeah it's totally normal and it's accepted it's actually good for her i mean"
+  },
+  {
+   "start": 1183.18,
+   "end": 1183.7,
+   "text": "it's probably good"
+  },
+  {
+   "start": 1183.7,
+   "end": 1188.56,
+   "text": "for a lot of things so it's totally normal but in france no that"
+  },
+  {
+   "start": 1188.56,
+   "end": 1193.92,
+   "text": "you have a problem timing and the density is the difference."
+  },
+  {
+   "start": 1194.3,
+   "end": 1197.72,
+   "text": "How about Serbs often get angry?"
+  },
+  {
+   "start": 1200.58,
+   "end": 1202.76,
+   "text": "Well, yes, yeah, yes."
+  },
+  {
+   "start": 1202.92,
+   "end": 1203.27,
+   "text": "Thinking"
+  },
+  {
+   "start": 1203.27,
+   "end": 1204.23,
+   "text": "of your wife."
+  },
+  {
+   "start": 1204.59,
+   "end": 1205.87,
+   "text": "Even more than French anymore."
+  },
+  {
+   "start": 1206.89,
+   "end": 1211.93,
+   "text": "Especially when it comes to driving, they can get very angry."
+  },
+  {
+   "start": 1213.15,
+   "end": 1213.75,
+   "text": "Swear a lot."
+  },
+  {
+   "start": 1214.89,
+   "end": 1215.75,
+   "text": "Yeah, they swear a lot."
+  },
+  {
+   "start": 1215.75,
+   "end": 1217.27,
+   "text": "And also the honking."
+  },
+  {
+   "start": 1217.81,
+   "end": 1219.67,
+   "text": "As soon, for example, in Belgrade, in Serbia,"
+  },
+  {
+   "start": 1219.67,
+   "end": 1223.49,
+   "text": "it first goes to orange and then green, the light."
+  },
+  {
+   "start": 1224.11,
+   "end": 1226.89,
+   "text": "and like as soon as it like a microsecond if it comes to a"
+  },
+  {
+   "start": 1226.89,
+   "end": 1227.49,
+   "text": "range and it didn't already start"
+  },
+  {
+   "start": 1227.49,
+   "end": 1232.65,
+   "text": "it would be like yeah exactly yeah that i they look like very i"
+  },
+  {
+   "start": 1232.65,
+   "end": 1232.93,
+   "text": "don't know stressed with the"
+  },
+  {
+   "start": 1232.93,
+   "end": 1239.79,
+   "text": "time which is strange because usually it's so yeah yeah but when they're driving"
+  },
+  {
+   "start": 1239.79,
+   "end": 1240.05,
+   "text": "no they're very"
+  },
+  {
+   "start": 1240.05,
+   "end": 1247.39,
+   "text": "very um what was aggressive or like angry yeah"
+  },
+  {
+   "start": 1247.39,
+   "end": 1250.19,
+   "text": "yeah but otherwise no i never had any"
+  },
+  {
+   "start": 1251.55,
+   "end": 1254.57,
+   "text": "i never saw any angry person that is not in a car in syria"
+  },
+  {
+   "start": 1254.57,
+   "end": 1257.37,
+   "text": "at least i mean i saw some but"
+  },
+  {
+   "start": 1257.37,
+   "end": 1263.99,
+   "text": "yeah i feel like not more than in france sorry no i just wanted"
+  },
+  {
+   "start": 1263.99,
+   "end": 1265.01,
+   "text": "to say i actually stopped you"
+  },
+  {
+   "start": 1265.01,
+   "end": 1268.73,
+   "text": "but i wanted to say that i feel like one of the things like"
+  },
+  {
+   "start": 1268.73,
+   "end": 1270.59,
+   "text": "with the angry thing i think it's more"
+  },
+  {
+   "start": 1270.59,
+   "end": 1274.57,
+   "text": "of like maybe holding a grudge i feel sometimes that we can do that"
+  },
+  {
+   "start": 1274.57,
+   "end": 1279.43,
+   "text": "rather than being constantly angry we do complain a lot i mean it's just"
+  },
+  {
+   "start": 1279.43,
+   "end": 1281.61,
+   "text": "you know and you kind of like swear or whatever but"
+  },
+  {
+   "start": 1281.61,
+   "end": 1286.43,
+   "text": "i think it's just maybe maybe the grudge more than being angry but yeah"
+  },
+  {
+   "start": 1286.43,
+   "end": 1289.55,
+   "text": "typical angry level i guess"
+  },
+  {
+   "start": 1291.57,
+   "end": 1298.87,
+   "text": "from that to women women are gold diggers in serbia is a common stereotype"
+  },
+  {
+   "start": 1300.27,
+   "end": 1303.19,
+   "text": "I mean, Slavic girls, actually."
+  },
+  {
+   "start": 1304.51,
+   "end": 1308.25,
+   "text": "I mean, I didn't saw that, but yeah, I heard it's a stereotype, but"
+  },
+  {
+   "start": 1308.25,
+   "end": 1308.81,
+   "text": "not more than the difference."
+  },
+  {
+   "start": 1308.81,
+   "end": 1310.05,
+   "text": "I mean, I don't know all the girls I know."
+  },
+  {
+   "start": 1310.05,
+   "end": 1311.13,
+   "text": "Yeah."
+  },
+  {
+   "start": 1311.13,
+   "end": 1315.55,
+   "text": "very normal so yeah but i mean you maybe the thing is that maybe"
+  },
+  {
+   "start": 1315.55,
+   "end": 1316.03,
+   "text": "people think that because"
+  },
+  {
+   "start": 1316.03,
+   "end": 1319.81,
+   "text": "you see like in the evening girls that i have a lot of makeup"
+  },
+  {
+   "start": 1319.81,
+   "end": 1321.45,
+   "text": "and that yeah like very beautiful"
+  },
+  {
+   "start": 1321.45,
+   "end": 1325.39,
+   "text": "dress and everything which you don't see often in france so maybe that's why"
+  },
+  {
+   "start": 1325.39,
+   "end": 1326.95,
+   "text": "i know but i i"
+  },
+  {
+   "start": 1326.95,
+   "end": 1334.01,
+   "text": "didn't experience this sadly you would have you would have ruled"
+  },
+  {
+   "start": 1334.01,
+   "end": 1338.05,
+   "text": "um but i don't have money so actually it doesn't work maybe that's right"
+  },
+  {
+   "start": 1338.05,
+   "end": 1340.81,
+   "text": "hey but you you actually don't really need to have a"
+  },
+  {
+   "start": 1340.81,
+   "end": 1345.03,
+   "text": "lot of money because the status is already everything you know it's like it's"
+  },
+  {
+   "start": 1345.03,
+   "end": 1345.47,
+   "text": "deal in serbia like you're from france come on france you know could have like a big"
+  },
+  {
+   "start": 1350.35,
+   "end": 1351.01,
+   "text": "used that could have"
+  },
+  {
+   "start": 1351.01,
+   "end": 1360.15,
+   "text": "too late too late no no i cannot are"
+  },
+  {
+   "start": 1360.15,
+   "end": 1365.75,
+   "text": "people cold here do you find them cold like they are distant cold like"
+  },
+  {
+   "start": 1365.75,
+   "end": 1371.77,
+   "text": "they don't smile much or they don't yeah yeah in france well i would"
+  },
+  {
+   "start": 1371.77,
+   "end": 1376.07,
+   "text": "say more like south in that regard like spain and italy even though it depends on"
+  },
+  {
+   "start": 1376.07,
+   "end": 1376.21,
+   "text": "but we tend maybe to smile much more than serbs yes that's true but"
+  },
+  {
+   "start": 1376.21,
+   "end": 1376.49,
+   "text": "the region"
+  },
+  {
+   "start": 1382.17,
+   "end": 1387.71,
+   "text": "that doesn't i mean yeah because again it depends on people but it's a"
+  },
+  {
+   "start": 1387.71,
+   "end": 1391.21,
+   "text": "lot of time i know a lot of serbs that really have like they"
+  },
+  {
+   "start": 1391.21,
+   "end": 1396.07,
+   "text": "never smile but but they're still like very nice and everything and it's really"
+  },
+  {
+   "start": 1396.07,
+   "end": 1399.65,
+   "text": "weird to see a french person that doesn't smile and it's the same when"
+  },
+  {
+   "start": 1399.65,
+   "end": 1400.93,
+   "text": "you go in a shop like when"
+  },
+  {
+   "start": 1400.93,
+   "end": 1403.39,
+   "text": "when you come like when you go to a shop or something like this"
+  },
+  {
+   "start": 1403.39,
+   "end": 1404.05,
+   "text": "you rarely see like the"
+  },
+  {
+   "start": 1404.05,
+   "end": 1407.09,
+   "text": "person like saying like hi how are you what do you want to have"
+  },
+  {
+   "start": 1407.09,
+   "end": 1407.77,
+   "text": "like they're usually like"
+  },
+  {
+   "start": 1409.01,
+   "end": 1414.95,
+   "text": "it's really damn yeah actually that's true because i get so confused when i"
+  },
+  {
+   "start": 1414.95,
+   "end": 1418.07,
+   "text": "go to the store and someone's like too enthusiastic to help me out"
+  },
+  {
+   "start": 1418.07,
+   "end": 1420.24,
+   "text": "or like they ask me, how are you or something?"
+  },
+  {
+   "start": 1420.24,
+   "end": 1423.72,
+   "text": "And I'm like, hey, hey, I'm just looking."
+  },
+  {
+   "start": 1423.84,
+   "end": 1429.38,
+   "text": "I'm just looking like, you know, like don't attack me right away."
+  },
+  {
+   "start": 1429.9,
+   "end": 1437.26,
+   "text": "That's true. yeah that's true so okay so considering"
+  },
+  {
+   "start": 1437.26,
+   "end": 1439.46,
+   "text": "that you've been here for here in serbia for a long"
+  },
+  {
+   "start": 1439.46,
+   "end": 1445.66,
+   "text": "time now i mean longer let's say um what was your biggest cultural shock"
+  },
+  {
+   "start": 1445.66,
+   "end": 1446.92,
+   "text": "but like what did"
+  },
+  {
+   "start": 1446.92,
+   "end": 1450.86,
+   "text": "you have to work through or maybe it's still something that you just don't"
+  },
+  {
+   "start": 1450.86,
+   "end": 1451.9,
+   "text": "can't deal with"
+  },
+  {
+   "start": 1451.9,
+   "end": 1457.52,
+   "text": "in a way no i think no i can deal with almost everything uh"
+  },
+  {
+   "start": 1457.52,
+   "end": 1462.44,
+   "text": "maybe one shock i would say was maybe the I mean the the obvious"
+  },
+  {
+   "start": 1462.44,
+   "end": 1465.34,
+   "text": "one like the first shock I had for example was the burek in"
+  },
+  {
+   "start": 1465.34,
+   "end": 1469.26,
+   "text": "the morning because literally the day the day when I arrived I mean the"
+  },
+  {
+   "start": 1469.26,
+   "end": 1470.34,
+   "text": "day after I arrived like in"
+  },
+  {
+   "start": 1470.34,
+   "end": 1475.08,
+   "text": "the morning we went to the office and at 8 a.m and they offered"
+  },
+  {
+   "start": 1475.08,
+   "end": 1476.22,
+   "text": "us like oh you're you're French"
+  },
+  {
+   "start": 1476.22,
+   "end": 1483.5,
+   "text": "hey take like a burek sacerum like and I mean it's it"
+  },
+  {
+   "start": 1483.5,
+   "end": 1486.5,
+   "text": "was like way too big oily and everything at 8 a.m and I was"
+  },
+  {
+   "start": 1486.5,
+   "end": 1489.7,
+   "text": "used to just have an apple in the morning so for me it was"
+  },
+  {
+   "start": 1489.7,
+   "end": 1491.06,
+   "text": "like that's a big"
+  },
+  {
+   "start": 1491.06,
+   "end": 1494.58,
+   "text": "shock for example yes and then I could not eat burak for one year"
+  },
+  {
+   "start": 1494.58,
+   "end": 1497.52,
+   "text": "I think wow you know it's quite"
+  },
+  {
+   "start": 1497.52,
+   "end": 1502.8,
+   "text": "interesting because my my when I was in Serbia with my boyfriend at the"
+  },
+  {
+   "start": 1502.8,
+   "end": 1504.34,
+   "text": "time and he's partially"
+  },
+  {
+   "start": 1504.34,
+   "end": 1509.4,
+   "text": "French as well and he was like your food is just really greasy and"
+  },
+  {
+   "start": 1509.4,
+   "end": 1512.8,
+   "text": "oily and it's it's very much like very heavy food."
+  },
+  {
+   "start": 1512.8,
+   "end": 1516.6,
+   "text": "Like, I don't, he's like, how aren't there more fat people in here?"
+  },
+  {
+   "start": 1516.6,
+   "end": 1516.84,
+   "text": "I said, I don't know."
+  },
+  {
+   "start": 1516.84,
+   "end": 1517.08,
+   "text": "You know,"
+  },
+  {
+   "start": 1517.9,
+   "end": 1521.72,
+   "text": "I just, especially in the, like, I'm from the North."
+  },
+  {
+   "start": 1521.72,
+   "end": 1521.94,
+   "text": "So this is where you"
+  },
+  {
+   "start": 1521.94,
+   "end": 1524.52,
+   "text": "have agriculture and you have a lot of cattle."
+  },
+  {
+   "start": 1524.52,
+   "end": 1527.5,
+   "text": "So like my parents are used to, or my grandpa is"
+  },
+  {
+   "start": 1527.5,
+   "end": 1533.68,
+   "text": "used to like eating bacon and schwarzi and, you know, like burek or like"
+  },
+  {
+   "start": 1533.68,
+   "end": 1535.96,
+   "text": "anything that's really, everything is really, really greasy."
+  },
+  {
+   "start": 1536.64,
+   "end": 1537.78,
+   "text": "I don't know how we do it."
+  },
+  {
+   "start": 1538.58,
+   "end": 1539.74,
+   "text": "Yeah, I don't know how, that's true."
+  },
+  {
+   "start": 1540.8,
+   "end": 1543.78,
+   "text": "But you have a lot of butter though in France, right?"
+  },
+  {
+   "start": 1544.06,
+   "end": 1545.06,
+   "text": "A lot of butter."
+  },
+  {
+   "start": 1545.46,
+   "end": 1548.72,
+   "text": "Yeah, especially where I come from, Brittany, it's all about butter."
+  },
+  {
+   "start": 1549.5,
+   "end": 1550.3,
+   "text": "We put it everywhere."
+  },
+  {
+   "start": 1550.42,
+   "end": 1552.14,
+   "text": "And we're also usually quite thin, so."
+  },
+  {
+   "start": 1552.58,
+   "end": 1553.22,
+   "text": "There you go."
+  },
+  {
+   "start": 1553.76,
+   "end": 1558.88,
+   "text": "then fat doesn't make you fat that's mostly sugar i would say so maybe"
+  },
+  {
+   "start": 1558.88,
+   "end": 1560.16,
+   "text": "serbs don't eat so much sugar"
+  },
+  {
+   "start": 1560.16,
+   "end": 1567.22,
+   "text": "maybe maybe oh man i love sugar um okay rapid question so we're gonna"
+  },
+  {
+   "start": 1567.22,
+   "end": 1568.26,
+   "text": "ask you a question and"
+  },
+  {
+   "start": 1568.26,
+   "end": 1571.82,
+   "text": "then you just you know say the first thing kind of that you think"
+  },
+  {
+   "start": 1571.82,
+   "end": 1578.86,
+   "text": "of um favorite serbian meals sarma oh that's a good one i love"
+  },
+  {
+   "start": 1578.86,
+   "end": 1585.34,
+   "text": "that too cool favorite sorry no no hesitation i say"
+  },
+  {
+   "start": 1585.34,
+   "end": 1589.3,
+   "text": "sarma i say uh favorite dessert"
+  },
+  {
+   "start": 1593.18,
+   "end": 1601.9,
+   "text": "favorite place"
+  },
+  {
+   "start": 1601.9,
+   "end": 1603.18,
+   "text": "to visit in serbia"
+  },
+  {
+   "start": 1605.54,
+   "end": 1607.14,
+   "text": "Tara. Oh, that's a good one."
+  },
+  {
+   "start": 1607.14,
+   "end": 1609.28,
+   "text": "I just went to Tara this year."
+  },
+  {
+   "start": 1610.42,
+   "end": 1611.94,
+   "text": "I still haven't seen it yet."
+  },
+  {
+   "start": 1612.42,
+   "end": 1614.24,
+   "text": "Yeah, it's pretty nice."
+  },
+  {
+   "start": 1616.52,
+   "end": 1618.1,
+   "text": "Favorite Serbian product?"
+  },
+  {
+   "start": 1619.6,
+   "end": 1620.34,
+   "text": "Can you repeat?"
+  },
+  {
+   "start": 1620.72,
+   "end": 1621.9,
+   "text": "Favorite Serbian product."
+  },
+  {
+   "start": 1622.36,
+   "end": 1623.86,
+   "text": "It can be something edible or not."
+  },
+  {
+   "start": 1623.86,
+   "end": 1624.92,
+   "text": "Yeah."
+  },
+  {
+   "start": 1630.3,
+   "end": 1631.06,
+   "text": "Sratko."
+  },
+  {
+   "start": 1631.06,
+   "end": 1634.08,
+   "text": "maybe that's interesting the jam"
+  },
+  {
+   "start": 1634.08,
+   "end": 1634.76,
+   "text": "like the weird jam"
+  },
+  {
+   "start": 1634.76,
+   "end": 1640.13,
+   "text": "because we don't have it in France."
+  },
+  {
+   "start": 1642.35,
+   "end": 1643.11,
+   "text": "That's a good one."
+  },
+  {
+   "start": 1644.75,
+   "end": 1648.07,
+   "text": "What about some of the funniest or weirdest words in Serbia?"
+  },
+  {
+   "start": 1649.81,
+   "end": 1651.71,
+   "text": "Serbian, actually, not a Serbian, Serbian."
+  },
+  {
+   "start": 1654.31,
+   "end": 1655.23,
+   "text": "I love Kikiriki."
+  },
+  {
+   "start": 1655.97,
+   "end": 1657.13,
+   "text": "Oh, Kikiriki is a good one, yeah."
+  },
+  {
+   "start": 1657.13,
+   "end": 1661.43,
+   "text": "Because it's kind of like the rooster, right?"
+  },
+  {
+   "start": 1662.63,
+   "end": 1666.09,
+   "text": "it's not what in french you're saying how do you how does the rooster"
+  },
+  {
+   "start": 1666.09,
+   "end": 1673.17,
+   "text": "say in french oh yeah but kikiriki is my favorite"
+  },
+  {
+   "start": 1673.17,
+   "end": 1676.73,
+   "text": "serbian word yeah that's good the most difficult word"
+  },
+  {
+   "start": 1676.73,
+   "end": 1682.75,
+   "text": "to pronounce in serbian there is so much everything with a lot of chew"
+  },
+  {
+   "start": 1684.55,
+   "end": 1688.67,
+   "text": "but your tray is pretty good so yeah i mean i'm not sure which"
+  },
+  {
+   "start": 1688.67,
+   "end": 1692.11,
+   "text": "but there is a word i remember oh Oh no, maybe it would be"
+  },
+  {
+   "start": 1692.11,
+   "end": 1695.37,
+   "text": "like V-R-H, like top, at the top of something."
+  },
+  {
+   "start": 1697.71,
+   "end": 1701.21,
+   "text": "Everything that ends with the H, for us French people, it's pretty hard."
+  },
+  {
+   "start": 1701.89,
+   "end": 1703.55,
+   "text": "Because we're not used to make H."
+  },
+  {
+   "start": 1704.59,
+   "end": 1708.69,
+   "text": "So I put all the oxygen I have in my lungs, and then I"
+  },
+  {
+   "start": 1708.69,
+   "end": 1710.71,
+   "text": "need to breathe before I continue the sentence."
+  },
+  {
+   "start": 1711.77,
+   "end": 1714.85,
+   "text": "So if V-R-H is the last word of the sentence, it's okay."
+  },
+  {
+   "start": 1714.85,
+   "end": 1718.25,
+   "text": "But if it's in the middle of a sentence, then it's, you see, now"
+  },
+  {
+   "start": 1718.25,
+   "end": 1719.45,
+   "text": "I need to breathe because I see it."
+  },
+  {
+   "start": 1720.75,
+   "end": 1723.63,
+   "text": "It's like, I don't know, I'm not used to the H."
+  },
+  {
+   "start": 1724.97,
+   "end": 1728.01,
+   "text": "Wait, you don't even have it in French or do you?"
+  },
+  {
+   "start": 1728.01,
+   "end": 1729.03,
+   "text": "No, we don't."
+  },
+  {
+   "start": 1730.93,
+   "end": 1734.97,
+   "text": "Maybe it's like a bit similar to R actually, right?"
+  },
+  {
+   "start": 1734.97,
+   "end": 1737.97,
+   "text": "Because that's how I like, it's very gluttural,"
+  },
+  {
+   "start": 1737.97,
+   "end": 1739.81,
+   "text": "it's very much here."
+  },
+  {
+   "start": 1741.59,
+   "end": 1741.97,
+   "text": "Okay, and then the last one is,"
+  },
+  {
+   "start": 1741.97,
+   "end": 1746.19,
+   "text": "what are the most common borrowings from French in Serbia?"
+  },
+  {
+   "start": 1746.19,
+   "end": 1747.59,
+   "text": "Or like, what are the ones..."
+  },
+  {
+   "start": 1747.59,
+   "end": 1748.51,
+   "text": "that you noticed?"
+  },
+  {
+   "start": 1750.21,
+   "end": 1751.61,
+   "text": "Burring some French."
+  },
+  {
+   "start": 1751.71,
+   "end": 1753.55,
+   "text": "There is abajur that I noticed."
+  },
+  {
+   "start": 1754.83,
+   "end": 1755.99,
+   "text": "What is that?"
+  },
+  {
+   "start": 1756.75,
+   "end": 1761.15,
+   "text": "Abajuri. Lamp. We have it in Turkish too."
+  },
+  {
+   "start": 1761.15,
+   "end": 1763.25,
+   "text": "Maybe we brought it."
+  },
+  {
+   "start": 1763.59,
+   "end": 1765.69,
+   "text": "Maybe we brought it from you."
+  },
+  {
+   "start": 1766.91,
+   "end": 1768.87,
+   "text": "Because it makes sense in French."
+  },
+  {
+   "start": 1768.87,
+   "end": 1769.79,
+   "text": "Jure is the day."
+  },
+  {
+   "start": 1769.79,
+   "end": 1771.19,
+   "text": "No, it's not Turkish."
+  },
+  {
+   "start": 1773.89,
+   "end": 1775.59,
+   "text": "I mean, I know there is a lot of,"
+  },
+  {
+   "start": 1775.59,
+   "end": 1778.57,
+   "text": "I mean, a lot, not a lot, like less for example there is more"
+  },
+  {
+   "start": 1778.57,
+   "end": 1781.79,
+   "text": "like Turkish words for example obviously that's but French I"
+  },
+  {
+   "start": 1781.79,
+   "end": 1786.09,
+   "text": "know there is French word but I cannot remember now can you remember Maki"
+  },
+  {
+   "start": 1786.09,
+   "end": 1786.65,
+   "text": "or some of them yeah I"
+  },
+  {
+   "start": 1786.65,
+   "end": 1792.51,
+   "text": "mean pantalon or television these kind of things are all French and we have"
+  },
+  {
+   "start": 1792.51,
+   "end": 1793.53,
+   "text": "them in in Turkish from"
+  },
+  {
+   "start": 1793.53,
+   "end": 1798.39,
+   "text": "French as well so yeah when you look at like this yeah and also"
+  },
+  {
+   "start": 1798.39,
+   "end": 1799.03,
+   "text": "I guess there is a lot of French"
+  },
+  {
+   "start": 1799.03,
+   "end": 1802.97,
+   "text": "words but no I mean the one I would think they're mostly Latin I"
+  },
+  {
+   "start": 1802.97,
+   "end": 1807.65,
+   "text": "guess like yes so it's hard for me to differentiate if it's a French"
+  },
+  {
+   "start": 1807.65,
+   "end": 1810.17,
+   "text": "thing or Latin thing or English thing because a lot of English"
+  },
+  {
+   "start": 1810.17,
+   "end": 1815.35,
+   "text": "words come from French so I don't think we know I mean we're not"
+  },
+  {
+   "start": 1815.35,
+   "end": 1816.95,
+   "text": "etymologists so you know this is"
+  },
+  {
+   "start": 1816.95,
+   "end": 1822.11,
+   "text": "not our specialty we're just finding the common ones exactly talking about the words"
+  },
+  {
+   "start": 1822.11,
+   "end": 1823.03,
+   "text": "uh what are"
+  },
+  {
+   "start": 1823.03,
+   "end": 1828.59,
+   "text": "your tips for Serbian learners do we really have to go with the vocabulary"
+  },
+  {
+   "start": 1828.59,
+   "end": 1835.17,
+   "text": "first just make fun of everything or go back to your country."
+  },
+  {
+   "start": 1839.11,
+   "end": 1843.31,
+   "text": "Well, I'm the worst person probably to give a tip because I mean, I'm"
+  },
+  {
+   "start": 1843.31,
+   "end": 1843.63,
+   "text": "running"
+  },
+  {
+   "start": 1843.63,
+   "end": 1845.01,
+   "text": "seven for three years and I"
+  },
+  {
+   "start": 1845.01,
+   "end": 1848.75,
+   "text": "still have a very bad level but I would say the the most important"
+  },
+  {
+   "start": 1848.75,
+   "end": 1850.45,
+   "text": "I mean the most important is vocabulary"
+  },
+  {
+   "start": 1850.45,
+   "end": 1856.13,
+   "text": "obviously for any language so yeah go to learn vocabulary and grammar I mean"
+  },
+  {
+   "start": 1856.13,
+   "end": 1856.47,
+   "text": "yeah you can learn"
+  },
+  {
+   "start": 1856.47,
+   "end": 1861.17,
+   "text": "it and everything but vocabulary is the hardest thing and the most important thing"
+  },
+  {
+   "start": 1861.17,
+   "end": 1866.49,
+   "text": "to know in any language because even if you say like three words right"
+  },
+  {
+   "start": 1866.49,
+   "end": 1869.57,
+   "text": "then people are going to know what you mean even if your grammar is"
+  },
+  {
+   "start": 1869.57,
+   "end": 1871.69,
+   "text": "not good right if you put just this this and this and they're like"
+  },
+  {
+   "start": 1871.69,
+   "end": 1875.39,
+   "text": "okay you are hungry you want to eat or something like that right of"
+  },
+  {
+   "start": 1875.39,
+   "end": 1876.09,
+   "text": "course and also to understand"
+  },
+  {
+   "start": 1876.09,
+   "end": 1881.03,
+   "text": "people because uh i mean even if you have like you know a lot"
+  },
+  {
+   "start": 1881.03,
+   "end": 1881.83,
+   "text": "of grammar of serbian you will not"
+  },
+  {
+   "start": 1881.83,
+   "end": 1886.21,
+   "text": "know all the grammars but you will understand every sentence if you know the"
+  },
+  {
+   "start": 1886.21,
+   "end": 1888.27,
+   "text": "words and you don't need"
+  },
+  {
+   "start": 1888.27,
+   "end": 1892.43,
+   "text": "to understand the paddigi if you understand each words separately and then you kind"
+  },
+  {
+   "start": 1892.43,
+   "end": 1897.01,
+   "text": "of okay it makes sense that it means that so it's important the grammar"
+  },
+  {
+   "start": 1897.01,
+   "end": 1898.69,
+   "text": "but the most important is the word so the"
+  },
+  {
+   "start": 1898.69,
+   "end": 1903.25,
+   "text": "grammar in the beginning but then once you learn serbian for one or two"
+  },
+  {
+   "start": 1903.25,
+   "end": 1907.11,
+   "text": "months i guess you kind of got kind of the grammar right so then"
+  },
+  {
+   "start": 1907.11,
+   "end": 1909.63,
+   "text": "the vocabulary is the longest road and i don't"
+  },
+  {
+   "start": 1909.63,
+   "end": 1916.45,
+   "text": "have any tips except suffer you how did you learn vocabulary though is it"
+  },
+  {
+   "start": 1916.45,
+   "end": 1916.79,
+   "text": "talking in serbian is it through reading is it through listening what did you"
+  },
+  {
+   "start": 1921.79,
+   "end": 1925.91,
+   "text": "do I know I learned a lot of vocabulary because I was working as"
+  },
+  {
+   "start": 1925.91,
+   "end": 1928.61,
+   "text": "a barman in a bar in Belgrade."
+  },
+  {
+   "start": 1928.61,
+   "end": 1933.09,
+   "text": "So I learned a lot, the numbers obviously, and a lot of things."
+  },
+  {
+   "start": 1934.03,
+   "end": 1937.61,
+   "text": "Because sometimes some drunk people that are like 70 come and just talk to"
+  },
+  {
+   "start": 1937.61,
+   "end": 1937.93,
+   "text": "Oh, you're French."
+  },
+  {
+   "start": 1937.93,
+   "end": 1938.13,
+   "text": "you."
+  },
+  {
+   "start": 1939.93,
+   "end": 1942.49,
+   "text": "You have to understand them."
+  },
+  {
+   "start": 1943.65,
+   "end": 1946.2,
+   "text": "And also interesting people, of course, that come and talk to you."
+  },
+  {
+   "start": 1946.44,
+   "end": 1950.0,
+   "text": "But mostly I learned maybe by reading."
+  },
+  {
+   "start": 1950.0,
+   "end": 1953.92,
+   "text": "I'm reading a lot of cartoons, stripovy, and stuff like that."
+  },
+  {
+   "start": 1953.92,
+   "end": 1958.12,
+   "text": "Cool, interesting. Or manga, because I mean mostly no stripovy,"
+  },
+  {
+   "start": 1958.12,
+   "end": 1961.78,
+   "text": "because I found a shop in Zeleni Venats in Belgrade"
+  },
+  {
+   "start": 1961.78,
+   "end": 1964.36,
+   "text": "that have a lot of strips for like 200 dinners."
+  },
+  {
+   "start": 1964.64,
+   "end": 1967.42,
+   "text": "And they're also for adults."
+  },
+  {
+   "start": 1967.42,
+   "end": 1969.78,
+   "text": "So it's not like just drawing like aesthetics and obliques."
+  },
+  {
+   "start": 1969.84,
+   "end": 1972.18,
+   "text": "I mean, aesthetics and obliques is awesome, but it's more for kids."
+  },
+  {
+   "start": 1972.18,
+   "end": 1974.2,
+   "text": "So at least you want to know what's happening."
+  },
+  {
+   "start": 1974.98,
+   "end": 1977.66,
+   "text": "And that's very good because if you don't understand the word, you have the"
+  },
+  {
+   "start": 1977.66,
+   "end": 1978.3,
+   "text": "drawing."
+  },
+  {
+   "start": 1978.3,
+   "end": 1980.64,
+   "text": "So you can kind of get it from the drawing."
+  },
+  {
+   "start": 1981.18,
+   "end": 1982.04,
+   "text": "So that's usually what I do."
+  },
+  {
+   "start": 1982.04,
+   "end": 1982.72,
+   "text": "I read it."
+  },
+  {
+   "start": 1983.32,
+   "end": 1985.16,
+   "text": "I underline everything I don't understand."
+  },
+  {
+   "start": 1985.7,
+   "end": 1987.52,
+   "text": "Then I will go in the dictionary, find the thing."
+  },
+  {
+   "start": 1988.34,
+   "end": 1989.32,
+   "text": "And then I will read it again."
+  },
+  {
+   "start": 1989.7,
+   "end": 1991.1,
+   "text": "Except that usually I don't do that."
+  },
+  {
+   "start": 1991.1,
+   "end": 1991.98,
+   "text": "I just read it."
+  },
+  {
+   "start": 1992.56,
+   "end": 1993.14,
+   "text": "But I should."
+  },
+  {
+   "start": 1993.2,
+   "end": 1993.7,
+   "text": "I should."
+  },
+  {
+   "start": 1995.16,
+   "end": 1995.5,
+   "text": "We all should."
+  },
+  {
+   "start": 1995.5,
+   "end": 1999.38,
+   "text": "Yeah. But that's an authentic advice."
+  },
+  {
+   "start": 1999.38,
+   "end": 2000.86,
+   "text": "And a really good tip."
+  },
+  {
+   "start": 2001.28,
+   "end": 2002.34,
+   "text": "A really good tip, actually."
+  },
+  {
+   "start": 2002.56,
+   "end": 2003.46,
+   "text": "Yeah, there you go."
+  },
+  {
+   "start": 2003.52,
+   "end": 2006.1,
+   "text": "So you said you didn't have any good suggestions, but you do."
+  },
+  {
+   "start": 2006.88,
+   "end": 2008.64,
+   "text": "Yeah, I'll make video in Serbian."
+  },
+  {
+   "start": 2008.64,
+   "end": 2009.66,
+   "text": "That's also, I learned a lot of vocabulary"
+  },
+  {
+   "start": 2009.66,
+   "end": 2012.06,
+   "text": "because, I mean, that was the point of me making video"
+  },
+  {
+   "start": 2012.06,
+   "end": 2013.38,
+   "text": "was to learn Serbian."
+  },
+  {
+   "start": 2014.3,
+   "end": 2018.6,
+   "text": "And when you have to write, of course, the script, then you have to"
+  },
+  {
+   "start": 2018.6,
+   "end": 2021.68,
+   "text": "play it. So you have to repeat it, have the good pronunciation,"
+  },
+  {
+   "start": 2021.68,
+   "end": 2023.02,
+   "text": "the good grammar, and then you have to edit it."
+  },
+  {
+   "start": 2023.02,
+   "end": 2025.62,
+   "text": "So you listen to you like 10, 15 times."
+  },
+  {
+   "start": 2026.1,
+   "end": 2030.32,
+   "text": "All of this make that you totally remember every word you use in one"
+  },
+  {
+   "start": 2030.32,
+   "end": 2032.3,
+   "text": "video. So that's also me."
+  },
+  {
+   "start": 2032.3,
+   "end": 2039.3,
+   "text": "I learned a lot of expression, sentence, structure and vocabulary by actually making videos."
+  },
+  {
+   "start": 2040.26,
+   "end": 2041.46,
+   "text": "Sounds good. Yeah."
+  },
+  {
+   "start": 2041.46,
+   "end": 2043.66,
+   "text": "And how can people find you on YouTube?"
+  },
+  {
+   "start": 2043.66,
+   "end": 2045.24,
+   "text": "Can you tell your name?"
+  },
+  {
+   "start": 2046.08,
+   "end": 2048.86,
+   "text": "Eloua, I guess if they put Françoise ou Serbi,"
+  },
+  {
+   "start": 2048.86,
+   "end": 2051.72,
+   "text": "like a French person in Serbia, I think they will find it."
+  },
+  {
+   "start": 2052.04,
+   "end": 2056.5,
+   "text": "Even though there is also other French, like, but I think they will find"
+  },
+  {
+   "start": 2056.5,
+   "end": 2056.7,
+   "text": "it, yes."
+  },
+  {
+   "start": 2056.7,
+   "end": 2062.02,
+   "text": "Yeah, I remember the French guy that was also interviewed in one, he's in"
+  },
+  {
+   "start": 2062.02,
+   "end": 2063.1,
+   "text": "Navisad, I think."
+  },
+  {
+   "start": 2063.78,
+   "end": 2067.2,
+   "text": "but I think you are known as Francis de Sravi on YouTube at least."
+  },
+  {
+   "start": 2067.2,
+   "end": 2068.36,
+   "text": "That's where I live."
+  },
+  {
+   "start": 2069.3,
+   "end": 2074.12,
+   "text": "Yeah. So YouTube, Instagram, do you offer, are you still open to offering courses,"
+  },
+  {
+   "start": 2074.12,
+   "end": 2077.32,
+   "text": "French courses? Is it in a, no?"
+  },
+  {
+   "start": 2077.6,
+   "end": 2080.02,
+   "text": "I mean, I'm not overbooked."
+  },
+  {
+   "start": 2080.02,
+   "end": 2083.4,
+   "text": "I'm just very lazy, but I have, I mean,"
+  },
+  {
+   "start": 2083.4,
+   "end": 2085.58,
+   "text": "I already have a lot of classes and I like to have time for"
+  },
+  {
+   "start": 2085.58,
+   "end": 2086.42,
+   "text": "myself and for"
+  },
+  {
+   "start": 2086.42,
+   "end": 2089.78,
+   "text": "personal projects. So no, I don't take really classes."
+  },
+  {
+   "start": 2090.68,
+   "end": 2093.72,
+   "text": "I mean, maybe next year, but this year, no."
+  },
+  {
+   "start": 2094.3,
+   "end": 2098.6,
+   "text": "okay i think we have to end it so thank you very much and"
+  },
+  {
+   "start": 2098.6,
+   "end": 2104.28,
+   "text": "hopefully yeah very good"
+  },
+  {
+   "start": 2104.28,
+   "end": 2110.0,
+   "text": "and see you guys in the next episode thank you for joining us today"
+  },
+  {
+   "start": 2110.0,
+   "end": 2110.72,
+   "text": "we hope you enjoyed our"
+  },
+  {
+   "start": 2110.72,
+   "end": 2115.5,
+   "text": "podcast and learned something new in case you have any comments suggestions or questions"
+  },
+  {
+   "start": 2115.5,
+   "end": 2120.48,
+   "text": "make sure to share them on our instagram page mozekafa podcast"
+  }
+ ],
+ "title": "Ep.6: French & Serbian stereotypes with Eloi–Francuz u Srbiji!",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939252/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075931-44100-1-6abc5e6f73bb2445.mp3"
+}

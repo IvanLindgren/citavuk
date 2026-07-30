@@ -328,8 +328,30 @@ matching нельзя проверить до заполнения всех па
 только при достижении `passThreshold`. Для свободного ввода используется
 экранная клавиатура сербских спецсимволов. Пока исходный атлас неровный,
 `CourseSprite` намеренно показывает один увеличенный кадр без анимации.
-Маршруты `/listening` и `/listening/:id` работают с `/audio/*`; длинный
-транскрипт рендерится лениво через `content-visibility`.
+
+Курс обязан открываться без сети. Во Flutter `CourseContentLoader` сначала
+показывает встроенный bundle, а серверную публикацию проверяет в фоне; валидная
+публикация применяется при следующем открытии. На React серверный запрос
+ограничен коротким таймаутом и параллельно загружается bundled JSON. Не
+возвращать последовательность «сначала сеть, затем asset»: при недоступном API
+первый урок выглядит как чёрный экран.
+
+Страницы курса являются lazy chunks. `main.tsx` слушает `vite:preloadError` и
+один раз обновляет устаревшую вкладку, а `PageErrorBoundary` показывает
+восстановление вместо пустого фона. `web/deploy/deploy.sh` сохраняет
+хешированные assets предыдущих сборок 14 дней. Не удалять их сразу после
+подмены `index.html`: открытая до выкладки вкладка может запросить chunk только
+после клика по «Курс».
+
+Маршруты `/listening` и `/listening/:id` получают каталог из Go
+`/audio/lessons`. Настоящие расшифровки лежат статикой в
+`web/public/transcripts/`, сопоставление аудио с файлом — `index.json`.
+`web/scripts/transcribe-podcasts.py` отправляет само аудио в Groq
+`whisper-large-v3-turbo` и сохраняет пословные тайминги; MP3 режется по кадрам,
+M4A конвертируется через указанный `--ffmpeg`. Никогда не возвращать старый
+алгоритм «описание RSS → фразы → время пропорционально длине»: такой текст не
+совпадает с речью. Если транскрипта нет, `cues` должны быть пустыми, а аудио
+доступным. Длинный транскрипт рендерится лениво через `content-visibility`.
 
 Авторизация веба живёт в `web/src/state/auth.tsx`. `/verify-email` завершает
 регистрацию по ссылке из письма, `/auth/yandex` обменивает одноразовый код
@@ -543,13 +565,16 @@ CORS открыт (нужно для Flutter web/desktop). Лексикон-фо
 (колонки `upos`/`feats`). Перевод: словарь → `deep_translator` (Google).
 
 Аудирование:
-- `/audio/lessons` отдаёт `backend/audio_lessons.json` + RSS-подкасты
-  `Learn Serbian Podcast` и `Može Kafa Podcast` (mp3 из enclosure).
-- `/audio/transcript?url=...&duration=...` лениво вытаскивает полный транскрипт
-  со страниц `serbianlanguagelessons.com` через `trafilatura` и строит примерные
-  тайминги по длине фраз.
-- `/audio/tts?text=...` озвучивает короткие реплики через `gTTS` и кэширует mp3
-  в памяти процесса. Новые зависимости backend: `feedparser`, `trafilatura`, `gTTS`.
+- Go `/audio/lessons` читает RSS `Learn Serbian` и `Može Kafa`, но отдаёт
+  реплики только при наличии файла в `web/public/transcripts/index.json`.
+- Go `/audio/transcript?url=...` разрешает только JSON внутри
+  `https://citavuk.ru/transcripts/`; это не открытый прокси.
+- Python пока обслуживает `/audio/proxy` и `/audio/tts`; TTS кэшируется.
+- Генерация реальных реплик:
+  `GROQ_API_KEY=... python web/scripts/transcribe-podcasts.py --limit 0
+  --feed learn-serbian --feed moze-kafa --ffmpeg /path/to/ffmpeg`.
+  После генерации обязательно:
+  `python web/scripts/transcribe-podcasts.py --normalize-only`.
 - `/documents/extract` принимает PDF/DOCX до 32 МБ. PDFium читает текстовый
   слой, а пустые страницы распознаёт Tesseract (`srp+srp_latn`). На запрос
   допускается до 80 OCR-страниц, чтобы бесплатный CPU Space не зависал.
@@ -561,8 +586,6 @@ CORS открыт (нужно для Flutter web/desktop). Лексикон-фо
 
 - Реальные уведомления интервального повторения на Android (плагин назад + Android-тест).
 - Озвучка отдельных слов (TTS) в окне разбора.
-- Улучшить точность таймингов аудирования (сейчас RSS-транскрипты растягиваются
-  пропорционально длине текста, без word-level alignment).
 - Расширение sr→ru словаря (Wiktionary).
 - SrLex как серверный словарь (не бандлить).
 - Грамматика-карточки → подключить к SRS (сейчас просто колода без расписания).

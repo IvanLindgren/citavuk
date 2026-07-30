@@ -40,11 +40,12 @@ export function putRemoteCourseProgress(
 
 export async function getPublishedCourse(
   courseId: string,
+  timeoutMs = 1_200,
 ): Promise<CourseBundle | null> {
   return (
     (await request<CourseBundle | undefined>(
       `/v1/course/bundle/${encodeURIComponent(courseId)}`,
-      { anonymous: true },
+      { anonymous: true, timeoutMs },
     )) ?? null
   );
 }

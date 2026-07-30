@@ -61,19 +61,25 @@ class CourseContentLoader {
       }
     }
 
-    final remote = await _fetchRemote();
-    if (remote != null) {
-      await prefs.setString(_remoteCourseCacheKey, remote);
-      return parseBundle(remote);
-    }
-
-    return parseBundle(await rootBundle.loadString(assetPath));
+    // Первый запуск не должен ждать сеть: базовый курс уже входит в приложение.
+    // Опубликованная серверная версия сохранится в фоне и будет использована при
+    // следующем открытии курса.
+    final bundled = parseBundle(await rootBundle.loadString(assetPath));
+    unawaited(_refreshRemote(prefs));
+    return bundled;
   }
 
   Future<void> _refreshRemote(SharedPreferences prefs) async {
-    final remote = await _fetchRemote();
-    if (remote != null) {
-      await prefs.setString(_remoteCourseCacheKey, remote);
+    try {
+      final remote = await _fetchRemote();
+      if (remote != null) {
+        // Не кладём повреждённую публикацию в кеш: иначе следующий запуск
+        // покажет пустой экран до ручной очистки данных приложения.
+        parseBundle(remote);
+        await prefs.setString(_remoteCourseCacheKey, remote);
+      }
+    } catch (e) {
+      debugPrint('course: не удалось обновить серверную версию ($e)');
     }
   }
 

@@ -1,0 +1,2080 @@
+{
+ "duration": 1504.37,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.78,
+   "end": 3.96,
+   "text": "Zdravo Sevima! Welcome to Možekafa podcast."
+  },
+  {
+   "start": 3.96,
+   "end": 4.76,
+   "text": "I am Maki."
+  },
+  {
+   "start": 4.76,
+   "end": 8.64,
+   "text": "This season of our podcast is a bit different from the previous ones."
+  },
+  {
+   "start": 8.92,
+   "end": 13.74,
+   "text": "I have another friend, also called Ivana, joining me to have short dialogues in"
+  },
+  {
+   "start": 13.74,
+   "end": 16.24,
+   "text": "Serbian. Then we will explain them in English."
+  },
+  {
+   "start": 16.24,
+   "end": 19.16,
+   "text": "This new season will be like mini Serbian lessons."
+  },
+  {
+   "start": 19.66,
+   "end": 23.08,
+   "text": "So if you are ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 24.62,
+   "end": 26.62,
+   "text": "Dobrodošli Sevima! Ja sam Maki."
+  },
+  {
+   "start": 26.62,
+   "end": 29.18,
+   "text": "And I am here with my friend Ivana today."
+  },
+  {
+   "start": 29.78,
+   "end": 36.84,
+   "text": "Today we are going to"
+  },
+  {
+   "start": 36.84,
+   "end": 43.8,
+   "text": "share our common stories of moving to Kuruševac in a short dialogue in Serbian."
+  },
+  {
+   "start": 44.48,
+   "end": 48.58,
+   "text": "This dialogue will be in Serbian, but after that we will switch to English"
+  },
+  {
+   "start": 48.58,
+   "end": 52.24,
+   "text": "and go over the vocabulary and expressions in detail."
+  },
+  {
+   "start": 52.58,
+   "end": 54.3,
+   "text": "Agreed. Agreed. All right."
+  },
+  {
+   "start": 54.3,
+   "end": 58.88,
+   "text": "And these are not random, you know, made up sentences."
+  },
+  {
+   "start": 58.88,
+   "end": 60.38,
+   "text": "These are real answers from Ivana."
+  },
+  {
+   "start": 60.38,
+   "end": 66.3,
+   "text": "I'm going to be asking her why she has come here and when and"
+  },
+  {
+   "start": 66.3,
+   "end": 71.46,
+   "text": "how long has she been here and also about her job."
+  },
+  {
+   "start": 71.46,
+   "end": 73.64,
+   "text": "So let's do the conversation first."
+  },
+  {
+   "start": 73.64,
+   "end": 75.55,
+   "text": "Let's see how much you understand."
+  },
+  {
+   "start": 75.89,
+   "end": 77.67,
+   "text": "Alright, idemo. Idemo."
+  },
+  {
+   "start": 78.05,
+   "end": 80.21,
+   "text": "Odakle i kada si došla ovde, Ivana?"
+  },
+  {
+   "start": 80.93,
+   "end": 82.27,
+   "text": "Došla sam iz Beograda,"
+  },
+  {
+   "start": 82.27,
+   "end": 84.65,
+   "text": "sada već pre pet godina."
+  },
+  {
+   "start": 85.41,
+   "end": 87.83,
+   "text": "Ovog leta, 2023,"
+  },
+  {
+   "start": 89.49,
+   "end": 91.15,
+   "text": "biće pet godina."
+  },
+  {
+   "start": 91.59,
+   "end": 95.01,
+   "text": "Mi nismo baš u Kruševcu, nego smo u selu,"
+  },
+  {
+   "start": 95.01,
+   "end": 96.89,
+   "text": "pored Kruševca, koja se zove"
+  },
+  {
+   "start": 96.89,
+   "end": 101.85,
+   "text": "Velika Lomnica. Why are you here, Ode?"
+  },
+  {
+   "start": 102.59,
+   "end": 105.69,
+   "text": "My husband and I have lived in Beograd very long."
+  },
+  {
+   "start": 106.79,
+   "end": 112.25,
+   "text": "In a moment we decided to travel to some other countries of Serbia because"
+  },
+  {
+   "start": 112.25,
+   "end": 113.37,
+   "text": "of the health of life."
+  },
+  {
+   "start": 115.23,
+   "end": 121.03,
+   "text": "We decided to go to Kruševac and make a business."
+  },
+  {
+   "start": 122.89,
+   "end": 127.17,
+   "text": "I understand. Kruševac has a nice nature and a peaceful life."
+  },
+  {
+   "start": 128.27,
+   "end": 130.09,
+   "text": "Can you tell us what you are doing?"
+  },
+  {
+   "start": 131.91,
+   "end": 137.69,
+   "text": "We have a beautiful guest house called Silvani Guest House in the Great Lomnici."
+  },
+  {
+   "start": 138.17,
+   "end": 142.95,
+   "text": "We organize bicycle tours in Jasreb and Koponiku."
+  },
+  {
+   "start": 143.61,
+   "end": 144.31,
+   "text": "It is!"
+  },
+  {
+   "start": 146.35,
+   "end": 146.87,
+   "text": "We want all the"
+  },
+  {
+   "start": 148.37,
+   "end": 149.99,
+   "text": "welcome everyone to our home."
+  },
+  {
+   "start": 175.01,
+   "end": 179.05,
+   "text": "So I put two questions together, which is doable and common in Serbian, right?"
+  },
+  {
+   "start": 179.47,
+   "end": 180.07,
+   "text": "Yes, it is."
+  },
+  {
+   "start": 180.87,
+   "end": 183.79,
+   "text": "Yes, it's from where and when, actually."
+  },
+  {
+   "start": 184.13,
+   "end": 184.43,
+   "text": "And it was the idea to put in one sentence, in one question, actually. Yes."
+  },
+  {
+   "start": 188.99,
+   "end": 190.31,
+   "text": "It's okay. Okay."
+  },
+  {
+   "start": 190.81,
+   "end": 192.23,
+   "text": "The first one is this is."
+  },
+  {
+   "start": 192.71,
+   "end": 195.09,
+   "text": "So is means from in English, right?"
+  },
+  {
+   "start": 195.87,
+   "end": 195.99,
+   "text": "After is, we have this genitive in Serbian, genitive in English, the padiji."
+  },
+  {
+   "start": 195.99,
+   "end": 196.23,
+   "text": "Yes."
+  },
+  {
+   "start": 203.97,
+   "end": 205.01,
+   "text": "So, Beograd became Beograda."
+  },
+  {
+   "start": 205.01,
+   "end": 207.77,
+   "text": "Yes, yes, yes, you are right."
+  },
+  {
+   "start": 207.77,
+   "end": 210.01,
+   "text": "Because it's a masculine word, is Beograda."
+  },
+  {
+   "start": 210.01,
+   "end": 216.27,
+   "text": "Yes, because it's that Beograd, yes, masculine, and because of that, it is Beograda."
+  },
+  {
+   "start": 216.27,
+   "end": 218.01,
+   "text": "You are right, correct, completely."
+  },
+  {
+   "start": 218.01,
+   "end": 223.35,
+   "text": "Okay, but if it was a city name or a village name, like Velika"
+  },
+  {
+   "start": 223.35,
+   "end": 229.42,
+   "text": "Lomnica, which is ending in R, which is female, then I would say is"
+  },
+  {
+   "start": 229.42,
+   "end": 232.82,
+   "text": "Velike Lomnice. Bravo, točno."
+  },
+  {
+   "start": 232.82,
+   "end": 234.98,
+   "text": "Upravo, točno. Okay."
+  },
+  {
+   "start": 234.98,
+   "end": 239.94,
+   "text": "But I'm not sure if it was a city name or village name that"
+  },
+  {
+   "start": 239.94,
+   "end": 242.02,
+   "text": "ending with O, Sredrni Rod."
+  },
+  {
+   "start": 242.88,
+   "end": 244.24,
+   "text": "Let me think."
+  },
+  {
+   "start": 244.24,
+   "end": 247.5,
+   "text": "Oh, some name on ending with O."
+  },
+  {
+   "start": 247.5,
+   "end": 250.22,
+   "text": "Like, for instance, we can say Selo."
+  },
+  {
+   "start": 250.22,
+   "end": 252.52,
+   "text": "It could be the name of the village."
+  },
+  {
+   "start": 252.52,
+   "end": 253.96,
+   "text": "Selo is in O."
+  },
+  {
+   "start": 255.04,
+   "end": 256.68,
+   "text": "Doshlasam is Sela."
+  },
+  {
+   "start": 256.68,
+   "end": 257.24,
+   "text": "It's the same."
+  },
+  {
+   "start": 257.64,
+   "end": 259.38,
+   "text": "It's the same as masculine one."
+  },
+  {
+   "start": 259.66,
+   "end": 260.46,
+   "text": "Yes. Okay, perfect."
+  },
+  {
+   "start": 260.46,
+   "end": 261.72,
+   "text": "So, two variations."
+  },
+  {
+   "start": 261.72,
+   "end": 267.9,
+   "text": "Ending with O and ending with other consonants or O or E."
+  },
+  {
+   "start": 267.9,
+   "end": 268.76,
+   "text": "It doesn't matter."
+  },
+  {
+   "start": 268.98,
+   "end": 276.18,
+   "text": "Yes. okay explained well thank you great and you said pre pet godina"
+  },
+  {
+   "start": 276.18,
+   "end": 278.98,
+   "text": "so before five years or in english"
+  },
+  {
+   "start": 278.98,
+   "end": 284.04,
+   "text": "it would be five years ago but yes literal translation is before five years"
+  },
+  {
+   "start": 284.04,
+   "end": 285.82,
+   "text": "so this godina"
+  },
+  {
+   "start": 285.82,
+   "end": 292.3,
+   "text": "is in plural form can we say yes yes it is in plural form"
+  },
+  {
+   "start": 292.3,
+   "end": 299.64,
+   "text": "because it will be one, godina, jedna godina, one year, two"
+  },
+  {
+   "start": 299.64,
+   "end": 300.46,
+   "text": "year,"
+  },
+  {
+   "start": 301.16,
+   "end": 305.1,
+   "text": "Three years, five years, it's in English, it will be in Serbian."
+  },
+  {
+   "start": 305.18,
+   "end": 309.64,
+   "text": "Jedna godina, dve, tri, četri, pet godina."
+  },
+  {
+   "start": 309.96,
+   "end": 310.74,
+   "text": "All the same."
+  },
+  {
+   "start": 311.58,
+   "end": 316.78,
+   "text": "Pre jedne godine, pre dve godine, pre tri, četri godine."
+  },
+  {
+   "start": 316.78,
+   "end": 319.04,
+   "text": "Everything is on A at the end."
+  },
+  {
+   "start": 319.52,
+   "end": 320.04,
+   "text": "Okay. Why?"
+  },
+  {
+   "start": 320.04,
+   "end": 326.66,
+   "text": "If we come to five, it will be pre pet godina."
+  },
+  {
+   "start": 327.88,
+   "end": 329.74,
+   "text": "Six, šest godina."
+  },
+  {
+   "start": 329.84,
+   "end": 337.16,
+   "text": "Okay, that means that something connected with the numbers actually from one till"
+  },
+  {
+   "start": 337.16,
+   "end": 341.98,
+   "text": "four. Okay, one till four is pre-jedan godine."
+  },
+  {
+   "start": 342.82,
+   "end": 345.44,
+   "text": "Yes, yes, on a."
+  },
+  {
+   "start": 346.06,
+   "end": 351.26,
+   "text": "Okay, but do we change jedan to another padeži?"
+  },
+  {
+   "start": 352.7,
+   "end": 357.88,
+   "text": "Yes, because we said jedan, ali godina, jedna godina."
+  },
+  {
+   "start": 359.08,
+   "end": 362.92,
+   "text": "So pre jedna, but this time pre jedne godine."
+  },
+  {
+   "start": 363.02,
+   "end": 368.34,
+   "text": "Tako, upravo, I just wanted to correct you, but you corrected yourself, yes."
+  },
+  {
+   "start": 368.64,
+   "end": 372.9,
+   "text": "Before one year, pre jedne godine."
+  },
+  {
+   "start": 373.34,
+   "end": 374.26,
+   "text": "All right, okay."
+  },
+  {
+   "start": 375.2,
+   "end": 378.08,
+   "text": "Let's not check this with all the numbers."
+  },
+  {
+   "start": 378.08,
+   "end": 379.64,
+   "text": "That's enough until five."
+  },
+  {
+   "start": 380.92,
+   "end": 382.88,
+   "text": "We don't know why, but it's e."
+  },
+  {
+   "start": 383.5,
+   "end": 384.1,
+   "text": "How about the months?"
+  },
+  {
+   "start": 384.1,
+   "end": 390.52,
+   "text": "If I want to say like before three months, like three months ago, the"
+  },
+  {
+   "start": 390.52,
+   "end": 393.14,
+   "text": "mesets is the month."
+  },
+  {
+   "start": 393.3,
+   "end": 393.56,
+   "text": "Month. Right."
+  },
+  {
+   "start": 393.56,
+   "end": 401.14,
+   "text": "Yes. So, because this is not godina, which is ending in R, like"
+  },
+  {
+   "start": 401.14,
+   "end": 405.72,
+   "text": "sounds like a female noun, but mesec sounds like a masculine noun."
+  },
+  {
+   "start": 406.3,
+   "end": 410.28,
+   "text": "So, do I say pre-jedan mesec?"
+  },
+  {
+   "start": 410.92,
+   "end": 418.48,
+   "text": "Pre-2 meseca, pre-1 mesec, pre-2 meseca, pre-3"
+  },
+  {
+   "start": 418.48,
+   "end": 424.42,
+   "text": "meseca, pre-4 meseca, now pre-5 meseci."
+  },
+  {
+   "start": 424.94,
+   "end": 429.56,
+   "text": "All right, that's confirming that after 5 we have that change."
+  },
+  {
+   "start": 429.56,
+   "end": 432.14,
+   "text": "I mean, including 5 and the other numbers."
+  },
+  {
+   "start": 432.24,
+   "end": 435.14,
+   "text": "Yes. Well, that's really helpful."
+  },
+  {
+   "start": 435.14,
+   "end": 437.02,
+   "text": "That's connecting numbers, actually, I think."
+  },
+  {
+   "start": 437.02,
+   "end": 439.38,
+   "text": "Okay, yeah, there's this thing."
+  },
+  {
+   "start": 439.38,
+   "end": 444.14,
+   "text": "I know that rule and I can maybe add the explanation from the book"
+  },
+  {
+   "start": 444.14,
+   "end": 447.04,
+   "text": "that I have because there is a chapter about it."
+  },
+  {
+   "start": 447.14,
+   "end": 447.6,
+   "text": "Thanks Okay."
+  },
+  {
+   "start": 449.02,
+   "end": 455.72,
+   "text": "Fair thing. And when we tell the years, like you said, ovog leta..."
+  },
+  {
+   "start": 455.88,
+   "end": 459.0,
+   "text": "Ovog leta 2023."
+  },
+  {
+   "start": 460.0,
+   "end": 463.86,
+   "text": "Because at the end, it will be treće godine."
+  },
+  {
+   "start": 465.0,
+   "end": 466.34,
+   "text": "But we didn't put godine here."
+  },
+  {
+   "start": 466.34,
+   "end": 469.0,
+   "text": "We just said 2023."
+  },
+  {
+   "start": 471.4,
+   "end": 477.3,
+   "text": "Znači 2023. Without godine, we are not continuing with godine."
+  },
+  {
+   "start": 477.3,
+   "end": 481.52,
+   "text": "We just cut it without godine, meaning the noun we don't want to say."
+  },
+  {
+   "start": 481.94,
+   "end": 483.04,
+   "text": "We just said number."
+  },
+  {
+   "start": 484.0,
+   "end": 486.28,
+   "text": "Ovog leta, 2023."
+  },
+  {
+   "start": 487.9,
+   "end": 488.6,
+   "text": "Okay, thank you."
+  },
+  {
+   "start": 488.96,
+   "end": 494.44,
+   "text": "But even though we don't say godina or godine, still it has the padeži"
+  },
+  {
+   "start": 494.44,
+   "end": 497.48,
+   "text": "still there. So that's what I'm underlining here."
+  },
+  {
+   "start": 497.98,
+   "end": 498.22,
+   "text": "Yeah, yes."
+  },
+  {
+   "start": 498.22,
+   "end": 499.8,
+   "text": "All right. Okay."
+  },
+  {
+   "start": 500.22,
+   "end": 502.58,
+   "text": "So you said five years ago you came,"
+  },
+  {
+   "start": 502.58,
+   "end": 504.96,
+   "text": "minis mo bašo kruševcu, you said."
+  },
+  {
+   "start": 505.18,
+   "end": 507.82,
+   "text": "Bašte, what does that mean?"
+  },
+  {
+   "start": 509.82,
+   "end": 515.34,
+   "text": "We like to use some strange, I don't know, words in the middle of"
+  },
+  {
+   "start": 515.34,
+   "end": 520.54,
+   "text": "the sentences that doesn't have some kind of real meaning."
+  },
+  {
+   "start": 521.34,
+   "end": 524.94,
+   "text": "Or function. Da, or function, yes, you are right."
+  },
+  {
+   "start": 526.3,
+   "end": 529.84,
+   "text": "It could be something like uh we are not really in"
+  },
+  {
+   "start": 529.84,
+   "end": 536.34,
+   "text": "krushevats uh meaning that we are not uh based really in the crucials but"
+  },
+  {
+   "start": 536.34,
+   "end": 537.72,
+   "text": "somewhere else so"
+  },
+  {
+   "start": 537.72,
+   "end": 542.96,
+   "text": "bars is not the word that we can uh have some real translation yeah"
+  },
+  {
+   "start": 542.96,
+   "end": 546.41,
+   "text": "but in this case it's close to really like we are not really in"
+  },
+  {
+   "start": 546.41,
+   "end": 550.74,
+   "text": "Kruševac. Yes, really meaning that in the context of the"
+  },
+  {
+   "start": 553.19,
+   "end": 555.4,
+   "text": "place. I see."
+  },
+  {
+   "start": 555.4,
+   "end": 559.34,
+   "text": "And then there is another to me a question mark here."
+  },
+  {
+   "start": 559.34,
+   "end": 561.04,
+   "text": "Nego. I would say as a"
+  },
+  {
+   "start": 561.04,
+   "end": 568.02,
+   "text": "learner of Serbian, because I would say, you know, but you use nego."
+  },
+  {
+   "start": 568.02,
+   "end": 569.32,
+   "text": "What does nego mean?"
+  },
+  {
+   "start": 569.86,
+   "end": 573.42,
+   "text": "Aha. We are not only in Kruševcu, but we are in the house."
+  },
+  {
+   "start": 574.98,
+   "end": 577.02,
+   "text": "It's not just because."
+  },
+  {
+   "start": 577.8,
+   "end": 580.65,
+   "text": "Because it's something else that could be used"
+  },
+  {
+   "start": 580.65,
+   "end": 581.98,
+   "text": "for some other continuation"
+  },
+  {
+   "start": 581.98,
+   "end": 583.56,
+   "text": "of this sentence."
+  },
+  {
+   "start": 584.2,
+   "end": 585.65,
+   "text": "But this will be..."
+  },
+  {
+   "start": 586.15,
+   "end": 588.74,
+   "text": "Rather than or instead."
+  },
+  {
+   "start": 589.28,
+   "end": 593.36,
+   "text": "Instead, maybe. We are not really in Kruševac."
+  },
+  {
+   "start": 594.64,
+   "end": 596.56,
+   "text": "Instead, we are in the village"
+  },
+  {
+   "start": 596.56,
+   "end": 598.48,
+   "text": "next to Kruševac."
+  },
+  {
+   "start": 599.42,
+   "end": 599.94,
+   "text": "Neko Izo"
+  },
+  {
+   "start": 600.01,
+   "end": 602.47,
+   "text": "used when you compare two things, right?"
+  },
+  {
+   "start": 602.47,
+   "end": 603.83,
+   "text": "Like something, you could share what is smaller"
+  },
+  {
+   "start": 603.83,
+   "end": 607.79,
+   "text": "than Belgrade. In this case, you would use Nego or Od, but"
+  },
+  {
+   "start": 607.79,
+   "end": 609.91,
+   "text": "Nego would work for comparing as"
+  },
+  {
+   "start": 609.91,
+   "end": 610.97,
+   "text": "well, right?"
+  },
+  {
+   "start": 612.65,
+   "end": 616.41,
+   "text": "Maybe, yes. Yes, but not in the each"
+  },
+  {
+   "start": 616.41,
+   "end": 620.41,
+   "text": "comparison. I don't think so."
+  },
+  {
+   "start": 621.29,
+   "end": 623.73,
+   "text": "Mainly, we use more Od, as you"
+  },
+  {
+   "start": 623.73,
+   "end": 627.69,
+   "text": "said, from Belgrade or something from"
+  },
+  {
+   "start": 627.69,
+   "end": 629.79,
+   "text": "something, you know."
+  },
+  {
+   "start": 630.23,
+   "end": 634.79,
+   "text": "Nego is, again, something that, not like a bash, not the same word."
+  },
+  {
+   "start": 635.01,
+   "end": 639.99,
+   "text": "I know. Again, yes, a very strange word that we use."
+  },
+  {
+   "start": 640.27,
+   "end": 641.41,
+   "text": "It's not a comparison."
+  },
+  {
+   "start": 642.89,
+   "end": 644.69,
+   "text": "It's a word that you mentioned."
+  },
+  {
+   "start": 645.19,
+   "end": 647.81,
+   "text": "It's better to be instead or rather than."
+  },
+  {
+   "start": 648.69,
+   "end": 650.69,
+   "text": "Yeah, instead. It could be instead."
+  },
+  {
+   "start": 651.33,
+   "end": 652.59,
+   "text": "Something like that, yes."
+  },
+  {
+   "start": 653.01,
+   "end": 656.69,
+   "text": "All right. And then, okay, another padege."
+  },
+  {
+   "start": 656.69,
+   "end": 660.27,
+   "text": "In two sentences, we have, I guess, six pages here."
+  },
+  {
+   "start": 660.27,
+   "end": 663.73,
+   "text": "But anyway, Poret Khrushchevca."
+  },
+  {
+   "start": 665.17,
+   "end": 668.41,
+   "text": "So Poret means near, right?"
+  },
+  {
+   "start": 668.67,
+   "end": 670.01,
+   "text": "Near or next, yes."
+  },
+  {
+   "start": 670.21,
+   "end": 673.13,
+   "text": "Next to Khrushchevac or near Khrushchevac."
+  },
+  {
+   "start": 673.69,
+   "end": 678.29,
+   "text": "So Khrushchevac became Kruševca, again genitive probably."
+  },
+  {
+   "start": 678.31,
+   "end": 683.33,
+   "text": "Yes, genitive. If it was near Belgrade, it would be Pored Belgrade."
+  },
+  {
+   "start": 683.65,
+   "end": 686.57,
+   "text": "Great, correct. Okay, good."
+  },
+  {
+   "start": 687.21,
+   "end": 689.15,
+   "text": "Koje se zove Velika Lomnica?"
+  },
+  {
+   "start": 689.45,
+   "end": 692.37,
+   "text": "So which is called as Velika Lomnica."
+  },
+  {
+   "start": 692.67,
+   "end": 697.03,
+   "text": "Yes. Perfect. And then I asked you, zašto si došla ovde?"
+  },
+  {
+   "start": 697.39,
+   "end": 698.89,
+   "text": "Why did you come here?"
+  },
+  {
+   "start": 699.57,
+   "end": 703.27,
+   "text": "Yes. Why is the only word for why, right?"
+  },
+  {
+   "start": 703.47,
+   "end": 706.95,
+   "text": "That we use, I think, in most, almost sentences."
+  },
+  {
+   "start": 707.23,
+   "end": 713.21,
+   "text": "Easy. And as you are too, that one, because you answered minismo pašu Kuruševcu,"
+  },
+  {
+   "start": 713.21,
+   "end": 716.65,
+   "text": "so you are talking in plural, like as we are not."
+  },
+  {
+   "start": 717.11,
+   "end": 723.05,
+   "text": "So if I wanted to ask you in you, plural you, would I say,"
+  },
+  {
+   "start": 723.43,
+   "end": 725.41,
+   "text": "zašto ste došli ovde?"
+  },
+  {
+   "start": 725.65,
+   "end": 727.63,
+   "text": "Tako je, that's correct."
+  },
+  {
+   "start": 728.01,
+   "end": 735.45,
+   "text": "That means that me and somebody else, yes, plural, you"
+  },
+  {
+   "start": 735.45,
+   "end": 740.55,
+   "text": "used to correct everything, meaning grammatically was correct completely."
+  },
+  {
+   "start": 740.77,
+   "end": 740.85,
+   "text": "Okay."
+  },
+  {
+   "start": 740.85,
+   "end": 746.35,
+   "text": "And I need to say that I'm so happy there is no preposition before"
+  },
+  {
+   "start": 746.35,
+   "end": 746.93,
+   "text": "OVDE."
+  },
+  {
+   "start": 746.93,
+   "end": 750.63,
+   "text": "It makes a little bit simpler, you know, the question that I want to..."
+  },
+  {
+   "start": 750.63,
+   "end": 752.71,
+   "text": "Yes. All right."
+  },
+  {
+   "start": 753.01,
+   "end": 756.35,
+   "text": "And then you say, I'm a very young person in Belgrade."
+  },
+  {
+   "start": 756.61,
+   "end": 763.71,
+   "text": "Iako is the new word that I'd like to understand because it"
+  },
+  {
+   "start": 763.71,
+   "end": 765.63,
+   "text": "has different meanings as far as I know."
+  },
+  {
+   "start": 765.63,
+   "end": 767.51,
+   "text": "But here is such a long time."
+  },
+  {
+   "start": 767.69,
+   "end": 768.63,
+   "text": "Right, Iako, Iako."
+  },
+  {
+   "start": 770.33,
+   "end": 772.91,
+   "text": "Yes, I just wanted to refer to that Iako."
+  },
+  {
+   "start": 772.93,
+   "end": 778.77,
+   "text": "I don't think that's grammatically correct to say jako."
+  },
+  {
+   "start": 779.03,
+   "end": 786.09,
+   "text": "Confession. It's more like everyday conversation that we use jako in"
+  },
+  {
+   "start": 786.09,
+   "end": 787.47,
+   "text": "this sentence, in this meaning."
+  },
+  {
+   "start": 787.93,
+   "end": 789.47,
+   "text": "Jako means really strong."
+  },
+  {
+   "start": 790.69,
+   "end": 796.91,
+   "text": "And here it could be more grammatically correct to say mnogo dugo."
+  },
+  {
+   "start": 798.19,
+   "end": 802.35,
+   "text": "Mnogo is something that goes with the timing."
+  },
+  {
+   "start": 803.07,
+   "end": 807.95,
+   "text": "Exactly. When you want to compare something with the timing, how long you've done"
+  },
+  {
+   "start": 807.95,
+   "end": 809.65,
+   "text": "something or something like that."
+  },
+  {
+   "start": 811.69,
+   "end": 814.83,
+   "text": "Jako, Dugo is really something like slang."
+  },
+  {
+   "start": 814.83,
+   "end": 817.97,
+   "text": "Not slang, but in real life conversation."
+  },
+  {
+   "start": 818.41,
+   "end": 824.66,
+   "text": "More informal. Can I use Jako for the other adjectives or adverbs in this"
+  },
+  {
+   "start": 824.66,
+   "end": 826.2,
+   "text": "case? Jako mnogo."
+  },
+  {
+   "start": 826.86,
+   "end": 827.44,
+   "text": "Oh, my God."
+  },
+  {
+   "start": 827.74,
+   "end": 829.5,
+   "text": "You use jako and mnogo together."
+  },
+  {
+   "start": 830.1,
+   "end": 832.2,
+   "text": "Yes, it's really strange."
+  },
+  {
+   "start": 832.4,
+   "end": 834.1,
+   "text": "Okay, that's funny."
+  },
+  {
+   "start": 834.32,
+   "end": 837.22,
+   "text": "Yes. You can use, for instance..."
+  },
+  {
+   "start": 837.8,
+   "end": 839.04,
+   "text": "Jako teško."
+  },
+  {
+   "start": 839.04,
+   "end": 841.58,
+   "text": "Like, Srb say, jako teško."
+  },
+  {
+   "start": 842.46,
+   "end": 843.66,
+   "text": "Jako teško."
+  },
+  {
+   "start": 843.66,
+   "end": 845.76,
+   "text": "Yes, it's really very, very hard."
+  },
+  {
+   "start": 846.12,
+   "end": 846.46,
+   "text": "That means in reals, yes, you can use."
+  },
+  {
+   "start": 846.46,
+   "end": 846.62,
+   "text": "Okay."
+  },
+  {
+   "start": 849.54,
+   "end": 851.1,
+   "text": "jako is really a word that we use"
+  },
+  {
+   "start": 851.1,
+   "end": 856.52,
+   "text": "for so many exactly, I hear it all the time that's why I want"
+  },
+  {
+   "start": 856.52,
+   "end": 856.98,
+   "text": "to talk about it"
+  },
+  {
+   "start": 856.98,
+   "end": 858.46,
+   "text": "and I"
+  },
+  {
+   "start": 858.46,
+   "end": 860.88,
+   "text": "read this in the books but"
+  },
+  {
+   "start": 860.88,
+   "end": 863.06,
+   "text": "you keep using this and I'm glad"
+  },
+  {
+   "start": 863.06,
+   "end": 866.82,
+   "text": "that you use it, I try to understand ujednom trenutku"
+  },
+  {
+   "start": 868.06,
+   "end": 868.58,
+   "text": "at one point"
+  },
+  {
+   "start": 868.58,
+   "end": 871.14,
+   "text": "right, yes at one point"
+  },
+  {
+   "start": 871.14,
+   "end": 873.98,
+   "text": "yes, really at one point"
+  },
+  {
+   "start": 873.98,
+   "end": 875.6,
+   "text": "that's super"
+  },
+  {
+   "start": 875.6,
+   "end": 879.6,
+   "text": "translation for that, it's not in one moment it at one point."
+  },
+  {
+   "start": 879.6,
+   "end": 881.38,
+   "text": "That's because at one point"
+  },
+  {
+   "start": 881.38,
+   "end": 885.06,
+   "text": "because again, regarding the timing,"
+  },
+  {
+   "start": 886.42,
+   "end": 889.86,
+   "text": "one point of the time, actually, we decided this and that."
+  },
+  {
+   "start": 890.16,
+   "end": 894.3,
+   "text": "Yes. So normally, that point is trenutak, right?"
+  },
+  {
+   "start": 894.3,
+   "end": 895.06,
+   "text": "Yes."
+  },
+  {
+   "start": 896.52,
+   "end": 898.08,
+   "text": "Because of the locative case,"
+  },
+  {
+   "start": 898.08,
+   "end": 899.9,
+   "text": "u, it became"
+  },
+  {
+   "start": 900.0,
+   "end": 901.86,
+   "text": "Yes, correct."
+  },
+  {
+   "start": 901.86,
+   "end": 908.26,
+   "text": "And there is no other use of trenutku."
+  },
+  {
+   "start": 908.26,
+   "end": 911.5,
+   "text": "Like u jednom trenutku is like an expression that we use all the time."
+  },
+  {
+   "start": 911.5,
+   "end": 914.52,
+   "text": "We don't have any other variation of that, right?"
+  },
+  {
+   "start": 914.82,
+   "end": 917.5,
+   "text": "No, you can avoid jednom."
+  },
+  {
+   "start": 917.5,
+   "end": 920.82,
+   "text": "You can say only u trenutku, smorečili."
+  },
+  {
+   "start": 920.82,
+   "end": 928.0,
+   "text": "But it means that you have to have previous sentences regarding this explanation."
+  },
+  {
+   "start": 928.0,
+   "end": 931.04,
+   "text": "then you can continue u trenutku."
+  },
+  {
+   "start": 931.86,
+   "end": 935.62,
+   "text": "I see. It's just one sentence before that."
+  },
+  {
+   "start": 935.62,
+   "end": 940.5,
+   "text": "We want to explain that it was living in Belgrade for such a long"
+  },
+  {
+   "start": 940.5,
+   "end": 940.88,
+   "text": "time."
+  },
+  {
+   "start": 940.88,
+   "end": 943.4,
+   "text": "At one point we decided this and that."
+  },
+  {
+   "start": 943.74,
+   "end": 945.5,
+   "text": "Perfect. And then you continued with small rešili."
+  },
+  {
+   "start": 945.5,
+   "end": 950.0,
+   "text": "That rešili to me, here you use it as we decided."
+  },
+  {
+   "start": 950.0,
+   "end": 957.3,
+   "text": "We decided to go to another country of Serbia because of"
+  },
+  {
+   "start": 957.3,
+   "end": 958.22,
+   "text": "the health of life."
+  },
+  {
+   "start": 959.72,
+   "end": 960.8,
+   "text": "Very nice explanation."
+  },
+  {
+   "start": 960.8,
+   "end": 964.88,
+   "text": "So you literally say we wanted to move somewhere."
+  },
+  {
+   "start": 964.88,
+   "end": 972.22,
+   "text": "We decided to move some other part of Serbia because of a healthier"
+  },
+  {
+   "start": 972.22,
+   "end": 974.5,
+   "text": "life. Yes, yes."
+  },
+  {
+   "start": 975.12,
+   "end": 982.69,
+   "text": "That was a good translation, except that maybe now when I said decided"
+  },
+  {
+   "start": 982.69,
+   "end": 989.73,
+   "text": "to move, this neki drugi kraj ve serbiye, that's in plural"
+  },
+  {
+   "start": 989.73,
+   "end": 993.33,
+   "text": "all. This is like a plural now."
+  },
+  {
+   "start": 993.33,
+   "end": 995.27,
+   "text": "Neki drugi kraj ve."
+  },
+  {
+   "start": 995.57,
+   "end": 997.39,
+   "text": "It's not neki drugi kraj."
+  },
+  {
+   "start": 997.81,
+   "end": 998.73,
+   "text": "That will be singular."
+  },
+  {
+   "start": 998.81,
+   "end": 1003.61,
+   "text": "Next movie, Kraj Serbia, the ending will be the same because of the healthier"
+  },
+  {
+   "start": 1003.61,
+   "end": 1004.27,
+   "text": "life."
+  },
+  {
+   "start": 1005.49,
+   "end": 1007.13,
+   "text": "So, Kraj has two meanings."
+  },
+  {
+   "start": 1007.13,
+   "end": 1011.77,
+   "text": "One is end, because at the end of movies there is Kraj, but also"
+  },
+  {
+   "start": 1011.77,
+   "end": 1012.91,
+   "text": "part, right?"
+  },
+  {
+   "start": 1012.91,
+   "end": 1015.01,
+   "text": "It has kind of two meanings."
+  },
+  {
+   "start": 1015.51,
+   "end": 1019.85,
+   "text": "Also the part of something, yes, that means in the sentence, yes."
+  },
+  {
+   "start": 1020.23,
+   "end": 1022.39,
+   "text": "That's different meaning, that's true."
+  },
+  {
+   "start": 1023.37,
+   "end": 1029.01,
+   "text": "So, rešili, smo rešili, was we have decided, kind of, or we decided."
+  },
+  {
+   "start": 1029.37,
+   "end": 1033.81,
+   "text": "And then in the second sentence, you say, odličil smo da dojemo u kurševats"
+  },
+  {
+   "start": 1033.81,
+   "end": 1037.39,
+   "text": "i da započnemo neki business."
+  },
+  {
+   "start": 1038.97,
+   "end": 1042.59,
+   "text": "Odličil smo is literally, we decided, right?"
+  },
+  {
+   "start": 1042.71,
+   "end": 1046.11,
+   "text": "Yes, yes, yes, we decided da."
+  },
+  {
+   "start": 1046.73,
+   "end": 1049.25,
+   "text": "Okay, započnemo means star."
+  },
+  {
+   "start": 1049.25,
+   "end": 1053.35,
+   "text": "Star, yes. I'm not going to ask you the hard question."
+  },
+  {
+   "start": 1053.35,
+   "end": 1053.99,
+   "text": "What is the difference?"
+  },
+  {
+   "start": 1054.29,
+   "end": 1056.17,
+   "text": "Zapocznemo i pocznemo."
+  },
+  {
+   "start": 1056.47,
+   "end": 1060.99,
+   "text": "I pocznemo. I know it's going to take time, so we will leave that"
+  },
+  {
+   "start": 1060.99,
+   "end": 1061.75,
+   "text": "part for now."
+  },
+  {
+   "start": 1061.75,
+   "end": 1066.57,
+   "text": "Yeah. Okay. And then I said, razumem, I understand you."
+  },
+  {
+   "start": 1066.57,
+   "end": 1071.65,
+   "text": "Kuruševac ima lepu prirodu i mirniji život."
+  },
+  {
+   "start": 1072.29,
+   "end": 1074.87,
+   "text": "Yes. Here we have accusative, right?"
+  },
+  {
+   "start": 1074.87,
+   "end": 1083.89,
+   "text": "yes that's accusative yes yes yes yes is"
+  },
+  {
+   "start": 1083.89,
+   "end": 1088.19,
+   "text": "a ending with a život ending as a masculine word"
+  },
+  {
+   "start": 1088.19,
+   "end": 1094.09,
+   "text": "so that's why it doesn't have u at the end yes okay and then"
+  },
+  {
+   "start": 1094.09,
+   "end": 1101.63,
+   "text": "uh like a real interviewer i asked Can you"
+  },
+  {
+   "start": 1101.63,
+   "end": 1104.29,
+   "text": "tell us what you do?"
+  },
+  {
+   "start": 1104.63,
+   "end": 1105.71,
+   "text": "What's your job?"
+  },
+  {
+   "start": 1105.93,
+   "end": 1108.05,
+   "text": "Yes. What is your job or what you do?"
+  },
+  {
+   "start": 1108.05,
+   "end": 1108.29,
+   "text": "Or what is your..."
+  },
+  {
+   "start": 1108.29,
+   "end": 1108.51,
+   "text": "Yes."
+  },
+  {
+   "start": 1108.83,
+   "end": 1109.05,
+   "text": "Yeah."
+  },
+  {
+   "start": 1109.05,
+   "end": 1114.67,
+   "text": "Okay. But as I use bavite, that means plural you or polite, but in"
+  },
+  {
+   "start": 1114.67,
+   "end": 1115.33,
+   "text": "this case, plural you I"
+  },
+  {
+   "start": 1115.33,
+   "end": 1116.55,
+   "text": "wanted to use."
+  },
+  {
+   "start": 1117.11,
+   "end": 1117.87,
+   "text": "You are plural."
+  },
+  {
+   "start": 1117.87,
+   "end": 1118.75,
+   "text": "Yes."
+  },
+  {
+   "start": 1120.45,
+   "end": 1124.14,
+   "text": "If I wanted to ask you, can you tell me, then I would say,"
+  },
+  {
+   "start": 1124.14,
+   "end": 1125.12,
+   "text": "right?"
+  },
+  {
+   "start": 1126.62,
+   "end": 1127.96,
+   "text": "Great. Yes, great."
+  },
+  {
+   "start": 1128.38,
+   "end": 1131.28,
+   "text": "You started with the singular because you are asking me,"
+  },
+  {
+   "start": 1131.28,
+   "end": 1139.16,
+   "text": "means only me, but then you continue in plural because it's"
+  },
+  {
+   "start": 1139.16,
+   "end": 1139.94,
+   "text": "me and husband,"
+  },
+  {
+   "start": 1139.94,
+   "end": 1143.22,
+   "text": "meaning what we are doing something."
+  },
+  {
+   "start": 1143.66,
+   "end": 1143.92,
+   "text": "Exactly."
+  },
+  {
+   "start": 1143.92,
+   "end": 1146.78,
+   "text": "Okay. If I wanted to ask you politely, I would say,"
+  },
+  {
+   "start": 1146.78,
+   "end": 1148.68,
+   "text": "right?"
+  },
+  {
+   "start": 1150.44,
+   "end": 1155.54,
+   "text": "Yes, if we are on the, how French says, per tu, per tu, or"
+  },
+  {
+   "start": 1155.54,
+   "end": 1156.82,
+   "text": "something like that, I think."
+  },
+  {
+   "start": 1157.1,
+   "end": 1162.92,
+   "text": "If we are, yes, more politely, that means, yes, možete nam reči, čime se"
+  },
+  {
+   "start": 1162.92,
+   "end": 1167.2,
+   "text": "vi bavite. Vi is also an option."
+  },
+  {
+   "start": 1167.2,
+   "end": 1170.14,
+   "text": "You can include also, yeah, it's also the option."
+  },
+  {
+   "start": 1170.8,
+   "end": 1174.52,
+   "text": "All right. And then you said imamo prelep guest house."
+  },
+  {
+   "start": 1175.0,
+   "end": 1179.34,
+   "text": "Guest house, I think, also is used in Serbian as guest house, right?"
+  },
+  {
+   "start": 1180.12,
+   "end": 1183.44,
+   "text": "But that started to be used in the last maybe"
+  },
+  {
+   "start": 1183.44,
+   "end": 1184.94,
+   "text": "5-10 years, whatever."
+  },
+  {
+   "start": 1184.94,
+   "end": 1185.56,
+   "text": "It wasn't so"
+  },
+  {
+   "start": 1185.56,
+   "end": 1189.36,
+   "text": "common. But I didn't"
+  },
+  {
+   "start": 1190.94,
+   "end": 1191.36,
+   "text": "find a really"
+  },
+  {
+   "start": 1191.36,
+   "end": 1193.84,
+   "text": "translation of the guest house."
+  },
+  {
+   "start": 1193.84,
+   "end": 1195.44,
+   "text": "So we kept the guest house as"
+  },
+  {
+   "start": 1195.44,
+   "end": 1197.28,
+   "text": "an English word."
+  },
+  {
+   "start": 1199.3,
+   "end": 1199.94,
+   "text": "It could be"
+  },
+  {
+   "start": 1200.36,
+   "end": 1206.7,
+   "text": "But it's very, again, it's very uncommon use of the words."
+  },
+  {
+   "start": 1207.68,
+   "end": 1211.04,
+   "text": "That's something that we are not pronouncing so easily."
+  },
+  {
+   "start": 1211.68,
+   "end": 1215.26,
+   "text": "So I think maybe it can be guest house."
+  },
+  {
+   "start": 1216.02,
+   "end": 1217.24,
+   "text": "And then you used."
+  },
+  {
+   "start": 1220.7,
+   "end": 1223.36,
+   "text": "So a guest house called Silvani."
+  },
+  {
+   "start": 1224.4,
+   "end": 1224.76,
+   "text": "In Velika Lomnica. Yes."
+  },
+  {
+   "start": 1227.52,
+   "end": 1237.5,
+   "text": "Okay. and then uh bicycle tours that"
+  },
+  {
+   "start": 1237.5,
+   "end": 1244.78,
+   "text": "is again is followed by padegi"
+  },
+  {
+   "start": 1244.78,
+   "end": 1249.88,
+   "text": "i think genitive right That will be po dativ."
+  },
+  {
+   "start": 1250.3,
+   "end": 1257.3,
+   "text": "Dativ. Yes, because dativ is for direction po jastrebcu"
+  },
+  {
+   "start": 1257.3,
+   "end": 1264.5,
+   "text": "i koponiku. The normal words, maybe our listeners do not know, jastrebac and koponik."
+  },
+  {
+   "start": 1265.22,
+   "end": 1269.74,
+   "text": "So jastrebac became jastrebcu i koponiku."
+  },
+  {
+   "start": 1270.4,
+   "end": 1272.28,
+   "text": "So both of them are masculine ending."
+  },
+  {
+   "start": 1272.54,
+   "end": 1274.06,
+   "text": "That's why it was the same."
+  },
+  {
+   "start": 1274.58,
+   "end": 1274.96,
+   "text": "Great."
+  },
+  {
+   "start": 1274.96,
+   "end": 1278.62,
+   "text": "Yes. And then I always hear bash cool."
+  },
+  {
+   "start": 1279.02,
+   "end": 1279.28,
+   "text": "Oh, bash."
+  },
+  {
+   "start": 1279.28,
+   "end": 1279.62,
+   "text": "Yes."
+  },
+  {
+   "start": 1279.62,
+   "end": 1283.68,
+   "text": "Again. Cool, I think, is adopted from English, right?"
+  },
+  {
+   "start": 1284.16,
+   "end": 1288.68,
+   "text": "Of course. Of And it could be just like so cool."
+  },
+  {
+   "start": 1289.36,
+   "end": 1291.94,
+   "text": "Now, the sentence of this sentence will be so cool."
+  },
+  {
+   "start": 1291.94,
+   "end": 1293.32,
+   "text": "Bash could be so."
+  },
+  {
+   "start": 1293.82,
+   "end": 1294.56,
+   "text": "Something like that."
+  },
+  {
+   "start": 1294.72,
+   "end": 1294.92,
+   "text": "And then, oh, can you read, repeat the last sentence?"
+  },
+  {
+   "start": 1294.92,
+   "end": 1295.18,
+   "text": "Okay."
+  },
+  {
+   "start": 1299.16,
+   "end": 1301.56,
+   "text": "because it's kind of difficult."
+  },
+  {
+   "start": 1302.72,
+   "end": 1309.78,
+   "text": "Jeste. Svim ljubiteljima prirode želimo dobrodošlicu u našu kuću."
+  },
+  {
+   "start": 1310.18,
+   "end": 1312.68,
+   "text": "All right. And dobrodošlicu."
+  },
+  {
+   "start": 1313.56,
+   "end": 1314.42,
+   "text": "What's that word?"
+  },
+  {
+   "start": 1316.36,
+   "end": 1323.72,
+   "text": "That's come from the verb dobrodošli, which means welcome."
+  },
+  {
+   "start": 1324.88,
+   "end": 1332.14,
+   "text": "And this is the noun of the verb, that will be the noun,"
+  },
+  {
+   "start": 1332.7,
+   "end": 1335.26,
+   "text": "but we use now in again,"
+  },
+  {
+   "start": 1336.94,
+   "end": 1342.88,
+   "text": "we use, yes, so I don't know, in English,"
+  },
+  {
+   "start": 1342.88,
+   "end": 1349.64,
+   "text": "it could be all the natural lovers, we wish welcome to our house, because"
+  },
+  {
+   "start": 1349.64,
+   "end": 1353.26,
+   "text": "we cannot do such a literal translation."
+  },
+  {
+   "start": 1353.76,
+   "end": 1354.4,
+   "text": "Yes, yes."
+  },
+  {
+   "start": 1354.4,
+   "end": 1357.72,
+   "text": "But it means we welcome all nature lovers to our house."
+  },
+  {
+   "start": 1357.72,
+   "end": 1361.32,
+   "text": "Yes, yes. That will be, yes, better."
+  },
+  {
+   "start": 1361.52,
+   "end": 1363.58,
+   "text": "It's easier in English and, of course, more challenging."
+  },
+  {
+   "start": 1363.58,
+   "end": 1370.64,
+   "text": "All right. I hope it was good enough explanation."
+  },
+  {
+   "start": 1370.8,
+   "end": 1375.0,
+   "text": "So after we explained the words, let's read it one more time."
+  },
+  {
+   "start": 1375.02,
+   "end": 1387.62,
+   "text": "Where"
+  },
+  {
+   "start": 1387.62,
+   "end": 1389.24,
+   "text": "did you come here?"
+  },
+  {
+   "start": 1405.84,
+   "end": 1406.52,
+   "text": "Why are you here?"
+  },
+  {
+   "start": 1406.52,
+   "end": 1410.9,
+   "text": "My wife and I have lived in Beograd very long."
+  },
+  {
+   "start": 1412.32,
+   "end": 1416.94,
+   "text": "We decided to go to another country of Serbia because of the healthy life."
+  },
+  {
+   "start": 1418.1,
+   "end": 1420.4,
+   "text": "We decided to get to Kruševac and start some business."
+  },
+  {
+   "start": 1420.4,
+   "end": 1422.46,
+   "text": "I da započnemo neki biznis."
+  },
+  {
+   "start": 1423.0,
+   "end": 1423.38,
+   "text": "Razumem. Kruševac ima ljepu prirodu i mirniji život."
+  },
+  {
+   "start": 1423.38,
+   "end": 1427.14,
+   "text": "I understand. Kruševac has a nice and a safe life."
+  },
+  {
+   "start": 1427.9,
+   "end": 1428.1,
+   "text": "Možeš li nam reći čime se vi babite?"
+  },
+  {
+   "start": 1428.1,
+   "end": 1429.94,
+   "text": "Can you tell us what you are going to do?"
+  },
+  {
+   "start": 1431.18,
+   "end": 1435.8,
+   "text": "Imamo prelep guest house koji se zove Silvani guest house u velikoj lomnici"
+  },
+  {
+   "start": 1435.8,
+   "end": 1440.56,
+   "text": "i organizujemo biciklističke ture po Jastrcu i Copalonikum."
+  },
+  {
+   "start": 1441.1,
+   "end": 1443.14,
+   "text": "Pa škol? Jeste."
+  },
+  {
+   "start": 1443.14,
+   "end": 1446.77,
+   "text": "Svim ljubiteljima prirode želimo dobrodošlicu u našu kuću."
+  },
+  {
+   "start": 1447.66,
+   "end": 1452.27,
+   "text": "All right. By the way, this is a real message."
+  },
+  {
+   "start": 1452.27,
+   "end": 1456.2,
+   "text": "They always welcome nature lovers to their home."
+  },
+  {
+   "start": 1456.44,
+   "end": 1459.22,
+   "text": "This house is really there in Veliko Komnitsi."
+  },
+  {
+   "start": 1459.32,
+   "end": 1463.94,
+   "text": "I will share the link under this episode so that you can have a"
+  },
+  {
+   "start": 1463.94,
+   "end": 1464.5,
+   "text": "look at it."
+  },
+  {
+   "start": 1464.58,
+   "end": 1468.65,
+   "text": "You will love their house and their beautiful garden, I'm sure."
+  },
+  {
+   "start": 1469.46,
+   "end": 1470.56,
+   "text": "Thank you very much, of course."
+  },
+  {
+   "start": 1470.56,
+   "end": 1472.82,
+   "text": "Okay, hvala ti puno."
+  },
+  {
+   "start": 1473.28,
+   "end": 1474.28,
+   "text": "Hvala i tebi."
+  },
+  {
+   "start": 1475.28,
+   "end": 1480.24,
+   "text": "Ok, we will continue with another theme in the next episode in this format."
+  },
+  {
+   "start": 1480.32,
+   "end": 1483.32,
+   "text": "I hope this is going to help our listeners a lot."
+  },
+  {
+   "start": 1483.76,
+   "end": 1484.96,
+   "text": "I hope so."
+  },
+  {
+   "start": 1485.14,
+   "end": 1486.88,
+   "text": "Ok, vidimo se, ciao!"
+  },
+  {
+   "start": 1486.96,
+   "end": 1488.24,
+   "text": "Vidimo se, drago!"
+  },
+  {
+   "start": 1490.32,
+   "end": 1491.96,
+   "text": "Thank you for listening to us today."
+  },
+  {
+   "start": 1492.2,
+   "end": 1495.38,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 1495.78,
+   "end": 1500.01,
+   "text": "In case you have any comments, suggestions or questions, make sure to share that."
+  },
+  {
+   "start": 1500.01,
+   "end": 1502.99,
+   "text": "on our Instagram page, Moje Kafa Podcast."
+  },
+  {
+   "start": 1503.15,
+   "end": 1503.83,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.1: Kruševac",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/66117023/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-2-7%2F316633060-44100-2-dc3b44cfb15da.m4a"
+}

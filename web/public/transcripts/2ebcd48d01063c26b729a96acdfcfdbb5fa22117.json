@@ -1,0 +1,2320 @@
+{
+ "duration": 2241.46,
+ "cues": [
+  {
+   "start": 18.14,
+   "end": 22.86,
+   "text": "Dobar dan i dobrodošli u novu epizodu Serbian Language Podcast."
+  },
+  {
+   "start": 23.48,
+   "end": 27.74,
+   "text": "Ja sam Nikola i danas sa mnom je moja devojka Jovana."
+  },
+  {
+   "start": 27.74,
+   "end": 29.12,
+   "text": "Ćao Jovana. Ćao."
+  },
+  {
+   "start": 30.1,
+   "end": 37.56,
+   "text": "Danas pričamo o tome kako u Srbiji naći stan ili kuću za"
+  },
+  {
+   "start": 37.56,
+   "end": 43.62,
+   "text": "kupovinu ili izdavanje i kako smo mi našli naš stan."
+  },
+  {
+   "start": 45.46,
+   "end": 53.82,
+   "text": "Pre nego što počnemo, možete da pogledate naš website www.serbinglanguagelessons.com"
+  },
+  {
+   "start": 54.66,
+   "end": 61.38,
+   "text": "gdje možete da bukirate vaš prvi besplatan čas i da se informišete o budućim"
+  },
+  {
+   "start": 61.38,
+   "end": 65.0,
+   "text": "projektima i časovima na tom sajtu."
+  },
+  {
+   "start": 65.36,
+   "end": 68.78,
+   "text": "Možete da slušate naš podcast i da čitate transkript."
+  },
+  {
+   "start": 70.12,
+   "end": 76.3,
+   "text": "I možete da zapratite našu Instagram stranicu Learn Serbian ili Serbian Language Network."
+  },
+  {
+   "start": 78.08,
+   "end": 79.46,
+   "text": "A sada da krenemo."
+  },
+  {
+   "start": 83.22,
+   "end": 86.54,
+   "text": "Kako tražiti stan ili kuću u Srbiji?"
+  },
+  {
+   "start": 87.04,
+   "end": 93.36,
+   "text": "Znači imate dve opcije, ako hoćete da kupite stan ili ako hoćete da iznajmljujete"
+  },
+  {
+   "start": 93.36,
+   "end": 100.9,
+   "text": "stan. iznemljivati znači plaćati stan ili bilo šta mesečno obično"
+  },
+  {
+   "start": 100.9,
+   "end": 105.58,
+   "text": "ili na neko određeno vreme, određenu sumu novca."
+  },
+  {
+   "start": 106.12,
+   "end": 110.52,
+   "text": "Postoji nekoliko websajta ili websajtova za to, tako?"
+  },
+  {
+   "start": 111.5,
+   "end": 118.52,
+   "text": "I neke od najpopularnijih su nekretnine, četiri"
+  },
+  {
+   "start": 118.52,
+   "end": 119.56,
+   "text": "zida,"
+  },
+  {
+   "start": 120.98,
+   "end": 122.3,
+   "text": "kako se još zovu sajtovi?"
+  },
+  {
+   "start": 122.96,
+   "end": 130.1,
+   "text": "oglasi.rs oglasi.nekretnine.rs Halo, oglasi."
+  },
+  {
+   "start": 130.22,
+   "end": 131.46,
+   "text": "Da, halo, oglasi."
+  },
+  {
+   "start": 133.06,
+   "end": 138.96,
+   "text": "I slično. Mislim da su sada najpopularniji četiri zida, tako se zove website za"
+  },
+  {
+   "start": 138.96,
+   "end": 144.72,
+   "text": "tražanje stanova. Sve zavisi, mislim, u Novom Sadu preko onoga oglasi."
+  },
+  {
+   "start": 145.44,
+   "end": 150.98,
+   "text": "Da, zavisi. Ako dođete u neko manje mesto, kao što je Šabac, teško ćete"
+  },
+  {
+   "start": 150.98,
+   "end": 153.44,
+   "text": "naći stan preko websitea."
+  },
+  {
+   "start": 153.76,
+   "end": 159.64,
+   "text": "Verovatno ćete morati da tražite po Facebook grupama ili po pravom oglasniku koji se"
+  },
+  {
+   "start": 159.64,
+   "end": 161.44,
+   "text": "štampa i prodaje na kiosku."
+  },
+  {
+   "start": 163.86,
+   "end": 171.02,
+   "text": "Ali eto, stanovi u Srbiji u Beogradu, pa trenutno su"
+  },
+  {
+   "start": 171.02,
+   "end": 179.3,
+   "text": "jako skupi, ali i pre velikih svetskih kriza, pre Covid-a također,"
+  },
+  {
+   "start": 179.3,
+   "end": 180.38,
+   "text": "isto su bili skupi."
+  },
+  {
+   "start": 180.74,
+   "end": 186.26,
+   "text": "I možda čak ista cena stanova je bila u nekim gradovima u Nemačku i"
+  },
+  {
+   "start": 186.26,
+   "end": 187.08,
+   "text": "kao u Beogradu."
+  },
+  {
+   "start": 188.86,
+   "end": 193.2,
+   "text": "A prosečna plata u Srbiji trenutno je koliko ti možda znaš bolje?"
+  },
+  {
+   "start": 193.74,
+   "end": 199.26,
+   "text": "Recimo da je oko 500 do 600 EUR neka prosečna plata u Srbiji i"
+  },
+  {
+   "start": 199.26,
+   "end": 206.48,
+   "text": "trenutne cene stanova ako na primer tražite garsonjeru, a garsonjera je studio apartment"
+  },
+  {
+   "start": 206.48,
+   "end": 212.66,
+   "text": "na engleskom, znači stan sa jednom sobom i kupatilom, kuhinja u istom delu gdje"
+  },
+  {
+   "start": 212.66,
+   "end": 213.34,
+   "text": "je krevet."
+  },
+  {
+   "start": 215.42,
+   "end": 222.67,
+   "text": "Ja mislim da u Beogradu sada jedna garsonjera košta oko najmanje 250-300 evra."
+  },
+  {
+   "start": 223.19,
+   "end": 228.83,
+   "text": "Da, cene se kreće od 250, ako imate sreće, vi to možda nađete tu"
+  },
+  {
+   "start": 228.83,
+   "end": 231.79,
+   "text": "garsonjeru negde na periferiji grada."
+  },
+  {
+   "start": 231.93,
+   "end": 238.93,
+   "text": "Da, to nije skupo za evropski standard, za neki možda američki standard, ali"
+  },
+  {
+   "start": 238.93,
+   "end": 244.73,
+   "text": "za srpski standard je skupo jer ako imate platu 500 evra, 250-300 evra dajete"
+  },
+  {
+   "start": 244.73,
+   "end": 252.83,
+   "text": "na kiriju. Kirija je mjeseč, znači cena stana koju vi plaćate stanodavcu,"
+  },
+  {
+   "start": 252.83,
+   "end": 257.23,
+   "text": "toj osobi koja zapravo posvjeduje taj stan."
+  },
+  {
+   "start": 257.87,
+   "end": 260.49,
+   "text": "I na kraju imate za hranu i to je to."
+  },
+  {
+   "start": 260.49,
+   "end": 263.73,
+   "text": "Tako da je cena stanova jako skupa."
+  },
+  {
+   "start": 263.91,
+   "end": 271.65,
+   "text": "Također morate platiti račune, u grajnoj sezoni ne možete ispod 100 evra proći."
+  },
+  {
+   "start": 273.13,
+   "end": 280.49,
+   "text": "Znači ako hoćete da živite u Beogradu, morate dati dosta novca i morate imati"
+  },
+  {
+   "start": 280.49,
+   "end": 284.21,
+   "text": "dobru platu da biste platili taj stan."
+  },
+  {
+   "start": 286.47,
+   "end": 295.09,
+   "text": "Posle, sada trenutno u Beogradu imamo mnogo imigranata"
+  },
+  {
+   "start": 295.09,
+   "end": 297.83,
+   "text": "sa različitih strana, ali najviše iz Rusije."
+  },
+  {
+   "start": 297.93,
+   "end": 300.21,
+   "text": "Tako da imamo mnogo Rusu u Srbiji trenutno."
+  },
+  {
+   "start": 300.71,
+   "end": 307.21,
+   "text": "I zbog toga, iz nekog razloga, skočile su cene stanova u Srbiji, u Beogradu"
+  },
+  {
+   "start": 307.21,
+   "end": 308.35,
+   "text": "i Novom Sadu najviše."
+  },
+  {
+   "start": 309.03,
+   "end": 315.75,
+   "text": "i ako hoćete da iznajmljujete jednu garsonjeru, to je na primjer 300 evra, ako"
+  },
+  {
+   "start": 315.75,
+   "end": 322.65,
+   "text": "hoćete jednoosoban stan, dvosoban, to je 500-600 evra za tako nešto."
+  },
+  {
+   "start": 322.65,
+   "end": 326.27,
+   "text": "Što je već mnogo više od prosečne srpske plate."
+  },
+  {
+   "start": 326.27,
+   "end": 330.77,
+   "text": "Tako da je zapravo nemoguće uopšte iznamljivati stan."
+  },
+  {
+   "start": 331.07,
+   "end": 337.85,
+   "text": "Mnogi ljudi sada kupuju stanove, uzimaju kredit za stanove, zato što je povoljnije imati"
+  },
+  {
+   "start": 337.85,
+   "end": 340.81,
+   "text": "kredit za stan nego iznamljivati stan."
+  },
+  {
+   "start": 342.75,
+   "end": 348.21,
+   "text": "Sve u svemu, mi smo tražili stan u Šapcu i mi smo živjeli u"
+  },
+  {
+   "start": 348.21,
+   "end": 350.63,
+   "text": "garsonjeri, tako? Tako je."
+  },
+  {
+   "start": 351.01,
+   "end": 352.95,
+   "text": "Kako je izgledala ta garsonjera?"
+  },
+  {
+   "start": 354.11,
+   "end": 361.25,
+   "text": "Ta garsonjera je možda imala 35 kvadrata, odvojeno kupatilo, mali"
+  },
+  {
+   "start": 361.25,
+   "end": 364.01,
+   "text": "hodnik i jednu veliku sobu."
+  },
+  {
+   "start": 364.49,
+   "end": 372.29,
+   "text": "I u toj sobi smo spavali, jeli, kuvali, gledali televizor,"
+  },
+  {
+   "start": 372.29,
+   "end": 375.27,
+   "text": "čitali, Nikola je radio u toj sobi."
+  },
+  {
+   "start": 375.57,
+   "end": 380.89,
+   "text": "i bilo je jako nezgodno zato što se ja vratim sa posla i želim"
+  },
+  {
+   "start": 380.89,
+   "end": 387.95,
+   "text": "samo da se odmorim i da sedim malo u tišini, a Nikola baš tad"
+  },
+  {
+   "start": 387.95,
+   "end": 391.79,
+   "text": "radi ili obrnuto."
+  },
+  {
+   "start": 392.15,
+   "end": 399.67,
+   "text": "Da, imali smo jedan krevet na rasklapanje, to je sklopivi ili rasklopivi krevet na"
+  },
+  {
+   "start": 399.67,
+   "end": 402.51,
+   "text": "kome smo sedeli u toku dana i uveče spavali."
+  },
+  {
+   "start": 402.51,
+   "end": 409.73,
+   "text": "To je bilo jako dosadan proces sklapati i rasklapati krevet svakog dana."
+  },
+  {
+   "start": 410.19,
+   "end": 415.95,
+   "text": "Kada smo kuvali nešto, ceo stan je mirisao na primjer na luk ili na"
+  },
+  {
+   "start": 415.95,
+   "end": 417.95,
+   "text": "bilo koju hranu koju smo spremali"
+  },
+  {
+   "start": 419.79,
+   "end": 424.11,
+   "text": "i nije bilo mjesta da se okreneš u suštini."
+  },
+  {
+   "start": 424.17,
+   "end": 426.87,
+   "text": "Nije bilo zapravo mjesta za naše stvari."
+  },
+  {
+   "start": 426.87,
+   "end": 432.35,
+   "text": "Ako ja sve svoje stvari koje želim da prenesem, prenesem u stan, onda nema"
+  },
+  {
+   "start": 432.35,
+   "end": 434.67,
+   "text": "mesta za Nikolu i obrnuto."
+  },
+  {
+   "start": 435.35,
+   "end": 436.83,
+   "text": "Bila je baš velika kuću."
+  },
+  {
+   "start": 437.48,
+   "end": 444.7,
+   "text": "I definitivno nam je trebao novi stan, najmanje jednosoban, pre svega"
+  },
+  {
+   "start": 444.7,
+   "end": 447.92,
+   "text": "da ima svako mjesta za sebe."
+  },
+  {
+   "start": 449.14,
+   "end": 455.0,
+   "text": "U tom starom stanu je bilo isto, iz nekog razloga je bilo mnogo vlage,"
+  },
+  {
+   "start": 455.0,
+   "end": 461.6,
+   "text": "vazduh je bio jako vlažan, nismo imali isto terasu, veš smo morali da sušimo"
+  },
+  {
+   "start": 461.6,
+   "end": 465.92,
+   "text": "u stanu, tako da nam je definitivno trebao novi stan."
+  },
+  {
+   "start": 466.5,
+   "end": 469.4,
+   "text": "Koliko smo plaćali garsonjeru mesečno?"
+  },
+  {
+   "start": 469.4,
+   "end": 475.98,
+   "text": "180 evra. Da, 180 evra smo mesečno davali za garsonjeru."
+  },
+  {
+   "start": 475.98,
+   "end": 482.58,
+   "text": "I da, u Srbiji imamo dinare, ali takve stvari kao što su plaćanje stana"
+  },
+  {
+   "start": 482.58,
+   "end": 489.48,
+   "text": "i sve velike stvari koje su zapravo skupe računaju se u evrima i plaćaju"
+  },
+  {
+   "start": 489.48,
+   "end": 490.16,
+   "text": "se u evrima."
+  },
+  {
+   "start": 492.52,
+   "end": 495.56,
+   "text": "Naprimjer, iznamljivanje stana s obječnom plaću u evrima."
+  },
+  {
+   "start": 497.44,
+   "end": 503.1,
+   "text": "I mi smo tražili stan preko oglasa, što je bilo malo teže."
+  },
+  {
+   "start": 503.1,
+   "end": 509.52,
+   "text": "Šabac nije tako veliki grad kao Beograd, nije ni mnogo mali grad, ali morali"
+  },
+  {
+   "start": 509.52,
+   "end": 511.54,
+   "text": "smo da kupujemo oglasnik."
+  },
+  {
+   "start": 511.66,
+   "end": 519.44,
+   "text": "Oglasnik je kao mala knjiga ili novine koja"
+  },
+  {
+   "start": 519.44,
+   "end": 525.04,
+   "text": "izlazi nedeljno svakog petka i mi smo svakog petka morali da kupujemo taj oglasnik"
+  },
+  {
+   "start": 525.04,
+   "end": 526.7,
+   "text": "i da tražimo stanove tu."
+  },
+  {
+   "start": 528.66,
+   "end": 535.72,
+   "text": "I posle mesec dana smo našli jedan stan, jednoosoban na"
+  },
+  {
+   "start": 535.72,
+   "end": 536.72,
+   "text": "poslednjem spratu."
+  },
+  {
+   "start": 538.0,
+   "end": 539.02,
+   "text": "Ali ovaj stan vam je baš leo."
+  },
+  {
+   "start": 539.02,
+   "end": 540.52,
+   "text": "Ali je stan jako..."
+  },
+  {
+   "start": 540.52,
+   "end": 543.86,
+   "text": "Odgovara nam po svemu, ipak se potraga i platila."
+  },
+  {
+   "start": 543.86,
+   "end": 551.12,
+   "text": "Da. I znači imamo jednu veliku sobu koja je kao dnevna soba,"
+  },
+  {
+   "start": 551.12,
+   "end": 552.48,
+   "text": "ali je dosta prostrana."
+  },
+  {
+   "start": 552.8,
+   "end": 554.86,
+   "text": "Imamo terasu, šta još?"
+  },
+  {
+   "start": 555.68,
+   "end": 562.34,
+   "text": "Imamo mali hodnik, imamo odvojenu kuhinju, kupatilo, spavaću sobu."
+  },
+  {
+   "start": 562.76,
+   "end": 564.9,
+   "text": "Koja je velika, nije mnogo mala."
+  },
+  {
+   "start": 565.48,
+   "end": 573.0,
+   "text": "Ništa nije skučeno, u svakoj prostori ima dovoljno prostora i jako je lepo,"
+  },
+  {
+   "start": 573.0,
+   "end": 573.86,
+   "text": "baš mi se svidje."
+  },
+  {
+   "start": 573.86,
+   "end": 580.92,
+   "text": "Ima trosed i imamo policu sa knjigama"
+  },
+  {
+   "start": 581.9,
+   "end": 583.58,
+   "text": "koje smo mi naponuli u knjigama."
+  },
+  {
+   "start": 583.58,
+   "end": 585.16,
+   "text": "Imamo još jednu policu."
+  },
+  {
+   "start": 586.86,
+   "end": 590.58,
+   "text": "Za TV mjesto imamo jedno velike sto stolice."
+  },
+  {
+   "start": 591.2,
+   "end": 594.7,
+   "text": "U spavačoj sobi imamo ormar."
+  },
+  {
+   "start": 595.34,
+   "end": 598.62,
+   "text": "Veliki ormar gdje možemo da stavimo našu garderobu."
+  },
+  {
+   "start": 600.24,
+   "end": 607.24,
+   "text": "U kupatilu imamo naravno vešmašinu i u kuhinji imamo"
+  },
+  {
+   "start": 607.24,
+   "end": 609.34,
+   "text": "frižider, špored i sve."
+  },
+  {
+   "start": 611.86,
+   "end": 617.08,
+   "text": "Jovana voli biljke i ona je donela koliko biljaka si donela?"
+  },
+  {
+   "start": 618.12,
+   "end": 623.64,
+   "text": "Jedno desetak. Desetak biljaka i biljke su zapravo jako bitne za stan zato što"
+  },
+  {
+   "start": 623.64,
+   "end": 626.52,
+   "text": "unose dosta zelenila."
+  },
+  {
+   "start": 627.62,
+   "end": 633.6,
+   "text": "i sada imamo 1, 2, 3, 4, 5, 6 pa više od 10 ja"
+  },
+  {
+   "start": 633.6,
+   "end": 640.12,
+   "text": "mislim biljaka i čekamo jedno da mi stigne da, i bit će još što"
+  },
+  {
+   "start": 640.12,
+   "end": 640.56,
+   "text": "je lepo"
+  },
+  {
+   "start": 642.36,
+   "end": 647.92,
+   "text": "i kada dođe lepo vreme, naravno imat ću i biljke na terasi cveće"
+  },
+  {
+   "start": 649.42,
+   "end": 654.58,
+   "text": "sezonsko koje cveta žardinjere ću da postavim i mnogo se radujem tome i mnogo"
+  },
+  {
+   "start": 654.58,
+   "end": 660.87,
+   "text": "se radujem da iznesemo stočić i stolicu za terasu i da pijemo ujutru kafu"
+  },
+  {
+   "start": 660.87,
+   "end": 665.17,
+   "text": "i da se nima na terasi i da uživamo."
+  },
+  {
+   "start": 665.81,
+   "end": 669.79,
+   "text": "Znači, terasa je lepa Nije mnogo velika, ali nije nije mala I tu imamo"
+  },
+  {
+   "start": 669.79,
+   "end": 672.97,
+   "text": "isto i klimu Nemamo zavese"
+  },
+  {
+   "start": 674.73,
+   "end": 681.37,
+   "text": "Iznad prozora nemamo zavese I mi smo mislili da mi postavimo Kako se to"
+  },
+  {
+   "start": 681.37,
+   "end": 689.03,
+   "text": "zove? Garnišne? U stvari, u rečenku matite srpske piše karniše Karniše?"
+  },
+  {
+   "start": 689.17,
+   "end": 694.23,
+   "text": "Ili karnišne, nisi sigurna To su jedna od onih čudnih reči koje niko ne"
+  },
+  {
+   "start": 694.23,
+   "end": 695.37,
+   "text": "zna kako se kažu."
+  },
+  {
+   "start": 695.37,
+   "end": 698.01,
+   "text": "Znači, u rečniku piše karniše."
+  },
+  {
+   "start": 698.01,
+   "end": 699.87,
+   "text": "Karnišne, ili tako našto?"
+  },
+  {
+   "start": 699.87,
+   "end": 702.83,
+   "text": "Karnišne, ali ja mislim da svi kažu garnišne."
+  },
+  {
+   "start": 703.17,
+   "end": 708.81,
+   "text": "To je ona šipka koja drži zavese, gde možete da postavite zavesu."
+  },
+  {
+   "start": 711.05,
+   "end": 715.29,
+   "text": "I da, toga nemamo u stanu i mi smo mislili da kupimo i bušilicu,"
+  },
+  {
+   "start": 715.31,
+   "end": 717.87,
+   "text": "izbušimo rupe i stavimo zavese."
+  },
+  {
+   "start": 719.99,
+   "end": 721.81,
+   "text": "To ćemo da uradimo."
+  },
+  {
+   "start": 721.81,
+   "end": 724.45,
+   "text": "Dozvolio nam je gazda i to ćemo da uradimo."
+  },
+  {
+   "start": 724.45,
+   "end": 726.39,
+   "text": "Da, trenutno su prozori bez zavesa."
+  },
+  {
+   "start": 726.79,
+   "end": 727.89,
+   "text": "Ali imamo roletne."
+  },
+  {
+   "start": 727.95,
+   "end": 728.97,
+   "text": "Imamo roletne."
+  },
+  {
+   "start": 730.93,
+   "end": 735.59,
+   "text": "Da, znači šta od nameštaja koje smo kupili i koje hoće da kupimo, hajde"
+  },
+  {
+   "start": 735.59,
+   "end": 739.75,
+   "text": "malo da pričamo o vocabulary za nameštaj."
+  },
+  {
+   "start": 741.47,
+   "end": 745.69,
+   "text": "Znači, mi smo skoro, pre nekoliko dana smo bili u Ikeji."
+  },
+  {
+   "start": 745.95,
+   "end": 750.53,
+   "text": "U Srbiji imamo Ikeju kod Beograda, u Beogradu tehnički."
+  },
+  {
+   "start": 750.93,
+   "end": 753.47,
+   "text": "i kupili smo jednu podnu lampu."
+  },
+  {
+   "start": 755.85,
+   "end": 762.25,
+   "text": "Kupili smo posebno postolje i šipku za lampu."
+  },
+  {
+   "start": 762.25,
+   "end": 764.03,
+   "text": "I kako se zove ovo gore?"
+  },
+  {
+   "start": 764.15,
+   "end": 769.25,
+   "text": "Abožur. Abožur je to platno koje ide oko sjelice."
+  },
+  {
+   "start": 769.59,
+   "end": 771.83,
+   "text": "I jako je lepo, zadovoljni smo."
+  },
+  {
+   "start": 772.53,
+   "end": 774.99,
+   "text": "Pravi nam lepo atmosferu u dnevnoj sobi."
+  },
+  {
+   "start": 774.99,
+   "end": 780.07,
+   "text": "Da. Pošto smo mi na posljednjem spratu, naš plafon je jako visok."
+  },
+  {
+   "start": 780.73,
+   "end": 784.77,
+   "text": "I imamo dve sjelice koje su bele."
+  },
+  {
+   "start": 784.77,
+   "end": 790.43,
+   "text": "Nije lepo svetlo, nije loše, ali je jako veštačko svetlo."
+  },
+  {
+   "start": 790.79,
+   "end": 797.21,
+   "text": "Ovo je dobro svetlo zbog toga što je jako i osvetljava, ali nije prijetno"
+  },
+  {
+   "start": 797.21,
+   "end": 802.51,
+   "text": "za oči. Da, i mi smo kupili jednu malu lampu i sad jednu veliku."
+  },
+  {
+   "start": 802.65,
+   "end": 804.55,
+   "text": "Mislim da nam možda treba još jedna."
+  },
+  {
+   "start": 804.75,
+   "end": 807.53,
+   "text": "I ja, mislim da nam možda treba još jedna i to zidna."
+  },
+  {
+   "start": 809.13,
+   "end": 811.63,
+   "text": "Možda, ali ne znam kako ćemo da bušimo rupe za zidna."
+  },
+  {
+   "start": 811.63,
+   "end": 813.97,
+   "text": "Pa, pošto možemo da bušimo..."
+  },
+  {
+   "start": 814.21,
+   "end": 817.41,
+   "text": "Rupa za garnišne ili karniše."
+  },
+  {
+   "start": 817.73,
+   "end": 819.17,
+   "text": "Možemo i za to."
+  },
+  {
+   "start": 819.97,
+   "end": 824.03,
+   "text": "U suštini kupili smo jednu polnu lampu i šta još treba da kupimo od"
+  },
+  {
+   "start": 824.03,
+   "end": 826.47,
+   "text": "nameštaja? Od nameštaja?"
+  },
+  {
+   "start": 826.91,
+   "end": 831.15,
+   "text": "Treba da smislimo da li da donesemo veliko ogledalo ili ne."
+  },
+  {
+   "start": 831.93,
+   "end": 839.23,
+   "text": "Treba da kupimo kao neki armarić ili postolje za moje biljke."
+  },
+  {
+   "start": 840.69,
+   "end": 847.73,
+   "text": "treba da kupimo noćne stočiće za spavać u sobu ali mislim da može da"
+  },
+  {
+   "start": 847.73,
+   "end": 848.69,
+   "text": "stane jedan samo"
+  },
+  {
+   "start": 849.91,
+   "end": 853.79,
+   "text": "ja mislim da će stati dva ali možda i nećemo kupovati dva jer će"
+  },
+  {
+   "start": 853.79,
+   "end": 855.33,
+   "text": "možda biti previše da imamo dva"
+  },
+  {
+   "start": 857.19,
+   "end": 864.05,
+   "text": "također treba da kupimo bar jedan tepih da nam unese malo toplote zato što"
+  },
+  {
+   "start": 864.05,
+   "end": 867.65,
+   "text": "su dole pločice jer je grejanje podno To je jako bitno."
+  },
+  {
+   "start": 867.65,
+   "end": 871.19,
+   "text": "Pričat ćemo o rome šta je bitno kada birate stan."
+  },
+  {
+   "start": 872.91,
+   "end": 874.15,
+   "text": "Dorot, Epih."
+  },
+  {
+   "start": 874.64,
+   "end": 882.06,
+   "text": "Tepih bar jedan i naravno ovako uz put vidjet ćemo neke slike,"
+  },
+  {
+   "start": 882.06,
+   "end": 888.92,
+   "text": "ramove, detalje, sitnice, ali od velikih stvari ništa nam ne nedostaje."
+  },
+  {
+   "start": 889.24,
+   "end": 890.78,
+   "text": "Sve zapravo imamo za..."
+  },
+  {
+   "start": 890.86,
+   "end": 897.3,
+   "text": "Imali smo već sto sa stolicama, veliki sto, jedan mali sto u kuhinji, imamo"
+  },
+  {
+   "start": 897.3,
+   "end": 899.9,
+   "text": "stočić za kafu i sve je okej."
+  },
+  {
+   "start": 899.9,
+   "end": 903.88,
+   "text": "Nije ništa specijalno, nije neki veliki kvalitet, ali je dobro."
+  },
+  {
+   "start": 904.28,
+   "end": 907.8,
+   "text": "Eto, sada smo doneli moju gitaru, to nam služi kao dekoracija."
+  },
+  {
+   "start": 910.28,
+   "end": 913.8,
+   "text": "I imamo dosta biljaka, knjiga."
+  },
+  {
+   "start": 914.66,
+   "end": 919.74,
+   "text": "Ja mislim da sljedeće što treba da kupimo je tepih, jer je dole podno"
+  },
+  {
+   "start": 919.74,
+   "end": 927.5,
+   "text": "grenje i zato su svuda pločice, keramičke pločice i malo je kao..."
+  },
+  {
+   "start": 927.74,
+   "end": 929.76,
+   "text": "Podseća na ordinaciju."
+  },
+  {
+   "start": 929.78,
+   "end": 935.26,
+   "text": "Kao na neku ordinaciju ili kancelariju, tako da ako stavimo tepih na pod bit"
+  },
+  {
+   "start": 935.26,
+   "end": 939.12,
+   "text": "će lepše, nekako udobnija je atmosfera."
+  },
+  {
+   "start": 940.34,
+   "end": 947.48,
+   "text": "Ja sam razmišljao da stavimo zidne police, police koja se kači na zid,"
+  },
+  {
+   "start": 947.48,
+   "end": 953.64,
+   "text": "ali mislim da to nije baš isplativo, zato što stan nije naš, mi iznajmljujemo"
+  },
+  {
+   "start": 953.64,
+   "end": 954.18,
+   "text": "stan."
+  },
+  {
+   "start": 955.92,
+   "end": 962.08,
+   "text": "Inače imamo jako dobro gazdu Gazda je naziv za tu osobu Koja Zapravo to"
+  },
+  {
+   "start": 962.08,
+   "end": 964.64,
+   "text": "se zove stanodavac Tako?"
+  },
+  {
+   "start": 965.02,
+   "end": 969.8,
+   "text": "To je osoba koju vi plaćate kiriju Ili kako si kao Zakup To je"
+  },
+  {
+   "start": 969.8,
+   "end": 975.44,
+   "text": "taj novac za stan mesečno I jako je dobar Dozvolio je nam je da"
+  },
+  {
+   "start": 975.44,
+   "end": 981.14,
+   "text": "bušimo rupe u zidu Pituje da li imamo problema I jako je prijatel Donao"
+  },
+  {
+   "start": 981.14,
+   "end": 983.36,
+   "text": "nam je novi dušak kad smo se uselili."
+  },
+  {
+   "start": 983.9,
+   "end": 986.78,
+   "text": "Donao nam je novi dušak za krevet."
+  },
+  {
+   "start": 988.44,
+   "end": 994.66,
+   "text": "I da, mislim da treba nam tepih i kada dođe lepo vreme, proleće, leto,"
+  },
+  {
+   "start": 994.66,
+   "end": 996.66,
+   "text": "stočići stolice za terasu da pijemo kamar."
+  },
+  {
+   "start": 996.66,
+   "end": 997.36,
+   "text": "Tako je."
+  },
+  {
+   "start": 998.84,
+   "end": 1000.0,
+   "text": "Sada se baš radom."
+  },
+  {
+   "start": 1001.32,
+   "end": 1006.8,
+   "text": "Od ostalih stvari, ja mislim, ja sam donao svoj stari radni sto i stavili"
+  },
+  {
+   "start": 1006.8,
+   "end": 1014.66,
+   "text": "smo ga u spavaču sobu zato što meni treba posebna soba gdje ja držim"
+  },
+  {
+   "start": 1014.66,
+   "end": 1015.24,
+   "text": "časove"
+  },
+  {
+   "start": 1016.9,
+   "end": 1021.6,
+   "text": "gdje radim tako da mogu da radim tamo tamo nam treba kao što si"
+  },
+  {
+   "start": 1021.6,
+   "end": 1027.3,
+   "text": "ti rekla dva noćna stočića ili jedan i ja mislim jedna lampa podna ili"
+  },
+  {
+   "start": 1027.44,
+   "end": 1034.54,
+   "text": "za stočić ili dve vidjet ćemo već ali o tom podnom U spavaćoj"
+  },
+  {
+   "start": 1034.54,
+   "end": 1036.74,
+   "text": "sobi je mali prozor, nije mnogo veliki."
+  },
+  {
+   "start": 1038.24,
+   "end": 1043.68,
+   "text": "Da, spavaća soba je inače soba koja je stalno u hladu, tako da je"
+  },
+  {
+   "start": 1043.68,
+   "end": 1045.42,
+   "text": "veoma prijatno tamo."
+  },
+  {
+   "start": 1045.64,
+   "end": 1050.42,
+   "text": "Da, u kuhinji imamo mali prozorčić i on nije mnogo veliki, ali i to"
+  },
+  {
+   "start": 1050.42,
+   "end": 1050.98,
+   "text": "je ok."
+  },
+  {
+   "start": 1053.38,
+   "end": 1058.14,
+   "text": "Tako da, to je ono što smo mi uradili sada i neki naš plan"
+  },
+  {
+   "start": 1058.14,
+   "end": 1059.3,
+   "text": "za buduće."
+  },
+  {
+   "start": 1060.76,
+   "end": 1063.9,
+   "text": "Nismo upoznali komšije, nijednog."
+  },
+  {
+   "start": 1063.98,
+   "end": 1065.4,
+   "text": "Tek smo nedelju dana ovde."
+  },
+  {
+   "start": 1065.54,
+   "end": 1067.48,
+   "text": "Da, tek smo nedelju dana ovde."
+  },
+  {
+   "start": 1069.3,
+   "end": 1071.78,
+   "text": "Ali nadam se da ćemo upoznati nekog."
+  },
+  {
+   "start": 1072.02,
+   "end": 1077.98,
+   "text": "Jedini problem je sada što je to posljednji sprat i jako je dosadno penjati"
+  },
+  {
+   "start": 1077.98,
+   "end": 1080.86,
+   "text": "se gore-dola. Da, nemamo lift, ali opet nije..."
+  },
+  {
+   "start": 1080.86,
+   "end": 1084.98,
+   "text": "Ali nije ni potrebe zato što to je treći ili četvrti sprat."
+  },
+  {
+   "start": 1087.12,
+   "end": 1089.4,
+   "text": "Tako da, to je naš stan."
+  },
+  {
+   "start": 1089.58,
+   "end": 1094.12,
+   "text": "E sada, ako vi hoćete da iznamljujete stan, Ako hoćete da živite u Srbiji,"
+  },
+  {
+   "start": 1094.12,
+   "end": 1099.28,
+   "text": "da se preselite u Srbiji, ili ako već živite u Srbiji u dugo vreme"
+  },
+  {
+   "start": 1099.28,
+   "end": 1105.9,
+   "text": "i hoćete da nađete novi stan, novu kuću, kao što smo rekli, koristite web"
+  },
+  {
+   "start": 1105.9,
+   "end": 1110.1,
+   "text": "sajtove, obično, za iznajmljivanje stanova."
+  },
+  {
+   "start": 1111.22,
+   "end": 1117.72,
+   "text": "i ono što ljudi obično prvo traže od osobina stanova jeste grejanje."
+  },
+  {
+   "start": 1117.72,
+   "end": 1124.26,
+   "text": "Znači prva kvadratura stana, garsonjera je studio apartment, to je stan sa jednom sobom"
+  },
+  {
+   "start": 1124.26,
+   "end": 1125.16,
+   "text": "i kupatilom."
+  },
+  {
+   "start": 1126.62,
+   "end": 1131.08,
+   "text": "Imamo jednoosoban, dvosoban, treosoban, četvorosoban stan."
+  },
+  {
+   "start": 1131.38,
+   "end": 1132.34,
+   "text": "I tako dalje."
+  },
+  {
+   "start": 1132.34,
+   "end": 1135.84,
+   "text": "I postoji kao jedno i posoban stan, ali..."
+  },
+  {
+   "start": 1136.04,
+   "end": 1137.44,
+   "text": "Što niko ne zna šta je zapravo."
+  },
+  {
+   "start": 1137.44,
+   "end": 1138.74,
+   "text": "Niko nije siguran šta je to."
+  },
+  {
+   "start": 1138.74,
+   "end": 1144.2,
+   "text": "Ja ne znam, jedno i posoban stan to je kao, ja mislim, jedna velika"
+  },
+  {
+   "start": 1144.2,
+   "end": 1147.1,
+   "text": "dnevna soba i spavać osoba."
+  },
+  {
+   "start": 1148.16,
+   "end": 1154.46,
+   "text": "Pa, iskreno nisam sigurna, zato što je sad jednoosoban stan, ja sam uvek mislila"
+  },
+  {
+   "start": 1154.46,
+   "end": 1157.04,
+   "text": "da je to da imaš jednu sobu i dnevnu sobu."
+  },
+  {
+   "start": 1157.04,
+   "end": 1162.86,
+   "text": "Da. Dnevnu sobu sa kuhinjom i jednu sobu, ali uglavnom da imaš tu jednu"
+  },
+  {
+   "start": 1162.86,
+   "end": 1165.92,
+   "text": "odvojenu sobu, a sada je jedno i posoban stan."
+  },
+  {
+   "start": 1167.08,
+   "end": 1172.4,
+   "text": "Ne znam. Ali to je bitno, meni su učenici pre pitali šta znači jednoosoban"
+  },
+  {
+   "start": 1172.4,
+   "end": 1177.04,
+   "text": "stan. Znači to znači jedna spavać osoba plus dnevna soba."
+  },
+  {
+   "start": 1178.08,
+   "end": 1179.4,
+   "text": "Da, ja mislim."
+  },
+  {
+   "start": 1179.4,
+   "end": 1184.48,
+   "text": "Ali sad neko to zove dvoosoban jer su to kao dve odvojene sobe."
+  },
+  {
+   "start": 1184.48,
+   "end": 1188.18,
+   "text": "Da, pomešano je, ali mislim da više ljudi kada kaže jednoosoban stan to je"
+  },
+  {
+   "start": 1188.18,
+   "end": 1191.64,
+   "text": "zapravo jedna spavać osoba plus dnevna soba."
+  },
+  {
+   "start": 1192.04,
+   "end": 1199.22,
+   "text": "Možda ima nekih ljudi koji kažu da je to dvosoban"
+  },
+  {
+   "start": 1199.22,
+   "end": 1203.79,
+   "text": "stan, ali mislim da je u Srbiji jednosoban stan, jedna spavać osoba."
+  },
+  {
+   "start": 1204.99,
+   "end": 1212.51,
+   "text": "Drugo što treba gledati je grejanje, znači parno grejanje ili"
+  },
+  {
+   "start": 1212.51,
+   "end": 1219.67,
+   "text": "centralno grejanje. To je grejanje koje dolazi uglavnom iz termoelektrane i"
+  },
+  {
+   "start": 1219.67,
+   "end": 1226.21,
+   "text": "to je sistem koji greje ceo grad ili deo grada, znači većina zgrada i"
+  },
+  {
+   "start": 1226.21,
+   "end": 1227.71,
+   "text": "stanova koristi to."
+  },
+  {
+   "start": 1229.29,
+   "end": 1233.99,
+   "text": "Postoji grejenje na gas koji nije toliko često, ali i dalje postoji."
+  },
+  {
+   "start": 1234.75,
+   "end": 1240.93,
+   "text": "Znam da u Zagrebu ima, da sam video, dosta su opiše gas, ali više"
+  },
+  {
+   "start": 1240.93,
+   "end": 1242.69,
+   "text": "postoji parno grejenje."
+  },
+  {
+   "start": 1243.03,
+   "end": 1246.85,
+   "text": "To je u stvari grejenje na ugalj, to je termoelektrana na ugalj koji se"
+  },
+  {
+   "start": 1246.85,
+   "end": 1247.95,
+   "text": "i dalje koristi u Srbiji."
+  },
+  {
+   "start": 1250.01,
+   "end": 1255.45,
+   "text": "Mnoge kuće, znači ovo je sada kuća, koriste isto ugolje za grejanje, ovo tome"
+  },
+  {
+   "start": 1255.45,
+   "end": 1256.91,
+   "text": "možemo malo kasnije."
+  },
+  {
+   "start": 1256.91,
+   "end": 1264.45,
+   "text": "Postoji grejanje na struju, to je ona"
+  },
+  {
+   "start": 1264.45,
+   "end": 1271.93,
+   "text": "TA5, to je jako kultna, jako popularna i poznata stvarčica."
+  },
+  {
+   "start": 1271.93,
+   "end": 1278.65,
+   "text": "stvarčica. TA5 TA5 to je termoakumulaciona peć."
+  },
+  {
+   "start": 1278.65,
+   "end": 1285.41,
+   "text": "To je peć koja je bila popularna u doba Jugoslavije i toliko je kvalitetno"
+  },
+  {
+   "start": 1285.41,
+   "end": 1289.55,
+   "text": "rađena da i danas uđe koriste te peći koje su stare pa najmanje 30"
+  },
+  {
+   "start": 1289.55,
+   "end": 1291.91,
+   "text": "godina i više."
+  },
+  {
+   "start": 1292.11,
+   "end": 1295.89,
+   "text": "Moja TA5 kući je odkad razo sebe ona."
+  },
+  {
+   "start": 1296.03,
+   "end": 1300.43,
+   "text": "Te peći su jako jakih i ono što je, zašto su popularne to je"
+  },
+  {
+   "start": 1300.43,
+   "end": 1301.01,
+   "text": "zato što"
+  },
+  {
+   "start": 1302.27,
+   "end": 1309.49,
+   "text": "ljudi su ih koristili noću znači ako hoćeš da grejaš stan ti je uključiš"
+  },
+  {
+   "start": 1309.49,
+   "end": 1310.65,
+   "text": "noću kada je jeftin"
+  },
+  {
+   "start": 1310.69,
+   "end": 1315.49,
+   "text": "postoji jeftina i skupa struja i jeftina struje obično noću, negde i danju."
+  },
+  {
+   "start": 1316.17,
+   "end": 1323.99,
+   "text": "I onda ugasiš peć kada krene skupa struja ujutru, ali peć"
+  },
+  {
+   "start": 1323.99,
+   "end": 1330.61,
+   "text": "i dalje greje, zato što je ona akumulirala svu toplotu, nekako, i onda možeš"
+  },
+  {
+   "start": 1330.61,
+   "end": 1337.65,
+   "text": "da uključiš taj ventilator koji duva taj topao vazduhu toku dana i tako čuvaš"
+  },
+  {
+   "start": 1337.65,
+   "end": 1342.83,
+   "text": "energiju. E sad, da li je to zapravo jeftinije nego, na primjer, sada norveški"
+  },
+  {
+   "start": 1342.83,
+   "end": 1344.89,
+   "text": "radijatori su popularni?"
+  },
+  {
+   "start": 1345.25,
+   "end": 1346.89,
+   "text": "Mislim da nije jeftinije."
+  },
+  {
+   "start": 1346.89,
+   "end": 1349.29,
+   "text": "Eto što je to malo starija tehnologija."
+  },
+  {
+   "start": 1349.99,
+   "end": 1354.41,
+   "text": "Ali mislim da i norveški radijatori ne mogu toliku kvadraturu da zagreju."
+  },
+  {
+   "start": 1354.43,
+   "end": 1360.87,
+   "text": "Mislim, ne znam, vjerovatno postoje neki kriterijumi po kojima se biraju, ali jedna TA5"
+  },
+  {
+   "start": 1360.87,
+   "end": 1364.99,
+   "text": "može više kvadrata da zagreje nego jedan norveški radijator."
+  },
+  {
+   "start": 1365.61,
+   "end": 1366.63,
+   "text": "Moguće."
+  },
+  {
+   "start": 1367.85,
+   "end": 1369.03,
+   "text": "Jača je te apeć."
+  },
+  {
+   "start": 1369.03,
+   "end": 1373.05,
+   "text": "Kada vidite stan gde piše da imate apeći, to je verovatno stara gradnja."
+  },
+  {
+   "start": 1373.43,
+   "end": 1375.59,
+   "text": "To je isto veoma bitno."
+  },
+  {
+   "start": 1375.59,
+   "end": 1376.95,
+   "text": "Stara gradnja, nova gradnja."
+  },
+  {
+   "start": 1376.95,
+   "end": 1377.85,
+   "text": "Šta je stara gradnja?"
+  },
+  {
+   "start": 1378.47,
+   "end": 1385.05,
+   "text": "Stara gradnja, ranije su bili stanovi koji su građeni pre 80-ih."
+  },
+  {
+   "start": 1385.57,
+   "end": 1390.35,
+   "text": "Sada je stara gradnja i stanovi koji su građeni do 2000 nekih, ja mislim."
+  },
+  {
+   "start": 1390.35,
+   "end": 1395.07,
+   "text": "Znači, stara gradnja su oni sada stanovi, ja bih rekao, koji su građeni u"
+  },
+  {
+   "start": 1395.07,
+   "end": 1396.61,
+   "text": "istu dobu komunizmu."
+  },
+  {
+   "start": 1396.95,
+   "end": 1402.33,
+   "text": "Da. Znači, to su ipak stari stanovi, a nova granja je sve ono što"
+  },
+  {
+   "start": 1402.33,
+   "end": 1405.99,
+   "text": "je staro proteklih 10-15 godina."
+  },
+  {
+   "start": 1408.99,
+   "end": 1414.95,
+   "text": "Isto što je bitno, osim grejanja, znači imamo, rekao sam, paro grejanje, grejanje na"
+  },
+  {
+   "start": 1414.95,
+   "end": 1421.94,
+   "text": "struju, grejanje na gas, i postoji etažno grejanje, koje je grejanje jako čudno."
+  },
+  {
+   "start": 1421.94,
+   "end": 1424.56,
+   "text": "Ja sam koristio, koristio li sam u prošlom stanu."
+  },
+  {
+   "start": 1424.56,
+   "end": 1426.02,
+   "text": "Ja mislim da je to etažno grejanje."
+  },
+  {
+   "start": 1427.06,
+   "end": 1434.28,
+   "text": "Da, to je, u sklopu zgrade postoji neki kotao, koji nije priključen"
+  },
+  {
+   "start": 1434.28,
+   "end": 1441.44,
+   "text": "na taj centralni sistem, to planu, termoelektranu i to, nego upravnik"
+  },
+  {
+   "start": 1441.44,
+   "end": 1442.36,
+   "text": "zgrade."
+  },
+  {
+   "start": 1443.86,
+   "end": 1445.42,
+   "text": "Ne znam šta radi s tim."
+  },
+  {
+   "start": 1445.46,
+   "end": 1450.4,
+   "text": "Da, negde možeš sam doključiti šta je koto, negde ne, ali nije priključen na"
+  },
+  {
+   "start": 1450.4,
+   "end": 1452.66,
+   "text": "ceo gradski sistem grejanja."
+  },
+  {
+   "start": 1454.88,
+   "end": 1459.48,
+   "text": "Bitno je gledati da li stan ima lift, to je da li zgrade ima"
+  },
+  {
+   "start": 1459.48,
+   "end": 1460.28,
+   "text": "lift ili ne."
+  },
+  {
+   "start": 1462.18,
+   "end": 1465.5,
+   "text": "Šta je još bitno gledati kada se traži stan?"
+  },
+  {
+   "start": 1466.76,
+   "end": 1473.24,
+   "text": "Obično svi stanovi imaju internet, Da, naravno, bitno je da ima klimu, zato što"
+  },
+  {
+   "start": 1473.24,
+   "end": 1477.76,
+   "text": "su sada nepodnošljiva leta."
+  },
+  {
+   "start": 1477.84,
+   "end": 1484.28,
+   "text": "Da, pričao sam i pre, Srbija ima kontinentalnu klimu, ali leta su zbog toga"
+  },
+  {
+   "start": 1484.28,
+   "end": 1489.14,
+   "text": "jako vruća, kao da ste u Španiji, kao da ste, ne znam, u nekoj"
+  },
+  {
+   "start": 1489.14,
+   "end": 1491.46,
+   "text": "tropskoj zemlji, a zime su jako hladne."
+  },
+  {
+   "start": 1491.46,
+   "end": 1497.94,
+   "text": "Tako da kada dođe leto, definitivno morate imati klimu da bi se rashladili."
+  },
+  {
+   "start": 1499.8,
+   "end": 1505.18,
+   "text": "ranije nije bilo potrebe za klimom jer leta nisu bila toliko vruća ali sad"
+  },
+  {
+   "start": 1505.18,
+   "end": 1511.36,
+   "text": "je nemoguće živjeti bez klime obično uz internetu je uključena kablovska televizija"
+  },
+  {
+   "start": 1513.22,
+   "end": 1518.64,
+   "text": "najeftiniji paket šta je još bitno?"
+  },
+  {
+   "start": 1519.6,
+   "end": 1524.16,
+   "text": "bitno je kada uđete u stan da pogledate kakvi su prozori kakva je stolarija"
+  },
+  {
+   "start": 1524.16,
+   "end": 1528.8,
+   "text": "i kakva su vrata zato što ako su prozori loši i ne dihtuju dobro,"
+  },
+  {
+   "start": 1528.8,
+   "end": 1533.74,
+   "text": "onda ćete džabe da bacate pare na grejanje ili na hlađenje."
+  },
+  {
+   "start": 1533.74,
+   "end": 1540.78,
+   "text": "Dačno. Meni je recimo u mom prvom stanu kada sam studirala, nije bila toliko"
+  },
+  {
+   "start": 1540.78,
+   "end": 1546.86,
+   "text": "stara zgrada, ali su prozori ostali stari, dvokrilni, nisu lepo dihtovali i stalno je"
+  },
+  {
+   "start": 1546.86,
+   "end": 1549.42,
+   "text": "duvalo, a bio je stan pored reke."
+  },
+  {
+   "start": 1549.98,
+   "end": 1553.94,
+   "text": "i kad god vetar duva unosi mi hladan vazduh i ja sam morala da"
+  },
+  {
+   "start": 1553.94,
+   "end": 1559.94,
+   "text": "ubacujem neku ćebad između prozora da ne bi bilo zima."
+  },
+  {
+   "start": 1560.06,
+   "end": 1562.14,
+   "text": "Ali taj stan je bio lep inače."
+  },
+  {
+   "start": 1562.26,
+   "end": 1563.02,
+   "text": "Da, to je bitno."
+  },
+  {
+   "start": 1563.02,
+   "end": 1566.96,
+   "text": "Stolarija je ta naziv za takvo prozore i vrata."
+  },
+  {
+   "start": 1567.9,
+   "end": 1569.56,
+   "text": "To je stolarija."
+  },
+  {
+   "start": 1569.7,
+   "end": 1574.6,
+   "text": "I stara stolarija je ona od drveta i to je građena za vreme komunizma."
+  },
+  {
+   "start": 1574.6,
+   "end": 1575.82,
+   "text": "To je drvena stolarija."
+  },
+  {
+   "start": 1576.3,
+   "end": 1583.22,
+   "text": "ali sada koristimo PVC, to je plastični prozori i vrata."
+  },
+  {
+   "start": 1583.74,
+   "end": 1592.1,
+   "text": "PVC je sada popularan i to su ti poznati prozori koje"
+  },
+  {
+   "start": 1592.1,
+   "end": 1593.78,
+   "text": "su, ja mislim, nemački standard."
+  },
+  {
+   "start": 1594.98,
+   "end": 1598.9,
+   "text": "I ono što isto jako zanimljivo je, mnogi ljudi ako su iz Amerike,"
+  },
+  {
+   "start": 1600.2,
+   "end": 1604.32,
+   "text": "to jest iz Sjedinih američke država, pa iz Amerike cele zapravo, Mislim da je"
+  },
+  {
+   "start": 1604.32,
+   "end": 1607.42,
+   "text": "svuda isto ili slično, ili na primjer iz Engleske."
+  },
+  {
+   "start": 1608.22,
+   "end": 1612.78,
+   "text": "Mnogi se čude kakvi su to prozori, zato što vi kad otvorite prozor u"
+  },
+  {
+   "start": 1612.78,
+   "end": 1613.52,
+   "text": "Evropi,"
+  },
+  {
+   "start": 1614.82,
+   "end": 1619.54,
+   "text": "otvorite ceo prozor, imate rupu u zidu kroz koju možete da ispadnete."
+  },
+  {
+   "start": 1619.54,
+   "end": 1625.34,
+   "text": "Znači, kad otvorite prozor, prozor ne kliza u levo, desno, gore, dole, nego se"
+  },
+  {
+   "start": 1625.34,
+   "end": 1631.4,
+   "text": "otvara ceo. Isto tako možete go otvoriti na kip, samo gornji deo može biti"
+  },
+  {
+   "start": 1631.4,
+   "end": 1633.84,
+   "text": "otvoren, a donji ostati zatvoren."
+  },
+  {
+   "start": 1634.52,
+   "end": 1636.58,
+   "text": "i to su takvi prozori."
+  },
+  {
+   "start": 1637.22,
+   "end": 1643.01,
+   "text": "Tako da tu postoji tehnika sa tom kvakom u kolom položaju će biti, tako"
+  },
+  {
+   "start": 1643.01,
+   "end": 1644.31,
+   "text": "će to otvarati prozor."
+  },
+  {
+   "start": 1644.69,
+   "end": 1649.01,
+   "text": "I to je sve od plastike pravljeno i to su prozori i vrata koja"
+  },
+  {
+   "start": 1649.01,
+   "end": 1656.91,
+   "text": "dihtuju lepo. Znači dihtovati to znači, to je glagol koji znači ne puštati"
+  },
+  {
+   "start": 1656.91,
+   "end": 1662.79,
+   "text": "vazduh, ja mislim, znači to je kada vazduh ne može proći."
+  },
+  {
+   "start": 1663.37,
+   "end": 1664.67,
+   "text": "kada je dobro zatvoreno."
+  },
+  {
+   "start": 1665.55,
+   "end": 1671.01,
+   "text": "Tako da kada duva vetar nemate problema, nemate tu opasnu promaju koju se svi"
+  },
+  {
+   "start": 1671.01,
+   "end": 1671.85,
+   "text": "Srbi plaše."
+  },
+  {
+   "start": 1674.55,
+   "end": 1676.01,
+   "text": "Tako da, to je to."
+  },
+  {
+   "start": 1676.29,
+   "end": 1680.97,
+   "text": "Ako vidite PVC stolariju u stanu, znate da je ili renoviran ili je nova"
+  },
+  {
+   "start": 1680.97,
+   "end": 1685.73,
+   "text": "granja. Bitno je da nema vlage, pogledati sve čoškove."
+  },
+  {
+   "start": 1686.57,
+   "end": 1690.43,
+   "text": "Naravno, takve stvari mogu da se prikriju u momentu izdavanja stana."
+  },
+  {
+   "start": 1690.43,
+   "end": 1694.89,
+   "text": "Da, obično... Osim ako nije neki baš veliki problem s flagom, to se onda"
+  },
+  {
+   "start": 1694.89,
+   "end": 1696.73,
+   "text": "osjeti kako uđete u zgradu."
+  },
+  {
+   "start": 1697.03,
+   "end": 1705.37,
+   "text": "Da, obično stanodavci, to je gazde stanodavci, kreće stan posle svakog"
+  },
+  {
+   "start": 1705.37,
+   "end": 1712.37,
+   "text": "zakupca, posle svake"
+  },
+  {
+   "start": 1712.37,
+   "end": 1714.19,
+   "text": "mušterije koje tu živjela."
+  },
+  {
+   "start": 1715.59,
+   "end": 1722.53,
+   "text": "i bude nova obično bela farba, tako da to može da zavara."
+  },
+  {
+   "start": 1724.85,
+   "end": 1729.07,
+   "text": "Najbitnije u stvari od svega je kakav je gazda, kakav je stanodavac."
+  },
+  {
+   "start": 1730.19,
+   "end": 1733.85,
+   "text": "Ako je pošten, onda ćete imati i dobar stan i bit će sve ok."
+  },
+  {
+   "start": 1734.69,
+   "end": 1737.53,
+   "text": "E sada, ako hoćete, koje su cene stanova?"
+  },
+  {
+   "start": 1737.61,
+   "end": 1743.81,
+   "text": "Rekli smo, garsonjera je sada, ja mislim, 250 evra najmanje, ali mislim da je"
+  },
+  {
+   "start": 1743.81,
+   "end": 1745.91,
+   "text": "300 evra u Beogradu i Novom Sadu."
+  },
+  {
+   "start": 1747.59,
+   "end": 1751.37,
+   "text": "Nosu mi stanovi 400 evra i najviše."
+  },
+  {
+   "start": 1751.59,
+   "end": 1754.81,
+   "text": "Iskreno nisam ni pratijela, to ne može ni da se isprati."
+  },
+  {
+   "start": 1756.55,
+   "end": 1759.89,
+   "text": "Kupovina stanova, nisam siguran."
+  },
+  {
+   "start": 1760.35,
+   "end": 1761.45,
+   "text": "Da, to još nismo gledali."
+  },
+  {
+   "start": 1761.45,
+   "end": 1765.75,
+   "text": "Ja mislim da je to za jednu garsonjeru u Beogradu, negde koja nije baš"
+  },
+  {
+   "start": 1765.75,
+   "end": 1771.21,
+   "text": "na periferiji, ja mislim da najmanje 90.000, 80.000 evra."
+  },
+  {
+   "start": 1772.23,
+   "end": 1775.05,
+   "text": "Ne znam, ne bih mogla da ti kažem."
+  },
+  {
+   "start": 1775.27,
+   "end": 1781.97,
+   "text": "Ali najskupiji kvadrat u Beogradu je na Beogradu na vodi."
+  },
+  {
+   "start": 1782.53,
+   "end": 1784.67,
+   "text": "Ne znam da li znaš koliko košta jedan kvadrat."
+  },
+  {
+   "start": 1786.79,
+   "end": 1789.99,
+   "text": "Mislim da je najmanje 2000 evra jedan kvadratni metar."
+  },
+  {
+   "start": 1790.21,
+   "end": 1791.07,
+   "text": "Ma više je."
+  },
+  {
+   "start": 1791.31,
+   "end": 1793.99,
+   "text": "Ako nije 3000 evra jedan kvadratni metar."
+  },
+  {
+   "start": 1793.99,
+   "end": 1795.79,
+   "text": "Ne moram da je 3000 evra, ali..."
+  },
+  {
+   "start": 1797.09,
+   "end": 1802.09,
+   "text": "Tako da tamo Beograd na vodi je novi deo Beograda, pored Save i to"
+  },
+  {
+   "start": 1802.09,
+   "end": 1809.25,
+   "text": "je jako skup deo gdje žive uglavnom bogati ljudi i poznati"
+  },
+  {
+   "start": 1809.25,
+   "end": 1814.09,
+   "text": "ljudi, mnogi glumci i pevači sada tamo imaju stanove i to je sada jako"
+  },
+  {
+   "start": 1814.09,
+   "end": 1816.33,
+   "text": "popularan deo Beograda."
+  },
+  {
+   "start": 1817.55,
+   "end": 1822.31,
+   "text": "Tako da ako hoćete da živite u Beogradu i da tražite stan, najskuplji stanovi"
+  },
+  {
+   "start": 1822.31,
+   "end": 1827.65,
+   "text": "će biti u Starom gradu, Dorčulu, na Vračaru, naravno Beogradu na Vodi,"
+  },
+  {
+   "start": 1829.61,
+   "end": 1833.29,
+   "text": "dok će malo jeftiniji stanovi biti na periferiji grada."
+  },
+  {
+   "start": 1833.91,
+   "end": 1838.41,
+   "text": "Već negdje na kraju Voždovca možda budu jeftiniji, mada nisam siguran i tamo."
+  },
+  {
+   "start": 1839.39,
+   "end": 1843.09,
+   "text": "Tako da, Novi Beograd je isto verovatno skup."
+  },
+  {
+   "start": 1843.33,
+   "end": 1850.55,
+   "text": "Novi Beograd je deo grada koji je građen jamit kada 60-ih, 70-ih i tada,"
+  },
+  {
+   "start": 1850.55,
+   "end": 1858.15,
+   "text": "to su zgradi iz doba komunizma, poznati blokovi komunistički koji su sada"
+  },
+  {
+   "start": 1858.15,
+   "end": 1863.88,
+   "text": "već zastareli i to su stare, sada se to računa kao stara granja, ja"
+  },
+  {
+   "start": 1863.88,
+   "end": 1864.48,
+   "text": "bih rekao."
+  },
+  {
+   "start": 1866.18,
+   "end": 1873.34,
+   "text": "Ako hoćete da kupite kuću, nećete imati velike sreće, osim ako nemate mnogo"
+  },
+  {
+   "start": 1873.34,
+   "end": 1879.42,
+   "text": "novca za srpski standard, Tako da većina ljudi u Srbiji nema novca da kupi"
+  },
+  {
+   "start": 1879.42,
+   "end": 1883.46,
+   "text": "kuću u Beogradu, osim ako naravno nije u nekom selu porad Beograda."
+  },
+  {
+   "start": 1884.12,
+   "end": 1887.56,
+   "text": "I to naravno zavisi od površine placa."
+  },
+  {
+   "start": 1887.56,
+   "end": 1892.88,
+   "text": "Plac je zemlja gde se gradi nešto, kuća."
+  },
+  {
+   "start": 1893.34,
+   "end": 1895.98,
+   "text": "Ne mora da se gradi, može da bude poljoprivredni plac."
+  },
+  {
+   "start": 1896.28,
+   "end": 1898.54,
+   "text": "Da, može da bude i prazan."
+  },
+  {
+   "start": 1900.34,
+   "end": 1906.08,
+   "text": "Možete kupiti staru kuću pa je renovirati, što ponekad može biti skuplje nego kupiti"
+  },
+  {
+   "start": 1906.08,
+   "end": 1906.94,
+   "text": "novu kuću."
+  },
+  {
+   "start": 1908.82,
+   "end": 1912.14,
+   "text": "Tako da možete uzeti stambeni kredit za stan."
+  },
+  {
+   "start": 1912.14,
+   "end": 1915.0,
+   "text": "Nisam siguran da li možete uzeti stambeni kredit za kuću."
+  },
+  {
+   "start": 1916.76,
+   "end": 1920.1,
+   "text": "Sada su popularne montažne kuće."
+  },
+  {
+   "start": 1921.2,
+   "end": 1927.96,
+   "text": "Montažne kuće su kuće koje nisu upravljene od blokova i od cigle, nego su"
+  },
+  {
+   "start": 1927.96,
+   "end": 1932.12,
+   "text": "upravljene po američkom stilu od drveta, drvenih panela."
+  },
+  {
+   "start": 1932.6,
+   "end": 1935.72,
+   "text": "Mogu da se izgrade vrlo brzo za nedelju, dve."
+  },
+  {
+   "start": 1938.36,
+   "end": 1941.0,
+   "text": "Treba samo napraviti temelj."
+  },
+  {
+   "start": 1941.18,
+   "end": 1944.42,
+   "text": "Temelj je osnova kuće od betona."
+  },
+  {
+   "start": 1945.64,
+   "end": 1953.36,
+   "text": "Na tom temelju dođe ekipa, napravi konstrukciju od drveta, popuni konstrukciju"
+  },
+  {
+   "start": 1953.36,
+   "end": 1960.68,
+   "text": "nekom penom i drvenim panelima i to je gotova kuća, cela od drveta i"
+  },
+  {
+   "start": 1960.68,
+   "end": 1963.74,
+   "text": "izolaciju one pene."
+  },
+  {
+   "start": 1964.54,
+   "end": 1971.56,
+   "text": "I ta kuća je, Neki ljudi misle da nije tako kvalitetna kao"
+  },
+  {
+   "start": 1971.56,
+   "end": 1976.08,
+   "text": "kuća od cigle ili od bloka, koja je jako popularna u Srbiji i celoj"
+  },
+  {
+   "start": 1976.08,
+   "end": 1982.98,
+   "text": "Evropi. Ali mislim da je vreme dokazalo da je zapravo i ta montažna kuća"
+  },
+  {
+   "start": 1982.98,
+   "end": 1989.24,
+   "text": "jako popularna. One su sada jeftinije i brže se grade nego kuće od cigle"
+  },
+  {
+   "start": 1989.24,
+   "end": 1989.8,
+   "text": "i od bloka."
+  },
+  {
+   "start": 1990.64,
+   "end": 1992.74,
+   "text": "Tako da mislim da postoje sve popularnije."
+  },
+  {
+   "start": 1993.02,
+   "end": 1996.52,
+   "text": "I za takvu kuću mislim da možete dobijeti stambeni kredit lakše."
+  },
+  {
+   "start": 1997.12,
+   "end": 1998.1,
+   "text": "Ali nisam siguran."
+  },
+  {
+   "start": 1998.1,
+   "end": 1999.72,
+   "text": "Nisam kupovao kuću do sada."
+  },
+  {
+   "start": 2000.54,
+   "end": 2003.98,
+   "text": "To je stanje nekretjeno u Srbiji."
+  },
+  {
+   "start": 2004.7,
+   "end": 2008.72,
+   "text": "Zbog različitih svjetskih situacija sada su skočile cene."
+  },
+  {
+   "start": 2008.72,
+   "end": 2015.5,
+   "text": "Imamo problema sa izdavanjem stanova i kupovinom stanova."
+  },
+  {
+   "start": 2016.7,
+   "end": 2021.54,
+   "text": "za srpski standard stanovi su jako skupi ako imate platu od 500 evra, 600"
+  },
+  {
+   "start": 2021.54,
+   "end": 2026.86,
+   "text": "evra ali recimo i 700, 800 evra vi morate dati 500, 600 evra na"
+  },
+  {
+   "start": 2026.86,
+   "end": 2031.66,
+   "text": "kiriju i vama na kraju meseca ostane 100 do 200 evra što je nemoguće"
+  },
+  {
+   "start": 2031.66,
+   "end": 2032.28,
+   "text": "preživjeti"
+  },
+  {
+   "start": 2035.78,
+   "end": 2037.9,
+   "text": "lakše ako živite sa nekim"
+  },
+  {
+   "start": 2039.78,
+   "end": 2042.28,
+   "text": "delite troškove"
+  },
+  {
+   "start": 2044.06,
+   "end": 2051.08,
+   "text": "parno grejenje mesečno može koštiti 10.000, zavisi od grada ili dela grada gdje se"
+  },
+  {
+   "start": 2051.08,
+   "end": 2058.12,
+   "text": "nalazite. Mesečni troškovi za internet su recimo samo internet, 1.500 dinara"
+  },
+  {
+   "start": 2058.12,
+   "end": 2059.3,
+   "text": "mesečno najmanje."
+  },
+  {
+   "start": 2061.2,
+   "end": 2066.08,
+   "text": "Plus ako koristite kalbovsku, znači to još 1.500, 3.000 dinara ukupno."
+  },
+  {
+   "start": 2070.9,
+   "end": 2077.83,
+   "text": "Struja zavisi koliko potrošite, ali recimo ako nije grejanja na struju može biti 3000"
+  },
+  {
+   "start": 2077.83,
+   "end": 2084.85,
+   "text": "dinara. Se zavisi zapravo troška, ne znam tačnu cenu po kilovat času."
+  },
+  {
+   "start": 2085.41,
+   "end": 2087.21,
+   "text": "I zavisi naravno i gdje je stan."
+  },
+  {
+   "start": 2087.51,
+   "end": 2089.33,
+   "text": "Zavisi gdje je stan, da."
+  },
+  {
+   "start": 2090.09,
+   "end": 2094.63,
+   "text": "Neki ljudi, to sam rekao, koji žive u kućama greju se, ne greju se"
+  },
+  {
+   "start": 2094.63,
+   "end": 2097.27,
+   "text": "na struju, nego se greju na svoje sobstveno grejanje."
+  },
+  {
+   "start": 2097.27,
+   "end": 2109.05,
+   "text": "Neki ljudi imaju peć u dnevnoj sobi i onda kupe drva i lože peć"
+  },
+  {
+   "start": 2109.05,
+   "end": 2109.99,
+   "text": "i tako se greju."
+  },
+  {
+   "start": 2110.13,
+   "end": 2115.67,
+   "text": "Što i to može biti skupo, 1 metar kubni tehnički drva, ja mislim sada"
+  },
+  {
+   "start": 2115.67,
+   "end": 2121.43,
+   "text": "oko 6.000 dinara i 1 metar kubni se može vrlo brzo potrošiti."
+  },
+  {
+   "start": 2122.09,
+   "end": 2127.95,
+   "text": "grejanje je skupo generalno nije bitno da li koristite struju, drva ili ugalj"
+  },
+  {
+   "start": 2129.93,
+   "end": 2136.39,
+   "text": "i ne znam koja je jeftinija varijanta od tih svih najjeftinije varijante bi bilo"
+  },
+  {
+   "start": 2136.39,
+   "end": 2141.05,
+   "text": "da imate svoju šumu koju sečete i koristite za grejanje što većina ljudi u"
+  },
+  {
+   "start": 2141.05,
+   "end": 2145.07,
+   "text": "Srbiji ima koji živi na selu ali oni koji su u gradovima kao što"
+  },
+  {
+   "start": 2145.07,
+   "end": 2147.29,
+   "text": "je Beograd to je malo teže"
+  },
+  {
+   "start": 2148.57,
+   "end": 2152.79,
+   "text": "da li i to je jeftino Pa, možda nije."
+  },
+  {
+   "start": 2180.77,
+   "end": 2183.95,
+   "text": "kako izgleda kvalitet stana, kako je grejenje u stanovima,"
+  },
+  {
+   "start": 2184.85,
+   "end": 2190.03,
+   "text": "Pričali smo malo o kućama i o tome kako smo mi živjeli u prošlom"
+  },
+  {
+   "start": 2190.03,
+   "end": 2191.77,
+   "text": "stano i kako smo našli novi stano."
+  },
+  {
+   "start": 2192.23,
+   "end": 2193.55,
+   "text": "Nadam se da ste uživali."
+  },
+  {
+   "start": 2193.55,
+   "end": 2200.87,
+   "text": "Ako hoćete da zakažete svoj prvi probni čas besplatno, posjetite"
+  },
+  {
+   "start": 2200.87,
+   "end": 2205.37,
+   "text": "web stranicu www.serbianlanguagelessons.com."
+  },
+  {
+   "start": 2205.99,
+   "end": 2212.01,
+   "text": "Možete da posjetite našu Instagram stranicu Learn Serbian ili Serbian Language Network."
+  },
+  {
+   "start": 2212.93,
+   "end": 2215.11,
+   "text": "i to bi bilo sve."
+  },
+  {
+   "start": 2215.95,
+   "end": 2219.71,
+   "text": "Nadam se da ste uživali i mi se vidimo i čujemo u nekoj sljedećoj"
+  },
+  {
+   "start": 2219.71,
+   "end": 2221.17,
+   "text": "epizodi. Ćao!"
+  }
+ ],
+ "title": "Advanced Serbian: Kako tražiti stan u Srbiji",
+ "audio": "https://www.buzzsprout.com/1246415/episodes/12357386-advanced-serbian-kako-traziti-stan-u-srbiji.mp3",
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word"
+}

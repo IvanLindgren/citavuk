@@ -7,26 +7,66 @@ export async function getAudioLessons(signal?: AbortSignal): Promise<AudioLesson
     timeoutMs: 30_000,
     signal,
   });
+  // Эпизод без реплик тоже нужен: расшифровки делаются постепенно, а слушать
+  // запись можно и до неё. Прежнее условие требовало непустых cues, и раздел
+  // прятал всё, для чего расшифровки ещё нет.
   return (response.items ?? []).filter(
-    (lesson) => lesson.id && lesson.title && lesson.cues?.length,
+    (lesson) => lesson.id && lesson.title && lesson.audio_url,
   );
 }
 
+/**
+ * Расшифровка эпизода.
+ *
+ * Наши расшифровки лежат статикой на том же домене, поэтому забираются напрямую:
+ * лишний заход на сервер тут не нужен, а раньше запрос шёл через прежний
+ * Python-бэкенд на засыпающем Space и раздел отвечал 502.
+ */
 export async function getTranscript(
   lesson: AudioLesson,
   signal?: AbortSignal,
 ): Promise<AudioCue[]> {
   if (!lesson.transcript_url) return lesson.cues;
-  const query = new URLSearchParams({
-    url: lesson.transcript_url,
-    duration: String(lesson.duration ?? 0),
-  });
-  const response = await request<{ cues?: AudioCue[] }>(
-    `/audio/transcript?${query}`,
-    { anonymous: true, timeoutMs: 45_000, signal },
-  );
+
+  const own = ownTranscriptPath(lesson.transcript_url);
+  const response = own
+    ? await fetchOwnTranscript(own, signal)
+    : await request<{ cues?: AudioCue[] }>(
+        `/audio/transcript?url=${encodeURIComponent(lesson.transcript_url)}`,
+        { anonymous: true, timeoutMs: 45_000, signal },
+      );
+
   const cues = (response.cues ?? []).filter((cue) => cue.text?.trim());
-  return cues.length > lesson.cues.length ? cues : lesson.cues;
+  // Настоящая расшифровка побеждает всегда. Прежде выбиралась та, где реплик
+  // больше, и короткий выверенный текст проигрывал длинному выдуманному.
+  return cues.length > 0 ? cues : lesson.cues;
+}
+
+/** Путь внутри сайта, если расшифровка наша. Иначе null. */
+function ownTranscriptPath(url: string): string | null {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    const allowedOrigins = new Set([
+      window.location.origin,
+      'https://citavuk.ru',
+      'https://www.citavuk.ru',
+    ]);
+    if (!allowedOrigins.has(parsed.origin)) return null;
+    if (!parsed.pathname.startsWith('/transcripts/')) return null;
+    if (!parsed.pathname.endsWith('.json')) return null;
+    return parsed.pathname;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchOwnTranscript(
+  path: string,
+  signal?: AbortSignal,
+): Promise<{ cues?: AudioCue[] }> {
+  const response = await fetch(path, { signal });
+  if (!response.ok) throw new Error('Расшифровка недоступна.');
+  return (await response.json()) as { cues?: AudioCue[] };
 }
 
 export function playableAudioUrl(url: string): string {

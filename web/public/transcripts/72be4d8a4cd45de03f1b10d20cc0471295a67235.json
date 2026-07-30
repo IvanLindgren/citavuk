@@ -1,0 +1,4170 @@
+{
+ "duration": 3065.13,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.28,
+   "end": 31.42,
+   "text": "Dobar dan svima."
+  },
+  {
+   "start": 34.08,
+   "end": 34.74,
+   "text": "Dobar dan."
+  },
+  {
+   "start": 36.4,
+   "end": 38.82,
+   "text": "And we have a special guest today in our show."
+  },
+  {
+   "start": 39.54,
+   "end": 42.62,
+   "text": "Go Speak Serbian is with us today, right Ivana?"
+  },
+  {
+   "start": 43.32,
+   "end": 47.18,
+   "text": "Exactly. Actually, I just saw some of your videos on Instagram."
+  },
+  {
+   "start": 47.92,
+   "end": 49.84,
+   "text": "So you are Dragana and Miljana."
+  },
+  {
+   "start": 50.46,
+   "end": 56.46,
+   "text": "And if I'm correct, Dragana in Canada and Miljana in Serbia, probably."
+  },
+  {
+   "start": 56.46,
+   "end": 63.7,
+   "text": "In Poland. yeah i am the only one in serbia yeah"
+  },
+  {
+   "start": 63.7,
+   "end": 67.34,
+   "text": "that's fantastic all the serbian people outside of"
+  },
+  {
+   "start": 67.34,
+   "end": 73.54,
+   "text": "serbia and all the and maki is there for us right i'm representing you"
+  },
+  {
+   "start": 73.54,
+   "end": 74.68,
+   "text": "guys here you know i think"
+  },
+  {
+   "start": 74.68,
+   "end": 77.74,
+   "text": "this is really going to be important for some of our questions because you"
+  },
+  {
+   "start": 77.74,
+   "end": 79.58,
+   "text": "know you are um now away"
+  },
+  {
+   "start": 79.58,
+   "end": 82.82,
+   "text": "from serbia and it's really going to be good to talk about some things"
+  },
+  {
+   "start": 82.82,
+   "end": 83.58,
+   "text": "that you appreciate about"
+  },
+  {
+   "start": 83.58,
+   "end": 86.54,
+   "text": "serbia or like things that you used to love to do and so on"
+  },
+  {
+   "start": 86.54,
+   "end": 89.2,
+   "text": "so i think this is going to be a good point."
+  },
+  {
+   "start": 89.2,
+   "end": 92.26,
+   "text": "But you are from Navisad, right?"
+  },
+  {
+   "start": 92.26,
+   "end": 93.78,
+   "text": "Or am I mistaken?"
+  },
+  {
+   "start": 94.52,
+   "end": 98.46,
+   "text": "Both of you? Yes. Yeah, originally, yeah."
+  },
+  {
+   "start": 98.48,
+   "end": 103.0,
+   "text": "From Navisad. And you used to work or you still work in the Language"
+  },
+  {
+   "start": 103.0,
+   "end": 109.02,
+   "text": "Center, right? And then you had a thought of making Udemy courses,"
+  },
+  {
+   "start": 109.02,
+   "end": 112.08,
+   "text": "which is a brilliant thought uh i i was"
+  },
+  {
+   "start": 112.08,
+   "end": 117.08,
+   "text": "actually even thinking about doing that but man it's a lot of work it's"
+  },
+  {
+   "start": 117.08,
+   "end": 118.14,
+   "text": "a lot of work but it's a"
+  },
+  {
+   "start": 118.14,
+   "end": 121.98,
+   "text": "brilliant way to you know i think a lot of people focus on private"
+  },
+  {
+   "start": 121.98,
+   "end": 122.64,
+   "text": "lessons and i think that's great"
+  },
+  {
+   "start": 122.64,
+   "end": 127.84,
+   "text": "but it's also really good to have something saved there online and you can"
+  },
+  {
+   "start": 127.84,
+   "end": 133.38,
+   "text": "always access it right so um yeah so these are our guests today and"
+  },
+  {
+   "start": 133.38,
+   "end": 137.16,
+   "text": "um we made coffee so because it is moja kappa podcast"
+  },
+  {
+   "start": 137.16,
+   "end": 144.02,
+   "text": "so everyone's up for a coffee hopefully and yeah and it's early not early"
+  },
+  {
+   "start": 144.02,
+   "end": 144.68,
+   "text": "but it's morning at least"
+  },
+  {
+   "start": 144.68,
+   "end": 150.82,
+   "text": "so it's a good time for coffee not for canada but for yeah it's"
+  },
+  {
+   "start": 150.82,
+   "end": 155.6,
+   "text": "really early really early for coffee over there okay yeah as Ivana already knows"
+  },
+  {
+   "start": 155.6,
+   "end": 159.8,
+   "text": "more I want to ask you how did you guys meet and like"
+  },
+  {
+   "start": 159.8,
+   "end": 164.4,
+   "text": "are you just partners for work or were you friends before how did this"
+  },
+  {
+   "start": 164.4,
+   "end": 165.14,
+   "text": "story begin"
+  },
+  {
+   "start": 167.14,
+   "end": 170.98,
+   "text": "yeah just before we answer that question I just want to make a small"
+  },
+  {
+   "start": 170.98,
+   "end": 172.34,
+   "text": "correction so we are no longer"
+  },
+  {
+   "start": 172.34,
+   "end": 179.12,
+   "text": "working at that language center so that's that used to be the case I"
+  },
+  {
+   "start": 179.12,
+   "end": 183.92,
+   "text": "don't want to say like maybe 10 years ago right okay so we were"
+  },
+  {
+   "start": 183.92,
+   "end": 187.76,
+   "text": "there actually yeah almost yeah i think it's actually 10 years ago"
+  },
+  {
+   "start": 187.76,
+   "end": 195.44,
+   "text": "um so we stopped working there uh and currently uh work separately"
+  },
+  {
+   "start": 195.44,
+   "end": 197.18,
+   "text": "in um you know different"
+  },
+  {
+   "start": 197.18,
+   "end": 204.92,
+   "text": "areas um i work in canada milena teaches serbian"
+  },
+  {
+   "start": 204.92,
+   "end": 211.2,
+   "text": "in poland um but uh yeah the that's actually how we met through the"
+  },
+  {
+   "start": 211.2,
+   "end": 214.9,
+   "text": "language center because we were colleagues there and yeah that's how the"
+  },
+  {
+   "start": 214.9,
+   "end": 218.97,
+   "text": "whole story started so I just wanted uh kind of make a small"
+  },
+  {
+   "start": 218.97,
+   "end": 225.37,
+   "text": "introduction and mediana can continue oh that's great yeah sure so that's where we"
+  },
+  {
+   "start": 225.37,
+   "end": 225.57,
+   "text": "in novice sad we were at some point we just realized that we uh"
+  },
+  {
+   "start": 225.57,
+   "end": 225.85,
+   "text": "met"
+  },
+  {
+   "start": 231.13,
+   "end": 231.93,
+   "text": "we wanted to make some"
+  },
+  {
+   "start": 231.93,
+   "end": 238.01,
+   "text": "kind of course books for serbian uh we used all of the possible course"
+  },
+  {
+   "start": 238.01,
+   "end": 242.63,
+   "text": "books that we could find on our market but there was something missing you"
+  },
+  {
+   "start": 242.63,
+   "end": 243.91,
+   "text": "know there was something that we that we"
+  },
+  {
+   "start": 243.91,
+   "end": 248.55,
+   "text": "weren't completely satisfied with we also we had tons of our own material that"
+  },
+  {
+   "start": 248.55,
+   "end": 249.39,
+   "text": "we were using you"
+  },
+  {
+   "start": 249.39,
+   "end": 254.65,
+   "text": "know when we were preparing our own classes there and we kind of wanted"
+  },
+  {
+   "start": 254.65,
+   "end": 255.85,
+   "text": "to put it all together to"
+  },
+  {
+   "start": 255.85,
+   "end": 261.93,
+   "text": "make some kind of systematic thing and yeah that was that was our first"
+  },
+  {
+   "start": 261.93,
+   "end": 267.01,
+   "text": "our initial thought to to make kind of the textbook for Serbian for beginners,"
+  },
+  {
+   "start": 267.01,
+   "end": 267.81,
+   "text": "for actual beginners."
+  },
+  {
+   "start": 267.81,
+   "end": 274.13,
+   "text": "And then later, we just realized that why wouldn't we switch it to online"
+  },
+  {
+   "start": 274.13,
+   "end": 275.23,
+   "text": "version, to something that we could do"
+  },
+  {
+   "start": 275.23,
+   "end": 280.25,
+   "text": "online? Because just like we knew that one day, one day it's going to"
+  },
+  {
+   "start": 280.25,
+   "end": 285.95,
+   "text": "be like the primary, primary, you know, way of teaching, like, like, unfortunately, these"
+  },
+  {
+   "start": 285.95,
+   "end": 293.07,
+   "text": "two years already since the coronavirus started and um and yeah then we"
+  },
+  {
+   "start": 293.07,
+   "end": 297.45,
+   "text": "thought about udemy uh um we we saw that they"
+  },
+  {
+   "start": 297.45,
+   "end": 302.13,
+   "text": "there were already a couple of courses for serbian i think one or two"
+  },
+  {
+   "start": 302.13,
+   "end": 304.17,
+   "text": "uh beginner courses and we"
+  },
+  {
+   "start": 304.17,
+   "end": 308.19,
+   "text": "wanted to make something different so yeah even i was right when when she"
+  },
+  {
+   "start": 308.19,
+   "end": 309.29,
+   "text": "mentioned that it that"
+  },
+  {
+   "start": 309.29,
+   "end": 313.87,
+   "text": "we really took a lot of a lot of time and effort to make"
+  },
+  {
+   "start": 313.87,
+   "end": 317.65,
+   "text": "it i think we were working on the on the first course, Dagen will"
+  },
+  {
+   "start": 317.65,
+   "end": 320.65,
+   "text": "correct me, but I think it was almost for two years, just to"
+  },
+  {
+   "start": 320.65,
+   "end": 328.13,
+   "text": "prepare the topics, to make a plan, to record videos,"
+  },
+  {
+   "start": 328.13,
+   "end": 333.11,
+   "text": "to edit videos, to make all the additional material,"
+  },
+  {
+   "start": 333.11,
+   "end": 336.21,
+   "text": "you know, PDF files with self-study worksheet"
+  },
+  {
+   "start": 336.21,
+   "end": 337.97,
+   "text": "and glossaries and everything."
+  },
+  {
+   "start": 337.97,
+   "end": 342.21,
+   "text": "So yeah, it was a lot of job."
+  },
+  {
+   "start": 342.21,
+   "end": 345.31,
+   "text": "Also another course that we are just preparing right now,"
+  },
+  {
+   "start": 345.31,
+   "end": 349.81,
+   "text": "pre-intermediate, also took us, I think, years for sure."
+  },
+  {
+   "start": 350.07,
+   "end": 354.43,
+   "text": "so yeah it's not something that you could do just overnight it's really it"
+  },
+  {
+   "start": 354.43,
+   "end": 355.13,
+   "text": "really takes a lot of a"
+  },
+  {
+   "start": 355.13,
+   "end": 359.59,
+   "text": "lot of effort yeah I think people are really gonna appreciate it because um"
+  },
+  {
+   "start": 359.59,
+   "end": 360.83,
+   "text": "because you are putting"
+  },
+  {
+   "start": 360.83,
+   "end": 365.75,
+   "text": "so much effort right and putting in so much effort so it's um and"
+  },
+  {
+   "start": 365.75,
+   "end": 366.69,
+   "text": "it's really good for me as a learner"
+  },
+  {
+   "start": 366.69,
+   "end": 370.27,
+   "text": "of other languages as well I think it's really important to have that you"
+  },
+  {
+   "start": 370.27,
+   "end": 370.89,
+   "text": "have several options"
+  },
+  {
+   "start": 370.89,
+   "end": 375.41,
+   "text": "on Udemy so sure there is one or two courses but you know maybe"
+  },
+  {
+   "start": 375.41,
+   "end": 381.41,
+   "text": "some people benefit from different types of instruction, different way of explaining things."
+  },
+  {
+   "start": 381.41,
+   "end": 382.81,
+   "text": "So it's just really individual."
+  },
+  {
+   "start": 382.81,
+   "end": 386.67,
+   "text": "And I think, yeah, I think everyone's going to be really happy."
+  },
+  {
+   "start": 386.67,
+   "end": 387.73,
+   "text": "And I'm really happy that you're here because"
+  },
+  {
+   "start": 387.73,
+   "end": 393.47,
+   "text": "I'm not a Serbian linguist, full stop."
+  },
+  {
+   "start": 393.47,
+   "end": 395.11,
+   "text": "Maki is a learner of Serbian."
+  },
+  {
+   "start": 395.11,
+   "end": 395.83,
+   "text": "So we're really happy to have"
+  },
+  {
+   "start": 395.83,
+   "end": 402.19,
+   "text": "experts here because I don't, it's really difficult sometimes to answer Maki's questions because"
+  },
+  {
+   "start": 402.19,
+   "end": 406.53,
+   "text": "I'm like, hmm, I don't know why, you know."
+  },
+  {
+   "start": 406.91,
+   "end": 409.93,
+   "text": "Don't worry, everybody has these moments, even Serbian teachers."
+  },
+  {
+   "start": 409.93,
+   "end": 411.51,
+   "text": "Sometimes you just, you cannot answer"
+  },
+  {
+   "start": 411.51,
+   "end": 415.47,
+   "text": "to all of the questions, especially when students are really into the topic."
+  },
+  {
+   "start": 415.47,
+   "end": 417.35,
+   "text": "You're really into some specific grammar structure"
+  },
+  {
+   "start": 417.35,
+   "end": 419.87,
+   "text": "and they ask you, why do you say this?"
+  },
+  {
+   "start": 419.87,
+   "end": 422.97,
+   "text": "And we're like, hmm, okay, maybe, give me some time,"
+  },
+  {
+   "start": 422.97,
+   "end": 425.05,
+   "text": "maybe next time I will talk about this."
+  },
+  {
+   "start": 425.07,
+   "end": 426.99,
+   "text": "But it happens rarely, of course."
+  },
+  {
+   "start": 426.99,
+   "end": 430.59,
+   "text": "You know, let's say most of the time we have already."
+  },
+  {
+   "start": 430.59,
+   "end": 434.81,
+   "text": "yeah but of course there are some very tricky questions very especially when it"
+  },
+  {
+   "start": 434.81,
+   "end": 434.95,
+   "text": "comes to things"
+  },
+  {
+   "start": 434.95,
+   "end": 436.89,
+   "text": "that you just don't think about you know"
+  },
+  {
+   "start": 437.26,
+   "end": 442.96,
+   "text": "because it's your it's naturally no language so yeah but by the way as"
+  },
+  {
+   "start": 442.96,
+   "end": 444.22,
+   "text": "a learner myself I'm super"
+  },
+  {
+   "start": 444.22,
+   "end": 448.24,
+   "text": "curious about your courses and I'm going to check them later right now I'm"
+  },
+  {
+   "start": 448.24,
+   "end": 448.56,
+   "text": "super busy with my"
+  },
+  {
+   "start": 448.56,
+   "end": 454.32,
+   "text": "schedule but it's in my mind I'm really but after taking courses be ready"
+  },
+  {
+   "start": 454.32,
+   "end": 454.66,
+   "text": "for my questions"
+  },
+  {
+   "start": 454.66,
+   "end": 460.48,
+   "text": "oh wait maybe we can do like a follow-up episode that would be so"
+  },
+  {
+   "start": 460.48,
+   "end": 462.46,
+   "text": "cool exactly yeah"
+  },
+  {
+   "start": 463.86,
+   "end": 467.98,
+   "text": "okay um mark you wrote down some questions for them like i think i'll"
+  },
+  {
+   "start": 467.98,
+   "end": 469.0,
+   "text": "take over the the um"
+  },
+  {
+   "start": 469.0,
+   "end": 474.76,
+   "text": "listeners questions like viewers and you you can move on to the more like"
+  },
+  {
+   "start": 474.76,
+   "end": 475.62,
+   "text": "kind of personal and like"
+  },
+  {
+   "start": 475.62,
+   "end": 482.52,
+   "text": "yeah okay so i want to start with the strategy of your course so"
+  },
+  {
+   "start": 482.52,
+   "end": 483.74,
+   "text": "you said you checked other books"
+  },
+  {
+   "start": 483.74,
+   "end": 489.36,
+   "text": "other materials and there was always something missing so how did you come up"
+  },
+  {
+   "start": 489.36,
+   "end": 493.62,
+   "text": "with a strategy Like, did you want to include all four skills like reading,"
+  },
+  {
+   "start": 493.62,
+   "end": 499.92,
+   "text": "writing, listening, speaking together or what kind of missing part you feel then?"
+  },
+  {
+   "start": 500.08,
+   "end": 506.5,
+   "text": "I'm curious. Yeah, I think like the first thing we noticed about the course"
+  },
+  {
+   "start": 506.5,
+   "end": 510.72,
+   "text": "books that were existing at the time is that they seemed a bit outdated"
+  },
+  {
+   "start": 510.72,
+   "end": 515.38,
+   "text": "and not perhaps engaging enough for students."
+  },
+  {
+   "start": 515.88,
+   "end": 522.86,
+   "text": "there was no kind of authentic material in them that students could connect to"
+  },
+  {
+   "start": 522.86,
+   "end": 523.28,
+   "text": "so we always had"
+  },
+  {
+   "start": 523.28,
+   "end": 531.08,
+   "text": "to supplement them with you know like newspapers and books and create"
+  },
+  {
+   "start": 531.08,
+   "end": 532.98,
+   "text": "our own texts and dialogues"
+  },
+  {
+   "start": 532.98,
+   "end": 536.8,
+   "text": "that and exercises that we would use in the classes so that was the"
+  },
+  {
+   "start": 536.8,
+   "end": 542.0,
+   "text": "first kind of hunch we need something more up to date,"
+  },
+  {
+   "start": 542.0,
+   "end": 543.04,
+   "text": "something more engaging,"
+  },
+  {
+   "start": 543.04,
+   "end": 544.36,
+   "text": "something more modern"
+  },
+  {
+   "start": 544.36,
+   "end": 551.46,
+   "text": "in methodology. And then the second hunch was also"
+  },
+  {
+   "start": 551.46,
+   "end": 556.92,
+   "text": "we need something more adjusted to the level of the learner, because we noticed"
+  },
+  {
+   "start": 556.92,
+   "end": 561.04,
+   "text": "that the course books were kind of like for beginners, but also would mix"
+  },
+  {
+   "start": 561.04,
+   "end": 566.86,
+   "text": "like different materials that would be out of the level."
+  },
+  {
+   "start": 566.86,
+   "end": 572.5,
+   "text": "So to say of the students and students could not connect with it very"
+  },
+  {
+   "start": 572.5,
+   "end": 579.2,
+   "text": "well. So that was our kind of desire to improve on these two points"
+  },
+  {
+   "start": 579.2,
+   "end": 585.2,
+   "text": "primarily and also visually to make things visually and aesthetically appealing what we"
+  },
+  {
+   "start": 585.2,
+   "end": 590.08,
+   "text": "were seeing at the time and the situation has improved now but still not"
+  },
+  {
+   "start": 590.08,
+   "end": 590.66,
+   "text": "for all levels."
+  },
+  {
+   "start": 590.66,
+   "end": 591.06,
+   "text": "would say for beginner you know there is material out there course books that"
+  },
+  {
+   "start": 591.06,
+   "end": 591.14,
+   "text": "I"
+  },
+  {
+   "start": 596.3,
+   "end": 597.36,
+   "text": "are you know"
+  },
+  {
+   "start": 599.02,
+   "end": 603.06,
+   "text": "up to these standards but for other levels there still could be an improvement"
+  },
+  {
+   "start": 603.06,
+   "end": 605.94,
+   "text": "um so yeah i think"
+  },
+  {
+   "start": 605.94,
+   "end": 610.74,
+   "text": "that these were like our three main points so uh for that reason miliana"
+  },
+  {
+   "start": 610.74,
+   "end": 611.52,
+   "text": "mentioned that we created"
+  },
+  {
+   "start": 611.52,
+   "end": 616.58,
+   "text": "also like some self self-study material but she can continue on how we built"
+  },
+  {
+   "start": 616.58,
+   "end": 617.5,
+   "text": "on these things in"
+  },
+  {
+   "start": 617.5,
+   "end": 621.78,
+   "text": "the course itself like how we try to make it visually appealing how we"
+  },
+  {
+   "start": 621.78,
+   "end": 625.26,
+   "text": "try to make it like more authentic, more engaging for students."
+  },
+  {
+   "start": 625.26,
+   "end": 627.68,
+   "text": "And as for the skills, I would say we can cover"
+  },
+  {
+   "start": 627.68,
+   "end": 632.1,
+   "text": "everything apart from the speaking in the courses, right?"
+  },
+  {
+   "start": 632.1,
+   "end": 634.36,
+   "text": "So the speaking part is going to be missing"
+  },
+  {
+   "start": 634.36,
+   "end": 635.9,
+   "text": "from an online course."
+  },
+  {
+   "start": 635.9,
+   "end": 639.0,
+   "text": "So that's just something I want to add and put it out there."
+  },
+  {
+   "start": 639.0,
+   "end": 641.54,
+   "text": "Of course, everybody can expect that."
+  },
+  {
+   "start": 641.54,
+   "end": 644.96,
+   "text": "But yeah, Milena, you can build on these, how we perhaps how we"
+  },
+  {
+   "start": 644.96,
+   "end": 649.32,
+   "text": "like developed all of these and build them into our course."
+  },
+  {
+   "start": 649.32,
+   "end": 652.88,
+   "text": "Yeah. So just like Dragona said,"
+  },
+  {
+   "start": 654.32,
+   "end": 655.46,
+   "text": "all the skills are there."
+  },
+  {
+   "start": 655.46,
+   "end": 656.53,
+   "text": "The only part that's missing,"
+  },
+  {
+   "start": 656.53,
+   "end": 660.85,
+   "text": "there's just that, I mean, it's not doable to do this in this situation,"
+  },
+  {
+   "start": 660.85,
+   "end": 666.73,
+   "text": "but that's why, I mean, we're not trying to say that this like type"
+  },
+  {
+   "start": 666.73,
+   "end": 669.73,
+   "text": "of e-learning or online course or any kind of course"
+  },
+  {
+   "start": 669.73,
+   "end": 674.03,
+   "text": "like this is the only thing that a student needs."
+  },
+  {
+   "start": 674.03,
+   "end": 679.13,
+   "text": "Of course, for us, I guess the perfect scenario will be the combination of"
+  },
+  {
+   "start": 679.13,
+   "end": 682.91,
+   "text": "many different you know sources like so not only to to have an online"
+  },
+  {
+   "start": 682.91,
+   "end": 687.55,
+   "text": "course but also to i mean it's always important to have to have a"
+  },
+  {
+   "start": 687.55,
+   "end": 694.45,
+   "text": "human interaction you know some private lessons but nothing nothing is uh is worth"
+  },
+  {
+   "start": 694.45,
+   "end": 696.27,
+   "text": "if you don't if if a student doesn't engage"
+  },
+  {
+   "start": 696.27,
+   "end": 700.69,
+   "text": "you know apart from all of that so self-study is also very important so"
+  },
+  {
+   "start": 700.69,
+   "end": 705.71,
+   "text": "i think that uh that's uh what we try to do in the course"
+  },
+  {
+   "start": 705.71,
+   "end": 709.31,
+   "text": "is to is to make students do a lot of things by themselves."
+  },
+  {
+   "start": 709.31,
+   "end": 713.35,
+   "text": "So that's why we created this additional material which are these"
+  },
+  {
+   "start": 715.17,
+   "end": 720.33,
+   "text": "worksheets that cover every topic, every unit that we have, so that they could"
+  },
+  {
+   "start": 720.33,
+   "end": 720.71,
+   "text": "they could"
+  },
+  {
+   "start": 720.71,
+   "end": 724.91,
+   "text": "practice more than just what they see, what they hear, what they you know"
+  },
+  {
+   "start": 724.91,
+   "end": 729.51,
+   "text": "what they can read in an actual actual unit so I think that's that's"
+  },
+  {
+   "start": 729.51,
+   "end": 731.95,
+   "text": "crucial about learning any general and any"
+  },
+  {
+   "start": 731.95,
+   "end": 735.85,
+   "text": "any language in general so not only not only when it comes to our"
+  },
+  {
+   "start": 735.85,
+   "end": 741.83,
+   "text": "course uh but yeah that's that's it so we try to we try to"
+  },
+  {
+   "start": 741.83,
+   "end": 746.83,
+   "text": "cover uh mostly I mean the the the the typical topics that were"
+  },
+  {
+   "start": 746.83,
+   "end": 753.13,
+   "text": "um suggested by I guess you know this common European framework for languages so"
+  },
+  {
+   "start": 753.13,
+   "end": 758.83,
+   "text": "everything everything that comes there is related to the most important vocabulary,"
+  },
+  {
+   "start": 758.83,
+   "end": 765.95,
+   "text": "most important topics in grammar structures is here, let's uh so we try"
+  },
+  {
+   "start": 765.95,
+   "end": 766.19,
+   "text": "to follow these"
+  },
+  {
+   "start": 766.19,
+   "end": 773.27,
+   "text": "guidelines um and um yeah i think i think that if something is missing"
+  },
+  {
+   "start": 773.27,
+   "end": 773.97,
+   "text": "that's probably because we"
+  },
+  {
+   "start": 773.97,
+   "end": 780.25,
+   "text": "thought it's um it's maybe a bit too high for one of these two"
+  },
+  {
+   "start": 780.25,
+   "end": 782.03,
+   "text": "levels that we made so far so we're"
+  },
+  {
+   "start": 782.03,
+   "end": 785.91,
+   "text": "gonna make we're definitely gonna make it for for our next course so of"
+  },
+  {
+   "start": 785.91,
+   "end": 790.65,
+   "text": "course there are things like that but I think that uh that um for"
+  },
+  {
+   "start": 790.65,
+   "end": 793.89,
+   "text": "self-study this this way of you know presenting things is"
+  },
+  {
+   "start": 793.89,
+   "end": 798.93,
+   "text": "going to be it's going to be enough for our students seeing the reviews"
+  },
+  {
+   "start": 798.93,
+   "end": 800.63,
+   "text": "on the like followers"
+  },
+  {
+   "start": 800.63,
+   "end": 806.39,
+   "text": "and the the takers of these courses I think you are doing you have"
+  },
+  {
+   "start": 806.39,
+   "end": 807.17,
+   "text": "done a great job I mean"
+  },
+  {
+   "start": 807.17,
+   "end": 811.99,
+   "text": "I see those stars those nice reviews on your under your course on Udemy"
+  },
+  {
+   "start": 811.99,
+   "end": 814.95,
+   "text": "and I'm like that's really a success."
+  },
+  {
+   "start": 814.95,
+   "end": 818.91,
+   "text": "I have never seen like a language course, like not like English or like"
+  },
+  {
+   "start": 818.91,
+   "end": 825.23,
+   "text": "German or something, but really speaking language, getting that much like interest from others."
+  },
+  {
+   "start": 825.83,
+   "end": 828.65,
+   "text": "That was like, I wanted to congratulate you on that."
+  },
+  {
+   "start": 828.65,
+   "end": 831.27,
+   "text": "Thank you. Two years paid off."
+  },
+  {
+   "start": 831.27,
+   "end": 831.45,
+   "text": "Yeah."
+  },
+  {
+   "start": 832.87,
+   "end": 836.93,
+   "text": "I think there are two things you mentioned actually, Milena."
+  },
+  {
+   "start": 836.93,
+   "end": 837.91,
+   "text": "Yeah, now I forgot the name."
+  },
+  {
+   "start": 837.91,
+   "end": 841.43,
+   "text": "sorry um so I think one the first one is like it's very important"
+  },
+  {
+   "start": 841.43,
+   "end": 842.43,
+   "text": "I think learn is one like a magical"
+  },
+  {
+   "start": 842.43,
+   "end": 846.65,
+   "text": "spell to kind of like how do I get to and it's like no"
+  },
+  {
+   "start": 846.65,
+   "end": 849.73,
+   "text": "you really have to have various sources"
+  },
+  {
+   "start": 849.73,
+   "end": 854.77,
+   "text": "of of the language so or like wear various methods so it's great to"
+  },
+  {
+   "start": 854.77,
+   "end": 855.75,
+   "text": "have something like that on Udemy"
+  },
+  {
+   "start": 855.75,
+   "end": 860.19,
+   "text": "but also do not neglect certain other things right like there's there's only so"
+  },
+  {
+   "start": 860.19,
+   "end": 864.99,
+   "text": "much you can learn from, I don't know, just reading, let's say, or just"
+  },
+  {
+   "start": 864.99,
+   "end": 867.37,
+   "text": "sitting down and doing like certain"
+  },
+  {
+   "start": 867.37,
+   "end": 873.71,
+   "text": "lessons, like you, it's your responsibility to actually diversify it and to practice"
+  },
+  {
+   "start": 873.8,
+   "end": 877.12,
+   "text": "other things so this is just one part we always say like on our"
+  },
+  {
+   "start": 877.12,
+   "end": 878.1,
+   "text": "podcast our podcast is envisioned"
+  },
+  {
+   "start": 878.1,
+   "end": 881.72,
+   "text": "as kind of like a not really like a lesson it's just kind of"
+  },
+  {
+   "start": 881.72,
+   "end": 883.36,
+   "text": "like a supplementary material where"
+  },
+  {
+   "start": 883.36,
+   "end": 886.42,
+   "text": "we sit down and we kind of like chit chat and about certain things"
+  },
+  {
+   "start": 886.42,
+   "end": 887.44,
+   "text": "right and we explain certain"
+  },
+  {
+   "start": 887.44,
+   "end": 892.28,
+   "text": "things but uh we also there's cultural aspects and so on and but it's"
+  },
+  {
+   "start": 892.28,
+   "end": 893.12,
+   "text": "just it builds up on on"
+  },
+  {
+   "start": 893.12,
+   "end": 898.44,
+   "text": "what you're what you're already doing um and then the second thing is that"
+  },
+  {
+   "start": 898.44,
+   "end": 902.62,
+   "text": "you have to like warm up your seat as we say right so you"
+  },
+  {
+   "start": 902.62,
+   "end": 906.58,
+   "text": "have to do the work and I think it's um it's with kind of"
+  },
+  {
+   "start": 906.58,
+   "end": 906.84,
+   "text": "anything I feel like even when I was like learning how to dance salsa"
+  },
+  {
+   "start": 906.84,
+   "end": 907.04,
+   "text": "with"
+  },
+  {
+   "start": 910.6,
+   "end": 911.48,
+   "text": "it was like you have to go home"
+  },
+  {
+   "start": 911.48,
+   "end": 916.82,
+   "text": "and practice right so it's it's just it's it's at the end of the"
+  },
+  {
+   "start": 916.82,
+   "end": 918.92,
+   "text": "day even if someone doesn't get as"
+  },
+  {
+   "start": 918.92,
+   "end": 923.96,
+   "text": "far uh maybe with the course it's like but it's your responsibility to do"
+  },
+  {
+   "start": 923.96,
+   "end": 924.86,
+   "text": "the other things and you"
+  },
+  {
+   "start": 924.86,
+   "end": 928.3,
+   "text": "know to organize yourself and do the work so there's only so much you"
+  },
+  {
+   "start": 928.3,
+   "end": 931.74,
+   "text": "can do you can give all of these things but at the end of"
+  },
+  {
+   "start": 931.74,
+   "end": 936.54,
+   "text": "the day how you can only like do half like meet them halfway in"
+  },
+  {
+   "start": 936.54,
+   "end": 936.64,
+   "text": "way learner's responsibility is much more for sure yeah but the beauty is you"
+  },
+  {
+   "start": 936.64,
+   "end": 936.76,
+   "text": "a"
+  },
+  {
+   "start": 943.34,
+   "end": 943.92,
+   "text": "do different things and"
+  },
+  {
+   "start": 943.92,
+   "end": 948.62,
+   "text": "then you feel frustrated because you're still thinking about what to say in a"
+  },
+  {
+   "start": 948.62,
+   "end": 949.38,
+   "text": "sec but the other"
+  },
+  {
+   "start": 949.38,
+   "end": 955.64,
+   "text": "day everything just comes naturally so i think that's the beauty of using different"
+  },
+  {
+   "start": 955.64,
+   "end": 959.66,
+   "text": "resources You don't see the result on one day or on one month, but"
+  },
+  {
+   "start": 959.66,
+   "end": 962.56,
+   "text": "one day you're like surprised by yourself."
+  },
+  {
+   "start": 962.56,
+   "end": 966.28,
+   "text": "That's the weaning feeling at the end."
+  },
+  {
+   "start": 967.2,
+   "end": 969.48,
+   "text": "Yeah. Sorry. No."
+  },
+  {
+   "start": 970.3,
+   "end": 975.44,
+   "text": "Yeah. I think for foreign language learning, whichever language you're learning, I think it"
+  },
+  {
+   "start": 975.44,
+   "end": 978.02,
+   "text": "always gets messier, you know, before it gets better."
+  },
+  {
+   "start": 978.02,
+   "end": 982.9,
+   "text": "And we've all went through these ups and downs where you feel like oh"
+  },
+  {
+   "start": 982.9,
+   "end": 983.14,
+   "text": "i've mastered"
+  },
+  {
+   "start": 983.14,
+   "end": 988.58,
+   "text": "something but then the very next day you feel oh no like i don't"
+  },
+  {
+   "start": 988.58,
+   "end": 990.12,
+   "text": "know anything again because you"
+  },
+  {
+   "start": 990.12,
+   "end": 995.86,
+   "text": "just try to express something new so it's always going in these um kinds"
+  },
+  {
+   "start": 995.86,
+   "end": 997.28,
+   "text": "of like waves so to say"
+  },
+  {
+   "start": 997.28,
+   "end": 1001.68,
+   "text": "but as you said like at one point it you start reaching this plateau"
+  },
+  {
+   "start": 1001.68,
+   "end": 1007.96,
+   "text": "and you feel okay now i'm control um so uh and hacking your brain"
+  },
+  {
+   "start": 1007.96,
+   "end": 1011.94,
+   "text": "so to say with different approaches is also very beneficial"
+  },
+  {
+   "start": 1011.94,
+   "end": 1018.2,
+   "text": "because then you know you get some information from the video lessons then you"
+  },
+  {
+   "start": 1018.2,
+   "end": 1019.8,
+   "text": "get kind of"
+  },
+  {
+   "start": 1019.8,
+   "end": 1026.14,
+   "text": "solidified with the worksheets then you put it into practice with speaking exercises in"
+  },
+  {
+   "start": 1026.14,
+   "end": 1026.26,
+   "text": "one-on-ones and so on so i think this is what we try to do"
+  },
+  {
+   "start": 1026.26,
+   "end": 1026.38,
+   "text": "your"
+  },
+  {
+   "start": 1030.96,
+   "end": 1036.1,
+   "text": "with the with the course to uh give as much of like diversity of"
+  },
+  {
+   "start": 1036.1,
+   "end": 1039.92,
+   "text": "material out there as possible in an online course right so we have"
+  },
+  {
+   "start": 1039.92,
+   "end": 1045.12,
+   "text": "a video lecture we have these worksheets that Milena mentioned but then we also"
+  },
+  {
+   "start": 1045.12,
+   "end": 1045.32,
+   "text": "have listening"
+  },
+  {
+   "start": 1045.32,
+   "end": 1052.54,
+   "text": "exercises that you know just go with the audio and the worksheet itself and"
+  },
+  {
+   "start": 1052.54,
+   "end": 1053.26,
+   "text": "then we have glossary"
+  },
+  {
+   "start": 1053.26,
+   "end": 1059.62,
+   "text": "with like examples and exercises and then we also in the video lessons themselves"
+  },
+  {
+   "start": 1059.62,
+   "end": 1065.02,
+   "text": "we also try to kind of shift the approaches as much as possible so"
+  },
+  {
+   "start": 1065.02,
+   "end": 1072.02,
+   "text": "that we show some interactive exercises then we also have like animated lessons this"
+  },
+  {
+   "start": 1072.02,
+   "end": 1073.28,
+   "text": "is like this was the probably most fun"
+  },
+  {
+   "start": 1073.28,
+   "end": 1078.18,
+   "text": "making those so at the end of each unit we would provide like a"
+  },
+  {
+   "start": 1078.18,
+   "end": 1081.52,
+   "text": "bonus animated lesson from like"
+  },
+  {
+   "start": 1081.52,
+   "end": 1086.42,
+   "text": "an example of real life or what we call everyday Serbian so this would"
+  },
+  {
+   "start": 1086.42,
+   "end": 1092.6,
+   "text": "be like a natural conversation with everyday phrases that they can catch, but basically"
+  },
+  {
+   "start": 1092.6,
+   "end": 1096.42,
+   "text": "in a small kind of cartoonish format."
+  },
+  {
+   "start": 1096.42,
+   "end": 1100.46,
+   "text": "So yeah, just trying all of these."
+  },
+  {
+   "start": 1100.46,
+   "end": 1103.22,
+   "text": "And I would say in our second course,"
+  },
+  {
+   "start": 1103.22,
+   "end": 1107.32,
+   "text": "we really, really built on the feedback that we received for the first course."
+  },
+  {
+   "start": 1107.32,
+   "end": 1114.2,
+   "text": "So yeah, we have some characters introduced in there, like the teacher characters and"
+  },
+  {
+   "start": 1114.2,
+   "end": 1119.38,
+   "text": "student characters who follow the narrative throughout you know all of the units and"
+  },
+  {
+   "start": 1119.38,
+   "end": 1120.54,
+   "text": "all of the grammar sections and so"
+  },
+  {
+   "start": 1120.54,
+   "end": 1127.58,
+   "text": "on so yeah um that's smart yeah that's quite smart yeah okay"
+  },
+  {
+   "start": 1127.58,
+   "end": 1130.26,
+   "text": "cool so from that i got your kind of"
+  },
+  {
+   "start": 1130.26,
+   "end": 1137.38,
+   "text": "tips to our followers right combining all the resources out"
+  },
+  {
+   "start": 1137.38,
+   "end": 1140.44,
+   "text": "there like videos audios uh"
+  },
+  {
+   "start": 1141.76,
+   "end": 1146.7,
+   "text": "like articles stories and everything and the most important thing we should not forget"
+  },
+  {
+   "start": 1146.7,
+   "end": 1146.84,
+   "text": "always try to enjoy I tell this to my students like even if it's"
+  },
+  {
+   "start": 1146.84,
+   "end": 1147.16,
+   "text": "is"
+  },
+  {
+   "start": 1150.78,
+   "end": 1153.04,
+   "text": "a boring article you try to make"
+  },
+  {
+   "start": 1153.04,
+   "end": 1158.56,
+   "text": "fun of it you try something fun about it I mean this is what"
+  },
+  {
+   "start": 1158.56,
+   "end": 1161.64,
+   "text": "I try to do at least and have you"
+  },
+  {
+   "start": 1161.64,
+   "end": 1167.76,
+   "text": "guys ever listened to our podcast as a source for like culture and like"
+  },
+  {
+   "start": 1167.76,
+   "end": 1171.96,
+   "text": "language points how do you see that and do you do you would just"
+  },
+  {
+   "start": 1171.96,
+   "end": 1175.98,
+   "text": "suggest your uh students to listen to us"
+  },
+  {
+   "start": 1178.46,
+   "end": 1184.82,
+   "text": "definitely i listened to some of them already uh and uh it's it's really"
+  },
+  {
+   "start": 1184.82,
+   "end": 1186.24,
+   "text": "a good idea to to do this"
+  },
+  {
+   "start": 1186.24,
+   "end": 1190.74,
+   "text": "kind of podcast because it's not only about the language and everybody knows that"
+  },
+  {
+   "start": 1190.74,
+   "end": 1199.14,
+   "text": "so language is when a learner really wants to meet the country,"
+  },
+  {
+   "start": 1199.14,
+   "end": 1202.87,
+   "text": "the culture, you have to combine all of these things."
+  },
+  {
+   "start": 1202.87,
+   "end": 1208.23,
+   "text": "And I really like when you were talking about the customs in Serbia, I had, you know,"
+  },
+  {
+   "start": 1208.23,
+   "end": 1209.39,
+   "text": "some habits. And"
+  },
+  {
+   "start": 1209.39,
+   "end": 1212.93,
+   "text": "I realized you also had some interesting guests."
+  },
+  {
+   "start": 1212.93,
+   "end": 1215.01,
+   "text": "I think I listened to that also to that podcast"
+  },
+  {
+   "start": 1215.01,
+   "end": 1221.89,
+   "text": "with Ivana's boyfriend, if I'm right, because he was talking about his own thoughts"
+  },
+  {
+   "start": 1221.89,
+   "end": 1222.25,
+   "text": "and"
+  },
+  {
+   "start": 1224.15,
+   "end": 1228.03,
+   "text": "impressions about about Serbia and it's really really cool to hear many different people"
+  },
+  {
+   "start": 1228.03,
+   "end": 1228.17,
+   "text": "who are"
+  },
+  {
+   "start": 1228.17,
+   "end": 1232.81,
+   "text": "not even you know related to just to see different different opinions you know"
+  },
+  {
+   "start": 1232.81,
+   "end": 1233.67,
+   "text": "so so it was really"
+  },
+  {
+   "start": 1233.67,
+   "end": 1239.77,
+   "text": "really interesting um and yeah these these podcasts are really useful not in you"
+  },
+  {
+   "start": 1239.77,
+   "end": 1240.03,
+   "text": "know not in the terms"
+  },
+  {
+   "start": 1240.03,
+   "end": 1244.25,
+   "text": "of learning the the language but in terms of learning anything else that is"
+  },
+  {
+   "start": 1244.25,
+   "end": 1244.89,
+   "text": "related to that"
+  },
+  {
+   "start": 1244.89,
+   "end": 1248.83,
+   "text": "particular country that you are planning to visit or you already live there and"
+  },
+  {
+   "start": 1248.83,
+   "end": 1252.09,
+   "text": "so on so and I think you two are a perfect combo because you"
+  },
+  {
+   "start": 1252.09,
+   "end": 1256.93,
+   "text": "know Mark he's a foreigner living in Serbia and and even he's abroad and"
+  },
+  {
+   "start": 1256.93,
+   "end": 1262.21,
+   "text": "and still you know you you have a different um uh approach to the"
+  },
+  {
+   "start": 1262.21,
+   "end": 1266.03,
+   "text": "whole thing you know and that's when when you combine that you get you"
+  },
+  {
+   "start": 1266.03,
+   "end": 1266.61,
+   "text": "get a cool thing so"
+  },
+  {
+   "start": 1266.61,
+   "end": 1273.87,
+   "text": "definitely this is really really like useful resource that's for sure thank you I"
+  },
+  {
+   "start": 1273.87,
+   "end": 1279.37,
+   "text": "I actually I realized that, that when I left Serbia, you know, you think"
+  },
+  {
+   "start": 1279.37,
+   "end": 1282.31,
+   "text": "that you're gonna not have any"
+  },
+  {
+   "start": 1282.31,
+   "end": 1286.47,
+   "text": "issues with kind of, I don't want to say forgetting your language, but it's"
+  },
+  {
+   "start": 1286.47,
+   "end": 1287.33,
+   "text": "like making it less"
+  },
+  {
+   "start": 1287.33,
+   "end": 1289.51,
+   "text": "automatic. You know what I mean?"
+  },
+  {
+   "start": 1289.51,
+   "end": 1290.67,
+   "text": "Like it's sometimes very difficult for me to like,"
+  },
+  {
+   "start": 1290.67,
+   "end": 1292.43,
+   "text": "think of words and so on."
+  },
+  {
+   "start": 1292.43,
+   "end": 1297.29,
+   "text": "And then I also realized I really didn't know a lot about my, maybe"
+  },
+  {
+   "start": 1297.29,
+   "end": 1299.87,
+   "text": "my country or culture, just because I was inside, right?"
+  },
+  {
+   "start": 1299.87,
+   "end": 1303.43,
+   "text": "So it wasn't like a thing that I needed to or at least like"
+  },
+  {
+   "start": 1303.43,
+   "end": 1305.67,
+   "text": "I couldn't really explicitly explain to other people certain"
+  },
+  {
+   "start": 1305.67,
+   "end": 1309.83,
+   "text": "things maybe cultural and so on or like language wise I think this park"
+  },
+  {
+   "start": 1309.83,
+   "end": 1310.41,
+   "text": "was was like"
+  },
+  {
+   "start": 1310.99,
+   "end": 1314.25,
+   "text": "in a way selfish for me because I'm like oh I can keep being"
+  },
+  {
+   "start": 1314.25,
+   "end": 1315.61,
+   "text": "in like keep preserving like the"
+  },
+  {
+   "start": 1315.61,
+   "end": 1321.47,
+   "text": "language and and the culture and learn new things right about my where I'm"
+  },
+  {
+   "start": 1321.47,
+   "end": 1322.81,
+   "text": "coming from right so in"
+  },
+  {
+   "start": 1322.81,
+   "end": 1328.71,
+   "text": "a way it was a way of preserving that um yeah being abroad preserving"
+  },
+  {
+   "start": 1328.71,
+   "end": 1330.09,
+   "text": "that Serbian side of me"
+  },
+  {
+   "start": 1332.01,
+   "end": 1337.07,
+   "text": "yeah it's it's really funny you should say that because I at times have"
+  },
+  {
+   "start": 1337.07,
+   "end": 1343.15,
+   "text": "the same feeling with regards to like course creation and collaborating with Milena on"
+  },
+  {
+   "start": 1343.15,
+   "end": 1344.55,
+   "text": "all of these materials because for"
+  },
+  {
+   "start": 1344.55,
+   "end": 1351.13,
+   "text": "me it's also I sometimes realize wow like this is healing my nostalgia this"
+  },
+  {
+   "start": 1351.13,
+   "end": 1352.01,
+   "text": "is like making me"
+  },
+  {
+   "start": 1352.01,
+   "end": 1358.99,
+   "text": "you know more connected to the country and more connected to the language itself"
+  },
+  {
+   "start": 1358.99,
+   "end": 1360.41,
+   "text": "and you know I"
+  },
+  {
+   "start": 1360.41,
+   "end": 1366.55,
+   "text": "also have like two kids who are now struggling with maintaining the language much"
+  },
+  {
+   "start": 1366.55,
+   "end": 1371.99,
+   "text": "more than we as adults do um and so for me like this course"
+  },
+  {
+   "start": 1371.99,
+   "end": 1376.77,
+   "text": "creation is also like i'm trying to involve them as well uh in some"
+  },
+  {
+   "start": 1376.77,
+   "end": 1381.39,
+   "text": "way and to show the importance of you know keeping the language"
+  },
+  {
+   "start": 1381.39,
+   "end": 1386.83,
+   "text": "and speaking the language as much as possible at home so uh i i"
+  },
+  {
+   "start": 1386.83,
+   "end": 1387.51,
+   "text": "think there's something about"
+  },
+  {
+   "start": 1387.51,
+   "end": 1391.61,
+   "text": "that process now that i hear you i've heard you like uh speak about"
+  },
+  {
+   "start": 1391.61,
+   "end": 1394.97,
+   "text": "that i'm like yes i felt that at times too like it's a way"
+  },
+  {
+   "start": 1394.97,
+   "end": 1400.89,
+   "text": "to um if you're outside of serbia to stay connected and in some"
+  },
+  {
+   "start": 1400.89,
+   "end": 1406.85,
+   "text": "ways to like heal the nostalgia before we continue with the show here's a"
+  },
+  {
+   "start": 1406.85,
+   "end": 1408.03,
+   "text": "quick reminder this podcast"
+  },
+  {
+   "start": 1408.03,
+   "end": 1412.81,
+   "text": "is free for everyone and supported by listeners like you we hope that this"
+  },
+  {
+   "start": 1412.81,
+   "end": 1413.53,
+   "text": "podcast is useful and"
+  },
+  {
+   "start": 1413.53,
+   "end": 1417.97,
+   "text": "companion to you this is a labor of love for both of us to"
+  },
+  {
+   "start": 1417.97,
+   "end": 1419.5,
+   "text": "help us continue creating useful content"
+  },
+  {
+   "start": 1419.5,
+   "end": 1422.36,
+   "text": "content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 1422.76,
+   "end": 1425.7,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 1426.32,
+   "end": 1432.2,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 1432.2,
+   "end": 1437.96,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 1437.96,
+   "end": 1443.52,
+   "text": "and get extra benefits like bonus content, full transcripts of the show in Serbian,"
+  },
+  {
+   "start": 1443.66,
+   "end": 1445.38,
+   "text": "or even join us on the show."
+  },
+  {
+   "start": 1446.02,
+   "end": 1448.12,
+   "text": "We rely on your support to help everyone more"
+  },
+  {
+   "start": 1448.12,
+   "end": 1450.6,
+   "text": "in learning Serbian language and culture."
+  },
+  {
+   "start": 1451.42,
+   "end": 1452.74,
+   "text": "Thanks for joining us today."
+  },
+  {
+   "start": 1452.98,
+   "end": 1454.82,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1455.28,
+   "end": 1460.04,
+   "text": "So Dregona and Miljana, what are your favorite places in Serbia?"
+  },
+  {
+   "start": 1460.04,
+   "end": 1461.5,
+   "text": "What places do you miss the most?"
+  },
+  {
+   "start": 1463.9,
+   "end": 1466.7,
+   "text": "Miljana. Well, I have to be a local patriot for a while."
+  },
+  {
+   "start": 1466.7,
+   "end": 1469.5,
+   "text": "So I have to say Navisad."
+  },
+  {
+   "start": 1470.18,
+   "end": 1474.22,
+   "text": "is the first uh first place that i that i miss but i i"
+  },
+  {
+   "start": 1474.22,
+   "end": 1477.64,
+   "text": "also love belgrade a lot and um whenever"
+  },
+  {
+   "start": 1477.64,
+   "end": 1483.1,
+   "text": "whenever people ask me which one do you prefer novice or belgrade which one"
+  },
+  {
+   "start": 1483.1,
+   "end": 1483.38,
+   "text": "should be busy first"
+  },
+  {
+   "start": 1483.38,
+   "end": 1487.5,
+   "text": "i tell them both of course because they are two completely different cities with"
+  },
+  {
+   "start": 1487.5,
+   "end": 1488.08,
+   "text": "different"
+  },
+  {
+   "start": 1488.08,
+   "end": 1495.3,
+   "text": "atmospheres and and um there's uh so so many amazing places to"
+  },
+  {
+   "start": 1495.3,
+   "end": 1500.58,
+   "text": "see in in both of them i also miss mountains serbian mountains a lot"
+  },
+  {
+   "start": 1500.58,
+   "end": 1505.94,
+   "text": "um tara is my favorite place to go that's for sure"
+  },
+  {
+   "start": 1505.94,
+   "end": 1512.4,
+   "text": "when it comes to southern serbia and um yeah i mean there they are"
+  },
+  {
+   "start": 1512.4,
+   "end": 1513.82,
+   "text": "there are some kind of you"
+  },
+  {
+   "start": 1513.82,
+   "end": 1518.32,
+   "text": "know small cute local places in ovisa that i definitely miss that i always"
+  },
+  {
+   "start": 1518.32,
+   "end": 1518.5,
+   "text": "like to come back"
+  },
+  {
+   "start": 1518.5,
+   "end": 1523.14,
+   "text": "whenever i have a chance to to go there in belgrade as well so"
+  },
+  {
+   "start": 1523.14,
+   "end": 1527.06,
+   "text": "i don't like to make any um any distinction between these two places because"
+  },
+  {
+   "start": 1527.06,
+   "end": 1528.46,
+   "text": "I really like both of"
+  },
+  {
+   "start": 1528.46,
+   "end": 1535.1,
+   "text": "them. But my top three would definitely be Novi Sad Belgrade and Tara Mountain."
+  },
+  {
+   "start": 1535.26,
+   "end": 1538.26,
+   "text": "How about you, Dragana?"
+  },
+  {
+   "start": 1539.6,
+   "end": 1542.82,
+   "text": "I would say Novi Sad as well in the first place."
+  },
+  {
+   "start": 1543.98,
+   "end": 1545.98,
+   "text": "For me, this is like the most special place."
+  },
+  {
+   "start": 1546.0,
+   "end": 1552.3,
+   "text": "I think it's really, you know, made for according to the measures that one"
+  },
+  {
+   "start": 1552.3,
+   "end": 1556.26,
+   "text": "human being needs, so to say, meaning everything is close by."
+  },
+  {
+   "start": 1556.38,
+   "end": 1558.88,
+   "text": "You don't spend time traveling throughout the city much."
+  },
+  {
+   "start": 1559.54,
+   "end": 1561.04,
+   "text": "You have everything you need."
+  },
+  {
+   "start": 1561.04,
+   "end": 1561.76,
+   "text": "You have the river."
+  },
+  {
+   "start": 1561.88,
+   "end": 1566.26,
+   "text": "You have a small mountain nearby, Pruska Gora."
+  },
+  {
+   "start": 1567.26,
+   "end": 1568.1,
+   "text": "You have the theater."
+  },
+  {
+   "start": 1568.4,
+   "end": 1569.24,
+   "text": "You have the cinema."
+  },
+  {
+   "start": 1569.26,
+   "end": 1575.34,
+   "text": "You have like urban life mixed with the feel of the small city, which"
+  },
+  {
+   "start": 1575.34,
+   "end": 1580.86,
+   "text": "is nice. So it's kind of packed that you have things going on, but"
+  },
+  {
+   "start": 1580.86,
+   "end": 1586.3,
+   "text": "yet it's not as like bustling and busy and difficult to navigate as some"
+  },
+  {
+   "start": 1586.3,
+   "end": 1592.58,
+   "text": "bigger cities. And it's just pure, you know, like memories kind of that connect"
+  },
+  {
+   "start": 1592.58,
+   "end": 1594.82,
+   "text": "me to that place."
+  },
+  {
+   "start": 1595.32,
+   "end": 1596.82,
+   "text": "So both of my kids were born there."
+  },
+  {
+   "start": 1596.82,
+   "end": 1601.62,
+   "text": "It's just the most special place for me in the world, I would say."
+  },
+  {
+   "start": 1601.94,
+   "end": 1606.2,
+   "text": "And then the second city would be the city of where I am from"
+  },
+  {
+   "start": 1606.2,
+   "end": 1607.94,
+   "text": "and where my parents live."
+  },
+  {
+   "start": 1609.12,
+   "end": 1614.16,
+   "text": "It's Kula. It's a very, very small place in the north of Serbia, in"
+  },
+  {
+   "start": 1614.16,
+   "end": 1614.68,
+   "text": "Vojvodina."
+  },
+  {
+   "start": 1616.42,
+   "end": 1622.04,
+   "text": "And yeah, it's just, again, packed with memories and people that I love."
+  },
+  {
+   "start": 1622.26,
+   "end": 1628.34,
+   "text": "So whenever I spent my summer this year there entirely and, you know, with"
+  },
+  {
+   "start": 1628.34,
+   "end": 1633.26,
+   "text": "trips to Novi Sad, obviously, but it was like it's these two places, I"
+  },
+  {
+   "start": 1633.26,
+   "end": 1636.88,
+   "text": "think, that are competing for the first place in my heart."
+  },
+  {
+   "start": 1636.88,
+   "end": 1637.83,
+   "text": "And then"
+  },
+  {
+   "start": 1637.83,
+   "end": 1644.25,
+   "text": "the third would be also in a mountain, Coponic, because I love skiing and"
+  },
+  {
+   "start": 1644.25,
+   "end": 1648.31,
+   "text": "Coponic has some great ski lanes."
+  },
+  {
+   "start": 1648.99,
+   "end": 1651.99,
+   "text": "So I would go there to ski every winter."
+  },
+  {
+   "start": 1653.65,
+   "end": 1656.29,
+   "text": "Yeah, so these would be the top three places for me."
+  },
+  {
+   "start": 1656.95,
+   "end": 1658.87,
+   "text": "That's cool. All right."
+  },
+  {
+   "start": 1659.73,
+   "end": 1660.83,
+   "text": "So that's it from me."
+  },
+  {
+   "start": 1661.13,
+   "end": 1666.55,
+   "text": "let's see what uh our followers asked Ivana you know I thought our followers"
+  },
+  {
+   "start": 1666.55,
+   "end": 1666.63,
+   "text": "are going to ask"
+  },
+  {
+   "start": 1666.63,
+   "end": 1673.09,
+   "text": "really um uh questions related to like grammar like explain this or that not"
+  },
+  {
+   "start": 1673.09,
+   "end": 1673.55,
+   "text": "really actually"
+  },
+  {
+   "start": 1673.55,
+   "end": 1677.63,
+   "text": "not really they just kind of have very generic questions some of them are"
+  },
+  {
+   "start": 1677.63,
+   "end": 1677.89,
+   "text": "quite generic some of"
+  },
+  {
+   "start": 1677.89,
+   "end": 1683.61,
+   "text": "them not not so this one is like it comes up quite often uh"
+  },
+  {
+   "start": 1683.61,
+   "end": 1687.39,
+   "text": "variations of it so it's like why is it so hard to learn serbian"
+  },
+  {
+   "start": 1687.39,
+   "end": 1694.47,
+   "text": "and why seven cases why if you"
+  },
+  {
+   "start": 1694.47,
+   "end": 1697.03,
+   "text": "have any explanation for that we are the"
+  },
+  {
+   "start": 1697.03,
+   "end": 1702.01,
+   "text": "right people to answer the second uh the second question why do we have"
+  },
+  {
+   "start": 1702.01,
+   "end": 1704.57,
+   "text": "seven cases yeah but i"
+  },
+  {
+   "start": 1704.57,
+   "end": 1709.69,
+   "text": "mean when it when it when we talk about difficult and easy languages i"
+  },
+  {
+   "start": 1709.69,
+   "end": 1715.13,
+   "text": "think we just shouldn't shouldn't generalize this kind of, you know, we shouldn't divide"
+  },
+  {
+   "start": 1715.13,
+   "end": 1718.59,
+   "text": "it in, we shouldn't polarize it,"
+  },
+  {
+   "start": 1718.59,
+   "end": 1723.09,
+   "text": "you know, like hard languages to learn, easy languages, that depends on many, many"
+  },
+  {
+   "start": 1723.09,
+   "end": 1723.49,
+   "text": "factors for, first of all, your perspective. different"
+  },
+  {
+   "start": 1726.73,
+   "end": 1728.33,
+   "text": "So first of all, your native language,"
+  },
+  {
+   "start": 1729.95,
+   "end": 1735.81,
+   "text": "how experienced you are in learning languages in general, you know, what's your linguistical,"
+  },
+  {
+   "start": 1735.81,
+   "end": 1738.07,
+   "text": "do you have any linguistical background or not?"
+  },
+  {
+   "start": 1738.07,
+   "end": 1743.25,
+   "text": "And for example, you know, if somebody comes from a country"
+  },
+  {
+   "start": 1743.25,
+   "end": 1745.09,
+   "text": "where they speak another Slavic language,"
+  },
+  {
+   "start": 1745.09,
+   "end": 1747.51,
+   "text": "Serbian wouldn't be that difficult."
+  },
+  {
+   "start": 1747.59,
+   "end": 1749.77,
+   "text": "We have to agree on that."
+  },
+  {
+   "start": 1749.77,
+   "end": 1753.67,
+   "text": "But of course, for people who don't have categories like cases,"
+  },
+  {
+   "start": 1753.67,
+   "end": 1758.23,
+   "text": "like verbal aspect and some other things that I know are a total nightmare"
+  },
+  {
+   "start": 1758.23,
+   "end": 1760.07,
+   "text": "for them,"
+  },
+  {
+   "start": 1760.07,
+   "end": 1763.01,
+   "text": "of course, it's going to be difficult, you know."
+  },
+  {
+   "start": 1763.37,
+   "end": 1764.17,
+   "text": "So that's why."
+  },
+  {
+   "start": 1764.87,
+   "end": 1765.71,
+   "text": "Why is it difficult?"
+  },
+  {
+   "start": 1765.87,
+   "end": 1772.15,
+   "text": "I think we shouldn't have that kind of attitude that learning Serbian is difficult."
+  },
+  {
+   "start": 1772.67,
+   "end": 1776.99,
+   "text": "It is just like, I guess, learning any other language, you know, from scratch"
+  },
+  {
+   "start": 1776.99,
+   "end": 1781.71,
+   "text": "could be. would be difficult so um we just have to embrace or even"
+  },
+  {
+   "start": 1781.71,
+   "end": 1783.63,
+   "text": "those difficulties even even that you know"
+  },
+  {
+   "start": 1783.63,
+   "end": 1787.13,
+   "text": "that it's gonna be a lot of struggling a lot of a lot of"
+  },
+  {
+   "start": 1787.13,
+   "end": 1789.79,
+   "text": "new completely new things for you uh i guess"
+  },
+  {
+   "start": 1789.79,
+   "end": 1795.45,
+   "text": "that that you should just um you know be be open to to to"
+  },
+  {
+   "start": 1795.45,
+   "end": 1798.57,
+   "text": "all of these things and uh yeah i know"
+  },
+  {
+   "start": 1798.57,
+   "end": 1804.73,
+   "text": "cases are are a horrible thing i know that uh that that's probably yeah"
+  },
+  {
+   "start": 1804.73,
+   "end": 1809.13,
+   "text": "not probably i think this is the most difficult thing for anybody who who"
+  },
+  {
+   "start": 1809.13,
+   "end": 1811.25,
+   "text": "decides to learn serbian or any other slavic"
+  },
+  {
+   "start": 1811.25,
+   "end": 1817.45,
+   "text": "language that has cases because some of them don't have luckily uh but um"
+  },
+  {
+   "start": 1817.45,
+   "end": 1819.89,
+   "text": "uh but it's it's just"
+  },
+  {
+   "start": 1819.89,
+   "end": 1825.61,
+   "text": "if i have to talk about about cases my my advice is always try"
+  },
+  {
+   "start": 1825.61,
+   "end": 1830.11,
+   "text": "not to learn them uh try not to start from the rules and endings"
+  },
+  {
+   "start": 1830.11,
+   "end": 1836.29,
+   "text": "because uh you know no nobody i guess nobody would be so excited and"
+  },
+  {
+   "start": 1836.29,
+   "end": 1840.29,
+   "text": "so thrilled sitting all day with charts and tables and everything you know and"
+  },
+  {
+   "start": 1840.29,
+   "end": 1840.55,
+   "text": "with exceptions"
+  },
+  {
+   "start": 1840.55,
+   "end": 1844.81,
+   "text": "i mean that that wouldn't take you far away i think my my advice"
+  },
+  {
+   "start": 1844.81,
+   "end": 1846.09,
+   "text": "would be always start from some"
+  },
+  {
+   "start": 1846.09,
+   "end": 1852.21,
+   "text": "kind of um uh some kind of always start with examples you know so"
+  },
+  {
+   "start": 1852.21,
+   "end": 1855.76,
+   "text": "that you can see that particular grammar structure in action, you know, some"
+  },
+  {
+   "start": 1855.76,
+   "end": 1860.74,
+   "text": "small sentence small you know those these kind of we call them chunks you"
+  },
+  {
+   "start": 1860.74,
+   "end": 1862.24,
+   "text": "know so start from that"
+  },
+  {
+   "start": 1862.24,
+   "end": 1868.14,
+   "text": "and and and then only when you are sure how can we use it"
+  },
+  {
+   "start": 1868.14,
+   "end": 1868.94,
+   "text": "which are the meanings of different"
+  },
+  {
+   "start": 1868.94,
+   "end": 1873.0,
+   "text": "cases then you can go on through the through the endings and then find"
+  },
+  {
+   "start": 1873.0,
+   "end": 1874.36,
+   "text": "you know make you see to see"
+  },
+  {
+   "start": 1874.36,
+   "end": 1878.78,
+   "text": "how does it function to see the roles because otherwise people people tend to"
+  },
+  {
+   "start": 1878.78,
+   "end": 1882.62,
+   "text": "get really frustrated when they when they start you know imagine me starting a"
+  },
+  {
+   "start": 1882.62,
+   "end": 1883.74,
+   "text": "lesson like hello today"
+  },
+  {
+   "start": 1883.74,
+   "end": 1889.58,
+   "text": "we're talking about block a tip yeah i guess everybody will run away immediately"
+  },
+  {
+   "start": 1889.58,
+   "end": 1891.36,
+   "text": "especially"
+  },
+  {
+   "start": 1891.36,
+   "end": 1895.16,
+   "text": "if i was stuck with all the all the rules and everything so we're"
+  },
+  {
+   "start": 1895.16,
+   "end": 1896.52,
+   "text": "not trying to do that uh"
+  },
+  {
+   "start": 1896.52,
+   "end": 1901.1,
+   "text": "we're trying to flip it you know for the the the a little bit"
+  },
+  {
+   "start": 1901.1,
+   "end": 1902.24,
+   "text": "in a way that it could be easier for"
+  },
+  {
+   "start": 1902.24,
+   "end": 1906.86,
+   "text": "students of course very good point i really agree with you that's why when"
+  },
+  {
+   "start": 1906.86,
+   "end": 1911.22,
+   "text": "we covered cases in our podcast we i said even do you know these"
+  },
+  {
+   "start": 1911.22,
+   "end": 1914.8,
+   "text": "common parts this and that uh in plural are the same"
+  },
+  {
+   "start": 1914.8,
+   "end": 1919.64,
+   "text": "this and this almost the same and i was trying to find the like"
+  },
+  {
+   "start": 1919.64,
+   "end": 1926.84,
+   "text": "good news about the cases yeah exactly exactly"
+  },
+  {
+   "start": 1926.84,
+   "end": 1931.6,
+   "text": "that's that's how it should be with cases yeah well i think it's also"
+  },
+  {
+   "start": 1931.6,
+   "end": 1931.68,
+   "text": "you said something about um you have to kind of accept it but it's"
+  },
+  {
+   "start": 1931.68,
+   "end": 1932.06,
+   "text": "like"
+  },
+  {
+   "start": 1935.26,
+   "end": 1939.48,
+   "text": "also like really appreciate these things because if it's not challenging how is it"
+  },
+  {
+   "start": 1939.48,
+   "end": 1941.3,
+   "text": "rewarding right like the most important"
+  },
+  {
+   "start": 1941.3,
+   "end": 1946.1,
+   "text": "like the most the biggest joy and like what drives you is like challenge"
+  },
+  {
+   "start": 1946.1,
+   "end": 1946.82,
+   "text": "isn't it like in anything"
+  },
+  {
+   "start": 1946.82,
+   "end": 1950.92,
+   "text": "you're doing so in a way it's a it's challenge it should be challenging"
+  },
+  {
+   "start": 1950.92,
+   "end": 1952.82,
+   "text": "and um and also I think this"
+  },
+  {
+   "start": 1952.82,
+   "end": 1956.58,
+   "text": "is a really good point like I'm I'm learning German right now I've been"
+  },
+  {
+   "start": 1956.58,
+   "end": 1957.24,
+   "text": "learning it for a while"
+  },
+  {
+   "start": 1957.24,
+   "end": 1962.52,
+   "text": "and um and they only have four cases so not that complex but still"
+  },
+  {
+   "start": 1962.52,
+   "end": 1965.4,
+   "text": "I think the best way how I learned it is that that's"
+  },
+  {
+   "start": 1965.4,
+   "end": 1966.16,
+   "text": "see, okay, based on"
+  },
+  {
+   "start": 1966.16,
+   "end": 1971.48,
+   "text": "frequency as well, like, what is the like most frequent use of data, let's"
+  },
+  {
+   "start": 1971.48,
+   "end": 1972.52,
+   "text": "say, and just go for"
+  },
+  {
+   "start": 1972.52,
+   "end": 1974.68,
+   "text": "that, right? And then slowly expand."
+  },
+  {
+   "start": 1974.68,
+   "end": 1977.34,
+   "text": "And you know what, it's going to take years, and it's okay."
+  },
+  {
+   "start": 1977.9,
+   "end": 1981.98,
+   "text": "No one's rushing, there's no need for you to be perfect in six months."
+  },
+  {
+   "start": 1981.98,
+   "end": 1982.98,
+   "text": "And I think it's also just"
+  },
+  {
+   "start": 1982.98,
+   "end": 1984.28,
+   "text": "a lot of stress."
+  },
+  {
+   "start": 1984.28,
+   "end": 1987.72,
+   "text": "And sometimes you're just not ready to absorb the rule."
+  },
+  {
+   "start": 1987.72,
+   "end": 1991.04,
+   "text": "And you have to give yourself time and it's fine and in a year"
+  },
+  {
+   "start": 1991.04,
+   "end": 1993.38,
+   "text": "it's going to be okay you'll get there right but like"
+  },
+  {
+   "start": 1993.38,
+   "end": 1997.5,
+   "text": "just give yourself that time I think that's a really good point just go"
+  },
+  {
+   "start": 1997.5,
+   "end": 1998.82,
+   "text": "from examples what is"
+  },
+  {
+   "start": 1998.82,
+   "end": 2003.08,
+   "text": "the most like useful frequent one and then just you know build on that"
+  },
+  {
+   "start": 2003.08,
+   "end": 2004.0,
+   "text": "start from the to start"
+  },
+  {
+   "start": 2004.0,
+   "end": 2008.94,
+   "text": "from the meaning you know yeah most I mean all the cases have tons"
+  },
+  {
+   "start": 2008.94,
+   "end": 2010.0,
+   "text": "of meaning especially genitive"
+  },
+  {
+   "start": 2010.0,
+   "end": 2015.08,
+   "text": "of course we don't have identity has like 20 27 if I remember 27"
+  },
+  {
+   "start": 2015.08,
+   "end": 2019.8,
+   "text": "different meanings different usages i mean when you if you say to a student"
+  },
+  {
+   "start": 2019.8,
+   "end": 2021.68,
+   "text": "they will probably be like i'm quitting service"
+  },
+  {
+   "start": 2021.68,
+   "end": 2027.52,
+   "text": "yeah you know so you shouldn't start start with that information keep it for"
+  },
+  {
+   "start": 2027.52,
+   "end": 2027.96,
+   "text": "later just if"
+  },
+  {
+   "start": 2027.96,
+   "end": 2032.8,
+   "text": "somebody wants to if somebody's interested you know but typical the most typical meaning"
+  },
+  {
+   "start": 2032.8,
+   "end": 2033.06,
+   "text": "like you said dative is for moving you know locative the name itself says"
+  },
+  {
+   "start": 2033.06,
+   "end": 2033.26,
+   "text": "just"
+  },
+  {
+   "start": 2037.14,
+   "end": 2037.66,
+   "text": "it's a location"
+  },
+  {
+   "start": 2037.66,
+   "end": 2042.3,
+   "text": "that's why we will always differ it from accusative we you know if you"
+  },
+  {
+   "start": 2042.3,
+   "end": 2046.56,
+   "text": "use different if you the same prepositions like u and na you know that's"
+  },
+  {
+   "start": 2046.56,
+   "end": 2049.32,
+   "text": "that's i think one of the one of the most"
+  },
+  {
+   "start": 2049.32,
+   "end": 2055.32,
+   "text": "typical mistakes that i've that i've uh that i've seen so far that the"
+  },
+  {
+   "start": 2055.32,
+   "end": 2055.78,
+   "text": "students are struggling"
+  },
+  {
+   "start": 2055.78,
+   "end": 2062.4,
+   "text": "between locative and accusative they cannot determine which one is uh is about moving"
+  },
+  {
+   "start": 2062.4,
+   "end": 2062.8,
+   "text": "you"
+  },
+  {
+   "start": 2062.8,
+   "end": 2066.6,
+   "text": "know about motion and which one is about location and then just connect it"
+  },
+  {
+   "start": 2066.6,
+   "end": 2067.06,
+   "text": "with the name of the case"
+  },
+  {
+   "start": 2067.06,
+   "end": 2073.14,
+   "text": "locative location that's instrumental aha there's an instrument so it's a tool it's something"
+  },
+  {
+   "start": 2073.14,
+   "end": 2074.63,
+   "text": "that that we use to do you"
+  },
+  {
+   "start": 2074.63,
+   "end": 2078.69,
+   "text": "know i'm cutting the bread with knives so no gem and so on so"
+  },
+  {
+   "start": 2078.69,
+   "end": 2080.01,
+   "text": "these kind of things of course"
+  },
+  {
+   "start": 2080.01,
+   "end": 2086.55,
+   "text": "we can't be this precise but but that's why it's the most difficult one"
+  },
+  {
+   "start": 2086.55,
+   "end": 2088.27,
+   "text": "but that that's why you"
+  },
+  {
+   "start": 2088.27,
+   "end": 2092.45,
+   "text": "your point is amazing because you have we have to start from a bigger"
+  },
+  {
+   "start": 2092.45,
+   "end": 2097.37,
+   "text": "bigger picture so so meaning and then slowly to narrow it down to the"
+  },
+  {
+   "start": 2097.37,
+   "end": 2103.87,
+   "text": "endings and of course exceptions oh i have a quick question now related to"
+  },
+  {
+   "start": 2103.87,
+   "end": 2108.29,
+   "text": "that because i always ask my serbian friends would you say um"
+  },
+  {
+   "start": 2110.17,
+   "end": 2117.45,
+   "text": "yeah that's a good one is"
+  },
+  {
+   "start": 2117.45,
+   "end": 2121.83,
+   "text": "there a preference for you or or is it something like actually so i"
+  },
+  {
+   "start": 2121.83,
+   "end": 2125.83,
+   "text": "think it's not i think both are grammatical right but like and i choose"
+  },
+  {
+   "start": 2125.83,
+   "end": 2127.19,
+   "text": "them interchangeably so i don't"
+  },
+  {
+   "start": 2127.19,
+   "end": 2131.81,
+   "text": "know what about you i would say what you should be more yeah me"
+  },
+  {
+   "start": 2131.81,
+   "end": 2134.97,
+   "text": "too yeah yeah i think i would"
+  },
+  {
+   "start": 2134.97,
+   "end": 2142.19,
+   "text": "definitely use genitive is there a reason why like a linguistic grammatical"
+  },
+  {
+   "start": 2142.19,
+   "end": 2142.53,
+   "text": "that you would explain"
+  },
+  {
+   "start": 2142.53,
+   "end": 2149.33,
+   "text": "i think the under text is like uh when we say what we are"
+  },
+  {
+   "start": 2149.33,
+   "end": 2157.59,
+   "text": "kind of just uh excluding the right so"
+  },
+  {
+   "start": 2157.59,
+   "end": 2163.77,
+   "text": "we are just excluding uh the container part which creates the genitive and we"
+  },
+  {
+   "start": 2163.77,
+   "end": 2163.89,
+   "text": "we are saying it's like using accusative but you know like without the the"
+  },
+  {
+   "start": 2163.89,
+   "end": 2164.25,
+   "text": "are when"
+  },
+  {
+   "start": 2170.13,
+   "end": 2171.53,
+   "text": "container but we usually"
+  },
+  {
+   "start": 2171.53,
+   "end": 2177.29,
+   "text": "like give water in a cup or in a you know glass so i"
+  },
+  {
+   "start": 2177.29,
+   "end": 2181.93,
+   "text": "think uh yeah it's just conversational so we just exclude the part with the"
+  },
+  {
+   "start": 2181.93,
+   "end": 2183.55,
+   "text": "copper glass in the question."
+  },
+  {
+   "start": 2183.55,
+   "end": 2184.39,
+   "text": "So"
+  },
+  {
+   "start": 2184.49,
+   "end": 2189.43,
+   "text": "But for me, it's more natural to say, you actually just had a great"
+  },
+  {
+   "start": 2189.43,
+   "end": 2192.03,
+   "text": "example with accusative and genitive."
+  },
+  {
+   "start": 2192.03,
+   "end": 2196.09,
+   "text": "Hocish čashu, accusative, vode, genitive."
+  },
+  {
+   "start": 2196.75,
+   "end": 2198.47,
+   "text": "Perfect. I think that would explain a lot."
+  },
+  {
+   "start": 2198.55,
+   "end": 2199.73,
+   "text": "I am enlightened."
+  },
+  {
+   "start": 2199.89,
+   "end": 2200.77,
+   "text": "We discussed it on our podcast"
+  },
+  {
+   "start": 2200.77,
+   "end": 2204.45,
+   "text": "and even I was like, yeah, there's no difference, blah, blah, blah."
+  },
+  {
+   "start": 2204.45,
+   "end": 2206.87,
+   "text": "No, okay. Thank you."
+  },
+  {
+   "start": 2207.69,
+   "end": 2211.51,
+   "text": "Yeah, because it's kind of like, you know, with accusative, in a way you're"
+  },
+  {
+   "start": 2211.51,
+   "end": 2212.35,
+   "text": "measuring it."
+  },
+  {
+   "start": 2212.35,
+   "end": 2214.35,
+   "text": "Like you need some source of measurement, right?"
+  },
+  {
+   "start": 2214.35,
+   "end": 2215.97,
+   "text": "So point of measurement."
+  },
+  {
+   "start": 2215.97,
+   "end": 2217.67,
+   "text": "So it's either a cup or it's like something."
+  },
+  {
+   "start": 2217.67,
+   "end": 2223.41,
+   "text": "But if you say, for me, it was always like a part of like,"
+  },
+  {
+   "start": 2223.41,
+   "end": 2225.13,
+   "text": "so just a part of something, right?"
+  },
+  {
+   "start": 2225.13,
+   "end": 2229.11,
+   "text": "Like it might be a bit of water, a bit more, right?"
+  },
+  {
+   "start": 2229.11,
+   "end": 2233.09,
+   "text": "But you're not really like limiting it to like one glass of water or"
+  },
+  {
+   "start": 2233.09,
+   "end": 2233.35,
+   "text": "something."
+  },
+  {
+   "start": 2234.59,
+   "end": 2239.25,
+   "text": "Okay. Oh, I'm learning Serbian as my first Slavic language."
+  },
+  {
+   "start": 2239.47,
+   "end": 2241.41,
+   "text": "Should I have started with the Russian instead?"
+  },
+  {
+   "start": 2245.87,
+   "end": 2247.01,
+   "text": "I'm not sure."
+  },
+  {
+   "start": 2247.01,
+   "end": 2253.27,
+   "text": "I mean, I think that starting with Serbian is good from the point, like"
+  },
+  {
+   "start": 2253.27,
+   "end": 2258.47,
+   "text": "if you compare it to Russian, from the point of reading and writing."
+  },
+  {
+   "start": 2259.05,
+   "end": 2264.61,
+   "text": "I think it is a bit easier because in Russian they have like the"
+  },
+  {
+   "start": 2264.61,
+   "end": 2271.45,
+   "text": "soft sound and the hard sound, right, that then change the letter before that"
+  },
+  {
+   "start": 2271.45,
+   "end": 2274.41,
+   "text": "letter and that sound."
+  },
+  {
+   "start": 2274.99,
+   "end": 2279.57,
+   "text": "So that makes it a little bit more, I would say, difficult from the"
+  },
+  {
+   "start": 2279.57,
+   "end": 2281.67,
+   "text": "point of just like reading and writing."
+  },
+  {
+   "start": 2281.75,
+   "end": 2286.21,
+   "text": "I think reading and writing in Serbian are super easy as long as you"
+  },
+  {
+   "start": 2286.21,
+   "end": 2293.35,
+   "text": "can pronounce the letters that are different from, you know, anything that you"
+  },
+  {
+   "start": 2293.35,
+   "end": 2298.69,
+   "text": "know in English, let's say, if you're an English speaker, but, you know, at"
+  },
+  {
+   "start": 2298.69,
+   "end": 2301.11,
+   "text": "least like each letter stands for one sound,"
+  },
+  {
+   "start": 2301.11,
+   "end": 2306.79,
+   "text": "and that's super straightforward, and I think learners really appreciate it."
+  },
+  {
+   "start": 2306.79,
+   "end": 2308.29,
+   "text": "So, at least from"
+  },
+  {
+   "start": 2308.29,
+   "end": 2312.83,
+   "text": "that point of view, you know, it's a bit easier."
+  },
+  {
+   "start": 2312.83,
+   "end": 2316.23,
+   "text": "Everything else, I mean, it's really hard to compare, I would say."
+  },
+  {
+   "start": 2316.23,
+   "end": 2321.83,
+   "text": "You know, Russian is the language that definitely is more, much more spoken"
+  },
+  {
+   "start": 2321.83,
+   "end": 2323.23,
+   "text": "than Serbian, right?"
+  },
+  {
+   "start": 2323.23,
+   "end": 2325.15,
+   "text": "More people speak Russian than Serbian."
+  },
+  {
+   "start": 2325.15,
+   "end": 2325.93,
+   "text": "So, you know, from the point of"
+  },
+  {
+   "start": 2325.93,
+   "end": 2329.31,
+   "text": "convenience and applicability, I would say, yes, go for Russian."
+  },
+  {
+   "start": 2329.31,
+   "end": 2331.59,
+   "text": "But if you're trying to just like"
+  },
+  {
+   "start": 2331.59,
+   "end": 2336.13,
+   "text": "start with the Slavic language in order to kind of understand, you know, some"
+  },
+  {
+   "start": 2336.13,
+   "end": 2337.23,
+   "text": "similarities with"
+  },
+  {
+   "start": 2337.23,
+   "end": 2343.33,
+   "text": "other Slavic languages, then I mean, I would say Serbian is a relatively good"
+  },
+  {
+   "start": 2343.33,
+   "end": 2344.65,
+   "text": "point to start from."
+  },
+  {
+   "start": 2345.75,
+   "end": 2350.69,
+   "text": "Yeah, and there are overlaps with Russian, but there are also differences that can"
+  },
+  {
+   "start": 2350.69,
+   "end": 2356.15,
+   "text": "be confusing for learners and that can, you know, make them take a different"
+  },
+  {
+   "start": 2356.15,
+   "end": 2357.51,
+   "text": "path and the wrong path."
+  },
+  {
+   "start": 2357.95,
+   "end": 2362.93,
+   "text": "So it's always something to be mindful of that even if words sound similar"
+  },
+  {
+   "start": 2362.93,
+   "end": 2366.31,
+   "text": "or if the structure sounds similar, they are not necessarily the same."
+  },
+  {
+   "start": 2367.45,
+   "end": 2369.79,
+   "text": "And we have two scripts, just so you know."
+  },
+  {
+   "start": 2369.87,
+   "end": 2374.07,
+   "text": "So you would have, yeah, you would learn both, right?"
+  },
+  {
+   "start": 2374.07,
+   "end": 2377.27,
+   "text": "in russian is just a cyrillic script right so as far as i know"
+  },
+  {
+   "start": 2377.27,
+   "end": 2379.41,
+   "text": "right right yeah that's a good point"
+  },
+  {
+   "start": 2379.41,
+   "end": 2384.91,
+   "text": "yes yes yeah what are the most difficult words to pronounce and how do"
+  },
+  {
+   "start": 2384.91,
+   "end": 2385.33,
+   "text": "you pronounce them"
+  },
+  {
+   "start": 2385.33,
+   "end": 2392.49,
+   "text": "oh i guess i guess i would start with"
+  },
+  {
+   "start": 2392.49,
+   "end": 2399.63,
+   "text": "uh with the words uh that are not really reaching vowels That's probably the"
+  },
+  {
+   "start": 2399.63,
+   "end": 2406.1,
+   "text": "thing, like, you know, words like my favorite one is probably"
+  },
+  {
+   "start": 2406.1,
+   "end": 2411.2,
+   "text": "because I think we have I think we have five consonants next to each"
+  },
+  {
+   "start": 2411.2,
+   "end": 2418.5,
+   "text": "other in that one oh yeah that's true yeah exactly so"
+  },
+  {
+   "start": 2418.5,
+   "end": 2421.08,
+   "text": "that one is pretty pretty difficult to to pronounce but"
+  },
+  {
+   "start": 2421.08,
+   "end": 2425.26,
+   "text": "but in general Serbian words are not difficult to pronounce just like Dragan already"
+  },
+  {
+   "start": 2425.26,
+   "end": 2429.98,
+   "text": "mentioned because we always have one sound for one letter."
+  },
+  {
+   "start": 2429.98,
+   "end": 2434.7,
+   "text": "So unlike other languages..."
+  },
+  {
+   "start": 2434.7,
+   "end": 2436.76,
+   "text": "Oh, I think..."
+  },
+  {
+   "start": 2437.54,
+   "end": 2438.94,
+   "text": "No, I'm here, I'm here."
+  },
+  {
+   "start": 2438.94,
+   "end": 2442.54,
+   "text": "It's just that my internet is kind of glitchy,"
+  },
+  {
+   "start": 2442.54,
+   "end": 2445.18,
+   "text": "so I'm just switching video on and off, but I'm here."
+  },
+  {
+   "start": 2445.18,
+   "end": 2446.8,
+   "text": "I hear you."
+  },
+  {
+   "start": 2447.6,
+   "end": 2450.7,
+   "text": "Yeah, for that reason, I think that it's not difficult"
+  },
+  {
+   "start": 2450.7,
+   "end": 2453.38,
+   "text": "to pick up the pronunciation in Serbian."
+  },
+  {
+   "start": 2453.38,
+   "end": 2459.98,
+   "text": "Of course, when we talk about word stress, that's, well, another thing, because we"
+  },
+  {
+   "start": 2459.98,
+   "end": 2463.46,
+   "text": "all know that word stress and the whole system of accent in Serbian is"
+  },
+  {
+   "start": 2463.46,
+   "end": 2468.84,
+   "text": "pretty difficult, not only for foreigners, but believe it or not, even for native"
+  },
+  {
+   "start": 2468.84,
+   "end": 2469.46,
+   "text": "speakers."
+  },
+  {
+   "start": 2469.46,
+   "end": 2476.74,
+   "text": "So that because we have pretty flexible word stress"
+  },
+  {
+   "start": 2476.74,
+   "end": 2483.64,
+   "text": "in our language, even if you can pronounce the word, people sometimes struggle a"
+  },
+  {
+   "start": 2483.64,
+   "end": 2486.72,
+   "text": "little bit when which one which syllable should be emphasized."
+  },
+  {
+   "start": 2486.72,
+   "end": 2490.46,
+   "text": "So I guess that could be the tricky part."
+  },
+  {
+   "start": 2490.46,
+   "end": 2494.9,
+   "text": "But pronouncing the words, it's that it's definitely not something."
+  },
+  {
+   "start": 2496.24,
+   "end": 2498.02,
+   "text": "Again, it really depends where you come from, right?"
+  },
+  {
+   "start": 2498.02,
+   "end": 2504.36,
+   "text": "Like if it's a language that doesn't really share a lot of sounds, then"
+  },
+  {
+   "start": 2504.36,
+   "end": 2505.02,
+   "text": "sure, it's going to be challenging."
+  },
+  {
+   "start": 2505.02,
+   "end": 2511.06,
+   "text": "But yeah. There is always that, sorry, because I interrupted you, there is always"
+  },
+  {
+   "start": 2511.08,
+   "end": 2515.52,
+   "text": "that, for example, we have these minimal pairs like and for many people."
+  },
+  {
+   "start": 2516.82,
+   "end": 2519.22,
+   "text": "It's a huge issue."
+  },
+  {
+   "start": 2519.22,
+   "end": 2520.66,
+   "text": "My major issue was that."
+  },
+  {
+   "start": 2520.66,
+   "end": 2526.86,
+   "text": "Yeah, especially if you don't don't have a distinction between them in your own"
+  },
+  {
+   "start": 2526.86,
+   "end": 2527.38,
+   "text": "language."
+  },
+  {
+   "start": 2527.38,
+   "end": 2532.22,
+   "text": "So if you feel like it's like it's one sound and and yeah, this"
+  },
+  {
+   "start": 2532.22,
+   "end": 2535.38,
+   "text": "is probably I think the most difficult thing."
+  },
+  {
+   "start": 2535.38,
+   "end": 2539.36,
+   "text": "maybe maybe dj and dj as well yeah this is another minimal pair we"
+  },
+  {
+   "start": 2539.36,
+   "end": 2541.6,
+   "text": "have but i'm all we always try to"
+  },
+  {
+   "start": 2541.6,
+   "end": 2546.38,
+   "text": "find some connection you know with other languages for example even if you don't"
+  },
+  {
+   "start": 2546.38,
+   "end": 2547.2,
+   "text": "speak italian i never"
+  },
+  {
+   "start": 2547.2,
+   "end": 2550.68,
+   "text": "learned italian in my life but i know words like and i know names"
+  },
+  {
+   "start": 2550.68,
+   "end": 2553.58,
+   "text": "like you know giovanni uh gelato"
+  },
+  {
+   "start": 2553.58,
+   "end": 2560.26,
+   "text": "so that's exactly the same as serbian dj for example yeah you know why"
+  },
+  {
+   "start": 2560.26,
+   "end": 2564.44,
+   "text": "on the other hand the harder one you can i think you can freely"
+  },
+  {
+   "start": 2564.44,
+   "end": 2569.42,
+   "text": "connect it with with english uh g okay in serbian it is a"
+  },
+  {
+   "start": 2569.42,
+   "end": 2574.52,
+   "text": "little bit harder but sound is is very very similar to that one so"
+  },
+  {
+   "start": 2574.52,
+   "end": 2575.42,
+   "text": "we can always find some equivalent"
+  },
+  {
+   "start": 2575.42,
+   "end": 2580.22,
+   "text": "in other languages i guess it's not it's not like only we have these"
+  },
+  {
+   "start": 2580.22,
+   "end": 2583.2,
+   "text": "sounds yeah that's true and and"
+  },
+  {
+   "start": 2583.2,
+   "end": 2586.46,
+   "text": "you can find the new in so many of it like in spanish as"
+  },
+  {
+   "start": 2586.46,
+   "end": 2593.54,
+   "text": "well right like yeah also in in uh Portuguese and like just anyway that's"
+  },
+  {
+   "start": 2593.54,
+   "end": 2596.38,
+   "text": "a really good point um so I think I'll I have some other"
+  },
+  {
+   "start": 2596.38,
+   "end": 2600.12,
+   "text": "questions but I'll take the last one and the last one is going to"
+  },
+  {
+   "start": 2600.12,
+   "end": 2603.74,
+   "text": "be very controversial so um you"
+  },
+  {
+   "start": 2603.74,
+   "end": 2610.12,
+   "text": "know how you answer no I'm kidding um are Serbian Bosnian Croatian and Montenegrin"
+  },
+  {
+   "start": 2610.12,
+   "end": 2612.22,
+   "text": "actually the same language."
+  },
+  {
+   "start": 2614.02,
+   "end": 2615.46,
+   "text": "Yeah, this is a common one."
+  },
+  {
+   "start": 2616.48,
+   "end": 2617.12,
+   "text": "Yeah, I would say"
+  },
+  {
+   "start": 2617.12,
+   "end": 2619.04,
+   "text": "like from my perspective,"
+  },
+  {
+   "start": 2619.04,
+   "end": 2621.39,
+   "text": "they are, uh, because"
+  },
+  {
+   "start": 2621.39,
+   "end": 2623.97,
+   "text": "Because I think that the language is about communication."
+  },
+  {
+   "start": 2624.87,
+   "end": 2626.91,
+   "text": "We can all understand each other."
+  },
+  {
+   "start": 2627.67,
+   "end": 2630.81,
+   "text": "We can communicate with no difficulties."
+  },
+  {
+   "start": 2631.65,
+   "end": 2634.85,
+   "text": "And the differences that there are are really negligible."
+  },
+  {
+   "start": 2634.85,
+   "end": 2637.53,
+   "text": "And they don't impair communication."
+  },
+  {
+   "start": 2638.33,
+   "end": 2640.53,
+   "text": "So somebody else might have a different perspective."
+  },
+  {
+   "start": 2640.53,
+   "end": 2646.59,
+   "text": "Linguistically speaking, there might be differences culturally, historically, all of that."
+  },
+  {
+   "start": 2646.89,
+   "end": 2652.07,
+   "text": "But, like, from the point of communication and establishing that bridge, you know, that"
+  },
+  {
+   "start": 2652.07,
+   "end": 2655.93,
+   "text": "connects people through language, there's absolutely no difference."
+  },
+  {
+   "start": 2658.25,
+   "end": 2659.57,
+   "text": "Do you want to add something to it?"
+  },
+  {
+   "start": 2661.61,
+   "end": 2665.83,
+   "text": "I have exactly the same opinion about this."
+  },
+  {
+   "start": 2665.83,
+   "end": 2670.53,
+   "text": "If you learn one language, it's an amazing gateway to any other languages when"
+  },
+  {
+   "start": 2670.53,
+   "end": 2672.27,
+   "text": "you talk about ex-Yugoslavia."
+  },
+  {
+   "start": 2673.09,
+   "end": 2676.99,
+   "text": "and and that if that's the point uh and i guess it is to"
+  },
+  {
+   "start": 2676.99,
+   "end": 2678.49,
+   "text": "be able to communicate freely to be able"
+  },
+  {
+   "start": 2678.49,
+   "end": 2683.15,
+   "text": "to understand each other okay of course there are some minor differences in vocabulary"
+  },
+  {
+   "start": 2683.15,
+   "end": 2683.41,
+   "text": "especially"
+  },
+  {
+   "start": 2683.41,
+   "end": 2688.05,
+   "text": "when we talk about creation and serbian but we understand each other without any"
+  },
+  {
+   "start": 2688.05,
+   "end": 2688.65,
+   "text": "problems and i"
+  },
+  {
+   "start": 2688.65,
+   "end": 2693.63,
+   "text": "think that's that's the most important of course yeah linguistically they are separate languages"
+  },
+  {
+   "start": 2693.75,
+   "end": 2698.23,
+   "text": "now we we we have completely they have they are their own systems but"
+  },
+  {
+   "start": 2698.23,
+   "end": 2700.67,
+   "text": "but I mean if if we can"
+  },
+  {
+   "start": 2700.67,
+   "end": 2706.61,
+   "text": "if we if we can fluently talk without any any obstacles then that's that's"
+  },
+  {
+   "start": 2706.61,
+   "end": 2707.81,
+   "text": "it yeah and I always"
+  },
+  {
+   "start": 2707.81,
+   "end": 2711.35,
+   "text": "point out that really like just focus on the the variety that I call"
+  },
+  {
+   "start": 2711.35,
+   "end": 2712.25,
+   "text": "them varieties because it's a"
+  },
+  {
+   "start": 2712.25,
+   "end": 2716.59,
+   "text": "very neutral term in in linguistics so you don't really make a decision between"
+  },
+  {
+   "start": 2716.59,
+   "end": 2717.03,
+   "text": "language or dialect"
+  },
+  {
+   "start": 2717.03,
+   "end": 2721.21,
+   "text": "right so you just use variety and for me it's like you just choose"
+  },
+  {
+   "start": 2721.21,
+   "end": 2725.85,
+   "text": "whichever you want right and I I think for learners is like, choose what"
+  },
+  {
+   "start": 2725.85,
+   "end": 2725.97,
+   "text": "you want."
+  },
+  {
+   "start": 2725.97,
+   "end": 2727.33,
+   "text": "And probably the one that you choose"
+  },
+  {
+   "start": 2727.33,
+   "end": 2729.11,
+   "text": "is based on like the people that you"
+  },
+  {
+   "start": 2729.11,
+   "end": 2733.15,
+   "text": "want to talk to right or like places that you want to visit um"
+  },
+  {
+   "start": 2733.15,
+   "end": 2735.09,
+   "text": "uh and just be aware i think"
+  },
+  {
+   "start": 2735.09,
+   "end": 2739.37,
+   "text": "just be knowledgeable that you know and even in serbia i mean i'm from"
+  },
+  {
+   "start": 2739.37,
+   "end": 2740.75,
+   "text": "the north so obviously my"
+  },
+  {
+   "start": 2740.75,
+   "end": 2745.41,
+   "text": "way of speaking is different from let's call it's you know and like different"
+  },
+  {
+   "start": 2745.41,
+   "end": 2746.31,
+   "text": "places so it's it's"
+  },
+  {
+   "start": 2746.31,
+   "end": 2749.17,
+   "text": "just it is what it is and i think the most most important thing"
+  },
+  {
+   "start": 2749.17,
+   "end": 2752.09,
+   "text": "is that do not focus if they're the same language it's just like be"
+  },
+  {
+   "start": 2752.09,
+   "end": 2757.99,
+   "text": "you know curious i'm guessing yeah exactly yeah okay"
+  },
+  {
+   "start": 2757.99,
+   "end": 2764.39,
+   "text": "that was it that was so good sorry continue so happy about this because"
+  },
+  {
+   "start": 2764.39,
+   "end": 2765.79,
+   "text": "like this was like the"
+  },
+  {
+   "start": 2765.79,
+   "end": 2769.81,
+   "text": "review of all the points that we were making about the language and in"
+  },
+  {
+   "start": 2769.81,
+   "end": 2771.07,
+   "text": "one episode and it's really"
+  },
+  {
+   "start": 2771.07,
+   "end": 2775.59,
+   "text": "good to be on the same page about many things so i feel like"
+  },
+  {
+   "start": 2775.59,
+   "end": 2780.85,
+   "text": "okay we were thinking like um in a sensible way then we were not"
+  },
+  {
+   "start": 2780.85,
+   "end": 2783.55,
+   "text": "you know giving only personal opinions but this is"
+  },
+  {
+   "start": 2783.55,
+   "end": 2789.21,
+   "text": "a common thing this positivity should be there while learning serbian like do not"
+  },
+  {
+   "start": 2789.21,
+   "end": 2789.53,
+   "text": "try to find"
+  },
+  {
+   "start": 2789.53,
+   "end": 2795.85,
+   "text": "those you know controversial like topics and try to label things but try to"
+  },
+  {
+   "start": 2795.85,
+   "end": 2796.41,
+   "text": "communicate with people"
+  },
+  {
+   "start": 2796.41,
+   "end": 2802.17,
+   "text": "so i like the last message and i want for my side i want"
+  },
+  {
+   "start": 2802.17,
+   "end": 2806.09,
+   "text": "to say uh this is self was selfish it like the podcast is my"
+  },
+  {
+   "start": 2806.09,
+   "end": 2809.45,
+   "text": "way of just making myself some coffee and having some real nice"
+  },
+  {
+   "start": 2809.45,
+   "end": 2812.97,
+   "text": "chats. You know, I was like, I know that once a week I'm going"
+  },
+  {
+   "start": 2812.97,
+   "end": 2814.37,
+   "text": "to sit down and take that time and"
+  },
+  {
+   "start": 2814.37,
+   "end": 2817.71,
+   "text": "just, you know, talk and, and enjoy."
+  },
+  {
+   "start": 2817.71,
+   "end": 2820.87,
+   "text": "So this is really a really good way to start my morning."
+  },
+  {
+   "start": 2820.87,
+   "end": 2821.83,
+   "text": "Thank you very much."
+  },
+  {
+   "start": 2822.03,
+   "end": 2825.09,
+   "text": "I would love to see you once or stay in contact."
+  },
+  {
+   "start": 2825.09,
+   "end": 2826.49,
+   "text": "That would be great."
+  },
+  {
+   "start": 2826.49,
+   "end": 2830.71,
+   "text": "And listeners, I hope you're going to check out their Udemy course."
+  },
+  {
+   "start": 2831.35,
+   "end": 2835.55,
+   "text": "Do you have your textbook online or is it can you order it actually."
+  },
+  {
+   "start": 2837.23,
+   "end": 2840.6,
+   "text": "So, yeah, we are currently actually in the process"
+  },
+  {
+   "start": 2840.6,
+   "end": 2844.1,
+   "text": "of launching the website so i think by the"
+  },
+  {
+   "start": 2844.1,
+   "end": 2848.48,
+   "text": "time actually the podcast is out we the both courses will be on our"
+  },
+  {
+   "start": 2848.48,
+   "end": 2850.56,
+   "text": "website as well as a lot"
+  },
+  {
+   "start": 2850.56,
+   "end": 2856.1,
+   "text": "of like free study material that we made available for students and that is"
+  },
+  {
+   "start": 2856.1,
+   "end": 2856.82,
+   "text": "downloadable"
+  },
+  {
+   "start": 2858.22,
+   "end": 2863.68,
+   "text": "as for the course book and the book it's in progress so it will"
+  },
+  {
+   "start": 2863.68,
+   "end": 2866.1,
+   "text": "be published sometime next"
+  },
+  {
+   "start": 2866.1,
+   "end": 2872.96,
+   "text": "year probably so we wanted to improve it and to offer like a different"
+  },
+  {
+   "start": 2872.96,
+   "end": 2873.96,
+   "text": "because we included a lot"
+  },
+  {
+   "start": 2873.96,
+   "end": 2879.28,
+   "text": "of material in our books in our courses so we wanted to offer like"
+  },
+  {
+   "start": 2879.28,
+   "end": 2882.32,
+   "text": "a little bit different material in the book."
+  },
+  {
+   "start": 2882.32,
+   "end": 2885.86,
+   "text": "So yeah, it will be available through the website as well."
+  },
+  {
+   "start": 2885.86,
+   "end": 2887.86,
+   "text": "In case our listeners"
+  },
+  {
+   "start": 2887.86,
+   "end": 2893.02,
+   "text": "also want to have that speaking aspect, do you give private lessons?"
+  },
+  {
+   "start": 2893.02,
+   "end": 2895.96,
+   "text": "Yes, of course."
+  },
+  {
+   "start": 2895.96,
+   "end": 2896.42,
+   "text": "Okay. Yes,"
+  },
+  {
+   "start": 2896.42,
+   "end": 2899.38,
+   "text": "that's also another option."
+  },
+  {
+   "start": 2899.38,
+   "end": 2904.46,
+   "text": "All the details about it will be visible on our website."
+  },
+  {
+   "start": 2904.46,
+   "end": 2906.84,
+   "text": "Hopefully by the end of this month, it's going to be ready."
+  },
+  {
+   "start": 2906.84,
+   "end": 2912.52,
+   "text": "So one-to-one lessons, if somebody's to individual type of type of work we also"
+  },
+  {
+   "start": 2912.52,
+   "end": 2918.16,
+   "text": "we will also organize uh um group conversation lessons"
+  },
+  {
+   "start": 2918.16,
+   "end": 2921.68,
+   "text": "so i think it's it's also going to be interesting so we will we'll"
+  },
+  {
+   "start": 2921.68,
+   "end": 2923.94,
+   "text": "um make small groups let's say"
+  },
+  {
+   "start": 2923.94,
+   "end": 2928.42,
+   "text": "up to 10 people maximum uh that are on the same level of course"
+  },
+  {
+   "start": 2928.42,
+   "end": 2929.82,
+   "text": "before every every conversation"
+  },
+  {
+   "start": 2929.82,
+   "end": 2934.04,
+   "text": "club that's how we will call it we will we will send the students"
+  },
+  {
+   "start": 2934.04,
+   "end": 2938.06,
+   "text": "some kind of a placement test just to determine the level to see to"
+  },
+  {
+   "start": 2938.06,
+   "end": 2939.24,
+   "text": "which group they belong to."
+  },
+  {
+   "start": 2939.24,
+   "end": 2944.1,
+   "text": "And that's going to be interesting because people will have an opportunity to interact"
+  },
+  {
+   "start": 2944.1,
+   "end": 2948.72,
+   "text": "with, you know, with more people, not only with the teacher, with the same"
+  },
+  {
+   "start": 2948.72,
+   "end": 2951.2,
+   "text": "it's every day so we it's"
+  },
+  {
+   "start": 2951.2,
+   "end": 2956.9,
+   "text": "going to look like um creating we will create some topic we will we"
+  },
+  {
+   "start": 2956.9,
+   "end": 2958.92,
+   "text": "will uh tell inform students"
+  },
+  {
+   "start": 2958.92,
+   "end": 2962.54,
+   "text": "about it in advance they will have time to think about it maybe we"
+  },
+  {
+   "start": 2962.54,
+   "end": 2963.22,
+   "text": "will provide some small"
+  },
+  {
+   "start": 2963.22,
+   "end": 2967.74,
+   "text": "vocabulary that they can use and it's just going to be about discussion on"
+  },
+  {
+   "start": 2967.74,
+   "end": 2968.28,
+   "text": "different topics so"
+  },
+  {
+   "start": 2968.28,
+   "end": 2972.0,
+   "text": "that's that's there are definitely things that we are going to offer sounds fun"
+  },
+  {
+   "start": 2972.0,
+   "end": 2978.76,
+   "text": "really that's a cool a really cool concept actually oh yeah we will we"
+  },
+  {
+   "start": 2978.76,
+   "end": 2980.06,
+   "text": "will be in different groups Ivana but still"
+  },
+  {
+   "start": 2980.06,
+   "end": 2987.42,
+   "text": "I think the challenge for me would be to actually slow down when speaking"
+  },
+  {
+   "start": 2987.42,
+   "end": 2988.9,
+   "text": "with other people because"
+  },
+  {
+   "start": 2988.9,
+   "end": 2993.8,
+   "text": "I just slur when I and rush when I talk in Serbia but anyway"
+  },
+  {
+   "start": 2993.8,
+   "end": 2995.82,
+   "text": "thank you again very much this was so"
+  },
+  {
+   "start": 2995.82,
+   "end": 2999.84,
+   "text": "much fun and thank you thanks for having us thanks for inviting and I"
+  },
+  {
+   "start": 2999.84,
+   "end": 3004.56,
+   "text": "hope we will organize at questions and answers also one day exactly and as"
+  },
+  {
+   "start": 3004.56,
+   "end": 3007.24,
+   "text": "you mentioned in the beginning it should"
+  },
+  {
+   "start": 3007.24,
+   "end": 3012.68,
+   "text": "be fun yeah yeah okay we usually we usually end with um just a"
+  },
+  {
+   "start": 3012.68,
+   "end": 3014.6,
+   "text": "greeting or like goodbye in serbian"
+  },
+  {
+   "start": 3014.6,
+   "end": 3022.02,
+   "text": "so i will say for my side positive prijatno something else"
+  },
+  {
+   "start": 3023.38,
+   "end": 3031.82,
+   "text": "I also wanted to say the same you're very like-minded thank"
+  },
+  {
+   "start": 3031.82,
+   "end": 3035.86,
+   "text": "you for joining us today"
+  },
+  {
+   "start": 3035.86,
+   "end": 3038.78,
+   "text": "we hope you enjoyed our podcast and learned something new"
+  },
+  {
+   "start": 3038.78,
+   "end": 3043.88,
+   "text": "in case you have any comments, suggestions or questions make sure to share them"
+  },
+  {
+   "start": 3043.88,
+   "end": 3047.9,
+   "text": "on our Instagram page Može Kafa Podcast Prijatno!"
+  }
+ ],
+ "title": "Ep.4: Coffee time with Dragana and Miljana from Go Speak Serbian!",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939258/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075932-44100-1-f4e3582fa7ed61e9.mp3"
+}

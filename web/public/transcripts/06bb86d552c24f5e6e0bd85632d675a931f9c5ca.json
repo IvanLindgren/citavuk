@@ -1,0 +1,2455 @@
+{
+ "duration": 1715.64,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.9,
+   "end": 31.42,
+   "text": "Good morning."
+  },
+  {
+   "start": 34.3,
+   "end": 35.1,
+   "text": "Here is Maki."
+  },
+  {
+   "start": 35.48,
+   "end": 36.52,
+   "text": "Here is Ivana."
+  },
+  {
+   "start": 36.7,
+   "end": 37.4,
+   "text": "How are you, Maki?"
+  },
+  {
+   "start": 38.22,
+   "end": 39.52,
+   "text": "I'm super. And you?"
+  },
+  {
+   "start": 40.02,
+   "end": 41.34,
+   "text": "Okay. It can be gone."
+  },
+  {
+   "start": 41.76,
+   "end": 42.92,
+   "text": "It can be gone means..."
+  },
+  {
+   "start": 42.92,
+   "end": 44.24,
+   "text": "It can pass."
+  },
+  {
+   "start": 44.36,
+   "end": 47.02,
+   "text": "It's okay. I know it can be better."
+  },
+  {
+   "start": 47.66,
+   "end": 48.3,
+   "text": "It can be better."
+  },
+  {
+   "start": 48.64,
+   "end": 51.62,
+   "text": "It Of course."
+  },
+  {
+   "start": 52.62,
+   "end": 55.88,
+   "text": "Today we're going to talk about something cultural."
+  },
+  {
+   "start": 56.3,
+   "end": 58.3,
+   "text": "Not a heavy topic, right?"
+  },
+  {
+   "start": 58.52,
+   "end": 58.9,
+   "text": "Not at all."
+  },
+  {
+   "start": 60.6,
+   "end": 63.3,
+   "text": "yeah i'm actually really curious to see if you know about these things and"
+  },
+  {
+   "start": 63.3,
+   "end": 63.48,
+   "text": "also if you"
+  },
+  {
+   "start": 63.48,
+   "end": 70.16,
+   "text": "do say the same things in turkey so we're talking about superstitions yeah some"
+  },
+  {
+   "start": 70.16,
+   "end": 70.4,
+   "text": "of them we already"
+  },
+  {
+   "start": 70.4,
+   "end": 75.06,
+   "text": "know but some of them we didn't even think of them as superstitions it's"
+  },
+  {
+   "start": 75.06,
+   "end": 75.44,
+   "text": "it's quite funny because"
+  },
+  {
+   "start": 75.44,
+   "end": 79.88,
+   "text": "it's so ingrained yeah in our body like in our not body but like"
+  },
+  {
+   "start": 79.88,
+   "end": 81.8,
+   "text": "in our mentality that yeah it's"
+  },
+  {
+   "start": 81.8,
+   "end": 87.76,
+   "text": "just the it's nothing about like god or whatever it's just kind of like"
+  },
+  {
+   "start": 87.76,
+   "end": 91.1,
+   "text": "i don't know you don't jinx things it's so weird it's such a weird"
+  },
+  {
+   "start": 91.1,
+   "end": 94.08,
+   "text": "thing but you you think about like something about like"
+  },
+  {
+   "start": 94.08,
+   "end": 100.24,
+   "text": "someone's really looking if you are gonna do certain thing not to have a"
+  },
+  {
+   "start": 100.24,
+   "end": 100.56,
+   "text": "bad luck you know"
+  },
+  {
+   "start": 100.56,
+   "end": 105.76,
+   "text": "like it's so funny i don't know it is but probably they all have"
+  },
+  {
+   "start": 105.76,
+   "end": 106.02,
+   "text": "their explanations"
+  },
+  {
+   "start": 106.02,
+   "end": 112.52,
+   "text": "from like the history yeah And some of them are nice."
+  },
+  {
+   "start": 112.84,
+   "end": 115.78,
+   "text": "Some of them are like a reason to cheer up, right?"
+  },
+  {
+   "start": 117.1,
+   "end": 119.78,
+   "text": "Yeah, definitely. I think they were quite useful sometimes."
+  },
+  {
+   "start": 119.78,
+   "end": 124.14,
+   "text": "Probably some of them are not that nice, you know?"
+  },
+  {
+   "start": 125.18,
+   "end": 129.4,
+   "text": "But yeah, I wanted to say superstitions in Serbian is sujeverje."
+  },
+  {
+   "start": 129.62,
+   "end": 134.2,
+   "text": "Sujeverje. In plural, it's sujeverje."
+  },
+  {
+   "start": 134.34,
+   "end": 138.64,
+   "text": "and in singular suje verje suje verje is it like two words coming together"
+  },
+  {
+   "start": 138.64,
+   "end": 139.52,
+   "text": "or it's one word"
+  },
+  {
+   "start": 141.18,
+   "end": 147.48,
+   "text": "uh it's one word but uh it means verje i'm guessing is to believe"
+  },
+  {
+   "start": 147.48,
+   "end": 150.4,
+   "text": "like and suje i don't"
+  },
+  {
+   "start": 150.4,
+   "end": 156.54,
+   "text": "know what that means in that word but one question to be is prestigious"
+  },
+  {
+   "start": 156.54,
+   "end": 159.5,
+   "text": "uh is kind of negative in"
+  },
+  {
+   "start": 159.5,
+   "end": 165.42,
+   "text": "in general in serbian people's minds or is it like something completely neutral or"
+  },
+  {
+   "start": 165.42,
+   "end": 165.94,
+   "text": "i think it's"
+  },
+  {
+   "start": 165.94,
+   "end": 171.74,
+   "text": "completely accepted yeah completely it's not like if you see someone doing something then"
+  },
+  {
+   "start": 171.74,
+   "end": 176.46,
+   "text": "you're like yeah okay i mean there's always gonna be some people that are a bit"
+  },
+  {
+   "start": 176.46,
+   "end": 178.46,
+   "text": "more kind of like modernized"
+  },
+  {
+   "start": 178.46,
+   "end": 183.26,
+   "text": "and they're like what is happening but it's such a normal thing for us"
+  },
+  {
+   "start": 183.26,
+   "end": 188.18,
+   "text": "to do i don't know no one really judges it that's good yeah i"
+  },
+  {
+   "start": 188.18,
+   "end": 191.52,
+   "text": "mean as long as you don't you know cause any other person"
+  },
+  {
+   "start": 191.52,
+   "end": 196.98,
+   "text": "trouble that's that should be the case i mean it can go places it"
+  },
+  {
+   "start": 196.98,
+   "end": 198.48,
+   "text": "can it can be quite like weird"
+  },
+  {
+   "start": 198.48,
+   "end": 203.14,
+   "text": "you know it really just depends on how far you go you know with"
+  },
+  {
+   "start": 203.14,
+   "end": 204.44,
+   "text": "it because uh you know that we"
+  },
+  {
+   "start": 204.44,
+   "end": 211.9,
+   "text": "are very big also on like magic and uh like using herbs and"
+  },
+  {
+   "start": 211.9,
+   "end": 216.66,
+   "text": "like just like believing about something above like this is the more the eastern"
+  },
+  {
+   "start": 216.66,
+   "end": 218.03,
+   "text": "mentality not the western mentality like"
+  },
+  {
+   "start": 218.03,
+   "end": 224.85,
+   "text": "you believe in something um above you you know bigger than you it doesn't"
+  },
+  {
+   "start": 224.85,
+   "end": 225.87,
+   "text": "have to be god it can"
+  },
+  {
+   "start": 225.87,
+   "end": 232.71,
+   "text": "be just like universe karma energy whatever energy whatever you know so you don't"
+  },
+  {
+   "start": 232.71,
+   "end": 232.81,
+   "text": "want to mess with"
+  },
+  {
+   "start": 232.81,
+   "end": 238.57,
+   "text": "it and i guess that's why you do all these things so i've seen"
+  },
+  {
+   "start": 238.57,
+   "end": 244.31,
+   "text": "that you categorize them as bad luck good luck and what is the third"
+  },
+  {
+   "start": 244.31,
+   "end": 249.89,
+   "text": "one miscellaneous i think that's a how do you pronounce it i would say"
+  },
+  {
+   "start": 249.89,
+   "end": 253.99,
+   "text": "miscellaneous but i think it's another it's another way how you have to pronounce"
+  },
+  {
+   "start": 253.99,
+   "end": 256.21,
+   "text": "it which is basically everything like mixed stuff"
+  },
+  {
+   "start": 256.21,
+   "end": 261.87,
+   "text": "oh yeah i forgot to say that um there's also the mentality of like"
+  },
+  {
+   "start": 261.87,
+   "end": 263.99,
+   "text": "because if it's superstition and"
+  },
+  {
+   "start": 263.99,
+   "end": 268.75,
+   "text": "and if you're not a believer of superstition and if it doesn't really hurt"
+  },
+  {
+   "start": 268.75,
+   "end": 272.91,
+   "text": "you because you don't believe in it then people are going to be like"
+  },
+  {
+   "start": 272.91,
+   "end": 274.93,
+   "text": "well if it doesn't hurt you then just you know"
+  },
+  {
+   "start": 274.93,
+   "end": 279.29,
+   "text": "don't don't judge it you know then why not like for example my mom"
+  },
+  {
+   "start": 279.29,
+   "end": 280.29,
+   "text": "would do certain things and"
+  },
+  {
+   "start": 280.29,
+   "end": 282.37,
+   "text": "i'm like but why are you doing that i don't want to mess you"
+  },
+  {
+   "start": 282.37,
+   "end": 284.33,
+   "text": "to mess with me and she's like but if"
+  },
+  {
+   "start": 284.33,
+   "end": 288.15,
+   "text": "you don't believe it like just let me do my thing it makes me"
+  },
+  {
+   "start": 288.15,
+   "end": 289.67,
+   "text": "feel happy it makes me feel like"
+  },
+  {
+   "start": 289.67,
+   "end": 294.27,
+   "text": "calm and and it's okay fine just do whatever you want to do you"
+  },
+  {
+   "start": 294.27,
+   "end": 300.31,
+   "text": "know and i i realized that you put more examples for bad luck and"
+  },
+  {
+   "start": 300.31,
+   "end": 305.95,
+   "text": "yes a few more things for the good luck i don't know why i"
+  },
+  {
+   "start": 305.95,
+   "end": 309.87,
+   "text": "i i mean maybe because okay these are just like the frequent ones that i know"
+  },
+  {
+   "start": 309.87,
+   "end": 310.29,
+   "text": "and that i've heard"
+  },
+  {
+   "start": 310.29,
+   "end": 315.29,
+   "text": "um but probably maybe someone else knows more about good luck i don't know"
+  },
+  {
+   "start": 315.29,
+   "end": 315.51,
+   "text": "it it it was kind of also difficult for me to like categorize them"
+  },
+  {
+   "start": 315.51,
+   "end": 315.73,
+   "text": "but"
+  },
+  {
+   "start": 319.37,
+   "end": 324.69,
+   "text": "like because it's all about this balance kind of, you know."
+  },
+  {
+   "start": 324.69,
+   "end": 327.15,
+   "text": "Obviously, you don't want bad luck,"
+  },
+  {
+   "start": 327.15,
+   "end": 328.17,
+   "text": "and obviously, you do want good luck"
+  },
+  {
+   "start": 328.17,
+   "end": 332.63,
+   "text": "yeah so there's a lot about that oh it's a lot about luck actually"
+  },
+  {
+   "start": 332.63,
+   "end": 333.43,
+   "text": "just if you think about it"
+  },
+  {
+   "start": 333.43,
+   "end": 337.95,
+   "text": "just a lot about yeah luck if you do that it's going to be"
+  },
+  {
+   "start": 337.95,
+   "end": 339.65,
+   "text": "either bringing you bad luck if you"
+  },
+  {
+   "start": 339.65,
+   "end": 345.21,
+   "text": "don't do that it's going to be good good luck again no honestly it"
+  },
+  {
+   "start": 345.21,
+   "end": 349.39,
+   "text": "goes back to the mentality of like believing that something is bigger than you"
+  },
+  {
+   "start": 349.39,
+   "end": 352.17,
+   "text": "right because in in west in the west they"
+  },
+  {
+   "start": 352.17,
+   "end": 356.31,
+   "text": "would probably be like what luck like just work you know like work or"
+  },
+  {
+   "start": 356.31,
+   "end": 357.09,
+   "text": "like make an effort or"
+  },
+  {
+   "start": 357.09,
+   "end": 361.27,
+   "text": "whatever but here it's like no if i have luck you know it doesn't"
+  },
+  {
+   "start": 361.27,
+   "end": 362.31,
+   "text": "have to be work related it's just"
+  },
+  {
+   "start": 362.31,
+   "end": 368.73,
+   "text": "like you know yeah luck is a thing you cannot buy yeah and you"
+  },
+  {
+   "start": 368.73,
+   "end": 374.93,
+   "text": "wrote one nice phrase which means so that evil cannot hear it?"
+  },
+  {
+   "start": 375.69,
+   "end": 376.49,
+   "text": "Yes."
+  },
+  {
+   "start": 376.49,
+   "end": 381.91,
+   "text": "So, I wanted to start with this knocking on three times, right?"
+  },
+  {
+   "start": 381.97,
+   "end": 383.21,
+   "text": "So, let's start with bad luck."
+  },
+  {
+   "start": 383.55,
+   "end": 386.19,
+   "text": "How do you repel bad luck?"
+  },
+  {
+   "start": 386.27,
+   "end": 390.05,
+   "text": "How do you, you know, shoo it away?"
+  },
+  {
+   "start": 390.05,
+   "end": 390.45,
+   "text": "How do you say it?"
+  },
+  {
+   "start": 390.45,
+   "end": 391.77,
+   "text": "Like, how do you..."
+  },
+  {
+   "start": 392.27,
+   "end": 394.13,
+   "text": "Yes, scare it away."
+  },
+  {
+   "start": 394.13,
+   "end": 396.33,
+   "text": "Like, are you prevented?"
+  },
+  {
+   "start": 397.21,
+   "end": 401.13,
+   "text": "Yeah. So, if you say something..."
+  },
+  {
+   "start": 401.83,
+   "end": 406.05,
+   "text": "uh like for example what if i i don't know die tomorrow and then"
+  },
+  {
+   "start": 406.05,
+   "end": 406.71,
+   "text": "someone's gonna tell you"
+  },
+  {
+   "start": 406.71,
+   "end": 413.81,
+   "text": "like no don't i like don't attract bad luck and in order"
+  },
+  {
+   "start": 413.81,
+   "end": 415.65,
+   "text": "to not attract it and from that what you"
+  },
+  {
+   "start": 415.65,
+   "end": 420.71,
+   "text": "said not to become true you need to um knock on the wood three"
+  },
+  {
+   "start": 420.71,
+   "end": 423.09,
+   "text": "times i learned to knock on the wood"
+  },
+  {
+   "start": 423.09,
+   "end": 429.11,
+   "text": "upside like not upside down uh bottom up like i say not upside down"
+  },
+  {
+   "start": 429.11,
+   "end": 433.67,
+   "text": "but um so that uh the thing is that if that's the wood, you"
+  },
+  {
+   "start": 433.67,
+   "end": 434.55,
+   "text": "knock,"
+  },
+  {
+   "start": 434.55,
+   "end": 436.31,
+   "text": "like the bad luck goes away."
+  },
+  {
+   "start": 436.59,
+   "end": 436.9,
+   "text": "I see."
+  },
+  {
+   "start": 436.9,
+   "end": 442.74,
+   "text": "you scare it away so you don't like push it towards you but some"
+  },
+  {
+   "start": 442.74,
+   "end": 443.12,
+   "text": "people don't do that"
+  },
+  {
+   "start": 443.12,
+   "end": 447.36,
+   "text": "they just knock three times and also for me like knocking on the door"
+  },
+  {
+   "start": 447.36,
+   "end": 449.06,
+   "text": "you don't have to say a bad"
+  },
+  {
+   "start": 449.06,
+   "end": 453.78,
+   "text": "statement you can say wow my grandma is like quite healthy and she's 90"
+  },
+  {
+   "start": 453.78,
+   "end": 456.18,
+   "text": "years old yeah i mean you"
+  },
+  {
+   "start": 456.18,
+   "end": 461.72,
+   "text": "just think about like thank god she she's like not gonna die so even"
+  },
+  {
+   "start": 461.72,
+   "end": 464.2,
+   "text": "if you don't say it you still knock on the door even if you"
+  },
+  {
+   "start": 464.2,
+   "end": 468.48,
+   "text": "say something positive you knock on the door yeah exactly because you don't want"
+  },
+  {
+   "start": 468.48,
+   "end": 469.88,
+   "text": "to because everything is good you don't want to attract"
+  },
+  {
+   "start": 469.88,
+   "end": 475.7,
+   "text": "the bad luck right you don't want to jinx it but uh another thing"
+  },
+  {
+   "start": 475.7,
+   "end": 476.38,
+   "text": "that you can do is you can also"
+  },
+  {
+   "start": 476.38,
+   "end": 481.86,
+   "text": "we say move from your place so you'll be like it doesn't it doesn't"
+  },
+  {
+   "start": 481.86,
+   "end": 482.68,
+   "text": "have to be completely but like"
+  },
+  {
+   "start": 482.68,
+   "end": 488.08,
+   "text": "one centimeter or two centimeters or something so this one we don't have in"
+  },
+  {
+   "start": 488.08,
+   "end": 491.58,
+   "text": "turkish by the way Knocking on the wood, I guess."
+  },
+  {
+   "start": 491.58,
+   "end": 492.38,
+   "text": "We have it in English as well."
+  },
+  {
+   "start": 492.38,
+   "end": 497.5,
+   "text": "But changing place, I heard it here."
+  },
+  {
+   "start": 497.5,
+   "end": 502.28,
+   "text": "Maybe because, now I'm thinking, maybe because you're sitting here."
+  },
+  {
+   "start": 503.12,
+   "end": 504.02,
+   "text": "You say the thing."
+  },
+  {
+   "start": 504.7,
+   "end": 508.38,
+   "text": "And then if you move away, the bad luck cannot find you."
+  },
+  {
+   "start": 508.38,
+   "end": 509.5,
+   "text": "Because you are not in the same."
+  },
+  {
+   "start": 509.6,
+   "end": 510.38,
+   "text": "Maybe because of that."
+  },
+  {
+   "start": 510.52,
+   "end": 510.98,
+   "text": "I don't know."
+  },
+  {
+   "start": 511.14,
+   "end": 511.8,
+   "text": "But it kind of makes sense."
+  },
+  {
+   "start": 511.8,
+   "end": 512.72,
+   "text": "Makes sense."
+  },
+  {
+   "start": 514.22,
+   "end": 517.5,
+   "text": "And then the last thing that I said is spitting three times."
+  },
+  {
+   "start": 517.5,
+   "end": 518.6,
+   "text": "And it's not actual spitting."
+  },
+  {
+   "start": 519.04,
+   "end": 519.72,
+   "text": "it's just like poo poo poo"
+  },
+  {
+   "start": 519.72,
+   "end": 522.32,
+   "text": "so you can do that"
+  },
+  {
+   "start": 522.32,
+   "end": 526.36,
+   "text": "and if you're really superstitious you can do all three of them you can"
+  },
+  {
+   "start": 526.36,
+   "end": 528.92,
+   "text": "knock on the wood three times you can spit three times"
+  },
+  {
+   "start": 528.92,
+   "end": 532.72,
+   "text": "and then you can also move and replace which I used to do sometimes"
+  },
+  {
+   "start": 534.2,
+   "end": 534.9,
+   "text": "yeah actually after praying"
+  },
+  {
+   "start": 534.9,
+   "end": 537.92,
+   "text": "I remember my grandma she does that as well"
+  },
+  {
+   "start": 539.2,
+   "end": 540.16,
+   "text": "yeah oh you're so pretty"
+  },
+  {
+   "start": 540.16,
+   "end": 542.82,
+   "text": "poo poo poo poo okay"
+  },
+  {
+   "start": 545.2,
+   "end": 549.92,
+   "text": "the salt thing is new to me throwing salt across your left shoulder"
+  },
+  {
+   "start": 551.14,
+   "end": 557.54,
+   "text": "yes so uh throw so throwing salt across your left shoulder behind right um"
+  },
+  {
+   "start": 557.54,
+   "end": 558.44,
+   "text": "this is to"
+  },
+  {
+   "start": 558.44,
+   "end": 563.84,
+   "text": "repel also bad luck and i'm guessing it can be situations like an event"
+  },
+  {
+   "start": 563.84,
+   "end": 564.48,
+   "text": "or something like that"
+  },
+  {
+   "start": 564.48,
+   "end": 569.82,
+   "text": "you know so uh more more that rather than like imagine if you were"
+  },
+  {
+   "start": 569.82,
+   "end": 574.34,
+   "text": "talking and then someone says something like just throwing salt that would have been"
+  },
+  {
+   "start": 574.34,
+   "end": 576.16,
+   "text": "really funny but i'm guessing it's more for"
+  },
+  {
+   "start": 576.16,
+   "end": 582.88,
+   "text": "like bigger events i never done that but i heard about that yeah and"
+  },
+  {
+   "start": 582.88,
+   "end": 584.64,
+   "text": "the cat of course this is also"
+  },
+  {
+   "start": 584.64,
+   "end": 591.18,
+   "text": "kind of universal i guess black cat it is and um i don't know"
+  },
+  {
+   "start": 591.18,
+   "end": 592.68,
+   "text": "why but yeah if you see a black"
+  },
+  {
+   "start": 592.68,
+   "end": 598.14,
+   "text": "cat so the rule is to wait let me just see which order it"
+  },
+  {
+   "start": 598.14,
+   "end": 600.44,
+   "text": "is because i used to do when i was younger i forgot what it"
+  },
+  {
+   "start": 600.44,
+   "end": 604.7,
+   "text": "is so you basically cross your i think it's for first cross your heart"
+  },
+  {
+   "start": 604.7,
+   "end": 611.7,
+   "text": "then you spit i think you actually spit at this time if i'm not"
+  },
+  {
+   "start": 611.7,
+   "end": 613.28,
+   "text": "mistaken and then you go three"
+  },
+  {
+   "start": 613.28,
+   "end": 619.44,
+   "text": "steps behind and then you can continue so it's not like uh you remember"
+  },
+  {
+   "start": 619.44,
+   "end": 620.48,
+   "text": "that for for like you"
+  },
+  {
+   "start": 620.48,
+   "end": 624.84,
+   "text": "know the americanized version is like you have to go around or like go"
+  },
+  {
+   "start": 624.84,
+   "end": 628.3,
+   "text": "in a different direction but here you can continue in the same direction you"
+  },
+  {
+   "start": 628.3,
+   "end": 630.38,
+   "text": "just like kind of like you know do it all"
+  },
+  {
+   "start": 630.38,
+   "end": 636.2,
+   "text": "these like customs to spin and i don't know what so now everything's fine"
+  },
+  {
+   "start": 636.2,
+   "end": 637.92,
+   "text": "i see in our case you just"
+  },
+  {
+   "start": 637.92,
+   "end": 643.64,
+   "text": "uh touch your hair when you see a black cat or yeah what else"
+  },
+  {
+   "start": 643.64,
+   "end": 644.82,
+   "text": "was it you just yeah change your"
+  },
+  {
+   "start": 644.82,
+   "end": 653.74,
+   "text": "direction that's another one but you don't go like backwards yeah it's"
+  },
+  {
+   "start": 653.74,
+   "end": 656.78,
+   "text": "so funny because i I love black cats."
+  },
+  {
+   "start": 656.78,
+   "end": 658.53,
+   "text": "I used to have a black cat and you know that black"
+  },
+  {
+   "start": 658.53,
+   "end": 665.39,
+   "text": "cats are the one of the most like difficult cats to foster because they're"
+  },
+  {
+   "start": 665.39,
+   "end": 666.67,
+   "text": "black so no one wants"
+  },
+  {
+   "start": 666.67,
+   "end": 672.07,
+   "text": "them because they're black because they're black you mean because they their hair is"
+  },
+  {
+   "start": 672.07,
+   "end": 672.81,
+   "text": "so visible or"
+  },
+  {
+   "start": 672.81,
+   "end": 677.91,
+   "text": "because they are like no bad luck um because because hair is visible i"
+  },
+  {
+   "start": 677.91,
+   "end": 682.57,
+   "text": "mean then prussian cats should not be interesting but they are you know oh"
+  },
+  {
+   "start": 682.57,
+   "end": 684.35,
+   "text": "yeah luckily though now nowadays people"
+  },
+  {
+   "start": 684.35,
+   "end": 689.25,
+   "text": "are changing now i like five of my friends i guess have black cats"
+  },
+  {
+   "start": 689.25,
+   "end": 691.11,
+   "text": "there you go there you go"
+  },
+  {
+   "start": 692.59,
+   "end": 697.31,
+   "text": "oh this one is uh so if it's a holiday a religious holiday so"
+  },
+  {
+   "start": 697.31,
+   "end": 699.55,
+   "text": "it should also be for slava right and"
+  },
+  {
+   "start": 699.55,
+   "end": 704.01,
+   "text": "uh you're not allowed to work well i don't want to say allowed to"
+  },
+  {
+   "start": 704.01,
+   "end": 707.51,
+   "text": "work because obviously you have to go to work uh if it's if it's"
+  },
+  {
+   "start": 707.51,
+   "end": 709.85,
+   "text": "your slava then you don't go to work but if it's some other holiday"
+  },
+  {
+   "start": 709.85,
+   "end": 716.89,
+   "text": "uh like some other religious holiday that might not be how can i say"
+  },
+  {
+   "start": 716.89,
+   "end": 718.69,
+   "text": "it's not like a state holiday"
+  },
+  {
+   "start": 718.69,
+   "end": 724.75,
+   "text": "but it's still religious then um maybe some of them are state then you're"
+  },
+  {
+   "start": 724.75,
+   "end": 725.11,
+   "text": "not allowed to"
+  },
+  {
+   "start": 725.11,
+   "end": 732.39,
+   "text": "work usually it means work in the house so not clean obviously cook"
+  },
+  {
+   "start": 732.39,
+   "end": 735.93,
+   "text": "you need to cook right but don't work too much it's kind of like"
+  },
+  {
+   "start": 735.93,
+   "end": 738.83,
+   "text": "don't work in the field you know don't"
+  },
+  {
+   "start": 738.83,
+   "end": 740.65,
+   "text": "paint something just like"
+  },
+  {
+   "start": 740.65,
+   "end": 742.27,
+   "text": "take the day off"
+  },
+  {
+   "start": 743.65,
+   "end": 744.71,
+   "text": "yeah take some time to think"
+  },
+  {
+   "start": 744.71,
+   "end": 746.75,
+   "text": "and to pray maybe or"
+  },
+  {
+   "start": 746.75,
+   "end": 748.71,
+   "text": "yeah and if you"
+  },
+  {
+   "start": 748.71,
+   "end": 750.69,
+   "text": "don't do that then it's bad luck"
+  },
+  {
+   "start": 752.93,
+   "end": 754.79,
+   "text": "I see how about babies"
+  },
+  {
+   "start": 754.79,
+   "end": 756.89,
+   "text": "yeah this one is I'm interested"
+  },
+  {
+   "start": 756.89,
+   "end": 758.79,
+   "text": "to see what you're going to say so"
+  },
+  {
+   "start": 758.79,
+   "end": 760.05,
+   "text": "I remember this when I was younger"
+  },
+  {
+   "start": 760.05,
+   "end": 766.25,
+   "text": "when a baby is born you take a red thread, so it's very thin,"
+  },
+  {
+   "start": 766.61,
+   "end": 769.87,
+   "text": "and then you tie it around its wrist as a lucky charm."
+  },
+  {
+   "start": 769.87,
+   "end": 774.25,
+   "text": "So again, it's kind of like repelling, you know, like, so that it's healthy,"
+  },
+  {
+   "start": 774.25,
+   "end": 780.75,
+   "text": "and that it survives, because, you know, babies, like, we're not like, nowadays, babies"
+  },
+  {
+   "start": 780.75,
+   "end": 786.99,
+   "text": "are, how can I say, have everything to survive, you know, but before it"
+  },
+  {
+   "start": 786.99,
+   "end": 792.21,
+   "text": "was like the toughest ones only like survive right yeah that one is new"
+  },
+  {
+   "start": 792.21,
+   "end": 792.59,
+   "text": "yeah i'm sure in turkey there are some things for babies but um i to me"
+  },
+  {
+   "start": 798.45,
+   "end": 799.43,
+   "text": "have never seen one i have"
+  },
+  {
+   "start": 799.43,
+   "end": 806.19,
+   "text": "never realized like in my family like nobody did that for a baby but"
+  },
+  {
+   "start": 806.19,
+   "end": 808.45,
+   "text": "there is you know in turkey the famous"
+  },
+  {
+   "start": 809.95,
+   "end": 811.45,
+   "text": "evil eye stone with blue"
+  },
+  {
+   "start": 811.45,
+   "end": 813.15,
+   "text": "that is gonna be put"
+  },
+  {
+   "start": 813.15,
+   "end": 817.27,
+   "text": "everywhere on baby's crib and on the doors and everywhere"
+  },
+  {
+   "start": 817.27,
+   "end": 824.17,
+   "text": "that is the good luck symbol for us and it's pretty I like the"
+  },
+  {
+   "start": 824.17,
+   "end": 824.33,
+   "text": "okay Friday the"
+  },
+  {
+   "start": 824.33,
+   "end": 824.59,
+   "text": "colors"
+  },
+  {
+   "start": 827.31,
+   "end": 828.43,
+   "text": "13th"
+  },
+  {
+   "start": 830.19,
+   "end": 831.71,
+   "text": "you wear 13 different sets?"
+  },
+  {
+   "start": 831.71,
+   "end": 838.51,
+   "text": "yes so if you want first of all I don't know if it's like"
+  },
+  {
+   "start": 838.51,
+   "end": 842.11,
+   "text": "a new thing in Serbia Friday the 13th or not I don't"
+  },
+  {
+   "start": 842.11,
+   "end": 846.97,
+   "text": "know but I remember when I was in school that if you don't want"
+  },
+  {
+   "start": 846.97,
+   "end": 847.91,
+   "text": "to if you don't want to have bad"
+  },
+  {
+   "start": 847.91,
+   "end": 852.13,
+   "text": "luck the whole day then you have to wear two separate socks like from"
+  },
+  {
+   "start": 852.13,
+   "end": 852.89,
+   "text": "like the separate color"
+  },
+  {
+   "start": 852.89,
+   "end": 857.39,
+   "text": "like not from the same pair so um so yeah we used to wear"
+  },
+  {
+   "start": 857.39,
+   "end": 862.47,
+   "text": "that or you can also different socks or maybe also flip it"
+  },
+  {
+   "start": 862.47,
+   "end": 866.67,
+   "text": "I think that would also work I mean not everyone has"
+  },
+  {
+   "start": 866.67,
+   "end": 867.49,
+   "text": "13 different socks"
+  },
+  {
+   "start": 867.49,
+   "end": 868.17,
+   "text": "but"
+  },
+  {
+   "start": 870.15,
+   "end": 871.57,
+   "text": "no not 13 no no no no"
+  },
+  {
+   "start": 871.57,
+   "end": 873.73,
+   "text": "on Friday the 13th"
+  },
+  {
+   "start": 873.8,
+   "end": 875.0,
+   "text": "Not wear 13."
+  },
+  {
+   "start": 875.0,
+   "end": 879.14,
+   "text": "No, no, no. It's... So, like, for example, one sock red, one sock white."
+  },
+  {
+   "start": 879.28,
+   "end": 879.68,
+   "text": "Like something like that. Okay, okay."
+  },
+  {
+   "start": 879.88,
+   "end": 881.22,
+   "text": "All right. Then it's okay."
+  },
+  {
+   "start": 882.04,
+   "end": 885.18,
+   "text": "Imagine 13, that would be 13 socks."
+  },
+  {
+   "start": 885.96,
+   "end": 888.96,
+   "text": "Yeah, you're gonna die out of heat."
+  },
+  {
+   "start": 889.86,
+   "end": 890.06,
+   "text": "Yeah."
+  },
+  {
+   "start": 891.28,
+   "end": 892.9,
+   "text": "Good luck. Yeah, good luck."
+  },
+  {
+   "start": 892.9,
+   "end": 894.3,
+   "text": "The first thing..."
+  },
+  {
+   "start": 894.3,
+   "end": 897.88,
+   "text": "The first image comes to my mind is clover."
+  },
+  {
+   "start": 899.02,
+   "end": 900.58,
+   "text": "The four-leaf clover."
+  },
+  {
+   "start": 900.94,
+   "end": 902.3,
+   "text": "We do have that, of course."
+  },
+  {
+   "start": 903.52,
+   "end": 907.36,
+   "text": "i never got one never yeah me neither a friend of mine got gets"
+  },
+  {
+   "start": 907.36,
+   "end": 908.1,
+   "text": "all the time"
+  },
+  {
+   "start": 909.42,
+   "end": 914.12,
+   "text": "but she's not as like more lucky she's not luckier than me i guess"
+  },
+  {
+   "start": 914.12,
+   "end": 914.46,
+   "text": "i don't know"
+  },
+  {
+   "start": 914.46,
+   "end": 921.04,
+   "text": "oh we have a saying who has um luck in cards does not have"
+  },
+  {
+   "start": 921.04,
+   "end": 923.18,
+   "text": "luck in love yeah that's true"
+  },
+  {
+   "start": 923.18,
+   "end": 929.62,
+   "text": "yeah yeah there you go you know so think about that uh so this"
+  },
+  {
+   "start": 929.62,
+   "end": 934.92,
+   "text": "one is uh quite funny actually if a bird poops on you then that's"
+  },
+  {
+   "start": 934.92,
+   "end": 939.12,
+   "text": "good luck definitely we have the same thing but i had never"
+  },
+  {
+   "start": 939.12,
+   "end": 944.82,
+   "text": "experienced like you know i told you before here in balkans you have a"
+  },
+  {
+   "start": 944.82,
+   "end": 946.14,
+   "text": "lot of crows like"
+  },
+  {
+   "start": 946.14,
+   "end": 953.52,
+   "text": "and once a crow just pooped on me and it smells like so badly"
+  },
+  {
+   "start": 953.52,
+   "end": 959.12,
+   "text": "i pigeon chicken they're all fine but that one wow that was really terrible"
+  },
+  {
+   "start": 959.12,
+   "end": 961.48,
+   "text": "it never happened to me at least not the crow"
+  },
+  {
+   "start": 961.48,
+   "end": 968.98,
+   "text": "so except that i'm okay with the bird poop i"
+  },
+  {
+   "start": 968.98,
+   "end": 971.58,
+   "text": "had i think twice or three times like pigeons"
+  },
+  {
+   "start": 971.58,
+   "end": 977.08,
+   "text": "so that happened to me but um actually and it wasn't like it wasn't"
+  },
+  {
+   "start": 977.08,
+   "end": 977.7,
+   "text": "that bad it wasn't like"
+  },
+  {
+   "start": 977.7,
+   "end": 981.74,
+   "text": "you know you always think of like their poop it's gonna be like this"
+  },
+  {
+   "start": 981.74,
+   "end": 982.68,
+   "text": "massive and it can be but"
+  },
+  {
+   "start": 982.68,
+   "end": 987.08,
+   "text": "you know because they're flying and they're pooping then it can just be a"
+  },
+  {
+   "start": 987.08,
+   "end": 987.88,
+   "text": "bit of like so"
+  },
+  {
+   "start": 987.88,
+   "end": 992.66,
+   "text": "i had some things on my shoulder and it's for some reason it's extremely"
+  },
+  {
+   "start": 992.66,
+   "end": 993.54,
+   "text": "difficult to wash it"
+  },
+  {
+   "start": 993.54,
+   "end": 999.88,
+   "text": "like from my like um backpack um and then i had one that actually"
+  },
+  {
+   "start": 999.88,
+   "end": 1000.74,
+   "text": "pooped on my laptop"
+  },
+  {
+   "start": 1002.08,
+   "end": 1008.42,
+   "text": "so that was uh good luck for your work or studies i couldn't believe"
+  },
+  {
+   "start": 1008.42,
+   "end": 1010.02,
+   "text": "it thank god my laptop it was"
+  },
+  {
+   "start": 1010.02,
+   "end": 1015.52,
+   "text": "on my screen imagine if it was like you know got in inside i"
+  },
+  {
+   "start": 1015.52,
+   "end": 1016.64,
+   "text": "would have to like repair it so i just"
+  },
+  {
+   "start": 1016.64,
+   "end": 1022.24,
+   "text": "turned it off and cleaned it but the thing is that how what are"
+  },
+  {
+   "start": 1022.24,
+   "end": 1024.3,
+   "text": "the chances that a bird is going to"
+  },
+  {
+   "start": 1024.3,
+   "end": 1029.46,
+   "text": "poop on you you then if that's the chance then something really good has"
+  },
+  {
+   "start": 1029.46,
+   "end": 1032.06,
+   "text": "to happen now that's That's the bottom line."
+  },
+  {
+   "start": 1033.18,
+   "end": 1036.32,
+   "text": "So you change your energy, your attitude."
+  },
+  {
+   "start": 1036.32,
+   "end": 1039.16,
+   "text": "It's something very negative normally, but you just make it."
+  },
+  {
+   "start": 1039.16,
+   "end": 1041.3,
+   "text": "It's kind of like the balance, right?"
+  },
+  {
+   "start": 1041.3,
+   "end": 1044.38,
+   "text": "It's like, okay, this horrible thing happened to me."
+  },
+  {
+   "start": 1044.38,
+   "end": 1046.32,
+   "text": "Now something good has to happen."
+  },
+  {
+   "start": 1046.46,
+   "end": 1048.46,
+   "text": "There cannot be worse."
+  },
+  {
+   "start": 1049.38,
+   "end": 1049.56,
+   "text": "Okay."
+  },
+  {
+   "start": 1051.1,
+   "end": 1053.44,
+   "text": "Before we continue with the show, here's a quick reminder."
+  },
+  {
+   "start": 1054.08,
+   "end": 1057.6,
+   "text": "This podcast is free for everyone and supported by listeners like you."
+  },
+  {
+   "start": 1057.76,
+   "end": 1061.06,
+   "text": "We hope that this podcast is useful and companion to you."
+  },
+  {
+   "start": 1061.52,
+   "end": 1063.46,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 1063.9,
+   "end": 1068.32,
+   "text": "To help us continue creating useful content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 1068.78,
+   "end": 1071.68,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 1072.38,
+   "end": 1078.26,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 1078.26,
+   "end": 1084.0,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 1084.0,
+   "end": 1087.56,
+   "text": "and get extra benefits like bonus content."
+  },
+  {
+   "start": 1087.62,
+   "end": 1091.16,
+   "text": "pull transcripts of the show in Serbian or even join us on the show."
+  },
+  {
+   "start": 1091.16,
+   "end": 1093.06,
+   "text": "we rely on your support to"
+  },
+  {
+   "start": 1093.06,
+   "end": 1098.66,
+   "text": "help everyone more in learning serbian language and culture thanks for joining us today"
+  },
+  {
+   "start": 1098.66,
+   "end": 1098.98,
+   "text": "and now"
+  },
+  {
+   "start": 1098.98,
+   "end": 1104.26,
+   "text": "let's get back to our episode i just so throwing water after someone brings"
+  },
+  {
+   "start": 1104.26,
+   "end": 1105.74,
+   "text": "luck you explain it as"
+  },
+  {
+   "start": 1105.74,
+   "end": 1112.1,
+   "text": "because everything flows right the water flows like the water the waves yeah so"
+  },
+  {
+   "start": 1112.1,
+   "end": 1117.18,
+   "text": "i mean if it's not like the ocean waves but like you know the"
+  },
+  {
+   "start": 1117.18,
+   "end": 1120.18,
+   "text": "water like the river flows so basically if you"
+  },
+  {
+   "start": 1120.18,
+   "end": 1124.28,
+   "text": "again it's before an event so i remember i think i told you once"
+  },
+  {
+   "start": 1124.28,
+   "end": 1125.72,
+   "text": "before i went on a date my mom"
+  },
+  {
+   "start": 1125.72,
+   "end": 1130.06,
+   "text": "went after me and then she threw the water after me obviously they shouldn't"
+  },
+  {
+   "start": 1130.06,
+   "end": 1131.44,
+   "text": "hit you because it's"
+  },
+  {
+   "start": 1131.44,
+   "end": 1135.58,
+   "text": "not the point the point is that behind you so that when the flow"
+  },
+  {
+   "start": 1135.58,
+   "end": 1140.0,
+   "text": "goes behind you that takes you and it just flows the reason we do"
+  },
+  {
+   "start": 1140.0,
+   "end": 1145.12,
+   "text": "that is different though what is it so like tides if you throw water"
+  },
+  {
+   "start": 1145.12,
+   "end": 1149.46,
+   "text": "after someone else then you expect them to come back to you it's like"
+  },
+  {
+   "start": 1149.46,
+   "end": 1150.7,
+   "text": "easily go and easily come"
+  },
+  {
+   "start": 1150.7,
+   "end": 1155.6,
+   "text": "back it's like oh go safely come back safely that's why we do it"
+  },
+  {
+   "start": 1155.6,
+   "end": 1157.98,
+   "text": "good one yeah but it's it's"
+  },
+  {
+   "start": 1157.98,
+   "end": 1164.98,
+   "text": "more selfish like come back exactly um then this one if you see a"
+  },
+  {
+   "start": 1164.98,
+   "end": 1169.6,
+   "text": "chimney sweep uh so it's the person right that cleans the chimneys you will"
+  },
+  {
+   "start": 1169.6,
+   "end": 1172.26,
+   "text": "have luck because they're you know you can't see"
+  },
+  {
+   "start": 1172.26,
+   "end": 1176.52,
+   "text": "them you don't see them quite often so they're like in this specific like"
+  },
+  {
+   "start": 1176.52,
+   "end": 1178.68,
+   "text": "clothing but i don't"
+  },
+  {
+   "start": 1178.68,
+   "end": 1182.6,
+   "text": "think i ever saw one but we have it if you see a store"
+  },
+  {
+   "start": 1182.6,
+   "end": 1183.86,
+   "text": "going to chimney then you will have luck"
+  },
+  {
+   "start": 1183.86,
+   "end": 1190.98,
+   "text": "because i think they they might make their houses on on chimneys"
+  },
+  {
+   "start": 1190.98,
+   "end": 1193.32,
+   "text": "in the summer chimneys are not used much then."
+  },
+  {
+   "start": 1194.66,
+   "end": 1195.66,
+   "text": "That makes sense."
+  },
+  {
+   "start": 1195.9,
+   "end": 1200.02,
+   "text": "I'm just thinking if we have the same thing, probably, but actually my region"
+  },
+  {
+   "start": 1200.02,
+   "end": 1205.89,
+   "text": "has a lot of storks so that was nice and and i added one"
+  },
+  {
+   "start": 1205.89,
+   "end": 1210.51,
+   "text": "thing i guess it's culturally in turkey but horseshoe you have to put it"
+  },
+  {
+   "start": 1210.51,
+   "end": 1211.09,
+   "text": "upwards"
+  },
+  {
+   "start": 1211.09,
+   "end": 1217.49,
+   "text": "like uh edges should be facing up and that brings you luck so you"
+  },
+  {
+   "start": 1217.49,
+   "end": 1219.09,
+   "text": "will see it on the doors a lot"
+  },
+  {
+   "start": 1220.33,
+   "end": 1224.07,
+   "text": "yeah exactly we have that too i didn't add it because i don't remember"
+  },
+  {
+   "start": 1224.07,
+   "end": 1224.47,
+   "text": "if i"
+  },
+  {
+   "start": 1224.47,
+   "end": 1229.23,
+   "text": "I don't think we have it in our house or kind of it's kind"
+  },
+  {
+   "start": 1229.23,
+   "end": 1230.61,
+   "text": "of like forgotten thing you know"
+  },
+  {
+   "start": 1230.61,
+   "end": 1235.89,
+   "text": "but yeah it is definitely something we do as well I see good okay"
+  },
+  {
+   "start": 1235.89,
+   "end": 1237.19,
+   "text": "now we're done with luck"
+  },
+  {
+   "start": 1237.19,
+   "end": 1243.67,
+   "text": "right let's let's uh let's do some like selfish desires yes weird desires"
+  },
+  {
+   "start": 1243.67,
+   "end": 1250.81,
+   "text": "so if you want to be rich then uh you should wait wait"
+  },
+  {
+   "start": 1250.81,
+   "end": 1254.69,
+   "text": "no if you want to be rich I think you should not eat breadcrumbs"
+  },
+  {
+   "start": 1254.69,
+   "end": 1258.85,
+   "text": "that's what i are you sure this makes more sense to me if you"
+  },
+  {
+   "start": 1258.85,
+   "end": 1259.29,
+   "text": "should you"
+  },
+  {
+   "start": 1259.29,
+   "end": 1263.51,
+   "text": "should eat breadcrumbs that means you are not wasting your money you're not wasting"
+  },
+  {
+   "start": 1263.51,
+   "end": 1268.93,
+   "text": "you're valuing everything that's why you eat breadcrumbs in our case i mean that's"
+  },
+  {
+   "start": 1268.93,
+   "end": 1269.17,
+   "text": "we have a similar saying but maybe yeah now i'm thinking because uh"
+  },
+  {
+   "start": 1269.17,
+   "end": 1269.35,
+   "text": "why"
+  },
+  {
+   "start": 1276.25,
+   "end": 1277.09,
+   "text": "probably it is correct you"
+  },
+  {
+   "start": 1277.09,
+   "end": 1280.61,
+   "text": "should eat breadcrumbs we're gonna have to check that one but now i'm thinking"
+  },
+  {
+   "start": 1280.61,
+   "end": 1286.25,
+   "text": "kind of like you if you eat breadcrumbs, usually that means you're poor, right?"
+  },
+  {
+   "start": 1286.25,
+   "end": 1288.71,
+   "text": "Or a good saver."
+  },
+  {
+   "start": 1290.19,
+   "end": 1294.35,
+   "text": "Well, you can earn a lot more than you can save."
+  },
+  {
+   "start": 1294.35,
+   "end": 1296.93,
+   "text": "But yeah, that makes sense."
+  },
+  {
+   "start": 1296.93,
+   "end": 1298.81,
+   "text": "I should check that one."
+  },
+  {
+   "start": 1300.63,
+   "end": 1300.93,
+   "text": "You should eat breadcrumbs."
+  },
+  {
+   "start": 1300.93,
+   "end": 1301.93,
+   "text": "Now I'm confused."
+  },
+  {
+   "start": 1301.93,
+   "end": 1306.43,
+   "text": "Okay. But this one was something that I don't know why,"
+  },
+  {
+   "start": 1306.43,
+   "end": 1310.69,
+   "text": "but since I was young, like for girls, they tried to eat breadcrumbs."
+  },
+  {
+   "start": 1310.69,
+   "end": 1315.23,
+   "text": "to prep you for you know getting married so they basically tell you if"
+  },
+  {
+   "start": 1315.23,
+   "end": 1316.79,
+   "text": "you eat the end of the bread"
+  },
+  {
+   "start": 1316.79,
+   "end": 1322.47,
+   "text": "then your mother-in-law is gonna love you that means like you need to finish"
+  },
+  {
+   "start": 1322.47,
+   "end": 1323.35,
+   "text": "your meal up or"
+  },
+  {
+   "start": 1323.35,
+   "end": 1328.43,
+   "text": "it means like the end of the bread loaf i think the end of"
+  },
+  {
+   "start": 1328.43,
+   "end": 1330.19,
+   "text": "the bread loaf so i think the reason"
+  },
+  {
+   "start": 1330.19,
+   "end": 1336.25,
+   "text": "for that is because probably no one wanted that's my favorite part i know"
+  },
+  {
+   "start": 1336.25,
+   "end": 1340.25,
+   "text": "it is mine too because of the crust yeah but uh and that's why"
+  },
+  {
+   "start": 1340.25,
+   "end": 1342.39,
+   "text": "we're like oh your mother-in-law is gonna love you so much"
+  },
+  {
+   "start": 1342.39,
+   "end": 1345.59,
+   "text": "you know my sister and i loved it uh but i guess the people"
+  },
+  {
+   "start": 1345.59,
+   "end": 1347.17,
+   "text": "don't want it because um usually our"
+  },
+  {
+   "start": 1347.17,
+   "end": 1352.41,
+   "text": "bread is like very crusty on the outside and then inside it's very very"
+  },
+  {
+   "start": 1352.41,
+   "end": 1353.19,
+   "text": "soft and warm and"
+  },
+  {
+   "start": 1353.19,
+   "end": 1356.67,
+   "text": "you know and at the end of the day you want also both best"
+  },
+  {
+   "start": 1356.67,
+   "end": 1358.73,
+   "text": "of like both worlds so i'm guessing no"
+  },
+  {
+   "start": 1358.73,
+   "end": 1363.67,
+   "text": "one wanted that but um but yeah i loved it yeah in our case"
+  },
+  {
+   "start": 1363.67,
+   "end": 1368.09,
+   "text": "it's a bit different if you go visit someone and they are having lunch"
+  },
+  {
+   "start": 1368.09,
+   "end": 1370.63,
+   "text": "or dinner or breakfast then it means that your mother-in-law"
+  },
+  {
+   "start": 1370.63,
+   "end": 1374.97,
+   "text": "will love you in the future because you're lucky like you just came upon"
+  },
+  {
+   "start": 1374.97,
+   "end": 1382.49,
+   "text": "someone's feast uh-huh um so many things for probably for mother-in-law because"
+  },
+  {
+   "start": 1382.49,
+   "end": 1384.63,
+   "text": "it's like so rare that you"
+  },
+  {
+   "start": 1384.63,
+   "end": 1391.23,
+   "text": "love each other you know that you need like uh additional luck okay so"
+  },
+  {
+   "start": 1391.23,
+   "end": 1394.33,
+   "text": "for women i think this is for women i'm not quite sure if it's"
+  },
+  {
+   "start": 1394.33,
+   "end": 1398.51,
+   "text": "for men if you want to get married so not to stay like a"
+  },
+  {
+   "start": 1398.51,
+   "end": 1405.43,
+   "text": "spinterest uh you should not sit at the corner of the table so you"
+  },
+  {
+   "start": 1405.43,
+   "end": 1406.13,
+   "text": "have to be always like"
+  },
+  {
+   "start": 1406.13,
+   "end": 1412.25,
+   "text": "properly sitting you know makes sense i mean makes sense in that like, you"
+  },
+  {
+   "start": 1412.25,
+   "end": 1412.41,
+   "text": "are going to get more"
+  },
+  {
+   "start": 1412.41,
+   "end": 1414.57,
+   "text": "socialized when you are among people."
+  },
+  {
+   "start": 1417.35,
+   "end": 1418.69,
+   "text": "Okay, oh, this one is funny."
+  },
+  {
+   "start": 1418.91,
+   "end": 1421.89,
+   "text": "It's, you know, about promaya."
+  },
+  {
+   "start": 1423.31,
+   "end": 1425.15,
+   "text": "Pramaya is drought."
+  },
+  {
+   "start": 1425.75,
+   "end": 1426.55,
+   "text": "And we use it when"
+  },
+  {
+   "start": 1426.55,
+   "end": 1430.93,
+   "text": "you, like, for example, when you open windows, like window and a door,"
+  },
+  {
+   "start": 1430.93,
+   "end": 1432.31,
+   "text": "and then, you know, the air"
+  },
+  {
+   "start": 1432.31,
+   "end": 1434.99,
+   "text": "like streams through, right?"
+  },
+  {
+   "start": 1435.79,
+   "end": 1440.25,
+   "text": "And the thing is that for some reason our people are so superstitious that"
+  },
+  {
+   "start": 1440.25,
+   "end": 1440.73,
+   "text": "so so unhealthy that is"
+  },
+  {
+   "start": 1442.47,
+   "end": 1447.71,
+   "text": "and it will kill you you're gonna get sick or whatever so for us"
+  },
+  {
+   "start": 1447.71,
+   "end": 1450.29,
+   "text": "it's like if you do that and you don't cover your"
+  },
+  {
+   "start": 1450.29,
+   "end": 1452.45,
+   "text": "even if it's summer and you don't cover"
+  },
+  {
+   "start": 1452.45,
+   "end": 1454.39,
+   "text": "your stomach"
+  },
+  {
+   "start": 1454.39,
+   "end": 1460.73,
+   "text": "then your ovaries are gonna freeze basically like you're not gonna be able to"
+  },
+  {
+   "start": 1460.73,
+   "end": 1462.27,
+   "text": "have kids makes sense"
+  },
+  {
+   "start": 1462.27,
+   "end": 1469.33,
+   "text": "yeah probably scaring people you know so that yeah nowadays it won't scare the"
+  },
+  {
+   "start": 1469.33,
+   "end": 1474.85,
+   "text": "young girls i guess no one cares i didn't care we always carried something"
+  },
+  {
+   "start": 1474.85,
+   "end": 1475.29,
+   "text": "like wore something"
+  },
+  {
+   "start": 1475.29,
+   "end": 1480.31,
+   "text": "short oh this one is uh i don't know if you have it i"
+  },
+  {
+   "start": 1480.31,
+   "end": 1482.51,
+   "text": "think i told you about this so if your left"
+  },
+  {
+   "start": 1482.51,
+   "end": 1487.75,
+   "text": "palm itches you will receive money and if your right palm itches you will"
+  },
+  {
+   "start": 1487.75,
+   "end": 1490.65,
+   "text": "give money it's vice worse in ours."
+  },
+  {
+   "start": 1490.65,
+   "end": 1492.71,
+   "text": "If we have the same thing, it's just why it's worse."
+  },
+  {
+   "start": 1493.07,
+   "end": 1496.37,
+   "text": "Because left is unfortunately more negative, right?"
+  },
+  {
+   "start": 1496.49,
+   "end": 1499.77,
+   "text": "So if it happens, something negative will happen to you, so you will have"
+  },
+  {
+   "start": 1499.77,
+   "end": 1500.49,
+   "text": "to give money."
+  },
+  {
+   "start": 1500.97,
+   "end": 1504.01,
+   "text": "If it's right hand, of course it depends"
+  },
+  {
+   "start": 1504.01,
+   "end": 1505.57,
+   "text": "how you look at it."
+  },
+  {
+   "start": 1505.57,
+   "end": 1508.15,
+   "text": "Giving money is something positive, so in your"
+  },
+  {
+   "start": 1508.15,
+   "end": 1512.57,
+   "text": "case, right makes sense, but in our case, you will be happier if you"
+  },
+  {
+   "start": 1512.57,
+   "end": 1515.63,
+   "text": "get money. So that's why right hand means you will get money."
+  },
+  {
+   "start": 1518.09,
+   "end": 1520.69,
+   "text": "But I'm thinking when I give money, I always give with the right hand"
+  },
+  {
+   "start": 1520.69,
+   "end": 1522.03,
+   "text": "because I'm right-handed."
+  },
+  {
+   "start": 1522.57,
+   "end": 1527.51,
+   "text": "And if I take, I mean, by both hands, but I can, I think"
+  },
+  {
+   "start": 1527.51,
+   "end": 1529.15,
+   "text": "that maybe, I don't know if that was the reason."
+  },
+  {
+   "start": 1529.15,
+   "end": 1532.45,
+   "text": "But yeah, for us, giving money is..."
+  },
+  {
+   "start": 1532.69,
+   "end": 1533.49,
+   "text": "With the right hand."
+  },
+  {
+   "start": 1533.53,
+   "end": 1536.87,
+   "text": "We don't want to, yeah, right hand, we don't want to give money."
+  },
+  {
+   "start": 1536.87,
+   "end": 1541.69,
+   "text": "we want to save as much as we can save so yeah sometimes both"
+  },
+  {
+   "start": 1541.69,
+   "end": 1542.67,
+   "text": "of them itch because you know"
+  },
+  {
+   "start": 1542.67,
+   "end": 1545.95,
+   "text": "you're constantly giving and receiving money you are doing trade"
+  },
+  {
+   "start": 1545.95,
+   "end": 1553.13,
+   "text": "exactly so i was gonna say in with the same mentality your"
+  },
+  {
+   "start": 1553.13,
+   "end": 1556.43,
+   "text": "ears can have ringing sometimes"
+  },
+  {
+   "start": 1556.43,
+   "end": 1561.43,
+   "text": "and left one means yeah they're talking about you in a bad way and"
+  },
+  {
+   "start": 1561.43,
+   "end": 1568.53,
+   "text": "right one means they're praising you yeah yeah oh you have"
+  },
+  {
+   "start": 1568.53,
+   "end": 1573.19,
+   "text": "it's ringing in my ear yeah yeah okay this one happened quite a"
+  },
+  {
+   "start": 1573.19,
+   "end": 1577.75,
+   "text": "lot from to my sister because she her nose always itches so if your"
+  },
+  {
+   "start": 1577.75,
+   "end": 1579.43,
+   "text": "nose itches you will fight with"
+  },
+  {
+   "start": 1579.43,
+   "end": 1586.15,
+   "text": "someone but fight no like argue with someone not necessarily like fight so or"
+  },
+  {
+   "start": 1586.15,
+   "end": 1589.09,
+   "text": "like or also it can mean someone's talking"
+  },
+  {
+   "start": 1589.09,
+   "end": 1590.87,
+   "text": "behind your back."
+  },
+  {
+   "start": 1591.57,
+   "end": 1593.83,
+   "text": "Like, maliciously. Gossip girl."
+  },
+  {
+   "start": 1596.13,
+   "end": 1597.77,
+   "text": "And I added one thing scary."
+  },
+  {
+   "start": 1597.77,
+   "end": 1598.71,
+   "text": "Oh, I can see it."
+  },
+  {
+   "start": 1600.07,
+   "end": 1601.09,
+   "text": "So if an owl hoots"
+  },
+  {
+   "start": 1601.09,
+   "end": 1603.29,
+   "text": "on your roof or on your balcony,"
+  },
+  {
+   "start": 1605.13,
+   "end": 1607.15,
+   "text": "people get scared in Turkey because that is kind of"
+  },
+  {
+   "start": 1607.15,
+   "end": 1609.73,
+   "text": "a signal that someone is going to die soon."
+  },
+  {
+   "start": 1611.01,
+   "end": 1613.21,
+   "text": "And I was really terrified by this."
+  },
+  {
+   "start": 1613.73,
+   "end": 1617.93,
+   "text": "I mean, when I was a kid oh oh i don't think maybe we"
+  },
+  {
+   "start": 1617.93,
+   "end": 1618.17,
+   "text": "this in serbia as well but i'm not that knowledgeable about all the superstitions"
+  },
+  {
+   "start": 1618.17,
+   "end": 1618.39,
+   "text": "have"
+  },
+  {
+   "start": 1622.83,
+   "end": 1623.01,
+   "text": "so"
+  },
+  {
+   "start": 1623.01,
+   "end": 1627.55,
+   "text": "who knows because owls are a little bit scary you know they turn their"
+  },
+  {
+   "start": 1627.55,
+   "end": 1634.57,
+   "text": "head like 180 degrees and then they have harry potter yeah but before"
+  },
+  {
+   "start": 1634.57,
+   "end": 1642.31,
+   "text": "before harry potter this happened that's true okay and"
+  },
+  {
+   "start": 1642.31,
+   "end": 1645.57,
+   "text": "then oh yeah that's it actually because you talked about the ear already"
+  },
+  {
+   "start": 1645.57,
+   "end": 1652.81,
+   "text": "yeah cool let's see so everyone if you have more interesting ones or similar"
+  },
+  {
+   "start": 1652.81,
+   "end": 1653.39,
+   "text": "ones feel free to"
+  },
+  {
+   "start": 1653.39,
+   "end": 1657.61,
+   "text": "share them with us on instagram or you can email us or you can"
+  },
+  {
+   "start": 1657.61,
+   "end": 1660.33,
+   "text": "write reviews on our either spotify"
+  },
+  {
+   "start": 1660.33,
+   "end": 1665.97,
+   "text": "or google podcast or apple podcast wherever you're listening to us we love to"
+  },
+  {
+   "start": 1665.97,
+   "end": 1670.37,
+   "text": "learn and we love to interact so feel free to email like email us"
+  },
+  {
+   "start": 1670.37,
+   "end": 1674.45,
+   "text": "text us and you know contact us wherever so uh yeah"
+  },
+  {
+   "start": 1674.45,
+   "end": 1685.99,
+   "text": "hope you enjoyed it thank you thank you thank you for"
+  },
+  {
+   "start": 1685.99,
+   "end": 1687.53,
+   "text": "joining us today we hope you enjoyed our"
+  },
+  {
+   "start": 1687.53,
+   "end": 1692.67,
+   "text": "podcast and learned something new in case you have any comments suggestions or questions"
+  },
+  {
+   "start": 1693.37,
+   "end": 1697.41,
+   "text": "make sure to share them on our Instagram page, mozekáfapodcast."
+  },
+  {
+   "start": 1697.77,
+   "end": 1698.39,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.2: Superstitions in Serbian Culture",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939242/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075925-44100-1-5e42176bd63d2df9.mp3"
+}

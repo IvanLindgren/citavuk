@@ -1,0 +1,2140 @@
+{
+ "duration": 1605.17,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 31.4,
+   "end": 32.48,
+   "text": "Hello everyone."
+  },
+  {
+   "start": 38.82,
+   "end": 39.82,
+   "text": "I talked over you."
+  },
+  {
+   "start": 39.82,
+   "end": 43.74,
+   "text": "That's okay. Hello everyone."
+  },
+  {
+   "start": 44.58,
+   "end": 47.86,
+   "text": "Yeah. We are ready to go to Kapoanik,"
+  },
+  {
+   "start": 47.86,
+   "end": 49.62,
+   "text": "as you can see, because today's topic is"
+  },
+  {
+   "start": 49.62,
+   "end": 52.22,
+   "text": "skiing in Kapoanik."
+  },
+  {
+   "start": 52.78,
+   "end": 54.92,
+   "text": "In Serbia. The most beautiful place."
+  },
+  {
+   "start": 55.5,
+   "end": 56.18,
+   "text": "Look at that."
+  },
+  {
+   "start": 58.04,
+   "end": 62.34,
+   "text": "So Maki, you've been talking a lot about how beautiful it is."
+  },
+  {
+   "start": 62.34,
+   "end": 62.94,
+   "text": "Have you been there?"
+  },
+  {
+   "start": 63.92,
+   "end": 64.02,
+   "text": "Yes."
+  },
+  {
+   "start": 64.02,
+   "end": 70.74,
+   "text": "And I can say that Copanic is the place that changed my life in"
+  },
+  {
+   "start": 70.74,
+   "end": 72.16,
+   "text": "a good way forever."
+  },
+  {
+   "start": 74.0,
+   "end": 74.6,
+   "text": "Tell me. Tell me more."
+  },
+  {
+   "start": 74.6,
+   "end": 75.9,
+   "text": "Why do I say that?"
+  },
+  {
+   "start": 75.9,
+   "end": 79.14,
+   "text": "Because this place is really magical."
+  },
+  {
+   "start": 79.62,
+   "end": 83.5,
+   "text": "I had nothing to do with skiing, with cold weather, snow."
+  },
+  {
+   "start": 83.54,
+   "end": 88.68,
+   "text": "I mean I liked it for a few days but just for maximum two"
+  },
+  {
+   "start": 88.68,
+   "end": 92.46,
+   "text": "days but Copanik is such a beautiful"
+  },
+  {
+   "start": 92.46,
+   "end": 98.46,
+   "text": "place and such a sunny place as well snow and sun together so it"
+  },
+  {
+   "start": 98.46,
+   "end": 99.84,
+   "text": "made me love like snowy mountain"
+  },
+  {
+   "start": 99.84,
+   "end": 104.62,
+   "text": "and I learned skiing there so this is my place where I learned skiing"
+  },
+  {
+   "start": 104.62,
+   "end": 107.96,
+   "text": "I mean I'm still learning Yeah."
+  },
+  {
+   "start": 109.16,
+   "end": 113.86,
+   "text": "Level is not there yet but i tried i think five six"
+  },
+  {
+   "start": 113.86,
+   "end": 120.44,
+   "text": "slopes there so that's good even i did one night skiing so i will"
+  },
+  {
+   "start": 120.44,
+   "end": 121.34,
+   "text": "tell you about it later"
+  },
+  {
+   "start": 121.34,
+   "end": 128.4,
+   "text": "nice i am i want that experience for myself too because i i"
+  },
+  {
+   "start": 128.4,
+   "end": 132.3,
+   "text": "went twice to coponic i don't know if you know that and i only"
+  },
+  {
+   "start": 132.3,
+   "end": 137.1,
+   "text": "once i talked to you i went twice it was with my school i"
+  },
+  {
+   "start": 137.1,
+   "end": 137.34,
+   "text": "was like uh"
+  },
+  {
+   "start": 137.34,
+   "end": 144.0,
+   "text": "when i was like 12 13 i think something like that and you i"
+  },
+  {
+   "start": 144.0,
+   "end": 146.16,
+   "text": "actually even found a place on on google"
+  },
+  {
+   "start": 146.16,
+   "end": 149.44,
+   "text": "where we used to go to it's some sort of like some sort of"
+  },
+  {
+   "start": 149.44,
+   "end": 156.44,
+   "text": "like children hostel so and it was you know on a budget and"
+  },
+  {
+   "start": 156.44,
+   "end": 162.08,
+   "text": "there was a lot of kids and there was one instructor so there wasn't"
+  },
+  {
+   "start": 162.08,
+   "end": 162.2,
+   "text": "lot of time I think we had like one class something like that there"
+  },
+  {
+   "start": 162.2,
+   "end": 162.54,
+   "text": "really a"
+  },
+  {
+   "start": 168.1,
+   "end": 169.3,
+   "text": "wasn't really a lot of time to"
+  },
+  {
+   "start": 169.3,
+   "end": 175.88,
+   "text": "for them to you know um how do you call it train you yeah"
+  },
+  {
+   "start": 175.88,
+   "end": 182.08,
+   "text": "to teach us how to ski so basically was and I'm a naturally very"
+  },
+  {
+   "start": 182.08,
+   "end": 187.38,
+   "text": "scared person like in the beginning like almost whatever I'm doing I'm"
+  },
+  {
+   "start": 187.38,
+   "end": 192.46,
+   "text": "usually like have this instinct of being like afraid or something so I think"
+  },
+  {
+   "start": 192.46,
+   "end": 192.74,
+   "text": "skiing was really"
+  },
+  {
+   "start": 192.74,
+   "end": 197.26,
+   "text": "scary for me because you can't get injured you know if you don't really"
+  },
+  {
+   "start": 197.26,
+   "end": 197.42,
+   "text": "know what you're doing"
+  },
+  {
+   "start": 197.42,
+   "end": 201.22,
+   "text": "and there wasn't a lot of I didn't really feel that there was a"
+  },
+  {
+   "start": 201.22,
+   "end": 206.94,
+   "text": "lot of like slowly building up It was like, okay, you had one class"
+  },
+  {
+   "start": 206.94,
+   "end": 212.2,
+   "text": "and you had like a very, very slow slope of like 10 meters or"
+  },
+  {
+   "start": 212.2,
+   "end": 212.88,
+   "text": "something like that."
+  },
+  {
+   "start": 213.48,
+   "end": 216.92,
+   "text": "And then, okay, now you go, you know, now you go and find a"
+  },
+  {
+   "start": 216.92,
+   "end": 217.37,
+   "text": "path or whatever."
+  },
+  {
+   "start": 217.37,
+   "end": 220.05,
+   "text": "And, and I was just scared."
+  },
+  {
+   "start": 220.05,
+   "end": 224.47,
+   "text": "And I did, I did learn it for one of my friends at the"
+  },
+  {
+   "start": 224.47,
+   "end": 225.31,
+   "text": "time, best friend."
+  },
+  {
+   "start": 225.31,
+   "end": 226.77,
+   "text": "She loved skiing."
+  },
+  {
+   "start": 226.77,
+   "end": 227.85,
+   "text": "She was quite good at it."
+  },
+  {
+   "start": 228.29,
+   "end": 232.69,
+   "text": "I did it for her, but I think I like went down several times."
+  },
+  {
+   "start": 232.69,
+   "end": 235.79,
+   "text": "And then the last time I went down, it was quite slippery because it"
+  },
+  {
+   "start": 235.79,
+   "end": 237.41,
+   "text": "was, it was frozen."
+  },
+  {
+   "start": 237.97,
+   "end": 240.53,
+   "text": "And I just remember falling constantly."
+  },
+  {
+   "start": 240.93,
+   "end": 246.09,
+   "text": "And not only that, but I was really afraid of hurting other people around"
+  },
+  {
+   "start": 246.09,
+   "end": 248.97,
+   "text": "me. And after that, I did not go."
+  },
+  {
+   "start": 249.15,
+   "end": 249.89,
+   "text": "The story ended."
+  },
+  {
+   "start": 250.51,
+   "end": 252.71,
+   "text": "That's it. But I would love to learn."
+  },
+  {
+   "start": 253.71,
+   "end": 256.03,
+   "text": "You fall a lot in this sport."
+  },
+  {
+   "start": 256.65,
+   "end": 259.79,
+   "text": "And you hate it at some point."
+  },
+  {
+   "start": 260.03,
+   "end": 264.21,
+   "text": "But when you don't give up, somehow it hooks you up."
+  },
+  {
+   "start": 264.97,
+   "end": 266.27,
+   "text": "Yeah, I think it's amazing."
+  },
+  {
+   "start": 266.27,
+   "end": 267.15,
+   "text": "I would love to learn it."
+  },
+  {
+   "start": 267.15,
+   "end": 273.51,
+   "text": "maybe that's the actually this year i'm planning to go to coponic but chance"
+  },
+  {
+   "start": 273.51,
+   "end": 274.53,
+   "text": "yeah but the thing is"
+  },
+  {
+   "start": 274.53,
+   "end": 277.49,
+   "text": "that i'm going to go with my parents and i'm pretty sure they don't"
+  },
+  {
+   "start": 277.49,
+   "end": 278.53,
+   "text": "want to ski so i think"
+  },
+  {
+   "start": 278.53,
+   "end": 281.23,
+   "text": "we're just going to go for a couple of days and just to like"
+  },
+  {
+   "start": 281.23,
+   "end": 283.93,
+   "text": "hike a bit and to get warm in a"
+  },
+  {
+   "start": 283.93,
+   "end": 288.77,
+   "text": "cottage or something like that yeah that's also good but maybe one afternoon you"
+  },
+  {
+   "start": 288.77,
+   "end": 288.87,
+   "text": "can take one"
+  },
+  {
+   "start": 288.87,
+   "end": 294.19,
+   "text": "class and try at least i can tell you which slopes to try on"
+  },
+  {
+   "start": 294.19,
+   "end": 299.41,
+   "text": "your first day and at least you can have fun without big injuries so"
+  },
+  {
+   "start": 299.41,
+   "end": 303.33,
+   "text": "actually now that we started talking about Coponic I hope some of the"
+  },
+  {
+   "start": 303.33,
+   "end": 307.97,
+   "text": "people don't really know what it is right and it's like the place you"
+  },
+  {
+   "start": 307.97,
+   "end": 309.87,
+   "text": "go to go skiing it's the mountain"
+  },
+  {
+   "start": 309.87,
+   "end": 315.07,
+   "text": "right and there's so many trails over there and you can go skiing to"
+  },
+  {
+   "start": 315.07,
+   "end": 315.67,
+   "text": "other places as well"
+  },
+  {
+   "start": 315.67,
+   "end": 321.03,
+   "text": "but Coponic is like a natural reserve I don't know park I don't know"
+  },
+  {
+   "start": 321.03,
+   "end": 327.07,
+   "text": "how you call it Yeah, and then, yeah, basically it's beautiful."
+  },
+  {
+   "start": 327.07,
+   "end": 329.05,
+   "text": "There's so many trails"
+  },
+  {
+   "start": 329.05,
+   "end": 330.45,
+   "text": "for you and uh it's also"
+  },
+  {
+   "start": 330.45,
+   "end": 337.19,
+   "text": "very very much in the south which is right next to kosovo in metohia"
+  },
+  {
+   "start": 337.19,
+   "end": 340.09,
+   "text": "yeah exactly and did you know"
+  },
+  {
+   "start": 340.09,
+   "end": 346.93,
+   "text": "that the name comes from kopati oh that will make sense kopati to dig"
+  },
+  {
+   "start": 346.93,
+   "end": 352.99,
+   "text": "to dig yeah as these mountains are the mountain range is so big they"
+  },
+  {
+   "start": 352.99,
+   "end": 356.95,
+   "text": "were digging for iron zinc lead for centuries here"
+  },
+  {
+   "start": 358.23,
+   "end": 364.71,
+   "text": "I didn't know that and it became a national park in 1981"
+  },
+  {
+   "start": 364.71,
+   "end": 372.03,
+   "text": "and I heard some stories from like relatively old people here who"
+  },
+  {
+   "start": 372.03,
+   "end": 373.63,
+   "text": "were who lived in Yugoslavia"
+  },
+  {
+   "start": 374.87,
+   "end": 381.27,
+   "text": "that time the companies had their own places there so for free you would"
+  },
+  {
+   "start": 381.27,
+   "end": 382.03,
+   "text": "go there for winter"
+  },
+  {
+   "start": 382.03,
+   "end": 387.85,
+   "text": "vacation like almost every company offered that it was such a thing especially probably"
+  },
+  {
+   "start": 387.85,
+   "end": 388.07,
+   "text": "because it's so close but they said like big companies always had their own"
+  },
+  {
+   "start": 388.07,
+   "end": 388.29,
+   "text": "in"
+  },
+  {
+   "start": 394.11,
+   "end": 394.69,
+   "text": "places in"
+  },
+  {
+   "start": 394.69,
+   "end": 400.45,
+   "text": "for their workers isn't this amazing oh my god it's kind of like the"
+  },
+  {
+   "start": 400.45,
+   "end": 405.09,
+   "text": "thing that my dad has he goes to i think to tara every every"
+  },
+  {
+   "start": 405.09,
+   "end": 407.37,
+   "text": "year his company has just gives them like free"
+  },
+  {
+   "start": 407.37,
+   "end": 413.07,
+   "text": "like everything free like the hotel with the swimming pool and so on i'm"
+  },
+  {
+   "start": 413.07,
+   "end": 413.33,
+   "text": "like wow"
+  },
+  {
+   "start": 413.33,
+   "end": 418.11,
+   "text": "i mean kind of more like communist a communist thing that's how how it's"
+  },
+  {
+   "start": 418.11,
+   "end": 419.73,
+   "text": "yeah yeah sounds great"
+  },
+  {
+   "start": 419.73,
+   "end": 425.63,
+   "text": "because it's so expensive and it's hard to find the nice place there because"
+  },
+  {
+   "start": 425.63,
+   "end": 425.83,
+   "text": "of the demand"
+  },
+  {
+   "start": 425.83,
+   "end": 432.19,
+   "text": "it's really expensive although there are really really i was checking so many hotels"
+  },
+  {
+   "start": 432.65,
+   "end": 434.33,
+   "text": "so many places to go to."
+  },
+  {
+   "start": 434.33,
+   "end": 437.35,
+   "text": "So yeah, yeah, so crazy."
+  },
+  {
+   "start": 437.82,
+   "end": 441.18,
+   "text": "uh i so guys if you want to go skiing feel free to go"
+  },
+  {
+   "start": 441.18,
+   "end": 444.24,
+   "text": "and uh maybe avoid the christmas season"
+  },
+  {
+   "start": 444.24,
+   "end": 447.88,
+   "text": "because i don't know how expensive it will be but if you if you're"
+  },
+  {
+   "start": 447.88,
+   "end": 448.68,
+   "text": "okay with that then also"
+  },
+  {
+   "start": 448.68,
+   "end": 453.1,
+   "text": "probably quite busy i'm not just not just expensive but quite busy right yeah"
+  },
+  {
+   "start": 453.1,
+   "end": 453.76,
+   "text": "last year i was going to"
+  },
+  {
+   "start": 453.76,
+   "end": 457.82,
+   "text": "tell if we stayed we wanted to stay there for the new year's eve"
+  },
+  {
+   "start": 457.82,
+   "end": 459.12,
+   "text": "it was three times more expensive"
+  },
+  {
+   "start": 459.12,
+   "end": 465.34,
+   "text": "if you stay actually christmas doesn't affect that much so between 25 and 28"
+  },
+  {
+   "start": 465.34,
+   "end": 471.72,
+   "text": "of december you can you can stay there like relatively normal places new year's"
+  },
+  {
+   "start": 471.72,
+   "end": 473.42,
+   "text": "year wow that's impossible"
+  },
+  {
+   "start": 473.42,
+   "end": 479.88,
+   "text": "almost well actually it makes sense because we don't really celebrate catholic christmas so"
+  },
+  {
+   "start": 479.88,
+   "end": 484.58,
+   "text": "why would you i just thought maybe people would go for like a week and"
+  },
+  {
+   "start": 484.58,
+   "end": 485.94,
+   "text": "they would combine like that week"
+  },
+  {
+   "start": 485.94,
+   "end": 489.84,
+   "text": "and then the new year's eve but yeah it would make sense why the"
+  },
+  {
+   "start": 489.84,
+   "end": 493.88,
+   "text": "new year's eve yeah yeah it's highly booked around that time for sure yeah"
+  },
+  {
+   "start": 493.88,
+   "end": 498.28,
+   "text": "and not only for skiing though I wanted to say it has a lot"
+  },
+  {
+   "start": 498.28,
+   "end": 498.58,
+   "text": "of"
+  },
+  {
+   "start": 499.78,
+   "end": 503.96,
+   "text": "like it's a national park it has a lot of things to see waterfalls"
+  },
+  {
+   "start": 503.96,
+   "end": 505.52,
+   "text": "lakes springs like mineral"
+  },
+  {
+   "start": 505.52,
+   "end": 511.32,
+   "text": "springs and spas that you can go and relax so if you're not a"
+  },
+  {
+   "start": 511.32,
+   "end": 513.04,
+   "text": "skier definitely you should still go"
+  },
+  {
+   "start": 513.04,
+   "end": 519.5,
+   "text": "there and experience it but in some other season or or in winter as"
+  },
+  {
+   "start": 519.5,
+   "end": 523.14,
+   "text": "well I think every season you can go for spa for sure you can"
+  },
+  {
+   "start": 523.14,
+   "end": 527.26,
+   "text": "go in the winter maybe waterfalls lakes better to go but the thing"
+  },
+  {
+   "start": 527.26,
+   "end": 532.7,
+   "text": "is in Coparnic even winters are so great I mean I've been there more"
+  },
+  {
+   "start": 532.7,
+   "end": 533.48,
+   "text": "than five times last winter"
+  },
+  {
+   "start": 533.48,
+   "end": 540.92,
+   "text": "and it was mostly sunny so sunny that's why I think it's good holiday"
+  },
+  {
+   "start": 540.92,
+   "end": 542.14,
+   "text": "destination even for the winter"
+  },
+  {
+   "start": 542.14,
+   "end": 547.94,
+   "text": "for not non-skiers yeah let's give them some of the facts that i found"
+  },
+  {
+   "start": 549.0,
+   "end": 556.72,
+   "text": "oh you have some more facts actually like yeah i go on the"
+  },
+  {
+   "start": 556.72,
+   "end": 557.92,
+   "text": "nickname is sunshine mountain because"
+  },
+  {
+   "start": 557.92,
+   "end": 562.68,
+   "text": "of the reason that i told you it's so sunny actually i don't remember"
+  },
+  {
+   "start": 562.68,
+   "end": 568.9,
+   "text": "the days but 200 days or something full sun like that it must be"
+  },
+  {
+   "start": 568.9,
+   "end": 570.76,
+   "text": "something regarding the height or something"
+  },
+  {
+   "start": 570.76,
+   "end": 576.9,
+   "text": "like that what is it about the weather somehow the climate yeah it's called"
+  },
+  {
+   "start": 576.9,
+   "end": 577.56,
+   "text": "sub uh alpine"
+  },
+  {
+   "start": 577.56,
+   "end": 583.52,
+   "text": "uh climate so that's why it's like it looks like alpines it is part"
+  },
+  {
+   "start": 583.52,
+   "end": 584.26,
+   "text": "of it but still it's"
+  },
+  {
+   "start": 584.26,
+   "end": 590.28,
+   "text": "sunnier version yeah i love the sun so i mean so happy that we're"
+  },
+  {
+   "start": 590.28,
+   "end": 594.96,
+   "text": "going there this year yeah you need actually sunscreen to go there that's a"
+  },
+  {
+   "start": 594.96,
+   "end": 597.6,
+   "text": "good tip i'll do that i'll do that okay other"
+  },
+  {
+   "start": 597.6,
+   "end": 601.12,
+   "text": "than that i was curious about the height because when you go to the"
+  },
+  {
+   "start": 601.12,
+   "end": 603.4,
+   "text": "top it feels so high so the"
+  },
+  {
+   "start": 603.4,
+   "end": 610.98,
+   "text": "highest point is 2017 meters above sea level and"
+  },
+  {
+   "start": 610.98,
+   "end": 618.08,
+   "text": "the lobus is 1650 so it's always high yeah and And"
+  },
+  {
+   "start": 618.08,
+   "end": 624.3,
+   "text": "I think around 2000, that's where the mountains starts getting rocky, really rocky, right?"
+  },
+  {
+   "start": 624.3,
+   "end": 628.28,
+   "text": "Because it's for some also like climate reasons."
+  },
+  {
+   "start": 628.28,
+   "end": 632.7,
+   "text": "I think that's where it becomes like, not until that point that you have"
+  },
+  {
+   "start": 632.7,
+   "end": 636.26,
+   "text": "a lot of vegetation and so on, but I'm guessing then it gets rocky."
+  },
+  {
+   "start": 637.02,
+   "end": 639.3,
+   "text": "Yeah, you see on top, it's kind of bold."
+  },
+  {
+   "start": 639.72,
+   "end": 641.88,
+   "text": "Yeah, yeah. Although there's no, yeah."
+  },
+  {
+   "start": 641.88,
+   "end": 645.98,
+   "text": "Yeah. Okay. Which ones did you want to share first?"
+  },
+  {
+   "start": 646.8,
+   "end": 650.5,
+   "text": "Well, I just kind of I actually just went on their website and I"
+  },
+  {
+   "start": 650.5,
+   "end": 655.5,
+   "text": "just like, you know, learned some things that I think will be interesting for"
+  },
+  {
+   "start": 655.5,
+   "end": 655.99,
+   "text": "ski"
+  },
+  {
+   "start": 655.99,
+   "end": 659.39,
+   "text": "lovers mostly. And you said that it's not just for ski lovers."
+  },
+  {
+   "start": 659.53,
+   "end": 666.51,
+   "text": "It's really for anyone, anyone who likes nature or just wants to chill somewhere,"
+  },
+  {
+   "start": 666.51,
+   "end": 669.69,
+   "text": "have really nice views and maybe disconnect."
+  },
+  {
+   "start": 669.69,
+   "end": 672.77,
+   "text": "But if you do want to connect, there's also social things that you can"
+  },
+  {
+   "start": 672.77,
+   "end": 673.33,
+   "text": "do over there."
+  },
+  {
+   "start": 673.33,
+   "end": 674.85,
+   "text": "I'm pretty sure because it's quite busy."
+  },
+  {
+   "start": 675.17,
+   "end": 676.01,
+   "text": "It can be quite busy."
+  },
+  {
+   "start": 677.29,
+   "end": 678.53,
+   "text": "And it's beautiful, right?"
+  },
+  {
+   "start": 679.95,
+   "end": 683.93,
+   "text": "before we continue with the show here's a quick reminder this podcast is free"
+  },
+  {
+   "start": 683.93,
+   "end": 684.35,
+   "text": "for everyone and"
+  },
+  {
+   "start": 684.35,
+   "end": 689.31,
+   "text": "supported by listeners like you we hope that this podcast is useful and companion"
+  },
+  {
+   "start": 689.31,
+   "end": 693.63,
+   "text": "to you this is a labor of love for both of us to help us continue"
+  },
+  {
+   "start": 693.63,
+   "end": 695.05,
+   "text": "creating useful content for everyone"
+  },
+  {
+   "start": 695.05,
+   "end": 699.73,
+   "text": "we will appreciate your help if you have the means you can support us"
+  },
+  {
+   "start": 699.73,
+   "end": 700.13,
+   "text": "in different ways"
+  },
+  {
+   "start": 700.13,
+   "end": 706.89,
+   "text": "you may just go to buymeacoffee.com slash mozecafa podcast and send us some cups"
+  },
+  {
+   "start": 706.89,
+   "end": 711.83,
+   "text": "of coffee You may also become a member of our show on patreon.com slash"
+  },
+  {
+   "start": 711.83,
+   "end": 717.67,
+   "text": "mozda kafapodcast and get extra benefits like bonus content, full transcripts of the show"
+  },
+  {
+   "start": 717.67,
+   "end": 720.07,
+   "text": "in Serbian, or even join us on the show."
+  },
+  {
+   "start": 720.89,
+   "end": 725.07,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 725.07,
+   "end": 727.55,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 727.87,
+   "end": 729.69,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 730.47,
+   "end": 732.83,
+   "text": "I mentioned it's the biggest key center in Serbia, right?"
+  },
+  {
+   "start": 732.83,
+   "end": 736.11,
+   "text": "So you can find some other ones."
+  },
+  {
+   "start": 737.47,
+   "end": 742.13,
+   "text": "and there's the trails are basically for like from beginners to advanced so you"
+  },
+  {
+   "start": 742.13,
+   "end": 742.35,
+   "text": "can cover all"
+  },
+  {
+   "start": 742.35,
+   "end": 747.55,
+   "text": "of them as you already said yeah and for each level there's not only"
+  },
+  {
+   "start": 747.55,
+   "end": 748.81,
+   "text": "one or two options if"
+  },
+  {
+   "start": 748.81,
+   "end": 752.03,
+   "text": "you're a beginner you can have three four different slopes and if you're intermediate"
+  },
+  {
+   "start": 752.03,
+   "end": 757.01,
+   "text": "like it gets to tens and then yeah the black ones are the hardest"
+  },
+  {
+   "start": 757.01,
+   "end": 759.23,
+   "text": "ones and they are only one"
+  },
+  {
+   "start": 759.23,
+   "end": 763.57,
+   "text": "one to three I guess I'm not sure but mostly they are blue blue"
+  },
+  {
+   "start": 763.57,
+   "end": 765.25,
+   "text": "means beginner to intermediate level"
+  },
+  {
+   "start": 765.25,
+   "end": 772.31,
+   "text": "so for especially new uh beginners that's a great place"
+  },
+  {
+   "start": 772.31,
+   "end": 778.81,
+   "text": "cheaper than the other European destinations yes and I think a lot of people"
+  },
+  {
+   "start": 778.81,
+   "end": 781.01,
+   "text": "don't really know because almost everyone will goes to like France"
+  },
+  {
+   "start": 781.01,
+   "end": 787.23,
+   "text": "you know to ski and then actually some in a way this isn't the"
+  },
+  {
+   "start": 787.23,
+   "end": 787.49,
+   "text": "budget"
+  },
+  {
+   "start": 788.99,
+   "end": 793.95,
+   "text": "it's somehow it's like somehow compared to other ski resources on a budget but"
+  },
+  {
+   "start": 793.95,
+   "end": 794.31,
+   "text": "compared to other"
+  },
+  {
+   "start": 794.31,
+   "end": 801.39,
+   "text": "parts of Serbia it's not a budget friendly place and they have what"
+  },
+  {
+   "start": 801.39,
+   "end": 805.05,
+   "text": "was it 64 different"
+  },
+  {
+   "start": 805.05,
+   "end": 812.61,
+   "text": "trails right tracks actually not trails tracks 64 kilometers"
+  },
+  {
+   "start": 812.61,
+   "end": 814.81,
+   "text": "actually sorry 64 kilometers"
+  },
+  {
+   "start": 817.27,
+   "end": 822.21,
+   "text": "so there's all all of these combined right and they also have the cable"
+  },
+  {
+   "start": 822.21,
+   "end": 823.75,
+   "text": "cars and I mean cable"
+  },
+  {
+   "start": 823.75,
+   "end": 828.85,
+   "text": "cars in many different shapes right like they can be for one person they"
+  },
+  {
+   "start": 828.85,
+   "end": 829.97,
+   "text": "can be like just to hold it"
+  },
+  {
+   "start": 829.97,
+   "end": 834.27,
+   "text": "they can be for four people and there's a lot of these also there's"
+  },
+  {
+   "start": 834.27,
+   "end": 835.41,
+   "text": "like cable cars for people that"
+  },
+  {
+   "start": 835.41,
+   "end": 839.97,
+   "text": "just want to just sightsee right so you don't have to ski you just"
+  },
+  {
+   "start": 839.97,
+   "end": 842.71,
+   "text": "go there I did that actually because I didn't want to ski."
+  },
+  {
+   "start": 843.21,
+   "end": 845.01,
+   "text": "So I went with my friend and I just sat down"
+  },
+  {
+   "start": 845.01,
+   "end": 846.63,
+   "text": "and we went like, you know,"
+  },
+  {
+   "start": 846.63,
+   "end": 849.15,
+   "text": "you look at it from above and it's pretty amazing."
+  },
+  {
+   "start": 849.15,
+   "end": 852.11,
+   "text": "Definitely. This is what people do as well."
+  },
+  {
+   "start": 852.29,
+   "end": 853.37,
+   "text": "People get tired as well."
+  },
+  {
+   "start": 853.37,
+   "end": 856.51,
+   "text": "They just get the lift and they go to the top"
+  },
+  {
+   "start": 856.51,
+   "end": 859.55,
+   "text": "and there are very nice restaurants on top."
+  },
+  {
+   "start": 859.55,
+   "end": 861.95,
+   "text": "So you can just chill, enjoy the sun and snow and the view."
+  },
+  {
+   "start": 861.95,
+   "end": 865.11,
+   "text": "So you don't have to go with your skis there."
+  },
+  {
+   "start": 866.01,
+   "end": 869.91,
+   "text": "Yeah. What are the most important, like most important, more popular trails over there?"
+  },
+  {
+   "start": 869.91,
+   "end": 870.43,
+   "text": "Do you know?"
+  },
+  {
+   "start": 870.89,
+   "end": 872.95,
+   "text": "Which ones have you gone to?"
+  },
+  {
+   "start": 874.02,
+   "end": 876.04,
+   "text": "The peaks are very important."
+  },
+  {
+   "start": 876.04,
+   "end": 882.62,
+   "text": "From that peak, you can have different roads to go, different slopes, blue ones,"
+  },
+  {
+   "start": 882.62,
+   "end": 884.78,
+   "text": "red ones, brown ones."
+  },
+  {
+   "start": 884.78,
+   "end": 887.9,
+   "text": "So that depends on whatever level you are."
+  },
+  {
+   "start": 887.9,
+   "end": 893.16,
+   "text": "So the most famous one is Pancı Çevur, which is the highest and Karaman"
+  },
+  {
+   "start": 893.16,
+   "end": 895.42,
+   "text": "Greben. I like the name Karaman Greben."
+  },
+  {
+   "start": 895.96,
+   "end": 899.42,
+   "text": "Yeah, Karaman Greben."
+  },
+  {
+   "start": 899.42,
+   "end": 900.76,
+   "text": "Yeah, exactly. It sounds a bit Turkish."
+  },
+  {
+   "start": 902.58,
+   "end": 908.5,
+   "text": "I love these places because of first restaurants views and the varieties of slopes"
+  },
+  {
+   "start": 908.5,
+   "end": 908.66,
+   "text": "that you can"
+  },
+  {
+   "start": 908.66,
+   "end": 912.1,
+   "text": "take from so you can go wherever slope you want and you can come"
+  },
+  {
+   "start": 912.1,
+   "end": 913.86,
+   "text": "back and try the other one from"
+  },
+  {
+   "start": 913.86,
+   "end": 919.66,
+   "text": "the same peak so that's why I really love these two Malo Yezoro I"
+  },
+  {
+   "start": 919.66,
+   "end": 921.52,
+   "text": "think it's a lake right yeah"
+  },
+  {
+   "start": 921.52,
+   "end": 926.34,
+   "text": "Yezoro is lake yeah yeah it's Malo Yezoro is again another kind of I"
+  },
+  {
+   "start": 926.34,
+   "end": 929.94,
+   "text": "guess peak or like trail that you can take this is also one of"
+  },
+  {
+   "start": 929.94,
+   "end": 931.46,
+   "text": "the most popular ones although I haven't been there"
+  },
+  {
+   "start": 931.46,
+   "end": 936.72,
+   "text": "though so I don't know last year actually they started this cable car from"
+  },
+  {
+   "start": 936.72,
+   "end": 938.06,
+   "text": "Brzeche yes I wanted"
+  },
+  {
+   "start": 938.06,
+   "end": 943.62,
+   "text": "to mention that yeah and it changed a lot I think in Kaponi it"
+  },
+  {
+   "start": 943.62,
+   "end": 944.62,
+   "text": "will especially this year because"
+  },
+  {
+   "start": 944.62,
+   "end": 950.52,
+   "text": "it was such a traffic jam there because everybody goes around the same time"
+  },
+  {
+   "start": 950.52,
+   "end": 955.38,
+   "text": "like especially the people who go for the day they go early in the"
+  },
+  {
+   "start": 955.38,
+   "end": 958.82,
+   "text": "morning and there's a traffic jam all the time"
+  },
+  {
+   "start": 958.82,
+   "end": 962.72,
+   "text": "but now in Brzeca you can just leave your car there and take the"
+  },
+  {
+   "start": 962.72,
+   "end": 964.94,
+   "text": "closed cable car to go to"
+  },
+  {
+   "start": 964.94,
+   "end": 969.64,
+   "text": "I think it was Karaman Greba and it's going so you can just go"
+  },
+  {
+   "start": 969.64,
+   "end": 970.62,
+   "text": "there and start your life from there"
+  },
+  {
+   "start": 970.62,
+   "end": 975.34,
+   "text": "you don't have to park your car or you I think saves time as"
+  },
+  {
+   "start": 975.34,
+   "end": 976.96,
+   "text": "well yeah I think this was one of"
+  },
+  {
+   "start": 976.96,
+   "end": 980.48,
+   "text": "the biggest investments that they made in the last I don't know how many"
+  },
+  {
+   "start": 980.48,
+   "end": 983.04,
+   "text": "years so uh so yeah You don't have to be in the"
+  },
+  {
+   "start": 983.04,
+   "end": 988.38,
+   "text": "the center of happening right so you can just go to Brzezic and and"
+  },
+  {
+   "start": 988.38,
+   "end": 989.06,
+   "text": "do that so that's an option"
+  },
+  {
+   "start": 989.06,
+   "end": 993.98,
+   "text": "maybe I'm guessing that also um the accommodation over there maybe is a bit"
+  },
+  {
+   "start": 993.98,
+   "end": 995.7,
+   "text": "cheaper compared to the"
+  },
+  {
+   "start": 995.7,
+   "end": 999.96,
+   "text": "core center but still I'm guessing the prices are rising right now because of"
+  },
+  {
+   "start": 999.96,
+   "end": 1000.92,
+   "text": "the the cable car"
+  },
+  {
+   "start": 1000.92,
+   "end": 1006.38,
+   "text": "but yeah that's another option yeah yeah and one thing that I really love"
+  },
+  {
+   "start": 1006.38,
+   "end": 1013.0,
+   "text": "there night skiing night skiing is a totally different thing the weather is colder"
+  },
+  {
+   "start": 1013.0,
+   "end": 1014.48,
+   "text": "there are just lights and it's"
+  },
+  {
+   "start": 1014.48,
+   "end": 1020.92,
+   "text": "kind of scarier because it's dark like there are lights on the pitch but"
+  },
+  {
+   "start": 1020.92,
+   "end": 1023.52,
+   "text": "uh it's the you know it's"
+  },
+  {
+   "start": 1023.52,
+   "end": 1027.62,
+   "text": "a wooded place like there are lots of trees on each slope like on"
+  },
+  {
+   "start": 1027.62,
+   "end": 1033.38,
+   "text": "the sides at night they are completely dark so you feel like creepy a"
+  },
+  {
+   "start": 1033.38,
+   "end": 1038.12,
+   "text": "little bit yeah experience experience or adventure yeah"
+  },
+  {
+   "start": 1038.12,
+   "end": 1044.94,
+   "text": "they also do have fake snow so even if there's global warming or whatever"
+  },
+  {
+   "start": 1044.94,
+   "end": 1045.38,
+   "text": "so they they have"
+  },
+  {
+   "start": 1045.38,
+   "end": 1049.38,
+   "text": "i don't know how much you like to ski and escape fake snow but"
+  },
+  {
+   "start": 1049.38,
+   "end": 1051.68,
+   "text": "you know at least actually they do"
+  },
+  {
+   "start": 1051.68,
+   "end": 1055.52,
+   "text": "it before the season starts for example they did it last week um to"
+  },
+  {
+   "start": 1055.52,
+   "end": 1060.04,
+   "text": "like have a welcome party to start the season because snow is not there"
+  },
+  {
+   "start": 1060.04,
+   "end": 1062.88,
+   "text": "yet but when snow comes they don't need any fake snow"
+  },
+  {
+   "start": 1062.88,
+   "end": 1069.94,
+   "text": "i think it's snowy there the snow hasn't started um as far as i"
+  },
+  {
+   "start": 1069.94,
+   "end": 1072.44,
+   "text": "checked not much okay i should go"
+  },
+  {
+   "start": 1072.44,
+   "end": 1076.78,
+   "text": "soon i should go soon but the season starts on the 9th of december"
+  },
+  {
+   "start": 1076.78,
+   "end": 1078.9,
+   "text": "so they're expecting to have"
+  },
+  {
+   "start": 1078.9,
+   "end": 1083.34,
+   "text": "enough snow until then and then they are going to start and they sold"
+  },
+  {
+   "start": 1083.34,
+   "end": 1086.4,
+   "text": "the tickets online this year and like with the discount."
+  },
+  {
+   "start": 1086.4,
+   "end": 1091.02,
+   "text": "So, so many people already bought their tickets."
+  },
+  {
+   "start": 1091.06,
+   "end": 1096.74,
+   "text": "Wow. Even during the pandemic interesting I mean last year there were a lot"
+  },
+  {
+   "start": 1096.74,
+   "end": 1099.14,
+   "text": "of people even though there weren't any vaccines and stuff"
+  },
+  {
+   "start": 1099.14,
+   "end": 1106.14,
+   "text": "what else have you noted uh wrote down here so"
+  },
+  {
+   "start": 1106.14,
+   "end": 1109.5,
+   "text": "you have more than 200 accommodation options yeah"
+  },
+  {
+   "start": 1109.5,
+   "end": 1115.8,
+   "text": "we talked about that oh yes ski pass yeah ski pass and for accommodation"
+  },
+  {
+   "start": 1115.8,
+   "end": 1120.94,
+   "text": "so there are two options you can stay near the slops near the skiing"
+  },
+  {
+   "start": 1120.94,
+   "end": 1123.92,
+   "text": "resorts like where you can walk to the"
+  },
+  {
+   "start": 1123.92,
+   "end": 1129.4,
+   "text": "skiing beaches but also there's a little village that I actually sent you it's"
+  },
+  {
+   "start": 1129.4,
+   "end": 1130.06,
+   "text": "just five kilometers"
+  },
+  {
+   "start": 1130.06,
+   "end": 1135.58,
+   "text": "away three to five kilometers away and you can if you go by car"
+  },
+  {
+   "start": 1135.58,
+   "end": 1136.5,
+   "text": "you can stay in that small village"
+  },
+  {
+   "start": 1136.5,
+   "end": 1141.24,
+   "text": "as well it's so beautiful that's what I wanted that's what I wanted exactly"
+  },
+  {
+   "start": 1141.24,
+   "end": 1145.44,
+   "text": "because I know that I'm not going to stay for that long and I'm"
+  },
+  {
+   "start": 1145.44,
+   "end": 1147.58,
+   "text": "not expecting my parents to go skiing we didn't like"
+  },
+  {
+   "start": 1147.58,
+   "end": 1152.72,
+   "text": "organize anything don't have any equipment nothing nothing nothing so we just thought we"
+  },
+  {
+   "start": 1152.72,
+   "end": 1152.82,
+   "text": "be like in a really beautiful place like where we can see like just"
+  },
+  {
+   "start": 1152.82,
+   "end": 1153.2,
+   "text": "just want to"
+  },
+  {
+   "start": 1158.02,
+   "end": 1160.62,
+   "text": "a really nice you know sightseeing"
+  },
+  {
+   "start": 1160.62,
+   "end": 1165.04,
+   "text": "place and where you can maybe walk a bit and that sounds like a"
+  },
+  {
+   "start": 1165.04,
+   "end": 1166.88,
+   "text": "good and not in the in the busy area"
+  },
+  {
+   "start": 1166.88,
+   "end": 1171.42,
+   "text": "right so that sounds like a good alternative definitely and it's called Kapoenig again"
+  },
+  {
+   "start": 1171.42,
+   "end": 1175.98,
+   "text": "the village name you just see it on the map when you oh i"
+  },
+  {
+   "start": 1175.98,
+   "end": 1179.32,
+   "text": "saw it okay yeah okay and ski passes"
+  },
+  {
+   "start": 1179.32,
+   "end": 1186.52,
+   "text": "that's a tricky one they sell half the day one full day two"
+  },
+  {
+   "start": 1186.52,
+   "end": 1187.9,
+   "text": "day three day four day tickets so"
+  },
+  {
+   "start": 1187.9,
+   "end": 1192.26,
+   "text": "many options we didn't know that in the beginning we were just buying tickets"
+  },
+  {
+   "start": 1192.26,
+   "end": 1193.44,
+   "text": "oh you realize we"
+  },
+  {
+   "start": 1193.44,
+   "end": 1198.2,
+   "text": "could have both half day tickets and then we did that so if you're"
+  },
+  {
+   "start": 1198.2,
+   "end": 1201.81,
+   "text": "going for a week that's going to be cheaper to buy the weekly pass"
+  },
+  {
+   "start": 1201.81,
+   "end": 1202.05,
+   "text": "also there's seasonal pass of course which is the most economic one if you're"
+  },
+  {
+   "start": 1202.05,
+   "end": 1202.29,
+   "text": "and"
+  },
+  {
+   "start": 1206.11,
+   "end": 1212.37,
+   "text": "going there quite often is there anything else we want to say before we"
+  },
+  {
+   "start": 1212.37,
+   "end": 1216.81,
+   "text": "start talking about the vocabulary actually actually we can go with the vocabulary because"
+  },
+  {
+   "start": 1216.81,
+   "end": 1224.21,
+   "text": "uh that's also interesting to learn we mentioned already work right yeah that's"
+  },
+  {
+   "start": 1224.21,
+   "end": 1231.15,
+   "text": "a peak yeah again three consonant words yeah yeah that's"
+  },
+  {
+   "start": 1231.15,
+   "end": 1231.33,
+   "text": "although i don't know for me at least it's not like it's not like"
+  },
+  {
+   "start": 1231.33,
+   "end": 1231.59,
+   "text": "true"
+  },
+  {
+   "start": 1235.49,
+   "end": 1236.63,
+   "text": "you know at least like"
+  },
+  {
+   "start": 1236.63,
+   "end": 1243.65,
+   "text": "is not too strong it could be strong but yeah and uh"
+  },
+  {
+   "start": 1243.65,
+   "end": 1251.31,
+   "text": "oh pantechev you know why pantechev no because panticeva morica is a how"
+  },
+  {
+   "start": 1251.31,
+   "end": 1253.55,
+   "text": "do you call like a oh my god how do you call these trees"
+  },
+  {
+   "start": 1253.55,
+   "end": 1259.27,
+   "text": "they're never like christmas trees basically it's a evergreen yeah it's a pine tree"
+  },
+  {
+   "start": 1259.27,
+   "end": 1259.67,
+   "text": "that can only be found in serbia so panticev i'm guessing this is the tree"
+  },
+  {
+   "start": 1266.11,
+   "end": 1272.33,
+   "text": "reason based on the that tree probably yeah exactly at least uh that's what"
+  },
+  {
+   "start": 1272.33,
+   "end": 1275.67,
+   "text": "i know about that so this is you can only find it in the"
+  },
+  {
+   "start": 1275.67,
+   "end": 1282.85,
+   "text": "Balkans. Okay, then we have skiing as a noun, which"
+  },
+  {
+   "start": 1282.85,
+   "end": 1284.21,
+   "text": "is, do you know it?"
+  },
+  {
+   "start": 1284.21,
+   "end": 1286.49,
+   "text": "Yeah, I just saw it."
+  },
+  {
+   "start": 1288.09,
+   "end": 1293.71,
+   "text": "Skiyanie, yeah, but I also thought there's snowboarding, right?"
+  },
+  {
+   "start": 1293.71,
+   "end": 1296.51,
+   "text": "So, we just say snowboarding."
+  },
+  {
+   "start": 1297.23,
+   "end": 1300.47,
+   "text": "I don't think there's a reason, there's like a translation for that."
+  },
+  {
+   "start": 1300.47,
+   "end": 1306.83,
+   "text": "How about the people who can ski and who can snowboard skier snowboarder oh"
+  },
+  {
+   "start": 1306.83,
+   "end": 1310.59,
+   "text": "that's good so a ski-ash i think that's ski-ash"
+  },
+  {
+   "start": 1310.89,
+   "end": 1317.99,
+   "text": "you have gender issue there skia shitza skia shitza or i'm gonna have"
+  },
+  {
+   "start": 1317.99,
+   "end": 1318.35,
+   "text": "to double check that"
+  },
+  {
+   "start": 1318.35,
+   "end": 1323.53,
+   "text": "but i think that's how it is because i haven't really been around actually"
+  },
+  {
+   "start": 1323.53,
+   "end": 1325.69,
+   "text": "i i forgot that a lot"
+  },
+  {
+   "start": 1325.69,
+   "end": 1330.13,
+   "text": "of this vocabulary i'm like wow i'm remembering right now because i don't use"
+  },
+  {
+   "start": 1330.13,
+   "end": 1331.33,
+   "text": "it right like i"
+  },
+  {
+   "start": 1331.33,
+   "end": 1335.19,
+   "text": "don't really use it yes skia shitza i think that's uh what it is"
+  },
+  {
+   "start": 1335.19,
+   "end": 1343.77,
+   "text": "male female snowboarding snowboarders i don't really know that one is quite tough because"
+  },
+  {
+   "start": 1343.77,
+   "end": 1349.15,
+   "text": "it's borrowed words so it's gonna sound different anyway yeah also it's not really"
+  },
+  {
+   "start": 1349.15,
+   "end": 1349.25,
+   "text": "like a"
+  },
+  {
+   "start": 1349.25,
+   "end": 1353.81,
+   "text": "thing like i don't know if we have many famous snowboarders or something like"
+  },
+  {
+   "start": 1353.81,
+   "end": 1354.71,
+   "text": "that so it's not"
+  },
+  {
+   "start": 1354.71,
+   "end": 1359.89,
+   "text": "really like that often i did add sledding as well as a noun because"
+  },
+  {
+   "start": 1359.89,
+   "end": 1367.21,
+   "text": "that's what you do when there's know right yeah that's fun definitely sankanyi sankanyi"
+  },
+  {
+   "start": 1367.21,
+   "end": 1370.93,
+   "text": "yes sankanyi you see skianye sankanyi"
+  },
+  {
+   "start": 1370.93,
+   "end": 1378.39,
+   "text": "so when there's nie it's a noun yeah okay why skianye because the skis"
+  },
+  {
+   "start": 1378.39,
+   "end": 1378.85,
+   "text": "are skie"
+  },
+  {
+   "start": 1378.85,
+   "end": 1386.45,
+   "text": "oh okay skie then sledge is sankar yeah it's"
+  },
+  {
+   "start": 1386.45,
+   "end": 1389.87,
+   "text": "actually so it's this is um we don't use uh"
+  },
+  {
+   "start": 1389.87,
+   "end": 1397.17,
+   "text": "singular we use plural um uh daimi more sunk it so"
+  },
+  {
+   "start": 1397.17,
+   "end": 1404.37,
+   "text": "it's very sunk it cool actually to ski is skiyati skiyati"
+  },
+  {
+   "start": 1404.37,
+   "end": 1411.65,
+   "text": "and then to sled sankati okay so when we make them now"
+  },
+  {
+   "start": 1411.65,
+   "end": 1412.77,
+   "text": "it's skiyanye"
+  },
+  {
+   "start": 1412.77,
+   "end": 1420.85,
+   "text": "or sankani yeah okay makes sense snowboard snowboard i guess yeah"
+  },
+  {
+   "start": 1420.85,
+   "end": 1427.29,
+   "text": "because we even skateboard is skateboard you know it's like it's like borrowing right"
+  },
+  {
+   "start": 1427.29,
+   "end": 1430.15,
+   "text": "yeah cable car that one i"
+  },
+  {
+   "start": 1430.15,
+   "end": 1437.51,
+   "text": "completely forgot we call this zhichara zhichara yes it's interesting and"
+  },
+  {
+   "start": 1437.51,
+   "end": 1438.85,
+   "text": "i'm guessing because"
+  },
+  {
+   "start": 1438.85,
+   "end": 1446.21,
+   "text": "zhichara is a wire cable wire right i see so it's like the wire"
+  },
+  {
+   "start": 1446.21,
+   "end": 1449.79,
+   "text": "or the cable that's connecting or like that's leading you."
+  },
+  {
+   "start": 1449.79,
+   "end": 1455.19,
+   "text": "So, Zicara. Zicara is a feminine noun."
+  },
+  {
+   "start": 1456.27,
+   "end": 1459.39,
+   "text": "Yeah, I added two more activities to do in kapoenik and maybe you"
+  },
+  {
+   "start": 1459.39,
+   "end": 1465.35,
+   "text": "can tell the names in serbian as well before the uh skiing season starts"
+  },
+  {
+   "start": 1465.35,
+   "end": 1466.91,
+   "text": "mountain bikers oh my god"
+  },
+  {
+   "start": 1466.91,
+   "end": 1471.85,
+   "text": "they all go there and they go on top with a car and then"
+  },
+  {
+   "start": 1471.85,
+   "end": 1478.13,
+   "text": "they ride back with their bikes mountain biking wait is it the bike or"
+  },
+  {
+   "start": 1478.13,
+   "end": 1484.31,
+   "text": "motor what is it no normal bike normal bike i don't really know because"
+  },
+  {
+   "start": 1484.31,
+   "end": 1487.17,
+   "text": "i also for a lot of these things we just use like we don't"
+  },
+  {
+   "start": 1487.17,
+   "end": 1487.27,
+   "text": "translation of our own i think it would be something like planning school mountain"
+  },
+  {
+   "start": 1487.27,
+   "end": 1487.61,
+   "text": "have a"
+  },
+  {
+   "start": 1492.91,
+   "end": 1493.07,
+   "text": "planning"
+  },
+  {
+   "start": 1493.07,
+   "end": 1498.25,
+   "text": "school biking is like i feel we can say biking as well i don't"
+  },
+  {
+   "start": 1498.25,
+   "end": 1500.17,
+   "text": "know i'm not questioning i think"
+  },
+  {
+   "start": 1500.17,
+   "end": 1504.93,
+   "text": "yeah i think you know i think you just do you should just type"
+  },
+  {
+   "start": 1504.93,
+   "end": 1509.99,
+   "text": "mountain biking i think you can because we are used to using borrowings like"
+  },
+  {
+   "start": 1509.99,
+   "end": 1513.19,
+   "text": "these kind of even like stand-up paddling we don't have a word for that"
+  },
+  {
+   "start": 1513.19,
+   "end": 1519.65,
+   "text": "in serbian it's stand-up paddling so that's it i would have to sorry i"
+  },
+  {
+   "start": 1519.65,
+   "end": 1519.77,
+   "text": "have to check this don't worry yeah and also last one paragliding that's a"
+  },
+  {
+   "start": 1519.77,
+   "end": 1519.93,
+   "text": "would"
+  },
+  {
+   "start": 1526.61,
+   "end": 1527.99,
+   "text": "nice view yeah paragliding"
+  },
+  {
+   "start": 1527.99,
+   "end": 1533.35,
+   "text": "the same yeah told you at least that's how I would say it."
+  },
+  {
+   "start": 1533.57,
+   "end": 1535.17,
+   "text": "Paragliding. Yeah. All right."
+  },
+  {
+   "start": 1535.17,
+   "end": 1535.77,
+   "text": "Thank you."
+  },
+  {
+   "start": 1535.77,
+   "end": 1538.67,
+   "text": "I hope we inspired people to go to Coponic."
+  },
+  {
+   "start": 1538.91,
+   "end": 1541.79,
+   "text": "Yeah. I bet everybody will love it."
+  },
+  {
+   "start": 1542.57,
+   "end": 1544.05,
+   "text": "Well, you definitely inspired me."
+  },
+  {
+   "start": 1544.89,
+   "end": 1550.81,
+   "text": "So I'm even like planning maybe next year to go for skiing specifically."
+  },
+  {
+   "start": 1550.81,
+   "end": 1551.41,
+   "text": "So let's see."
+  },
+  {
+   "start": 1552.07,
+   "end": 1553.21,
+   "text": "I will come with you."
+  },
+  {
+   "start": 1554.71,
+   "end": 1555.93,
+   "text": "Any excuse for me?"
+  },
+  {
+   "start": 1556.83,
+   "end": 1558.49,
+   "text": "It's great to go there."
+  },
+  {
+   "start": 1559.73,
+   "end": 1561.09,
+   "text": "Okay, guys, I hope you enjoyed."
+  },
+  {
+   "start": 1561.09,
+   "end": 1562.59,
+   "text": "I hope you enjoyed it."
+  },
+  {
+   "start": 1563.97,
+   "end": 1565.55,
+   "text": "Yes. Yes, also."
+  },
+  {
+   "start": 1566.47,
+   "end": 1571.81,
+   "text": "Yes, So see you in the next episode."
+  },
+  {
+   "start": 1572.69,
+   "end": 1573.33,
+   "text": "All right, see you."
+  },
+  {
+   "start": 1575.03,
+   "end": 1576.49,
+   "text": "Thank you for joining us today."
+  },
+  {
+   "start": 1576.49,
+   "end": 1579.31,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 1579.45,
+   "end": 1583.93,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 1583.93,
+   "end": 1585.33,
+   "text": "on our Instagram page,"
+  },
+  {
+   "start": 1585.33,
+   "end": 1587.93,
+   "text": "možekafa podcast. Prijatno!"
+  }
+ ],
+ "title": "Ep.8: Kopaonik",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939237/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075916-44100-1-82062917d7bfd1ef.mp3"
+}

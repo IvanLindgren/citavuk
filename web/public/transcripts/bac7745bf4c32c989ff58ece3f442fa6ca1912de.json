@@ -1,0 +1,545 @@
+{
+ "duration": 523.02,
+ "cues": [
+  {
+   "start": 0.04,
+   "end": 4.66,
+   "text": "Dobar dan i dobrodošli u prvu epizodu Serbian Language Podcast."
+  },
+  {
+   "start": 5.0,
+   "end": 8.84,
+   "text": "Ja sam Nikola, student srpskog jezika i online nastavnik."
+  },
+  {
+   "start": 9.4,
+   "end": 11.96,
+   "text": "I ovdje sam da bih vam pomogao u učenju."
+  },
+  {
+   "start": 12.92,
+   "end": 17.54,
+   "text": "Veoma mi je drago što veliki deo mojih učenika već dosta dugo priča srpski"
+  },
+  {
+   "start": 17.54,
+   "end": 22.24,
+   "text": "jezik, a mnog učenika također traži vežbe čitanja i razgovora."
+  },
+  {
+   "start": 23.12,
+   "end": 27.4,
+   "text": "To su odlične vesti jer učenje jezika treba biti nešto što ne sme da"
+  },
+  {
+   "start": 27.4,
+   "end": 31.06,
+   "text": "dosadi, a vežbanje jezika mora postati navika."
+  },
+  {
+   "start": 32.64,
+   "end": 37.32,
+   "text": "Ova, a i buduće epizode napravljene su za napredne učenike."
+  },
+  {
+   "start": 37.46,
+   "end": 44.14,
+   "text": "To su oni učenici koji su već dobro savladali osnovne čitanja, pisanja, gramatike i"
+  },
+  {
+   "start": 44.14,
+   "end": 46.34,
+   "text": "koji imaju dobar osnovni vokabular."
+  },
+  {
+   "start": 47.52,
+   "end": 52.5,
+   "text": "Naravno, početnici mogu slušati ove epizode da bi se upoznali sa jezikom, da bi"
+  },
+  {
+   "start": 52.5,
+   "end": 56.92,
+   "text": "čuli kako srpski jezik treba da zvuči i u svaku epizodu spremljen je i"
+  },
+  {
+   "start": 56.92,
+   "end": 64.24,
+   "text": "transkript koji preporučujem onim slušalcima koji imaju problema u praćenju i razumevanju audiozapisa."
+  },
+  {
+   "start": 65.1,
+   "end": 71.1,
+   "text": "Ovdje ćemo zajedno učiti o raznim zanimljivostima iz raznih oblasti, a najviše ćemo govoriti"
+  },
+  {
+   "start": 71.1,
+   "end": 73.76,
+   "text": "o Srbiji i srpskoj kulturi."
+  },
+  {
+   "start": 74.24,
+   "end": 79.86,
+   "text": "Često ću iznositi svoje mišljenja, ali ću se potruditi da nađem i iznesem mišljenja"
+  },
+  {
+   "start": 79.86,
+   "end": 84.82,
+   "text": "različitih stručnjaka, u zavisnosti od teme o kojoj govorimo."
+  },
+  {
+   "start": 85.48,
+   "end": 89.98,
+   "text": "Nadam se da će vam teme koje zaberem biti zanimljive, a možete mi pisati"
+  },
+  {
+   "start": 89.98,
+   "end": 97.18,
+   "text": "i dati predloge na e-mail nikola.pujic.gmail.com Pa,"
+  },
+  {
+   "start": 97.18,
+   "end": 99.1,
+   "text": "prva epizoda može da počne."
+  },
+  {
+   "start": 100.92,
+   "end": 104.42,
+   "text": "Za početak govorit ćemo o tome kako učimo jesik."
+  },
+  {
+   "start": 105.02,
+   "end": 111.14,
+   "text": "Mnogi lingvisti, ali i filozofi, vekovima su raspravljali o tome kako čovek uči, kako"
+  },
+  {
+   "start": 111.14,
+   "end": 117.34,
+   "text": "usvaja znanje. Tako je još Platon govorio da čovek ne sazna nove stvari, već"
+  },
+  {
+   "start": 117.34,
+   "end": 121.34,
+   "text": "se samo seća ideja koje postoje kao univerzalne, idealne."
+  },
+  {
+   "start": 121.34,
+   "end": 127.88,
+   "text": "A engleski filozof John Locke govorio je da je ljudski um prazna tabla, tabula"
+  },
+  {
+   "start": 127.88,
+   "end": 130.62,
+   "text": "rasa, i da čovek uči kroz iskustvo."
+  },
+  {
+   "start": 131.54,
+   "end": 136.72,
+   "text": "Ali zašto je tako teško učiti novi, strani jezik, iako dece nauči to vrlo"
+  },
+  {
+   "start": 136.72,
+   "end": 138.34,
+   "text": "lako, dok su još mala?"
+  },
+  {
+   "start": 139.32,
+   "end": 142.34,
+   "text": "Da li postojimo gluplji za učenje jezika kako starimo?"
+  },
+  {
+   "start": 143.08,
+   "end": 144.48,
+   "text": "Pa, ne baš."
+  },
+  {
+   "start": 144.48,
+   "end": 148.78,
+   "text": "Odrastao čovek svako ko ima više znanja i inteligencije od bebe."
+  },
+  {
+   "start": 149.32,
+   "end": 155.38,
+   "text": "Da bi odgovorili novo pitanje, moramo da spomenemo američkog lingvistu, Noma Čomskog."
+  },
+  {
+   "start": 155.98,
+   "end": 157.26,
+   "text": "Čomski još 60."
+  },
+  {
+   "start": 157.26,
+   "end": 162.78,
+   "text": "godina 20. veka govori o urođenom aparatu koji služi za učenje jezika."
+  },
+  {
+   "start": 163.48,
+   "end": 169.4,
+   "text": "Prema njemu u našem mozgu postoji poseban sistem koji prepozna različite vrste i različite"
+  },
+  {
+   "start": 169.4,
+   "end": 171.72,
+   "text": "funkcije reči i glasova."
+  },
+  {
+   "start": 172.74,
+   "end": 177.64,
+   "text": "Ovim sistemom služe se i deca, čak i pre nego što kažu prvu reč."
+  },
+  {
+   "start": 178.5,
+   "end": 183.54,
+   "text": "Dakle, jezik se ne uči samo iz knjige, već slušanjem i pričanjem."
+  },
+  {
+   "start": 184.1,
+   "end": 189.1,
+   "text": "Svako od nas ima urođeni aparat koji stvara jezički sistem u našem mozgu."
+  },
+  {
+   "start": 189.86,
+   "end": 192.42,
+   "text": "Ovo važi i za učenje stranih jezika."
+  },
+  {
+   "start": 193.2,
+   "end": 199.24,
+   "text": "Iako već govorimo svojim, maternjim jezikom, teško je naučiti strani jezik zato što je"
+  },
+  {
+   "start": 199.24,
+   "end": 201.98,
+   "text": "teško prebaciti se u drugi jezički sistem."
+  },
+  {
+   "start": 202.78,
+   "end": 207.86,
+   "text": "Danas je popularno mišljenje da je jezik sistem koji se sastoji od mnogo delova."
+  },
+  {
+   "start": 208.42,
+   "end": 214.54,
+   "text": "Kada učimo strani jezik, mi se prebacujemo iz sistema primornog jezika u sistem jezika"
+  },
+  {
+   "start": 214.54,
+   "end": 215.94,
+   "text": "koji nam je nepoznat."
+  },
+  {
+   "start": 216.66,
+   "end": 222.45,
+   "text": "Pored toga, moramo da naučimo veliki broj novih reči, a to zahtava mnogo vežbanja"
+  },
+  {
+   "start": 222.45,
+   "end": 225.71,
+   "text": "i ponavljanja, mnogo mentalne snage."
+  },
+  {
+   "start": 226.33,
+   "end": 231.33,
+   "text": "Svakako, čovjek je sposoban za sve ovo, iako sve deluje previše teško."
+  },
+  {
+   "start": 232.01,
+   "end": 235.67,
+   "text": "Najvažnije je biti uporan, dosledan i vežbati."
+  },
+  {
+   "start": 236.49,
+   "end": 240.85,
+   "text": "Iako se jezik najbolje uči kroz slušanje i pričanje, što je i poenta ovih"
+  },
+  {
+   "start": 240.85,
+   "end": 246.69,
+   "text": "epizoda, potrebno je upoznati se sa osnovama jezika sa gramatikom."
+  },
+  {
+   "start": 247.31,
+   "end": 254.35,
+   "text": "Kada naučimo osnove gramatike i sintakse, slušanje, pričanje i razumevanje jezika ići će"
+  },
+  {
+   "start": 254.35,
+   "end": 255.59,
+   "text": "duplo brže."
+  },
+  {
+   "start": 257.01,
+   "end": 261.41,
+   "text": "Postoji mnogo mobilnih aplikacija koje pomažu u učenju stranog jezika."
+  },
+  {
+   "start": 262.17,
+   "end": 267.47,
+   "text": "Neke od njih omogućavaju rezervisanje časova, kao što je na primjer prepli, a neke"
+  },
+  {
+   "start": 267.47,
+   "end": 273.05,
+   "text": "pružuju vežbanje pisanja i učenje jezika kroz razgovor sa strancima, kao što je tandem"
+  },
+  {
+   "start": 273.05,
+   "end": 275.05,
+   "text": "ili hello talk."
+  },
+  {
+   "start": 275.57,
+   "end": 281.59,
+   "text": "Meni je u učenju francuskog, na primer, mnogo pomogao YouTube kanal Easy French, dok"
+  },
+  {
+   "start": 281.59,
+   "end": 283.87,
+   "text": "sam gramatiku učio iz knjige."
+  },
+  {
+   "start": 284.75,
+   "end": 290.51,
+   "text": "Što se tiče vokabulara, mnogi ljudi preporučuju pisanje reči na papiru i lepljenje na"
+  },
+  {
+   "start": 290.51,
+   "end": 294.87,
+   "text": "različite predmetu u kući, da ne bi zaboravili imena stvari."
+  },
+  {
+   "start": 295.91,
+   "end": 301.75,
+   "text": "Možda to i nije neophodno, ali svakako je najbitnije da sastavimo listu nepoznatih reči"
+  },
+  {
+   "start": 301.75,
+   "end": 305.13,
+   "text": "i da je ponavljamo i proširujemo svakog dana."
+  },
+  {
+   "start": 305.81,
+   "end": 311.51,
+   "text": "Ponavljanje reči je verovato najdosadniji deo učenja svakog jezika, ali je vrlo važan."
+  },
+  {
+   "start": 312.19,
+   "end": 315.17,
+   "text": "Dakle, moramo da slušamo strani jezik što više."
+  },
+  {
+   "start": 315.17,
+   "end": 318.91,
+   "text": "Možete da nađete dosta materijala na internetu."
+  },
+  {
+   "start": 325.05,
+   "end": 330.53,
+   "text": "Pored toga, treba da vežbamo i čitanje, zato je dobro da nađemo online novine"
+  },
+  {
+   "start": 330.53,
+   "end": 337.19,
+   "text": "ili časopise. Kada treba da kažemo neku rečenicu, možemo da pokušamo da je prevedemo"
+  },
+  {
+   "start": 337.19,
+   "end": 339.31,
+   "text": "na strani jezik koji učimo."
+  },
+  {
+   "start": 340.41,
+   "end": 345.17,
+   "text": "U učenju jezika, pričanje sa samim sobom nije tako čudna stvar."
+  },
+  {
+   "start": 346.35,
+   "end": 348.05,
+   "text": "Ko priča srpskim jezikom?"
+  },
+  {
+   "start": 348.91,
+   "end": 353.73,
+   "text": "Srpskim jezikom prema nekim podacima priča oko 12 miliona ljudi."
+  },
+  {
+   "start": 353.91,
+   "end": 356.45,
+   "text": "Ovim jezikom se ne priča samo u Srbiji."
+  },
+  {
+   "start": 356.97,
+   "end": 361.97,
+   "text": "Zvanično to je jezik srpskog naroda, njime se govori najviše u Srbiji i Bosni"
+  },
+  {
+   "start": 361.97,
+   "end": 365.09,
+   "text": "i Hercegovini, svuda gde ima Srba."
+  },
+  {
+   "start": 365.83,
+   "end": 371.01,
+   "text": "Međutim, ako učite srpski jezik, razumećete i, na primjer, hrvatski."
+  },
+  {
+   "start": 371.49,
+   "end": 377.73,
+   "text": "Zašto? Zato što je jezik kojim se govori u Srbiji, Hrvatskoj, Bosni i Hercegovini"
+  },
+  {
+   "start": 377.73,
+   "end": 380.41,
+   "text": "i Crnoj gori jedan jezik."
+  },
+  {
+   "start": 381.07,
+   "end": 387.31,
+   "text": "Taj jezik trenutno nema zvaničan naziv, ali sve lingvističke činjenice pokazuju nam da je"
+  },
+  {
+   "start": 387.31,
+   "end": 390.81,
+   "text": "to jedan jezik koji ima svoje varijante."
+  },
+  {
+   "start": 392.13,
+   "end": 397.93,
+   "text": "Te razlike postoje, ali nisu dovoljno velike da bi razdelile jedan jezik na više"
+  },
+  {
+   "start": 397.93,
+   "end": 404.57,
+   "text": "delova. Zato, kada učite srpski, vi zapravo učite onaj jezik kojim se govori i"
+  },
+  {
+   "start": 404.57,
+   "end": 408.13,
+   "text": "u Hrvatskoj, Bosni Hercegovini i Crnoj Gori."
+  },
+  {
+   "start": 409.57,
+   "end": 413.79,
+   "text": "Većina mojih učenika uči srpski jer je u kontaktu sa srbima."
+  },
+  {
+   "start": 414.13,
+   "end": 419.09,
+   "text": "To su ljudi koji imaju prijatelje iz Srbije i žele da komuniciraju sa njima."
+  },
+  {
+   "start": 419.73,
+   "end": 425.23,
+   "text": "Drugi deo učenika su deca koja imaju majku srpknju ili oca srbina."
+  },
+  {
+   "start": 426.19,
+   "end": 431.99,
+   "text": "Treća i, nažalost, najmanja grupa mojih učenika su Srbi koji su odrasli u inostranstvu"
+  },
+  {
+   "start": 431.99,
+   "end": 437.21,
+   "text": "i žele da nauče jezik svoje porodice ili da ga se podsete."
+  },
+  {
+   "start": 437.86,
+   "end": 443.74,
+   "text": "Ovakvih učenika je malo jer odrasli imaju dosta obaveza, tako da učenje stranog jezika"
+  },
+  {
+   "start": 443.74,
+   "end": 445.5,
+   "text": "nije najvažniji zadatak."
+  },
+  {
+   "start": 446.06,
+   "end": 451.22,
+   "text": "Međutim, u mojim časovima ja se trudim da pomognem svima, a i da pokažem"
+  },
+  {
+   "start": 451.22,
+   "end": 457.22,
+   "text": "da učenje srpskog jezika ne mora biti velika obaveza, već nešto kao hobi ili"
+  },
+  {
+   "start": 457.22,
+   "end": 458.02,
+   "text": "druženje."
+  },
+  {
+   "start": 459.32,
+   "end": 464.96,
+   "text": "Kao što možemo da vidimo, srpskim jezikom govori veliki broj ljudi, a uči se"
+  },
+  {
+   "start": 464.96,
+   "end": 466.84,
+   "text": "iz različitih razloga."
+  },
+  {
+   "start": 467.54,
+   "end": 472.4,
+   "text": "Postoji jedna jako lepa stvar u vezi sa onima koji uče bilo koji strani"
+  },
+  {
+   "start": 472.4,
+   "end": 476.2,
+   "text": "jezik. Veliki deo njih uči zbog ljubavi."
+  },
+  {
+   "start": 476.68,
+   "end": 481.76,
+   "text": "Zamislite koliki je broj ljudi koji uče jezik da bi mogli da pričaju zajedno"
+  },
+  {
+   "start": 481.76,
+   "end": 486.5,
+   "text": "sa svojim partnerom, da kažu volim te ili nedostaješ mi."
+  },
+  {
+   "start": 487.34,
+   "end": 492.84,
+   "text": "Nekoliko mojih učenika uči srpski baš iz tih razloga, a neki to rade i"
+  },
+  {
+   "start": 492.84,
+   "end": 496.08,
+   "text": "tajno da bi jednom iznenadili one koje vole."
+  },
+  {
+   "start": 496.9,
+   "end": 499.64,
+   "text": "Iz kojih razloga vi užite srpski jezik?"
+  },
+  {
+   "start": 501.72,
+   "end": 505.32,
+   "text": "Ovo bi bio kraj prve epizode Serbian Language Podcast."
+  },
+  {
+   "start": 505.48,
+   "end": 509.96,
+   "text": "Nadam se da ste uživali i da ovakav sadržaj pomaže vašem učenju jezika."
+  },
+  {
+   "start": 510.54,
+   "end": 518.76,
+   "text": "Ako imate nekih pitanja ili savjeta, pišite na moj email nikola.pujic at gmail.com."
+  },
+  {
+   "start": 519.54,
+   "end": 521.72,
+   "text": "Ostanite zdravi i čuvajte se virusa."
+  },
+  {
+   "start": 521.72,
+   "end": 522.4,
+   "text": "Ćao!"
+  }
+ ],
+ "title": "E1: Kako učimo jezik?",
+ "audio": "https://www.buzzsprout.com/1246415/episodes/8101251-e1-kako-ucimo-jezik.mp3",
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word"
+}

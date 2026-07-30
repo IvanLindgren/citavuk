@@ -1,0 +1,900 @@
+{
+ "duration": 768.47,
+ "cues": [
+  {
+   "start": 15.32,
+   "end": 19.58,
+   "text": "Zdravo! Welcome to the new episode of the Learn Serbian Podcast."
+  },
+  {
+   "start": 19.58,
+   "end": 22.26,
+   "text": "I'm your Serbian language tutor, Nikola."
+  },
+  {
+   "start": 22.26,
+   "end": 26.2,
+   "text": "As you can tell, we recently changed the name of our podcast from Serbian"
+  },
+  {
+   "start": 26.2,
+   "end": 29.12,
+   "text": "Language podcast to learn Serbian podcast."
+  },
+  {
+   "start": 29.12,
+   "end": 34.04,
+   "text": "Also, we have two new logos for our website and for the podcast."
+  },
+  {
+   "start": 34.34,
+   "end": 35.22,
+   "text": "I hope you like them."
+  },
+  {
+   "start": 35.22,
+   "end": 41.64,
+   "text": "In today's episode, we're going to learn everything about grammatical cases or padeži in"
+  },
+  {
+   "start": 41.64,
+   "end": 44.64,
+   "text": "Serbian language and why they are so hard to understand."
+  },
+  {
+   "start": 44.64,
+   "end": 49.7,
+   "text": "Before we start the lesson, make sure to check out our new updated website"
+  },
+  {
+   "start": 49.7,
+   "end": 56.78,
+   "text": "www.serbianlanguagelessons.com where you can now access free learning materials in form of tables"
+  },
+  {
+   "start": 56.78,
+   "end": 59.74,
+   "text": "with grammar, vocabulary lists and quizzes."
+  },
+  {
+   "start": 60.76,
+   "end": 64.7,
+   "text": "This section will be updated and more material will be added each month."
+  },
+  {
+   "start": 65.36,
+   "end": 67.36,
+   "text": "Now, if you're ready, let's start the episode."
+  },
+  {
+   "start": 67.92,
+   "end": 68.38,
+   "text": "Idemo!"
+  },
+  {
+   "start": 69.96,
+   "end": 74.84,
+   "text": "Grammatical cases or padeži are one of the most irritating things about learning Serbian,"
+  },
+  {
+   "start": 74.84,
+   "end": 79.44,
+   "text": "aren't they? Why do we say idemo Srbiju, but it's also incorrect to say"
+  },
+  {
+   "start": 79.44,
+   "end": 81.0,
+   "text": "ja sam u Srbiju?"
+  },
+  {
+   "start": 81.56,
+   "end": 84.32,
+   "text": "There are so many different forms that are used that it makes your head"
+  },
+  {
+   "start": 84.32,
+   "end": 90.4,
+   "text": "spin. You can say Srbija, Srbije, Srbiju, Srbijom, Obre."
+  },
+  {
+   "start": 90.94,
+   "end": 93.18,
+   "text": "So how do we know which of these forms to use?"
+  },
+  {
+   "start": 93.66,
+   "end": 94.9,
+   "text": "Let's start from the top."
+  },
+  {
+   "start": 95.94,
+   "end": 101.12,
+   "text": "Grammatical cases are different forms of a word, noun, adjective or a pronoun, which"
+  },
+  {
+   "start": 101.12,
+   "end": 102.76,
+   "text": "are used in different contexts."
+  },
+  {
+   "start": 103.32,
+   "end": 106.56,
+   "text": "Comparing that to English, we can say that it is similar to different forms"
+  },
+  {
+   "start": 106.56,
+   "end": 107.54,
+   "text": "or pronouns in English."
+  },
+  {
+   "start": 108.08,
+   "end": 114.1,
+   "text": "For example, we say I'm a student, but give me the book, not give"
+  },
+  {
+   "start": 114.1,
+   "end": 115.14,
+   "text": "I the book."
+  },
+  {
+   "start": 115.92,
+   "end": 122.18,
+   "text": "Or he's happy, but we're talking about him, not we're talking about he."
+  },
+  {
+   "start": 123.02,
+   "end": 125.68,
+   "text": "We use different forms of pronouns depending on the context."
+  },
+  {
+   "start": 126.54,
+   "end": 130.48,
+   "text": "In English, we have only two forms for each of these pronouns, for example,"
+  },
+  {
+   "start": 130.48,
+   "end": 131.7,
+   "text": "I and me."
+  },
+  {
+   "start": 132.18,
+   "end": 136.78,
+   "text": "But in Serbian we have 7 different forms, so 7 different grammatical cases."
+  },
+  {
+   "start": 137.58,
+   "end": 142.9,
+   "text": "These grammatical cases have extensions, which will mostly be different for each grammatical case."
+  },
+  {
+   "start": 143.5,
+   "end": 148.32,
+   "text": "But to make things even more complicated, there are different extensions for different genders"
+  },
+  {
+   "start": 148.32,
+   "end": 152.8,
+   "text": "of nouns, and also different sets of extensions for singular and plural."
+  },
+  {
+   "start": 153.74,
+   "end": 158.1,
+   "text": "So the extension for grammatical case will depend on the gender and grammatical number"
+  },
+  {
+   "start": 158.1,
+   "end": 160.56,
+   "text": "of the word, singular or plural."
+  },
+  {
+   "start": 162.14,
+   "end": 166.5,
+   "text": "Because of all of this, there are over 35 different extensions to be learned"
+  },
+  {
+   "start": 166.5,
+   "end": 167.54,
+   "text": "for grammatical cases."
+  },
+  {
+   "start": 168.28,
+   "end": 170.78,
+   "text": "The good news is that some of them repeat."
+  },
+  {
+   "start": 171.38,
+   "end": 174.48,
+   "text": "This is the reason why I don't force my students to memorize by heart"
+  },
+  {
+   "start": 174.48,
+   "end": 177.02,
+   "text": "all of these extensions or inflections."
+  },
+  {
+   "start": 177.42,
+   "end": 179.6,
+   "text": "That would be a very exhausting and boring process."
+  },
+  {
+   "start": 180.44,
+   "end": 184.88,
+   "text": "Instead, I always advise them to copy the extensions to their notes or visit"
+  },
+  {
+   "start": 184.88,
+   "end": 188.44,
+   "text": "the website and take a look at the grammatical cases table to find a"
+  },
+  {
+   "start": 188.44,
+   "end": 193.12,
+   "text": "proper inflection. If you want, you can access these tables on the website in"
+  },
+  {
+   "start": 193.12,
+   "end": 194.6,
+   "text": "the free material section."
+  },
+  {
+   "start": 195.58,
+   "end": 198.04,
+   "text": "The names of grammatical cases are as follows."
+  },
+  {
+   "start": 198.8,
+   "end": 205.4,
+   "text": "Nominative, genitive, dative, accusative, vocative, instrumental, and locative."
+  },
+  {
+   "start": 206.4,
+   "end": 208.44,
+   "text": "Nominative is a basic grammatical case."
+  },
+  {
+   "start": 208.72,
+   "end": 212.6,
+   "text": "That means that all words that you learn and see in vocabulary list, for"
+  },
+  {
+   "start": 212.6,
+   "end": 214.14,
+   "text": "example, are in this case."
+  },
+  {
+   "start": 214.14,
+   "end": 219.29,
+   "text": "It is the standard basic form of nouns, adjectives and pronouns."
+  },
+  {
+   "start": 219.89,
+   "end": 222.91,
+   "text": "It is the starting point for other grammatical cases."
+  },
+  {
+   "start": 222.91,
+   "end": 227.79,
+   "text": "Nominative can be used outside the sentence independently, but if it's used in a"
+  },
+  {
+   "start": 227.79,
+   "end": 230.27,
+   "text": "sentence, it has a function of a subject."
+  },
+  {
+   "start": 231.47,
+   "end": 234.73,
+   "text": "Subject is a person or a thing that performs an action or is in"
+  },
+  {
+   "start": 234.73,
+   "end": 235.81,
+   "text": "some kind of state."
+  },
+  {
+   "start": 236.13,
+   "end": 238.59,
+   "text": "For example, učenik čita knjigu."
+  },
+  {
+   "start": 238.59,
+   "end": 241.01,
+   "text": "Učenik is the subject of the sentence."
+  },
+  {
+   "start": 242.55,
+   "end": 247.41,
+   "text": "Genitive grammatical case has several different uses and functions, but mainly you will use"
+  },
+  {
+   "start": 247.41,
+   "end": 249.37,
+   "text": "it with a lot of different prepositions."
+  },
+  {
+   "start": 249.97,
+   "end": 254.49,
+   "text": "Prepositions are words like in, on, before, after, and so on."
+  },
+  {
+   "start": 255.37,
+   "end": 259.97,
+   "text": "Prepositions are very important for grammatical cases because they will demand a specific grammatical"
+  },
+  {
+   "start": 259.97,
+   "end": 261.59,
+   "text": "case to be used after them."
+  },
+  {
+   "start": 261.97,
+   "end": 267.33,
+   "text": "For example, preposition pre demands only a grammatical case of genitive to be used"
+  },
+  {
+   "start": 267.33,
+   "end": 273.21,
+   "text": "after it, while preposition u and a are used both with acquisitive and locative"
+  },
+  {
+   "start": 273.21,
+   "end": 278.35,
+   "text": "cases. The list of prepositions that go with genitive is very long, so it's"
+  },
+  {
+   "start": 278.35,
+   "end": 281.11,
+   "text": "easier to memorize the ones that usually don't go with them."
+  },
+  {
+   "start": 281.81,
+   "end": 285.97,
+   "text": "U, na, sa, kroz, ka, prema, for example."
+  },
+  {
+   "start": 286.31,
+   "end": 288.47,
+   "text": "Those prepositions do not go with genitive."
+  },
+  {
+   "start": 289.53,
+   "end": 292.63,
+   "text": "Genitive is also used in possessive or partitive meanings."
+  },
+  {
+   "start": 292.75,
+   "end": 297.41,
+   "text": "For example, if we want to say glass of water, we say čaša vode,"
+  },
+  {
+   "start": 297.41,
+   "end": 299.27,
+   "text": "not čaša od vode."
+  },
+  {
+   "start": 299.69,
+   "end": 304.25,
+   "text": "Therefore, genitive can be used with or without prepositions, and it usually takes at"
+  },
+  {
+   "start": 304.25,
+   "end": 306.01,
+   "text": "least two or three lessons to cover it."
+  },
+  {
+   "start": 306.73,
+   "end": 310.41,
+   "text": "Another advice to remember is that whenever there is a preposition of in a"
+  },
+  {
+   "start": 310.41,
+   "end": 314.57,
+   "text": "sentence in English language, that is when you need to use genitive in Serbian,"
+  },
+  {
+   "start": 314.57,
+   "end": 315.35,
+   "text": "without prepositions."
+  },
+  {
+   "start": 318.23,
+   "end": 323.99,
+   "text": "Dativ is a grammatical case used to mark an indirect object without prepositions."
+  },
+  {
+   "start": 323.99,
+   "end": 327.91,
+   "text": "Indirect object is an object that is indirectly affected by the action."
+  },
+  {
+   "start": 328.31,
+   "end": 333.59,
+   "text": "Dative is also used to mark intention or recipient either of an object or"
+  },
+  {
+   "start": 333.59,
+   "end": 334.83,
+   "text": "of an action."
+  },
+  {
+   "start": 335.83,
+   "end": 336.77,
+   "text": "Here are some examples."
+  },
+  {
+   "start": 336.77,
+   "end": 340.89,
+   "text": "In a sentence Jovan čita knjigu, word knjiga is a direct object of the"
+  },
+  {
+   "start": 340.89,
+   "end": 345.55,
+   "text": "sentence because it is a first thing which is affected by the action to"
+  },
+  {
+   "start": 345.55,
+   "end": 351.51,
+   "text": "read. But in a sentence Jova čita knjigu Milanu, Milan is affected indirectly by"
+  },
+  {
+   "start": 351.51,
+   "end": 356.43,
+   "text": "the action because Jovan does not read Milan, he reads a book to him."
+  },
+  {
+   "start": 356.43,
+   "end": 361.57,
+   "text": "There is also an intention involved where Jovan wants Milan to receive the action"
+  },
+  {
+   "start": 361.57,
+   "end": 363.85,
+   "text": "of him reading a book."
+  },
+  {
+   "start": 363.85,
+   "end": 367.73,
+   "text": "Yep, it can get really messy when it comes to grammatical cases."
+  },
+  {
+   "start": 367.73,
+   "end": 372.09,
+   "text": "In addition to this, dativ is used with prepositions ka and prema, which mean"
+  },
+  {
+   "start": 372.15,
+   "end": 379.09,
+   "text": "towards. Acquisitive is a grammatical case that marks a direct object in a sentence."
+  },
+  {
+   "start": 379.09,
+   "end": 382.75,
+   "text": "For example, in one of the previous sentences, Jovan čita knjigu."
+  },
+  {
+   "start": 382.75,
+   "end": 387.03,
+   "text": "The word knjiga is a direct object which is affected first by the action"
+  },
+  {
+   "start": 387.03,
+   "end": 392.59,
+   "text": "to read. Another very important use of acquisitive is for general movement."
+  },
+  {
+   "start": 392.59,
+   "end": 396.65,
+   "text": "Whenever you are going to a place, that place or a destination will be"
+  },
+  {
+   "start": 396.65,
+   "end": 401.93,
+   "text": "in acquisitive case, unless you are using prepositions that specify different kind of movement."
+  },
+  {
+   "start": 402.45,
+   "end": 406.89,
+   "text": "Prepositions that are used with akuzeti for general movement are u and na."
+  },
+  {
+   "start": 407.71,
+   "end": 413.33,
+   "text": "Preposition u is used for destinations like school, shop or buildings, city or country."
+  },
+  {
+   "start": 413.93,
+   "end": 419.11,
+   "text": "If a destination is an elevated surface like hill or balcony, exposed surface like"
+  },
+  {
+   "start": 419.11,
+   "end": 424.17,
+   "text": "town square and beach, or an event like a party, concert or wedding, we"
+  },
+  {
+   "start": 424.17,
+   "end": 425.51,
+   "text": "use preposition na."
+  },
+  {
+   "start": 426.59,
+   "end": 430.41,
+   "text": "So we say idem u prodavnicu, but idem na koncert."
+  },
+  {
+   "start": 431.17,
+   "end": 435.17,
+   "text": "Accusative is also used with preposition kroz, which means through."
+  },
+  {
+   "start": 436.9,
+   "end": 440.84,
+   "text": "Vocative is a grammatical case that is used when addressing someone or something."
+  },
+  {
+   "start": 441.12,
+   "end": 445.24,
+   "text": "Masculine names ending on E and O mostly stay the same and don't change"
+  },
+  {
+   "start": 445.24,
+   "end": 448.6,
+   "text": "in vocative. Marko and Pavle, for example."
+  },
+  {
+   "start": 449.06,
+   "end": 453.3,
+   "text": "Names and nouns in masculine gender ending on consonants will end on E and"
+  },
+  {
+   "start": 453.3,
+   "end": 455.82,
+   "text": "U. Milan, Milane."
+  },
+  {
+   "start": 455.98,
+   "end": 461.0,
+   "text": "Kralj, Kralju. Female names that end on A will usually end on O in"
+  },
+  {
+   "start": 461.0,
+   "end": 463.36,
+   "text": "vocative. Maja, Majo."
+  },
+  {
+   "start": 463.56,
+   "end": 467.48,
+   "text": "Nada, Nado. Still, some female names won't change."
+  },
+  {
+   "start": 467.68,
+   "end": 471.42,
+   "text": "Ana, Jana, Sanja will be exactly the same invocative."
+  },
+  {
+   "start": 472.28,
+   "end": 476.32,
+   "text": "It is best to listen to native speakers address and call someone in order"
+  },
+  {
+   "start": 476.32,
+   "end": 478.0,
+   "text": "to learn how to address that person."
+  },
+  {
+   "start": 480.88,
+   "end": 485.48,
+   "text": "Instrumental grammatical case is mostly used with the preposition sa, which means with."
+  },
+  {
+   "start": 486.08,
+   "end": 486.92,
+   "text": "You should be careful, though."
+  },
+  {
+   "start": 486.92,
+   "end": 490.94,
+   "text": "This preposition is used when you want to express an action that is performed"
+  },
+  {
+   "start": 490.94,
+   "end": 495.56,
+   "text": "with someone in company or when combining several different objects, for example."
+  },
+  {
+   "start": 496.46,
+   "end": 500.44,
+   "text": "Pijem kafu sa jovanom or pijem kafu sa mlekom."
+  },
+  {
+   "start": 501.14,
+   "end": 504.94,
+   "text": "The preposition sa should not be used when using an object to perform an"
+  },
+  {
+   "start": 504.94,
+   "end": 509.4,
+   "text": "action. For example, in English we say I am washing hands with a soap,"
+  },
+  {
+   "start": 509.8,
+   "end": 512.86,
+   "text": "while in Serbian we will say perem ruke sa punom."
+  },
+  {
+   "start": 513.3,
+   "end": 517.76,
+   "text": "We use the word soap, sapun, in instrumental, and we do not use the"
+  },
+  {
+   "start": 517.76,
+   "end": 522.09,
+   "text": "preposition sa. It would be the same if we say I'm traveling by car"
+  },
+  {
+   "start": 522.09,
+   "end": 527.83,
+   "text": "in Serbian and that would be putujem kolima not putujem sa kolima."
+  },
+  {
+   "start": 529.03,
+   "end": 534.05,
+   "text": "Instrumental can also be used with other prepositions like nad, pod, među and similar."
+  },
+  {
+   "start": 534.55,
+   "end": 537.63,
+   "text": "It is also used to describe long and repeating actions."
+  },
+  {
+   "start": 540.11,
+   "end": 541.53,
+   "text": "And finally, locative."
+  },
+  {
+   "start": 541.87,
+   "end": 545.45,
+   "text": "This grammatical case is used to mark the location where an action or state"
+  },
+  {
+   "start": 545.45,
+   "end": 550.25,
+   "text": "is happening. It is very important to note the difference between locative and acquisitive,"
+  },
+  {
+   "start": 550.61,
+   "end": 554.73,
+   "text": "since both are used to mark a location and both use prepositions u and"
+  },
+  {
+   "start": 554.73,
+   "end": 557.11,
+   "text": "na. Locative is not used for movement."
+  },
+  {
+   "start": 557.59,
+   "end": 561.19,
+   "text": "It is only used to mark a location where something is already happening, while"
+  },
+  {
+   "start": 561.19,
+   "end": 565.07,
+   "text": "acquisitive is used to mark a location where someone or something is going, a"
+  },
+  {
+   "start": 565.07,
+   "end": 569.99,
+   "text": "destination. That's why we say idem u Srbiju, but ja sam u Srbiji."
+  },
+  {
+   "start": 570.55,
+   "end": 574.43,
+   "text": "In the first sentence, word Srbija is in akuzative and in the second one"
+  },
+  {
+   "start": 574.43,
+   "end": 575.53,
+   "text": "it is in locative."
+  },
+  {
+   "start": 576.05,
+   "end": 579.75,
+   "text": "Locative is also used with preposition o, which means about."
+  },
+  {
+   "start": 582.37,
+   "end": 585.53,
+   "text": "At the end, let's write a short text using all of these grammatical cases."
+  },
+  {
+   "start": 586.15,
+   "end": 590.21,
+   "text": "The answers to which word is in which grammatical case you can find at"
+  },
+  {
+   "start": 590.21,
+   "end": 591.99,
+   "text": "the transcript on our website."
+  },
+  {
+   "start": 592.65,
+   "end": 593.71,
+   "text": "Try to spot them all."
+  },
+  {
+   "start": 595.01,
+   "end": 596.61,
+   "text": "Ja danas idem u školu."
+  },
+  {
+   "start": 597.03,
+   "end": 597.69,
+   "text": "Za doručak jedem parče pice."
+  },
+  {
+   "start": 597.69,
+   "end": 598.91,
+   "text": "Jedan parč je pice."
+  },
+  {
+   "start": 599.45,
+   "end": 600.61,
+   "text": "Od kuće do škole putujem petnešt minuta. I'm going to school."
+  },
+  {
+   "start": 602.49,
+   "end": 604.23,
+   "text": "Poslao sam poruku prijatelju."
+  },
+  {
+   "start": 604.63,
+   "end": 608.09,
+   "text": "Napisao sam, Marko, sačekaj me ispred škole."
+  },
+  {
+   "start": 608.81,
+   "end": 613.85,
+   "text": "Kada sam došao u školu, pričao sam sa drugarima o testu iz matematike."
+  },
+  {
+   "start": 658.85,
+   "end": 661.97,
+   "text": "There are a couple of things to remember when you're using grammatical cases in"
+  },
+  {
+   "start": 661.97,
+   "end": 666.45,
+   "text": "sentences. First, never rely on an extension or inflections."
+  },
+  {
+   "start": 666.99,
+   "end": 669.53,
+   "text": "Different grammatical cases can have same index."
+  },
+  {
+   "start": 670.17,
+   "end": 674.69,
+   "text": "Second, first take a look at which preposition is used before the word that"
+  },
+  {
+   "start": 674.69,
+   "end": 676.41,
+   "text": "you want to put in a grammatical case."
+  },
+  {
+   "start": 677.19,
+   "end": 681.39,
+   "text": "As I said, there are strict rules which prepositions go with which grammatical cases."
+  },
+  {
+   "start": 682.45,
+   "end": 686.81,
+   "text": "Third thing to remember, sometimes there will be prepositions that go with two cases,"
+  },
+  {
+   "start": 686.81,
+   "end": 688.89,
+   "text": "or maybe there will be no preposition at all."
+  },
+  {
+   "start": 688.89,
+   "end": 692.61,
+   "text": "If that is the case, we check the context of the sentence."
+  },
+  {
+   "start": 692.61,
+   "end": 695.35,
+   "text": "Is there a movement or is it just a state?"
+  },
+  {
+   "start": 695.35,
+   "end": 698.87,
+   "text": "Is there a meaning of possession or partitive meaning and so on and so"
+  },
+  {
+   "start": 698.87,
+   "end": 703.83,
+   "text": "on. The most important thing above all is not to stress over grammar and"
+  },
+  {
+   "start": 703.83,
+   "end": 704.77,
+   "text": "all of these rules."
+  },
+  {
+   "start": 704.77,
+   "end": 707.69,
+   "text": "The language learning journey should be relaxed and enjoyable."
+  },
+  {
+   "start": 708.77,
+   "end": 712.19,
+   "text": "If you try to force grammar into your learning method, you might get stuck"
+  },
+  {
+   "start": 712.19,
+   "end": 714.03,
+   "text": "and not make much progress."
+  },
+  {
+   "start": 714.55,
+   "end": 718.05,
+   "text": "Ask your teacher to help you with learning and to adjust the learning plan"
+  },
+  {
+   "start": 718.05,
+   "end": 721.27,
+   "text": "according to your needs, language level and interests."
+  },
+  {
+   "start": 723.05,
+   "end": 726.11,
+   "text": "I hope this episode was at least a little bit useful to you."
+  },
+  {
+   "start": 726.55,
+   "end": 730.01,
+   "text": "I tried to include all the basic functions of each grammatical case."
+  },
+  {
+   "start": 730.01,
+   "end": 736.19,
+   "text": "Remember to visit our website www.serbianlanguagelessons.com and take a look at the table of"
+  },
+  {
+   "start": 736.19,
+   "end": 738.51,
+   "text": "grammatical cases and their inflections."
+  },
+  {
+   "start": 739.05,
+   "end": 742.21,
+   "text": "Nouns and adjectives will sometimes have different endings."
+  },
+  {
+   "start": 743.19,
+   "end": 746.99,
+   "text": "Also, visit our Instagram page LearnSerbian or Serbian Language Network."
+  },
+  {
+   "start": 747.67,
+   "end": 749.73,
+   "text": "Thank you for listening and see you next time."
+  },
+  {
+   "start": 750.17,
+   "end": 751.35,
+   "text": "Vidimo se. Ćao!"
+  },
+  {
+   "start": 760.01,
+   "end": 760.51,
+   "text": "Bye."
+  }
+ ],
+ "title": "Serbian for Beginners: Grammatical Cases (Padeži)",
+ "audio": "https://www.buzzsprout.com/1246415/episodes/13368597-serbian-for-beginners-grammatical-cases-padezi.mp3",
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word"
+}

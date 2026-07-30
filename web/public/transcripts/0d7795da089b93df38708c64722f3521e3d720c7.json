@@ -1,1045 +1,1898 @@
 {
- "duration": 1452.62,
+ "duration": 1452.59,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
  "cues": [
   {
-   "start": 0.0,
-   "end": 8.0,
-   "text": "Zdravo svima, dobrodošli u još jednu epizodu, welcome to one more episode. Ja sam Nikola i ovdje je..."
+   "start": 0.22,
+   "end": 3.8,
+   "text": "Hello everyone, welcome to another episode."
   },
   {
-   "start": 8.0,
-   "end": 10.0,
-   "text": "Maki, zdravo svima."
+   "start": 3.8,
+   "end": 5.36,
+   "text": "Welcome to one more episode."
   },
   {
-   "start": 10.0,
-   "end": 20.0,
-   "text": "Today we're talking about a thing that you might have heard of that's very important right now in Serbia, it's protests."
+   "start": 6.0,
+   "end": 7.82,
+   "text": "I am Nikola and here is..."
   },
   {
-   "start": 20.0,
-   "end": 34.0,
-   "text": "It's all over the news, in Serbia at least. So we'll talk about what are these protests for, what is happening now, what's the plan for protests in the future."
+   "start": 7.94,
+   "end": 9.4,
+   "text": "My kids, hello everyone."
   },
   {
-   "start": 34.0,
-   "end": 43.0,
-   "text": "And we'll try to explain what it all means and how they started in the first place."
+   "start": 30.0,
+   "end": 31.64,
+   "text": "now what's the"
   },
   {
-   "start": 43.0,
-   "end": 45.0,
-   "text": "Exactly."
+   "start": 31.64,
+   "end": 33.6,
+   "text": "plan for protests in the future"
   },
   {
-   "start": 45.0,
-   "end": 53.0,
-   "text": "So, you will be sharing it in Serbian if you want. I mean, I will try to summarize it in English after you finish. Is that ok?"
+   "start": 33.6,
+   "end": 35.44,
+   "text": "and"
   },
   {
-   "start": 53.0,
-   "end": 55.0,
+   "start": 35.44,
+   "end": 36.78,
+   "text": "we'll try to explain"
+  },
+  {
+   "start": 36.78,
+   "end": 39.46,
+   "text": "what it all means"
+  },
+  {
+   "start": 39.46,
+   "end": 41.54,
+   "text": "and how they started in the"
+  },
+  {
+   "start": 41.54,
+   "end": 43.98,
+   "text": "first place. Exactly."
+  },
+  {
+   "start": 45.18,
+   "end": 47.3,
+   "text": "So you will be sharing it in"
+  },
+  {
+   "start": 47.3,
+   "end": 49.26,
+   "text": "Serbian if you want."
+  },
+  {
+   "start": 49.26,
+   "end": 51.22,
+   "text": "I will try to summarize it in English"
+  },
+  {
+   "start": 51.22,
+   "end": 52.72,
+   "text": "after you finish."
+  },
+  {
+   "start": 52.72,
+   "end": 53.4,
+   "text": "Is that okay?"
+  },
+  {
+   "start": 53.84,
+   "end": 54.52,
    "text": "Yes, of course."
   },
   {
-   "start": 55.0,
-   "end": 57.0,
-   "text": "Just to sum up what's going on."
+   "start": 56.24,
+   "end": 64.34,
+   "text": "Okay. Let's start from the basic information I'll tell"
   },
   {
-   "start": 57.0,
-   "end": 67.0,
-   "text": "Let's start from the basic information. I'll tell you or read in Serbian."
+   "start": 64.34,
+   "end": 65.98,
+   "text": "you or read in Serbian."
   },
   {
-   "start": 67.0,
-   "end": 83.0,
-   "text": "So, in November 2024, in Novi Sad, a series of mass protests began after the demolition of the railway station in the city, where 15 people were killed and 2 seriously injured."
+   "start": 67.26,
+   "end": 67.9,
+   "text": "So,"
   },
   {
-   "start": 83.0,
-   "end": 97.0,
-   "text": "The blockade of educational facilities began on the 22nd of November at the Faculty of Drama and Arts, after students were attacked during a silent tribute to the victims of the incident on the 1st of November."
+   "start": 89.32,
+   "end": 93.74,
+   "text": "after the students were attacked by the final of the incident"
   },
   {
-   "start": 97.0,
-   "end": 117.0,
-   "text": "After the Faculty of Drama and Arts, other faculties and high schools soon followed. In addition to the other demonstrations, the demonstrators held a blockade of meetings, which lasted from 11.52pm, when in Novi Sad, the platform was demolished, until 12pm."
+   "start": 93.74,
+   "end": 96.32,
+   "text": "during the first time of the incident."
   },
   {
-   "start": 127.0,
-   "end": 153.0,
-   "text": "So, a series of mass protests began in Novi Sad in November 2024, after the demolition of the railway station in the city, where 15 people were killed and 2 seriously injured."
+   "start": 98.2,
+   "end": 134.4,
+   "text": "After the first time of the Dramskeh Umethe, to"
   },
   {
-   "start": 153.0,
-   "end": 165.0,
-   "text": "And during that time, of course, people were very sad and students started blockades on November 22nd."
+   "start": 134.4,
+   "end": 138.34,
+   "text": "happen in Novi Sad in November 2024."
   },
   {
-   "start": 165.0,
-   "end": 187.0,
-   "text": "And the Faculty of Drama and Arts, it was a very nice one, I loved the video, it's a silent tribute to the victims of the November 1 incident. And after that, other faculties and even secondary schools started to join them."
+   "start": 140.54,
+   "end": 142.2,
+   "text": "Nakon, Uru Shavanya, you said,"
   },
   {
-   "start": 187.0,
-   "end": 213.0,
-   "text": "And also, now it's still going on, obviously, right? So, it was like quiet protesting, everybody gathered, like hundreds of thousands of people, right? And they were quietly protesting with the posters in their hands and just the lights from their phones, as we see in the picture."
+   "start": 142.2,
+   "end": 146.6,
+   "text": "like after the collapse of the railway station canopy in the city."
   },
   {
-   "start": 213.0,
-   "end": 235.0,
-   "text": "First of all, when learning a language, it's always good to engage in whatever news is going on in the target country of the language you're learning. To engage in the social layers, culture, history, so it's easier for you to learn, you have more motivation to learn."
+   "start": 147.7,
+   "end": 149.48,
+   "text": "Unfortunately, 15 people lost their lives"
   },
   {
-   "start": 235.0,
-   "end": 258.0,
-   "text": "When we talk about these protests, they started on Isopočili right after the canopy collapsed and there were mass protests. And why they escalated is because the, let's say, politicians or the government handled them poorly."
+   "start": 149.48,
+   "end": 153.18,
+   "text": "and two people were seriously injured."
   },
   {
-   "start": 259.0,
-   "end": 286.0,
-   "text": "Instead of listening to people, they started, I guess, oppressing them and trying to fight people in the streets. And they did not listen properly to their demands. The demands were to find why this happened, how could have it happened, because the railway station was renovated twice before that date."
+   "start": 154.12,
+   "end": 161.62,
+   "text": "And during that time, of course, people were very sad and students started"
   },
   {
-   "start": 287.0,
-   "end": 291.0,
-   "text": "And people were suspicious of corruption."
+   "start": 161.62,
+   "end": 165.4,
+   "text": "blockades on November 22nd, right?"
   },
   {
-   "start": 292.0,
-   "end": 307.0,
-   "text": "Of course. And no one was found responsible. In a couple of weeks, they did not... I mean, later, some people were, of course, resigned, like the prime minister."
+   "start": 165.94,
+   "end": 169.96,
+   "text": "Yes. And a faculty to Drumskih Umetnosti, you said,"
   },
   {
-   "start": 308.0,
-   "end": 322.0,
-   "text": "People that, yes, people that resigned, like the mayor of Novi Sad and similar, that was just a show, I guess, in order to just calm down the situation."
+   "start": 169.96,
+   "end": 172.66,
+   "text": "which is Faculty of Dramatic Arts."
   },
   {
-   "start": 323.0,
-   "end": 342.0,
-   "text": "We had stuff like this before and we know that if stuff like this happened, no one will, like the justice won't be satisfied and the people who, I don't know, ran over someone by car or killed someone would be free in a very short time."
+   "start": 174.02,
+   "end": 174.98,
+   "text": "It was a very nice one."
   },
   {
-   "start": 342.0,
-   "end": 357.0,
-   "text": "And that's why we said we had a lot of bad, bad news, bad, dark stuff happening in past previous years in Serbia. If you remember, school shootings, mass shootings and stuff like that."
+   "start": 174.98,
+   "end": 175.76,
+   "text": "I love the video."
   },
   {
-   "start": 357.0,
-   "end": 370.0,
-   "text": "So that's all built up. People are very frustrated. And the protest after that, after all faculties, universities in Serbia are blocked."
+   "start": 175.76,
+   "end": 179.84,
+   "text": "It's Silent Tribute to the Victims of November 1 Incident."
   },
   {
-   "start": 371.0,
-   "end": 379.0,
-   "text": "Yes, let's say winter break started earlier by the decision of the president."
+   "start": 180.54,
+   "end": 187.18,
+   "text": "And after that, other faculties and even secondary schools started to join them."
   },
   {
-   "start": 380.0,
-   "end": 398.0,
-   "text": "All universities in Serbia are blocked, but also not only universities, high schools as well. Not all of them, but like good amounts of them, maybe, like all the biggest high schools are blocked, which means there is no teachers there and so on."
+   "start": 189.1,
+   "end": 192.78,
+   "text": "And also now it's still going on, obviously, right?"
   },
   {
-   "start": 399.0,
-   "end": 414.0,
-   "text": "And it started because government responded poorly, started oppressing, started trying to punishing, doing counter protests and trying to blame students."
+   "start": 193.24,
+   "end": 198.26,
+   "text": "Yes. So it was like quiet protesting."
   },
   {
-   "start": 414.0,
-   "end": 432.0,
-   "text": "It all escalated. Every time they did something like that, it showed that it did counter effect. So now people that were never political or apolitical now started supporting students because that's the youth of Serbia."
+   "start": 198.26,
+   "end": 201.94,
+   "text": "Everybody gathered, like hundreds of thousands of people, right?"
   },
   {
-   "start": 433.0,
-   "end": 443.0,
-   "text": "That's who is going to live in that country in the future. And people are united, more and more united over those."
+   "start": 202.22,
+   "end": 202.48,
+   "text": "And they were quietly protesting with the posters in their hands Yes."
   },
   {
-   "start": 444.0,
-   "end": 459.0,
-   "text": "So since November, we're talking about like for a three month period, right? And it's still so strong and people are so united. And I'm so proud of everyone. They're not quitting."
+   "start": 206.82,
+   "end": 211.7,
+   "text": "and just the lights from their phones, as we see in the picture."
   },
   {
-   "start": 460.0,
-   "end": 469.0,
-   "text": "Stronger and stronger, yes. Protests are in every city, like even in the smallest cities."
+   "start": 212.66,
+   "end": 215.42,
+   "text": "So first of all, when learning a language,"
   },
   {
-   "start": 470.0,
-   "end": 471.0,
-   "text": "Yes, even in Prushevac."
+   "start": 215.42,
+   "end": 217.29,
+   "text": "which is always good to engage"
   },
   {
-   "start": 472.0,
-   "end": 489.0,
-   "text": "Yeah, everywhere. There's people on the streets united. We haven't seen these protests like this since, I think people say 90s, but even before that in 60s, 70s, when we had mass student protests."
+   "start": 217.29,
+   "end": 223.61,
+   "text": "in whatever news is going on in the target country of the language you're"
   },
   {
-   "start": 490.0,
-   "end": 506.0,
-   "text": "And these protests can really change something because students have nothing to lose. They cannot be scared. They cannot be punished. They have nothing to lose. While people, older people have to lose, can lose their jobs, which can affect their family and kids."
+   "start": 223.61,
+   "end": 230.67,
+   "text": "learning. To engage in the social layers, culture, history,"
   },
   {
-   "start": 507.0,
-   "end": 511.0,
-   "text": "Students are very, very stubborn. They can change something."
+   "start": 230.67,
+   "end": 234.03,
+   "text": "so it's easier for you to learn and have more motivation to learn."
   },
   {
-   "start": 512.0,
-   "end": 514.0,
-   "text": "I hope so. I really hope so."
+   "start": 234.33,
+   "end": 241.13,
+   "text": "So when we talk about these protests, they started on Isu Počeli right after"
   },
   {
-   "start": 514.0,
-   "end": 524.0,
-   "text": "And protests, look, we have usually start with 15 minutes of silence. So imagine like 100,000 people in Berlin."
+   "start": 241.13,
+   "end": 244.47,
+   "text": "the canopy collapsed."
   },
   {
-   "start": 524.28,
-   "end": 534.12,
-   "text": "longer than every city, being like dead silent for 15 minutes is, I don't know, like, it's"
+   "start": 244.55,
+   "end": 246.17,
+   "text": "Collapsed. And they were mass protests."
   },
   {
-   "start": 534.12,
-   "end": 541.12,
-   "text": "hard to say, like, it's kind of touches you. So, yes, it's quietness. It shows the power"
+   "start": 248.09,
+   "end": 255.13,
+   "text": "And why they escalated is because the, let's say, politicians or the"
   },
   {
-   "start": 541.12,
-   "end": 547.72,
-   "text": "of, you know, people, that quietness. At least that. So we show that we can change something"
+   "start": 255.13,
+   "end": 257.63,
+   "text": "government handled them poorly."
   },
   {
-   "start": 547.72,
-   "end": 555.72,
-   "text": "and that we are not scared of showing, fighting for justice. It's 15 minutes for 15 people"
+   "start": 258.09,
+   "end": 265.45,
+   "text": "Instead of listening to people, they started, I guess, oppressing them"
   },
   {
-   "start": 555.72,
-   "end": 564.2,
-   "text": "that died. So for every person. Yeah. So this reminded me of what happened when I was graduating"
+   "start": 265.45,
+   "end": 271.29,
+   "text": "and trying to fight people in the streets."
   },
   {
-   "start": 564.2,
-   "end": 571.92,
-   "text": "from university in Turkey in 2012, 13. We had the Gezi protest time and the same kind"
+   "start": 272.33,
+   "end": 275.19,
+   "text": "And they did not listen properly to their demands."
   },
   {
-   "start": 571.92,
-   "end": 579.56,
-   "text": "of reaction we had, like the government immediately blamed the students, like the foreign powers,"
+   "start": 275.87,
+   "end": 281.63,
+   "text": "The demands were to find why this happened, how could it happen, because the"
   },
   {
-   "start": 579.56,
-   "end": 585.08,
-   "text": "foreign intellectual agencies are supporting them, they are guiding them, all the same"
+   "start": 281.63,
+   "end": 286.37,
+   "text": "railway station was renovated twice before that date."
   },
   {
-   "start": 585.08,
-   "end": 592.92,
-   "text": "kind of oppression I saw. Unfortunately, our protest did not end in a very good way, but"
+   "start": 286.95,
+   "end": 287.57,
+   "text": "and people"
   },
   {
-   "start": 592.92,
-   "end": 603.32,
-   "text": "I believe now everybody is taking students seriously. Yes, that's a common thing. Governments"
+   "start": 287.57,
+   "end": 293.85,
+   "text": "suspicious of corruption of course and no one was found"
   },
   {
-   "start": 603.32,
-   "end": 609.52,
-   "text": "like this say, like paid by West. That's yeah. There's always have to be someone to blame,"
+   "start": 293.85,
+   "end": 298.85,
+   "text": "responsible like in a couple of weeks they did not"
   },
   {
-   "start": 609.52,
-   "end": 617.36,
-   "text": "like the easiest scapegoat. Yeah. But unfortunately for them, no, it's just these are the people"
+   "start": 298.85,
+   "end": 303.21,
+   "text": "later some people were of course resigned"
   },
   {
-   "start": 617.36,
-   "end": 622.64,
-   "text": "of the country fighting. They are explaining themselves very clearly. Obviously, there"
+   "start": 303.21,
+   "end": 306.91,
+   "text": "like the prime minister"
   },
   {
-   "start": 622.64,
-   "end": 630.6,
-   "text": "is everything is so logical from their perspective. Yes. And they they want to stay apolitical"
+   "start": 308.41,
+   "end": 308.93,
+   "text": "people that"
   },
   {
-   "start": 630.6,
-   "end": 636.28,
-   "text": "in a way that they like the opposition that wanted to join the protest. They don't want"
+   "start": 308.93,
+   "end": 310.03,
+   "text": "resigned"
   },
   {
-   "start": 636.28,
-   "end": 641.52,
-   "text": "opposition inside the protest. So they are clearly saying we are not siding with any"
+   "start": 310.03,
+   "end": 312.61,
+   "text": "like mayor of Norvishide and similar"
   },
   {
-   "start": 641.52,
-   "end": 648.76,
-   "text": "oppositional parties. Do not come to our protest. We are not siding with anyone. We're just"
+   "start": 312.61,
+   "end": 319.89,
+   "text": "were that was just a show, I guess, in"
   },
   {
-   "start": 648.76,
-   "end": 656.56,
-   "text": "people and students demanding justice and fight against corruption. Exactly. So they"
+   "start": 319.89,
+   "end": 323.11,
+   "text": "order to just calm down the situation."
   },
   {
-   "start": 656.56,
-   "end": 663.92,
-   "text": "say in which I'm all go or not. Yes. The one is this responsibility. Mm hmm. And court"
+   "start": 323.11,
+   "end": 324.07,
+   "text": "We had stuff"
   },
   {
-   "start": 663.92,
-   "end": 672.36,
-   "text": "CLB. I heard this when they were. That's the most corrupt corruption kills. Mm hmm. Yeah."
+   "start": 324.07,
+   "end": 326.97,
+   "text": "like this before and we"
   },
   {
-   "start": 672.36,
-   "end": 679.48,
-   "text": "So let's talk about the vocabulary a little bit for our listeners. So canopy is not a"
+   "start": 326.97,
+   "end": 332.27,
+   "text": "know that if stuff like this happens, the justice"
   },
   {
-   "start": 679.48,
-   "end": 685.96,
-   "text": "very common word that you would use. But nowadays in the news, it's used a lot. Right. So how"
+   "start": 332.27,
+   "end": 338.99,
+   "text": "won't be satisfied and the people who ran over someone by car or killed"
   },
   {
-   "start": 685.96,
-   "end": 694.08,
-   "text": "would we say it again in Serbian? Not stress needs not stress needs. Yeah, it's a bit challenging"
+   "start": 338.99,
+   "end": 339.67,
+   "text": "someone would"
   },
   {
-   "start": 694.08,
-   "end": 708.72,
-   "text": "right now. Yeah. And railway station. Yeah. Incident is written in the same way, but read"
+   "start": 339.67,
+   "end": 342.75,
+   "text": "be free in a very short time."
   },
   {
-   "start": 708.72,
-   "end": 721.68,
-   "text": "as incident. Incident. Yes. Yeah. Incident. Yeah. Incident. And safety best bet. Mm hmm."
+   "start": 342.75,
+   "end": 350.15,
+   "text": "That's why we said we had a lot of bad news, dark stuff happening"
   },
   {
-   "start": 721.76,
-   "end": 728.24,
-   "text": "And we said responsibility. Yes. Protest also is written in the same way. Yeah. Protest."
+   "start": 350.15,
+   "end": 354.37,
+   "text": "in the past previous years in Serbia if you remember school"
   },
   {
-   "start": 728.96,
-   "end": 737.28,
-   "text": "What is T we say like. Yeah. If it's plural. Yes. Mm hmm. So we started like protest."
+   "start": 354.37,
+   "end": 356.75,
+   "text": "shootings mass shootings and stuff"
   },
   {
-   "start": 742.56,
-   "end": 750.16,
-   "text": "Right. Yes. Russia is normally fall or collapse. Well, Russia is pretty specific verb."
+   "start": 356.75,
+   "end": 358.83,
+   "text": "like that so that"
   },
   {
-   "start": 751.76,
-   "end": 757.28,
-   "text": "Which or noun verbal noun. Mm hmm. To collapse."
+   "start": 358.83,
+   "end": 360.67,
+   "text": "all built up people are very"
   },
   {
-   "start": 759.6,
-   "end": 765.52,
-   "text": "Structure the collapses. So there's another way to say to destroy it."
+   "start": 360.67,
+   "end": 361.63,
+   "text": "frustrated"
   },
   {
-   "start": 765.52,
-   "end": 772.24,
-   "text": "Collapse. Mm hmm. It's it doesn't mean I mean, we cannot use the same word or Russia when you"
+   "start": 363.41,
+   "end": 364.77,
+   "text": "and the protest"
   },
   {
-   "start": 772.24,
-   "end": 779.68,
-   "text": "like when you collapse as a person. Right. No, no. Okay. Yeah. Russia. Yeah. That's a new word"
+   "start": 364.77,
+   "end": 366.37,
+   "text": "after that after the"
   },
   {
-   "start": 779.68,
-   "end": 791.84,
-   "text": "for me, for sure. Yeah. Yeah. And I want to go on to the posters that people are mostly holding"
+   "start": 366.37,
+   "end": 368.39,
+   "text": "all faculties universities"
   },
   {
-   "start": 791.84,
-   "end": 800.88,
-   "text": "in their hands. Yes. So there's a lot of them. They can get really creative when you see pictures"
+   "start": 368.39,
+   "end": 369.85,
+   "text": "in Serbia are blocked"
   },
   {
-   "start": 800.88,
-   "end": 807.04,
-   "text": "from protests. There's a lot of fun of those because they try to make students try to make it"
+   "start": 371.57,
+   "end": 374.29,
+   "text": "yes the let's say winter break started"
   },
   {
-   "start": 807.44,
-   "end": 816.88,
-   "text": "is interesting to catch attention. And they live now. They live in those blockades. They live in"
+   "start": 374.29,
+   "end": 376.45,
+   "text": "earlier yes by"
   },
   {
-   "start": 817.92,
-   "end": 822.8,
-   "text": "the sleeping streets. They march currently. They march from like last couple of days ago from"
+   "start": 376.45,
+   "end": 378.43,
+   "text": "the decision of the president"
   },
   {
-   "start": 822.8,
-   "end": 831.04,
-   "text": "Belgrade to Novi Sad. Which is how many kilometers? Maybe 80. I'm not sure. 80, 90. Yeah."
+   "start": 378.43,
+   "end": 384.43,
+   "text": "right all universities in serbia are blocked but also not only university high schools"
   },
   {
-   "start": 831.84,
-   "end": 837.84,
-   "text": "By car, it's one hour. Imagine. Yeah. An hour. Yeah. They're using the same way like they're on"
+   "start": 384.43,
+   "end": 387.61,
+   "text": "as well not all of them but like good"
   },
   {
-   "start": 837.84,
-   "end": 846.32,
-   "text": "the highway. No, they went like near highway. But by highway, by car is an hour. So they march for"
+   "start": 387.61,
+   "end": 392.89,
+   "text": "amounts of them maybe like all the biggest high schools are blocked uh which"
   },
   {
-   "start": 846.32,
-   "end": 856.72,
-   "text": "two days or three days. And they slept all over the city, Novi Sad, all open stadiums and some"
+   "start": 392.89,
+   "end": 393.71,
+   "text": "means there is no"
   },
   {
-   "start": 856.72,
-   "end": 865.04,
-   "text": "streets. But people helped them. People came out with food, with tents, sleeping bags. So"
+   "start": 395.95,
+   "end": 403.03,
+   "text": "um teachers there and so on and it started and because government responded poorly"
   },
   {
-   "start": 866.64,
-   "end": 874.96,
-   "text": "everybody helped them. Solidarity is there. So one of those, we call it transparent or the posters"
+   "start": 403.03,
+   "end": 406.35,
+   "text": "started oppressing, started trying to..."
   },
   {
-   "start": 874.96,
-   "end": 881.92,
-   "text": "they have, for example, Korupcja ubija, Corruption kills, which is the most frequent one. Krvave svam"
+   "start": 406.35,
+   "end": 410.79,
+   "text": "Punishing. Yes, punishing, doing counter-protests and trying to"
   },
   {
-   "start": 882.64,
-   "end": 888.72,
-   "text": "ruke. Krvave svam ruke, I think is the one that made the government really angry, right?"
+   "start": 410.79,
+   "end": 416.77,
+   "text": "blame students. It all escalated."
   },
   {
-   "start": 889.44,
-   "end": 897.92,
-   "text": "Maybe. I think it was one of the first ones I remember. So that means there's blood in your"
+   "start": 416.77,
+   "end": 419.85,
+   "text": "Every time they did something like that, it showed that"
   },
   {
-   "start": 897.92,
-   "end": 906.8,
-   "text": "hands. Yes. Or your hands are bloody, literally. Kočimo odgovornost. We want responsibility."
+   "start": 419.85,
+   "end": 422.59,
+   "text": "it did counter-effect."
   },
   {
-   "start": 907.76,
-   "end": 917.92,
-   "text": "Studenti nećute, RTS ćuti. Students are not silent. RTS is silent. RTS is the biggest news"
+   "start": 422.59,
+   "end": 429.81,
+   "text": "So now people that were never political or apolitical now started supporting students"
   },
   {
-   "start": 917.92,
-   "end": 925.28,
-   "text": "channel or channel in Serbia for TV. It's a national TV channel. Yeah, radio television"
+   "start": 429.81,
+   "end": 430.23,
+   "text": "because"
   },
   {
-   "start": 925.28,
-   "end": 931.28,
-   "text": "of Serbia. Radio television. Serbia, which means all residents or people in Serbia pay for that"
+   "start": 431.47,
+   "end": 434.43,
+   "text": "that's the youth of Serbia that's who is going to"
   },
   {
-   "start": 931.28,
-   "end": 937.68,
-   "text": "channel. They were quite silent about the protests. And one big win of these protests"
+   "start": 434.43,
+   "end": 436.85,
+   "text": "live in the village"
   },
   {
-   "start": 938.4,
-   "end": 947.12,
-   "text": "is that they started reporting on them live as well. So, which is good because we don't have"
+   "start": 437.24,
+   "end": 442.4,
+   "text": "in that country in the future and people are united more and more united"
   },
   {
-   "start": 947.12,
-   "end": 956.8,
-   "text": "much media presence of protests or anything against the government. Did they also share"
+   "start": 442.4,
+   "end": 448.3,
+   "text": "over those so since november we're talking about like for uh three month period"
   },
   {
-   "start": 957.36,
-   "end": 962.88,
-   "text": "what the government said mostly, more than what students were saying? This happens in Turkey a lot."
+   "start": 448.3,
+   "end": 450.4,
+   "text": "right and"
   },
   {
-   "start": 964.64,
-   "end": 972.88,
-   "text": "Yes. Yes, still. But it's good to like, at least something. Yeah. That's good."
+   "start": 450.4,
+   "end": 456.54,
+   "text": "um it's still so strong and people are so united and i'm so"
   },
   {
-   "start": 973.68,
-   "end": 982.0,
-   "text": "And I also saw mi se ne bojimo, učimo do brojimo. Can you explain what that means? I mean, brojimo,"
+   "start": 456.54,
+   "end": 461.98,
+   "text": "like proud of everyone they're not quitting stronger and stronger yes um"
   },
   {
-   "start": 982.08,
-   "end": 987.12,
-   "text": "like what are they counting? Yes. Mi se ne bojimo, učimo do brojimo is a song. It's a children's"
+   "start": 465.34,
+   "end": 470.16,
+   "text": "protests are in every city like even in the smallest cities yes"
   },
   {
-   "start": 987.12,
-   "end": 993.04,
-   "text": "song. Ah, okay. I didn't know. Yeah, it's a children's song. You can find it on YouTube."
+   "start": 470.16,
+   "end": 470.98,
+   "text": "everywhere"
   },
   {
-   "start": 994.08,
-   "end": 999.92,
-   "text": "It's really a song for counting. And we're not afraid. We learn to count. That's how it goes."
+   "start": 473.54,
+   "end": 474.42,
+   "text": "there's people on the streets"
   },
   {
-   "start": 1000.56,
-   "end": 1007.36,
-   "text": "I see. But here it's kind of, it implies that they are counting all the bad things that"
+   "start": 474.42,
+   "end": 475.32,
+   "text": "united"
   },
   {
-   "start": 1008.08,
-   "end": 1015.04,
-   "text": "happened, right? All the corruption issues are counted. Very good."
+   "start": 476.78,
+   "end": 478.02,
+   "text": "we haven't seen these"
   },
   {
-   "start": 1016.08,
-   "end": 1027.28,
-   "text": "And also zahte vamo transparentnost. We demand transparency. Yeah. That's a very good one."
+   "start": 478.02,
+   "end": 485.18,
+   "text": "protests like this since I think people say 90s but even"
   },
   {
-   "start": 1028.24,
-   "end": 1035.44,
-   "text": "And have you been to the protests, Nikola? Yes, I have. It's hard to avoid them now because"
+   "start": 485.18,
+   "end": 488.4,
+   "text": "before that in 60s, 70s when we had mass student"
   },
   {
-   "start": 1036.16,
-   "end": 1042.16,
-   "text": "they're in every city, almost every day. So wherever you go in the city, you come across them."
+   "start": 488.4,
+   "end": 489.26,
+   "text": "protests"
   },
   {
-   "start": 1044.72,
-   "end": 1048.4,
-   "text": "So the biggest ones are in Belgrade. Nice."
+   "start": 490.82,
+   "end": 492.34,
+   "text": "and these protests can really change something"
   },
   {
-   "start": 1048.56,
-   "end": 1053.6,
-   "text": "sad, but every small city in Serbia had protests."
+   "start": 492.34,
+   "end": 494.66,
+   "text": "because students have nothing to lose"
   },
   {
-   "start": 1053.6,
-   "end": 1057.64,
-   "text": "In the beginning, the police was a little bit harsh, as we saw the videos, but right"
+   "start": 494.66,
+   "end": 495.64,
+   "text": "they cannot be scared"
   },
   {
-   "start": 1057.64,
-   "end": 1065.6,
-   "text": "now, after all the attention gained on the students, I think there's no conflict, not"
+   "start": 495.64,
+   "end": 497.48,
+   "text": "they cannot be punished"
   },
   {
-   "start": 1065.6,
-   "end": 1066.6,
-   "text": "much conflict, right?"
+   "start": 497.48,
+   "end": 501.78,
+   "text": "they have nothing to lose while people, older people"
   },
   {
-   "start": 1066.6,
-   "end": 1067.6,
-   "text": "Between the police."
+   "start": 501.78,
+   "end": 506.36,
+   "text": "can lose their jobs which can affect their family and kids"
   },
   {
-   "start": 1067.6,
-   "end": 1069.9,
+   "start": 506.36,
+   "end": 510.28,
+   "text": "students are very very stubborn and they can"
+  },
+  {
+   "start": 510.28,
+   "end": 516.04,
+   "text": "change something I hope so, I really hope so and protests"
+  },
+  {
+   "start": 516.04,
+   "end": 522.4,
+   "text": "look, we have usually start with 15 minutes of silence so imagine like 100"
+  },
+  {
+   "start": 522.4,
+   "end": 524.4,
+   "text": "000 people in belgare in every"
+  },
+  {
+   "start": 524.4,
+   "end": 531.48,
+   "text": "city being like dead silent for 15 minutes is uh i don't know"
+  },
+  {
+   "start": 531.48,
+   "end": 534.52,
+   "text": "like you're it's how to say it like"
+  },
+  {
+   "start": 534.52,
+   "end": 541.02,
+   "text": "it's kind of touches you so yes yeah it's quietness it shows the power"
+  },
+  {
+   "start": 541.02,
+   "end": 543.8,
+   "text": "of you know people that quietness."
+  },
+  {
+   "start": 544.1,
+   "end": 544.94,
+   "text": "At least that."
+  },
+  {
+   "start": 544.94,
+   "end": 547.74,
+   "text": "So we show that we can change something and that"
+  },
+  {
+   "start": 547.74,
+   "end": 554.82,
+   "text": "we are not scared of showing fighting for justice it's 50 minutes for"
+  },
+  {
+   "start": 554.82,
+   "end": 555.98,
+   "text": "15 people that die so for"
+  },
+  {
+   "start": 555.98,
+   "end": 563.06,
+   "text": "every person yeah and so this reminded me of what happened when"
+  },
+  {
+   "start": 563.06,
+   "end": 567.18,
+   "text": "i was graduating from university in Turkey in 2012-13"
+  },
+  {
+   "start": 567.18,
+   "end": 568.88,
+   "text": "we had the Gezi"
+  },
+  {
+   "start": 568.88,
+   "end": 570.74,
+   "text": "protest time and"
+  },
+  {
+   "start": 570.74,
+   "end": 574.14,
+   "text": "the same kind of reaction we had the government immediately"
+  },
+  {
+   "start": 574.14,
+   "end": 576.5,
+   "text": "blamed the students"
+  },
+  {
+   "start": 576.5,
+   "end": 578.48,
+   "text": "like the foreign powers"
+  },
+  {
+   "start": 578.48,
+   "end": 580.24,
+   "text": "foreign intellectual"
+  },
+  {
+   "start": 580.24,
+   "end": 582.58,
+   "text": "agencies are supporting them"
+  },
+  {
+   "start": 582.58,
+   "end": 584.64,
+   "text": "they are guiding them, all the same"
+  },
+  {
+   "start": 584.64,
+   "end": 586.46,
+   "text": "kind of oppression"
+  },
+  {
+   "start": 586.46,
+   "end": 590.66,
+   "text": "I saw, unfortunately our protest did not end"
+  },
+  {
+   "start": 590.66,
+   "end": 591.86,
+   "text": "in a very good way but"
+  },
+  {
+   "start": 591.86,
+   "end": 593.44,
+   "text": "I believe"
+  },
+  {
+   "start": 595.2,
+   "end": 597.68,
+   "text": "now everybody is taking students seriously."
+  },
+  {
+   "start": 598.06,
+   "end": 601.08,
+   "text": "Yes, that's a common thing."
+  },
+  {
+   "start": 602.86,
+   "end": 605.54,
+   "text": "Governments like this say, like paid by West."
+  },
+  {
+   "start": 606.54,
+   "end": 609.14,
+   "text": "There always has to be someone to blame."
+  },
+  {
+   "start": 609.38,
+   "end": 610.98,
+   "text": "Like the easiest scapegoat."
+  },
+  {
+   "start": 612.4,
+   "end": 615.02,
+   "text": "But unfortunately for them, no."
+  },
+  {
+   "start": 615.18,
+   "end": 618.44,
+   "text": "It's just these are the people of the country fighting."
+  },
+  {
+   "start": 618.74,
+   "end": 621.74,
+   "text": "Exactly. They are explaining themselves very clearly."
+  },
+  {
+   "start": 621.74,
+   "end": 627.58,
+   "text": "obviously there is everything is so logical from their perspective yes and they they"
+  },
+  {
+   "start": 627.58,
+   "end": 628.06,
+   "text": "want to stay"
+  },
+  {
+   "start": 628.06,
+   "end": 633.78,
+   "text": "apolitical in a way that they like the opposition that wanted to join the"
+  },
+  {
+   "start": 633.78,
+   "end": 634.2,
+   "text": "protest they"
+  },
+  {
+   "start": 634.2,
+   "end": 640.56,
+   "text": "don't want opposition inside the protest so they're clearly saying we are not siding"
+  },
+  {
+   "start": 640.56,
+   "end": 640.84,
+   "text": "any oppositional parties do not come to our protest we are not siding with"
+  },
+  {
+   "start": 640.84,
+   "end": 641.04,
+   "text": "with"
+  },
+  {
+   "start": 647.32,
+   "end": 654.5,
+   "text": "anyone we're just people, students demanding justice and fight against corruption."
+  },
+  {
+   "start": 655.03,
+   "end": 661.79,
+   "text": "Exactly. So they say, Yes, odgovornost is responsibility."
+  },
+  {
+   "start": 663.25,
+   "end": 666.17,
+   "text": "And korupcja ubija, I heard this when they were yelling."
+  },
+  {
+   "start": 666.65,
+   "end": 669.17,
+   "text": "That's the most kind of korupcja, but corruption kills."
+  },
+  {
+   "start": 671.23,
+   "end": 675.85,
+   "text": "So let's think about the vocabulary a little bit for our listeners."
+  },
+  {
+   "start": 676.83,
+   "end": 682.19,
+   "text": "So, canopy is not a very common word that you would use, but nowadays"
+  },
+  {
+   "start": 682.19,
+   "end": 684.99,
+   "text": "in the news, it's used a lot, right?"
+  },
+  {
+   "start": 685.71,
+   "end": 687.89,
+   "text": "So, how would we say it again in Serbian?"
+  },
+  {
+   "start": 688.81,
+   "end": 690.07,
+   "text": "Nadstrešnica."
+  },
+  {
+   "start": 693.05,
+   "end": 695.05,
+   "text": "Yeah, it's a bit challenging word, nadstrešnica."
+  },
+  {
+   "start": 697.03,
+   "end": 698.21,
+   "text": "And railway station?"
+  },
+  {
+   "start": 698.95,
+   "end": 704.01,
+   "text": "Železnička stanica. Železnička, yeah, stanica."
+  },
+  {
+   "start": 704.97,
+   "end": 706.35,
+   "text": "incident is written in the same way"
+  },
+  {
+   "start": 706.35,
+   "end": 709.17,
+   "text": "but read as"
+  },
+  {
+   "start": 710.37,
+   "end": 717.89,
+   "text": "incident and"
+  },
+  {
+   "start": 717.89,
+   "end": 720.11,
+   "text": "safety bezbejtnost"
+  },
+  {
+   "start": 721.79,
+   "end": 722.53,
+   "text": "and hoce mod govarnos"
+  },
+  {
+   "start": 722.53,
+   "end": 724.21,
+   "text": "we said responsibility"
+  },
+  {
+   "start": 724.21,
+   "end": 727.21,
+   "text": "protest also is written in the same way"
+  },
+  {
+   "start": 727.21,
+   "end": 730.47,
+   "text": "protest protest we say like plural"
+  },
+  {
+   "start": 730.47,
+   "end": 732.49,
+   "text": "if it's plural yes"
+  },
+  {
+   "start": 734.69,
+   "end": 735.79,
+   "text": "so we started"
+  },
+  {
+   "start": 735.79,
+   "end": 737.03,
+   "text": "protestors"
+  },
+  {
+   "start": 737.03,
+   "end": 742.75,
+   "text": "because of the russization on the yes"
+  },
+  {
+   "start": 742.75,
+   "end": 744.05,
+   "text": "russization"
+  },
+  {
+   "start": 744.05,
+   "end": 745.13,
+   "text": "is normally"
+  },
+  {
+   "start": 745.13,
+   "end": 745.61,
+   "text": "fall"
+  },
+  {
+   "start": 745.61,
+   "end": 746.77,
+   "text": "or collapse"
+  },
+  {
+   "start": 746.77,
+   "end": 747.81,
+   "text": "well russization"
+  },
+  {
+   "start": 747.81,
+   "end": 748.29,
+   "text": "is pretty"
+  },
+  {
+   "start": 748.29,
+   "end": 748.97,
+   "text": "specific"
+  },
+  {
+   "start": 748.97,
+   "end": 749.73,
+   "text": "verb"
+  },
+  {
+   "start": 749.73,
+   "end": 751.75,
+   "text": "which"
+  },
+  {
+   "start": 751.75,
+   "end": 754.17,
+   "text": "or noun"
+  },
+  {
+   "start": 754.17,
+   "end": 754.77,
+   "text": "verbal noun"
+  },
+  {
+   "start": 754.77,
+   "end": 757.05,
+   "text": "to collapse"
+  },
+  {
+   "start": 759.35,
+   "end": 759.55,
+   "text": "a structure"
+  },
+  {
+   "start": 759.55,
+   "end": 760.61,
+   "text": "that collapses"
+  },
+  {
+   "start": 762.81,
+   "end": 765.85,
+   "text": "There's another way to say to destroy to collapse"
+  },
+  {
+   "start": 767.63,
+   "end": 771.95,
+   "text": "it's it doesn't mean i mean we cannot use the same word when you"
+  },
+  {
+   "start": 771.95,
+   "end": 773.39,
+   "text": "like when you collapse as a"
+  },
+  {
+   "start": 773.39,
+   "end": 780.47,
+   "text": "person right no no okay that's a new word for me for sure"
+  },
+  {
+   "start": 780.47,
+   "end": 785.93,
+   "text": "yeah yeah and i want to go on to"
+  },
+  {
+   "start": 787.15,
+   "end": 788.27,
+   "text": "the posters that"
+  },
+  {
+   "start": 788.27,
+   "end": 789.67,
+   "text": "people are"
+  },
+  {
+   "start": 790.97,
+   "end": 792.71,
+   "text": "mostly holding in their hands in the protests"
+  },
+  {
+   "start": 792.71,
+   "end": 796.35,
+   "text": "so there's a lot of them"
+  },
+  {
+   "start": 796.35,
+   "end": 798.13,
+   "text": "they can get really creative"
+  },
+  {
+   "start": 798.13,
+   "end": 800.41,
+   "text": "when you see pictures"
+  },
+  {
+   "start": 800.41,
+   "end": 802.05,
+   "text": "from protests there's a lot of fun"
+  },
+  {
+   "start": 802.05,
+   "end": 806.41,
+   "text": "of those because they try to make students try to make"
+  },
+  {
+   "start": 806.41,
+   "end": 807.13,
+   "text": "it"
+  },
+  {
+   "start": 809.53,
+   "end": 811.11,
+   "text": "is interesting"
+  },
+  {
+   "start": 811.11,
+   "end": 817.65,
+   "text": "to catch attention and they live now they live in those blockades they live"
+  },
+  {
+   "start": 817.65,
+   "end": 819.91,
+   "text": "in the sleeping streets they march"
+  },
+  {
+   "start": 819.91,
+   "end": 824.59,
+   "text": "currently they march from like last couple days ago from belgory to novi sad"
+  },
+  {
+   "start": 824.59,
+   "end": 826.01,
+   "text": "on foot which is how"
+  },
+  {
+   "start": 826.01,
+   "end": 832.69,
+   "text": "many kilometers uh maybe 80 i'm not sure 90 yeah by car it's one"
+  },
+  {
+   "start": 832.69,
+   "end": 837.83,
+   "text": "hour imagine yeah an hour yeah they're using the same way like they're on"
+  },
+  {
+   "start": 837.83,
+   "end": 844.17,
+   "text": "the highway no they they went like near highway but By highway, my car"
+  },
+  {
+   "start": 844.17,
+   "end": 844.75,
+   "text": "is an hour."
+  },
+  {
+   "start": 845.45,
+   "end": 847.55,
+   "text": "So they marched for two days or three days."
+  },
+  {
+   "start": 848.59,
+   "end": 852.83,
+   "text": "And they slept all over the city in Novi Sad."
+  },
+  {
+   "start": 852.83,
+   "end": 858.53,
+   "text": "They all opened the stadiums and some in the streets, some in like..."
+  },
+  {
+   "start": 859.41,
+   "end": 861.63,
+   "text": "But people helped them."
+  },
+  {
+   "start": 861.63,
+   "end": 864.87,
+   "text": "People came out with food, with tents, sleeping bags."
+  },
+  {
+   "start": 864.87,
+   "end": 867.53,
+   "text": "So everybody helped them."
+  },
+  {
+   "start": 868.21,
+   "end": 869.77,
+   "text": "Yes, solidarity is there."
+  },
+  {
+   "start": 869.87,
+   "end": 873.73,
+   "text": "So one of those, we call it transparent or"
+  },
+  {
+   "start": 873.8,
+   "end": 879.82,
+   "text": "The posters they have, for example, korupcija ubija, corruption kills, which is the most"
+  },
+  {
+   "start": 879.82,
+   "end": 882.5,
+   "text": "frequent one. Krvave suvamruke."
+  },
+  {
+   "start": 883.0,
+   "end": 885.04,
+   "text": "Krvave suvamruke, I think,"
+  },
+  {
+   "start": 885.04,
+   "end": 888.94,
+   "text": "is the one that made the government really angry, right?"
+  },
+  {
+   "start": 889.48,
+   "end": 893.54,
+   "text": "Maybe, yeah. I think it was one of the first ones I remember."
+  },
+  {
+   "start": 893.54,
+   "end": 898.32,
+   "text": "Krvave suvamruke. So that means there's blood in your hands."
+  },
+  {
+   "start": 898.78,
+   "end": 902.26,
+   "text": "Yes. Or your hands are bloody, literally."
+  },
+  {
+   "start": 903.74,
+   "end": 906.32,
+   "text": "we want responsibility"
+  },
+  {
+   "start": 907.64,
+   "end": 914.94,
+   "text": "students are not silent rts is silent"
+  },
+  {
+   "start": 915.02,
+   "end": 917.78,
+   "text": "rts is the biggest news channel"
+  },
+  {
+   "start": 917.78,
+   "end": 920.94,
+   "text": "or channel in serbia for tv"
+  },
+  {
+   "start": 920.94,
+   "end": 928.52,
+   "text": "it's a national tv channel radio television of serbia all residents"
+  },
+  {
+   "start": 928.52,
+   "end": 931.52,
+   "text": "or people in serbia pay for that channel"
+  },
+  {
+   "start": 933.3,
+   "end": 937.14,
+   "text": "and they were quite silent about the protest and one big win of these"
+  },
+  {
+   "start": 937.14,
+   "end": 944.6,
+   "text": "protests is that they started reporting on them live as well so"
+  },
+  {
+   "start": 944.6,
+   "end": 947.16,
+   "text": "which is good because we don't have much"
+  },
+  {
+   "start": 947.16,
+   "end": 954.32,
+   "text": "media presence of protest or anything against against the government"
+  },
+  {
+   "start": 954.32,
+   "end": 960.88,
+   "text": "but did they also share what the government said mostly more than what students"
+  },
+  {
+   "start": 960.88,
+   "end": 962.66,
+   "text": "were saying this happens in turkey a lot"
+  },
+  {
+   "start": 962.66,
+   "end": 970.62,
+   "text": "yes yes still but it's good to like at least something yeah"
+  },
+  {
+   "start": 970.62,
+   "end": 974.7,
+   "text": "yeah that's good and um i also"
+  },
+  {
+   "start": 974.7,
+   "end": 981.76,
+   "text": "saw can you explain what that means i mean brojimo"
+  },
+  {
+   "start": 981.76,
+   "end": 987.78,
+   "text": "like what are they counting yes is a song it's a children's song ah"
+  },
+  {
+   "start": 987.78,
+   "end": 992.16,
+   "text": "okay i didn't yeah it's a children's song you can find it on"
+  },
+  {
+   "start": 992.16,
+   "end": 998.04,
+   "text": "youtube um it's really a song for counting and we are not afraid we"
+  },
+  {
+   "start": 998.04,
+   "end": 1000.48,
+   "text": "learn to count that's how it I see."
+  },
+  {
+   "start": 1001.74,
+   "end": 1003.06,
+   "text": "But here it's kind of"
+  },
+  {
+   "start": 1003.06,
+   "end": 1004.94,
+   "text": "it implies that they are counting"
+  },
+  {
+   "start": 1004.94,
+   "end": 1008.84,
+   "text": "all the bad things that I guess."
+  },
+  {
+   "start": 1010.38,
+   "end": 1010.92,
+   "text": "All the corruption"
+  },
+  {
+   "start": 1010.92,
+   "end": 1013.96,
+   "text": "issues are counting."
+  },
+  {
+   "start": 1014.54,
+   "end": 1016.94,
+   "text": "Very good. And also"
+  },
+  {
+   "start": 1018.48,
+   "end": 1023.86,
+   "text": "We demand transparency."
+  },
+  {
+   "start": 1024.84,
+   "end": 1025.04,
+   "text": "Yeah."
+  },
+  {
+   "start": 1026.52,
+   "end": 1027.42,
+   "text": "That's a very good one."
+  },
+  {
+   "start": 1028.34,
+   "end": 1031.0,
+   "text": "And have you been to the protests, Nikola?"
+  },
+  {
+   "start": 1032.06,
+   "end": 1032.92,
+   "text": "Yes, I have."
+  },
+  {
+   "start": 1033.12,
+   "end": 1034.62,
+   "text": "It's hard to avoid them now"
+  },
+  {
+   "start": 1034.62,
+   "end": 1039.2,
+   "text": "because they're in every city almost every day."
+  },
+  {
+   "start": 1039.5,
+   "end": 1041.16,
+   "text": "So wherever you go in the city,"
+  },
+  {
+   "start": 1041.16,
+   "end": 1042.18,
+   "text": "you come across them."
+  },
+  {
+   "start": 1042.82,
+   "end": 1043.4,
+   "text": "I see."
+  },
+  {
+   "start": 1044.76,
+   "end": 1048.04,
+   "text": "So the biggest ones are in Belgrade,"
+  },
+  {
+   "start": 1048.04,
+   "end": 1048.28,
+   "text": "Novi Sad,"
+  },
+  {
+   "start": 1048.28,
+   "end": 1051.08,
+   "text": "but every small city in Serbia"
+  },
+  {
+   "start": 1051.08,
+   "end": 1056.06,
+   "text": "had protests. In the beginning, the police was a little bit harsh as we"
+  },
+  {
+   "start": 1056.06,
+   "end": 1057.98,
+   "text": "saw the videos, but right now,"
+  },
+  {
+   "start": 1057.98,
+   "end": 1062.24,
+   "text": "after all the attention gained on the students,"
+  },
+  {
+   "start": 1062.24,
+   "end": 1066.32,
+   "text": "I think there's no conflict, not much conflict, right?"
+  },
+  {
+   "start": 1066.32,
+   "end": 1069.06,
    "text": "No, there's no conflict."
   },
   {
-   "start": 1069.9,
-   "end": 1073.6,
+   "start": 1069.32,
+   "end": 1070.98,
    "text": "Police protects protests."
   },
   {
-   "start": 1073.6,
-   "end": 1076.36,
-   "text": "Because it's a large gathering, you have to protect."
+   "start": 1071.78,
+   "end": 1074.32,
+   "text": "Yes. Because it's a large gathering."
   },
   {
-   "start": 1076.36,
-   "end": 1081.96,
-   "text": "Like it's, that's the law, I guess."
+   "start": 1074.46,
+   "end": 1075.4,
+   "text": "You have to protect."
   },
   {
-   "start": 1081.96,
-   "end": 1082.96,
-   "text": "Yeah."
+   "start": 1077.92,
+   "end": 1079.9,
+   "text": "That's the law, I guess."
   },
   {
-   "start": 1082.96,
-   "end": 1083.96,
-   "text": "Yeah."
+   "start": 1080.12,
+   "end": 1082.66,
+   "text": "Yeah, yeah. So, yeah."
   },
   {
-   "start": 1083.96,
-   "end": 1084.96,
-   "text": "Yeah."
+   "start": 1083.52,
+   "end": 1089.7,
+   "text": "Okay. So, I want you to ask the listeners now a couple of questions"
   },
   {
-   "start": 1084.96,
-   "end": 1085.96,
-   "text": "So yeah."
+   "start": 1089.7,
+   "end": 1092.78,
+   "text": "that they can try to answer"
   },
   {
-   "start": 1085.96,
-   "end": 1086.96,
-   "text": "Okay."
+   "start": 1092.78,
+   "end": 1098.36,
+   "text": "by writing comments maybe on our Instagram or YouTube."
   },
   {
-   "start": 1086.96,
-   "end": 1091.52,
-   "text": "So I want you to ask the listeners now a little bit of a couple of questions that they can"
+   "start": 1098.9,
+   "end": 1102.5,
+   "text": "Yeah, so, šta vi mislite u ovoj situaciji?"
   },
   {
-   "start": 1091.52,
-   "end": 1098.72,
-   "text": "try to answer by writing comments, maybe on our Instagram or YouTube."
-  },
-  {
-   "start": 1098.72,
-   "end": 1099.72,
-   "text": "Yeah."
-  },
-  {
-   "start": 1099.72,
-   "end": 1103.6,
-   "text": "So, so what do you think about this situation?"
-  },
-  {
-   "start": 1103.6,
-   "end": 1105.56,
+   "start": 1103.44,
+   "end": 1104.76,
    "text": "What do you think about these situations?"
   },
   {
-   "start": 1105.56,
-   "end": 1112.48,
+   "start": 1105.32,
+   "end": 1107.68,
+   "text": "Da li mislite da su protesti opravdani?"
+  },
+  {
+   "start": 1107.72,
+   "end": 1110.32,
    "text": "Do you think the protests are justified?"
   },
   {
-   "start": 1112.48,
-   "end": 1123.08,
-   "text": "How would you describe this event to a friend in Serbian language?"
+   "start": 1112.3,
+   "end": 1116.1,
+   "text": "Kako biste opisali ove događe prijatelju na srpskom jeziku?"
   },
   {
-   "start": 1123.08,
-   "end": 1131.68,
-   "text": "So share those answers in the comments section, whatever you say in this post."
+   "start": 1116.38,
+   "end": 1119.54,
+   "text": "how would you describe this event to your friend in"
   },
   {
-   "start": 1131.68,
-   "end": 1136.84,
-   "text": "I would answer, because I prepared my answer for, šta vi myslite o ovoj situaciji?"
+   "start": 1119.54,
+   "end": 1123.6,
+   "text": "Serbian language so share those answers"
   },
   {
-   "start": 1136.84,
-   "end": 1138.84,
-   "text": "The question for you."
+   "start": 1123.6,
+   "end": 1126.16,
+   "text": "in comments section"
   },
   {
-   "start": 1138.84,
-   "end": 1139.84,
-   "text": "Okay."
+   "start": 1129.34,
+   "end": 1132.08,
+   "text": "yeah I would answer"
   },
   {
-   "start": 1139.84,
-   "end": 1140.84,
-   "text": "Let's see."
+   "start": 1132.08,
+   "end": 1134.82,
+   "text": "because I prepared my answer for what do you think about this"
   },
   {
-   "start": 1140.84,
-   "end": 1149.56,
-   "text": "Ponosno sam na studenti i ljudi u Srbiji, što se ne plaše, imaju miran protest i oni"
+   "start": 1134.82,
+   "end": 1137.22,
+   "text": "question for you"
   },
   {
-   "start": 1149.56,
-   "end": 1159.6,
-   "text": "su odličan primaz za ljudi iz drugih zemalja, u kojima se dešava korupcija, oni pišu"
+   "start": 1137.22,
+   "end": 1137.64,
+   "text": "okay"
   },
   {
-   "start": 1159.6,
-   "end": 1160.6,
-   "text": "istoriju."
+   "start": 1139.06,
+   "end": 1140.3,
+   "text": "I'm happy"
   },
   {
-   "start": 1160.6,
-   "end": 1161.6,
-   "text": "Yes."
+   "start": 1140.3,
+   "end": 1145.72,
+   "text": "I'm happy to students and people in Serbia that they don't worry"
   },
   {
-   "start": 1162.52,
-   "end": 1163.52,
+   "start": 1146.96,
+   "end": 1151.72,
+   "text": "and they have a peaceful protest and they are an excellent example for people"
+  },
+  {
+   "start": 1151.72,
+   "end": 1157.3,
+   "text": "from other countries in which corruption is caused."
+  },
+  {
+   "start": 1158.78,
+   "end": 1160.34,
+   "text": "They write an story."
+  },
+  {
+   "start": 1160.82,
+   "end": 1162.14,
+   "text": "Yes. Well, thank you."
+  },
+  {
+   "start": 1162.18,
+   "end": 1162.68,
    "text": "Thank you."
   },
   {
-   "start": 1163.52,
-   "end": 1164.52,
-   "text": "Hvala."
-  },
-  {
-   "start": 1164.52,
-   "end": 1165.52,
+   "start": 1164.94,
+   "end": 1165.78,
    "text": "That's very nice."
   },
   {
-   "start": 1165.52,
-   "end": 1173.32,
-   "text": "And it does feel like we have some historical changes happening, historical protests at least."
+   "start": 1165.78,
+   "end": 1167.0,
+   "text": "It does feel like"
   },
   {
-   "start": 1173.32,
-   "end": 1177.44,
-   "text": "Even like another win is that Novak Djoković supported the protests."
+   "start": 1167.0,
+   "end": 1169.6,
+   "text": "we have some historical changes"
   },
   {
-   "start": 1177.44,
-   "end": 1178.44,
-   "text": "Yes."
+   "start": 1169.6,
+   "end": 1171.66,
+   "text": "happening, historical protests"
   },
   {
-   "start": 1178.44,
-   "end": 1181.52,
-   "text": "I was waiting for him to say something."
+   "start": 1171.66,
+   "end": 1178.08,
+   "text": "at least. Even like another win is that novak jokovic supported protests yes i"
   },
   {
-   "start": 1181.52,
-   "end": 1182.52,
-   "text": "Finally he did."
+   "start": 1178.08,
+   "end": 1179.38,
+   "text": "was waiting for him to say"
   },
   {
-   "start": 1182.52,
-   "end": 1184.68,
-   "text": "I think a couple of weeks ago."
+   "start": 1179.38,
+   "end": 1185.08,
+   "text": "something finally he did i think a couple of weeks ago which is really"
   },
   {
-   "start": 1184.68,
-   "end": 1188.68,
-   "text": "Which is really important because all Serbia likes, it doesn't matter if you're against"
+   "start": 1185.08,
+   "end": 1185.44,
+   "text": "important because"
   },
   {
-   "start": 1188.68,
-   "end": 1196.12,
-   "text": "or against protests or not, all people like Novak Djoković and his word means a lot."
+   "start": 1185.44,
+   "end": 1190.46,
+   "text": "all serbia likes it doesn't matter if you're against or against protest or not"
   },
   {
-   "start": 1196.12,
-   "end": 1198.36,
-   "text": "Exactly."
+   "start": 1190.46,
+   "end": 1190.92,
+   "text": "all people"
   },
   {
-   "start": 1198.36,
-   "end": 1202.76,
-   "text": "And he's always been supportive for the young generation, right?"
+   "start": 1190.92,
+   "end": 1198.26,
+   "text": "like novak jokovic and his word means a lot exactly so and"
   },
   {
-   "start": 1202.76,
-   "end": 1203.76,
-   "text": "Yes."
+   "start": 1198.26,
+   "end": 1202.28,
+   "text": "he's always been supportive for the young generation, right?"
   },
   {
-   "start": 1203.76,
-   "end": 1205.72,
-   "text": "Now I wonder if Jokic said anything."
+   "start": 1202.41,
+   "end": 1204.99,
+   "text": "Yes. Now I wonder if Jokic said anything."
   },
   {
-   "start": 1205.72,
-   "end": 1208.92,
+   "start": 1205.51,
+   "end": 1208.57,
    "text": "No, Jokic has been always neutral."
   },
   {
-   "start": 1208.92,
-   "end": 1209.92,
-   "text": "Yeah."
+   "start": 1209.37,
+   "end": 1213.01,
+   "text": "Yeah. He's like a mamrsh kind of person."
   },
   {
-   "start": 1209.92,
-   "end": 1214.76,
-   "text": "He's like mamrš kind of person."
-  },
-  {
-   "start": 1214.76,
-   "end": 1221.0,
+   "start": 1213.01,
+   "end": 1219.69,
    "text": "He only likes his horses and he just wants to not be bothered."
   },
   {
-   "start": 1221.0,
-   "end": 1222.0,
-   "text": "Understood though."
+   "start": 1221.63,
+   "end": 1225.95,
+   "text": "Understood, though. And also, I'd like to, I can't remember right now, but probably"
   },
   {
-   "start": 1222.0,
-   "end": 1226.68,
-   "text": "And also I'd like to, I can't remember right now, but probably will."
+   "start": 1225.95,
+   "end": 1231.71,
+   "text": "will. You have this very commonly used proverb in Serbian"
   },
   {
-   "start": 1226.68,
-   "end": 1236.56,
-   "text": "You have this very commonly used proverb in Serbian that the world is on the back of children"
+   "start": 1233.09,
+   "end": 1238.03,
+   "text": "that the world is on the back of children, kind of meaning it has."
   },
   {
-   "start": 1236.56,
-   "end": 1237.56,
-   "text": "kind of meaning it has."
-  },
-  {
-   "start": 1237.56,
-   "end": 1238.56,
+   "start": 1238.03,
+   "end": 1238.81,
    "text": "Do you know what that is?"
   },
   {
-   "start": 1238.56,
-   "end": 1244.56,
+   "start": 1241.45,
+   "end": 1244.15,
    "text": "Svet na mladima ostaje is in Serbia."
   },
   {
-   "start": 1245.36,
-   "end": 1247.12,
-   "text": "Svet na mladima ostaje."
+   "start": 1244.65,
+   "end": 1247.11,
+   "text": "Yeah. Svet na mladima ostaje."
   },
   {
-   "start": 1247.12,
-   "end": 1248.92,
+   "start": 1247.11,
+   "end": 1247.81,
    "text": "I think that's how you say it."
   },
   {
-   "start": 1248.92,
-   "end": 1253.0,
+   "start": 1247.81,
+   "end": 1252.49,
    "text": "The word is left for young generations."
   },
   {
-   "start": 1253.0,
-   "end": 1254.4,
+   "start": 1252.49,
+   "end": 1253.99,
    "text": "That's what they inherit."
   },
   {
-   "start": 1254.4,
-   "end": 1255.4,
+   "start": 1254.71,
+   "end": 1260.95,
+   "text": "yes i think that's proverb is just so good for this um situation to"
+  },
+  {
+   "start": 1260.95,
+   "end": 1262.17,
+   "text": "describe this situation and"
+  },
+  {
+   "start": 1262.17,
+   "end": 1269.65,
+   "text": "luckily the young people in in serbia knows this embraces this right yes that's"
+  },
+  {
+   "start": 1269.65,
+   "end": 1274.69,
+   "text": "really good so i will ask you one question before you go though about"
+  },
+  {
+   "start": 1274.69,
+   "end": 1279.63,
+   "text": "the future of this um thing but i What do you think?"
+  },
+  {
+   "start": 1286.95,
+   "end": 1288.55,
+   "text": "It will be."
+  },
+  {
+   "start": 1289.21,
+   "end": 1293.93,
+   "text": "It don't know yet."
+  },
+  {
+   "start": 1298.71,
+   "end": 1299.45,
+   "text": "It's very weird at the moment."
+  },
+  {
+   "start": 1299.45,
+   "end": 1304.57,
+   "text": "Because we don't have any elections."
+  },
+  {
+   "start": 1310.69,
+   "end": 1315.07,
+   "text": "and Relažnu Vlado, transitional government,"
+  },
+  {
+   "start": 1315.07,
+   "end": 1321.45,
+   "text": "which means government without the ruling party now."
+  },
+  {
+   "start": 1322.97,
+   "end": 1324.17,
+   "text": "Until the election time."
+  },
+  {
+   "start": 1324.75,
+   "end": 1325.05,
    "text": "Yes."
   },
   {
-   "start": 1255.4,
-   "end": 1262.4,
-   "text": "I think that proverb is just so good for this situation, to describe this situation."
+   "start": 1326.39,
+   "end": 1333.59,
+   "text": "The president of Serbia offered, I think offered elections, but"
   },
   {
-   "start": 1262.4,
-   "end": 1268.68,
-   "text": "And luckily the young people in Serbia knows this, embraces this, right?"
+   "start": 1333.59,
+   "end": 1334.47,
+   "text": "Syrians do not want elections"
   },
   {
-   "start": 1268.68,
-   "end": 1271.12,
-   "text": "That's really good."
-  },
-  {
-   "start": 1271.12,
-   "end": 1277.28,
-   "text": "So I will ask you one question before you go there about the future of this thing, but"
-  },
-  {
-   "start": 1277.28,
-   "end": 1278.28,
-   "text": "I don't know."
-  },
-  {
-   "start": 1278.28,
-   "end": 1289.44,
-   "text": "Šta ti misliš, I don't know how to say it, šta ti misliš da biće?"
-  },
-  {
-   "start": 1289.44,
-   "end": 1290.44,
-   "text": "Da će biti."
-  },
-  {
-   "start": 1290.44,
-   "end": 1291.44,
-   "text": "Ok."
-  },
-  {
-   "start": 1291.44,
-   "end": 1292.44,
-   "text": "Da će biti."
-  },
-  {
-   "start": 1292.44,
-   "end": 1300.52,
-   "text": "Ne znam još, jako je, it's very weird at the moment."
-  },
-  {
-   "start": 1300.52,
-   "end": 1310.48,
-   "text": "Zato što nemamo izbore, we don't have any elections, coming up, studenti zahtevaju,"
-  },
-  {
-   "start": 1310.48,
-   "end": 1320.68,
-   "text": "they demand prelaznu vladu, transitional government, which means government without the ruling"
-  },
-  {
-   "start": 1320.68,
-   "end": 1323.32,
-   "text": "party now."
-  },
-  {
-   "start": 1323.32,
-   "end": 1325.56,
-   "text": "Until the election time?"
-  },
-  {
-   "start": 1325.56,
-   "end": 1326.56,
-   "text": "Yes."
-  },
-  {
-   "start": 1326.56,
-   "end": 1335.04,
-   "text": "The president of Serbia offered, I think offered elections, but students do not want elections"
-  },
-  {
-   "start": 1335.04,
-   "end": 1340.0,
+   "start": 1334.47,
+   "end": 1339.79,
    "text": "because they think the every elections we had so far did not work."
   },
   {
-   "start": 1340.0,
-   "end": 1352.16,
-   "text": "Like it was all, how do you call it, corrupted elections, something like that."
+   "start": 1339.79,
+   "end": 1340.77,
+   "text": "it was all"
   },
   {
-   "start": 1352.16,
-   "end": 1354.6,
+   "start": 1343.87,
+   "end": 1344.79,
+   "text": "how do you call it?"
+  },
+  {
+   "start": 1345.93,
+   "end": 1349.87,
+   "text": "Corrupted elections. Something like that."
+  },
+  {
+   "start": 1351.01,
+   "end": 1354.69,
    "text": "He doesn't want transitional government."
   },
   {
-   "start": 1354.64,
-   "end": 1365.92,
-   "text": "No, he said there won't be transitional government, so I don't know, I don't know what will happen."
+   "start": 1354.69,
+   "end": 1355.19,
+   "text": "No, he said"
   },
   {
-   "start": 1365.92,
-   "end": 1374.28,
-   "text": "At least one thing that is good is that it raised awareness of everyone, how corruption"
+   "start": 1355.19,
+   "end": 1357.27,
+   "text": "there won't be"
   },
   {
-   "start": 1374.28,
-   "end": 1383.84,
-   "text": "affects everyone and helped them gather more strength and be more brave and see that if"
+   "start": 1357.27,
+   "end": 1359.35,
+   "text": "transitional government."
   },
   {
-   "start": 1383.84,
-   "end": 1387.92,
-   "text": "you're united, we are united, we can have changes."
+   "start": 1361.39,
+   "end": 1361.65,
+   "text": "I don't know. So"
   },
   {
-   "start": 1387.92,
-   "end": 1391.32,
+   "start": 1364.37,
+   "end": 1364.97,
+   "text": "I don't know what will happen."
+  },
+  {
+   "start": 1364.97,
+   "end": 1366.79,
+   "text": "At least one thing that"
+  },
+  {
+   "start": 1366.79,
+   "end": 1374.15,
+   "text": "is good is that it raised awareness of everyone, how corruption"
+  },
+  {
+   "start": 1374.15,
+   "end": 1380.33,
+   "text": "affects everyone, and help them gather more strength"
+  },
+  {
+   "start": 1380.33,
+   "end": 1386.38,
+   "text": "and be more brave and see that if you're united, we are united, we"
+  },
+  {
+   "start": 1386.38,
+   "end": 1387.4,
+   "text": "can have changes."
+  },
+  {
+   "start": 1389.2,
+   "end": 1391.02,
    "text": "Yes, that's a very strong message."
   },
   {
-   "start": 1391.32,
-   "end": 1394.24,
+   "start": 1391.24,
+   "end": 1393.24,
    "text": "I really am curious what's going to happen."
   },
   {
-   "start": 1394.24,
-   "end": 1400.88,
-   "text": "I'm checking the news and the news, unfortunately, you know, has always like high level of vocabulary,"
+   "start": 1394.18,
+   "end": 1394.76,
+   "text": "I'm checking the news."
   },
   {
-   "start": 1400.88,
-   "end": 1405.52,
-   "text": "like quite advanced and quite heavy terminology, but it's good."
+   "start": 1394.76,
+   "end": 1401.86,
+   "text": "And the news, unfortunately, has always a high level of vocabulary, quite advanced and"
   },
   {
-   "start": 1405.52,
-   "end": 1412.0,
-   "text": "I recommend everyone to try and translate if it's needed, but it's going to be in top"
+   "start": 1401.86,
+   "end": 1404.68,
+   "text": "quite heavy terminology."
   },
   {
-   "start": 1412.0,
-   "end": 1418.12,
-   "text": "trending topic all the time, I think, in the upcoming weeks as well."
+   "start": 1404.68,
+   "end": 1405.28,
+   "text": "But it's good."
   },
   {
-   "start": 1418.12,
-   "end": 1419.64,
-   "text": "So there you go."
+   "start": 1405.32,
+   "end": 1406.78,
+   "text": "I recommend everyone to try"
   },
   {
-   "start": 1419.64,
-   "end": 1427.12,
-   "text": "Try learning more about protests, spread the word about the protests."
+   "start": 1406.78,
+   "end": 1410.88,
+   "text": "and translate if it's needed but it's going to be"
   },
   {
-   "start": 1427.12,
-   "end": 1432.36,
-   "text": "And say Svaka Cest if you are passing by protesters, right?"
+   "start": 1410.88,
+   "end": 1415.36,
+   "text": "a top trending topic all the time I think in the upcoming weeks as"
   },
   {
-   "start": 1432.36,
-   "end": 1436.56,
-   "text": "Yes, yes, exactly."
+   "start": 1415.36,
+   "end": 1418.56,
+   "text": "well so there you go"
   },
   {
-   "start": 1436.56,
-   "end": 1440.0,
-   "text": "Try to learn more about it and tell people more about it."
+   "start": 1418.56,
+   "end": 1420.98,
+   "text": "try learning more about protests"
   },
   {
-   "start": 1440.0,
-   "end": 1441.0,
-   "text": "Yes."
+   "start": 1420.98,
+   "end": 1423.92,
+   "text": "spread the word about the protests"
   },
   {
-   "start": 1441.0,
-   "end": 1443.0,
-   "text": "OK, that's it for this video."
+   "start": 1426.6,
+   "end": 1426.9,
+   "text": "and say"
   },
   {
-   "start": 1443.0,
-   "end": 1444.0,
-   "text": "Srečno!"
+   "start": 1426.9,
+   "end": 1432.84,
+   "text": "if you are passing by yes exactly"
   },
   {
-   "start": 1444.0,
-   "end": 1445.0,
-   "text": "Hvala!"
+   "start": 1436.32,
+   "end": 1437.2,
+   "text": "try to learn more about it"
   },
   {
-   "start": 1445.0,
-   "end": 1446.0,
-   "text": "Hvala!"
+   "start": 1437.2,
+   "end": 1439.94,
+   "text": "and tell people more about it yes"
   },
   {
-   "start": 1446.0,
-   "end": 1449.0,
-   "text": "And we'll see each other in the next episode."
+   "start": 1441.2,
+   "end": 1443.52,
+   "text": "ok srečno hala"
   },
   {
-   "start": 1449.0,
-   "end": 1450.0,
-   "text": "Da!"
-  },
-  {
-   "start": 1450.0,
-   "end": 1451.0,
-   "text": "Vidimo se!"
-  },
-  {
-   "start": 1451.0,
-   "end": 1452.0,
-   "text": "Vidimo se!"
-  },
-  {
-   "start": 1452.0,
-   "end": 1453.0,
-   "text": "Čau!"
+   "start": 1443.52,
+   "end": 1451.56,
+   "text": "and we'll see each other in the next episode vidimo se ciao"
   }
  ],
  "title": "Learn Serbian & Može kafa podcast: Episode 16 - Protests in Serbia",

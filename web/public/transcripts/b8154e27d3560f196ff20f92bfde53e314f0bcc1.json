@@ -1,0 +1,3965 @@
+{
+ "duration": 2833.92,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.18,
+   "end": 30.98,
+   "text": "Good morning everyone."
+  },
+  {
+   "start": 31.34,
+   "end": 33.76,
+   "text": "Good Good morning."
+  },
+  {
+   "start": 35.12,
+   "end": 37.4,
+   "text": "We live. We drink Rakia."
+  },
+  {
+   "start": 38.24,
+   "end": 43.7,
+   "text": "Why do we drink?"
+  },
+  {
+   "start": 44.98,
+   "end": 46.02,
+   "text": "I'm a little bit."
+  },
+  {
+   "start": 46.66,
+   "end": 48.84,
+   "text": "No. Why are we drinking Rakia?"
+  },
+  {
+   "start": 48.84,
+   "end": 50.04,
+   "text": "Because it's our..."
+  },
+  {
+   "start": 50.04,
+   "end": 50.84,
+   "text": "We're here."
+  },
+  {
+   "start": 53.7,
+   "end": 54.24,
+   "text": "Whom? Whom?"
+  },
+  {
+   "start": 54.24,
+   "end": 56.44,
+   "text": "To whom? We're here."
+  },
+  {
+   "start": 56.9,
+   "end": 59.58,
+   "text": "For us. For We're here."
+  },
+  {
+   "start": 60.24,
+   "end": 67.46,
+   "text": "slavimo yeah okay slavimo yeah uh the final of"
+  },
+  {
+   "start": 67.46,
+   "end": 72.9,
+   "text": "our fifth season exactly it's our last it's our last episode ever no i'm"
+  },
+  {
+   "start": 72.9,
+   "end": 74.28,
+   "text": "kidding it's our last episode of the season"
+  },
+  {
+   "start": 74.28,
+   "end": 81.54,
+   "text": "and we actually planned on meeting up but that"
+  },
+  {
+   "start": 81.54,
+   "end": 87.54,
+   "text": "we just really wasn't feasible with all the schedule and traveling mind you guys"
+  },
+  {
+   "start": 87.54,
+   "end": 90.58,
+   "text": "i am in zreninin and she is in krušovac and that takes"
+  },
+  {
+   "start": 90.58,
+   "end": 95.84,
+   "text": "a while i think it takes like six five six hours by car and"
+  },
+  {
+   "start": 95.84,
+   "end": 96.78,
+   "text": "if we don't have a car then there's a"
+  },
+  {
+   "start": 96.78,
+   "end": 101.7,
+   "text": "lot of how do you call it like when you change transport now a"
+  },
+  {
+   "start": 101.7,
+   "end": 104.46,
+   "text": "meeting stopover yeah yeah so"
+  },
+  {
+   "start": 104.46,
+   "end": 108.96,
+   "text": "the thing is this is our first time both of us being in serbia"
+  },
+  {
+   "start": 109.14,
+   "end": 110.42,
+   "text": "though, like at least."
+  },
+  {
+   "start": 110.5,
+   "end": 111.64,
+   "text": "It is. It is."
+  },
+  {
+   "start": 111.64,
+   "end": 112.56,
+   "text": "I hope the internet is good."
+  },
+  {
+   "start": 112.56,
+   "end": 113.48,
+   "text": "It's a different one."
+  },
+  {
+   "start": 113.48,
+   "end": 114.6,
+   "text": "Yeah, it is."
+  },
+  {
+   "start": 114.6,
+   "end": 116.92,
+   "text": "I don't have any liking there now."
+  },
+  {
+   "start": 118.3,
+   "end": 118.86,
+   "text": "Good, good."
+  },
+  {
+   "start": 120.26,
+   "end": 126.04,
+   "text": "So this one is going to be our QA, like question and answer."
+  },
+  {
+   "start": 126.5,
+   "end": 127.74,
+   "text": "Yeah. Both of us."
+  },
+  {
+   "start": 127.74,
+   "end": 131.28,
+   "text": "And I asked some questions to our followers on Instagram and I will share"
+  },
+  {
+   "start": 131.28,
+   "end": 132.68,
+   "text": "the answers from there as well."
+  },
+  {
+   "start": 134.22,
+   "end": 138.82,
+   "text": "Before that, I wanted to say that my rakia is made out of quince."
+  },
+  {
+   "start": 139.38,
+   "end": 141.24,
+   "text": "And we call this dunya or dunya."
+  },
+  {
+   "start": 141.24,
+   "end": 146.16,
+   "text": "But it's really just easier to say the name of the of the fruit."
+  },
+  {
+   "start": 146.16,
+   "end": 147.68,
+   "text": "And it's just I mean, we just say dunya."
+  },
+  {
+   "start": 147.98,
+   "end": 149.04,
+   "text": "Yeah, not dunya or whatever."
+  },
+  {
+   "start": 149.86,
+   "end": 155.34,
+   "text": "And I think this one is made by my dad's friend."
+  },
+  {
+   "start": 155.34,
+   "end": 156.14,
+   "text": "And he's our neighbor."
+  },
+  {
+   "start": 156.74,
+   "end": 160.5,
+   "text": "He's been making rakia for the last I don't know how many days, weeks,"
+  },
+  {
+   "start": 160.5,
+   "end": 160.72,
+   "text": "Don't ask me."
+  },
+  {
+   "start": 160.72,
+   "end": 161.32,
+   "text": "months."
+  },
+  {
+   "start": 162.44,
+   "end": 167.62,
+   "text": "so um so yeah that's his and smells really good probably doesn't taste that"
+  },
+  {
+   "start": 168.32,
+   "end": 172.02,
+   "text": "it's probably strong i'm not really into strong alcohol but yeah"
+  },
+  {
+   "start": 173.28,
+   "end": 180.48,
+   "text": "ito domacharakia where who did you buy it from from a local friends friends"
+  },
+  {
+   "start": 180.48,
+   "end": 181.38,
+   "text": "friends but"
+  },
+  {
+   "start": 181.38,
+   "end": 186.66,
+   "text": "i don't know who made it but someone from kurusha was made it i"
+  },
+  {
+   "start": 186.66,
+   "end": 193.12,
+   "text": "know that far okay and that's actually a good um uh explanation kind of"
+  },
+  {
+   "start": 193.12,
+   "end": 197.02,
+   "text": "like this is where we usually buy rakia from there's always someone who makes"
+  },
+  {
+   "start": 197.02,
+   "end": 200.96,
+   "text": "it a home always yeah and always um it's a very common"
+  },
+  {
+   "start": 200.96,
+   "end": 207.42,
+   "text": "gift if you join some kind of event like celebration party you might get"
+  },
+  {
+   "start": 207.42,
+   "end": 207.74,
+   "text": "a bottle of"
+  },
+  {
+   "start": 207.74,
+   "end": 214.52,
+   "text": "rakia back home exactly and i think you will be really safe with um"
+  },
+  {
+   "start": 214.52,
+   "end": 221.53,
+   "text": "rakia coffee ground coffee obviously and chocolate like we call and the the"
+  },
+  {
+   "start": 221.53,
+   "end": 221.79,
+   "text": "the nicer"
+  },
+  {
+   "start": 221.79,
+   "end": 228.81,
+   "text": "chocolates the little like pralines or whatever we call them bomboniere bomboniere yeah one"
+  },
+  {
+   "start": 228.81,
+   "end": 228.99,
+   "text": "bomboniera so it's like the more fancy like fancily packed you know like one"
+  },
+  {
+   "start": 228.99,
+   "end": 229.15,
+   "text": "is"
+  },
+  {
+   "start": 234.11,
+   "end": 234.55,
+   "text": "like 10 maybe"
+  },
+  {
+   "start": 234.55,
+   "end": 238.51,
+   "text": "or maybe five only that you get yeah so we call these bomboniere"
+  },
+  {
+   "start": 240.29,
+   "end": 246.57,
+   "text": "how do we say followers in serbian"
+  },
+  {
+   "start": 247.95,
+   "end": 255.75,
+   "text": "so as"
+  },
+  {
+   "start": 255.75,
+   "end": 261.23,
+   "text": "you know oh you like it i thought it was going to be more"
+  },
+  {
+   "start": 261.23,
+   "end": 265.37,
+   "text": "stronger but it's not i'm i'm really happy with it and it has and"
+  },
+  {
+   "start": 265.37,
+   "end": 269.21,
+   "text": "it actually has a taste of a fruit so i'm really happy yeah"
+  },
+  {
+   "start": 269.21,
+   "end": 276.21,
+   "text": "thank you good okay i was gonna say as"
+  },
+  {
+   "start": 276.21,
+   "end": 279.77,
+   "text": "you know we have so many new followers uh from different"
+  },
+  {
+   "start": 279.77,
+   "end": 286.15,
+   "text": "places so i wanted to start with like brief you know summary of our"
+  },
+  {
+   "start": 286.15,
+   "end": 293.17,
+   "text": "story like how did we start how did we change in time what did"
+  },
+  {
+   "start": 293.17,
+   "end": 296.89,
+   "text": "we do so far this kind of things yeah i think it's also really"
+  },
+  {
+   "start": 296.89,
+   "end": 302.25,
+   "text": "nice like a um to kind of like remember for us you know what"
+  },
+  {
+   "start": 302.25,
+   "end": 304.11,
+   "text": "the things we've done and the things"
+  },
+  {
+   "start": 304.11,
+   "end": 309.51,
+   "text": "that yeah just nice to remember yeah i had no idea we would finish"
+  },
+  {
+   "start": 309.51,
+   "end": 311.07,
+   "text": "like the fifth season i didn't"
+  },
+  {
+   "start": 311.07,
+   "end": 316.51,
+   "text": "know we would come up with so many different topics actually so no i'm"
+  },
+  {
+   "start": 316.51,
+   "end": 321.69,
+   "text": "so happy about this I think what I'm most happy about is that I"
+  },
+  {
+   "start": 321.69,
+   "end": 324.57,
+   "text": "have someone to chat with every week."
+  },
+  {
+   "start": 324.87,
+   "end": 329.23,
+   "text": "Honestly, it's such a nice way to um chat every week"
+  },
+  {
+   "start": 329.23,
+   "end": 333.81,
+   "text": "but also to um have a way to connect to my culture I think"
+  },
+  {
+   "start": 333.81,
+   "end": 336.03,
+   "text": "that's amazing imagine me I am in your"
+  },
+  {
+   "start": 336.03,
+   "end": 343.07,
+   "text": "culture yeah and I'm having someone regularly yeah to talk about the"
+  },
+  {
+   "start": 343.07,
+   "end": 343.97,
+   "text": "things that I find interesting"
+  },
+  {
+   "start": 343.97,
+   "end": 349.69,
+   "text": "so I don't forget the past that much thanks to you yeah and I"
+  },
+  {
+   "start": 349.69,
+   "end": 354.97,
+   "text": "also started writing to you in Serbian and way more than before so and"
+  },
+  {
+   "start": 354.97,
+   "end": 357.23,
+   "text": "I'm like you know what in in conversation it's a bit tough"
+  },
+  {
+   "start": 357.23,
+   "end": 361.85,
+   "text": "but when I write it down then you have time to process and to"
+  },
+  {
+   "start": 361.85,
+   "end": 362.83,
+   "text": "maybe translate if you need"
+  },
+  {
+   "start": 362.83,
+   "end": 366.67,
+   "text": "translating or ask someone what the word is and you've learned some new things"
+  },
+  {
+   "start": 366.67,
+   "end": 367.05,
+   "text": "in the last couple"
+  },
+  {
+   "start": 367.05,
+   "end": 371.65,
+   "text": "of weeks I'd say exactly you know what you can even write me in"
+  },
+  {
+   "start": 371.65,
+   "end": 378.83,
+   "text": "Chiriritsu now oh really yes I've been practicing it"
+  },
+  {
+   "start": 378.83,
+   "end": 380.93,
+   "text": "for the last month I think I'm quite"
+  },
+  {
+   "start": 380.93,
+   "end": 384.21,
+   "text": "fluent-ish in that"
+  },
+  {
+   "start": 385.47,
+   "end": 386.95,
+   "text": "not yet, still some letters"
+  },
+  {
+   "start": 386.95,
+   "end": 391.29,
+   "text": "are kind of confusing I need some moment to think about them"
+  },
+  {
+   "start": 391.29,
+   "end": 393.49,
+   "text": "but I can read it much faster"
+  },
+  {
+   "start": 393.49,
+   "end": 400.23,
+   "text": "now oh that's so cool maybe we can do one on the Cyrillic alphabet"
+  },
+  {
+   "start": 400.35,
+   "end": 400.69,
+   "text": "exactly"
+  },
+  {
+   "start": 400.69,
+   "end": 407.73,
+   "text": "so So, as you know, I'm talking to"
+  },
+  {
+   "start": 407.73,
+   "end": 411.63,
+   "text": "the followers. As you know, I'm talking to Moje Blue."
+  },
+  {
+   "start": 412.39,
+   "end": 415.39,
+   "text": "And this is how we started, right?"
+  },
+  {
+   "start": 415.39,
+   "end": 417.17,
+   "text": "Thanks to your YouTube account."
+  },
+  {
+   "start": 417.17,
+   "end": 418.77,
+   "text": "Thanks to your videos on YouTube."
+  },
+  {
+   "start": 419.19,
+   "end": 421.99,
+   "text": "I was so into learning Serbian."
+  },
+  {
+   "start": 421.99,
+   "end": 425.73,
+   "text": "And you were explaining everything in such a nice way, in such a clear"
+  },
+  {
+   "start": 425.73,
+   "end": 427.89,
+   "text": "way. And I wanted more."
+  },
+  {
+   "start": 428.41,
+   "end": 430.37,
+   "text": "So I had to come up with a plan."
+  },
+  {
+   "start": 432.31,
+   "end": 432.83,
+   "text": "That was smart."
+  },
+  {
+   "start": 432.87,
+   "end": 434.29,
+   "text": "It's really smart of you."
+  },
+  {
+   "start": 434.29,
+   "end": 435.41,
+   "text": "Yeah, go for it."
+  },
+  {
+   "start": 436.92,
+   "end": 441.14,
+   "text": "And then I emailed you and you were in Germany back then, right?"
+  },
+  {
+   "start": 441.4,
+   "end": 443.1,
+   "text": "Yeah, still in Germany, yeah."
+  },
+  {
+   "start": 444.8,
+   "end": 450.42,
+   "text": "So I offered you to think about having podcasts with me and then you"
+  },
+  {
+   "start": 450.42,
+   "end": 452.5,
+   "text": "jumped in. It was so unexpected."
+  },
+  {
+   "start": 452.94,
+   "end": 453.2,
+   "text": "I mean, I was so pleased."
+  },
+  {
+   "start": 453.2,
+   "end": 454.34,
+   "text": "Yeah, it was for me."
+  },
+  {
+   "start": 455.46,
+   "end": 455.7,
+   "text": "It was for me too."
+  },
+  {
+   "start": 455.7,
+   "end": 460.0,
+   "text": "I think one of the things that I learned from you from that experience"
+  },
+  {
+   "start": 460.0,
+   "end": 462.2,
+   "text": "is like, you cannot"
+  },
+  {
+   "start": 462.2,
+   "end": 465.54,
+   "text": "get like a yes if you don't ask, right?"
+  },
+  {
+   "start": 466.14,
+   "end": 470.44,
+   "text": "you know so and I think for me I really never thought about podcasts"
+  },
+  {
+   "start": 470.44,
+   "end": 471.2,
+   "text": "that much because YouTube"
+  },
+  {
+   "start": 471.2,
+   "end": 475.78,
+   "text": "was already too overwhelming and I just really didn't have any time to dedicate"
+  },
+  {
+   "start": 475.78,
+   "end": 477.16,
+   "text": "like on Instagram"
+  },
+  {
+   "start": 477.16,
+   "end": 482.46,
+   "text": "I like I was on Instagram but I really didn't have like structured posts"
+  },
+  {
+   "start": 482.46,
+   "end": 482.96,
+   "text": "or anything like that"
+  },
+  {
+   "start": 482.96,
+   "end": 487.46,
+   "text": "because it was just too tough to do that um and that's why podcast"
+  },
+  {
+   "start": 487.46,
+   "end": 488.54,
+   "text": "was really never on my mind but"
+  },
+  {
+   "start": 488.54,
+   "end": 493.4,
+   "text": "having someone there who is excited who has some ideas and who is willing"
+  },
+  {
+   "start": 493.4,
+   "end": 497.36,
+   "text": "to share that job with you I think it was like so much easier"
+  },
+  {
+   "start": 497.36,
+   "end": 502.76,
+   "text": "but your tech saviness helped us a lot not only"
+  },
+  {
+   "start": 502.76,
+   "end": 507.46,
+   "text": "for YouTube later on but in the beginning as well I learned a lot"
+  },
+  {
+   "start": 507.46,
+   "end": 509.1,
+   "text": "from you in that oh I learned a lot"
+  },
+  {
+   "start": 509.1,
+   "end": 513.34,
+   "text": "from you too you were also like really um you also you knew a"
+  },
+  {
+   "start": 513.34,
+   "end": 514.56,
+   "text": "lot of stuff you were very informative"
+  },
+  {
+   "start": 514.56,
+   "end": 519.38,
+   "text": "about certain things so we tried also we tried and failed certain things right"
+  },
+  {
+   "start": 519.38,
+   "end": 524.12,
+   "text": "so and that's okay that's exactly what so many funny failures we have but"
+  },
+  {
+   "start": 524.12,
+   "end": 527.68,
+   "text": "still we kept going yeah yeah one of the"
+  },
+  {
+   "start": 527.68,
+   "end": 534.16,
+   "text": "toughest things was like the selection of topics right because we have different mindsets"
+  },
+  {
+   "start": 534.16,
+   "end": 540.26,
+   "text": "about serbian culture you don't think about your culture in in different perspectives as"
+  },
+  {
+   "start": 540.26,
+   "end": 542.24,
+   "text": "i do right so i"
+  },
+  {
+   "start": 542.24,
+   "end": 546.66,
+   "text": "was offering you weird things sometimes and you were like wow what are we"
+  },
+  {
+   "start": 546.66,
+   "end": 546.86,
+   "text": "going to talk about"
+  },
+  {
+   "start": 546.86,
+   "end": 552.18,
+   "text": "that and then we we turned it into something more common and it was"
+  },
+  {
+   "start": 552.18,
+   "end": 555.52,
+   "text": "it was very interesting for example I talked about I wanted to talk about"
+  },
+  {
+   "start": 555.52,
+   "end": 560.66,
+   "text": "Serbia sorry Rakia Serbian Rakia and then we went"
+  },
+  {
+   "start": 560.66,
+   "end": 565.92,
+   "text": "into like all the process I was going to just focus on vocabulary right"
+  },
+  {
+   "start": 565.92,
+   "end": 570.5,
+   "text": "fruit names and stuff But we then came up with the regions, like what"
+  },
+  {
+   "start": 570.5,
+   "end": 572.22,
+   "text": "fruits are produced where."
+  },
+  {
+   "start": 572.22,
+   "end": 575.68,
+   "text": "So it was more broad when you think of it at the end of"
+  },
+  {
+   "start": 575.68,
+   "end": 580.16,
+   "text": "the day. Yeah, I think sometimes I would like ask you to write down"
+  },
+  {
+   "start": 580.16,
+   "end": 582.3,
+   "text": "a script so that I see how you think, right?"
+  },
+  {
+   "start": 582.3,
+   "end": 585.8,
+   "text": "Like what you were, because, you know, giving a topic is just very broad."
+  },
+  {
+   "start": 585.8,
+   "end": 589.94,
+   "text": "And then I really wanted to see how you are going about like thinking"
+  },
+  {
+   "start": 589.94,
+   "end": 590.68,
+   "text": "about that topic."
+  },
+  {
+   "start": 591.36,
+   "end": 596.28,
+   "text": "So, yeah, sometimes it just surprised me, you know, because I also really, I"
+  },
+  {
+   "start": 596.28,
+   "end": 597.04,
+   "text": "don't really, as you said,"
+  },
+  {
+   "start": 597.04,
+   "end": 602.16,
+   "text": "I don't really structure it as a like as as a from a learner's"
+  },
+  {
+   "start": 602.16,
+   "end": 604.96,
+   "text": "perspective right and that was"
+  },
+  {
+   "start": 604.96,
+   "end": 609.44,
+   "text": "even though I was taught to be a teacher a professor actually I was"
+  },
+  {
+   "start": 609.44,
+   "end": 609.84,
+   "text": "I wasn't teaching"
+  },
+  {
+   "start": 609.84,
+   "end": 616.26,
+   "text": "languages I was teaching grammar and linguistics which is theory it's just purely theory"
+  },
+  {
+   "start": 616.26,
+   "end": 616.48,
+   "text": "there's not a lot of like kind of like exercises I mean there were"
+  },
+  {
+   "start": 616.48,
+   "end": 616.74,
+   "text": "and"
+  },
+  {
+   "start": 620.72,
+   "end": 625.92,
+   "text": "of course but not like this real-time exercises so so i think um i"
+  },
+  {
+   "start": 625.92,
+   "end": 629.64,
+   "text": "think we also really jumped in whenever someone was like"
+  },
+  {
+   "start": 629.64,
+   "end": 634.92,
+   "text": "you could see someone else's strengths you know and then divided everything really um"
+  },
+  {
+   "start": 634.92,
+   "end": 640.14,
+   "text": "yeah i think that's a good thing about having like we balanced it out"
+  },
+  {
+   "start": 640.14,
+   "end": 641.02,
+   "text": "definitely yeah yeah"
+  },
+  {
+   "start": 641.02,
+   "end": 645.94,
+   "text": "balance it out at the end of the day do you know how many"
+  },
+  {
+   "start": 645.94,
+   "end": 650.88,
+   "text": "times our episodes so far have been download it?"
+  },
+  {
+   "start": 651.6,
+   "end": 653.56,
+   "text": "I think I should know"
+  },
+  {
+   "start": 653.56,
+   "end": 655.18,
+   "text": "but I have no idea."
+  },
+  {
+   "start": 655.89,
+   "end": 658.91,
+   "text": "what was the last number that you remember i don't remember 10 000"
+  },
+  {
+   "start": 658.91,
+   "end": 666.05,
+   "text": "it was months ago yeah it was funny"
+  },
+  {
+   "start": 666.05,
+   "end": 671.77,
+   "text": "yeah almost 17 000"
+  },
+  {
+   "start": 673.67,
+   "end": 679.11,
+   "text": "I mean times it was downloaded our podcast episodes yeah it's a bit crazy"
+  },
+  {
+   "start": 679.11,
+   "end": 679.97,
+   "text": "for me yeah to"
+  },
+  {
+   "start": 679.97,
+   "end": 683.99,
+   "text": "think about it because it's different on YouTube right you go on YouTube and"
+  },
+  {
+   "start": 683.99,
+   "end": 684.67,
+   "text": "it's just one platform"
+  },
+  {
+   "start": 684.67,
+   "end": 690.39,
+   "text": "and then everyone knows like that they can find certain things over there yeah"
+  },
+  {
+   "start": 690.39,
+   "end": 690.57,
+   "text": "I feel like"
+  },
+  {
+   "start": 690.57,
+   "end": 696.17,
+   "text": "podcasting we were not on YouTube so I really it was really tough to"
+  },
+  {
+   "start": 696.17,
+   "end": 702.71,
+   "text": "move people from YouTube to podcasts I know I'm tough I still really don't"
+  },
+  {
+   "start": 702.71,
+   "end": 704.63,
+   "text": "listen to podcasts that are just listening I"
+  },
+  {
+   "start": 704.63,
+   "end": 709.31,
+   "text": "like to watch them too so very rarely do I listen so I understand"
+  },
+  {
+   "start": 709.31,
+   "end": 710.97,
+   "text": "that struggle and"
+  },
+  {
+   "start": 710.97,
+   "end": 716.31,
+   "text": "what did I want to say something about that basically so it was a"
+  },
+  {
+   "start": 716.31,
+   "end": 721.43,
+   "text": "challenge definitely now on YouTube it's the same by the way for the other"
+  },
+  {
+   "start": 721.43,
+   "end": 726.21,
+   "text": "side of the group like me I never listen to podcasts on YouTube still"
+  },
+  {
+   "start": 726.21,
+   "end": 729.13,
+   "text": "I listen to hours from time to time but I feel like"
+  },
+  {
+   "start": 729.13,
+   "end": 733.29,
+   "text": "I need to move when I and when I listen to podcasts so that's"
+  },
+  {
+   "start": 733.29,
+   "end": 735.07,
+   "text": "how I'm used to it yeah"
+  },
+  {
+   "start": 735.07,
+   "end": 740.57,
+   "text": "but that number makes me happy yeah it's a good number it's crazy to"
+  },
+  {
+   "start": 740.57,
+   "end": 744.53,
+   "text": "think about it we mentioned this like maybe at the end of the first"
+  },
+  {
+   "start": 744.53,
+   "end": 745.11,
+   "text": "or second season but"
+  },
+  {
+   "start": 745.11,
+   "end": 752.67,
+   "text": "some countries like top countries that we are listened from uh Serbia definitely"
+  },
+  {
+   "start": 753.39,
+   "end": 757.65,
+   "text": "Why do you think Serbia is the most, like, is the country that people"
+  },
+  {
+   "start": 757.65,
+   "end": 758.17,
+   "text": "listen to us to most?"
+  },
+  {
+   "start": 758.17,
+   "end": 759.17,
+   "text": "I don't know."
+  },
+  {
+   "start": 759.17,
+   "end": 762.79,
+   "text": "It always popped up, like, Serbia was always Belgrade, like, from the top."
+  },
+  {
+   "start": 762.79,
+   "end": 764.49,
+   "text": "I don't really, I mean, I don't know"
+  },
+  {
+   "start": 764.49,
+   "end": 768.17,
+   "text": "if it was always like that but but um i was really i remember"
+  },
+  {
+   "start": 768.17,
+   "end": 769.15,
+   "text": "being really surprised it's like"
+  },
+  {
+   "start": 769.15,
+   "end": 773.99,
+   "text": "who is listening why are serbs listening to us because this is um it"
+  },
+  {
+   "start": 773.99,
+   "end": 775.91,
+   "text": "maybe is not serbs maybe"
+  },
+  {
+   "start": 775.91,
+   "end": 782.33,
+   "text": "the internationals living and like studying like me like and then it makes me"
+  },
+  {
+   "start": 782.33,
+   "end": 783.29,
+   "text": "think how many"
+  },
+  {
+   "start": 783.29,
+   "end": 788.55,
+   "text": "international students or like people or expats we have in serbia that's that's still"
+  },
+  {
+   "start": 788.55,
+   "end": 794.33,
+   "text": "crazy to you think about yeah crazy like there is business people there are"
+  },
+  {
+   "start": 794.33,
+   "end": 795.97,
+   "text": "students there are you know"
+  },
+  {
+   "start": 795.97,
+   "end": 802.29,
+   "text": "project-based workers here so many i guess so i really wonder the number of"
+  },
+  {
+   "start": 802.29,
+   "end": 802.77,
+   "text": "internationals in"
+  },
+  {
+   "start": 802.77,
+   "end": 807.33,
+   "text": "belgrade or in in serbia in general hopefully we will find it one day"
+  },
+  {
+   "start": 807.33,
+   "end": 809.41,
+   "text": "second country what would you"
+  },
+  {
+   "start": 809.41,
+   "end": 816.41,
+   "text": "say the u.s exactly i knew it was a again i don't really know"
+  },
+  {
+   "start": 816.41,
+   "end": 819.37,
+   "text": "if it's if it's like our people in in the U.S."
+  },
+  {
+   "start": 819.37,
+   "end": 820.21,
+   "text": "or it's like the U.S."
+  },
+  {
+   "start": 820.21,
+   "end": 822.01,
+   "text": "people really wanting to learn because of I don't know their"
+  },
+  {
+   "start": 822.01,
+   "end": 826.43,
+   "text": "partners or whatever but um but I think it was the U.S."
+  },
+  {
+   "start": 826.43,
+   "end": 828.39,
+   "text": "I thought it was going to be before we"
+  },
+  {
+   "start": 828.39,
+   "end": 831.31,
+   "text": "started a podcast I thought it was going to be Australia because there's a"
+  },
+  {
+   "start": 831.31,
+   "end": 832.31,
+   "text": "lot of Balkan people"
+  },
+  {
+   "start": 832.31,
+   "end": 839.35,
+   "text": "in Australia but it wasn't yeah yeah actually between Australia and the U.S."
+  },
+  {
+   "start": 839.35,
+   "end": 839.79,
+   "text": "there's a huge"
+  },
+  {
+   "start": 839.79,
+   "end": 846.37,
+   "text": "difference in percentages so Australia comes next and then Germany I think either you"
+  },
+  {
+   "start": 846.37,
+   "end": 851.31,
+   "text": "are listening to us crazy in a crazy way your friends yeah"
+  },
+  {
+   "start": 853.41,
+   "end": 861.77,
+   "text": "yeah and then uk and canada uh are following yeah hello"
+  },
+  {
+   "start": 861.77,
+   "end": 869.21,
+   "text": "people hello what serbia the us uh australia the uk uh"
+  },
+  {
+   "start": 869.21,
+   "end": 873.77,
+   "text": "germany everyone austria sweden so"
+  },
+  {
+   "start": 873.8,
+   "end": 881.12,
+   "text": "hello everyone that's that's crazy I can't even grasp that honestly I"
+  },
+  {
+   "start": 881.12,
+   "end": 882.16,
+   "text": "mean even if it was like 200"
+  },
+  {
+   "start": 882.16,
+   "end": 888.3,
+   "text": "like downloads I would be like what you know like people actually listen they"
+  },
+  {
+   "start": 888.3,
+   "end": 888.68,
+   "text": "took their time"
+  },
+  {
+   "start": 888.68,
+   "end": 892.26,
+   "text": "the time of the day to listen to us and it was it's a"
+  },
+  {
+   "start": 892.26,
+   "end": 894.78,
+   "text": "nice it's like I guess it's ego boosting"
+  },
+  {
+   "start": 894.78,
+   "end": 900.42,
+   "text": "as well but it's mostly like oh but you actually like what you're listening"
+  },
+  {
+   "start": 900.42,
+   "end": 903.64,
+   "text": "to you know like you care about what we're talking so that's really nice"
+  },
+  {
+   "start": 903.64,
+   "end": 906.22,
+   "text": "to know exactly and it really motivates us"
+  },
+  {
+   "start": 906.22,
+   "end": 913.22,
+   "text": "and we appreciate um not only who are listening to us the"
+  },
+  {
+   "start": 913.22,
+   "end": 914.28,
+   "text": "people who are listening to us but our"
+  },
+  {
+   "start": 914.28,
+   "end": 921.7,
+   "text": "followers as well we have these uh regular and irregular followers and supporters"
+  },
+  {
+   "start": 921.7,
+   "end": 928.42,
+   "text": "on buy me a coffee and patreon so that's another like big part actually"
+  },
+  {
+   "start": 928.42,
+   "end": 931.88,
+   "text": "of my motivation exactly yeah and"
+  },
+  {
+   "start": 931.88,
+   "end": 936.58,
+   "text": "it's a i mean not to say that your money is everything of course"
+  },
+  {
+   "start": 936.58,
+   "end": 937.48,
+   "text": "but um it's really good"
+  },
+  {
+   "start": 937.48,
+   "end": 942.5,
+   "text": "to know that you know someone is is willing to invest in us you"
+  },
+  {
+   "start": 942.5,
+   "end": 946.1,
+   "text": "know in that sense as a as a as a project as well and"
+  },
+  {
+   "start": 946.1,
+   "end": 949.3,
+   "text": "i don't know if i told you but now i was in belgrade and"
+  },
+  {
+   "start": 949.3,
+   "end": 954.96,
+   "text": "i met with one of our viewers or listeners yeah exactly he's known me"
+  },
+  {
+   "start": 954.96,
+   "end": 957.88,
+   "text": "for a long time already I mean from my"
+  },
+  {
+   "start": 957.88,
+   "end": 962.26,
+   "text": "YouTube but also he's he's always like always texts me something oh listen to"
+  },
+  {
+   "start": 962.26,
+   "end": 962.58,
+   "text": "your episode or"
+  },
+  {
+   "start": 962.58,
+   "end": 966.8,
+   "text": "whatever and then he gives me honestly he gives me a lot of input"
+  },
+  {
+   "start": 966.8,
+   "end": 968.8,
+   "text": "Serbian input that I'm missing"
+  },
+  {
+   "start": 968.8,
+   "end": 975.62,
+   "text": "if he's Serbian he's Serbian and he is from Laskova I think or or"
+  },
+  {
+   "start": 975.62,
+   "end": 981.6,
+   "text": "the surrounding of Laskova So that's a really, really big cultural difference as well,"
+  },
+  {
+   "start": 981.6,
+   "end": 983.74,
+   "text": "because it's, it's, I'm, I'm in the North."
+  },
+  {
+   "start": 983.74,
+   "end": 986.02,
+   "text": "We are specific and they're also specific."
+  },
+  {
+   "start": 986.02,
+   "end": 988.66,
+   "text": "Everyone has like a, it's a, and also the accent is"
+  },
+  {
+   "start": 988.66,
+   "end": 991.88,
+   "text": "different and it's just, it's really nice too."
+  },
+  {
+   "start": 991.88,
+   "end": 994.26,
+   "text": "Cause whatever, I remember I would correct people"
+  },
+  {
+   "start": 994.26,
+   "end": 999.68,
+   "text": "when they were pronounced certain things like, uh, morava, not morava, you know?"
+  },
+  {
+   "start": 999.68,
+   "end": 999.78,
+   "text": "And then he'd be"
+  },
+  {
+   "start": 999.78,
+   "end": 1005.0,
+   "text": "like, but we do say morava, you know, like we do accentuate the second"
+  },
+  {
+   "start": 1005.0,
+   "end": 1011.3,
+   "text": "syllable. So these kinds of things that i would learn oh cool yeah so"
+  },
+  {
+   "start": 1011.3,
+   "end": 1016.3,
+   "text": "what do you think our uh top three episodes are okay"
+  },
+  {
+   "start": 1016.3,
+   "end": 1021.8,
+   "text": "favorite places to visit exactly yeah i know that was the first one yeah"
+  },
+  {
+   "start": 1021.8,
+   "end": 1023.82,
+   "text": "um our first episode is the"
+  },
+  {
+   "start": 1023.82,
+   "end": 1028.44,
+   "text": "first one can you imagine that was a really good topic and you were"
+  },
+  {
+   "start": 1028.44,
+   "end": 1035.94,
+   "text": "so much more amateur in that one it was our first i cannot"
+  },
+  {
+   "start": 1035.94,
+   "end": 1042.82,
+   "text": "i don't think about the learners what they need the most when they first"
+  },
+  {
+   "start": 1042.82,
+   "end": 1049.2,
+   "text": "start learning serbian how to i don't know i don't know so many things"
+  },
+  {
+   "start": 1049.2,
+   "end": 1049.48,
+   "text": "i don't know what"
+  },
+  {
+   "start": 1049.48,
+   "end": 1055.34,
+   "text": "how to do small talk so small talk in serbian is the number two"
+  },
+  {
+   "start": 1055.34,
+   "end": 1059.96,
+   "text": "i thought it was gonna be something cultural like um like what the people"
+  },
+  {
+   "start": 1059.96,
+   "end": 1061.64,
+   "text": "are like or something like that i don't know what"
+  },
+  {
+   "start": 1061.64,
+   "end": 1068.1,
+   "text": "the third one could be it's cultural it's cultural it's someone that is someone"
+  },
+  {
+   "start": 1068.1,
+   "end": 1069.14,
+   "text": "that's very famous in"
+  },
+  {
+   "start": 1069.14,
+   "end": 1075.12,
+   "text": "your culture yes that one is number three that makes you so happy it's"
+  },
+  {
+   "start": 1075.12,
+   "end": 1075.6,
+   "text": "such a it was such a"
+  },
+  {
+   "start": 1075.6,
+   "end": 1080.84,
+   "text": "big part of yeah who i am yeah and my story that's really nice"
+  },
+  {
+   "start": 1080.84,
+   "end": 1084.76,
+   "text": "and not only serbians i guess he's famous all around the world, right?"
+  },
+  {
+   "start": 1084.76,
+   "end": 1085.84,
+   "text": "Yeah, he is all around the world."
+  },
+  {
+   "start": 1085.84,
+   "end": 1088.68,
+   "text": "That's why maybe it's number three."
+  },
+  {
+   "start": 1089.2,
+   "end": 1095.94,
+   "text": "Yeah, it's all the Balkan, basically, people, the slavs um and probably also worldwide"
+  },
+  {
+   "start": 1095.94,
+   "end": 1098.32,
+   "text": "but the thing is that i think it would be very difficult for"
+  },
+  {
+   "start": 1098.32,
+   "end": 1102.26,
+   "text": "other people to understand him because he has a way of poetic way of"
+  },
+  {
+   "start": 1102.26,
+   "end": 1103.72,
+   "text": "writing so it's very difficult"
+  },
+  {
+   "start": 1103.72,
+   "end": 1108.2,
+   "text": "to translate it in such a you know seductive way how he was doing"
+  },
+  {
+   "start": 1108.2,
+   "end": 1109.12,
+   "text": "it he just draws you in so"
+  },
+  {
+   "start": 1109.12,
+   "end": 1114.08,
+   "text": "i wouldn't understand why people uh like outside of our area like the balkan"
+  },
+  {
+   "start": 1114.08,
+   "end": 1119.56,
+   "text": "area would not understand so yeah yeah cool I mean some songs of his"
+  },
+  {
+   "start": 1119.56,
+   "end": 1122.44,
+   "text": "are kind of easier but some songs I'm like"
+  },
+  {
+   "start": 1122.44,
+   "end": 1129.76,
+   "text": "I'm just memorizing even memorizing helps so it's it's cool yeah okay"
+  },
+  {
+   "start": 1129.76,
+   "end": 1131.8,
+   "text": "not about me or you know"
+  },
+  {
+   "start": 1131.8,
+   "end": 1138.06,
+   "text": "technical thing but what I'm gonna start asking you questions about podcasting in general"
+  },
+  {
+   "start": 1138.56,
+   "end": 1143.86,
+   "text": "podcasting in general yeah yeah what do you think podcasting has taught you"
+  },
+  {
+   "start": 1146.6,
+   "end": 1153.6,
+   "text": "uh podcasting but not like any any like content wise is that not"
+  },
+  {
+   "start": 1153.6,
+   "end": 1155.16,
+   "text": "content wise not like this job"
+  },
+  {
+   "start": 1156.72,
+   "end": 1163.16,
+   "text": "this new job area well you know i think a lot of like metaphorically"
+  },
+  {
+   "start": 1163.16,
+   "end": 1164.1,
+   "text": "or maybe like let's say"
+  },
+  {
+   "start": 1164.1,
+   "end": 1171.44,
+   "text": "it's mostly general like to be willing to learn new things i think always"
+  },
+  {
+   "start": 1171.44,
+   "end": 1178.1,
+   "text": "to i i think i pride myself from being humble and driven and I'm"
+  },
+  {
+   "start": 1178.1,
+   "end": 1181.44,
+   "text": "always humble with my like when it comes to my"
+  },
+  {
+   "start": 1181.44,
+   "end": 1187.7,
+   "text": "accomplishments but I'm always like I know there's so much more to learn and"
+  },
+  {
+   "start": 1187.7,
+   "end": 1188.68,
+   "text": "I think that was like"
+  },
+  {
+   "start": 1188.68,
+   "end": 1194.24,
+   "text": "one of the things that it taught me just to be always yeah just"
+  },
+  {
+   "start": 1194.24,
+   "end": 1196.2,
+   "text": "to be always learning and that"
+  },
+  {
+   "start": 1196.2,
+   "end": 1201.11,
+   "text": "was my podcasting for me you know basically when I thought about this question"
+  },
+  {
+   "start": 1201.11,
+   "end": 1201.53,
+   "text": "and your answer,"
+  },
+  {
+   "start": 1201.53,
+   "end": 1206.03,
+   "text": "I thought maybe you would also feel kind of a different challenge"
+  },
+  {
+   "start": 1206.03,
+   "end": 1209.43,
+   "text": "because you are used to being in front of the camera, right?"
+  },
+  {
+   "start": 1209.43,
+   "end": 1213.19,
+   "text": "Yeah. You are always producing something visual."
+  },
+  {
+   "start": 1213.19,
+   "end": 1221.07,
+   "text": "And all of a sudden you went into this, you know, just audio content."
+  },
+  {
+   "start": 1221.07,
+   "end": 1224.47,
+   "text": "So that's why I thought that might be a little bit tough in the"
+  },
+  {
+   "start": 1224.47,
+   "end": 1225.35,
+   "text": "beginning for you."
+  },
+  {
+   "start": 1225.67,
+   "end": 1228.63,
+   "text": "That is, that's exactly what it is about, because now you have to shift"
+  },
+  {
+   "start": 1228.63,
+   "end": 1233.87,
+   "text": "your attention to what grabs the attention is not the visual, it has to"
+  },
+  {
+   "start": 1233.87,
+   "end": 1240.17,
+   "text": "be either good quality audio, or, and or things that you have to say,"
+  },
+  {
+   "start": 1240.17,
+   "end": 1241.11,
+   "text": "right? Exactly."
+  },
+  {
+   "start": 1241.11,
+   "end": 1247.43,
+   "text": "So and it's a format where people don't click on podcast episodes that are"
+  },
+  {
+   "start": 1247.43,
+   "end": 1252.01,
+   "text": "two minutes long, which is exactly the format that works on YouTube, like up"
+  },
+  {
+   "start": 1252.01,
+   "end": 1254.83,
+   "text": "to five minutes is perfect though, right?"
+  },
+  {
+   "start": 1255.47,
+   "end": 1260.95,
+   "text": "so um and this is not what works on on for podcasts right so"
+  },
+  {
+   "start": 1260.95,
+   "end": 1262.81,
+   "text": "i had to like distinguish"
+  },
+  {
+   "start": 1262.81,
+   "end": 1267.35,
+   "text": "that and be like how are we different and how are we creating value"
+  },
+  {
+   "start": 1267.35,
+   "end": 1269.15,
+   "text": "you know exactly what about you"
+  },
+  {
+   "start": 1269.15,
+   "end": 1276.09,
+   "text": "uh uh it's interesting i was always talking to people like face to face"
+  },
+  {
+   "start": 1276.09,
+   "end": 1276.63,
+   "text": "right because i'm a"
+  },
+  {
+   "start": 1276.63,
+   "end": 1282.93,
+   "text": "teacher and content producer but for the first time like i'm not doing something"
+  },
+  {
+   "start": 1282.93,
+   "end": 1289.51,
+   "text": "about my area Like this is, okay, language learning, but talking about culture, like"
+  },
+  {
+   "start": 1289.51,
+   "end": 1290.81,
+   "text": "in a different way."
+  },
+  {
+   "start": 1290.81,
+   "end": 1294.45,
+   "text": "It sounds like it's closed in the beginning, but when I started doing this,"
+  },
+  {
+   "start": 1294.45,
+   "end": 1296.13,
+   "text": "I thought, no, this is completely new."
+  },
+  {
+   "start": 1296.77,
+   "end": 1301.99,
+   "text": "I mean, I needed to take that teacher hat off a little bit because"
+  },
+  {
+   "start": 1301.99,
+   "end": 1306.73,
+   "text": "I thought this should be like more interactive, more fun in a way."
+  },
+  {
+   "start": 1306.73,
+   "end": 1310.69,
+   "text": "It's not like it shouldn't be lecture-based or, you know, explanation-based."
+  },
+  {
+   "start": 1310.69,
+   "end": 1314.53,
+   "text": "so that part was kind of new and challenging for me in the beginning"
+  },
+  {
+   "start": 1316.47,
+   "end": 1319.07,
+   "text": "yeah I wanted to say another thing that you just said I think it"
+  },
+  {
+   "start": 1319.07,
+   "end": 1319.51,
+   "text": "was also"
+  },
+  {
+   "start": 1320.89,
+   "end": 1326.13,
+   "text": "uh that we were quite good at is acknowledging that if we're stressed you"
+  },
+  {
+   "start": 1326.13,
+   "end": 1326.39,
+   "text": "know like exactly"
+  },
+  {
+   "start": 1326.39,
+   "end": 1331.63,
+   "text": "because and and if we are stressed and if you can jump in then"
+  },
+  {
+   "start": 1331.63,
+   "end": 1333.33,
+   "text": "great and if you cannot jump in"
+  },
+  {
+   "start": 1333.33,
+   "end": 1338.29,
+   "text": "that's fine you know like these kind of things so if you ever I"
+  },
+  {
+   "start": 1338.29,
+   "end": 1340.73,
+   "text": "don't know how it is when you did it But whenever I jumped in"
+  },
+  {
+   "start": 1340.73,
+   "end": 1344.11,
+   "text": "for you, I never thought of like, oh, now I'm doing this."
+  },
+  {
+   "start": 1344.11,
+   "end": 1345.89,
+   "text": "She's going to have to do something else."
+  },
+  {
+   "start": 1345.89,
+   "end": 1349.25,
+   "text": "Or like she should be thankful or like she's going to have to make"
+  },
+  {
+   "start": 1349.25,
+   "end": 1349.39,
+   "text": "up for it or something"
+  },
+  {
+   "start": 1349.39,
+   "end": 1349.73,
+   "text": "like that."
+  },
+  {
+   "start": 1349.73,
+   "end": 1353.79,
+   "text": "It's like if I'm doing this willingly, then I'm doing this willingly."
+  },
+  {
+   "start": 1354.17,
+   "end": 1354.41,
+   "text": "And it's not being like and I think that's a tough part as well, Right."
+  },
+  {
+   "start": 1358.31,
+   "end": 1358.63,
+   "text": "because you also have"
+  },
+  {
+   "start": 1358.63,
+   "end": 1361.31,
+   "text": "to put your like limitation for yourself."
+  },
+  {
+   "start": 1361.31,
+   "end": 1365.67,
+   "text": "And I think it's just responsibility in like everyday situation."
+  },
+  {
+   "start": 1365.67,
+   "end": 1370.31,
+   "text": "you have to have um like a limit not limitations but like how do"
+  },
+  {
+   "start": 1370.31,
+   "end": 1379.03,
+   "text": "you call them it's not borders but yeah you have to have some sort of like"
+  },
+  {
+   "start": 1379.03,
+   "end": 1383.49,
+   "text": "responsibilities other responsibilities or kind of no i mean like you have to know"
+  },
+  {
+   "start": 1383.49,
+   "end": 1383.67,
+   "text": "put boundary that's what boundary so you have to because you know there's always"
+  },
+  {
+   "start": 1383.67,
+   "end": 1383.95,
+   "text": "where to"
+  },
+  {
+   "start": 1389.41,
+   "end": 1389.65,
+   "text": "some things that you're gonna have to do right and with this one we"
+  },
+  {
+   "start": 1389.65,
+   "end": 1389.87,
+   "text": "going to be"
+  },
+  {
+   "start": 1393.13,
+   "end": 1397.55,
+   "text": "started with the podcast and then we decided to like open up the patreon"
+  },
+  {
+   "start": 1397.55,
+   "end": 1400.13,
+   "text": "and then to put stuff on youtube and to have scripts"
+  },
+  {
+   "start": 1400.13,
+   "end": 1404.51,
+   "text": "for patreon by the way people we have scripts on patreon um if you"
+  },
+  {
+   "start": 1404.51,
+   "end": 1406.25,
+   "text": "need them cool ones yeah if from"
+  },
+  {
+   "start": 1406.25,
+   "end": 1410.83,
+   "text": "they also we have offered we offered them in the Cyrillic alphabet too so"
+  },
+  {
+   "start": 1410.83,
+   "end": 1411.67,
+   "text": "um and that was a lot"
+  },
+  {
+   "start": 1411.67,
+   "end": 1415.69,
+   "text": "that was a lot especially because we were trying to do that for all"
+  },
+  {
+   "start": 1415.69,
+   "end": 1416.59,
+   "text": "the seasons because we started"
+  },
+  {
+   "start": 1416.59,
+   "end": 1420.04,
+   "text": "a bit late and um and I think"
+  },
+  {
+   "start": 1420.04,
+   "end": 1421.86,
+   "text": "at a certain point you just"
+  },
+  {
+   "start": 1421.86,
+   "end": 1425.9,
+   "text": "have to be like okay you know um there's some things that I want"
+  },
+  {
+   "start": 1425.9,
+   "end": 1426.48,
+   "text": "to do some things that I don't"
+  },
+  {
+   "start": 1426.48,
+   "end": 1429.76,
+   "text": "want to do and certain things that are going to stress me out and"
+  },
+  {
+   "start": 1429.76,
+   "end": 1431.12,
+   "text": "if I choose to do these things"
+  },
+  {
+   "start": 1431.12,
+   "end": 1436.32,
+   "text": "then it's my own responsibility that I'm doing that and it's not yours that"
+  },
+  {
+   "start": 1436.32,
+   "end": 1436.54,
+   "text": "you didn't have the"
+  },
+  {
+   "start": 1436.54,
+   "end": 1442.04,
+   "text": "time because this thing that we're doing we're doing voluntarily right so exactly yeah"
+  },
+  {
+   "start": 1442.04,
+   "end": 1446.42,
+   "text": "before we continue with the show, here's a quick reminder."
+  },
+  {
+   "start": 1446.42,
+   "end": 1447.92,
+   "text": "This podcast is free for everyone"
+  },
+  {
+   "start": 1447.92,
+   "end": 1450.46,
+   "text": "and supported by listeners like you."
+  },
+  {
+   "start": 1450.46,
+   "end": 1453.8,
+   "text": "We hope that this podcast is useful and companion to you."
+  },
+  {
+   "start": 1454.22,
+   "end": 1456.28,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 1456.28,
+   "end": 1458.92,
+   "text": "To help us continue creating useful content for everyone,"
+  },
+  {
+   "start": 1458.92,
+   "end": 1461.14,
+   "text": "we will appreciate your help."
+  },
+  {
+   "start": 1461.14,
+   "end": 1464.5,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 1465.1,
+   "end": 1470.94,
+   "text": "You may just go to buymeacoffee.com slash mozacaffapodcast and send us some cups of"
+  },
+  {
+   "start": 1470.94,
+   "end": 1476.3,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozda"
+  },
+  {
+   "start": 1476.3,
+   "end": 1481.72,
+   "text": "kafapodcast and get extra benefits like bonus content, full transcripts of the show in"
+  },
+  {
+   "start": 1481.72,
+   "end": 1484.06,
+   "text": "Serbian, or even join us on the show."
+  },
+  {
+   "start": 1484.76,
+   "end": 1488.94,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1488.94,
+   "end": 1491.42,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1491.74,
+   "end": 1493.56,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1494.4,
+   "end": 1496.52,
+   "text": "That's the beautiful feeling that I have as well."
+  },
+  {
+   "start": 1496.52,
+   "end": 1501.0,
+   "text": "Like I know that you have been doing so many extra things at some"
+  },
+  {
+   "start": 1501.0,
+   "end": 1501.1,
+   "text": "And I was like, you know what?"
+  },
+  {
+   "start": 1501.1,
+   "end": 1501.7,
+   "text": "point."
+  },
+  {
+   "start": 1502.94,
+   "end": 1503.58,
+   "text": "I'm so grateful."
+  },
+  {
+   "start": 1503.58,
+   "end": 1507.32,
+   "text": "But it's not like something that we talked all the time."
+  },
+  {
+   "start": 1507.7,
+   "end": 1510.54,
+   "text": "But the next month it was West for South."
+  },
+  {
+   "start": 1510.54,
+   "end": 1516.26,
+   "text": "So it just balanced itself out in a very natural way, I think."
+  },
+  {
+   "start": 1516.64,
+   "end": 1519.48,
+   "text": "I think that's how I think of a friendship too."
+  },
+  {
+   "start": 1519.48,
+   "end": 1521.8,
+   "text": "Maybe it's something like from Serbia or maybe it's,"
+  },
+  {
+   "start": 1521.8,
+   "end": 1527.32,
+   "text": "it's maybe like connected to our cultures, but like, I don't like, have points"
+  },
+  {
+   "start": 1527.32,
+   "end": 1530.22,
+   "text": "you know what I mean it's like whatever you need I'm there this"
+  },
+  {
+   "start": 1530.22,
+   "end": 1533.94,
+   "text": "is why you have friends and this is why you have your own community"
+  },
+  {
+   "start": 1533.94,
+   "end": 1535.02,
+   "text": "and then I'll help you out if"
+  },
+  {
+   "start": 1535.02,
+   "end": 1539.66,
+   "text": "I can't I'll let you know and and I'm not doing it that you"
+  },
+  {
+   "start": 1539.66,
+   "end": 1541.42,
+   "text": "helped me too but I know I'm pretty"
+  },
+  {
+   "start": 1541.42,
+   "end": 1545.48,
+   "text": "sure that if you do have time and space for some other things for"
+  },
+  {
+   "start": 1545.48,
+   "end": 1546.6,
+   "text": "me then you would do the same"
+  },
+  {
+   "start": 1546.6,
+   "end": 1551.74,
+   "text": "and I think it's just you know and and don't people don't start counting"
+  },
+  {
+   "start": 1551.74,
+   "end": 1555.82,
+   "text": "things that's where It really gets like, don't expect things."
+  },
+  {
+   "start": 1556.18,
+   "end": 1560.02,
+   "text": "Don't expect other people to do things that you are doing for other people,"
+  },
+  {
+   "start": 1560.02,
+   "end": 1565.06,
+   "text": "I guess. If you really expect, try to say it clearly so that there's"
+  },
+  {
+   "start": 1565.06,
+   "end": 1568.44,
+   "text": "no bad feelings at the end."
+  },
+  {
+   "start": 1568.98,
+   "end": 1569.36,
+   "text": "Yeah. Exactly."
+  },
+  {
+   "start": 1570.56,
+   "end": 1572.0,
+   "text": "I was thinking of the same answer."
+  },
+  {
+   "start": 1572.0,
+   "end": 1576.1,
+   "text": "So I don't think we should go into details for that."
+  },
+  {
+   "start": 1576.1,
+   "end": 1580.6,
+   "text": "But during this year, the whole year, a lot of big changes happen in"
+  },
+  {
+   "start": 1580.6,
+   "end": 1581.36,
+   "text": "our lives, in both"
+  },
+  {
+   "start": 1581.36,
+   "end": 1582.48,
+   "text": "of our lives."
+  },
+  {
+   "start": 1582.9,
+   "end": 1586.1,
+   "text": "I think I've had very bad ones."
+  },
+  {
+   "start": 1586.86,
+   "end": 1590.0,
+   "text": "When I remember your changes, oh, crazy stuff."
+  },
+  {
+   "start": 1590.94,
+   "end": 1592.88,
+   "text": "There is still an idea"
+  },
+  {
+   "start": 1592.88,
+   "end": 1594.8,
+   "text": "to do an episode on that,"
+  },
+  {
+   "start": 1594.8,
+   "end": 1597.12,
+   "text": "but we have been through thick and thin"
+  },
+  {
+   "start": 1597.12,
+   "end": 1598.56,
+   "text": "during this year."
+  },
+  {
+   "start": 1598.9,
+   "end": 1599.84,
+   "text": "Yeah, that's true."
+  },
+  {
+   "start": 1601.36,
+   "end": 1602.4,
+   "text": "But we still did."
+  },
+  {
+   "start": 1603.36,
+   "end": 1604.2,
+   "text": "We still did the episode."
+  },
+  {
+   "start": 1605.0,
+   "end": 1605.44,
+   "text": "Can you imagine?"
+  },
+  {
+   "start": 1605.98,
+   "end": 1610.32,
+   "text": "Crazy. I was going to leave Serbia at some point."
+  },
+  {
+   "start": 1610.32,
+   "end": 1616.44,
+   "text": "I was on the edge of you know during the yeah anyway i'm so"
+  },
+  {
+   "start": 1616.44,
+   "end": 1619.76,
+   "text": "like feeling proud of this like when let me think"
+  },
+  {
+   "start": 1619.76,
+   "end": 1624.58,
+   "text": "of those moments so that's one of the things that i'm most proud of"
+  },
+  {
+   "start": 1624.58,
+   "end": 1626.62,
+   "text": "like keeping it up no matter what"
+  },
+  {
+   "start": 1626.62,
+   "end": 1631.6,
+   "text": "yeah but is there anything else that you are most proud of our show"
+  },
+  {
+   "start": 1631.6,
+   "end": 1632.4,
+   "text": "for"
+  },
+  {
+   "start": 1634.12,
+   "end": 1637.34,
+   "text": "wait what was the first question was uh what you have learned right i"
+  },
+  {
+   "start": 1637.34,
+   "end": 1637.73,
+   "text": "said no what was"
+  },
+  {
+   "start": 1637.73,
+   "end": 1643.87,
+   "text": "what yeah yeah but what are you proud of about our show most"
+  },
+  {
+   "start": 1643.87,
+   "end": 1650.57,
+   "text": "i feel like i mentioned a lot of things i think it was definitely"
+  },
+  {
+   "start": 1650.57,
+   "end": 1656.75,
+   "text": "that um consistency and grit that we had that we just shared um i"
+  },
+  {
+   "start": 1656.75,
+   "end": 1662.77,
+   "text": "think i'm really just like proud of our show um honestly like not connected"
+  },
+  {
+   "start": 1662.77,
+   "end": 1666.73,
+   "text": "to like viewers are part of us and um like how we manage"
+  },
+  {
+   "start": 1666.73,
+   "end": 1671.11,
+   "text": "things and how much fun we have and how much we are there for"
+  },
+  {
+   "start": 1671.11,
+   "end": 1672.69,
+   "text": "each other and even though we're"
+  },
+  {
+   "start": 1672.69,
+   "end": 1676.73,
+   "text": "physically not there is like physical friends you know but like just that support"
+  },
+  {
+   "start": 1676.73,
+   "end": 1677.11,
+   "text": "i think that's"
+  },
+  {
+   "start": 1677.11,
+   "end": 1681.29,
+   "text": "really so in that sense i think i hope people notice that i really"
+  },
+  {
+   "start": 1681.29,
+   "end": 1685.35,
+   "text": "do hope i i think it should be noticeable yeah yeah i think it"
+  },
+  {
+   "start": 1685.35,
+   "end": 1688.43,
+   "text": "is remember what i was missing for some like three four"
+  },
+  {
+   "start": 1688.43,
+   "end": 1694.81,
+   "text": "episodes and people started asking always maki and kind of things so i felt"
+  },
+  {
+   "start": 1694.81,
+   "end": 1695.39,
+   "text": "like they need this"
+  },
+  {
+   "start": 1695.39,
+   "end": 1702.57,
+   "text": "you know friendship to be continued yeah there's everything that you know i"
+  },
+  {
+   "start": 1702.57,
+   "end": 1703.21,
+   "text": "think it's also like a"
+  },
+  {
+   "start": 1703.21,
+   "end": 1708.05,
+   "text": "big part of our podcast i think i'm a great i'm i'm um i'm"
+  },
+  {
+   "start": 1708.05,
+   "end": 1712.05,
+   "text": "proud of like people of like how much we've done learned and also people"
+  },
+  {
+   "start": 1712.05,
+   "end": 1717.73,
+   "text": "like wanting to listen to us i think that's really yeah you and"
+  },
+  {
+   "start": 1717.73,
+   "end": 1724.99,
+   "text": "that's it like the same thing but yeah consistency for sure and passion"
+  },
+  {
+   "start": 1724.99,
+   "end": 1727.63,
+   "text": "i mean still we have so many"
+  },
+  {
+   "start": 1727.63,
+   "end": 1732.63,
+   "text": "episode ideas here like to go over yeah we're not sure if you're gonna"
+  },
+  {
+   "start": 1732.63,
+   "end": 1733.61,
+   "text": "change anything in the format"
+  },
+  {
+   "start": 1733.61,
+   "end": 1739.25,
+   "text": "or you know in the show but ideas are still popping up that's what"
+  },
+  {
+   "start": 1739.25,
+   "end": 1742.59,
+   "text": "i'm mostly proud of We do need a break though."
+  },
+  {
+   "start": 1742.59,
+   "end": 1744.45,
+   "text": "So we're definitely not going to work before."
+  },
+  {
+   "start": 1744.45,
+   "end": 1747.01,
+   "text": "Like January is going to be chilling, guys."
+  },
+  {
+   "start": 1747.59,
+   "end": 1751.07,
+   "text": "Make sure to re-listen or listen to some of the episodes that you haven't."
+  },
+  {
+   "start": 1751.07,
+   "end": 1752.31,
+   "text": "Because we have many."
+  },
+  {
+   "start": 1752.35,
+   "end": 1753.21,
+   "text": "We have 50, right?"
+  },
+  {
+   "start": 1753.79,
+   "end": 1758.39,
+   "text": "So we just need some time to be away."
+  },
+  {
+   "start": 1758.69,
+   "end": 1758.81,
+   "text": "I think that's good."
+  },
+  {
+   "start": 1758.81,
+   "end": 1761.03,
+   "text": "Yeah, to refill."
+  },
+  {
+   "start": 1762.13,
+   "end": 1765.85,
+   "text": "And what is your favorite episode or episodes?"
+  },
+  {
+   "start": 1768.17,
+   "end": 1772.79,
+   "text": "Oh, man. I think around in the middle, it kind of stuff starts getting"
+  },
+  {
+   "start": 1772.79,
+   "end": 1776.15,
+   "text": "blurry. I'm pretty sure we had a lot of fun with a lot of"
+  },
+  {
+   "start": 1776.15,
+   "end": 1783.11,
+   "text": "episodes. i still remember for some reason that second episode coffee i just remember"
+  },
+  {
+   "start": 1783.11,
+   "end": 1784.29,
+   "text": "yeah the importance"
+  },
+  {
+   "start": 1784.29,
+   "end": 1788.17,
+   "text": "of coffee because i remember the first episode was quite we were quite nervous"
+  },
+  {
+   "start": 1788.17,
+   "end": 1790.05,
+   "text": "um we did two"
+  },
+  {
+   "start": 1790.05,
+   "end": 1793.53,
+   "text": "i think it was both episodes no it wasn't at the same uh time"
+  },
+  {
+   "start": 1793.53,
+   "end": 1794.29,
+   "text": "right it wasn't the same day"
+  },
+  {
+   "start": 1794.29,
+   "end": 1799.31,
+   "text": "i can't remember now but but we did the first episode which was quite"
+  },
+  {
+   "start": 1799.31,
+   "end": 1805.83,
+   "text": "structured um it was like You list five things and I list five things."
+  },
+  {
+   "start": 1805.83,
+   "end": 1806.73,
+   "text": "And it was amazing."
+  },
+  {
+   "start": 1806.73,
+   "end": 1808.29,
+   "text": "It was a lot of fun, but it was structured."
+  },
+  {
+   "start": 1808.87,
+   "end": 1813.89,
+   "text": "But the coffee episode was such a spontaneous kind of thing."
+  },
+  {
+   "start": 1813.89,
+   "end": 1818.23,
+   "text": "And you could also bring in things from Turkey, which I love that we"
+  },
+  {
+   "start": 1818.23,
+   "end": 1819.31,
+   "text": "can connect on."
+  },
+  {
+   "start": 1819.73,
+   "end": 1820.85,
+   "text": "I think that one was one of my."
+  },
+  {
+   "start": 1821.49,
+   "end": 1823.95,
+   "text": "Exactly. I remember many details about it."
+  },
+  {
+   "start": 1823.95,
+   "end": 1825.69,
+   "text": "You're right. It was very nice."
+  },
+  {
+   "start": 1827.05,
+   "end": 1828.53,
+   "text": "So topic based."
+  },
+  {
+   "start": 1828.53,
+   "end": 1832.47,
+   "text": "I love so many things because I really want to do those topics one"
+  },
+  {
+   "start": 1832.47,
+   "end": 1833.09,
+   "text": "more time in a different way"
+  },
+  {
+   "start": 1833.09,
+   "end": 1841.17,
+   "text": "but I think for me most culturally interesting and the"
+  },
+  {
+   "start": 1841.17,
+   "end": 1842.65,
+   "text": "one that I had fun with was humor and"
+  },
+  {
+   "start": 1842.65,
+   "end": 1849.67,
+   "text": "inat oh yeah because I learned so many you know important events happened"
+  },
+  {
+   "start": 1849.67,
+   "end": 1854.71,
+   "text": "back in time you know those t-shirts when they took bombings were happening."
+  },
+  {
+   "start": 1854.71,
+   "end": 1855.68,
+   "text": "It was"
+  },
+  {
+   "start": 1855.68,
+   "end": 1858.54,
+   "text": "it was it was for me um it was very"
+  },
+  {
+   "start": 1858.54,
+   "end": 1865.66,
+   "text": "informative and fun and understood how stubborn a person a serbian person could"
+  },
+  {
+   "start": 1865.66,
+   "end": 1865.84,
+   "text": "be"
+  },
+  {
+   "start": 1867.06,
+   "end": 1871.12,
+   "text": "i you guys i've been in serbia for a while now because i i"
+  },
+  {
+   "start": 1871.12,
+   "end": 1872.3,
+   "text": "could work a bit remotely and"
+  },
+  {
+   "start": 1872.3,
+   "end": 1879.06,
+   "text": "it's such a true thing about serbia this thing called inat is like stubbornness"
+  },
+  {
+   "start": 1879.06,
+   "end": 1883.42,
+   "text": "basically it's just like such a powerful thing and and sometimes it just really"
+  },
+  {
+   "start": 1883.42,
+   "end": 1884.68,
+   "text": "makes me laugh sometimes it makes"
+  },
+  {
+   "start": 1884.68,
+   "end": 1889.98,
+   "text": "me cry sometimes it makes me laugh especially when you come back from another"
+  },
+  {
+   "start": 1889.98,
+   "end": 1890.6,
+   "text": "country you see"
+  },
+  {
+   "start": 1890.6,
+   "end": 1894.3,
+   "text": "it more clearly right yeah definitely and you know a lot of people are"
+  },
+  {
+   "start": 1894.3,
+   "end": 1895.16,
+   "text": "very open about it they're just"
+  },
+  {
+   "start": 1895.16,
+   "end": 1900.24,
+   "text": "like it's a nature is inata nature is inata and i'm like you're even"
+  },
+  {
+   "start": 1900.24,
+   "end": 1901.16,
+   "text": "admitting it that it's like"
+  },
+  {
+   "start": 1901.16,
+   "end": 1905.66,
+   "text": "out of like just pure inat that you're doing this not because it's logical"
+  },
+  {
+   "start": 1905.66,
+   "end": 1910.0,
+   "text": "or or beneficial it's like now you just want to show it yeah but"
+  },
+  {
+   "start": 1910.0,
+   "end": 1913.06,
+   "text": "the other person doesn't judge that so okay go ahead if you"
+  },
+  {
+   "start": 1913.06,
+   "end": 1920.08,
+   "text": "have that you know then go ahead okay how about the least favorite which"
+  },
+  {
+   "start": 1920.08,
+   "end": 1921.02,
+   "text": "one made you like feel"
+  },
+  {
+   "start": 1921.02,
+   "end": 1926.02,
+   "text": "oh are we really gonna do this or was it really hard to get"
+  },
+  {
+   "start": 1926.02,
+   "end": 1928.78,
+   "text": "information about it you know it was"
+  },
+  {
+   "start": 1928.78,
+   "end": 1933.16,
+   "text": "one of the last episodes that I was really um not happy with I"
+  },
+  {
+   "start": 1933.16,
+   "end": 1936.28,
+   "text": "think and I even thought of like telling you not to post it but"
+  },
+  {
+   "start": 1936.28,
+   "end": 1939.12,
+   "text": "then I said you know what sometimes it's really good sometimes"
+  },
+  {
+   "start": 1939.12,
+   "end": 1944.08,
+   "text": "it's not and maybe for me it just looks very it's it's like from"
+  },
+  {
+   "start": 1944.08,
+   "end": 1944.7,
+   "text": "my perspective but maybe someone"
+  },
+  {
+   "start": 1944.7,
+   "end": 1948.08,
+   "text": "else is gonna be like oh my god it's great it was the scary"
+  },
+  {
+   "start": 1948.08,
+   "end": 1949.8,
+   "text": "stories where I feel like I just really"
+  },
+  {
+   "start": 1949.8,
+   "end": 1955.26,
+   "text": "wasn't adding anything to the conversation and I really just didn't have a lot"
+  },
+  {
+   "start": 1955.26,
+   "end": 1961.04,
+   "text": "of information um so I think there was a lot of like um spontaneity"
+  },
+  {
+   "start": 1961.04,
+   "end": 1966.74,
+   "text": "like like not spontaneity but like um trying to wing it yeah trying to"
+  },
+  {
+   "start": 1966.74,
+   "end": 1968.18,
+   "text": "wing it with the topic i"
+  },
+  {
+   "start": 1968.18,
+   "end": 1973.48,
+   "text": "think that that one i just really didn't like that much yeah yeah yeah"
+  },
+  {
+   "start": 1973.48,
+   "end": 1974.0,
+   "text": "the most interesting"
+  },
+  {
+   "start": 1974.0,
+   "end": 1980.22,
+   "text": "thing about it was like the vampire story yeah but the other is you're"
+  },
+  {
+   "start": 1980.22,
+   "end": 1981.42,
+   "text": "right we did not know the"
+  },
+  {
+   "start": 1981.42,
+   "end": 1984.56,
+   "text": "whole story and we did not want to tell the whole story as well"
+  },
+  {
+   "start": 1984.56,
+   "end": 1988.76,
+   "text": "yeah so what we did was sharing the links later for people to read"
+  },
+  {
+   "start": 1988.76,
+   "end": 1992.96,
+   "text": "but you're right it was not an easy one and also because I think"
+  },
+  {
+   "start": 1992.96,
+   "end": 1999.1,
+   "text": "it comes from my um gap not gaps in knowledge because it's it's a"
+  },
+  {
+   "start": 1999.1,
+   "end": 2000.38,
+   "text": "cultural thing if you talk"
+  },
+  {
+   "start": 2000.38,
+   "end": 2003.46,
+   "text": "about scary stories I think it's just scary stories are not a real thing"
+  },
+  {
+   "start": 2003.46,
+   "end": 2006.24,
+   "text": "here that much um because I"
+  },
+  {
+   "start": 2006.24,
+   "end": 2009.62,
+   "text": "think everyone's kind of like sensitive they're like don't scare the kid you know"
+  },
+  {
+   "start": 2009.62,
+   "end": 2010.14,
+   "text": "in a sense so"
+  },
+  {
+   "start": 2010.14,
+   "end": 2013.62,
+   "text": "in a way I didn't have that knowledge but I still could have you"
+  },
+  {
+   "start": 2013.62,
+   "end": 2018.26,
+   "text": "know made a bit more effort I think I think you knew way more"
+  },
+  {
+   "start": 2018.26,
+   "end": 2018.38,
+   "text": "than me"
+  },
+  {
+   "start": 2018.38,
+   "end": 2021.58,
+   "text": "in that episode I'm supposed to be the expert"
+  },
+  {
+   "start": 2021.58,
+   "end": 2026.64,
+   "text": "but I just really didn't add a lot to the conversation honest response"
+  },
+  {
+   "start": 2028.12,
+   "end": 2032.02,
+   "text": "yeah okay thank you for that yeah what about you?"
+  },
+  {
+   "start": 2033.28,
+   "end": 2034.4,
+   "text": "it's hard to choose for me as well"
+  },
+  {
+   "start": 2034.4,
+   "end": 2036.16,
+   "text": "I mean"
+  },
+  {
+   "start": 2036.16,
+   "end": 2038.74,
+   "text": "I'm happy that we did it"
+  },
+  {
+   "start": 2038.74,
+   "end": 2040.12,
+   "text": "sustainable living in Serbia"
+  },
+  {
+   "start": 2040.12,
+   "end": 2041.92,
+   "text": "but it was again"
+  },
+  {
+   "start": 2041.92,
+   "end": 2047.72,
+   "text": "for the information we shared it was always like not a good one or"
+  },
+  {
+   "start": 2047.72,
+   "end": 2052.18,
+   "text": "no it was not a big thing in Serbia it made me feel like"
+  },
+  {
+   "start": 2052.18,
+   "end": 2053.06,
+   "text": "oh I wish I was"
+  },
+  {
+   "start": 2053.06,
+   "end": 2058.82,
+   "text": "talking about it in a very you know positive way oh that's why but"
+  },
+  {
+   "start": 2058.82,
+   "end": 2060.1,
+   "text": "you know do you know we got a"
+  },
+  {
+   "start": 2060.1,
+   "end": 2066.94,
+   "text": "comment on that one a very positive comment actually on YouTube yeah it was"
+  },
+  {
+   "start": 2066.94,
+   "end": 2067.22,
+   "text": "it was a girl"
+  },
+  {
+   "start": 2067.22,
+   "end": 2071.02,
+   "text": "and she said I think she is she it was a she and she"
+  },
+  {
+   "start": 2071.02,
+   "end": 2076.45,
+   "text": "said um basically how she loves the fact that we talked about the negatives,"
+  },
+  {
+   "start": 2076.45,
+   "end": 2081.45,
+   "text": "too, because I think that part of Serbia is not really represented that much"
+  },
+  {
+   "start": 2081.45,
+   "end": 2083.19,
+   "text": "because we're just not there yet."
+  },
+  {
+   "start": 2083.19,
+   "end": 2085.89,
+   "text": "Right. So I think she actually really liked the fact."
+  },
+  {
+   "start": 2086.35,
+   "end": 2090.07,
+   "text": "And she was like, yeah, thank you for mentioning Piazza and all of these"
+  },
+  {
+   "start": 2090.07,
+   "end": 2094.85,
+   "text": "things and things that are, you know, when you think about sustainability, you always"
+  },
+  {
+   "start": 2094.85,
+   "end": 2096.55,
+   "text": "think about, oh, this is going to be expensive."
+  },
+  {
+   "start": 2096.59,
+   "end": 2100.75,
+   "text": "right now i have to buy expensive stuff that you know unpackaged or whatever"
+  },
+  {
+   "start": 2100.75,
+   "end": 2101.51,
+   "text": "but it's actually like"
+  },
+  {
+   "start": 2101.51,
+   "end": 2107.19,
+   "text": "no you can be sustainable in traditional ways too uh sure it can be"
+  },
+  {
+   "start": 2107.19,
+   "end": 2108.31,
+   "text": "expensive that's up to you if"
+  },
+  {
+   "start": 2108.31,
+   "end": 2113.81,
+   "text": "you want to buy like like some eco-friendly whatever stuff like yeah it can"
+  },
+  {
+   "start": 2113.81,
+   "end": 2114.09,
+   "text": "be but it doesn't"
+  },
+  {
+   "start": 2114.09,
+   "end": 2119.03,
+   "text": "have to it can also just be not by not taking a plastic bag"
+  },
+  {
+   "start": 2119.03,
+   "end": 2123.63,
+   "text": "or going to piazza and asking them to put it in your bag not"
+  },
+  {
+   "start": 2123.63,
+   "end": 2127.65,
+   "text": "in there and like stuff like that um so yeah i think uh actually"
+  },
+  {
+   "start": 2127.65,
+   "end": 2130.97,
+   "text": "i kind of like that one that one was like for me it was like a good"
+  },
+  {
+   "start": 2130.97,
+   "end": 2133.39,
+   "text": "but i understand important yeah okay cool"
+  },
+  {
+   "start": 2133.39,
+   "end": 2140.61,
+   "text": "all right so imagine in our sixth season we want to"
+  },
+  {
+   "start": 2140.61,
+   "end": 2142.31,
+   "text": "have some changes"
+  },
+  {
+   "start": 2142.31,
+   "end": 2149.59,
+   "text": "is there anything that you would like to add or omit from our show"
+  },
+  {
+   "start": 2152.21,
+   "end": 2153.69,
+   "text": "is there anything i would like to add"
+  },
+  {
+   "start": 2153.69,
+   "end": 2159.93,
+   "text": "i didn't really think about that at all i can't really give you like"
+  },
+  {
+   "start": 2159.93,
+   "end": 2161.35,
+   "text": "an honest response i think"
+  },
+  {
+   "start": 2161.35,
+   "end": 2169.01,
+   "text": "i would like to keep it shorter 20 around 20 25 minutes tops uh"
+  },
+  {
+   "start": 2169.01,
+   "end": 2170.79,
+   "text": "in terms of what i would keep i"
+  },
+  {
+   "start": 2170.79,
+   "end": 2176.53,
+   "text": "would keep uh other like interviews i would love i love them i love"
+  },
+  {
+   "start": 2176.53,
+   "end": 2180.91,
+   "text": "them i would definitely ask some people to interview them and just have a"
+  },
+  {
+   "start": 2180.91,
+   "end": 2181.47,
+   "text": "Maybe I would introduce a bit more Serbian probably. chit chat."
+  },
+  {
+   "start": 2184.49,
+   "end": 2188.07,
+   "text": "was something that I would like to do and if we can in some"
+  },
+  {
+   "start": 2188.07,
+   "end": 2190.41,
+   "text": "way introduce our listeners to maybe"
+  },
+  {
+   "start": 2190.41,
+   "end": 2195.07,
+   "text": "through some audios or something like that I think that would be like maybe"
+  },
+  {
+   "start": 2195.07,
+   "end": 2195.99,
+   "text": "we can find a way how to"
+  },
+  {
+   "start": 2195.99,
+   "end": 2202.23,
+   "text": "do that I think that would be something that I would change you yeah"
+  },
+  {
+   "start": 2202.23,
+   "end": 2203.33,
+   "text": "if there was no copyright"
+  },
+  {
+   "start": 2203.33,
+   "end": 2209.03,
+   "text": "issue I would definitely add some kind of audios song parts you know something"
+  },
+  {
+   "start": 2209.03,
+   "end": 2216.23,
+   "text": "more from like the authentic resources out there but it's"
+  },
+  {
+   "start": 2216.23,
+   "end": 2220.21,
+   "text": "kind of a challenge for us but that's what i want deep"
+  },
+  {
+   "start": 2220.21,
+   "end": 2225.79,
+   "text": "in my heart and also i'd like to change the i don't know maybe"
+  },
+  {
+   "start": 2225.79,
+   "end": 2226.85,
+   "text": "like um"
+  },
+  {
+   "start": 2228.63,
+   "end": 2234.63,
+   "text": "maybe having some kind of sponsors local like brands sustainable nice brands from serbia"
+  },
+  {
+   "start": 2234.75,
+   "end": 2239.91,
+   "text": "like contribute to their you know business and this kind of things i want"
+  },
+  {
+   "start": 2239.91,
+   "end": 2241.85,
+   "text": "but for the topic based"
+  },
+  {
+   "start": 2241.85,
+   "end": 2247.59,
+   "text": "let me tell you i asked the followers um oh yeah what they would"
+  },
+  {
+   "start": 2247.59,
+   "end": 2248.05,
+   "text": "like to"
+  },
+  {
+   "start": 2248.05,
+   "end": 2255.31,
+   "text": "hear more from our podcast and they"
+  },
+  {
+   "start": 2255.31,
+   "end": 2260.93,
+   "text": "say keep talking about serbian culture most of them i love that so yes"
+  },
+  {
+   "start": 2260.93,
+   "end": 2267.11,
+   "text": "yeah again uh again around 30 said vocabulary based ones are really good so"
+  },
+  {
+   "start": 2267.11,
+   "end": 2267.23,
+   "text": "doing that yeah i think we're really strong with like vocabulary and culture we're"
+  },
+  {
+   "start": 2267.23,
+   "end": 2267.53,
+   "text": "keep"
+  },
+  {
+   "start": 2272.85,
+   "end": 2276.95,
+   "text": "really good at i think grammar is just like the thing that we weren't trained for and"
+  },
+  {
+   "start": 2276.95,
+   "end": 2277.37,
+   "text": "that's like the tricky"
+  },
+  {
+   "start": 2277.37,
+   "end": 2281.27,
+   "text": "part for us also because we don't want to be the course the language"
+  },
+  {
+   "start": 2281.27,
+   "end": 2284.33,
+   "text": "course you know what i mean So I try really hard not to be"
+  },
+  {
+   "start": 2284.33,
+   "end": 2287.41,
+   "text": "very grammar based."
+  },
+  {
+   "start": 2287.73,
+   "end": 2293.13,
+   "text": "But still, as the learners need grammar, they also said, oh, have some structure"
+  },
+  {
+   "start": 2293.13,
+   "end": 2294.87,
+   "text": "based grammar based episodes as well"
+  },
+  {
+   "start": 2294.87,
+   "end": 2300.73,
+   "text": "and the least one was among my list uh interviews which i was surprised"
+  },
+  {
+   "start": 2300.73,
+   "end": 2301.75,
+   "text": "because i love them too"
+  },
+  {
+   "start": 2301.75,
+   "end": 2307.13,
+   "text": "i love them i think maybe if they were in serbian maybe that would"
+  },
+  {
+   "start": 2307.13,
+   "end": 2308.53,
+   "text": "have been that would be better"
+  },
+  {
+   "start": 2308.53,
+   "end": 2315.21,
+   "text": "actually maybe yeah i will ask more detailed questions about interviews what they like"
+  },
+  {
+   "start": 2315.21,
+   "end": 2319.33,
+   "text": "about it by what they don't like about it but yeah that was shocking"
+  },
+  {
+   "start": 2319.33,
+   "end": 2323.39,
+   "text": "to me and i asked them can i just tell"
+  },
+  {
+   "start": 2323.39,
+   "end": 2326.33,
+   "text": "you about the sponsors by the way the thing that you said i think"
+  },
+  {
+   "start": 2326.33,
+   "end": 2327.37,
+   "text": "in serb it's this is still not"
+  },
+  {
+   "start": 2327.37,
+   "end": 2333.45,
+   "text": "like a very big thing being having sponsors like or because i even know"
+  },
+  {
+   "start": 2333.45,
+   "end": 2334.93,
+   "text": "the maria the the tourist"
+  },
+  {
+   "start": 2334.93,
+   "end": 2341.45,
+   "text": "guy in belgrade um she would every for every tour she would bring like"
+  },
+  {
+   "start": 2341.45,
+   "end": 2345.17,
+   "text": "if it's an eating tour or whatever she would bring people into specific like"
+  },
+  {
+   "start": 2345.17,
+   "end": 2347.65,
+   "text": "shops or like restaurants and so on and even these"
+  },
+  {
+   "start": 2347.65,
+   "end": 2352.25,
+   "text": "people are not really like generous or offering a lot of them are really"
+  },
+  {
+   "start": 2352.25,
+   "end": 2352.91,
+   "text": "not offering a percentage"
+  },
+  {
+   "start": 2352.91,
+   "end": 2357.75,
+   "text": "or something like that so um it's i mean and it's like in their"
+  },
+  {
+   "start": 2357.75,
+   "end": 2359.55,
+   "text": "interest to create some sort of"
+  },
+  {
+   "start": 2359.55,
+   "end": 2363.43,
+   "text": "partnership right and they a lot of them are just not doing it and"
+  },
+  {
+   "start": 2363.43,
+   "end": 2370.23,
+   "text": "that's such a pity because that really like really um holds our tourism back"
+  },
+  {
+   "start": 2370.23,
+   "end": 2372.51,
+   "text": "that's one of the reasons why if you think about"
+  },
+  {
+   "start": 2372.51,
+   "end": 2379.29,
+   "text": "liz i don't really think she earned a lot through some serbian sponsors right"
+  },
+  {
+   "start": 2379.29,
+   "end": 2379.91,
+   "text": "she was offered she"
+  },
+  {
+   "start": 2379.91,
+   "end": 2384.43,
+   "text": "was interviewed a lot she's really really nice and generous and i think a"
+  },
+  {
+   "start": 2384.43,
+   "end": 2384.79,
+   "text": "lot of things she did"
+  },
+  {
+   "start": 2384.79,
+   "end": 2388.63,
+   "text": "probably for free because she was on a lot of podcasts and she's just"
+  },
+  {
+   "start": 2388.63,
+   "end": 2392.63,
+   "text": "willing to you know share the enthusiasm about Serbia."
+  },
+  {
+   "start": 2392.63,
+   "end": 2395.03,
+   "text": "I don't really think she made a lot of money"
+  },
+  {
+   "start": 2395.03,
+   "end": 2397.67,
+   "text": "from sponsors in Serbia."
+  },
+  {
+   "start": 2397.67,
+   "end": 2399.21,
+   "text": "It's just not still a thing."
+  },
+  {
+   "start": 2399.21,
+   "end": 2403.08,
+   "text": "And I think it's a shame because it's really pulling us back."
+  },
+  {
+   "start": 2404.14,
+   "end": 2404.34,
+   "text": "Exactly."
+  },
+  {
+   "start": 2405.82,
+   "end": 2409.4,
+   "text": "Maybe only on YouTube, not on Instagram, I think."
+  },
+  {
+   "start": 2409.4,
+   "end": 2413.04,
+   "text": "They might be more interested because I see lots of businesses"
+  },
+  {
+   "start": 2413.04,
+   "end": 2415.92,
+   "text": "having huge Instagram accounts."
+  },
+  {
+   "start": 2417.08,
+   "end": 2420.06,
+   "text": "It could be one way, but in podcasts, it's hard."
+  },
+  {
+   "start": 2420.6,
+   "end": 2423.92,
+   "text": "And I asked them where they heard about us from."
+  },
+  {
+   "start": 2424.7,
+   "end": 2426.88,
+   "text": "Oh, interesting. Interesting."
+  },
+  {
+   "start": 2427.1,
+   "end": 2432.8,
+   "text": "The ones who joined the quiz said mostly YouTube."
+  },
+  {
+   "start": 2434.3,
+   "end": 2436.36,
+   "text": "Wait, is it our Moje Kafa YouTube?"
+  },
+  {
+   "start": 2437.18,
+   "end": 2438.7,
+   "text": "I think Moje Blue."
+  },
+  {
+   "start": 2438.7,
+   "end": 2439.68,
+   "text": "They were followers."
+  },
+  {
+   "start": 2440.4,
+   "end": 2442.62,
+   "text": "Maybe the one I posted."
+  },
+  {
+   "start": 2442.8,
+   "end": 2444.2,
+   "text": "There's a video that I posted about us"
+  },
+  {
+   "start": 2444.2,
+   "end": 2446.1,
+   "text": "on my channel."
+  },
+  {
+   "start": 2446.1,
+   "end": 2447.6,
+   "text": "Because like me, I can imagine"
+  },
+  {
+   "start": 2447.6,
+   "end": 2449.86,
+   "text": "all the Serbian learners will go on YouTube"
+  },
+  {
+   "start": 2449.86,
+   "end": 2452.86,
+   "text": "and try to find some content, learning content."
+  },
+  {
+   "start": 2452.86,
+   "end": 2457.72,
+   "text": "So you are probably there and people already followed you like me."
+  },
+  {
+   "start": 2457.72,
+   "end": 2459.04,
+   "text": "So thanks to Maya Blue."
+  },
+  {
+   "start": 2459.54,
+   "end": 2464.36,
+   "text": "That's cool. And then we have Instagram in the second place and Google in the third"
+  },
+  {
+   "start": 2464.36,
+   "end": 2469.88,
+   "text": "place. So probably they write a podcast and then ours show up."
+  },
+  {
+   "start": 2469.88,
+   "end": 2472.62,
+   "text": "Cool. That's really nice to hear that, you know,"
+  },
+  {
+   "start": 2472.62,
+   "end": 2475.32,
+   "text": "Google is offering our services."
+  },
+  {
+   "start": 2476.72,
+   "end": 2478.4,
+   "text": "Yeah. I wrote a couple of times some keywords"
+  },
+  {
+   "start": 2478.4,
+   "end": 2480.58,
+   "text": "and we appear, so that's nice."
+  },
+  {
+   "start": 2481.52,
+   "end": 2488.22,
+   "text": "That's good. That's the ones that joined this quiz they didn't know that we"
+  },
+  {
+   "start": 2488.22,
+   "end": 2490.42,
+   "text": "were doing our fifth episode so"
+  },
+  {
+   "start": 2490.42,
+   "end": 2495.72,
+   "text": "fifth season uh fifth season sorry 15th episode i was gonna say oh yeah"
+  },
+  {
+   "start": 2495.72,
+   "end": 2495.98,
+   "text": "50th yeah"
+  },
+  {
+   "start": 2495.98,
+   "end": 2501.86,
+   "text": "so probably most of them are following on youtube right now and they think"
+  },
+  {
+   "start": 2501.86,
+   "end": 2508.38,
+   "text": "because youtube is coming uh like a little bit it's behind yeah behind yeah"
+  },
+  {
+   "start": 2508.38,
+   "end": 2514.42,
+   "text": "that's why and uh and it's a good thing to know because um we"
+  },
+  {
+   "start": 2514.42,
+   "end": 2514.7,
+   "text": "started youtube"
+  },
+  {
+   "start": 2514.7,
+   "end": 2521.6,
+   "text": "like very very like uh let's say late right so and also we haven't"
+  },
+  {
+   "start": 2521.6,
+   "end": 2523.38,
+   "text": "really uh advertised it a lot"
+  },
+  {
+   "start": 2523.38,
+   "end": 2527.66,
+   "text": "and now only like some days ago i realized that now i can put"
+  },
+  {
+   "start": 2527.66,
+   "end": 2529.12,
+   "text": "a link which is so much easier"
+  },
+  {
+   "start": 2529.12,
+   "end": 2533.58,
+   "text": "because whenever i would like you whenever i would advertise in the story right"
+  },
+  {
+   "start": 2533.58,
+   "end": 2538.62,
+   "text": "on instagram I'll be like I would tag you like you like our Instagram"
+  },
+  {
+   "start": 2540.5,
+   "end": 2545.1,
+   "text": "Maki is managing Instagram our Instagram account that's why I said you but um"
+  },
+  {
+   "start": 2545.1,
+   "end": 2545.92,
+   "text": "but yeah I would now"
+  },
+  {
+   "start": 2545.92,
+   "end": 2549.08,
+   "text": "I can actually add a link and they can click on it and go"
+  },
+  {
+   "start": 2549.08,
+   "end": 2553.84,
+   "text": "straight to YouTube so that is amazing yeah exactly yeah I remember the last"
+  },
+  {
+   "start": 2553.84,
+   "end": 2561.04,
+   "text": "story it was very very cool so that's nice so that's the whole like"
+  },
+  {
+   "start": 2561.04,
+   "end": 2567.32,
+   "text": "wrap up of our podcast story and what kind of changes we could have"
+  },
+  {
+   "start": 2567.32,
+   "end": 2573.44,
+   "text": "in the future so thank you a lot for for everything is there anything"
+  },
+  {
+   "start": 2573.44,
+   "end": 2574.68,
+   "text": "else that you'd like to add"
+  },
+  {
+   "start": 2576.82,
+   "end": 2580.7,
+   "text": "as a random thought it's nothing like related to like saying goodbye but it"
+  },
+  {
+   "start": 2580.7,
+   "end": 2586.66,
+   "text": "was um today i had a funny thing about um serbian language and so"
+  },
+  {
+   "start": 2586.66,
+   "end": 2591.12,
+   "text": "on i want to just kind of explain what we're doing so so language"
+  },
+  {
+   "start": 2591.12,
+   "end": 2594.92,
+   "text": "is a lot about the culture and everything and I realized that"
+  },
+  {
+   "start": 2594.92,
+   "end": 2598.5,
+   "text": "there's a lot of like this I don't want to say filler words but"
+  },
+  {
+   "start": 2598.5,
+   "end": 2600.5,
+   "text": "like exclamation words that you"
+  },
+  {
+   "start": 2600.5,
+   "end": 2606.64,
+   "text": "have in your own language and there's this thing that we have in the"
+  },
+  {
+   "start": 2606.64,
+   "end": 2607.78,
+   "text": "Balkans which is Opa"
+  },
+  {
+   "start": 2609.62,
+   "end": 2614.22,
+   "text": "I know yeah yeah and a lot of people associated with the Greek probably"
+  },
+  {
+   "start": 2614.22,
+   "end": 2619.46,
+   "text": "I don't know if it came from Greece, but we have it too."
+  },
+  {
+   "start": 2619.72,
+   "end": 2619.9,
+   "text": "And it was quite funny"
+  },
+  {
+   "start": 2619.9,
+   "end": 2621.39,
+   "text": "because there's,"
+  },
+  {
+   "start": 2621.39,
+   "end": 2624.75,
+   "text": "and the equivalent that I would say in, in, um, in English, for example,"
+  },
+  {
+   "start": 2624.75,
+   "end": 2627.73,
+   "text": "if something I mess something up, I'm like, Oh, shoot."
+  },
+  {
+   "start": 2627.73,
+   "end": 2629.39,
+   "text": "Or like, uh, oops."
+  },
+  {
+   "start": 2629.67,
+   "end": 2634.01,
+   "text": "Or it was, it doesn't have oops in Serbian as well, but in Serbian,"
+  },
+  {
+   "start": 2634.01,
+   "end": 2634.99,
+   "text": "I would say Opa."
+  },
+  {
+   "start": 2634.99,
+   "end": 2638.91,
+   "text": "So it was, I would say Opa, Opa."
+  },
+  {
+   "start": 2638.91,
+   "end": 2643.47,
+   "text": "Um, and yesterday I was talking to my colleague and she was trying to,"
+  },
+  {
+   "start": 2643.47,
+   "end": 2645.03,
+   "text": "we talked for hours."
+  },
+  {
+   "start": 2645.03,
+   "end": 2645.25,
+   "text": "she was showing me something and every time I would type and we make"
+  },
+  {
+   "start": 2645.25,
+   "end": 2645.43,
+   "text": "I mean,"
+  },
+  {
+   "start": 2648.51,
+   "end": 2648.89,
+   "text": "a mistake,"
+  },
+  {
+   "start": 2648.89,
+   "end": 2653.19,
+   "text": "it'll be like oppa oppa and then i realized oh my god being in"
+  },
+  {
+   "start": 2653.19,
+   "end": 2655.71,
+   "text": "serbia really changes the way i think"
+  },
+  {
+   "start": 2655.71,
+   "end": 2659.93,
+   "text": "because it is connected to the way i think my my speaking in that"
+  },
+  {
+   "start": 2659.93,
+   "end": 2661.83,
+   "text": "if i'm in a serbian context i'm"
+  },
+  {
+   "start": 2661.83,
+   "end": 2666.09,
+   "text": "using these filler exclamation words and it was such a funny thing and she"
+  },
+  {
+   "start": 2666.09,
+   "end": 2666.83,
+   "text": "made fun of me so much"
+  },
+  {
+   "start": 2666.83,
+   "end": 2670.67,
+   "text": "she was like oppa oppa oppa you know but it was what i want"
+  },
+  {
+   "start": 2670.67,
+   "end": 2671.59,
+   "text": "to say is language is just like"
+  },
+  {
+   "start": 2671.59,
+   "end": 2675.57,
+   "text": "more than just the language right it's a state of mind i was in"
+  },
+  {
+   "start": 2675.57,
+   "end": 2678.31,
+   "text": "that state of mind i'm thinking i'm in the context of Serbia."
+  },
+  {
+   "start": 2679.03,
+   "end": 2681.57,
+   "text": "So I think I want to just say this little anecdote."
+  },
+  {
+   "start": 2681.57,
+   "end": 2683.73,
+   "text": "And I think this is the thing that we are trying to do."
+  },
+  {
+   "start": 2684.13,
+   "end": 2687.09,
+   "text": "I think we're trying to connect these like very separate things"
+  },
+  {
+   "start": 2687.09,
+   "end": 2690.21,
+   "text": "like culture, grammar, you know, vocabulary."
+  },
+  {
+   "start": 2690.21,
+   "end": 2692.11,
+   "text": "So I'm trying to kind of somehow put them together"
+  },
+  {
+   "start": 2692.11,
+   "end": 2693.47,
+   "text": "and make sense of it."
+  },
+  {
+   "start": 2693.97,
+   "end": 2695.67,
+   "text": "So I hope you're here for the ride."
+  },
+  {
+   "start": 2696.55,
+   "end": 2696.83,
+   "text": "And I'm also excited about like finishing Yeah."
+  },
+  {
+   "start": 2698.79,
+   "end": 2701.17,
+   "text": "this pre-intermediate course."
+  },
+  {
+   "start": 2701.17,
+   "end": 2703.75,
+   "text": "And then that will allow me to have"
+  },
+  {
+   "start": 2703.75,
+   "end": 2705.95,
+   "text": "kind of longer conversations."
+  },
+  {
+   "start": 2705.95,
+   "end": 2708.87,
+   "text": "and I will bring much more to the table, right?"
+  },
+  {
+   "start": 2708.87,
+   "end": 2713.63,
+   "text": "From the Southern part of Serbia, like, because I cannot catch a lot of,"
+  },
+  {
+   "start": 2713.63,
+   "end": 2713.87,
+   "text": "you know,"
+  },
+  {
+   "start": 2713.87,
+   "end": 2715.43,
+   "text": "phrases, idioms and stuff."
+  },
+  {
+   "start": 2715.91,
+   "end": 2717.91,
+   "text": "Now I'm excited that I will learn even more"
+  },
+  {
+   "start": 2717.91,
+   "end": 2721.71,
+   "text": "and then we will have interesting topics to discuss."
+  },
+  {
+   "start": 2722.79,
+   "end": 2724.11,
+   "text": "It's an interesting time for you."
+  },
+  {
+   "start": 2724.11,
+   "end": 2726.99,
+   "text": "You'll see, you'll just pick up a really like, what?"
+  },
+  {
+   "start": 2726.99,
+   "end": 2728.97,
+   "text": "And you just like learn crazy stuff about, you know,"
+  },
+  {
+   "start": 2728.97,
+   "end": 2731.27,
+   "text": "this one word that you can use in various contexts."
+  },
+  {
+   "start": 2731.27,
+   "end": 2734.09,
+   "text": "And then you'll tell me, and then you're going to remind me"
+  },
+  {
+   "start": 2734.09,
+   "end": 2736.73,
+   "text": "because I didn't learn it like that."
+  },
+  {
+   "start": 2736.77,
+   "end": 2738.13,
+   "text": "And you're going to be like, did you know?"
+  },
+  {
+   "start": 2738.13,
+   "end": 2740.99,
+   "text": "And I'm like, ah, I learned something new about my language."
+  },
+  {
+   "start": 2741.87,
+   "end": 2744.07,
+   "text": "Yeah. Exactly. Okay."
+  },
+  {
+   "start": 2744.07,
+   "end": 2748.13,
+   "text": "So I think this is going to be posted on Friday."
+  },
+  {
+   "start": 2748.13,
+   "end": 2751.67,
+   "text": "So we should say Srechan Božic to everyone."
+  },
+  {
+   "start": 2752.67,
+   "end": 2754.91,
+   "text": "Sorry, I'm Srećan Božić."
+  },
+  {
+   "start": 2756.67,
+   "end": 2758.27,
+   "text": "Uživajte u Božiću."
+  },
+  {
+   "start": 2758.27,
+   "end": 2760.43,
+   "text": "Uživajte. Yeah, and..."
+  },
+  {
+   "start": 2761.09,
+   "end": 2763.51,
+   "text": "I Srećan Novogodina, we should say."
+  },
+  {
+   "start": 2763.83,
+   "end": 2767.23,
+   "text": "Yes, Srećan Novogodina i Novogodišnji praznici."
+  },
+  {
+   "start": 2768.23,
+   "end": 2769.79,
+   "text": "That's like New Year's."
+  },
+  {
+   "start": 2770.13,
+   "end": 2770.37,
+   "text": "So we don't have..."
+  },
+  {
+   "start": 2770.37,
+   "end": 2772.21,
+   "text": "Holidays. Yeah, Holidays."
+  },
+  {
+   "start": 2772.21,
+   "end": 2777.15,
+   "text": "We usually don't say Božićni praznici because our Christmas is in January."
+  },
+  {
+   "start": 2777.53,
+   "end": 2779.93,
+   "text": "So we usually say Novogodišnji praznici because it's not New Year's."
+  },
+  {
+   "start": 2779.93,
+   "end": 2786.05,
+   "text": "Right? so cool ok, I hope you enjoyed it I hope you enjoyed it"
+  },
+  {
+   "start": 2786.07,
+   "end": 2788.35,
+   "text": "I course"
+  },
+  {
+   "start": 2788.35,
+   "end": 2793.77,
+   "text": "and we'll see you next year"
+  },
+  {
+   "start": 2795.21,
+   "end": 2796.97,
+   "text": "we'll see yeah, super"
+  },
+  {
+   "start": 2798.29,
+   "end": 2798.85,
+   "text": "hello and welcome"
+  },
+  {
+   "start": 2798.85,
+   "end": 2799.49,
+   "text": "welcome"
+  },
+  {
+   "start": 2800.89,
+   "end": 2811.81,
+   "text": "bye make"
+  },
+  {
+   "start": 2811.81,
+   "end": 2816.71,
+   "text": "sure to share them on our Instagram page mozekáfapodcast Prijatno!"
+  }
+ ],
+ "title": "Ep.10: Chit-chat with Maki and Ivana & Srećna Nova godina!",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939253/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075923-44100-1-a85acac1bfcbed1d.mp3"
+}

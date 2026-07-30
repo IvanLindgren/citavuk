@@ -4,6 +4,7 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { AppPrompt } from "./components/AppPrompt";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { PageErrorBoundary } from "./components/PageErrorBoundary";
 import { Spinner } from "./components/ui";
 import {
   Link,
@@ -39,6 +40,9 @@ const CourseLesson = lazy(() =>
 );
 const Trainer = lazy(() =>
   import("./pages/Trainer").then((m) => ({ default: m.Trainer })),
+);
+const SharedBook = lazy(() =>
+  import("./pages/SharedBook").then((m) => ({ default: m.SharedBook })),
 );
 const TestRun = lazy(() =>
   import("./pages/TestRun").then((m) => ({ default: m.TestRun })),
@@ -94,6 +98,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/course/lesson/:id", element: <CourseLesson /> },
   { pattern: "/trainer", element: <Trainer /> },
   { pattern: "/tests/:id", element: <TestRun /> },
+  { pattern: "/shared/:token", element: <SharedBook /> },
   { pattern: "/books", element: <Books /> },
   { pattern: "/materials", element: <Materials /> },
   { pattern: "/materials/:subject", element: <Materials /> },
@@ -113,22 +118,32 @@ export function App() {
       <AuthProvider>
         <SyncProvider>
           <RouterProvider>
-            <div className="flex min-h-dvh flex-col">
-              <Header />
-              <div className="flex-1">
-                <PageTransition>
-                  <Suspense fallback={<PageLoader />}>
-                    <Routes routes={ROUTES} />
-                  </Suspense>
-                </PageTransition>
-              </div>
-              <Footer />
-            <AppPrompt />
-            </div>
+            <AppFrame />
           </RouterProvider>
         </SyncProvider>
       </AuthProvider>
     </ThemeProvider>
+  );
+}
+
+function AppFrame() {
+  const { path } = useRouter();
+
+  return (
+    <div className="flex min-h-dvh flex-col">
+      <Header />
+      <div className="flex-1">
+        <PageErrorBoundary key={path.split("?")[0]}>
+          <PageTransition>
+            <Suspense fallback={<PageLoader />}>
+              <Routes routes={ROUTES} />
+            </Suspense>
+          </PageTransition>
+        </PageErrorBoundary>
+      </div>
+      <Footer />
+      <AppPrompt />
+    </div>
   );
 }
 

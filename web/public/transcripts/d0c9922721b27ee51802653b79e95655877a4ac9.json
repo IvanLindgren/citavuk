@@ -1,0 +1,3435 @@
+{
+ "duration": 2599.47,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.1,
+   "end": 31.28,
+   "text": "Okay, should we start?"
+  },
+  {
+   "start": 31.92,
+   "end": 33.04,
+   "text": "Yep. Hajde da..."
+  },
+  {
+   "start": 33.04,
+   "end": 34.68,
+   "text": "What was start?"
+  },
+  {
+   "start": 34.88,
+   "end": 35.18,
+   "text": "Aha!"
+  },
+  {
+   "start": 37.32,
+   "end": 38.48,
+   "text": "Hajde da počnemo."
+  },
+  {
+   "start": 38.48,
+   "end": 38.86,
+   "text": "Dobar dan svima."
+  },
+  {
+   "start": 38.86,
+   "end": 41.3,
+   "text": "Počnemo. Dobar dan."
+  },
+  {
+   "start": 41.58,
+   "end": 42.86,
+   "text": "Dobro došla, Ivano."
+  },
+  {
+   "start": 43.12,
+   "end": 44.88,
+   "text": "Hvala. Bolje vas našla."
+  },
+  {
+   "start": 44.88,
+   "end": 45.94,
+   "text": "Kako si, Maki?"
+  },
+  {
+   "start": 46.62,
+   "end": 48.06,
+   "text": "Super sama ti?"
+  },
+  {
+   "start": 48.72,
+   "end": 52.28,
+   "text": "Odlično. Mada ću uskoro da spavam."
+  },
+  {
+   "start": 53.72,
+   "end": 54.64,
+   "text": "Odmarala si?"
+  },
+  {
+   "start": 56.34,
+   "end": 59.76,
+   "text": "Ne. Odmaraću. Okay."
+  },
+  {
+   "start": 60.0,
+   "end": 63.8,
+   "text": "in the future i'm asking if she has rested because she's just back from"
+  },
+  {
+   "start": 63.8,
+   "end": 66.08,
+   "text": "her holidays which was i"
+  },
+  {
+   "start": 66.08,
+   "end": 71.56,
+   "text": "think which were quite long yeah right i think uh i listened to the"
+  },
+  {
+   "start": 71.56,
+   "end": 73.46,
+   "text": "last episode and when you and uh"
+  },
+  {
+   "start": 73.46,
+   "end": 79.16,
+   "text": "survived serbian what's her name i forgot now man alexandra alexandra yeah um i"
+  },
+  {
+   "start": 79.16,
+   "end": 79.44,
+   "text": "knew it and then i"
+  },
+  {
+   "start": 79.44,
+   "end": 84.68,
+   "text": "forgot it but when you said like oh i said oh we're envious of"
+  },
+  {
+   "start": 84.68,
+   "end": 87.52,
+   "text": "ivana and i'm like yeah i'm so glad i I was part of that"
+  },
+  {
+   "start": 87.52,
+   "end": 89.46,
+   "text": "conversation, even if I wasn't there."
+  },
+  {
+   "start": 89.46,
+   "end": 90.94,
+   "text": "So, yeah. You were, you were."
+  },
+  {
+   "start": 92.74,
+   "end": 97.86,
+   "text": "Cool. Okay. So you have come back and I said, okay, let's talk about"
+  },
+  {
+   "start": 97.86,
+   "end": 98.52,
+   "text": "a little bit grammar."
+  },
+  {
+   "start": 98.52,
+   "end": 105.54,
+   "text": "I mean, this season was mostly about culture and interviews, but"
+  },
+  {
+   "start": 105.54,
+   "end": 106.96,
+   "text": "I'm sure some of our followers"
+  },
+  {
+   "start": 106.96,
+   "end": 110.82,
+   "text": "really want to have more vocabulary and structure so"
+  },
+  {
+   "start": 110.82,
+   "end": 115.74,
+   "text": "this episode is going to be about something new which is the model verbs"
+  },
+  {
+   "start": 115.74,
+   "end": 118.0,
+   "text": "in Serbian yeah which I"
+  },
+  {
+   "start": 118.0,
+   "end": 123.34,
+   "text": "think they're not as complicated do you think and also I think they are"
+  },
+  {
+   "start": 123.34,
+   "end": 125.18,
+   "text": "not actual model verbs like"
+  },
+  {
+   "start": 125.18,
+   "end": 130.3,
+   "text": "as we know in English no they are like more like verbs actually yeah"
+  },
+  {
+   "start": 130.3,
+   "end": 133.86,
+   "text": "I don't remember it when I was learning serbian i don't really i mean"
+  },
+  {
+   "start": 133.86,
+   "end": 135.54,
+   "text": "when i was younger obviously learning the grammar"
+  },
+  {
+   "start": 135.54,
+   "end": 142.9,
+   "text": "of serbian i don't remember them being like well these ones are specific verbs"
+  },
+  {
+   "start": 142.9,
+   "end": 143.62,
+   "text": "like they're called"
+  },
+  {
+   "start": 143.62,
+   "end": 148.64,
+   "text": "modal verbs actually the first time i encountered this was in english so and"
+  },
+  {
+   "start": 148.64,
+   "end": 149.06,
+   "text": "in german then later"
+  },
+  {
+   "start": 149.06,
+   "end": 153.8,
+   "text": "but did you have any separate group like not modal verbs but maybe the"
+  },
+  {
+   "start": 153.8,
+   "end": 154.42,
+   "text": "ones that go with da"
+  },
+  {
+   "start": 154.42,
+   "end": 160.26,
+   "text": "like blah blah blah blah blah i don't think we were explicitly taught this"
+  },
+  {
+   "start": 160.26,
+   "end": 160.66,
+   "text": "actually"
+  },
+  {
+   "start": 162.56,
+   "end": 165.12,
+   "text": "um because there are two ways how you can go about this usually in"
+  },
+  {
+   "start": 165.12,
+   "end": 172.12,
+   "text": "serbia you can use that right the construction so uh hot you the spavam"
+  },
+  {
+   "start": 172.12,
+   "end": 175.02,
+   "text": "for example which is very appropriate for me now"
+  },
+  {
+   "start": 175.02,
+   "end": 179.26,
+   "text": "but uh there's another uh way how you can say it which is not"
+  },
+  {
+   "start": 179.26,
+   "end": 180.66,
+   "text": "so common in serbia but you will"
+  },
+  {
+   "start": 180.66,
+   "end": 185.42,
+   "text": "hear it i think it was common before hot you spavati which is a"
+  },
+  {
+   "start": 185.42,
+   "end": 190.72,
+   "text": "bit easier it's the same meaning um but it's just the infinitive so you"
+  },
+  {
+   "start": 190.72,
+   "end": 195.08,
+   "text": "don't have to think about that plus sleep what"
+  },
+  {
+   "start": 195.08,
+   "end": 200.38,
+   "text": "the first person exactly single but if you could just um spavati right the"
+  },
+  {
+   "start": 200.38,
+   "end": 206.66,
+   "text": "infinitive and that's it um that is mostly i think mostly used in the"
+  },
+  {
+   "start": 206.66,
+   "end": 209.28,
+   "text": "surrounding uh countries but not so"
+  },
+  {
+   "start": 209.28,
+   "end": 214.02,
+   "text": "much in serbia i think we mostly use that and yeah i remember when"
+  },
+  {
+   "start": 214.02,
+   "end": 217.97,
+   "text": "i was younger um and my mom is from Bosnia, my aunt is from"
+  },
+  {
+   "start": 217.97,
+   "end": 221.53,
+   "text": "Bosnia and we all lived in different cities in Serbia"
+  },
+  {
+   "start": 221.53,
+   "end": 224.09,
+   "text": "because they went to study and work in Serbia and so on."
+  },
+  {
+   "start": 224.09,
+   "end": 229.13,
+   "text": "So we would have all of these people that we would know from different"
+  },
+  {
+   "start": 229.13,
+   "end": 229.47,
+   "text": "parts of Serbia"
+  },
+  {
+   "start": 229.47,
+   "end": 231.83,
+   "text": "and from Bosnia."
+  },
+  {
+   "start": 231.83,
+   "end": 236.83,
+   "text": "We would travel there every year and I could easily identify if someone was"
+  },
+  {
+   "start": 236.83,
+   "end": 237.81,
+   "text": "from Serbia,"
+  },
+  {
+   "start": 237.81,
+   "end": 239.53,
+   "text": "at least from my part of Serbia,"
+  },
+  {
+   "start": 239.53,
+   "end": 241.13,
+   "text": "because I would almost guarantee you"
+  },
+  {
+   "start": 241.13,
+   "end": 245.01,
+   "text": "that I would almost never hear Hojus Bhavati."
+  },
+  {
+   "start": 245.23,
+   "end": 247.65,
+   "text": "But I know it's grammatical,"
+  },
+  {
+   "start": 247.65,
+   "end": 250.31,
+   "text": "so I'll be like, okay, but it's just not common, I guess."
+  },
+  {
+   "start": 251.57,
+   "end": 253.85,
+   "text": "So yeah. So people are like thinking,"
+  },
+  {
+   "start": 253.85,
+   "end": 254.77,
+   "text": "what are they saying now?"
+  },
+  {
+   "start": 254.77,
+   "end": 257.19,
+   "text": "Like, what are these model verbs?"
+  },
+  {
+   "start": 257.63,
+   "end": 258.55,
+   "text": "You guys know them."
+  },
+  {
+   "start": 259.27,
+   "end": 260.19,
+   "text": "Hojus, you already know them."
+  },
+  {
+   "start": 260.19,
+   "end": 261.35,
+   "text": "Moje, right?"
+  },
+  {
+   "start": 261.35,
+   "end": 263.07,
+   "text": "Yeah, yeah, exactly."
+  },
+  {
+   "start": 263.31,
+   "end": 264.75,
+   "text": "The most common one is Moje."
+  },
+  {
+   "start": 264.75,
+   "end": 265.59,
+   "text": "You should know it"
+  },
+  {
+   "start": 265.59,
+   "end": 269.03,
+   "text": "if you're listening to our podcast, Moje Kava."
+  },
+  {
+   "start": 269.63,
+   "end": 275.75,
+   "text": "yeah exactly so they are a bit different from the english equivalents for sure"
+  },
+  {
+   "start": 275.75,
+   "end": 277.67,
+   "text": "yeah and we said"
+  },
+  {
+   "start": 277.67,
+   "end": 284.01,
+   "text": "the similarity between them is for serbian like speakers is you use them you"
+  },
+  {
+   "start": 284.01,
+   "end": 284.77,
+   "text": "say da and then you"
+  },
+  {
+   "start": 284.77,
+   "end": 290.65,
+   "text": "use the main verb and then you conjugate it as well that's the similarity"
+  },
+  {
+   "start": 290.65,
+   "end": 297.29,
+   "text": "among them so both the modal verb plus the the main verb that follows"
+  },
+  {
+   "start": 297.29,
+   "end": 302.09,
+   "text": "that they are both conjugated in the first in the"
+  },
+  {
+   "start": 302.09,
+   "end": 307.45,
+   "text": "person that you wanted right like yeah if you're speaking the first person first"
+  },
+  {
+   "start": 307.45,
+   "end": 307.81,
+   "text": "person singular"
+  },
+  {
+   "start": 307.81,
+   "end": 312.97,
+   "text": "okay let's put them in categories like let's talk about the ones about ability"
+  },
+  {
+   "start": 312.97,
+   "end": 314.33,
+   "text": "like we use"
+  },
+  {
+   "start": 314.33,
+   "end": 318.51,
+   "text": "we use that in english but it's not the same thing but still you"
+  },
+  {
+   "start": 318.51,
+   "end": 324.39,
+   "text": "can have that kind of a categorization to follow much more easily, I think."
+  },
+  {
+   "start": 325.75,
+   "end": 328.45,
+   "text": "Yeah, yeah, I think, and when I remember when I was looking at it"
+  },
+  {
+   "start": 328.45,
+   "end": 333.13,
+   "text": "there's several ways how you can say things actually so I think the first"
+  },
+  {
+   "start": 333.13,
+   "end": 334.91,
+   "text": "one is actually"
+  },
+  {
+   "start": 334.91,
+   "end": 340.61,
+   "text": "the one that we use in our podcast right which is exactly so moj"
+  },
+  {
+   "start": 340.61,
+   "end": 342.03,
+   "text": "and the infinitive is mochi"
+  },
+  {
+   "start": 342.03,
+   "end": 347.67,
+   "text": "I know it's a regular it's a regular and then it has a totally"
+  },
+  {
+   "start": 347.67,
+   "end": 354.89,
+   "text": "different form when you conjugate sorry for that but yeah mogu yes"
+  },
+  {
+   "start": 354.89,
+   "end": 358.95,
+   "text": "i know that one so that this is to be this is can or"
+  },
+  {
+   "start": 358.95,
+   "end": 359.69,
+   "text": "be able to"
+  },
+  {
+   "start": 359.69,
+   "end": 367.13,
+   "text": "actually has both meanings i think as in english um yeah mogu yeah do"
+  },
+  {
+   "start": 367.13,
+   "end": 368.47,
+   "text": "you want to continue yeah"
+  },
+  {
+   "start": 368.47,
+   "end": 376.19,
+   "text": "why not timorish on on a może oh no there's"
+  },
+  {
+   "start": 376.19,
+   "end": 385.59,
+   "text": "one more thing i was thinking yeah exactly yeah"
+  },
+  {
+   "start": 385.59,
+   "end": 392.51,
+   "text": "and they are also mogu yes that's interesting yeah mogu on a mogu yeah"
+  },
+  {
+   "start": 392.51,
+   "end": 397.23,
+   "text": "that's true that's true never really thought about that you see this is where you are"
+  },
+  {
+   "start": 397.23,
+   "end": 404.63,
+   "text": "like foreigner perspective comes in yeah exactly so so the before"
+  },
+  {
+   "start": 404.63,
+   "end": 406.73,
+   "text": "the example the negative version i would"
+  },
+  {
+   "start": 406.73,
+   "end": 414.17,
+   "text": "like to say just ne you add right yeah exactly so"
+  },
+  {
+   "start": 414.17,
+   "end": 418.45,
+   "text": "yeah mogu yeah ne mogu you not to forget"
+  },
+  {
+   "start": 418.45,
+   "end": 423.43,
+   "text": "not to forget that you can actually omit a pronoun right yes so you"
+  },
+  {
+   "start": 423.43,
+   "end": 425.27,
+   "text": "can say you don't have to say you can say"
+  },
+  {
+   "start": 425.27,
+   "end": 426.63,
+   "text": "like"
+  },
+  {
+   "start": 426.63,
+   "end": 428.13,
+   "text": "also"
+  },
+  {
+   "start": 430.67,
+   "end": 431.41,
+   "text": "that means"
+  },
+  {
+   "start": 431.41,
+   "end": 431.83,
+   "text": "that if you"
+  },
+  {
+   "start": 431.83,
+   "end": 432.33,
+   "text": "want to add"
+  },
+  {
+   "start": 432.33,
+   "end": 434.21,
+   "text": "a negation it would be"
+  },
+  {
+   "start": 434.21,
+   "end": 434.45,
+   "text": "yeah"
+  },
+  {
+   "start": 434.45,
+   "end": 434.87,
+   "text": "no"
+  },
+  {
+   "start": 434.87,
+   "end": 435.15,
+   "text": "no"
+  },
+  {
+   "start": 435.15,
+   "end": 436.83,
+   "text": "no"
+  },
+  {
+   "start": 436.9,
+   "end": 443.36,
+   "text": "just ne mogu yes and you write ne separately right yes this is an"
+  },
+  {
+   "start": 443.36,
+   "end": 445.44,
+   "text": "important part there's only"
+  },
+  {
+   "start": 445.44,
+   "end": 452.72,
+   "text": "i think five verbs in serbian that are written together with the verb ne"
+  },
+  {
+   "start": 452.72,
+   "end": 453.12,
+   "text": "is written together"
+  },
+  {
+   "start": 453.12,
+   "end": 458.72,
+   "text": "with the verb isam one of them is nisam one of them is yeah"
+  },
+  {
+   "start": 458.72,
+   "end": 464.26,
+   "text": "one of them is necciu and so on these ones are separate so if"
+  },
+  {
+   "start": 464.26,
+   "end": 469.74,
+   "text": "if the verb makes sense alone it's separate"
+  },
+  {
+   "start": 470.98,
+   "end": 477.22,
+   "text": "actually no me some me is like it's a negative but it's not me"
+  },
+  {
+   "start": 477.22,
+   "end": 482.16,
+   "text": "right so it's like weird anyway we we topic for another episode but yeah"
+  },
+  {
+   "start": 482.16,
+   "end": 492.56,
+   "text": "okay this is great question for you yes things you"
+  },
+  {
+   "start": 492.56,
+   "end": 495.58,
+   "text": "wanted to you can do i'm asking that i want that i can do"
+  },
+  {
+   "start": 495.58,
+   "end": 506.52,
+   "text": "right that i'm able to oh that's the new one she"
+  },
+  {
+   "start": 506.52,
+   "end": 511.42,
+   "text": "can surf yeah i can surf uh I can dance."
+  },
+  {
+   "start": 512.92,
+   "end": 515.0,
+   "text": "Plesham. Dance. Yes."
+  },
+  {
+   "start": 515.26,
+   "end": 517.0,
+   "text": "Exactly. I can dance."
+  },
+  {
+   "start": 517.0,
+   "end": 518.04,
+   "text": "I can dance salsa."
+  },
+  {
+   "start": 518.24,
+   "end": 519.48,
+   "text": "Right? I can dance salsa."
+  },
+  {
+   "start": 520.2,
+   "end": 522.38,
+   "text": "Salsa. Koga šta."
+  },
+  {
+   "start": 522.38,
+   "end": 523.36,
+   "text": "That would be accusative."
+  },
+  {
+   "start": 523.6,
+   "end": 525.72,
+   "text": "Salsa. I can dance."
+  },
+  {
+   "start": 527.46,
+   "end": 528.24,
+   "text": "Pivas? Pivas?"
+  },
+  {
+   "start": 528.24,
+   "end": 530.54,
+   "text": "Pivas? I can sing?"
+  },
+  {
+   "start": 530.88,
+   "end": 532.48,
+   "text": "Well, not that well, but pretty."
+  },
+  {
+   "start": 532.48,
+   "end": 535.46,
+   "text": "Yeah. I remember our episode about songs now."
+  },
+  {
+   "start": 535.46,
+   "end": 535.56,
+   "text": "Yes."
+  },
+  {
+   "start": 535.56,
+   "end": 536.52,
+   "text": "You were saying."
+  },
+  {
+   "start": 536.88,
+   "end": 538.12,
+   "text": "Hey, I was saying, yeah."
+  },
+  {
+   "start": 538.74,
+   "end": 541.68,
+   "text": "What can you do?"
+  },
+  {
+   "start": 544.62,
+   "end": 547.12,
+   "text": "I can speak."
+  },
+  {
+   "start": 549.06,
+   "end": 550.3,
+   "text": "I speak a lot."
+  },
+  {
+   "start": 551.2,
+   "end": 551.62,
+   "text": "That's very good, yeah."
+  },
+  {
+   "start": 551.62,
+   "end": 555.24,
+   "text": "Super. I can speak a little bit of a plan."
+  },
+  {
+   "start": 556.38,
+   "end": 559.6,
+   "text": "Planinarim. Planinarim, not planinari."
+  },
+  {
+   "start": 559.62,
+   "end": 565.06,
+   "text": "Yeah. I can speak a little bit of a Serbian."
+  },
+  {
+   "start": 565.22,
+   "end": 567.92,
+   "text": "Oh! Every time."
+  },
+  {
+   "start": 567.98,
+   "end": 569.94,
+   "text": "Every time, bravo."
+  },
+  {
+   "start": 570.66,
+   "end": 579.06,
+   "text": "I'm honored."
+  },
+  {
+   "start": 579.06,
+   "end": 582.5,
+   "text": "I'm She said thanks to you."
+  },
+  {
+   "start": 582.74,
+   "end": 583.62,
+   "text": "And I said, I'm honored."
+  },
+  {
+   "start": 584.36,
+   "end": 585.66,
+   "text": "Yeah, that's a hard word."
+  },
+  {
+   "start": 586.02,
+   "end": 587.08,
+   "text": "I'm always trying."
+  },
+  {
+   "start": 588.38,
+   "end": 596.06,
+   "text": "Actually, this is now a bit different."
+  },
+  {
+   "start": 596.06,
+   "end": 598.04,
+   "text": "The meaning would be."
+  },
+  {
+   "start": 600.44,
+   "end": 602.72,
+   "text": "Yeah, okay. One of the meanings is I cannot."
+  },
+  {
+   "start": 602.72,
+   "end": 603.96,
+   "text": "Okay. What can I do?"
+  },
+  {
+   "start": 606.08,
+   "end": 606.58,
+   "text": "I don't know."
+  },
+  {
+   "start": 607.52,
+   "end": 608.14,
+   "text": "That's the thing."
+  },
+  {
+   "start": 608.14,
+   "end": 610.8,
+   "text": "You see, usually you would say, I don't know how to..."
+  },
+  {
+   "start": 611.16,
+   "end": 611.8,
+   "text": "Ah, okay."
+  },
+  {
+   "start": 613.12,
+   "end": 615.58,
+   "text": "Yeah, you wouldn't say, you wouldn't say,"
+  },
+  {
+   "start": 616.82,
+   "end": 618.14,
+   "text": "I can't sing."
+  },
+  {
+   "start": 618.84,
+   "end": 620.54,
+   "text": "Because actually you can sing, right?"
+  },
+  {
+   "start": 620.54,
+   "end": 623.42,
+   "text": "Yeah. The question is how you're singing."
+  },
+  {
+   "start": 624.66,
+   "end": 626.38,
+   "text": "I can't sing good."
+  },
+  {
+   "start": 626.9,
+   "end": 628.04,
+   "text": "That's what you can say."
+  },
+  {
+   "start": 628.12,
+   "end": 629.52,
+   "text": "Yeah, yeah. I can't sing good."
+  },
+  {
+   "start": 631.92,
+   "end": 637.12,
+   "text": "I can't run fast."
+  },
+  {
+   "start": 650.45,
+   "end": 651.53,
+   "text": "And double da."
+  },
+  {
+   "start": 652.33,
+   "end": 652.45,
+   "text": "No, one da."
+  },
+  {
+   "start": 652.45,
+   "end": 653.89,
+   "text": "One."
+  },
+  {
+   "start": 655.13,
+   "end": 656.45,
+   "text": "Ne mogu brzo da."
+  },
+  {
+   "start": 657.35,
+   "end": 660.07,
+   "text": "Okay. Yeah. Cool."
+  },
+  {
+   "start": 660.12,
+   "end": 660.75,
+   "text": "Cool."
+  },
+  {
+   "start": 660.75,
+   "end": 662.23,
+   "text": "I learned something new, actually."
+  },
+  {
+   "start": 664.93,
+   "end": 670.59,
+   "text": "And I actually do not hear this much, but Umeti is also like Ken."
+  },
+  {
+   "start": 671.13,
+   "end": 673.69,
+   "text": "Yes. I wrote down Ken, know how to."
+  },
+  {
+   "start": 673.69,
+   "end": 674.89,
+   "text": "I know how to do it."
+  },
+  {
+   "start": 675.37,
+   "end": 680.11,
+   "text": "I think it's, to me, at least in my ears,"
+  },
+  {
+   "start": 680.11,
+   "end": 685.21,
+   "text": "it sounds a bit more formal yeah znam would be more common yeah right"
+  },
+  {
+   "start": 685.21,
+   "end": 686.01,
+   "text": "i would usually"
+  },
+  {
+   "start": 688.03,
+   "end": 694.07,
+   "text": "exactly so umeti is um i can know how to and it goes yeah"
+  },
+  {
+   "start": 694.07,
+   "end": 701.03,
+   "text": "um or just umem uh ti umesh On, ona, ume."
+  },
+  {
+   "start": 701.95,
+   "end": 704.93,
+   "text": "Mi umemo. Vi umete."
+  },
+  {
+   "start": 705.61,
+   "end": 707.53,
+   "text": "Oni, one, ona, umeju."
+  },
+  {
+   "start": 708.55,
+   "end": 710.37,
+   "text": "Meju. Umeju, yeah."
+  },
+  {
+   "start": 711.67,
+   "end": 716.61,
+   "text": "And negation is ne umem or ja ne umem."
+  },
+  {
+   "start": 717.03,
+   "end": 720.77,
+   "text": "It's the same for every, like for moci."
+  },
+  {
+   "start": 721.47,
+   "end": 729.33,
+   "text": "I see. So what kind of difference do you feel if I say because"
+  },
+  {
+   "start": 729.33,
+   "end": 735.81,
+   "text": "i think when i use umem i would definitely think of a skill"
+  },
+  {
+   "start": 735.81,
+   "end": 741.65,
+   "text": "like um i would always think of a skill no man like it's something"
+  },
+  {
+   "start": 741.65,
+   "end": 742.57,
+   "text": "that i you had to actually"
+  },
+  {
+   "start": 742.57,
+   "end": 749.77,
+   "text": "learn i don't know how to i don't"
+  },
+  {
+   "start": 749.77,
+   "end": 752.97,
+   "text": "know how to explain it it's a bit weird like it it refers to"
+  },
+  {
+   "start": 752.97,
+   "end": 757.23,
+   "text": "something that you learned like that yeah something that has something you learn yeah"
+  },
+  {
+   "start": 757.23,
+   "end": 757.35,
+   "text": "you consciously that doesn't have to be conscious but usually it means that you"
+  },
+  {
+   "start": 757.35,
+   "end": 757.67,
+   "text": "you"
+  },
+  {
+   "start": 761.91,
+   "end": 762.63,
+   "text": "consciously know"
+  },
+  {
+   "start": 762.63,
+   "end": 763.31,
+   "text": "that you have to"
+  },
+  {
+   "start": 763.31,
+   "end": 765.83,
+   "text": "like consciously learn it, right?"
+  },
+  {
+   "start": 765.83,
+   "end": 771.47,
+   "text": "Or that you really have to have to make an effort or it's usually"
+  },
+  {
+   "start": 771.47,
+   "end": 773.29,
+   "text": "regarding a skill."
+  },
+  {
+   "start": 773.29,
+   "end": 774.03,
+   "text": "I don't really know."
+  },
+  {
+   "start": 774.03,
+   "end": 776.19,
+   "text": "I mean, Znam is also, I mean, Znati is also"
+  },
+  {
+   "start": 776.19,
+   "end": 780.05,
+   "text": "regarding a skill, but it's a bit more, to me, a bit more formal."
+  },
+  {
+   "start": 780.05,
+   "end": 780.15,
+   "text": "Like,"
+  },
+  {
+   "start": 782.53,
+   "end": 792.89,
+   "text": "um yeah i"
+  },
+  {
+   "start": 792.89,
+   "end": 797.43,
+   "text": "think i get a bit more elevated would be um there you go that's"
+  },
+  {
+   "start": 797.43,
+   "end": 797.99,
+   "text": "why i don't hear it or"
+  },
+  {
+   "start": 797.99,
+   "end": 802.93,
+   "text": "even if i heard maybe i didn't pay attention but znam is always there"
+  },
+  {
+   "start": 802.93,
+   "end": 808.35,
+   "text": "in the conversations you can always replace umeti with znahti i think and uh"
+  },
+  {
+   "start": 808.35,
+   "end": 810.45,
+   "text": "i think znam also refers to like an"
+  },
+  {
+   "start": 810.45,
+   "end": 817.45,
+   "text": "information right like you wouldn't say like nesam znala za to i didn't know"
+  },
+  {
+   "start": 817.45,
+   "end": 821.45,
+   "text": "about it nesnam za to i don't know about it uh but you cannot"
+  },
+  {
+   "start": 821.45,
+   "end": 822.61,
+   "text": "say ne umem"
+  },
+  {
+   "start": 822.61,
+   "end": 829.61,
+   "text": "because it's it's umeti is just for a skill like i don't"
+  },
+  {
+   "start": 829.61,
+   "end": 836.11,
+   "text": "i didn't know about the war you cannot say i i couldn't you know"
+  },
+  {
+   "start": 836.11,
+   "end": 836.93,
+   "text": "what i mean so for but"
+  },
+  {
+   "start": 836.93,
+   "end": 844.07,
+   "text": "for surfing for example uh no i wanted to use past"
+  },
+  {
+   "start": 844.07,
+   "end": 852.11,
+   "text": "tense but uh see i have to say you can"
+  },
+  {
+   "start": 852.11,
+   "end": 853.87,
+   "text": "use it i don't hear it often"
+  },
+  {
+   "start": 855.53,
+   "end": 858.53,
+   "text": "i don't hear it often but yeah you can use it i just think"
+  },
+  {
+   "start": 858.53,
+   "end": 859.19,
+   "text": "it's just not as frequent"
+  },
+  {
+   "start": 859.19,
+   "end": 865.15,
+   "text": "a bit more elevated mostly connected to a skill um and mostly used in"
+  },
+  {
+   "start": 865.15,
+   "end": 866.35,
+   "text": "the in the present tense"
+  },
+  {
+   "start": 866.35,
+   "end": 871.83,
+   "text": "but you can of course it has a past and future but just the"
+  },
+  {
+   "start": 871.83,
+   "end": 873.65,
+   "text": "frequency sounds so not"
+  },
+  {
+   "start": 873.8,
+   "end": 879.18,
+   "text": "like casual yeah yeah but do use it do use it because it's so"
+  },
+  {
+   "start": 879.18,
+   "end": 880.0,
+   "text": "posh"
+  },
+  {
+   "start": 880.0,
+   "end": 892.48,
+   "text": "sounds good"
+  },
+  {
+   "start": 892.48,
+   "end": 898.16,
+   "text": "at least yeah yeah what else do you have and for abilities i guess"
+  },
+  {
+   "start": 898.16,
+   "end": 903.9,
+   "text": "one more is is it ability i'm not sure though smitty no it's uh"
+  },
+  {
+   "start": 903.9,
+   "end": 908.9,
+   "text": "uh possibility or yeah how do you call it"
+  },
+  {
+   "start": 908.9,
+   "end": 914.16,
+   "text": "oh my god if you're yeah i don't know if you're allowed to do"
+  },
+  {
+   "start": 914.16,
+   "end": 914.62,
+   "text": "something i don't know"
+  },
+  {
+   "start": 914.62,
+   "end": 922.14,
+   "text": "it's like may in english right yeah you may not you may exactly and"
+  },
+  {
+   "start": 922.14,
+   "end": 923.0,
+   "text": "um"
+  },
+  {
+   "start": 924.32,
+   "end": 926.78,
+   "text": "i don't i wouldn't use may quite a lot in english i think it's"
+  },
+  {
+   "start": 926.78,
+   "end": 931.08,
+   "text": "just the american english that i'm using that i would just i would mostly"
+  },
+  {
+   "start": 931.08,
+   "end": 935.9,
+   "text": "use like you're not allowed to but i wouldn't say you may not you"
+  },
+  {
+   "start": 935.9,
+   "end": 940.54,
+   "text": "know what i mean but but definitely may yeah may and allow to"
+  },
+  {
+   "start": 940.54,
+   "end": 945.14,
+   "text": "yeah yeah i use may in emails a lot you may see the patch"
+  },
+  {
+   "start": 945.14,
+   "end": 947.42,
+   "text": "blah blah so yeah yeah in serbian you"
+  },
+  {
+   "start": 947.42,
+   "end": 954.28,
+   "text": "would say smeti for that let's say you're writing an email no actually no"
+  },
+  {
+   "start": 954.28,
+   "end": 958.78,
+   "text": "no this is um no this is different contexts so while you would use"
+  },
+  {
+   "start": 958.78,
+   "end": 962.12,
+   "text": "uh you may you may find this attached you would be like"
+  },
+  {
+   "start": 963.38,
+   "end": 970.52,
+   "text": "it would actually be can right it wouldn't be like you might you're"
+  },
+  {
+   "start": 970.52,
+   "end": 971.42,
+   "text": "allowed yeah yeah or"
+  },
+  {
+   "start": 971.42,
+   "end": 977.2,
+   "text": "you're more like allowed to then okay it is allowed to okay people for"
+  },
+  {
+   "start": 977.2,
+   "end": 978.26,
+   "text": "people who know german it's"
+  },
+  {
+   "start": 978.26,
+   "end": 984.46,
+   "text": "basically just i don't know you probably won't know but there's literally"
+  },
+  {
+   "start": 984.46,
+   "end": 990.18,
+   "text": "because in english you can use for allowed to you can also use can"
+  },
+  {
+   "start": 990.18,
+   "end": 991.82,
+   "text": "can i touch this can i take this"
+  },
+  {
+   "start": 991.82,
+   "end": 996.58,
+   "text": "can i eat this um it's may i may i right am i allowed"
+  },
+  {
+   "start": 996.58,
+   "end": 1001.94,
+   "text": "to but in german these two do not go together because can is the"
+  },
+  {
+   "start": 1001.94,
+   "end": 1008.84,
+   "text": "ability like am i able to do this and may dürfen is um am"
+  },
+  {
+   "start": 1008.84,
+   "end": 1009.3,
+   "text": "to do it so they're obviously separated in english it's a bit more mixed i allowed"
+  },
+  {
+   "start": 1013.4,
+   "end": 1015.54,
+   "text": "exactly so here it's also"
+  },
+  {
+   "start": 1015.54,
+   "end": 1022.96,
+   "text": "separated okay let me read the conjugations then yeah smem to smem it's"
+  },
+  {
+   "start": 1022.96,
+   "end": 1025.98,
+   "text": "a bit longer smem okay And smeesh?"
+  },
+  {
+   "start": 1026.08,
+   "end": 1030.96,
+   "text": "Mm-hmm. Okay. On, ona, ono, smeh."
+  },
+  {
+   "start": 1031.4,
+   "end": 1036.76,
+   "text": "Mm-hmm. Mi smemo, vi smete, vi oni, one, ona smeyu."
+  },
+  {
+   "start": 1037.06,
+   "end": 1041.32,
+   "text": "Mm-hmm. Okay. And your example is?"
+  },
+  {
+   "start": 1043.08,
+   "end": 1044.0,
+   "text": "I wrote down,"
+  },
+  {
+   "start": 1045.66,
+   "end": 1047.44,
+   "text": "smem da idem na žurku."
+  },
+  {
+   "start": 1048.34,
+   "end": 1052.64,
+   "text": "I'm allowed to go to the party or I may go to the party."
+  },
+  {
+   "start": 1053.7,
+   "end": 1056.84,
+   "text": "that's whatever you hear this"
+  },
+  {
+   "start": 1056.84,
+   "end": 1057.72,
+   "text": "party is like"
+  },
+  {
+   "start": 1057.72,
+   "end": 1060.6,
+   "text": "for some reason"
+  },
+  {
+   "start": 1060.6,
+   "end": 1069.92,
+   "text": "you just came from that's normal yeah smepi"
+  },
+  {
+   "start": 1069.92,
+   "end": 1071.22,
+   "text": "so let me just think of what else"
+  },
+  {
+   "start": 1071.22,
+   "end": 1077.84,
+   "text": "there's a song sorry there's a song nesmemda blah blah"
+  },
+  {
+   "start": 1079.12,
+   "end": 1080.16,
+   "text": "nesmemda se zalibim u tebe"
+  },
+  {
+   "start": 1080.16,
+   "end": 1086.4,
+   "text": "no I'm not sure, but I first time I, you know, learned about smell"
+  },
+  {
+   "start": 1086.4,
+   "end": 1087.0,
+   "text": "was because of a song."
+  },
+  {
+   "start": 1087.0,
+   "end": 1092.24,
+   "text": "I don't remember now, but then I saw I heard it in other songs"
+  },
+  {
+   "start": 1092.24,
+   "end": 1093.34,
+   "text": "as well that's a really good"
+  },
+  {
+   "start": 1093.34,
+   "end": 1098.74,
+   "text": "point because i was just thinking of like what other meaning can smethe can"
+  },
+  {
+   "start": 1098.74,
+   "end": 1100.36,
+   "text": "can have right um"
+  },
+  {
+   "start": 1100.36,
+   "end": 1105.36,
+   "text": "and it can have a meaning of i shouldn't because there's a song there's"
+  },
+  {
+   "start": 1105.36,
+   "end": 1106.9,
+   "text": "a song like uh nesme"
+  },
+  {
+   "start": 1106.9,
+   "end": 1113.26,
+   "text": "i should not fall in love with you like i can i know i"
+  },
+  {
+   "start": 1113.26,
+   "end": 1119.2,
+   "text": "can and no one's stopping me but it's it better not right i shouldn't"
+  },
+  {
+   "start": 1119.2,
+   "end": 1126.66,
+   "text": "so you shouldn't do that shouldn't you should"
+  },
+  {
+   "start": 1126.66,
+   "end": 1132.2,
+   "text": "not do that okay i'm adding should to this explanation yeah actually that's good"
+  },
+  {
+   "start": 1132.2,
+   "end": 1137.36,
+   "text": "because it's very difficult because like when you think of modal verbs yeah this"
+  },
+  {
+   "start": 1137.36,
+   "end": 1137.58,
+   "text": "is the meaning that"
+  },
+  {
+   "start": 1137.58,
+   "end": 1141.42,
+   "text": "it has but it has so many other meanings so the question is do"
+  },
+  {
+   "start": 1141.42,
+   "end": 1146.74,
+   "text": "we like go through all of these meanings right probably not probably just the"
+  },
+  {
+   "start": 1146.74,
+   "end": 1151.7,
+   "text": "most common ones okay good yeah so treba everybody"
+  },
+  {
+   "start": 1151.7,
+   "end": 1156.62,
+   "text": "knows that i guess not but most of us know it uh treba me"
+  },
+  {
+   "start": 1156.62,
+   "end": 1158.74,
+   "text": "but you you feel like this is different"
+  },
+  {
+   "start": 1158.74,
+   "end": 1165.06,
+   "text": "from all the others because this is not conjugated yes it's not conjugated but"
+  },
+  {
+   "start": 1165.06,
+   "end": 1165.68,
+   "text": "first of all obviously"
+  },
+  {
+   "start": 1165.68,
+   "end": 1171.36,
+   "text": "you learn everyone needs to learn this because in the beginning you should just"
+  },
+  {
+   "start": 1171.36,
+   "end": 1175.68,
+   "text": "be able to express like what do you need right because you're in a"
+  },
+  {
+   "start": 1175.68,
+   "end": 1179.86,
+   "text": "foreign country you're like i need to get there right like i need this"
+  },
+  {
+   "start": 1179.86,
+   "end": 1182.16,
+   "text": "i need that so this is like one of the first things you should"
+  },
+  {
+   "start": 1182.16,
+   "end": 1182.4,
+   "text": "and it's easy because as you said it's not conjugated so it's always treba"
+  },
+  {
+   "start": 1182.4,
+   "end": 1182.62,
+   "text": "learn"
+  },
+  {
+   "start": 1186.6,
+   "end": 1187.12,
+   "text": "which is the"
+  },
+  {
+   "start": 1187.12,
+   "end": 1194.3,
+   "text": "third person singular basically like uh used for every person"
+  },
+  {
+   "start": 1194.3,
+   "end": 1195.84,
+   "text": "that's why i when i thought about"
+  },
+  {
+   "start": 1195.84,
+   "end": 1200.16,
+   "text": "model verbs the first thing that came to my mind was treba because like"
+  },
+  {
+   "start": 1200.16,
+   "end": 1203.93,
+   "text": "models in english you wouldn't conjugate, you know, that one only."
+  },
+  {
+   "start": 1204.09,
+   "end": 1205.77,
+   "text": "So I was like, treba is a model verb."
+  },
+  {
+   "start": 1206.61,
+   "end": 1208.37,
+   "text": "It is a true model."
+  },
+  {
+   "start": 1208.99,
+   "end": 1210.33,
+   "text": "It's a true model."
+  },
+  {
+   "start": 1210.55,
+   "end": 1212.15,
+   "text": "Yeah. there you go."
+  },
+  {
+   "start": 1212.85,
+   "end": 1213.99,
+   "text": "How did you? Treba da ucim."
+  },
+  {
+   "start": 1214.33,
+   "end": 1221.47,
+   "text": "I always use treba in the supermarkets or the classic sentence like ne treba"
+  },
+  {
+   "start": 1221.47,
+   "end": 1223.71,
+   "text": "mi kes. Yeah."
+  },
+  {
+   "start": 1224.51,
+   "end": 1225.99,
+   "text": "Actually, this is a good point."
+  },
+  {
+   "start": 1226.95,
+   "end": 1230.49,
+   "text": "If you want to express that you need one thing, then you say treba."
+  },
+  {
+   "start": 1230.49,
+   "end": 1234.47,
+   "text": "If you want to express that you need multiple things, then it is treba"
+  },
+  {
+   "start": 1234.47,
+   "end": 1234.93,
+   "text": "you."
+  },
+  {
+   "start": 1236.61,
+   "end": 1239.65,
+   "text": "So, for example, if you want to say, I need an apple."
+  },
+  {
+   "start": 1239.91,
+   "end": 1240.95,
+   "text": "Treba mi jabuka."
+  },
+  {
+   "start": 1242.19,
+   "end": 1242.93,
+   "text": "I need apples."
+  },
+  {
+   "start": 1243.35,
+   "end": 1244.91,
+   "text": "Treba you mi jabuke."
+  },
+  {
+   "start": 1246.57,
+   "end": 1248.47,
+   "text": "Okay. The number is important."
+  },
+  {
+   "start": 1249.11,
+   "end": 1252.85,
+   "text": "But only if you say, like, specify, I need this one thing, like, physically"
+  },
+  {
+   "start": 1252.85,
+   "end": 1256.45,
+   "text": "or something. Treba you mi jabuke."
+  },
+  {
+   "start": 1256.55,
+   "end": 1256.97,
+   "text": "I don't know."
+  },
+  {
+   "start": 1256.99,
+   "end": 1257.13,
+   "text": "Prietegi."
+  },
+  {
+   "start": 1257.13,
+   "end": 1261.07,
+   "text": "Prietegi. Yeah. Oh my God, that's crazy."
+  },
+  {
+   "start": 1261.45,
+   "end": 1265.67,
+   "text": "But for example, well, you can also say"
+  },
+  {
+   "start": 1265.67,
+   "end": 1269.37,
+   "text": "trebami puno jabuka."
+  },
+  {
+   "start": 1269.63,
+   "end": 1270.49,
+   "text": "Here it's different."
+  },
+  {
+   "start": 1271.25,
+   "end": 1274.77,
+   "text": "Here you use, and I need a lot of apples."
+  },
+  {
+   "start": 1276.63,
+   "end": 1278.05,
+   "text": "Before we continue with the show,"
+  },
+  {
+   "start": 1278.05,
+   "end": 1279.03,
+   "text": "here's a quick reminder."
+  },
+  {
+   "start": 1279.61,
+   "end": 1280.75,
+   "text": "This podcast is free for everyone"
+  },
+  {
+   "start": 1280.75,
+   "end": 1283.17,
+   "text": "and supported by listeners like you."
+  },
+  {
+   "start": 1283.59,
+   "end": 1286.67,
+   "text": "We hope that this podcast is useful and companion to you."
+  },
+  {
+   "start": 1286.67,
+   "end": 1289.11,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 1289.11,
+   "end": 1290.67,
+   "text": "To help us continue creating useful"
+  },
+  {
+   "start": 1290.67,
+   "end": 1293.99,
+   "text": "content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 1293.99,
+   "end": 1295.99,
+   "text": "If you have the means, you can support us"
+  },
+  {
+   "start": 1295.99,
+   "end": 1297.49,
+   "text": "in different ways."
+  },
+  {
+   "start": 1297.49,
+   "end": 1303.33,
+   "text": "You may just go to buymeacoffee.com slash mosekafapodcast and send us some cups of"
+  },
+  {
+   "start": 1303.33,
+   "end": 1309.93,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mosekafapodcast"
+  },
+  {
+   "start": 1309.93,
+   "end": 1310.69,
+   "text": "and get"
+  },
+  {
+   "start": 1310.71,
+   "end": 1315.59,
+   "text": "extra benefits like bonus content, full transcripts of the show in Serbian, or even"
+  },
+  {
+   "start": 1315.59,
+   "end": 1316.93,
+   "text": "join us on the show."
+  },
+  {
+   "start": 1317.61,
+   "end": 1321.75,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1321.75,
+   "end": 1324.27,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1324.27,
+   "end": 1326.43,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1327.21,
+   "end": 1328.63,
+   "text": "But it's in singular."
+  },
+  {
+   "start": 1328.63,
+   "end": 1333.21,
+   "text": "Singular. Yeah. When you use, we use puno, then you use singular."
+  },
+  {
+   "start": 1333.21,
+   "end": 1334.03,
+   "text": "I just thought of it."
+  },
+  {
+   "start": 1334.03,
+   "end": 1334.69,
+   "text": "It's a bit,"
+  },
+  {
+   "start": 1334.69,
+   "end": 1340.25,
+   "text": "it used to be weird i don't know why anyway everybody has to know"
+  },
+  {
+   "start": 1340.25,
+   "end": 1340.43,
+   "text": "this one at least"
+  },
+  {
+   "start": 1340.43,
+   "end": 1347.69,
+   "text": "exactly so we did these examples is treba me but yeah that's"
+  },
+  {
+   "start": 1347.69,
+   "end": 1350.63,
+   "text": "true we use treba da right"
+  },
+  {
+   "start": 1352.01,
+   "end": 1354.39,
+   "text": "that's a that's a good point treba da"
+  },
+  {
+   "start": 1356.43,
+   "end": 1363.57,
+   "text": "um i need to buy an apple actually yeah i actually need"
+  },
+  {
+   "start": 1363.57,
+   "end": 1365.11,
+   "text": "to apologize because this thing"
+  },
+  {
+   "start": 1365.11,
+   "end": 1371.23,
+   "text": "that i just said uh this is another use of uh trebati which is"
+  },
+  {
+   "start": 1371.23,
+   "end": 1372.81,
+   "text": "conjugated and that's why you"
+  },
+  {
+   "start": 1372.81,
+   "end": 1377.59,
+   "text": "use yeah which is a verb where you don't use da right so it's"
+  },
+  {
+   "start": 1377.59,
+   "end": 1383.07,
+   "text": "a proper verb it means to need as well and it's used for um"
+  },
+  {
+   "start": 1383.07,
+   "end": 1386.37,
+   "text": "man i don't know it's gonna be like a different episode"
+  },
+  {
+   "start": 1386.37,
+   "end": 1392.03,
+   "text": "but yeah in this case treba just stays the same treba da always treba"
+  },
+  {
+   "start": 1392.03,
+   "end": 1394.19,
+   "text": "treba treba da učim treba"
+  },
+  {
+   "start": 1394.19,
+   "end": 1400.53,
+   "text": "da treba da se tuširam treba da se nađem sa prijateljima treba da idem"
+  },
+  {
+   "start": 1400.53,
+   "end": 1406.43,
+   "text": "na odmor i need to go on vacation i need to go yeah i"
+  },
+  {
+   "start": 1406.43,
+   "end": 1413.47,
+   "text": "was thinking of past versions of these actually and trebalo that"
+  },
+  {
+   "start": 1413.47,
+   "end": 1420.51,
+   "text": "is always trebalo yeah the trebalo yeah uh past is"
+  },
+  {
+   "start": 1420.51,
+   "end": 1426.04,
+   "text": "past like i had to i needed to just i want to say past"
+  },
+  {
+   "start": 1426.04,
+   "end": 1427.26,
+   "text": "the compound past which is for"
+  },
+  {
+   "start": 1427.26,
+   "end": 1433.64,
+   "text": "us past is compound uh which means it's from two two words um is"
+  },
+  {
+   "start": 1433.64,
+   "end": 1437.82,
+   "text": "and on the main verb you need to specify if it's feminine or masculine"
+  },
+  {
+   "start": 1437.82,
+   "end": 1446.22,
+   "text": "uh so yeah yeah so trebala"
+  },
+  {
+   "start": 1446.22,
+   "end": 1447.48,
+   "text": "let's see i treba the"
+  },
+  {
+   "start": 1447.48,
+   "end": 1453.92,
+   "text": "trebala some the ulti because i'm a girl trebala some uh if you're a"
+  },
+  {
+   "start": 1453.92,
+   "end": 1455.98,
+   "text": "guy trebala some okay so"
+  },
+  {
+   "start": 1455.98,
+   "end": 1461.82,
+   "text": "normal verb past tense conjugation will come yeah yeah this is anywhere not just"
+  },
+  {
+   "start": 1461.82,
+   "end": 1465.4,
+   "text": "for modal verbs it's like for as you said just any verb in past"
+  },
+  {
+   "start": 1465.4,
+   "end": 1468.22,
+   "text": "you have to think about the gender okay"
+  },
+  {
+   "start": 1469.64,
+   "end": 1474.82,
+   "text": "yeah good treba is still i'm proud of treba because that's the model"
+  },
+  {
+   "start": 1474.82,
+   "end": 1480.96,
+   "text": "the one modal verb that's actually helping you it's easy of course we are"
+  },
+  {
+   "start": 1480.96,
+   "end": 1481.48,
+   "text": "saying treba the witch"
+  },
+  {
+   "start": 1481.48,
+   "end": 1488.32,
+   "text": "but for for he she it would be treba the uchi uchi right um"
+  },
+  {
+   "start": 1489.78,
+   "end": 1496.78,
+   "text": "so the conjugation will depend on the"
+  },
+  {
+   "start": 1496.78,
+   "end": 1499.46,
+   "text": "front uh personal pronoun in the beginning"
+  },
+  {
+   "start": 1500.7,
+   "end": 1505.24,
+   "text": "even though treba doesn't change the verb has to be conjugated with the pronoun"
+  },
+  {
+   "start": 1505.9,
+   "end": 1509.02,
+   "text": "oh yeah that's true yeah yeah exactly the verb following the main verb yeah"
+  },
+  {
+   "start": 1509.02,
+   "end": 1511.52,
+   "text": "it has to be conjugated always"
+  },
+  {
+   "start": 1512.86,
+   "end": 1520.26,
+   "text": "exactly exactly"
+  },
+  {
+   "start": 1520.26,
+   "end": 1527.46,
+   "text": "okay and morati is another one yeah and mochi"
+  },
+  {
+   "start": 1527.46,
+   "end": 1535.02,
+   "text": "and morati to me yeah right well what"
+  },
+  {
+   "start": 1535.02,
+   "end": 1540.38,
+   "text": "exactly is similar what do you mean starting with more i guess i think"
+  },
+  {
+   "start": 1540.38,
+   "end": 1540.84,
+   "text": "the meaning i'm like if i moramta idam and mogud actually one is can this is"
+  },
+  {
+   "start": 1546.74,
+   "end": 1551.46,
+   "text": "the other one is i have to right exactly the other one is obligate"
+  },
+  {
+   "start": 1551.46,
+   "end": 1555.06,
+   "text": "like obligation right or something external obligation"
+  },
+  {
+   "start": 1555.06,
+   "end": 1559.66,
+   "text": "or so the difference between must and have to is must i think is"
+  },
+  {
+   "start": 1559.66,
+   "end": 1562.36,
+   "text": "internal obligation like i must do"
+  },
+  {
+   "start": 1562.36,
+   "end": 1566.54,
+   "text": "something and have to is like external so someone is telling me that i"
+  },
+  {
+   "start": 1566.54,
+   "end": 1567.2,
+   "text": "have to do that because"
+  },
+  {
+   "start": 1567.2,
+   "end": 1574.86,
+   "text": "there's their rules and so on right um in here i think i"
+  },
+  {
+   "start": 1574.86,
+   "end": 1580.52,
+   "text": "think it's could be both for us could be both so more than the"
+  },
+  {
+   "start": 1580.52,
+   "end": 1586.08,
+   "text": "more than the i don't know more than the plot"
+  },
+  {
+   "start": 1586.08,
+   "end": 1593.22,
+   "text": "what are the pm this is internal could be"
+  },
+  {
+   "start": 1593.22,
+   "end": 1595.92,
+   "text": "also external you understand it from the context more"
+  },
+  {
+   "start": 1595.92,
+   "end": 1599.34,
+   "text": "of the pm because my friends will kill me otherwise so exactly yeah yeah"
+  },
+  {
+   "start": 1599.34,
+   "end": 1601.26,
+   "text": "so that could be Yeah, yeah."
+  },
+  {
+   "start": 1601.54,
+   "end": 1601.96,
+   "text": "There you go."
+  },
+  {
+   "start": 1602.06,
+   "end": 1605.52,
+   "text": "There And so this one is quite regular."
+  },
+  {
+   "start": 1605.52,
+   "end": 1608.12,
+   "text": "Morati. You take out the ti."
+  },
+  {
+   "start": 1608.44,
+   "end": 1610.8,
+   "text": "Ja moram. Right?"
+  },
+  {
+   "start": 1611.3,
+   "end": 1611.48,
+   "text": "Ti moras."
+  },
+  {
+   "start": 1611.48,
+   "end": 1615.26,
+   "text": "Ti On, ona, ono mora."
+  },
+  {
+   "start": 1616.06,
+   "end": 1618.34,
+   "text": "Mi moramo. Vi morate."
+  },
+  {
+   "start": 1618.64,
+   "end": 1620.18,
+   "text": "Oni, one, ona moraju."
+  },
+  {
+   "start": 1621.58,
+   "end": 1624.84,
+   "text": "And here we left can for some reason, but it's must."
+  },
+  {
+   "start": 1625.58,
+   "end": 1626.84,
+   "text": "Yeah. Yeah."
+  },
+  {
+   "start": 1628.12,
+   "end": 1629.9,
+   "text": "What do you think how the negative goes?"
+  },
+  {
+   "start": 1631.62,
+   "end": 1632.4,
+   "text": "Easy peasy."
+  },
+  {
+   "start": 1632.4,
+   "end": 1633.57,
+   "text": "Ne moram. Exactly."
+  },
+  {
+   "start": 1633.57,
+   "end": 1634.87,
+   "text": "Exactly, that's it."
+  },
+  {
+   "start": 1635.94,
+   "end": 1641.26,
+   "text": "Ne moraš. Ne moraš da slav... You can say"
+  },
+  {
+   "start": 1641.26,
+   "end": 1642.64,
+   "text": "No, spavaš."
+  },
+  {
+   "start": 1644.39,
+   "end": 1645.67,
+   "text": "this Inat thing, right?"
+  },
+  {
+   "start": 1645.67,
+   "end": 1650.33,
+   "text": "I don't have to do anything."
+  },
+  {
+   "start": 1653.33,
+   "end": 1657.55,
+   "text": "But I can do a lot."
+  },
+  {
+   "start": 1659.55,
+   "end": 1661.33,
+   "text": "Yeah, it's like a lot."
+  },
+  {
+   "start": 1661.99,
+   "end": 1667.49,
+   "text": "Anything, basically. I don't have to do anything but can do everything oh that's"
+  },
+  {
+   "start": 1667.49,
+   "end": 1667.93,
+   "text": "we should add it to the title a good one"
+  },
+  {
+   "start": 1670.99,
+   "end": 1675.23,
+   "text": "Nemoram da kajem I don't have to say but usually"
+  },
+  {
+   "start": 1675.23,
+   "end": 1677.45,
+   "text": "kajeti is like it is followed by"
+  },
+  {
+   "start": 1677.45,
+   "end": 1678.93,
+   "text": "something to say what"
+  },
+  {
+   "start": 1680.15,
+   "end": 1680.69,
+   "text": "Nemoram"
+  },
+  {
+   "start": 1680.69,
+   "end": 1681.21,
+   "text": "kajem"
+  },
+  {
+   "start": 1681.21,
+   "end": 1688.27,
+   "text": "kajem oh my god very good Nemoram da pricam"
+  },
+  {
+   "start": 1689.73,
+   "end": 1690.19,
+   "text": "we're getting there"
+  },
+  {
+   "start": 1690.19,
+   "end": 1697.47,
+   "text": "Nemoram da pricam yeah yeah exactly so"
+  },
+  {
+   "start": 1697.47,
+   "end": 1700.87,
+   "text": "if you go to a meeting and say i don't have to talk number"
+  },
+  {
+   "start": 1700.87,
+   "end": 1707.73,
+   "text": "of the freedom okay good for example for the rules of let's say you're"
+  },
+  {
+   "start": 1707.73,
+   "end": 1709.37,
+   "text": "you're traveling you had to check a lot of"
+  },
+  {
+   "start": 1709.37,
+   "end": 1715.15,
+   "text": "rules like if you have to show pcr or what kind of document these"
+  },
+  {
+   "start": 1715.15,
+   "end": 1718.43,
+   "text": "kind of things like you have to show this you have to bring this"
+  },
+  {
+   "start": 1718.43,
+   "end": 1723.27,
+   "text": "with you you know these are with more this morati right it would"
+  },
+  {
+   "start": 1723.27,
+   "end": 1728.73,
+   "text": "be morati right because um otherwise it will be something like you're advised to"
+  },
+  {
+   "start": 1728.73,
+   "end": 1729.09,
+   "text": "right but here"
+  },
+  {
+   "start": 1729.09,
+   "end": 1733.87,
+   "text": "it's like morati i i don't i'm not quite sure how they write it"
+  },
+  {
+   "start": 1733.87,
+   "end": 1734.99,
+   "text": "down maybe there is another like"
+  },
+  {
+   "start": 1734.99,
+   "end": 1740.61,
+   "text": "formal way of saying it i think they usually say it's obligatory obavezno je"
+  },
+  {
+   "start": 1740.61,
+   "end": 1742.45,
+   "text": "obavezno je"
+  },
+  {
+   "start": 1747.59,
+   "end": 1754.87,
+   "text": "vaccines um but yeah sure you can also morate morate biti vaccine sorry morate"
+  },
+  {
+   "start": 1754.87,
+   "end": 1756.03,
+   "text": "sorry i just"
+  },
+  {
+   "start": 1756.03,
+   "end": 1764.33,
+   "text": "use the different okay morate da budete yeah exactly you"
+  },
+  {
+   "start": 1764.33,
+   "end": 1766.09,
+   "text": "see i use it in the library for"
+  },
+  {
+   "start": 1766.09,
+   "end": 1772.87,
+   "text": "example morate da budeti silent they usually know they say molim tishina"
+  },
+  {
+   "start": 1774.37,
+   "end": 1776.71,
+   "text": "or molim za tišinu something like that"
+  },
+  {
+   "start": 1776.71,
+   "end": 1781.49,
+   "text": "it would be very very short you would use these impersonal ones"
+  },
+  {
+   "start": 1781.49,
+   "end": 1784.29,
+   "text": "we're quite pleased"
+  },
+  {
+   "start": 1784.29,
+   "end": 1788.49,
+   "text": "molim za tišinu but yeah"
+  },
+  {
+   "start": 1789.75,
+   "end": 1789.87,
+   "text": "if someone says"
+  },
+  {
+   "start": 1789.87,
+   "end": 1796.93,
+   "text": "moraš da nosiš moraš da ponesiš pasoš moraš da nosiš ličnu"
+  },
+  {
+   "start": 1796.93,
+   "end": 1798.99,
+   "text": "kartu we have to bring your passport"
+  },
+  {
+   "start": 1798.99,
+   "end": 1806.19,
+   "text": "your ID or moras da moras da yedes posle vakcinacje for"
+  },
+  {
+   "start": 1806.19,
+   "end": 1810.45,
+   "text": "example you have to eat after getting vaccinated so doctor i don't know just"
+  },
+  {
+   "start": 1810.45,
+   "end": 1814.69,
+   "text": "i don't know but a doc maybe a doctor would tell you that like"
+  },
+  {
+   "start": 1814.69,
+   "end": 1814.95,
+   "text": "know these like or like the shelterus right the ones that the uh how you"
+  },
+  {
+   "start": 1820.47,
+   "end": 1821.05,
+   "text": "do you call them the women"
+  },
+  {
+   "start": 1821.05,
+   "end": 1827.05,
+   "text": "that are working or like men that are working at the doctor's office no"
+  },
+  {
+   "start": 1827.05,
+   "end": 1831.25,
+   "text": "it's this oh my god a stand you know like when you have stands"
+  },
+  {
+   "start": 1831.25,
+   "end": 1834.15,
+   "text": "like in the post office in the bank you know the ones behind"
+  },
+  {
+   "start": 1834.15,
+   "end": 1840.41,
+   "text": "person exactly or like behind the desk right they we call them shelter oh"
+  },
+  {
+   "start": 1840.41,
+   "end": 1841.69,
+   "text": "this is a very bad way how"
+  },
+  {
+   "start": 1841.69,
+   "end": 1846.07,
+   "text": "to say it but they're usually like you have to do this you have"
+  },
+  {
+   "start": 1846.07,
+   "end": 1847.99,
+   "text": "to you cannot you know you know so"
+  },
+  {
+   "start": 1847.99,
+   "end": 1851.31,
+   "text": "this is where you're gonna hear a lot so go to a post office"
+  },
+  {
+   "start": 1851.31,
+   "end": 1855.37,
+   "text": "or something like that i will try i I will just go there and"
+  },
+  {
+   "start": 1855.37,
+   "end": 1858.0,
+   "text": "just piss them off just piss them off"
+  },
+  {
+   "start": 1858.0,
+   "end": 1861.56,
+   "text": "and then you'll hear all the modal verbs i would keep saying"
+  },
+  {
+   "start": 1861.56,
+   "end": 1868.58,
+   "text": "okay as common as"
+  },
+  {
+   "start": 1868.58,
+   "end": 1875.76,
+   "text": "moje mojesh mogul hochu hitayti right yeah i put will"
+  },
+  {
+   "start": 1875.76,
+   "end": 1876.52,
+   "text": "next to it because"
+  },
+  {
+   "start": 1876.52,
+   "end": 1880.96,
+   "text": "you use the chu part only instead of hochu right chu"
+  },
+  {
+   "start": 1882.84,
+   "end": 1887.86,
+   "text": "we use hot you as um yeah actually yeah yeah yeah so i say"
+  },
+  {
+   "start": 1887.86,
+   "end": 1889.74,
+   "text": "i hope you yeah that's true"
+  },
+  {
+   "start": 1889.74,
+   "end": 1896.8,
+   "text": "they order for drinks and coffee i always say two two couple to"
+  },
+  {
+   "start": 1896.8,
+   "end": 1898.48,
+   "text": "something yeah no we don't"
+  },
+  {
+   "start": 1898.48,
+   "end": 1904.48,
+   "text": "usually you would say yeah you wouldn't say two yeah so yeah yeah because"
+  },
+  {
+   "start": 1904.48,
+   "end": 1910.96,
+   "text": "it's such a weird word to say chu alone it's like chu like what"
+  },
+  {
+   "start": 1910.96,
+   "end": 1914.98,
+   "text": "does it mean oh my god um yeah exactly so"
+  },
+  {
+   "start": 1914.98,
+   "end": 1921.68,
+   "text": "you use always yeah with chu um but yeah how chu is i want"
+  },
+  {
+   "start": 1921.68,
+   "end": 1924.02,
+   "text": "but actually no you can say"
+  },
+  {
+   "start": 1924.02,
+   "end": 1931.32,
+   "text": "yeah you can say yeah yeah how chu or yeah yeah longer"
+  },
+  {
+   "start": 1931.32,
+   "end": 1938.22,
+   "text": "version would be yeah it's the pm kafu right uh with that yeah that's"
+  },
+  {
+   "start": 1938.22,
+   "end": 1941.04,
+   "text": "a good point because you always have to yeah how to"
+  },
+  {
+   "start": 1941.04,
+   "end": 1947.44,
+   "text": "you see um it has a slightly different meaning now now i'm thinking about"
+  },
+  {
+   "start": 1947.44,
+   "end": 1947.84,
+   "text": "it let's say"
+  },
+  {
+   "start": 1947.84,
+   "end": 1955.16,
+   "text": "yeah how to the pmk who it sounds like you're asking for approval"
+  },
+  {
+   "start": 1956.88,
+   "end": 1964.8,
+   "text": "i see i want to i was like go ahead sure you"
+  },
+  {
+   "start": 1964.8,
+   "end": 1966.44,
+   "text": "want okay but if you say yeah it should"
+  },
+  {
+   "start": 1966.44,
+   "end": 1969.76,
+   "text": "without i will have a coffee yeah yeah it's"
+  },
+  {
+   "start": 1969.76,
+   "end": 1974.2,
+   "text": "just like i decided no one's gonna influence me yeah to the pink coffee"
+  },
+  {
+   "start": 1974.2,
+   "end": 1976.12,
+   "text": "whatever i'm like i want"
+  },
+  {
+   "start": 1976.12,
+   "end": 1982.62,
+   "text": "to like it's i don't know that no one's stopping you drink it it"
+  },
+  {
+   "start": 1982.62,
+   "end": 1984.44,
+   "text": "has some sort of meaning like that"
+  },
+  {
+   "start": 1984.44,
+   "end": 1988.62,
+   "text": "sometimes. Okay, let's conjugate them a little bit."
+  },
+  {
+   "start": 1990.54,
+   "end": 1991.56,
+   "text": "Do you want to do it?"
+  },
+  {
+   "start": 1991.56,
+   "end": 1991.76,
+   "text": "No, you go."
+  },
+  {
+   "start": 1991.76,
+   "end": 1992.02,
+   "text": "Or me?"
+  },
+  {
+   "start": 1992.98,
+   "end": 1993.3,
+   "text": "With duck tubes"
+  },
+  {
+   "start": 1993.3,
+   "end": 1996.08,
+   "text": "because I'm not saying it right, I think."
+  },
+  {
+   "start": 1996.08,
+   "end": 1997.02,
+   "text": "So I want to hear it more."
+  },
+  {
+   "start": 1997.72,
+   "end": 1998.02,
+   "text": "Okay."
+  },
+  {
+   "start": 1999.92,
+   "end": 2000.88,
+   "text": "ASMR."
+  },
+  {
+   "start": 2002.28,
+   "end": 2003.56,
+   "text": "I want you."
+  },
+  {
+   "start": 2004.26,
+   "end": 2005.08,
+   "text": "You want you."
+  },
+  {
+   "start": 2006.12,
+   "end": 2007.38,
+   "text": "He wants you."
+  },
+  {
+   "start": 2009.02,
+   "end": 2010.28,
+   "text": "We want you."
+  },
+  {
+   "start": 2010.6,
+   "end": 2011.38,
+   "text": "You want you."
+  },
+  {
+   "start": 2012.34,
+   "end": 2013.06,
+   "text": "He wants you."
+  },
+  {
+   "start": 2013.06,
+   "end": 2020.14,
+   "text": "not something with u this time okay so"
+  },
+  {
+   "start": 2020.14,
+   "end": 2025.4,
+   "text": "this time on on a ono i mean singular version third person and plural"
+  },
+  {
+   "start": 2025.4,
+   "end": 2030.32,
+   "text": "third person are the same oh that's true i'm just looking at it"
+  },
+  {
+   "start": 2030.32,
+   "end": 2035.56,
+   "text": "it's true you see like try to like why you know like i always"
+  },
+  {
+   "start": 2035.56,
+   "end": 2037.24,
+   "text": "question why i know i try to find"
+  },
+  {
+   "start": 2037.24,
+   "end": 2041.1,
+   "text": "but i try to find a logic and there is none so i mean"
+  },
+  {
+   "start": 2041.1,
+   "end": 2042.68,
+   "text": "maybe there is but too many exceptions"
+  },
+  {
+   "start": 2044.56,
+   "end": 2051.66,
+   "text": "well the negation is now different right because actually here you add"
+  },
+  {
+   "start": 2051.66,
+   "end": 2054.26,
+   "text": "ne sorry i said ne like so"
+  },
+  {
+   "start": 2054.26,
+   "end": 2061.78,
+   "text": "foreign ne but you actually put it together so if"
+  },
+  {
+   "start": 2061.78,
+   "end": 2067.94,
+   "text": "you have chu without the ho right so it's like so if you say"
+  },
+  {
+   "start": 2067.94,
+   "end": 2074.42,
+   "text": "so and if you think of like if it starts"
+  },
+  {
+   "start": 2074.42,
+   "end": 2079.61,
+   "text": "from hochu then you have to kick out the ho and add ne"
+  },
+  {
+   "start": 2081.01,
+   "end": 2084.93,
+   "text": "so if i'm not allowing you you say ja chukapo and then ti nečes"
+  },
+  {
+   "start": 2084.93,
+   "end": 2089.29,
+   "text": "kapo yeah too much for you"
+  },
+  {
+   "start": 2089.29,
+   "end": 2091.17,
+   "text": "I see"
+  },
+  {
+   "start": 2092.63,
+   "end": 2092.87,
+   "text": "okay"
+  },
+  {
+   "start": 2094.11,
+   "end": 2100.77,
+   "text": "you know that we used to"
+  },
+  {
+   "start": 2100.77,
+   "end": 2102.91,
+   "text": "do this like with verbs"
+  },
+  {
+   "start": 2102.91,
+   "end": 2104.53,
+   "text": "sometimes kind of like Latin"
+  },
+  {
+   "start": 2104.53,
+   "end": 2107.49,
+   "text": "how you learn Latin like"
+  },
+  {
+   "start": 2107.49,
+   "end": 2108.49,
+   "text": "yeah"
+  },
+  {
+   "start": 2109.83,
+   "end": 2112.65,
+   "text": "this is the"
+  },
+  {
+   "start": 2112.65,
+   "end": 2119.79,
+   "text": "two part right yeah i can't say it"
+  },
+  {
+   "start": 2119.79,
+   "end": 2124.63,
+   "text": "as long as you repeat yeah yeah good yeah yeah sure we'll work on"
+  },
+  {
+   "start": 2124.63,
+   "end": 2125.13,
+   "text": "work on that good okay good good and the last one will be jealousy that we'll"
+  },
+  {
+   "start": 2130.63,
+   "end": 2135.13,
+   "text": "yeah i will work down"
+  },
+  {
+   "start": 2136.47,
+   "end": 2143.77,
+   "text": "it's also i want it's uh but it's wish yeah i would"
+  },
+  {
+   "start": 2143.77,
+   "end": 2149.11,
+   "text": "to wish on something like that yeah i write to you for example right"
+  },
+  {
+   "start": 2149.11,
+   "end": 2155.33,
+   "text": "i wish you a good day but if i say that means like i"
+  },
+  {
+   "start": 2155.33,
+   "end": 2160.75,
+   "text": "want a good day yeah well here again it's without that right so jelly"
+  },
+  {
+   "start": 2161.41,
+   "end": 2167.39,
+   "text": "it's not that but in this case it would be very similar um it's"
+  },
+  {
+   "start": 2167.39,
+   "end": 2168.81,
+   "text": "actually it would be a bit more"
+  },
+  {
+   "start": 2168.81,
+   "end": 2174.09,
+   "text": "formal if you say you know it's like you're wishing something kind of like"
+  },
+  {
+   "start": 2174.09,
+   "end": 2175.03,
+   "text": "that i said it's"
+  },
+  {
+   "start": 2175.03,
+   "end": 2180.69,
+   "text": "just a bit more formal um and i probably a bit more restrictive right"
+  },
+  {
+   "start": 2180.69,
+   "end": 2184.49,
+   "text": "so it will be weird to go"
+  },
+  {
+   "start": 2184.49,
+   "end": 2190.79,
+   "text": "to a cafe and say and then"
+  },
+  {
+   "start": 2190.79,
+   "end": 2192.31,
+   "text": "will be the question"
+  },
+  {
+   "start": 2192.31,
+   "end": 2195.85,
+   "text": "well you know"
+  },
+  {
+   "start": 2195.85,
+   "end": 2197.13,
+   "text": "I mean"
+  },
+  {
+   "start": 2198.45,
+   "end": 2199.75,
+   "text": "if the you can use it"
+  },
+  {
+   "start": 2199.75,
+   "end": 2206.89,
+   "text": "it's a bit formal you can use it actually you can but if you're"
+  },
+  {
+   "start": 2206.89,
+   "end": 2207.59,
+   "text": "already kind of like"
+  },
+  {
+   "start": 2208.91,
+   "end": 2209.17,
+   "text": "regular there"
+  },
+  {
+   "start": 2209.17,
+   "end": 2214.67,
+   "text": "you wouldn't probably you wouldn't probably also if the waiter is a bit more"
+  },
+  {
+   "start": 2214.67,
+   "end": 2217.11,
+   "text": "formal which if you really they are actually they there"
+  },
+  {
+   "start": 2217.11,
+   "end": 2222.15,
+   "text": "can be a bit formal like they can adapt so and they would come"
+  },
+  {
+   "start": 2222.15,
+   "end": 2223.17,
+   "text": "to you and they would say um"
+  },
+  {
+   "start": 2225.27,
+   "end": 2231.87,
+   "text": "maybe that's one of the things that they can ask and yeah and you"
+  },
+  {
+   "start": 2231.87,
+   "end": 2237.37,
+   "text": "can say I want to drink Coca-Cola or I want to drink tea."
+  },
+  {
+   "start": 2238.17,
+   "end": 2244.89,
+   "text": "But you can just say hot tea than tea, which is quite informal, actually."
+  },
+  {
+   "start": 2246.31,
+   "end": 2247.39,
+   "text": "But that's why I use može."
+  },
+  {
+   "start": 2248.71,
+   "end": 2249.35,
+   "text": "Može je dan tea."
+  },
+  {
+   "start": 2250.35,
+   "end": 2251.31,
+   "text": "It's very neutral."
+  },
+  {
+   "start": 2251.63,
+   "end": 2252.79,
+   "text": "I don't know how to explain it."
+  },
+  {
+   "start": 2253.09,
+   "end": 2255.01,
+   "text": "Exactly. But you can use it."
+  },
+  {
+   "start": 2255.57,
+   "end": 2257.15,
+   "text": "Yeah, you can use žele ti."
+  },
+  {
+   "start": 2257.79,
+   "end": 2263.91,
+   "text": "Okay. uh i just wanted to ask you i know it's off topic maybe"
+  },
+  {
+   "start": 2263.91,
+   "end": 2264.37,
+   "text": "but this"
+  },
+  {
+   "start": 2264.37,
+   "end": 2272.87,
+   "text": "yeah is this a model for you it's"
+  },
+  {
+   "start": 2272.87,
+   "end": 2274.93,
+   "text": "like condition of the english like if if i knew"
+  },
+  {
+   "start": 2274.93,
+   "end": 2277.73,
+   "text": "this would have i would have done this you know"
+  },
+  {
+   "start": 2282.83,
+   "end": 2284.29,
+   "text": "Actually, you can..."
+  },
+  {
+   "start": 2286.89,
+   "end": 2291.78,
+   "text": "I'm just thinking, I think it derives from I would like this"
+  },
+  {
+   "start": 2291.78,
+   "end": 2292.78,
+   "text": "as you said like yeah"
+  },
+  {
+   "start": 2292.78,
+   "end": 2295.76,
+   "text": "this politeness kind of thing"
+  },
+  {
+   "start": 2298.5,
+   "end": 2299.98,
+   "text": "is it like wood?"
+  },
+  {
+   "start": 2300.48,
+   "end": 2301.38,
+   "text": "yes I think it is wood"
+  },
+  {
+   "start": 2301.38,
+   "end": 2302.42,
+   "text": "it's more like wood"
+  },
+  {
+   "start": 2302.42,
+   "end": 2304.94,
+   "text": "and actually you can even use it without"
+  },
+  {
+   "start": 2304.94,
+   "end": 2307.12,
+   "text": "you can say instead of saying"
+  },
+  {
+   "start": 2307.12,
+   "end": 2315.42,
+   "text": "you can say I"
+  },
+  {
+   "start": 2315.42,
+   "end": 2331.7,
+   "text": "would like to"
+  },
+  {
+   "start": 2331.7,
+   "end": 2332.0,
+   "text": "I would like to sleep."
+  },
+  {
+   "start": 2332.0,
+   "end": 2332.68,
+   "text": "sleep."
+  },
+  {
+   "start": 2332.86,
+   "end": 2340.0,
+   "text": "yeah yeah you can you can use that then i'm adding it to"
+  },
+  {
+   "start": 2340.0,
+   "end": 2340.54,
+   "text": "the models"
+  },
+  {
+   "start": 2342.14,
+   "end": 2346.34,
+   "text": "sure and my question would be wait a second i'm gonna ask it properly"
+  },
+  {
+   "start": 2346.34,
+   "end": 2353.78,
+   "text": "yeah wait you haven't written down something do"
+  },
+  {
+   "start": 2353.78,
+   "end": 2369.56,
+   "text": "you"
+  },
+  {
+   "start": 2369.56,
+   "end": 2371.88,
+   "text": "want to write it down is that what you wanted to say yeah i"
+  },
+  {
+   "start": 2371.88,
+   "end": 2372.54,
+   "text": "want to add it to the list"
+  },
+  {
+   "start": 2372.54,
+   "end": 2375.96,
+   "text": "actually this is quite tough uh I would like to..."
+  },
+  {
+   "start": 2378.02,
+   "end": 2379.32,
+   "text": "Actually, you can say dodam."
+  },
+  {
+   "start": 2379.46,
+   "end": 2379.96,
+   "text": "That would be good."
+  },
+  {
+   "start": 2380.02,
+   "end": 2380.96,
+   "text": "Can I add dodam?"
+  },
+  {
+   "start": 2380.96,
+   "end": 2382.54,
+   "text": "I think this is better."
+  },
+  {
+   "start": 2383.46,
+   "end": 2384.12,
+   "text": "I would like to..."
+  },
+  {
+   "start": 2385.2,
+   "end": 2386.42,
+   "text": "Can I also say..."
+  },
+  {
+   "start": 2386.42,
+   "end": 2387.98,
+   "text": "Is it better?"
+  },
+  {
+   "start": 2387.98,
+   "end": 2388.86,
+   "text": "I would like to..."
+  },
+  {
+   "start": 2388.86,
+   "end": 2389.48,
+   "text": "to. I have to."
+  },
+  {
+   "start": 2389.48,
+   "end": 2390.58,
+   "text": "I would like to..."
+  },
+  {
+   "start": 2391.36,
+   "end": 2392.38,
+   "text": "Dodam. I would like to..."
+  },
+  {
+   "start": 2392.38,
+   "end": 2392.66,
+   "text": "I have to."
+  },
+  {
+   "start": 2392.66,
+   "end": 2393.02,
+   "text": "I have to."
+  },
+  {
+   "start": 2393.02,
+   "end": 2393.5,
+   "text": "I would"
+  },
+  {
+   "start": 2393.5,
+   "end": 2393.76,
+   "text": "I have to."
+  },
+  {
+   "start": 2395.36,
+   "end": 2396.16,
+   "text": "Okay, thank you."
+  },
+  {
+   "start": 2398.86,
+   "end": 2403.48,
+   "text": "So, I also really wanted to point out that a lot of these, for"
+  },
+  {
+   "start": 2403.48,
+   "end": 2407.04,
+   "text": "example, they can also be shortened informally."
+  },
+  {
+   "start": 2407.04,
+   "end": 2409.48,
+   "text": "So, you can say, instead of saying..."
+  },
+  {
+   "start": 2411.82,
+   "end": 2413.36,
+   "text": "No, wait."
+  },
+  {
+   "start": 2415.82,
+   "end": 2416.6,
+   "text": "Which one was it?"
+  },
+  {
+   "start": 2417.54,
+   "end": 2422.02,
+   "text": "ah yeah smem da smem da da dem right you can you can smem"
+  },
+  {
+   "start": 2422.02,
+   "end": 2424.0,
+   "text": "da da dem no but you have to have"
+  },
+  {
+   "start": 2424.0,
+   "end": 2431.14,
+   "text": "but you would have to have an object um or let's say like"
+  },
+  {
+   "start": 2431.14,
+   "end": 2438.2,
+   "text": "this uh for example can i go to the party to"
+  },
+  {
+   "start": 2438.2,
+   "end": 2445.26,
+   "text": "a party you can say you can just say uh you don't have to"
+  },
+  {
+   "start": 2445.26,
+   "end": 2451.66,
+   "text": "use that item you know it's me the patient it's me the"
+  },
+  {
+   "start": 2453.22,
+   "end": 2461.48,
+   "text": "so you can do it like that um i'm"
+  },
+  {
+   "start": 2461.48,
+   "end": 2466.96,
+   "text": "just thinking of something else actually more more as well more um they did"
+  },
+  {
+   "start": 2466.96,
+   "end": 2474.48,
+   "text": "the sastanak i have to go to this meeting or whatever um i see"
+  },
+  {
+   "start": 2474.48,
+   "end": 2477.26,
+   "text": "so i think it was to go to go mostly"
+  },
+  {
+   "start": 2477.26,
+   "end": 2482.32,
+   "text": "the verb is obvious like you know what's gonna come before sastanak right that's"
+  },
+  {
+   "start": 2482.32,
+   "end": 2482.84,
+   "text": "why maybe it's"
+  },
+  {
+   "start": 2482.84,
+   "end": 2490.9,
+   "text": "more practical to speak like that yeah yeah good thank you yeah"
+  },
+  {
+   "start": 2490.9,
+   "end": 2494.84,
+   "text": "i'm also enlightened because i I haven't really thought about these things,"
+  },
+  {
+   "start": 2494.84,
+   "end": 2498.57,
+   "text": "so it's really good that you're here to ask me um i wrote down"
+  },
+  {
+   "start": 2498.57,
+   "end": 2500.23,
+   "text": "two sentences which are like outro sentences"
+  },
+  {
+   "start": 2500.23,
+   "end": 2507.43,
+   "text": "for us all right let me just see um можете deposit it in our"
+  },
+  {
+   "start": 2507.43,
+   "end": 2510.87,
+   "text": "instagram and patreon for more information."
+  },
+  {
+   "start": 2511.97,
+   "end": 2512.87,
+   "text": "See what I did?"
+  },
+  {
+   "start": 2513.45,
+   "end": 2513.77,
+   "text": "Yes."
+  },
+  {
+   "start": 2515.25,
+   "end": 2517.53,
+   "text": "You can write us on Instagram"
+  },
+  {
+   "start": 2518.73,
+   "end": 2522.99,
+   "text": "and Patreon for more information."
+  },
+  {
+   "start": 2523.83,
+   "end": 2524.17,
+   "text": "Actually, I wrote down"
+  },
+  {
+   "start": 2524.17,
+   "end": 2526.55,
+   "text": "which is you can visit"
+  },
+  {
+   "start": 2526.55,
+   "end": 2528.63,
+   "text": "or like find us, visit us."
+  },
+  {
+   "start": 2528.93,
+   "end": 2530.45,
+   "text": "But yeah, you can."
+  },
+  {
+   "start": 2530.45,
+   "end": 2537.25,
+   "text": "So we wouldn't say, I could have said I could have said"
+  },
+  {
+   "start": 2537.25,
+   "end": 2537.55,
+   "text": "you can find us."
+  },
+  {
+   "start": 2537.55,
+   "end": 2537.71,
+   "text": "that"
+  },
+  {
+   "start": 2538.51,
+   "end": 2542.85,
+   "text": "but yeah everything else was great everything else was great and the last one"
+  },
+  {
+   "start": 2542.85,
+   "end": 2549.91,
+   "text": "was let me tell it exactly we"
+  },
+  {
+   "start": 2549.91,
+   "end": 2556.95,
+   "text": "wish you a great peaceful right yeah right wonderful wonderful yeah"
+  },
+  {
+   "start": 2556.95,
+   "end": 2557.35,
+   "text": "great wonderful"
+  },
+  {
+   "start": 2557.35,
+   "end": 2560.27,
+   "text": "day exactly okay"
+  },
+  {
+   "start": 2569.05,
+   "end": 2570.51,
+   "text": "Thank you for joining us today."
+  },
+  {
+   "start": 2570.51,
+   "end": 2573.37,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 2573.45,
+   "end": 2577.95,
+   "text": "In case you have any comments, suggestions, or questions, make sure to share them"
+  },
+  {
+   "start": 2577.95,
+   "end": 2579.37,
+   "text": "on our Instagram page,"
+  },
+  {
+   "start": 2579.37,
+   "end": 2581.01,
+   "text": "Mazze Kafa Podcast."
+  },
+  {
+   "start": 2581.31,
+   "end": 2581.93,
+   "text": "Prijatno!"
+  },
+  {
+   "start": 2598.49,
+   "end": 2599.47,
+   "text": "you"
+  }
+ ],
+ "title": "Ep.8: Modal Verbs In Serbian",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939249/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075920-44100-1-6c4c7cf41505847b.mp3"
+}

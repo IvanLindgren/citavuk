@@ -55,6 +55,7 @@ class ExerciseHost extends StatelessWidget {
               key: ValueKey(e.id),
               options: e.options,
               multi: e.multi,
+              shuffleSeed: e.id,
               answer: answer,
               enabled: enabled,
               onChanged: onChanged,

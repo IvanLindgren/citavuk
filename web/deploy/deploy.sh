@@ -51,6 +51,14 @@ ssh_run "rm -rf ${REMOTE_DIR}.new && mkdir -p ${REMOTE_DIR}.new"
 scp -i "$KEY" -o BatchMode=yes -r dist/. "$HOST:${REMOTE_DIR}.new/"
 
 ssh_run "set -e
+    # Уже открытая вкладка может запросить lazy chunk предыдущей сборки только
+    # после клика по разделу. Сохраняем хешированные assets на 14 дней, чтобы
+    # выкладка не превращала такой переход в пустой экран.
+    if [ -d ${REMOTE_DIR}/assets ]; then
+        mkdir -p ${REMOTE_DIR}.new/assets
+        cp -a --update=none ${REMOTE_DIR}/assets/. ${REMOTE_DIR}.new/assets/
+    fi
+    find ${REMOTE_DIR}.new/assets -type f -mtime +14 -delete
     chown -R www-data:www-data ${REMOTE_DIR}.new
     find ${REMOTE_DIR}.new -type d -exec chmod 755 {} +
     find ${REMOTE_DIR}.new -type f -exec chmod 644 {} +

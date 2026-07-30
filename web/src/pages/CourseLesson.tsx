@@ -184,26 +184,6 @@ export function CourseLesson() {
     setStep((value) => value + 1);
   };
 
-  // Enter проверяет ответ и переходит дальше: тянуться к мышке после каждого
-  // задания утомительно. В многострочном поле Enter остаётся переносом строки.
-  useEffect(() => {
-    if (phase !== 'exercise') return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Enter' || event.shiftKey || event.altKey) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.tagName === 'TEXTAREA') return;
-      if (evaluation) {
-        event.preventDefault();
-        next();
-      } else if (canEvaluate(exercise, draft)) {
-        event.preventDefault();
-        check();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  });
-
   const progress =
     phase === 'intro'
       ? 0
@@ -213,6 +193,13 @@ export function CourseLesson() {
 
   return (
     <main className="min-h-[calc(100dvh-4rem)] bg-[var(--bg)]">
+      <LessonKeyboardShortcuts
+        active={phase === 'exercise'}
+        canCheck={!evaluation && canEvaluate(exercise, draft)}
+        hasEvaluation={evaluation !== null}
+        onCheck={check}
+        onNext={next}
+      />
       <div className="sticky top-16 z-30 border-b border-[var(--line)] bg-[var(--bg)]/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
           <button
@@ -321,6 +308,42 @@ export function CourseLesson() {
   );
 }
 
+function LessonKeyboardShortcuts({
+  active,
+  canCheck,
+  hasEvaluation,
+  onCheck,
+  onNext,
+}: {
+  active: boolean;
+  canCheck: boolean;
+  hasEvaluation: boolean;
+  onCheck: () => void;
+  onNext: () => void;
+}) {
+  // Отдельный компонент держит число hooks родительской страницы постоянным:
+  // до загрузки данных CourseLesson возвращает spinner, а после — сам урок.
+  useEffect(() => {
+    if (!active) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' || event.shiftKey || event.altKey) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.tagName === 'TEXTAREA') return;
+      if (hasEvaluation) {
+        event.preventDefault();
+        onNext();
+      } else if (canCheck) {
+        event.preventDefault();
+        onCheck();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [active, canCheck, hasEvaluation, onCheck, onNext]);
+
+  return null;
+}
+
 /** Теория урока для тех, кто ещё не вошёл. */
 function LessonTheory({ lesson }: { lesson: CourseLessonModel }) {
   const blocks = introBlocks(lesson);
@@ -410,7 +433,8 @@ function LessonIntroView({
   );
 }
 
-function IntroBlockView({ block }: { block: IntroBlock }) {
+/** Блок теории. Экспортируется ради теста, прогоняющего весь курс. */
+export function IntroBlockView({ block }: { block: IntroBlock }) {
   if (block.kind === 'paragraph') {
     return <p className="text-lg leading-relaxed">{richText(block.text)}</p>;
   }
@@ -937,9 +961,10 @@ function Matching({
     `${exercise.id}-${shuffleSeed}-rows`,
   );
   const choices = deterministicShuffle(
-    [...exercise.pairs.map((pair) => pair.right), ...exercise.distractorsRight].map(
-      (text) => ({ id: text, text }),
-    ),
+    [...new Set([
+      ...exercise.pairs.map((pair) => pair.right),
+      ...exercise.distractorsRight,
+    ])].map((text) => ({ id: text, text })),
     `${exercise.id}-${shuffleSeed}-choices`,
   );
   return (

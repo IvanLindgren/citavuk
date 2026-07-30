@@ -1,0 +1,3255 @@
+{
+ "duration": 2548.74,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.76,
+   "end": 32.02,
+   "text": "Good morning everyone!"
+  },
+  {
+   "start": 32.46,
+   "end": 34.12,
+   "text": "Good morning, welcome!"
+  },
+  {
+   "start": 34.94,
+   "end": 35.88,
+   "text": "We are good to see you!"
+  },
+  {
+   "start": 36.98,
+   "end": 38.04,
+   "text": "I have to say it!"
+  },
+  {
+   "start": 38.42,
+   "end": 39.46,
+   "text": "Here is Ivana."
+  },
+  {
+   "start": 40.26,
+   "end": 41.18,
+   "text": "Here is Maki."
+  },
+  {
+   "start": 41.18,
+   "end": 43.0,
+   "text": "How are you today, Ivana?"
+  },
+  {
+   "start": 44.52,
+   "end": 46.74,
+   "text": "Good. We are blessed."
+  },
+  {
+   "start": 46.74,
+   "end": 47.2,
+   "text": "What?"
+  },
+  {
+   "start": 48.9,
+   "end": 49.66,
+   "text": "We are blessed."
+  },
+  {
+   "start": 49.9,
+   "end": 53.18,
+   "text": "We What we are blessed?"
+  },
+  {
+   "start": 55.22,
+   "end": 55.5,
+   "text": "We are blessed."
+  },
+  {
+   "start": 55.5,
+   "end": 56.3,
+   "text": "We are blessed."
+  },
+  {
+   "start": 58.56,
+   "end": 68.9,
+   "text": "yes i said"
+  },
+  {
+   "start": 68.9,
+   "end": 75.34,
+   "text": "it yes so i got this award the ones who are watching us on"
+  },
+  {
+   "start": 75.34,
+   "end": 75.54,
+   "text": "for the half marathon that happened in kusha but what which"
+  },
+  {
+   "start": 75.54,
+   "end": 75.76,
+   "text": "youtube"
+  },
+  {
+   "start": 82.34,
+   "end": 87.7,
+   "text": "award was it which place what was it first place but among the women"
+  },
+  {
+   "start": 87.7,
+   "end": 91.74,
+   "text": "of Khrushchevac not the whole race so I'm still the eighth in the"
+  },
+  {
+   "start": 91.74,
+   "end": 99.3,
+   "text": "overall ranking but in Khrushchevac for now I'm the fastest pause for plant-powered"
+  },
+  {
+   "start": 100.92,
+   "end": 102.58,
+   "text": "plant-powered runner yes exactly"
+  },
+  {
+   "start": 102.58,
+   "end": 109.64,
+   "text": "so we are talking about health actually today because we"
+  },
+  {
+   "start": 109.64,
+   "end": 109.9,
+   "text": "said"
+  },
+  {
+   "start": 111.66,
+   "end": 118.68,
+   "text": "as everybody knows the first thing that serbs think of health"
+  },
+  {
+   "start": 118.68,
+   "end": 120.56,
+   "text": "is rakia that's why i'm having"
+  },
+  {
+   "start": 120.56,
+   "end": 127.0,
+   "text": "this here but also this is kind of controversial so the second one is"
+  },
+  {
+   "start": 127.0,
+   "end": 134.42,
+   "text": "not controversial i think bania culture spa culture i mean spas organic springs natural"
+  },
+  {
+   "start": 134.42,
+   "end": 137.16,
+   "text": "springs in serbia i had no idea"
+  },
+  {
+   "start": 137.16,
+   "end": 143.2,
+   "text": "you had so many springs here and i mean near khrushchev there are so"
+  },
+  {
+   "start": 143.2,
+   "end": 144.42,
+   "text": "many but i was searching"
+  },
+  {
+   "start": 144.42,
+   "end": 151.5,
+   "text": "for this episode and i found east west north central everywhere there are lots"
+  },
+  {
+   "start": 151.5,
+   "end": 156.14,
+   "text": "of options yes uh so there are many i also i think maki now"
+  },
+  {
+   "start": 156.14,
+   "end": 160.68,
+   "text": "knows more than me to be honest because i didn't it's just not okay"
+  },
+  {
+   "start": 160.68,
+   "end": 164.84,
+   "text": "i'll tell you why i don't know a lot it's because they're like synonymous"
+  },
+  {
+   "start": 164.84,
+   "end": 165.02,
+   "text": "to"
+  },
+  {
+   "start": 165.02,
+   "end": 172.22,
+   "text": "old people it's the same story in turkey actually so i understand you unfortunately"
+  },
+  {
+   "start": 172.22,
+   "end": 172.9,
+   "text": "it's not like"
+  },
+  {
+   "start": 172.9,
+   "end": 177.44,
+   "text": "i don't i don't know why younger people would would not like to go"
+  },
+  {
+   "start": 177.44,
+   "end": 182.04,
+   "text": "to a spa like it's a great like just relaxation health and it's good"
+  },
+  {
+   "start": 182.04,
+   "end": 185.46,
+   "text": "for your skin and you know health and because of the"
+  },
+  {
+   "start": 185.46,
+   "end": 190.28,
+   "text": "old people they don't want to see the old people there I think I"
+  },
+  {
+   "start": 190.28,
+   "end": 192.44,
+   "text": "actually started going to uh to"
+  },
+  {
+   "start": 192.44,
+   "end": 196.42,
+   "text": "the spa in but like spa like the spring right like I'm not meeting"
+  },
+  {
+   "start": 196.42,
+   "end": 197.26,
+   "text": "like spa like I was getting"
+  },
+  {
+   "start": 197.26,
+   "end": 202.52,
+   "text": "massages or anything like that um in in Germany because there was something near"
+  },
+  {
+   "start": 202.52,
+   "end": 207.04,
+   "text": "my the place where I was living and and it was like a thermal"
+  },
+  {
+   "start": 207.04,
+   "end": 212.26,
+   "text": "pool or whatever and I would just go there very"
+  },
+  {
+   "start": 212.26,
+   "end": 216.26,
+   "text": "often and I'm thinking why didn't I do that in Serbia you know and"
+  },
+  {
+   "start": 216.26,
+   "end": 219.23,
+   "text": "it was just this day of relaxation no in serbia"
+  },
+  {
+   "start": 219.23,
+   "end": 224.91,
+   "text": "no i think um well i think i went to i didn't go to"
+  },
+  {
+   "start": 224.91,
+   "end": 228.93,
+   "text": "um okay i didn't go specifically to these"
+  },
+  {
+   "start": 228.93,
+   "end": 236.15,
+   "text": "places for healing i just went to visit or i just"
+  },
+  {
+   "start": 236.15,
+   "end": 241.89,
+   "text": "went or i just went to like thermal swimming pools which is because they"
+  },
+  {
+   "start": 241.89,
+   "end": 245.91,
+   "text": "are mostly inside these natural parks near the forest so you"
+  },
+  {
+   "start": 245.91,
+   "end": 252.19,
+   "text": "end up going there even you go for hiking right but going inside I"
+  },
+  {
+   "start": 252.19,
+   "end": 253.49,
+   "text": "think one of the reasons that"
+  },
+  {
+   "start": 253.49,
+   "end": 258.63,
+   "text": "maybe young people don't like them is the smell it is kind of funky"
+  },
+  {
+   "start": 258.63,
+   "end": 259.17,
+   "text": "yeah"
+  },
+  {
+   "start": 260.67,
+   "end": 264.95,
+   "text": "yeah but you get used to it yeah because it's minerals a few minutes"
+  },
+  {
+   "start": 264.95,
+   "end": 265.75,
+   "text": "yeah"
+  },
+  {
+   "start": 267.31,
+   "end": 271.85,
+   "text": "okay and so you haven't tried it yet i've actually to be honest i've"
+  },
+  {
+   "start": 271.85,
+   "end": 272.13,
+   "text": "tried only"
+  },
+  {
+   "start": 272.13,
+   "end": 278.89,
+   "text": "once in one hotel so they are using the thermal water and taking it"
+  },
+  {
+   "start": 278.89,
+   "end": 279.63,
+   "text": "to the hotel so"
+  },
+  {
+   "start": 279.63,
+   "end": 285.21,
+   "text": "not the public one or you know the one that is in really in"
+  },
+  {
+   "start": 285.21,
+   "end": 290.83,
+   "text": "the park but nearby so but still it felt so good and I loved"
+  },
+  {
+   "start": 290.83,
+   "end": 295.61,
+   "text": "it and I'm planning to go more often but we do I would always"
+  },
+  {
+   "start": 295.61,
+   "end": 295.85,
+   "text": "drink that"
+  },
+  {
+   "start": 295.85,
+   "end": 300.63,
+   "text": "water with lots of minerals like I know that every time I would go"
+  },
+  {
+   "start": 300.63,
+   "end": 302.99,
+   "text": "to I don't want to mention the"
+  },
+  {
+   "start": 302.99,
+   "end": 306.43,
+   "text": "name of this spa because we'll talk about it later but every time I"
+  },
+  {
+   "start": 306.43,
+   "end": 306.93,
+   "text": "would go there I know and"
+  },
+  {
+   "start": 306.93,
+   "end": 311.17,
+   "text": "a couple of times it was always a thing that you go there and"
+  },
+  {
+   "start": 311.17,
+   "end": 313.33,
+   "text": "you get this mineral water but like"
+  },
+  {
+   "start": 313.33,
+   "end": 316.77,
+   "text": "when I say mineral I don't mean like sparkling I mean like mineral like"
+  },
+  {
+   "start": 316.77,
+   "end": 321.57,
+   "text": "full of minerals and yeah it was such a weird taste but it was"
+  },
+  {
+   "start": 321.57,
+   "end": 323.37,
+   "text": "kind of like a thing like obviously now i'm there i'm"
+  },
+  {
+   "start": 323.37,
+   "end": 330.67,
+   "text": "gonna drink this water yeah and my parents actually get water from Pruska"
+  },
+  {
+   "start": 330.67,
+   "end": 333.71,
+   "text": "Gora, like that, with more minerals."
+  },
+  {
+   "start": 333.93,
+   "end": 334.79,
+   "text": "So, yeah, they just go there."
+  },
+  {
+   "start": 334.79,
+   "end": 337.29,
+   "text": "Pruska Gora has a lot of options as well."
+  },
+  {
+   "start": 337.53,
+   "end": 337.85,
+   "text": "So, some facts."
+  },
+  {
+   "start": 337.85,
+   "end": 338.01,
+   "text": "Yeah."
+  },
+  {
+   "start": 340.27,
+   "end": 342.91,
+   "text": "Over a thousand springs Serbia has."
+  },
+  {
+   "start": 343.37,
+   "end": 344.51,
+   "text": "Okay, I didn't know that."
+  },
+  {
+   "start": 345.07,
+   "end": 345.33,
+   "text": "I didn't know that."
+  },
+  {
+   "start": 345.33,
+   "end": 349.77,
+   "text": "So many mountains, of course, but still, the number is too big for that"
+  },
+  {
+   "start": 349.77,
+   "end": 355.53,
+   "text": "small country. over 40 spa centers like not hotels and stuff i'm saying like"
+  },
+  {
+   "start": 355.53,
+   "end": 358.55,
+   "text": "natural uh you know pools natural"
+  },
+  {
+   "start": 358.55,
+   "end": 365.61,
+   "text": "springs that's too much too much to me it's never too much of health"
+  },
+  {
+   "start": 365.61,
+   "end": 366.65,
+   "text": "right but yeah i understand"
+  },
+  {
+   "start": 366.65,
+   "end": 371.97,
+   "text": "what you mean and their history i was reading about them of course i"
+  },
+  {
+   "start": 371.97,
+   "end": 372.39,
+   "text": "can't keep all the"
+  },
+  {
+   "start": 372.39,
+   "end": 377.19,
+   "text": "information that i had in my mind so i wrote them down but they"
+  },
+  {
+   "start": 377.19,
+   "end": 383.39,
+   "text": "are so old like since the roman times they've been used i mean because"
+  },
+  {
+   "start": 383.39,
+   "end": 386.61,
+   "text": "of the wars they were you know they were"
+  },
+  {
+   "start": 386.61,
+   "end": 393.81,
+   "text": "kind of gone they were devastated and you know they became ruins"
+  },
+  {
+   "start": 393.81,
+   "end": 394.05,
+   "text": "but still"
+  },
+  {
+   "start": 394.05,
+   "end": 400.83,
+   "text": "the new government the new countries always repaired them or rebuilt them so they're"
+  },
+  {
+   "start": 400.83,
+   "end": 401.01,
+   "text": "in the same place because the source is there right the source is coming"
+  },
+  {
+   "start": 401.01,
+   "end": 401.21,
+   "text": "still"
+  },
+  {
+   "start": 404.29,
+   "end": 409.49,
+   "text": "from the mountain exactly so that's why they to feel that they're very old"
+  },
+  {
+   "start": 409.49,
+   "end": 411.69,
+   "text": "also makes them more interesting to me"
+  },
+  {
+   "start": 411.69,
+   "end": 416.69,
+   "text": "yeah I think I'm just thinking this is a really great opportunity for like"
+  },
+  {
+   "start": 416.69,
+   "end": 423.53,
+   "text": "tourism right because I mean because I I do it often here in Germany"
+  },
+  {
+   "start": 423.53,
+   "end": 425.11,
+   "text": "and then I'm like why did I never"
+  },
+  {
+   "start": 425.11,
+   "end": 431.03,
+   "text": "think of just going to like a spa somewhere in Serbia you know and"
+  },
+  {
+   "start": 431.03,
+   "end": 436.9,
+   "text": "I think they're missing like a big portion of the population or like the,"
+  },
+  {
+   "start": 436.9,
+   "end": 442.58,
+   "text": "foreigners that could go there instead of going to monasteries well actually go to"
+  },
+  {
+   "start": 442.58,
+   "end": 442.82,
+   "text": "monasteries as"
+  },
+  {
+   "start": 442.82,
+   "end": 449.2,
+   "text": "well but also there is always a monastery nearby exactly so two in one"
+  },
+  {
+   "start": 449.2,
+   "end": 451.12,
+   "text": "there you go exactly first"
+  },
+  {
+   "start": 451.12,
+   "end": 455.7,
+   "text": "walk in the forest visit the church or monastery and then go relax but"
+  },
+  {
+   "start": 455.7,
+   "end": 456.94,
+   "text": "doesn't make sense monasteries"
+  },
+  {
+   "start": 456.94,
+   "end": 462.04,
+   "text": "like you know they are also all about the the health mental and physical"
+  },
+  {
+   "start": 462.04,
+   "end": 467.32,
+   "text": "health and they know that it is beneficial to be near uh spring exactly"
+  },
+  {
+   "start": 467.32,
+   "end": 470.9,
+   "text": "that's true yeah so when it comes to health"
+  },
+  {
+   "start": 470.9,
+   "end": 477.96,
+   "text": "benefits what do you think they provide what kind of uh you"
+  },
+  {
+   "start": 477.96,
+   "end": 479.36,
+   "text": "know health problems they can cure"
+  },
+  {
+   "start": 479.36,
+   "end": 485.26,
+   "text": "uh based on what i was reading a bit almost anything honestly it's like"
+  },
+  {
+   "start": 485.26,
+   "end": 492.52,
+   "text": "so it can be like skin diseases or like respiratory issues or"
+  },
+  {
+   "start": 492.52,
+   "end": 495.04,
+   "text": "like uh i don't know i don't know if it's like"
+  },
+  {
+   "start": 495.04,
+   "end": 502.22,
+   "text": "uh like kidney stones uh diabetes yes rheumatic diseases"
+  },
+  {
+   "start": 502.22,
+   "end": 505.12,
+   "text": "yeah and gynecological gynecological"
+  },
+  {
+   "start": 505.12,
+   "end": 512.12,
+   "text": "yes gynecological problems that's also makes something that i read in many of them"
+  },
+  {
+   "start": 512.12,
+   "end": 518.96,
+   "text": "actually respiratory system problems so i have one story for one of them it's"
+  },
+  {
+   "start": 518.96,
+   "end": 520.32,
+   "text": "funny it's a myth obviously"
+  },
+  {
+   "start": 520.32,
+   "end": 525.36,
+   "text": "but still i'm going to share it later okay okay later okay fine so"
+  },
+  {
+   "start": 525.36,
+   "end": 525.86,
+   "text": "how we are going to talk about"
+  },
+  {
+   "start": 525.86,
+   "end": 530.36,
+   "text": "all these 40 we are not going to mention all these 40 spots of"
+  },
+  {
+   "start": 530.36,
+   "end": 531.68,
+   "text": "course banyas we are going to"
+  },
+  {
+   "start": 531.68,
+   "end": 536.28,
+   "text": "put them into three categories the ones in the north the ones in the"
+  },
+  {
+   "start": 536.28,
+   "end": 541.24,
+   "text": "center the ones in the south yeah so three five examples and a little"
+  },
+  {
+   "start": 541.24,
+   "end": 546.38,
+   "text": "bit of their history we are going to mention okay all right so for"
+  },
+  {
+   "start": 546.38,
+   "end": 546.8,
+   "text": "the the first group let's"
+  },
+  {
+   "start": 546.8,
+   "end": 553.3,
+   "text": "start from your place boy wouldina by the way guys boy wouldina is made"
+  },
+  {
+   "start": 553.3,
+   "end": 554.56,
+   "text": "up of banat but can"
+  },
+  {
+   "start": 554.56,
+   "end": 558.9,
+   "text": "stream so it doesn't matter where you are like these three parts you remember"
+  },
+  {
+   "start": 558.9,
+   "end": 559.06,
+   "text": "so the so it's like three areas in poverty and where the where i"
+  },
+  {
+   "start": 559.06,
+   "end": 559.3,
+   "text": "that"
+  },
+  {
+   "start": 566.04,
+   "end": 572.2,
+   "text": "am i'm from zrenyanin it's banat and banat banat like people in they're called"
+  },
+  {
+   "start": 572.2,
+   "end": 575.46,
+   "text": "lale right yeah i know that yes moya blues"
+  },
+  {
+   "start": 575.46,
+   "end": 581.36,
+   "text": "yeah and then navisad is actually in srem oh wait is it i think"
+  },
+  {
+   "start": 581.36,
+   "end": 582.24,
+   "text": "it's in srem yeah in srem"
+  },
+  {
+   "start": 582.24,
+   "end": 588.82,
+   "text": "and then subotica is in bachka for example so uh i just wanted people"
+  },
+  {
+   "start": 588.82,
+   "end": 589.3,
+   "text": "because i wanted to mention"
+  },
+  {
+   "start": 589.3,
+   "end": 593.62,
+   "text": "that later and i just wanted people to familiarize it uh with it i"
+  },
+  {
+   "start": 593.62,
+   "end": 597.66,
+   "text": "hope i picked those uh spas from these three places but you tell me"
+  },
+  {
+   "start": 597.66,
+   "end": 602.08,
+   "text": "yes yeah not all of them but that's okay i have one to mention"
+  },
+  {
+   "start": 602.08,
+   "end": 609.16,
+   "text": "the first one from voyvodina is bania vurdnik i think that's the most famous"
+  },
+  {
+   "start": 609.16,
+   "end": 610.56,
+   "text": "one like in the north"
+  },
+  {
+   "start": 610.56,
+   "end": 617.72,
+   "text": "just three to four kilometers from novi sad and um it has"
+  },
+  {
+   "start": 617.72,
+   "end": 620.66,
+   "text": "this thermal mineral water in it natural"
+  },
+  {
+   "start": 622.1,
+   "end": 628.26,
+   "text": "and it is famous for its big olympic size pools inside pool outside pool"
+  },
+  {
+   "start": 628.26,
+   "end": 629.62,
+   "text": "yeah i mean it's not"
+  },
+  {
+   "start": 629.62,
+   "end": 633.98,
+   "text": "only for health but also sports i think you can go and you know"
+  },
+  {
+   "start": 633.98,
+   "end": 636.94,
+   "text": "enjoy the pools there and"
+  },
+  {
+   "start": 636.94,
+   "end": 643.7,
+   "text": "it is most of them all these banias actually have this rehabilitation centers like"
+  },
+  {
+   "start": 643.7,
+   "end": 644.12,
+   "text": "certified and they're good for like you can go there as a patient you they are"
+  },
+  {
+   "start": 648.4,
+   "end": 651.88,
+   "text": "just show your actually you mostly go there as a patient as well because"
+  },
+  {
+   "start": 651.88,
+   "end": 655.99,
+   "text": "it's like you have a receipt not receipt but like a recommendation"
+  },
+  {
+   "start": 655.99,
+   "end": 660.61,
+   "text": "or whatever from your doctor right so prescription maybe prescription that's what i want"
+  },
+  {
+   "start": 660.61,
+   "end": 660.93,
+   "text": "to say yeah"
+  },
+  {
+   "start": 660.93,
+   "end": 668.35,
+   "text": "so there's called is there's is called thermal thermal i think yeah you"
+  },
+  {
+   "start": 668.35,
+   "end": 670.03,
+   "text": "go there and you can"
+  },
+  {
+   "start": 670.03,
+   "end": 675.85,
+   "text": "you know find some cure or some kind of support for your rheumatic diseases"
+  },
+  {
+   "start": 675.85,
+   "end": 681.35,
+   "text": "or all these other kinds of diseases you can maybe suffer from yeah I"
+  },
+  {
+   "start": 681.35,
+   "end": 682.95,
+   "text": "read a bit and it's like people"
+  },
+  {
+   "start": 682.95,
+   "end": 689.35,
+   "text": "mostly go there for like when they have injuries or like post-surgery issues or"
+  },
+  {
+   "start": 689.35,
+   "end": 690.75,
+   "text": "like spine issues"
+  },
+  {
+   "start": 690.75,
+   "end": 697.11,
+   "text": "migraines and so on but I think honestly like maybe they specialize with these"
+  },
+  {
+   "start": 697.11,
+   "end": 697.55,
+   "text": "things but"
+  },
+  {
+   "start": 697.55,
+   "end": 703.03,
+   "text": "maybe they're like specific doctors or whatever but I think anywhere is like good"
+  },
+  {
+   "start": 703.03,
+   "end": 709.79,
+   "text": "for anything over health overall yeah i mean popular first of all it helps"
+  },
+  {
+   "start": 709.79,
+   "end": 711.97,
+   "text": "your mood and with your mood right"
+  },
+  {
+   "start": 711.97,
+   "end": 718.33,
+   "text": "so when you're there you're you know in this hot water sparkling water and"
+  },
+  {
+   "start": 718.33,
+   "end": 719.95,
+   "text": "i think your mood and"
+  },
+  {
+   "start": 719.95,
+   "end": 726.01,
+   "text": "energy also changes a lot there yeah yeah definitely when you're isolated and you"
+  },
+  {
+   "start": 726.01,
+   "end": 726.15,
+   "text": "have any worries and you're just there and you're like meditating but i think"
+  },
+  {
+   "start": 726.15,
+   "end": 726.29,
+   "text": "don't"
+  },
+  {
+   "start": 731.61,
+   "end": 736.21,
+   "text": "yeah but is definitely a good one to mention first because and i've been"
+  },
+  {
+   "start": 736.21,
+   "end": 737.67,
+   "text": "there many times but i just really"
+  },
+  {
+   "start": 737.67,
+   "end": 743.99,
+   "text": "never went to the thermal pool right like i just went i just went"
+  },
+  {
+   "start": 743.99,
+   "end": 745.11,
+   "text": "there there's a monastery there"
+  },
+  {
+   "start": 745.11,
+   "end": 750.41,
+   "text": "as well of course it's called ravenitsa monastery right yeah so what is it"
+  },
+  {
+   "start": 750.41,
+   "end": 751.35,
+   "text": "called i forgot when it's"
+  },
+  {
+   "start": 751.35,
+   "end": 758.37,
+   "text": "okay you you know better i forgot no but uh but yeah so and"
+  },
+  {
+   "start": 758.37,
+   "end": 761.69,
+   "text": "my friends have been there actually one of my friends was there when they're"
+  },
+  {
+   "start": 761.69,
+   "end": 764.77,
+   "text": "recently and she loved it so I don't know why"
+  },
+  {
+   "start": 764.77,
+   "end": 766.37,
+   "text": "why I never thought of going there."
+  },
+  {
+   "start": 766.91,
+   "end": 767.55,
+   "text": "Now I will."
+  },
+  {
+   "start": 767.55,
+   "end": 772.03,
+   "text": "You and I, we will go on a tour of Banias one day."
+  },
+  {
+   "start": 772.27,
+   "end": 772.57,
+   "text": "We need that."
+  },
+  {
+   "start": 772.57,
+   "end": 772.75,
+   "text": "Yeah."
+  },
+  {
+   "start": 773.91,
+   "end": 775.33,
+   "text": "I definitely, to heal."
+  },
+  {
+   "start": 777.05,
+   "end": 777.53,
+   "text": "Second one from the north is Yunakovich. Very good."
+  },
+  {
+   "start": 781.71,
+   "end": 783.81,
+   "text": "Yunakovich. Yunakovich, yes."
+  },
+  {
+   "start": 783.81,
+   "end": 787.59,
+   "text": "I think it's the surname of a family, right?"
+  },
+  {
+   "start": 787.63,
+   "end": 790.01,
+   "text": "I think it is, yeah, if I remember correctly."
+  },
+  {
+   "start": 790.53,
+   "end": 793.03,
+   "text": "Yeah, there's an amazing park, they say, nearby."
+  },
+  {
+   "start": 793.99,
+   "end": 797.23,
+   "text": "And those two beautiful cities that I want to visit,"
+  },
+  {
+   "start": 797.23,
+   "end": 799.95,
+   "text": "one day, Suboritsa and Sombor, are nearby."
+  },
+  {
+   "start": 801.13,
+   "end": 804.71,
+   "text": "Yeah. So this is a perfect place to see these northern cities."
+  },
+  {
+   "start": 804.71,
+   "end": 811.85,
+   "text": "And one important information about this, they say they checked,"
+  },
+  {
+   "start": 811.85,
+   "end": 812.79,
+   "text": "tested, and everything."
+  },
+  {
+   "start": 813.39,
+   "end": 819.63,
+   "text": "it has the same quality of water as carlos carlovi vari in czech republic"
+  },
+  {
+   "start": 819.63,
+   "end": 822.05,
+   "text": "oh wow the same quality of"
+  },
+  {
+   "start": 822.05,
+   "end": 826.83,
+   "text": "water they say so it's one of the it is one of the healthiest"
+  },
+  {
+   "start": 826.83,
+   "end": 829.97,
+   "text": "ones they say cool i what let me"
+  },
+  {
+   "start": 829.97,
+   "end": 833.85,
+   "text": "see what i wrote down i didn't write down anything more i just wrote"
+  },
+  {
+   "start": 833.85,
+   "end": 841.15,
+   "text": "down that it's near apathy yes and time i thought apatine apatine"
+  },
+  {
+   "start": 841.15,
+   "end": 845.73,
+   "text": "apatine apatine apatine why did i write"
+  },
+  {
+   "start": 845.73,
+   "end": 854.39,
+   "text": "maybe there's no tea okay and"
+  },
+  {
+   "start": 854.39,
+   "end": 857.85,
+   "text": "that that part is in batka actually the subotica is in batka"
+  },
+  {
+   "start": 857.85,
+   "end": 864.27,
+   "text": "somebody's in batka so but it's somewhat very interesting architecture very austro-hungarian and influence,"
+  },
+  {
+   "start": 864.27,
+   "end": 864.89,
+   "text": "but also in Subotita,"
+  },
+  {
+   "start": 864.89,
+   "end": 866.51,
+   "text": "there are these like weird,"
+  },
+  {
+   "start": 866.51,
+   "end": 869.93,
+   "text": "I don't know what type of architecture that is,"
+  },
+  {
+   "start": 869.93,
+   "end": 871.11,
+   "text": "but like there are several houses,"
+  },
+  {
+   "start": 871.11,
+   "end": 873.39,
+   "text": "very, very colorful and interesting."
+  },
+  {
+   "start": 873.82,
+   "end": 877.88,
+   "text": "There's also one Ottoman tower there that I wrote."
+  },
+  {
+   "start": 877.88,
+   "end": 878.88,
+   "text": "Pasha's Tower, it's called."
+  },
+  {
+   "start": 878.88,
+   "end": 881.9,
+   "text": "Oh. It's Sombor."
+  },
+  {
+   "start": 884.14,
+   "end": 885.6,
+   "text": "So there are beautiful places."
+  },
+  {
+   "start": 885.6,
+   "end": 891.28,
+   "text": "And this brewery, Apatinska Pivare, is also famous, they say."
+  },
+  {
+   "start": 891.76,
+   "end": 891.86,
+   "text": "Everyone knows about Apatinska Pivare, yeah."
+  },
+  {
+   "start": 891.86,
+   "end": 892.2,
+   "text": "Oh, yeah."
+  },
+  {
+   "start": 894.66,
+   "end": 894.8,
+   "text": "Yeah."
+  },
+  {
+   "start": 894.8,
+   "end": 898.48,
+   "text": "The third one that I picked from the north is not that famous, to"
+  },
+  {
+   "start": 898.48,
+   "end": 901.34,
+   "text": "be honest. But I love the picture of it."
+  },
+  {
+   "start": 901.4,
+   "end": 907.9,
+   "text": "it has this pink water it's like a lake and it's completely pink so"
+  },
+  {
+   "start": 907.9,
+   "end": 910.78,
+   "text": "they say the local residents"
+  },
+  {
+   "start": 910.78,
+   "end": 915.12,
+   "text": "there they go there all the time there's a line in the summer so"
+  },
+  {
+   "start": 915.12,
+   "end": 921.98,
+   "text": "you have to go early and stuff that's called termalna banya patir patir i"
+  },
+  {
+   "start": 921.98,
+   "end": 927.4,
+   "text": "think patir yeah it's a new one it's not very old i mean it"
+  },
+  {
+   "start": 927.4,
+   "end": 933.88,
+   "text": "has become like a spa center like later than the others yeah but you"
+  },
+  {
+   "start": 933.88,
+   "end": 934.58,
+   "text": "know we're promoting"
+  },
+  {
+   "start": 934.58,
+   "end": 942.3,
+   "text": "promoting like small businesses hey local small businesses yeah because"
+  },
+  {
+   "start": 942.3,
+   "end": 942.68,
+   "text": "everyone's gonna know"
+  },
+  {
+   "start": 942.68,
+   "end": 948.46,
+   "text": "about banya vrednik right but yes this is a little bit in the northern"
+  },
+  {
+   "start": 948.46,
+   "end": 952.46,
+   "text": "part of foybredina by the way I can't know the, I can't remember the"
+  },
+  {
+   "start": 952.46,
+   "end": 954.04,
+   "text": "name. It's in Bacchka."
+  },
+  {
+   "start": 954.24,
+   "end": 955.42,
+   "text": "I think it's in Bacchka, yeah."
+  },
+  {
+   "start": 956.16,
+   "end": 959.24,
+   "text": "Okay, now, I think it is actually, now I'm thinking."
+  },
+  {
+   "start": 960.76,
+   "end": 961.5,
+   "text": "I'm not sure now."
+  },
+  {
+   "start": 961.96,
+   "end": 965.66,
+   "text": "But I have one, one, one banya."
+  },
+  {
+   "start": 966.48,
+   "end": 967.7,
+   "text": "And I-"
+  },
+  {
+   "start": 967.7,
+   "end": 970.04,
+   "text": "In Zrenarin? Near Zrenarin."
+  },
+  {
+   "start": 970.36,
+   "end": 971.38,
+   "text": "I saw that."
+  },
+  {
+   "start": 972.14,
+   "end": 972.34,
+   "text": "Do you remember? Okay."
+  },
+  {
+   "start": 974.58,
+   "end": 976.64,
+   "text": "Rotonda, something like that."
+  },
+  {
+   "start": 976.68,
+   "end": 981.46,
+   "text": "Yeah, it's, oh my God, it just went out of, I wrote it somewhere"
+  },
+  {
+   "start": 981.46,
+   "end": 982.76,
+   "text": "to ask you, not in the"
+  },
+  {
+   "start": 982.76,
+   "end": 983.82,
+   "text": "the podcast later because"
+  },
+  {
+   "start": 983.82,
+   "end": 988.5,
+   "text": "i saw that it's news i just i literally was thinking about it the"
+  },
+  {
+   "start": 988.5,
+   "end": 989.78,
+   "text": "rusanda i think rusanda"
+  },
+  {
+   "start": 989.78,
+   "end": 997.04,
+   "text": "yes and whenever you have any issues like and then people from serb"
+  },
+  {
+   "start": 997.04,
+   "end": 997.8,
+   "text": "from serbia from zranian"
+  },
+  {
+   "start": 997.8,
+   "end": 1003.78,
+   "text": "are sent to um the the little village oh shit it's not that little"
+  },
+  {
+   "start": 1003.78,
+   "end": 1008.0,
+   "text": "village it's a little it's like a village let's say and then actually my"
+  },
+  {
+   "start": 1008.0,
+   "end": 1011.2,
+   "text": "my grandpa and my dad uh they're from there i mean"
+  },
+  {
+   "start": 1011.2,
+   "end": 1017.7,
+   "text": "my grandparents and my dad is from there um from melon melon tea that's"
+  },
+  {
+   "start": 1017.7,
+   "end": 1017.88,
+   "text": "how it's called"
+  },
+  {
+   "start": 1017.88,
+   "end": 1024.8,
+   "text": "the place's name yes and the rusanda is the yeah so the spa so"
+  },
+  {
+   "start": 1024.8,
+   "end": 1026.62,
+   "text": "i've we've i've been there several"
+  },
+  {
+   "start": 1026.62,
+   "end": 1032.38,
+   "text": "times but never to just like you know swim or whatever yeah because it's"
+  },
+  {
+   "start": 1032.38,
+   "end": 1035.9,
+   "text": "mostly it's just again for people that do have issues so they are sent"
+  },
+  {
+   "start": 1035.9,
+   "end": 1038.26,
+   "text": "there and um i don't know if there's like an"
+  },
+  {
+   "start": 1038.26,
+   "end": 1043.28,
+   "text": "official open like swimming pool or something i don't know but uh it was"
+  },
+  {
+   "start": 1043.28,
+   "end": 1044.88,
+   "text": "just i do now i saw it on"
+  },
+  {
+   "start": 1044.88,
+   "end": 1051.24,
+   "text": "a couple of websites yeah hotels are nearby so maybe it's open now exactly"
+  },
+  {
+   "start": 1051.24,
+   "end": 1052.54,
+   "text": "yeah north has"
+  },
+  {
+   "start": 1052.54,
+   "end": 1057.46,
+   "text": "these beautiful places when it comes to central serbia oh my god there were"
+  },
+  {
+   "start": 1057.46,
+   "end": 1062.58,
+   "text": "more options but i chose only four of them but it makes sense right"
+  },
+  {
+   "start": 1062.58,
+   "end": 1069.32,
+   "text": "like the hills the the mountains like fresh air and it's larger like northern"
+  },
+  {
+   "start": 1069.32,
+   "end": 1073.28,
+   "text": "and southern serbia yeah like serbia is like this right so eastern"
+  },
+  {
+   "start": 1073.28,
+   "end": 1078.66,
+   "text": "west also are included in the center to me that's okay the most famous"
+  },
+  {
+   "start": 1078.66,
+   "end": 1079.58,
+   "text": "one i think is bukovička"
+  },
+  {
+   "start": 1079.58,
+   "end": 1086.86,
+   "text": "banya yeah i've heard of it i i've never been there actually there"
+  },
+  {
+   "start": 1086.86,
+   "end": 1091.68,
+   "text": "is also kovilacca that's also very famous but bukovička is called the pearl of"
+  },
+  {
+   "start": 1091.68,
+   "end": 1092.18,
+   "text": "shumadia"
+  },
+  {
+   "start": 1093.76,
+   "end": 1100.8,
+   "text": "do you know what's being treated there or anything like uh"
+  },
+  {
+   "start": 1100.8,
+   "end": 1106.84,
+   "text": "what's specific about it i mean the same kind of diseases yeah exactly they"
+  },
+  {
+   "start": 1106.84,
+   "end": 1109.4,
+   "text": "wrote so many diseases on their website right"
+  },
+  {
+   "start": 1109.4,
+   "end": 1115.54,
+   "text": "um its history is so old and i don't remember his father but mihaela"
+  },
+  {
+   "start": 1115.54,
+   "end": 1122.4,
+   "text": "obranović his father was milosh obronovich i guess right i think these kings the"
+  },
+  {
+   "start": 1122.4,
+   "end": 1125.26,
+   "text": "king and prince they were there and they"
+  },
+  {
+   "start": 1125.26,
+   "end": 1131.96,
+   "text": "kind of made this place very you know elite beautiful back in time it"
+  },
+  {
+   "start": 1131.96,
+   "end": 1132.62,
+   "text": "was like the center of"
+  },
+  {
+   "start": 1132.62,
+   "end": 1136.56,
+   "text": "those royal family let's say now i have to go there"
+  },
+  {
+   "start": 1136.56,
+   "end": 1142.94,
+   "text": "because you like mihailo obronovich because i'm a royal no i want to feel"
+  },
+  {
+   "start": 1142.94,
+   "end": 1148.18,
+   "text": "like a royalty i want to take care of myself yeah okay cool what"
+  },
+  {
+   "start": 1148.18,
+   "end": 1150.42,
+   "text": "mihailo prince mihailo did is he changed"
+  },
+  {
+   "start": 1150.42,
+   "end": 1156.74,
+   "text": "the decoration so it was one of the first european style spas in serbia"
+  },
+  {
+   "start": 1156.74,
+   "end": 1158.74,
+   "text": "oh but before was it like"
+  },
+  {
+   "start": 1158.74,
+   "end": 1164.54,
+   "text": "turkish though or no maybe i'm not sure like more it was more like"
+  },
+  {
+   "start": 1164.54,
+   "end": 1169.98,
+   "text": "i don't know maybe rustic or i don't know but he changed the decoration"
+  },
+  {
+   "start": 1169.98,
+   "end": 1174.4,
+   "text": "and there is a lake nearby Gorashi lake"
+  },
+  {
+   "start": 1174.4,
+   "end": 1181.76,
+   "text": "and also there is a monument of Karajorj because that"
+  },
+  {
+   "start": 1181.76,
+   "end": 1182.8,
+   "text": "place was the first"
+  },
+  {
+   "start": 1184.08,
+   "end": 1188.76,
+   "text": "where the first uprising happened against the Turks so look at you"
+  },
+  {
+   "start": 1190.4,
+   "end": 1196.08,
+   "text": "that information was interesting for me yeah if anyone for anyone who doesn't know"
+  },
+  {
+   "start": 1196.38,
+   "end": 1200.69,
+   "text": "Maki is from Turkey so just just to throw it out there That's why"
+  },
+  {
+   "start": 1200.69,
+   "end": 1201.49,
+   "text": "I need to go there."
+  },
+  {
+   "start": 1201.49,
+   "end": 1202.49,
+   "text": "Hey, we're still here."
+  },
+  {
+   "start": 1204.17,
+   "end": 1205.89,
+   "text": "Ha ha. Ha ha."
+  },
+  {
+   "start": 1207.07,
+   "end": 1211.21,
+   "text": "But by the way, most of these banyas have kind of festivals in the"
+  },
+  {
+   "start": 1211.21,
+   "end": 1211.49,
+   "text": "summer to attract"
+  },
+  {
+   "start": 1211.49,
+   "end": 1212.63,
+   "text": "more people."
+  },
+  {
+   "start": 1212.63,
+   "end": 1216.23,
+   "text": "Also, there are beautiful places to have some festivals and events."
+  },
+  {
+   "start": 1224.01,
+   "end": 1227.97,
+   "text": "before we continue with the show here's a quick reminder this podcast is free"
+  },
+  {
+   "start": 1227.97,
+   "end": 1228.39,
+   "text": "for everyone and"
+  },
+  {
+   "start": 1228.39,
+   "end": 1233.37,
+   "text": "supported by listeners like you we hope that this podcast is useful and companion"
+  },
+  {
+   "start": 1233.37,
+   "end": 1237.67,
+   "text": "to you this is a labor of love for both of us to help us continue"
+  },
+  {
+   "start": 1237.67,
+   "end": 1239.11,
+   "text": "creating useful content for everyone"
+  },
+  {
+   "start": 1239.11,
+   "end": 1243.79,
+   "text": "we will appreciate your help if you have the means you can support us"
+  },
+  {
+   "start": 1243.79,
+   "end": 1244.17,
+   "text": "in different ways"
+  },
+  {
+   "start": 1244.17,
+   "end": 1250.93,
+   "text": "you may just go to buymeacoffee.com slash mozecafa podcast and send us some cups"
+  },
+  {
+   "start": 1250.93,
+   "end": 1255.87,
+   "text": "of coffee You may also become a member of our show on patreon.com slash"
+  },
+  {
+   "start": 1255.87,
+   "end": 1261.55,
+   "text": "mozda cafe podcast and get extra benefits like bonus content, full transcripts of the"
+  },
+  {
+   "start": 1261.55,
+   "end": 1264.25,
+   "text": "show in Serbian, or even join us on the show."
+  },
+  {
+   "start": 1264.93,
+   "end": 1269.11,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1269.11,
+   "end": 1271.61,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1271.91,
+   "end": 1273.75,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1274.71,
+   "end": 1278.07,
+   "text": "How? Mermer is vici."
+  },
+  {
+   "start": 1278.89,
+   "end": 1279.87,
+   "text": "I never heard of that."
+  },
+  {
+   "start": 1280.61,
+   "end": 1284.35,
+   "text": "what is it what is it so it's like a marble and the sound"
+  },
+  {
+   "start": 1284.35,
+   "end": 1286.93,
+   "text": "kind of so because that place had these"
+  },
+  {
+   "start": 1286.93,
+   "end": 1294.91,
+   "text": "beautiful marbles it's white yeah yeah okay marimari's"
+  },
+  {
+   "start": 1294.91,
+   "end": 1297.13,
+   "text": "a witsy that's true yeah so that's"
+  },
+  {
+   "start": 1297.13,
+   "end": 1302.77,
+   "text": "the festival that happens there and obviously i have never been to that but"
+  },
+  {
+   "start": 1302.77,
+   "end": 1305.29,
+   "text": "it sounds interesting I'd like to go there."
+  },
+  {
+   "start": 1305.61,
+   "end": 1306.81,
+   "text": "So many festivals."
+  },
+  {
+   "start": 1306.81,
+   "end": 1310.69,
+   "text": "Now I'm like discovering, especially like in these pop places."
+  },
+  {
+   "start": 1310.69,
+   "end": 1316.99,
+   "text": "is like oh my god crazy i mean that sounds beautiful and there's a"
+  },
+  {
+   "start": 1316.99,
+   "end": 1324.81,
+   "text": "beautiful name matarushkabanya again in the center again healing mineral water there"
+  },
+  {
+   "start": 1324.81,
+   "end": 1325.51,
+   "text": "are three mountains nearby"
+  },
+  {
+   "start": 1325.51,
+   "end": 1332.73,
+   "text": "and of course monasteries but there's also medieval town of maglic nearby oh i"
+  },
+  {
+   "start": 1332.73,
+   "end": 1339.49,
+   "text": "didn't know that yeah uh i wrote not that big but about what i"
+  },
+  {
+   "start": 1339.49,
+   "end": 1343.13,
+   "text": "wrote down it's near kraljevo yeah so if you"
+  },
+  {
+   "start": 1343.13,
+   "end": 1348.21,
+   "text": "don't know kraljevo is like kralje means king in serbian so it's like a"
+  },
+  {
+   "start": 1348.21,
+   "end": 1348.83,
+   "text": "king city or something like"
+  },
+  {
+   "start": 1348.83,
+   "end": 1355.93,
+   "text": "that king's landing you know like game of thrones um and uh near um"
+  },
+  {
+   "start": 1355.93,
+   "end": 1358.13,
+   "text": "i mean next to a river ibar"
+  },
+  {
+   "start": 1359.33,
+   "end": 1364.19,
+   "text": "and actually yeah i read that it's the the water the mineral water is"
+  },
+  {
+   "start": 1364.19,
+   "end": 1369.67,
+   "text": "like full of rich in um sulfur sulfur sulfur is that how you say"
+  },
+  {
+   "start": 1369.67,
+   "end": 1372.83,
+   "text": "it sulfur and specifically this is good for like skin"
+  },
+  {
+   "start": 1372.83,
+   "end": 1378.45,
+   "text": "diseases so if you want to go for you're saying maturushka right yes that"
+  },
+  {
+   "start": 1378.45,
+   "end": 1383.97,
+   "text": "one actually i read that in the central like in that area like kralia"
+  },
+  {
+   "start": 1383.97,
+   "end": 1389.79,
+   "text": "or frushevaz or sulfurous water is the most common"
+  },
+  {
+   "start": 1389.79,
+   "end": 1395.97,
+   "text": "one there you go so it's quite the northern one's more like ozone i"
+  },
+  {
+   "start": 1395.97,
+   "end": 1403.39,
+   "text": "heard some other minerals like later for the south one sorry but sulfurous"
+  },
+  {
+   "start": 1403.39,
+   "end": 1408.33,
+   "text": "water is mostly common in the center yeah as i see there you go"
+  },
+  {
+   "start": 1408.33,
+   "end": 1412.37,
+   "text": "so if you want to treat your skin you know where and one of"
+  },
+  {
+   "start": 1412.37,
+   "end": 1419.2,
+   "text": "the oldest is yeah that one again from the 16th century it's been banya"
+  },
+  {
+   "start": 1419.2,
+   "end": 1419.6,
+   "text": "beautiful and your famous book karajic yeah i just wrote there"
+  },
+  {
+   "start": 1426.12,
+   "end": 1426.4,
+   "text": "yes turshic right his his town is called turshic yeah actually yeah"
+  },
+  {
+   "start": 1426.4,
+   "end": 1426.62,
+   "text": "that"
+  },
+  {
+   "start": 1433.18,
+   "end": 1435.56,
+   "text": "yeah yeah i wrote down that he"
+  },
+  {
+   "start": 1435.56,
+   "end": 1440.76,
+   "text": "visited a lot yeah quite a lot yes did you want to say something"
+  },
+  {
+   "start": 1440.76,
+   "end": 1445.66,
+   "text": "to you yeah i just wanted to say that's also uh the place where"
+  },
+  {
+   "start": 1445.66,
+   "end": 1450.7,
+   "text": "the first balkan casino called kur salon was opened there i mean"
+  },
+  {
+   "start": 1450.7,
+   "end": 1457.9,
+   "text": "in the 20th century before world war world war ii so the"
+  },
+  {
+   "start": 1457.9,
+   "end": 1459.62,
+   "text": "building looks really beautiful i checked"
+  },
+  {
+   "start": 1459.62,
+   "end": 1468.72,
+   "text": "there is it still working not sure probably it's legal here i wouldn't i'm"
+  },
+  {
+   "start": 1468.72,
+   "end": 1471.92,
+   "text": "gonna have to find this now i'm just googling like on my phone and"
+  },
+  {
+   "start": 1471.92,
+   "end": 1474.26,
+   "text": "that one has also beautiful thing have you ever heard"
+  },
+  {
+   "start": 1474.26,
+   "end": 1482.58,
+   "text": "drena regatta regatta sorry what is regatta like oh"
+  },
+  {
+   "start": 1482.58,
+   "end": 1488.82,
+   "text": "yeah what is oh yeah that's true is it race competition i wanted to"
+  },
+  {
+   "start": 1488.82,
+   "end": 1492.28,
+   "text": "say that yeah it's race yes so yachts versus rowing boats"
+  },
+  {
+   "start": 1492.28,
+   "end": 1498.44,
+   "text": "they compete against each other oh yeah in that river and the drena regatta"
+  },
+  {
+   "start": 1503.54,
+   "end": 1506.2,
+   "text": "everything so that's also yeah an"
+  },
+  {
+   "start": 1506.2,
+   "end": 1512.48,
+   "text": "activity to join yeah cool there you go i didn't know that i i"
+  },
+  {
+   "start": 1512.48,
+   "end": 1514.12,
+   "text": "wrote down that also we had like"
+  },
+  {
+   "start": 1514.12,
+   "end": 1520.48,
+   "text": "other famous people like dosy teo bradovich jovan cvich that visited there also as"
+  },
+  {
+   "start": 1520.48,
+   "end": 1520.94,
+   "text": "well as vuk of"
+  },
+  {
+   "start": 1520.94,
+   "end": 1526.62,
+   "text": "course and and that it is specialized for like bone issues so like spine"
+  },
+  {
+   "start": 1526.62,
+   "end": 1531.96,
+   "text": "and like ankles and whatever so i should go there after after my"
+  },
+  {
+   "start": 1531.96,
+   "end": 1539.16,
+   "text": "injury from skiing yes yeah and uh the last one from the center that"
+  },
+  {
+   "start": 1539.16,
+   "end": 1539.42,
+   "text": "i want to mention is"
+  },
+  {
+   "start": 1539.42,
+   "end": 1546.6,
+   "text": "does it sound any familiarity no it sounds like scepter i don't know"
+  },
+  {
+   "start": 1546.6,
+   "end": 1553.68,
+   "text": "selters think in german So the name comes"
+  },
+  {
+   "start": 1553.68,
+   "end": 1559.76,
+   "text": "from German Spania, German spa, Seltere Spa in Germany."
+  },
+  {
+   "start": 1560.14,
+   "end": 1566.36,
+   "text": "Oh. It's named after that spa because I think the water was more or"
+  },
+  {
+   "start": 1566.36,
+   "end": 1568.24,
+   "text": "less the same type"
+  },
+  {
+   "start": 1568.24,
+   "end": 1574.28,
+   "text": "and same kind of quality, extremely rich in sodium bicarbonate."
+  },
+  {
+   "start": 1576.04,
+   "end": 1579.82,
+   "text": "So that's why the name is, I checked it there's also a spa in"
+  },
+  {
+   "start": 1579.82,
+   "end": 1583.24,
+   "text": "Germany is it maybe"
+  },
+  {
+   "start": 1585.3,
+   "end": 1590.82,
+   "text": "or maybe German pronunciation is different but yeah that's why I was a bit"
+  },
+  {
+   "start": 1590.82,
+   "end": 1591.34,
+   "text": "I didn't know about it"
+  },
+  {
+   "start": 1591.34,
+   "end": 1598.72,
+   "text": "I didn't know about it so ignorant yeah cool and that is the nearest"
+  },
+  {
+   "start": 1598.72,
+   "end": 1604.26,
+   "text": "one uh to validate so that's why it's also convenient for many tourists i"
+  },
+  {
+   "start": 1604.26,
+   "end": 1609.4,
+   "text": "guess in the town of mulada novats there you go so"
+  },
+  {
+   "start": 1609.4,
+   "end": 1613.64,
+   "text": "tourists if you want to like go to baghazi a bit like the urban"
+  },
+  {
+   "start": 1613.64,
+   "end": 1618.88,
+   "text": "area but also want to kind of chill you can just do that now"
+  },
+  {
+   "start": 1618.88,
+   "end": 1625.2,
+   "text": "my area i know probably the most southern girl right now yeah it's probably"
+  },
+  {
+   "start": 1625.2,
+   "end": 1629.48,
+   "text": "the most interesting area to be honest but okay i mean so this area"
+  },
+  {
+   "start": 1629.48,
+   "end": 1631.62,
+   "text": "is so rich in Baniyas."
+  },
+  {
+   "start": 1631.62,
+   "end": 1634.82,
+   "text": "I mean, you just drive a car around,"
+  },
+  {
+   "start": 1634.82,
+   "end": 1636.88,
+   "text": "Bania, Bania, Bania, all the time."
+  },
+  {
+   "start": 1636.88,
+   "end": 1642.71,
+   "text": "The nearest places that i can go to relax walk it's when i actually"
+  },
+  {
+   "start": 1642.71,
+   "end": 1646.75,
+   "text": "banya soka banya barstica banya everywhere is banya here yeah"
+  },
+  {
+   "start": 1646.75,
+   "end": 1651.75,
+   "text": "but the best one is when i actually banya i think that's really the"
+  },
+  {
+   "start": 1651.75,
+   "end": 1653.23,
+   "text": "i think the most famous one in"
+  },
+  {
+   "start": 1653.23,
+   "end": 1659.57,
+   "text": "serbia i would say it's like where everyone goes by default where you go"
+  },
+  {
+   "start": 1659.57,
+   "end": 1665.33,
+   "text": "with your school on a like excursion and it's just the the most i"
+  },
+  {
+   "start": 1665.33,
+   "end": 1668.07,
+   "text": "feel like it's the most famous one it is very ancient"
+  },
+  {
+   "start": 1668.07,
+   "end": 1673.39,
+   "text": "and they say even the celtic tribes lived there so that was the town"
+  },
+  {
+   "start": 1673.39,
+   "end": 1674.23,
+   "text": "the old town of the"
+  },
+  {
+   "start": 1674.23,
+   "end": 1681.35,
+   "text": "from the ancient times and serbian prince nihilo made it like an elite summer"
+  },
+  {
+   "start": 1683.13,
+   "end": 1690.41,
+   "text": "resort so it was very you know royal again yeah yes and"
+  },
+  {
+   "start": 1690.41,
+   "end": 1692.45,
+   "text": "there are also a lot of festivals there"
+  },
+  {
+   "start": 1692.45,
+   "end": 1698.75,
+   "text": "the most famous ones famous one is carnival of bernice bernice how do you"
+  },
+  {
+   "start": 1698.75,
+   "end": 1699.45,
+   "text": "say it bernice"
+  },
+  {
+   "start": 1699.45,
+   "end": 1706.65,
+   "text": "is the town bernice i think bernice oh my god every"
+  },
+  {
+   "start": 1711.95,
+   "end": 1716.61,
+   "text": "of vrnizzi vrnizzi i think yeah there are other"
+  },
+  {
+   "start": 1722.19,
+   "end": 1727.07,
+   "text": "so it's a beautiful place yeah i oh my grandpa used to go there"
+  },
+  {
+   "start": 1727.07,
+   "end": 1728.13,
+   "text": "every every year and he would"
+  },
+  {
+   "start": 1728.13,
+   "end": 1732.33,
+   "text": "stay there for a couple of months uh and my sister that goes every"
+  },
+  {
+   "start": 1732.33,
+   "end": 1736.03,
+   "text": "year actually she just takes her kid, goes with a friend and they just"
+  },
+  {
+   "start": 1736.03,
+   "end": 1736.15,
+   "text": "And because it's in the, there's a mountain, Gorge."
+  },
+  {
+   "start": 1736.15,
+   "end": 1736.65,
+   "text": "go."
+  },
+  {
+   "start": 1740.93,
+   "end": 1742.21,
+   "text": "That's right next to it."
+  },
+  {
+   "start": 1742.21,
+   "end": 1742.49,
+   "text": "Yeah."
+  },
+  {
+   "start": 1742.49,
+   "end": 1746.43,
+   "text": "So it's like you go to Gorge and then you're in this like very"
+  },
+  {
+   "start": 1746.43,
+   "end": 1747.59,
+   "text": "nice area"
+  },
+  {
+   "start": 1747.59,
+   "end": 1751.59,
+   "text": "you know very high altitude and and then you go down and then you"
+  },
+  {
+   "start": 1751.59,
+   "end": 1752.91,
+   "text": "go to yeah there's also even"
+  },
+  {
+   "start": 1752.91,
+   "end": 1759.37,
+   "text": "ski resort in coach yeah small one but still my favorite sokovania wait wait"
+  },
+  {
+   "start": 1759.37,
+   "end": 1759.69,
+   "text": "wait i didn't finish"
+  },
+  {
+   "start": 1759.69,
+   "end": 1764.77,
+   "text": "i just wanted to say that i read that it's it's like um again"
+  },
+  {
+   "start": 1764.77,
+   "end": 1766.37,
+   "text": "it's like some people for all people"
+  },
+  {
+   "start": 1766.37,
+   "end": 1772.23,
+   "text": "mostly but it's like uh for like urinary infections as well good and like"
+  },
+  {
+   "start": 1772.23,
+   "end": 1776.81,
+   "text": "for diabetes and obviously many other things but like kind of specializes in that"
+  },
+  {
+   "start": 1776.81,
+   "end": 1779.25,
+   "text": "okay so company the other"
+  },
+  {
+   "start": 1779.25,
+   "end": 1783.73,
+   "text": "thing about venezco banya that i don't like is the building it's so old"
+  },
+  {
+   "start": 1783.73,
+   "end": 1785.31,
+   "text": "building but inside i think"
+  },
+  {
+   "start": 1785.31,
+   "end": 1790.67,
+   "text": "it's better but still outside it looks quite old and you go slim you"
+  },
+  {
+   "start": 1790.67,
+   "end": 1792.49,
+   "text": "know i don't know the building"
+  },
+  {
+   "start": 1792.49,
+   "end": 1797.61,
+   "text": "is not that attractive but inside i'm sure it's good yeah so kabarnia is"
+  },
+  {
+   "start": 1797.61,
+   "end": 1801.53,
+   "text": "the story that i was like has the story that i was telling you"
+  },
+  {
+   "start": 1801.53,
+   "end": 1807.83,
+   "text": "so soko grad soko is hawk i think oh i thought it was"
+  },
+  {
+   "start": 1807.83,
+   "end": 1813.63,
+   "text": "falcon okay but it's something like that hawk yeah okay so this is a"
+  },
+  {
+   "start": 1813.63,
+   "end": 1817.81,
+   "text": "lord soko okay there's a lord"
+  },
+  {
+   "start": 1817.81,
+   "end": 1822.43,
+   "text": "he fell off his horse and hurt himself and there was no one else"
+  },
+  {
+   "start": 1822.43,
+   "end": 1826.31,
+   "text": "to help him so he just said okay I'm going to die here and"
+  },
+  {
+   "start": 1826.31,
+   "end": 1832.85,
+   "text": "then the hawk comes and the hawk's wing is broken so the hawk goes"
+  },
+  {
+   "start": 1832.85,
+   "end": 1833.29,
+   "text": "this water and stays there a little bit and then it heals itself yeah into"
+  },
+  {
+   "start": 1840.27,
+   "end": 1842.65,
+   "text": "goes out and the lord who is"
+  },
+  {
+   "start": 1842.65,
+   "end": 1849.29,
+   "text": "about to die watches all this you know event and then he says okay"
+  },
+  {
+   "start": 1849.29,
+   "end": 1853.67,
+   "text": "he crawls himself into the water he takes a bath a long bath there"
+  },
+  {
+   "start": 1853.67,
+   "end": 1857.02,
+   "text": "and then he instantly got cured."
+  },
+  {
+   "start": 1859.12,
+   "end": 1860.42,
+   "text": "So that's the story."
+  },
+  {
+   "start": 1860.42,
+   "end": 1863.08,
+   "text": "But the place is so old."
+  },
+  {
+   "start": 1863.28,
+   "end": 1869.64,
+   "text": "So, for example, Konstantin, the philosopher, Evliace Devi or Vuk Karadzic, these kind of"
+  },
+  {
+   "start": 1869.64,
+   "end": 1873.06,
+   "text": "authors always mention Sokobanya in their books."
+  },
+  {
+   "start": 1873.54,
+   "end": 1874.5,
+   "text": "That's true, actually."
+  },
+  {
+   "start": 1874.98,
+   "end": 1876.62,
+   "text": "Yeah. It's a very famous place."
+  },
+  {
+   "start": 1877.92,
+   "end": 1883.04,
+   "text": "and ozran is the that this mountain and ritan where i climbed by the"
+  },
+  {
+   "start": 1883.04,
+   "end": 1890.08,
+   "text": "way these two mountains are nearby for hiking for just you know chilling out"
+  },
+  {
+   "start": 1890.08,
+   "end": 1890.78,
+   "text": "people can go there"
+  },
+  {
+   "start": 1890.78,
+   "end": 1896.12,
+   "text": "i've never been there you know even though it's so famous but yeah ozran"
+  },
+  {
+   "start": 1896.12,
+   "end": 1897.16,
+   "text": "mountain there's a cave"
+  },
+  {
+   "start": 1897.16,
+   "end": 1903.14,
+   "text": "as well and the biggest waterfall in serbia is there it's called ripalka yeah"
+  },
+  {
+   "start": 1903.14,
+   "end": 1906.92,
+   "text": "i didn't know it the biggest but yeah i visited that it's really beautiful"
+  },
+  {
+   "start": 1906.92,
+   "end": 1909.86,
+   "text": "oh nice but i haven't tried spa so next"
+  },
+  {
+   "start": 1909.86,
+   "end": 1915.86,
+   "text": "time i'm trying and i wrote down respiratory issues usually people go there for"
+  },
+  {
+   "start": 1915.86,
+   "end": 1917.32,
+   "text": "that um so"
+  },
+  {
+   "start": 1917.32,
+   "end": 1922.42,
+   "text": "it must be something with the missing maybe the altitude or i don't know"
+  },
+  {
+   "start": 1922.42,
+   "end": 1922.74,
+   "text": "i don't know what it is"
+  },
+  {
+   "start": 1922.74,
+   "end": 1928.1,
+   "text": "about that there's like just very good for respiratory issues i don't know but"
+  },
+  {
+   "start": 1928.1,
+   "end": 1931.56,
+   "text": "there's a nearby lake by the way i don't even know the name but it's so"
+  },
+  {
+   "start": 1931.56,
+   "end": 1936.56,
+   "text": "cool yeah like maybe it's beautiful it's very big as well yeah yeah uh"
+  },
+  {
+   "start": 1936.56,
+   "end": 1940.06,
+   "text": "and yeah the sakograd the the kind of medieval it's a medieval"
+  },
+  {
+   "start": 1940.06,
+   "end": 1945.6,
+   "text": "city it's just ruins obviously but it's still like crazy to think about how"
+  },
+  {
+   "start": 1945.6,
+   "end": 1946.78,
+   "text": "old that is right"
+  },
+  {
+   "start": 1946.78,
+   "end": 1952.88,
+   "text": "yeah back there are so many ancient yeah places to visit yeah it's like"
+  },
+  {
+   "start": 1952.88,
+   "end": 1953.76,
+   "text": "i think it's a roman"
+  },
+  {
+   "start": 1955.9,
+   "end": 1959.38,
+   "text": "So it's a Roman kind of castle, whatever it is."
+  },
+  {
+   "start": 1959.38,
+   "end": 1967.1,
+   "text": "And then to repel, to fight Slavs and some"
+  },
+  {
+   "start": 1967.1,
+   "end": 1969.06,
+   "text": "other, I don't know basically ottomans i don't"
+  },
+  {
+   "start": 1969.06,
+   "end": 1973.36,
+   "text": "really remember who it was sure yeah or something like that but we stayed"
+  },
+  {
+   "start": 1973.36,
+   "end": 1973.94,
+   "text": "obviously slavs stayed"
+  },
+  {
+   "start": 1973.94,
+   "end": 1981.02,
+   "text": "for some reason so um what did i write down but yeah stephan emina"
+  },
+  {
+   "start": 1981.02,
+   "end": 1982.48,
+   "text": "was like he also like"
+  },
+  {
+   "start": 1982.48,
+   "end": 1987.06,
+   "text": "took over it and it's like think about like this stephan emina right it's"
+  },
+  {
+   "start": 1987.06,
+   "end": 1991.86,
+   "text": "like the one of the most important like personalities in our history so it's"
+  },
+  {
+   "start": 1991.86,
+   "end": 1994.76,
+   "text": "like that old is it that old but yeah it is"
+  },
+  {
+   "start": 1994.76,
+   "end": 1999.08,
+   "text": "but it's still beautiful when I went there it was summer and I was"
+  },
+  {
+   "start": 1999.08,
+   "end": 2001.72,
+   "text": "like it seems like a summer resort"
+  },
+  {
+   "start": 2001.72,
+   "end": 2008.24,
+   "text": "like everybody is in like their swimsuits and everybody's having you know walking on"
+  },
+  {
+   "start": 2008.24,
+   "end": 2008.7,
+   "text": "with swimsuits but there's no sea right it feels like coming from a culture the street"
+  },
+  {
+   "start": 2014.52,
+   "end": 2018.08,
+   "text": "where it's like spa is not a big thing i felt like what are"
+  },
+  {
+   "start": 2018.08,
+   "end": 2019.98,
+   "text": "these people doing here with their bikinis in the mountain"
+  },
+  {
+   "start": 2019.98,
+   "end": 2025.36,
+   "text": "and then i realized all of those houses have you know springs not all"
+  },
+  {
+   "start": 2025.36,
+   "end": 2026.64,
+   "text": "of them many springs there"
+  },
+  {
+   "start": 2026.64,
+   "end": 2031.26,
+   "text": "and they're just going and it feels like such a summer place yeah we"
+  },
+  {
+   "start": 2031.26,
+   "end": 2032.08,
+   "text": "don't have the sea but"
+  },
+  {
+   "start": 2032.08,
+   "end": 2039.16,
+   "text": "hell we have springs so many so nishkabanya is the next one"
+  },
+  {
+   "start": 2039.16,
+   "end": 2046.52,
+   "text": "yeah it's again very old constantine the great sultan suleiman in"
+  },
+  {
+   "start": 2046.52,
+   "end": 2050.36,
+   "text": "auto on time they all death abated there so"
+  },
+  {
+   "start": 2050.36,
+   "end": 2057.14,
+   "text": "beautiful yeah there's a creative mineral mud there this time not only spring but"
+  },
+  {
+   "start": 2057.14,
+   "end": 2057.7,
+   "text": "mud so they"
+  },
+  {
+   "start": 2057.7,
+   "end": 2063.66,
+   "text": "you go into the mud and there's also paragliding contest so it's high in"
+  },
+  {
+   "start": 2063.66,
+   "end": 2069.62,
+   "text": "a place yeah i read that There are three springs, I think, that are"
+  },
+  {
+   "start": 2069.62,
+   "end": 2071.4,
+   "text": "used in those spas."
+  },
+  {
+   "start": 2071.4,
+   "end": 2079.25,
+   "text": "And actually, they have a high level of radioactive homotherm"
+  },
+  {
+   "start": 2079.25,
+   "end": 2084.07,
+   "text": "i don't know what that means but basically the higher like because um oh"
+  },
+  {
+   "start": 2084.07,
+   "end": 2090.27,
+   "text": "my god density yeah like a lot of radioactive like substances right so it's"
+  },
+  {
+   "start": 2090.27,
+   "end": 2092.15,
+   "text": "not bad like that bad"
+  },
+  {
+   "start": 2092.15,
+   "end": 2095.97,
+   "text": "you know but it's still like compared to other springs that was interesting it"
+  },
+  {
+   "start": 2095.97,
+   "end": 2099.77,
+   "text": "was like radioactive do i want to go there but apparently it's it's harmless"
+  },
+  {
+   "start": 2099.77,
+   "end": 2101.85,
+   "text": "it's just uh yeah a bit more than another"
+  },
+  {
+   "start": 2101.85,
+   "end": 2109.11,
+   "text": "yeah and oh uh cardiovascular issues are have been treated"
+  },
+  {
+   "start": 2109.11,
+   "end": 2111.19,
+   "text": "there yeah maybe there is something"
+  },
+  {
+   "start": 2111.19,
+   "end": 2118.19,
+   "text": "with pretty active i don't know whatever so"
+  },
+  {
+   "start": 2118.19,
+   "end": 2124.41,
+   "text": "prolon is the last one yeah where our mineral waters kisela waters come from"
+  },
+  {
+   "start": 2124.41,
+   "end": 2127.03,
+   "text": "in every supermarket there is problem in every little"
+  },
+  {
+   "start": 2127.03,
+   "end": 2132.49,
+   "text": "traffic you have problem problem is so famous all on water yeah problem water"
+  },
+  {
+   "start": 2132.49,
+   "end": 2133.71,
+   "text": "yes so that's bania"
+  },
+  {
+   "start": 2133.71,
+   "end": 2141.03,
+   "text": "and uh it's in kuršumlia and"
+  },
+  {
+   "start": 2141.03,
+   "end": 2148.15,
+   "text": "it is the highest spa in serbia like the altitude is 630 meters so"
+  },
+  {
+   "start": 2148.47,
+   "end": 2151.65,
+   "text": "all of the others most of the others are very low like like near"
+  },
+  {
+   "start": 2151.65,
+   "end": 2152.67,
+   "text": "sea level but this one is"
+  },
+  {
+   "start": 2152.67,
+   "end": 2159.75,
+   "text": "quite high which makes the water different i guess um i wrote"
+  },
+  {
+   "start": 2159.75,
+   "end": 2160.97,
+   "text": "down it's near the mountain"
+  },
+  {
+   "start": 2160.97,
+   "end": 2166.59,
+   "text": "radan and it has been actually recently discovered it's been there forever but it"
+  },
+  {
+   "start": 2166.59,
+   "end": 2173.67,
+   "text": "has been like recently like activated i i'd say and the spa yeah like like a tourist"
+  },
+  {
+   "start": 2173.67,
+   "end": 2177.33,
+   "text": "like a place where you would actually go and use it um again filled"
+  },
+  {
+   "start": 2177.33,
+   "end": 2181.51,
+   "text": "with minerals high alkaline water for anyone who cares"
+  },
+  {
+   "start": 2181.51,
+   "end": 2184.47,
+   "text": "about that and uh again treated"
+  },
+  {
+   "start": 2184.49,
+   "end": 2190.67,
+   "text": "wide specter of issues so yeah and the most famous place to visit nearby"
+  },
+  {
+   "start": 2190.67,
+   "end": 2197.87,
+   "text": "is i've never been there the devil's down i know i"
+  },
+  {
+   "start": 2197.87,
+   "end": 2199.95,
+   "text": "me neither i'm close but still i haven't"
+  },
+  {
+   "start": 2199.95,
+   "end": 2203.99,
+   "text": "but i'm gonna go to pro lombania and i'm gonna visit to volia baros"
+  },
+  {
+   "start": 2204.97,
+   "end": 2208.45,
+   "text": "oh you have to send me send me photos especially you are like near"
+  },
+  {
+   "start": 2208.45,
+   "end": 2212.39,
+   "text": "much nearer than me i'm in It feels like around two hours."
+  },
+  {
+   "start": 2212.39,
+   "end": 2212.85,
+   "text": "Yeah."
+  },
+  {
+   "start": 2214.75,
+   "end": 2216.17,
+   "text": "But yeah, I need photos."
+  },
+  {
+   "start": 2217.23,
+   "end": 2219.47,
+   "text": "Tag it. Put it on Maja Kafa."
+  },
+  {
+   "start": 2220.23,
+   "end": 2223.63,
+   "text": "I will. Yes, I will share it on our Instagram as well."
+  },
+  {
+   "start": 2223.77,
+   "end": 2224.43,
+   "text": "Promise given."
+  },
+  {
+   "start": 2227.03,
+   "end": 2227.13,
+   "text": "I hope we made everyone feel like going to Bania here in Serbia."
+  },
+  {
+   "start": 2227.13,
+   "end": 2227.31,
+   "text": "Okay."
+  },
+  {
+   "start": 2232.65,
+   "end": 2237.65,
+   "text": "Yeah. Apart from all the other options, I think that's really worth trying."
+  },
+  {
+   "start": 2238.25,
+   "end": 2239.45,
+   "text": "You made me want to go."
+  },
+  {
+   "start": 2240.35,
+   "end": 2243.61,
+   "text": "really good it's like i want to go to know if no one wants"
+  },
+  {
+   "start": 2243.61,
+   "end": 2245.01,
+   "text": "to go at least i want to go so like"
+  },
+  {
+   "start": 2245.01,
+   "end": 2252.33,
+   "text": "plus one at least okay cool yeah there we will share some links uh"
+  },
+  {
+   "start": 2252.33,
+   "end": 2253.79,
+   "text": "where they can see the other"
+  },
+  {
+   "start": 2253.79,
+   "end": 2258.87,
+   "text": "details and by the way prices i was going to share they are around"
+  },
+  {
+   "start": 2258.87,
+   "end": 2261.25,
+   "text": "20 to 40 euros like some of them"
+  },
+  {
+   "start": 2261.25,
+   "end": 2266.39,
+   "text": "are 25 some of them are 35 euros to enter yeah so there are"
+  },
+  {
+   "start": 2266.39,
+   "end": 2270.75,
+   "text": "also different packages for like treatments there is a different price for you know"
+  },
+  {
+   "start": 2270.75,
+   "end": 2270.89,
+   "text": "know, for some massages that are different, right?"
+  },
+  {
+   "start": 2270.89,
+   "end": 2272.75,
+   "text": "for some massages that are different"
+  },
+  {
+   "start": 2272.75,
+   "end": 2273.53,
+   "text": "price so yeah depends but honestly if you're it's like about your health and"
+  },
+  {
+   "start": 2273.53,
+   "end": 2274.83,
+   "text": "So yeah, of course."
+  },
+  {
+   "start": 2275.61,
+   "end": 2279.07,
+   "text": "But honestly, if you're, it's like about your health and, you know, for, for"
+  },
+  {
+   "start": 2279.07,
+   "end": 2279.91,
+   "text": "you"
+  },
+  {
+   "start": 2280.89,
+   "end": 2286.15,
+   "text": "like in Europe, going somewhere on like, like a daily kind of rate is,"
+  },
+  {
+   "start": 2286.15,
+   "end": 2288.31,
+   "text": "is around 30 euros, right?"
+  },
+  {
+   "start": 2288.31,
+   "end": 2288.65,
+   "text": "Like 20 to"
+  },
+  {
+   "start": 2288.65,
+   "end": 2291.75,
+   "text": "30, 40, 50, whatever, it depends where you are."
+  },
+  {
+   "start": 2291.75,
+   "end": 2294.75,
+   "text": "Right. I mean, considering that this is healing,"
+  },
+  {
+   "start": 2294.75,
+   "end": 2297.15,
+   "text": "right. Then it's about health."
+  },
+  {
+   "start": 2297.15,
+   "end": 2299.25,
+   "text": "Then I don't think it's that expensive, honestly."
+  },
+  {
+   "start": 2299.25,
+   "end": 2299.67,
+   "text": "It's not,"
+  },
+  {
+   "start": 2299.67,
+   "end": 2304.31,
+   "text": "you're you're going not going there to be entertained you're going there to just"
+  },
+  {
+   "start": 2304.31,
+   "end": 2304.55,
+   "text": "you know"
+  },
+  {
+   "start": 2304.55,
+   "end": 2311.63,
+   "text": "take care of your health yeah cured uh do you want"
+  },
+  {
+   "start": 2311.63,
+   "end": 2312.37,
+   "text": "to quickly go through the vocabulary"
+  },
+  {
+   "start": 2312.37,
+   "end": 2317.53,
+   "text": "ah yes i forgot i was just looking at my notes yes please well"
+  },
+  {
+   "start": 2317.53,
+   "end": 2320.35,
+   "text": "we yeah we mentioned a lot of them"
+  },
+  {
+   "start": 2320.35,
+   "end": 2324.51,
+   "text": "so we mentioned a lot of banya which is spa it's a spa and"
+  },
+  {
+   "start": 2324.51,
+   "end": 2325.99,
+   "text": "not in a sense spa like"
+  },
+  {
+   "start": 2327.33,
+   "end": 2330.21,
+   "text": "yeah sure it can mean like spa you go there and then you relax"
+  },
+  {
+   "start": 2330.21,
+   "end": 2331.29,
+   "text": "and get a massage right but like"
+  },
+  {
+   "start": 2331.29,
+   "end": 2336.67,
+   "text": "it's like just the zone the whole place is like a banya and um"
+  },
+  {
+   "start": 2336.67,
+   "end": 2339.01,
+   "text": "the spring we would say either"
+  },
+  {
+   "start": 2339.01,
+   "end": 2346.37,
+   "text": "uh i wrote down two things uh mineral is what is a"
+  },
+  {
+   "start": 2346.37,
+   "end": 2347.95,
+   "text": "spring actually so you don't have to say"
+  },
+  {
+   "start": 2347.95,
+   "end": 2354.31,
+   "text": "mineral but i say mineral because it's mineral right um or mineral novello you"
+  },
+  {
+   "start": 2354.31,
+   "end": 2359.25,
+   "text": "can say in two ways um we also means it's for it's like synonym"
+  },
+  {
+   "start": 2359.25,
+   "end": 2364.01,
+   "text": "or yeah i think it is vrelo i think it should be"
+  },
+  {
+   "start": 2364.01,
+   "end": 2370.1,
+   "text": "like warm warm spring yeah if i'm not mistaken yeah okay how do"
+  },
+  {
+   "start": 2370.1,
+   "end": 2375.08,
+   "text": "you call them warm spring doesn't matter okay hot spring yeah hot spring i"
+  },
+  {
+   "start": 2375.08,
+   "end": 2375.78,
+   "text": "think that is vrelo is"
+  },
+  {
+   "start": 2375.78,
+   "end": 2380.12,
+   "text": "hot spring oh now i'm gonna have to check it not sure but um"
+  },
+  {
+   "start": 2380.12,
+   "end": 2382.86,
+   "text": "okay to bathe"
+  },
+  {
+   "start": 2384.46,
+   "end": 2392.62,
+   "text": "it's reflexive yeah to heal so"
+  },
+  {
+   "start": 2392.62,
+   "end": 2396.16,
+   "text": "we usually mean like to actually it kind of means like to cure"
+  },
+  {
+   "start": 2396.16,
+   "end": 2404.12,
+   "text": "like heal something it can be like leciti leciti so it's like to"
+  },
+  {
+   "start": 2404.12,
+   "end": 2408.5,
+   "text": "fix something in a sense right but you can also heal means like um"
+  },
+  {
+   "start": 2408.5,
+   "end": 2415.68,
+   "text": "like a wound or something it can also be like so there are several"
+  },
+  {
+   "start": 2415.68,
+   "end": 2418.4,
+   "text": "ways that you can say that but i i think he would usually say"
+  },
+  {
+   "start": 2418.4,
+   "end": 2418.68,
+   "text": "if you need to"
+  },
+  {
+   "start": 2418.68,
+   "end": 2424.66,
+   "text": "like you know yeah to cure something then it's legity mostly"
+  },
+  {
+   "start": 2427.26,
+   "end": 2434.56,
+   "text": "health zdravlje yeah exactly um recreation uh very"
+  },
+  {
+   "start": 2434.56,
+   "end": 2436.14,
+   "text": "simple rekreatia"
+  },
+  {
+   "start": 2436.14,
+   "end": 2443.64,
+   "text": "yeah or you we can use razonoda as well but rekreatia"
+  },
+  {
+   "start": 2443.64,
+   "end": 2449.26,
+   "text": "is also good um and the cure is lick isn't it also doctor"
+  },
+  {
+   "start": 2451.26,
+   "end": 2454.28,
+   "text": "Lekar wait I think I lost you for a second"
+  },
+  {
+   "start": 2454.28,
+   "end": 2459.26,
+   "text": "yes we're back okay sorry about it."
+  },
+  {
+   "start": 2459.74,
+   "end": 2461.52,
+   "text": "Okay, but now you get the connection, right?"
+  },
+  {
+   "start": 2461.52,
+   "end": 2463.86,
+   "text": "Lake, lacquer. Yes."
+  },
+  {
+   "start": 2464.94,
+   "end": 2466.08,
+   "text": "That's so much sense."
+  },
+  {
+   "start": 2466.48,
+   "end": 2467.92,
+   "text": "Medicine, lake, right?"
+  },
+  {
+   "start": 2467.92,
+   "end": 2469.4,
+   "text": "Cure, lake as well."
+  },
+  {
+   "start": 2469.84,
+   "end": 2471.94,
+   "text": "So it can mean both."
+  },
+  {
+   "start": 2472.58,
+   "end": 2473.84,
+   "text": "Yeah, I mean, so there you go."
+  },
+  {
+   "start": 2474.18,
+   "end": 2475.62,
+   "text": "We make it simple for you."
+  },
+  {
+   "start": 2475.96,
+   "end": 2477.62,
+   "text": "Medicine, lake, cure, lake."
+  },
+  {
+   "start": 2480.08,
+   "end": 2480.6,
+   "text": "After, lacquer. exactly One thing."
+  },
+  {
+   "start": 2484.64,
+   "end": 2486.42,
+   "text": "cool a healer yeah"
+  },
+  {
+   "start": 2486.42,
+   "end": 2487.08,
+   "text": "yeah it is"
+  },
+  {
+   "start": 2487.08,
+   "end": 2487.48,
+   "text": "it is"
+  },
+  {
+   "start": 2487.48,
+   "end": 2488.38,
+   "text": "a healer cube"
+  },
+  {
+   "start": 2488.38,
+   "end": 2489.46,
+   "text": "yeah exactly"
+  },
+  {
+   "start": 2489.46,
+   "end": 2491.04,
+   "text": "anyway"
+  },
+  {
+   "start": 2491.04,
+   "end": 2491.96,
+   "text": "I think"
+  },
+  {
+   "start": 2491.96,
+   "end": 2492.94,
+   "text": "this was very informative"
+  },
+  {
+   "start": 2492.94,
+   "end": 2493.6,
+   "text": "for me"
+  },
+  {
+   "start": 2493.6,
+   "end": 2494.16,
+   "text": "so I really hope"
+  },
+  {
+   "start": 2494.16,
+   "end": 2495.36,
+   "text": "that others also"
+  },
+  {
+   "start": 2495.36,
+   "end": 2496.18,
+   "text": "learned a lot"
+  },
+  {
+   "start": 2496.18,
+   "end": 2496.6,
+   "text": "and I think"
+  },
+  {
+   "start": 2496.6,
+   "end": 2497.58,
+   "text": "I have a new thing"
+  },
+  {
+   "start": 2497.58,
+   "end": 2498.98,
+   "text": "on my bucket list"
+  },
+  {
+   "start": 2498.98,
+   "end": 2501.7,
+   "text": "yes me too"
+  },
+  {
+   "start": 2503.08,
+   "end": 2503.58,
+   "text": "we will keep you posted"
+  },
+  {
+   "start": 2503.58,
+   "end": 2504.84,
+   "text": "if we try them"
+  },
+  {
+   "start": 2504.84,
+   "end": 2506.26,
+   "text": "exactly"
+  },
+  {
+   "start": 2506.26,
+   "end": 2508.46,
+   "text": "okay I hope"
+  },
+  {
+   "start": 2508.46,
+   "end": 2513.14,
+   "text": "you enjoyed and we'll see you next time."
+  },
+  {
+   "start": 2514.6,
+   "end": 2516.84,
+   "text": "Yes, next time we'll see you."
+  },
+  {
+   "start": 2517.3,
+   "end": 2520.08,
+   "text": "Bye! Thank you for joining us today."
+  },
+  {
+   "start": 2520.08,
+   "end": 2522.92,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 2523.0,
+   "end": 2527.52,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 2527.52,
+   "end": 2530.56,
+   "text": "on our Instagram page, Može Kafa Podcast."
+  },
+  {
+   "start": 2530.86,
+   "end": 2531.5,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.6: Spa-Banja Culture in Serbia",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939254/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075930-44100-1-db646c2262213788.mp3"
+}

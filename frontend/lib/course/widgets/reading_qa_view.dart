@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../models/answer.dart';
 import '../models/exercise.dart';
+import '../services/exercise_shuffle.dart';
 import 'course_chip.dart';
 
 class ReadingQaView extends StatefulWidget {
@@ -115,6 +116,9 @@ class _ReadingQaViewState extends State<ReadingQaView> {
           _QuestionBlock(
             index: i + 1,
             question: widget.exercise.questions[i],
+            // Верный ответ в материалах записан первым — перемешиваем, иначе
+            // задание проходится нажатием на первую строку.
+            shuffleSeed: '${widget.exercise.id}:${widget.exercise.questions[i].id}',
             selectedId: chosen[widget.exercise.questions[i].id],
             enabled: widget.enabled,
             onPick: (optionId) =>
@@ -130,6 +134,7 @@ class _QuestionBlock extends StatelessWidget {
   const _QuestionBlock({
     required this.index,
     required this.question,
+    required this.shuffleSeed,
     required this.selectedId,
     required this.enabled,
     required this.onPick,
@@ -137,6 +142,7 @@ class _QuestionBlock extends StatelessWidget {
 
   final int index;
   final ReadingQuestion question;
+  final String shuffleSeed;
   final String? selectedId;
   final bool enabled;
   final ValueChanged<String> onPick;
@@ -152,7 +158,10 @@ class _QuestionBlock extends StatelessWidget {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
-        for (final option in question.options)
+        for (final option in seededShuffle(
+          question.options,
+          seedFromString(shuffleSeed),
+        ))
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Material(

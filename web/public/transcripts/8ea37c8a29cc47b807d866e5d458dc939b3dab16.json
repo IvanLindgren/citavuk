@@ -1,0 +1,2740 @@
+{
+ "duration": 2174.12,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.5,
+   "end": 31.84,
+   "text": "Здравия в Вима!"
+  },
+  {
+   "start": 37.86,
+   "end": 40.38,
+   "text": "Yes, but you're not going to share it on 8th March."
+  },
+  {
+   "start": 40.58,
+   "end": 45.64,
+   "text": "I know, but we're filming on the International Women's Day, so there you go."
+  },
+  {
+   "start": 47.34,
+   "end": 52.28,
+   "text": "We both made coffee, so this is a success because this is Možekafa podcast."
+  },
+  {
+   "start": 52.76,
+   "end": 55.16,
+   "text": "So, you know, it's appropriate, I think, of us."
+  },
+  {
+   "start": 55.58,
+   "end": 62.26,
+   "text": "Rarely. so it's off in germany it's not off in serbia actually no it's"
+  },
+  {
+   "start": 62.26,
+   "end": 64.18,
+   "text": "it's off in berlin only for"
+  },
+  {
+   "start": 64.18,
+   "end": 69.6,
+   "text": "some reason oh yeah so i thought because before berlin i was not well"
+  },
+  {
+   "start": 69.6,
+   "end": 70.36,
+   "text": "before berlin i was not in"
+  },
+  {
+   "start": 70.36,
+   "end": 75.58,
+   "text": "berlin right but i was in one town near hanover and um in day"
+  },
+  {
+   "start": 75.58,
+   "end": 76.64,
+   "text": "over there it was just like a normal"
+  },
+  {
+   "start": 76.64,
+   "end": 80.74,
+   "text": "working day and then someone told me oh you're not working it's like a"
+  },
+  {
+   "start": 80.74,
+   "end": 86.98,
+   "text": "holiday and this is amazing finally women are being celebrated no but um I"
+  },
+  {
+   "start": 86.98,
+   "end": 89.18,
+   "text": "think the reason for that is because um Berlin"
+  },
+  {
+   "start": 89.18,
+   "end": 93.48,
+   "text": "like is because it's like like more of like an Easter Germany so it's"
+  },
+  {
+   "start": 93.48,
+   "end": 94.52,
+   "text": "not really religious and"
+  },
+  {
+   "start": 94.52,
+   "end": 99.08,
+   "text": "because of that they have fewer holidays and for that they just said okay"
+  },
+  {
+   "start": 99.08,
+   "end": 99.84,
+   "text": "let me just like let us"
+  },
+  {
+   "start": 99.84,
+   "end": 105.38,
+   "text": "just pick one and then it ended up being Wednesday that's great yeah good"
+  },
+  {
+   "start": 105.38,
+   "end": 107.14,
+   "text": "for us good for our podcast"
+  },
+  {
+   "start": 108.72,
+   "end": 112.0,
+   "text": "Yeah, and I got some flowers from my flatmate so that's really"
+  },
+  {
+   "start": 112.0,
+   "end": 117.32,
+   "text": "nice i saw yes i did tulips i love flowers how do we say"
+  },
+  {
+   "start": 117.32,
+   "end": 123.78,
+   "text": "tulips in serbian do you know lala lala or actually plural is lale lale"
+  },
+  {
+   "start": 123.78,
+   "end": 128.68,
+   "text": "in jorkish it's singular lale by the way yeah do you know that lala"
+  },
+  {
+   "start": 128.68,
+   "end": 135.08,
+   "text": "or tulip was is was is whatever my kind of like symbol for my"
+  },
+  {
+   "start": 135.08,
+   "end": 137.16,
+   "text": "channel my my blue"
+  },
+  {
+   "start": 137.16,
+   "end": 142.36,
+   "text": "that's true that's true it's in the middle so you your favorite flower is"
+  },
+  {
+   "start": 142.36,
+   "end": 144.2,
+   "text": "tulip lala well actually"
+  },
+  {
+   "start": 144.2,
+   "end": 151.24,
+   "text": "because we call people from my area from uh bana so yeah i just"
+  },
+  {
+   "start": 151.24,
+   "end": 151.92,
+   "text": "thought it's appropriate and and"
+  },
+  {
+   "start": 151.92,
+   "end": 155.26,
+   "text": "and they're beautiful of course i don't really have a like a favorite flower"
+  },
+  {
+   "start": 155.26,
+   "end": 159.08,
+   "text": "but that really tells a lot about my story so i just thought why"
+  },
+  {
+   "start": 159.08,
+   "end": 163.56,
+   "text": "not then my icon will be a sock yes it should be"
+  },
+  {
+   "start": 163.56,
+   "end": 170.7,
+   "text": "right okay we're not talking about flowers or the"
+  },
+  {
+   "start": 170.7,
+   "end": 174.04,
+   "text": "the 8th of march um we're talking about dogs"
+  },
+  {
+   "start": 174.04,
+   "end": 181.02,
+   "text": "yeah a follower of ours very dear followers and supporter um gave us this"
+  },
+  {
+   "start": 181.02,
+   "end": 187.3,
+   "text": "idea can we tell his her name uh i don't know okay i didn't"
+  },
+  {
+   "start": 187.3,
+   "end": 190.14,
+   "text": "write it down but i will write it in the comments so okay"
+  },
+  {
+   "start": 190.14,
+   "end": 196.74,
+   "text": "he came here and he's so like so many dogs around everybody has a"
+  },
+  {
+   "start": 196.74,
+   "end": 198.36,
+   "text": "dog walking dogs dog parks in the"
+  },
+  {
+   "start": 198.36,
+   "end": 203.04,
+   "text": "parks and stuff so he said let's talk about this what is this uh"
+  },
+  {
+   "start": 203.04,
+   "end": 207.12,
+   "text": "love for dogs in serbia and i said actually i was thinking of the"
+  },
+  {
+   "start": 207.12,
+   "end": 211.86,
+   "text": "same thing so let's talk about it i do have a have to preface"
+  },
+  {
+   "start": 211.86,
+   "end": 217.08,
+   "text": "this with I haven't been living in Serbia for eight or nine years now"
+  },
+  {
+   "start": 217.08,
+   "end": 217.82,
+   "text": "and I think"
+  },
+  {
+   "start": 217.82,
+   "end": 219.95,
+   "text": "there's a lot that's changed."
+  },
+  {
+   "start": 219.95,
+   "end": 221.97,
+   "text": "And I think this will be visible in this episode."
+  },
+  {
+   "start": 222.65,
+   "end": 226.89,
+   "text": "So whatever I'm going to be talking about is my experience from like 10"
+  },
+  {
+   "start": 226.89,
+   "end": 227.39,
+   "text": "years ago."
+  },
+  {
+   "start": 227.39,
+   "end": 231.43,
+   "text": "And Maki, because she's been living in Serbia for the last four years."
+  },
+  {
+   "start": 231.43,
+   "end": 231.99,
+   "text": "No, no, two. How much?"
+  },
+  {
+   "start": 233.37,
+   "end": 236.37,
+   "text": "Two? Okay. How did I think three years, something?"
+  },
+  {
+   "start": 236.97,
+   "end": 241.53,
+   "text": "Two years. I think she has like a fresh outlook, right?"
+  },
+  {
+   "start": 241.61,
+   "end": 246.81,
+   "text": "right or like a fresh mind and everything and super observant mind wherever i"
+  },
+  {
+   "start": 246.81,
+   "end": 247.13,
+   "text": "go i'm like what"
+  },
+  {
+   "start": 247.13,
+   "end": 250.69,
+   "text": "are they doing how is this region in serbia how is that region in"
+  },
+  {
+   "start": 250.69,
+   "end": 255.17,
+   "text": "serbia so yeah yeah dog do you"
+  },
+  {
+   "start": 255.17,
+   "end": 259.09,
+   "text": "know how you say it in serbia i know one thing about like whenever"
+  },
+  {
+   "start": 259.09,
+   "end": 260.87,
+   "text": "uh i ask the plural form"
+  },
+  {
+   "start": 260.87,
+   "end": 267.09,
+   "text": "everybody gives the example of dog like dog oh because when you pluralize dog"
+  },
+  {
+   "start": 267.09,
+   "end": 273.53,
+   "text": "it's normally psa pass you see i am confused pass so singular is pass"
+  },
+  {
+   "start": 273.53,
+   "end": 276.35,
+   "text": "okay pass there is psa there is psi"
+  },
+  {
+   "start": 276.35,
+   "end": 283.21,
+   "text": "oh yeah that is quite difficult so the plural nominative is uh psi"
+  },
+  {
+   "start": 283.21,
+   "end": 290.17,
+   "text": "yeah so maybe like i don't think of it like the the the greek"
+  },
+  {
+   "start": 290.17,
+   "end": 296.97,
+   "text": "psi like the psi like i don't know so pass see that's nominative but"
+  },
+  {
+   "start": 296.97,
+   "end": 300.11,
+   "text": "yeah it gets complicated because it's like uh after five"
+  },
+  {
+   "start": 300.11,
+   "end": 307.39,
+   "text": "it becomes like after five like two psi oh yeah yeah well"
+  },
+  {
+   "start": 307.39,
+   "end": 309.61,
+   "text": "yeah i would say plural will be psi but"
+  },
+  {
+   "start": 309.61,
+   "end": 320.79,
+   "text": "then yeah oh my"
+  },
+  {
+   "start": 320.79,
+   "end": 325.13,
+   "text": "god oh i have to revive yeah yeah yeah That's complicated even for you,"
+  },
+  {
+   "start": 325.13,
+   "end": 326.01,
+   "text": "imagine me."
+  },
+  {
+   "start": 326.01,
+   "end": 327.67,
+   "text": "And I'm like, plural form,"
+  },
+  {
+   "start": 327.67,
+   "end": 328.73,
+   "text": "form so easy"
+  },
+  {
+   "start": 328.73,
+   "end": 332.63,
+   "text": "peasy in english i mean that's that is i don't know why we do"
+  },
+  {
+   "start": 332.63,
+   "end": 333.57,
+   "text": "that but this is not the only noun"
+  },
+  {
+   "start": 333.57,
+   "end": 337.55,
+   "text": "we do this with yeah anyway this would be a good topic for um"
+  },
+  {
+   "start": 337.55,
+   "end": 339.85,
+   "text": "like some other episode and also to"
+  },
+  {
+   "start": 339.85,
+   "end": 346.71,
+   "text": "revise my knowledge because i'm confused okay tell me like uh more most common"
+  },
+  {
+   "start": 346.71,
+   "end": 353.95,
+   "text": "dog names here answered yeah max max i heard max i think before"
+  },
+  {
+   "start": 353.95,
+   "end": 359.51,
+   "text": "yeah a lot of the x runs like max uh rex i think"
+  },
+  {
+   "start": 359.51,
+   "end": 363.53,
+   "text": "like these are like that means like uh what does it mean like rex"
+  },
+  {
+   "start": 363.53,
+   "end": 364.83,
+   "text": "is that god or something in some"
+  },
+  {
+   "start": 364.83,
+   "end": 368.85,
+   "text": "language i don't know it has this meaning i wrote down some things so"
+  },
+  {
+   "start": 368.85,
+   "end": 374.25,
+   "text": "it was like a very short names like Ricky, Rocky, you know, these kind"
+  },
+  {
+   "start": 374.25,
+   "end": 379.15,
+   "text": "of things. But then we also have, I wrote down four males."
+  },
+  {
+   "start": 379.43,
+   "end": 382.15,
+   "text": "So we also have like our nicknames, like Mickey."
+  },
+  {
+   "start": 382.87,
+   "end": 383.55,
+   "text": "That's like a..."
+  },
+  {
+   "start": 383.69,
+   "end": 383.87,
+   "text": "Maki."
+  },
+  {
+   "start": 383.87,
+   "end": 387.03,
+   "text": "Or Maki, okay, it could be Maki, I guess."
+  },
+  {
+   "start": 387.51,
+   "end": 390.91,
+   "text": "Zuccia is one that I've met so many dogs called Zuccia"
+  },
+  {
+   "start": 390.91,
+   "end": 395.71,
+   "text": "because Zuto is yellow and Zuccia is a nickname."
+  },
+  {
+   "start": 396.39,
+   "end": 399.15,
+   "text": "Even, yeah, even my dad, yeah, exactly."
+  },
+  {
+   "start": 399.15,
+   "end": 403.31,
+   "text": "my dad's nickname is rucha as well and we had a dog called rucha"
+  },
+  {
+   "start": 403.31,
+   "end": 410.49,
+   "text": "so that was quite funny um cats called rucha too yeah exactly so now"
+  },
+  {
+   "start": 410.49,
+   "end": 413.19,
+   "text": "they have all like lucky for example i forgot about"
+  },
+  {
+   "start": 413.19,
+   "end": 416.89,
+   "text": "that one lucky was one of them as well can bella be a name"
+  },
+  {
+   "start": 416.89,
+   "end": 424.11,
+   "text": "yeah so for female ones bella for like cat dog donna donna"
+  },
+  {
+   "start": 424.11,
+   "end": 430.07,
+   "text": "was a very very frequent female name for a dog lily as well"
+  },
+  {
+   "start": 431.81,
+   "end": 436.9,
+   "text": "uh maza because uh lunia imaza it's like a lady in the tramp that's"
+  },
+  {
+   "start": 436.9,
+   "end": 442.74,
+   "text": "how we translate it this disney maza is like maza basically means cuddly like"
+  },
+  {
+   "start": 442.74,
+   "end": 443.46,
+   "text": "someone who's cuddly"
+  },
+  {
+   "start": 443.46,
+   "end": 451.58,
+   "text": "right so maza luna as well like the moon i"
+  },
+  {
+   "start": 451.58,
+   "end": 455.96,
+   "text": "wrote down 50 sorry i just said it in such a weird way"
+  },
+  {
+   "start": 455.96,
+   "end": 461.22,
+   "text": "it's fifi and the reason why i wrote it is because there is this"
+  },
+  {
+   "start": 461.22,
+   "end": 466.76,
+   "text": "one famous famous song poem called fifi have you have you had a chance"
+  },
+  {
+   "start": 466.76,
+   "end": 470.24,
+   "text": "to check it out not sure maybe i did but i don't remember"
+  },
+  {
+   "start": 470.24,
+   "end": 475.88,
+   "text": "okay so i'm not gonna read it but i think we should link it"
+  },
+  {
+   "start": 475.88,
+   "end": 477.68,
+   "text": "to other people so guys search"
+  },
+  {
+   "start": 477.68,
+   "end": 485.06,
+   "text": "for fifi dragan lukic that's the the writer exactly so no"
+  },
+  {
+   "start": 485.06,
+   "end": 486.36,
+   "text": "it's not a song it's a poem a poem"
+  },
+  {
+   "start": 486.36,
+   "end": 490.56,
+   "text": "sorry no no i think it's not a song you can also find it"
+  },
+  {
+   "start": 490.56,
+   "end": 496.66,
+   "text": "on youtube someone reading it out loud and and I think it talks about"
+  },
+  {
+   "start": 496.66,
+   "end": 501.98,
+   "text": "this like tiny dog that is like I think it's a poodle Fifi poodle"
+  },
+  {
+   "start": 501.98,
+   "end": 508.82,
+   "text": "and she's all dressed up and has like nail polish and whatnot and this"
+  },
+  {
+   "start": 508.82,
+   "end": 509.12,
+   "text": "old lady"
+  },
+  {
+   "start": 509.12,
+   "end": 513.72,
+   "text": "is just talking to Fifi don't do this don't do that don't do this"
+  },
+  {
+   "start": 513.72,
+   "end": 515.78,
+   "text": "and this and so you you basically"
+  },
+  {
+   "start": 515.78,
+   "end": 520.3,
+   "text": "think that Fifi has a great life because she's tended she like she looks"
+  },
+  {
+   "start": 520.3,
+   "end": 525.28,
+   "text": "beautiful but actually like she's a her her owner is this annoying old lady"
+  },
+  {
+   "start": 525.28,
+   "end": 527.74,
+   "text": "and that's the life of fiffy so yeah"
+  },
+  {
+   "start": 527.74,
+   "end": 533.72,
+   "text": "you should you should check it out yeah poor fiffy but yeah that was"
+  },
+  {
+   "start": 533.72,
+   "end": 536.4,
+   "text": "one of them so here really i"
+  },
+  {
+   "start": 536.4,
+   "end": 541.86,
+   "text": "mean majority of people have pets pet dogs i mean they have dog friends"
+  },
+  {
+   "start": 541.86,
+   "end": 546.7,
+   "text": "at home more than one in many cases or more than one yeah yeah"
+  },
+  {
+   "start": 546.7,
+   "end": 554.26,
+   "text": "so in kurushawatts many houses have their own garden and in each garden there's"
+  },
+  {
+   "start": 554.26,
+   "end": 558.68,
+   "text": "a tidy tidy dog or big ones but mostly they are small dogs but"
+  },
+  {
+   "start": 558.68,
+   "end": 565.0,
+   "text": "you know that wasn't the case before before it was actually like great to"
+  },
+  {
+   "start": 565.0,
+   "end": 569.22,
+   "text": "have a big dog right because i think the purpose of dogs was well"
+  },
+  {
+   "start": 569.22,
+   "end": 573.82,
+   "text": "first of all yeah exactly so really to protect and i'm you know now"
+  },
+  {
+   "start": 573.82,
+   "end": 574.78,
+   "text": "i'm thinking i"
+  },
+  {
+   "start": 574.78,
+   "end": 579.14,
+   "text": "have this tiny dog at home she is she's quite feisty her name is"
+  },
+  {
+   "start": 579.14,
+   "end": 582.48,
+   "text": "milita milita um that's not"
+  },
+  {
+   "start": 582.48,
+   "end": 587.08,
+   "text": "a common name milita is a name for a woman exactly so for a"
+  },
+  {
+   "start": 587.08,
+   "end": 588.42,
+   "text": "human but it would just for some reason"
+  },
+  {
+   "start": 588.42,
+   "end": 593.48,
+   "text": "because oh meat meat is like endearing way how to say it yeah nickname"
+  },
+  {
+   "start": 593.48,
+   "end": 598.56,
+   "text": "um but yeah it's protection it is really protection because someone's gonna even if"
+  },
+  {
+   "start": 598.56,
+   "end": 600.78,
+   "text": "they don't attack they will bark and they"
+  },
+  {
+   "start": 600.78,
+   "end": 604.18,
+   "text": "will let you know that someone is approaching because it's a different type of"
+  },
+  {
+   "start": 604.18,
+   "end": 605.08,
+   "text": "bark so it's"
+  },
+  {
+   "start": 605.08,
+   "end": 611.2,
+   "text": "either that or even before that there people just you know deal with people"
+  },
+  {
+   "start": 611.2,
+   "end": 611.7,
+   "text": "not deal with but like"
+  },
+  {
+   "start": 611.7,
+   "end": 617.94,
+   "text": "their life was agriculture right and um kettles right yeah so they had a"
+  },
+  {
+   "start": 617.94,
+   "end": 618.34,
+   "text": "lot of they just needed"
+  },
+  {
+   "start": 618.34,
+   "end": 624.06,
+   "text": "someone to gather their take care of their cattle chickens or whatever yeah the"
+  },
+  {
+   "start": 624.06,
+   "end": 627.7,
+   "text": "goods as well they keep their for example coal or you know wood everything"
+  },
+  {
+   "start": 627.7,
+   "end": 629.66,
+   "text": "in the garden so which could be stolen"
+  },
+  {
+   "start": 629.66,
+   "end": 635.02,
+   "text": "I mean but I think the small dogs are better at protecting or informing"
+  },
+  {
+   "start": 635.02,
+   "end": 635.24,
+   "text": "because they're"
+  },
+  {
+   "start": 635.24,
+   "end": 641.88,
+   "text": "not scared then yeah but they can't be scared but they won't stop shouting"
+  },
+  {
+   "start": 641.88,
+   "end": 643.4,
+   "text": "they don't but that's the"
+  },
+  {
+   "start": 643.4,
+   "end": 648.42,
+   "text": "thing they always shout so you don't really know if it's like just the"
+  },
+  {
+   "start": 648.42,
+   "end": 654.0,
+   "text": "normal thing or or a human yeah I don't know exactly so my dog"
+  },
+  {
+   "start": 654.0,
+   "end": 656.37,
+   "text": "just yells at everything and i don't i don't walk"
+  },
+  {
+   "start": 656.37,
+   "end": 660.97,
+   "text": "with her anymore like i don't walk my dog anymore because it's a her"
+  },
+  {
+   "start": 660.97,
+   "end": 661.55,
+   "text": "for me because it's a sheep"
+  },
+  {
+   "start": 661.55,
+   "end": 666.95,
+   "text": "so because she just yells at everything i can i mean they yells barks"
+  },
+  {
+   "start": 666.95,
+   "end": 667.89,
+   "text": "at everything and she's like"
+  },
+  {
+   "start": 667.89,
+   "end": 672.29,
+   "text": "we just walk and it's like other dogs because every house has a dog"
+  },
+  {
+   "start": 672.29,
+   "end": 673.29,
+   "text": "right so it's like and"
+  },
+  {
+   "start": 673.29,
+   "end": 678.49,
+   "text": "then everyone is barking around us then the bike passes by then she's barking"
+  },
+  {
+   "start": 678.49,
+   "end": 683.87,
+   "text": "then the passenger like whatever or like some car then she's barking and it's"
+  },
+  {
+   "start": 683.87,
+   "end": 684.85,
+   "text": "just annoying and she's"
+  },
+  {
+   "start": 684.85,
+   "end": 689.45,
+   "text": "always barking my mom goes to the store she's barking like she's sad and"
+  },
+  {
+   "start": 689.45,
+   "end": 692.27,
+   "text": "but anyway uh i think"
+  },
+  {
+   "start": 692.27,
+   "end": 696.65,
+   "text": "it was like for us before walking the dog wasn't really such a thing"
+  },
+  {
+   "start": 696.65,
+   "end": 697.95,
+   "text": "because you oh everyone has a"
+  },
+  {
+   "start": 697.95,
+   "end": 702.09,
+   "text": "big backyard and you if you have an apartment then you don't have a"
+  },
+  {
+   "start": 702.09,
+   "end": 705.55,
+   "text": "big dog you know and actually you don't have a dog but now i"
+  },
+  {
+   "start": 705.55,
+   "end": 709.25,
+   "text": "think it's changing i think even in department you you do have a dog"
+  },
+  {
+   "start": 709.25,
+   "end": 713.15,
+   "text": "because you can buy a tiny one too the other day i went to"
+  },
+  {
+   "start": 713.15,
+   "end": 719.17,
+   "text": "a hairdresser and there were three dogs inside i mean not waiting in line"
+  },
+  {
+   "start": 719.17,
+   "end": 722.97,
+   "text": "but three women came with their three dogs in the same place and"
+  },
+  {
+   "start": 722.97,
+   "end": 726.95,
+   "text": "it was like that wouldn't have happened before that wouldn't it just now it's"
+  },
+  {
+   "start": 726.95,
+   "end": 727.19,
+   "text": "just becoming a"
+  },
+  {
+   "start": 727.19,
+   "end": 732.65,
+   "text": "thing but i wrote down today also small dogs not only are they small"
+  },
+  {
+   "start": 732.65,
+   "end": 736.37,
+   "text": "they don't take so much space but also it's less food that you have"
+  },
+  {
+   "start": 736.37,
+   "end": 739.57,
+   "text": "to pay for yeah that's true more economic and less"
+  },
+  {
+   "start": 739.57,
+   "end": 745.59,
+   "text": "distance they need i mean they don't need to walk hours but bigger dogs"
+  },
+  {
+   "start": 745.59,
+   "end": 746.77,
+   "text": "need bigger place to run"
+  },
+  {
+   "start": 746.77,
+   "end": 751.33,
+   "text": "yeah a bit bigger yeah but still you need to bigger dog small dog"
+  },
+  {
+   "start": 751.33,
+   "end": 751.69,
+   "text": "you need to walk them"
+  },
+  {
+   "start": 751.69,
+   "end": 755.95,
+   "text": "at least like once or twice a day yeah as we're walking as our"
+  },
+  {
+   "start": 755.95,
+   "end": 760.05,
+   "text": "follower also guessed i mean observed, the leash thing."
+  },
+  {
+   "start": 760.05,
+   "end": 763.67,
+   "text": "Normally, you would never leave the leash, right?"
+  },
+  {
+   "start": 763.67,
+   "end": 766.11,
+   "text": "But here, the dogs are trained well I guess"
+  },
+  {
+   "start": 766.11,
+   "end": 771.03,
+   "text": "they don't have the leash they just have the collar here but not the"
+  },
+  {
+   "start": 771.03,
+   "end": 772.29,
+   "text": "leash itself so they just"
+  },
+  {
+   "start": 772.29,
+   "end": 777.71,
+   "text": "walk next to their human friends and some of them are big and when"
+  },
+  {
+   "start": 777.71,
+   "end": 779.63,
+   "text": "I go for a run I feel like what"
+  },
+  {
+   "start": 779.63,
+   "end": 783.51,
+   "text": "if this dog thinks that I'm running for a different purpose you know but"
+  },
+  {
+   "start": 783.51,
+   "end": 789.13,
+   "text": "yeah never such a bad thing happens like they all look at me peacefully"
+  },
+  {
+   "start": 789.13,
+   "end": 792.79,
+   "text": "they're used to running people as i guess anyway"
+  },
+  {
+   "start": 792.79,
+   "end": 797.05,
+   "text": "i'm always like having this doubt in my mind if this dog is gonna"
+  },
+  {
+   "start": 797.05,
+   "end": 800.09,
+   "text": "run after me or not because i"
+  },
+  {
+   "start": 800.09,
+   "end": 805.05,
+   "text": "think we still don't have it like you don't have to train your dog"
+  },
+  {
+   "start": 805.05,
+   "end": 806.61,
+   "text": "right so still not like a legal"
+  },
+  {
+   "start": 806.61,
+   "end": 811.45,
+   "text": "requirement as far as i know um yeah so i wouldn't be so calm"
+  },
+  {
+   "start": 811.45,
+   "end": 817.35,
+   "text": "but usually so dogs are if you don't look at them I think you're"
+  },
+  {
+   "start": 817.35,
+   "end": 819.65,
+   "text": "usually you're fine I mean not always because they can be"
+  },
+  {
+   "start": 819.65,
+   "end": 825.13,
+   "text": "aggressive dogs but dogs hate being looked in the eyes so I just try"
+  },
+  {
+   "start": 825.13,
+   "end": 826.37,
+   "text": "to ignore them but I did"
+  },
+  {
+   "start": 826.37,
+   "end": 830.13,
+   "text": "like for example I was walking my friend's dog now when I was in"
+  },
+  {
+   "start": 830.13,
+   "end": 832.53,
+   "text": "Serbia and it's like a I think"
+  },
+  {
+   "start": 832.53,
+   "end": 839.15,
+   "text": "it's a pit bull dog so but she's she's like yeah she's she's active"
+  },
+  {
+   "start": 839.15,
+   "end": 843.47,
+   "text": "she's not scary you know she's not biting or anything like she's not aggressive"
+  },
+  {
+   "start": 843.47,
+   "end": 847.31,
+   "text": "uh her name is luna and so i was walking her and"
+  },
+  {
+   "start": 847.31,
+   "end": 851.47,
+   "text": "you know i feel like i just didn't have that much authority over her"
+  },
+  {
+   "start": 851.47,
+   "end": 852.13,
+   "text": "so she was just like taking"
+  },
+  {
+   "start": 852.13,
+   "end": 856.19,
+   "text": "like the lead um and i just thought okay i can't walk for her"
+  },
+  {
+   "start": 856.19,
+   "end": 857.05,
+   "text": "everywhere because she's not gonna"
+  },
+  {
+   "start": 857.05,
+   "end": 861.93,
+   "text": "listen to me and um and i'm like i hope there's not gonna be"
+  },
+  {
+   "start": 861.93,
+   "end": 863.75,
+   "text": "any dog around that's not trained"
+  },
+  {
+   "start": 863.75,
+   "end": 868.73,
+   "text": "right because can you control her exactly so what i mean she's gonna defend"
+  },
+  {
+   "start": 868.73,
+   "end": 871.89,
+   "text": "herself of course and the dog is just whatever,"
+  },
+  {
+   "start": 871.89,
+   "end": 873.8,
+   "text": "I don't know what's in their mind."
+  },
+  {
+   "start": 873.8,
+   "end": 878.98,
+   "text": "So, and one dog actually, tiny dog approached us and it was not on"
+  },
+  {
+   "start": 878.98,
+   "end": 882.96,
+   "text": "the leash, but I think it was just like a random stray dog or"
+  },
+  {
+   "start": 882.96,
+   "end": 884.22,
+   "text": "someone else's dog."
+  },
+  {
+   "start": 884.64,
+   "end": 889.4,
+   "text": "Who's not really, you know, who's just like letting them run or whatever."
+  },
+  {
+   "start": 889.4,
+   "end": 890.14,
+   "text": "Very common here."
+  },
+  {
+   "start": 891.08,
+   "end": 892.36,
+   "text": "Yeah. Didn't really train them."
+  },
+  {
+   "start": 893.2,
+   "end": 897.94,
+   "text": "So the dog was going after us, you know, and thankfully, I don't know"
+  },
+  {
+   "start": 897.94,
+   "end": 899.66,
+   "text": "how, but I think no."
+  },
+  {
+   "start": 900.34,
+   "end": 905.24,
+   "text": "and all at once Luna just moved like turned and she was like and"
+  },
+  {
+   "start": 905.24,
+   "end": 908.74,
+   "text": "the dog just left and I'm like oh thank god you're big and scared"
+  },
+  {
+   "start": 908.74,
+   "end": 911.16,
+   "text": "you look big and scary you know you're not scary but you look"
+  },
+  {
+   "start": 911.16,
+   "end": 917.7,
+   "text": "so yeah really sometimes can be scary you know exactly before we continue with"
+  },
+  {
+   "start": 917.7,
+   "end": 918.22,
+   "text": "the show here's"
+  },
+  {
+   "start": 918.22,
+   "end": 922.78,
+   "text": "a quick reminder this podcast is free for everyone and supported by listeners like"
+  },
+  {
+   "start": 922.78,
+   "end": 922.98,
+   "text": "we hope that this podcast is useful and companion to you this is a"
+  },
+  {
+   "start": 922.98,
+   "end": 923.18,
+   "text": "you"
+  },
+  {
+   "start": 927.54,
+   "end": 931.58,
+   "text": "labor of love for both of us To help us continue creating useful content"
+  },
+  {
+   "start": 931.58,
+   "end": 934.02,
+   "text": "for everyone, we will appreciate your help."
+  },
+  {
+   "start": 934.38,
+   "end": 937.4,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 937.96,
+   "end": 943.86,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 943.86,
+   "end": 949.88,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 949.88,
+   "end": 950.48,
+   "text": "and get"
+  },
+  {
+   "start": 950.48,
+   "end": 955.66,
+   "text": "extra benefits like bonus content, full transcripts of the show in Serbian, or even"
+  },
+  {
+   "start": 955.66,
+   "end": 955.98,
+   "text": "join us on"
+  },
+  {
+   "start": 955.98,
+   "end": 961.06,
+   "text": "the show. we rely on your support to help everyone more in learning serbian"
+  },
+  {
+   "start": 961.06,
+   "end": 965.84,
+   "text": "language and culture thanks for joining us today and now let's get back to"
+  },
+  {
+   "start": 965.84,
+   "end": 969.28,
+   "text": "our episode so you take the leash with"
+  },
+  {
+   "start": 969.28,
+   "end": 974.68,
+   "text": "you when you walk luna always always yeah although i don't really walk my"
+  },
+  {
+   "start": 974.68,
+   "end": 974.92,
+   "text": "dog that much"
+  },
+  {
+   "start": 974.92,
+   "end": 981.16,
+   "text": "actually but always the leash yeah for the bigger dogs like labradors or german"
+  },
+  {
+   "start": 981.16,
+   "end": 983.64,
+   "text": "shepherds of course they are mostly in leash."
+  },
+  {
+   "start": 984.54,
+   "end": 985.16,
+   "text": "Yeah, yeah."
+  },
+  {
+   "start": 985.16,
+   "end": 988.84,
+   "text": "Because they are huge and people, not because they will do something, but people"
+  },
+  {
+   "start": 988.84,
+   "end": 989.32,
+   "text": "will be scared of them."
+  },
+  {
+   "start": 989.32,
+   "end": 992.68,
+   "text": "If they see the leash, they are more relieved."
+  },
+  {
+   "start": 993.62,
+   "end": 997.94,
+   "text": "Exactly. I think that, I mean, I personally am not scared by big dogs"
+  },
+  {
+   "start": 997.94,
+   "end": 1004.2,
+   "text": "because I know that that does not correlate with the aggressiveness."
+  },
+  {
+   "start": 1005.12,
+   "end": 1009.74,
+   "text": "like I can see when a dog is a bit aggressive and usually they're"
+  },
+  {
+   "start": 1009.74,
+   "end": 1010.64,
+   "text": "aggressive because they feel"
+  },
+  {
+   "start": 1010.64,
+   "end": 1015.16,
+   "text": "threatened not just because they're aggressive it's not like it's not really like a"
+  },
+  {
+   "start": 1015.16,
+   "end": 1015.38,
+   "text": "but but yeah I don't I love big dogs I 12 dogs annoy me"
+  },
+  {
+   "start": 1015.38,
+   "end": 1015.6,
+   "text": "thing"
+  },
+  {
+   "start": 1020.92,
+   "end": 1025.78,
+   "text": "because they're always yelling exactly exactly it's just like it's kind of as if"
+  },
+  {
+   "start": 1025.78,
+   "end": 1027.76,
+   "text": "it's allowed for them to be aggressive and for"
+  },
+  {
+   "start": 1027.76,
+   "end": 1030.64,
+   "text": "bigger dogs oh no way they're aggressive they're going to be put to sleep"
+  },
+  {
+   "start": 1030.64,
+   "end": 1035.04,
+   "text": "you know what I mean It's just like unfair because they have this reputation."
+  },
+  {
+   "start": 1037.04,
+   "end": 1038.64,
+   "text": "Common breeds."
+  },
+  {
+   "start": 1040.64,
+   "end": 1044.38,
+   "text": "So what I'm actually curious to see what you have seen."
+  },
+  {
+   "start": 1045.02,
+   "end": 1048.88,
+   "text": "Yeah, I'm going to share my screen to show you the most common ones"
+  },
+  {
+   "start": 1048.88,
+   "end": 1049.98,
+   "text": "that I see here."
+  },
+  {
+   "start": 1050.82,
+   "end": 1051.92,
+   "text": "This is going to come later."
+  },
+  {
+   "start": 1052.6,
+   "end": 1053.04,
+   "text": "This one."
+  },
+  {
+   "start": 1054.48,
+   "end": 1059.18,
+   "text": "This English bulldog, Minish schnauzer."
+  },
+  {
+   "start": 1060.84,
+   "end": 1065.92,
+   "text": "that one is so common I see them in hiking I see them in"
+  },
+  {
+   "start": 1065.92,
+   "end": 1067.38,
+   "text": "parks this is number one for me"
+  },
+  {
+   "start": 1067.38,
+   "end": 1072.42,
+   "text": "because of their you know beard I guess I pay attention to them they"
+  },
+  {
+   "start": 1072.42,
+   "end": 1073.16,
+   "text": "I find them very funny"
+  },
+  {
+   "start": 1073.16,
+   "end": 1077.4,
+   "text": "actually so I haven't seen that many of them this is really interesting for"
+  },
+  {
+   "start": 1077.4,
+   "end": 1078.24,
+   "text": "me to see yeah to hear"
+  },
+  {
+   "start": 1078.24,
+   "end": 1083.12,
+   "text": "in Belgrade once I saw a woman walking two or three of them another"
+  },
+  {
+   "start": 1083.12,
+   "end": 1086.28,
+   "text": "one again two of them I was like what is wrong i i often"
+  },
+  {
+   "start": 1086.28,
+   "end": 1090.38,
+   "text": "see them like are they that cute what's happening okay these slow"
+  },
+  {
+   "start": 1090.38,
+   "end": 1092.12,
+   "text": "ones english bulldogs are very common"
+  },
+  {
+   "start": 1092.12,
+   "end": 1098.62,
+   "text": "too and they are no they're so funny they're so funny to me all"
+  },
+  {
+   "start": 1098.62,
+   "end": 1103.24,
+   "text": "of these like like big eyed ones they're just so funny to me i"
+  },
+  {
+   "start": 1103.24,
+   "end": 1104.9,
+   "text": "think i would have one just to laugh every day"
+  },
+  {
+   "start": 1104.9,
+   "end": 1110.36,
+   "text": "because they're yeah when it comes to cuteness this is the funniest this is"
+  },
+  {
+   "start": 1110.36,
+   "end": 1114.7,
+   "text": "the slowest and most common the third one is corgi oh my god this"
+  },
+  {
+   "start": 1114.7,
+   "end": 1117.08,
+   "text": "is very very common and you see them sometimes"
+  },
+  {
+   "start": 1117.08,
+   "end": 1122.94,
+   "text": "abandoned and then they can survive by themselves on the street somehow here i"
+  },
+  {
+   "start": 1122.94,
+   "end": 1123.78,
+   "text": "see so many breed"
+  },
+  {
+   "start": 1123.78,
+   "end": 1130.08,
+   "text": "dogs you know just left out that but small ones uh because of their"
+  },
+  {
+   "start": 1130.08,
+   "end": 1131.46,
+   "text": "you know fur you realize"
+  },
+  {
+   "start": 1131.46,
+   "end": 1136.62,
+   "text": "they need special care and they don't have it on the street by themselves"
+  },
+  {
+   "start": 1136.62,
+   "end": 1143.3,
+   "text": "poor things just survive but they're always in a pack so they protect each"
+  },
+  {
+   "start": 1143.3,
+   "end": 1145.98,
+   "text": "other so this it don't seem lonely"
+  },
+  {
+   "start": 1145.98,
+   "end": 1153.38,
+   "text": "dogs much yeah unfortunately we don't have a good system for like you"
+  },
+  {
+   "start": 1153.38,
+   "end": 1154.28,
+   "text": "know taking care of stray dogs"
+  },
+  {
+   "start": 1154.28,
+   "end": 1159.72,
+   "text": "and so what we usually do we have a lot of like volunteers and"
+  },
+  {
+   "start": 1159.72,
+   "end": 1163.52,
+   "text": "they create like the how do you call it oh my god now i'm"
+  },
+  {
+   "start": 1163.52,
+   "end": 1168.04,
+   "text": "just my mind stopped like a society or something yeah support group"
+  },
+  {
+   "start": 1168.04,
+   "end": 1175.18,
+   "text": "or something like that and then um yeah there's like donations they organize uh"
+  },
+  {
+   "start": 1175.18,
+   "end": 1175.92,
+   "text": "some place where"
+  },
+  {
+   "start": 1175.92,
+   "end": 1180.88,
+   "text": "like you can put these dogs and and then you can keep them people"
+  },
+  {
+   "start": 1180.88,
+   "end": 1182.4,
+   "text": "are more like supporting them a"
+  },
+  {
+   "start": 1182.4,
+   "end": 1186.34,
+   "text": "lot all i see in front of my house there's a park and i"
+  },
+  {
+   "start": 1186.34,
+   "end": 1189.82,
+   "text": "see the kids giving them food the owners of the cafes, restaurants,"
+  },
+  {
+   "start": 1189.82,
+   "end": 1193.62,
+   "text": "pass-food places, everybody kind of supports them."
+  },
+  {
+   "start": 1194.14,
+   "end": 1198.84,
+   "text": "You know, they're usually around like a burger place"
+  },
+  {
+   "start": 1198.84,
+   "end": 1199.84,
+   "text": "is like Piasca Vica."
+  },
+  {
+   "start": 1199.84,
+   "end": 1200.84,
+   "text": "Exactly."
+  },
+  {
+   "start": 1200.84,
+   "end": 1203.31,
+   "text": "Like where they know that they will get food."
+  },
+  {
+   "start": 1204.79,
+   "end": 1207.73,
+   "text": "Yeah. Vita is also very very common."
+  },
+  {
+   "start": 1207.73,
+   "end": 1212.49,
+   "text": "I see them in the parks a lot but my favorite is this one"
+  },
+  {
+   "start": 1212.49,
+   "end": 1216.13,
+   "text": "Komondor. I have a couple of them here."
+  },
+  {
+   "start": 1216.13,
+   "end": 1219.21,
+   "text": "I mean I see them in some parks in Khrushchevac."
+  },
+  {
+   "start": 1219.69,
+   "end": 1226.43,
+   "text": "they look like sheep but sheep you mean yeah sheep yeah sheep sheep yeah"
+  },
+  {
+   "start": 1226.43,
+   "end": 1227.05,
+   "text": "i thought you said"
+  },
+  {
+   "start": 1227.05,
+   "end": 1234.23,
+   "text": "shit i was like oh my god who shits like that yeah yeah"
+  },
+  {
+   "start": 1234.23,
+   "end": 1236.29,
+   "text": "they're quite hairy right yeah golden"
+  },
+  {
+   "start": 1236.29,
+   "end": 1241.51,
+   "text": "retrievers for me in turkey golden retriever was a dog that you walk with"
+  },
+  {
+   "start": 1241.51,
+   "end": 1245.69,
+   "text": "a leash but here golden retrievers are just free they just walk themselves i"
+  },
+  {
+   "start": 1245.69,
+   "end": 1252.51,
+   "text": "mean because i think people have this not prejudice but like a generalization that"
+  },
+  {
+   "start": 1252.51,
+   "end": 1254.97,
+   "text": "they're just they're the kindest dogs ever but"
+  },
+  {
+   "start": 1254.97,
+   "end": 1258.41,
+   "text": "it's it really like i mean i think they are i think that they"
+  },
+  {
+   "start": 1258.41,
+   "end": 1260.45,
+   "text": "are not really you know they're"
+  },
+  {
+   "start": 1260.45,
+   "end": 1266.69,
+   "text": "not really aggressive but any dog can be aggressive so you know why yeah"
+  },
+  {
+   "start": 1266.69,
+   "end": 1271.19,
+   "text": "why why them not on the leash but everyone else yes you know exactly"
+  },
+  {
+   "start": 1271.19,
+   "end": 1273.65,
+   "text": "doberman for example you never see a free doberman walking"
+  },
+  {
+   "start": 1273.65,
+   "end": 1278.13,
+   "text": "around they're always on the leash no that would have been a no-no that's"
+  },
+  {
+   "start": 1278.13,
+   "end": 1278.49,
+   "text": "what i'm saying like"
+  },
+  {
+   "start": 1278.49,
+   "end": 1282.67,
+   "text": "just because they are trained i mean a lot of these like some of"
+  },
+  {
+   "start": 1282.67,
+   "end": 1283.37,
+   "text": "the dogs have this hunt these"
+  },
+  {
+   "start": 1283.37,
+   "end": 1288.81,
+   "text": "hunting um skills and so on but that doesn't mean they're gonna bite everyone"
+  },
+  {
+   "start": 1288.81,
+   "end": 1290.21,
+   "text": "exactly you know if"
+  },
+  {
+   "start": 1290.21,
+   "end": 1295.37,
+   "text": "they're well fed they're fine they don't care about running around it's like cats"
+  },
+  {
+   "start": 1295.37,
+   "end": 1299.81,
+   "text": "cat would of eaten you trust me but just because they are well fed"
+  },
+  {
+   "start": 1299.81,
+   "end": 1301.77,
+   "text": "they don't care about chasing a"
+  },
+  {
+   "start": 1301.77,
+   "end": 1308.05,
+   "text": "mouse or anything like that otherwise they would by the way this is i"
+  },
+  {
+   "start": 1308.05,
+   "end": 1308.79,
+   "text": "don't know the name right now"
+  },
+  {
+   "start": 1308.79,
+   "end": 1310.63,
+   "text": "this is also very"
+  },
+  {
+   "start": 1310.69,
+   "end": 1318.05,
+   "text": "oh wait wait wait is this they're so beautiful it's"
+  },
+  {
+   "start": 1318.05,
+   "end": 1320.17,
+   "text": "something it's something asian something like"
+  },
+  {
+   "start": 1320.17,
+   "end": 1326.97,
+   "text": "i no i don't know me neither let me go on go there yeah"
+  },
+  {
+   "start": 1326.97,
+   "end": 1329.57,
+   "text": "i think it's something on a if i'm"
+  },
+  {
+   "start": 1329.57,
+   "end": 1337.13,
+   "text": "not mistaken yeah i checked this name poodle chef dog chow"
+  },
+  {
+   "start": 1337.13,
+   "end": 1344.25,
+   "text": "chow i love chow chow it's so funny samoyed samoyed samoyed maybe samoyed"
+  },
+  {
+   "start": 1344.25,
+   "end": 1347.45,
+   "text": "oh wait oh that's one this american eskimo dog i thought"
+  },
+  {
+   "start": 1347.45,
+   "end": 1351.73,
+   "text": "it was okay akita i thought it was akita yes that's the same it's"
+  },
+  {
+   "start": 1351.73,
+   "end": 1356.63,
+   "text": "also akita i heard that too akita no akita is not that fluffy okay"
+  },
+  {
+   "start": 1356.63,
+   "end": 1361.01,
+   "text": "fine i was just fluffy fun is eskimo dog yeah that one is so"
+  },
+  {
+   "start": 1361.13,
+   "end": 1367.43,
+   "text": "beautiful oh my god i see them here yeah they they are i think"
+  },
+  {
+   "start": 1367.43,
+   "end": 1369.79,
+   "text": "very you know calm dogs and full of"
+  },
+  {
+   "start": 1369.79,
+   "end": 1377.03,
+   "text": "energy i didn't see them that much unfortunately but but yeah so what"
+  },
+  {
+   "start": 1377.03,
+   "end": 1378.07,
+   "text": "okay this is funny because"
+  },
+  {
+   "start": 1378.07,
+   "end": 1381.89,
+   "text": "what i used to see i will tell you 10 years ago 10 20"
+  },
+  {
+   "start": 1381.89,
+   "end": 1382.95,
+   "text": "years ago this is what i used to see"
+  },
+  {
+   "start": 1382.95,
+   "end": 1388.09,
+   "text": "so i used oh wait you didn't show me this one yeah okay and"
+  },
+  {
+   "start": 1388.09,
+   "end": 1391.89,
+   "text": "they use so these more because these are original balkan dogs as far as"
+  },
+  {
+   "start": 1391.89,
+   "end": 1399.69,
+   "text": "i see which ones i think you saw hounds uh yes"
+  },
+  {
+   "start": 1399.69,
+   "end": 1406.93,
+   "text": "i think i would i think in in like there's two"
+  },
+  {
+   "start": 1406.93,
+   "end": 1411.67,
+   "text": "types of hounds serbian hound just brown and black and serbian tree color found"
+  },
+  {
+   "start": 1411.67,
+   "end": 1418.83,
+   "text": "yeah including life these ones i've seen yeah i've seen them but um not"
+  },
+  {
+   "start": 1418.83,
+   "end": 1424.86,
+   "text": "as much as I should considering that they're typical like dogs in Serbia right"
+  },
+  {
+   "start": 1424.86,
+   "end": 1430.24,
+   "text": "uh like you know how can I say fat uh not fat oh my"
+  },
+  {
+   "start": 1430.24,
+   "end": 1430.44,
+   "text": "god doesn't matter"
+  },
+  {
+   "start": 1430.44,
+   "end": 1434.72,
+   "text": "because they're supposed to be Serbian hounds right but I think I I did"
+  },
+  {
+   "start": 1434.72,
+   "end": 1440.52,
+   "text": "definitely see shepherds um and i think but mostly these ones like on in"
+  },
+  {
+   "start": 1440.52,
+   "end": 1444.44,
+   "text": "villages yeah because there are there for a"
+  },
+  {
+   "start": 1444.44,
+   "end": 1451.44,
+   "text": "purpose right because you have like chickens and curds they are leading yeah i"
+  },
+  {
+   "start": 1451.44,
+   "end": 1451.64,
+   "text": "think i would say"
+  },
+  {
+   "start": 1451.64,
+   "end": 1458.06,
+   "text": "these ones um i don't i don't remember anything like very specifically i usually"
+  },
+  {
+   "start": 1458.06,
+   "end": 1458.76,
+   "text": "saw like other"
+  },
+  {
+   "start": 1458.76,
+   "end": 1464.38,
+   "text": "international breed dogs i would say or maybe a mixture of something like mixed"
+  },
+  {
+   "start": 1464.38,
+   "end": 1469.74,
+   "text": "dogs i would see for sure all of these are seen perfectly these ones"
+  },
+  {
+   "start": 1469.74,
+   "end": 1472.26,
+   "text": "mostly black just brown in in the valley part"
+  },
+  {
+   "start": 1472.26,
+   "end": 1477.9,
+   "text": "so that's very common here too but as street dogs though as street exactly"
+  },
+  {
+   "start": 1477.9,
+   "end": 1478.46,
+   "text": "that's what i wanted to"
+  },
+  {
+   "start": 1478.46,
+   "end": 1485.22,
+   "text": "say yeah did you see any other there from the on the photo like"
+  },
+  {
+   "start": 1485.22,
+   "end": 1490.12,
+   "text": "in serbia yeah every kind of dog you can see for sure here yeah"
+  },
+  {
+   "start": 1490.12,
+   "end": 1494.56,
+   "text": "but these are the most common ones also uh this australian"
+  },
+  {
+   "start": 1494.56,
+   "end": 1502.94,
+   "text": "cattle dog like looks like shepherd but it's a bit different and i"
+  },
+  {
+   "start": 1502.94,
+   "end": 1505.2,
+   "text": "think yeah that's it so"
+  },
+  {
+   "start": 1505.2,
+   "end": 1510.74,
+   "text": "siberian husky i don't see them much actually to be here yeah in khrushchev"
+  },
+  {
+   "start": 1510.74,
+   "end": 1511.62,
+   "text": "at least yeah in"
+  },
+  {
+   "start": 1511.62,
+   "end": 1514.18,
+   "text": "in Serbia, in Malgrit, I think."
+  },
+  {
+   "start": 1514.18,
+   "end": 1517.4,
+   "text": "That are very difficult to take care of, right?"
+  },
+  {
+   "start": 1517.4,
+   "end": 1520.72,
+   "text": "Like the fur and so on."
+  },
+  {
+   "start": 1520.72,
+   "end": 1527.16,
+   "text": "But I, so what I used to see is, well, first of all, mixed"
+  },
+  {
+   "start": 1527.16,
+   "end": 1528.5,
+   "text": "breed, I would definitely"
+  },
+  {
+   "start": 1528.5,
+   "end": 1531.22,
+   "text": "see that and we call these meshanats"
+  },
+  {
+   "start": 1532.48,
+   "end": 1538.54,
+   "text": "um or we call meshanats it's like mission or like mixed right uh or"
+  },
+  {
+   "start": 1538.54,
+   "end": 1541.76,
+   "text": "we call them was a dodge"
+  },
+  {
+   "start": 1541.76,
+   "end": 1549.42,
+   "text": "and there's a reason for that why oh the og which means home"
+  },
+  {
+   "start": 1549.42,
+   "end": 1554.9,
+   "text": "it's a homemade it's like okay i'll say in serbian they'll try to translate"
+  },
+  {
+   "start": 1554.9,
+   "end": 1562.8,
+   "text": "it's an acronym so d is domaća o is obična normal"
+  },
+  {
+   "start": 1562.8,
+   "end": 1569.76,
+   "text": "d is i think dukela if i'm not mistaken yeah dukela so dukela is"
+  },
+  {
+   "start": 1569.76,
+   "end": 1570.2,
+   "text": "actually like a very"
+  },
+  {
+   "start": 1570.2,
+   "end": 1577.28,
+   "text": "bad way to say dog right dukela like a some random"
+  },
+  {
+   "start": 1577.28,
+   "end": 1582.36,
+   "text": "like dog over there um domache is like home it's not homemade you know"
+  },
+  {
+   "start": 1582.36,
+   "end": 1585.6,
+   "text": "like it's like like domestic or local domestic"
+  },
+  {
+   "start": 1585.6,
+   "end": 1592.76,
+   "text": "domestic local obyčna is regular or like just normal regular yeah exactly"
+  },
+  {
+   "start": 1592.76,
+   "end": 1593.7,
+   "text": "and then it would be"
+  },
+  {
+   "start": 1593.7,
+   "end": 1600.32,
+   "text": "like domestic regular dog which means that no breed anything like like so many"
+  },
+  {
+   "start": 1600.32,
+   "end": 1600.44,
+   "text": "breeds in one"
+  },
+  {
+   "start": 1600.44,
+   "end": 1604.3,
+   "text": "like just random who knows what it is so yeah you can say but"
+  },
+  {
+   "start": 1604.3,
+   "end": 1611.24,
+   "text": "usually mishanat mishanat is better and then these dogs like i think labrador and"
+  },
+  {
+   "start": 1611.24,
+   "end": 1615.14,
+   "text": "um zlatny retriever golden retriever like labrador"
+  },
+  {
+   "start": 1615.14,
+   "end": 1620.16,
+   "text": "uh they were because they have this reputation of just being like the the"
+  },
+  {
+   "start": 1620.16,
+   "end": 1621.26,
+   "text": "best family dogs very"
+  },
+  {
+   "start": 1621.26,
+   "end": 1626.8,
+   "text": "well natured and so on uh good natured right good natured so these ones"
+  },
+  {
+   "start": 1626.8,
+   "end": 1630.5,
+   "text": "i would see a lot especially with families."
+  },
+  {
+   "start": 1630.5,
+   "end": 1638.09,
+   "text": "Then, I mean, also like these people like these bad ass"
+  },
+  {
+   "start": 1638.09,
+   "end": 1640.45,
+   "text": "dogs like Rottweiler as well."
+  },
+  {
+   "start": 1641.67,
+   "end": 1644.85,
+   "text": "I don't know, German Shepherd and so on."
+  },
+  {
+   "start": 1644.85,
+   "end": 1646.31,
+   "text": "So these kind of things I would see."
+  },
+  {
+   "start": 1647.17,
+   "end": 1649.41,
+   "text": "And mind you, I probably saw a mixture of all of these."
+  },
+  {
+   "start": 1649.63,
+   "end": 1651.79,
+   "text": "I don't know if they're 100% like breed."
+  },
+  {
+   "start": 1652.75,
+   "end": 1656.95,
+   "text": "And then I would say somewhere around when I was in high school or"
+  },
+  {
+   "start": 1656.95,
+   "end": 1657.71,
+   "text": "something like that,"
+  },
+  {
+   "start": 1657.71,
+   "end": 1661.61,
+   "text": "like a bit maybe before, they started getting these tiny dogs."
+  },
+  {
+   "start": 1662.85,
+   "end": 1666.55,
+   "text": "so then that started being a trend and then it was two types of"
+  },
+  {
+   "start": 1666.55,
+   "end": 1667.75,
+   "text": "tiny dogs one of them is like"
+  },
+  {
+   "start": 1667.75,
+   "end": 1673.89,
+   "text": "the funny tiny dogs which is like the french bulldog like the uh like"
+  },
+  {
+   "start": 1673.89,
+   "end": 1674.71,
+   "text": "uh how do you call them"
+  },
+  {
+   "start": 1674.71,
+   "end": 1681.93,
+   "text": "uh we say mops mops no oh my god i forgot"
+  },
+  {
+   "start": 1681.93,
+   "end": 1686.67,
+   "text": "now doesn't matter but all of these like very eye big eye dogs that"
+  },
+  {
+   "start": 1686.67,
+   "end": 1691.95,
+   "text": "are like tiny and funny um and then uh and then the other ones"
+  },
+  {
+   "start": 1691.95,
+   "end": 1692.21,
+   "text": "are like the"
+  },
+  {
+   "start": 1692.21,
+   "end": 1700.43,
+   "text": "cute tiny dogs so maltaser poodle uh bichon"
+  },
+  {
+   "start": 1700.43,
+   "end": 1702.21,
+   "text": "i don't know how you say bichon something like that"
+  },
+  {
+   "start": 1702.21,
+   "end": 1706.33,
+   "text": "which is pretty much this white white like these tiny white dogs that are"
+  },
+  {
+   "start": 1706.33,
+   "end": 1708.55,
+   "text": "just like so cute um"
+  },
+  {
+   "start": 1711.51,
+   "end": 1715.23,
+   "text": "chihuahua i still had back then i didn't see chihuahuas but i definitely see"
+  },
+  {
+   "start": 1715.23,
+   "end": 1715.53,
+   "text": "chihuahuas now"
+  },
+  {
+   "start": 1715.53,
+   "end": 1719.53,
+   "text": "i definitely see them now but yeah this is pretty much what i saw"
+  },
+  {
+   "start": 1719.53,
+   "end": 1720.31,
+   "text": "obviously there's so many other"
+  },
+  {
+   "start": 1720.31,
+   "end": 1726.77,
+   "text": "breeds but uh yeah by the way one of the reasons also for the"
+  },
+  {
+   "start": 1726.77,
+   "end": 1728.45,
+   "text": "small dogs is that they are cheaper"
+  },
+  {
+   "start": 1728.45,
+   "end": 1735.15,
+   "text": "the bigger the dog unfortunately they buy those animals as you know guys who"
+  },
+  {
+   "start": 1735.15,
+   "end": 1739.83,
+   "text": "live in yeah guys for you who live in serbia you can find breed"
+  },
+  {
+   "start": 1739.83,
+   "end": 1743.39,
+   "text": "dogs in the shelter animal shelter so and you"
+  },
+  {
+   "start": 1743.39,
+   "end": 1747.59,
+   "text": "pay 20 euros maybe yeah you just donate to"
+  },
+  {
+   "start": 1747.59,
+   "end": 1752.33,
+   "text": "their organization and take the dog yeah there are so many shelters around and"
+  },
+  {
+   "start": 1752.33,
+   "end": 1753.13,
+   "text": "not so so many but"
+  },
+  {
+   "start": 1753.13,
+   "end": 1759.81,
+   "text": "there are so many uh at this places where you can see those animals"
+  },
+  {
+   "start": 1759.81,
+   "end": 1760.75,
+   "text": "are taken care of some of them"
+  },
+  {
+   "start": 1760.75,
+   "end": 1766.53,
+   "text": "not are not official you know um ngos or something but yeah so many"
+  },
+  {
+   "start": 1766.53,
+   "end": 1773.59,
+   "text": "instagram accounts helping dogs from the streets right it's so beautiful here so there's"
+  },
+  {
+   "start": 1773.59,
+   "end": 1776.33,
+   "text": "a my friend that has this luna dog"
+  },
+  {
+   "start": 1776.33,
+   "end": 1782.13,
+   "text": "which is a pit bull um he got her for like he paid like"
+  },
+  {
+   "start": 1782.13,
+   "end": 1784.25,
+   "text": "symbolic 15 years or something like that"
+  },
+  {
+   "start": 1784.25,
+   "end": 1790.51,
+   "text": "i mean really really if you really care about breed dogs for some reason"
+  },
+  {
+   "start": 1790.51,
+   "end": 1791.65,
+   "text": "go to the animal"
+  },
+  {
+   "start": 1791.65,
+   "end": 1797.55,
+   "text": "shelter or go to these like um um don't like how do you call"
+  },
+  {
+   "start": 1797.55,
+   "end": 1801.95,
+   "text": "them on the communities where they like societies where they help out yeah exactly"
+  },
+  {
+   "start": 1801.95,
+   "end": 1806.73,
+   "text": "also dog hotels in every city there is a dog hotel i didn't know"
+  },
+  {
+   "start": 1806.73,
+   "end": 1811.17,
+   "text": "that i because i have a cat and i need to find a hotel"
+  },
+  {
+   "start": 1811.17,
+   "end": 1812.03,
+   "text": "to leave her when i go on"
+  },
+  {
+   "start": 1812.03,
+   "end": 1816.95,
+   "text": "holiday so i call the dog hotels if they also keep the cats and"
+  },
+  {
+   "start": 1816.95,
+   "end": 1820.73,
+   "text": "some of them do and uh dog"
+  },
+  {
+   "start": 1820.73,
+   "end": 1826.29,
+   "text": "pensions like they are also called pensions here it's so funny they have their"
+  },
+  {
+   "start": 1826.29,
+   "end": 1831.75,
+   "text": "own garden their own you know routine it's oh my god beautiful life how"
+  },
+  {
+   "start": 1831.75,
+   "end": 1833.53,
+   "text": "expensive is it they how do how do you pay"
+  },
+  {
+   "start": 1833.53,
+   "end": 1840.45,
+   "text": "daily daily yeah there are packages you food included excluded or but there there"
+  },
+  {
+   "start": 1840.45,
+   "end": 1840.57,
+   "text": "official for example the one that i leave like they have their own vet"
+  },
+  {
+   "start": 1840.57,
+   "end": 1840.93,
+   "text": "are very"
+  },
+  {
+   "start": 1844.09,
+   "end": 1845.65,
+   "text": "that you make you sign"
+  },
+  {
+   "start": 1845.65,
+   "end": 1849.99,
+   "text": "a paper saying if any serious thing happens they are allowed to take my"
+  },
+  {
+   "start": 1849.99,
+   "end": 1856.3,
+   "text": "animal there so 10 euro more or less in belgrade maybe in smaller cities"
+  },
+  {
+   "start": 1856.3,
+   "end": 1856.5,
+   "text": "seven"
+  },
+  {
+   "start": 1856.5,
+   "end": 1862.28,
+   "text": "eight per day yeah it's not that much actually not at all that's great"
+  },
+  {
+   "start": 1862.28,
+   "end": 1863.3,
+   "text": "that's great and then they"
+  },
+  {
+   "start": 1863.3,
+   "end": 1868.58,
+   "text": "they always you know record videos take photos and send them to you so"
+  },
+  {
+   "start": 1868.58,
+   "end": 1869.92,
+   "text": "you are always in in touch"
+  },
+  {
+   "start": 1871.16,
+   "end": 1874.42,
+   "text": "that's nice i didn't know that oh that's amazing i think that's better than"
+  },
+  {
+   "start": 1874.42,
+   "end": 1882.36,
+   "text": "the dog or cat being alone at home yeah shelters"
+  },
+  {
+   "start": 1882.36,
+   "end": 1886.46,
+   "text": "and i was gonna share one story like there is this talk i think"
+  },
+  {
+   "start": 1886.46,
+   "end": 1886.68,
+   "text": "never ever forget that dog i mean still alive by the way blind dog"
+  },
+  {
+   "start": 1886.68,
+   "end": 1886.94,
+   "text": "i will"
+  },
+  {
+   "start": 1892.72,
+   "end": 1895.16,
+   "text": "with a collar walks himself"
+  },
+  {
+   "start": 1895.16,
+   "end": 1902.14,
+   "text": "i think herself i'm not sure uh every morning comes to the park makes"
+  },
+  {
+   "start": 1902.14,
+   "end": 1908.56,
+   "text": "a couple of flaps and that goes back home alone somebody trained that dog"
+  },
+  {
+   "start": 1908.56,
+   "end": 1914.48,
+   "text": "obviously wow alone that's impressive yeah guys even if you have like i mean"
+  },
+  {
+   "start": 1914.48,
+   "end": 1918.78,
+   "text": "even if a dog doesn't have one leg they can still function they"
+  },
+  {
+   "start": 1918.78,
+   "end": 1926.04,
+   "text": "can run they can do everything literally so help them out yeah"
+  },
+  {
+   "start": 1926.04,
+   "end": 1932.86,
+   "text": "okay let's give some vocabulary about dogs so we know past seepsa okay that's"
+  },
+  {
+   "start": 1932.86,
+   "end": 1935.0,
+   "text": "complicated but this is how we talk about dogs"
+  },
+  {
+   "start": 1935.0,
+   "end": 1938.86,
+   "text": "and how do we say barking and howling"
+  },
+  {
+   "start": 1941.36,
+   "end": 1949.38,
+   "text": "layati is barking and howling"
+  },
+  {
+   "start": 1949.38,
+   "end": 1950.3,
+   "text": "i guess it will be"
+  },
+  {
+   "start": 1951.76,
+   "end": 1955.24,
+   "text": "Zaviyat, I think."
+  },
+  {
+   "start": 1956.0,
+   "end": 1957.34,
+   "text": "That's a good one, actually."
+  },
+  {
+   "start": 1957.72,
+   "end": 1961.74,
+   "text": "Because there is one dog living next door in the garden whenever the"
+  },
+  {
+   "start": 1961.74,
+   "end": 1967.94,
+   "text": "church bells ring starts howling yeah it's howling man i didn't think i think"
+  },
+  {
+   "start": 1967.94,
+   "end": 1968.68,
+   "text": "it's a vietti i think"
+  },
+  {
+   "start": 1968.68,
+   "end": 1975.94,
+   "text": "is it like can i check it yes go ahead and to"
+  },
+  {
+   "start": 1975.94,
+   "end": 1982.78,
+   "text": "walk your dog will be shetati shetati psa right shape that yeah let me"
+  },
+  {
+   "start": 1982.78,
+   "end": 1985.4,
+   "text": "just see how to how"
+  },
+  {
+   "start": 1987.6,
+   "end": 1994.68,
+   "text": "how i was right yeah um i think i usually just hear them"
+  },
+  {
+   "start": 1994.68,
+   "end": 1996.78,
+   "text": "barking so that's why howling is i think"
+  },
+  {
+   "start": 1996.78,
+   "end": 2003.8,
+   "text": "it's specific for a breed like my dog maybe smaller ones maybe don't howl"
+  },
+  {
+   "start": 2003.8,
+   "end": 2008.72,
+   "text": "yeah no yeah i no everyone howls obviously but it's just like maybe someone"
+  },
+  {
+   "start": 2008.72,
+   "end": 2010.3,
+   "text": "more like i i always envision myself"
+  },
+  {
+   "start": 2010.3,
+   "end": 2016.22,
+   "text": "like huskies how charlie yeah that's probably more you know so something like that"
+  },
+  {
+   "start": 2016.22,
+   "end": 2016.42,
+   "text": "like singing a bit more but yeah everyone obviously does um what did you"
+  },
+  {
+   "start": 2016.42,
+   "end": 2016.7,
+   "text": "so they"
+  },
+  {
+   "start": 2020.88,
+   "end": 2025.64,
+   "text": "say then so what else was it what is the next thing that you"
+  },
+  {
+   "start": 2025.64,
+   "end": 2032.64,
+   "text": "asked me i asked walking a dog walking your dog is multiple"
+  },
+  {
+   "start": 2032.64,
+   "end": 2040.14,
+   "text": "yeah okay um then to adopt a dog uh which"
+  },
+  {
+   "start": 2040.14,
+   "end": 2042.44,
+   "text": "is so there are two ways how you can say it"
+  },
+  {
+   "start": 2042.44,
+   "end": 2047.88,
+   "text": "uh you can say which also means you can also say adopt a child"
+  },
+  {
+   "start": 2047.88,
+   "end": 2048.82,
+   "text": "it's the same"
+  },
+  {
+   "start": 2048.82,
+   "end": 2055.56,
+   "text": "right but you can say as well because dom is home so you can"
+  },
+  {
+   "start": 2055.56,
+   "end": 2063.06,
+   "text": "say reminds me of getting married for women it's udavati se, venčavati"
+  },
+  {
+   "start": 2063.06,
+   "end": 2065.12,
+   "text": "se, ženiti se, yeah."
+  },
+  {
+   "start": 2065.12,
+   "end": 2068.6,
+   "text": "But this one makes sense, u dom, so at home."
+  },
+  {
+   "start": 2069.52,
+   "end": 2072.07,
+   "text": "I don't think you would use that for a child like"
+  },
+  {
+   "start": 2072.07,
+   "end": 2078.17,
+   "text": "i mean sure you can but yeah it's just a bit more yeah and"
+  },
+  {
+   "start": 2078.17,
+   "end": 2080.03,
+   "text": "a quick reminder to our previous episode"
+  },
+  {
+   "start": 2080.03,
+   "end": 2085.23,
+   "text": "like one of our earliest episodes about adjectives or idioms sorry"
+  },
+  {
+   "start": 2087.07,
+   "end": 2094.11,
+   "text": "yeah loyal as a dog you can say tired as a"
+  },
+  {
+   "start": 2094.11,
+   "end": 2099.13,
+   "text": "dog um because they are always there was active"
+  },
+  {
+   "start": 2099.13,
+   "end": 2104.83,
+   "text": "do you like yeah when you compare cats and dogs dogs are active you"
+  },
+  {
+   "start": 2104.83,
+   "end": 2106.95,
+   "text": "know exactly exactly um and"
+  },
+  {
+   "start": 2106.95,
+   "end": 2109.85,
+   "text": "also another one that i thought it was like um you know when you're"
+  },
+  {
+   "start": 2109.85,
+   "end": 2115.23,
+   "text": "fighting like like uh like cats and dogs right so we say cow passimatka"
+  },
+  {
+   "start": 2115.23,
+   "end": 2118.55,
+   "text": "they're like cow passimatka okay all these idioms"
+  },
+  {
+   "start": 2118.55,
+   "end": 2123.31,
+   "text": "use the singular form that's great yeah we do use singular form yeah yeah"
+  },
+  {
+   "start": 2123.31,
+   "end": 2125.33,
+   "text": "thanks a lot yeah thank"
+  },
+  {
+   "start": 2125.33,
+   "end": 2129.47,
+   "text": "you i think we didn't cover everything that we wanted but still it's still"
+  },
+  {
+   "start": 2129.47,
+   "end": 2129.91,
+   "text": "if you have other"
+  },
+  {
+   "start": 2129.91,
+   "end": 2134.53,
+   "text": "questions to ask us please find us on instagram or send us an email"
+  },
+  {
+   "start": 2134.53,
+   "end": 2138.25,
+   "text": "and we will be happy to share whatever you need from us."
+  },
+  {
+   "start": 2139.03,
+   "end": 2140.45,
+   "text": "Yeah. Hvala puno."
+  },
+  {
+   "start": 2140.51,
+   "end": 2141.79,
+   "text": "Yeah. Hvala puno."
+  },
+  {
+   "start": 2142.03,
+   "end": 2145.47,
+   "text": "Uživaj. Ciao. Thank you for joining us today."
+  },
+  {
+   "start": 2145.47,
+   "end": 2146.37,
+   "text": "We hope you enjoyed our podcast"
+  },
+  {
+   "start": 2146.37,
+   "end": 2148.31,
+   "text": "and learned something new."
+  },
+  {
+   "start": 2148.37,
+   "end": 2149.79,
+   "text": "In case you have any comments,"
+  },
+  {
+   "start": 2149.79,
+   "end": 2152.45,
+   "text": "suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 2152.45,
+   "end": 2155.95,
+   "text": "on our Instagram page možekafa podcast."
+  },
+  {
+   "start": 2156.21,
+   "end": 2156.87,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.3: Dog Culture in Serbia",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939246/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075915-44100-1-3b7b203e135989c2.mp3"
+}

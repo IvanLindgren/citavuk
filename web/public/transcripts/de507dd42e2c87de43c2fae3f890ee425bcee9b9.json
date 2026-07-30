@@ -1,0 +1,1345 @@
+{
+ "duration": 955.58,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.78,
+   "end": 3.96,
+   "text": "Zdravo Sivima! Welcome to Možekofa podcast."
+  },
+  {
+   "start": 3.96,
+   "end": 4.78,
+   "text": "I am Maki."
+  },
+  {
+   "start": 4.78,
+   "end": 8.64,
+   "text": "This season of our podcast is a bit different from the previous ones."
+  },
+  {
+   "start": 8.92,
+   "end": 13.74,
+   "text": "I have another friend, also called Ivana, joining me to have short dialogues in"
+  },
+  {
+   "start": 13.74,
+   "end": 16.24,
+   "text": "Serbian. Then we will explain them in English."
+  },
+  {
+   "start": 16.24,
+   "end": 19.16,
+   "text": "This new season will be like mini Serbian lessons."
+  },
+  {
+   "start": 19.66,
+   "end": 23.08,
+   "text": "So if you are ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 24.76,
+   "end": 25.96,
+   "text": "Dobro dažli Sivima."
+  },
+  {
+   "start": 25.96,
+   "end": 27.18,
+   "text": "Ja sam Maki."
+  },
+  {
+   "start": 27.18,
+   "end": 29.7,
+   "text": "Iyi. Ivana. Kakos Ivana."
+  },
+  {
+   "start": 30.4,
+   "end": 35.26,
+   "text": "Dobro, hvala. Ivan, hvala puno na pitanju."
+  },
+  {
+   "start": 35.66,
+   "end": 41.54,
+   "text": "So today we are going to talk about our personal interests, our likes."
+  },
+  {
+   "start": 42.34,
+   "end": 44.46,
+   "text": "Yes. Licni ucusi."
+  },
+  {
+   "start": 44.66,
+   "end": 44.96,
+   "text": "Right."
+  },
+  {
+   "start": 44.96,
+   "end": 49.44,
+   "text": "Brao. Yes. That literally means personal interests."
+  },
+  {
+   "start": 49.82,
+   "end": 51.58,
+   "text": "Personal tastes, maybe."
+  },
+  {
+   "start": 51.58,
+   "end": 52.02,
+   "text": "Right? Ucusi. Maybe."
+  },
+  {
+   "start": 52.02,
+   "end": 53.34,
+   "text": "Nice. Yes."
+  },
+  {
+   "start": 53.34,
+   "end": 53.58,
+   "text": "Taste."
+  },
+  {
+   "start": 53.58,
+   "end": 54.82,
+   "text": "Yeah, it could be."
+  },
+  {
+   "start": 54.82,
+   "end": 54.98,
+   "text": "Yeah."
+  },
+  {
+   "start": 56.24,
+   "end": 61.4,
+   "text": "That's nice. So I will be asking her to give me some recommendations about"
+  },
+  {
+   "start": 68.28,
+   "end": 73.8,
+   "text": "And we will have conversation again, a short dialogue, and we will read it"
+  },
+  {
+   "start": 73.8,
+   "end": 78.25,
+   "text": "first. Let's see how much you understand, and then we will translate it for"
+  },
+  {
+   "start": 78.25,
+   "end": 83.19,
+   "text": "you, and then we will have a little bit of discussion about some words"
+  },
+  {
+   "start": 83.19,
+   "end": 86.23,
+   "text": "that are interesting, and then we will read it again."
+  },
+  {
+   "start": 86.37,
+   "end": 87.31,
+   "text": "All right. Let's go."
+  },
+  {
+   "start": 93.65,
+   "end": 93.81,
+   "text": "to be weird."
+  },
+  {
+   "start": 102.41,
+   "end": 103.97,
+   "text": "He loves jazz."
+  },
+  {
+   "start": 103.97,
+   "end": 106.27,
+   "text": "He listens to home when he does."
+  },
+  {
+   "start": 107.45,
+   "end": 111.99,
+   "text": "Super. Can you give me a good book?"
+  },
+  {
+   "start": 112.93,
+   "end": 115.19,
+   "text": "I am interested in srpskis."
+  },
+  {
+   "start": 115.19,
+   "end": 118.59,
+   "text": "I read the book on Drini Čuprije."
+  },
+  {
+   "start": 118.59,
+   "end": 121.95,
+   "text": "Ive Andrića. Andrića."
+  },
+  {
+   "start": 122.75,
+   "end": 125.51,
+   "text": "I can't, but I can't read many of our pieces."
+  },
+  {
+   "start": 125.51,
+   "end": 129.43,
+   "text": "I love romances about the lives of people in the dark and the world"
+  },
+  {
+   "start": 129.43,
+   "end": 130.77,
+   "text": "I've never been."
+  },
+  {
+   "start": 130.77,
+   "end": 134.71,
+   "text": "If I'm interested, I can recommend you to take some of them."
+  },
+  {
+   "start": 134.71,
+   "end": 143.11,
+   "text": "For example, Lovac na Zmajeve, A planine od Jeknuše, Hila da Hoseinija."
+  },
+  {
+   "start": 144.11,
+   "end": 145.01,
+   "text": "Thank you for the support."
+  },
+  {
+   "start": 145.01,
+   "end": 145.91,
+   "text": "Za preporuku. Dalje ste gledali neki dobar film u posljednje vreme?"
+  },
+  {
+   "start": 145.91,
+   "end": 149.95,
+   "text": "Do you have watched a good film in the last time?"
+  },
+  {
+   "start": 150.85,
+   "end": 150.95,
+   "text": "Ja najviše volim da gledam trilere i filmove inspirisane stvarnim događajima."
+  },
+  {
+   "start": 150.95,
+   "end": 155.49,
+   "text": "I love the thrillers and films inspired by the real ones."
+  },
+  {
+   "start": 156.01,
+   "end": 161.79,
+   "text": "I gledali smo Plivačice, na engleskom The Swimmers, film je biografska drama od dve"
+  },
+  {
+   "start": 161.79,
+   "end": 166.09,
+   "text": "serijske sestre Plivačice koje 2015."
+  },
+  {
+   "start": 166.09,
+   "end": 171.07,
+   "text": "beže iz rodnog grada Damaska o njihovom izbjegličkom putu do Grčke i učestvuju na"
+  },
+  {
+   "start": 171.07,
+   "end": 172.31,
+   "text": "olimpijadi u Riju."
+  },
+  {
+   "start": 172.97,
+   "end": 175.95,
+   "text": "Zvuci interesantno. Gledočuga."
+  },
+  {
+   "start": 176.85,
+   "end": 179.29,
+   "text": "Ok, that was the conversation."
+  },
+  {
+   "start": 179.41,
+   "end": 183.13,
+   "text": "I know Ivana's recommendations are long,"
+  },
+  {
+   "start": 183.13,
+   "end": 183.99,
+   "text": "but they are very useful"
+  },
+  {
+   "start": 183.99,
+   "end": 186.05,
+   "text": "for catching some new words"
+  },
+  {
+   "start": 186.05,
+   "end": 188.97,
+   "text": "and seeing some padži in it."
+  },
+  {
+   "start": 191.33,
+   "end": 192.39,
+   "text": "Let's start from the beginning."
+  },
+  {
+   "start": 192.39,
+   "end": 192.95,
+   "text": "I said,"
+  },
+  {
+   "start": 192.95,
+   "end": 194.45,
+   "text": "Jucis sam bila na koncertu"
+  },
+  {
+   "start": 194.45,
+   "end": 197.45,
+   "text": "rock muzike i divno sam se provala."
+  },
+  {
+   "start": 198.13,
+   "end": 198.77,
+   "text": "So I was in a"
+  },
+  {
+   "start": 202.47,
+   "end": 204.19,
+   "text": "I mi je toga mi je toga."
+  },
+  {
+   "start": 204.71,
+   "end": 206.11,
+   "text": "Doi u Svomse Pravele?"
+  },
+  {
+   "start": 206.63,
+   "end": 207.95,
+   "text": "Yes. I u sada?"
+  },
+  {
+   "start": 208.37,
+   "end": 209.29,
+   "text": "I u sada,"
+  },
+  {
+   "start": 214.71,
+   "end": 216.51,
+   "text": "You did not say I like, you said I love."
+  },
+  {
+   "start": 218.87,
+   "end": 219.65,
+   "text": "That's what we talked"
+  },
+  {
+   "start": 219.65,
+   "end": 221.37,
+   "text": "just before this."
+  },
+  {
+   "start": 222.05,
+   "end": 223.81,
+   "text": "The difference between like"
+  },
+  {
+   "start": 223.81,
+   "end": 227.22,
+   "text": "and love in Serbian also."
+  },
+  {
+   "start": 227.22,
+   "end": 228.18,
+   "text": "I like it and love."
+  },
+  {
+   "start": 230.6,
+   "end": 232.04,
+   "text": "How did you say it in Serbian again?"
+  },
+  {
+   "start": 232.84,
+   "end": 235.4,
+   "text": "In Serbian again, great."
+  },
+  {
+   "start": 239.16,
+   "end": 241.8,
+   "text": "And then I got curious about Srdjan's taste."
+  },
+  {
+   "start": 249.24,
+   "end": 252.32,
+   "text": "He loves jazz, he usually listens to his house while he works."
+  },
+  {
+   "start": 253.2,
+   "end": 255.98,
+   "text": "That means in English, he enjoys jazz."
+  },
+  {
+   "start": 256.58,
+   "end": 259.6,
+   "text": "Usually he listens while he works at home."
+  },
+  {
+   "start": 260.76,
+   "end": 263.4,
+   "text": "Yes, usually is usual there."
+  },
+  {
+   "start": 263.54,
+   "end": 263.78,
+   "text": "Yes."
+  },
+  {
+   "start": 265.62,
+   "end": 268.08,
+   "text": "And then I said, great, super."
+  },
+  {
+   "start": 268.74,
+   "end": 272.62,
+   "text": "And I asked if you have any book recommendation for me,"
+  },
+  {
+   "start": 272.62,
+   "end": 275.52,
+   "text": "or if you can recommend me any good book."
+  },
+  {
+   "start": 275.96,
+   "end": 280.08,
+   "text": "And I said, Serbian authors interest me."
+  },
+  {
+   "start": 280.44,
+   "end": 285.28,
+   "text": "And I said, I read The Bridge on Drini by Ivo Andrić."
+  },
+  {
+   "start": 286.3,
+   "end": 287.98,
+   "text": "So how did I say this?"
+  },
+  {
+   "start": 287.98,
+   "end": 288.96,
+   "text": "I said, super."
+  },
+  {
+   "start": 289.24,
+   "end": 296.96,
+   "text": "If you can give me a good book, I love Serbsk"
+  },
+  {
+   "start": 296.96,
+   "end": 297.42,
+   "text": "pizza."
+  },
+  {
+   "start": 298.96,
+   "end": 300.02,
+   "text": "And then I said, why?"
+  },
+  {
+   "start": 300.02,
+   "end": 304.2,
+   "text": "Pitala sam knjigu na Derenje Čuprija i ve Andrića."
+  },
+  {
+   "start": 304.56,
+   "end": 310.0,
+   "text": "Yes, great. Okay, now my answer is yes, I can, but I don't read"
+  },
+  {
+   "start": 310.0,
+   "end": 312.02,
+   "text": "so much Serbian writers."
+  },
+  {
+   "start": 313.24,
+   "end": 320.34,
+   "text": "I like novels about people lives in some distant countries that they have never"
+  },
+  {
+   "start": 320.34,
+   "end": 324.28,
+   "text": "been. Yes, from there I think we should, because you have a long answer,"
+  },
+  {
+   "start": 324.28,
+   "end": 325.34,
+   "text": "maybe sentence by sentence."
+  },
+  {
+   "start": 325.34,
+   "end": 331.28,
+   "text": "Yes, yes. So, mogu naravno, ali ne čita mnogo naše pise."
+  },
+  {
+   "start": 331.28,
+   "end": 336.86,
+   "text": "Ja volim romane o životima ljudi u nekim dalekim zemljama u kojima nikada nisam"
+  },
+  {
+   "start": 336.86,
+   "end": 344.42,
+   "text": "bila. Nice. So, actually you said, ali ne čita mnogo naše pise, so I"
+  },
+  {
+   "start": 344.42,
+   "end": 346.72,
+   "text": "don't read our writers much."
+  },
+  {
+   "start": 347.1,
+   "end": 350.38,
+   "text": "Yes, our. That means naše pise."
+  },
+  {
+   "start": 350.4,
+   "end": 352.26,
+   "text": "Naše pise. Okay, good."
+  },
+  {
+   "start": 352.26,
+   "end": 354.28,
+   "text": "And then you continued?"
+  },
+  {
+   "start": 354.72,
+   "end": 361.04,
+   "text": "Ja volim romane o životima ljudi u nekim dalekim zemljama u kojima nikada nisam"
+  },
+  {
+   "start": 361.04,
+   "end": 368.02,
+   "text": "bila. So I like novels about people's lives in some different countries."
+  },
+  {
+   "start": 368.18,
+   "end": 370.58,
+   "text": "Where I have never been."
+  },
+  {
+   "start": 370.84,
+   "end": 374.04,
+   "text": "U kojima nikada nisam bila."
+  },
+  {
+   "start": 375.28,
+   "end": 377.96,
+   "text": "And then you used if you like it."
+  },
+  {
+   "start": 378.48,
+   "end": 379.72,
+   "text": "If you're interested in that"
+  },
+  {
+   "start": 379.72,
+   "end": 381.8,
+   "text": "or if you like it, yes."
+  },
+  {
+   "start": 381.8,
+   "end": 383.5,
+   "text": "We both. I can"
+  },
+  {
+   "start": 383.5,
+   "end": 384.94,
+   "text": "recommend some of them"
+  },
+  {
+   "start": 384.94,
+   "end": 389.48,
+   "text": "such as The Kite"
+  },
+  {
+   "start": 389.48,
+   "end": 391.6,
+   "text": "Runner. That's the name of"
+  },
+  {
+   "start": 391.6,
+   "end": 393.18,
+   "text": "the books now."
+  },
+  {
+   "start": 393.18,
+   "end": 393.68,
+   "text": "A Thousand Splendid"
+  },
+  {
+   "start": 393.68,
+   "end": 395.46,
+   "text": "Suns and the Mountains"
+  },
+  {
+   "start": 395.46,
+   "end": 400.44,
+   "text": "Ehod. All from the same writer Halid Hoseini."
+  },
+  {
+   "start": 400.98,
+   "end": 403.42,
+   "text": "Okay. In Serbian, you said?"
+  },
+  {
+   "start": 403.74,
+   "end": 410.06,
+   "text": "Ako te to zanima, mogu da ti preporučim neki od njih, na primer, Lovac"
+  },
+  {
+   "start": 410.06,
+   "end": 417.18,
+   "text": "na zmajeve, A planina od Jeknuše, Hiljadu čudesnih sunaca, sve od istog pisa Halida"
+  },
+  {
+   "start": 417.18,
+   "end": 421.82,
+   "text": "Hoseinija. Nice. And of course, I didn't want to ask"
+  },
+  {
+   "start": 421.82,
+   "end": 422.96,
+   "text": "difficult questions I just said."
+  },
+  {
+   "start": 422.96,
+   "end": 425.52,
+   "text": "Thanks for the recommendation."
+  },
+  {
+   "start": 425.64,
+   "end": 428.02,
+   "text": "Hvala za preporuku."
+  },
+  {
+   "start": 429.14,
+   "end": 432.86,
+   "text": "And I ask if you have seen any good film lately, like,"
+  },
+  {
+   "start": 432.86,
+   "end": 437.54,
+   "text": "da li ste gledali neki dobar film u posljedne vreme?"
+  },
+  {
+   "start": 438.0,
+   "end": 443.58,
+   "text": "I most like thrillers and movies inspired by true stories."
+  },
+  {
+   "start": 443.58,
+   "end": 445.02,
+   "text": "And we have watched The Swimmers."
+  },
+  {
+   "start": 445.02,
+   "end": 446.94,
+   "text": "Here, watch the swimmers in Serbian."
+  },
+  {
+   "start": 446.94,
+   "end": 448.02,
+   "text": "Mi Srbijan, ja najviše volim thrillere"
+  },
+  {
+   "start": 448.02,
+   "end": 449.42,
+   "text": "I love thrillers and films inspired by real events."
+  },
+  {
+   "start": 449.42,
+   "end": 452.96,
+   "text": "i filmove inspirisane stvarnim događajima"
+  },
+  {
+   "start": 452.96,
+   "end": 453.46,
+   "text": "i gledali smo Plivačice."
+  },
+  {
+   "start": 453.46,
+   "end": 455.08,
+   "text": "We watched the plivačice."
+  },
+  {
+   "start": 455.46,
+   "end": 460.08,
+   "text": "And then you explain what this film is about, saying this is a biographical"
+  },
+  {
+   "start": 460.08,
+   "end": 467.34,
+   "text": "drama, right? Yes, about two sisters, swimmers, that 2015 flee"
+  },
+  {
+   "start": 467.34,
+   "end": 474.2,
+   "text": "from their hometown Damask about their refugee journey to Greece and their participation at"
+  },
+  {
+   "start": 474.2,
+   "end": 476.26,
+   "text": "the Olympic Games in Rio."
+  },
+  {
+   "start": 477.16,
+   "end": 484.7,
+   "text": "Serbia, yes. Film je biografska drama o dve sirijske sestre-plivačice"
+  },
+  {
+   "start": 484.7,
+   "end": 489.28,
+   "text": "koje 2015. beže iz rodnog grada Damaska"
+  },
+  {
+   "start": 489.28,
+   "end": 495.74,
+   "text": "o njihovom izbegličkom putu do Grčke i učestvovanju na olimpijadi u Riju."
+  },
+  {
+   "start": 497.04,
+   "end": 498.66,
+   "text": "Okay, we will dive into that later."
+  },
+  {
+   "start": 499.46,
+   "end": 501.96,
+   "text": "And I said, that sounds interesting."
+  },
+  {
+   "start": 501.96,
+   "end": 504.68,
+   "text": "Zvuci interessantno. Yes."
+  },
+  {
+   "start": 505.02,
+   "end": 506.38,
+   "text": "And I'll watch it."
+  },
+  {
+   "start": 506.5,
+   "end": 507.54,
+   "text": "Gleda, chuga."
+  },
+  {
+   "start": 508.88,
+   "end": 509.54,
+   "text": "Okay. That's it."
+  },
+  {
+   "start": 509.54,
+   "end": 516.8,
+   "text": "So, in your last long sentence, you said, film"
+  },
+  {
+   "start": 516.8,
+   "end": 517.94,
+   "text": "je biografska drama."
+  },
+  {
+   "start": 518.58,
+   "end": 520.84,
+   "text": "O. O is about or on."
+  },
+  {
+   "start": 520.86,
+   "end": 522.08,
+   "text": "Right, in English."
+  },
+  {
+   "start": 522.38,
+   "end": 523.84,
+   "text": "Yes. So, you put..."
+  },
+  {
+   "start": 523.84,
+   "end": 526.38,
+   "text": "It could be, yes, you know why?"
+  },
+  {
+   "start": 526.38,
+   "end": 528.46,
+   "text": "Because it's a very long sentence, yes."
+  },
+  {
+   "start": 529.96,
+   "end": 533.22,
+   "text": "And I started with film Je Biografska Drama,"
+  },
+  {
+   "start": 533.22,
+   "end": 536.24,
+   "text": "and now I wanted to explain about, as you said, o."
+  },
+  {
+   "start": 537.34,
+   "end": 539.9,
+   "text": "Then I continue again, as you said, o."
+  },
+  {
+   "start": 540.12,
+   "end": 547.41,
+   "text": "Njiho Misbekličkom put about their refugee journey and participation on"
+  },
+  {
+   "start": 547.41,
+   "end": 549.66,
+   "text": "Olympic Games in Rio."
+  },
+  {
+   "start": 550.18,
+   "end": 555.27,
+   "text": "I could use O again, but it will be so much O in one"
+  },
+  {
+   "start": 555.27,
+   "end": 561.68,
+   "text": "long sentence. So it's completely correct to put N participation at the end of"
+  },
+  {
+   "start": 561.68,
+   "end": 564.24,
+   "text": "this long sentence."
+  },
+  {
+   "start": 564.65,
+   "end": 569.4,
+   "text": "Okay. Nice. Zvucce is nice because we use it."
+  },
+  {
+   "start": 569.4,
+   "end": 570.28,
+   "text": "It sounds good."
+  },
+  {
+   "start": 570.28,
+   "end": 573.84,
+   "text": "Zvucce dobro, zvucce lepo, zvucce intrasantno."
+  },
+  {
+   "start": 574.68,
+   "end": 575.52,
+   "text": "We use it that way."
+  },
+  {
+   "start": 576.56,
+   "end": 580.42,
+   "text": "And as we discussed, ja volim i sviđam se."
+  },
+  {
+   "start": 581.44,
+   "end": 584.92,
+   "text": "So basically, I love versus I like, right?"
+  },
+  {
+   "start": 585.48,
+   "end": 589.15,
+   "text": "Yes. For example, proleće is coming soon, like spring."
+  },
+  {
+   "start": 589.9,
+   "end": 592.74,
+   "text": "And I would say ja volim proleće, right?"
+  },
+  {
+   "start": 593.46,
+   "end": 597.18,
+   "text": "Yes. You wouldn't say sviđam se proleće."
+  },
+  {
+   "start": 597.4,
+   "end": 600.46,
+   "text": "That means very strange in Serbian."
+  },
+  {
+   "start": 600.69,
+   "end": 607.11,
+   "text": "yes you use correct better word not better correct word yes i like or"
+  },
+  {
+   "start": 607.11,
+   "end": 609.35,
+   "text": "i love yes the other"
+  },
+  {
+   "start": 609.35,
+   "end": 614.63,
+   "text": "one yeah i if you are sure you like something really like something to"
+  },
+  {
+   "start": 614.63,
+   "end": 615.11,
+   "text": "be on the safe side"
+  },
+  {
+   "start": 615.11,
+   "end": 622.33,
+   "text": "you use volume yeah yes nice and another beautiful word"
+  },
+  {
+   "start": 622.33,
+   "end": 626.49,
+   "text": "that i also use luckily even though it's hard It's a little bit hard"
+  },
+  {
+   "start": 626.49,
+   "end": 627.67,
+   "text": "to say in the beginning."
+  },
+  {
+   "start": 627.87,
+   "end": 630.33,
+   "text": "Obožava te. So, obožava."
+  },
+  {
+   "start": 630.77,
+   "end": 632.51,
+   "text": "It's a really nice word, yes."
+  },
+  {
+   "start": 632.69,
+   "end": 637.21,
+   "text": "Yes. And do you know my, do you remember my line that whenever I"
+  },
+  {
+   "start": 637.21,
+   "end": 639.69,
+   "text": "meet someone new, I say this."
+  },
+  {
+   "start": 640.67,
+   "end": 642.47,
+   "text": "Obožavam da živim u Kruševcu."
+  },
+  {
+   "start": 643.77,
+   "end": 649.29,
+   "text": "Something similar, but it's also now I can say it better, but I learned"
+  },
+  {
+   "start": 649.29,
+   "end": 651.47,
+   "text": "obožavam život ovde."
+  },
+  {
+   "start": 652.07,
+   "end": 652.17,
+   "text": "Ah, okay."
+  },
+  {
+   "start": 652.17,
+   "end": 653.89,
+   "text": "That's the shorter, yeah, okay."
+  },
+  {
+   "start": 654.79,
+   "end": 655.71,
+   "text": "There was no podizji, nothing."
+  },
+  {
+   "start": 655.71,
+   "end": 658.83,
+   "text": "But now I can say,"
+  },
+  {
+   "start": 658.83,
+   "end": 663.19,
+   "text": "I live in Korshivu or in Serbia."
+  },
+  {
+   "start": 663.43,
+   "end": 665.23,
+   "text": "Yes, in Serbia."
+  },
+  {
+   "start": 665.29,
+   "end": 670.89,
+   "text": "Okay. And I wanted to a little bit explain the pronouns,"
+  },
+  {
+   "start": 670.89,
+   "end": 672.61,
+   "text": "like me, mene."
+  },
+  {
+   "start": 673.29,
+   "end": 679.03,
+   "text": "So when we talked about, when I said I have some interest in Serbian."
+  },
+  {
+   "start": 679.03,
+   "end": 680.95,
+   "text": "Mene zanimaju serbski pizzi."
+  },
+  {
+   "start": 681.67,
+   "end": 683.37,
+   "text": "Yes. I started with mene."
+  },
+  {
+   "start": 683.67,
+   "end": 686.61,
+   "text": "That means I'm giving some stress on me."
+  },
+  {
+   "start": 686.61,
+   "end": 688.61,
+   "text": "Like to me, they are really interesting."
+  },
+  {
+   "start": 688.61,
+   "end": 690.33,
+   "text": "Like I find them interesting."
+  },
+  {
+   "start": 690.75,
+   "end": 691.27,
+   "text": "Yes."
+  },
+  {
+   "start": 691.27,
+   "end": 697.61,
+   "text": "So mene. But in another way, we can also say zanimaju me serbski pizzi."
+  },
+  {
+   "start": 698.19,
+   "end": 703.87,
+   "text": "Right. Yes. you're not emphasizing me in that sentence you just say i'm interested"
+  },
+  {
+   "start": 703.87,
+   "end": 705.13,
+   "text": "in which is okay completely"
+  },
+  {
+   "start": 705.13,
+   "end": 712.41,
+   "text": "like uh you don't want to stress me yeah but for example both"
+  },
+  {
+   "start": 712.41,
+   "end": 714.55,
+   "text": "is correct actually yeah okay"
+  },
+  {
+   "start": 714.55,
+   "end": 721.93,
+   "text": "and then you said if that interests you"
+  },
+  {
+   "start": 721.93,
+   "end": 726.67,
+   "text": "right in this case would you also say"
+  },
+  {
+   "start": 729.05,
+   "end": 730.27,
+   "text": "again, both are correct"
+  },
+  {
+   "start": 730.27,
+   "end": 732.89,
+   "text": "but it's more informal"
+  },
+  {
+   "start": 732.89,
+   "end": 738.53,
+   "text": "it will be like again, you want to stress"
+  },
+  {
+   "start": 738.53,
+   "end": 740.83,
+   "text": "like you are maybe"
+  },
+  {
+   "start": 740.83,
+   "end": 741.95,
+   "text": "some important person"
+  },
+  {
+   "start": 741.95,
+   "end": 744.81,
+   "text": "or somebody that you don't know"
+  },
+  {
+   "start": 744.81,
+   "end": 745.49,
+   "text": "more"
+  },
+  {
+   "start": 745.49,
+   "end": 750.33,
+   "text": "depends with whom you speak both of them are grammatically correct."
+  },
+  {
+   "start": 750.33,
+   "end": 752.01,
+   "text": "They mean the same thing."
+  },
+  {
+   "start": 753.49,
+   "end": 753.91,
+   "text": "And then when you talked about the films that you love, in English you Okay."
+  },
+  {
+   "start": 758.71,
+   "end": 761.53,
+   "text": "would say, like, I love thrillers the most, right?"
+  },
+  {
+   "start": 762.05,
+   "end": 765.11,
+   "text": "But in Serbian, again, because of the stress maybe,"
+  },
+  {
+   "start": 765.11,
+   "end": 768.55,
+   "text": "you say, ja najviše volim thrillere."
+  },
+  {
+   "start": 769.33,
+   "end": 773.45,
+   "text": "Aha, da. So najviše comes before the verb, right?"
+  },
+  {
+   "start": 774.13,
+   "end": 779.21,
+   "text": "yes it comes before like that i most like like that yes and i"
+  },
+  {
+   "start": 779.21,
+   "end": 781.33,
+   "text": "wish volume i i want to stress yes"
+  },
+  {
+   "start": 781.33,
+   "end": 789.07,
+   "text": "what i really really yes really like nice and then you used tvarnim"
+  },
+  {
+   "start": 789.07,
+   "end": 791.69,
+   "text": "dogadjajima dogadjaj i learned this"
+  },
+  {
+   "start": 791.69,
+   "end": 798.89,
+   "text": "like a few months ago that means event events"
+  },
+  {
+   "start": 798.89,
+   "end": 804.71,
+   "text": "dogadjaji now this is in plural yeah tvarni dogadžaji, real events."
+  },
+  {
+   "start": 805.67,
+   "end": 805.87,
+   "text": "here, and we talked about But"
+  },
+  {
+   "start": 808.25,
+   "end": 810.41,
+   "text": "movies that inspired by"
+  },
+  {
+   "start": 810.41,
+   "end": 812.71,
+   "text": "in English, it will be true stories,"
+  },
+  {
+   "start": 812.71,
+   "end": 817.17,
+   "text": "but we will not say in Serbian realne priče."
+  },
+  {
+   "start": 817.43,
+   "end": 819.23,
+   "text": "So we used stvarni dogadžaji."
+  },
+  {
+   "start": 820.19,
+   "end": 822.21,
+   "text": "Real events. Yeah."
+  },
+  {
+   "start": 822.21,
+   "end": 826.66,
+   "text": "Very nice. And gledaj ću ga, I said, I will watch it."
+  },
+  {
+   "start": 826.66,
+   "end": 829.72,
+   "text": "That go refers to film."
+  },
+  {
+   "start": 829.72,
+   "end": 830.94,
+   "text": "Like I will watch it."
+  },
+  {
+   "start": 831.56,
+   "end": 834.52,
+   "text": "Yes. So for it, we use go."
+  },
+  {
+   "start": 834.94,
+   "end": 838.46,
+   "text": "But if that it was a female word, like keniga, then it would."
+  },
+  {
+   "start": 838.46,
+   "end": 839.2,
+   "text": "Chita chou ye."
+  },
+  {
+   "start": 839.56,
+   "end": 840.34,
+   "text": "Glad to chou ye."
+  },
+  {
+   "start": 840.42,
+   "end": 840.64,
+   "text": "Yes. Depending on what kind of it you're saying, you choose go or ye."
+  },
+  {
+   "start": 846.2,
+   "end": 846.3,
+   "text": "Okay."
+  },
+  {
+   "start": 846.3,
+   "end": 848.4,
+   "text": "Perfect. Thank you so much."
+  },
+  {
+   "start": 848.6,
+   "end": 849.98,
+   "text": "Let's read it one more time."
+  },
+  {
+   "start": 850.3,
+   "end": 852.62,
+   "text": "in a normal pace and then we finish."
+  },
+  {
+   "start": 863.38,
+   "end": 864.44,
+   "text": "It's a jazz jazz."
+  },
+  {
+   "start": 864.92,
+   "end": 866.78,
+   "text": "You usually listen to the house while you're working."
+  },
+  {
+   "start": 867.62,
+   "end": 871.42,
+   "text": "Great. Can you give me a good book?"
+  },
+  {
+   "start": 872.24,
+   "end": 874.3,
+   "text": "I'm interested in Serbian writing."
+  },
+  {
+   "start": 875.12,
+   "end": 878.44,
+   "text": "I've read the book on the Dreni Čuprija, Ive Andriće."
+  },
+  {
+   "start": 879.38,
+   "end": 881.94,
+   "text": "I can't read it, but I can't read it."
+  },
+  {
+   "start": 900.0,
+   "end": 902.96,
+   "text": "Hvala za preporuku."
+  },
+  {
+   "start": 902.96,
+   "end": 906.64,
+   "text": "Dalje ste gledali neki dobar film u posljedne vreme?"
+  },
+  {
+   "start": 907.32,
+   "end": 911.16,
+   "text": "Ja najviše volim trilere i filmove inspirisane stvarnim događajima."
+  },
+  {
+   "start": 911.16,
+   "end": 913.28,
+   "text": "I gledali smo Plivačice."
+  },
+  {
+   "start": 913.28,
+   "end": 920.0,
+   "text": "Film je biogradska drama o dve iriske sestre Plivačice koje 2015."
+  },
+  {
+   "start": 920.0,
+   "end": 925.8,
+   "text": "beže iz rodnog grada Damaska o njihovom izbjekličkom putu do Grčke i učestvovnju na"
+  },
+  {
+   "start": 925.8,
+   "end": 926.96,
+   "text": "olimpijadi u Riju."
+  },
+  {
+   "start": 927.56,
+   "end": 931.96,
+   "text": "Zvuce interessantno Gledatjuka Ok, that was it."
+  },
+  {
+   "start": 931.96,
+   "end": 938.02,
+   "text": "Thank you Ivana Hvala ti puno Hvala tebi, thank you Ok, ci imamo se,"
+  },
+  {
+   "start": 938.02,
+   "end": 938.84,
+   "text": "ciao Ciao"
+  },
+  {
+   "start": 938.84,
+   "end": 942.62,
+   "text": "Thank you for listening to us"
+  },
+  {
+   "start": 942.62,
+   "end": 944.72,
+   "text": "today. We hope you enjoyed our podcast"
+  },
+  {
+   "start": 944.72,
+   "end": 946.32,
+   "text": "and learned something new"
+  },
+  {
+   "start": 946.32,
+   "end": 948.62,
+   "text": "In case you have any comments, suggestions"
+  },
+  {
+   "start": 948.62,
+   "end": 950.62,
+   "text": "or questions, make sure to share"
+  },
+  {
+   "start": 950.62,
+   "end": 954.24,
+   "text": "them on our Instagram page Može Kafa Podcast."
+  },
+  {
+   "start": 954.24,
+   "end": 954.86,
+   "text": "Prijatno"
+  }
+ ],
+ "title": "Ep.3: Lični ukusi",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/66570268/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-2-14%2F318048595-44100-2-54697d02aab82.m4a"
+}

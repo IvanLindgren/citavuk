@@ -1,0 +1,2195 @@
+{
+ "duration": 1807.52,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 31.38,
+   "end": 39.04,
+   "text": "that looks"
+  },
+  {
+   "start": 39.04,
+   "end": 42.0,
+   "text": "like we are gonna be like fortune tellers but you're not"
+  },
+  {
+   "start": 42.0,
+   "end": 47.14,
+   "text": "no it doesn't this is supposed to be a topic horror stories or like"
+  },
+  {
+   "start": 47.14,
+   "end": 54.78,
+   "text": "kind of like scary stories legends yeah from serbia from serbia uh i do"
+  },
+  {
+   "start": 54.78,
+   "end": 57.52,
+   "text": "have to say i don't know many of them so I'm really curious to"
+  },
+  {
+   "start": 57.52,
+   "end": 61.64,
+   "text": "see what we're gonna learn today yeah I don't know"
+  },
+  {
+   "start": 61.64,
+   "end": 67.2,
+   "text": "some of them by heart I just found them on the internet hoping that"
+  },
+  {
+   "start": 67.2,
+   "end": 68.26,
+   "text": "you would know the details"
+  },
+  {
+   "start": 68.26,
+   "end": 75.52,
+   "text": "let's see oh before we move on uh people are liking our YouTube"
+  },
+  {
+   "start": 75.52,
+   "end": 77.6,
+   "text": "where they can actually see us"
+  },
+  {
+   "start": 77.6,
+   "end": 82.82,
+   "text": "so it's actually boosting our views and people are like really excited I mean"
+  },
+  {
+   "start": 82.82,
+   "end": 86.9,
+   "text": "it actually makes sense because i at me as a viewer i'm also really"
+  },
+  {
+   "start": 86.9,
+   "end": 90.5,
+   "text": "excited to not only hear but like watch a podcast"
+  },
+  {
+   "start": 90.5,
+   "end": 95.0,
+   "text": "that's what i'm used to i'm a i'm a typical youtuber or youtube user"
+  },
+  {
+   "start": 95.0,
+   "end": 97.5,
+   "text": "i know so uh yeah i'm"
+  },
+  {
+   "start": 97.5,
+   "end": 100.78,
+   "text": "really happy that you like it so i think i hope this is gonna"
+  },
+  {
+   "start": 100.78,
+   "end": 103.68,
+   "text": "make it even better this yeah thank"
+  },
+  {
+   "start": 103.68,
+   "end": 108.74,
+   "text": "you for all the followers and all the supporters i see that many more"
+  },
+  {
+   "start": 108.74,
+   "end": 113.88,
+   "text": "are coming to support us we are super grateful about this yeah real happy"
+  },
+  {
+   "start": 113.88,
+   "end": 117.46,
+   "text": "okay so why did we choose this first of all why"
+  },
+  {
+   "start": 117.46,
+   "end": 123.02,
+   "text": "did we want to cover legends and mysteries from serbia i think initially we"
+  },
+  {
+   "start": 123.02,
+   "end": 123.46,
+   "text": "were thinking of"
+  },
+  {
+   "start": 123.46,
+   "end": 127.78,
+   "text": "having like a halloween episode but then the halloween was gone and we were"
+  },
+  {
+   "start": 127.78,
+   "end": 133.02,
+   "text": "really busy yeah guys we didn't have an episode last week so um yeah"
+  },
+  {
+   "start": 133.02,
+   "end": 135.16,
+   "text": "quite busy these weeks i think it's"
+  },
+  {
+   "start": 135.16,
+   "end": 139.9,
+   "text": "going to be months so that was an initial initial thought but you also"
+  },
+  {
+   "start": 139.9,
+   "end": 141.3,
+   "text": "heard a lot of or like some"
+  },
+  {
+   "start": 141.3,
+   "end": 147.44,
+   "text": "stories about serbia so um yeah it was why not why not it's i"
+  },
+  {
+   "start": 147.44,
+   "end": 148.2,
+   "text": "think culturally it's also really"
+  },
+  {
+   "start": 148.2,
+   "end": 154.34,
+   "text": "cool to know i also went to a piazza a market and i realized"
+  },
+  {
+   "start": 154.34,
+   "end": 158.54,
+   "text": "there are so many flowers and i asked the seller said it's the day"
+  },
+  {
+   "start": 158.54,
+   "end": 163.32,
+   "text": "of debts that people so that's why I was like okay this is something"
+  },
+  {
+   "start": 163.32,
+   "end": 168.14,
+   "text": "that I don't know maybe our followers also don't know let's talk about this"
+  },
+  {
+   "start": 168.14,
+   "end": 169.92,
+   "text": "first of all legends"
+  },
+  {
+   "start": 169.92,
+   "end": 175.78,
+   "text": "let's start with legends did you grow up listening to legends or reading legends"
+  },
+  {
+   "start": 175.78,
+   "end": 177.18,
+   "text": "or I have to be"
+  },
+  {
+   "start": 177.18,
+   "end": 182.74,
+   "text": "honest I I haven't really that much I think a lot of the the"
+  },
+  {
+   "start": 182.74,
+   "end": 188.2,
+   "text": "legends or so on were mostly like about marco kraljevic of course you know"
+  },
+  {
+   "start": 188.2,
+   "end": 194.24,
+   "text": "and there were some kids kind of stories where uh actually i read some"
+  },
+  {
+   "start": 194.24,
+   "end": 196.1,
+   "text": "of them like where you should get some sort of"
+  },
+  {
+   "start": 196.1,
+   "end": 200.78,
+   "text": "message from it and some of them are quite i mean for the kid"
+  },
+  {
+   "start": 200.78,
+   "end": 204.24,
+   "text": "i mean i mean it's quite brutal"
+  },
+  {
+   "start": 204.24,
+   "end": 207.94,
+   "text": "and quite scary when we were listening to them they were not they did"
+  },
+  {
+   "start": 207.94,
+   "end": 209.3,
+   "text": "not sound like that that"
+  },
+  {
+   "start": 209.3,
+   "end": 213.18,
+   "text": "much but now when i'm reading like whoa this is a horrible story like"
+  },
+  {
+   "start": 213.18,
+   "end": 217.56,
+   "text": "animals eating people and so it's just crazy."
+  },
+  {
+   "start": 218.04,
+   "end": 220.77,
+   "text": "So, but I do have to say i'm really excited for this"
+  },
+  {
+   "start": 220.77,
+   "end": 224.35,
+   "text": "episode because i don't know a lot i haven't heard a lot of horror"
+  },
+  {
+   "start": 224.35,
+   "end": 225.13,
+   "text": "stories maybe my friends"
+  },
+  {
+   "start": 225.13,
+   "end": 230.03,
+   "text": "were trying to protect me so yeah scary stories or whatever yeah as we"
+  },
+  {
+   "start": 230.03,
+   "end": 230.57,
+   "text": "already mentioned who is"
+  },
+  {
+   "start": 230.57,
+   "end": 237.37,
+   "text": "this marco marco krajevic i would think we had we talked about him in"
+  },
+  {
+   "start": 237.37,
+   "end": 242.65,
+   "text": "one episode didn't we i'm not sure i think we did we was um"
+  },
+  {
+   "start": 242.65,
+   "end": 247.61,
+   "text": "was the uh oh yes it was a serbian literature yeah yeah"
+  },
+  {
+   "start": 247.61,
+   "end": 251.23,
+   "text": "literature and there was a lot of stories about him and he's kind of"
+  },
+  {
+   "start": 251.23,
+   "end": 253.79,
+   "text": "seen as the uh hero yes"
+  },
+  {
+   "start": 253.79,
+   "end": 258.75,
+   "text": "hero of serbia even though he was muslim actually if you think about it"
+  },
+  {
+   "start": 258.75,
+   "end": 260.79,
+   "text": "yeah he was know that yeah"
+  },
+  {
+   "start": 260.79,
+   "end": 266.71,
+   "text": "so um there's a lot of stories about him and him his heroic deeds"
+  },
+  {
+   "start": 266.71,
+   "end": 269.55,
+   "text": "towards serbian people during the Ottoman Empire."
+  },
+  {
+   "start": 269.55,
+   "end": 274.81,
+   "text": "So the most famous one is Marco and the Eagle, I guess, right?"
+  },
+  {
+   "start": 275.49,
+   "end": 277.17,
+   "text": "Ooh, I don't know that one."
+  },
+  {
+   "start": 277.17,
+   "end": 278.65,
+   "text": "What is it about?"
+  },
+  {
+   "start": 278.65,
+   "end": 280.45,
+   "text": "I'm not sure."
+  },
+  {
+   "start": 280.45,
+   "end": 282.07,
+   "text": "I read it, but I cannot retell it."
+  },
+  {
+   "start": 282.07,
+   "end": 282.35,
+   "text": "will leave the link."
+  },
+  {
+   "start": 282.35,
+   "end": 282.53,
+   "text": "So I"
+  },
+  {
+   "start": 283.67,
+   "end": 285.05,
+   "text": "It's a long story."
+  },
+  {
+   "start": 285.05,
+   "end": 287.39,
+   "text": "So it's hard to remember the details."
+  },
+  {
+   "start": 287.39,
+   "end": 288.95,
+   "text": "We can add also the"
+  },
+  {
+   "start": 288.95,
+   "end": 292.03,
+   "text": "links on Patreon, right?"
+  },
+  {
+   "start": 292.03,
+   "end": 294.25,
+   "text": "I think that will be a really good opportunity for them to use the"
+  },
+  {
+   "start": 294.25,
+   "end": 299.11,
+   "text": "links. a bit more links then yeah yeah okay who are the other heroes"
+  },
+  {
+   "start": 299.11,
+   "end": 301.29,
+   "text": "oh i see you wrote down some of the"
+  },
+  {
+   "start": 301.29,
+   "end": 306.19,
+   "text": "things this is so if you guys don't know much about serbia like when"
+  },
+  {
+   "start": 306.19,
+   "end": 307.21,
+   "text": "serbia started being i"
+  },
+  {
+   "start": 307.21,
+   "end": 311.99,
+   "text": "think officially it still wasn't a country if i'm mistaken but it started being"
+  },
+  {
+   "start": 311.99,
+   "end": 313.15,
+   "text": "governed by"
+  },
+  {
+   "start": 313.15,
+   "end": 317.41,
+   "text": "certain people and one of them was stefan nemania so it's the whole nemanici"
+  },
+  {
+   "start": 317.41,
+   "end": 323.45,
+   "text": "the whole family so i think yeah we even like the new statue in"
+  },
+  {
+   "start": 323.45,
+   "end": 326.45,
+   "text": "front of in belgrade in front of the main"
+  },
+  {
+   "start": 326.45,
+   "end": 329.93,
+   "text": "station yeah stefan emania exactly huge guy"
+  },
+  {
+   "start": 329.93,
+   "end": 336.13,
+   "text": "yes yeah the huge guy actually yeah pick a statue there i guess yeah"
+  },
+  {
+   "start": 336.13,
+   "end": 338.49,
+   "text": "um and also"
+  },
+  {
+   "start": 338.49,
+   "end": 345.55,
+   "text": "his son is quite um famous famous respected as well sveti sala because"
+  },
+  {
+   "start": 345.55,
+   "end": 350.19,
+   "text": "he was the how do you say he was important for the education in"
+  },
+  {
+   "start": 350.19,
+   "end": 355.39,
+   "text": "serbia because he was the one who was spreading basically the education in Serbia"
+  },
+  {
+   "start": 355.39,
+   "end": 358.55,
+   "text": "he he was a but yeah is it a monk I don't know but"
+  },
+  {
+   "start": 358.55,
+   "end": 364.15,
+   "text": "yeah but he's also responsible for for some monasteries and so on and this"
+  },
+  {
+   "start": 364.15,
+   "end": 364.33,
+   "text": "is exactly where"
+  },
+  {
+   "start": 364.33,
+   "end": 370.51,
+   "text": "the education was happening right in monasteries mostly in churches and so on at"
+  },
+  {
+   "start": 370.51,
+   "end": 370.63,
+   "text": "that time"
+  },
+  {
+   "start": 370.63,
+   "end": 377.81,
+   "text": "and that this beautiful church house and Sawa in Valgrady is also a landmark"
+  },
+  {
+   "start": 379.39,
+   "end": 385.11,
+   "text": "yes exactly oh yeah yeah and and just for everyone to know because monasteries"
+  },
+  {
+   "start": 385.11,
+   "end": 392.39,
+   "text": "are such and and churches are such preserving our history in them"
+  },
+  {
+   "start": 392.39,
+   "end": 393.81,
+   "text": "they're really a big part of our culture"
+  },
+  {
+   "start": 393.81,
+   "end": 398.03,
+   "text": "and i think they can even do tours where you can go through serbia"
+  },
+  {
+   "start": 398.03,
+   "end": 400.75,
+   "text": "and visit monasteries and so on"
+  },
+  {
+   "start": 400.75,
+   "end": 406.57,
+   "text": "so that's a that's a maybe an interesting thing to do before we continue"
+  },
+  {
+   "start": 406.57,
+   "end": 410.69,
+   "text": "with the show here's a Quick reminder, this podcast is free for everyone and"
+  },
+  {
+   "start": 410.69,
+   "end": 412.41,
+   "text": "supported by listeners like you."
+  },
+  {
+   "start": 412.41,
+   "end": 415.81,
+   "text": "We hope that this podcast is useful and companion to you."
+  },
+  {
+   "start": 416.23,
+   "end": 418.29,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 418.59,
+   "end": 423.11,
+   "text": "To help us continue creating useful content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 423.11,
+   "end": 426.43,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 427.09,
+   "end": 432.97,
+   "text": "You may just go to buymeacoffee.com slash mozacaffapodcast and send us some cups of"
+  },
+  {
+   "start": 432.97,
+   "end": 433.07,
+   "text": "coffee."
+  },
+  {
+   "start": 433.07,
+   "end": 436.9,
+   "text": "You may also become a member of our show on Patreon.com."
+  },
+  {
+   "start": 436.9,
+   "end": 442.34,
+   "text": "slash mozda kafapodcast and get extra benefits like bonus content,"
+  },
+  {
+   "start": 442.34,
+   "end": 445.94,
+   "text": "full transcripts of the show in Serbian, or even join us on the show."
+  },
+  {
+   "start": 446.8,
+   "end": 450.96,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 450.96,
+   "end": 453.48,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 453.78,
+   "end": 455.64,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 456.3,
+   "end": 461.72,
+   "text": "Tarlazar is also famous here because we have a neighborhood, Lazarica."
+  },
+  {
+   "start": 462.7,
+   "end": 464.3,
+   "text": "Oh! Yeah."
+  },
+  {
+   "start": 465.64,
+   "end": 470.72,
+   "text": "and there's this tower there so it's a historic nice place in in kuru"
+  },
+  {
+   "start": 470.72,
+   "end": 477.1,
+   "text": "shawadz nazaritsa neighborhood i mean okay uh as you said the royal prince um"
+  },
+  {
+   "start": 477.26,
+   "end": 484.8,
+   "text": "there's a we are very proud people so"
+  },
+  {
+   "start": 484.8,
+   "end": 490.68,
+   "text": "we we like to you know kind of give ode to certain people but"
+  },
+  {
+   "start": 490.68,
+   "end": 495.72,
+   "text": "also to we that's why also we have a lot of like saints and"
+  },
+  {
+   "start": 495.72,
+   "end": 501.86,
+   "text": "celebrate them still okay you have these real uh heroes and you also have"
+  },
+  {
+   "start": 501.86,
+   "end": 502.96,
+   "text": "I'm not sure real or unreal"
+  },
+  {
+   "start": 502.96,
+   "end": 509.1,
+   "text": "kind of bad guys right are they bad guys or good guys"
+  },
+  {
+   "start": 509.1,
+   "end": 515.9,
+   "text": "I think if you look at today's series and movies they're the good guys"
+  },
+  {
+   "start": 515.9,
+   "end": 520.82,
+   "text": "you know they're heroes yeah yeah it was uh so the reason why we"
+  },
+  {
+   "start": 520.82,
+   "end": 523.58,
+   "text": "talk about vampires is because it's the only serbian word"
+  },
+  {
+   "start": 523.58,
+   "end": 530.72,
+   "text": "that's been used globally and why is it is that because everyone knows about"
+  },
+  {
+   "start": 530.72,
+   "end": 531.28,
+   "text": "dracula right but"
+  },
+  {
+   "start": 531.28,
+   "end": 538.86,
+   "text": "this is like a different thing and originated from transylvania but vampir supposedly"
+  },
+  {
+   "start": 538.86,
+   "end": 539.12,
+   "text": "let's say it"
+  },
+  {
+   "start": 539.12,
+   "end": 544.24,
+   "text": "originated from serbia because we we there were some stories about certain people that"
+  },
+  {
+   "start": 544.24,
+   "end": 544.96,
+   "text": "were acting some"
+  },
+  {
+   "start": 544.96,
+   "end": 551.98,
+   "text": "a bit weirdly and sucking blood and sleeping the whole day and stuff like"
+  },
+  {
+   "start": 551.98,
+   "end": 555.02,
+   "text": "that. So this is where the vampire comes from."
+  },
+  {
+   "start": 555.02,
+   "end": 559.28,
+   "text": "And actually, there's lots of literature about that, actually."
+  },
+  {
+   "start": 560.52,
+   "end": 563.5,
+   "text": "I do have to say no one really talked to me about this."
+  },
+  {
+   "start": 563.64,
+   "end": 566.24,
+   "text": "But I did, when I was younger, I did read about it."
+  },
+  {
+   "start": 566.24,
+   "end": 567.98,
+   "text": "Because, yeah, you know, you're younger."
+  },
+  {
+   "start": 568.1,
+   "end": 568.72,
+   "text": "You got curious."
+  },
+  {
+   "start": 569.26,
+   "end": 575.4,
+   "text": "Yeah. spooky and like magic and like vampires and so on so yeah that's"
+  },
+  {
+   "start": 575.4,
+   "end": 575.88,
+   "text": "very interesting when i was"
+  },
+  {
+   "start": 575.88,
+   "end": 582.24,
+   "text": "growing up i had never i guess had a vampire story like local vampire"
+  },
+  {
+   "start": 582.24,
+   "end": 583.76,
+   "text": "story so that feels cool"
+  },
+  {
+   "start": 583.76,
+   "end": 589.34,
+   "text": "you know you know what's the worst thing that it's not really like fun"
+  },
+  {
+   "start": 589.34,
+   "end": 590.46,
+   "text": "stories you know these"
+  },
+  {
+   "start": 590.46,
+   "end": 594.64,
+   "text": "stories are not like fun like legend myths it the way they are told"
+  },
+  {
+   "start": 594.64,
+   "end": 599.3,
+   "text": "is as as is like a documentary in a way so it's not really"
+  },
+  {
+   "start": 599.3,
+   "end": 603.12,
+   "text": "like a thing you talk like tell other people or like kids or someone"
+  },
+  {
+   "start": 603.12,
+   "end": 603.36,
+   "text": "it's like you're not really quite sure what happened so it's like this this"
+  },
+  {
+   "start": 603.36,
+   "end": 603.6,
+   "text": "but"
+  },
+  {
+   "start": 607.66,
+   "end": 608.0,
+   "text": "true story that"
+  },
+  {
+   "start": 608.0,
+   "end": 613.0,
+   "text": "you don't really like want to mess with so i think the first the"
+  },
+  {
+   "start": 613.0,
+   "end": 615.5,
+   "text": "first official vampire that we had"
+  },
+  {
+   "start": 615.5,
+   "end": 621.96,
+   "text": "in our uh documents i also think it was also in austrian documents he"
+  },
+  {
+   "start": 621.96,
+   "end": 628.74,
+   "text": "was there they were like talking about a vampire like sucking blood sucking person"
+  },
+  {
+   "start": 628.74,
+   "end": 632.06,
+   "text": "Petar Blagojevic okay Petar Blagojevic"
+  },
+  {
+   "start": 632.06,
+   "end": 638.6,
+   "text": "so that's a quite Serbian name quite Serbian 17 I found that he lived"
+  },
+  {
+   "start": 638.6,
+   "end": 640.54,
+   "text": "around 1720s or something"
+  },
+  {
+   "start": 640.54,
+   "end": 648.74,
+   "text": "like that I think the story went out in 1725 something like that and"
+  },
+  {
+   "start": 648.74,
+   "end": 652.16,
+   "text": "he was from a village called I'm going to butcher the way how you"
+  },
+  {
+   "start": 652.16,
+   "end": 658.49,
+   "text": "pronounce it. I don't know if it's kisilevo or kisilevo i would say kisilevo"
+  },
+  {
+   "start": 658.49,
+   "end": 661.97,
+   "text": "but i'm probably wrong i don't know okay where is that"
+  },
+  {
+   "start": 661.97,
+   "end": 667.37,
+   "text": "like in now in current serbia or yeah it's in current serbia oh i"
+  },
+  {
+   "start": 667.37,
+   "end": 668.25,
+   "text": "i actually googled where it"
+  },
+  {
+   "start": 668.25,
+   "end": 673.65,
+   "text": "was because you know uh i don't think i think that i think this"
+  },
+  {
+   "start": 673.65,
+   "end": 680.51,
+   "text": "one is i think all of the stories are basically like mid-central serbia for"
+  },
+  {
+   "start": 680.51,
+   "end": 687.93,
+   "text": "some reason i don't know so the story was the story was that"
+  },
+  {
+   "start": 687.93,
+   "end": 694.03,
+   "text": "he died and then some people just started dying you know and then uh"
+  },
+  {
+   "start": 694.03,
+   "end": 694.75,
+   "text": "they basically said"
+  },
+  {
+   "start": 694.75,
+   "end": 698.63,
+   "text": "oh it's him i think it was the talk was that he got infected"
+  },
+  {
+   "start": 698.63,
+   "end": 703.85,
+   "text": "somewhere in greece or something like that and then they opened his grave and"
+  },
+  {
+   "start": 703.85,
+   "end": 707.17,
+   "text": "then they found that his body was intact and there was"
+  },
+  {
+   "start": 707.17,
+   "end": 713.45,
+   "text": "supposedly blood on his lips so they did the very typical thing which is"
+  },
+  {
+   "start": 713.45,
+   "end": 719.83,
+   "text": "take a stake run it through his heart and also they burned him okay"
+  },
+  {
+   "start": 719.83,
+   "end": 725.15,
+   "text": "and i think the austrian officials were there because they needed to make sure"
+  },
+  {
+   "start": 725.15,
+   "end": 731.23,
+   "text": "that it was done okay so the austrians were more afraid they wanted"
+  },
+  {
+   "start": 731.23,
+   "end": 737.67,
+   "text": "to control what's going yeah they're like do it finish with it yeah okay"
+  },
+  {
+   "start": 737.67,
+   "end": 740.53,
+   "text": "so he's uh he was like"
+  },
+  {
+   "start": 740.53,
+   "end": 746.27,
+   "text": "a religious guy right his like possession possession his position was like a resnick"
+  },
+  {
+   "start": 746.27,
+   "end": 750.79,
+   "text": "right oh you see i didn't know what you meant by this no i"
+  },
+  {
+   "start": 750.79,
+   "end": 755.25,
+   "text": "didn't read that i didn't see that what did you read so resnik is"
+  },
+  {
+   "start": 755.25,
+   "end": 760.33,
+   "text": "a i don't know in orthodox as urban orthodox um religion's kind of a"
+  },
+  {
+   "start": 760.33,
+   "end": 764.29,
+   "text": "title man i don't know what that means i thought you would know that's"
+  },
+  {
+   "start": 764.29,
+   "end": 764.73,
+   "text": "why i didn't write"
+  },
+  {
+   "start": 764.73,
+   "end": 771.97,
+   "text": "resnik i'm really bad at this sorry guys just know the horror things um"
+  },
+  {
+   "start": 771.97,
+   "end": 773.47,
+   "text": "yeah he was the first"
+  },
+  {
+   "start": 773.47,
+   "end": 779.71,
+   "text": "vampire petash yeah and then he might not be the most known one but"
+  },
+  {
+   "start": 779.71,
+   "end": 780.81,
+   "text": "the second one was one of the"
+  },
+  {
+   "start": 780.81,
+   "end": 787.55,
+   "text": "most known ones which was sava savanovic he was from zarzje and i think"
+  },
+  {
+   "start": 787.55,
+   "end": 793.73,
+   "text": "if i'm not mistaken that one is near baina bashta so near tara again"
+  },
+  {
+   "start": 793.73,
+   "end": 795.89,
+   "text": "central serbia basically i mean central in the"
+  },
+  {
+   "start": 795.89,
+   "end": 800.63,
+   "text": "sense that it's not north it's not south it's in the middle um and"
+  },
+  {
+   "start": 800.63,
+   "end": 802.47,
+   "text": "he was also mentioned in the"
+  },
+  {
+   "start": 802.47,
+   "end": 806.37,
+   "text": "story of milo and glisic i think that's one of the reasons why he's"
+  },
+  {
+   "start": 806.37,
+   "end": 814.35,
+   "text": "the most famous one of the most famous ones and um so you"
+  },
+  {
+   "start": 814.35,
+   "end": 819.11,
+   "text": "said you wrote taking a black horse to cemetery cemetery it's not about so"
+  },
+  {
+   "start": 819.11,
+   "end": 825.17,
+   "text": "we will come to that it's about vampire culture ah okay okay but i"
+  },
+  {
+   "start": 825.17,
+   "end": 829.33,
+   "text": "think they did something similar that they had to like bring a horse and"
+  },
+  {
+   "start": 829.33,
+   "end": 830.23,
+   "text": "i think they've had this"
+  },
+  {
+   "start": 830.23,
+   "end": 834.49,
+   "text": "whole ceremony the same thing all over again but he was one of the"
+  },
+  {
+   "start": 834.49,
+   "end": 836.31,
+   "text": "most uh popular popular ones"
+  },
+  {
+   "start": 836.31,
+   "end": 841.15,
+   "text": "uh but yeah nothing they don't really like these uh that's why it's not"
+  },
+  {
+   "start": 841.15,
+   "end": 844.87,
+   "text": "really like a story they I don't really go in depth about what happened,"
+  },
+  {
+   "start": 844.87,
+   "end": 846.83,
+   "text": "but they kind of just mentioned it."
+  },
+  {
+   "start": 846.83,
+   "end": 850.19,
+   "text": "They were like weird occurrences happening and people dying."
+  },
+  {
+   "start": 850.85,
+   "end": 855.15,
+   "text": "And therefore, they need to open it up and then just stab them."
+  },
+  {
+   "start": 855.81,
+   "end": 860.97,
+   "text": "Yeah. While looking at those stories, I realized this is also done by Montenegro."
+  },
+  {
+   "start": 860.97,
+   "end": 864.07,
+   "text": "Oh, yeah."
+  },
+  {
+   "start": 864.07,
+   "end": 869.35,
+   "text": "When they are suspicious of the existence of a vampire,"
+  },
+  {
+   "start": 869.35,
+   "end": 873.77,
+   "text": "they take a black horse to the cemetery and then"
+  },
+  {
+   "start": 873.8,
+   "end": 880.0,
+   "text": "they find the vampire i guess during the day they do that yeah because"
+  },
+  {
+   "start": 880.0,
+   "end": 880.66,
+   "text": "they're sleeping during the"
+  },
+  {
+   "start": 880.66,
+   "end": 887.64,
+   "text": "day right but the horses feel them that's fine especially black horses according to"
+  },
+  {
+   "start": 887.64,
+   "end": 887.92,
+   "text": "the belief"
+  },
+  {
+   "start": 887.92,
+   "end": 892.88,
+   "text": "well i read something about horses not about black horses but i'm guessing that"
+  },
+  {
+   "start": 892.88,
+   "end": 893.18,
+   "text": "some sort of superstition with like black cats black horses black there is"
+  },
+  {
+   "start": 899.62,
+   "end": 905.08,
+   "text": "another tradition is garlic necklaces so if people want to perfect themselves they make"
+  },
+  {
+   "start": 905.08,
+   "end": 911.86,
+   "text": "necklaces out of garlics thank god we love garlic in serbia thank god so"
+  },
+  {
+   "start": 911.86,
+   "end": 912.14,
+   "text": "we have a lot"
+  },
+  {
+   "start": 912.14,
+   "end": 916.68,
+   "text": "that's how you survive as a nation i mean actually if you think about"
+  },
+  {
+   "start": 916.68,
+   "end": 917.28,
+   "text": "it that's really"
+  },
+  {
+   "start": 917.28,
+   "end": 921.32,
+   "text": "like a really good strategy just to keep like having garlic and eating garlic"
+  },
+  {
+   "start": 921.32,
+   "end": 924.98,
+   "text": "because it's a good what is it antibiotic right is that how it's called"
+  },
+  {
+   "start": 924.98,
+   "end": 928.76,
+   "text": "yeah antiseptic as well there you go so"
+  },
+  {
+   "start": 928.76,
+   "end": 935.54,
+   "text": "garlic does wonders hey it it how do you it fights the vampire plus"
+  },
+  {
+   "start": 935.54,
+   "end": 937.24,
+   "text": "also the the cold and the"
+  },
+  {
+   "start": 937.24,
+   "end": 944.2,
+   "text": "diseases so no wonder it's it's been on a pedestal um i'm gonna also"
+  },
+  {
+   "start": 944.2,
+   "end": 945.56,
+   "text": "check the pictures why he is"
+  },
+  {
+   "start": 945.56,
+   "end": 950.44,
+   "text": "called the most beautiful vampire i was surprising i've never heard that"
+  },
+  {
+   "start": 952.38,
+   "end": 959.26,
+   "text": "what's beautiful are you checking now no not now okay i will i will"
+  },
+  {
+   "start": 959.26,
+   "end": 960.86,
+   "text": "prepare uh posts with that"
+  },
+  {
+   "start": 960.86,
+   "end": 966.34,
+   "text": "if i really find him handsome well guys we want your spooky stories if"
+  },
+  {
+   "start": 966.34,
+   "end": 966.78,
+   "text": "you know if you know more"
+  },
+  {
+   "start": 966.78,
+   "end": 973.32,
+   "text": "spooky stories in serbia about serbia in serbia we want to know i read"
+  },
+  {
+   "start": 973.32,
+   "end": 980.68,
+   "text": "some stories about these legends and also like horror stories and there"
+  },
+  {
+   "start": 980.68,
+   "end": 984.9,
+   "text": "is one he whom god helps no one can harm have you ever heard"
+  },
+  {
+   "start": 984.9,
+   "end": 985.14,
+   "text": "of this story"
+  },
+  {
+   "start": 985.14,
+   "end": 992.46,
+   "text": "no uh it has three parts a very long story in each"
+  },
+  {
+   "start": 992.46,
+   "end": 995.76,
+   "text": "part there is a different you know"
+  },
+  {
+   "start": 995.76,
+   "end": 1002.48,
+   "text": "action different drama and in one i am not sure which one there's a"
+  },
+  {
+   "start": 1002.48,
+   "end": 1007.76,
+   "text": "fight with vampires so he has to kill the vampires the youngest good brother"
+  },
+  {
+   "start": 1007.76,
+   "end": 1011.04,
+   "text": "to prove that he deserves to marry the queen like the"
+  },
+  {
+   "start": 1011.04,
+   "end": 1017.34,
+   "text": "princess it's like is it is so typical like i feel like all of"
+  },
+  {
+   "start": 1017.34,
+   "end": 1018.26,
+   "text": "these stories like there's always"
+  },
+  {
+   "start": 1018.26,
+   "end": 1023.46,
+   "text": "three brothers there's always the youngest one who's the most humble one and then"
+  },
+  {
+   "start": 1023.46,
+   "end": 1023.68,
+   "text": "he needs to"
+  },
+  {
+   "start": 1023.68,
+   "end": 1029.14,
+   "text": "kill someone to get the girl you know like it's so weird and the"
+  },
+  {
+   "start": 1029.14,
+   "end": 1032.48,
+   "text": "girl loves him too so he just wants to prove that their love is"
+  },
+  {
+   "start": 1032.48,
+   "end": 1036.14,
+   "text": "real and stuff so that's a fun to read story"
+  },
+  {
+   "start": 1038.04,
+   "end": 1042.82,
+   "text": "um that actually uh now that you mentioned that maybe we should go to"
+  },
+  {
+   "start": 1042.82,
+   "end": 1043.3,
+   "text": "the the legends"
+  },
+  {
+   "start": 1043.3,
+   "end": 1050.86,
+   "text": "uh first because you wrote something about the pavilion neither in the sky nor"
+  },
+  {
+   "start": 1050.86,
+   "end": 1051.32,
+   "text": "on the earth"
+  },
+  {
+   "start": 1051.32,
+   "end": 1057.3,
+   "text": "yeah i cannot retell that story again it's a very long one but do"
+  },
+  {
+   "start": 1057.3,
+   "end": 1061.6,
+   "text": "you know that yes and i'm not gonna retell it either because i think"
+  },
+  {
+   "start": 1061.6,
+   "end": 1063.16,
+   "text": "it this how can you say it's not that long"
+  },
+  {
+   "start": 1063.16,
+   "end": 1067.3,
+   "text": "but it's very eventful and you really need like have there's a lot of"
+  },
+  {
+   "start": 1067.3,
+   "end": 1067.92,
+   "text": "information but"
+  },
+  {
+   "start": 1067.92,
+   "end": 1073.16,
+   "text": "basically there's a lot of death there's a lot of betrayal there's the brothers"
+  },
+  {
+   "start": 1073.16,
+   "end": 1073.32,
+   "text": "three brothers"
+  },
+  {
+   "start": 1073.32,
+   "end": 1078.78,
+   "text": "again of course and uh it's just it's just weird like this some of"
+  },
+  {
+   "start": 1078.78,
+   "end": 1083.74,
+   "text": "these stories like morals i just can't uh yeah but it's about a as"
+  },
+  {
+   "start": 1083.74,
+   "end": 1089.28,
+   "text": "far as i know it's about a uh dragon that kidnaps a girl actually"
+  },
+  {
+   "start": 1089.28,
+   "end": 1092.34,
+   "text": "he's been a dragon has been kidnapping girls and eating them"
+  },
+  {
+   "start": 1092.34,
+   "end": 1097.5,
+   "text": "and every week i think or so one has to die from a village"
+  },
+  {
+   "start": 1097.5,
+   "end": 1098.42,
+   "text": "and it's just this whole thing"
+  },
+  {
+   "start": 1098.42,
+   "end": 1103.22,
+   "text": "but yeah this is and there should be some sort of message in there"
+  },
+  {
+   "start": 1104.44,
+   "end": 1109.54,
+   "text": "i don't know message i'm pretty sure there is some good message but i"
+  },
+  {
+   "start": 1109.54,
+   "end": 1110.08,
+   "text": "just and that when i was"
+  },
+  {
+   "start": 1110.08,
+   "end": 1115.24,
+   "text": "reading i remember i was just shocked so yeah let's hope that some hero"
+  },
+  {
+   "start": 1115.24,
+   "end": 1122.62,
+   "text": "realizes this unfair situation and then kills the dragon maybe um"
+  },
+  {
+   "start": 1122.62,
+   "end": 1125.28,
+   "text": "we will link by the way these stories in serbia and"
+  },
+  {
+   "start": 1125.28,
+   "end": 1128.24,
+   "text": "i know i have some links in serbia so you can actually read it"
+  },
+  {
+   "start": 1128.24,
+   "end": 1129.86,
+   "text": "and then you can tell us uh"
+  },
+  {
+   "start": 1129.86,
+   "end": 1133.5,
+   "text": "what you think about them yeah what do you think the message is this"
+  },
+  {
+   "start": 1133.5,
+   "end": 1135.24,
+   "text": "story yeah and did you hear"
+  },
+  {
+   "start": 1135.24,
+   "end": 1142.38,
+   "text": "about pepe liuga i know there's a different story from the disney one right"
+  },
+  {
+   "start": 1142.38,
+   "end": 1148.26,
+   "text": "but man i can't remember now it is cinderella right it is cinderella but"
+  },
+  {
+   "start": 1148.26,
+   "end": 1151.6,
+   "text": "it's it's a different version than what we have in"
+  },
+  {
+   "start": 1151.6,
+   "end": 1158.16,
+   "text": "disney right hmm i'm not sure i thought it's the kind of the same"
+  },
+  {
+   "start": 1158.16,
+   "end": 1159.72,
+   "text": "i think there was no happy ending"
+  },
+  {
+   "start": 1159.72,
+   "end": 1166.56,
+   "text": "or something like that maybe maybe the ending is so it's about the beautiful"
+  },
+  {
+   "start": 1166.56,
+   "end": 1173.46,
+   "text": "girl who lost her parents and stepmother ugly half sisters always ugly sisters it's"
+  },
+  {
+   "start": 1173.46,
+   "end": 1174.48,
+   "text": "always ugly the bad people are"
+  },
+  {
+   "start": 1174.48,
+   "end": 1182.0,
+   "text": "always ugly yeah right pepe yuga uh pepe yuga derives from pepe which"
+  },
+  {
+   "start": 1182.0,
+   "end": 1182.8,
+   "text": "is ash ashes"
+  },
+  {
+   "start": 1182.8,
+   "end": 1189.3,
+   "text": "okay because she's always dirty like ashy right because she's cleaning and there's like"
+  },
+  {
+   "start": 1189.3,
+   "end": 1189.4,
+   "text": "yeah and then somehow she goes to a party prince falls in love with"
+  },
+  {
+   "start": 1189.4,
+   "end": 1189.74,
+   "text": "yeah"
+  },
+  {
+   "start": 1195.14,
+   "end": 1199.48,
+   "text": "her i guess it's the same But it's going to be interesting for Serbian"
+  },
+  {
+   "start": 1199.48,
+   "end": 1201.33,
+   "text": "learners to read this story because"
+  },
+  {
+   "start": 1201.33,
+   "end": 1206.09,
+   "text": "they already know the basics of this story so it's going to be easy"
+  },
+  {
+   "start": 1206.09,
+   "end": 1207.57,
+   "text": "to read and unfollow it maybe"
+  },
+  {
+   "start": 1207.57,
+   "end": 1213.33,
+   "text": "yeah yeah yeah always go whenever you're reading something in a new language always"
+  },
+  {
+   "start": 1213.33,
+   "end": 1213.53,
+   "text": "go from"
+  },
+  {
+   "start": 1213.53,
+   "end": 1219.53,
+   "text": "somewhere something that you already have read or at least know the plot and"
+  },
+  {
+   "start": 1219.53,
+   "end": 1219.99,
+   "text": "much easier to follow it and predict yeah definitely and read that story not then it's going to be"
+  },
+  {
+   "start": 1225.05,
+   "end": 1231.03,
+   "text": "only once a couple of times so that you remember the verbs better by"
+  },
+  {
+   "start": 1231.03,
+   "end": 1232.71,
+   "text": "the way just not to forget vampires"
+  },
+  {
+   "start": 1232.71,
+   "end": 1240.45,
+   "text": "that's how we say it plural singular vampire yeah yeah"
+  },
+  {
+   "start": 1240.45,
+   "end": 1247.45,
+   "text": "that's true and blood is yes yeah it's"
+  },
+  {
+   "start": 1247.45,
+   "end": 1255.71,
+   "text": "this weird little curvy uh yeah"
+  },
+  {
+   "start": 1255.71,
+   "end": 1260.65,
+   "text": "yeah curvy yeah okay that's that's good good Mikey good yeah"
+  },
+  {
+   "start": 1260.65,
+   "end": 1268.41,
+   "text": "and the final part is witches of course I love that one because"
+  },
+  {
+   "start": 1268.41,
+   "end": 1272.85,
+   "text": "because I was so I when I was a teenager I used to watch"
+  },
+  {
+   "start": 1272.85,
+   "end": 1277.65,
+   "text": "Charmed if you remember oh I was so into it and I think I"
+  },
+  {
+   "start": 1277.65,
+   "end": 1278.05,
+   "text": "was always drawn"
+  },
+  {
+   "start": 1278.05,
+   "end": 1284.03,
+   "text": "to like kind of not really witchcraft but like magic more and now when"
+  },
+  {
+   "start": 1284.03,
+   "end": 1284.69,
+   "text": "I think about it I think"
+  },
+  {
+   "start": 1284.69,
+   "end": 1289.93,
+   "text": "I mean there are certain fantasy world that I loved about it of course"
+  },
+  {
+   "start": 1289.93,
+   "end": 1291.03,
+   "text": "as a kid but I think"
+  },
+  {
+   "start": 1291.03,
+   "end": 1295.33,
+   "text": "one of the reasons that I still love it now is because I think"
+  },
+  {
+   "start": 1295.33,
+   "end": 1301.51,
+   "text": "there were different women that were different types of witches, so to speak."
+  },
+  {
+   "start": 1301.51,
+   "end": 1306.29,
+   "text": "Right. And what I was always interested is the people that actually knew about"
+  },
+  {
+   "start": 1306.29,
+   "end": 1307.13,
+   "text": "all about herbs,"
+  },
+  {
+   "start": 1307.13,
+   "end": 1311.11,
+   "text": "all about how to use which ingredients for what."
+  },
+  {
+   "start": 1311.11,
+   "end": 1314.55,
+   "text": "and this to me i think was actually art an art or like actually"
+  },
+  {
+   "start": 1314.55,
+   "end": 1315.51,
+   "text": "it's kind of like being doctors"
+  },
+  {
+   "start": 1315.51,
+   "end": 1321.71,
+   "text": "right and science i mean they need to science chemicals right what goes together"
+  },
+  {
+   "start": 1321.71,
+   "end": 1322.13,
+   "text": "with what and"
+  },
+  {
+   "start": 1322.13,
+   "end": 1327.59,
+   "text": "what happens later or what helps you for this specific thing that specific thing"
+  },
+  {
+   "start": 1327.59,
+   "end": 1329.39,
+   "text": "and a witch"
+  },
+  {
+   "start": 1329.39,
+   "end": 1337.23,
+   "text": "is vashtitsa vashtitsa is a singular singular vashtitsa is"
+  },
+  {
+   "start": 1337.23,
+   "end": 1342.49,
+   "text": "plural for a guy you can say a warlock i think which warlock i"
+  },
+  {
+   "start": 1342.49,
+   "end": 1347.03,
+   "text": "think that's a warlock is it warlock yes yes um it's a"
+  },
+  {
+   "start": 1347.03,
+   "end": 1354.69,
+   "text": "and the plural is no"
+  },
+  {
+   "start": 1354.69,
+   "end": 1360.45,
+   "text": "i'm not quite sure actually because i i don't think anyone really"
+  },
+  {
+   "start": 1361.71,
+   "end": 1367.15,
+   "text": "has heard of yeah like many guys yeah uh but yeah i should say"
+  },
+  {
+   "start": 1367.15,
+   "end": 1371.73,
+   "text": "uh again i think it's especially because we derive from like a pagan kind"
+  },
+  {
+   "start": 1371.73,
+   "end": 1375.45,
+   "text": "of culture before the orthodox religion right"
+  },
+  {
+   "start": 1375.45,
+   "end": 1382.49,
+   "text": "there are some scary stories i haven't really read many there are"
+  },
+  {
+   "start": 1382.49,
+   "end": 1383.61,
+   "text": "several ones that are quite"
+  },
+  {
+   "start": 1383.61,
+   "end": 1388.25,
+   "text": "famous but which is what kind of famous for like eating the so vampires"
+  },
+  {
+   "start": 1388.25,
+   "end": 1394.49,
+   "text": "are sucking the blood but witches are eating the organs right so eating the"
+  },
+  {
+   "start": 1394.49,
+   "end": 1399.55,
+   "text": "heart or the liver and for some reason it's usually like directed to kids"
+  },
+  {
+   "start": 1399.55,
+   "end": 1403.95,
+   "text": "because kids are scared of them right so because you know it's"
+  },
+  {
+   "start": 1403.95,
+   "end": 1408.83,
+   "text": "really scared of witches maybe old people old people adults are scared of vampires"
+  },
+  {
+   "start": 1408.83,
+   "end": 1409.09,
+   "text": "kids are"
+  },
+  {
+   "start": 1409.09,
+   "end": 1414.19,
+   "text": "scared of witches kind of like this thing and when they eat they turn"
+  },
+  {
+   "start": 1414.19,
+   "end": 1418.39,
+   "text": "into an animal right this uh bird maiden is one of them oh i"
+  },
+  {
+   "start": 1418.39,
+   "end": 1421.0,
+   "text": "haven't heard that tell me then there's a"
+  },
+  {
+   "start": 1421.0,
+   "end": 1428.12,
+   "text": "story and the book is also on amazon bird maidens the"
+  },
+  {
+   "start": 1428.12,
+   "end": 1431.08,
+   "text": "they could only access their animal forms via"
+  },
+  {
+   "start": 1431.08,
+   "end": 1436.26,
+   "text": "a token if this token was destroyed the bird maiden would be stuck in"
+  },
+  {
+   "start": 1436.26,
+   "end": 1437.46,
+   "text": "her humanoid or bird form"
+  },
+  {
+   "start": 1437.46,
+   "end": 1443.6,
+   "text": "so they could transform into different types of birds depending on their experience"
+  },
+  {
+   "start": 1445.02,
+   "end": 1451.16,
+   "text": "and they are like shape changers and to able to change their shape they"
+  },
+  {
+   "start": 1451.16,
+   "end": 1452.32,
+   "text": "needed to eat"
+  },
+  {
+   "start": 1453.62,
+   "end": 1460.92,
+   "text": "something i guess bull cocks waltzers giant eagles they could be these superheroes"
+  },
+  {
+   "start": 1460.92,
+   "end": 1461.9,
+   "text": "at the end"
+  },
+  {
+   "start": 1463.38,
+   "end": 1470.54,
+   "text": "okay good good girls the one that i heard about"
+  },
+  {
+   "start": 1470.54,
+   "end": 1475.5,
+   "text": "um not specifically again no one really told me this story but i"
+  },
+  {
+   "start": 1475.5,
+   "end": 1480.68,
+   "text": "remember some people just mentioned the name and my mom for example i think"
+  },
+  {
+   "start": 1480.68,
+   "end": 1487.84,
+   "text": "she knew about this baba yaga baba is grandma old lady yaga"
+  },
+  {
+   "start": 1487.84,
+   "end": 1493.92,
+   "text": "is the name of the old lady supposedly this is a witch woman woman"
+  },
+  {
+   "start": 1493.92,
+   "end": 1499.94,
+   "text": "demon demon okay yeah demon in the shape of a woman okay yeah so"
+  },
+  {
+   "start": 1499.94,
+   "end": 1500.94,
+   "text": "basically like a"
+  },
+  {
+   "start": 1502.24,
+   "end": 1509.64,
+   "text": "like a bad mean woman and it's an old lady and it's it"
+  },
+  {
+   "start": 1509.64,
+   "end": 1516.32,
+   "text": "she eats everyone not only kids but um so yeah so very very not"
+  },
+  {
+   "start": 1516.32,
+   "end": 1521.2,
+   "text": "exclusive you know it's just like it's everything um and i think the specific"
+  },
+  {
+   "start": 1521.2,
+   "end": 1528.04,
+   "text": "thing about her was that her fence was made out of like bones so"
+  },
+  {
+   "start": 1528.04,
+   "end": 1528.56,
+   "text": "that was the"
+  },
+  {
+   "start": 1528.56,
+   "end": 1533.26,
+   "text": "story so human bones so there's there's our specifics"
+  },
+  {
+   "start": 1533.26,
+   "end": 1538.68,
+   "text": "also like the the doorknob is like oh they're like the gate knob whatever"
+  },
+  {
+   "start": 1538.68,
+   "end": 1540.64,
+   "text": "was out of this type"
+  },
+  {
+   "start": 1540.64,
+   "end": 1545.82,
+   "text": "of the bone or like or the teeth or something or like like you"
+  },
+  {
+   "start": 1545.82,
+   "end": 1549.84,
+   "text": "know they have this so specific so that was that was it um and"
+  },
+  {
+   "start": 1549.84,
+   "end": 1554.88,
+   "text": "then also the story was that uh she used to bake kids so for"
+  },
+  {
+   "start": 1554.88,
+   "end": 1559.1,
+   "text": "adults she would like eat the the organs right and for kids she would take"
+  },
+  {
+   "start": 1559.1,
+   "end": 1559.84,
+   "text": "them and put them in the oven"
+  },
+  {
+   "start": 1559.84,
+   "end": 1566.98,
+   "text": "and then like bake them inside that's so sad for little kids to hear"
+  },
+  {
+   "start": 1566.98,
+   "end": 1568.94,
+   "text": "this i know how scary is it i"
+  },
+  {
+   "start": 1568.94,
+   "end": 1573.16,
+   "text": "mean it's just like a such a scary story thank god i haven't heard"
+  },
+  {
+   "start": 1573.16,
+   "end": 1574.94,
+   "text": "it till now yes"
+  },
+  {
+   "start": 1576.86,
+   "end": 1581.22,
+   "text": "i have no no kid uh hears that story before they are like 15"
+  },
+  {
+   "start": 1581.22,
+   "end": 1585.4,
+   "text": "yeah i hope so also uh i remember my"
+  },
+  {
+   "start": 1585.4,
+   "end": 1588.52,
+   "text": "mom used to tell me this story that was she was she's from bosnia"
+  },
+  {
+   "start": 1588.52,
+   "end": 1589.42,
+   "text": "so she had like a different"
+  },
+  {
+   "start": 1589.42,
+   "end": 1593.24,
+   "text": "thing and oh my god now i see every little thing and i'm like"
+  },
+  {
+   "start": 1593.24,
+   "end": 1599.0,
+   "text": "i got so he's so scared i don't like to watch horror movies that's"
+  },
+  {
+   "start": 1599.0,
+   "end": 1603.58,
+   "text": "this is the reason so she said that they i don't really remember what"
+  },
+  {
+   "start": 1603.58,
+   "end": 1606.42,
+   "text": "the name of this uh old lady is again it's some"
+  },
+  {
+   "start": 1606.42,
+   "end": 1612.06,
+   "text": "mean old lady um and supposedly they would in order for to keep the"
+  },
+  {
+   "start": 1612.06,
+   "end": 1614.3,
+   "text": "kids at home um they would"
+  },
+  {
+   "start": 1614.3,
+   "end": 1618.28,
+   "text": "say that if you're not home or if you're being like you're misbehaving right"
+  },
+  {
+   "start": 1618.28,
+   "end": 1620.32,
+   "text": "then uh she will"
+  },
+  {
+   "start": 1620.32,
+   "end": 1625.26,
+   "text": "like grandma will come and like like knock on your not knock but like"
+  },
+  {
+   "start": 1625.26,
+   "end": 1630.46,
+   "text": "tap your window with the fingers and some like I think it was like"
+  },
+  {
+   "start": 1630.46,
+   "end": 1633.22,
+   "text": "a dead old lady something with that it was just something"
+  },
+  {
+   "start": 1633.22,
+   "end": 1638.63,
+   "text": "so creepy I was like I am like who the hell would tell this"
+  },
+  {
+   "start": 1638.63,
+   "end": 1639.61,
+   "text": "story to kids?"
+  },
+  {
+   "start": 1639.61,
+   "end": 1641.69,
+   "text": "But I guess we would, we would."
+  },
+  {
+   "start": 1641.69,
+   "end": 1646.75,
+   "text": "Yeah. In the old times, like, I guess that was more usual."
+  },
+  {
+   "start": 1647.27,
+   "end": 1648.81,
+   "text": "Yeah. Unfortunately. Tough enough."
+  },
+  {
+   "start": 1648.81,
+   "end": 1649.69,
+   "text": "I would,"
+  },
+  {
+   "start": 1649.69,
+   "end": 1652.11,
+   "text": "I would not survive in the old times."
+  },
+  {
+   "start": 1652.11,
+   "end": 1655.39,
+   "text": "I'm so easily scared that."
+  },
+  {
+   "start": 1655.39,
+   "end": 1655.55,
+   "text": "Yeah."
+  },
+  {
+   "start": 1657.31,
+   "end": 1663.49,
+   "text": "Okay. So one more question about all, after all these horror stories, yeah plush"
+  },
+  {
+   "start": 1663.49,
+   "end": 1670.17,
+   "text": "him say is i'm afraid right plush him say or you could say boy"
+  },
+  {
+   "start": 1670.17,
+   "end": 1676.51,
+   "text": "him say boy him say yes as well yeah i'm scared yeah okay it's"
+  },
+  {
+   "start": 1676.51,
+   "end": 1687.39,
+   "text": "uh both are i think interchangeable I"
+  },
+  {
+   "start": 1687.39,
+   "end": 1692.77,
+   "text": "was going to ask you."
+  },
+  {
+   "start": 1692.77,
+   "end": 1694.45,
+   "text": "I should say."
+  },
+  {
+   "start": 1695.29,
+   "end": 1701.99,
+   "text": "That one is tricky because it's a masculine, right?"
+  },
+  {
+   "start": 1702.03,
+   "end": 1703.27,
+   "text": "I'm going to say Vampira."
+  },
+  {
+   "start": 1703.85,
+   "end": 1704.77,
+   "text": "Vampira."
+  },
+  {
+   "start": 1704.77,
+   "end": 1711.83,
+   "text": "Yeah. Okay. I hope I"
+  },
+  {
+   "start": 1711.83,
+   "end": 1717.31,
+   "text": "made your day scary or not scary I hope you are listening to this"
+  },
+  {
+   "start": 1717.31,
+   "end": 1723.03,
+   "text": "at night yes and we really want your feedback because um wanna because we"
+  },
+  {
+   "start": 1723.03,
+   "end": 1723.71,
+   "text": "did we don't have a lot of time to"
+  },
+  {
+   "start": 1723.71,
+   "end": 1728.95,
+   "text": "actually specifically talk about some stories we could potentially do an episode like that"
+  },
+  {
+   "start": 1728.95,
+   "end": 1735.15,
+   "text": "if you are interested then we would um select a short story maybe read"
+  },
+  {
+   "start": 1735.15,
+   "end": 1738.47,
+   "text": "it out in Serbian actually that would be a good thing to read it"
+  },
+  {
+   "start": 1738.47,
+   "end": 1741.63,
+   "text": "on this we can also ask a quit like in a quiz or in"
+  },
+  {
+   "start": 1741.63,
+   "end": 1747.55,
+   "text": "a like a poll or see exactly and see what uh what what is"
+  },
+  {
+   "start": 1747.59,
+   "end": 1751.75,
+   "text": "most popular thing that they would like to hear yeah always feel free to"
+  },
+  {
+   "start": 1751.75,
+   "end": 1752.67,
+   "text": "email us write us on"
+  },
+  {
+   "start": 1752.67,
+   "end": 1758.49,
+   "text": "instagram or comment on youtube on whatever topic you want us to cover yeah"
+  },
+  {
+   "start": 1758.49,
+   "end": 1759.01,
+   "text": "we will get back to you"
+  },
+  {
+   "start": 1759.01,
+   "end": 1763.63,
+   "text": "as soon as we can um and we're quite busy too this is our"
+  },
+  {
+   "start": 1763.63,
+   "end": 1765.57,
+   "text": "side gig but we really happy that"
+  },
+  {
+   "start": 1765.57,
+   "end": 1769.77,
+   "text": "you are following that you are interested and we really do want your feedback"
+  },
+  {
+   "start": 1769.77,
+   "end": 1777.73,
+   "text": "so okay Thank you"
+  },
+  {
+   "start": 1777.73,
+   "end": 1778.87,
+   "text": "for joining us today."
+  },
+  {
+   "start": 1778.87,
+   "end": 1781.67,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 1781.67,
+   "end": 1786.31,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 1786.31,
+   "end": 1789.39,
+   "text": "on our Instagram page, možekafa podcast."
+  },
+  {
+   "start": 1789.63,
+   "end": 1790.29,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.7: Legends and Mysteries in Serbia",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939241/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075917-44100-1-2b02e14902e8cdab.mp3"
+}

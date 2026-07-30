@@ -1,0 +1,1480 @@
+{
+ "duration": 921.64,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.78,
+   "end": 3.96,
+   "text": "Zdravo Sevima! Welcome to Može Kafa podcast."
+  },
+  {
+   "start": 3.96,
+   "end": 4.78,
+   "text": "I am Maki."
+  },
+  {
+   "start": 4.78,
+   "end": 8.58,
+   "text": "This season of our podcast is a bit different from the previous ones."
+  },
+  {
+   "start": 8.92,
+   "end": 13.74,
+   "text": "I have another friend, also called Ivana, joining me to have short dialogues in"
+  },
+  {
+   "start": 13.74,
+   "end": 16.26,
+   "text": "Serbian. Then we will explain them in English."
+  },
+  {
+   "start": 16.26,
+   "end": 19.16,
+   "text": "This new season will be like mini Serbian lessons."
+  },
+  {
+   "start": 19.66,
+   "end": 22.7,
+   "text": "So if you are ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 24.5,
+   "end": 28.94,
+   "text": "Ivana and I today we are going to share some tips for adapting to"
+  },
+  {
+   "start": 28.94,
+   "end": 31.92,
+   "text": "living abroad in a short dialogue in Serbian."
+  },
+  {
+   "start": 33.08,
+   "end": 37.18,
+   "text": "After having the dialogue in Serbian first, we will switch to English and go"
+  },
+  {
+   "start": 37.18,
+   "end": 39.82,
+   "text": "over the vocabulary and expressions in detail."
+  },
+  {
+   "start": 40.36,
+   "end": 43.56,
+   "text": "You will see a lot of useful expressions in this one."
+  },
+  {
+   "start": 44.46,
+   "end": 48.24,
+   "text": "And I hope it's going to be useful when you live in Serbia especially."
+  },
+  {
+   "start": 49.1,
+   "end": 50.22,
+   "text": "All right, Ivana, ready?"
+  },
+  {
+   "start": 50.84,
+   "end": 51.12,
+   "text": "Yes."
+  },
+  {
+   "start": 52.44,
+   "end": 53.16,
+   "text": "Let's start."
+  },
+  {
+   "start": 70.01,
+   "end": 79.51,
+   "text": "I know we"
+  },
+  {
+   "start": 79.51,
+   "end": 94.39,
+   "text": "have"
+  },
+  {
+   "start": 94.39,
+   "end": 97.77,
+   "text": "lots of new words for our listeners here, so we will go over them"
+  },
+  {
+   "start": 97.77,
+   "end": 99.27,
+   "text": "sentence by sentence."
+  },
+  {
+   "start": 99.79,
+   "end": 102.41,
+   "text": "So what did you say first, Ivana?"
+  },
+  {
+   "start": 102.55,
+   "end": 107.51,
+   "text": "It's very hard to leave your country and to live abroad."
+  },
+  {
+   "start": 108.47,
+   "end": 110.31,
+   "text": "Yes, can you say it again in Serbian?"
+  },
+  {
+   "start": 110.85,
+   "end": 115.39,
+   "text": "It's very hard to leave your country and live in another country."
+  },
+  {
+   "start": 116.19,
+   "end": 118.05,
+   "text": "Yeah, to leave."
+  },
+  {
+   "start": 119.11,
+   "end": 125.45,
+   "text": "Yes. Right? And then I said, but it's a opportunity to improve and learn"
+  },
+  {
+   "start": 125.45,
+   "end": 127.41,
+   "text": "new things. So what does that mean?"
+  },
+  {
+   "start": 127.41,
+   "end": 128.59,
+   "text": "Can you help?"
+  },
+  {
+   "start": 129.33,
+   "end": 133.85,
+   "text": "That's the chance to improve yourself and to learn some new things."
+  },
+  {
+   "start": 134.67,
+   "end": 138.81,
+   "text": "That's true. And then you asked me what?"
+  },
+  {
+   "start": 139.37,
+   "end": 142.53,
+   "text": "Aha, then I asked you, what do you think, what is the best way"
+  },
+  {
+   "start": 142.53,
+   "end": 144.87,
+   "text": "to adapt a new country?"
+  },
+  {
+   "start": 145.77,
+   "end": 147.15,
+   "text": "And how did you do that?"
+  },
+  {
+   "start": 147.51,
+   "end": 151.79,
+   "text": "Šta misliš, da je najbolji način da si prilagodiš novoj zemlji?"
+  },
+  {
+   "start": 152.43,
+   "end": 153.91,
+   "text": "Mm-hmm, okay, good."
+  },
+  {
+   "start": 154.47,
+   "end": 158.23,
+   "text": "And then I said, I have some advices."
+  },
+  {
+   "start": 159.57,
+   "end": 161.67,
+   "text": "And imam par saveta."
+  },
+  {
+   "start": 162.55,
+   "end": 164.87,
+   "text": "And then I said, start everything from the beginning."
+  },
+  {
+   "start": 165.13,
+   "end": 167.11,
+   "text": "Počete sve iz početka."
+  },
+  {
+   "start": 167.43,
+   "end": 172.25,
+   "text": "And then I said, say yes to every chance that you are offered."
+  },
+  {
+   "start": 172.27,
+   "end": 176.87,
+   "text": "So, reći da svim prilikama koje se pružaju."
+  },
+  {
+   "start": 178.17,
+   "end": 180.01,
+   "text": "And then I said what I'm doing right now."
+  },
+  {
+   "start": 180.37,
+   "end": 183.89,
+   "text": "Learn the language of your new country."
+  },
+  {
+   "start": 183.89,
+   "end": 186.63,
+   "text": "So, nauči jezik svoje nove zemlje."
+  },
+  {
+   "start": 186.85,
+   "end": 189.09,
+   "text": "And then you added something, right?"
+  },
+  {
+   "start": 189.09,
+   "end": 191.93,
+   "text": "Yes. Slažem se, I agree."
+  },
+  {
+   "start": 192.43,
+   "end": 197.17,
+   "text": "Ja bih još dodala da je najbolji način da naučiš u životu u novoj"
+  },
+  {
+   "start": 197.17,
+   "end": 200.55,
+   "text": "zemlji, da pručaš ponašanje ljudi oko sebe."
+  },
+  {
+   "start": 201.37,
+   "end": 207.23,
+   "text": "I would add that the best way to learn about life in your country"
+  },
+  {
+   "start": 207.97,
+   "end": 212.35,
+   "text": "to study behaving people around you."
+  },
+  {
+   "start": 213.17,
+   "end": 214.59,
+   "text": "The behavior of the people, right?"
+  },
+  {
+   "start": 214.59,
+   "end": 216.05,
+   "text": "Yes, yes."
+  },
+  {
+   "start": 217.37,
+   "end": 219.93,
+   "text": "And then I said, da, obavezno."
+  },
+  {
+   "start": 220.63,
+   "end": 222.07,
+   "text": "Yes, it's a must."
+  },
+  {
+   "start": 222.25,
+   "end": 222.55,
+   "text": "Yes."
+  },
+  {
+   "start": 223.95,
+   "end": 224.38,
+   "text": "Ti si dober primer ove teme, Maki, svaka čast."
+  },
+  {
+   "start": 224.38,
+   "end": 226.22,
+   "text": "a good example of this topic, Maki."
+  },
+  {
+   "start": 226.3,
+   "end": 226.73,
+   "text": "You are a good example of this topic, Maki."
+  },
+  {
+   "start": 226.73,
+   "end": 227.71,
+   "text": "You are"
+  },
+  {
+   "start": 230.22,
+   "end": 231.22,
+   "text": "Well done. Bravo."
+  },
+  {
+   "start": 231.7,
+   "end": 232.58,
+   "text": "Yes, thank you."
+  },
+  {
+   "start": 233.52,
+   "end": 236.26,
+   "text": "So, new ones for me, to be honest."
+  },
+  {
+   "start": 236.42,
+   "end": 239.32,
+   "text": "Pobolšaju, even while saying it, I have difficulty."
+  },
+  {
+   "start": 240.22,
+   "end": 242.04,
+   "text": "Pobolšati se. Bravo, yes."
+  },
+  {
+   "start": 242.04,
+   "end": 245.02,
+   "text": "Pobolšati se. To improve yourself."
+  },
+  {
+   "start": 245.62,
+   "end": 247.32,
+   "text": "Yes, that's true."
+  },
+  {
+   "start": 247.96,
+   "end": 252.9,
+   "text": "So, if you do not have se, can we say, like, for example, improve"
+  },
+  {
+   "start": 252.9,
+   "end": 254.48,
+   "text": "your Serbian would be..."
+  },
+  {
+   "start": 254.56,
+   "end": 256.5,
+   "text": "Pobolšati svoj Srpski."
+  },
+  {
+   "start": 257.0,
+   "end": 258.4,
+   "text": "Aha, svoj Srpski."
+  },
+  {
+   "start": 258.66,
+   "end": 260.56,
+   "text": "Okay, pobolšati svoj Srpski."
+  },
+  {
+   "start": 262.08,
+   "end": 264.62,
+   "text": "If you do not have a direct object, you can use se."
+  },
+  {
+   "start": 264.76,
+   "end": 267.58,
+   "text": "Se, right? Yes, that's true."
+  },
+  {
+   "start": 267.58,
+   "end": 269.22,
+   "text": "Se, pobolšati, yes."
+  },
+  {
+   "start": 269.6,
+   "end": 273.74,
+   "text": "Okay, good. And then, način, right?"
+  },
+  {
+   "start": 273.74,
+   "end": 276.02,
+   "text": "We used način a few times."
+  },
+  {
+   "start": 276.84,
+   "end": 279.04,
+   "text": "Way. Way. Yes, we can say way."
+  },
+  {
+   "start": 279.04,
+   "end": 280.04,
+   "text": "Yes. It is the best way."
+  },
+  {
+   "start": 280.04,
+   "end": 280.84,
+   "text": "The best way."
+  },
+  {
+   "start": 280.84,
+   "end": 283.02,
+   "text": "Yes. Naiboli in action."
+  },
+  {
+   "start": 283.02,
+   "end": 284.38,
+   "text": "It's a muscular noun."
+  },
+  {
+   "start": 285.08,
+   "end": 286.2,
+   "text": "Yes, it is."
+  },
+  {
+   "start": 286.56,
+   "end": 288.46,
+   "text": "And naiboli in action."
+  },
+  {
+   "start": 288.46,
+   "end": 289.98,
+   "text": "Let's give another example."
+  },
+  {
+   "start": 289.98,
+   "end": 292.4,
+   "text": "For example, that's the only way."
+  },
+  {
+   "start": 293.06,
+   "end": 293.98,
+   "text": "That's the only way."
+  },
+  {
+   "start": 293.98,
+   "end": 294.76,
+   "text": "Yes, that could be also."
+  },
+  {
+   "start": 294.76,
+   "end": 296.5,
+   "text": "Toe naiboli in action."
+  },
+  {
+   "start": 296.5,
+   "end": 297.64,
+   "text": "Toe iedini in action."
+  },
+  {
+   "start": 297.64,
+   "end": 298.76,
+   "text": "That's the only way."
+  },
+  {
+   "start": 298.76,
+   "end": 300.12,
+   "text": "It will be."
+  },
+  {
+   "start": 300.12,
+   "end": 302.56,
+   "text": "Jedini način. Jedini Good."
+  },
+  {
+   "start": 304.06,
+   "end": 307.26,
+   "text": "Another reflexive prilagoditi se."
+  },
+  {
+   "start": 308.0,
+   "end": 310.84,
+   "text": "Yes. A bit hard again to say."
+  },
+  {
+   "start": 311.18,
+   "end": 312.86,
+   "text": "What does that mean again?"
+  },
+  {
+   "start": 312.86,
+   "end": 316.06,
+   "text": "Prilagoditi se. Prilagoditi se to adapt."
+  },
+  {
+   "start": 316.66,
+   "end": 317.98,
+   "text": "To adapt yourself."
+  },
+  {
+   "start": 318.1,
+   "end": 318.34,
+   "text": "If I take se out again, can I use prilagoditi with another object?"
+  },
+  {
+   "start": 318.34,
+   "end": 318.5,
+   "text": "Yes."
+  },
+  {
+   "start": 326.62,
+   "end": 334.18,
+   "text": "Yes, maybe something like prilagoditi svoyu priču to adapt"
+  },
+  {
+   "start": 334.18,
+   "end": 335.98,
+   "text": "your story to something."
+  },
+  {
+   "start": 335.98,
+   "end": 339.96,
+   "text": "Or maybe you can use such in such sentences."
+  },
+  {
+   "start": 340.52,
+   "end": 344.38,
+   "text": "Yeah, without not using se prilagoditi."
+  },
+  {
+   "start": 344.5,
+   "end": 347.72,
+   "text": "Yes, you can use prilagoditi svoyu priču, for instance."
+  },
+  {
+   "start": 348.26,
+   "end": 349.16,
+   "text": "That's a good example."
+  },
+  {
+   "start": 349.4,
+   "end": 352.32,
+   "text": "Thank you. And then we have par."
+  },
+  {
+   "start": 352.66,
+   "end": 353.02,
+   "text": "Par, Savate. What does par mean? Par."
+  },
+  {
+   "start": 356.14,
+   "end": 357.56,
+   "text": "Par means couple of."
+  },
+  {
+   "start": 358.04,
+   "end": 358.98,
+   "text": "Yeah, couple of."
+  },
+  {
+   "start": 359.42,
+   "end": 366.12,
+   "text": "And we discussed this, you and me, before the recording, that par always is"
+  },
+  {
+   "start": 366.12,
+   "end": 367.54,
+   "text": "followed by a plural now."
+  },
+  {
+   "start": 368.0,
+   "end": 372.3,
+   "text": "Doesn't matter if it's feminine, masculine or neuter."
+  },
+  {
+   "start": 372.8,
+   "end": 374.42,
+   "text": "It's always a, right?"
+  },
+  {
+   "start": 374.54,
+   "end": 374.74,
+   "text": "Par sa veta."
+  },
+  {
+   "start": 374.74,
+   "end": 375.88,
+   "text": "At the end."
+  },
+  {
+   "start": 376.18,
+   "end": 378.16,
+   "text": "Yes. Par primera."
+  },
+  {
+   "start": 378.74,
+   "end": 380.5,
+   "text": "Par primera. Okay."
+  },
+  {
+   "start": 380.96,
+   "end": 382.92,
+   "text": "Couple of examples that means."
+  },
+  {
+   "start": 383.1,
+   "end": 384.44,
+   "text": "That's also masculine."
+  },
+  {
+   "start": 384.44,
+   "end": 386.18,
+   "text": "Let's give one feminine noun."
+  },
+  {
+   "start": 386.18,
+   "end": 387.48,
+   "text": "For example, prilika."
+  },
+  {
+   "start": 387.92,
+   "end": 390.3,
+   "text": "Prilika, sorry. Prilika, yes."
+  },
+  {
+   "start": 391.02,
+   "end": 393.54,
+   "text": "Par prilika. All right."
+  },
+  {
+   "start": 393.84,
+   "end": 394.04,
+   "text": "That's easy."
+  },
+  {
+   "start": 394.04,
+   "end": 394.3,
+   "text": "Yes."
+  },
+  {
+   "start": 394.46,
+   "end": 397.32,
+   "text": "I am so happy about this."
+  },
+  {
+   "start": 398.86,
+   "end": 400.48,
+   "text": "And a couple of villages, I want to say."
+  },
+  {
+   "start": 400.48,
+   "end": 405.28,
+   "text": "Yes, I just want to mention that, yes, we mentioned previously, yes, par selo,"
+  },
+  {
+   "start": 405.28,
+   "end": 407.46,
+   "text": "you are right, a couple of villages."
+  },
+  {
+   "start": 407.76,
+   "end": 410.8,
+   "text": "Yes, selo, which is new to now, became selo."
+  },
+  {
+   "start": 411.4,
+   "end": 415.84,
+   "text": "Yes. Good. So I do not need to think about the gender when I"
+  },
+  {
+   "start": 415.84,
+   "end": 417.12,
+   "text": "use par. That's good."
+  },
+  {
+   "start": 417.82,
+   "end": 423.2,
+   "text": "And then we used svim prilikama, reči da svim prilikama."
+  },
+  {
+   "start": 425.6,
+   "end": 432.62,
+   "text": "so prilika is a chance or opportunity yes yes to all the opportunities"
+  },
+  {
+   "start": 432.62,
+   "end": 433.52,
+   "text": "in data it will"
+  },
+  {
+   "start": 433.52,
+   "end": 441.32,
+   "text": "it becomes swim yes that's data swim prilika all the opportunities"
+  },
+  {
+   "start": 441.32,
+   "end": 442.06,
+   "text": "ili all the chances"
+  },
+  {
+   "start": 442.06,
+   "end": 450.04,
+   "text": "that's right if i want to say say yes to all the questions Reči"
+  },
+  {
+   "start": 450.04,
+   "end": 452.22,
+   "text": "da svim pitanjima."
+  },
+  {
+   "start": 452.64,
+   "end": 454.96,
+   "text": "Yes, it could be a at the end."
+  },
+  {
+   "start": 455.08,
+   "end": 457.72,
+   "text": "Yes. OK, good. Nice."
+  },
+  {
+   "start": 458.28,
+   "end": 460.18,
+   "text": "And then you used slažem se."
+  },
+  {
+   "start": 460.74,
+   "end": 462.18,
+   "text": "I hear this all the time."
+  },
+  {
+   "start": 462.56,
+   "end": 464.16,
+   "text": "Ah, agree. That's nice."
+  },
+  {
+   "start": 464.62,
+   "end": 466.12,
+   "text": "It's agree. I agree."
+  },
+  {
+   "start": 466.32,
+   "end": 467.12,
+   "text": "Slažem se."
+  },
+  {
+   "start": 468.64,
+   "end": 473.06,
+   "text": "If I wanted to say I agreed, do you also use it in past"
+  },
+  {
+   "start": 473.06,
+   "end": 474.72,
+   "text": "tense, your conversation?"
+  },
+  {
+   "start": 474.76,
+   "end": 478.66,
+   "text": "Yes, yes. Složila sam se ili složio sam se."
+  },
+  {
+   "start": 478.66,
+   "end": 480.78,
+   "text": "That's also past tense."
+  },
+  {
+   "start": 481.6,
+   "end": 484.48,
+   "text": "Something changed. Something changed, yes."
+  },
+  {
+   "start": 484.48,
+   "end": 486.16,
+   "text": "A lot then."
+  },
+  {
+   "start": 486.16,
+   "end": 488.46,
+   "text": "It's not so složem se."
+  },
+  {
+   "start": 488.46,
+   "end": 490.28,
+   "text": "It's složila sam se."
+  },
+  {
+   "start": 490.84,
+   "end": 491.48,
+   "text": "Složila sam se."
+  },
+  {
+   "start": 491.48,
+   "end": 492.6,
+   "text": "Složila sam se."
+  },
+  {
+   "start": 492.6,
+   "end": 495.5,
+   "text": "Yes, that's feminine or masculine."
+  },
+  {
+   "start": 495.5,
+   "end": 496.64,
+   "text": "Složio sam se."
+  },
+  {
+   "start": 497.8,
+   "end": 498.8,
+   "text": "Složio sam se."
+  },
+  {
+   "start": 498.8,
+   "end": 500.56,
+   "text": "Okay, that's nice."
+  },
+  {
+   "start": 501.38,
+   "end": 505.32,
+   "text": "And a new word for me was actually two other new words."
+  },
+  {
+   "start": 505.86,
+   "end": 509.56,
+   "text": "Proučavati. Ponašanje. Ponašanje, okay."
+  },
+  {
+   "start": 509.56,
+   "end": 514.94,
+   "text": "So, proučavati is like to study, but it's not like to study at school,"
+  },
+  {
+   "start": 514.94,
+   "end": 515.36,
+   "text": "It's like observe."
+  },
+  {
+   "start": 515.36,
+   "end": 515.41,
+   "text": "right?"
+  },
+  {
+   "start": 516.94,
+   "end": 518.56,
+   "text": "Yes, great, yes."
+  },
+  {
+   "start": 518.56,
+   "end": 521.32,
+   "text": "You used the correct word in English, yes."
+  },
+  {
+   "start": 522.02,
+   "end": 527.32,
+   "text": "Proučavati, it started probably from učiti, of course, as you said, study."
+  },
+  {
+   "start": 527.66,
+   "end": 531.14,
+   "text": "Proučavati meaning, yes, observing something around you."
+  },
+  {
+   "start": 532.38,
+   "end": 533.84,
+   "text": "That's nice. That's a nice verb."
+  },
+  {
+   "start": 534.76,
+   "end": 537.64,
+   "text": "Ponašanje is behaviors, right?"
+  },
+  {
+   "start": 537.64,
+   "end": 540.32,
+   "text": "Yes, yes. Okay, that's good."
+  },
+  {
+   "start": 540.66,
+   "end": 546.02,
+   "text": "Oko sebe. Oko is also a nice word that I hear because oko is"
+  },
+  {
+   "start": 546.02,
+   "end": 546.86,
+   "text": "around, right?"
+  },
+  {
+   "start": 546.86,
+   "end": 549.94,
+   "text": "Yes, around yourself, yes."
+  },
+  {
+   "start": 550.12,
+   "end": 554.72,
+   "text": "When I want to meet people, I also use like oko jedan sati, oko"
+  },
+  {
+   "start": 554.72,
+   "end": 555.94,
+   "text": "dva sati, right?"
+  },
+  {
+   "start": 556.32,
+   "end": 557.68,
+   "text": "Like around one o'clock."
+  },
+  {
+   "start": 557.82,
+   "end": 564.04,
+   "text": "Yes, yes. We use in a different, yes, with a different connotation."
+  },
+  {
+   "start": 564.04,
+   "end": 565.0,
+   "text": "How can I say oko?"
+  },
+  {
+   "start": 565.64,
+   "end": 567.78,
+   "text": "We can use it, yes, in different sentences."
+  },
+  {
+   "start": 568.5,
+   "end": 571.4,
+   "text": "That sebe is a genitive, you would say?"
+  },
+  {
+   "start": 571.4,
+   "end": 573.76,
+   "text": "Oko sebe, oko mene, I would say?"
+  },
+  {
+   "start": 574.4,
+   "end": 576.56,
+   "text": "Yes, let's write oko mene, oko sebe, great."
+  },
+  {
+   "start": 576.92,
+   "end": 578.64,
+   "text": "Yes, right. Okay, good."
+  },
+  {
+   "start": 578.98,
+   "end": 584.04,
+   "text": "And one of my first words in Serbian I learned when I was hiking."
+  },
+  {
+   "start": 584.14,
+   "end": 585.12,
+   "text": "Obobezno."
+  },
+  {
+   "start": 589.74,
+   "end": 592.4,
+   "text": "What's the best word in English to say?"
+  },
+  {
+   "start": 592.88,
+   "end": 595.04,
+   "text": "I don't know even the word in English really."
+  },
+  {
+   "start": 595.12,
+   "end": 600.01,
+   "text": "If you translate it the literal way, it's like..."
+  },
+  {
+   "start": 600.01,
+   "end": 602.21,
+   "text": "Mandatory. But it's not mandatory."
+  },
+  {
+   "start": 602.21,
+   "end": 603.11,
+   "text": "It's like a must."
+  },
+  {
+   "start": 603.11,
+   "end": 604.01,
+   "text": "You never miss it."
+  },
+  {
+   "start": 604.17,
+   "end": 607.27,
+   "text": "I just want to tell you that, yes, it's not so mandatory."
+  },
+  {
+   "start": 607.27,
+   "end": 609.11,
+   "text": "Yeah, it could be used must."
+  },
+  {
+   "start": 609.33,
+   "end": 610.25,
+   "text": "Yes. For sure."
+  },
+  {
+   "start": 610.41,
+   "end": 610.65,
+   "text": "Yeah, must."
+  },
+  {
+   "start": 610.65,
+   "end": 612.09,
+   "text": "You have to do that."
+  },
+  {
+   "start": 612.61,
+   "end": 613.95,
+   "text": "Yes. I like that word."
+  },
+  {
+   "start": 613.95,
+   "end": 619.25,
+   "text": "Yeah. And you said svaka čast at the end."
+  },
+  {
+   "start": 619.25,
+   "end": 621.57,
+   "text": "That's also a nice word, nice expression."
+  },
+  {
+   "start": 621.97,
+   "end": 625.13,
+   "text": "I hear it all the time when I'm running on the streets."
+  },
+  {
+   "start": 625.41,
+   "end": 629.17,
+   "text": "And yes, and people are applauding and said svaka čast."
+  },
+  {
+   "start": 630.21,
+   "end": 636.29,
+   "text": "or like well done bravo like we can add something like bravo svaka trust"
+  },
+  {
+   "start": 636.29,
+   "end": 638.17,
+   "text": "yeah well done does it also"
+  },
+  {
+   "start": 638.17,
+   "end": 643.89,
+   "text": "include the meaning of like i hope you will make it you know i"
+  },
+  {
+   "start": 643.89,
+   "end": 649.11,
+   "text": "wish you luck does it also mean that because i wish you luck maybe"
+  },
+  {
+   "start": 649.11,
+   "end": 656.47,
+   "text": "yes wish you like luck yes uh i wish you luck that also has"
+  },
+  {
+   "start": 656.47,
+   "end": 661.75,
+   "text": "something with the swaka trust like uh somebody is actually uh"
+  },
+  {
+   "start": 663.01,
+   "end": 668.29,
+   "text": "uh applauding you for what you did or what you are doing actually and"
+  },
+  {
+   "start": 668.29,
+   "end": 671.05,
+   "text": "um and saying yes you are"
+  },
+  {
+   "start": 671.05,
+   "end": 677.33,
+   "text": "you are good in that just continue yeah it's not it's not used when"
+  },
+  {
+   "start": 677.33,
+   "end": 677.61,
+   "text": "complete or succeed in something you know it's used when you are about to"
+  },
+  {
+   "start": 677.61,
+   "end": 677.81,
+   "text": "you"
+  },
+  {
+   "start": 682.15,
+   "end": 682.65,
+   "text": "do something as well"
+  },
+  {
+   "start": 682.65,
+   "end": 687.95,
+   "text": "like to it's in english you would say well done when something is finished"
+  },
+  {
+   "start": 687.95,
+   "end": 688.65,
+   "text": "right like you did it"
+  },
+  {
+   "start": 688.65,
+   "end": 694.37,
+   "text": "well but in swakachas i feel like you're doing well you're gonna do great"
+  },
+  {
+   "start": 694.37,
+   "end": 700.27,
+   "text": "don't worry go ahead kind of meaning i i understand maybe i misunderstand yes"
+  },
+  {
+   "start": 700.27,
+   "end": 702.33,
+   "text": "but it's also uh for the"
+  },
+  {
+   "start": 702.33,
+   "end": 707.25,
+   "text": "something that you have done at the end yes we we say that svaka"
+  },
+  {
+   "start": 707.25,
+   "end": 708.11,
+   "text": "just for instance with the"
+  },
+  {
+   "start": 708.11,
+   "end": 713.89,
+   "text": "when you are in the school or in the university when you graduate you"
+  },
+  {
+   "start": 713.89,
+   "end": 719.17,
+   "text": "said svaka just well done you've done something we use that also for something"
+  },
+  {
+   "start": 719.17,
+   "end": 721.37,
+   "text": "when something is finished."
+  },
+  {
+   "start": 722.33,
+   "end": 723.29,
+   "text": "Not only in the process"
+  },
+  {
+   "start": 723.29,
+   "end": 724.77,
+   "text": "of doing something."
+  },
+  {
+   "start": 725.53,
+   "end": 727.09,
+   "text": "Yes, exactly. And can I use"
+  },
+  {
+   "start": 727.09,
+   "end": 729.15,
+   "text": "svaka čas? For example, somebody cooks"
+  },
+  {
+   "start": 729.15,
+   "end": 730.97,
+   "text": "something and I'm like, wow,"
+  },
+  {
+   "start": 730.97,
+   "end": 732.93,
+   "text": "great job, well done."
+  },
+  {
+   "start": 732.93,
+   "end": 733.93,
+   "text": "Yes, of course."
+  },
+  {
+   "start": 733.93,
+   "end": 734.85,
+   "text": "That's also a nice"
+  },
+  {
+   "start": 734.85,
+   "end": 736.21,
+   "text": "word for something."
+  },
+  {
+   "start": 736.21,
+   "end": 736.75,
+   "text": "Yes, you can use"
+  },
+  {
+   "start": 736.75,
+   "end": 738.67,
+   "text": "in such situations."
+  },
+  {
+   "start": 738.67,
+   "end": 741.69,
+   "text": "Actually, čas means honor."
+  },
+  {
+   "start": 742.27,
+   "end": 742.81,
+   "text": "If you use"
+  },
+  {
+   "start": 742.81,
+   "end": 745.45,
+   "text": "only čas, that's honor."
+  },
+  {
+   "start": 745.85,
+   "end": 747.01,
+   "text": "But in this sentence, like svaka"
+  },
+  {
+   "start": 747.01,
+   "end": 748.13,
+   "text": "čas,"
+  },
+  {
+   "start": 748.13,
+   "end": 753.03,
+   "text": "that's like you honor somebody for something."
+  },
+  {
+   "start": 753.25,
+   "end": 755.73,
+   "text": "Exactly. That's the expression, you know."
+  },
+  {
+   "start": 757.07,
+   "end": 760.89,
+   "text": "And I also know the verb form of it, častim, like častity."
+  },
+  {
+   "start": 761.57,
+   "end": 762.53,
+   "text": "Ah, like častity, yes."
+  },
+  {
+   "start": 762.53,
+   "end": 765.13,
+   "text": "Yeah. But this is noun here, svaka častity."
+  },
+  {
+   "start": 765.13,
+   "end": 766.53,
+   "text": "This is the noun."
+  },
+  {
+   "start": 766.53,
+   "end": 768.65,
+   "text": "Yes, honor. All right."
+  },
+  {
+   "start": 768.65,
+   "end": 770.27,
+   "text": "That was very nice."
+  },
+  {
+   "start": 770.31,
+   "end": 772.93,
+   "text": "I'd like to read it one more time because there are lots of new"
+  },
+  {
+   "start": 772.93,
+   "end": 773.37,
+   "text": "words."
+  },
+  {
+   "start": 773.37,
+   "end": 776.65,
+   "text": "as we explained it, can we read it one more time from the beginning?"
+  },
+  {
+   "start": 777.31,
+   "end": 778.39,
+   "text": "Yes, of course."
+  },
+  {
+   "start": 778.81,
+   "end": 782.97,
+   "text": "Okay. It's very hard to leave your country and live in another country."
+  },
+  {
+   "start": 783.45,
+   "end": 787.71,
+   "text": "But it's a chance to improve and learn new things."
+  },
+  {
+   "start": 789.01,
+   "end": 791.79,
+   "text": "What do you think is the best way to improve your country?"
+  },
+  {
+   "start": 793.31,
+   "end": 794.17,
+   "text": "I have a few advice."
+  },
+  {
+   "start": 795.35,
+   "end": 796.81,
+   "text": "Start everything from the beginning."
+  },
+  {
+   "start": 797.91,
+   "end": 800.87,
+   "text": "Say yes to all the traditions that are filled."
+  },
+  {
+   "start": 801.73,
+   "end": 804.01,
+   "text": "learn your language in your new world."
+  },
+  {
+   "start": 805.13,
+   "end": 810.41,
+   "text": "I understand. I would add that the best way to learn about life in"
+  },
+  {
+   "start": 810.41,
+   "end": 813.97,
+   "text": "the new world is to teach people around yourself."
+  },
+  {
+   "start": 814.75,
+   "end": 819.23,
+   "text": "Yes, absolutely. You are a good example of this topic, Maki."
+  },
+  {
+   "start": 819.23,
+   "end": 821.89,
+   "text": "Everyone's welcome. Thank you, Ivana."
+  },
+  {
+   "start": 823.75,
+   "end": 826.43,
+   "text": "Thank you. Thank you so much."
+  },
+  {
+   "start": 826.73,
+   "end": 828.52,
+   "text": "Do you want to add anything else?"
+  },
+  {
+   "start": 828.86,
+   "end": 830.22,
+   "text": "no I think that was really okay"
+  },
+  {
+   "start": 830.22,
+   "end": 832.2,
+   "text": "yes it was a little bit hard but"
+  },
+  {
+   "start": 832.2,
+   "end": 834.4,
+   "text": "we managed"
+  },
+  {
+   "start": 834.4,
+   "end": 838.94,
+   "text": "somehow exactly have you ever lived abroad Ivana?"
+  },
+  {
+   "start": 839.92,
+   "end": 840.2,
+   "text": "some kind of really period not"
+  },
+  {
+   "start": 842.24,
+   "end": 843.92,
+   "text": "longer period of time no"
+  },
+  {
+   "start": 843.92,
+   "end": 849.84,
+   "text": "actually not so as you know I've been here for three years almost three"
+  },
+  {
+   "start": 849.84,
+   "end": 854.74,
+   "text": "years and do you think i'm doing these uh advices myself"
+  },
+  {
+   "start": 854.74,
+   "end": 861.84,
+   "text": "tell me your honest review i think yeah you're you"
+  },
+  {
+   "start": 861.84,
+   "end": 865.56,
+   "text": "have good observation really and i think that"
+  },
+  {
+   "start": 865.56,
+   "end": 872.98,
+   "text": "you are really improving yourself for these three years now really thank you and"
+  },
+  {
+   "start": 872.98,
+   "end": 881.36,
+   "text": "I would like to use that difficult word now zahvalyući"
+  },
+  {
+   "start": 881.36,
+   "end": 886.4,
+   "text": "tebe zahvalyući tebi tebi yes thanks to you right"
+  },
+  {
+   "start": 886.4,
+   "end": 887.72,
+   "text": "zahvalyući tebi"
+  },
+  {
+   "start": 887.72,
+   "end": 889.56,
+   "text": "and I also use"
+  },
+  {
+   "start": 889.56,
+   "end": 891.4,
+   "text": "zahvalyući vama"
+  },
+  {
+   "start": 891.4,
+   "end": 893.66,
+   "text": "like if they are plural"
+  },
+  {
+   "start": 893.66,
+   "end": 895.3,
+   "text": "yes yes"
+  },
+  {
+   "start": 895.3,
+   "end": 898.0,
+   "text": "that's true okay thanks a lot again"
+  },
+  {
+   "start": 898.0,
+   "end": 899.92,
+   "text": "and we will continue"
+  },
+  {
+   "start": 900.0,
+   "end": 902.18,
+   "text": "with a new theme in the next episode."
+  },
+  {
+   "start": 902.64,
+   "end": 904.34,
+   "text": "So keep tuning in."
+  },
+  {
+   "start": 904.34,
+   "end": 905.6,
+   "text": "Prijatno! Ciao!"
+  },
+  {
+   "start": 907.62,
+   "end": 909.26,
+   "text": "Thank you for listening to us today."
+  },
+  {
+   "start": 909.58,
+   "end": 912.8,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 913.1,
+   "end": 917.32,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 917.32,
+   "end": 920.22,
+   "text": "on our Instagram page, Moje Kafa Podcast."
+  },
+  {
+   "start": 920.44,
+   "end": 920.92,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.2: Život u inostranstvu",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/66538206/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-2-14%2F317945649-44100-2-f06c8741a9cc8.m4a"
+}

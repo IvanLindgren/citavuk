@@ -1,0 +1,1165 @@
+{
+ "duration": 797.8,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.78,
+   "end": 3.96,
+   "text": "Zdravo Svima! Welcome to Možekova podcast."
+  },
+  {
+   "start": 3.96,
+   "end": 4.76,
+   "text": "I am Maki."
+  },
+  {
+   "start": 4.76,
+   "end": 8.64,
+   "text": "This season of our podcast is a bit different from the previous ones."
+  },
+  {
+   "start": 8.94,
+   "end": 13.74,
+   "text": "I have another friend, also called Ivana, joining me to have short dialogues in"
+  },
+  {
+   "start": 13.74,
+   "end": 16.24,
+   "text": "Serbian. Then we will explain them in English."
+  },
+  {
+   "start": 16.24,
+   "end": 19.16,
+   "text": "This new season will be like mini Serbian lessons."
+  },
+  {
+   "start": 19.64,
+   "end": 23.08,
+   "text": "So if you are ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 24.72,
+   "end": 26.78,
+   "text": "Dobrdan Svima, ya sam Maki."
+  },
+  {
+   "start": 27.2,
+   "end": 28.42,
+   "text": "Dobro jutro Ivana."
+  },
+  {
+   "start": 29.22,
+   "end": 30.34,
+   "text": "Good morning, Ivana."
+  },
+  {
+   "start": 30.34,
+   "end": 30.68,
+   "text": "How are you?"
+  },
+  {
+   "start": 31.52,
+   "end": 33.06,
+   "text": "Good, thanks. Good morning."
+  },
+  {
+   "start": 33.66,
+   "end": 34.4,
+   "text": "Good morning, yes."
+  },
+  {
+   "start": 34.68,
+   "end": 38.34,
+   "text": "We are doing this in the morning, so this is our morning voices."
+  },
+  {
+   "start": 38.9,
+   "end": 39.18,
+   "text": "Yes."
+  },
+  {
+   "start": 41.3,
+   "end": 45.64,
+   "text": "Okay. Today we are going to talk about money, and we are going to"
+  },
+  {
+   "start": 45.64,
+   "end": 51.62,
+   "text": "have a discussion about how to buy the things or rent the place,"
+  },
+  {
+   "start": 51.62,
+   "end": 56.06,
+   "text": "but we don't have enough money, how to save money, and we are going"
+  },
+  {
+   "start": 56.06,
+   "end": 57.92,
+   "text": "to give you some nice expressions"
+  },
+  {
+   "start": 57.92,
+   "end": 63.06,
+   "text": "to talk about different parts of money and human relationship."
+  },
+  {
+   "start": 63.46,
+   "end": 67.62,
+   "text": "Okay, so Ivana, first question before we start."
+  },
+  {
+   "start": 68.0,
+   "end": 69.46,
+   "text": "Novats ili pare?"
+  },
+  {
+   "start": 69.46,
+   "end": 71.44,
+   "text": "Which one do you use?"
+  },
+  {
+   "start": 72.76,
+   "end": 75.0,
+   "text": "Novats ili pare?"
+  },
+  {
+   "start": 75.51,
+   "end": 78.23,
+   "text": "I think, let me think now."
+  },
+  {
+   "start": 78.61,
+   "end": 80.63,
+   "text": "50-50? Pare. No, maybe."
+  },
+  {
+   "start": 80.63,
+   "end": 83.85,
+   "text": "I'm just thinking now in my mind saying to, for instance,"
+  },
+  {
+   "start": 83.85,
+   "end": 88.17,
+   "text": "to my husband, Srdjan, when I ask him, do you have enough money?"
+  },
+  {
+   "start": 88.87,
+   "end": 91.31,
+   "text": "Do you have enough money?"
+  },
+  {
+   "start": 91.85,
+   "end": 96.23,
+   "text": "Do But actually, I think that I use, as you said, 50-50."
+  },
+  {
+   "start": 96.23,
+   "end": 97.79,
+   "text": "I use Novac also."
+  },
+  {
+   "start": 97.85,
+   "end": 102.25,
+   "text": "So it's not something that you don't, you are, I don't know, think about"
+  },
+  {
+   "start": 102.25,
+   "end": 104.61,
+   "text": "that. Just feel it loud, whatever."
+  },
+  {
+   "start": 104.61,
+   "end": 106.07,
+   "text": "Yeah. Nice."
+  },
+  {
+   "start": 107.29,
+   "end": 109.45,
+   "text": "Para is also in Turkish."
+  },
+  {
+   "start": 109.45,
+   "end": 110.15,
+   "text": "So that's why I use it."
+  },
+  {
+   "start": 110.15,
+   "end": 112.47,
+   "text": "Ah, ah. Okay."
+  },
+  {
+   "start": 113.11,
+   "end": 118.75,
+   "text": "Okay. we're going to have the discussion or the dialogue in Serbian first,"
+  },
+  {
+   "start": 118.75,
+   "end": 122.77,
+   "text": "and then we will go over it in English as we do always."
+  },
+  {
+   "start": 122.77,
+   "end": 125.81,
+   "text": "And then we are going to talk about some important words."
+  },
+  {
+   "start": 126.79,
+   "end": 128.61,
+   "text": "All right. Let's start."
+  },
+  {
+   "start": 129.01,
+   "end": 134.01,
+   "text": "Let's I wanted to go home with a bus, but I don't have enough"
+  },
+  {
+   "start": 134.01,
+   "end": 136.11,
+   "text": "money. How much money do you have?"
+  },
+  {
+   "start": 136.73,
+   "end": 139.83,
+   "text": "I have a little extravita, but I don't want to extravita."
+  },
+  {
+   "start": 140.95,
+   "end": 142.95,
+   "text": "I don't want to extravita."
+  },
+  {
+   "start": 142.95,
+   "end": 143.53,
+   "text": "I'm going to extravita."
+  },
+  {
+   "start": 143.53,
+   "end": 144.41,
+   "text": "I'm going to extravita."
+  },
+  {
+   "start": 144.41,
+   "end": 145.39,
+   "text": "I'm going to extravita."
+  },
+  {
+   "start": 146.37,
+   "end": 148.31,
+   "text": "What do you think of money?"
+  },
+  {
+   "start": 150.31,
+   "end": 155.83,
+   "text": "I think that a lot of money from traveling, restaurants and friends."
+  },
+  {
+   "start": 157.09,
+   "end": 159.49,
+   "text": "I would better plan the saving money."
+  },
+  {
+   "start": 160.27,
+   "end": 164.25,
+   "text": "Yes, I hope that we won't be a difficult situation."
+  },
+  {
+   "start": 175.03,
+   "end": 179.07,
+   "text": "Again, I will read in Serbian, then I will say in English."
+  },
+  {
+   "start": 179.43,
+   "end": 182.87,
+   "text": "I wanted to know my house with a lot of water, but I don't"
+  },
+  {
+   "start": 182.87,
+   "end": 183.63,
+   "text": "have enough money."
+  },
+  {
+   "start": 184.33,
+   "end": 188.85,
+   "text": "That means in English, I wanted to rent a house with a garden close"
+  },
+  {
+   "start": 188.85,
+   "end": 191.83,
+   "text": "to a river, but I don't have enough money."
+  },
+  {
+   "start": 193.89,
+   "end": 195.65,
+   "text": "So you said, I don't have enough money."
+  },
+  {
+   "start": 196.81,
+   "end": 200.27,
+   "text": "Yes. It would be, dovoljno para or para?"
+  },
+  {
+   "start": 200.89,
+   "end": 204.05,
+   "text": "Dovoljno para. Para, it would be, I again."
+  },
+  {
+   "start": 204.59,
+   "end": 212.01,
+   "text": "I have"
+  },
+  {
+   "start": 212.01,
+   "end": 215.29,
+   "text": "a little extra, but I don't want to spend it."
+  },
+  {
+   "start": 215.29,
+   "end": 219.85,
+   "text": "I have small savings, but I don't want to spend it."
+  },
+  {
+   "start": 220.57,
+   "end": 222.51,
+   "text": "Yeah, good idea."
+  },
+  {
+   "start": 224.01,
+   "end": 227.74,
+   "text": "And then I said, I'm also not good at saving."
+  },
+  {
+   "start": 227.74,
+   "end": 233.96,
+   "text": "I said, yeah, I'm not sure how to translate it."
+  },
+  {
+   "start": 234.76,
+   "end": 236.12,
+   "text": "I don't know."
+  },
+  {
+   "start": 236.12,
+   "end": 239.16,
+   "text": "It's OK. Yeah, I'm not good at it."
+  },
+  {
+   "start": 239.16,
+   "end": 242.14,
+   "text": "Yes, yes. I don't know or I'm good at it."
+  },
+  {
+   "start": 242.14,
+   "end": 243.56,
+   "text": "Yes, that's OK in English."
+  },
+  {
+   "start": 244.46,
+   "end": 251.94,
+   "text": "And then I said, Whatever I make, I easily fast spend."
+  },
+  {
+   "start": 252.1,
+   "end": 256.38,
+   "text": "Yes. Now that you are the most likely to get in the oven, I"
+  },
+  {
+   "start": 256.38,
+   "end": 258.02,
+   "text": "asked, so it's in English."
+  },
+  {
+   "start": 258.16,
+   "end": 260.64,
+   "text": "What do you spend most of your money on?"
+  },
+  {
+   "start": 261.16,
+   "end": 266.9,
+   "text": "And then I said, I think I spend a lot of money on travel,"
+  },
+  {
+   "start": 266.9,
+   "end": 267.58,
+   "text": "restaurants and"
+  },
+  {
+   "start": 267.58,
+   "end": 271.18,
+   "text": "loaning or giving some loans to my friends."
+  },
+  {
+   "start": 271.7,
+   "end": 276.84,
+   "text": "So, I think that a lot of money will come to travel, restaurants and"
+  },
+  {
+   "start": 276.84,
+   "end": 278.08,
+   "text": "to spend friends."
+  },
+  {
+   "start": 279.04,
+   "end": 286.12,
+   "text": "We should be better to plan spending money on."
+  },
+  {
+   "start": 286.56,
+   "end": 287.96,
+   "text": "Yes, what to spend on, right?"
+  },
+  {
+   "start": 288.34,
+   "end": 291.54,
+   "text": "Yes. And then I said, so, yeah, that's right."
+  },
+  {
+   "start": 292.24,
+   "end": 294.54,
+   "text": "I hope we will not be..."
+  },
+  {
+   "start": 296.1,
+   "end": 297.7,
+   "text": "That's a difficult word to..."
+  },
+  {
+   "start": 297.7,
+   "end": 300.12,
+   "text": "We will not be too stingy, I guess."
+  },
+  {
+   "start": 300.12,
+   "end": 301.88,
+   "text": "But I don't want to repeat it."
+  },
+  {
+   "start": 301.88,
+   "end": 306.62,
+   "text": "It's a word expression in Serbian."
+  },
+  {
+   "start": 307.5,
+   "end": 310.3,
+   "text": "Actually, also for me, it's a very strange word in English"
+  },
+  {
+   "start": 310.3,
+   "end": 315.38,
+   "text": "because I didn't use it so much explaining the character of the people."
+  },
+  {
+   "start": 315.4,
+   "end": 322.12,
+   "text": "We use that when we want to explain that somebody doesn't want to spend"
+  },
+  {
+   "start": 322.12,
+   "end": 328.12,
+   "text": "money and if he has enough or he has a lot of money and he"
+  },
+  {
+   "start": 328.12,
+   "end": 331.78,
+   "text": "just put the money in the pockets and doesn't want to pay anything"
+  },
+  {
+   "start": 331.78,
+   "end": 334.38,
+   "text": "and always calculate how much money he has"
+  },
+  {
+   "start": 334.38,
+   "end": 336.76,
+   "text": "or how much money he will spend."
+  },
+  {
+   "start": 336.92,
+   "end": 341.54,
+   "text": "That kind of character is the, when you explain titia, actually."
+  },
+  {
+   "start": 341.54,
+   "end": 345.06,
+   "text": "Okay, so titia by itself is a word."
+  },
+  {
+   "start": 345.82,
+   "end": 346.22,
+   "text": "It's a word."
+  },
+  {
+   "start": 346.44,
+   "end": 348.12,
+   "text": "So teshka is just an adjective to say."
+  },
+  {
+   "start": 348.12,
+   "end": 348.46,
+   "text": "Yes."
+  },
+  {
+   "start": 348.46,
+   "end": 349.84,
+   "text": "It's really hardcore."
+  },
+  {
+   "start": 350.42,
+   "end": 352.72,
+   "text": "Yes, yes, yes, yes, yes."
+  },
+  {
+   "start": 353.46,
+   "end": 355.1,
+   "text": "We can say instead of the teshka,"
+  },
+  {
+   "start": 355.1,
+   "end": 357.44,
+   "text": "we can say also velika, big."
+  },
+  {
+   "start": 357.98,
+   "end": 361.16,
+   "text": "We can say Veliqa tzitzia also."
+  },
+  {
+   "start": 361.68,
+   "end": 362.88,
+   "text": "Okay, good to know."
+  },
+  {
+   "start": 362.88,
+   "end": 366.96,
+   "text": "I thought that's an expression together, like colloquial together."
+  },
+  {
+   "start": 366.96,
+   "end": 369.68,
+   "text": "Okay, good to know."
+  },
+  {
+   "start": 369.68,
+   "end": 372.26,
+   "text": "Can we say like a little bit of tzitzia?"
+  },
+  {
+   "start": 372.26,
+   "end": 374.26,
+   "text": "Like small cizia?"
+  },
+  {
+   "start": 375.08,
+   "end": 380.08,
+   "text": "No, no, because cizia already means something bigger, something huge,"
+  },
+  {
+   "start": 380.08,
+   "end": 383.56,
+   "text": "meaning, you know, you cannot be small cizia."
+  },
+  {
+   "start": 383.58,
+   "end": 386.84,
+   "text": "You can be just a cizia or big cizia or teška cizia, as you"
+  },
+  {
+   "start": 386.84,
+   "end": 389.94,
+   "text": "said. You can be just bigger or bigger."
+  },
+  {
+   "start": 391.0,
+   "end": 392.04,
+   "text": "All right, good."
+  },
+  {
+   "start": 393.24,
+   "end": 394.8,
+   "text": "And dovolno nocza."
+  },
+  {
+   "start": 395.4,
+   "end": 397.94,
+   "text": "So dovolno is normally enough, right?"
+  },
+  {
+   "start": 397.94,
+   "end": 398.66,
+   "text": "Yes."
+  },
+  {
+   "start": 400.02,
+   "end": 407.62,
+   "text": "and the one that doesn't have the page here it's"
+  },
+  {
+   "start": 407.62,
+   "end": 411.6,
+   "text": "not the one now for example no no it's not double"
+  },
+  {
+   "start": 411.6,
+   "end": 416.12,
+   "text": "no no no say no it doesn't have yeah it will be just double"
+  },
+  {
+   "start": 416.12,
+   "end": 420.5,
+   "text": "no no and then you use imam"
+  },
+  {
+   "start": 420.5,
+   "end": 426.3,
+   "text": "So, ušte djevina means saving, right?"
+  },
+  {
+   "start": 426.3,
+   "end": 427.34,
+   "text": "Savings, yes."
+  },
+  {
+   "start": 428.68,
+   "end": 434.52,
+   "text": "So, we use mala ušte djevina, velika ušte djevina, right?"
+  },
+  {
+   "start": 435.52,
+   "end": 438.38,
+   "text": "Yes, we can use it, yes."
+  },
+  {
+   "start": 440.78,
+   "end": 444.12,
+   "text": "Small, yes, small, big, yes, it is mala and velika."
+  },
+  {
+   "start": 444.68,
+   "end": 445.78,
+   "text": "That's a good, yeah."
+  },
+  {
+   "start": 446.72,
+   "end": 449.34,
+   "text": "Okay, also I saw životna ušte djevina."
+  },
+  {
+   "start": 449.34,
+   "end": 455.38,
+   "text": "Yeah, life yeah yes yes yeah we talked about life savings when we"
+  },
+  {
+   "start": 455.38,
+   "end": 459.46,
+   "text": "want to go to the bank and sign some agreement or some kind of"
+  },
+  {
+   "start": 459.46,
+   "end": 461.86,
+   "text": "contract with some insurance company"
+  },
+  {
+   "start": 461.86,
+   "end": 466.32,
+   "text": "or something like that life is savings but you can also say life saving"
+  },
+  {
+   "start": 466.32,
+   "end": 466.82,
+   "text": "is something that you"
+  },
+  {
+   "start": 466.82,
+   "end": 472.78,
+   "text": "you save money for something by yourself just in cash or something for some"
+  },
+  {
+   "start": 472.78,
+   "end": 480.0,
+   "text": "yeah that's okay good And this Umeti, Umeti, that I was having difficulty"
+  },
+  {
+   "start": 480.0,
+   "end": 480.78,
+   "text": "in explaining."
+  },
+  {
+   "start": 480.78,
+   "end": 484.66,
+   "text": "It's like, how would you say it, the first thing comes to your mind"
+  },
+  {
+   "start": 484.66,
+   "end": 486.18,
+   "text": "when you say Umem?"
+  },
+  {
+   "start": 488.94,
+   "end": 490.38,
+   "text": "Neznam, I don't know."
+  },
+  {
+   "start": 491.1,
+   "end": 494.18,
+   "text": "That will be my, I don't know how to do something."
+  },
+  {
+   "start": 495.18,
+   "end": 497.82,
+   "text": "Okay, good. And Umesh is also common, right?"
+  },
+  {
+   "start": 497.82,
+   "end": 500.38,
+   "text": "Because I hear Umem more than Umesh, I think."
+  },
+  {
+   "start": 501.52,
+   "end": 503.58,
+   "text": "Umem is, yeah, we use Umeti."
+  },
+  {
+   "start": 503.58,
+   "end": 509.58,
+   "text": "connected with something that you know or you can do."
+  },
+  {
+   "start": 510.24,
+   "end": 512.08,
+   "text": "Something like that."
+  },
+  {
+   "start": 512.08,
+   "end": 516.42,
+   "text": "I know how to cook, for instance."
+  },
+  {
+   "start": 516.42,
+   "end": 521.36,
+   "text": "Okay, good. And when you used about saving, you said"
+  },
+  {
+   "start": 521.36,
+   "end": 528.16,
+   "text": "But in my sentence, I said, sve što zaradim, kurzo potrošim."
+  },
+  {
+   "start": 528.72,
+   "end": 531.5,
+   "text": "So I did not use trošim, but potrošim."
+  },
+  {
+   "start": 532.3,
+   "end": 535.86,
+   "text": "Because it's a bit different, right?"
+  },
+  {
+   "start": 535.9,
+   "end": 537.38,
+   "text": "Trošiti and potrošiti."
+  },
+  {
+   "start": 538.54,
+   "end": 539.72,
+   "text": "It's a little bit different, yes."
+  },
+  {
+   "start": 539.72,
+   "end": 540.69,
+   "text": "What does it mean?"
+  },
+  {
+   "start": 540.69,
+   "end": 546.22,
+   "text": "Trošiti means, okay, you are spending, spending like you're always spending some money."
+  },
+  {
+   "start": 547.62,
+   "end": 552.9,
+   "text": "but if you potrosh it means that you already done that you are run"
+  },
+  {
+   "start": 552.9,
+   "end": 553.02,
+   "text": "of money"
+  },
+  {
+   "start": 553.02,
+   "end": 553.34,
+   "text": "out"
+  },
+  {
+   "start": 555.9,
+   "end": 556.9,
+   "text": "so that's a perfective"
+  },
+  {
+   "start": 556.9,
+   "end": 557.76,
+   "text": "imperfective"
+  },
+  {
+   "start": 557.76,
+   "end": 558.54,
+   "text": "yes"
+  },
+  {
+   "start": 559.88,
+   "end": 561.2,
+   "text": "so if you already finish it"
+  },
+  {
+   "start": 561.2,
+   "end": 562.15,
+   "text": "you say potrosh"
+  },
+  {
+   "start": 562.15,
+   "end": 569.15,
+   "text": "but if you spend in general you will say"
+  },
+  {
+   "start": 569.2,
+   "end": 571.9,
+   "text": "focusing on the end the sad end"
+  },
+  {
+   "start": 571.9,
+   "end": 576.96,
+   "text": "you just say potrosh Yes, yes, yes, that's true."
+  },
+  {
+   "start": 577.06,
+   "end": 579.74,
+   "text": "Okay. And then zaraditi."
+  },
+  {
+   "start": 580.0,
+   "end": 584.15,
+   "text": "So radim is I work, but zaraditi is something different, right?"
+  },
+  {
+   "start": 586.02,
+   "end": 588.2,
+   "text": "So zaraditi I make in this case."
+  },
+  {
+   "start": 588.36,
+   "end": 589.88,
+   "text": "I make, yes, I earn."
+  },
+  {
+   "start": 590.4,
+   "end": 591.94,
+   "text": "I earn. Yes."
+  },
+  {
+   "start": 592.59,
+   "end": 596.12,
+   "text": "Okay, good. And pozay mitze."
+  },
+  {
+   "start": 596.65,
+   "end": 600.01,
+   "text": "Pozay mitzi is to lend money or to lend?"
+  },
+  {
+   "start": 600.01,
+   "end": 608.27,
+   "text": "in general to land in general uh you can yeah i actually uh probably"
+  },
+  {
+   "start": 608.27,
+   "end": 609.35,
+   "text": "uh what is the word in"
+  },
+  {
+   "start": 609.35,
+   "end": 617.05,
+   "text": "english for posa it's like a noun it's like a noun actually uh"
+  },
+  {
+   "start": 617.05,
+   "end": 617.91,
+   "text": "it's like the now from the"
+  },
+  {
+   "start": 617.91,
+   "end": 622.81,
+   "text": "noun we have posaimity meaning the verb to land because i meet the person"
+  },
+  {
+   "start": 622.81,
+   "end": 626.95,
+   "text": "or is the activity like It's a, posamita is the noun."
+  },
+  {
+   "start": 627.63,
+   "end": 631.07,
+   "text": "Is the money borrowing or loan maybe?"
+  },
+  {
+   "start": 631.43,
+   "end": 633.95,
+   "text": "Loan, loan. Yeah, yeah, yeah, yeah."
+  },
+  {
+   "start": 633.95,
+   "end": 634.85,
+   "text": "It could be loan, yeah."
+  },
+  {
+   "start": 635.77,
+   "end": 638.05,
+   "text": "And posamita could be used for banks as well?"
+  },
+  {
+   "start": 638.51,
+   "end": 639.67,
+   "text": "Yes, yes, it could be."
+  },
+  {
+   "start": 640.03,
+   "end": 640.21,
+   "text": "Perfect."
+  },
+  {
+   "start": 640.21,
+   "end": 641.47,
+   "text": "Yes. All right."
+  },
+  {
+   "start": 642.59,
+   "end": 642.89,
+   "text": "We covered all the words, I guess. Nice."
+  },
+  {
+   "start": 645.51,
+   "end": 647.37,
+   "text": "So let's go again from the beginning."
+  },
+  {
+   "start": 648.17,
+   "end": 648.43,
+   "text": "And because we are going from the beginning, you just, you asked me at"
+  },
+  {
+   "start": 648.43,
+   "end": 648.87,
+   "text": "Yes."
+  },
+  {
+   "start": 652.51,
+   "end": 654.63,
+   "text": "the beginning and now it comes to my mind."
+  },
+  {
+   "start": 654.93,
+   "end": 659.65,
+   "text": "when you ask me is naimiti yes you rent the house but also i"
+  },
+  {
+   "start": 659.65,
+   "end": 661.75,
+   "text": "can i said i can rent to my friend like"
+  },
+  {
+   "start": 661.75,
+   "end": 667.05,
+   "text": "when i want to rent to someone else but we also said the word"
+  },
+  {
+   "start": 667.05,
+   "end": 669.27,
+   "text": "in serbian is is that it"
+  },
+  {
+   "start": 671.13,
+   "end": 677.23,
+   "text": "is naimiti and is that it i give da yes it is but i"
+  },
+  {
+   "start": 677.23,
+   "end": 680.65,
+   "text": "will also in english it will also be the rent I rent to my"
+  },
+  {
+   "start": 680.65,
+   "end": 687.67,
+   "text": "friends. But I can say, I rent my place to"
+  },
+  {
+   "start": 687.67,
+   "end": 687.81,
+   "text": "my friend."
+  },
+  {
+   "start": 687.81,
+   "end": 692.51,
+   "text": "And also, I'm the same."
+  },
+  {
+   "start": 693.13,
+   "end": 693.92,
+   "text": "I see. I'm saying, I'm the same."
+  },
+  {
+   "start": 693.92,
+   "end": 695.28,
+   "text": "Najmi ti izdati."
+  },
+  {
+   "start": 695.87,
+   "end": 696.54,
+   "text": "Okay, perfect. I want to go to my house with a bar."
+  },
+  {
+   "start": 696.54,
+   "end": 697.98,
+   "text": "Ok, perfect."
+  },
+  {
+   "start": 699.22,
+   "end": 699.88,
+   "text": "A idemo."
+  },
+  {
+   "start": 701.08,
+   "end": 705.42,
+   "text": "Htela sam da iznemim kuću sa baštom blizu reki, ali nemam dovoljno novca."
+  },
+  {
+   "start": 706.5,
+   "end": 707.98,
+   "text": "Koliko novca imaš?"
+  },
+  {
+   "start": 709.52,
+   "end": 713.12,
+   "text": "Imam malu ušteđivinu, ali ne želim da je trošim."
+  },
+  {
+   "start": 714.08,
+   "end": 716.48,
+   "text": "Ja također ne umem da štetim."
+  },
+  {
+   "start": 716.98,
+   "end": 719.3,
+   "text": "Sve što zaradim, burzo potrošim."
+  },
+  {
+   "start": 720.24,
+   "end": 722.32,
+   "text": "Našto ti najčešće odlazi novac?"
+  },
+  {
+   "start": 723.36,
+   "end": 729.48,
+   "text": "Mislim da mi mnogo novca odlazi na putovanje, restorane i pozajmit se prijateljima."
+  },
+  {
+   "start": 730.38,
+   "end": 732.68,
+   "text": "Trebalo bi bolje da planiramo trošenje novca."
+  },
+  {
+   "start": 733.88,
+   "end": 737.2,
+   "text": "Tako je. Nadam se da nećemo biti teške Citi."
+  },
+  {
+   "start": 737.2,
+   "end": 738.08,
+   "text": "Citiya."
+  },
+  {
+   "start": 739.62,
+   "end": 742.58,
+   "text": "Hvašo je njegovat kada ti Citiya?"
+  },
+  {
+   "start": 743.62,
+   "end": 744.3,
+   "text": "No."
+  },
+  {
+   "start": 746.78,
+   "end": 747.48,
+   "text": "I'm not sure."
+  },
+  {
+   "start": 748.9,
+   "end": 750.24,
+   "text": "Njegovat kada je njegovat kadaj."
+  },
+  {
+   "start": 751.42,
+   "end": 756.18,
+   "text": "Ja. Njegovat kada je nemaj oči kadaj."
+  },
+  {
+   "start": 756.68,
+   "end": 758.98,
+   "text": "Njegovat kadaj je njegovat kadaj."
+  },
+  {
+   "start": 759.78,
+   "end": 761.4,
+   "text": "Hvala Citiya, kadaj, teške."
+  },
+  {
+   "start": 761.74,
+   "end": 764.66,
+   "text": "Njegovat kadaj je njegovat kadaj."
+  },
+  {
+   "start": 766.34,
+   "end": 770.82,
+   "text": "uh-huh yeah i mean yeah as we talked about in this conversation being a"
+  },
+  {
+   "start": 770.82,
+   "end": 771.36,
+   "text": "little bit tisier is"
+  },
+  {
+   "start": 771.36,
+   "end": 778.06,
+   "text": "not bad at the end right yeah yeah okay hvala puno hvala tebi so"
+  },
+  {
+   "start": 778.06,
+   "end": 780.8,
+   "text": "you to zadanas vidimo se vidimo se"
+  },
+  {
+   "start": 780.8,
+   "end": 787.12,
+   "text": "ciao thank you for listening to us today we hope you enjoyed our podcast"
+  },
+  {
+   "start": 787.12,
+   "end": 788.28,
+   "text": "and learned something new"
+  },
+  {
+   "start": 788.28,
+   "end": 793.4,
+   "text": "in case you have any comments suggestions or questions make sure to share them"
+  },
+  {
+   "start": 793.4,
+   "end": 796.32,
+   "text": "on our Instagram page, Može Kafa Podcast."
+  },
+  {
+   "start": 796.5,
+   "end": 797.16,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.6: Novac",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/68404158/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-3-11%2F323338020-44100-2-09cd17a5635d1.m4a"
+}

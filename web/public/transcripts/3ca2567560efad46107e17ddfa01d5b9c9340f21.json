@@ -1,0 +1,2205 @@
+{
+ "duration": 1610.84,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 31.86,
+   "end": 39.86,
+   "text": "here we"
+  },
+  {
+   "start": 39.86,
+   "end": 46.86,
+   "text": "are of this exactly okay we're gonna take you to childhood today"
+  },
+  {
+   "start": 46.86,
+   "end": 49.24,
+   "text": "yes i love this topic i"
+  },
+  {
+   "start": 49.24,
+   "end": 55.66,
+   "text": "love this episode because we're gonna do some games and these games children's games"
+  },
+  {
+   "start": 55.66,
+   "end": 59.08,
+   "text": "but the thing is that it doesn't have to be children's games it can"
+  },
+  {
+   "start": 59.08,
+   "end": 61.98,
+   "text": "be adult games too yeah and some of"
+  },
+  {
+   "start": 61.98,
+   "end": 68.48,
+   "text": "them specifically are really good for your vocabulary uh expansion so I think this"
+  },
+  {
+   "start": 68.48,
+   "end": 68.6,
+   "text": "linguistically a really good idea definitely so I watched Squid Game as other many"
+  },
+  {
+   "start": 68.6,
+   "end": 68.92,
+   "text": "is also"
+  },
+  {
+   "start": 75.08,
+   "end": 75.24,
+   "text": "other millions"
+  },
+  {
+   "start": 75.24,
+   "end": 82.62,
+   "text": "of people not me though good I mean it's quite brutal and"
+  },
+  {
+   "start": 82.62,
+   "end": 88.24,
+   "text": "I thought while watching it how about the Serbian local games, what do they"
+  },
+  {
+   "start": 88.24,
+   "end": 89.96,
+   "text": "call and, you know, specific"
+  },
+  {
+   "start": 89.96,
+   "end": 94.64,
+   "text": "vocabulary jargon for games I got curious about."
+  },
+  {
+   "start": 94.64,
+   "end": 96.58,
+   "text": "And I said, let's do this."
+  },
+  {
+   "start": 97.16,
+   "end": 98.42,
+   "text": "Yeah, I think this is a great idea."
+  },
+  {
+   "start": 98.42,
+   "end": 101.86,
+   "text": "Also, you learn about the Serbian culture, right?"
+  },
+  {
+   "start": 101.86,
+   "end": 103.08,
+   "text": "So I think that's really cool."
+  },
+  {
+   "start": 103.08,
+   "end": 107.6,
+   "text": "And for me, it brought me back to my childhood and we still do"
+  },
+  {
+   "start": 107.6,
+   "end": 107.68,
+   "text": "some of these"
+  },
+  {
+   "start": 107.68,
+   "end": 110.08,
+   "text": "things when we are home."
+  },
+  {
+   "start": 110.08,
+   "end": 112.48,
+   "text": "And yeah, there's so many games."
+  },
+  {
+   "start": 112.48,
+   "end": 118.92,
+   "text": "We have so many because we are a very community-driven, social culture."
+  },
+  {
+   "start": 119.18,
+   "end": 121.62,
+   "text": "So of course, it only makes sense that we do have a lot of"
+  },
+  {
+   "start": 121.62,
+   "end": 121.86,
+   "text": "So could have ridden so many of them."
+  },
+  {
+   "start": 121.86,
+   "end": 122.38,
+   "text": "games."
+  },
+  {
+   "start": 123.96,
+   "end": 126.24,
+   "text": "But actually, some of them are quite international."
+  },
+  {
+   "start": 126.62,
+   "end": 130.12,
+   "text": "So I think that's also really nice so that you can see some parallel,"
+  },
+  {
+   "start": 130.36,
+   "end": 132.26,
+   "text": "but also you can learn some new things."
+  },
+  {
+   "start": 133.3,
+   "end": 137.4,
+   "text": "i think even in serbia in different regions there might be different games that"
+  },
+  {
+   "start": 137.4,
+   "end": 143.44,
+   "text": "kids are more used to depending on their environment right and also i'm pretty"
+  },
+  {
+   "start": 143.44,
+   "end": 144.46,
+   "text": "sure that some of these games have"
+  },
+  {
+   "start": 144.46,
+   "end": 150.0,
+   "text": "different roles in different regions yeah pretty sure i'm pretty sure because i mean"
+  },
+  {
+   "start": 150.0,
+   "end": 150.22,
+   "text": "like you know"
+  },
+  {
+   "start": 150.22,
+   "end": 154.0,
+   "text": "it's kind of like the word of mouth when a lot of things get"
+  },
+  {
+   "start": 154.0,
+   "end": 159.86,
+   "text": "lost in translation actually it's Similar to one of the games that we'll talk"
+  },
+  {
+   "start": 159.86,
+   "end": 160.4,
+   "text": "about today."
+  },
+  {
+   "start": 160.4,
+   "end": 162.16,
+   "text": "But yeah, should we start?"
+  },
+  {
+   "start": 162.16,
+   "end": 166.6,
+   "text": "I will ask you also a couple of games in Squid Game, maybe, that"
+  },
+  {
+   "start": 166.6,
+   "end": 169.98,
+   "text": "I thought maybe Serbian Kids know this or not."
+  },
+  {
+   "start": 170.1,
+   "end": 171.84,
+   "text": "So we are going to talk about it as well."
+  },
+  {
+   "start": 172.12,
+   "end": 173.1,
+   "text": "Do you want to start with that?"
+  },
+  {
+   "start": 173.1,
+   "end": 174.2,
+   "text": "Or do you want to start with the..."
+  },
+  {
+   "start": 174.2,
+   "end": 177.2,
+   "text": "Let's go with them because maybe you already have them."
+  },
+  {
+   "start": 177.2,
+   "end": 180.62,
+   "text": "So I will tell, ah, this was also in Squid Game or not."
+  },
+  {
+   "start": 180.76,
+   "end": 185.34,
+   "text": "Okay. So the first one is like the international one."
+  },
+  {
+   "start": 185.34,
+   "end": 186.2,
+   "text": "Everyone knows it."
+  },
+  {
+   "start": 186.5,
+   "end": 188.0,
+   "text": "is rock, paper, scissors."
+  },
+  {
+   "start": 188.0,
+   "end": 192.48,
+   "text": "Oh, right. The same thing, the same rules, right?"
+  },
+  {
+   "start": 192.48,
+   "end": 196.72,
+   "text": "So you have rock that beats the scissors and so on, you know, the"
+  },
+  {
+   "start": 196.72,
+   "end": 199.58,
+   "text": "rules. The only difference is just obviously"
+  },
+  {
+   "start": 199.58,
+   "end": 200.7,
+   "text": "how you say it."
+  },
+  {
+   "start": 200.7,
+   "end": 206.38,
+   "text": "We don't say rock, paper, scissors or whatever, you know, we say kamen, papir,"
+  },
+  {
+   "start": 206.38,
+   "end": 210.18,
+   "text": "makaze, which is basically means rock, paper, scissors."
+  },
+  {
+   "start": 210.18,
+   "end": 215.46,
+   "text": "I knew papir and makaze, but Kaman is new for me."
+  },
+  {
+   "start": 215.7,
+   "end": 218.29,
+   "text": "Yeah. So it goes like this."
+  },
+  {
+   "start": 218.29,
+   "end": 221.05,
+   "text": "Kaman papir makaze."
+  },
+  {
+   "start": 221.79,
+   "end": 224.27,
+   "text": "Ah, Kaman papir makaze."
+  },
+  {
+   "start": 224.27,
+   "end": 226.07,
+   "text": "Exactly. So this is the rhyme."
+  },
+  {
+   "start": 226.07,
+   "end": 227.95,
+   "text": "Let's do it once."
+  },
+  {
+   "start": 227.95,
+   "end": 228.53,
+   "text": "Let's do it once."
+  },
+  {
+   "start": 228.53,
+   "end": 233.47,
+   "text": "Okay. Okay. Kaman papir makaze."
+  },
+  {
+   "start": 233.47,
+   "end": 234.63,
+   "text": "What is that?"
+  },
+  {
+   "start": 237.37,
+   "end": 243.29,
+   "text": "what did you do you you too no it was common common okay because"
+  },
+  {
+   "start": 243.29,
+   "end": 244.77,
+   "text": "i was reading i didn't look at you"
+  },
+  {
+   "start": 246.79,
+   "end": 252.87,
+   "text": "sorry so okay so usually this would be common this would be popular ah"
+  },
+  {
+   "start": 252.87,
+   "end": 253.23,
+   "text": "this would be popular"
+  },
+  {
+   "start": 253.23,
+   "end": 258.45,
+   "text": "okay for us uh because for us it's like common pop it goes on"
+  },
+  {
+   "start": 258.45,
+   "end": 264.85,
+   "text": "on the camera right but also we do this this way as well i'm"
+  },
+  {
+   "start": 264.85,
+   "end": 265.41,
+   "text": "just thinking can we do it"
+  },
+  {
+   "start": 265.41,
+   "end": 272.43,
+   "text": "yeah we definitely don't do this but just use one the cultural"
+  },
+  {
+   "start": 272.43,
+   "end": 278.33,
+   "text": "difference you see and then the scissors are just like this so yeah that's"
+  },
+  {
+   "start": 278.33,
+   "end": 280.53,
+   "text": "universal yeah but again i don't do this"
+  },
+  {
+   "start": 280.53,
+   "end": 285.47,
+   "text": "okay that's quite cool actually i remember just doing because you don't change the"
+  },
+  {
+   "start": 285.47,
+   "end": 292.53,
+   "text": "orientation of the hand yes you do i do yeah because you"
+  },
+  {
+   "start": 292.53,
+   "end": 296.33,
+   "text": "do come and puppy my cousin i don't know this is"
+  },
+  {
+   "start": 296.33,
+   "end": 300.59,
+   "text": "probably something that we you see it's such an international game but still there"
+  },
+  {
+   "start": 300.59,
+   "end": 301.03,
+   "text": "okay definitely maybe this is something that i learned in my area and probably are differences"
+  },
+  {
+   "start": 305.63,
+   "end": 305.75,
+   "text": "i'm pretty sure"
+  },
+  {
+   "start": 305.75,
+   "end": 310.35,
+   "text": "that somewhere else is different okay how do you say i win in this"
+  },
+  {
+   "start": 310.35,
+   "end": 317.63,
+   "text": "case so you won now actually you one but i lost so okay"
+  },
+  {
+   "start": 317.63,
+   "end": 322.19,
+   "text": "feminine or masculine version i can try feminine first okay because i"
+  },
+  {
+   "start": 322.19,
+   "end": 328.31,
+   "text": "won for baby lesson for baby lesson masculine"
+  },
+  {
+   "start": 328.31,
+   "end": 335.47,
+   "text": "for baby awesome and then to lose is is gubillessome is gubillessome"
+  },
+  {
+   "start": 335.47,
+   "end": 341.15,
+   "text": "or is gubillessome yeah exactly there you go i don't have to teach anymore"
+  },
+  {
+   "start": 341.15,
+   "end": 348.25,
+   "text": "good for genders at least yes okay then the second one is again very"
+  },
+  {
+   "start": 348.25,
+   "end": 352.27,
+   "text": "a very international one and these are ones are really easy by the way"
+  },
+  {
+   "start": 352.27,
+   "end": 355.11,
+   "text": "we're starting with the easiest ones it's um i"
+  },
+  {
+   "start": 355.11,
+   "end": 359.79,
+   "text": "don't know how it's called is it called hot and cold hot and cold"
+  },
+  {
+   "start": 359.79,
+   "end": 362.17,
+   "text": "yeah i guess so it's we say"
+  },
+  {
+   "start": 362.17,
+   "end": 369.25,
+   "text": "which is hot and cold and basically you hide an object somewhere in"
+  },
+  {
+   "start": 369.25,
+   "end": 370.45,
+   "text": "a room or in an apartment or"
+  },
+  {
+   "start": 370.45,
+   "end": 374.83,
+   "text": "whatever and then that person is not allowed to be in that space and"
+  },
+  {
+   "start": 374.83,
+   "end": 378.85,
+   "text": "then the other person comes in and you guide that person by saying hot"
+  },
+  {
+   "start": 378.85,
+   "end": 383.01,
+   "text": "or cold so if if they're near and the object then it's hot"
+  },
+  {
+   "start": 383.01,
+   "end": 387.87,
+   "text": "uh you can also play around with it yeah so you can so we"
+  },
+  {
+   "start": 387.87,
+   "end": 388.89,
+   "text": "usually what we would do is like"
+  },
+  {
+   "start": 388.89,
+   "end": 395.03,
+   "text": "if you're getting closer it's like you can use also which is like lukewarm"
+  },
+  {
+   "start": 395.03,
+   "end": 395.55,
+   "text": "something like that"
+  },
+  {
+   "start": 395.55,
+   "end": 400.89,
+   "text": "like it's getting it's getting warmer right warmer i think so so you can"
+  },
+  {
+   "start": 400.89,
+   "end": 402.39,
+   "text": "say also you can say freezing"
+  },
+  {
+   "start": 403.87,
+   "end": 409.35,
+   "text": "almost there yeah it's completely somewhere completely yeah so you can say oh"
+  },
+  {
+   "start": 410.57,
+   "end": 415.81,
+   "text": "you can just make it up you know so the only thing you do"
+  },
+  {
+   "start": 415.81,
+   "end": 417.05,
+   "text": "have to have in mind because it's"
+  },
+  {
+   "start": 417.05,
+   "end": 419.81,
+   "text": "a fun game right so the only thing you have to have in mind"
+  },
+  {
+   "start": 419.81,
+   "end": 421.69,
+   "text": "is conceptually just what you're"
+  },
+  {
+   "start": 421.69,
+   "end": 427.35,
+   "text": "using that it's denoting something that's cold something that's warm so you can play"
+  },
+  {
+   "start": 427.35,
+   "end": 430.83,
+   "text": "around with You can say frigider, you can say zamrzivac, which is like a"
+  },
+  {
+   "start": 430.83,
+   "end": 431.29,
+   "text": "I can say padasnek."
+  },
+  {
+   "start": 431.29,
+   "end": 431.81,
+   "text": "freezer."
+  },
+  {
+   "start": 433.59,
+   "end": 436.83,
+   "text": "Yeah, you can say padasnek, you know, so they're like,"
+  },
+  {
+   "start": 436.9,
+   "end": 437.92,
+   "text": "Okay, so that means cold."
+  },
+  {
+   "start": 437.92,
+   "end": 440.66,
+   "text": "Okay, go somewhere else."
+  },
+  {
+   "start": 441.24,
+   "end": 442.74,
+   "text": "So you can just play around."
+  },
+  {
+   "start": 442.74,
+   "end": 443.94,
+   "text": "It's usually, that's the point."
+  },
+  {
+   "start": 444.02,
+   "end": 444.76,
+   "text": "That's the whole point."
+  },
+  {
+   "start": 445.2,
+   "end": 446.78,
+   "text": "It's not about the object."
+  },
+  {
+   "start": 446.78,
+   "end": 450.52,
+   "text": "Always in that form, we say them."
+  },
+  {
+   "start": 451.06,
+   "end": 452.54,
+   "text": "So if you want to be technical,"
+  },
+  {
+   "start": 452.54,
+   "end": 457.02,
+   "text": "you can say but it's just, you can just use the two of these"
+  },
+  {
+   "start": 457.02,
+   "end": 459.26,
+   "text": "words, right? But you can use whatever you want"
+  },
+  {
+   "start": 459.26,
+   "end": 461.08,
+   "text": "just to devote a temperature."
+  },
+  {
+   "start": 462.08,
+   "end": 464.18,
+   "text": "Okay, cool. Okay."
+  },
+  {
+   "start": 464.86,
+   "end": 466.88,
+   "text": "The third one is?"
+  },
+  {
+   "start": 467.26,
+   "end": 474.3,
+   "text": "na slovo na slovo na slovo in something in something right yes na"
+  },
+  {
+   "start": 474.3,
+   "end": 481.48,
+   "text": "is on actually but um in this case the point is tell me something"
+  },
+  {
+   "start": 481.48,
+   "end": 483.46,
+   "text": "starting with this letter with"
+  },
+  {
+   "start": 483.46,
+   "end": 491.02,
+   "text": "letter right so na slovo it means it starts with"
+  },
+  {
+   "start": 491.02,
+   "end": 496.32,
+   "text": "the letter na slovo oh okay so the last letter or the first letter"
+  },
+  {
+   "start": 496.32,
+   "end": 502.84,
+   "text": "the first letter okay and this one has many variations right so um you"
+  },
+  {
+   "start": 502.84,
+   "end": 503.3,
+   "text": "can do"
+  },
+  {
+   "start": 503.3,
+   "end": 509.72,
+   "text": "also this with colors or whatever like with however you want it yeah but"
+  },
+  {
+   "start": 509.72,
+   "end": 510.42,
+   "text": "what you could do"
+  },
+  {
+   "start": 510.42,
+   "end": 514.48,
+   "text": "for example one of the variations is basically you're in a room or if"
+  },
+  {
+   "start": 514.48,
+   "end": 515.42,
+   "text": "you're in a train or you're"
+  },
+  {
+   "start": 515.42,
+   "end": 519.46,
+   "text": "in a bus or whatever and then you see something like you see like"
+  },
+  {
+   "start": 519.46,
+   "end": 525.34,
+   "text": "okay someone is wearing like headset right and then uh naslava naslava right like"
+  },
+  {
+   "start": 525.34,
+   "end": 527.14,
+   "text": "and then you tell the letter after naslova"
+  },
+  {
+   "start": 527.14,
+   "end": 532.04,
+   "text": "naslova yeah so you said which letter it starts with and they have to"
+  },
+  {
+   "start": 532.04,
+   "end": 534.18,
+   "text": "guess which um which object"
+  },
+  {
+   "start": 534.18,
+   "end": 539.14,
+   "text": "it is in the room and okay or which object in in their mind"
+  },
+  {
+   "start": 539.14,
+   "end": 541.36,
+   "text": "if they are going by car or if they're"
+  },
+  {
+   "start": 541.36,
+   "end": 546.7,
+   "text": "not in a room like with many objects right well i think if you're"
+  },
+  {
+   "start": 546.7,
+   "end": 549.32,
+   "text": "going beyond the objects in the room,"
+  },
+  {
+   "start": 549.32,
+   "end": 551.42,
+   "text": "it gets quite difficult, actually, right?"
+  },
+  {
+   "start": 551.42,
+   "end": 553.08,
+   "text": "Because you can just think of anything."
+  },
+  {
+   "start": 554.12,
+   "end": 557.94,
+   "text": "So that's easier because you can play it for a longer time."
+  },
+  {
+   "start": 557.94,
+   "end": 559.2,
+   "text": "Actually, we play it like that."
+  },
+  {
+   "start": 559.58,
+   "end": 564.18,
+   "text": "We put the category, like animals or city names."
+  },
+  {
+   "start": 564.7,
+   "end": 567.12,
+   "text": "And then, yeah, we say that."
+  },
+  {
+   "start": 567.34,
+   "end": 570.32,
+   "text": "But the start is not the same in Turkish."
+  },
+  {
+   "start": 571.48,
+   "end": 573.6,
+   "text": "So I guess you can do this with almost anything."
+  },
+  {
+   "start": 573.6,
+   "end": 575.1,
+   "text": "It kind of like a similar thing."
+  },
+  {
+   "start": 575.52,
+   "end": 579.16,
+   "text": "There's a similar thing in English as well, which is like, what in the,"
+  },
+  {
+   "start": 579.16,
+   "end": 579.82,
+   "text": "something like that,"
+  },
+  {
+   "start": 579.82,
+   "end": 582.1,
+   "text": "like what in the room is red or something."
+  },
+  {
+   "start": 582.8,
+   "end": 583.98,
+   "text": "There's a sentence, something like that."
+  },
+  {
+   "start": 583.98,
+   "end": 586.26,
+   "text": "We did that when we used to go to conferences."
+  },
+  {
+   "start": 586.94,
+   "end": 588.32,
+   "text": "I spy with my little eye."
+  },
+  {
+   "start": 588.48,
+   "end": 590.56,
+   "text": "I spy with my little eye, exactly."
+  },
+  {
+   "start": 590.78,
+   "end": 591.7,
+   "text": "That's basically it."
+  },
+  {
+   "start": 591.7,
+   "end": 595.4,
+   "text": "It's just the version of like, which I spy with my little eye,"
+  },
+  {
+   "start": 595.4,
+   "end": 599.6,
+   "text": "something that starts with the letter R or whatever."
+  },
+  {
+   "start": 600.18,
+   "end": 607.26,
+   "text": "That's it. I should ask you a new one"
+  },
+  {
+   "start": 607.26,
+   "end": 612.1,
+   "text": "or you also find with some you tell me you okay not slower not"
+  },
+  {
+   "start": 612.1,
+   "end": 620.94,
+   "text": "slower I was"
+  },
+  {
+   "start": 620.94,
+   "end": 628.78,
+   "text": "expecting telephone ah okay anyway good what is keyboard keyboard okay that's"
+  },
+  {
+   "start": 628.78,
+   "end": 629.02,
+   "text": "a beautiful name"
+  },
+  {
+   "start": 629.02,
+   "end": 636.2,
+   "text": "so because the the um button is taster like this kind of kind"
+  },
+  {
+   "start": 636.2,
+   "end": 638.52,
+   "text": "of that tastatura i don't know it's"
+  },
+  {
+   "start": 638.52,
+   "end": 645.12,
+   "text": "they use the same in german anyway okay before we continue with the show"
+  },
+  {
+   "start": 645.12,
+   "end": 645.7,
+   "text": "here's a quick reminder"
+  },
+  {
+   "start": 645.7,
+   "end": 651.1,
+   "text": "this podcast is free for everyone and supported by listeners like you We hope"
+  },
+  {
+   "start": 651.1,
+   "end": 653.8,
+   "text": "that this podcast is useful and companion to you."
+  },
+  {
+   "start": 654.2,
+   "end": 656.21,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 656.59,
+   "end": 660.93,
+   "text": "To help us continue creating useful content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 661.41,
+   "end": 664.37,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 665.03,
+   "end": 670.91,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 670.91,
+   "end": 676.93,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 677.55,
+   "end": 680.25,
+   "text": "and get extra benefits like bonus content,"
+  },
+  {
+   "start": 680.25,
+   "end": 683.87,
+   "text": "pull transcripts of the show in Serbian, or even join us on the show."
+  },
+  {
+   "start": 684.71,
+   "end": 686.83,
+   "text": "We rely on your support to help everyone more"
+  },
+  {
+   "start": 686.83,
+   "end": 689.31,
+   "text": "in learning Serbian language and culture."
+  },
+  {
+   "start": 690.09,
+   "end": 691.49,
+   "text": "Thanks for joining us today."
+  },
+  {
+   "start": 691.67,
+   "end": 693.51,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 694.61,
+   "end": 696.41,
+   "text": "This one I love."
+  },
+  {
+   "start": 696.41,
+   "end": 699.47,
+   "text": "I think I can play this one for hours, guys."
+  },
+  {
+   "start": 700.37,
+   "end": 701.47,
+   "text": "It's called Kaladont."
+  },
+  {
+   "start": 702.53,
+   "end": 705.53,
+   "text": "Kaladont. It's like a borrowed word or not?"
+  },
+  {
+   "start": 705.53,
+   "end": 706.55,
+   "text": "Kaladont."
+  },
+  {
+   "start": 706.55,
+   "end": 712.21,
+   "text": "I, if I'm not mistaken, there is like a brand, there was at least"
+  },
+  {
+   "start": 712.21,
+   "end": 713.07,
+   "text": "a brand color."
+  },
+  {
+   "start": 713.07,
+   "end": 713.77,
+   "text": "I'm not quite"
+  },
+  {
+   "start": 713.77,
+   "end": 715.13,
+   "text": "sure. I don't know."
+  },
+  {
+   "start": 715.13,
+   "end": 717.91,
+   "text": "It has a, it has a point though."
+  },
+  {
+   "start": 717.91,
+   "end": 719.61,
+   "text": "So this is how it goes."
+  },
+  {
+   "start": 719.61,
+   "end": 720.59,
+   "text": "Basically you"
+  },
+  {
+   "start": 720.59,
+   "end": 724.89,
+   "text": "give me a word and then I have to create a new word, existing"
+  },
+  {
+   "start": 724.89,
+   "end": 727.03,
+   "text": "word in Serbian from the last two"
+  },
+  {
+   "start": 727.03,
+   "end": 731.81,
+   "text": "letters. It has to be two letters, the last two letters."
+  },
+  {
+   "start": 731.81,
+   "end": 734.71,
+   "text": "And you know, it gets, it gets really tricky so the thing is that"
+  },
+  {
+   "start": 734.71,
+   "end": 737.61,
+   "text": "this really works well with serbian because there's a one-to-one"
+  },
+  {
+   "start": 737.61,
+   "end": 744.05,
+   "text": "course like correspondence with the letters and sounds right so it's quite in english"
+  },
+  {
+   "start": 744.05,
+   "end": 744.51,
+   "text": "difficult because you have to think of something i did that in english though it's quite"
+  },
+  {
+   "start": 747.91,
+   "end": 749.27,
+   "text": "too it worked it"
+  },
+  {
+   "start": 749.27,
+   "end": 755.41,
+   "text": "worked but it didn't work as well right i will challenge you then go"
+  },
+  {
+   "start": 755.41,
+   "end": 758.47,
+   "text": "ahead this is exactly the Yeah."
+  },
+  {
+   "start": 758.73,
+   "end": 760.45,
+   "text": "No, I don't know."
+  },
+  {
+   "start": 760.45,
+   "end": 761.45,
+   "text": "I don't care."
+  },
+  {
+   "start": 761.45,
+   "end": 764.47,
+   "text": "But OK, this is exactly where you want"
+  },
+  {
+   "start": 764.47,
+   "end": 769.97,
+   "text": "to go to and caladon this is where caladon comes in a place which"
+  },
+  {
+   "start": 769.97,
+   "end": 772.89,
+   "text": "is it you start with caladon ta"
+  },
+  {
+   "start": 772.89,
+   "end": 779.51,
+   "text": "and then this is the first word always the first word ta and then"
+  },
+  {
+   "start": 779.51,
+   "end": 783.29,
+   "text": "i have to say ta testatura ra"
+  },
+  {
+   "start": 783.29,
+   "end": 790.39,
+   "text": "ra that was the thing from"
+  },
+  {
+   "start": 791.25,
+   "end": 795.01,
+   "text": "ikea you can tell the brands"
+  },
+  {
+   "start": 795.01,
+   "end": 796.09,
+   "text": "so"
+  },
+  {
+   "start": 798.09,
+   "end": 798.61,
+   "text": "depends on the rules"
+  },
+  {
+   "start": 798.61,
+   "end": 800.01,
+   "text": "it really depends on the rules"
+  },
+  {
+   "start": 800.01,
+   "end": 800.85,
+   "text": "okay let me try something"
+  },
+  {
+   "start": 800.85,
+   "end": 806.13,
+   "text": "actually I think also the names are not allowed proper names are not allowed"
+  },
+  {
+   "start": 807.55,
+   "end": 808.53,
+   "text": "i think it has to like be like"
+  },
+  {
+   "start": 808.53,
+   "end": 815.29,
+   "text": "an object or an abstract thing so ikona ikona okay i was gonna say"
+  },
+  {
+   "start": 815.29,
+   "end": 821.03,
+   "text": "ikona it will go on like that exactly the thing is that"
+  },
+  {
+   "start": 821.03,
+   "end": 825.17,
+   "text": "you you lose if you get to a point where you can't really think"
+  },
+  {
+   "start": 825.17,
+   "end": 827.71,
+   "text": "of anything right um and also you lose"
+  },
+  {
+   "start": 827.71,
+   "end": 835.53,
+   "text": "if you choose a word that ends in ka because then it's kaladont so"
+  },
+  {
+   "start": 835.53,
+   "end": 840.23,
+   "text": "if i say something with ka the other person says kaladonta and exactly and"
+  },
+  {
+   "start": 840.23,
+   "end": 843.13,
+   "text": "you lose so it has doesn't cannot be ka and also if"
+  },
+  {
+   "start": 843.13,
+   "end": 847.03,
+   "text": "it happens that you cannot remember a word or maybe there is just no"
+  },
+  {
+   "start": 847.03,
+   "end": 848.13,
+   "text": "word like maybe with maybe"
+  },
+  {
+   "start": 848.13,
+   "end": 852.77,
+   "text": "there's no word sounding with i'm not gonna say it but maybe there isn't"
+  },
+  {
+   "start": 852.77,
+   "end": 853.39,
+   "text": "well so that's when you"
+  },
+  {
+   "start": 853.39,
+   "end": 860.61,
+   "text": "lose yeah i see all right cool kaladonta yeah next one is"
+  },
+  {
+   "start": 860.61,
+   "end": 867.47,
+   "text": "gloomy telephony gloomy telefones Yes, means that phones."
+  },
+  {
+   "start": 867.47,
+   "end": 871.29,
+   "text": "I think there's the variation of this game almost anywhere."
+  },
+  {
+   "start": 871.55,
+   "end": 873.69,
+   "text": "Basically there are several"
+  },
+  {
+   "start": 873.8,
+   "end": 878.32,
+   "text": "people they line up sit next to each other and there's one person who"
+  },
+  {
+   "start": 878.32,
+   "end": 878.84,
+   "text": "thinks of a sentence"
+  },
+  {
+   "start": 878.84,
+   "end": 884.74,
+   "text": "and then whispers it to one like the first person in the line so"
+  },
+  {
+   "start": 884.74,
+   "end": 885.72,
+   "text": "let's say I want to say"
+  },
+  {
+   "start": 885.72,
+   "end": 892.76,
+   "text": "I don't know the weather I like pasta whatever and then you whisper it"
+  },
+  {
+   "start": 892.76,
+   "end": 894.36,
+   "text": "and obviously no one should"
+  },
+  {
+   "start": 894.36,
+   "end": 899.0,
+   "text": "listen and if the other person and the other person has to understand what"
+  },
+  {
+   "start": 899.0,
+   "end": 902.3,
+   "text": "you said right and then they should tell it to the to the second"
+  },
+  {
+   "start": 902.3,
+   "end": 906.02,
+   "text": "person and there's no no one can ask you additional"
+  },
+  {
+   "start": 906.02,
+   "end": 911.94,
+   "text": "questions nothing so they like while you're here no and you get the most"
+  },
+  {
+   "start": 911.94,
+   "end": 914.32,
+   "text": "bizarre sentences after"
+  },
+  {
+   "start": 914.32,
+   "end": 920.34,
+   "text": "that completely different completely because because it's exactly you're like because it's"
+  },
+  {
+   "start": 920.34,
+   "end": 925.04,
+   "text": "whispering right it's not like you're saying something properly it's like you're whispering then"
+  },
+  {
+   "start": 925.04,
+   "end": 928.72,
+   "text": "and you're not allowed to repeat it so you just get the I love"
+  },
+  {
+   "start": 928.72,
+   "end": 930.22,
+   "text": "pasta can in the end be I hate"
+  },
+  {
+   "start": 930.22,
+   "end": 936.06,
+   "text": "spiders I hate spiders exactly it's just the most random things so I used"
+  },
+  {
+   "start": 936.06,
+   "end": 937.84,
+   "text": "to have my students play"
+  },
+  {
+   "start": 937.84,
+   "end": 944.92,
+   "text": "that yeah and they they did change on purpose though so to embarrass the"
+  },
+  {
+   "start": 944.92,
+   "end": 945.72,
+   "text": "last person to say that"
+  },
+  {
+   "start": 945.72,
+   "end": 951.12,
+   "text": "that's so mean oh yeah I could I could definitely I've been so naive"
+  },
+  {
+   "start": 951.12,
+   "end": 952.92,
+   "text": "I could definitely imagine that Yeah."
+  },
+  {
+   "start": 952.92,
+   "end": 957.74,
+   "text": "Okay. And the, oh no, there's two more."
+  },
+  {
+   "start": 957.74,
+   "end": 960.52,
+   "text": "These two more are actually something that I learned,"
+  },
+  {
+   "start": 960.52,
+   "end": 964.84,
+   "text": "I would say a bit later in my teenage years, it wasn't something you"
+  },
+  {
+   "start": 964.84,
+   "end": 965.8,
+   "text": "really kind of need to a bit"
+  },
+  {
+   "start": 965.8,
+   "end": 968.06,
+   "text": "more grown up, I would have to say."
+  },
+  {
+   "start": 968.06,
+   "end": 971.2,
+   "text": "So it's the first one is a counting game."
+  },
+  {
+   "start": 971.2,
+   "end": 972.54,
+   "text": "And we usually used"
+  },
+  {
+   "start": 972.54,
+   "end": 976.06,
+   "text": "to do that in a bus train."
+  },
+  {
+   "start": 976.06,
+   "end": 980.68,
+   "text": "So when we are traveling, so you have to clap your hand, your hands,"
+  },
+  {
+   "start": 980.68,
+   "end": 981.26,
+   "text": "If"
+  },
+  {
+   "start": 981.26,
+   "end": 988.78,
+   "text": "uh if a number ha consists of a number three or if it's multiplications"
+  },
+  {
+   "start": 988.78,
+   "end": 993.28,
+   "text": "of three right three six nine yeah or if it's divisible divisible is"
+  },
+  {
+   "start": 993.28,
+   "end": 998.62,
+   "text": "that how you say divisible by three so for example so you everything else"
+  },
+  {
+   "start": 998.62,
+   "end": 1004.02,
+   "text": "you clap so you'll be one two four five right because six is divisible"
+  },
+  {
+   "start": 1004.02,
+   "end": 1009.64,
+   "text": "right seven eight ten eleven and then because"
+  },
+  {
+   "start": 1009.64,
+   "end": 1013.86,
+   "text": "12 is divisible by three and 13 has three in the in the number"
+  },
+  {
+   "start": 1013.86,
+   "end": 1016.14,
+   "text": "right uh-huh so that's how it that's"
+  },
+  {
+   "start": 1016.14,
+   "end": 1023.2,
+   "text": "fine okay got it so you have to have some math skills and concentration"
+  },
+  {
+   "start": 1023.2,
+   "end": 1024.72,
+   "text": "exactly and the thing"
+  },
+  {
+   "start": 1024.72,
+   "end": 1027.66,
+   "text": "is that of course you do this with like you can do with two"
+  },
+  {
+   "start": 1027.66,
+   "end": 1030.36,
+   "text": "people right but it's better if you do it with more and the thing"
+  },
+  {
+   "start": 1030.36,
+   "end": 1034.38,
+   "text": "is that you cannot be slow so if you're taking more than a second"
+  },
+  {
+   "start": 1034.38,
+   "end": 1034.82,
+   "text": "clap or or maybe one you say one two and then you clap right to"
+  },
+  {
+   "start": 1039.46,
+   "end": 1041.8,
+   "text": "four five and clap yeah sorry i think i"
+  },
+  {
+   "start": 1041.8,
+   "end": 1045.06,
+   "text": "mixed it up in the beginning so you have to very very very fast"
+  },
+  {
+   "start": 1045.06,
+   "end": 1046.68,
+   "text": "when you're speaking it or clapping"
+  },
+  {
+   "start": 1046.68,
+   "end": 1050.98,
+   "text": "right because if you're taking a lot more time then that's not the point"
+  },
+  {
+   "start": 1050.98,
+   "end": 1051.58,
+   "text": "of the game and it should get"
+  },
+  {
+   "start": 1051.58,
+   "end": 1056.68,
+   "text": "much faster and faster and faster that's true and when the numbers are bigger"
+  },
+  {
+   "start": 1056.68,
+   "end": 1062.82,
+   "text": "you just lose your concentration yeah and you also want to count on other"
+  },
+  {
+   "start": 1062.82,
+   "end": 1065.44,
+   "text": "people like making sure that you are not"
+  },
+  {
+   "start": 1065.44,
+   "end": 1070.32,
+   "text": "making a mistake because you can be very like busy with making sure that"
+  },
+  {
+   "start": 1070.32,
+   "end": 1071.44,
+   "text": "you are doing the right"
+  },
+  {
+   "start": 1071.44,
+   "end": 1075.86,
+   "text": "clapping right or like the right thing but um and then usually someone else"
+  },
+  {
+   "start": 1075.86,
+   "end": 1077.28,
+   "text": "points out like oh you"
+  },
+  {
+   "start": 1077.28,
+   "end": 1080.14,
+   "text": "know you didn't clap for this one or like this one is incorrect you"
+  },
+  {
+   "start": 1080.14,
+   "end": 1080.94,
+   "text": "know so someone has to be aware"
+  },
+  {
+   "start": 1080.94,
+   "end": 1085.84,
+   "text": "accountable of these things so you can do that let's do it shall i"
+  },
+  {
+   "start": 1085.84,
+   "end": 1087.8,
+   "text": "start okay you're done Two, four, seven, eight,"
+  },
+  {
+   "start": 1087.8,
+   "end": 1093.84,
+   "text": "awesome that's it yeah"
+  },
+  {
+   "start": 1093.84,
+   "end": 1095.24,
+   "text": "ten, eleven."
+  },
+  {
+   "start": 1095.24,
+   "end": 1095.74,
+   "text": "honest"
+  },
+  {
+   "start": 1097.24,
+   "end": 1104.9,
+   "text": "and then i need to clap because it's 13 exactly you"
+  },
+  {
+   "start": 1104.9,
+   "end": 1106.48,
+   "text": "can do this with any language you can do this"
+  },
+  {
+   "start": 1106.48,
+   "end": 1112.16,
+   "text": "with turkish or whatever but yeah that's good for revising numbers in serbian you're"
+  },
+  {
+   "start": 1112.16,
+   "end": 1112.42,
+   "text": "like"
+  },
+  {
+   "start": 1113.68,
+   "end": 1117.1,
+   "text": "you see this is what i said linguistically it's really cool because in terms"
+  },
+  {
+   "start": 1117.1,
+   "end": 1117.72,
+   "text": "of vocabulary you're"
+  },
+  {
+   "start": 1117.72,
+   "end": 1122.84,
+   "text": "really gonna learn a lot the last one i love this one as well"
+  },
+  {
+   "start": 1122.84,
+   "end": 1126.14,
+   "text": "uh and it's kind of silly and again we"
+  },
+  {
+   "start": 1126.14,
+   "end": 1129.62,
+   "text": "usually do that if we're like in a bus or a car or something"
+  },
+  {
+   "start": 1129.62,
+   "end": 1132.96,
+   "text": "like that it's called hop soup hop soup"
+  },
+  {
+   "start": 1134.22,
+   "end": 1138.88,
+   "text": "yeah cup soup soup yeah so i don't know if you know but hop"
+  },
+  {
+   "start": 1138.88,
+   "end": 1143.02,
+   "text": "soup usually is like when you dance you're like hoppa tupa hoppa tupa hoppa"
+  },
+  {
+   "start": 1143.02,
+   "end": 1146.28,
+   "text": "tupa you know that's how it goes i don't really know why"
+  },
+  {
+   "start": 1146.28,
+   "end": 1153.16,
+   "text": "here it's hop tup there's also like a hop tup nakalup it's like anyway"
+  },
+  {
+   "start": 1153.16,
+   "end": 1154.4,
+   "text": "it's used in in serbian"
+  },
+  {
+   "start": 1154.4,
+   "end": 1160.16,
+   "text": "so it's i do know this game in in english which is called fezbaz"
+  },
+  {
+   "start": 1160.16,
+   "end": 1167.08,
+   "text": "fezbaz sounds kind of familiar but tell me the rules so you again you"
+  },
+  {
+   "start": 1167.08,
+   "end": 1170.94,
+   "text": "go with again with numbers i guess i made a mistake fizz"
+  },
+  {
+   "start": 1170.94,
+   "end": 1176.14,
+   "text": "buzz is similar to the counting game because here instead of clapping you have"
+  },
+  {
+   "start": 1176.14,
+   "end": 1177.06,
+   "text": "replacing any number"
+  },
+  {
+   "start": 1177.06,
+   "end": 1183.24,
+   "text": "divisible by three with the word fizz and any number divisible by five with"
+  },
+  {
+   "start": 1183.24,
+   "end": 1184.74,
+   "text": "the word buzz so"
+  },
+  {
+   "start": 1184.74,
+   "end": 1189.4,
+   "text": "this gets very complex and then if you have divisible by three and five"
+  },
+  {
+   "start": 1189.4,
+   "end": 1191.24,
+   "text": "like 50 then it's Fizzbuzz."
+  },
+  {
+   "start": 1191.24,
+   "end": 1194.34,
+   "text": "In your case, it's hop-top."
+  },
+  {
+   "start": 1194.72,
+   "end": 1195.6,
+   "text": "No, no, sorry."
+  },
+  {
+   "start": 1195.6,
+   "end": 1199.02,
+   "text": "This is connected to the counting game."
+  },
+  {
+   "start": 1199.02,
+   "end": 1200.16,
+   "text": "One, yeah, one, two."
+  },
+  {
+   "start": 1200.16,
+   "end": 1201.38,
+   "text": "So it's similar."
+  },
+  {
+   "start": 1201.38,
+   "end": 1202.49,
+   "text": "This is something different."
+  },
+  {
+   "start": 1202.49,
+   "end": 1203.71,
+   "text": "Okay, let's start from scratch."
+  },
+  {
+   "start": 1203.71,
+   "end": 1206.43,
+   "text": "Hop, Tsup. Not similar to Fizzbuzz."
+  },
+  {
+   "start": 1206.65,
+   "end": 1207.41,
+   "text": "What do you do?"
+  },
+  {
+   "start": 1207.41,
+   "end": 1212.01,
+   "text": "So you basically, again, go in a circle and you have to say hop"
+  },
+  {
+   "start": 1212.01,
+   "end": 1216.99,
+   "text": "three times. So each person, so it's like, I say hop, you say hop."
+  },
+  {
+   "start": 1217.33,
+   "end": 1219.15,
+   "text": "And then the other third person says hop."
+  },
+  {
+   "start": 1219.89,
+   "end": 1221.61,
+   "text": "Then you say Tsup three times."
+  },
+  {
+   "start": 1222.71,
+   "end": 1223.71,
+   "text": "Tsup, Tsup, Tsup."
+  },
+  {
+   "start": 1224.21,
+   "end": 1225.93,
+   "text": "And then you do this again twice."
+  },
+  {
+   "start": 1225.93,
+   "end": 1230.93,
+   "text": "and then one time and then you say i don't know this one is"
+  },
+  {
+   "start": 1230.93,
+   "end": 1232.77,
+   "text": "weird uh for some reason"
+  },
+  {
+   "start": 1232.77,
+   "end": 1239.75,
+   "text": "so it goes like this hop hop hop soup soup soup hop hop soup"
+  },
+  {
+   "start": 1239.75,
+   "end": 1240.61,
+   "text": "soup hop soup uh"
+  },
+  {
+   "start": 1240.61,
+   "end": 1247.67,
+   "text": "i guess maybe it has some sort"
+  },
+  {
+   "start": 1247.67,
+   "end": 1253.65,
+   "text": "of connection to sex or something because it's it can be also meaning sex"
+  },
+  {
+   "start": 1253.65,
+   "end": 1259.51,
+   "text": "i don't know so that's maybe where there's why there's a yeah can't tell"
+  },
+  {
+   "start": 1259.51,
+   "end": 1259.63,
+   "text": "the rest"
+  },
+  {
+   "start": 1259.63,
+   "end": 1265.17,
+   "text": "so anyway the the point it's very similar to counting right because you have"
+  },
+  {
+   "start": 1265.17,
+   "end": 1265.61,
+   "text": "focused that you are saying it three times two times once and then saying to be really"
+  },
+  {
+   "start": 1271.25,
+   "end": 1271.89,
+   "text": "the uh thing right"
+  },
+  {
+   "start": 1271.89,
+   "end": 1277.73,
+   "text": "so it's the same thing um in a circle and you very easily again"
+  },
+  {
+   "start": 1277.73,
+   "end": 1282.65,
+   "text": "have to be very fast and it has any limit for players like can"
+  },
+  {
+   "start": 1282.65,
+   "end": 1285.59,
+   "text": "you play with two people only or whatever uh there's no"
+  },
+  {
+   "start": 1285.59,
+   "end": 1290.33,
+   "text": "limit no there's no limit i'm guessing that it gets a bit more tough"
+  },
+  {
+   "start": 1290.33,
+   "end": 1291.21,
+   "text": "with 10 people but i get i"
+  },
+  {
+   "start": 1291.21,
+   "end": 1297.83,
+   "text": "can see that it would be how that can be really interesting right okay"
+  },
+  {
+   "start": 1297.83,
+   "end": 1302.87,
+   "text": "from the squid game i think you guys also played these."
+  },
+  {
+   "start": 1303.83,
+   "end": 1305.03,
+   "text": "How about marbles?"
+  },
+  {
+   "start": 1305.87,
+   "end": 1307.65,
+   "text": "Oh, love that."
+  },
+  {
+   "start": 1307.87,
+   "end": 1310.69,
+   "text": "The thing is, we have a lot of very"
+  },
+  {
+   "start": 1310.71,
+   "end": 1315.83,
+   "text": "of marble games but the one in squid game the series was completely different"
+  },
+  {
+   "start": 1315.83,
+   "end": 1317.03,
+   "text": "they make a kind"
+  },
+  {
+   "start": 1317.03,
+   "end": 1321.67,
+   "text": "of a hole on the sand and they leave one and they throw one"
+  },
+  {
+   "start": 1321.67,
+   "end": 1324.93,
+   "text": "um to just like distribute the others"
+  },
+  {
+   "start": 1324.93,
+   "end": 1330.31,
+   "text": "all around so it's or to keep that in the hole we never played"
+  },
+  {
+   "start": 1330.31,
+   "end": 1331.65,
+   "text": "that way we played so many different"
+  },
+  {
+   "start": 1331.65,
+   "end": 1338.99,
+   "text": "marbles and i thought how serbians play that okay i haven't i"
+  },
+  {
+   "start": 1338.99,
+   "end": 1343.03,
+   "text": "don't remember a specific game of how we do it I do remember that"
+  },
+  {
+   "start": 1343.03,
+   "end": 1345.79,
+   "text": "we would just try to hit the other marble I remember that"
+  },
+  {
+   "start": 1345.79,
+   "end": 1351.59,
+   "text": "was the point but um I did like having marbles I don't remember like"
+  },
+  {
+   "start": 1351.59,
+   "end": 1352.15,
+   "text": "playing with them a lot"
+  },
+  {
+   "start": 1352.15,
+   "end": 1356.39,
+   "text": "I don't think a lot of people they're so colorful beautiful you you were"
+  },
+  {
+   "start": 1356.39,
+   "end": 1356.79,
+   "text": "the collector then"
+  },
+  {
+   "start": 1356.79,
+   "end": 1361.81,
+   "text": "oh I had some of them oh yeah yeah I had some but very"
+  },
+  {
+   "start": 1361.81,
+   "end": 1366.99,
+   "text": "quickly it just went out of style I don't weird my marbles are still"
+  },
+  {
+   "start": 1366.99,
+   "end": 1371.61,
+   "text": "at home oh no i don't have any marbles oh precious"
+  },
+  {
+   "start": 1371.61,
+   "end": 1378.87,
+   "text": "okay let's revise some words again um how do i say i"
+  },
+  {
+   "start": 1378.87,
+   "end": 1383.43,
+   "text": "win way marbles a marble how you say it"
+  },
+  {
+   "start": 1383.43,
+   "end": 1389.33,
+   "text": "in serbian i'm thinking something similar no it's quite difficult"
+  },
+  {
+   "start": 1389.33,
+   "end": 1396.37,
+   "text": "different uh clicker clicker i'm guessing it's because of the click click"
+  },
+  {
+   "start": 1396.37,
+   "end": 1396.65,
+   "text": "when they have the"
+  },
+  {
+   "start": 1396.65,
+   "end": 1403.67,
+   "text": "sound click clicker i'm guessing and plural is clickery and the way we"
+  },
+  {
+   "start": 1403.67,
+   "end": 1412.03,
+   "text": "say it in turkish is quite serbian i mean sounds bilje oh interesting kind"
+  },
+  {
+   "start": 1412.03,
+   "end": 1416.19,
+   "text": "of like plant yeah like plant based yeah"
+  },
+  {
+   "start": 1416.19,
+   "end": 1423.21,
+   "text": "okay pobedilasam pobedilasam uh is"
+  },
+  {
+   "start": 1423.21,
+   "end": 1430.37,
+   "text": "is no i lost is gubilasam is gubilasam okay pobedilasam is"
+  },
+  {
+   "start": 1430.37,
+   "end": 1436.53,
+   "text": "how do you say like it's your turn you are the it it's your"
+  },
+  {
+   "start": 1436.53,
+   "end": 1436.63,
+   "text": "turn"
+  },
+  {
+   "start": 1436.63,
+   "end": 1444.01,
+   "text": "tc narado tc narado yeah yeah red is um can also mean turn"
+  },
+  {
+   "start": 1444.01,
+   "end": 1447.53,
+   "text": "you are on turn basically it's your turn"
+  },
+  {
+   "start": 1449.75,
+   "end": 1455.37,
+   "text": "if you are the one like for example you're playing tag and if you're"
+  },
+  {
+   "start": 1455.37,
+   "end": 1455.75,
+   "text": "the one"
+  },
+  {
+   "start": 1457.57,
+   "end": 1461.07,
+   "text": "Ah, TC. ah uh tc tc i guess i'm guessing ah tc okay oh"
+  },
+  {
+   "start": 1461.07,
+   "end": 1462.69,
+   "text": "TC, I'm guessing."
+  },
+  {
+   "start": 1462.83,
+   "end": 1462.95,
+   "text": "Ah, TC."
+  },
+  {
+   "start": 1462.95,
+   "end": 1464.91,
+   "text": "Okay. Oh, wait, Point Tech, huh?"
+  },
+  {
+   "start": 1464.91,
+   "end": 1465.73,
+   "text": "wait playing tech how do we did"
+  },
+  {
+   "start": 1465.73,
+   "end": 1470.85,
+   "text": "let's say you're playing hide and seek and the one who sees"
+  },
+  {
+   "start": 1470.85,
+   "end": 1476.39,
+   "text": "i would say like i found you nashla something right i thought i don't"
+  },
+  {
+   "start": 1476.39,
+   "end": 1476.57,
+   "text": "remember now"
+  },
+  {
+   "start": 1476.57,
+   "end": 1482.99,
+   "text": "uh you can just say you you're it you're it tc or something to"
+  },
+  {
+   "start": 1482.99,
+   "end": 1484.27,
+   "text": "see uh-huh okay"
+  },
+  {
+   "start": 1486.39,
+   "end": 1489.61,
+   "text": "let me just i want to say another thing i forgot now it's not"
+  },
+  {
+   "start": 1489.61,
+   "end": 1489.89,
+   "text": "teaching the radio"
+  },
+  {
+   "start": 1489.89,
+   "end": 1495.17,
+   "text": "uh you can say now you saddi you can always say that right"
+  },
+  {
+   "start": 1497.01,
+   "end": 1499.73,
+   "text": "in turkish we have such a funny word for that we call it the"
+  },
+  {
+   "start": 1499.73,
+   "end": 1500.11,
+   "text": "old grandma"
+  },
+  {
+   "start": 1500.11,
+   "end": 1507.21,
+   "text": "that's why i thought maybe you also have something weird uh we have"
+  },
+  {
+   "start": 1507.21,
+   "end": 1514.23,
+   "text": "a name for that game is sugar sugar yeah which means uh sugar"
+  },
+  {
+   "start": 1514.23,
+   "end": 1518.05,
+   "text": "means what is this thing when you get like little like"
+  },
+  {
+   "start": 1518.05,
+   "end": 1521.85,
+   "text": "chickenpox or something like that kind of something like some disease like that is"
+  },
+  {
+   "start": 1521.85,
+   "end": 1521.97,
+   "text": "when you have like little so you kind of like basically means like you"
+  },
+  {
+   "start": 1521.97,
+   "end": 1522.33,
+   "text": "sugar"
+  },
+  {
+   "start": 1527.27,
+   "end": 1528.17,
+   "text": "got infected or something"
+  },
+  {
+   "start": 1528.17,
+   "end": 1533.21,
+   "text": "like i don't know infected yeah like i touched you i infected you so"
+  },
+  {
+   "start": 1533.21,
+   "end": 1535.26,
+   "text": "uh sugar yeah you can just say Suga."
+  },
+  {
+   "start": 1536.66,
+   "end": 1538.66,
+   "text": "Cool. Totally not cool."
+  },
+  {
+   "start": 1540.36,
+   "end": 1543.5,
+   "text": "I mean, at least we learned something cultural here."
+  },
+  {
+   "start": 1545.64,
+   "end": 1546.44,
+   "text": "Hope you had fun."
+  },
+  {
+   "start": 1546.76,
+   "end": 1550.04,
+   "text": "It was such a nice revision of my childhood."
+  },
+  {
+   "start": 1550.44,
+   "end": 1552.7,
+   "text": "And we played a little bit for the first time."
+  },
+  {
+   "start": 1553.64,
+   "end": 1555.74,
+   "text": "Guys, you're welcome, guys."
+  },
+  {
+   "start": 1555.74,
+   "end": 1560.52,
+   "text": "I hope you're going to use this and practice Serbian and enjoy it."
+  },
+  {
+   "start": 1560.52,
+   "end": 1563.8,
+   "text": "also with your friends and tell some of your serbian friends some of the"
+  },
+  {
+   "start": 1563.8,
+   "end": 1568.54,
+   "text": "serbian games definitely and get prepared and beat them up exactly"
+  },
+  {
+   "start": 1568.54,
+   "end": 1576.4,
+   "text": "okay guys thank"
+  },
+  {
+   "start": 1576.4,
+   "end": 1583.52,
+   "text": "you for joining us today we hope you enjoyed our podcast"
+  },
+  {
+   "start": 1583.52,
+   "end": 1584.48,
+   "text": "and learned something new"
+  },
+  {
+   "start": 1584.48,
+   "end": 1589.58,
+   "text": "in case you have any comments suggestions or questions make sure to share them"
+  },
+  {
+   "start": 1589.58,
+   "end": 1592.66,
+   "text": "on our Instagram page, mažekáfa podcast."
+  },
+  {
+   "start": 1592.66,
+   "end": 1593.58,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.9: Children’s Games in Serbia",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939239/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075924-44100-1-ca26931beb2f0932.mp3"
+}

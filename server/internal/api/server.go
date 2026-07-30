@@ -11,6 +11,7 @@ import (
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
 	"github.com/citavuk/server/internal/mailer"
+	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
 	"github.com/citavuk/server/internal/store"
 	"github.com/citavuk/server/internal/translate"
@@ -33,6 +34,7 @@ type Server struct {
 	redis        *rediscache.Redis
 	documentHTTP *http.Client
 	quiz         *quiz.Generator
+	podcasts     *podcast.Service
 
 	authLimit      *limiter
 	translateLimit *limiter
@@ -84,6 +86,7 @@ func New(
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
+		podcasts:     podcast.New(),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit:      newLimiter("auth", 20, 10, redisClient),
@@ -179,6 +182,25 @@ func (s *Server) Handler() http.Handler {
 
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
 	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
+
+	// Книга по ссылке и обсуждение её страниц.
+	//
+	// Чтение открыто всем: по ссылке приходят те, у кого аккаунта ещё нет, и
+	// книгу они должны увидеть до регистрации. Писать в обсуждение и создавать
+	// ссылки — только с аккаунтом: под сообщением стоит имя, а безымянные
+	// сообщения превращают раздел в свалку.
+	mux.HandleFunc("POST /v1/share/books", s.rateLimit(s.generalLimit, s.requireAuth(s.handleCreateShare)))
+	mux.HandleFunc("GET /v1/share/books/{token}", s.rateLimit(s.generalLimit, s.handleGetShare))
+	mux.HandleFunc("GET /v1/share/books/{token}/content", s.rateLimit(s.generalLimit, s.handleShareContent))
+	mux.HandleFunc("DELETE /v1/share/books/{token}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleDeleteShare)))
+	mux.HandleFunc("GET /v1/share/books/{token}/comments", s.rateLimit(s.generalLimit, s.optionalAuth(s.handleComments)))
+	mux.HandleFunc("POST /v1/share/books/{token}/comments", s.rateLimit(s.generalLimit, s.requireAuth(s.handleAddComment)))
+	mux.HandleFunc("DELETE /v1/share/comments/{id}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleHideComment)))
+
+	// Подкасты. Раньше уходили на прежний Python-бэкенд: он засыпал (502), а
+	// тайминги реплик там выдумывались пропорционально длине текста.
+	mux.HandleFunc("GET /audio/lessons", s.rateLimit(s.generalLimit, s.handleAudioLessons))
+	mux.HandleFunc("GET /audio/transcript", s.rateLimit(s.generalLimit, s.handleAudioTranscript))
 
 	// Тесты по материалам. Составление и попытки требуют аккаунта: без него
 	// некому вести статистику, а обращение к модели ещё и стоит денег. Список

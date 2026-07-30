@@ -1,1174 +1,877 @@
 {
- "duration": 772.39,
+ "duration": 772.36,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
  "cues": [
   {
-   "start": 0.0,
-   "end": 4.0,
-   "text": "Zdravo svima, dobrodošli u još jednu epizodu."
+   "start": 0.12,
+   "end": 3.08,
+   "text": "Hello everyone, welcome to another episode."
   },
   {
-   "start": 4.0,
-   "end": 11.34,
-   "text": "Today we're doing a couple of texts and topics based on more complex topics and themes."
+   "start": 4.3,
+   "end": 9.88,
+   "text": "Today we're doing a couple of texts and topics based on more complex topics"
   },
   {
-   "start": 11.34,
-   "end": 20.84,
-   "text": "So you can use examples and how to connect them into a sentence, how to make a good,"
+   "start": 9.88,
+   "end": 16.96,
+   "text": "and themes. So you can use examples and how to connect them into a"
   },
   {
-   "start": 20.84,
-   "end": 25.44,
-   "text": "let's say impromptu speech about various topics."
+   "start": 16.96,
+   "end": 17.48,
+   "text": "sentence,"
   },
   {
-   "start": 25.44,
-   "end": 26.64,
-   "text": "Here I am with Maki."
+   "start": 17.48,
+   "end": 23.94,
+   "text": "how to make a good, let's say, impromptu speech about various topics."
   },
   {
-   "start": 26.64,
-   "end": 27.64,
-   "text": "Čao Maki."
+   "start": 25.2,
+   "end": 27.26,
+   "text": "Here I'm with Maki."
   },
   {
-   "start": 27.64,
-   "end": 28.64,
-   "text": "Čao, čao, zdravo."
+   "start": 27.38,
+   "end": 30.24,
+   "text": "Ciao Maki. Ciao, ciao, bravo, kako si?"
   },
   {
-   "start": 28.64,
-   "end": 29.64,
-   "text": "Kako si?"
-  },
-  {
-   "start": 29.64,
-   "end": 30.64,
+   "start": 30.48,
+   "end": 31.64,
    "text": "Dobro, hvala, a ti?"
   },
   {
-   "start": 30.64,
-   "end": 34.96,
+   "start": 32.12,
+   "end": 34.3,
    "text": "Hvala, dobro sam, super sam."
   },
   {
-   "start": 34.96,
-   "end": 36.92,
+   "start": 34.84,
+   "end": 36.9,
    "text": "But I need help for this topic."
   },
   {
-   "start": 36.92,
-   "end": 41.24,
+   "start": 36.9,
+   "end": 40.0,
    "text": "I really wanted to do this with a teacher."
   },
   {
-   "start": 41.24,
-   "end": 47.0,
-   "text": "This was one of my plans because making impromptu speech like on top of your head, you just"
+   "start": 41.08,
+   "end": 45.3,
+   "text": "This was one of my plans because making a prompt to speech like on"
   },
   {
-   "start": 47.0,
-   "end": 53.84,
-   "text": "give your opinion about a big topic, an abstract topic, is a challenge in all languages and"
+   "start": 45.3,
+   "end": 45.96,
+   "text": "top of your head,"
   },
   {
-   "start": 53.84,
-   "end": 55.88,
-   "text": "even in your own language."
+   "start": 45.96,
+   "end": 52.16,
+   "text": "you just give your opinion about a big topic, an abstract topic, is a"
   },
   {
-   "start": 55.88,
-   "end": 58.28,
+   "start": 52.16,
+   "end": 55.54,
+   "text": "challenge in all languages and even in your own language."
+  },
+  {
+   "start": 55.54,
+   "end": 58.22,
    "text": "But let's try today with Serbian."
   },
   {
-   "start": 58.28,
-   "end": 59.28,
-   "text": "Yes, let's try."
+   "start": 58.4,
+   "end": 59.2,
+   "text": "Yeah, so let's try."
   },
   {
-   "start": 59.52,
-   "end": 61.36,
+   "start": 59.48,
+   "end": 60.96,
    "text": "Hey guys, Nikola here."
   },
   {
-   "start": 61.36,
-   "end": 66.36,
-   "text": "Just a quick reminder, stay tuned for the Serbian language e-book that will be hopefully"
+   "start": 61.14,
+   "end": 62.08,
+   "text": "Just a quick reminder."
   },
   {
-   "start": 66.36,
-   "end": 69.16,
-   "text": "coming out at the end of December."
+   "start": 62.5,
+   "end": 67.62,
+   "text": "Stay tuned for the Serbian language e-book that will be hopefully coming out at"
   },
   {
-   "start": 69.16,
-   "end": 72.32,
+   "start": 67.62,
+   "end": 68.46,
+   "text": "the end of December."
+  },
+  {
+   "start": 69.02,
+   "end": 72.08,
    "text": "It's an e-book that covers A1 and A2 language levels."
   },
   {
-   "start": 72.32,
-   "end": 76.3,
+   "start": 72.26,
+   "end": 75.64,
    "text": "I've been working on it for a whole past year."
   },
   {
-   "start": 76.3,
-   "end": 82.28,
-   "text": "So make sure to subscribe to this newsletter and to be first to find out the official release"
+   "start": 76.22,
+   "end": 80.2,
+   "text": "So make sure to subscribe to this new letter and to be first to"
   },
   {
-   "start": 82.28,
-   "end": 83.28,
-   "text": "date of the book."
+   "start": 80.2,
+   "end": 83.12,
+   "text": "find out the official release date of the book."
   },
   {
-   "start": 83.28,
-   "end": 84.28,
-   "text": "Hvala, čao."
+   "start": 83.6,
+   "end": 83.96,
+   "text": "Hvala. Ciao."
   },
   {
-   "start": 85.28,
-   "end": 98.28,
-   "text": "OK, so I picked some topics for you and the first one is, let me just, zagadženie i ekologie."
+   "start": 83.96,
+   "end": 90.1,
+   "text": "Okay. So I picked some topics for you."
   },
   {
-   "start": 98.28,
-   "end": 102.28,
-   "text": "Zagadženie i ekologie, so pollution and ecology."
+   "start": 90.1,
+   "end": 97.18,
+   "text": "And the first one is, let me just, Zagadjenje i ekologija."
   },
   {
-   "start": 102.28,
-   "end": 103.28,
-   "text": "Yes."
+   "start": 99.56,
+   "end": 100.8,
+   "text": "Zagadjenje i ekologija."
   },
   {
-   "start": 103.28,
-   "end": 108.28,
-   "text": "Could you give a little short impromptu speech about this?"
+   "start": 100.8,
+   "end": 102.44,
+   "text": "So pollution and ecology."
   },
   {
-   "start": 108.28,
-   "end": 114.28,
-   "text": "OK, so let me read it quickly so we can expand on it."
+   "start": 134.22,
+   "end": 136.36,
+   "text": "Sve će biti mnogo bolje."
   },
   {
-   "start": 114.28,
-   "end": 117.28,
-   "text": "Zagadženje je stvarno veliki problem danas."
-  },
-  {
-   "start": 117.28,
-   "end": 121.28,
-   "text": "Ljudi stanalo bacaju plastiku i ostale odplate ne treba."
-  },
-  {
-   "start": 121.28,
-   "end": 124.28,
-   "text": "Zbog toga priroda pati, a životin nemaju gde da žive."
-  },
-  {
-   "start": 124.28,
-   "end": 126.28,
-   "text": "Ali svi možemo da uradimo nešto."
-  },
-  {
-   "start": 126.28,
-   "end": 132.28,
-   "text": "Na primjer, recikliraj, koristi torba platnu mesto plastičnih i vozi bicikl kad možeš."
-  },
-  {
-   "start": 132.28,
-   "end": 137.28,
-   "text": "Male stvari, ali ako ih svi radimo, sve će biti mnogo bolje."
-  },
-  {
-   "start": 137.28,
-   "end": 140.28,
+   "start": 136.36,
+   "end": 139.46,
    "text": "Ja se slažem sa ovim."
   },
   {
-   "start": 140.28,
-   "end": 148.28,
-   "text": "Mislim da je ekologija jako bitna za sve nas na duže staze."
+   "start": 139.46,
+   "end": 146.68,
+   "text": "Mislim da je ekologija jako bitna za sve nas na"
   },
   {
-   "start": 148.28,
-   "end": 150.28,
-   "text": "On a long term."
+   "start": 146.68,
+   "end": 149.32,
+   "text": "duže staze, na long term."
   },
   {
-   "start": 150.28,
-   "end": 157.28,
+   "start": 149.32,
+   "end": 156.62,
    "text": "I mislim da ne brinemo svi kao ljudi, kao društvo, dovoljno o ekologiji."
   },
   {
-   "start": 157.28,
-   "end": 163.28,
-   "text": "Imamo dosta primara o tome i u Srbiji."
+   "start": 158.16,
+   "end": 159.4,
+   "text": "Imamo dosta primjera"
   },
   {
-   "start": 163.28,
-   "end": 168.28,
-   "text": "U Srbiji možemo naći dosta divljeg otpada."
+   "start": 160.96,
+   "end": 161.18,
+   "text": "O tome"
   },
   {
-   "start": 168.28,
-   "end": 175.28,
-   "text": "Divlje otpad je otpad ili džubare koji nije standardni,"
+   "start": 161.18,
+   "end": 165.02,
+   "text": "I u Srbiji U Srbiji možemo naći dosta"
   },
   {
-   "start": 175.28,
-   "end": 183.28,
-   "text": "nije obezbeđen od strane grada ili države."
+   "start": 166.72,
+   "end": 169.08,
+   "text": "Divljeg otpada Divljeg otpad je"
   },
   {
-   "start": 183.28,
-   "end": 186.28,
-   "text": "Tako da to je ono što mi se ne sviđa."
+   "start": 170.32,
+   "end": 171.42,
+   "text": "Otpad ili džubre"
   },
   {
-   "start": 187.28,
-   "end": 196.28,
-   "text": "Mislim da se to dešava zato što ljudi nisu se dovoljno obrazovali o tom problemu."
+   "start": 171.42,
+   "end": 173.2,
+   "text": "Koji nije"
   },
   {
-   "start": 196.28,
-   "end": 204.28,
-   "text": "Oni zapravo ne razmišljaju što se sve dešava ako bacimo plastiku"
+   "start": 174.54,
+   "end": 175.0,
+   "text": "Nije standardni"
   },
   {
-   "start": 204.28,
-   "end": 213.28,
+   "start": 175.0,
+   "end": 175.84,
+   "text": "Nije"
+  },
+  {
+   "start": 178.08,
+   "end": 181.32,
+   "text": "Obezbeđen Nije obezbeđen od strane grada"
+  },
+  {
+   "start": 181.32,
+   "end": 187.52,
+   "text": "Ili države Tako da to je ono što mi se ne sviđa I mislim"
+  },
+  {
+   "start": 187.52,
+   "end": 195.28,
+   "text": "da se to dešava zato što uvidi nisu se dovoljno obrazovali"
+  },
+  {
+   "start": 195.28,
+   "end": 196.16,
+   "text": "o tom problemu."
+  },
+  {
+   "start": 196.16,
+   "end": 204.36,
+   "text": "Oni zapravo ne razmišljaju šta se sve dešava ako bacimo plastiku"
+  },
+  {
+   "start": 204.36,
+   "end": 209.9,
    "text": "ili bilo kakav otpad u neku reku ili neki potok."
   },
   {
-   "start": 213.28,
-   "end": 218.28,
-   "text": "Oni ne razmišljaju o tome, već razmišljaju kako da reše svoj problem."
+   "start": 209.9,
+   "end": 217.01,
+   "text": "Oni ne razmišljaju o tome, već razmišljaju kako da reše svoj"
   },
   {
-   "start": 218.28,
-   "end": 224.28,
-   "text": "Tako da je prvo problem na nivou zajednice, sociološki problem,"
+   "start": 217.01,
+   "end": 224.21,
+   "text": "problem. Tako da je prvo problem na nivou zajednice, sociološki problem, a"
   },
   {
-   "start": 224.28,
-   "end": 230.28,
-   "text": "a drugi problem je na nivou individuje, osobe, svake osobe."
+   "start": 224.21,
+   "end": 229.89,
+   "text": "drugi problem je na nivou individuje, osobe, svake osobe."
   },
   {
-   "start": 230.28,
-   "end": 235.28,
-   "text": "To je problem gde čovek ne treba biti sebičan."
+   "start": 230.29,
+   "end": 234.91,
+   "text": "To je problem gdje čovjek ne treba biti sebičan."
   },
   {
-   "start": 235.28,
-   "end": 241.28,
-   "text": "Čovek mora misliti i na druge i misliti i na prirodu oko sebe."
+   "start": 235.21,
+   "end": 240.59,
+   "text": "Čovjek mora misliti i na druge i misliti i na prirodu oko sebe."
   },
   {
-   "start": 243.28,
-   "end": 247.28,
-   "text": "O čemu smo govorili? Pogledajmo to."
+   "start": 241.05,
+   "end": 241.93,
+   "text": "Da, da je to."
   },
   {
-   "start": 247.28,
-   "end": 254.28,
-   "text": "Prvi tekst koji sam ličio je o povrću polućnosti i ekologije"
+   "start": 243.45,
+   "end": 244.47,
+   "text": "Hvala što pratite kanal."
   },
   {
-   "start": 254.28,
-   "end": 259.28,
-   "text": "i o tome kako polućnost je veliki problem i ljudi stvarno stavljaju plastiku"
+   "start": 273.45,
+   "end": 274.41,
+   "text": "Plastic, ride a bike"
   },
   {
-   "start": 259.28,
-   "end": 262.28,
-   "text": "u njegovu reku gdje ne mora biti."
+   "start": 274.41,
+   "end": 276.87,
+   "text": "When we can And small things"
   },
   {
-   "start": 262.28,
-   "end": 266.28,
-   "text": "Zadruženje je, djevovi nemaju mjesta gdje živjeti."
+   "start": 276.87,
+   "end": 282.71,
+   "text": "If we all do them The world will be a much better place Sveče"
   },
   {
-   "start": 266.28,
-   "end": 270.28,
-   "text": "Što možemo? Možemo da radimo nešto o tome."
+   "start": 282.71,
+   "end": 288.75,
+   "text": "biti mnogo podi And you added your own opinions about this Yes Which we"
   },
   {
-   "start": 270.28,
-   "end": 274.28,
-   "text": "Možemo odvratiti, koristiti plastički staklenke u staklenke,"
+   "start": 288.75,
+   "end": 290.57,
+   "text": "will write with the subtitles for sure"
   },
   {
-   "start": 274.28,
-   "end": 278.28,
-   "text": "jeziti na jezicu kada možemo i malo stvari."
+   "start": 290.57,
+   "end": 291.55,
+   "text": "Yes, exactly"
   },
   {
-   "start": 278.28,
-   "end": 284.28,
-   "text": "Ako ih svi radimo, svijet će biti mnogo bolji."
+   "start": 291.55,
+   "end": 293.57,
+   "text": "I can write that down"
   },
   {
-   "start": 284.28,
-   "end": 287.28,
-   "text": "I ti ještila si svoju opiniju o tome."
+   "start": 293.57,
+   "end": 299.41,
+   "text": "And you will see the transcript And the translation By the way"
   },
   {
-   "start": 287.28,
-   "end": 288.28,
-   "text": "Da."
+   "start": 299.41,
+   "end": 304.61,
+   "text": "About throwing trash everywhere in Serbia."
   },
   {
-   "start": 288.28,
-   "end": 291.28,
-   "text": "Ovo ćemo napisati u napisnjama."
+   "start": 305.01,
+   "end": 308.83,
+   "text": "I know there is this problem and people are very upset, but in the"
   },
   {
-   "start": 291.28,
-   "end": 293.28,
-   "text": "Da, zapravo."
+   "start": 308.83,
+   "end": 312.91,
+   "text": "Balkans, this is what I see a lot, actually."
   },
   {
-   "start": 293.28,
-   "end": 296.28,
-   "text": "Napisat ću to i ćeš vidjeti transkript."
+   "start": 312.91,
+   "end": 313.67,
+   "text": "It's very common."
   },
   {
-   "start": 296.28,
-   "end": 297.28,
-   "text": "Ok."
+   "start": 313.77,
+   "end": 317.17,
+   "text": "And Serbia is not the top one, as far as I saw."
   },
   {
-   "start": 297.28,
-   "end": 299.28,
-   "text": "I translaciju."
+   "start": 318.55,
+   "end": 319.95,
+   "text": "Okay, well... You get to feel a little bit happy."
   },
   {
-   "start": 299.28,
-   "end": 305.28,
-   "text": "Prvo, o stavljanju plastičkih staklenka u Srbiju."
+   "start": 319.95,
+   "end": 322.19,
+   "text": "That's good, a little bit,"
   },
   {
-   "start": 305.28,
-   "end": 308.28,
-   "text": "Znam da je to problem i ljudi su zadovoljni,"
+   "start": 322.19,
+   "end": 323.61,
+   "text": "but still, yeah."
   },
   {
-   "start": 308.28,
-   "end": 313.28,
-   "text": "ali u Balkanima to je nešto što vidim puno."
+   "start": 323.61,
+   "end": 325.23,
+   "text": "Yeah, there's a lot of work to do."
   },
   {
-   "start": 313.28,
-   "end": 314.28,
-   "text": "To je značno."
+   "start": 326.03,
+   "end": 327.51,
+   "text": "Second topic is,"
   },
   {
-   "start": 314.28,
-   "end": 318.28,
-   "text": "A Srbija nije najgore, kao što ja vidim."
+   "start": 327.51,
+   "end": 329.37,
+   "text": "one of my favorite topics to talk about."
   },
   {
-   "start": 318.28,
-   "end": 319.28,
-   "text": "Ok."
+   "start": 329.39,
+   "end": 331.47,
+   "text": "I wish I had that level, but I'll try."
   },
   {
-   "start": 319.28,
-   "end": 320.28,
-   "text": "Ljudi će biti malo srećni."
+   "start": 332.09,
+   "end": 333.53,
+   "text": "Drav način života."
   },
   {
-   "start": 320.28,
-   "end": 323.28,
-   "text": "To je dobro, malo, ali uopće."
+   "start": 333.95,
+   "end": 338.35,
+   "text": "So maybe this one I will read and you will tell your opinion about"
   },
   {
-   "start": 323.28,
-   "end": 325.28,
-   "text": "Da, ima mnogo stvara da radimo."
+   "start": 338.35,
+   "end": 344.67,
+   "text": "this. Okay. Važno je da živimo zdravo, ali često to zabarovimo."
   },
   {
-   "start": 325.28,
-   "end": 329.28,
-   "text": "Drugi topik je jedan od mojih prijateljskih topika,"
+   "start": 345.23,
+   "end": 352.03,
+   "text": "Teo dan sedimo ispred kompjutera, telefona, televizora, a to baš nije dobro."
   },
   {
-   "start": 329.28,
-   "end": 332.28,
-   "text": "želim da bih imala ovaj nivou, ali ja ću provoditi."
+   "start": 352.03,
+   "end": 357.61,
+   "text": "We need to eat more fruits and vegetables, to drink water and to move"
   },
   {
-   "start": 332.28,
-   "end": 334.28,
-   "text": "Zdravo način života."
+   "start": 357.61,
+   "end": 357.75,
+   "text": "a little."
   },
   {
-   "start": 334.28,
-   "end": 337.28,
-   "text": "Možda ću ovaj napisati i ti ćeš napisati"
+   "start": 359.19,
+   "end": 364.59,
+   "text": "The most important thing to eat or even to drink with the stairs, everything"
   },
   {
-   "start": 337.28,
-   "end": 339.28,
-   "text": "svoju opiniju o tome."
+   "start": 364.59,
+   "end": 370.51,
+   "text": "helps. When we are active, we have more energy and we feel super."
   },
   {
-   "start": 339.28,
-   "end": 340.28,
-   "text": "Ok."
+   "start": 372.57,
+   "end": 374.91,
+   "text": "It's good. Yeah."
   },
   {
-   "start": 340.28,
-   "end": 345.28,
-   "text": "Važno je da živimo zdravo, ali često to zaboravimo."
+   "start": 376.57,
+   "end": 383.77,
+   "text": "So the text is talking about a healthy lifestyle and how important it is"
   },
   {
-   "start": 345.28,
-   "end": 349.28,
-   "text": "Cijelo dan sedimo ispred komputera, telefona, televizora,"
+   "start": 383.77,
+   "end": 390.03,
+   "text": "to be active, to eat healthy, to have more energy."
   },
   {
-   "start": 349.28,
-   "end": 352.28,
-   "text": "a to baš nije dobro."
+   "start": 391.31,
+   "end": 396.27,
+   "text": "And just the little things, at least riding a bike and climbing stairs can"
   },
   {
-   "start": 352.28,
-   "end": 355.28,
-   "text": "Treba je da jedemo više voća i povrća,"
+   "start": 396.27,
+   "end": 396.43,
+   "text": "And I agree."
   },
   {
-   "start": 355.28,
-   "end": 359.28,
-   "text": "da pijemo vodu i da se malo krećemo."
+   "start": 396.43,
+   "end": 396.75,
+   "text": "help."
   },
   {
-   "start": 359.28,
-   "end": 364.28,
-   "text": "Šetnja, vožnja bitikla ili makar penjanje uz stepenice,"
+   "start": 399.89,
+   "end": 400.37,
+   "text": "Slasemsi."
   },
   {
-   "start": 364.28,
-   "end": 366.28,
-   "text": "sve to pomože."
+   "start": 402.35,
+   "end": 407.71,
+   "text": "And do you think, in Serbian can you say a little bit why this"
   },
   {
-   "start": 366.28,
-   "end": 372.28,
-   "text": "Kad smo aktivni imamo više energije i osjećamo se super."
+   "start": 407.71,
+   "end": 410.93,
+   "text": "is easy but not so doable for many people?"
   },
   {
-   "start": 372.28,
-   "end": 374.28,
-   "text": "Slaži se?"
+   "start": 412.19,
+   "end": 413.05,
+   "text": "Okay, sure."
   },
   {
-   "start": 374.28,
-   "end": 376.28,
-   "text": "Tako je."
+   "start": 436.09,
+   "end": 436.17,
+   "text": "for"
   },
   {
-   "start": 376.28,
-   "end": 380.28,
-   "text": "Napis je o zdravom životu,"
+   "start": 438.12,
+   "end": 445.28,
+   "text": "Druga stvar je da gde god idemo, mi idemo kolima, autobusom ili"
   },
   {
-   "start": 380.28,
-   "end": 385.28,
-   "text": "i kako je pomećno biti aktivni,"
+   "start": 445.28,
+   "end": 452.54,
+   "text": "sl. Iako možemo da idemo i pešice, možemo da hodamo"
   },
   {
-   "start": 385.28,
-   "end": 387.28,
-   "text": "jeti zdravo,"
+   "start": 452.54,
+   "end": 459.96,
+   "text": "do prodavnice umjesto da idemo kolima, tako da mi namerno izbjegavamo kretanje."
   },
   {
-   "start": 387.28,
-   "end": 390.28,
-   "text": "i imati više energije."
+   "start": 460.92,
+   "end": 468.82,
+   "text": "I treća stvar koja isto otežava zdrav način života je ishrana"
   },
   {
-   "start": 390.28,
-   "end": 393.28,
-   "text": "I malo nešto,"
+   "start": 468.82,
+   "end": 474.96,
+   "text": "koja je danas sve više i više ljudi jede mnogo šećera, na primjer."
   },
   {
-   "start": 393.28,
-   "end": 397.28,
-   "text": "možda je kodjeći u bike ili kodjeći u stepenice pomoguće."
+   "start": 474.96,
+   "end": 478.18,
+   "text": "Šećer nije dobar, naravno, to svi znamo."
   },
   {
-   "start": 397.28,
-   "end": 401.28,
-   "text": "Odgovorujem, slaži se."
+   "start": 478.9,
+   "end": 487.12,
+   "text": "Mnogo ljudi ima šećernu bolest, mnogo ljudi je gojazno zbog nekretanja,"
   },
   {
-   "start": 402.28,
-   "end": 406.28,
-   "text": "A možete li reći na srpskom,"
+   "start": 487.12,
+   "end": 494.34,
+   "text": "zbog loše iskrene i mnogo jedemo brzu hranu i ugljene"
   },
   {
-   "start": 406.28,
-   "end": 411.28,
-   "text": "zašto je to lako, ali nije moguće za mnogo ljudi?"
+   "start": 494.34,
+   "end": 496.22,
+   "text": "hidrate. zato što je lakše"
   },
   {
-   "start": 411.28,
-   "end": 413.28,
-   "text": "Ok, jasno."
+   "start": 496.22,
+   "end": 501.64,
+   "text": "napraviti tu hranu lakše doći do te hrane nego do"
   },
   {
-   "start": 415.28,
-   "end": 419.28,
-   "text": "U današnje vreme mnogo ljudi radi sedeći,"
+   "start": 501.64,
+   "end": 503.74,
+   "text": "napraviti nešto"
   },
   {
-   "start": 419.28,
-   "end": 423.28,
-   "text": "radi iz kancelarije i mnogo nas sedi."
+   "start": 503.74,
+   "end": 508.56,
+   "text": "od zdravije hrane jednostavno šećer"
   },
   {
-   "start": 423.28,
-   "end": 427.28,
-   "text": "I to je, ja mislim, jedan od glavnih problema,"
+   "start": 508.56,
+   "end": 510.46,
+   "text": "čini stvari ukusnijim"
   },
   {
-   "start": 427.28,
-   "end": 430.28,
-   "text": "jer za zdrav život, ja mislim da je jako bitno"
+   "start": 510.46,
+   "end": 512.8,
+   "text": "i zato jedemo previše šećera"
   },
   {
-   "start": 431.28,
-   "end": 434.28,
-   "text": "fizička aktivnost,"
+   "start": 515.14,
+   "end": 515.26,
+   "text": "tako da"
   },
   {
-   "start": 434.28,
-   "end": 438.28,
-   "text": "naprimjer trčanje, hodanje i sl."
+   "start": 515.26,
+   "end": 518.16,
+   "text": "to je nešto sa čime moramo"
   },
   {
-   "start": 438.28,
-   "end": 442.28,
-   "text": "Druga stvar je da gde god idemo,"
+   "start": 518.16,
+   "end": 525.18,
+   "text": "da se borimo svaki dan i moramo da idemo u šetnju barem."
   },
   {
-   "start": 442.28,
-   "end": 446.28,
-   "text": "mi idemo kolima, autobusom ili sl."
+   "start": 525.36,
+   "end": 530.06,
+   "text": "Dnevnu šetnju. U veće, popodne, prepodne."
   },
   {
-   "start": 446.28,
-   "end": 451.28,
-   "text": "Iako možemo da idemo i peške, pešice,"
-  },
-  {
-   "start": 451.28,
-   "end": 455.28,
-   "text": "možemo da hodamo do prodavnice umesto da idemo kolima,"
-  },
-  {
-   "start": 455.28,
-   "end": 460.28,
-   "text": "tako da mi namerno izbegavamo kretanje."
-  },
-  {
-   "start": 460.28,
-   "end": 466.28,
-   "text": "I treća stvar koja isto otežava zdrav način života"
-  },
-  {
-   "start": 466.28,
-   "end": 470.28,
-   "text": "je ishrana koja je danas,"
-  },
-  {
-   "start": 470.28,
-   "end": 474.28,
-   "text": "sve više i više ljudi jede mnogo šećera,"
-  },
-  {
-   "start": 474.28,
-   "end": 478.28,
-   "text": "šećer nije dobar, naravno, to svi znamo."
-  },
-  {
-   "start": 478.28,
-   "end": 483.28,
-   "text": "Mnogo ljudi ima šećernu bolest,"
-  },
-  {
-   "start": 483.28,
-   "end": 487.28,
-   "text": "mnogo ljudi je gojozno zbog ne kretanja,"
-  },
-  {
-   "start": 487.28,
-   "end": 492.28,
-   "text": "zbog loše ishrane i mnogo jedemo brzu hranu"
-  },
-  {
-   "start": 492.28,
-   "end": 498.28,
-   "text": "i ugljene hidrate, zato što je lakše napraviti tu hranu,"
-  },
-  {
-   "start": 498.28,
-   "end": 504.28,
-   "text": "je lakše doći do te hrane nego da napraviti nešto"
-  },
-  {
-   "start": 504.28,
-   "end": 510.28,
-   "text": "od zdravije hrane, jednostavno šećer čini stvari ukusnim"
-  },
-  {
-   "start": 510.28,
-   "end": 514.28,
-   "text": "i zato jedemo previše šećera."
-  },
-  {
-   "start": 514.28,
-   "end": 520.28,
-   "text": "To je nešto sa čime moramo da se borimo svaki dan"
-  },
-  {
-   "start": 520.28,
-   "end": 524.28,
-   "text": "i moramo da idemo u šećer."
-  },
-  {
-   "start": 524.28,
-   "end": 527.28,
-   "text": "šetnju, barem dnevnu šetnju."
-  },
-  {
-   "start": 528.28,
+   "start": 530.06,
    "end": 533.28,
-   "text": "Uveče, popodne, prepodne, kako god želite."
+   "text": "Da. Kako god želite."
   },
   {
-   "start": 549.28,
-   "end": 552.28,
-   "text": "Tehnologija nam je stvarno olakšala život,"
+   "start": 534.16,
+   "end": 535.72,
+   "text": "Good, yes, I agree."
   },
   {
-   "start": 552.28,
-   "end": 554.28,
-   "text": "jer je previše koristimo."
+   "start": 536.12,
+   "end": 536.88,
+   "text": "And the last one is"
   },
   {
-   "start": 554.28,
-   "end": 556.28,
-   "text": "Pod cijel dan gledamo telefone,"
+   "start": 536.88,
+   "end": 539.84,
+   "text": "a very common topic."
   },
   {
-   "start": 556.28,
-   "end": 558.28,
-   "text": "društvene mreže, igre, sve to."
+   "start": 540.04,
+   "end": 542.74,
+   "text": "Young people and technology."
   },
   {
-   "start": 558.28,
-   "end": 560.28,
-   "text": "A zaboravljamo na druženje uživo,"
+   "start": 544.86,
+   "end": 545.68,
+   "text": "You can lead this one."
   },
   {
-   "start": 560.28,
-   "end": 562.28,
-   "text": "šetnju, prirodu."
+   "start": 548.78,
+   "end": 553.66,
+   "text": "Tehnologija nam je stvarno olakšala život, ali nekad je previše koristimo."
   },
   {
-   "start": 562.28,
-   "end": 564.28,
-   "text": "Nije problem koristiti tehnologiju,"
+   "start": 553.72,
+   "end": 558.0,
+   "text": "Pod sve dan gledamo u telefone, društvene mreže, igre, sve to."
   },
   {
-   "start": 564.28,
-   "end": 566.28,
-   "text": "ali sve smerom."
+   "start": 558.34,
+   "end": 561.78,
+   "text": "A zaboravljamo na druženje uživo, šetnju, prirodu."
   },
   {
-   "start": 566.28,
-   "end": 568.28,
+   "start": 562.0,
+   "end": 565.66,
+   "text": "Nije problem koristiti tehnologiju, ali sve smerom."
+  },
+  {
+   "start": 566.3,
+   "end": 567.9,
    "text": "Malo online, malo offline."
   },
   {
-   "start": 568.28,
-   "end": 570.28,
+   "start": 567.9,
+   "end": 570.1,
    "text": "To je najbolja kombinacija."
   },
   {
-   "start": 572.28,
-   "end": 574.28,
-   "text": "Slažem se."
+   "start": 571.62,
+   "end": 572.62,
+   "text": "Slažim se."
   },
   {
-   "start": 583.28,
-   "end": 585.28,
-   "text": "Ne znamo kako mnogo časa"
+   "start": 577.14,
+   "end": 580.48,
+   "text": "But we need to balance it, right?"
   },
   {
-   "start": 585.28,
-   "end": 587.28,
-   "text": "stavljamo na ekranu,"
-  },
-  {
-   "start": 587.28,
-   "end": 589.28,
-   "text": "zbog toga je bolje"
-  },
-  {
-   "start": 589.28,
-   "end": 591.28,
-   "text": "zapominuti se"
-  },
-  {
-   "start": 591.28,
-   "end": 593.28,
-   "text": "da smo offline,"
-  },
-  {
-   "start": 593.28,
-   "end": 595.28,
-   "text": "nekako cijel dan."
-  },
-  {
-   "start": 595.28,
-   "end": 597.28,
-   "text": "Što vidite u Srbiji?"
-  },
-  {
-   "start": 597.28,
-   "end": 599.28,
-   "text": "Mislimo,"
-  },
-  {
-   "start": 599.28,
-   "end": 601.28,
-   "text": "mladi, mladi ljudi,"
-  },
-  {
-   "start": 601.28,
-   "end": 603.28,
-   "text": "ali i mladi ljudi,"
-  },
-  {
-   "start": 603.28,
-   "end": 605.28,
-   "text": "specifično tajne,"
-  },
-  {
-   "start": 605.28,
-   "end": 607.28,
-   "text": "su uključeni"
-  },
-  {
-   "start": 607.28,
-   "end": 609.28,
-   "text": "na ekranu."
-  },
-  {
-   "start": 612.28,
-   "end": 614.28,
-   "text": "U Srbiji, ali i u celom svetu,"
-  },
-  {
-   "start": 614.28,
-   "end": 616.28,
-   "text": "mladi su"
-  },
-  {
-   "start": 616.28,
-   "end": 618.28,
-   "text": "najugroženiji."
-  },
-  {
-   "start": 618.28,
-   "end": 620.28,
-   "text": "Mladi najviše vremena"
-  },
-  {
-   "start": 620.28,
-   "end": 622.28,
-   "text": "provode uz telefon"
-  },
-  {
-   "start": 622.28,
-   "end": 624.28,
-   "text": "ili kompjuter."
-  },
-  {
-   "start": 624.28,
-   "end": 626.28,
-   "text": "I to ne može da se, sad,"
-  },
-  {
-   "start": 626.28,
-   "end": 628.28,
-   "text": "popravi, ne možemo da zabranimo"
-  },
-  {
-   "start": 628.28,
-   "end": 630.28,
-   "text": "to mladima,"
-  },
-  {
-   "start": 630.28,
-   "end": 632.28,
-   "text": "ali i dalje nismo svesni"
-  },
-  {
-   "start": 632.28,
-   "end": 634.28,
-   "text": "dovoljno"
-  },
-  {
-   "start": 634.28,
-   "end": 636.28,
-   "text": "koliko je to zapravo loše,"
-  },
-  {
-   "start": 636.28,
-   "end": 638.28,
-   "text": "i kako to utiče na nas"
-  },
-  {
-   "start": 638.28,
-   "end": 640.28,
-   "text": "i na mlade."
-  },
-  {
-   "start": 640.28,
-   "end": 642.28,
-   "text": "Nismo na mlade, na primjer"
-  },
-  {
-   "start": 642.28,
-   "end": 644.28,
-   "text": "na decu i na tineđere."
-  },
-  {
-   "start": 644.28,
-   "end": 646.28,
-   "text": "Tehnologije"
-  },
-  {
-   "start": 646.28,
-   "end": 648.28,
-   "text": "i mediji"
-  },
-  {
-   "start": 648.28,
-   "end": 650.28,
-   "text": "utiču na"
-  },
-  {
-   "start": 650.28,
-   "end": 652.28,
-   "text": "raspoloženje"
-  },
-  {
-   "start": 652.28,
-   "end": 654.28,
-   "text": "i na"
-  },
-  {
-   "start": 654.28,
-   "end": 656.28,
-   "text": "raspon pažnje."
-  },
-  {
-   "start": 656.28,
-   "end": 658.28,
-   "text": "Deca imaju sve manje"
-  },
-  {
-   "start": 658.28,
-   "end": 660.28,
-   "text": "pažnje ili sve manje"
-  },
-  {
-   "start": 660.28,
-   "end": 662.28,
-   "text": "raspon pažnje. Ne mogu da se koncentrišu,"
-  },
-  {
-   "start": 662.28,
-   "end": 664.28,
-   "text": "ne mogu da se fokusiraju"
-  },
-  {
-   "start": 664.28,
-   "end": 666.28,
-   "text": "na učenje ili na čitanje."
-  },
-  {
-   "start": 666.28,
-   "end": 668.28,
-   "text": "Mnoga deca ne mogu da"
-  },
-  {
-   "start": 668.28,
-   "end": 670.28,
-   "text": "čitaju knjigu zato što je"
-  },
-  {
-   "start": 670.28,
-   "end": 672.28,
-   "text": "ne znaju kako"
-  },
-  {
-   "start": 672.28,
-   "end": 674.28,
-   "text": "još uvek, nisu"
-  },
-  {
-   "start": 674.28,
-   "end": 676.28,
-   "text": "odrasti uz to. Odrasti su"
-  },
-  {
-   "start": 676.28,
-   "end": 678.28,
-   "text": "uz telefon, na primjer."
-  },
-  {
-   "start": 678.28,
-   "end": 680.28,
-   "text": "A isto utiče na"
-  },
-  {
-   "start": 680.28,
-   "end": 682.28,
-   "text": "psihološki na raspoloženje zato što"
-  },
-  {
-   "start": 682.28,
-   "end": 684.28,
-   "text": "socijalne mreže"
-  },
-  {
-   "start": 684.28,
-   "end": 686.28,
-   "text": "kao što je Instagram, Facebook"
-  },
-  {
-   "start": 686.28,
-   "end": 688.28,
-   "text": "pa i TikTok"
-  },
-  {
-   "start": 688.28,
-   "end": 690.28,
-   "text": "obično prikazuju neke stvari koje"
-  },
-  {
-   "start": 690.28,
-   "end": 692.28,
-   "text": "nisu realne. Nešto"
-  },
-  {
-   "start": 692.28,
-   "end": 694.28,
-   "text": "kako bi mi hteli da izgledamo"
-  },
-  {
-   "start": 694.28,
-   "end": 696.28,
-   "text": "tako se"
-  },
-  {
-   "start": 696.28,
-   "end": 698.28,
-   "text": "prikazujemo na tim mrežama"
-  },
-  {
-   "start": 698.28,
-   "end": 700.28,
-   "text": "i to utiče na"
-  },
-  {
-   "start": 700.28,
-   "end": 702.28,
-   "text": "decu jer"
-  },
-  {
-   "start": 702.28,
-   "end": 704.28,
-   "text": "nisu svesni šta je realnost"
-  },
-  {
-   "start": 704.28,
-   "end": 706.28,
-   "text": "a imaju pogrešnu"
-  },
-  {
-   "start": 706.28,
-   "end": 708.28,
-   "text": "svest o tome."
-  },
-  {
-   "start": 708.28,
-   "end": 710.28,
-   "text": "Tako da to je neko moje mišljenje."
-  },
-  {
-   "start": 710.28,
-   "end": 712.28,
-   "text": "Nažalost. Da, to je"
-  },
-  {
-   "start": 712.28,
-   "end": 714.28,
-   "text": "tačno."
-  },
-  {
-   "start": 714.28,
-   "end": 716.28,
-   "text": "I want, I will put the topics"
-  },
-  {
-   "start": 716.28,
-   "end": 718.28,
-   "text": "as well on my social"
-  },
-  {
-   "start": 718.28,
-   "end": 720.28,
-   "text": "media and I want people to try"
-  },
-  {
-   "start": 720.28,
-   "end": 722.28,
-   "text": "for the other topics to come up with their own"
-  },
-  {
-   "start": 722.28,
-   "end": 724.28,
-   "text": "impromptu speeches."
-  },
-  {
-   "start": 724.28,
-   "end": 726.28,
-   "text": "That's your challenge, everyone."
-  },
-  {
-   "start": 726.28,
-   "end": 728.28,
-   "text": "So I hope it will be"
-  },
-  {
-   "start": 728.28,
-   "end": 730.28,
-   "text": "a nice, fun challenge for everyone"
-  },
-  {
-   "start": 730.28,
-   "end": 732.28,
-   "text": "and I'd like to hear what they think about these"
-  },
-  {
-   "start": 732.28,
-   "end": 734.28,
-   "text": "issues."
-  },
-  {
-   "start": 734.28,
-   "end": 736.28,
-   "text": "These are all interesting topics"
-  },
-  {
-   "start": 736.28,
-   "end": 738.28,
-   "text": "to always talk about"
-  },
-  {
-   "start": 738.28,
-   "end": 740.28,
-   "text": "either with friends"
-  },
-  {
-   "start": 740.28,
-   "end": 742.28,
-   "text": "or to write a text about it by yourself."
-  },
-  {
-   "start": 742.28,
-   "end": 744.28,
-   "text": "And that's why I think they are very"
-  },
-  {
-   "start": 744.28,
-   "end": 746.28,
-   "text": "good sources of practicing Serbian."
-  },
-  {
-   "start": 746.28,
-   "end": 748.28,
-   "text": "You can think of"
-  },
-  {
-   "start": 748.28,
-   "end": 750.28,
-   "text": "talking about these topics with"
-  },
-  {
-   "start": 750.28,
-   "end": 752.28,
-   "text": "your professor, with your friends,"
-  },
-  {
-   "start": 752.28,
-   "end": 754.28,
-   "text": "with your parents, you can change"
-  },
-  {
-   "start": 754.28,
-   "end": 756.28,
-   "text": "the tone or the choice"
-  },
-  {
-   "start": 756.28,
-   "end": 758.28,
-   "text": "of words accordingly."
-  },
-  {
-   "start": 758.28,
-   "end": 760.28,
+   "start": 580.86,
+   "end": 581.12,
    "text": "Exactly."
   },
   {
-   "start": 760.28,
-   "end": 762.28,
-   "text": "Hvala od srca, Nikola."
+   "start": 582.6,
+   "end": 586.94,
+   "text": "We are not aware how much time we actually spend on the screens."
   },
   {
-   "start": 762.28,
-   "end": 764.28,
-   "text": "Hvala tebi."
+   "start": 587.16,
+   "end": 593.58,
+   "text": "So it's better to remind ourselves to be offline at least sometime every day."
   },
   {
-   "start": 764.28,
-   "end": 766.28,
-   "text": "To je to za danas."
+   "start": 595.38,
+   "end": 597.04,
+   "text": "So what do you see in Serbia?"
   },
   {
-   "start": 766.28,
-   "end": 768.28,
-   "text": "To je to i vidimo se"
+   "start": 597.14,
+   "end": 600.68,
+   "text": "I think Mladihir, youth, yes,"
   },
   {
-   "start": 768.28,
-   "end": 770.28,
-   "text": "u sledećoj epizodi."
+   "start": 612.57,
+   "end": 614.09,
+   "text": "but in the whole world,"
   },
   {
-   "start": 770.28,
-   "end": 772.28,
+   "start": 615.67,
+   "end": 617.57,
+   "text": "the young people are the most vulnerable."
+  },
+  {
+   "start": 618.85,
+   "end": 623.25,
+   "text": "The young people spend the most time with the phone or computer."
+  },
+  {
+   "start": 623.89,
+   "end": 624.99,
+   "text": "And we can't do that now."
+  },
+  {
+   "start": 624.99,
+   "end": 627.99,
+   "text": "We can't stop it."
+  },
+  {
+   "start": 628.13,
+   "end": 634.13,
+   "text": "to mladima, ali i dalje nismo svesni dovoljno koliko je to"
+  },
+  {
+   "start": 634.13,
+   "end": 639.43,
+   "text": "zapravo loše i kako to utiče na nas i na mlade."
+  },
+  {
+   "start": 639.75,
+   "end": 643.77,
+   "text": "Pogotovo na mlade, na primjer na decu i na tinejdžere."
+  },
+  {
+   "start": 645.39,
+   "end": 652.43,
+   "text": "Tehnologije i mediji utiču na raspoloženje i"
+  },
+  {
+   "start": 652.43,
+   "end": 655.71,
+   "text": "na raspon pažnje."
+  },
+  {
+   "start": 656.67,
+   "end": 661.13,
+   "text": "Deca imaju sve manje i manje pažnje Ili sve manje raspon pažnje I ne"
+  },
+  {
+   "start": 661.13,
+   "end": 665.93,
+   "text": "mogu da se koncentrišu Ne mogu da se fokusiraju na učenje ili na čitanje"
+  },
+  {
+   "start": 666.97,
+   "end": 672.53,
+   "text": "Mnoga deca ne mogu da čitaju knjigu Zato što je, ne znaju kako još"
+  },
+  {
+   "start": 672.53,
+   "end": 675.53,
+   "text": "uvijek Nisu odrasti uz to"
+  },
+  {
+   "start": 675.53,
+   "end": 682.29,
+   "text": "Odrasti su uz telefon, na primjer A isto utiči na psihološki naraspoloženje Zato što"
+  },
+  {
+   "start": 682.29,
+   "end": 688.84,
+   "text": "socijalne mreže like Instagram, Facebook, and TikTok, they show"
+  },
+  {
+   "start": 688.84,
+   "end": 691.1,
+   "text": "prikazuju neke stvari koje nisu realne."
+  },
+  {
+   "start": 692.02,
+   "end": 698.02,
+   "text": "Nešto kako bi mi hteli da izgledamo, tako se prikazujemo na tim mrežama i"
+  },
+  {
+   "start": 698.02,
+   "end": 705.02,
+   "text": "to utiče na decu jer nisu svesni šta je realnost, a šta nije."
+  },
+  {
+   "start": 705.02,
+   "end": 707.74,
+   "text": "Imaju pogrešnu svest o tome."
+  },
+  {
+   "start": 708.68,
+   "end": 710.3,
+   "text": "Tako da to je neko moje mišljenje."
+  },
+  {
+   "start": 710.58,
+   "end": 713.42,
+   "text": "Nažalost, da, to je tačno."
+  },
+  {
+   "start": 714.44,
+   "end": 715.8,
+   "text": "I will put the topics"
+  },
+  {
+   "start": 715.8,
+   "end": 720.56,
+   "text": "as well on my social media and I want people to try for the"
+  },
+  {
+   "start": 720.56,
+   "end": 725.68,
+   "text": "other topics to come up with their own impromptu speeches that's your challenge everyone"
+  },
+  {
+   "start": 726.42,
+   "end": 727.1,
+   "text": "so I hope it will be"
+  },
+  {
+   "start": 727.1,
+   "end": 729.7,
+   "text": "a nice fun challenge for everyone"
+  },
+  {
+   "start": 729.7,
+   "end": 731.44,
+   "text": "and I'd like to hear what they think about"
+  },
+  {
+   "start": 731.44,
+   "end": 733.1,
+   "text": "these issues"
+  },
+  {
+   "start": 734.92,
+   "end": 735.86,
+   "text": "these are all interesting topics"
+  },
+  {
+   "start": 735.86,
+   "end": 737.92,
+   "text": "to always talk about"
+  },
+  {
+   "start": 737.92,
+   "end": 739.58,
+   "text": "either with friends"
+  },
+  {
+   "start": 739.58,
+   "end": 743.82,
+   "text": "or to write a text about it by yourself And that's why I think"
+  },
+  {
+   "start": 743.82,
+   "end": 746.5,
+   "text": "they are very good sources of practicing Serbian."
+  },
+  {
+   "start": 746.74,
+   "end": 752.4,
+   "text": "You can think of talking about these suffix with your professor, with your friends,"
+  },
+  {
+   "start": 752.4,
+   "end": 753.32,
+   "text": "with your parents."
+  },
+  {
+   "start": 753.32,
+   "end": 757.66,
+   "text": "You can change the tone or the choice of words accordingly."
+  },
+  {
+   "start": 758.4,
+   "end": 759.6,
+   "text": "Exactly. It's a nice thing."
+  },
+  {
+   "start": 760.26,
+   "end": 760.66,
+   "text": "Hvala od Svetsa, Nikola. All right."
+  },
+  {
+   "start": 763.12,
+   "end": 766.46,
+   "text": "Hvala tebi. To je to za danas."
+  },
+  {
+   "start": 767.22,
+   "end": 769.74,
+   "text": "To je to i vidimo se u sljedećoj epizodi."
+  },
+  {
+   "start": 770.22,
+   "end": 771.9,
    "text": "Ćao. Ćao, čao."
   }
  ],

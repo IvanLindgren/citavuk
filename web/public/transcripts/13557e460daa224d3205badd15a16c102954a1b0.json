@@ -1,0 +1,1870 @@
+{
+ "duration": 1212.26,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.78,
+   "end": 3.94,
+   "text": "Zdravo Svima! Welcome to Moje Kafa podcast."
+  },
+  {
+   "start": 3.94,
+   "end": 4.78,
+   "text": "I am Maki."
+  },
+  {
+   "start": 4.78,
+   "end": 8.64,
+   "text": "This season of our podcast is a bit different from the previous ones."
+  },
+  {
+   "start": 8.92,
+   "end": 13.74,
+   "text": "I have another friend, also called Ivana, joining me to have short dialogues in"
+  },
+  {
+   "start": 13.74,
+   "end": 16.54,
+   "text": "Serbian. Then we will explain them in English."
+  },
+  {
+   "start": 16.54,
+   "end": 19.16,
+   "text": "This new season will be like mini Serbian lessons."
+  },
+  {
+   "start": 19.66,
+   "end": 23.1,
+   "text": "So if you are ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 25.48,
+   "end": 28.28,
+   "text": "Ciao Svima! Ya sam Maki."
+  },
+  {
+   "start": 28.46,
+   "end": 30.78,
+   "text": "İyi ovdeye. Ivana, ciao."
+  },
+  {
+   "start": 31.14,
+   "end": 34.76,
+   "text": "Ciao Ivana. Today we are going to talk about traveling in Serbia."
+  },
+  {
+   "start": 35.32,
+   "end": 40.12,
+   "text": "We will give some nice recommendations about where to go in Serbia for nice"
+  },
+  {
+   "start": 40.12,
+   "end": 45.82,
+   "text": "trips. This small country has a lot to offer, as you might already know."
+  },
+  {
+   "start": 46.38,
+   "end": 50.28,
+   "text": "And our dialogue will be on how to arrange a visit to somewhere in"
+  },
+  {
+   "start": 50.28,
+   "end": 52.18,
+   "text": "Serbia. Do go, Vareno."
+  },
+  {
+   "start": 52.98,
+   "end": 54.44,
+   "text": "Yes, Tim. Okay."
+  },
+  {
+   "start": 55.92,
+   "end": 58.54,
+   "text": "Serbia is now a lot of tourists."
+  },
+  {
+   "start": 59.04,
+   "end": 65.18,
+   "text": "Exactly. There are many mountains, rivers, rivers, mountains, etc."
+  },
+  {
+   "start": 65.78,
+   "end": 67.06,
+   "text": "What would you like to find?"
+  },
+  {
+   "start": 68.04,
+   "end": 71.96,
+   "text": "I am between Zlatibora and Fruška Gore."
+  },
+  {
+   "start": 73.52,
+   "end": 74.53,
+   "text": "I know that it will be nice."
+  },
+  {
+   "start": 74.53,
+   "end": 81.31,
+   "text": "biti lepo. Izarobrala bih Zlatibor gdje možemo da obiđemo stopića pećinu, odemo na izled"
+  },
+  {
+   "start": 81.31,
+   "end": 86.45,
+   "text": "do Šarganjske osmice, da plovimo drinom do Perućca i do Višegradske čuprije."
+  },
+  {
+   "start": 87.19,
+   "end": 89.73,
+   "text": "Zvuči odlično. Slažem se."
+  },
+  {
+   "start": 89.73,
+   "end": 92.55,
+   "text": "Čula sam da je tamo hrana baš okusna."
+  },
+  {
+   "start": 93.45,
+   "end": 98.01,
+   "text": "Jeste. Probat ćemo najbolju prašutu i kajmak i uživat ćemo u planinskom doručku."
+  },
+  {
+   "start": 98.83,
+   "end": 99.91,
+   "text": "Baš se radujem."
+  },
+  {
+   "start": 99.91,
+   "end": 102.71,
+   "text": "Sigurno sam dačemo se sijajno provesti."
+  },
+  {
+   "start": 103.95,
+   "end": 107.47,
+   "text": "Ok, that was short, but we will explain it in detail now."
+  },
+  {
+   "start": 108.65,
+   "end": 115.93,
+   "text": "So, I started with saying, Serbia has a lot to offer to tourists,"
+  },
+  {
+   "start": 115.93,
+   "end": 119.41,
+   "text": "doesn't it? Zarne is like tech question here."
+  },
+  {
+   "start": 119.77,
+   "end": 121.27,
+   "text": "Yes, it's tech question, right."
+  },
+  {
+   "start": 121.51,
+   "end": 125.73,
+   "text": "I said, Serbia ima mnogo toga da ponudi turistima."
+  },
+  {
+   "start": 125.73,
+   "end": 127.47,
+   "text": "Zarne. Correct."
+  },
+  {
+   "start": 128.79,
+   "end": 129.51,
+   "text": "And you said?"
+  },
+  {
+   "start": 129.93,
+   "end": 131.93,
+   "text": "I said correct, tačno."
+  },
+  {
+   "start": 132.89,
+   "end": 139.27,
+   "text": "Fortress, monasteries, lakes, rivers, mountains, spas and so on."
+  },
+  {
+   "start": 139.69,
+   "end": 141.03,
+   "text": "What would you like to see?"
+  },
+  {
+   "start": 142.31,
+   "end": 148.79,
+   "text": "So I said, tačno, tvrdjeve, monasteri, jezera, reke, planine, banje itd."
+  },
+  {
+   "start": 149.53,
+   "end": 150.85,
+   "text": "Šta bi ti žela to see?"
+  },
+  {
+   "start": 152.05,
+   "end": 157.15,
+   "text": "Yeah. And then I said, I'm in between Zlatibor and Fruska Gora."
+  },
+  {
+   "start": 157.15,
+   "end": 162.33,
+   "text": "So, dvo umim se između Zlatibora i Fruska Gore."
+  },
+  {
+   "start": 162.33,
+   "end": 168.83,
+   "text": "And then I said, in any case, I know that it will be great"
+  },
+  {
+   "start": 168.83,
+   "end": 170.09,
+   "text": "or beautiful for me."
+  },
+  {
+   "start": 170.09,
+   "end": 175.41,
+   "text": "Yes. So I said, u svakom slučaju znam da će mi biti lepo."
+  },
+  {
+   "start": 175.77,
+   "end": 177.07,
+   "text": "Ok, then me."
+  },
+  {
+   "start": 177.43,
+   "end": 184.49,
+   "text": "I would choose Zlatibor where we can see Stopića Pečina, go for the trip"
+  },
+  {
+   "start": 184.49,
+   "end": 191.73,
+   "text": "to Šarganska osmica, then to sail by Drina river from Peručac to"
+  },
+  {
+   "start": 191.73,
+   "end": 193.15,
+   "text": "Pišegradska Čuprija."
+  },
+  {
+   "start": 195.01,
+   "end": 199.67,
+   "text": "What I said is, I would have picked Slatibor, where we can get the"
+  },
+  {
+   "start": 199.67,
+   "end": 204.93,
+   "text": "five-inch stop, and go to the Shargansk 8, and we'll fly with a drink"
+  },
+  {
+   "start": 204.93,
+   "end": 207.77,
+   "text": "from Peručica to Višegradske Čuprije."
+  },
+  {
+   "start": 223.09,
+   "end": 224.88,
+   "text": "So, I heard that it"
+  },
+  {
+   "start": 224.88,
+   "end": 226.38,
+   "text": "food is very tasty."
+  },
+  {
+   "start": 227.3,
+   "end": 229.66,
+   "text": "Okay, yes, that's yes."
+  },
+  {
+   "start": 229.66,
+   "end": 237.0,
+   "text": "We will try the best prosciutto and kajmak and we will enjoy"
+  },
+  {
+   "start": 237.0,
+   "end": 239.32,
+   "text": "in mountain breakfast."
+  },
+  {
+   "start": 239.82,
+   "end": 244.1,
+   "text": "That means we will try the best prosciutto and kajmak and we will enjoy"
+  },
+  {
+   "start": 244.1,
+   "end": 245.72,
+   "text": "it in the planinsk dormitory."
+  },
+  {
+   "start": 247.12,
+   "end": 251.48,
+   "text": "it's very strange to identify what is kaimak but we can talk about that"
+  },
+  {
+   "start": 251.48,
+   "end": 254.06,
+   "text": "what is it okay"
+  },
+  {
+   "start": 254.06,
+   "end": 262.66,
+   "text": "and then i said i'm already so happy and excited about it and i"
+  },
+  {
+   "start": 262.66,
+   "end": 264.42,
+   "text": "said i'm sure that we will enjoy"
+  },
+  {
+   "start": 264.42,
+   "end": 271.6,
+   "text": "our time a lot so sigurna sam the chemo says so while talking"
+  },
+  {
+   "start": 271.6,
+   "end": 278.12,
+   "text": "about it even though i'm vegan i have this mouth-watering effect, I think."
+  },
+  {
+   "start": 278.12,
+   "end": 282.5,
+   "text": "So, beautiful words."
+  },
+  {
+   "start": 282.5,
+   "end": 284.3,
+   "text": "Zarne, I think, is a nice one."
+  },
+  {
+   "start": 284.3,
+   "end": 284.72,
+   "text": "to sound like a local person, right? If you want"
+  },
+  {
+   "start": 287.22,
+   "end": 288.22,
+   "text": "Isn't it? Doesn't it?"
+  },
+  {
+   "start": 288.22,
+   "end": 290.04,
+   "text": "So, it doesn't have tense in it."
+  },
+  {
+   "start": 290.44,
+   "end": 293.06,
+   "text": "You can add Zarne to any kind of sentence, right?"
+  },
+  {
+   "start": 293.06,
+   "end": 294.48,
+   "text": "Zarne. You can."
+  },
+  {
+   "start": 294.48,
+   "end": 295.4,
+   "text": "Yes, you can."
+  },
+  {
+   "start": 295.4,
+   "end": 299.2,
+   "text": "But mostly, we use that in the writing form."
+  },
+  {
+   "start": 299.2,
+   "end": 300.02,
+   "text": "We use that"
+  },
+  {
+   "start": 300.02,
+   "end": 304.76,
+   "text": "In the oral, but now I'm thinking it's more that we use when we"
+  },
+  {
+   "start": 304.76,
+   "end": 306.46,
+   "text": "write something like this."
+  },
+  {
+   "start": 306.5,
+   "end": 307.02,
+   "text": "Ah, I see."
+  },
+  {
+   "start": 307.52,
+   "end": 310.86,
+   "text": "Okay. Then I sound like more literary because I keep using it."
+  },
+  {
+   "start": 310.86,
+   "end": 311.18,
+   "text": "Ah, yes."
+  },
+  {
+   "start": 313.7,
+   "end": 315.18,
+   "text": "And then takodalia."
+  },
+  {
+   "start": 315.18,
+   "end": 321.3,
+   "text": "You said fortresses, monasteries, lakes, and then takodalia and so on, right?"
+  },
+  {
+   "start": 322.46,
+   "end": 323.76,
+   "text": "And so, yes, that's true."
+  },
+  {
+   "start": 323.76,
+   "end": 327.3,
+   "text": "So on. Or et cetera, as we said, you know, sometimes."
+  },
+  {
+   "start": 328.38,
+   "end": 331.86,
+   "text": "Takodalia. Literally, taco is so, right?"
+  },
+  {
+   "start": 331.88,
+   "end": 335.76,
+   "text": "Dalie. Dalie means further, that you have to name other things."
+  },
+  {
+   "start": 337.02,
+   "end": 338.2,
+   "text": "Yeah, taco dalie."
+  },
+  {
+   "start": 338.2,
+   "end": 338.76,
+   "text": "If you want."
+  },
+  {
+   "start": 339.28,
+   "end": 345.18,
+   "text": "I see. And then instead of ichi, I wanted to use obi-gemo."
+  },
+  {
+   "start": 347.68,
+   "end": 350.32,
+   "text": "Obici as the normal word."
+  },
+  {
+   "start": 350.32,
+   "end": 351.56,
+   "text": "Take a tour."
+  },
+  {
+   "start": 351.86,
+   "end": 353.68,
+   "text": "Yes, obici, that's the verb."
+  },
+  {
+   "start": 354.8,
+   "end": 357.2,
+   "text": "Meaning that you can take a tour of something,"
+  },
+  {
+   "start": 357.2,
+   "end": 364.28,
+   "text": "sightseeing something to see something mainly in the touristic issues yes obi gem"
+  },
+  {
+   "start": 364.28,
+   "end": 364.62,
+   "text": "in present"
+  },
+  {
+   "start": 364.62,
+   "end": 370.66,
+   "text": "for me right obi gem obi josh yes uh let me try obi josh"
+  },
+  {
+   "start": 370.66,
+   "end": 372.4,
+   "text": "does it make sense yes great okay"
+  },
+  {
+   "start": 372.4,
+   "end": 378.14,
+   "text": "but can I use it like, I will visit you, obijeçuçu?"
+  },
+  {
+   "start": 378.66,
+   "end": 379.94,
+   "text": "No, I cannot say that, right?"
+  },
+  {
+   "start": 380.94,
+   "end": 386.92,
+   "text": "You can say that, now I'm thinking, you can say that in some, it's"
+  },
+  {
+   "start": 386.92,
+   "end": 387.22,
+   "text": "not very pleasant,"
+  },
+  {
+   "start": 387.22,
+   "end": 394.12,
+   "text": "but we said obijeçu te in the hospital, if you are laying down somewhere,"
+  },
+  {
+   "start": 394.12,
+   "end": 394.76,
+   "text": "because it's"
+  },
+  {
+   "start": 394.76,
+   "end": 396.62,
+   "text": "not just normal visiting."
+  },
+  {
+   "start": 396.62,
+   "end": 401.28,
+   "text": "It's just we say in that case, we said običečute u bolnici."
+  },
+  {
+   "start": 401.84,
+   "end": 403.94,
+   "text": "That made me use that word."
+  },
+  {
+   "start": 404.3,
+   "end": 411.46,
+   "text": "OK. And here običem or običeču, if it's the location, običeču kruševac."
+  },
+  {
+   "start": 411.46,
+   "end": 412.8,
+   "text": "I don't need anything else."
+  },
+  {
+   "start": 412.9,
+   "end": 414.12,
+   "text": "Just kruševac."
+  },
+  {
+   "start": 414.12,
+   "end": 416.06,
+   "text": "No. It's just the nominative, yes."
+  },
+  {
+   "start": 416.06,
+   "end": 416.4,
+   "text": "Just kruševac."
+  },
+  {
+   "start": 416.4,
+   "end": 422.86,
+   "text": "OK. Perfect. And I like this, duvo umim se, because it's literally in two"
+  },
+  {
+   "start": 422.86,
+   "end": 423.76,
+   "text": "minds. I'm in two minds."
+  },
+  {
+   "start": 423.76,
+   "end": 425.98,
+   "text": "Like duvo umim se, right?"
+  },
+  {
+   "start": 426.76,
+   "end": 430.9,
+   "text": "Yes, I'm not sure whether I will do something or go."
+  },
+  {
+   "start": 430.9,
+   "end": 435.16,
+   "text": "I'm not sure whether I will do something, where I will go somewhere or"
+  },
+  {
+   "start": 435.16,
+   "end": 435.56,
+   "text": "something."
+  },
+  {
+   "start": 436.92,
+   "end": 437.94,
+   "text": "Yes, it's very..."
+  },
+  {
+   "start": 437.94,
+   "end": 444.58,
+   "text": "In the Serbian, you could say, but like,"
+  },
+  {
+   "start": 446.0,
+   "end": 449.38,
+   "text": "I'm not sure."
+  },
+  {
+   "start": 449.38,
+   "end": 454.56,
+   "text": "But it's a very nice expression, really."
+  },
+  {
+   "start": 455.56,
+   "end": 457.58,
+   "text": "Interesting verb. Exactly."
+  },
+  {
+   "start": 457.8,
+   "end": 461.14,
+   "text": "And I'm just curious about its past form."
+  },
+  {
+   "start": 461.7,
+   "end": 463.28,
+   "text": "Dovo umila sam se?"
+  },
+  {
+   "start": 464.38,
+   "end": 465.2,
+   "text": "Yes, great."
+  },
+  {
+   "start": 465.2,
+   "end": 468.48,
+   "text": "Da. Yes, po umila sam se."
+  },
+  {
+   "start": 469.48,
+   "end": 473.58,
+   "text": "Great. And izmeju means between."
+  },
+  {
+   "start": 474.22,
+   "end": 476.38,
+   "text": "is made you between."
+  },
+  {
+   "start": 476.46,
+   "end": 478.68,
+   "text": "Yeah. And usvakom slučaju."
+  },
+  {
+   "start": 478.7,
+   "end": 482.26,
+   "text": "I hear this also almost every day here."
+  },
+  {
+   "start": 482.48,
+   "end": 484.7,
+   "text": "Usvakom slučaju. In any case, right?"
+  },
+  {
+   "start": 484.7,
+   "end": 486.54,
+   "text": "Yes, yes, yes."
+  },
+  {
+   "start": 487.02,
+   "end": 490.12,
+   "text": "If you want to say something like a reply"
+  },
+  {
+   "start": 490.12,
+   "end": 492.92,
+   "text": "on something that somebody asks you to do"
+  },
+  {
+   "start": 492.92,
+   "end": 497.38,
+   "text": "or to go or to see or to do something for somebody"
+  },
+  {
+   "start": 497.38,
+   "end": 500.1,
+   "text": "and you want to be positive,"
+  },
+  {
+   "start": 500.1,
+   "end": 501.64,
+   "text": "you will say, don't worry."
+  },
+  {
+   "start": 501.64,
+   "end": 502.6,
+   "text": "Usvakom slučaju."
+  },
+  {
+   "start": 502.6,
+   "end": 504.22,
+   "text": "I will do that and this or something like that."
+  },
+  {
+   "start": 504.22,
+   "end": 505.1,
+   "text": "Exactly."
+  },
+  {
+   "start": 505.1,
+   "end": 507.6,
+   "text": "Don't worry. In any case, I will do it."
+  },
+  {
+   "start": 507.6,
+   "end": 510.54,
+   "text": "In any case, I will do it and that."
+  },
+  {
+   "start": 511.06,
+   "end": 515.56,
+   "text": "Yes, super. It's very useful, useful for the daily conversation."
+  },
+  {
+   "start": 515.56,
+   "end": 516.38,
+   "text": "Yes, yes."
+  },
+  {
+   "start": 516.38,
+   "end": 519.42,
+   "text": "And I like that second form is"
+  },
+  {
+   "start": 519.42,
+   "end": 525.05,
+   "text": "So there, it's going to be good for me in English, but you don't"
+  },
+  {
+   "start": 525.05,
+   "end": 526.6,
+   "text": "need for anything."
+  },
+  {
+   "start": 526.6,
+   "end": 527.68,
+   "text": "No preposition."
+  },
+  {
+   "start": 527.68,
+   "end": 533.91,
+   "text": "You just say, Yes, we don't need this."
+  },
+  {
+   "start": 533.91,
+   "end": 534.76,
+   "text": "That's in English."
+  },
+  {
+   "start": 535.5,
+   "end": 535.69,
+   "text": "Yeah."
+  },
+  {
+   "start": 535.69,
+   "end": 538.04,
+   "text": "This is future tense."
+  },
+  {
+   "start": 538.04,
+   "end": 542.64,
+   "text": "If it's present tense, Lepo mi je, right?"
+  },
+  {
+   "start": 542.76,
+   "end": 544.16,
+   "text": "Bravo. Super mi je."
+  },
+  {
+   "start": 544.41,
+   "end": 544.62,
+   "text": "That's it. Yes."
+  },
+  {
+   "start": 545.86,
+   "end": 547.56,
+   "text": "That's, yeah. Okay."
+  },
+  {
+   "start": 548.6,
+   "end": 555.0,
+   "text": "and the next one is zvuchi that i wanted to mention zuchi means i"
+  },
+  {
+   "start": 555.0,
+   "end": 556.56,
+   "text": "always have this problem"
+  },
+  {
+   "start": 556.56,
+   "end": 562.18,
+   "text": "with is this ch or ch you know now it's it's it's a hard"
+  },
+  {
+   "start": 562.18,
+   "end": 565.22,
+   "text": "ch ch to make a difference we said"
+  },
+  {
+   "start": 565.22,
+   "end": 571.98,
+   "text": "yes like a c ch ch is like a softer ch is like a"
+  },
+  {
+   "start": 571.98,
+   "end": 576.46,
+   "text": "harder at that's that you can have your difference in your mind something like"
+  },
+  {
+   "start": 576.46,
+   "end": 581.56,
+   "text": "that yeah and there are nice places here that we mentioned stop it"
+  },
+  {
+   "start": 581.56,
+   "end": 589.06,
+   "text": "yeah stop it that's a what was it cave"
+  },
+  {
+   "start": 589.06,
+   "end": 591.76,
+   "text": "cave it's a cave yes yes it's a cave have you been there"
+  },
+  {
+   "start": 591.76,
+   "end": 597.21,
+   "text": "no i never been there yeah okay it'll be interesting yeah we will we"
+  },
+  {
+   "start": 597.21,
+   "end": 598.4,
+   "text": "are literally planning this then"
+  },
+  {
+   "start": 598.4,
+   "end": 599.2,
+   "text": "yes"
+  },
+  {
+   "start": 601.17,
+   "end": 602.95,
+   "text": "And then you said, Odemona islet."
+  },
+  {
+   "start": 602.95,
+   "end": 608.11,
+   "text": "That's tricky. If you just Google translate islet, it means like trip."
+  },
+  {
+   "start": 608.11,
+   "end": 610.19,
+   "text": "But in reality, what is it?"
+  },
+  {
+   "start": 611.59,
+   "end": 615.13,
+   "text": "We used islet for the picnic, actually."
+  },
+  {
+   "start": 615.13,
+   "end": 621.23,
+   "text": "Mainly, we think about going outside of the town, going somewhere in the nature,"
+  },
+  {
+   "start": 621.23,
+   "end": 626.79,
+   "text": "pick up some basket with the food or drinks and have our whatever, some"
+  },
+  {
+   "start": 626.79,
+   "end": 629.49,
+   "text": "kind of blanket and sit on the grass."
+  },
+  {
+   "start": 629.99,
+   "end": 635.71,
+   "text": "But in the other case, of course, you can use that like islet just"
+  },
+  {
+   "start": 635.71,
+   "end": 639.33,
+   "text": "to go to see something as we use this here, you know."
+  },
+  {
+   "start": 640.35,
+   "end": 640.59,
+   "text": "For example, tourist agencies I see sometimes use islet though, islet for like they"
+  },
+  {
+   "start": 640.59,
+   "end": 640.71,
+   "text": "Yeah."
+  },
+  {
+   "start": 646.11,
+   "end": 647.49,
+   "text": "have trips as well."
+  },
+  {
+   "start": 647.75,
+   "end": 648.75,
+   "text": "It's also used as trips."
+  },
+  {
+   "start": 648.93,
+   "end": 650.19,
+   "text": "Yes. Super that you mentioned that."
+  },
+  {
+   "start": 650.19,
+   "end": 655.81,
+   "text": "Yes. Touristic organization said islet that also islet means one day trip."
+  },
+  {
+   "start": 656.39,
+   "end": 657.65,
+   "text": "Aha. Good idea."
+  },
+  {
+   "start": 657.65,
+   "end": 663.65,
+   "text": "just you just remind me brainstorming yes that's great is it means one day"
+  },
+  {
+   "start": 663.65,
+   "end": 664.33,
+   "text": "trip you just remind me"
+  },
+  {
+   "start": 664.33,
+   "end": 669.99,
+   "text": "because you mentioned tourist uh agency that they are they are uh writing on"
+  },
+  {
+   "start": 669.99,
+   "end": 670.75,
+   "text": "their advice yes"
+  },
+  {
+   "start": 670.75,
+   "end": 674.83,
+   "text": "you have some kind of ads we're going from the easlet eat Islet."
+  },
+  {
+   "start": 675.15,
+   "end": 676.35,
+   "text": "That means one day."
+  },
+  {
+   "start": 677.71,
+   "end": 679.19,
+   "text": "And Islet, to me, is"
+  },
+  {
+   "start": 679.19,
+   "end": 681.23,
+   "text": "first of May here, like the biggest"
+  },
+  {
+   "start": 681.23,
+   "end": 682.97,
+   "text": "Islet day."
+  },
+  {
+   "start": 684.73,
+   "end": 685.31,
+   "text": "Everyone prepares"
+  },
+  {
+   "start": 685.31,
+   "end": 687.49,
+   "text": "their basket. One day in advance"
+  },
+  {
+   "start": 687.49,
+   "end": 689.93,
+   "text": "or during the night before the first May."
+  },
+  {
+   "start": 690.17,
+   "end": 691.83,
+   "text": "Yes. To pick up the good spot."
+  },
+  {
+   "start": 692.25,
+   "end": 693.25,
+   "text": "Whoever has more time, spends"
+  },
+  {
+   "start": 693.25,
+   "end": 697.65,
+   "text": "more time. And you said Plovimo."
+  },
+  {
+   "start": 698.67,
+   "end": 699.37,
+   "text": "Plovimo."
+  },
+  {
+   "start": 699.37,
+   "end": 701.47,
+   "text": "Ploviti, I think, is to sail."
+  },
+  {
+   "start": 701.75,
+   "end": 706.85,
+   "text": "Yes. Yes. I heard about this sailing tours there."
+  },
+  {
+   "start": 707.29,
+   "end": 709.37,
+   "text": "Ondrina from Peruchats."
+  },
+  {
+   "start": 709.71,
+   "end": 711.31,
+   "text": "Peruchats? Peruchats, yes."
+  },
+  {
+   "start": 711.31,
+   "end": 715.43,
+   "text": "Yeah. And Visegratska Čupria."
+  },
+  {
+   "start": 716.15,
+   "end": 718.21,
+   "text": "Visegratska Čupria. Yeah."
+  },
+  {
+   "start": 718.81,
+   "end": 720.05,
+   "text": "That one I saw."
+  },
+  {
+   "start": 720.71,
+   "end": 722.91,
+   "text": "Ah, yes, you saw that because you traveled there."
+  },
+  {
+   "start": 722.91,
+   "end": 723.17,
+   "text": "To Sarevo. Yeah."
+  },
+  {
+   "start": 724.75,
+   "end": 726.85,
+   "text": "While going to Sarevo, I stopped by."
+  },
+  {
+   "start": 727.13,
+   "end": 730.27,
+   "text": "And something more confusing coming."
+  },
+  {
+   "start": 730.57,
+   "end": 737.17,
+   "text": "When we hear something nice, like when we are planning something exciting, we can"
+  },
+  {
+   "start": 737.17,
+   "end": 737.91,
+   "text": "use this, right?"
+  },
+  {
+   "start": 737.91,
+   "end": 741.33,
+   "text": "It's all like looking forward to in English."
+  },
+  {
+   "start": 741.33,
+   "end": 743.25,
+   "text": "Yes. forward to it."
+  },
+  {
+   "start": 743.25,
+   "end": 746.21,
+   "text": "Great. Because I saw it in the emails."
+  },
+  {
+   "start": 746.21,
+   "end": 747.09,
+   "text": "That's why I am."
+  },
+  {
+   "start": 747.63,
+   "end": 748.03,
+   "text": "Looking forward to something. Yes."
+  },
+  {
+   "start": 748.93,
+   "end": 749.79,
+   "text": "Yeah, yeah, super."
+  },
+  {
+   "start": 750.51,
+   "end": 755.15,
+   "text": "That's again very, okay, positive word, or the positive verb, positive sentence, actually."
+  },
+  {
+   "start": 755.15,
+   "end": 758.39,
+   "text": "That in advance you have nice feelings"
+  },
+  {
+   "start": 758.39,
+   "end": 762.19,
+   "text": "about what you will experience or see"
+  },
+  {
+   "start": 762.19,
+   "end": 763.37,
+   "text": "or something like that."
+  },
+  {
+   "start": 764.61,
+   "end": 765.43,
+   "text": "And it's reflexive with se."
+  },
+  {
+   "start": 765.43,
+   "end": 769.31,
+   "text": "There is another one that my last sentence had."
+  },
+  {
+   "start": 769.93,
+   "end": 770.69,
+   "text": "Provestise."
+  },
+  {
+   "start": 772.45,
+   "end": 773.91,
+   "text": "Provestise is very nice."
+  },
+  {
+   "start": 773.91,
+   "end": 777.59,
+   "text": "We will have a great time."
+  },
+  {
+   "start": 777.81,
+   "end": 782.23,
+   "text": "Yes. When you use it for the past experience, how was it?"
+  },
+  {
+   "start": 782.61,
+   "end": 783.79,
+   "text": "I enjoyed a lot."
+  },
+  {
+   "start": 783.79,
+   "end": 784.93,
+   "text": "I had a great time."
+  },
+  {
+   "start": 785.57,
+   "end": 786.33,
+   "text": "I proved it."
+  },
+  {
+   "start": 786.87,
+   "end": 789.37,
+   "text": "I Yes. Okay."
+  },
+  {
+   "start": 789.97,
+   "end": 790.13,
+   "text": "I proved it."
+  },
+  {
+   "start": 790.13,
+   "end": 791.41,
+   "text": "Then it's easy."
+  },
+  {
+   "start": 791.75,
+   "end": 792.87,
+   "text": "Okay. I proved it."
+  },
+  {
+   "start": 793.61,
+   "end": 795.01,
+   "text": "How did you prove it?"
+  },
+  {
+   "start": 796.43,
+   "end": 797.19,
+   "text": "In the weekend."
+  },
+  {
+   "start": 797.53,
+   "end": 800.15,
+   "text": "Right? Yes. These are very nice things."
+  },
+  {
+   "start": 800.61,
+   "end": 801.29,
+   "text": "And enjoy."
+  },
+  {
+   "start": 801.29,
+   "end": 806.43,
+   "text": "That's one of my common mistakes while speaking, because I match it with enjoy"
+  },
+  {
+   "start": 806.43,
+   "end": 808.45,
+   "text": "in English and I always forget."
+  },
+  {
+   "start": 810.57,
+   "end": 812.27,
+   "text": "Yes, verb is uživati."
+  },
+  {
+   "start": 813.11,
+   "end": 815.73,
+   "text": "And then you have to add something in something."
+  },
+  {
+   "start": 815.99,
+   "end": 816.97,
+   "text": "Yes, you are correct."
+  },
+  {
+   "start": 817.11,
+   "end": 818.75,
+   "text": "Because in English, it's only enjoy."
+  },
+  {
+   "start": 819.15,
+   "end": 822.91,
+   "text": "Yes, let's practice a little bit with male words, female words."
+  },
+  {
+   "start": 822.91,
+   "end": 827.46,
+   "text": "For example, I want to say goodbye to people."
+  },
+  {
+   "start": 827.54,
+   "end": 828.48,
+   "text": "Enjoy your day."
+  },
+  {
+   "start": 828.64,
+   "end": 831.1,
+   "text": "Enjoy your weekend, for example."
+  },
+  {
+   "start": 831.36,
+   "end": 834.38,
+   "text": "And I always say, uživaj dan."
+  },
+  {
+   "start": 834.38,
+   "end": 837.28,
+   "text": "But uživaj u danu."
+  },
+  {
+   "start": 837.5,
+   "end": 838.96,
+   "text": "Yes. It should be."
+  },
+  {
+   "start": 839.62,
+   "end": 841.86,
+   "text": "Male, danu. Yes."
+  },
+  {
+   "start": 842.0,
+   "end": 843.04,
+   "text": "Weekend the same."
+  },
+  {
+   "start": 843.04,
+   "end": 844.44,
+   "text": "Uživaj u weekendu."
+  },
+  {
+   "start": 845.08,
+   "end": 846.68,
+   "text": "Yes. Uživaj u doručku."
+  },
+  {
+   "start": 847.12,
+   "end": 848.76,
+   "text": "U doručku. U ručku."
+  },
+  {
+   "start": 849.74,
+   "end": 855.42,
+   "text": "yes why not enjoy your breakfast yeah enjoy your run can i say that"
+  },
+  {
+   "start": 855.7,
+   "end": 862.64,
+   "text": "yes you enjoy your run meaning okay with the verbs as well we can"
+  },
+  {
+   "start": 862.64,
+   "end": 862.84,
+   "text": "use"
+  },
+  {
+   "start": 864.32,
+   "end": 871.48,
+   "text": "right yes great yeah we say that really very very often yes i"
+  },
+  {
+   "start": 871.48,
+   "end": 871.96,
+   "text": "hear that"
+  },
+  {
+   "start": 874.04,
+   "end": 879.0,
+   "text": "And for female words, for example, I like going, you and I, we like"
+  },
+  {
+   "start": 879.0,
+   "end": 879.36,
+   "text": "going to mountains."
+  },
+  {
+   "start": 879.36,
+   "end": 884.54,
+   "text": "And Serjan might say to us, like, uživai on the mountain."
+  },
+  {
+   "start": 885.68,
+   "end": 887.0,
+   "text": "Uživai u planini."
+  },
+  {
+   "start": 887.56,
+   "end": 889.08,
+   "text": "This time, i planini."
+  },
+  {
+   "start": 889.16,
+   "end": 890.02,
+   "text": "Yes, planini."
+  },
+  {
+   "start": 891.94,
+   "end": 896.14,
+   "text": "Is there any other word that we can enjoy in a female word?"
+  },
+  {
+   "start": 898.06,
+   "end": 900.3,
+   "text": "Ukafi. Ukafi."
+  },
+  {
+   "start": 900.3,
+   "end": 901.94,
+   "text": "In coffee? Yes, uživaju kafe."
+  },
+  {
+   "start": 901.94,
+   "end": 904.6,
+   "text": "Why not? Yeah, yeah, why not?"
+  },
+  {
+   "start": 904.78,
+   "end": 908.4,
+   "text": "Perfect. Or if you have new house, you can say if you go somewhere"
+  },
+  {
+   "start": 908.4,
+   "end": 910.24,
+   "text": "to see some new house or something,"
+  },
+  {
+   "start": 910.24,
+   "end": 911.3,
+   "text": "you say uživaju kući."
+  },
+  {
+   "start": 911.8,
+   "end": 912.92,
+   "text": "Uživaju nove kući."
+  },
+  {
+   "start": 913.18,
+   "end": 913.96,
+   "text": "Something like that."
+  },
+  {
+   "start": 914.48,
+   "end": 914.9,
+   "text": "Yes, that's good."
+  },
+  {
+   "start": 914.9,
+   "end": 916.56,
+   "text": "No kući. Yeah."
+  },
+  {
+   "start": 917.48,
+   "end": 924.08,
+   "text": "Perfect. And with the neutral words like selo, uživaju selo, like male words, it's"
+  },
+  {
+   "start": 924.08,
+   "end": 924.32,
+   "text": "Yes, yes, it will be u at the end."
+  },
+  {
+   "start": 924.32,
+   "end": 924.56,
+   "text": "going to be."
+  },
+  {
+   "start": 927.04,
+   "end": 929.44,
+   "text": "Okay. Uživaju, we can do."
+  },
+  {
+   "start": 929.84,
+   "end": 935.6,
+   "text": "okay oh yes that's the number one that i use because friday evenings um"
+  },
+  {
+   "start": 935.6,
+   "end": 936.18,
+   "text": "there is crossfit"
+  },
+  {
+   "start": 936.18,
+   "end": 940.16,
+   "text": "and then i want to say goodbye to everyone like that good i think"
+  },
+  {
+   "start": 940.16,
+   "end": 941.24,
+   "text": "this was really nice let's read"
+  },
+  {
+   "start": 941.24,
+   "end": 947.28,
+   "text": "from the beginning and hey sorry sorry one moment we have to explain kai"
+  },
+  {
+   "start": 947.28,
+   "end": 948.96,
+   "text": "muck yes that's a very"
+  },
+  {
+   "start": 948.96,
+   "end": 956.14,
+   "text": "interesting word actually interesting dish meal or whatever it's unique here definitely yes"
+  },
+  {
+   "start": 956.82,
+   "end": 957.92,
+   "text": "What's kaimak then?"
+  },
+  {
+   "start": 957.92,
+   "end": 960.34,
+   "text": "You wanted this question."
+  },
+  {
+   "start": 961.92,
+   "end": 965.94,
+   "text": "Again, it's very hard to explain in English, but okay, that's the product of"
+  },
+  {
+   "start": 965.94,
+   "end": 969.78,
+   "text": "the milk, always from the cow milk."
+  },
+  {
+   "start": 969.78,
+   "end": 973.68,
+   "text": "And it's in the process of making cheese."
+  },
+  {
+   "start": 973.68,
+   "end": 977.05,
+   "text": "But before you make cheese, you can make kaimak."
+  },
+  {
+   "start": 979.21,
+   "end": 985.63,
+   "text": "That's something when you cook milk, when the milk starts to boil, you pick"
+  },
+  {
+   "start": 985.63,
+   "end": 990.07,
+   "text": "up those what is on the top, the surface, like some kind of foam."
+  },
+  {
+   "start": 990.07,
+   "end": 990.29,
+   "text": "And I never done that by myself, actually, but I saw and I heard."
+  },
+  {
+   "start": 990.29,
+   "end": 990.67,
+   "text": "Yes."
+  },
+  {
+   "start": 997.85,
+   "end": 999.13,
+   "text": "You watched that one doing."
+  },
+  {
+   "start": 999.19,
+   "end": 1000.57,
+   "text": "Yes, it's all processed."
+  },
+  {
+   "start": 1000.57,
+   "end": 1006.05,
+   "text": "It's processed that here in the village people used to do that, still doing"
+  },
+  {
+   "start": 1006.05,
+   "end": 1006.69,
+   "text": "that, of course."
+  },
+  {
+   "start": 1006.69,
+   "end": 1011.77,
+   "text": "And you've done a couple of times with that foam and put in some"
+  },
+  {
+   "start": 1011.77,
+   "end": 1015.81,
+   "text": "kind of dish, whatever, during the night it will stay and some kind of"
+  },
+  {
+   "start": 1015.81,
+   "end": 1017.13,
+   "text": "fermentation is going on."
+  },
+  {
+   "start": 1017.55,
+   "end": 1022.67,
+   "text": "Product is something between soft cheese and sour cream."
+  },
+  {
+   "start": 1024.55,
+   "end": 1027.65,
+   "text": "Yes. And the question is, how does it get sour?"
+  },
+  {
+   "start": 1029.49,
+   "end": 1030.77,
+   "text": "because I think that during the fermentation"
+  },
+  {
+   "start": 1030.77,
+   "end": 1032.89,
+   "text": "they have to add salt of course"
+  },
+  {
+   "start": 1032.89,
+   "end": 1035.53,
+   "text": "because they're making the cheese"
+  },
+  {
+   "start": 1035.53,
+   "end": 1036.23,
+   "text": "you know for the sure"
+  },
+  {
+   "start": 1036.23,
+   "end": 1039.37,
+   "text": "I don't know that's the only thing that I think"
+  },
+  {
+   "start": 1039.37,
+   "end": 1041.39,
+   "text": "about because it cannot be"
+  },
+  {
+   "start": 1041.39,
+   "end": 1046.53,
+   "text": "anything else inside it's just from the milk and salt a friend of mine"
+  },
+  {
+   "start": 1046.53,
+   "end": 1047.73,
+   "text": "went to Zlatibor"
+  },
+  {
+   "start": 1047.73,
+   "end": 1052.91,
+   "text": "and he said the best Kaimak really is in Zlatibor."
+  },
+  {
+   "start": 1053.17,
+   "end": 1054.85,
+   "text": "Okay, yeah, maybe."
+  },
+  {
+   "start": 1054.85,
+   "end": 1057.49,
+   "text": "We will check that."
+  },
+  {
+   "start": 1057.49,
+   "end": 1059.35,
+   "text": "I will check that."
+  },
+  {
+   "start": 1059.35,
+   "end": 1060.81,
+   "text": "I don't think they will have"
+  },
+  {
+   "start": 1060.81,
+   "end": 1062.41,
+   "text": "Posna version of Kaimak."
+  },
+  {
+   "start": 1062.41,
+   "end": 1064.19,
+   "text": "No, no, for sure."
+  },
+  {
+   "start": 1064.19,
+   "end": 1070.59,
+   "text": "Yeah, and Purshut, it's like also something here similar to pepperoni, right?"
+  },
+  {
+   "start": 1070.59,
+   "end": 1071.61,
+   "text": "A little bit, but"
+  },
+  {
+   "start": 1071.61,
+   "end": 1075.69,
+   "text": "it doesn't have to be, actually."
+  },
+  {
+   "start": 1076.71,
+   "end": 1077.27,
+   "text": "Prosciutto,"
+  },
+  {
+   "start": 1077.27,
+   "end": 1078.37,
+   "text": "okay, it's not"
+  },
+  {
+   "start": 1078.37,
+   "end": 1080.49,
+   "text": "only connected"
+  },
+  {
+   "start": 1080.49,
+   "end": 1084.67,
+   "text": "with Serbia. It's from Macedonia,"
+  },
+  {
+   "start": 1084.67,
+   "end": 1090.15,
+   "text": "Montenegro, even, I think, as in Italy, you know, that's the different kind of"
+  },
+  {
+   "start": 1090.15,
+   "end": 1090.65,
+   "text": "prosciutto"
+  },
+  {
+   "start": 1090.65,
+   "end": 1092.29,
+   "text": "actually, you know."
+  },
+  {
+   "start": 1093.33,
+   "end": 1095.45,
+   "text": "Prosciutto means that it's from the beef."
+  },
+  {
+   "start": 1096.69,
+   "end": 1101.43,
+   "text": "and it's always there in the prediala section and the menus it is yes"
+  },
+  {
+   "start": 1101.43,
+   "end": 1103.07,
+   "text": "appetizer cheese and"
+  },
+  {
+   "start": 1103.07,
+   "end": 1109.71,
+   "text": "everything else yes exactly cheese i mean sir prosciutto kaimak yes uh what else"
+  },
+  {
+   "start": 1109.71,
+   "end": 1109.93,
+   "text": "like mostly"
+  },
+  {
+   "start": 1109.93,
+   "end": 1114.21,
+   "text": "these mostly these maybe some kind of as you said peppers or something like"
+  },
+  {
+   "start": 1114.21,
+   "end": 1114.61,
+   "text": "that or"
+  },
+  {
+   "start": 1114.61,
+   "end": 1119.69,
+   "text": "yeah some pepper balls yeah when you said prosciutto if you want to buy"
+  },
+  {
+   "start": 1119.69,
+   "end": 1122.91,
+   "text": "prosciutto in the in the store, it's some kind of delicatess."
+  },
+  {
+   "start": 1122.91,
+   "end": 1127.48,
+   "text": "It's not any kind of sausage or any kind of, I don't know,"
+  },
+  {
+   "start": 1127.48,
+   "end": 1130.6,
+   "text": "any kind of that kind of appetizing meat or something."
+  },
+  {
+   "start": 1130.62,
+   "end": 1133.84,
+   "text": "Persuota is something really delicious and a little bit expensive,"
+  },
+  {
+   "start": 1133.84,
+   "end": 1136.06,
+   "text": "you know, if you want to buy it in a store."
+  },
+  {
+   "start": 1136.7,
+   "end": 1139.72,
+   "text": "Exactly. From the beginning, I'm starting again."
+  },
+  {
+   "start": 1140.38,
+   "end": 1144.24,
+   "text": "Serbia has a lot of things to provide tourists, isn't it?"
+  },
+  {
+   "start": 1145.38,
+   "end": 1150.14,
+   "text": "Right. In the river, river, mountains, mountains, and so on."
+  },
+  {
+   "start": 1150.8,
+   "end": 1152.14,
+   "text": "What would you like to find?"
+  },
+  {
+   "start": 1153.06,
+   "end": 1156.54,
+   "text": "I'm in between Zlatibora and Fruška Gora."
+  },
+  {
+   "start": 1157.14,
+   "end": 1159.9,
+   "text": "I know that I'm going to be nice."
+  },
+  {
+   "start": 1160.78,
+   "end": 1167.3,
+   "text": "I'm in Zlatibor where we can find Stopića Pecin, and go to Sharganskosmice, and"
+  },
+  {
+   "start": 1167.3,
+   "end": 1170.28,
+   "text": "swim with Peručica to Višagradske Čuprije."
+  },
+  {
+   "start": 1170.28,
+   "end": 1172.42,
+   "text": "It sounds great."
+  },
+  {
+   "start": 1172.42,
+   "end": 1176.0,
+   "text": "I hear. I heard that the food is really delicious."
+  },
+  {
+   "start": 1176.88,
+   "end": 1180.44,
+   "text": "Yes. We will try the best fresh fruit and kajmek and enjoy it in"
+  },
+  {
+   "start": 1180.44,
+   "end": 1181.56,
+   "text": "the planning package."
+  },
+  {
+   "start": 1182.34,
+   "end": 1185.92,
+   "text": "Really good. I'm sure we will probably have a great meal."
+  },
+  {
+   "start": 1186.46,
+   "end": 1187.7,
+   "text": "That's it. We made it."
+  },
+  {
+   "start": 1187.7,
+   "end": 1188.64,
+   "text": "Thank you so much."
+  },
+  {
+   "start": 1188.64,
+   "end": 1189.3,
+   "text": "Thank you very much."
+  },
+  {
+   "start": 1189.42,
+   "end": 1192.2,
+   "text": "Thank Thank you all."
+  },
+  {
+   "start": 1192.2,
+   "end": 1194.04,
+   "text": "Thank you. Okay."
+  },
+  {
+   "start": 1194.04,
+   "end": 1195.08,
+   "text": "See you. Bye."
+  },
+  {
+   "start": 1195.62,
+   "end": 1195.8,
+   "text": "Bye."
+  },
+  {
+   "start": 1198.22,
+   "end": 1200.2,
+   "text": "Thank you for listening to us today."
+  },
+  {
+   "start": 1200.2,
+   "end": 1203.46,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 1203.74,
+   "end": 1207.96,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 1207.96,
+   "end": 1210.86,
+   "text": "on our Instagram page, Moje Kafa Podcast."
+  },
+  {
+   "start": 1211.02,
+   "end": 1211.72,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.5: Putovanje po Srbiji",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/67711385/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-3-1%2F321541378-44100-2-426e12e538518.m4a"
+}

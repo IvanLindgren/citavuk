@@ -1,0 +1,2695 @@
+{
+ "duration": 2074.2,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.26,
+   "end": 31.38,
+   "text": "Good morning everyone."
+  },
+  {
+   "start": 31.38,
+   "end": 32.14,
+   "text": "Here is Ivana."
+  },
+  {
+   "start": 32.4,
+   "end": 34.12,
+   "text": "Good morning. Here is Yamaki."
+  },
+  {
+   "start": 34.7,
+   "end": 35.02,
+   "text": "Good morning. Today I'm good. How are you?"
+  },
+  {
+   "start": 38.52,
+   "end": 40.02,
+   "text": "I drink coffee."
+  },
+  {
+   "start": 40.02,
+   "end": 41.88,
+   "text": "I enjoy. And you?"
+  },
+  {
+   "start": 43.26,
+   "end": 45.7,
+   "text": "Yes, I enjoy my coffee."
+  },
+  {
+   "start": 47.24,
+   "end": 48.3,
+   "text": "You used it perfectly."
+  },
+  {
+   "start": 48.3,
+   "end": 51.36,
+   "text": "You said enjoy, which is the imperative way."
+  },
+  {
+   "start": 51.36,
+   "end": 53.64,
+   "text": "Enjoy. Thank you."
+  },
+  {
+   "start": 55.46,
+   "end": 57.66,
+   "text": "So we need some cake next to that."
+  },
+  {
+   "start": 58.64,
+   "end": 64.82,
+   "text": "or something sweet would be nice right yeah i think i would prefer what"
+  },
+  {
+   "start": 64.82,
+   "end": 64.94,
+   "text": "would i prefer"
+  },
+  {
+   "start": 64.94,
+   "end": 69.88,
+   "text": "like a yeah like a chocolate cake i just love chocolate and coffee i"
+  },
+  {
+   "start": 69.88,
+   "end": 71.1,
+   "text": "would just make i would"
+  },
+  {
+   "start": 71.1,
+   "end": 77.28,
+   "text": "make a chocolate coffee cake that's what i would do okay good combination i"
+  },
+  {
+   "start": 77.28,
+   "end": 77.48,
+   "text": "would love something"
+  },
+  {
+   "start": 77.48,
+   "end": 85.24,
+   "text": "with fruits bananas strawberries really coffee and fruit bananas i mean with cakes fruits"
+  },
+  {
+   "start": 85.24,
+   "end": 92.34,
+   "text": "go better for me okay uh what about um a rat look would"
+  },
+  {
+   "start": 92.34,
+   "end": 95.16,
+   "text": "you would you eat that yeah but i think our"
+  },
+  {
+   "start": 95.16,
+   "end": 98.5,
+   "text": "rat look which is your locum i think our rat look is that compared"
+  },
+  {
+   "start": 98.5,
+   "end": 99.14,
+   "text": "to locum is just like"
+  },
+  {
+   "start": 99.14,
+   "end": 104.98,
+   "text": "plain it's really plain yeah because you have all of these like you have"
+  },
+  {
+   "start": 104.98,
+   "end": 105.78,
+   "text": "like a rose water"
+  },
+  {
+   "start": 105.78,
+   "end": 109.48,
+   "text": "and then you have nuts and then you have this and that."
+  },
+  {
+   "start": 109.98,
+   "end": 115.34,
+   "text": "Double roasted nuts and fruits and other flavors, vanilla and stuff."
+  },
+  {
+   "start": 116.2,
+   "end": 117.36,
+   "text": "And for us, it's like pour."
+  },
+  {
+   "start": 117.46,
+   "end": 120.12,
+   "text": "Like there's a cube of liquid."
+  },
+  {
+   "start": 120.54,
+   "end": 121.66,
+   "text": "Either pink or yellow."
+  },
+  {
+   "start": 121.96,
+   "end": 122.34,
+   "text": "No more."
+  },
+  {
+   "start": 123.64,
+   "end": 125.54,
+   "text": "That's it. There's a jelly for you."
+  },
+  {
+   "start": 125.54,
+   "end": 126.74,
+   "text": "That's it. That's Suck it."
+  },
+  {
+   "start": 126.74,
+   "end": 127.62,
+   "text": "Yes."
+  },
+  {
+   "start": 129.12,
+   "end": 133.72,
+   "text": "Actually, you know, it's quite sad, but like we sometimes just take like sugar"
+  },
+  {
+   "start": 133.72,
+   "end": 136.96,
+   "text": "cubes. and that's it and then you suck on it like yes while drinking"
+  },
+  {
+   "start": 136.96,
+   "end": 142.24,
+   "text": "coffee oh so sad anyway we're not"
+  },
+  {
+   "start": 142.24,
+   "end": 147.76,
+   "text": "talking about cakes today but we are talking about cooking in serbian exactly we"
+  },
+  {
+   "start": 147.76,
+   "end": 148.06,
+   "text": "wanted to give you"
+  },
+  {
+   "start": 148.06,
+   "end": 153.68,
+   "text": "some recipes i mean while giving recipes of course lots of vocabulary about uh"
+  },
+  {
+   "start": 153.68,
+   "end": 158.62,
+   "text": "cooking styles yeah so i think i need to learn them as well i"
+  },
+  {
+   "start": 158.62,
+   "end": 164.38,
+   "text": "just you know from the many i know that like cooked roasted boiled kind"
+  },
+  {
+   "start": 164.38,
+   "end": 169.18,
+   "text": "of things yeah which i also don't use now i haven't used it for"
+  },
+  {
+   "start": 169.18,
+   "end": 169.3,
+   "text": "a while so i'm"
+  },
+  {
+   "start": 169.3,
+   "end": 174.34,
+   "text": "like oh how do you say it but yeah definitely uh oh but you"
+  },
+  {
+   "start": 174.34,
+   "end": 175.44,
+   "text": "wrote down what are what are your"
+  },
+  {
+   "start": 175.44,
+   "end": 182.64,
+   "text": "favorite meals okay everybody already knows i mean serbian serbian favorite meals"
+  },
+  {
+   "start": 182.64,
+   "end": 183.2,
+   "text": "yeah serbian"
+  },
+  {
+   "start": 183.2,
+   "end": 187.44,
+   "text": "because it's like serbian cuisine is just a mixture of all the other cuisines"
+  },
+  {
+   "start": 187.44,
+   "end": 191.32,
+   "text": "has their its own specific things but a lot of the things are serbian"
+  },
+  {
+   "start": 191.32,
+   "end": 194.5,
+   "text": "now yeah yeah so it is it is something"
+  },
+  {
+   "start": 194.5,
+   "end": 201.32,
+   "text": "common here in turkey of obviously sarma oh i wrote that too i love"
+  },
+  {
+   "start": 201.32,
+   "end": 202.94,
+   "text": "sarma yeah okay i think"
+  },
+  {
+   "start": 202.94,
+   "end": 207.52,
+   "text": "it's my favorite meal but my favorite would be prebranac okay second one oh"
+  },
+  {
+   "start": 207.52,
+   "end": 208.96,
+   "text": "okay why prebranac"
+  },
+  {
+   "start": 208.96,
+   "end": 213.22,
+   "text": "it's so plain you would say like just beans and tomato sauce or in"
+  },
+  {
+   "start": 213.22,
+   "end": 217.41,
+   "text": "onion and tomato sauce but so fulfilling and it comes here in a you"
+  },
+  {
+   "start": 217.41,
+   "end": 224.43,
+   "text": "know you know clay yeah and you just uh put some uh chili"
+  },
+  {
+   "start": 224.43,
+   "end": 227.07,
+   "text": "pepper black pepper something on top and then it's so"
+  },
+  {
+   "start": 227.07,
+   "end": 232.17,
+   "text": "tasty you know i didn't write beans but now that i think about it"
+  },
+  {
+   "start": 232.17,
+   "end": 233.83,
+   "text": "it's just like such a special"
+  },
+  {
+   "start": 233.83,
+   "end": 239.07,
+   "text": "specific way how we make it i just didn't see that anywhere else and"
+  },
+  {
+   "start": 239.07,
+   "end": 243.87,
+   "text": "i think in in europe they call this like bean soup but yeah beans"
+  },
+  {
+   "start": 243.87,
+   "end": 246.81,
+   "text": "yeah really really soup to me actually prebranas is"
+  },
+  {
+   "start": 246.81,
+   "end": 251.01,
+   "text": "just a meal like full of beans to us to us it's not a"
+  },
+  {
+   "start": 251.01,
+   "end": 254.45,
+   "text": "soup but that's how they call it yeah like"
+  },
+  {
+   "start": 254.45,
+   "end": 259.81,
+   "text": "bean soup but yeah but it's not what else did you have anything else"
+  },
+  {
+   "start": 259.81,
+   "end": 261.21,
+   "text": "of course break is another"
+  },
+  {
+   "start": 261.21,
+   "end": 266.85,
+   "text": "thing i don't like quite often eat that but from time to time because"
+  },
+  {
+   "start": 266.85,
+   "end": 273.95,
+   "text": "you make this in the thing is your uh bread with spinach uh is"
+  },
+  {
+   "start": 273.95,
+   "end": 276.59,
+   "text": "great because you don't have cheese in it in turkey you have"
+  },
+  {
+   "start": 276.59,
+   "end": 282.37,
+   "text": "mostly cheese a little bit spinach but here it's full of spinach and it's"
+  },
+  {
+   "start": 282.37,
+   "end": 284.35,
+   "text": "postno so yeah something"
+  },
+  {
+   "start": 284.35,
+   "end": 290.57,
+   "text": "that i can eat vegan version so that's something i really love here and"
+  },
+  {
+   "start": 290.57,
+   "end": 293.53,
+   "text": "i discovered months later I did not know about it."
+  },
+  {
+   "start": 293.53,
+   "end": 300.91,
+   "text": "Yeah. So I, for me, Sarba and, and, uh, Burik, uh,"
+  },
+  {
+   "start": 300.91,
+   "end": 301.79,
+   "text": "well, I I'll,"
+  },
+  {
+   "start": 301.79,
+   "end": 307.69,
+   "text": "I'll do Burik slash Pita because there are different rules about what, what is"
+  },
+  {
+   "start": 307.69,
+   "end": 308.35,
+   "text": "depending on the ingredients, why I don't make it or eat it as often what,"
+  },
+  {
+   "start": 312.69,
+   "end": 316.35,
+   "text": "is just because I don't know how to make it and i because i"
+  },
+  {
+   "start": 316.35,
+   "end": 322.69,
+   "text": "like buric or pita which is made from scratch and i don't and it's"
+  },
+  {
+   "start": 322.69,
+   "end": 327.29,
+   "text": "quite tough actually to make it from scratch my mom is obviously really good"
+  },
+  {
+   "start": 327.29,
+   "end": 329.17,
+   "text": "at it. You know, she grew up in Bosnia."
+  },
+  {
+   "start": 329.61,
+   "end": 332.25,
+   "text": "They loved anything like pita related."
+  },
+  {
+   "start": 332.25,
+   "end": 337.29,
+   "text": "You know, you do know that in Bosnia, they call burek anything with meat."
+  },
+  {
+   "start": 337.77,
+   "end": 339.41,
+   "text": "So burek sa siro."
+  },
+  {
+   "start": 339.65,
+   "end": 340.89,
+   "text": "Sorry, burek sa meso."
+  },
+  {
+   "start": 340.89,
+   "end": 343.39,
+   "text": "That's burek. Anything else is pita."
+  },
+  {
+   "start": 344.23,
+   "end": 346.55,
+   "text": "So pita is like pita sa siro."
+  },
+  {
+   "start": 346.79,
+   "end": 348.09,
+   "text": "Pita sirnica."
+  },
+  {
+   "start": 348.09,
+   "end": 350.61,
+   "text": "You know, they have like pita sa siro mi sirnica."
+  },
+  {
+   "start": 350.65,
+   "end": 357.75,
+   "text": "and so on so how these things uh so she knows"
+  },
+  {
+   "start": 357.75,
+   "end": 360.69,
+   "text": "how to make it really well and i love it i love it i"
+  },
+  {
+   "start": 360.69,
+   "end": 363.83,
+   "text": "mean i just love dough i just love it but i don't know how"
+  },
+  {
+   "start": 363.83,
+   "end": 365.23,
+   "text": "to make it so here i don't eat it that"
+  },
+  {
+   "start": 365.23,
+   "end": 369.99,
+   "text": "much i just buy the rolls from piazza but it's not the same as"
+  },
+  {
+   "start": 369.99,
+   "end": 371.45,
+   "text": "them but that's the easiest recipe"
+  },
+  {
+   "start": 371.45,
+   "end": 376.85,
+   "text": "you can do and it's quite greasy right that's just what it is that's"
+  },
+  {
+   "start": 376.85,
+   "end": 381.13,
+   "text": "the point like it's dough and grease you know i mean like oil and"
+  },
+  {
+   "start": 381.13,
+   "end": 385.09,
+   "text": "uh you can easily buy it vegan slash vegetarian personal"
+  },
+  {
+   "start": 385.09,
+   "end": 392.01,
+   "text": "right i wrote down another one paprika is it stuffed peppers paprika no no"
+  },
+  {
+   "start": 392.01,
+   "end": 392.37,
+   "text": "actually no it's"
+  },
+  {
+   "start": 392.37,
+   "end": 398.05,
+   "text": "not uh that's punyene paprika yes that's punyene paprika that's true what is paprika"
+  },
+  {
+   "start": 398.05,
+   "end": 398.97,
+   "text": "paprika i think"
+  },
+  {
+   "start": 398.97,
+   "end": 403.77,
+   "text": "is hungarian because like goulash is also hungarian paprika so a lot of these"
+  },
+  {
+   "start": 403.77,
+   "end": 409.15,
+   "text": "shes sound like ending words are probably um and yeah it must be because"
+  },
+  {
+   "start": 409.15,
+   "end": 411.05,
+   "text": "paprika is is it's not bell pepper paprika"
+  },
+  {
+   "start": 411.05,
+   "end": 418.25,
+   "text": "is actually no sorry in here there's like paprika the spice paprika i see"
+  },
+  {
+   "start": 418.25,
+   "end": 420.91,
+   "text": "you can also add yeah so"
+  },
+  {
+   "start": 420.91,
+   "end": 426.93,
+   "text": "it should be uh with potatoes so it's like cooked right it should be"
+  },
+  {
+   "start": 426.93,
+   "end": 430.89,
+   "text": "with potatoes and then you can You can add bell peppers if you want."
+  },
+  {
+   "start": 430.89,
+   "end": 436.31,
+   "text": "And that, but the important thing is to add that spice, paprika."
+  },
+  {
+   "start": 436.9,
+   "end": 440.24,
+   "text": "The way I ate it, which is very plain and probably not traditional, but"
+  },
+  {
+   "start": 440.24,
+   "end": 445.42,
+   "text": "we loved it because it was literally just like potatoes."
+  },
+  {
+   "start": 446.0,
+   "end": 449.0,
+   "text": "And how do you call them?"
+  },
+  {
+   "start": 449.9,
+   "end": 450.42,
+   "text": "Oh, God."
+  },
+  {
+   "start": 452.16,
+   "end": 454.84,
+   "text": "Knödel? Knödle? Knödle?"
+  },
+  {
+   "start": 454.84,
+   "end": 456.7,
+   "text": "Knödle, which is these like, oh, my, how do you call them?"
+  },
+  {
+   "start": 456.7,
+   "end": 457.76,
+   "text": "What are they?"
+  },
+  {
+   "start": 458.78,
+   "end": 461.8,
+   "text": "They are, oh, Knödel is in German."
+  },
+  {
+   "start": 462.52,
+   "end": 463.92,
+   "text": "Like a type of vegetable?"
+  },
+  {
+   "start": 464.04,
+   "end": 471.08,
+   "text": "dumplings dumplings okay wow but dumplings they're not"
+  },
+  {
+   "start": 471.08,
+   "end": 472.62,
+   "text": "like stuffed dumplings they just make"
+  },
+  {
+   "start": 472.62,
+   "end": 479.98,
+   "text": "it out of it's it's literally just uh oh flour and"
+  },
+  {
+   "start": 479.98,
+   "end": 481.6,
+   "text": "i think you put eggs in it you don't have to"
+  },
+  {
+   "start": 481.6,
+   "end": 486.7,
+   "text": "but it's easier with eggs like i think it was uh i think it's"
+  },
+  {
+   "start": 486.7,
+   "end": 491.02,
+   "text": "with a egg yolk if i'm not mistaken and then you can add a"
+  },
+  {
+   "start": 491.02,
+   "end": 494.48,
+   "text": "bit of like salt and then you just mix it and a bit of"
+  },
+  {
+   "start": 494.48,
+   "end": 494.88,
+   "text": "water whatever and"
+  },
+  {
+   "start": 494.88,
+   "end": 500.68,
+   "text": "then it just it's literally just like a dumpling which is it's very soft"
+  },
+  {
+   "start": 500.68,
+   "end": 502.6,
+   "text": "and it's just uh potatoes"
+  },
+  {
+   "start": 502.6,
+   "end": 509.64,
+   "text": "dumplings yeah and uh yeah my parents didn't make it with bell peppers"
+  },
+  {
+   "start": 509.64,
+   "end": 510.58,
+   "text": "but of course i think you"
+  },
+  {
+   "start": 510.58,
+   "end": 515.1,
+   "text": "should add bell peppers and you can add some other veggies if you want"
+  },
+  {
+   "start": 515.1,
+   "end": 518.1,
+   "text": "and i guess you can also add a bit of meat but it's mostly"
+  },
+  {
+   "start": 518.1,
+   "end": 522.36,
+   "text": "just like this like very like cooked watery soupy kind of"
+  },
+  {
+   "start": 522.36,
+   "end": 527.08,
+   "text": "thing and i loved it because i love carbs so it's like i love"
+  },
+  {
+   "start": 527.08,
+   "end": 530.4,
+   "text": "potatoes i love flour like dough and"
+  },
+  {
+   "start": 530.4,
+   "end": 534.58,
+   "text": "i love that uh paprika kind of taste so i'm gonna check it out"
+  },
+  {
+   "start": 534.58,
+   "end": 536.22,
+   "text": "here like if i see paprika i will"
+  },
+  {
+   "start": 536.22,
+   "end": 540.5,
+   "text": "let you know you probably won't find it vegan but you can make a"
+  },
+  {
+   "start": 540.5,
+   "end": 542.04,
+   "text": "vegan version why not okay Right."
+  },
+  {
+   "start": 542.04,
+   "end": 544.88,
+   "text": "So very nice meals."
+  },
+  {
+   "start": 544.88,
+   "end": 546.08,
+   "text": "I'm guessing hungry."
+  },
+  {
+   "start": 547.12,
+   "end": 547.36,
+   "text": "So we"
+  },
+  {
+   "start": 547.36,
+   "end": 550.34,
+   "text": "are talking about, by the way, cooking is kuvanie, right?"
+  },
+  {
+   "start": 550.94,
+   "end": 558.3,
+   "text": "Kuvanie. Good. So basic verbs to use while sharing recipes."
+  },
+  {
+   "start": 560.78,
+   "end": 563.78,
+   "text": "Do you want to start English-Serbian or Serbian-English?"
+  },
+  {
+   "start": 564.22,
+   "end": 564.44,
+   "text": "English-Serbian."
+  },
+  {
+   "start": 564.44,
+   "end": 568.8,
+   "text": "Okay. So we need the ball first."
+  },
+  {
+   "start": 568.8,
+   "end": 571.02,
+   "text": "You put everything in a bowl, right?"
+  },
+  {
+   "start": 571.94,
+   "end": 579.38,
+   "text": "which is chinia chinia or you can say posuda as well but"
+  },
+  {
+   "start": 579.38,
+   "end": 583.14,
+   "text": "chinia chinia means a bowl like it's not"
+  },
+  {
+   "start": 583.14,
+   "end": 590.32,
+   "text": "a pot it's actually just a ball so put is staviti okay"
+  },
+  {
+   "start": 590.32,
+   "end": 602.16,
+   "text": "and then something would be nešto i just So,"
+  },
+  {
+   "start": 602.16,
+   "end": 604.0,
+   "text": "nešto would be an accusative."
+  },
+  {
+   "start": 606.7,
+   "end": 607.5,
+   "text": "Oh, my God."
+  },
+  {
+   "start": 608.38,
+   "end": 612.42,
+   "text": "Saviti koga šta učiniju u kome..."
+  },
+  {
+   "start": 613.76,
+   "end": 614.14,
+   "text": "Oh, I think..."
+  },
+  {
+   "start": 614.14,
+   "end": 616.08,
+   "text": "I don't know if it's dative."
+  },
+  {
+   "start": 616.08,
+   "end": 617.82,
+   "text": "But anyway, use učiniju."
+  },
+  {
+   "start": 618.52,
+   "end": 619.68,
+   "text": "Saviti nešto učiniju."
+  },
+  {
+   "start": 620.06,
+   "end": 624.0,
+   "text": "Okay. then you mix those things, those neštos."
+  },
+  {
+   "start": 624.94,
+   "end": 627.3,
+   "text": "so if you mix something to nest is"
+  },
+  {
+   "start": 628.72,
+   "end": 633.18,
+   "text": "promesha ti mesha niya was the one"
+  },
+  {
+   "start": 633.18,
+   "end": 635.4,
+   "text": "that we talked in the dog's episode"
+  },
+  {
+   "start": 635.4,
+   "end": 639.2,
+   "text": "yeah okay mesha ti is like you can also say oh just like"
+  },
+  {
+   "start": 639.2,
+   "end": 641.3,
+   "text": "mix the soup"
+  },
+  {
+   "start": 641.3,
+   "end": 643.32,
+   "text": "or whatever mix the meal"
+  },
+  {
+   "start": 643.32,
+   "end": 646.86,
+   "text": "like just mix the meat I don't know whatever like just"
+  },
+  {
+   "start": 646.86,
+   "end": 649.04,
+   "text": "you know but promesha ti means"
+  },
+  {
+   "start": 649.04,
+   "end": 651.1,
+   "text": "put like mix everything together"
+  },
+  {
+   "start": 651.1,
+   "end": 655.27,
+   "text": "right pro changes the meaning No, promesati"
+  },
+  {
+   "start": 655.27,
+   "end": 657.25,
+   "text": "promesha actually means to"
+  },
+  {
+   "start": 657.25,
+   "end": 663.93,
+   "text": "it's weird like it's like a finished action like uh mesha mesha means i'm"
+  },
+  {
+   "start": 663.93,
+   "end": 665.79,
+   "text": "mixing and promesha is"
+  },
+  {
+   "start": 665.79,
+   "end": 671.27,
+   "text": "like can you finish mixing something like that it's just weird kind of thing"
+  },
+  {
+   "start": 671.27,
+   "end": 672.59,
+   "text": "yeah okay exactly"
+  },
+  {
+   "start": 672.59,
+   "end": 679.59,
+   "text": "promesha anyway if you're making a cake you need to whisk things whisk eggs"
+  },
+  {
+   "start": 679.59,
+   "end": 687.31,
+   "text": "for example whisk whatever like uh which would be umutiti umutiti or ulupati"
+  },
+  {
+   "start": 687.31,
+   "end": 689.93,
+   "text": "ulupati kind of like it's"
+  },
+  {
+   "start": 689.93,
+   "end": 695.89,
+   "text": "more like whip that's like lupati is like yeah that's throw right like no"
+  },
+  {
+   "start": 695.89,
+   "end": 696.95,
+   "text": "lupati is like"
+  },
+  {
+   "start": 698.87,
+   "end": 703.51,
+   "text": "loop well uh like hit i don't know how to explain yeah hit it"
+  },
+  {
+   "start": 703.51,
+   "end": 706.01,
+   "text": "to like it can be actually many things"
+  },
+  {
+   "start": 706.01,
+   "end": 713.01,
+   "text": "it can be also like don't like say nonsense that's what I remember yeah,"
+  },
+  {
+   "start": 713.01,
+   "end": 713.47,
+   "text": "lupati is actually like"
+  },
+  {
+   "start": 713.47,
+   "end": 713.97,
+   "text": "hitting"
+  },
+  {
+   "start": 713.97,
+   "end": 714.59,
+   "text": "like"
+  },
+  {
+   "start": 716.39,
+   "end": 720.93,
+   "text": "don't hit the door don't slam the door"
+  },
+  {
+   "start": 720.93,
+   "end": 725.95,
+   "text": "that's great crying"
+  },
+  {
+   "start": 728.07,
+   "end": 728.17,
+   "text": "pržiti"
+  },
+  {
+   "start": 728.17,
+   "end": 732.95,
+   "text": "pržiti pržiti"
+  },
+  {
+   "start": 735.15,
+   "end": 740.43,
+   "text": "maybe maybe it is maybe it is like because of like you know like"
+  },
+  {
+   "start": 740.43,
+   "end": 741.39,
+   "text": "when you put it on top and"
+  },
+  {
+   "start": 741.39,
+   "end": 748.53,
+   "text": "it's like right it kind of like imitates right i don't know it sounds"
+  },
+  {
+   "start": 748.53,
+   "end": 750.35,
+   "text": "similar at least yeah at"
+  },
+  {
+   "start": 750.35,
+   "end": 754.13,
+   "text": "least you're gonna remember it now but i had one i don't know the"
+  },
+  {
+   "start": 754.13,
+   "end": 761.23,
+   "text": "translation in english but you might know it uh dinstati and the reason"
+  },
+  {
+   "start": 761.23,
+   "end": 763.93,
+   "text": "so i was also thinking what is dinstati and actually"
+  },
+  {
+   "start": 763.93,
+   "end": 765.33,
+   "text": "what it is it's we usually"
+  },
+  {
+   "start": 765.33,
+   "end": 770.37,
+   "text": "say that for like onions or maybe like mushrooms or something like that and"
+  },
+  {
+   "start": 770.37,
+   "end": 770.79,
+   "text": "that means when you"
+  },
+  {
+   "start": 770.79,
+   "end": 777.01,
+   "text": "put something on oil and then this thing lets um um oh my god"
+  },
+  {
+   "start": 777.01,
+   "end": 780.73,
+   "text": "water out yes so you're basically"
+  },
+  {
+   "start": 780.73,
+   "end": 787.19,
+   "text": "kind of like steaming it and and frying it and in the in its"
+  },
+  {
+   "start": 787.19,
+   "end": 792.97,
+   "text": "own water you're like cooking it that's dinsdati yeah for mushrooms especially i will"
+  },
+  {
+   "start": 792.97,
+   "end": 794.73,
+   "text": "remember yeah yeah of course dinsdati"
+  },
+  {
+   "start": 794.73,
+   "end": 799.11,
+   "text": "patchwork and dinsdati look yeah so it will be anything that lets go of"
+  },
+  {
+   "start": 799.11,
+   "end": 799.87,
+   "text": "the water the liquid"
+  },
+  {
+   "start": 799.87,
+   "end": 807.13,
+   "text": "okay sounds good dinsdati and then boil to boil something uh"
+  },
+  {
+   "start": 807.13,
+   "end": 810.31,
+   "text": "you can say skuvati actually which"
+  },
+  {
+   "start": 810.31,
+   "end": 815.73,
+   "text": "is to cook um you can say prokuvati as well both are what both"
+  },
+  {
+   "start": 815.73,
+   "end": 822.43,
+   "text": "of them have kuvati skuvati yeah because it's like i think cooking in its"
+  },
+  {
+   "start": 822.43,
+   "end": 825.49,
+   "text": "essence is like in in something like in some"
+  },
+  {
+   "start": 825.49,
+   "end": 830.39,
+   "text": "liquid in some usually that's what it means like if i say kuva no"
+  },
+  {
+   "start": 830.39,
+   "end": 832.27,
+   "text": "yellow i always think of something"
+  },
+  {
+   "start": 832.27,
+   "end": 837.23,
+   "text": "that's been cooked in the liquid right like in the big pot and so"
+  },
+  {
+   "start": 837.23,
+   "end": 837.91,
+   "text": "on but obviously it doesn't"
+  },
+  {
+   "start": 837.91,
+   "end": 844.35,
+   "text": "necessarily have to be so but yeah uh-huh sechi you wrote this is a"
+  },
+  {
+   "start": 844.35,
+   "end": 849.17,
+   "text": "different ending here yes to cut is seci"
+  },
+  {
+   "start": 849.17,
+   "end": 857.03,
+   "text": "and if you want to say I am cutting secem secem or"
+  },
+  {
+   "start": 857.03,
+   "end": 857.17,
+   "text": "cim"
+  },
+  {
+   "start": 857.17,
+   "end": 861.87,
+   "text": "and secem secem, okay, secem, beli luk"
+  },
+  {
+   "start": 863.15,
+   "end": 865.45,
+   "text": "and if you want to say, you know, usually they say"
+  },
+  {
+   "start": 865.45,
+   "end": 867.63,
+   "text": "cut the onion, whatever"
+  },
+  {
+   "start": 867.63,
+   "end": 873.8,
+   "text": "iseti yeah, iseti and this e again is"
+  },
+  {
+   "start": 873.8,
+   "end": 879.04,
+   "text": "again implies the finished action like cut it finish cutting it basically like"
+  },
+  {
+   "start": 879.04,
+   "end": 884.36,
+   "text": "you say it's a safety like we can say safety look but it's like"
+  },
+  {
+   "start": 884.36,
+   "end": 887.06,
+   "text": "cut like keep cutting the onion but"
+  },
+  {
+   "start": 887.06,
+   "end": 891.5,
+   "text": "there's an ending right that you're gonna end so is safety so like finish"
+  },
+  {
+   "start": 891.5,
+   "end": 892.32,
+   "text": "cutting the onion and yeah"
+  },
+  {
+   "start": 892.32,
+   "end": 899.74,
+   "text": "good and as pro-meshati just mashati is yeah"
+  },
+  {
+   "start": 899.74,
+   "end": 902.82,
+   "text": "it's to stir it's like mashati again"
+  },
+  {
+   "start": 904.54,
+   "end": 911.94,
+   "text": "to melt the butter or the frozen thing uh top itty uh again"
+  },
+  {
+   "start": 911.94,
+   "end": 915.6,
+   "text": "top is like heat topla top like to"
+  },
+  {
+   "start": 915.6,
+   "end": 920.18,
+   "text": "heat it up oh yeah yeah yeah yeah top top is hot right so"
+  },
+  {
+   "start": 920.18,
+   "end": 923.48,
+   "text": "it's like warm uh it's warm actually so"
+  },
+  {
+   "start": 923.48,
+   "end": 930.32,
+   "text": "again top itty but i would say it's top itty it's top itty yes"
+  },
+  {
+   "start": 930.32,
+   "end": 935.48,
+   "text": "because it's like finish yeah but just it's gonna end one day right so"
+  },
+  {
+   "start": 935.48,
+   "end": 938.78,
+   "text": "it's like it's topi it's topi uh"
+  },
+  {
+   "start": 938.78,
+   "end": 945.92,
+   "text": "i don't know like what can you do what can you lead"
+  },
+  {
+   "start": 945.92,
+   "end": 953.2,
+   "text": "i don't know yeah maybe most of the time it's is right yeah"
+  },
+  {
+   "start": 953.2,
+   "end": 960.64,
+   "text": "so here it's is not s i see stop it is stop it the"
+  },
+  {
+   "start": 960.64,
+   "end": 967.74,
+   "text": "other one was e ic which is we just i oh it's just"
+  },
+  {
+   "start": 967.74,
+   "end": 974.84,
+   "text": "i okay okay this is like to make it warm and to heat is"
+  },
+  {
+   "start": 974.84,
+   "end": 979.1,
+   "text": "also something actually to heat up right it would be to heat up"
+  },
+  {
+   "start": 979.1,
+   "end": 981.68,
+   "text": "pot creative pot creative okay"
+  },
+  {
+   "start": 981.68,
+   "end": 984.48,
+   "text": "yeah grety is heating like to"
+  },
+  {
+   "start": 984.48,
+   "end": 990.8,
+   "text": "grety is no actually grety is make something warm right like to make myself"
+  },
+  {
+   "start": 990.8,
+   "end": 992.52,
+   "text": "warm um and then"
+  },
+  {
+   "start": 992.52,
+   "end": 999.86,
+   "text": "or grety oh no sorry grety sobu heating heat the room right okay uh"
+  },
+  {
+   "start": 999.86,
+   "end": 1004.42,
+   "text": "and then pod grety would be mean just like well you just have to"
+  },
+  {
+   "start": 1004.42,
+   "end": 1008.8,
+   "text": "reheat it because it was it was it was kind of like before"
+  },
+  {
+   "start": 1008.8,
+   "end": 1012.54,
+   "text": "you cooked it and it was it was hot right and then i don't"
+  },
+  {
+   "start": 1012.54,
+   "end": 1013.08,
+   "text": "know you put it in the fridge or"
+  },
+  {
+   "start": 1013.08,
+   "end": 1017.72,
+   "text": "whatever and now you just have to reheat it so that for example my"
+  },
+  {
+   "start": 1017.72,
+   "end": 1019.06,
+   "text": "coffee is like there's a coffee"
+  },
+  {
+   "start": 1019.06,
+   "end": 1026.28,
+   "text": "machine and i say uh pot gray pot gray i'm careful like i'm reheating"
+  },
+  {
+   "start": 1026.28,
+   "end": 1031.06,
+   "text": "well if you yeah so so you made the coffee yeah then you drank"
+  },
+  {
+   "start": 1031.06,
+   "end": 1033.5,
+   "text": "it then it got really cold and then you can also put it back"
+  },
+  {
+   "start": 1033.5,
+   "end": 1033.78,
+   "text": "the stove or like in the microwave and you can do that but usually"
+  },
+  {
+   "start": 1033.78,
+   "end": 1033.96,
+   "text": "on"
+  },
+  {
+   "start": 1037.46,
+   "end": 1038.86,
+   "text": "we just we do that for meals"
+  },
+  {
+   "start": 1038.86,
+   "end": 1044.0,
+   "text": "right so we make a big meal and then you know one week put"
+  },
+  {
+   "start": 1044.0,
+   "end": 1045.88,
+   "text": "it in exactly put it in the fridge and"
+  },
+  {
+   "start": 1045.88,
+   "end": 1053.18,
+   "text": "okay you know before we continue with the show here's"
+  },
+  {
+   "start": 1053.18,
+   "end": 1057.7,
+   "text": "a quick reminder this podcast is free for everyone and supported by listeners like"
+  },
+  {
+   "start": 1057.7,
+   "end": 1060.66,
+   "text": "you. We hope that this podcast is useful and companion to"
+  },
+  {
+   "start": 1060.66,
+   "end": 1063.94,
+   "text": "you. This is a labor of love for both of us."
+  },
+  {
+   "start": 1063.94,
+   "end": 1066.18,
+   "text": "To help us continue creating useful content for"
+  },
+  {
+   "start": 1066.18,
+   "end": 1068.78,
+   "text": "everyone, we will appreciate your help."
+  },
+  {
+   "start": 1068.78,
+   "end": 1072.24,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 1072.72,
+   "end": 1078.6,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 1078.6,
+   "end": 1083.98,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozda"
+  },
+  {
+   "start": 1083.98,
+   "end": 1089.18,
+   "text": "cafe podcast and get extra benefits like bonus content, full transcripts of the show"
+  },
+  {
+   "start": 1089.18,
+   "end": 1091.8,
+   "text": "in Serbian or even join us on the show."
+  },
+  {
+   "start": 1092.38,
+   "end": 1096.54,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1096.54,
+   "end": 1099.04,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1099.36,
+   "end": 1101.18,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1102.04,
+   "end": 1104.12,
+   "text": "And like Sece, you wrote Pece."
+  },
+  {
+   "start": 1105.88,
+   "end": 1108.78,
+   "text": "Sorry, guys. To bake is Pece."
+  },
+  {
+   "start": 1109.06,
+   "end": 1111.92,
+   "text": "So it implies something in the oven, right?"
+  },
+  {
+   "start": 1112.24,
+   "end": 1114.62,
+   "text": "Pece, yeah. It's always on the menu."
+  },
+  {
+   "start": 1115.82,
+   "end": 1121.18,
+   "text": "yeah well pecenya yeah yeah that's true peceny peceny pecenya yeah so it should"
+  },
+  {
+   "start": 1121.18,
+   "end": 1122.02,
+   "text": "be exactly"
+  },
+  {
+   "start": 1122.02,
+   "end": 1129.58,
+   "text": "baked for potatoes i think peceny krumpir yes yeah my"
+  },
+  {
+   "start": 1129.58,
+   "end": 1134.4,
+   "text": "favorite yeah okay and to serve after all these"
+  },
+  {
+   "start": 1136.02,
+   "end": 1143.3,
+   "text": "of course i'm gonna have oh don't"
+  },
+  {
+   "start": 1143.3,
+   "end": 1147.12,
+   "text": "worry we are ready already i think if you've been"
+  },
+  {
+   "start": 1147.12,
+   "end": 1152.68,
+   "text": "you you must be a more a bit more than a beginner to learn"
+  },
+  {
+   "start": 1152.68,
+   "end": 1153.42,
+   "text": "this because it's like"
+  },
+  {
+   "start": 1153.42,
+   "end": 1159.9,
+   "text": "there's these differences but yeah um for example i can say uh let me"
+  },
+  {
+   "start": 1159.9,
+   "end": 1161.28,
+   "text": "let me serve you like"
+  },
+  {
+   "start": 1164.34,
+   "end": 1171.4,
+   "text": "for example when they write the recipes they say um cool it"
+  },
+  {
+   "start": 1171.4,
+   "end": 1172.5,
+   "text": "down a little bit and then serve it"
+  },
+  {
+   "start": 1172.5,
+   "end": 1179.94,
+   "text": "right for that after this yeah because"
+  },
+  {
+   "start": 1179.94,
+   "end": 1182.64,
+   "text": "it again it doesn't mean you're a servant and you'll be"
+  },
+  {
+   "start": 1182.64,
+   "end": 1187.54,
+   "text": "doing that forever it just means that do it this one time poslužiti okay"
+  },
+  {
+   "start": 1187.54,
+   "end": 1194.56,
+   "text": "because služiti would imply more like you're a slave you"
+  },
+  {
+   "start": 1194.56,
+   "end": 1197.4,
+   "text": "know like you have an owner for companies they serve you"
+  },
+  {
+   "start": 1197.4,
+   "end": 1201.17,
+   "text": "like yeah yeah exactly yeah in a way i sell yeah"
+  },
+  {
+   "start": 1201.17,
+   "end": 1204.31,
+   "text": "way. Formal to me."
+  },
+  {
+   "start": 1204.81,
+   "end": 1207.65,
+   "text": "Yeah. Okay. These are some verbs."
+  },
+  {
+   "start": 1207.65,
+   "end": 1211.01,
+   "text": "By the way, we are going to put all of these on Instagram."
+  },
+  {
+   "start": 1211.01,
+   "end": 1211.69,
+   "text": "So don't worry."
+  },
+  {
+   "start": 1212.25,
+   "end": 1212.83,
+   "text": "Right now you can't."
+  },
+  {
+   "start": 1212.83,
+   "end": 1213.91,
+   "text": "Or on Patreon."
+  },
+  {
+   "start": 1214.59,
+   "end": 1216.13,
+   "text": "Or on Patreon as well."
+  },
+  {
+   "start": 1216.19,
+   "end": 1221.11,
+   "text": "Exactly. Let's give some things, utensils in the kitchen."
+  },
+  {
+   "start": 1221.53,
+   "end": 1222.77,
+   "text": "We already have chili, yeah?"
+  },
+  {
+   "start": 1223.95,
+   "end": 1225.91,
+   "text": "And I will add pasta."
+  },
+  {
+   "start": 1225.91,
+   "end": 1232.93,
+   "text": "as well okay just to make sure yeah pod uh there"
+  },
+  {
+   "start": 1232.93,
+   "end": 1239.85,
+   "text": "are two ways to say it or lawn nuts lawn nuts and the difference"
+  },
+  {
+   "start": 1239.85,
+   "end": 1244.93,
+   "text": "is that lawn nuts as far as i know i could be wrong lawn"
+  },
+  {
+   "start": 1244.93,
+   "end": 1248.95,
+   "text": "nuts is a bit bigger and when i say bigger it's usually a bit"
+  },
+  {
+   "start": 1248.95,
+   "end": 1254.83,
+   "text": "like taller and this is for like big like for slava or something like"
+  },
+  {
+   "start": 1254.83,
+   "end": 1258.01,
+   "text": "that or like for big lunches or something so yeah and"
+  },
+  {
+   "start": 1258.01,
+   "end": 1262.91,
+   "text": "they're usually with maybe like steel i think it's steel right stainless steel is"
+  },
+  {
+   "start": 1262.91,
+   "end": 1263.59,
+   "text": "it or like metal i"
+  },
+  {
+   "start": 1263.59,
+   "end": 1267.25,
+   "text": "don't know how you call it because yeah so you have different things for"
+  },
+  {
+   "start": 1267.25,
+   "end": 1267.99,
+   "text": "sherpa but lonets is"
+  },
+  {
+   "start": 1267.99,
+   "end": 1273.99,
+   "text": "like usually this like gray silver thing right um and like very big yeah"
+  },
+  {
+   "start": 1273.99,
+   "end": 1280.55,
+   "text": "okay and i love this word because somehow it's it reminds me of an"
+  },
+  {
+   "start": 1280.55,
+   "end": 1286.63,
+   "text": "animal i don't know a t-gun yeah t-gun pan pan frying pan"
+  },
+  {
+   "start": 1286.63,
+   "end": 1296.61,
+   "text": "yeah and baking tray is it's weird it's"
+  },
+  {
+   "start": 1296.61,
+   "end": 1302.45,
+   "text": "just so we actually they have in germany they say blech so it makes"
+  },
+  {
+   "start": 1302.45,
+   "end": 1308.15,
+   "text": "me think who took it from who but but yeah blech blech okay good"
+  },
+  {
+   "start": 1308.15,
+   "end": 1309.41,
+   "text": "we already know"
+  },
+  {
+   "start": 1309.41,
+   "end": 1310.41,
+   "text": "these three"
+  },
+  {
+   "start": 1310.73,
+   "end": 1313.37,
+   "text": "right? Kashika, noz, viljushka."
+  },
+  {
+   "start": 1313.37,
+   "end": 1316.51,
+   "text": "Yeah. Kashika, noz, viljushka, spoon, knife, fork."
+  },
+  {
+   "start": 1316.51,
+   "end": 1316.61,
+   "text": "know this even if you're a beginner."
+  },
+  {
+   "start": 1316.61,
+   "end": 1316.97,
+   "text": "You should"
+  },
+  {
+   "start": 1319.07,
+   "end": 1323.49,
+   "text": "Yeah. So, and then I had to add this one, which I always"
+  },
+  {
+   "start": 1323.49,
+   "end": 1328.33,
+   "text": "forget in English, ladle, which is a thing for soup, right?"
+  },
+  {
+   "start": 1328.33,
+   "end": 1329.49,
+   "text": "Like this big spoon."
+  },
+  {
+   "start": 1329.49,
+   "end": 1332.01,
+   "text": "We say kutlacha."
+  },
+  {
+   "start": 1332.37,
+   "end": 1335.97,
+   "text": "or sipacha"
+  },
+  {
+   "start": 1335.97,
+   "end": 1339.15,
+   "text": "and I think"
+  },
+  {
+   "start": 1339.15,
+   "end": 1346.15,
+   "text": "I say I think my mom says sipacha but I think sipacha makes more"
+  },
+  {
+   "start": 1346.15,
+   "end": 1346.55,
+   "text": "because how do you say to pour sense"
+  },
+  {
+   "start": 1348.07,
+   "end": 1353.37,
+   "text": "it means sipati sipati I say yeah to pour something"
+  },
+  {
+   "start": 1353.37,
+   "end": 1355.03,
+   "text": "pour me some like"
+  },
+  {
+   "start": 1356.35,
+   "end": 1357.27,
+   "text": "I don't know it's not like this"
+  },
+  {
+   "start": 1357.27,
+   "end": 1364.27,
+   "text": "pour me exactly so it would be sipa it's much"
+  },
+  {
+   "start": 1364.27,
+   "end": 1368.87,
+   "text": "more transparent but i say kutlaca i see yeah good i heard kutlaca"
+  },
+  {
+   "start": 1368.87,
+   "end": 1373.85,
+   "text": "before by the way i remember now and oven i think there are different"
+  },
+  {
+   "start": 1373.85,
+   "end": 1375.75,
+   "text": "ways of saying oven too right"
+  },
+  {
+   "start": 1375.75,
+   "end": 1379.49,
+   "text": "i saw that you wrote something i would say that that's something people use"
+  },
+  {
+   "start": 1379.49,
+   "end": 1380.03,
+   "text": "in croatian war"
+  },
+  {
+   "start": 1380.03,
+   "end": 1387.05,
+   "text": "i think or but here i would say rerna rerna rerna yeah"
+  },
+  {
+   "start": 1387.05,
+   "end": 1391.19,
+   "text": "how did you write it out i forgot what i wrote but if you"
+  },
+  {
+   "start": 1391.19,
+   "end": 1397.81,
+   "text": "tell me i remember aha wait uh oh my god now i forgot because"
+  },
+  {
+   "start": 1397.81,
+   "end": 1398.25,
+   "text": "i was like okay no one"
+  },
+  {
+   "start": 1398.25,
+   "end": 1401.23,
+   "text": "would say that no i think no one would say that i mean obviously"
+  },
+  {
+   "start": 1401.23,
+   "end": 1401.95,
+   "text": "some people would say that but"
+  },
+  {
+   "start": 1401.95,
+   "end": 1406.65,
+   "text": "like mostly it's a rare now oh now i have to find it uh"
+  },
+  {
+   "start": 1406.65,
+   "end": 1410.23,
+   "text": "let me just flip it and see how they would say it in creation"
+  },
+  {
+   "start": 1410.23,
+   "end": 1417.95,
+   "text": "pecnica i think i pecnica or pecnica yeah pecnica uh yeah i"
+  },
+  {
+   "start": 1417.95,
+   "end": 1418.51,
+   "text": "i understand what"
+  },
+  {
+   "start": 1418.51,
+   "end": 1423.34,
+   "text": "it is but uh but i think it's either like well"
+  },
+  {
+   "start": 1423.34,
+   "end": 1430.4,
+   "text": "we would understand it we now say mostly um and pitch"
+  },
+  {
+   "start": 1430.4,
+   "end": 1435.82,
+   "text": "is actually it's like the the it's not the radiator but the the the"
+  },
+  {
+   "start": 1435.82,
+   "end": 1438.02,
+   "text": "the thing where you like before you would have"
+  },
+  {
+   "start": 1438.02,
+   "end": 1443.96,
+   "text": "oh my god it's kind of like this the heated place like i think"
+  },
+  {
+   "start": 1443.96,
+   "end": 1450.44,
+   "text": "it's more like a big pizza oven maybe yeah yeah something well maybe maybe"
+  },
+  {
+   "start": 1450.44,
+   "end": 1452.66,
+   "text": "anyway um pech means the thing"
+  },
+  {
+   "start": 1452.66,
+   "end": 1457.48,
+   "text": "that's heating something up right and pechnica is like this the thing that's heating"
+  },
+  {
+   "start": 1457.48,
+   "end": 1457.78,
+   "text": "or like that"
+  },
+  {
+   "start": 1457.78,
+   "end": 1463.26,
+   "text": "has fire for cooking like stove i see yeah but uh but i would"
+  },
+  {
+   "start": 1463.26,
+   "end": 1467.26,
+   "text": "say i think a more modern way to say is redna um yeah but"
+  },
+  {
+   "start": 1467.26,
+   "end": 1474.5,
+   "text": "pekny says okay i guess okay stove would be sporet yes"
+  },
+  {
+   "start": 1474.5,
+   "end": 1480.2,
+   "text": "sporet and i forgot to say burners you know the the four like um"
+  },
+  {
+   "start": 1480.2,
+   "end": 1487.64,
+   "text": "circles would be uh ringle ringle okay yes rings yeah"
+  },
+  {
+   "start": 1487.64,
+   "end": 1489.78,
+   "text": "it is yeah is it like that ringle"
+  },
+  {
+   "start": 1492.22,
+   "end": 1499.86,
+   "text": "exactly and one and singular is the ringla okay cool"
+  },
+  {
+   "start": 1499.86,
+   "end": 1503.58,
+   "text": "and i think the last thing i want to do is"
+  },
+  {
+   "start": 1503.58,
+   "end": 1510.28,
+   "text": "kind of share like a recipe for burik which is burik in in turkish"
+  },
+  {
+   "start": 1510.28,
+   "end": 1512.04,
+   "text": "right and this one is not"
+  },
+  {
+   "start": 1512.04,
+   "end": 1517.72,
+   "text": "vegan but actually a lot of the buriks are or pitas in serbia are"
+  },
+  {
+   "start": 1517.72,
+   "end": 1521.54,
+   "text": "vegan so you just have to actually just ask is it post no thanks"
+  },
+  {
+   "start": 1521.54,
+   "end": 1525.06,
+   "text": "um my mom makes like with uh potatoes with"
+  },
+  {
+   "start": 1525.06,
+   "end": 1532.18,
+   "text": "mushrooms spinach uh what is this like a sour"
+  },
+  {
+   "start": 1532.18,
+   "end": 1535.48,
+   "text": "crowd um and like yeah that one is"
+  },
+  {
+   "start": 1535.48,
+   "end": 1540.54,
+   "text": "quite popular as well zucchini is common zucchini as well yeah so you can"
+  },
+  {
+   "start": 1540.54,
+   "end": 1541.24,
+   "text": "oh sweet ones as well"
+  },
+  {
+   "start": 1541.24,
+   "end": 1547.42,
+   "text": "cherries my dad makes it with um pumpkins like he makes a pumpkin and"
+  },
+  {
+   "start": 1547.42,
+   "end": 1550.92,
+   "text": "pumpkin like spices you know like cinnamon and so on he loves that one"
+  },
+  {
+   "start": 1550.92,
+   "end": 1554.32,
+   "text": "yeah so it's like you can make it of course we're not"
+  },
+  {
+   "start": 1554.32,
+   "end": 1559.04,
+   "text": "going to give the recipe for making the dough just we will mention that's"
+  },
+  {
+   "start": 1559.04,
+   "end": 1562.04,
+   "text": "crust yeah so should i"
+  },
+  {
+   "start": 1562.04,
+   "end": 1567.28,
+   "text": "should i read it okay let me tell the english ones and then you"
+  },
+  {
+   "start": 1567.28,
+   "end": 1572.14,
+   "text": "say it okay first prepare the dressing"
+  },
+  {
+   "start": 1574.0,
+   "end": 1581.16,
+   "text": "and now i say it right okay dressing means"
+  },
+  {
+   "start": 1581.16,
+   "end": 1582.66,
+   "text": "the thing that you are going to put on the layers"
+  },
+  {
+   "start": 1582.66,
+   "end": 1589.84,
+   "text": "so beat eggs add fresh milk stir and then add carbonated water and"
+  },
+  {
+   "start": 1589.84,
+   "end": 1591.8,
+   "text": "oil and then stir again"
+  },
+  {
+   "start": 1591.8,
+   "end": 1598.12,
+   "text": "set aside okay so we didn't say that is actually like prepare right but"
+  },
+  {
+   "start": 1598.12,
+   "end": 1602.24,
+   "text": "i think it makes sense um and now now that i like prepare pretty"
+  },
+  {
+   "start": 1602.24,
+   "end": 1608.96,
+   "text": "much the same exactly umutite jaja uh which here you"
+  },
+  {
+   "start": 1608.96,
+   "end": 1614.86,
+   "text": "translated as beat eggs but yeah it's like whisk yeah whisk like whip it"
+  },
+  {
+   "start": 1614.86,
+   "end": 1622.02,
+   "text": "whisk it um dodajte sveže mléko add fresh milk to add something dodati"
+  },
+  {
+   "start": 1622.02,
+   "end": 1626.94,
+   "text": "um stir and add carbonated water and oil."
+  },
+  {
+   "start": 1626.94,
+   "end": 1628.7,
+   "text": "Promesajte. Yes."
+  },
+  {
+   "start": 1628.7,
+   "end": 1631.44,
+   "text": "Promesajte. I dodajte. Add."
+  },
+  {
+   "start": 1631.86,
+   "end": 1633.98,
+   "text": "Gaziranu vodu i ulje."
+  },
+  {
+   "start": 1634.92,
+   "end": 1636.42,
+   "text": "And then said stir again."
+  },
+  {
+   "start": 1636.42,
+   "end": 1639.59,
+   "text": "Ponovo. Promesajte. Ponovo is again."
+  },
+  {
+   "start": 1639.91,
+   "end": 1644.51,
+   "text": "Yeah. Again. And set aside, which is ostavite sa strane."
+  },
+  {
+   "start": 1644.79,
+   "end": 1645.85,
+   "text": "To leave something."
+  },
+  {
+   "start": 1645.85,
+   "end": 1649.57,
+   "text": "Like ostaviti. By the way, all these are in te, in V form."
+  },
+  {
+   "start": 1649.57,
+   "end": 1651.83,
+   "text": "In polite or plural form."
+  },
+  {
+   "start": 1652.75,
+   "end": 1654.05,
+   "text": "Yeah. So, exactly."
+  },
+  {
+   "start": 1654.49,
+   "end": 1654.71,
+   "text": "Okay."
+  },
+  {
+   "start": 1655.95,
+   "end": 1656.11,
+   "text": "Now you. Okay."
+  },
+  {
+   "start": 1656.11,
+   "end": 1656.23,
+   "text": "Yeah."
+  },
+  {
+   "start": 1657.99,
+   "end": 1658.83,
+   "text": "Dressing is done."
+  },
+  {
+   "start": 1658.97,
+   "end": 1662.51,
+   "text": "Waiting. Now the rolls or crust."
+  },
+  {
+   "start": 1662.79,
+   "end": 1669.49,
+   "text": "divide the crust sheet by sheet and place sheet by sheet sheet yes sheet"
+  },
+  {
+   "start": 1669.49,
+   "end": 1669.89,
+   "text": "and sheet"
+  },
+  {
+   "start": 1672.07,
+   "end": 1679.45,
+   "text": "place you said i know okay sheet by sheet yeah place one crust on"
+  },
+  {
+   "start": 1679.45,
+   "end": 1679.91,
+   "text": "the work surface"
+  },
+  {
+   "start": 1679.91,
+   "end": 1687.13,
+   "text": "and then sprinkle with grated cheese and whatever you want to add actually and"
+  },
+  {
+   "start": 1687.13,
+   "end": 1694.35,
+   "text": "collect as an accordion which is this thing yeah uh"
+  },
+  {
+   "start": 1694.35,
+   "end": 1698.49,
+   "text": "okay divide the crust sheet by sheet would be"
+  },
+  {
+   "start": 1698.49,
+   "end": 1705.59,
+   "text": "core podelite or podelite core least poliest that's if you buy these"
+  },
+  {
+   "start": 1705.59,
+   "end": 1710.43,
+   "text": "like leaf by leaf you least leaf it's i mean that means yeah yeah"
+  },
+  {
+   "start": 1710.43,
+   "end": 1716.33,
+   "text": "okay yeah uh which also means like a page in the book least least"
+  },
+  {
+   "start": 1716.33,
+   "end": 1723.99,
+   "text": "place one crust on the work surface yeah work surface is radna površina it"
+  },
+  {
+   "start": 1723.99,
+   "end": 1724.35,
+   "text": "i was younger i was so confused because my mom would say put it was when"
+  },
+  {
+   "start": 1727.11,
+   "end": 1728.75,
+   "text": "on the working work perfect"
+  },
+  {
+   "start": 1728.75,
+   "end": 1732.35,
+   "text": "surface and i'd be like you mean the office like where's the office like"
+  },
+  {
+   "start": 1732.35,
+   "end": 1735.23,
+   "text": "and that makes sense because most of the work is actually being done"
+  },
+  {
+   "start": 1735.23,
+   "end": 1736.01,
+   "text": "in the kitchen, right?"
+  },
+  {
+   "start": 1736.01,
+   "end": 1736.87,
+   "text": "So,"
+  },
+  {
+   "start": 1738.09,
+   "end": 1741.59,
+   "text": "na radnu površinu stavite, to put, right?"
+  },
+  {
+   "start": 1742.07,
+   "end": 1747.59,
+   "text": "jednu koru. Kora is also, it's least, it's"
+  },
+  {
+   "start": 1747.59,
+   "end": 1753.07,
+   "text": "the the the crust or whatever uh so yeah we would say kora pita"
+  },
+  {
+   "start": 1753.07,
+   "end": 1760.21,
+   "text": "kora bureka mostly um sprinkle with grated cheese pospita oh the one that"
+  },
+  {
+   "start": 1760.21,
+   "end": 1760.61,
+   "text": "we didn't talk about right"
+  },
+  {
+   "start": 1760.61,
+   "end": 1767.85,
+   "text": "to sprinkle something um yeah great it is meravigen"
+  },
+  {
+   "start": 1767.85,
+   "end": 1768.67,
+   "text": "sir"
+  },
+  {
+   "start": 1769.93,
+   "end": 1777.23,
+   "text": "wait a minute five consonants oh my god it's"
+  },
+  {
+   "start": 1777.23,
+   "end": 1777.41,
+   "text": "actually four because"
+  },
+  {
+   "start": 1777.41,
+   "end": 1780.73,
+   "text": "is counted as one right yeah but lj"
+  },
+  {
+   "start": 1782.79,
+   "end": 1789.79,
+   "text": "which means like collected as an accordion"
+  },
+  {
+   "start": 1790.99,
+   "end": 1793.23,
+   "text": "and the same with the other crests will be"
+  },
+  {
+   "start": 1793.23,
+   "end": 1800.65,
+   "text": "the same you can say tako, isto tako, whatever,"
+  },
+  {
+   "start": 1800.65,
+   "end": 1801.13,
+   "text": "ostalim korama. Korag, again, is that kind of sheet. i sa"
+  },
+  {
+   "start": 1805.07,
+   "end": 1810.35,
+   "text": "Okay. And then, arrange tightly in a tray, side by side."
+  },
+  {
+   "start": 1811.57,
+   "end": 1811.83,
+   "text": "Go ahead."
+  },
+  {
+   "start": 1813.55,
+   "end": 1818.41,
+   "text": "Poređajte, yeah, we wrote this, zbijeno, or, how would they say it?"
+  },
+  {
+   "start": 1818.41,
+   "end": 1820.79,
+   "text": "Zbijeno, uple, like, tidely."
+  },
+  {
+   "start": 1821.15,
+   "end": 1821.31,
+   "text": "Yeah."
+  },
+  {
+   "start": 1823.39,
+   "end": 1824.43,
+   "text": "Blizu, again, you can say"
+  },
+  {
+   "start": 1824.43,
+   "end": 1826.21,
+   "text": "blizu, or whatever."
+  },
+  {
+   "start": 1826.57,
+   "end": 1827.27,
+   "text": "Upleh"
+  },
+  {
+   "start": 1828.59,
+   "end": 1830.58,
+   "text": "Jedno do druge Jedno do druge."
+  },
+  {
+   "start": 1830.68,
+   "end": 1832.58,
+   "text": "Jedno pored druge, jedno do druge."
+  },
+  {
+   "start": 1832.72,
+   "end": 1834.74,
+   "text": "Whatever. So many ways to say these things."
+  },
+  {
+   "start": 1834.8,
+   "end": 1842.22,
+   "text": "Exactly. Then pour plenty of the prepared topping and bake in a preheated"
+  },
+  {
+   "start": 1842.22,
+   "end": 1844.48,
+   "text": "oven at 180 degrees."
+  },
+  {
+   "start": 1847.52,
+   "end": 1852.24,
+   "text": "Obilno. Yeah, obilno is another word that we use definitely."
+  },
+  {
+   "start": 1853.88,
+   "end": 1856.6,
+   "text": "um maybe it's not that the first word you were with a counter so"
+  },
+  {
+   "start": 1856.6,
+   "end": 1857.92,
+   "text": "obilno is plenty"
+  },
+  {
+   "start": 1859.28,
+   "end": 1866.4,
+   "text": "puno it's like puno basically obilno prelite pripremljenim prelivom oh my god sorry"
+  },
+  {
+   "start": 1866.4,
+   "end": 1866.6,
+   "text": "this is"
+  },
+  {
+   "start": 1866.6,
+   "end": 1874.18,
+   "text": "like a tongue twister prelite pripremljenim prelivom five letters five"
+  },
+  {
+   "start": 1874.18,
+   "end": 1880.68,
+   "text": "words starting with p oh that's so tough isn't it um so it's just"
+  },
+  {
+   "start": 1880.68,
+   "end": 1888.42,
+   "text": "prelite is poor is prepared and prelite is topping okay"
+  },
+  {
+   "start": 1888.42,
+   "end": 1894.08,
+   "text": "um and wait a minute so we say prelite here"
+  },
+  {
+   "start": 1894.08,
+   "end": 1901.22,
+   "text": "I mean topping but we also mentioned the same thing as um prelite uh"
+  },
+  {
+   "start": 1901.22,
+   "end": 1904.34,
+   "text": "it's the same thing yeah yeah so here"
+  },
+  {
+   "start": 1904.34,
+   "end": 1906.52,
+   "text": "it's instrumental"
+  },
+  {
+   "start": 1906.52,
+   "end": 1909.08,
+   "text": "with what? with the dressing"
+  },
+  {
+   "start": 1910.92,
+   "end": 1911.46,
+   "text": "preliom."
+  },
+  {
+   "start": 1913.56,
+   "end": 1916.16,
+   "text": "That's how I test the case, by the way."
+  },
+  {
+   "start": 1917.02,
+   "end": 1918.0,
+   "text": "And bake."
+  },
+  {
+   "start": 1918.0,
+   "end": 1918.86,
+   "text": "I peci te."
+  },
+  {
+   "start": 1919.82,
+   "end": 1922.08,
+   "text": "That's the verb peci, right?"
+  },
+  {
+   "start": 1922.12,
+   "end": 1922.34,
+   "text": "Peci te. Peci."
+  },
+  {
+   "start": 1922.34,
+   "end": 1922.46,
+   "text": "Yeah."
+  },
+  {
+   "start": 1924.46,
+   "end": 1925.34,
+   "text": "Ti peci."
+  },
+  {
+   "start": 1927.84,
+   "end": 1929.38,
+   "text": "In a preheated oven."
+  },
+  {
+   "start": 1930.1,
+   "end": 1931.88,
+   "text": "U ugrejanoj rejerni."
+  },
+  {
+   "start": 1932.26,
+   "end": 1932.98,
+   "text": "Ugrejanoj."
+  },
+  {
+   "start": 1934.54,
+   "end": 1941.04,
+   "text": "not not sto or sandes it's the penny okay it's the penny yeah so"
+  },
+  {
+   "start": 1941.04,
+   "end": 1941.26,
+   "text": "we don't say"
+  },
+  {
+   "start": 1941.26,
+   "end": 1947.28,
+   "text": "tells you or something like that because we don't use fahrenheit so we just"
+  },
+  {
+   "start": 1947.28,
+   "end": 1954.04,
+   "text": "use celsius yeah yeah cool okay you can try this and let us know how it"
+  },
+  {
+   "start": 1954.04,
+   "end": 1959.88,
+   "text": "goes yeah and i hope you will like it i mean we don't know"
+  },
+  {
+   "start": 1959.88,
+   "end": 1963.98,
+   "text": "where you can find the crust and other things but i think well turkish"
+  },
+  {
+   "start": 1963.98,
+   "end": 1964.08,
+   "text": "right turkey they must have in every in every i feel like in every"
+  },
+  {
+   "start": 1964.08,
+   "end": 1964.42,
+   "text": "store"
+  },
+  {
+   "start": 1969.1,
+   "end": 1970.26,
+   "text": "country they have a form of"
+  },
+  {
+   "start": 1970.26,
+   "end": 1975.98,
+   "text": "these like leafy phyllo phyllo dough i think that's how you call it so"
+  },
+  {
+   "start": 1975.98,
+   "end": 1976.56,
+   "text": "it's not going to be"
+  },
+  {
+   "start": 1976.56,
+   "end": 1979.5,
+   "text": "authentic but it's going to be a version of like at least for you"
+  },
+  {
+   "start": 1979.5,
+   "end": 1980.48,
+   "text": "to kind of get an idea of what it"
+  },
+  {
+   "start": 1980.48,
+   "end": 1985.34,
+   "text": "could be yeah i see them in piazza or next to piazza there are"
+  },
+  {
+   "start": 1985.34,
+   "end": 1990.36,
+   "text": "tiny stores where you can find fresh cheese, milk, and those fillers."
+  },
+  {
+   "start": 1990.7,
+   "end": 1994.67,
+   "text": "So I wrote down this episode as kovanie"
+  },
+  {
+   "start": 1994.67,
+   "end": 1996.89,
+   "text": "sa maki i Ivanom, which is a cooking"
+  },
+  {
+   "start": 1996.89,
+   "end": 1998.69,
+   "text": "with maki and Ivana."
+  },
+  {
+   "start": 1998.69,
+   "end": 1998.97,
+   "text": "This should be"
+  },
+  {
+   "start": 1998.97,
+   "end": 2001.37,
+   "text": "like a series"
+  },
+  {
+   "start": 2001.37,
+   "end": 2002.73,
+   "text": "or something. Yeah."
+  },
+  {
+   "start": 2002.73,
+   "end": 2003.29,
+   "text": "Kovanie sa maki"
+  },
+  {
+   "start": 2003.29,
+   "end": 2004.75,
+   "text": "i Ivanom. Yeah."
+  },
+  {
+   "start": 2004.75,
+   "end": 2008.95,
+   "text": "Yeah. So since we are getting to the point"
+  },
+  {
+   "start": 2008.95,
+   "end": 2012.27,
+   "text": "where we should use a bit more Serbian, I am going to say it"
+  },
+  {
+   "start": 2012.27,
+   "end": 2013.75,
+   "text": "in Serbian. Go ahead."
+  },
+  {
+   "start": 2013.75,
+   "end": 2017.03,
+   "text": "Nadam se da ste uživali."
+  },
+  {
+   "start": 2017.27,
+   "end": 2018.37,
+   "text": "I hope you enjoyed it."
+  },
+  {
+   "start": 2019.25,
+   "end": 2023.03,
+   "text": "I that you've learned something."
+  },
+  {
+   "start": 2023.87,
+   "end": 2023.97,
+   "text": "Yeah."
+  },
+  {
+   "start": 2026.95,
+   "end": 2027.63,
+   "text": "And you're wondering."
+  },
+  {
+   "start": 2028.37,
+   "end": 2031.37,
+   "text": "Yeah. And I'm wondering."
+  },
+  {
+   "start": 2034.17,
+   "end": 2034.37,
+   "text": "I'm wondering."
+  },
+  {
+   "start": 2035.65,
+   "end": 2036.73,
+   "text": "And enjoy."
+  },
+  {
+   "start": 2038.25,
+   "end": 2038.97,
+   "text": "Thank you very much."
+  },
+  {
+   "start": 2040.19,
+   "end": 2040.71,
+   "text": "There's nothing to do."
+  },
+  {
+   "start": 2041.63,
+   "end": 2042.65,
+   "text": "Enjoy. Bye."
+  },
+  {
+   "start": 2042.65,
+   "end": 2045.47,
+   "text": "Bye. Thank you for joining us today."
+  },
+  {
+   "start": 2045.47,
+   "end": 2048.39,
+   "text": "We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 2048.45,
+   "end": 2052.97,
+   "text": "In case you have any comments, suggestions, or questions, make sure to share them"
+  },
+  {
+   "start": 2052.97,
+   "end": 2054.39,
+   "text": "on our Instagram page,"
+  },
+  {
+   "start": 2054.39,
+   "end": 2056.01,
+   "text": "Mazze Kafa Podcast."
+  },
+  {
+   "start": 2056.33,
+   "end": 2056.95,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.4: Cooking Vocabulary in Serbian",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939247/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075922-44100-1-87241e1bc4828ed6.mp3"
+}

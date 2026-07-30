@@ -67,6 +67,62 @@ class _HarnessState extends State<_Harness> {
 }
 
 void main() {
+  group('порядок вариантов ответа', () {
+    /// В материалах курса верный ответ записан первым во всех заданиях с
+    /// выбором — так их удобнее вычитывать. Значит показывать варианты в
+    /// исходном порядке нельзя: курс проходился нажатием на первую строку.
+    Exercise choice(String id) => Exercise.fromJson(_base(id, 'multiple_choice')
+      ..addAll({
+        'prompt': 'Выберите верную форму',
+        'multi': false,
+        'options': [
+          {'id': 'a', 'text': 'верно', 'correct': true},
+          {'id': 'b', 'text': 'мимо один'},
+          {'id': 'c', 'text': 'мимо два'},
+          {'id': 'd', 'text': 'мимо три'},
+        ],
+      }));
+
+    testWidgets('верный вариант не всегда первый', (tester) async {
+      // Одного упражнения мало: перемешивание детерминировано по ID, и у
+      // какого-то одного верный ответ мог остаться на первом месте случайно.
+      var firstIsCorrect = 0;
+      const total = 12;
+      for (var i = 0; i < total; i++) {
+        await tester.pumpWidget(_Harness(exercise: choice('ex_choice_$i')));
+        final texts = tester
+            .widgetList<Text>(find.descendant(
+              of: find.byType(InkWell),
+              matching: find.byType(Text),
+            ))
+            .map((widget) => widget.data)
+            .whereType<String>()
+            .toList();
+        expect(texts.length, 4, reason: 'должны показываться все варианты');
+        if (texts.first == 'верно') firstIsCorrect++;
+      }
+      expect(firstIsCorrect, lessThan(total),
+          reason: 'верный ответ оказался первым во всех заданиях');
+    });
+
+    testWidgets('порядок не меняется между перерисовками', (tester) async {
+      await tester.pumpWidget(_Harness(exercise: choice('ex_stable')));
+      List<String?> shown() => tester
+          .widgetList<Text>(find.descendant(
+            of: find.byType(InkWell),
+            matching: find.byType(Text),
+          ))
+          .map((widget) => widget.data)
+          .toList();
+
+      final before = shown();
+      await tester.tap(find.text('мимо один'));
+      await tester.pumpAndSettle();
+      expect(shown(), before,
+          reason: 'после ответа варианты не должны перескакивать');
+    });
+  });
+
   group('reading_qa', () {
     final exercise = Exercise.fromJson(_base('ex_rq', 'reading_qa')
       ..addAll({

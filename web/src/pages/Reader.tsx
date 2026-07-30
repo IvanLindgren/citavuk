@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'r
 import { downloadContent } from '../api/sync';
 import { Mascot } from '../components/Mascot';
 import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
+import { ShareBook } from '../components/ShareBook';
 import { Button, Spinner } from '../components/ui';
 import { WordReader } from '../components/WordReader';
 import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
@@ -313,6 +314,8 @@ export function Reader() {
                 А+
               </IconButton>
             </div>
+
+            <ShareBook book={state.book} />
 
             <button
               type="button"

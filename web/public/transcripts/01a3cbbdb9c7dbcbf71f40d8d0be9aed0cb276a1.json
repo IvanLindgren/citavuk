@@ -1,1890 +1,2058 @@
 {
- "duration": 1571.4,
+ "duration": 1571.37,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
  "cues": [
   {
-   "start": 0.0,
-   "end": 6.0,
-   "text": "Zdravo svima! Welcome to the new episode. Ja sam Nikola, i ovde je..."
+   "start": 0.3,
+   "end": 3.86,
+   "text": "Hello everyone, welcome to the new episode."
   },
   {
-   "start": 6.0,
-   "end": 8.0,
-   "text": "Ovde je Maki! Zdravo!"
+   "start": 3.86,
+   "end": 5.76,
+   "text": "I'm Nikola and I'm here..."
   },
   {
-   "start": 8.0,
-   "end": 10.0,
-   "text": "Kako si, Maki?"
+   "start": 5.78,
+   "end": 7.8,
+   "text": "Here's Maki, hello."
   },
   {
-   "start": 10.0,
-   "end": 12.0,
-   "text": "Super sam, hvala! A ti, Nikola?"
+   "start": 8.54,
+   "end": 9.42,
+   "text": "How are you, Maki?"
   },
   {
-   "start": 12.0,
-   "end": 14.0,
-   "text": "Dobro, nije loše."
+   "start": 9.62,
+   "end": 10.6,
+   "text": "Super, thank you."
   },
   {
-   "start": 14.0,
-   "end": 21.0,
-   "text": "Today we're doing like a recap of everything we did so far."
+   "start": 10.6,
+   "end": 11.38,
+   "text": "And you, Nikola?"
   },
   {
-   "start": 21.0,
-   "end": 36.0,
-   "text": "And we can give also advices what would be the best steps and options, steps to take when learning a language or Serbian specifically by yourself, I guess."
+   "start": 12.14,
+   "end": 13.0,
+   "text": "Good, not bad."
   },
   {
-   "start": 36.0,
-   "end": 41.0,
-   "text": "How can you improve Serbian?"
+   "start": 15.34,
+   "end": 20.78,
+   "text": "Today we're doing a recap of everything we did so far."
   },
   {
-   "start": 41.0,
-   "end": 50.0,
-   "text": "It went so fast for me to do 10 episodes for each podcast video, so almost 20. This is 19, I guess."
+   "start": 22.08,
+   "end": 27.48,
+   "text": "And we can give also advices what will be the best steps and options,"
   },
   {
-   "start": 50.0,
-   "end": 59.0,
-   "text": "And to be honest, this was really useful for me. And I'm sure and I see sometimes people send me comments like they find it really useful."
+   "start": 27.66,
+   "end": 35.16,
+   "text": "steps to take when learning a language or serbian specifically um by"
   },
   {
-   "start": 59.0,
-   "end": 69.0,
-   "text": "But as the tradition goes, every 10 episodes, we make a break and we come up with new ideas and then we continue. That's how it goes."
+   "start": 35.16,
+   "end": 35.52,
+   "text": "yourself i guess"
   },
   {
-   "start": 69.0,
-   "end": 72.0,
-   "text": "So let's do some recap with you, Nikola."
+   "start": 35.52,
+   "end": 42.74,
+   "text": "how can you improve um yeah serbian it's it went so"
   },
   {
-   "start": 72.0,
-   "end": 76.0,
-   "text": "Okay, so we can start with major topics we covered."
+   "start": 42.74,
+   "end": 45.46,
+   "text": "fast for me to do 10 10 episodes for each"
   },
   {
-   "start": 76.0,
-   "end": 78.0,
+   "start": 45.46,
+   "end": 51.66,
+   "text": "podcast video so almost 20 this is 19 i guess and to be honest"
+  },
+  {
+   "start": 51.66,
+   "end": 55.84,
+   "text": "this was really useful for me And I'm sure, and I see sometimes people"
+  },
+  {
+   "start": 55.84,
+   "end": 58.78,
+   "text": "send me comments, like they find it really useful."
+  },
+  {
+   "start": 59.12,
+   "end": 65.16,
+   "text": "But as the tradition goes, every 10 episodes, we make a break and we"
+  },
+  {
+   "start": 65.16,
+   "end": 67.32,
+   "text": "come up with new ideas and then we continue."
+  },
+  {
+   "start": 67.32,
+   "end": 68.18,
+   "text": "That's how it goes."
+  },
+  {
+   "start": 69.18,
+   "end": 71.62,
+   "text": "So let's do some recap with you, Nicola."
+  },
+  {
+   "start": 72.5,
+   "end": 75.96,
+   "text": "Okay. So we can start with major topics we covered."
+  },
+  {
+   "start": 76.72,
+   "end": 76.9,
    "text": "Yeah."
   },
   {
-   "start": 78.0,
-   "end": 84.0,
-   "text": "First, we started one of the first things, self-introduction in Serbian."
+   "start": 78.44,
+   "end": 82.78,
+   "text": "First, we started, one of the first things, self-introduction."
   },
   {
-   "start": 84.0,
-   "end": 86.0,
-   "text": "Yes."
+   "start": 83.08,
+   "end": 90.0,
+   "text": "in serbian um yes and we talked about like major like the most frequent"
   },
   {
-   "start": 86.0,
-   "end": 95.0,
-   "text": "And we talked about like major, like the most frequent ways and phrases you can use to introduce yourself."
+   "start": 90.0,
+   "end": 91.94,
+   "text": "ways and phrases you can"
   },
   {
-   "start": 95.0,
-   "end": 103.0,
-   "text": "And the good thing was, in my opinion, that I hadn't tried before, like to have the same thing in three levels, beginner, intermediate and advanced."
+   "start": 91.94,
+   "end": 97.56,
+   "text": "use to introduce yourself and the good thing was in my opinion that i"
   },
   {
-   "start": 103.0,
-   "end": 110.0,
-   "text": "And we started with this. And I think that's very useful. I haven't seen such a resource somewhere else."
+   "start": 97.56,
+   "end": 98.84,
+   "text": "had not hadn't tried before"
   },
   {
-   "start": 110.0,
-   "end": 119.0,
-   "text": "And I think it's nice for the listeners to go back and when they feel more confident to pay more attention to the intermediate one than advanced one."
+   "start": 98.84,
+   "end": 103.64,
+   "text": "like to have the same thing in three levels beginner intermediate and advanced and"
   },
   {
-   "start": 119.0,
-   "end": 123.0,
-   "text": "So it's going to be useful for some time, I think."
+   "start": 103.64,
+   "end": 103.76,
+   "text": "we started"
   },
   {
-   "start": 124.0,
-   "end": 134.0,
-   "text": "Definitely, because you can expand your sentence with more structure, grammar structure and more complex syntax."
+   "start": 103.76,
+   "end": 109.5,
+   "text": "with this and i think that's very useful i haven't seen such a resource"
   },
   {
-   "start": 134.0,
-   "end": 140.0,
-   "text": "Yourself, you can try writing beginner, intermediate and advanced text, depending on your level."
+   "start": 109.5,
+   "end": 110.46,
+   "text": "somewhere else and i think"
   },
   {
-   "start": 140.0,
-   "end": 142.0,
-   "text": "Exactly."
+   "start": 110.46,
+   "end": 115.48,
+   "text": "it's nice for the listeners to go back and when they feel more confident"
   },
   {
-   "start": 142.0,
-   "end": 152.0,
-   "text": "We talked about habits and hobbies. So that's one of the things you can do at a beginner level, at least talk about the things you like to do."
+   "start": 115.48,
+   "end": 116.62,
+   "text": "to pay more attention to"
   },
   {
-   "start": 152.0,
-   "end": 158.0,
-   "text": "That's a very good conversation starter. Like, what are you into? What have you been doing these days?"
+   "start": 116.62,
+   "end": 122.04,
+   "text": "the intermediate one than advanced one so it's going to be useful for some"
   },
   {
-   "start": 158.0,
-   "end": 165.0,
-   "text": "So that's why it's very essential to know how to talk about your habits and hobbies in Serbian."
+   "start": 122.04,
+   "end": 129.84,
+   "text": "time i think definitely uh because you can expand your sentence with more structure"
   },
   {
-   "start": 165.0,
-   "end": 168.0,
+   "start": 129.84,
+   "end": 132.84,
+   "text": "grammar structure and more complex syntax"
+  },
+  {
+   "start": 134.08,
+   "end": 137.2,
+   "text": "yourself you can try writing beginner intermediate and advanced"
+  },
+  {
+   "start": 137.2,
+   "end": 138.92,
+   "text": "text depending on your level"
+  },
+  {
+   "start": 138.92,
+   "end": 143.42,
+   "text": "exactly we talked about habits and hobbies"
+  },
+  {
+   "start": 143.42,
+   "end": 145.34,
+   "text": "so that's one of the things"
+  },
+  {
+   "start": 145.34,
+   "end": 147.56,
+   "text": "you can do at beginner level at least"
+  },
+  {
+   "start": 147.56,
+   "end": 149.16,
+   "text": "talk about the things you like"
+  },
+  {
+   "start": 149.16,
+   "end": 150.36,
+   "text": "to do"
+  },
+  {
+   "start": 152.7,
+   "end": 153.4,
+   "text": "that's a very good"
+  },
+  {
+   "start": 153.4,
+   "end": 155.18,
+   "text": "conversation started like"
+  },
+  {
+   "start": 155.18,
+   "end": 157.24,
+   "text": "what are you into what have you been doing"
+  },
+  {
+   "start": 157.24,
+   "end": 162.64,
+   "text": "these days so that's why it's Very essential to know how to talk about"
+  },
+  {
+   "start": 162.64,
+   "end": 164.86,
+   "text": "your habits and hobbies in Serbian."
+  },
+  {
+   "start": 165.32,
+   "end": 167.32,
    "text": "So that episode is also one of my favorites."
   },
   {
-   "start": 168.0,
-   "end": 173.0,
-   "text": "Yes. Or to talk about your works. You're often hear like, what do you do?"
+   "start": 168.26,
+   "end": 170.64,
+   "text": "Yes. Or to talk about your works."
   },
   {
-   "start": 173.0,
-   "end": 176.0,
-   "text": "Čime se baviš? Šta radiš?"
+   "start": 170.64,
+   "end": 172.68,
+   "text": "You're often here like, what do you do?"
   },
   {
-   "start": 176.0,
-   "end": 178.0,
+   "start": 173.78,
+   "end": 175.62,
+   "text": "Cime se baviš, ta radiš."
+  },
+  {
+   "start": 176.64,
+   "end": 177.64,
    "text": "So that also helps."
   },
   {
-   "start": 178.0,
-   "end": 180.0,
+   "start": 178.34,
+   "end": 178.6,
    "text": "Exactly."
   },
   {
-   "start": 181.0,
-   "end": 185.0,
+   "start": 181.22,
+   "end": 183.46,
    "text": "We had practical dialogues in different situations."
   },
   {
-   "start": 185.0,
-   "end": 188.0,
-   "text": "Like restaurants, cafes."
+   "start": 184.28,
+   "end": 186.94,
+   "text": "Yeah. Like restaurants, cafes."
   },
   {
-   "start": 188.0,
-   "end": 193.0,
-   "text": "Yes. Ordering, buying, asking for stuff, which is very useful."
+   "start": 187.72,
+   "end": 194.1,
+   "text": "Yes. ordering, buying, asking for stuff which is very useful and believe me"
   },
   {
-   "start": 193.0,
-   "end": 203.0,
-   "text": "And believe me, I keep revising them again and again, because it's so easy to forget the little details about the question."
+   "start": 194.1,
+   "end": 197.52,
+   "text": "I keep revising them again and again"
   },
   {
-   "start": 203.0,
-   "end": 207.0,
-   "text": "So it's always, I think, good to have it there all the time."
+   "start": 197.52,
+   "end": 199.18,
+   "text": "because it's so easy to forget"
   },
   {
-   "start": 207.0,
-   "end": 218.0,
-   "text": "There is always some phrases to learn, like practical phrases that only make sense in specific contexts and situations."
+   "start": 199.18,
+   "end": 202.76,
+   "text": "the little details about the question"
   },
   {
-   "start": 218.0,
-   "end": 226.0,
-   "text": "You need to make peace with it. You need to keep learning that and experiencing it."
+   "start": 202.76,
+   "end": 208.14,
+   "text": "so it's always good to have it there all the time there is always"
   },
   {
-   "start": 229.0,
-   "end": 233.0,
-   "text": "We talked about Serbian dialects and we had a quiz."
+   "start": 208.14,
+   "end": 212.14,
+   "text": "some phrases to learn"
   },
   {
-   "start": 233.0,
-   "end": 243.0,
-   "text": "That was one of my favorites, actually, because I really wanted to test one Serbian to see if the dialects are real."
+   "start": 212.14,
+   "end": 217.41,
+   "text": "like practical phrases that only make sense in specific contexts such situations."
   },
   {
-   "start": 243.0,
-   "end": 246.0,
-   "text": "I knew they were real, but if they were really that different."
-  },
-  {
-   "start": 246.0,
-   "end": 253.0,
-   "text": "And you proved that it's easy to see, to understand where people are from."
-  },
-  {
-   "start": 253.0,
-   "end": 255.0,
-   "text": "So it was really fun."
-  },
-  {
-   "start": 255.0,
-   "end": 269.0,
-   "text": "And I think that episode is also very useful to people to understand some sounds like čiču and how they prolong vowels in general."
-  },
-  {
-   "start": 269.0,
-   "end": 272.0,
-   "text": "So it was really eye-opening for me."
-  },
-  {
-   "start": 272.0,
-   "end": 276.0,
-   "text": "Yes. So there's a lot of differences."
-  },
-  {
-   "start": 277.0,
-   "end": 288.0,
-   "text": "And most of the foreigners that learn Serbian can be confused if they talk with someone that only speaks in that dialect."
-  },
-  {
-   "start": 288.0,
-   "end": 292.0,
-   "text": "But it's still, again, the grammar structure is mostly the same."
-  },
-  {
-   "start": 293.0,
-   "end": 294.0,
-   "text": "Exactly."
-  },
-  {
-   "start": 294.0,
-   "end": 298.0,
-   "text": "Okay. We did impromptu speaking."
-  },
-  {
-   "start": 298.0,
-   "end": 306.0,
-   "text": "So how to answer spontaneously to questions and to just talk with someone."
-  },
-  {
-   "start": 306.0,
-   "end": 309.0,
-   "text": "And that's the goal of learning a language."
-  },
-  {
-   "start": 309.0,
-   "end": 318.0,
-   "text": "It's important to be able to spontaneously make your own sentences, not just to repeat phrases that you learn."
-  },
-  {
-   "start": 318.0,
-   "end": 323.0,
-   "text": "So it's okay to know some practical phrases in practical situations."
-  },
-  {
-   "start": 323.0,
-   "end": 330.0,
-   "text": "But the point of learning a language is to spontaneously make a sentence."
-  },
-  {
-   "start": 330.0,
-   "end": 336.0,
-   "text": "But even in spontaneous answers, you might have at least some kind of template in your mind."
-  },
-  {
-   "start": 336.0,
-   "end": 338.0,
-   "text": "That's what we also try to add."
-  },
-  {
-   "start": 338.0,
-   "end": 342.0,
-   "text": "Tell your opinion, tell the other opinion that you might disagree with."
-  },
-  {
-   "start": 343.0,
-   "end": 349.0,
-   "text": "Or share examples after you tell your opinion from your own life or from somebody else's life."
-  },
-  {
-   "start": 349.0,
-   "end": 353.0,
-   "text": "So it was a good structure to go over, I think."
-  },
-  {
-   "start": 353.0,
-   "end": 357.0,
-   "text": "And the same structure can be applied to many topics."
-  },
-  {
-   "start": 357.0,
-   "end": 363.0,
-   "text": "Yes. And it's important to know grammar structures that you can use and methods."
-  },
-  {
-   "start": 363.0,
-   "end": 369.0,
-   "text": "You don't have to memorize stuff by heart that much."
-  },
-  {
-   "start": 369.0,
-   "end": 374.0,
-   "text": "You just learn a method of using words and you just change them in your sentence."
-  },
-  {
-   "start": 374.0,
-   "end": 375.0,
-   "text": "That's the goal."
-  },
-  {
-   "start": 375.0,
-   "end": 378.0,
-   "text": "Exactly. It was very useful too."
-  },
-  {
-   "start": 378.0,
-   "end": 383.0,
-   "text": "Of course, Moje Kafa without coffee culture would make no sense."
-  },
-  {
-   "start": 383.0,
-   "end": 387.0,
-   "text": "So we added one more episode about coffee culture in Serbia with you."
-  },
-  {
-   "start": 387.0,
-   "end": 390.0,
-   "text": "Even though I touched upon that topic a lot."
-  },
-  {
-   "start": 390.0,
-   "end": 392.0,
-   "text": "It was fun. It's always nice."
-  },
-  {
-   "start": 392.0,
-   "end": 399.0,
-   "text": "It was, for example, interesting for me to see that you're not that familiar with some of the phases."
-  },
-  {
-   "start": 399.0,
-   "end": 402.0,
-   "text": "For example, Ivana was familiar."
-  },
-  {
-   "start": 402.0,
-   "end": 406.0,
-   "text": "It was nice to see the cultural differences in Serbia for me."
-  },
-  {
-   "start": 406.0,
-   "end": 409.0,
-   "text": "Yeah, that's good."
-  },
-  {
-   "start": 409.0,
-   "end": 412.0,
-   "text": "So do you want to do a quiz now?"
-  },
-  {
-   "start": 412.0,
-   "end": 415.0,
-   "text": "Yes, let's have a little quiz for everyone."
-  },
-  {
-   "start": 415.0,
-   "end": 420.0,
-   "text": "But I will be answering the questions on behalf of our listeners."
-  },
-  {
-   "start": 420.0,
-   "end": 425.0,
-   "text": "But we will give some time for them to say their answer."
-  },
-  {
-   "start": 425.0,
-   "end": 430.0,
-   "text": "We have some questions here regarding Serbia and Serbian culture and language."
-  },
-  {
-   "start": 430.0,
-   "end": 434.0,
-   "text": "So let's start with the first one."
-  },
-  {
-   "start": 434.0,
-   "end": 438.0,
-   "text": "So I will read the question. You have options."
-  },
-  {
-   "start": 438.0,
-   "end": 444.0,
-   "text": "You can answer in the meantime. Our listeners can also think of their own answer."
-  },
-  {
-   "start": 444.0,
-   "end": 448.0,
-   "text": "And I'll say what's correct, I guess."
-  },
-  {
-   "start": 448.0,
-   "end": 456.0,
-   "text": "So, which Serbian word describes the joy of life's simple pleasures?"
-  },
-  {
-   "start": 456.0,
-   "end": 462.0,
-   "text": "We have inat, merak and ajde."
-  },
-  {
-   "start": 462.0,
-   "end": 469.0,
-   "text": "Yeah, three words I think that you cannot translate easily to English."
-  },
-  {
-   "start": 469.0,
-   "end": 474.0,
-   "text": "So obviously it's merak, in my opinion."
-  },
-  {
-   "start": 474.0,
-   "end": 476.0,
-   "text": "Right? Is it merak?"
-  },
-  {
-   "start": 476.0,
-   "end": 478.0,
-   "text": "It is, yeah."
-  },
-  {
-   "start": 478.0,
-   "end": 482.0,
-   "text": "I mean, inat is also joyful for some people."
-  },
-  {
-   "start": 482.0,
-   "end": 487.0,
-   "text": "Yes, and I know inat is a Turkish origin. Merak is also."
-  },
-  {
-   "start": 487.0,
-   "end": 492.0,
-   "text": "Yeah, but we don't use merak to describe simple pleasures."
-  },
-  {
-   "start": 492.0,
-   "end": 496.0,
-   "text": "It's curiosity in Turkish, but merak here."
-  },
-  {
-   "start": 496.0,
-   "end": 501.0,
-   "text": "So you will see a lot of merak restaurants all around the Balkans, everyone."
-  },
-  {
-   "start": 501.0,
-   "end": 505.0,
-   "text": "For example, Skopski Merak, Maurovski Merak."
-  },
-  {
-   "start": 505.0,
-   "end": 508.0,
-   "text": "I don't know, in Serbia, Meraklija, right?"
-  },
-  {
-   "start": 508.0,
-   "end": 517.0,
-   "text": "Yeah, Meraklija is the name for someone who enjoys simple pleasures, I guess, like moments in life, I guess."
-  },
-  {
-   "start": 517.0,
-   "end": 524.0,
-   "text": "So many restaurant owners use merak as their name because it invites people to have pleasure."
-  },
-  {
-   "start": 524.28,
-   "end": 528.36,
-   "text": "Yeah, it's kind of a part of Kafana culture."
-  },
-  {
-   "start": 528.36,
-   "end": 529.36,
-   "text": "Yeah, yeah."
-  },
-  {
-   "start": 529.36,
-   "end": 531.36,
-   "text": "That's an important word."
-  },
-  {
-   "start": 531.36,
-   "end": 532.36,
-   "text": "All right."
-  },
-  {
-   "start": 532.36,
-   "end": 533.36,
-   "text": "Good."
-  },
-  {
-   "start": 533.36,
-   "end": 540.96,
-   "text": "And also, inat is a Turkish word, Turkish origin, I don't know if you use it now in"
-  },
-  {
-   "start": 540.96,
-   "end": 541.96,
-   "text": "standard Turkish."
-  },
-  {
-   "start": 541.96,
-   "end": 544.48,
-   "text": "Yes, we use it still the same way."
-  },
-  {
-   "start": 544.48,
-   "end": 545.68,
-   "text": "So that one is the same."
-  },
-  {
-   "start": 545.68,
-   "end": 546.68,
+   "start": 217.41,
+   "end": 218.25,
    "text": "Yeah."
   },
   {
-   "start": 546.68,
-   "end": 551.0,
-   "text": "So it means spite, I guess, in Serbian, out of spite."
+   "start": 220.25,
+   "end": 222.81,
+   "text": "You need to make peace with it."
   },
   {
-   "start": 551.0,
-   "end": 557.64,
-   "text": "And Serbs are famous for, I guess, famous for dink-dink, out of spite."
+   "start": 223.07,
+   "end": 225.99,
+   "text": "You need to keep learning that and experiencing it."
   },
   {
-   "start": 557.64,
-   "end": 558.64,
-   "text": "Yeah."
-  },
-  {
-   "start": 558.64,
-   "end": 559.64,
-   "text": "Okay."
-  },
-  {
-   "start": 559.64,
-   "end": 560.64,
-   "text": "Number two."
-  },
-  {
-   "start": 560.64,
-   "end": 563.76,
-   "text": "What is the most common way to say cheers in Serbian?"
-  },
-  {
-   "start": 563.76,
-   "end": 567.2,
-   "text": "Živjeli, hvala, idemo."
-  },
-  {
-   "start": 567.2,
-   "end": 569.56,
-   "text": "Yeah, of course."
-  },
-  {
-   "start": 569.56,
-   "end": 572.08,
-   "text": "Živjeli is the answer."
-  },
-  {
-   "start": 572.08,
-   "end": 573.08,
-   "text": "Yeah."
-  },
-  {
-   "start": 573.08,
-   "end": 575.08,
-   "text": "I like Živjeli."
-  },
-  {
-   "start": 575.08,
-   "end": 576.08,
-   "text": "Yeah."
-  },
-  {
-   "start": 576.08,
-   "end": 580.76,
-   "text": "Živjeli, it means, I guess, to life, or like something like..."
-  },
-  {
-   "start": 581.52,
-   "end": 583.52,
-   "text": "Život, živjeli."
-  },
-  {
-   "start": 583.52,
-   "end": 588.52,
-   "text": "Yes, or, yeah, to life."
-  },
-  {
-   "start": 588.52,
-   "end": 596.52,
-   "text": "Also, in other countries, na zdravje is also used also in Serbia, but not cheers."
-  },
-  {
-   "start": 596.52,
-   "end": 597.52,
-   "text": "Na zdravje, yeah."
-  },
-  {
-   "start": 597.52,
-   "end": 601.52,
-   "text": "No, it means bless you when someone sneezes."
-  },
-  {
-   "start": 601.52,
-   "end": 602.52,
-   "text": "Yeah."
-  },
-  {
-   "start": 602.52,
-   "end": 603.52,
-   "text": "Okay."
-  },
-  {
-   "start": 603.52,
-   "end": 604.52,
-   "text": "Three."
-  },
-  {
-   "start": 605.16,
-   "end": 611.08,
-   "text": "Which Serbian phrase means come on and is used in many situations?"
-  },
-  {
-   "start": 611.08,
-   "end": 616.2,
-   "text": "Snalažljivost, ajde, baš."
-  },
-  {
-   "start": 616.2,
-   "end": 618.08,
-   "text": "I think everyone knows this."
-  },
-  {
-   "start": 618.08,
-   "end": 619.08,
-   "text": "Come on."
-  },
-  {
-   "start": 619.08,
-   "end": 620.08,
-   "text": "Ajde."
-  },
-  {
-   "start": 620.08,
-   "end": 626.08,
-   "text": "It's not Serbian only, it's Balkan word everywhere, ajde works."
-  },
-  {
-   "start": 626.08,
-   "end": 628.08,
-   "text": "Ajde or hajde."
-  },
-  {
-   "start": 628.08,
-   "end": 632.12,
-   "text": "And isn't it also Turkish origin?"
-  },
-  {
-   "start": 632.12,
-   "end": 633.24,
-   "text": "It is."
-  },
-  {
-   "start": 633.32,
-   "end": 637.32,
-   "text": "I don't know, but we have ajde, we say e at the end."
-  },
-  {
-   "start": 637.32,
-   "end": 639.32,
-   "text": "Ajde, yes."
-  },
-  {
-   "start": 639.32,
-   "end": 641.32,
-   "text": "So, there is enough."
-  },
-  {
-   "start": 641.32,
-   "end": 647.32,
-   "text": "Come on, hurry up, okay, that's fine."
-  },
-  {
-   "start": 647.32,
-   "end": 652.32,
-   "text": "It has many, many different meanings, but mostly come on."
-  },
-  {
-   "start": 652.32,
-   "end": 653.32,
-   "text": "Good."
-  },
-  {
-   "start": 653.32,
-   "end": 656.32,
-   "text": "Which of these is the traditional Serbian dish?"
-  },
-  {
-   "start": 656.32,
-   "end": 660.32,
-   "text": "We have sushi, teskavica, and pizza."
-  },
-  {
-   "start": 660.4,
-   "end": 664.4,
-   "text": "Yeah, the options eliminate each other, I know."
-  },
-  {
-   "start": 664.4,
-   "end": 671.4,
-   "text": "But piljeskavica, that's a burger, right?"
-  },
-  {
-   "start": 671.4,
-   "end": 675.4,
-   "text": "Yeah, like a Serbian burger, let's say."
-  },
-  {
-   "start": 675.4,
-   "end": 684.4,
-   "text": "We have it all around, and it's a minced meat, it can be pork, it can be even lamb sometimes."
-  },
-  {
-   "start": 684.4,
-   "end": 685.4,
-   "text": "Beef."
-  },
-  {
-   "start": 685.4,
-   "end": 689.4,
-   "text": "Beef, yeah, with onions in it."
-  },
-  {
-   "start": 689.48,
-   "end": 691.48,
-   "text": "Sometimes cheese in it, right?"
-  },
-  {
-   "start": 691.48,
-   "end": 697.48,
-   "text": "Sometimes cheese, and it's served with kajmak, ajvar, yes."
-  },
-  {
-   "start": 697.48,
-   "end": 701.48,
-   "text": "Yes, kajmak and ajvar, always on the plate with it."
-  },
-  {
-   "start": 701.48,
-   "end": 708.48,
-   "text": "And piljeskavica is also the same, you think in Bosnia, in Croatia, or is it?"
-  },
-  {
-   "start": 708.48,
-   "end": 710.48,
-   "text": "Yeah, I think it's the same."
-  },
-  {
-   "start": 710.48,
-   "end": 717.48,
-   "text": "Maybe like for cevapi, they call it different in Croatia, I think somewhere."
-  },
-  {
-   "start": 717.56,
-   "end": 723.56,
-   "text": "The shape of cevapi and piljeskavica is quite different though, right?"
-  },
-  {
-   "start": 723.56,
-   "end": 725.56,
-   "text": "In Serbia."
-  },
-  {
-   "start": 725.56,
-   "end": 730.56,
-   "text": "Cevapi are small finger-like minced meat."
-  },
-  {
-   "start": 730.56,
-   "end": 731.56,
-   "text": "Yeah, meatballs."
-  },
-  {
-   "start": 731.56,
-   "end": 734.56,
-   "text": "Yeah, piljeskavica is like..."
-  },
-  {
-   "start": 734.56,
-   "end": 738.56,
-   "text": "Huge ring, yeah."
-  },
-  {
-   "start": 738.56,
-   "end": 740.56,
-   "text": "Okay, number five."
-  },
-  {
-   "start": 740.56,
-   "end": 743.56,
-   "text": "What is the official script of the Serbian language?"
-  },
-  {
-   "start": 743.56,
-   "end": 746.56,
-   "text": "Or maybe like the alphabet?"
-  },
-  {
-   "start": 746.64,
-   "end": 752.64,
-   "text": "Latin, Cyrillic, both Latin and Cyrillic."
-  },
-  {
-   "start": 752.64,
-   "end": 759.64,
-   "text": "Hard question, because it depends on the situation you might have, in my opinion, of course."
-  },
-  {
-   "start": 759.64,
-   "end": 769.64,
-   "text": "I think it's both, but you can never find a children's book in Latin alphabet."
-  },
-  {
-   "start": 769.64,
-   "end": 775.64,
-   "text": "Also in formal letters, I think mostly Cyrillic is used."
-  },
-  {
-   "start": 775.72,
-   "end": 783.72,
-   "text": "Yes, so in the constitution, it says that the formal official script is Cyrillic."
-  },
-  {
-   "start": 783.72,
-   "end": 792.72,
-   "text": "And it also says the use of other scripts or alphabets is regulated by law."
-  },
-  {
-   "start": 792.72,
-   "end": 799.72,
-   "text": "And then that also means that Latin script is part of the standard use."
-  },
-  {
-   "start": 799.8,
-   "end": 810.8,
-   "text": "So we give advantage to Cyrillic in stuff regarding government, like papers and stuff like that."
-  },
-  {
-   "start": 810.8,
-   "end": 813.8,
-   "text": "And kids primarily learn Cyrillic."
-  },
-  {
-   "start": 813.8,
-   "end": 820.8,
-   "text": "I don't remember which grade, but immediately after Cyrillic, we learn Latin."
-  },
-  {
-   "start": 820.8,
-   "end": 823.8,
-   "text": "But our textbooks in school are printed in Cyrillic."
-  },
-  {
-   "start": 823.88,
-   "end": 832.88,
-   "text": "However, books you find in stores, in bookstores, are, I think, mostly printed in Latin script."
-  },
-  {
-   "start": 832.88,
-   "end": 833.88,
-   "text": "That's true."
-  },
-  {
-   "start": 833.88,
-   "end": 838.88,
-   "text": "Like everything online is mostly printed, like shown in Latin."
-  },
-  {
-   "start": 838.88,
-   "end": 840.88,
-   "text": "So we use them equally."
-  },
-  {
-   "start": 840.88,
-   "end": 841.88,
-   "text": "Yeah."
-  },
-  {
-   "start": 841.88,
-   "end": 849.88,
-   "text": "It's funny, sometimes on YouTube or on social media, some singers even, they use Cyrillic"
-  },
-  {
-   "start": 849.96,
-   "end": 851.96,
-   "text": "in their descriptions."
-  },
-  {
-   "start": 851.96,
-   "end": 854.96,
-   "text": "I'm like, wow, it feels rare to me."
-  },
-  {
-   "start": 854.96,
-   "end": 857.96,
-   "text": "But it's actually, as you said, it's equal."
-  },
-  {
-   "start": 857.96,
-   "end": 860.96,
-   "text": "Some people just prefer to use Cyrillic for everything."
-  },
-  {
-   "start": 860.96,
-   "end": 861.96,
+   "start": 226.51,
+   "end": 226.77,
    "text": "Yes."
   },
   {
-   "start": 861.96,
-   "end": 867.96,
-   "text": "And even some hip hop singers might use Cyrillic in their social media."
+   "start": 229.71,
+   "end": 233.21,
+   "text": "We talked about Serbian dialects and we had a quiz."
   },
   {
-   "start": 867.96,
-   "end": 868.96,
-   "text": "Exactly."
+   "start": 233.47,
+   "end": 238.55,
+   "text": "That was one of my favorites, actually, because I really wanted to test one"
   },
   {
-   "start": 868.96,
-   "end": 869.96,
+   "start": 238.55,
+   "end": 244.23,
+   "text": "Serbian to see if the dialects are real or I knew they were real,"
+  },
+  {
+   "start": 244.23,
+   "end": 245.33,
+   "text": "but if they were really that different"
+  },
+  {
+   "start": 245.33,
+   "end": 252.49,
+   "text": "and you proved that it's easy to see, to understand where people are"
+  },
+  {
+   "start": 252.49,
+   "end": 254.87,
+   "text": "from. So it was really fun."
+  },
+  {
+   "start": 255.15,
+   "end": 260.55,
+   "text": "And I think that episode is also, you know, very useful to people"
+  },
+  {
+   "start": 260.55,
+   "end": 267.95,
+   "text": "to understand some sounds like chichu and how they prolong the, like some vowels"
+  },
+  {
+   "start": 267.95,
+   "end": 271.83,
+   "text": "in general. So it was really eye-opening for me."
+  },
+  {
+   "start": 272.61,
+   "end": 278.97,
+   "text": "yes so there's a lot of differences um and some like most of probably"
+  },
+  {
+   "start": 278.97,
+   "end": 280.19,
+   "text": "foreigners that learn serbian"
+  },
+  {
+   "start": 280.19,
+   "end": 286.47,
+   "text": "could not can be confused if they talk with someone that only speaks in"
+  },
+  {
+   "start": 286.47,
+   "end": 292.33,
+   "text": "that dialect but it's still again the grammar structure is mostly the same yeah"
+  },
+  {
+   "start": 292.33,
+   "end": 299.39,
+   "text": "exactly okay we did impromptu speaking so how"
+  },
+  {
+   "start": 299.39,
+   "end": 306.17,
+   "text": "to answer spontaneously to questions and to just talk with someone and"
+  },
+  {
+   "start": 306.17,
+   "end": 313.07,
+   "text": "that's the goal of when learning a language it's important to be able to"
+  },
+  {
+   "start": 313.07,
+   "end": 314.13,
+   "text": "spontaneously make your"
+  },
+  {
+   "start": 314.13,
+   "end": 319.31,
+   "text": "own sentences not just to repeat phrases that you learn so it's okay to"
+  },
+  {
+   "start": 319.31,
+   "end": 322.37,
+   "text": "know some practical phrases and like in practical situations,"
+  },
+  {
+   "start": 322.37,
+   "end": 325.85,
+   "text": "but the point of learning a language"
+  },
+  {
+   "start": 325.85,
+   "end": 330.21,
+   "text": "is to spontaneously make sentence."
+  },
+  {
+   "start": 331.09,
+   "end": 335.15,
+   "text": "But even in spontaneous answers, you might have at least some kind of template"
+  },
+  {
+   "start": 335.15,
+   "end": 335.75,
+   "text": "in your mind."
+  },
+  {
+   "start": 335.75,
+   "end": 337.43,
+   "text": "That's what we also try to add."
+  },
+  {
+   "start": 337.43,
+   "end": 343.05,
+   "text": "Like, tell your opinion, tell the other opinion that you might disagree with, or"
+  },
+  {
+   "start": 343.05,
+   "end": 348.41,
+   "text": "share examples after you tell opinion from your own life or from somebody else's"
+  },
+  {
+   "start": 348.41,
+   "end": 353.21,
+   "text": "life. So it was a good structure to go over, I think."
+  },
+  {
+   "start": 353.21,
+   "end": 356.61,
+   "text": "And the same structure can be applied to many topics."
+  },
+  {
+   "start": 357.27,
+   "end": 360.73,
+   "text": "Yes. And it's important to know like grammar structures that you can use."
+  },
+  {
+   "start": 362.19,
+   "end": 368.65,
+   "text": "And like methods, you don't have to memorize stuff by heart that much."
+  },
+  {
+   "start": 368.97,
+   "end": 373.81,
+   "text": "You just learn a method of using like words and you just change them"
+  },
+  {
+   "start": 373.81,
+   "end": 374.51,
+   "text": "in your sentence."
+  },
+  {
+   "start": 374.51,
+   "end": 375.09,
+   "text": "That's the goal."
+  },
+  {
+   "start": 375.89,
+   "end": 377.85,
+   "text": "Exactly. It was very useful too."
+  },
+  {
+   "start": 378.71,
+   "end": 383.79,
+   "text": "of course a mozikafa without coffee culture would make no sense that we added"
+  },
+  {
+   "start": 383.79,
+   "end": 384.27,
+   "text": "one more episode"
+  },
+  {
+   "start": 384.27,
+   "end": 389.79,
+   "text": "about coffee culture in serbia with you even though i touched upon that topic"
+  },
+  {
+   "start": 389.79,
+   "end": 390.69,
+   "text": "a lot it was"
+  },
+  {
+   "start": 390.69,
+   "end": 395.03,
+   "text": "fun it's always nice it was for example interesting for me to see that"
+  },
+  {
+   "start": 395.03,
+   "end": 395.95,
+   "text": "you you're not that familiar"
+  },
+  {
+   "start": 395.95,
+   "end": 401.05,
+   "text": "one of some of with some of the phases and for example ivana was"
+  },
+  {
+   "start": 401.05,
+   "end": 406.55,
+   "text": "familiar like it was nice to see the cultural differences in serbia for me"
+  },
+  {
+   "start": 406.55,
+   "end": 413.85,
+   "text": "yeah that's good so do you want to do a quiz now yes let's"
+  },
+  {
+   "start": 413.85,
+   "end": 419.35,
+   "text": "have a little quiz for everyone but i will be answering the questions on"
+  },
+  {
+   "start": 419.35,
+   "end": 423.65,
+   "text": "behalf of our listeners but we will give some time for them to say their answer"
+  },
+  {
+   "start": 423.65,
+   "end": 430.17,
+   "text": "so i have some questions here regarding Serbia and Serbian culture and language."
+  },
+  {
+   "start": 430.17,
+   "end": 433.67,
+   "text": "So let's start with the first one."
+  },
+  {
+   "start": 434.41,
+   "end": 435.89,
+   "text": "So I will read the question."
+  },
+  {
+   "start": 436.29,
+   "end": 437.35,
+   "text": "You have options."
+  },
+  {
+   "start": 438.62,
+   "end": 443.52,
+   "text": "you can answer in the meantime our listeners can also think of their own"
+  },
+  {
+   "start": 443.52,
+   "end": 445.08,
+   "text": "answer and i'll say what's"
+  },
+  {
+   "start": 445.08,
+   "end": 452.2,
+   "text": "the correct i guess so which serbian word describes the joy of"
+  },
+  {
+   "start": 452.2,
+   "end": 453.1,
+   "text": "life's simple pleasures"
+  },
+  {
+   "start": 453.1,
+   "end": 460.58,
+   "text": "we have inat merak and aide"
+  },
+  {
+   "start": 462.74,
+   "end": 466.4,
+   "text": "yeah three words i think that you cannot translate easily to english"
+  },
+  {
+   "start": 466.4,
+   "end": 473.56,
+   "text": "so obviously it's merak in my opinion um"
+  },
+  {
+   "start": 473.56,
+   "end": 479.02,
+   "text": "right is it merak it is yeah yeah i mean inad is also"
+  },
+  {
+   "start": 479.02,
+   "end": 486.24,
+   "text": "joyful for some people yes and i know inad is a turkish origin merak"
+  },
+  {
+   "start": 486.24,
+   "end": 486.62,
+   "text": "is also"
+  },
+  {
+   "start": 488.02,
+   "end": 493.98,
+   "text": "yeah but we don't use merak to describe simple pleasures it's curiosity in turkish"
+  },
+  {
+   "start": 493.98,
+   "end": 494.12,
+   "text": "but merak"
+  },
+  {
+   "start": 494.12,
+   "end": 500.0,
+   "text": "here so you will see a lot of merak restaurants all around the balkans"
+  },
+  {
+   "start": 500.0,
+   "end": 501.42,
+   "text": "everyone for example"
+  },
+  {
+   "start": 501.42,
+   "end": 508.78,
+   "text": "skovski merak maurovski merak i don't know in serbia meraklia right yeah"
+  },
+  {
+   "start": 508.78,
+   "end": 513.32,
+   "text": "meraklia is the name for someone who enjoys simple pleasures, I guess,"
+  },
+  {
+   "start": 513.32,
+   "end": 515.28,
+   "text": "like moments"
+  },
+  {
+   "start": 515.28,
+   "end": 516.56,
+   "text": "in life, I guess."
+  },
+  {
+   "start": 517.3,
+   "end": 519.22,
+   "text": "So many restaurant owners used Merek"
+  },
+  {
+   "start": 519.22,
+   "end": 521.02,
+   "text": "as their name because"
+  },
+  {
+   "start": 521.02,
+   "end": 522.96,
+   "text": "it invites people to have"
+  },
+  {
+   "start": 522.96,
+   "end": 525.06,
+   "text": "pleasure in their restaurants."
+  },
+  {
+   "start": 525.08,
+   "end": 528.16,
+   "text": "Yeah, it's kind of a part of kafana culture."
+  },
+  {
+   "start": 528.68,
+   "end": 530.8,
+   "text": "Yeah, yeah. That's an important word."
+  },
+  {
+   "start": 532.02,
+   "end": 532.4,
+   "text": "All right."
+  },
+  {
+   "start": 533.7,
+   "end": 539.9,
+   "text": "Good. And also, Inat is a Turkish word, Turkish origin."
+  },
+  {
+   "start": 539.9,
+   "end": 542.02,
+   "text": "I don't know if you use it now in standard Turkish."
+  },
+  {
+   "start": 542.5,
+   "end": 544.4,
+   "text": "Yes, we use it still the same way."
+  },
+  {
+   "start": 544.4,
+   "end": 545.38,
+   "text": "So that one is the same."
+  },
+  {
+   "start": 546.04,
+   "end": 549.08,
+   "text": "Yeah. So it means spite, I guess, in Serbian."
+  },
+  {
+   "start": 549.52,
+   "end": 550.76,
+   "text": "Out of spite."
+  },
+  {
+   "start": 550.76,
+   "end": 555.74,
+   "text": "And Serbs are famous for, I guess, famous for doing things out of spite."
+  },
+  {
+   "start": 556.9,
+   "end": 558.7,
+   "text": "Yeah. Okay, number two."
+  },
+  {
+   "start": 559.5,
+   "end": 562.6,
+   "text": "What is the most common way to say cheers in Serbian?"
+  },
+  {
+   "start": 563.74,
+   "end": 566.86,
+   "text": "Živeli, hvala, idemo."
+  },
+  {
+   "start": 567.84,
+   "end": 569.12,
+   "text": "Yeah, of course."
+  },
+  {
+   "start": 569.22,
+   "end": 571.32,
+   "text": "is the answer"
+  },
+  {
+   "start": 572.8,
+   "end": 573.74,
+   "text": "yeah I like"
+  },
+  {
+   "start": 573.74,
+   "end": 576.92,
+   "text": "it means"
+  },
+  {
+   "start": 578.26,
+   "end": 578.66,
+   "text": "I guess to life"
+  },
+  {
+   "start": 578.66,
+   "end": 583.56,
+   "text": "or something like yes or"
+  },
+  {
+   "start": 585.92,
+   "end": 586.34,
+   "text": "yeah to life"
+  },
+  {
+   "start": 586.34,
+   "end": 591.84,
+   "text": "also in other countries is also used"
+  },
+  {
+   "start": 591.84,
+   "end": 592.98,
+   "text": "in Serbia"
+  },
+  {
+   "start": 592.98,
+   "end": 599.84,
+   "text": "it means bless you when someone sneezes."
+  },
+  {
+   "start": 600.6,
+   "end": 601.22,
    "text": "Yeah."
   },
   {
-   "start": 869.96,
-   "end": 874.46,
-   "text": "It's easier to use Latin online because of the English keyboards and switching between"
+   "start": 602.5,
+   "end": 605.7,
+   "text": "Okay. Three. Which Serbian phrase"
   },
   {
-   "start": 874.46,
-   "end": 875.46,
-   "text": "English and Serbian."
+   "start": 605.7,
+   "end": 607.7,
+   "text": "means come on and is used"
   },
   {
-   "start": 875.46,
-   "end": 877.96,
+   "start": 607.7,
+   "end": 609.5,
+   "text": "in many situations?"
+  },
+  {
+   "start": 610.82,
+   "end": 613.8,
+   "text": "Snalazljivost, ajde, baš."
+  },
+  {
+   "start": 616.12,
+   "end": 617.6,
+   "text": "I think everyone knows this."
+  },
+  {
+   "start": 617.86,
+   "end": 619.5,
+   "text": "Come on. Ajde."
+  },
+  {
+   "start": 620.04,
+   "end": 621.56,
+   "text": "It's not Serbian only, it's"
+  },
+  {
+   "start": 621.56,
+   "end": 624.1,
+   "text": "Balkan word everywhere."
+  },
+  {
+   "start": 624.1,
+   "end": 627.02,
+   "text": "Ajde works. Ajde or ajde."
+  },
+  {
+   "start": 627.88,
+   "end": 627.93,
+   "text": "and"
+  },
+  {
+   "start": 629.8,
+   "end": 631.4,
+   "text": "isn't it also Turkish origin?"
+  },
+  {
+   "start": 631.96,
+   "end": 636.74,
+   "text": "It is I don't know but we have ID, we say E at the"
+  },
+  {
+   "start": 636.74,
+   "end": 637.02,
+   "text": "ID yes"
+  },
+  {
+   "start": 637.02,
+   "end": 637.16,
+   "text": "end"
+  },
+  {
+   "start": 639.66,
+   "end": 640.14,
+   "text": "so there is"
+  },
+  {
+   "start": 640.14,
+   "end": 642.04,
+   "text": "come on"
+  },
+  {
+   "start": 642.04,
+   "end": 643.82,
+   "text": "hurry up"
+  },
+  {
+   "start": 643.82,
+   "end": 646.64,
+   "text": "okay that's fine"
+  },
+  {
+   "start": 646.64,
+   "end": 648.8,
+   "text": "it has many many different meanings"
+  },
+  {
+   "start": 648.8,
+   "end": 650.52,
+   "text": "but mostly come on"
+  },
+  {
+   "start": 652.28,
+   "end": 659.39,
+   "text": "good which of these is the traditional serbian dish we have sushi yescavica and"
+  },
+  {
+   "start": 659.39,
+   "end": 670.01,
+   "text": "pizza yeah the options eliminate each other i know but piliescavica burger"
+  },
+  {
+   "start": 670.01,
+   "end": 676.35,
+   "text": "right yeah like a serbian burger let's say uh we have it all around"
+  },
+  {
+   "start": 676.35,
+   "end": 683.09,
+   "text": "um and it's a minced meat it can be pork it can be even"
+  },
+  {
+   "start": 683.09,
+   "end": 689.45,
+   "text": "lamb sometimes or beef yeah yeah with onions in it sometimes"
+  },
+  {
+   "start": 689.45,
+   "end": 696.51,
+   "text": "cheese in it right sometimes cheese um and it's served with kaimak iver"
+  },
+  {
+   "start": 696.51,
+   "end": 698.43,
+   "text": "yes yes kaimak and iver"
+  },
+  {
+   "start": 698.43,
+   "end": 704.37,
+   "text": "always on the flight with it and piletskavica is also the same you think"
+  },
+  {
+   "start": 704.37,
+   "end": 711.39,
+   "text": "in bosnia in Croatia I think it's the same maybe like"
+  },
+  {
+   "start": 712.21,
+   "end": 714.89,
+   "text": "for cevapi they call it different in Croatia"
+  },
+  {
+   "start": 714.89,
+   "end": 719.39,
+   "text": "somewhere the shape"
+  },
+  {
+   "start": 719.39,
+   "end": 721.13,
+   "text": "of cevapia and pilaskavica"
+  },
+  {
+   "start": 721.13,
+   "end": 724.21,
+   "text": "is quite different though in Serbia"
+  },
+  {
+   "start": 726.29,
+   "end": 726.43,
+   "text": "cevapi are"
+  },
+  {
+   "start": 726.43,
+   "end": 734.83,
+   "text": "small finger yeah huge"
+  },
+  {
+   "start": 734.83,
+   "end": 742.17,
+   "text": "ring yeah yeah right okay number five what is the official script"
+  },
+  {
+   "start": 742.17,
+   "end": 749.31,
+   "text": "of the serbian language or meaning like the alphabet uh latin cyrillic both"
+  },
+  {
+   "start": 749.31,
+   "end": 750.35,
+   "text": "latin and cyrillic"
+  },
+  {
+   "start": 752.81,
+   "end": 758.43,
+   "text": "hard question because depends on the situation you might have in my opinion of"
+  },
+  {
+   "start": 758.43,
+   "end": 758.63,
+   "text": "course"
+  },
+  {
+   "start": 760.13,
+   "end": 766.77,
+   "text": "I think it's both, but you can never find a children's book in Latin"
+  },
+  {
+   "start": 766.77,
+   "end": 768.15,
+   "text": "alphabet. Yes."
+  },
+  {
+   "start": 770.07,
+   "end": 775.33,
+   "text": "Also in formal letters, I think, mostly Cyrillic is used."
+  },
+  {
+   "start": 776.01,
+   "end": 783.19,
+   "text": "Yes. So in the Constitution, it says that the formal official script is Cyrillic."
+  },
+  {
+   "start": 783.85,
+   "end": 787.07,
+   "text": "and it also says the use of other scripts or alphabets"
+  },
+  {
+   "start": 787.07,
+   "end": 791.99,
+   "text": "is regulated by law."
+  },
+  {
+   "start": 792.53,
+   "end": 795.01,
+   "text": "And then that also means that Latin script"
+  },
+  {
+   "start": 795.01,
+   "end": 798.61,
+   "text": "is part of the standard use."
+  },
+  {
+   "start": 799.65,
+   "end": 802.67,
+   "text": "So we give advantage to Cyrillic"
+  },
+  {
+   "start": 804.97,
+   "end": 810.19,
+   "text": "in stuff regarding government, like papers and stuff like that."
+  },
+  {
+   "start": 810.51,
+   "end": 813.45,
+   "text": "and kids primarily learn Cyrillic."
+  },
+  {
+   "start": 813.45,
+   "end": 817.13,
+   "text": "And then in like, I don't remember which grade,"
+  },
+  {
+   "start": 817.13,
+   "end": 819.61,
+   "text": "but immediately after Cyrillic, we'll learn Latin."
+  },
+  {
+   "start": 820.37,
+   "end": 823.71,
+   "text": "But our textbooks in school are printed in Cyrillic."
+  },
+  {
+   "start": 824.01,
+   "end": 830.93,
+   "text": "However, books you find in stores, in bookstores, are, I think, mostly printed in"
+  },
+  {
+   "start": 830.93,
+   "end": 831.57,
+   "text": "Latin script."
+  },
+  {
+   "start": 832.89,
+   "end": 838.81,
+   "text": "That's true. Like everything online is mostly printed, like shown in Latin."
+  },
+  {
+   "start": 838.81,
+   "end": 840.65,
+   "text": "So we use them equally."
+  },
+  {
+   "start": 841.47,
+   "end": 845.49,
+   "text": "Yeah. It's funny sometimes on YouTube or on social media,"
+  },
+  {
+   "start": 846.91,
+   "end": 851.29,
+   "text": "some singers even, like they use Cyrillic in their descriptions."
+  },
+  {
+   "start": 851.57,
+   "end": 856.93,
+   "text": "I'm like, wow, it feels rare to me, but it's actually, as you said,"
+  },
+  {
+   "start": 856.93,
+   "end": 860.77,
+   "text": "it's equal. Some people just prefer to use Cyrillic for everything."
+  },
+  {
+   "start": 861.21,
+   "end": 867.31,
+   "text": "Yes. And even some hip hop singers might use Cyrillic in their social media."
+  },
+  {
+   "start": 867.31,
+   "end": 867.69,
+   "text": "Exactly."
+  },
+  {
+   "start": 867.69,
+   "end": 868.29,
+   "text": "Yeah."
+  },
+  {
+   "start": 869.71,
+   "end": 873.8,
+   "text": "It's easier to use Latin online because of the English keyboards and so"
+  },
+  {
+   "start": 873.8,
+   "end": 875.28,
+   "text": "switching between English and Serbian."
+  },
+  {
+   "start": 875.28,
+   "end": 877.54,
    "text": "And that's why most people use Latin script online."
   },
   {
-   "start": 878.04,
+   "start": 878.6,
    "end": 881.04,
    "text": "But there are people that want to use Cyrillic."
   },
   {
-   "start": 881.04,
-   "end": 883.04,
+   "start": 881.66,
+   "end": 882.6,
    "text": "Yes, that's true."
   },
   {
-   "start": 883.04,
-   "end": 886.04,
+   "start": 884.0,
+   "end": 885.14,
    "text": "Okay, number six."
   },
   {
-   "start": 886.04,
-   "end": 890.04,
+   "start": 886.3,
+   "end": 889.26,
    "text": "Which of these sports is Serbia famous for?"
   },
   {
-   "start": 890.04,
-   "end": 893.04,
+   "start": 890.16,
+   "end": 893.3,
    "text": "Ice hockey, basketball, cricket?"
   },
   {
-   "start": 895.04,
-   "end": 900.04,
-   "text": "I think everybody is already aware of the answer, like 100% sure."
+   "start": 895.6,
+   "end": 898.64,
+   "text": "I think everybody is already aware of the answer,"
   },
   {
-   "start": 900.04,
-   "end": 902.04,
+   "start": 898.64,
+   "end": 900.6,
+   "text": "like 100% sure."
+  },
+  {
+   "start": 900.64,
+   "end": 901.78,
    "text": "Basketball, of course."
   },
   {
-   "start": 902.04,
-   "end": 905.04,
-   "text": "Yes, basketball is famous."
+   "start": 902.52,
+   "end": 909.56,
+   "text": "yes basketball is um football uh for example soccer uh is very is"
   },
   {
-   "start": 905.12,
-   "end": 913.12,
-   "text": "Football, for example, soccer is maybe even more popular because it's popular everywhere."
+   "start": 909.56,
+   "end": 910.62,
+   "text": "maybe even more popular"
   },
   {
-   "start": 913.12,
-   "end": 918.12,
-   "text": "But we're not as good at football as we are in basketball."
+   "start": 910.62,
+   "end": 915.98,
+   "text": "because it's very popular everywhere but we're not as good as football as we"
   },
   {
-   "start": 918.12,
-   "end": 925.12,
-   "text": "Basketball is very frequent in larger cities, Belgrade, Novi Sad, Niš."
+   "start": 915.98,
+   "end": 916.28,
+   "text": "are in basketball"
   },
   {
-   "start": 925.12,
-   "end": 928.12,
-   "text": "And a lot of people play basketball."
+   "start": 916.28,
+   "end": 923.6,
+   "text": "basketball is very um frequent in larger cities belgrade"
   },
   {
-   "start": 928.12,
-   "end": 929.12,
-   "text": "Exactly."
+   "start": 923.6,
+   "end": 928.8,
+   "text": "and a lot of people play basketball Exactly."
   },
   {
-   "start": 929.12,
-   "end": 933.12,
+   "start": 928.8,
+   "end": 932.66,
    "text": "And everybody knows my favorite guy, Nikola Jokic."
   },
   {
-   "start": 933.12,
-   "end": 934.12,
+   "start": 932.92,
+   "end": 934.1,
    "text": "Nikola Jokic, yes."
   },
   {
-   "start": 934.2,
-   "end": 937.2,
+   "start": 935.94,
+   "end": 936.78,
    "text": "And the last one."
   },
   {
-   "start": 937.2,
-   "end": 942.2,
-   "text": "Which famous Serbian musician is known for mixing folk and modern sounds?"
+   "start": 942.08,
+   "end": 945.38,
+   "text": "Djordje Balashevic, Tomas Drakovic, Ceca."
   },
   {
-   "start": 942.2,
-   "end": 946.2,
-   "text": "Djordje Balašović, Tomas Draković, Ceca?"
+   "start": 948.6,
+   "end": 952.0,
+   "text": "They will try to, I think our listeners will try to pick one."
   },
   {
-   "start": 948.2,
-   "end": 953.2,
-   "text": "I think our listeners will try to pick one."
+   "start": 953.36,
+   "end": 958.72,
+   "text": "but as far as i listened they are all mixing folk and modern sounds"
   },
   {
-   "start": 953.2,
-   "end": 959.2,
-   "text": "But as far as I listened, they are all mixing folk and modern sounds."
+   "start": 958.72,
+   "end": 959.62,
+   "text": "yeah yeah essentially"
   },
   {
-   "start": 959.2,
-   "end": 960.2,
-   "text": "Yeah, essentially."
+   "start": 959.62,
+   "end": 965.12,
+   "text": "even balashevich i would say george balashevich has uh is one of i think"
   },
   {
-   "start": 960.2,
-   "end": 962.2,
-   "text": "Even Balašović, I would say."
+   "start": 965.12,
+   "end": 965.82,
+   "text": "one of the best"
   },
   {
-   "start": 962.28,
-   "end": 968.28,
-   "text": "Djordje Balašović is one of, I think, one of the best musicians and also poets."
+   "start": 974.64,
+   "end": 977.28,
+   "text": "Draković in Cetca, but he also uses folk."
   },
   {
-   "start": 968.28,
-   "end": 971.28,
-   "text": "His texts and lyrics are beautiful."
+   "start": 982.16,
+   "end": 982.4,
+   "text": "Vojvodina"
   },
   {
-   "start": 971.28,
-   "end": 973.28,
-   "text": "I agree."
+   "start": 982.4,
+   "end": 984.22,
+   "text": "which is under the influence"
   },
   {
-   "start": 973.28,
-   "end": 978.28,
-   "text": "And he's very different from Tomas Draković and Ceca, but he also uses folk."
+   "start": 984.22,
+   "end": 985.94,
+   "text": "of Hungary of course"
   },
   {
-   "start": 978.28,
-   "end": 983.28,
-   "text": "And when I say folk, I mean music of northern Serbia, Vojvodina,"
+   "start": 987.28,
+   "end": 989.88,
+   "text": "violins and band those bands you"
   },
   {
-   "start": 983.28,
-   "end": 987.28,
-   "text": "which is under the influence of Hungary, of course."
+   "start": 989.88,
+   "end": 992.18,
+   "text": "frequent in Vojvodina Tomas Dracovic"
   },
   {
-   "start": 987.36,
-   "end": 992.36,
-   "text": "Violins and those bands are frequent in Vojvodina."
+   "start": 992.18,
+   "end": 994.42,
+   "text": "is majorly"
   },
   {
-   "start": 992.36,
-   "end": 998.36,
-   "text": "Tomas Draković is majorly a pop singer, I would say, but also has folk elements."
+   "start": 994.42,
+   "end": 996.04,
+   "text": "pop singer I would say but also"
   },
   {
-   "start": 998.36,
-   "end": 1001.36,
-   "text": "And Ceca can also..."
+   "start": 996.04,
+   "end": 997.94,
+   "text": "has folk elements and sets"
   },
   {
-   "start": 1001.36,
-   "end": 1006.36,
-   "text": "That's like a turbo folk even area, I would say."
+   "start": 997.94,
+   "end": 999.76,
+   "text": "can also"
   },
   {
-   "start": 1006.36,
-   "end": 1013.36,
-   "text": "Also for Tomas, when you say pop, many people might think it's very active,"
+   "start": 999.76,
+   "end": 1002.32,
+   "text": "that's like a turbo folk even"
   },
   {
-   "start": 1013.44,
-   "end": 1018.44,
-   "text": "uplifting songs, but Tomas has very dramatic pop songs as well."
+   "start": 1002.32,
+   "end": 1003.9,
+   "text": "area I would say"
   },
   {
-   "start": 1018.44,
-   "end": 1020.44,
-   "text": "Very slow."
+   "start": 1003.9,
+   "end": 1010.86,
+   "text": "but yeah Also for Toma, when you say pop, many people might think it's"
   },
   {
-   "start": 1020.44,
-   "end": 1022.44,
-   "text": "Yeah, not in today's terms."
+   "start": 1010.86,
+   "end": 1017.96,
+   "text": "very active, uplifting songs, but Toma has very dramatic pop songs as"
   },
   {
-   "start": 1022.44,
-   "end": 1026.44,
-   "text": "It's like pop in like 80s, 70s."
+   "start": 1017.96,
+   "end": 1018.2,
+   "text": "Very slow. Not in today's terms. well."
   },
   {
-   "start": 1026.44,
-   "end": 1031.44,
-   "text": "And that's like that popular music then."
+   "start": 1018.2,
+   "end": 1018.4,
+   "text": "Yes."
   },
   {
-   "start": 1031.44,
-   "end": 1036.44,
-   "text": "But their songs are really helpful when it comes to learning Serbian,"
+   "start": 1022.38,
+   "end": 1026.1,
+   "text": "It's like pop in the 80s, 70s."
   },
   {
-   "start": 1036.44,
-   "end": 1038.44,
-   "text": "because easy to follow."
+   "start": 1031.94,
+   "end": 1035.82,
+   "text": "But their songs are really helpful when it comes to learning Serbian."
   },
   {
-   "start": 1038.44,
-   "end": 1040.44,
-   "text": "There's a rhythm."
+   "start": 1035.82,
+   "end": 1039.62,
+   "text": "because easy to follow, there's rhythm."
   },
   {
-   "start": 1040.44,
-   "end": 1042.44,
+   "start": 1039.86,
+   "end": 1042.1,
    "text": "I enjoy listening to them."
   },
   {
-   "start": 1042.52,
-   "end": 1045.52,
-   "text": "I'm not that familiar, to be honest, but"
+   "start": 1042.1,
+   "end": 1044.16,
+   "text": "I'm not that familiar to be honest,"
   },
   {
-   "start": 1045.52,
-   "end": 1048.52,
-   "text": "Djordje Balašević is my favorite."
+   "start": 1044.16,
+   "end": 1048.68,
+   "text": "but Georgia Balashevic is my favorite in these options."
   },
   {
-   "start": 1048.56,
-   "end": 1059.16,
-   "text": "Yeah, let's talk about a little bit, what's next for Serbian learners."
+   "start": 1050.84,
+   "end": 1051.82,
+   "text": "Okay, that's it."
   },
   {
-   "start": 1059.16,
-   "end": 1067.3,
-   "text": "The one thing that I really feel so happy about is right now, I mean, I started learning"
+   "start": 1052.64,
+   "end": 1056.98,
+   "text": "Yeah, let's talk about a little bit, what's next for Serbian learners?"
   },
   {
-   "start": 1067.3,
-   "end": 1073.86,
-   "text": "Serbian a few years ago, but right now the source, thanks to social media, the source"
+   "start": 1059.04,
+   "end": 1066.46,
+   "text": "The one thing that I really feel so happy about is right now,"
   },
   {
-   "start": 1073.86,
-   "end": 1080.72,
-   "text": "of listening, hearing, and reading Serbian is becoming more and more."
+   "start": 1066.46,
+   "end": 1071.04,
+   "text": "I mean, I started learning Serbian a few years ago, but right now, the"
   },
   {
-   "start": 1080.72,
+   "start": 1071.04,
+   "end": 1071.86,
+   "text": "source,"
+  },
+  {
+   "start": 1071.86,
+   "end": 1079.36,
+   "text": "thanks to social media, the source of listening, hearing, and reading Serbian is"
+  },
+  {
+   "start": 1079.36,
+   "end": 1079.62,
+   "text": "becoming more and"
+  },
+  {
+   "start": 1079.62,
+   "end": 1086.36,
+   "text": "more. What I mean, for example, a podcast, like a Serbian local podcast for"
+  },
+  {
+   "start": 1086.36,
    "end": 1087.3,
-   "text": "What I mean, for example, a podcast, like a Serbian local podcast for Serbian people,"
+   "text": "Serbian people, right?"
   },
   {
-   "start": 1087.3,
-   "end": 1088.3,
-   "text": "right?"
+   "start": 1087.6,
+   "end": 1090.3,
+   "text": "It was very difficult to listen for me."
   },
   {
-   "start": 1088.3,
-   "end": 1094.34,
-   "text": "It was very difficult to listen for me, but now, thanks to YouTube and social media like"
+   "start": 1090.3,
+   "end": 1095.98,
+   "text": "But now, thanks to YouTube and social media like Instagram, they are having these"
   },
   {
-   "start": 1094.34,
-   "end": 1099.86,
-   "text": "Instagram, they are having these short clips where you can get at least the main idea and"
+   "start": 1095.98,
+   "end": 1098.28,
+   "text": "short clips where you can get at least the main idea."
   },
   {
-   "start": 1099.86,
-   "end": 1107.98,
-   "text": "I'm so happy that they also write like the text in Serbian, in Cyrillic, sorry, in Latin."
+   "start": 1098.28,
+   "end": 1104.88,
+   "text": "And I'm so happy that they also write the text in Latin."
   },
   {
-   "start": 1107.98,
-   "end": 1110.22,
+   "start": 1107.76,
+   "end": 1109.06,
    "text": "So it's very nice."
   },
   {
-   "start": 1110.22,
-   "end": 1114.62,
-   "text": "I can watch those short clips again and again and write down what they are saying, how they"
+   "start": 1109.46,
+   "end": 1113.58,
+   "text": "I can watch those short clips again and again and write down what they"
   },
   {
-   "start": 1114.62,
-   "end": 1115.9,
-   "text": "are pronouncing the words."
+   "start": 1113.58,
+   "end": 1115.62,
+   "text": "are saying, how they are pronouncing the words."
   },
   {
-   "start": 1115.9,
-   "end": 1121.34,
-   "text": "So there are too many resources all of a sudden now online, I would say."
+   "start": 1115.68,
+   "end": 1120.74,
+   "text": "So there are too many resources all of a sudden now online, I would"
   },
   {
-   "start": 1121.34,
+   "start": 1120.74,
+   "end": 1121.08,
+   "text": "say. Exactly."
+  },
+  {
+   "start": 1121.08,
    "end": 1122.34,
-   "text": "Exactly."
-  },
-  {
-   "start": 1122.34,
-   "end": 1124.02,
    "text": "That's very good."
   },
   {
-   "start": 1124.02,
-   "end": 1128.58,
-   "text": "I have a couple of tips when learning any language, including Serbian online, and that"
+   "start": 1123.92,
+   "end": 1128.48,
+   "text": "I have a couple of tips when learning any language, including Serbian online, that"
   },
   {
-   "start": 1128.58,
-   "end": 1134.34,
-   "text": "I've also found out when learning, when I was learning like French or English."
+   "start": 1128.48,
+   "end": 1132.3,
+   "text": "I've also found out when I was learning like French or English."
   },
   {
-   "start": 1134.34,
-   "end": 1143.06,
-   "text": "The most important thing when learning a language by yourself is exposing yourself to the language"
+   "start": 1134.14,
+   "end": 1137.22,
+   "text": "The most important thing when learning a language by yourself"
   },
   {
-   "start": 1143.06,
-   "end": 1145.18,
-   "text": "as much as possible."
+   "start": 1137.22,
+   "end": 1143.86,
+   "text": "is exposing yourself to the language as much as possible."
   },
   {
-   "start": 1145.18,
-   "end": 1152.42,
-   "text": "Listening, podcasts, watching shows, or reading."
+   "start": 1145.78,
+   "end": 1151.1,
+   "text": "So listening, podcasts, watching shows, or reading."
   },
   {
-   "start": 1152.42,
-   "end": 1154.78,
+   "start": 1152.06,
+   "end": 1154.2,
    "text": "Reading might be the best option because it's slower."
   },
   {
-   "start": 1154.78,
-   "end": 1156.98,
+   "start": 1154.58,
+   "end": 1155.64,
    "text": "You read at your own pace."
   },
   {
-   "start": 1156.98,
-   "end": 1160.06,
+   "start": 1156.74,
+   "end": 1159.14,
    "text": "It might be hard at first, especially if you're a beginner."
   },
   {
-   "start": 1160.06,
-   "end": 1166.42,
-   "text": "So find material that's easier to digest like children's books, children's TV shows and"
+   "start": 1159.86,
+   "end": 1166.4,
+   "text": "So find material that's easier to digest, like children's books, children's TV shows, and"
   },
   {
-   "start": 1166.42,
-   "end": 1170.3,
-   "text": "stuff like that, which might be hard again."
+   "start": 1166.4,
+   "end": 1167.76,
+   "text": "stuff like that, which might be hard."
   },
   {
-   "start": 1170.3,
-   "end": 1179.94,
-   "text": "There's not that much materials, but children's books are accessible in Serbia at least."
+   "start": 1167.76,
+   "end": 1172.04,
+   "text": "Again, there's not that much materials."
   },
   {
-   "start": 1179.94,
-   "end": 1186.42,
-   "text": "And then if it's too hard as a beginner and later on, if you need help with some grammar"
+   "start": 1174.14,
+   "end": 1177.7,
+   "text": "But children's books are accessible in Serbia at least."
   },
   {
-   "start": 1186.42,
-   "end": 1192.18,
-   "text": "structures, find a tutor or ideally start learning by yourself grammar."
+   "start": 1179.66,
+   "end": 1185.24,
+   "text": "And then if it's too hard as a beginner, and later on, if you"
   },
   {
-   "start": 1192.18,
-   "end": 1195.38,
-   "text": "But Serbian grammar can be very, very messy."
+   "start": 1185.24,
+   "end": 1191.02,
+   "text": "need help with some grammar structures, find a tutor or ideally start learning by"
   },
   {
-   "start": 1195.38,
-   "end": 1196.38,
-   "text": "It's hard."
+   "start": 1191.02,
+   "end": 1191.78,
+   "text": "yourself grammar,"
   },
   {
-   "start": 1196.38,
-   "end": 1199.38,
-   "text": "So many irregularities."
+   "start": 1191.78,
+   "end": 1195.1,
+   "text": "but Serbian grammar can be very, very messy."
   },
   {
-   "start": 1199.38,
-   "end": 1200.38,
-   "text": "Yes."
+   "start": 1195.1,
+   "end": 1198.62,
+   "text": "It's hard. So many irregularities."
   },
   {
-   "start": 1200.38,
-   "end": 1201.38,
-   "text": "Find a tutor."
+   "start": 1199.06,
+   "end": 1200.66,
+   "text": "Yes. Find a tutor."
   },
   {
-   "start": 1201.38,
-   "end": 1203.3,
+   "start": 1200.98,
+   "end": 1202.51,
    "text": "You can't go without grammar."
   },
   {
-   "start": 1203.3,
-   "end": 1206.78,
-   "text": "You can, if you live in Serbia, you probably can."
+   "start": 1203.15,
+   "end": 1204.61,
+   "text": "You can if you live in Serbia."
   },
   {
-   "start": 1206.78,
-   "end": 1210.42,
-   "text": "Depends on, every student has different, you know, profile."
+   "start": 1205.03,
+   "end": 1206.29,
+   "text": "You probably can."
   },
   {
-   "start": 1210.42,
-   "end": 1214.2,
-   "text": "Some absorb language like a sponge, some do not."
+   "start": 1206.29,
+   "end": 1210.11,
+   "text": "Depends on every student has a different profile."
   },
   {
-   "start": 1214.2,
-   "end": 1220.2,
-   "text": "So it all depends from student to student, but you'll probably need help with grammar."
+   "start": 1210.11,
+   "end": 1212.97,
+   "text": "Some absorb language like a sponge."
   },
   {
-   "start": 1220.2,
-   "end": 1226.0,
-   "text": "And grammar is not learned just to learn what's subject, what's nominative, what's accusative."
+   "start": 1212.97,
+   "end": 1213.15,
+   "text": "Some do not."
   },
   {
-   "start": 1226.0,
-   "end": 1230.36,
-   "text": "It's learned to recognize patterns in sentence structure and grammar."
+   "start": 1213.15,
+   "end": 1216.81,
+   "text": "So it all depends from student to student."
   },
   {
-   "start": 1230.36,
-   "end": 1237.68,
-   "text": "So it makes it easier for you to make your own sentences or to understand why did someone"
+   "start": 1217.09,
+   "end": 1219.35,
+   "text": "But you probably need help with grammar."
   },
   {
-   "start": 1237.68,
-   "end": 1241.68,
-   "text": "say this in that way and similar."
+   "start": 1219.87,
+   "end": 1225.63,
+   "text": "And grammar is not just to learn what's subject, what's nominative, what's accusative."
   },
   {
-   "start": 1241.68,
-   "end": 1245.28,
-   "text": "And using those methods, it's easier for you to speak."
+   "start": 1225.63,
+   "end": 1230.87,
+   "text": "it's learned to recognize patterns in sentence structure and grammar so it makes it"
   },
   {
-   "start": 1245.28,
-   "end": 1248.8,
-   "text": "So those are first two tips."
+   "start": 1230.87,
+   "end": 1230.99,
+   "text": "easier for"
   },
   {
-   "start": 1248.8,
-   "end": 1249.8,
-   "text": "Exactly."
+   "start": 1230.99,
+   "end": 1237.55,
+   "text": "you when you to make your own sentences or to understand why did someone"
   },
   {
-   "start": 1249.8,
-   "end": 1250.8,
-   "text": "And songs."
+   "start": 1237.55,
+   "end": 1239.29,
+   "text": "say this in that way"
   },
   {
-   "start": 1250.8,
-   "end": 1254.8,
-   "text": "I mean, in addition to books and videos and stuff."
+   "start": 1239.29,
+   "end": 1246.53,
+   "text": "and similar and using those methods it's easier for you to speak so those"
   },
   {
-   "start": 1254.8,
-   "end": 1260.68,
-   "text": "Songs to me, as you, if you like music and if you like Serbian music, you can listen"
+   "start": 1246.53,
+   "end": 1252.59,
+   "text": "are first two tips exactly and songs i mean in addition to books songs"
   },
   {
-   "start": 1260.68,
-   "end": 1266.72,
-   "text": "to the same song every day and you can memorize the lyrics and then, you know, without knowing"
+   "start": 1261.41,
+   "end": 1266.85,
+   "text": "day and you can memorize the lyrics and then you know without knowing which"
   },
   {
-   "start": 1266.8,
-   "end": 1269.8,
-   "text": "what it is, you know what to say and how to say."
+   "start": 1266.85,
+   "end": 1267.89,
+   "text": "part is you know what"
   },
   {
-   "start": 1269.8,
-   "end": 1272.96,
-   "text": "That's really helpful."
+   "start": 1267.89,
+   "end": 1273.73,
+   "text": "to say and how to say that's really helpful it's it's very important to"
   },
   {
-   "start": 1272.96,
-   "end": 1278.96,
-   "text": "It's very important to actively learn, like it takes, when you learn, when you read or"
+   "start": 1273.73,
+   "end": 1275.69,
+   "text": "actively learn like it it"
   },
   {
-   "start": 1278.96,
-   "end": 1284.96,
-   "text": "listen to music in language you don't know, Serbian, or watch TV shows, it will be mentally"
+   "start": 1280.57,
+   "end": 1285.89,
+   "text": "don't know serbian or watch TV shows, it will be mentally harder."
   },
   {
-   "start": 1284.96,
-   "end": 1287.24,
-   "text": "harder."
+   "start": 1286.97,
+   "end": 1287.75,
+   "text": "You have to focus more."
   },
   {
-   "start": 1287.24,
-   "end": 1292.2,
-   "text": "You have to focus more, it will drain you more, you'll get tired more than watching"
+   "start": 1287.75,
+   "end": 1288.85,
+   "text": "It will drain you more."
   },
   {
-   "start": 1292.2,
-   "end": 1293.2,
-   "text": "other shows."
+   "start": 1288.85,
+   "end": 1292.73,
+   "text": "You'll get tired more than watching other shows."
   },
   {
-   "start": 1293.36,
-   "end": 1299.32,
-   "text": "So it's very important to do it every day, to focus and have a notebook, write down things"
+   "start": 1292.73,
+   "end": 1298.07,
+   "text": "So it's very important to do it every day, to focus and have a"
   },
   {
-   "start": 1299.32,
-   "end": 1303.2,
-   "text": "that are new and it will be harder to do."
+   "start": 1298.07,
+   "end": 1298.47,
+   "text": "notebook,"
   },
   {
-   "start": 1303.2,
-   "end": 1307.08,
+   "start": 1298.47,
+   "end": 1302.97,
+   "text": "write down things that are new, and it will be harder to do."
+  },
+  {
+   "start": 1302.97,
+   "end": 1305.99,
    "text": "It won't be as relaxing at the beginning at first."
   },
   {
-   "start": 1307.08,
-   "end": 1310.52,
+   "start": 1306.83,
+   "end": 1310.25,
    "text": "Second, the thing that helped me the most are podcasts."
   },
   {
-   "start": 1310.52,
-   "end": 1311.84,
-   "text": "That's why I started a podcast."
+   "start": 1310.25,
+   "end": 1310.69,
+   "text": "That's why."
   },
   {
-   "start": 1311.84,
-   "end": 1316.36,
-   "text": "I listened to a podcast and read transcript in French, for example."
+   "start": 1310.69,
+   "end": 1315.63,
+   "text": "started a podcast i listened to a podcast and read transcript in french for"
   },
   {
-   "start": 1316.36,
-   "end": 1319.76,
-   "text": "It helped me enormously."
+   "start": 1315.63,
+   "end": 1316.83,
+   "text": "example it helped me"
   },
   {
-   "start": 1319.8,
-   "end": 1324.64,
-   "text": "I was studying French in school for like eight years, I think."
+   "start": 1316.83,
+   "end": 1323.57,
+   "text": "enormously um i was studying french in school for like eight years i think"
   },
   {
-   "start": 1324.64,
-   "end": 1325.64,
-   "text": "I learned nothing."
+   "start": 1323.57,
+   "end": 1325.51,
+   "text": "i learned nothing and then"
   },
   {
-   "start": 1325.64,
-   "end": 1328.0,
-   "text": "And then I did this for like a couple of months."
+   "start": 1325.51,
+   "end": 1329.25,
+   "text": "i did this for like a couple of months i i did more than"
   },
   {
-   "start": 1328.0,
-   "end": 1330.12,
-   "text": "I did more than in school."
+   "start": 1329.25,
+   "end": 1336.89,
+   "text": "in school i learned more so that's very useful um so also"
   },
   {
-   "start": 1330.12,
-   "end": 1332.04,
-   "text": "I learned more."
+   "start": 1336.89,
+   "end": 1343.89,
+   "text": "um read stuff online like um even though news i mean the websites"
   },
   {
-   "start": 1332.04,
-   "end": 1335.96,
-   "text": "So that's very useful."
+   "start": 1343.89,
+   "end": 1344.27,
+   "text": "of newspapers"
   },
   {
-   "start": 1335.96,
-   "end": 1342.08,
-   "text": "So also read stuff online."
+   "start": 1344.27,
+   "end": 1349.37,
+   "text": "are good but they are a little bit hard in the beginning because you"
   },
   {
-   "start": 1342.08,
-   "end": 1347.56,
-   "text": "Even though news, I mean, the websites of newspapers are good, but they are a little"
+   "start": 1349.37,
+   "end": 1350.13,
+   "text": "don't know like they use"
   },
   {
-   "start": 1347.56,
-   "end": 1353.96,
-   "text": "bit hard in the beginning because you don't know, like they use very professional, rare"
+   "start": 1350.13,
+   "end": 1357.51,
+   "text": "very um professional rare professional terms and stuff but it is useful in"
   },
   {
-   "start": 1353.96,
-   "end": 1355.96,
-   "text": "professional terms and stuff."
+   "start": 1357.51,
+   "end": 1361.93,
+   "text": "the long term especially the easy the lucky uh vest there i think are"
   },
   {
-   "start": 1355.96,
-   "end": 1363.08,
-   "text": "But it is useful in the long term, especially the easy, the lucky, I think are easy to like"
+   "start": 1361.93,
+   "end": 1365.13,
+   "text": "easy to like social life kind of things or about fashion"
   },
   {
-   "start": 1363.08,
-   "end": 1367.08,
-   "text": "social life kind of things or about fashion and stuff."
+   "start": 1365.13,
+   "end": 1372.63,
+   "text": "and stuff easier ones are definitely useful um either articles or"
   },
   {
-   "start": 1367.08,
-   "end": 1371.6,
-   "text": "Easier ones are definitely useful."
+   "start": 1372.63,
+   "end": 1374.77,
+   "text": "like a reddit um is very useful"
   },
   {
-   "start": 1371.6,
-   "end": 1376.48,
-   "text": "Either articles or like a Reddit is very useful because it's a forum."
+   "start": 1374.77,
+   "end": 1379.52,
+   "text": "because it's a forum it's an open forum where people talk in a colloquial"
   },
   {
-   "start": 1376.48,
-   "end": 1380.96,
-   "text": "It's an open forum where people talk in a colloquial, like where you'll hear people"
+   "start": 1379.52,
+   "end": 1381.6,
+   "text": "way you'll hear people talk on the street."
   },
   {
-   "start": 1380.96,
-   "end": 1382.8,
-   "text": "talk on the street."
-  },
-  {
-   "start": 1382.8,
-   "end": 1387.68,
+   "start": 1382.28,
+   "end": 1387.46,
    "text": "And you can also inform yourself about the culture, current events."
   },
   {
-   "start": 1387.68,
-   "end": 1390.28,
+   "start": 1387.46,
+   "end": 1388.48,
    "text": "And that's also important."
   },
   {
-   "start": 1390.28,
-   "end": 1398.36,
-   "text": "Tip number four or five is to get interested into the culture of the country, which language"
+   "start": 1390.0,
+   "end": 1394.98,
+   "text": "Tip number four or five is to get interested into the culture of the"
   },
   {
-   "start": 1398.36,
-   "end": 1403.96,
-   "text": "you're learning, actually, because learning a language is learning to think in that language."
+   "start": 1394.98,
+   "end": 1399.62,
+   "text": "country, which language you're learning, actually."
   },
   {
-   "start": 1404.0,
-   "end": 1410.12,
-   "text": "And it also is learning about the culture, culture, history, news, current events."
+   "start": 1400.12,
+   "end": 1403.08,
+   "text": "because learning a language is learning to think in that language."
   },
   {
-   "start": 1410.12,
-   "end": 1416.64,
+   "start": 1403.48,
+   "end": 1405.92,
+   "text": "And it also is learning about the culture."
+  },
+  {
+   "start": 1406.58,
+   "end": 1409.36,
+   "text": "Culture, history, news, current events."
+  },
+  {
+   "start": 1409.92,
+   "end": 1415.64,
    "text": "If you're interested in that, you'll be more motivated to learn that language."
   },
   {
-   "start": 1416.64,
-   "end": 1419.72,
+   "start": 1416.46,
+   "end": 1418.98,
    "text": "If you're not motivated at all, you won't learn."
   },
   {
-   "start": 1419.72,
-   "end": 1423.84,
+   "start": 1419.58,
+   "end": 1421.16,
    "text": "So you have to have a motivation."
   },
   {
-   "start": 1423.84,
-   "end": 1424.84,
+   "start": 1421.96,
+   "end": 1422.22,
+   "text": "Yeah."
+  },
+  {
+   "start": 1423.76,
+   "end": 1423.92,
    "text": "I've got that."
   },
   {
-   "start": 1424.84,
-   "end": 1430.28,
-   "text": "I feel lucky that I will never get tired, even though I get really angry with the difficult"
+   "start": 1423.92,
+   "end": 1426.9,
+   "text": "I feel lucky that I will never get tired."
   },
   {
-   "start": 1430.28,
-   "end": 1432.84,
-   "text": "parts of Serbian from time to time."
+   "start": 1426.9,
+   "end": 1432.22,
+   "text": "Even though I get really angry with the difficult parts of Serbia from time"
   },
   {
-   "start": 1432.84,
-   "end": 1439.24,
-   "text": "I still love it and I enjoy learning new things about the culture."
+   "start": 1432.22,
+   "end": 1433.7,
+   "text": "to time, I still love it."
   },
   {
-   "start": 1439.24,
-   "end": 1448.48,
-   "text": "And also, like as we did in the previous episode, new TV series like modern ones, of course,"
+   "start": 1433.7,
+   "end": 1437.88,
+   "text": "And I enjoy learning new things about the culture."
   },
   {
-   "start": 1448.48,
-   "end": 1451.56,
-   "text": "old movies are useful, but the new ones are also very good."
+   "start": 1439.02,
+   "end": 1446.33,
+   "text": "And also, like as we did in the previous episode new tv series like"
   },
   {
-   "start": 1451.56,
-   "end": 1457.56,
-   "text": "I know a lot of friends of mine learned English thanks to Friends, How I Met Your Mother,"
+   "start": 1446.33,
+   "end": 1446.73,
+   "text": "ones of course old movies are useful but the new ones are also very modern"
   },
   {
-   "start": 1457.56,
-   "end": 1463.08,
-   "text": "you know, those short episode ones, because it's easy to repeat and, you know, you're"
+   "start": 1451.05,
+   "end": 1452.45,
+   "text": "good i know a lot of friends"
   },
   {
-   "start": 1463.08,
-   "end": 1464.08,
-   "text": "not going to be bored."
+   "start": 1452.45,
+   "end": 1457.71,
+   "text": "of mine learned english thanks to friends how i met your mother you know"
   },
   {
-   "start": 1464.08,
-   "end": 1465.08,
-   "text": "They are fun."
+   "start": 1457.71,
+   "end": 1459.91,
+   "text": "those short episode ones"
   },
   {
-   "start": 1465.08,
-   "end": 1473.4,
-   "text": "And also Serbian soap operas, I think also good for developing your language skills."
+   "start": 1459.91,
+   "end": 1463.77,
+   "text": "because it's easy to repeat and you know you're not going to be bored"
   },
   {
-   "start": 1473.4,
-   "end": 1475.08,
-   "text": "Yes."
+   "start": 1463.77,
+   "end": 1465.59,
+   "text": "they are fun and also serbian"
   },
   {
-   "start": 1475.08,
-   "end": 1478.28,
-   "text": "So that would be my major tips."
+   "start": 1467.41,
+   "end": 1475.05,
+   "text": "soap operas I think also good for developing your language skills yes so"
   },
   {
-   "start": 1478.28,
-   "end": 1481.16,
-   "text": "I don't know if you have some other stuff to add."
+   "start": 1475.05,
+   "end": 1475.47,
+   "text": "that would be my"
   },
   {
-   "start": 1481.16,
-   "end": 1486.48,
-   "text": "No, I think you covered it all, but staying motivated is the most challenging thing."
+   "start": 1475.47,
+   "end": 1481.77,
+   "text": "major tips I don't know if you have some other stuff to add no"
   },
   {
-   "start": 1486.48,
-   "end": 1491.92,
-   "text": "But if you do it, it will pay you back quite a lot."
+   "start": 1481.77,
+   "end": 1483.29,
+   "text": "I think you covered it all but"
   },
   {
-   "start": 1491.92,
-   "end": 1494.64,
-   "text": "OK, this was a very nice season for me."
+   "start": 1483.29,
+   "end": 1488.39,
+   "text": "staying motivated is the most challenging thing but if you do it it will"
   },
   {
-   "start": 1494.64,
-   "end": 1496.68,
-   "text": "It was one of the best, to be honest."
+   "start": 1488.39,
+   "end": 1489.05,
+   "text": "pay you back"
   },
   {
-   "start": 1496.68,
-   "end": 1503.16,
-   "text": "I believe I can now kind of proudly say that I'm intermediate level."
+   "start": 1490.37,
+   "end": 1491.07,
+   "text": "quite a lot"
   },
   {
-   "start": 1503.16,
-   "end": 1504.16,
-   "text": "Yeah, I would say so."
+   "start": 1492.51,
+   "end": 1494.23,
+   "text": "okay this was a very nice season for me"
   },
   {
-   "start": 1504.16,
-   "end": 1506.16,
-   "text": "At least while reading this thing."
+   "start": 1494.23,
+   "end": 1495.99,
+   "text": "it was one of the best to be honest"
   },
   {
-   "start": 1506.16,
-   "end": 1507.16,
-   "text": "Yes."
+   "start": 1495.99,
+   "end": 1497.51,
+   "text": "I believe"
   },
   {
-   "start": 1507.16,
-   "end": 1508.16,
-   "text": "I enjoyed it as well."
+   "start": 1497.51,
+   "end": 1502.03,
+   "text": "I can now kind of proudly say that I'm intermediate"
   },
   {
-   "start": 1508.16,
-   "end": 1512.96,
-   "text": "It was a nice experience for me as well."
+   "start": 1502.03,
+   "end": 1505.21,
+   "text": "level while reading the scene"
   },
   {
-   "start": 1512.96,
-   "end": 1518.48,
-   "text": "And I hope you advance even faster and learn more and more."
+   "start": 1506.63,
+   "end": 1507.52,
+   "text": "I enjoyed it as well"
   },
   {
-   "start": 1518.48,
-   "end": 1521.0,
-   "text": "Oh, so, so much."
+   "start": 1507.52,
+   "end": 1514.28,
+   "text": "it was a nice experience for me as well um and I hope you"
   },
   {
-   "start": 1521.0,
-   "end": 1526.52,
-   "text": "I will make a surprise, like, let's have an episode in advanced level for our listeners"
+   "start": 1514.28,
+   "end": 1517.02,
+   "text": "advance even faster and learn more and"
   },
   {
-   "start": 1526.52,
-   "end": 1527.68,
-   "text": "one day."
+   "start": 1517.02,
+   "end": 1522.88,
+   "text": "more um so so much I will make a surprise like let's have an"
   },
   {
-   "start": 1527.68,
-   "end": 1534.0,
-   "text": "But I will definitely keep going and let's see what new ideas we will come up with and"
+   "start": 1522.88,
+   "end": 1528.86,
+   "text": "episode in advanced level for our listeners one day but i will definitely keep"
   },
   {
-   "start": 1534.0,
-   "end": 1536.04,
-   "text": "continue helping others."
+   "start": 1528.86,
+   "end": 1532.84,
+   "text": "going and let's see what new ideas we will"
   },
   {
-   "start": 1536.04,
-   "end": 1537.04,
-   "text": "Yes."
+   "start": 1532.84,
+   "end": 1539.88,
+   "text": "come up with and continue helping others yes well thank you i guess thank"
   },
   {
-   "start": 1537.04,
-   "end": 1539.84,
-   "text": "Well, thank you, I guess."
+   "start": 1539.88,
+   "end": 1546.92,
+   "text": "you too and we'll see each other i guess maybe"
   },
   {
-   "start": 1539.84,
-   "end": 1540.84,
-   "text": "Thank you too."
+   "start": 1546.92,
+   "end": 1549.8,
+   "text": "one day for a cup of coffee or a cup of coffee if you"
   },
   {
-   "start": 1540.84,
-   "end": 1541.84,
-   "text": "Hvala mnogo."
+   "start": 1549.8,
+   "end": 1552.32,
+   "text": "come to Belgrade or somewhere near?"
   },
   {
-   "start": 1541.84,
-   "end": 1542.84,
-   "text": "Hvala mnogo."
+   "start": 1552.82,
+   "end": 1556.0,
+   "text": "Sure, sure. And of course, for you as well, if you are on your"
   },
   {
-   "start": 1542.84,
-   "end": 1543.84,
-   "text": "Čemu."
+   "start": 1556.0,
+   "end": 1560.5,
+   "text": "way to Greece, I live in Skopje, as you know, for everyone, you can"
   },
   {
-   "start": 1543.84,
-   "end": 1544.84,
-   "text": "Čemu."
+   "start": 1560.5,
+   "end": 1561.36,
+   "text": "easily reach out to me"
   },
   {
-   "start": 1544.84,
-   "end": 1549.52,
-   "text": "And we'll see each other, I guess, maybe one day for a cup of coffee or a cup of coffee"
+   "start": 1561.36,
+   "end": 1564.28,
+   "text": "and I would be happy to host you around."
   },
   {
-   "start": 1549.52,
-   "end": 1552.76,
-   "text": "if you come to Belgrade or somewhere near."
+   "start": 1564.94,
+   "end": 1567.2,
+   "text": "Okay, great. Toe to."
   },
   {
-   "start": 1552.76,
-   "end": 1553.76,
-   "text": "Sure."
+   "start": 1567.92,
+   "end": 1570.22,
+   "text": "Hvala. Vidimo se."
   },
   {
-   "start": 1553.76,
-   "end": 1554.76,
-   "text": "Sure."
-  },
-  {
-   "start": 1554.76,
-   "end": 1558.84,
-   "text": "And of course, for you as well, if you're on your way to Greece, I live in Skopje, as"
-  },
-  {
-   "start": 1558.84,
-   "end": 1560.4,
-   "text": "you know, for everyone."
-  },
-  {
-   "start": 1560.4,
-   "end": 1564.96,
-   "text": "You can easily reach out to me and I would be happy to host you around."
-  },
-  {
-   "start": 1564.96,
-   "end": 1565.96,
-   "text": "OK, great."
-  },
-  {
-   "start": 1565.96,
-   "end": 1566.96,
-   "text": "Hvala."
-  },
-  {
-   "start": 1566.96,
-   "end": 1567.96,
-   "text": "Čemu."
-  },
-  {
-   "start": 1567.96,
-   "end": 1568.96,
-   "text": "Čemu."
-  },
-  {
-   "start": 1568.96,
-   "end": 1569.96,
-   "text": "Hvala."
-  },
-  {
-   "start": 1569.96,
-   "end": 1570.96,
-   "text": "Čemu."
+   "start": 1570.36,
+   "end": 1570.56,
+   "text": "Ciao."
   }
  ],
  "title": "Learn Serbian & Može kafa podcast: Episode 18 - Season Recap",

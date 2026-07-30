@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../models/answer.dart';
 import '../models/exercise.dart';
+import '../services/exercise_shuffle.dart';
 import 'course_chip.dart';
 
 class ChoiceView extends StatelessWidget {
@@ -13,6 +14,7 @@ class ChoiceView extends StatelessWidget {
     required this.options,
     required this.multi,
     required this.onChanged,
+    required this.shuffleSeed,
     this.answer,
     this.enabled = true,
   });
@@ -20,6 +22,16 @@ class ChoiceView extends StatelessWidget {
   final List<ChoiceOption> options;
   final bool multi;
   final ValueChanged<Answer?> onChanged;
+
+  /// Строка, по которой перемешиваются варианты — обычно ID упражнения.
+  ///
+  /// В материалах курса верный ответ записан первым во всех ста пятидесяти
+  /// девяти заданиях с выбором: так их удобнее вычитывать. Без перемешивания
+  /// курс проходился нажатием на первую строку, ничего не читая. Порядок
+  /// детерминирован по этой же строке, поэтому при возврате к уроку варианты
+  /// не перескакивают с места на место.
+  final String shuffleSeed;
+
   final Answer? answer;
   final bool enabled;
 
@@ -40,6 +52,7 @@ class ChoiceView extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final selected = _selected;
+    final shown = seededShuffle(options, seedFromString(shuffleSeed));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +68,7 @@ class ChoiceView extends StatelessWidget {
               ),
             ),
           ),
-        for (final option in options)
+        for (final option in shown)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: _OptionRow(

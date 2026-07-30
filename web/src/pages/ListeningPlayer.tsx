@@ -106,7 +106,8 @@ export function ListeningPlayer() {
       })
       .catch(() => {
         if (controller.signal.aborted) return;
-        // Короткие cues из RSS остаются рабочим запасным вариантом.
+        // Встроенные реплики остаются запасным вариантом для курируемых
+        // аудиоуроков. Подкасты с Go-сервера приходят с пустым массивом.
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoadingTranscript(false);
@@ -201,6 +202,14 @@ export function ListeningPlayer() {
     if (!player || !lesson) return;
     if (playing) {
       player.pause();
+    } else if (cues.length === 0 && !isTts) {
+      if (!started.current) {
+        player.src = playableAudioUrl(lesson.audio_url!);
+        player.load();
+        started.current = true;
+      }
+      player.playbackRate = speed;
+      await player.play().catch(() => setPlaying(false));
     } else if (!started.current || player.ended) {
       await playCue(player.ended ? 0 : cueIndex);
     } else {
@@ -268,6 +277,15 @@ export function ListeningPlayer() {
         </div>
 
         <div className="space-y-2">
+          {!loadingTranscript && cues.length === 0 && (
+            <div className="border-y border-[var(--line)] py-8 text-center">
+              <p className="font-bold">Транскрипция этого эпизода готовится</p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">
+                Запись уже можно слушать. Текст появится после проверки
+                автоматической расшифровки.
+              </p>
+            </div>
+          )}
           {cues.map((cue, index) => (
             <KaraokeCue
               key={`${index}-${cue.start ?? 'tts'}`}
@@ -412,7 +430,7 @@ function PlayerControls({
             <SkipNextIcon />
           </IconButton>
           <span className="ml-2 min-w-16 text-sm font-bold text-[var(--text-muted)]">
-            {cue + 1}/{count}
+            {count > 0 ? `${cue + 1}/${count}` : 'без текста'}
           </span>
         </div>
         <div className="flex items-center gap-1 sm:ml-auto" aria-label="Скорость воспроизведения">

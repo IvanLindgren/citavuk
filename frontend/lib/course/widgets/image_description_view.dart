@@ -52,6 +52,7 @@ class _ImageDescriptionViewState extends State<ImageDescriptionView> {
           ImageMode.choose => ChoiceView(
               options: e.options,
               multi: false,
+              shuffleSeed: e.id,
               answer: widget.answer,
               enabled: widget.enabled,
               onChanged: widget.onChanged,

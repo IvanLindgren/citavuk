@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -204,20 +205,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _importFile() async {
+    // withData только на вебе. Там пути к файлу нет вовсе, а на телефоне этот
+    // флаг заставляет плагин положить файл в память ЦЕЛИКОМ — и вдобавок
+    // сохранить копию в кеш. Для книги на несколько десятков мегабайт это два
+    // одновременных снимка файла в памяти, и Android убивал приложение прямо
+    // при выборе книги. С путём файл читается один раз и одним куском.
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: DocumentParser.supportedExtensions,
-      withData: true,
+      withData: kIsWeb,
     );
     if (result == null || result.files.isEmpty) return;
 
     final file = result.files.first;
-    final bytes = file.bytes;
-    if (bytes == null) return;
+    if (kIsWeb) {
+      final bytes = file.bytes;
+      if (bytes == null) return;
+      await _importBytes(file.name, file.name, bytes);
+      return;
+    }
 
-    // На вебе file.path недоступен (кидает исключение) — используем имя.
-    await _importBytes(
-        file.name, kIsWeb ? file.name : (file.path ?? file.name), bytes);
+    final path = file.path;
+    if (path == null) {
+      // Пути нет — остаётся то, что плагин успел прочитать сам.
+      final bytes = file.bytes;
+      if (bytes == null) return;
+      await _importBytes(file.name, file.name, bytes);
+      return;
+    }
+    await _importPath(file.name, path);
+  }
+
+  /// Импорт файла по пути: байты читаются здесь и живут в одном экземпляре.
+  ///
+  /// Через XFile, а не dart:io: этот же экран собирается для веба, где dart:io
+  /// нет вовсе. XFile — та же обёртка, которой приходят файлы, брошенные в окно.
+  Future<void> _importPath(String name, String path) async {
+    final Uint8List bytes;
+    try {
+      bytes = await XFile(path).readAsBytes();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Не удалось прочитать файл: $e')));
+      return;
+    }
+    await _importBytes(name, path, bytes);
   }
 
   /// Общий путь импорта: и выбор файла, и перетаскивание в окно.

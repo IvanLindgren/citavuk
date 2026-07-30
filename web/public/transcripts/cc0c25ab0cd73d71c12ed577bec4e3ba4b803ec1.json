@@ -1,0 +1,2360 @@
+{
+ "duration": 1736.6,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 6.8,
+   "end": 13.66,
+   "text": "Hello everyone! Welcome to our combined podcast, Learn Serbian podcast and Može Kafa podcast."
+  },
+  {
+   "start": 14.12,
+   "end": 18.08,
+   "text": "I'm Nikola and I'm Maki."
+  },
+  {
+   "start": 18.08,
+   "end": 19.02,
+   "text": "Welcome to the World Serbian podcast."
+  },
+  {
+   "start": 19.26,
+   "end": 26.46,
+   "text": "Today we're doing Prava Serbia 2, the second part when we talk about what"
+  },
+  {
+   "start": 26.46,
+   "end": 31.24,
+   "text": "it really is to live in Serbia."
+  },
+  {
+   "start": 31.68,
+   "end": 38.08,
+   "text": "We talk about Serbian culture and things that make Serbian culture unique in the"
+  },
+  {
+   "start": 38.08,
+   "end": 39.92,
+   "text": "perspective of someone living there."
+  },
+  {
+   "start": 40.66,
+   "end": 45.54,
+   "text": "When you visit, you can also follow these tips to have a better time."
+  },
+  {
+   "start": 46.34,
+   "end": 47.2,
+   "text": "Where do you want to start?"
+  },
+  {
+   "start": 48.18,
+   "end": 55.3,
+   "text": "so uh living in Serbia I really enjoyed you know everything about"
+  },
+  {
+   "start": 55.3,
+   "end": 57.1,
+   "text": "it but the most I think the nature"
+  },
+  {
+   "start": 57.1,
+   "end": 63.64,
+   "text": "so I'd like to start with nature escapes I think I've been to most"
+  },
+  {
+   "start": 63.64,
+   "end": 66.16,
+   "text": "of them I think except one so"
+  },
+  {
+   "start": 66.16,
+   "end": 72.46,
+   "text": "let's start with beautiful uh natural spots that you can visit and maybe we"
+  },
+  {
+   "start": 72.46,
+   "end": 75.53,
+   "text": "can add some you know interesting facts about these places"
+  },
+  {
+   "start": 75.53,
+   "end": 80.19,
+   "text": "and what they mean to you as a local person what they mean to"
+  },
+  {
+   "start": 80.19,
+   "end": 82.59,
+   "text": "me as an expat in serbia"
+  },
+  {
+   "start": 84.13,
+   "end": 91.43,
+   "text": "so kaponik zlatibor starapranina bruska gora these are all mountains"
+  },
+  {
+   "start": 91.43,
+   "end": 99.29,
+   "text": "right let's start with the mountains so which one is your favorite nicola my"
+  },
+  {
+   "start": 99.29,
+   "end": 103.29,
+   "text": "favorite has to be star planina because i'm uh"
+  },
+  {
+   "start": 103.29,
+   "end": 109.51,
+   "text": "from that's my hometown is near near it and uh often uh was going"
+  },
+  {
+   "start": 109.51,
+   "end": 110.91,
+   "text": "there before and now whenever"
+  },
+  {
+   "start": 110.91,
+   "end": 117.77,
+   "text": "i come usually in spring and summer um it doesn't have much um there's"
+  },
+  {
+   "start": 117.77,
+   "end": 122.31,
+   "text": "not many hotels there that you can visit as in Coponic and Zlatibor but"
+  },
+  {
+   "start": 122.31,
+   "end": 124.83,
+   "text": "it's definitely I think the most beautiful"
+  },
+  {
+   "start": 126.21,
+   "end": 133.55,
+   "text": "nature park because just because of that it's just pure nature everywhere and"
+  },
+  {
+   "start": 133.55,
+   "end": 134.67,
+   "text": "so it's on also"
+  },
+  {
+   "start": 134.67,
+   "end": 139.11,
+   "text": "one of the highest mountains in Serbia and it also has a ski resort"
+  },
+  {
+   "start": 139.11,
+   "end": 140.35,
+   "text": "there a small one I guess"
+  },
+  {
+   "start": 140.35,
+   "end": 145.49,
+   "text": "yeah yeah of course there's a ski resort there is one hotel with like"
+  },
+  {
+   "start": 145.49,
+   "end": 148.73,
+   "text": "luxury hotel there is a couple there is one"
+  },
+  {
+   "start": 150.29,
+   "end": 155.97,
+   "text": "old hotel and, of course, places you can rent out all over."
+  },
+  {
+   "start": 156.55,
+   "end": 158.59,
+   "text": "Yeah, weekend itza, right, you say."
+  },
+  {
+   "start": 158.59,
+   "end": 159.37,
+   "text": "Weekend itza, yeah."
+  },
+  {
+   "start": 160.39,
+   "end": 164.03,
+   "text": "Weekend houses, there are plenty of them in Serbia."
+  },
+  {
+   "start": 164.99,
+   "end": 166.81,
+   "text": "But the thing is, let me give you a hint."
+  },
+  {
+   "start": 167.89,
+   "end": 172.99,
+   "text": "Normally on booking or Airbnb, you can find if you were in Europe, right?"
+  },
+  {
+   "start": 173.33,
+   "end": 176.35,
+   "text": "But in Serbia, not all of them are there."
+  },
+  {
+   "start": 176.35,
+   "end": 178.29,
+   "text": "Actually, most of them are not there."
+  },
+  {
+   "start": 178.79,
+   "end": 183.19,
+   "text": "So you need to find, you need to improve your skills of researching when"
+  },
+  {
+   "start": 183.19,
+   "end": 184.49,
+   "text": "it comes to renting a place."
+  },
+  {
+   "start": 184.95,
+   "end": 189.25,
+   "text": "But Google Maps, Instagram and Facebook."
+  },
+  {
+   "start": 189.37,
+   "end": 191.29,
+   "text": "Facebook the most, I think, helpful one."
+  },
+  {
+   "start": 191.75,
+   "end": 193.03,
+   "text": "You need to write weekends."
+  },
+  {
+   "start": 193.03,
+   "end": 198.05,
+   "text": "And there are some websites that you can find these kind of places to"
+  },
+  {
+   "start": 198.05,
+   "end": 200.99,
+   "text": "rent and to reach their contact info."
+  },
+  {
+   "start": 200.99,
+   "end": 208.09,
+   "text": "So my favorite is Koponik, because Krušovac was near"
+  },
+  {
+   "start": 208.09,
+   "end": 213.67,
+   "text": "Koponik, and I went there many, many times, and I learned skiing there."
+  },
+  {
+   "start": 213.97,
+   "end": 216.91,
+   "text": "So that's why it's a special place for me."
+  },
+  {
+   "start": 217.99,
+   "end": 224.05,
+   "text": "Yeah. It's probably the most popular ski resort in Serbia."
+  },
+  {
+   "start": 224.63,
+   "end": 225.92,
+   "text": "Yes. The biggest,"
+  },
+  {
+   "start": 225.92,
+   "end": 226.02,
+   "text": "for sure."
+  },
+  {
+   "start": 226.02,
+   "end": 227.9,
+   "text": "The biggest, yeah."
+  },
+  {
+   "start": 228.2,
+   "end": 232.48,
+   "text": "And the most popular mountain people go to, that and Zlatybou."
+  },
+  {
+   "start": 233.14,
+   "end": 239.9,
+   "text": "Exactly. And it has a very functional ski resort, I would say, even though"
+  },
+  {
+   "start": 239.9,
+   "end": 240.68,
+   "text": "it's very crowded."
+  },
+  {
+   "start": 241.0,
+   "end": 242.12,
+   "text": "It's in good shape."
+  },
+  {
+   "start": 242.2,
+   "end": 244.16,
+   "text": "It can be crowded and expensive."
+  },
+  {
+   "start": 245.06,
+   "end": 245.28,
+   "text": "Yeah."
+  },
+  {
+   "start": 246.74,
+   "end": 248.04,
+   "text": "but since it's popular"
+  },
+  {
+   "start": 248.04,
+   "end": 251.88,
+   "text": "there's a lot of people there and a little hint it's more expensive"
+  },
+  {
+   "start": 251.88,
+   "end": 253.5,
+   "text": "on special days of course like"
+  },
+  {
+   "start": 253.5,
+   "end": 259.66,
+   "text": "New Year's Eve Božić Christmas days are more expensive"
+  },
+  {
+   "start": 259.66,
+   "end": 261.68,
+   "text": "than let's say December"
+  },
+  {
+   "start": 261.68,
+   "end": 265.62,
+   "text": "and February in general so Fruska Gora"
+  },
+  {
+   "start": 265.62,
+   "end": 268.18,
+   "text": "would you call it a mountain?"
+  },
+  {
+   "start": 270.34,
+   "end": 271.22,
+   "text": "it's funny because for me"
+  },
+  {
+   "start": 271.22,
+   "end": 272.38,
+   "text": "in my hometown"
+  },
+  {
+   "start": 272.38,
+   "end": 277.74,
+   "text": "there's a lot of hills and mountains and when you see Fruska Gora it"
+  },
+  {
+   "start": 277.74,
+   "end": 279.14,
+   "text": "doesn't seem like a mountain but I think"
+  },
+  {
+   "start": 279.14,
+   "end": 286.0,
+   "text": "technically it is a mountain what's interesting for Fruska Gora it was an island"
+  },
+  {
+   "start": 286.0,
+   "end": 287.02,
+   "text": "before so"
+  },
+  {
+   "start": 287.02,
+   "end": 291.48,
+   "text": "yeah so old Pannonian region was once a sea like"
+  },
+  {
+   "start": 291.48,
+   "end": 298.44,
+   "text": "a long long time ago right and Fruska Gora was an island in that"
+  },
+  {
+   "start": 298.44,
+   "end": 300.0,
+   "text": "sea and you can see a lot of"
+  },
+  {
+   "start": 300.02,
+   "end": 306.04,
+   "text": "fossils you can find there of different sea creatures that lived at that time."
+  },
+  {
+   "start": 306.38,
+   "end": 307.74,
+   "text": "Oh, that's nice."
+  },
+  {
+   "start": 307.74,
+   "end": 309.34,
+   "text": "I didn't know that."
+  },
+  {
+   "start": 310.0,
+   "end": 315.18,
+   "text": "Yeah. And yeah, it's very popular."
+  },
+  {
+   "start": 315.18,
+   "end": 317.36,
+   "text": "It's near Novi Sad, of course."
+  },
+  {
+   "start": 317.36,
+   "end": 318.64,
+   "text": "And you can go there from"
+  },
+  {
+   "start": 318.64,
+   "end": 320.1,
+   "text": "Novi Sad, from Belgrade."
+  },
+  {
+   "start": 320.1,
+   "end": 322.74,
+   "text": "It has a lot of forests."
+  },
+  {
+   "start": 322.74,
+   "end": 327.46,
+   "text": "Yeah. When you are in Krishkogora, there are lots of wineries to visit in"
+  },
+  {
+   "start": 327.46,
+   "end": 330.54,
+   "text": "that area. and also monasteries."
+  },
+  {
+   "start": 330.54,
+   "end": 332.0,
+   "text": "There's a lot of monasteries."
+  },
+  {
+   "start": 334.9,
+   "end": 336.64,
+   "text": "They call it Srpske Sveta Gora,"
+  },
+  {
+   "start": 336.64,
+   "end": 337.24,
+   "text": "I think."
+  },
+  {
+   "start": 339.26,
+   "end": 342.08,
+   "text": "So, yeah. Very nice monasteries."
+  },
+  {
+   "start": 342.26,
+   "end": 344.86,
+   "text": "Yeah. So, number one, Stara Plenina."
+  },
+  {
+   "start": 344.88,
+   "end": 345.96,
+   "text": "Number two, Kaponik."
+  },
+  {
+   "start": 346.0,
+   "end": 348.32,
+   "text": "Number three, Fruska Gora in our common list."
+  },
+  {
+   "start": 349.02,
+   "end": 350.92,
+   "text": "And Zlatibor. I haven't been there,"
+  },
+  {
+   "start": 350.92,
+   "end": 353.14,
+   "text": "but I heard so much about Zlatibor."
+  },
+  {
+   "start": 353.3,
+   "end": 354.98,
+   "text": "The Kaimak place, in my opinion."
+  },
+  {
+   "start": 355.5,
+   "end": 356.6,
+   "text": "Yeah, Kaimak place."
+  },
+  {
+   "start": 357.38,
+   "end": 364.42,
+   "text": "Zlatibor has a lot of old villages and like rustic life, we can"
+  },
+  {
+   "start": 364.42,
+   "end": 366.24,
+   "text": "rent houses, it's very nice."
+  },
+  {
+   "start": 366.24,
+   "end": 372.9,
+   "text": "But it has one problem, it has a term, Zlatiborizacja, if I'm not wrong."
+  },
+  {
+   "start": 373.64,
+   "end": 377.58,
+   "text": "Since it was so popular, people started building a lot of hotels there."
+  },
+  {
+   "start": 378.18,
+   "end": 380.12,
+   "text": "And it's turned into a city."
+  },
+  {
+   "start": 382.38,
+   "end": 385.44,
+   "text": "A whole city with a lot of buildings and concrete."
+  },
+  {
+   "start": 386.3,
+   "end": 389.86,
+   "text": "So if you want to escape from Belgium to nature, go to Zlatibor, and"
+  },
+  {
+   "start": 389.86,
+   "end": 392.52,
+   "text": "it feels like you're still in a city, which is not good."
+  },
+  {
+   "start": 393.3,
+   "end": 396.54,
+   "text": "So there's a lot of people building hotels and expanding."
+  },
+  {
+   "start": 397.58,
+   "end": 403.6,
+   "text": "so that's a minus but nature is beautiful yeah still before it's all like"
+  },
+  {
+   "start": 403.6,
+   "end": 404.84,
+   "text": "turned into city i"
+  },
+  {
+   "start": 404.84,
+   "end": 409.66,
+   "text": "think still it's a nice place to go yeah uh one of the like"
+  },
+  {
+   "start": 409.66,
+   "end": 412.94,
+   "text": "least known ones i think astra bus is"
+  },
+  {
+   "start": 412.94,
+   "end": 418.32,
+   "text": "what was my beautiful spot i visited many many times maybe you haven't right"
+  },
+  {
+   "start": 418.32,
+   "end": 418.44,
+   "text": "i didn't i don't think i have been there yeah astra bus is uh"
+  },
+  {
+   "start": 418.44,
+   "end": 418.72,
+   "text": "nicola"
+  },
+  {
+   "start": 424.02,
+   "end": 428.12,
+   "text": "near kapoanik near kurushabas It's beautiful, I think."
+  },
+  {
+   "start": 428.12,
+   "end": 429.68,
+   "text": "It's also a national park."
+  },
+  {
+   "start": 430.34,
+   "end": 435.22,
+   "text": "And it's famous for its variety of trees and beautiful trails around,"
+  },
+  {
+   "start": 435.22,
+   "end": 438.3,
+   "text": "a nice little stream."
+  },
+  {
+   "start": 440.0,
+   "end": 441.1,
+   "text": "It is really nice."
+  },
+  {
+   "start": 441.1,
+   "end": 445.02,
+   "text": "I mean, if you are on your way to Greece, it would be a"
+  },
+  {
+   "start": 445.02,
+   "end": 446.16,
+   "text": "nice place to stop"
+  },
+  {
+   "start": 446.16,
+   "end": 450.6,
+   "text": "and rent a weekend again and then enjoy the nature."
+  },
+  {
+   "start": 451.66,
+   "end": 456.7,
+   "text": "I definitely plan on visit all the nature parks of Serbia one day."
+  },
+  {
+   "start": 457.42,
+   "end": 460.56,
+   "text": "Yeah, go with Jasjabat if you haven't been."
+  },
+  {
+   "start": 461.66,
+   "end": 462.6,
+   "text": "And Očarbanje Kulisira."
+  },
+  {
+   "start": 462.6,
+   "end": 464.06,
+   "text": "This is not a mountain."
+  },
+  {
+   "start": 464.18,
+   "end": 466.72,
+   "text": "This is the most beautiful river, in my opinion."
+  },
+  {
+   "start": 468.8,
+   "end": 472.44,
+   "text": "Because it makes this like S-shape all around the valley."
+  },
+  {
+   "start": 473.32,
+   "end": 478.52,
+   "text": "and you can go there like some do kayaking or just kayaking though it's"
+  },
+  {
+   "start": 478.52,
+   "end": 479.34,
+   "text": "not very fascinating"
+  },
+  {
+   "start": 479.34,
+   "end": 485.74,
+   "text": "but it's a beautiful nature and it it's near cacac i would say"
+  },
+  {
+   "start": 485.74,
+   "end": 493.22,
+   "text": "and it's one of my favorite places that i've been to in serbia one"
+  },
+  {
+   "start": 493.22,
+   "end": 499.6,
+   "text": "of one other um river that's beautiful is a canyon reke uvac uvac river"
+  },
+  {
+   "start": 499.6,
+   "end": 503.86,
+   "text": "which has like those meanders mean how do you call it"
+  },
+  {
+   "start": 503.86,
+   "end": 510.9,
+   "text": "like um and there's there's a belogalevi soup which is a type of bird"
+  },
+  {
+   "start": 510.9,
+   "end": 512.34,
+   "text": "a scavenger bird that"
+  },
+  {
+   "start": 512.34,
+   "end": 518.88,
+   "text": "lives there and it's very very rare so it's endangered so that's definitely a"
+  },
+  {
+   "start": 518.88,
+   "end": 524.08,
+   "text": "must to visit Canyon Rekovac Sounds familiar, but I'm not sure"
+  },
+  {
+   "start": 524.08,
+   "end": 525.69,
+   "text": "Where is it exactly?"
+  },
+  {
+   "start": 526.8,
+   "end": 527.94,
+   "text": "It's near Tara."
+  },
+  {
+   "start": 528.94,
+   "end": 532.76,
+   "text": "I think it's like around that region in West Serbia."
+  },
+  {
+   "start": 533.98,
+   "end": 536.27,
+   "text": "Not the best in geography, but yeah."
+  },
+  {
+   "start": 537.18,
+   "end": 540.44,
+   "text": "It's hard to go, but I think there are lots of things to see"
+  },
+  {
+   "start": 540.44,
+   "end": 542.46,
+   "text": "on that side and near Tara."
+  },
+  {
+   "start": 543.4,
+   "end": 544.68,
+   "text": "That Serbia is beautiful."
+  },
+  {
+   "start": 544.84,
+   "end": 545.69,
+   "text": "All Serbia is beautiful."
+  },
+  {
+   "start": 546.18,
+   "end": 549.8,
+   "text": "But if you do not have any time, enough time, but you want to"
+  },
+  {
+   "start": 549.8,
+   "end": 553.64,
+   "text": "see some kind of nature and you are in Belgrade, I think other Zagania"
+  },
+  {
+   "start": 553.64,
+   "end": 555.76,
+   "text": "would be the address to go, right?"
+  },
+  {
+   "start": 556.24,
+   "end": 560.04,
+   "text": "Yeah, that's the closest nature escape from Belgrade."
+  },
+  {
+   "start": 560.62,
+   "end": 563.32,
+   "text": "It's technically a lake now."
+  },
+  {
+   "start": 565.68,
+   "end": 566.68,
+   "text": "And people go there."
+  },
+  {
+   "start": 566.68,
+   "end": 567.42,
+   "text": "There's a beach."
+  },
+  {
+   "start": 567.42,
+   "end": 568.62,
+   "text": "You can go and swim there."
+  },
+  {
+   "start": 569.28,
+   "end": 571.22,
+   "text": "A lot of water sports you can do there."
+  },
+  {
+   "start": 571.76,
+   "end": 573.06,
+   "text": "There's a park around it."
+  },
+  {
+   "start": 573.8,
+   "end": 578.9,
+   "text": "Yes. even a little mini lake inside so if you want to experience the"
+  },
+  {
+   "start": 578.9,
+   "end": 580.22,
+   "text": "weekend it's a i think you can also"
+  },
+  {
+   "start": 580.22,
+   "end": 584.76,
+   "text": "find a lot of boat kind of weekend it says there and then you"
+  },
+  {
+   "start": 584.76,
+   "end": 586.2,
+   "text": "can rent them you can stay there you"
+  },
+  {
+   "start": 586.2,
+   "end": 593.3,
+   "text": "can go around the forest uh running cycling or whatever you want kayaking"
+  },
+  {
+   "start": 593.3,
+   "end": 594.46,
+   "text": "it's a beautiful spot"
+  },
+  {
+   "start": 594.46,
+   "end": 599.86,
+   "text": "so there are many many more but these are the first ones that come"
+  },
+  {
+   "start": 599.86,
+   "end": 600.0,
+   "text": "to"
+  },
+  {
+   "start": 600.01,
+   "end": 607.85,
+   "text": "my mind okay and uh let's move to history in daily life okay"
+  },
+  {
+   "start": 607.85,
+   "end": 610.87,
+   "text": "so as a turkish person i think the"
+  },
+  {
+   "start": 610.87,
+   "end": 617.69,
+   "text": "the sentence that i heard every day was like of course after living 500"
+  },
+  {
+   "start": 617.69,
+   "end": 619.03,
+   "text": "years or 600 years together"
+  },
+  {
+   "start": 619.03,
+   "end": 624.35,
+   "text": "we have this word and that word like this was a lot of turkish"
+  },
+  {
+   "start": 624.35,
+   "end": 629.95,
+   "text": "words yeah and also a lot of uh Greek, Latin, German."
+  },
+  {
+   "start": 630.27,
+   "end": 631.51,
+   "text": "Yeah, yeah, yeah."
+  },
+  {
+   "start": 632.75,
+   "end": 637.11,
+   "text": "So you probably noticed more of those words than I did growing up."
+  },
+  {
+   "start": 637.11,
+   "end": 638.65,
+   "text": "I didn't know their Turkish words."
+  },
+  {
+   "start": 639.89,
+   "end": 644.21,
+   "text": "But there is a lot of them, which is, of course, normal because it's"
+  },
+  {
+   "start": 644.21,
+   "end": 645.97,
+   "text": "all the influence from surrounding countries"
+  },
+  {
+   "start": 645.97,
+   "end": 648.21,
+   "text": "and historical countries."
+  },
+  {
+   "start": 649.23,
+   "end": 652.17,
+   "text": "So words like, I don't know if you know words that you notice,"
+  },
+  {
+   "start": 652.17,
+   "end": 659.53,
+   "text": "I think, Akashica or something like that, all those"
+  },
+  {
+   "start": 659.53,
+   "end": 661.39,
+   "text": "words are from Turkish language."
+  },
+  {
+   "start": 661.39,
+   "end": 662.27,
+   "text": "Maybe you know more than I do."
+  },
+  {
+   "start": 662.27,
+   "end": 665.09,
+   "text": "Yeah, I made a long list of them."
+  },
+  {
+   "start": 665.09,
+   "end": 665.71,
+   "text": "We have so many."
+  },
+  {
+   "start": 665.71,
+   "end": 672.79,
+   "text": "I will share a couple of them on Instagram when I share this"
+  },
+  {
+   "start": 672.79,
+   "end": 673.83,
+   "text": "post, but there are"
+  },
+  {
+   "start": 673.83,
+   "end": 678.29,
+   "text": "so many. You said you don't recognize they are Turkish, but how about the"
+  },
+  {
+   "start": 678.29,
+   "end": 682.05,
+   "text": "other words, like words from German, words from Greek?"
+  },
+  {
+   "start": 682.29,
+   "end": 684.27,
+   "text": "Do you notice them more easily?"
+  },
+  {
+   "start": 684.67,
+   "end": 688.89,
+   "text": "Yeah, now I do, of course, but before I didn't."
+  },
+  {
+   "start": 690.71,
+   "end": 693.01,
+   "text": "I only learned about them in school."
+  },
+  {
+   "start": 693.35,
+   "end": 695.23,
+   "text": "We called it Turcism, Grezism."
+  },
+  {
+   "start": 695.23,
+   "end": 700.77,
+   "text": "me. And then it comes together and says, oh yeah, that sounds Turkish."
+  },
+  {
+   "start": 700.77,
+   "end": 703.67,
+   "text": "So it makes sense."
+  },
+  {
+   "start": 703.89,
+   "end": 708.83,
+   "text": "Yeah. Sometimes they say to me like, oh, this word sounds Turkish to you,"
+  },
+  {
+   "start": 708.83,
+   "end": 709.17,
+   "text": "to Serbian, but"
+  },
+  {
+   "start": 709.17,
+   "end": 713.43,
+   "text": "to me it doesn't sound Turkish because it's a very, very old word and"
+  },
+  {
+   "start": 713.43,
+   "end": 715.11,
+   "text": "I do not even know"
+  },
+  {
+   "start": 715.11,
+   "end": 716.59,
+   "text": "what it means."
+  },
+  {
+   "start": 716.59,
+   "end": 721.71,
+   "text": "But I think it's also something unique between Serbia and Turkey."
+  },
+  {
+   "start": 721.71,
+   "end": 729.23,
+   "text": "So in history, I mean, not only history, but I think"
+  },
+  {
+   "start": 729.23,
+   "end": 735.87,
+   "text": "jokes are also a big part of daily life, especially about different Balkan countries,"
+  },
+  {
+   "start": 735.87,
+   "end": 736.01,
+   "text": "right?"
+  },
+  {
+   "start": 738.05,
+   "end": 742.01,
+   "text": "So is it still like, I know the older generations use them more,"
+  },
+  {
+   "start": 742.01,
+   "end": 750.11,
+   "text": "but do you still hear jokes about, I don't know, Montenegrins, Macedonians, Albanians,"
+  },
+  {
+   "start": 750.11,
+   "end": 752.83,
+   "text": "neighboring countries? yes you can"
+  },
+  {
+   "start": 752.83,
+   "end": 759.07,
+   "text": "hear them i mean not i i me personally i don't now maybe before"
+  },
+  {
+   "start": 759.07,
+   "end": 761.07,
+   "text": "when in school it was more"
+  },
+  {
+   "start": 761.07,
+   "end": 767.13,
+   "text": "frequent but one joke that comes into mind is that montenegres are lazy of"
+  },
+  {
+   "start": 767.13,
+   "end": 774.21,
+   "text": "course there's all stereotypes and not not proven in real life uh"
+  },
+  {
+   "start": 774.21,
+   "end": 776.39,
+   "text": "other than that i can't really think of any other"
+  },
+  {
+   "start": 776.39,
+   "end": 783.83,
+   "text": "joke yeah montenegrins what i heard most as well i think also albanians are"
+  },
+  {
+   "start": 783.83,
+   "end": 785.13,
+   "text": "used a lot in the jokes"
+  },
+  {
+   "start": 785.13,
+   "end": 791.15,
+   "text": "so that's fine but um some of them are based on stereotypes i'm not"
+  },
+  {
+   "start": 791.15,
+   "end": 797.15,
+   "text": "some are just pick those characters because why not yeah and all countries do"
+  },
+  {
+   "start": 797.15,
+   "end": 801.43,
+   "text": "that yes and you as you lived together in egoslavia i think this is"
+  },
+  {
+   "start": 801.43,
+   "end": 806.17,
+   "text": "more common i mean in turkish for example we have also jokes a lot"
+  },
+  {
+   "start": 806.17,
+   "end": 812.83,
+   "text": "about you know one guy one italian one french one british like that kind of"
+  },
+  {
+   "start": 812.83,
+   "end": 813.37,
+   "text": "we have but with"
+  },
+  {
+   "start": 813.37,
+   "end": 818.11,
+   "text": "neighboring countries we do not have that many you know so that's why i"
+  },
+  {
+   "start": 818.11,
+   "end": 822.87,
+   "text": "realized maybe it's because of the effect of living together years and years ago."
+  },
+  {
+   "start": 822.91,
+   "end": 824.33,
+   "text": "Probably, yeah, it makes sense."
+  },
+  {
+   "start": 824.6,
+   "end": 829.06,
+   "text": "Yeah. And I think in daily life, Komšiluk is still active,"
+  },
+  {
+   "start": 829.06,
+   "end": 833.5,
+   "text": "like being neighbors is important, I think, in Serbia, right?"
+  },
+  {
+   "start": 833.94,
+   "end": 835.02,
+   "text": "Komšiluk is a neighborhood."
+  },
+  {
+   "start": 836.88,
+   "end": 841.92,
+   "text": "Yeah, neighbors are important because they help each other,"
+  },
+  {
+   "start": 841.92,
+   "end": 844.5,
+   "text": "you keep close with your neighbors."
+  },
+  {
+   "start": 846.14,
+   "end": 849.6,
+   "text": "But again, it depends on if it's a good or bad neighbor."
+  },
+  {
+   "start": 849.6,
+   "end": 853.84,
+   "text": "they have of course like bad neighbor is one of the worst things you"
+  },
+  {
+   "start": 853.84,
+   "end": 855.36,
+   "text": "can have right exactly exactly"
+  },
+  {
+   "start": 855.36,
+   "end": 861.2,
+   "text": "but in smaller towns uh i think it's really um a big thing in"
+  },
+  {
+   "start": 861.2,
+   "end": 863.64,
+   "text": "syrpia yes in smaller town when"
+  },
+  {
+   "start": 863.64,
+   "end": 870.24,
+   "text": "houses like in the suburbs yes um you neighbor can come into your house"
+  },
+  {
+   "start": 870.24,
+   "end": 872.02,
+   "text": "and that like um"
+  },
+  {
+   "start": 873.42,
+   "end": 875.44,
+   "text": "without notice"
+  },
+  {
+   "start": 875.44,
+   "end": 877.66,
+   "text": "yeah just appears and says"
+  },
+  {
+   "start": 877.66,
+   "end": 880.78,
+   "text": "let's drink coffee and usually it's fine"
+  },
+  {
+   "start": 880.78,
+   "end": 886.9,
+   "text": "if you don't have a problem with that yeah so that can happen exactly"
+  },
+  {
+   "start": 886.9,
+   "end": 887.58,
+   "text": "they come mostly for"
+  },
+  {
+   "start": 887.58,
+   "end": 890.34,
+   "text": "coffee right coffee iraqia"
+  },
+  {
+   "start": 890.34,
+   "end": 895.68,
+   "text": "okay good and I want to move"
+  },
+  {
+   "start": 895.68,
+   "end": 897.18,
+   "text": "to balkan fashion"
+  },
+  {
+   "start": 897.18,
+   "end": 899.98,
+   "text": "I know that"
+  },
+  {
+   "start": 900.0,
+   "end": 903.56,
+   "text": "Right now, traditional clothing is not, of course, a thing."
+  },
+  {
+   "start": 903.56,
+   "end": 911.14,
+   "text": "But when you go to smaller places, I think you still see men"
+  },
+  {
+   "start": 911.14,
+   "end": 914.02,
+   "text": "with shajkača. Is it called shajkača?"
+  },
+  {
+   "start": 914.92,
+   "end": 915.66,
+   "text": "Shajkača, yeah."
+  },
+  {
+   "start": 917.04,
+   "end": 921.3,
+   "text": "Villages, usually, like older generations, some people still wear them."
+  },
+  {
+   "start": 922.72,
+   "end": 926.3,
+   "text": "You can buy them in Knezmihajlova if you walk down the street, you can"
+  },
+  {
+   "start": 926.3,
+   "end": 932.08,
+   "text": "see them. I just want to say that original shakacha doesn't have any emblem"
+  },
+  {
+   "start": 932.08,
+   "end": 933.08,
+   "text": "on it, it's just a green hat"
+  },
+  {
+   "start": 933.08,
+   "end": 934.38,
+   "text": "without any emblem"
+  },
+  {
+   "start": 934.38,
+   "end": 936.8,
+   "text": "or any"
+  },
+  {
+   "start": 936.8,
+   "end": 938.5,
+   "text": "how do you call it, mark"
+  },
+  {
+   "start": 938.5,
+   "end": 940.64,
+   "text": "other than that, there are versions"
+  },
+  {
+   "start": 940.64,
+   "end": 942.66,
+   "text": "with emblems but those are some other"
+  },
+  {
+   "start": 942.66,
+   "end": 944.62,
+   "text": "stuff, historical stuff that usually"
+  },
+  {
+   "start": 944.62,
+   "end": 946.7,
+   "text": "are popular to sell if you want to buy"
+  },
+  {
+   "start": 946.7,
+   "end": 948.62,
+   "text": "a proper hat, shakacha"
+  },
+  {
+   "start": 948.62,
+   "end": 952.78,
+   "text": "by just plain green one and you can"
+  },
+  {
+   "start": 952.78,
+   "end": 954.6,
+   "text": "see them in folklore dances"
+  },
+  {
+   "start": 956.2,
+   "end": 960.04,
+   "text": "Folklore children in Serbia, they train different sports."
+  },
+  {
+   "start": 965.46,
+   "end": 970.2,
+   "text": "And when they learn dances, traditional dances over Serbia,"
+  },
+  {
+   "start": 970.2,
+   "end": 973.52,
+   "text": "and wider than that, maybe Macedonian and stuff like that."
+  },
+  {
+   "start": 974.99,
+   "end": 976.49,
+   "text": "And they wear those clothes."
+  },
+  {
+   "start": 982.81,
+   "end": 983.67,
+   "text": "It's really nice to see."
+  },
+  {
+   "start": 984.75,
+   "end": 989.25,
+   "text": "Exactly. I think it's a nice thing and it's unique in the Balkans."
+  },
+  {
+   "start": 990.01,
+   "end": 994.13,
+   "text": "Kids at school have this access to folk or dance clubs."
+  },
+  {
+   "start": 994.13,
+   "end": 996.07,
+   "text": "And I think it's so common."
+  },
+  {
+   "start": 996.07,
+   "end": 999.35,
+   "text": "And there are always competitions, like some tournaments."
+  },
+  {
+   "start": 999.35,
+   "end": 1005.59,
+   "text": "competition exactly go to represent serbia in different countries so it's still a huge"
+  },
+  {
+   "start": 1005.59,
+   "end": 1010.43,
+   "text": "thing yes it's a it's a nice experience to have and it's also it"
+  },
+  {
+   "start": 1010.43,
+   "end": 1011.81,
+   "text": "is kind of like a sport as well"
+  },
+  {
+   "start": 1011.81,
+   "end": 1017.07,
+   "text": "because it can be a very draining very physically hard to do and dance"
+  },
+  {
+   "start": 1017.07,
+   "end": 1019.33,
+   "text": "yeah yeah hours of standing"
+  },
+  {
+   "start": 1019.33,
+   "end": 1025.43,
+   "text": "and moving all the time of course yep cool and i just know charape"
+  },
+  {
+   "start": 1025.43,
+   "end": 1032.75,
+   "text": "because uh cruciate with the socks are"
+  },
+  {
+   "start": 1032.75,
+   "end": 1034.07,
+   "text": "very famous in Kruşovas."
+  },
+  {
+   "start": 1034.49,
+   "end": 1036.63,
+   "text": "But these words, for example, are Turkish to me."
+  },
+  {
+   "start": 1036.63,
+   "end": 1040.23,
+   "text": "Like çarap, fustan, opan, yelek."
+  },
+  {
+   "start": 1041.33,
+   "end": 1046.77,
+   "text": "Okay, yes. So fustan, zubun, I haven't heard much before."
+  },
+  {
+   "start": 1046.83,
+   "end": 1048.65,
+   "text": "Çarap is like socks."
+  },
+  {
+   "start": 1048.65,
+   "end": 1050.29,
+   "text": "There's no other word for it,"
+  },
+  {
+   "start": 1050.29,
+   "end": 1050.91,
+   "text": "I would say."
+  },
+  {
+   "start": 1051.33,
+   "end": 1053.29,
+   "text": "Maybe nazwitz, but that's something else."
+  },
+  {
+   "start": 1054.03,
+   "end": 1055.55,
+   "text": "Yelek is pretty common."
+  },
+  {
+   "start": 1057.05,
+   "end": 1058.61,
+   "text": "Opensi, those are"
+  },
+  {
+   "start": 1058.61,
+   "end": 1061.09,
+   "text": "shoes made of usually leather."
+  },
+  {
+   "start": 1062.01,
+   "end": 1064.23,
+   "text": "Very unique shoes."
+  },
+  {
+   "start": 1064.23,
+   "end": 1066.71,
+   "text": "People were wearing back in the past,"
+  },
+  {
+   "start": 1066.71,
+   "end": 1068.35,
+   "text": "but now Opensi are usually"
+  },
+  {
+   "start": 1068.35,
+   "end": 1069.39,
+   "text": "made of rubber."
+  },
+  {
+   "start": 1070.29,
+   "end": 1072.25,
+   "text": "People still use Opensi, but just in a"
+  },
+  {
+   "start": 1072.25,
+   "end": 1073.31,
+   "text": "modern way"
+  },
+  {
+   "start": 1074.67,
+   "end": 1079.07,
+   "text": "for work in villages like in field or around the house."
+  },
+  {
+   "start": 1079.79,
+   "end": 1081.61,
+   "text": "Are they in general black?"
+  },
+  {
+   "start": 1082.49,
+   "end": 1083.63,
+   "text": "They're usually black, yeah."
+  },
+  {
+   "start": 1084.35,
+   "end": 1087.93,
+   "text": "But back then when made of leather, they were yellowish."
+  },
+  {
+   "start": 1089.27,
+   "end": 1090.71,
+   "text": "I see. Good."
+  },
+  {
+   "start": 1091.49,
+   "end": 1094.35,
+   "text": "So you can, I mean, the listeners can just Google them"
+  },
+  {
+   "start": 1094.35,
+   "end": 1096.85,
+   "text": "and see how they look like later."
+  },
+  {
+   "start": 1097.85,
+   "end": 1100.07,
+   "text": "When it comes to Prava Serbia, of course,"
+  },
+  {
+   "start": 1100.07,
+   "end": 1102.97,
+   "text": "we should mention sports and the famous athletes."
+  },
+  {
+   "start": 1102.97,
+   "end": 1107.81,
+   "text": "I mean, there's so many famous athletes in the world from Serbia."
+  },
+  {
+   "start": 1109.03,
+   "end": 1111.41,
+   "text": "But I just picked the ones that I'm more familiar with."
+  },
+  {
+   "start": 1111.41,
+   "end": 1112.89,
+   "text": "But feel free to add more."
+  },
+  {
+   "start": 1113.85,
+   "end": 1120.23,
+   "text": "And what I found interesting also, I mean, compared to Turkish again, Serbia has"
+  },
+  {
+   "start": 1120.23,
+   "end": 1122.53,
+   "text": "different words for esports, almost esports."
+  },
+  {
+   "start": 1123.99,
+   "end": 1126.94,
+   "text": "You know, for example, basketball is similar in Turkish."
+  },
+  {
+   "start": 1126.94,
+   "end": 1128.02,
+   "text": "Volleyball is similar."
+  },
+  {
+   "start": 1128.02,
+   "end": 1131.26,
+   "text": "But here we have hosarka, which is basketball."
+  },
+  {
+   "start": 1132.0,
+   "end": 1132.98,
+   "text": "Different word."
+  },
+  {
+   "start": 1134.4,
+   "end": 1136.16,
+   "text": "Odbojka for volleyball."
+  },
+  {
+   "start": 1136.36,
+   "end": 1138.98,
+   "text": "So this was really interesting for me."
+  },
+  {
+   "start": 1138.98,
+   "end": 1140.86,
+   "text": "Like, how do they come up with their own words?"
+  },
+  {
+   "start": 1140.86,
+   "end": 1147.5,
+   "text": "I mean, they had this before, you know, English affected Serbia, probably."
+  },
+  {
+   "start": 1147.94,
+   "end": 1149.44,
+   "text": "They had these proper names."
+  },
+  {
+   "start": 1150.48,
+   "end": 1151.62,
+   "text": "probably something like that"
+  },
+  {
+   "start": 1151.62,
+   "end": 1153.74,
+   "text": "yes or maybe it was a little bit"
+  },
+  {
+   "start": 1153.74,
+   "end": 1157.42,
+   "text": "more forced to make your own name out of it"
+  },
+  {
+   "start": 1157.42,
+   "end": 1158.74,
+   "text": "and then later on"
+  },
+  {
+   "start": 1158.74,
+   "end": 1161.18,
+   "text": "it was not as important"
+  },
+  {
+   "start": 1161.18,
+   "end": 1163.22,
+   "text": "for some words it's the same as in English"
+  },
+  {
+   "start": 1163.22,
+   "end": 1164.48,
+   "text": "for some not"
+  },
+  {
+   "start": 1166.52,
+   "end": 1169.12,
+   "text": "but yeah so about sports of course"
+  },
+  {
+   "start": 1169.12,
+   "end": 1171.62,
+   "text": "Serbs and Serbs"
+  },
+  {
+   "start": 1171.62,
+   "end": 1173.22,
+   "text": "is proud of their sport"
+  },
+  {
+   "start": 1173.22,
+   "end": 1174.54,
+   "text": "and athletes"
+  },
+  {
+   "start": 1176.54,
+   "end": 1181.38,
+   "text": "of course Novak Djokovic is one of the best athletes and sportists in the"
+  },
+  {
+   "start": 1181.38,
+   "end": 1185.64,
+   "text": "world and actively Serbia promotes sport"
+  },
+  {
+   "start": 1185.64,
+   "end": 1190.54,
+   "text": "promotes sport to youth many young people there's many"
+  },
+  {
+   "start": 1190.54,
+   "end": 1197.94,
+   "text": "many organizations many clubs you can join and"
+  },
+  {
+   "start": 1197.94,
+   "end": 1200.0,
+   "text": "it's heavily promoted by"
+  },
+  {
+   "start": 1200.02,
+   "end": 1203.54,
+   "text": "the country so that's one of the reasons we have a lot of sports"
+  },
+  {
+   "start": 1203.54,
+   "end": 1208.0,
+   "text": "athletes and people like watching"
+  },
+  {
+   "start": 1208.0,
+   "end": 1213.12,
+   "text": "football basketball that culture around like cheering for your team is very very popular"
+  },
+  {
+   "start": 1213.12,
+   "end": 1213.32,
+   "text": "serbia as well yeah so i mean as a foreigner i definitely was amazed"
+  },
+  {
+   "start": 1213.32,
+   "end": 1213.56,
+   "text": "in"
+  },
+  {
+   "start": 1219.38,
+   "end": 1226.88,
+   "text": "by the fact that municipalities offer such great uh facilities sports facilities uh"
+  },
+  {
+   "start": 1226.88,
+   "end": 1234.68,
+   "text": "almost in every city like an olympic pool in public facility in kruševat and"
+  },
+  {
+   "start": 1234.68,
+   "end": 1239.0,
+   "text": "funny prices like one euro or something like"
+  },
+  {
+   "start": 1239.0,
+   "end": 1243.68,
+   "text": "and you can act like yeah you can do sports so easily if you"
+  },
+  {
+   "start": 1243.68,
+   "end": 1246.24,
+   "text": "are willing to do it yes yes there"
+  },
+  {
+   "start": 1246.24,
+   "end": 1251.56,
+   "text": "is a lot of children playing around there's usually at least one state football"
+  },
+  {
+   "start": 1251.56,
+   "end": 1255.3,
+   "text": "stadium everywhere in any place that has people living,"
+  },
+  {
+   "start": 1255.3,
+   "end": 1256.8,
+   "text": "like even a village."
+  },
+  {
+   "start": 1258.0,
+   "end": 1260.04,
+   "text": "So kids go out and play a lot."
+  },
+  {
+   "start": 1260.46,
+   "end": 1266.46,
+   "text": "Yeah, basketball court in every Klamshluk, in every neighborhood exists in a very good"
+  },
+  {
+   "start": 1266.46,
+   "end": 1266.96,
+   "text": "shape."
+  },
+  {
+   "start": 1268.2,
+   "end": 1271.9,
+   "text": "Yeah, basketball is still less popular than football, obviously,"
+  },
+  {
+   "start": 1271.9,
+   "end": 1278.52,
+   "text": "but in bigger cities, especially like Belgrave, Novi Sad, it takes less space to"
+  },
+  {
+   "start": 1278.52,
+   "end": 1279.5,
+   "text": "build a basketball court, right?"
+  },
+  {
+   "start": 1279.5,
+   "end": 1286.7,
+   "text": "So people play basketball, usually three versus"
+  },
+  {
+   "start": 1286.7,
+   "end": 1287.36,
+   "text": "three, right?"
+  },
+  {
+   "start": 1287.36,
+   "end": 1288.54,
+   "text": "We call it basket."
+  },
+  {
+   "start": 1288.92,
+   "end": 1293.4,
+   "text": "That's one of the reasons we have a very good basketball culture, basketball players"
+  },
+  {
+   "start": 1293.4,
+   "end": 1294.66,
+   "text": "as well. Exactly."
+  },
+  {
+   "start": 1295.72,
+   "end": 1299.48,
+   "text": "So I personally love Djokovic."
+  },
+  {
+   "start": 1301.06,
+   "end": 1302.34,
+   "text": "for many reasons."
+  },
+  {
+   "start": 1302.94,
+   "end": 1307.02,
+   "text": "Also, Jokic, I think, right now, nowadays,"
+  },
+  {
+   "start": 1307.02,
+   "end": 1310.96,
+   "text": "is one of the most famous athletes and funny ones."
+  },
+  {
+   "start": 1311.2,
+   "end": 1312.78,
+   "text": "One of the most funny ones."
+  },
+  {
+   "start": 1314.34,
+   "end": 1318.72,
+   "text": "How do you see the characters of these athletes in general?"
+  },
+  {
+   "start": 1318.84,
+   "end": 1321.88,
+   "text": "Do you think they are all proud Serbians, for example,"
+  },
+  {
+   "start": 1321.88,
+   "end": 1326.9,
+   "text": "or do you think they feel like more European,"
+  },
+  {
+   "start": 1326.9,
+   "end": 1330.0,
+   "text": "or do you think they are still connected to Serbia a lot?"
+  },
+  {
+   "start": 1330.24,
+   "end": 1331.54,
+   "text": "Of course, they're still connected."
+  },
+  {
+   "start": 1331.54,
+   "end": 1332.32,
+   "text": "Yeah, they're proud."
+  },
+  {
+   "start": 1332.32,
+   "end": 1336.7,
+   "text": "Novak Djokovic expresses that in every game, in every interview."
+  },
+  {
+   "start": 1336.7,
+   "end": 1341.64,
+   "text": "It's very obvious that he is very proud of being Serbian."
+  },
+  {
+   "start": 1341.64,
+   "end": 1342.98,
+   "text": "Jokic as well, of course."
+  },
+  {
+   "start": 1342.98,
+   "end": 1351.2,
+   "text": "And Novak is a different"
+  },
+  {
+   "start": 1351.2,
+   "end": 1354.64,
+   "text": "player, but when he appeared, very different from others."
+  },
+  {
+   "start": 1354.64,
+   "end": 1356.22,
+   "text": "So that's what made him stand out."
+  },
+  {
+   "start": 1356.84,
+   "end": 1362.64,
+   "text": "Maybe made him unlikable by some people being used to tennis, to view tennis"
+  },
+  {
+   "start": 1362.64,
+   "end": 1366.6,
+   "text": "as something more like a high fashion sport."
+  },
+  {
+   "start": 1366.6,
+   "end": 1369.2,
+   "text": "But Djokovic changed that a bit."
+  },
+  {
+   "start": 1370.06,
+   "end": 1371.44,
+   "text": "And Jokic is a character."
+  },
+  {
+   "start": 1371.44,
+   "end": 1376.24,
+   "text": "it's on it he's very funny because he had the he has a big"
+  },
+  {
+   "start": 1376.24,
+   "end": 1377.68,
+   "text": "love for horses and horse racing"
+  },
+  {
+   "start": 1377.68,
+   "end": 1382.8,
+   "text": "uh he wants to be a jockey but he was a little too big"
+  },
+  {
+   "start": 1382.8,
+   "end": 1385.52,
+   "text": "for that and he's such a character it's"
+  },
+  {
+   "start": 1385.52,
+   "end": 1389.6,
+   "text": "yeah the one thing that i will i think never forget in an interview"
+  },
+  {
+   "start": 1389.6,
+   "end": 1390.48,
+   "text": "after a very big match"
+  },
+  {
+   "start": 1390.48,
+   "end": 1396.88,
+   "text": "and he wins something a kind of trophy for playing excellently and then he's"
+  },
+  {
+   "start": 1396.88,
+   "end": 1401.34,
+   "text": "asked about his feelings and he's like what is done is done i just"
+  },
+  {
+   "start": 1401.34,
+   "end": 1403.64,
+   "text": "want to go home and enjoy my evening with"
+  },
+  {
+   "start": 1403.64,
+   "end": 1408.18,
+   "text": "my family that's like no comment about his success we get to go home"
+  },
+  {
+   "start": 1408.18,
+   "end": 1410.88,
+   "text": "yes that's so cute"
+  },
+  {
+   "start": 1410.88,
+   "end": 1415.82,
+   "text": "all right and uh one more thing that i like to discuss with you"
+  },
+  {
+   "start": 1415.82,
+   "end": 1422.48,
+   "text": "a bit festivals i think serbian culture is full of uh excuses to dance"
+  },
+  {
+   "start": 1422.48,
+   "end": 1429.88,
+   "text": "to have a party right and when it comes to festivals, Exit, I think,"
+  },
+  {
+   "start": 1429.88,
+   "end": 1433.58,
+   "text": "is the most famous one around the world or around Europe, I would say."
+  },
+  {
+   "start": 1433.58,
+   "end": 1436.82,
+   "text": "Yeah, probably in Europe, one of the biggest ones."
+  },
+  {
+   "start": 1438.56,
+   "end": 1439.5,
+   "text": "It's in Novi Sad."
+  },
+  {
+   "start": 1446.0,
+   "end": 1451.4,
+   "text": "probably. you have different stages and it lasts for a couple of days big"
+  },
+  {
+   "start": 1451.4,
+   "end": 1452.8,
+   "text": "names were performing there"
+  },
+  {
+   "start": 1458.64,
+   "end": 1460.32,
+   "text": "yeah i didn't know"
+  },
+  {
+   "start": 1460.32,
+   "end": 1464.5,
+   "text": "it was a student but it became like such a huge thing and all"
+  },
+  {
+   "start": 1464.5,
+   "end": 1465.94,
+   "text": "novice is full of people you can't"
+  },
+  {
+   "start": 1465.94,
+   "end": 1473.56,
+   "text": "find anything to rent if you're late you can't uh you know drive to"
+  },
+  {
+   "start": 1473.56,
+   "end": 1478.12,
+   "text": "that terjava the the fortress you have to walk for kilometers to be able"
+  },
+  {
+   "start": 1478.12,
+   "end": 1479.76,
+   "text": "to go to join this."
+  },
+  {
+   "start": 1479.76,
+   "end": 1483.9,
+   "text": "It's hardly even access because of the crowd, but it's really good."
+  },
+  {
+   "start": 1489.34,
+   "end": 1491.38,
+   "text": "that's become more and more popular."
+  },
+  {
+   "start": 1492.65,
+   "end": 1493.84,
+   "text": "And Hrnjacka Banya."
+  },
+  {
+   "start": 1494.54,
+   "end": 1495.76,
+   "text": "Hrnjacka Banya, yes."
+  },
+  {
+   "start": 1507.27,
+   "end": 1509.37,
+   "text": "I haven't been to that one, but it was in my..."
+  },
+  {
+   "start": 1509.37,
+   "end": 1513.53,
+   "text": "Me neither, actually, but there's always time for that."
+  },
+  {
+   "start": 1514.75,
+   "end": 1516.71,
+   "text": "I've been to Arsenal Fest in..."
+  },
+  {
+   "start": 1517.05,
+   "end": 1521.81,
+   "text": "Arsenal Fest, I've been this year, and it's getting bigger and bigger as well."
+  },
+  {
+   "start": 1522.51,
+   "end": 1525.01,
+   "text": "And it had very big names coming."
+  },
+  {
+   "start": 1526.15,
+   "end": 1526.95,
+   "text": "Strav Koczolec was there"
+  },
+  {
+   "start": 1526.95,
+   "end": 1530.91,
+   "text": "and it was so crowded but yeah"
+  },
+  {
+   "start": 1530.91,
+   "end": 1535.25,
+   "text": "that's a very good festival I recommend and Nishvil was also"
+  },
+  {
+   "start": 1535.25,
+   "end": 1536.97,
+   "text": "one of the festivals I've been to"
+  },
+  {
+   "start": 1536.97,
+   "end": 1539.15,
+   "text": "it was really really nice"
+  },
+  {
+   "start": 1539.15,
+   "end": 1540.89,
+   "text": "well organized again in Turdjava"
+  },
+  {
+   "start": 1540.89,
+   "end": 1545.31,
+   "text": "in a fortress Nishvil is a"
+  },
+  {
+   "start": 1545.31,
+   "end": 1546.77,
+   "text": "jazz festival, it's very good"
+  },
+  {
+   "start": 1546.77,
+   "end": 1549.09,
+   "text": "I volunteered there actually"
+  },
+  {
+   "start": 1549.09,
+   "end": 1551.21,
+   "text": "a long"
+  },
+  {
+   "start": 1551.21,
+   "end": 1551.89,
+   "text": "time ago"
+  },
+  {
+   "start": 1558.89,
+   "end": 1560.97,
+   "text": "is also free parts of niche festival as well"
+  },
+  {
+   "start": 1560.97,
+   "end": 1565.95,
+   "text": "there's a lot of festivals and one thing i like to add is uh"
+  },
+  {
+   "start": 1565.95,
+   "end": 1568.27,
+   "text": "fairs which are all like mini festivals"
+  },
+  {
+   "start": 1568.27,
+   "end": 1573.91,
+   "text": "every city in serbia usually has their own um let's call it a city"
+  },
+  {
+   "start": 1573.91,
+   "end": 1579.75,
+   "text": "day but it's more like a slava and around that time usually a fair"
+  },
+  {
+   "start": 1579.75,
+   "end": 1584.09,
+   "text": "comes to town when i say fair it's not like in american"
+  },
+  {
+   "start": 1584.09,
+   "end": 1588.89,
+   "text": "or european fair we call it washer and it's usually a market where you"
+  },
+  {
+   "start": 1588.89,
+   "end": 1594.23,
+   "text": "can buy cheap stuff you can buy food sweets toys for children and there"
+  },
+  {
+   "start": 1594.23,
+   "end": 1595.97,
+   "text": "is also a part with rides for children"
+  },
+  {
+   "start": 1595.97,
+   "end": 1599.91,
+   "text": "and children like to go there as well so it's a little bit on"
+  },
+  {
+   "start": 1599.91,
+   "end": 1602.13,
+   "text": "a wild side so nothing is"
+  },
+  {
+   "start": 1604.01,
+   "end": 1608.67,
+   "text": "regulated like in fairs, I don't know, in Europe or US."
+  },
+  {
+   "start": 1608.95,
+   "end": 1610.49,
+   "text": "No ticket necessary."
+  },
+  {
+   "start": 1610.65,
+   "end": 1611.75,
+   "text": "No tickets, yeah."
+  },
+  {
+   "start": 1611.75,
+   "end": 1617.51,
+   "text": "But it's part of Serbian culture and it's very important to visit Vašar at"
+  },
+  {
+   "start": 1617.51,
+   "end": 1624.21,
+   "text": "least once and buy Lice Dersko Srce, which is like a heart-shaped candy you"
+  },
+  {
+   "start": 1624.21,
+   "end": 1627.75,
+   "text": "can buy. That's one of the best typical things."
+  },
+  {
+   "start": 1627.99,
+   "end": 1632.65,
+   "text": "I think I've seen the one in Kruša where there are lots of roštelj"
+  },
+  {
+   "start": 1632.65,
+   "end": 1635.03,
+   "text": "as well, like meat."
+  },
+  {
+   "start": 1635.13,
+   "end": 1640.39,
+   "text": "Yeah, roštelj, pečenje, roasted pork all over."
+  },
+  {
+   "start": 1640.79,
+   "end": 1643.59,
+   "text": "The biggest valshar is in Shabats, Shabatski valshar."
+  },
+  {
+   "start": 1645.25,
+   "end": 1647.87,
+   "text": "So it's quite a unique thing to see and experience."
+  },
+  {
+   "start": 1648.71,
+   "end": 1652.83,
+   "text": "So that valshar is a bit different from Roštiviada or Kupisiada."
+  },
+  {
+   "start": 1652.93,
+   "end": 1657.45,
+   "text": "I haven't seen them, but I think they are also very common in Serbia,"
+  },
+  {
+   "start": 1657.45,
+   "end": 1659.73,
+   "text": "right? Yeah, it's a bit different."
+  },
+  {
+   "start": 1659.73,
+   "end": 1664.63,
+   "text": "Now, currently, I think, I don't know if it's Finnish, but Cvarciada, I think"
+  },
+  {
+   "start": 1664.63,
+   "end": 1665.41,
+   "text": "it's called."
+  },
+  {
+   "start": 1665.41,
+   "end": 1667.97,
+   "text": "It's a fair for Cvarci."
+  },
+  {
+   "start": 1668.23,
+   "end": 1673.69,
+   "text": "If you had schwarzi, it's a type of food made from pork fat and"
+  },
+  {
+   "start": 1673.69,
+   "end": 1674.23,
+   "text": "meat in English."
+  },
+  {
+   "start": 1675.15,
+   "end": 1677.17,
+   "text": "I think they call it pork scratchings."
+  },
+  {
+   "start": 1677.81,
+   "end": 1680.65,
+   "text": "So there's a thousand people visiting that."
+  },
+  {
+   "start": 1681.93,
+   "end": 1683.71,
+   "text": "For cupusiada, they make cabbage."
+  },
+  {
+   "start": 1683.71,
+   "end": 1687.35,
+   "text": "For, I don't know what you mentioned, maybe sarmijada."
+  },
+  {
+   "start": 1687.35,
+   "end": 1692.37,
+   "text": "They make different types of foods and people come and try different versions of"
+  },
+  {
+   "start": 1692.37,
+   "end": 1693.17,
+   "text": "the same meal."
+  },
+  {
+   "start": 1693.17,
+   "end": 1694.61,
+   "text": "It's quite popular, yeah."
+  },
+  {
+   "start": 1695.09,
+   "end": 1701.79,
+   "text": "Exactly. And Berbe, I think, is also very common in wine producing areas, I"
+  },
+  {
+   "start": 1701.79,
+   "end": 1703.81,
+   "text": "think. I've been to Zsupska Berbe."
+  },
+  {
+   "start": 1704.93,
+   "end": 1709.51,
+   "text": "What I liked, they turned this fountain in the city, in this town, this"
+  },
+  {
+   "start": 1709.51,
+   "end": 1713.73,
+   "text": "small town, into wine fountain."
+  },
+  {
+   "start": 1713.99,
+   "end": 1717.19,
+   "text": "So you can just go to the city center with your glass and just"
+  },
+  {
+   "start": 1717.19,
+   "end": 1718.95,
+   "text": "drink wine from it."
+  },
+  {
+   "start": 1719.01,
+   "end": 1719.95,
+   "text": "Nice, I didn't know that."
+  },
+  {
+   "start": 1719.97,
+   "end": 1722.25,
+   "text": "I've never been to Zsupska Berbe."
+  },
+  {
+   "start": 1722.51,
+   "end": 1724.93,
+   "text": "Yeah, it's my recommendation to everyone."
+  },
+  {
+   "start": 1726.19,
+   "end": 1728.27,
+   "text": "Nice. Alright. Thank you very much."
+  },
+  {
+   "start": 1728.27,
+   "end": 1729.65,
+   "text": "This was really nice."
+  },
+  {
+   "start": 1729.93,
+   "end": 1731.57,
+   "text": "Thank you. Thank you very much."
+  },
+  {
+   "start": 1731.59,
+   "end": 1733.01,
+   "text": "See you. Bye."
+  },
+  {
+   "start": 1733.11,
+   "end": 1733.49,
+   "text": "Bye."
+  }
+ ],
+ "title": "Prava Srbija 2",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/94268925/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2024-10-11%2F389624169-44100-2-27a6c1123ac34.m4a"
+}

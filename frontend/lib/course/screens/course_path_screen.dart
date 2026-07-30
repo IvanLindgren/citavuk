@@ -386,33 +386,43 @@ class _PathBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final course = controller.course!;
 
+    // Строки списка собираются замыканиями, а сам список — ListView.builder.
+    //
+    // Раньше здесь был ListView со списком children, то есть вся карта курса
+    // строилась сразу: десять разделов, в каждом тропа из узлов с градиентами,
+    // тенями и спрайтами. На телефоне это не влезало в бюджет кадра, список
+    // дёргался и вверх прокручивался рывками — часть событий прокрутки просто
+    // терялась. Замыкания дают ленивую отрисовку: строится только видимое.
+    final rows = <WidgetBuilder>[
+      (_) => _HeaderCard(controller: controller),
+      (_) => const SizedBox(height: 20),
+      for (var u = 0; u < course.units.length; u++) ...[
+        (_) => _UnitBanner(unit: course.units[u], index: u),
+        (_) => const SizedBox(height: 26),
+        (_) => _LessonPath(
+              unit: course.units[u],
+              controller: controller,
+              onOpenNode: onOpenNode,
+            ),
+        (_) => const SizedBox(height: 26),
+      ],
+      if (course.finalExam != null && course.finalExam!.isEmpty)
+        (_) => const _ComingSoonCard(
+              icon: Icons.workspace_premium_outlined,
+              title: 'Итоговая контрольная',
+              text: 'Появится, когда будут готовы все разделы курса.',
+            ),
+      (_) => const SizedBox(height: 8),
+      (_) => _TrainerCard(course: course),
+    ];
+
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
-        child: ListView(
+        child: ListView.builder(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: [
-            _HeaderCard(controller: controller),
-            const SizedBox(height: 20),
-            for (var u = 0; u < course.units.length; u++) ...[
-              _UnitBanner(unit: course.units[u], index: u),
-              const SizedBox(height: 26),
-              _LessonPath(
-                unit: course.units[u],
-                controller: controller,
-                onOpenNode: onOpenNode,
-              ),
-              const SizedBox(height: 26),
-            ],
-            if (course.finalExam != null && course.finalExam!.isEmpty)
-              const _ComingSoonCard(
-                icon: Icons.workspace_premium_outlined,
-                title: 'Итоговая контрольная',
-                text: 'Появится, когда будут готовы все разделы курса.',
-              ),
-            const SizedBox(height: 8),
-            _TrainerCard(course: course),
-          ],
+          itemCount: rows.length,
+          itemBuilder: (context, index) => rows[index](context),
         ),
       ),
     );

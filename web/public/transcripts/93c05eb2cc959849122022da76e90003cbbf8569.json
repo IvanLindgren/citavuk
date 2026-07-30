@@ -1,0 +1,3585 @@
+{
+ "duration": 2796.62,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.38,
+   "end": 32.0,
+   "text": "Hello everyone, good morning everyone."
+  },
+  {
+   "start": 32.3,
+   "end": 34.84,
+   "text": "Here is Ivana and here is Maki."
+  },
+  {
+   "start": 34.84,
+   "end": 35.2,
+   "text": "Good morning."
+  },
+  {
+   "start": 38.26,
+   "end": 38.92,
+   "text": "We are back."
+  },
+  {
+   "start": 39.68,
+   "end": 42.14,
+   "text": "Back to... Which season is it?"
+  },
+  {
+   "start": 42.9,
+   "end": 45.06,
+   "text": "Sixth season. Season six."
+  },
+  {
+   "start": 45.12,
+   "end": 46.32,
+   "text": "I hope you missed us."
+  },
+  {
+   "start": 47.78,
+   "end": 51.54,
+   "text": "Me too. I hope we are not satisfied."
+  },
+  {
+   "start": 53.46,
+   "end": 55.46,
+   "text": "Yeah, that's a hard sentence."
+  },
+  {
+   "start": 55.46,
+   "end": 56.28,
+   "text": "It is quite hard."
+  },
+  {
+   "start": 56.28,
+   "end": 57.54,
+   "text": "I just said it."
+  },
+  {
+   "start": 57.54,
+   "end": 62.1,
+   "text": "I was like, oh, you have to think about is it he we are"
+  },
+  {
+   "start": 62.1,
+   "end": 64.54,
+   "text": "women men say me"
+  },
+  {
+   "start": 64.54,
+   "end": 70.22,
+   "text": "anyway we will write that down for you so that you can see it"
+  },
+  {
+   "start": 72.14,
+   "end": 75.5,
+   "text": "wait so that's easy"
+  },
+  {
+   "start": 75.5,
+   "end": 84.48,
+   "text": "which is"
+  },
+  {
+   "start": 84.48,
+   "end": 89.92,
+   "text": "funny because it means nedosteyati is missing like to miss someone right but it's"
+  },
+  {
+   "start": 89.92,
+   "end": 92.94,
+   "text": "like ne it sounds like i didn't miss you"
+  },
+  {
+   "start": 92.94,
+   "end": 99.98,
+   "text": "uh okay so we have one episode"
+  },
+  {
+   "start": 99.98,
+   "end": 102.54,
+   "text": "on that by the way oh my god i think they're gonna hate it"
+  },
+  {
+   "start": 102.54,
+   "end": 102.82,
+   "text": "like too much grammar but we are starting with a bang because we're starting"
+  },
+  {
+   "start": 102.82,
+   "end": 102.98,
+   "text": "it's"
+  },
+  {
+   "start": 106.64,
+   "end": 108.68,
+   "text": "with a very interesting topic, I think."
+  },
+  {
+   "start": 109.08,
+   "end": 113.98,
+   "text": "And maybe people, many girls would like this episode."
+  },
+  {
+   "start": 114.6,
+   "end": 115.76,
+   "text": "You know what I thought?"
+  },
+  {
+   "start": 116.16,
+   "end": 120.44,
+   "text": "So we invited many people, I mean, foreigners who moved to Serbia."
+  },
+  {
+   "start": 120.44,
+   "end": 122.64,
+   "text": "And most of them were men and they came for love."
+  },
+  {
+   "start": 123.22,
+   "end": 127.48,
+   "text": "But there are a couple of girls as well, international people who came here"
+  },
+  {
+   "start": 127.48,
+   "end": 128.08,
+   "text": "for love."
+  },
+  {
+   "start": 129.62,
+   "end": 131.24,
+   "text": "I mean, for love of Serbian men."
+  },
+  {
+   "start": 131.5,
+   "end": 138.5,
+   "text": "So that's why I think we should also think of their perspective, what they"
+  },
+  {
+   "start": 138.5,
+   "end": 139.3,
+   "text": "shared as well."
+  },
+  {
+   "start": 140.12,
+   "end": 141.02,
+   "text": "Yeah, we should."
+  },
+  {
+   "start": 141.02,
+   "end": 146.12,
+   "text": "I think we asked a couple of them like differences, cultural differences."
+  },
+  {
+   "start": 146.12,
+   "end": 149.64,
+   "text": "But I really yeah, I think it would be really nice to see, like,"
+  },
+  {
+   "start": 149.64,
+   "end": 151.42,
+   "text": "how did you get with them?"
+  },
+  {
+   "start": 151.42,
+   "end": 152.88,
+   "text": "How how was that process?"
+  },
+  {
+   "start": 152.88,
+   "end": 153.78,
+   "text": "How was the flirting?"
+  },
+  {
+   "start": 153.78,
+   "end": 156.82,
+   "text": "How are the so what attracted you to them?"
+  },
+  {
+   "start": 157.18,
+   "end": 160.92,
+   "text": "so yeah in the in the episode of uh we have a lot to"
+  },
+  {
+   "start": 160.92,
+   "end": 163.86,
+   "text": "talk about also we there is an american"
+  },
+  {
+   "start": 163.86,
+   "end": 169.96,
+   "text": "girl and serbian guy yeah we talked about their love a little bit so"
+  },
+  {
+   "start": 169.96,
+   "end": 171.4,
+   "text": "but not only foreigner versus"
+  },
+  {
+   "start": 171.4,
+   "end": 177.44,
+   "text": "i mean foreigner with a serbian guy but serbian guys serbian women all the"
+  },
+  {
+   "start": 177.44,
+   "end": 178.22,
+   "text": "relationships we are"
+  },
+  {
+   "start": 178.22,
+   "end": 183.28,
+   "text": "gonna put on the table yeah yeah i'll tell you what i know it's"
+  },
+  {
+   "start": 183.28,
+   "end": 184.82,
+   "text": "not that i know everything but"
+  },
+  {
+   "start": 186.12,
+   "end": 190.5,
+   "text": "it's not that I dated so many guys but but I do have some"
+  },
+  {
+   "start": 190.5,
+   "end": 191.72,
+   "text": "experience you know because I grew up"
+  },
+  {
+   "start": 191.72,
+   "end": 195.94,
+   "text": "over there so let's see what I can how you know your friend's stories"
+  },
+  {
+   "start": 195.94,
+   "end": 196.7,
+   "text": "you know your relative"
+  },
+  {
+   "start": 196.7,
+   "end": 202.74,
+   "text": "stories so obviously you know more than me yes I do I do okay"
+  },
+  {
+   "start": 202.74,
+   "end": 204.02,
+   "text": "do you want to start"
+  },
+  {
+   "start": 204.02,
+   "end": 212.46,
+   "text": "okay so I want to learn first what is flirting in Serbian we"
+  },
+  {
+   "start": 212.46,
+   "end": 214.02,
+   "text": "just use a flat Flartovanie."
+  },
+  {
+   "start": 214.98,
+   "end": 219.87,
+   "text": "Flartovanie. Okay. Flartovanie or, let me see."
+  },
+  {
+   "start": 224.53,
+   "end": 231.79,
+   "text": "You can say, if you want to say to flirt, flertovati or nabacivati se."
+  },
+  {
+   "start": 232.79,
+   "end": 235.29,
+   "text": "It's like nabacivati se."
+  },
+  {
+   "start": 235.35,
+   "end": 238.95,
+   "text": "Yeah. Actually, maybe I should write that down so that we remember to put"
+  },
+  {
+   "start": 238.95,
+   "end": 239.79,
+   "text": "it in the script."
+  },
+  {
+   "start": 240.59,
+   "end": 245.73,
+   "text": "Okay. but yeah it's basically like if you want to say like don't flirt"
+  },
+  {
+   "start": 245.73,
+   "end": 253.81,
+   "text": "with me you know don't you like okay i'm"
+  },
+  {
+   "start": 253.81,
+   "end": 261.03,
+   "text": "writing this down i'm gonna ask you again okay okay good so"
+  },
+  {
+   "start": 261.03,
+   "end": 262.69,
+   "text": "guys what are the first"
+  },
+  {
+   "start": 262.69,
+   "end": 268.01,
+   "text": "of all the names the most common names male names in serbian i wrote"
+  },
+  {
+   "start": 268.01,
+   "end": 272.69,
+   "text": "some of them down but there's so many and i think um there's like"
+  },
+  {
+   "start": 272.69,
+   "end": 275.83,
+   "text": "uh so a lot of them are based uh obviously like like in other"
+  },
+  {
+   "start": 275.83,
+   "end": 283.85,
+   "text": "languages they're religiously based right like um stefan no actually wait mihailo"
+  },
+  {
+   "start": 283.85,
+   "end": 284.07,
+   "text": "mihailo that's"
+  },
+  {
+   "start": 284.07,
+   "end": 288.65,
+   "text": "the one i want to say or also based on our history right so"
+  },
+  {
+   "start": 288.65,
+   "end": 290.93,
+   "text": "we have like an emanici this is like the"
+  },
+  {
+   "start": 290.93,
+   "end": 296.11,
+   "text": "the family tree like the family of rulers in serbia and we have this"
+  },
+  {
+   "start": 296.11,
+   "end": 300.51,
+   "text": "new monument in belgrade right in front of the main train station so that"
+  },
+  {
+   "start": 300.51,
+   "end": 303.83,
+   "text": "is stefan emania so a lot of these names keep being"
+  },
+  {
+   "start": 303.83,
+   "end": 310.91,
+   "text": "repeated like uros milan and so on um we"
+  },
+  {
+   "start": 310.91,
+   "end": 313.95,
+   "text": "have like uh marco that's quite a common one"
+  },
+  {
+   "start": 315.69,
+   "end": 322.77,
+   "text": "nikola nikola milan dragon that one is also quite common"
+  },
+  {
+   "start": 322.77,
+   "end": 325.89,
+   "text": "yeah it's so funny because in english sounds like dragon right like"
+  },
+  {
+   "start": 325.89,
+   "end": 334.11,
+   "text": "but you know you can use a nickname for dragon draghi so"
+  },
+  {
+   "start": 334.11,
+   "end": 338.59,
+   "text": "it's that also means deer yeah exactly so you can use that so it's"
+  },
+  {
+   "start": 338.59,
+   "end": 345.17,
+   "text": "not such a bad name especially for a boyfriend exactly yeah luca quite a"
+  },
+  {
+   "start": 345.17,
+   "end": 350.37,
+   "text": "quite a common one again i think religiously as well right um philip again"
+  },
+  {
+   "start": 350.37,
+   "end": 356.13,
+   "text": "quite a general one um and many more many more okay yeah i know"
+  },
+  {
+   "start": 356.13,
+   "end": 363.55,
+   "text": "so can we say that in general serbian guys are handsome so"
+  },
+  {
+   "start": 363.55,
+   "end": 365.01,
+   "text": "i am from serbia so i would say"
+  },
+  {
+   "start": 365.01,
+   "end": 370.77,
+   "text": "yeah i would say that is not personal taste but of course i'm used"
+  },
+  {
+   "start": 370.77,
+   "end": 371.63,
+   "text": "to that right so it's like of"
+  },
+  {
+   "start": 371.63,
+   "end": 376.15,
+   "text": "course i'm a bit biased but based on what other people would tell me"
+  },
+  {
+   "start": 376.15,
+   "end": 379.19,
+   "text": "like guys and girls they would be like oh my god they're so tall"
+  },
+  {
+   "start": 379.19,
+   "end": 382.15,
+   "text": "they're so masculine right and i think i don't they don't"
+  },
+  {
+   "start": 382.15,
+   "end": 387.85,
+   "text": "really talk about their beauty like i think for men like usually you don't"
+  },
+  {
+   "start": 387.85,
+   "end": 388.39,
+   "text": "say he's beautiful"
+  },
+  {
+   "start": 388.39,
+   "end": 392.69,
+   "text": "you can i think we but like guys don't say he's beautiful it's like"
+  },
+  {
+   "start": 392.69,
+   "end": 393.95,
+   "text": "you know you just look at like"
+  },
+  {
+   "start": 393.95,
+   "end": 400.69,
+   "text": "he's like good looking good looking yeah and i think uh that serbian guys"
+  },
+  {
+   "start": 400.69,
+   "end": 401.31,
+   "text": "just give that vibe"
+  },
+  {
+   "start": 401.31,
+   "end": 405.13,
+   "text": "right like they're masculine there might not be some of them might not be"
+  },
+  {
+   "start": 405.13,
+   "end": 408.59,
+   "text": "the tallest but they're still very masculine when they see them right so it's"
+  },
+  {
+   "start": 408.59,
+   "end": 410.61,
+   "text": "like a very clear separation this is a man"
+  },
+  {
+   "start": 410.61,
+   "end": 417.65,
+   "text": "so uh yeah i think uh there was a video about like i think"
+  },
+  {
+   "start": 417.65,
+   "end": 419.09,
+   "text": "it's dating beyond borders i don't"
+  },
+  {
+   "start": 419.09,
+   "end": 424.03,
+   "text": "know if you've seen that and they maybe rings a bell maria was there"
+  },
+  {
+   "start": 424.03,
+   "end": 427.21,
+   "text": "uh alternative serbia and"
+  },
+  {
+   "start": 427.21,
+   "end": 433.93,
+   "text": "the couple from zraninin as well uh black and ginger um and i think"
+  },
+  {
+   "start": 433.93,
+   "end": 437.35,
+   "text": "maria actually said Oh, let me think."
+  },
+  {
+   "start": 437.68,
+   "end": 442.48,
+   "text": "yeah i think she said and some other people like the reason why maybe"
+  },
+  {
+   "start": 442.48,
+   "end": 444.58,
+   "text": "it is like uh they are"
+  },
+  {
+   "start": 444.58,
+   "end": 449.2,
+   "text": "considered as handsome is because we are really just like a mix of everything"
+  },
+  {
+   "start": 449.2,
+   "end": 454.56,
+   "text": "so we are slavs but also we have that a bit of like middle"
+  },
+  {
+   "start": 454.56,
+   "end": 458.78,
+   "text": "eastern but also we are mediterranean but also like you"
+  },
+  {
+   "start": 458.78,
+   "end": 462.8,
+   "text": "know we're just kind of like everything i mean not really everything but like"
+  },
+  {
+   "start": 462.8,
+   "end": 468.8,
+   "text": "a combination of yeah so and then you get like a mix of you"
+  },
+  {
+   "start": 468.8,
+   "end": 472.96,
+   "text": "have to get everything you get blonde you can get ginger you get like"
+  },
+  {
+   "start": 472.96,
+   "end": 479.14,
+   "text": "dark hair you get brown exactly everything yeah there's not one type"
+  },
+  {
+   "start": 479.14,
+   "end": 483.62,
+   "text": "definitely I completely see the difference even in Kuruševac which is a very small"
+  },
+  {
+   "start": 483.62,
+   "end": 484.04,
+   "text": "but mostly yeah you're right they are most of the time tall and town"
+  },
+  {
+   "start": 491.2,
+   "end": 497.98,
+   "text": "they have this to me more like a slavic appearance i i see them"
+  },
+  {
+   "start": 497.98,
+   "end": 502.8,
+   "text": "like that like uh the cheekbones are very visible and"
+  },
+  {
+   "start": 502.8,
+   "end": 510.5,
+   "text": "they are very serious serious looking guy i don't see like laughing guys"
+  },
+  {
+   "start": 510.5,
+   "end": 511.3,
+   "text": "around they're mostly like"
+  },
+  {
+   "start": 511.3,
+   "end": 517.44,
+   "text": "sitting seriously when they like uh the outside yes as soon as you start"
+  },
+  {
+   "start": 517.44,
+   "end": 521.88,
+   "text": "talking to them they're very friendly but like before talking to them they just"
+  },
+  {
+   "start": 521.88,
+   "end": 525.84,
+   "text": "seem like very angry or serious or something"
+  },
+  {
+   "start": 525.84,
+   "end": 531.22,
+   "text": "but they're always I think actually that's a very big part in Serbia like"
+  },
+  {
+   "start": 531.22,
+   "end": 536.16,
+   "text": "you have to be able to joke so they are very jokey they love"
+  },
+  {
+   "start": 536.16,
+   "end": 539.92,
+   "text": "humor and yeah so I think that's a very big part which is funny"
+  },
+  {
+   "start": 539.92,
+   "end": 546.28,
+   "text": "because you just said that they look like they're like very standoffish right exactly"
+  },
+  {
+   "start": 546.28,
+   "end": 553.3,
+   "text": "and then they surprise you with their jokes so that's one charm yeah and"
+  },
+  {
+   "start": 553.3,
+   "end": 556.44,
+   "text": "they're not they're not that shy actually at least"
+  },
+  {
+   "start": 556.44,
+   "end": 563.0,
+   "text": "like my experience they i don't remember like of course i can't really generalize"
+  },
+  {
+   "start": 563.0,
+   "end": 563.78,
+   "text": "but because we"
+  },
+  {
+   "start": 563.78,
+   "end": 569.72,
+   "text": "are so such social animals in serbia right like it's all about friends a"
+  },
+  {
+   "start": 569.72,
+   "end": 574.2,
+   "text": "community and so on you just get a lot of practice you know and"
+  },
+  {
+   "start": 574.2,
+   "end": 576.64,
+   "text": "and it's not that as daunting like to meet other people"
+  },
+  {
+   "start": 576.64,
+   "end": 582.82,
+   "text": "or approach women or so on cool so we are we are going to"
+  },
+  {
+   "start": 582.82,
+   "end": 585.0,
+   "text": "have confident guys here i mean for the"
+  },
+  {
+   "start": 585.0,
+   "end": 592.16,
+   "text": "ones who are looking okay how about dating like"
+  },
+  {
+   "start": 592.16,
+   "end": 599.16,
+   "text": "the rules in general are they like normal more common rules or serbians"
+  },
+  {
+   "start": 599.16,
+   "end": 604.02,
+   "text": "have other kind of you know tradition or ritual in terms of dating who"
+  },
+  {
+   "start": 604.02,
+   "end": 611.04,
+   "text": "starts the conversation who moves first and who says what kind"
+  },
+  {
+   "start": 611.04,
+   "end": 612.44,
+   "text": "of questions i have traditional"
+  },
+  {
+   "start": 612.44,
+   "end": 619.96,
+   "text": "it's very traditional like i don't even because even if like"
+  },
+  {
+   "start": 619.96,
+   "end": 624.38,
+   "text": "i think it's maybe been a bit loosened up i'm guessing that some of"
+  },
+  {
+   "start": 624.38,
+   "end": 628.42,
+   "text": "them do like being approached but it's too easy you know"
+  },
+  {
+   "start": 628.42,
+   "end": 631.7,
+   "text": "what i mean like they need to approach they need to feel like a"
+  },
+  {
+   "start": 631.7,
+   "end": 633.94,
+   "text": "man they need to feel like they're"
+  },
+  {
+   "start": 633.94,
+   "end": 637.78,
+   "text": "making an effort they need to feel like they deserve it you know because"
+  },
+  {
+   "start": 637.78,
+   "end": 639.82,
+   "text": "it's it's again it's"
+  },
+  {
+   "start": 639.82,
+   "end": 645.34,
+   "text": "a bit contradict not a contradict but controversial but they do like women that"
+  },
+  {
+   "start": 645.34,
+   "end": 650.4,
+   "text": "are also a bit more traditional in a sense that they are pure, haven't"
+  },
+  {
+   "start": 650.4,
+   "end": 652.28,
+   "text": "been, haven't had a lot of partners."
+  },
+  {
+   "start": 653.68,
+   "end": 656.37,
+   "text": "I think, you know, you talked about confidence I don't really"
+  },
+  {
+   "start": 656.37,
+   "end": 663.45,
+   "text": "know how their self-esteem like how self-esteem is like if they're secure in"
+  },
+  {
+   "start": 663.45,
+   "end": 664.01,
+   "text": "themselves to be like"
+  },
+  {
+   "start": 664.01,
+   "end": 668.19,
+   "text": "oh I can be with a girl who's had like I mean it's it's"
+  },
+  {
+   "start": 668.19,
+   "end": 669.97,
+   "text": "it's a bit funny but even 20 partners"
+  },
+  {
+   "start": 669.97,
+   "end": 675.17,
+   "text": "is a lot which is like nothing in today's society but it would be"
+  },
+  {
+   "start": 675.17,
+   "end": 678.87,
+   "text": "like it would probably be like oh oh wait uh how can i compete"
+  },
+  {
+   "start": 678.87,
+   "end": 680.69,
+   "text": "with that you know like they would they would probably just start"
+  },
+  {
+   "start": 680.69,
+   "end": 686.13,
+   "text": "thinking about it so yeah they're quite traditional in that sense so they love"
+  },
+  {
+   "start": 686.13,
+   "end": 688.25,
+   "text": "to approach i say do"
+  },
+  {
+   "start": 688.25,
+   "end": 693.31,
+   "text": "they ask like or is it a kind of taboo to talk about boyfriends"
+  },
+  {
+   "start": 693.31,
+   "end": 698.53,
+   "text": "ex-boyfriends and girlfriends or i think they want to know you know what i"
+  },
+  {
+   "start": 698.53,
+   "end": 701.15,
+   "text": "think they would eventually ask i'm not quite sure but"
+  },
+  {
+   "start": 702.91,
+   "end": 708.95,
+   "text": "and I don't know I don't have a lot of experience and it's not"
+  },
+  {
+   "start": 708.95,
+   "end": 709.99,
+   "text": "that I talked to my friends a lot"
+  },
+  {
+   "start": 709.99,
+   "end": 713.69,
+   "text": "about that but because when I was there and I was talking to my"
+  },
+  {
+   "start": 713.69,
+   "end": 715.73,
+   "text": "friends about it then we were quite"
+  },
+  {
+   "start": 715.73,
+   "end": 720.67,
+   "text": "new to this whole dating scene right so it was very easy because not"
+  },
+  {
+   "start": 720.67,
+   "end": 722.47,
+   "text": "like we we had like one or"
+  },
+  {
+   "start": 722.47,
+   "end": 727.33,
+   "text": "maybe two partners right so it's not like it was a big deal but"
+  },
+  {
+   "start": 727.33,
+   "end": 731.49,
+   "text": "now thinking about it my friends and my my sister and so on we"
+  },
+  {
+   "start": 731.49,
+   "end": 738.57,
+   "text": "we never had as like many partners so even if they shared I'm"
+  },
+  {
+   "start": 738.57,
+   "end": 738.69,
+   "text": "that it's just not a big deal because it's not a big number you"
+  },
+  {
+   "start": 738.69,
+   "end": 739.01,
+   "text": "guessing"
+  },
+  {
+   "start": 742.77,
+   "end": 745.29,
+   "text": "know I see so but I think they"
+  },
+  {
+   "start": 745.29,
+   "end": 750.67,
+   "text": "would eventually ask if they want to know the answer I don't know I"
+  },
+  {
+   "start": 750.67,
+   "end": 750.95,
+   "text": "think that's individual"
+  },
+  {
+   "start": 750.95,
+   "end": 756.19,
+   "text": "I think personally think I they it's better for them not to know if"
+  },
+  {
+   "start": 756.19,
+   "end": 759.33,
+   "text": "it's a high number because I I think they would just haunt them."
+  },
+  {
+   "start": 760.41,
+   "end": 761.45,
+   "text": "Most of them probably."
+  },
+  {
+   "start": 761.45,
+   "end": 763.21,
+   "text": "They would feel so insecure, right?"
+  },
+  {
+   "start": 763.21,
+   "end": 767.17,
+   "text": "um but yeah i think okay again this is"
+  },
+  {
+   "start": 767.17,
+   "end": 771.55,
+   "text": "changing don't like i haven't been in serbia for like the past eight years"
+  },
+  {
+   "start": 771.55,
+   "end": 772.53,
+   "text": "this is changing but i"
+  },
+  {
+   "start": 772.53,
+   "end": 779.35,
+   "text": "think it's still like the same values and like uh yeah traditional kind of"
+  },
+  {
+   "start": 779.35,
+   "end": 786.27,
+   "text": "thing okay when the relationship starts what is the most typical like present or"
+  },
+  {
+   "start": 786.27,
+   "end": 789.57,
+   "text": "gesture like that we would expect from"
+  },
+  {
+   "start": 789.57,
+   "end": 796.05,
+   "text": "a serving guy i don't see many florists around so i'm not i'm thinking"
+  },
+  {
+   "start": 796.05,
+   "end": 798.81,
+   "text": "flowers is not the priority"
+  },
+  {
+   "start": 798.81,
+   "end": 806.19,
+   "text": "but chocolate could be in my opinion so i there"
+  },
+  {
+   "start": 806.19,
+   "end": 809.21,
+   "text": "are many things that serbian guys are good at but if they're not good"
+  },
+  {
+   "start": 809.21,
+   "end": 813.67,
+   "text": "at presents and they i think that that is like a"
+  },
+  {
+   "start": 813.67,
+   "end": 821.13,
+   "text": "they just haven't been really educated to think from"
+  },
+  {
+   "start": 821.13,
+   "end": 823.93,
+   "text": "our perspective right i think that majority"
+  },
+  {
+   "start": 823.93,
+   "end": 829.31,
+   "text": "of them just do what they think we would like and uh one of"
+  },
+  {
+   "start": 829.31,
+   "end": 830.61,
+   "text": "them is buying flowers as you said not"
+  },
+  {
+   "start": 830.61,
+   "end": 835.93,
+   "text": "maybe not as much but like chocolates or you know like it's just like"
+  },
+  {
+   "start": 835.93,
+   "end": 841.35,
+   "text": "material things like that like chocolates let me just think what else could be"
+  },
+  {
+   "start": 841.35,
+   "end": 844.13,
+   "text": "what did I get perfumes yeah perfumes definitely"
+  },
+  {
+   "start": 844.13,
+   "end": 850.39,
+   "text": "perfumes I'm guessing like some jewelry if you I mean when I was there"
+  },
+  {
+   "start": 850.39,
+   "end": 851.25,
+   "text": "I we didn't have money"
+  },
+  {
+   "start": 851.25,
+   "end": 855.67,
+   "text": "for jewelry we were like students you know I can throw jewelry but yeah"
+  },
+  {
+   "start": 855.67,
+   "end": 856.35,
+   "text": "but yeah jewelry can also"
+  },
+  {
+   "start": 856.35,
+   "end": 859.51,
+   "text": "be good you know for a while it was like these you know these"
+  },
+  {
+   "start": 859.51,
+   "end": 860.71,
+   "text": "two hearts that you get and then"
+  },
+  {
+   "start": 860.71,
+   "end": 866.07,
+   "text": "you separate and then you carry one that was a thing before we continue"
+  },
+  {
+   "start": 866.07,
+   "end": 871.83,
+   "text": "with the show here's a Thank you."
+  },
+  {
+   "start": 873.8,
+   "end": 875.32,
+   "text": "useful and companion to you."
+  },
+  {
+   "start": 875.32,
+   "end": 877.8,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 877.8,
+   "end": 879.0,
+   "text": "To help us continue creating"
+  },
+  {
+   "start": 879.0,
+   "end": 882.54,
+   "text": "useful content for everyone, we will appreciate your help."
+  },
+  {
+   "start": 882.54,
+   "end": 884.46,
+   "text": "If you have the means, you can support"
+  },
+  {
+   "start": 884.46,
+   "end": 886.16,
+   "text": "us in different ways."
+  },
+  {
+   "start": 886.16,
+   "end": 891.86,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups"
+  },
+  {
+   "start": 891.86,
+   "end": 897.34,
+   "text": "of coffee. You may also become a member of our show on patreon.com slash"
+  },
+  {
+   "start": 897.34,
+   "end": 903.24,
+   "text": "mozdecafapodcast and get extra benefits like bonus content, full transcripts of the show in"
+  },
+  {
+   "start": 903.24,
+   "end": 903.92,
+   "text": "Serbian, or even"
+  },
+  {
+   "start": 903.92,
+   "end": 905.44,
+   "text": "join us on the show."
+  },
+  {
+   "start": 905.44,
+   "end": 909.76,
+   "text": "We rely on your support to help everyone more in learning Serbian language"
+  },
+  {
+   "start": 909.76,
+   "end": 912.98,
+   "text": "and culture. Thanks for joining us today."
+  },
+  {
+   "start": 912.98,
+   "end": 915.1,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 916.5,
+   "end": 922.12,
+   "text": "For Valentine's Day, they would often order like pizza in the shape of a"
+  },
+  {
+   "start": 922.12,
+   "end": 922.8,
+   "text": "heart."
+  },
+  {
+   "start": 925.3,
+   "end": 930.6,
+   "text": "it's like they just don't know and I think the society doesn't push them"
+  },
+  {
+   "start": 930.6,
+   "end": 931.04,
+   "text": "to get a bit"
+  },
+  {
+   "start": 931.04,
+   "end": 936.34,
+   "text": "more you know like come on everybody loves pizza that's not a bad idea"
+  },
+  {
+   "start": 936.34,
+   "end": 937.42,
+   "text": "I would love that"
+  },
+  {
+   "start": 937.42,
+   "end": 943.26,
+   "text": "I know I know but it's a but it's just like such a typical"
+  },
+  {
+   "start": 943.26,
+   "end": 945.0,
+   "text": "I remember when my ex would give me"
+  },
+  {
+   "start": 945.0,
+   "end": 951.36,
+   "text": "presents and I think the only present I was genuinely really like excited about"
+  },
+  {
+   "start": 951.36,
+   "end": 956.0,
+   "text": "was that like a necklace with a what is it called oh my god"
+  },
+  {
+   "start": 956.0,
+   "end": 958.1,
+   "text": "the heart shape with a heart half of the heart"
+  },
+  {
+   "start": 958.1,
+   "end": 963.24,
+   "text": "um it was because it was just the well of course I love jewelry"
+  },
+  {
+   "start": 963.24,
+   "end": 966.64,
+   "text": "but it was it was quite simple it was nice but it was um"
+  },
+  {
+   "start": 966.64,
+   "end": 971.18,
+   "text": "it was just like a sign of him like really being committed and not"
+  },
+  {
+   "start": 971.18,
+   "end": 971.44,
+   "text": "playing around and of course it's not like we're gonna get married or anything"
+  },
+  {
+   "start": 971.44,
+   "end": 971.66,
+   "text": "just"
+  },
+  {
+   "start": 974.68,
+   "end": 975.04,
+   "text": "like that it's just"
+  },
+  {
+   "start": 975.04,
+   "end": 979.12,
+   "text": "that in at this moment you I care about you right but all of"
+  },
+  {
+   "start": 979.12,
+   "end": 983.82,
+   "text": "the other things I remember he would like bring me flour like flour for"
+  },
+  {
+   "start": 983.82,
+   "end": 984.16,
+   "text": "um"
+  },
+  {
+   "start": 984.16,
+   "end": 990.1,
+   "text": "the 8th of March right like the which is coming soon yeah coming soon"
+  },
+  {
+   "start": 990.1,
+   "end": 991.26,
+   "text": "and and he would just tell"
+  },
+  {
+   "start": 991.26,
+   "end": 994.86,
+   "text": "me like yeah I bought this because like my mom told me like you"
+  },
+  {
+   "start": 994.86,
+   "end": 995.86,
+   "text": "know and and for me even when"
+  },
+  {
+   "start": 995.86,
+   "end": 1000.26,
+   "text": "he gave me I would be like okay it's nice you know as you"
+  },
+  {
+   "start": 1000.26,
+   "end": 1003.64,
+   "text": "said food is always nice I like chocolate so like that was always nice"
+  },
+  {
+   "start": 1003.64,
+   "end": 1007.6,
+   "text": "pizza sharing we would order more practical yeah but I think really"
+  },
+  {
+   "start": 1007.6,
+   "end": 1013.78,
+   "text": "too much you know like we didn't buy like clothes for ourselves like he"
+  },
+  {
+   "start": 1013.78,
+   "end": 1020.52,
+   "text": "him for me or um yeah I think these were presents we were not"
+  },
+  {
+   "start": 1020.52,
+   "end": 1021.62,
+   "text": "really big on presents and I think"
+  },
+  {
+   "start": 1021.62,
+   "end": 1027.38,
+   "text": "I just think guys don't really like think about it that much I see"
+  },
+  {
+   "start": 1027.38,
+   "end": 1033.78,
+   "text": "yeah okay they like to yeah keep things simple easy in the relationship in"
+  },
+  {
+   "start": 1033.78,
+   "end": 1036.56,
+   "text": "the beginning yes and you know i think also"
+  },
+  {
+   "start": 1036.56,
+   "end": 1039.94,
+   "text": "it really just depends on the person but i i mean it's a shame"
+  },
+  {
+   "start": 1039.94,
+   "end": 1041.58,
+   "text": "that like experiences are not part of"
+  },
+  {
+   "start": 1041.58,
+   "end": 1048.2,
+   "text": "the present right like uh uh like i would have to fight to go"
+  },
+  {
+   "start": 1048.2,
+   "end": 1049.78,
+   "text": "on vacation with my boyfriend like"
+  },
+  {
+   "start": 1049.78,
+   "end": 1053.66,
+   "text": "really because they are so tight with their friends and they organize everything with"
+  },
+  {
+   "start": 1053.66,
+   "end": 1054.0,
+   "text": "friends right so it's like do you don't you want to be with me"
+  },
+  {
+   "start": 1054.0,
+   "end": 1054.1,
+   "text": "their"
+  },
+  {
+   "start": 1057.12,
+   "end": 1060.14,
+   "text": "like and like do the same like did you want to go on vacation"
+  },
+  {
+   "start": 1060.14,
+   "end": 1063.94,
+   "text": "with me so um but I think that's again like where maybe they went"
+  },
+  {
+   "start": 1063.94,
+   "end": 1069.4,
+   "text": "there a bit younger when you're like in your 20 late 20s and 30s"
+  },
+  {
+   "start": 1069.4,
+   "end": 1071.98,
+   "text": "then you know you you you're like"
+  },
+  {
+   "start": 1071.98,
+   "end": 1076.96,
+   "text": "very confident like um in yourself and then you actually pay a bit more"
+  },
+  {
+   "start": 1076.96,
+   "end": 1082.5,
+   "text": "attention to a woman than you would when you were 20 right I see"
+  },
+  {
+   "start": 1082.5,
+   "end": 1088.14,
+   "text": "but you're right I like normal I have friends here male friends and I"
+  },
+  {
+   "start": 1088.14,
+   "end": 1092.56,
+   "text": "see that they go on vacation with their male friends for for a week"
+  },
+  {
+   "start": 1092.56,
+   "end": 1093.52,
+   "text": "or for a"
+  },
+  {
+   "start": 1093.52,
+   "end": 1100.34,
+   "text": "couple of days quite often and and interestingly they are not like mixed groups"
+  },
+  {
+   "start": 1100.34,
+   "end": 1101.5,
+   "text": "they are only male"
+  },
+  {
+   "start": 1101.5,
+   "end": 1108.94,
+   "text": "friends together they do hiking or skiing or you know going somewhere together yeah"
+  },
+  {
+   "start": 1108.94,
+   "end": 1110.34,
+   "text": "yeah it just"
+  },
+  {
+   "start": 1110.34,
+   "end": 1114.96,
+   "text": "depends also dating when you're married it's a different story when you're married right"
+  },
+  {
+   "start": 1115.52,
+   "end": 1119.54,
+   "text": "but uh i have also married friends and they do the same thing they"
+  },
+  {
+   "start": 1119.54,
+   "end": 1120.46,
+   "text": "go on holidays with their"
+  },
+  {
+   "start": 1120.46,
+   "end": 1126.34,
+   "text": "male friends okay well it's not really a different thing than in turkey it's"
+  },
+  {
+   "start": 1126.34,
+   "end": 1127.46,
+   "text": "a bit different yeah i"
+  },
+  {
+   "start": 1127.46,
+   "end": 1131.12,
+   "text": "mean of course it's individual some people keep doing that but most of the"
+  },
+  {
+   "start": 1131.12,
+   "end": 1132.32,
+   "text": "families i think they"
+  },
+  {
+   "start": 1132.32,
+   "end": 1135.8,
+   "text": "would do things more together even if you go with your male friends they"
+  },
+  {
+   "start": 1135.8,
+   "end": 1136.92,
+   "text": "are wise and kids will come"
+  },
+  {
+   "start": 1136.92,
+   "end": 1141.8,
+   "text": "as well it's like a pack mentality you know what i mean like they're"
+  },
+  {
+   "start": 1141.8,
+   "end": 1145.08,
+   "text": "like i have my group of guy friend and i'm i'm the part of"
+  },
+  {
+   "start": 1145.08,
+   "end": 1152.24,
+   "text": "the pack and we do it together yeah okay can we call them macho"
+  },
+  {
+   "start": 1152.24,
+   "end": 1153.06,
+   "text": "yes"
+  },
+  {
+   "start": 1155.46,
+   "end": 1161.36,
+   "text": "definite answer no doubt yes they're very like mollet is macho right but like"
+  },
+  {
+   "start": 1161.36,
+   "end": 1161.44,
+   "text": "they're very"
+  },
+  {
+   "start": 1161.44,
+   "end": 1169.8,
+   "text": "a macho for me is like musc not muscular masculine masculine yeah masculine macho"
+  },
+  {
+   "start": 1169.8,
+   "end": 1174.58,
+   "text": "definitely uh maybe a bit too going to the extreme right because again i"
+  },
+  {
+   "start": 1174.58,
+   "end": 1177.52,
+   "text": "think um i mean they are right in the"
+  },
+  {
+   "start": 1177.52,
+   "end": 1184.02,
+   "text": "sense that some women really want to feel that uh that they are men"
+  },
+  {
+   "start": 1184.02,
+   "end": 1185.58,
+   "text": "that they are strong that"
+  },
+  {
+   "start": 1185.58,
+   "end": 1190.8,
+   "text": "they can rely on them i think that's really important right um but then"
+  },
+  {
+   "start": 1190.8,
+   "end": 1191.92,
+   "text": "we also need that"
+  },
+  {
+   "start": 1191.92,
+   "end": 1195.7,
+   "text": "like a bit softer side right like we need them to be open to"
+  },
+  {
+   "start": 1195.7,
+   "end": 1200.1,
+   "text": "conversation open to like new ways of thinking or to cooperating."
+  },
+  {
+   "start": 1200.1,
+   "end": 1200.75,
+   "text": "And sometimes"
+  },
+  {
+   "start": 1200.75,
+   "end": 1201.93,
+   "text": "sometimes that just goes into like"
+  },
+  {
+   "start": 1201.93,
+   "end": 1207.69,
+   "text": "i have to you know have control and be always right and things like"
+  },
+  {
+   "start": 1207.69,
+   "end": 1210.49,
+   "text": "that so and uh act like a man and"
+  },
+  {
+   "start": 1210.49,
+   "end": 1217.41,
+   "text": "um yeah so not a lot of metrosexuals i think that's how we say"
+  },
+  {
+   "start": 1217.41,
+   "end": 1219.65,
+   "text": "like not a lot of those but yeah"
+  },
+  {
+   "start": 1221.27,
+   "end": 1225.39,
+   "text": "even like as a friend i realized they really want to pay when you"
+  },
+  {
+   "start": 1225.39,
+   "end": 1226.83,
+   "text": "drink coffee or when you go"
+  },
+  {
+   "start": 1226.83,
+   "end": 1233.11,
+   "text": "like for lunch or dinner that's sometimes so and i i once saw this"
+  },
+  {
+   "start": 1233.11,
+   "end": 1235.83,
+   "text": "move like don't even like i was"
+  },
+  {
+   "start": 1235.83,
+   "end": 1242.47,
+   "text": "i was shocked like it gets to a point where you like you start"
+  },
+  {
+   "start": 1242.47,
+   "end": 1246.25,
+   "text": "arguing literally you start arguing you know and you know when I was younger"
+  },
+  {
+   "start": 1246.25,
+   "end": 1250.09,
+   "text": "when I was a teenager fine okay once or twice like they"
+  },
+  {
+   "start": 1250.09,
+   "end": 1255.43,
+   "text": "could do that but now it's kind of like no it's fine like you"
+  },
+  {
+   "start": 1255.43,
+   "end": 1257.31,
+   "text": "don't have to like I understand the"
+  },
+  {
+   "start": 1257.31,
+   "end": 1261.43,
+   "text": "customs I understand all of that but let me also sometimes like treat you"
+  },
+  {
+   "start": 1261.43,
+   "end": 1262.71,
+   "text": "it's fine I have a friend"
+  },
+  {
+   "start": 1262.71,
+   "end": 1267.61,
+   "text": "and he I it's not even like oh no let me oh no it's"
+  },
+  {
+   "start": 1267.61,
+   "end": 1270.79,
+   "text": "not like that it's like I'll get angry if you pay i'll get fucking"
+  },
+  {
+   "start": 1270.79,
+   "end": 1274.33,
+   "text": "angry like don't and then he would like no shit and i can't even"
+  },
+  {
+   "start": 1274.33,
+   "end": 1274.45,
+   "text": "put it in"
+  },
+  {
+   "start": 1274.45,
+   "end": 1278.85,
+   "text": "his like his like pocket and and i'm like you know i i get"
+  },
+  {
+   "start": 1278.85,
+   "end": 1280.27,
+   "text": "it it's okay sometimes to negotiate like"
+  },
+  {
+   "start": 1280.27,
+   "end": 1283.59,
+   "text": "oh maybe no no let me and then you just let it go fine"
+  },
+  {
+   "start": 1283.59,
+   "end": 1284.93,
+   "text": "so sometimes i pay sometimes you pay that's"
+  },
+  {
+   "start": 1284.93,
+   "end": 1290.33,
+   "text": "great but this is like constantly some of them are like consistently because again"
+  },
+  {
+   "start": 1290.33,
+   "end": 1290.79,
+   "text": "hitting their masculine part of them that's going to support supposed to be a you're like"
+  },
+  {
+   "start": 1295.13,
+   "end": 1296.25,
+   "text": "provider right"
+  },
+  {
+   "start": 1298.23,
+   "end": 1300.93,
+   "text": "I see. Yeah, this is also, and they are very serious about it."
+  },
+  {
+   "start": 1300.93,
+   "end": 1303.93,
+   "text": "Like that gesture was like, don't even talk about it."
+  },
+  {
+   "start": 1306.17,
+   "end": 1306.85,
+   "text": "Exactly."
+  },
+  {
+   "start": 1308.17,
+   "end": 1308.29,
+   "text": "So as V also mentioned earlier,"
+  },
+  {
+   "start": 1308.29,
+   "end": 1308.45,
+   "text": "Okay."
+  },
+  {
+   "start": 1310.69,
+   "end": 1313.61,
+   "text": "Like they like to hang out with their own pack."
+  },
+  {
+   "start": 1314.49,
+   "end": 1317.75,
+   "text": "So are there other like hobbies or, you know,"
+  },
+  {
+   "start": 1319.35,
+   "end": 1323.03,
+   "text": "or kind of habits that Serbian men have?"
+  },
+  {
+   "start": 1323.03,
+   "end": 1326.77,
+   "text": "I wrote some of things that I thought like most of them,"
+  },
+  {
+   "start": 1328.41,
+   "end": 1329.89,
+   "text": "most of them are into sports then."
+  },
+  {
+   "start": 1329.89,
+   "end": 1334.09,
+   "text": "So they have these game nights or they play the sport themselves"
+  },
+  {
+   "start": 1334.09,
+   "end": 1338.61,
+   "text": "or they go out with only their male friends to watch the games and"
+  },
+  {
+   "start": 1338.61,
+   "end": 1344.97,
+   "text": "stuff. Right. yes sports a big deal in Serbia really a big deal and"
+  },
+  {
+   "start": 1344.97,
+   "end": 1347.09,
+   "text": "uh yeah I mean again I think uh"
+  },
+  {
+   "start": 1347.09,
+   "end": 1353.09,
+   "text": "practicing it might be different you know like because I think now there's like"
+  },
+  {
+   "start": 1353.09,
+   "end": 1353.55,
+   "text": "a lot more gyms"
+  },
+  {
+   "start": 1353.55,
+   "end": 1358.79,
+   "text": "and a lot more individuality I think before it was like like that was"
+  },
+  {
+   "start": 1358.79,
+   "end": 1359.45,
+   "text": "the way how you would move"
+  },
+  {
+   "start": 1359.45,
+   "end": 1364.25,
+   "text": "your body right so uh sports a big deal in terms of like following"
+  },
+  {
+   "start": 1364.25,
+   "end": 1370.39,
+   "text": "sports as a as an entertainment right so really big deal like football like"
+  },
+  {
+   "start": 1370.39,
+   "end": 1372.15,
+   "text": "everyone football like soccer however you want"
+  },
+  {
+   "start": 1372.15,
+   "end": 1376.87,
+   "text": "to call it but everyone plays it you know everyone knows how to play"
+  },
+  {
+   "start": 1376.87,
+   "end": 1378.43,
+   "text": "it maybe not well but like this"
+  },
+  {
+   "start": 1378.43,
+   "end": 1382.89,
+   "text": "is the sports that you need to know um and then uh and that"
+  },
+  {
+   "start": 1382.89,
+   "end": 1385.23,
+   "text": "you everyone follows like i think"
+  },
+  {
+   "start": 1385.23,
+   "end": 1391.35,
+   "text": "every guy follows soccer yeah and uh even though if you're not really interested"
+  },
+  {
+   "start": 1391.35,
+   "end": 1395.59,
+   "text": "in it but and then basketball of course and most of them know how to play"
+  },
+  {
+   "start": 1395.59,
+   "end": 1400.73,
+   "text": "basketball So that's the second, I would say probably one of the second most"
+  },
+  {
+   "start": 1400.73,
+   "end": 1403.57,
+   "text": "common played sports as well."
+  },
+  {
+   "start": 1403.57,
+   "end": 1406.15,
+   "text": "Again, very popular following."
+  },
+  {
+   "start": 1406.51,
+   "end": 1408.81,
+   "text": "And then other sports, whatever you have."
+  },
+  {
+   "start": 1408.81,
+   "end": 1409.69,
+   "text": "What did you write?"
+  },
+  {
+   "start": 1409.69,
+   "end": 1411.73,
+   "text": "Yeah, I don't know."
+  },
+  {
+   "start": 1411.73,
+   "end": 1413.57,
+   "text": "Tennis could be another one."
+  },
+  {
+   "start": 1413.57,
+   "end": 1419.1,
+   "text": "But my question is, doing sports together as a couple could be an option."
+  },
+  {
+   "start": 1419.6,
+   "end": 1423.2,
+   "text": "Yes. But there are not, for example, if it's soccer,"
+  },
+  {
+   "start": 1423.2,
+   "end": 1428.38,
+   "text": "they probably play only with, like they don't play in mixed teams, I guess."
+  },
+  {
+   "start": 1428.92,
+   "end": 1430.02,
+   "text": "That's not very common."
+  },
+  {
+   "start": 1430.54,
+   "end": 1434.08,
+   "text": "So you can organize like at work, you can do that."
+  },
+  {
+   "start": 1434.08,
+   "end": 1436.8,
+   "text": "You can also like what people do,"
+  },
+  {
+   "start": 1436.8,
+   "end": 1440.36,
+   "text": "they just ask schools if it's okay to just go there."
+  },
+  {
+   "start": 1441.48,
+   "end": 1443.4,
+   "text": "And then they would organize teams."
+  },
+  {
+   "start": 1443.4,
+   "end": 1448.94,
+   "text": "and we have like a yearly uh tournaments as well so even though you're"
+  },
+  {
+   "start": 1448.94,
+   "end": 1450.16,
+   "text": "not really like doing"
+  },
+  {
+   "start": 1450.16,
+   "end": 1455.66,
+   "text": "like that's not your like how do you say you're not training right exactly"
+  },
+  {
+   "start": 1455.66,
+   "end": 1456.44,
+   "text": "so they still like"
+  },
+  {
+   "start": 1456.44,
+   "end": 1462.68,
+   "text": "apply and then they do it out of fun um so yeah play together"
+  },
+  {
+   "start": 1462.68,
+   "end": 1468.28,
+   "text": "with different teams so there's always someone who can um organize it uh sports"
+  },
+  {
+   "start": 1468.28,
+   "end": 1473.02,
+   "text": "but also they um how do you call it bed yeah yeah"
+  },
+  {
+   "start": 1473.02,
+   "end": 1479.1,
+   "text": "everywhere there's like in almost every not every street but one in third let's"
+  },
+  {
+   "start": 1479.1,
+   "end": 1480.1,
+   "text": "say there are lots"
+  },
+  {
+   "start": 1480.1,
+   "end": 1485.54,
+   "text": "of betting places and you know they earn like they earn some money it's"
+  },
+  {
+   "start": 1485.54,
+   "end": 1486.44,
+   "text": "quite funny but i mean not all"
+  },
+  {
+   "start": 1486.44,
+   "end": 1490.4,
+   "text": "the time of course but it's like especially when you're younger you're like whoa"
+  },
+  {
+   "start": 1490.4,
+   "end": 1494.7,
+   "text": "i got this money So, yeah, I have to be kind of knowledgeable about,"
+  },
+  {
+   "start": 1494.7,
+   "end": 1500.46,
+   "text": "like, which team, what's the track record and so on."
+  },
+  {
+   "start": 1500.46,
+   "end": 1503.92,
+   "text": "But they can easily, like, get some money."
+  },
+  {
+   "start": 1503.92,
+   "end": 1506.6,
+   "text": "So trading, trading, like bidding is a big deal."
+  },
+  {
+   "start": 1507.96,
+   "end": 1508.64,
+   "text": "Video games."
+  },
+  {
+   "start": 1510.08,
+   "end": 1511.84,
+   "text": "Okay, that's universal, right?"
+  },
+  {
+   "start": 1512.32,
+   "end": 1515.36,
+   "text": "Video games. But, you know, it wasn't because when I was a teenager, it"
+  },
+  {
+   "start": 1515.36,
+   "end": 1519.26,
+   "text": "wasn't still like computers were still, not everyone had computers, right?"
+  },
+  {
+   "start": 1519.8,
+   "end": 1524.86,
+   "text": "so and then someone would have like a playstation and like fifa oh my"
+  },
+  {
+   "start": 1524.86,
+   "end": 1526.94,
+   "text": "god they could play for hours"
+  },
+  {
+   "start": 1526.94,
+   "end": 1531.68,
+   "text": "like hours i'm telling you so yeah and especially now it's"
+  },
+  {
+   "start": 1531.68,
+   "end": 1535.4,
+   "text": "like now you have the helmet they're like this and that like it just"
+  },
+  {
+   "start": 1535.4,
+   "end": 1536.6,
+   "text": "goes crazy right so that's"
+  },
+  {
+   "start": 1536.6,
+   "end": 1543.68,
+   "text": "definitely that's cool yeah and"
+  },
+  {
+   "start": 1543.68,
+   "end": 1549.76,
+   "text": "they like to go to kafana right yeah it's like kafana or now you"
+  },
+  {
+   "start": 1549.76,
+   "end": 1554.64,
+   "text": "have pubs as well pub that's how we call them as like bar how"
+  },
+  {
+   "start": 1554.64,
+   "end": 1557.48,
+   "text": "do we say bar we say pub yeah pubs"
+  },
+  {
+   "start": 1557.48,
+   "end": 1562.62,
+   "text": "or like kafana or it really just depends on what type of like mood"
+  },
+  {
+   "start": 1562.62,
+   "end": 1563.58,
+   "text": "you're in like what you want to"
+  },
+  {
+   "start": 1563.58,
+   "end": 1568.5,
+   "text": "do it so that's definitely something that they do with their partners right to"
+  },
+  {
+   "start": 1568.5,
+   "end": 1573.3,
+   "text": "go to kafana or pubs yeah well you know it depends it really just"
+  },
+  {
+   "start": 1573.3,
+   "end": 1577.74,
+   "text": "depends i think it's a very universal like place for like the pack sorry"
+  },
+  {
+   "start": 1577.74,
+   "end": 1581.02,
+   "text": "now i'm gonna be true now i'm gonna call them a pack uh because"
+  },
+  {
+   "start": 1581.02,
+   "end": 1581.18,
+   "text": "kind of you go over there and of course you order alcohol and you"
+  },
+  {
+   "start": 1581.18,
+   "end": 1581.46,
+   "text": "it's"
+  },
+  {
+   "start": 1584.1,
+   "end": 1584.86,
+   "text": "know which alcohol you should order"
+  },
+  {
+   "start": 1584.86,
+   "end": 1591.66,
+   "text": "it's like the justina yeah yeah so justina is like rakia and like how"
+  },
+  {
+   "start": 1591.66,
+   "end": 1592.36,
+   "text": "do you call this is spirits"
+  },
+  {
+   "start": 1592.36,
+   "end": 1599.36,
+   "text": "like whiskey and like all these like very very uh strong drinks very masculine"
+  },
+  {
+   "start": 1599.36,
+   "end": 1605.28,
+   "text": "right because they're so so strong that you need to be very masculine for"
+  },
+  {
+   "start": 1605.28,
+   "end": 1608.02,
+   "text": "that like manly um so yeah so and then hang"
+  },
+  {
+   "start": 1608.02,
+   "end": 1612.3,
+   "text": "out and that's like a nice place too um and then you know yeah"
+  },
+  {
+   "start": 1612.3,
+   "end": 1612.98,
+   "text": "sure you can go also with your"
+  },
+  {
+   "start": 1612.98,
+   "end": 1617.42,
+   "text": "partner um as well but definitely that's a meeting point for for the pack"
+  },
+  {
+   "start": 1617.42,
+   "end": 1621.62,
+   "text": "i see cool and they are huge"
+  },
+  {
+   "start": 1621.62,
+   "end": 1626.08,
+   "text": "dog lovers as far as i see you know i run a lot in"
+  },
+  {
+   "start": 1626.08,
+   "end": 1630.28,
+   "text": "the parks and of course there are so many women also walking their dogs."
+  },
+  {
+   "start": 1630.28,
+   "end": 1638.04,
+   "text": "But I see boys, like young men, going with two dogs, like interesting bees."
+  },
+  {
+   "start": 1638.04,
+   "end": 1641.77,
+   "text": "And I think they're it's the kind of uh possession that"
+  },
+  {
+   "start": 1641.77,
+   "end": 1648.11,
+   "text": "they show off that is what I'm thinking yeah yeah probably could be I"
+  },
+  {
+   "start": 1648.11,
+   "end": 1650.39,
+   "text": "don't like before it was you"
+  },
+  {
+   "start": 1650.39,
+   "end": 1653.51,
+   "text": "know you don't really walk your dog a lot because you have a really"
+  },
+  {
+   "start": 1653.51,
+   "end": 1656.57,
+   "text": "big backyard so um I mean it's"
+  },
+  {
+   "start": 1656.57,
+   "end": 1660.41,
+   "text": "I'm talking about because you know I didn't live in Belgrade so I don't"
+  },
+  {
+   "start": 1660.41,
+   "end": 1663.95,
+   "text": "know how it is in like bigger cities but uh but yeah now uh"
+  },
+  {
+   "start": 1663.95,
+   "end": 1666.53,
+   "text": "you see them more and more and definitely like they have a lot"
+  },
+  {
+   "start": 1666.53,
+   "end": 1671.67,
+   "text": "of like it's it's a kind of thing of a value right if you"
+  },
+  {
+   "start": 1671.67,
+   "end": 1673.93,
+   "text": "don't like animals or don't have animals"
+  },
+  {
+   "start": 1673.93,
+   "end": 1681.49,
+   "text": "it really kind of makes you think you have like empathy for animals or"
+  },
+  {
+   "start": 1681.49,
+   "end": 1682.73,
+   "text": "for them the human being"
+  },
+  {
+   "start": 1682.73,
+   "end": 1687.11,
+   "text": "how like it's kind of this thing like how can someone not love animals"
+  },
+  {
+   "start": 1687.11,
+   "end": 1692.53,
+   "text": "you know so so yeah it I think it talks a lot about your"
+  },
+  {
+   "start": 1692.53,
+   "end": 1697.41,
+   "text": "character right like um do you have that empathy towards other"
+  },
+  {
+   "start": 1697.41,
+   "end": 1703.61,
+   "text": "beings are you like a good are you outgoing are you like I don't"
+  },
+  {
+   "start": 1703.61,
+   "end": 1706.01,
+   "text": "know just fun I think responsible"
+  },
+  {
+   "start": 1706.01,
+   "end": 1711.05,
+   "text": "as well I think it's like sign of responsibility can you show love can"
+  },
+  {
+   "start": 1711.05,
+   "end": 1711.57,
+   "text": "you because you know towards"
+  },
+  {
+   "start": 1711.57,
+   "end": 1715.23,
+   "text": "your dog you show love right can you actually show can you love someone"
+  },
+  {
+   "start": 1715.23,
+   "end": 1719.27,
+   "text": "right can you show it for a long term because when you have the"
+  },
+  {
+   "start": 1719.27,
+   "end": 1724.37,
+   "text": "dog you have it for many years so exactly yeah so it tells"
+  },
+  {
+   "start": 1724.37,
+   "end": 1729.09,
+   "text": "a lot about a person and i think anyone like i mean it wouldn't"
+  },
+  {
+   "start": 1729.09,
+   "end": 1730.29,
+   "text": "be a deciding factor for me"
+  },
+  {
+   "start": 1730.29,
+   "end": 1733.29,
+   "text": "someone didn't have a dog you know but if someone did have a dog"
+  },
+  {
+   "start": 1733.29,
+   "end": 1734.59,
+   "text": "that would immediately attract me"
+  },
+  {
+   "start": 1734.59,
+   "end": 1740.87,
+   "text": "to them and they know this that's why i think they are like having"
+  },
+  {
+   "start": 1740.87,
+   "end": 1746.09,
+   "text": "their you know cool outfits and then they go out with the dogs."
+  },
+  {
+   "start": 1746.43,
+   "end": 1747.55,
+   "text": "Yeah, because they think"
+  },
+  {
+   "start": 1747.59,
+   "end": 1753.45,
+   "text": "I like that kind of showing off instead of, you know, having this big"
+  },
+  {
+   "start": 1753.45,
+   "end": 1756.95,
+   "text": "expensive cars and, you know, other kinds of."
+  },
+  {
+   "start": 1757.49,
+   "end": 1758.29,
+   "text": "Hey, that's also happening."
+  },
+  {
+   "start": 1758.29,
+   "end": 1762.87,
+   "text": "But it's like, what did I want to show?"
+  },
+  {
+   "start": 1763.25,
+   "end": 1767.13,
+   "text": "I want to say something and now I forgot, but it's kind of like"
+  },
+  {
+   "start": 1767.13,
+   "end": 1771.13,
+   "text": "taking care of someone outside of like, you know, not being selfish."
+  },
+  {
+   "start": 1771.13,
+   "end": 1773.69,
+   "text": "Like you're taking your time to take care of someone else."
+  },
+  {
+   "start": 1774.15,
+   "end": 1778.07,
+   "text": "and that again really like talks a lot about uh who you are as"
+  },
+  {
+   "start": 1778.07,
+   "end": 1779.87,
+   "text": "a person who could you potentially be"
+  },
+  {
+   "start": 1779.87,
+   "end": 1786.99,
+   "text": "but yes cars like motorbikes scooters like because"
+  },
+  {
+   "start": 1786.99,
+   "end": 1788.59,
+   "text": "when you're younger you we have this"
+  },
+  {
+   "start": 1788.59,
+   "end": 1794.45,
+   "text": "kerecha dozvola i think that's how it's like it's like a dozvola sorry um"
+  },
+  {
+   "start": 1794.45,
+   "end": 1800.89,
+   "text": "it's a license for uh to drive a motorbike right creature is it right"
+  },
+  {
+   "start": 1800.89,
+   "end": 1803.47,
+   "text": "yeah that's like a slang i'll have to check how"
+  },
+  {
+   "start": 1803.47,
+   "end": 1810.13,
+   "text": "you say it like it's like dog kid is dog right anyway um so"
+  },
+  {
+   "start": 1810.13,
+   "end": 1812.03,
+   "text": "it's it's kind of like a it's not"
+  },
+  {
+   "start": 1812.03,
+   "end": 1815.55,
+   "text": "a fake but it's like a mini license because you can only drive a"
+  },
+  {
+   "start": 1815.55,
+   "end": 1816.59,
+   "text": "scooter so nothing with gears"
+  },
+  {
+   "start": 1816.59,
+   "end": 1822.65,
+   "text": "and then you can uh if you want you can like go for a"
+  },
+  {
+   "start": 1822.65,
+   "end": 1827.45,
+   "text": "level level higher which is still not a car it's like any motorbike with"
+  },
+  {
+   "start": 1827.45,
+   "end": 1831.07,
+   "text": "a gear um and then that comes a car but you can skip that"
+  },
+  {
+   "start": 1831.07,
+   "end": 1836.57,
+   "text": "part from with the the gear like motorbike suit gears so while you have"
+  },
+  {
+   "start": 1836.57,
+   "end": 1842.07,
+   "text": "only that then you um then you're like it's all about the scooter right like it's"
+  },
+  {
+   "start": 1842.07,
+   "end": 1842.21,
+   "text": "all about like"
+  },
+  {
+   "start": 1842.21,
+   "end": 1847.35,
+   "text": "how fast you can go and so on and not really how pretty it"
+  },
+  {
+   "start": 1847.35,
+   "end": 1851.57,
+   "text": "is it's like mostly how fast you can go And then later it's cars,"
+  },
+  {
+   "start": 1851.57,
+   "end": 1851.65,
+   "text": "Yeah. Oh yeah."
+  },
+  {
+   "start": 1851.65,
+   "end": 1852.41,
+   "text": "of course."
+  },
+  {
+   "start": 1853.57,
+   "end": 1859.12,
+   "text": "For motorbikes, sometimes they modify it for making this stupid"
+  },
+  {
+   "start": 1859.12,
+   "end": 1864.44,
+   "text": "noise here in kruševac and that's something that i really hope that trend will"
+  },
+  {
+   "start": 1864.44,
+   "end": 1865.32,
+   "text": "go away soon"
+  },
+  {
+   "start": 1866.56,
+   "end": 1869.66,
+   "text": "my dad even wants to buy an electric one and i said yes please"
+  },
+  {
+   "start": 1869.66,
+   "end": 1876.98,
+   "text": "that was better for anyone for everyone yeah okay the good things now we"
+  },
+  {
+   "start": 1876.98,
+   "end": 1879.2,
+   "text": "talked about but let's say"
+  },
+  {
+   "start": 1880.54,
+   "end": 1887.7,
+   "text": "like what should we be careful about or your advices for people who want"
+  },
+  {
+   "start": 1887.7,
+   "end": 1888.22,
+   "text": "to who are about"
+  },
+  {
+   "start": 1888.22,
+   "end": 1892.32,
+   "text": "to start or who are already you know in a relationship with serving guys"
+  },
+  {
+   "start": 1892.32,
+   "end": 1892.68,
+   "text": "i just see a"
+  },
+  {
+   "start": 1892.68,
+   "end": 1898.7,
+   "text": "road down uh yeah so first of all i didn't write this down commitment"
+  },
+  {
+   "start": 1898.7,
+   "end": 1905.68,
+   "text": "i think it's um they're not willing to commit right away so it uh"
+  },
+  {
+   "start": 1905.68,
+   "end": 1909.52,
+   "text": "it's kind of like a trial period in the beginning"
+  },
+  {
+   "start": 1909.52,
+   "end": 1916.42,
+   "text": "even though you're monogamous right but don't think even though they look lovey-dovey and"
+  },
+  {
+   "start": 1916.42,
+   "end": 1920.92,
+   "text": "like you know all into you and so on it's it's they can easily"
+  },
+  {
+   "start": 1920.92,
+   "end": 1923.86,
+   "text": "just flip so flip the switch and uh"
+  },
+  {
+   "start": 1923.86,
+   "end": 1927.6,
+   "text": "and they they're not going to be committed it takes some time for them"
+  },
+  {
+   "start": 1927.6,
+   "end": 1928.16,
+   "text": "to get there"
+  },
+  {
+   "start": 1929.54,
+   "end": 1930.44,
+   "text": "to get into their relationship."
+  },
+  {
+   "start": 1930.44,
+   "end": 1937.78,
+   "text": "So don't expect big commitment because they have this like period of like,"
+  },
+  {
+   "start": 1938.14,
+   "end": 1942.14,
+   "text": "even though they might be in love, it could easily disappear, right?"
+  },
+  {
+   "start": 1942.82,
+   "end": 1947.18,
+   "text": "So yeah, so that, then I wrote down, make him work for it."
+  },
+  {
+   "start": 1947.6,
+   "end": 1948.56,
+   "text": "That's what I said."
+  },
+  {
+   "start": 1948.6,
+   "end": 1949.52,
+   "text": "They like a challenge."
+  },
+  {
+   "start": 1950.22,
+   "end": 1956.44,
+   "text": "Definitely don't be so available in a sense that, how could I say, don't"
+  },
+  {
+   "start": 1956.44,
+   "end": 1961.16,
+   "text": "be too much around him, you know, like don't be too much into like,"
+  },
+  {
+   "start": 1961.16,
+   "end": 1965.42,
+   "text": "yeah, yeah, everything's great in the beginning, like, let's, we're gonna have a family"
+  },
+  {
+   "start": 1965.42,
+   "end": 1966.2,
+   "text": "or so on right"
+  },
+  {
+   "start": 1966.2,
+   "end": 1973.12,
+   "text": "uh don't just like make him just make him work for keep asking more"
+  },
+  {
+   "start": 1973.12,
+   "end": 1975.84,
+   "text": "yeah just the act I would say"
+  },
+  {
+   "start": 1975.84,
+   "end": 1980.12,
+   "text": "act but it also for you as as a woman doesn't matter if you're"
+  },
+  {
+   "start": 1980.12,
+   "end": 1980.76,
+   "text": "a woman or a man but like"
+  },
+  {
+   "start": 1980.76,
+   "end": 1984.42,
+   "text": "you're also not sure if you want to be with that person right it's"
+  },
+  {
+   "start": 1984.42,
+   "end": 1985.3,
+   "text": "like still like you have more"
+  },
+  {
+   "start": 1985.3,
+   "end": 1989.28,
+   "text": "maybe in the beginning you have those butterflies trial process yeah but just like"
+  },
+  {
+   "start": 1989.28,
+   "end": 1992.78,
+   "text": "you don't know maybe it takes time to get to know some a person"
+  },
+  {
+   "start": 1992.78,
+   "end": 1996.1,
+   "text": "so don't be so available all the time i guess"
+  },
+  {
+   "start": 1996.1,
+   "end": 2002.52,
+   "text": "expect monogamy jealousy and traditional values"
+  },
+  {
+   "start": 2004.8,
+   "end": 2009.66,
+   "text": "that's a surprise after all the things that you have said so far yes"
+  },
+  {
+   "start": 2009.66,
+   "end": 2011.06,
+   "text": "but it there is a bit of a"
+  },
+  {
+   "start": 2011.06,
+   "end": 2015.6,
+   "text": "contradiction because they do because as i said it takes them a while to"
+  },
+  {
+   "start": 2015.6,
+   "end": 2019.64,
+   "text": "get to that commitment period and when it gets there it's commitment and it's"
+  },
+  {
+   "start": 2019.64,
+   "end": 2024.12,
+   "text": "monogamy and it's it we're like the only time"
+  },
+  {
+   "start": 2024.12,
+   "end": 2028.14,
+   "text": "that they could be like with multiple partners is in the beginning where they're"
+  },
+  {
+   "start": 2028.14,
+   "end": 2028.36,
+   "text": "trying to figure it"
+  },
+  {
+   "start": 2028.36,
+   "end": 2033.68,
+   "text": "out or so it doesn't mean that they so they can like sleep with"
+  },
+  {
+   "start": 2033.68,
+   "end": 2035.26,
+   "text": "several women uh at the same time"
+  },
+  {
+   "start": 2035.26,
+   "end": 2038.98,
+   "text": "but they're not going to be with one woman in the relationship and sleep"
+  },
+  {
+   "start": 2038.98,
+   "end": 2042.96,
+   "text": "with other women actually how can I say of course they can do that"
+  },
+  {
+   "start": 2042.96,
+   "end": 2046.86,
+   "text": "that's called cheating um but they at least expecting"
+  },
+  {
+   "start": 2046.86,
+   "end": 2053.86,
+   "text": "like the norm is monogamy right so there's no really I"
+  },
+  {
+   "start": 2053.86,
+   "end": 2055.4,
+   "text": "did never learned how to have the talk"
+  },
+  {
+   "start": 2055.4,
+   "end": 2059.54,
+   "text": "are we serious now like you know what I mean it was kind of"
+  },
+  {
+   "start": 2059.54,
+   "end": 2061.64,
+   "text": "like if we started hanging out and so"
+  },
+  {
+   "start": 2061.64,
+   "end": 2065.82,
+   "text": "on it was a relationship and then you have a choice of we can"
+  },
+  {
+   "start": 2065.82,
+   "end": 2070.8,
+   "text": "stop it or we can continue but it was never like, are you dating"
+  },
+  {
+   "start": 2070.8,
+   "end": 2071.0,
+   "text": "someone else?"
+  },
+  {
+   "start": 2071.0,
+   "end": 2074.36,
+   "text": "Like, are you seeing someone else besides or whatever?"
+  },
+  {
+   "start": 2074.36,
+   "end": 2075.59,
+   "text": "There was never even an issue"
+  },
+  {
+   "start": 2075.59,
+   "end": 2080.03,
+   "text": "because it was a given that we started our relationship, right?"
+  },
+  {
+   "start": 2080.99,
+   "end": 2084.13,
+   "text": "So are you saying that cheating"
+  },
+  {
+   "start": 2084.13,
+   "end": 2089.41,
+   "text": "or like flirting with others is not that common?"
+  },
+  {
+   "start": 2089.89,
+   "end": 2091.77,
+   "text": "Like, you know, some nations"
+  },
+  {
+   "start": 2091.77,
+   "end": 2094.79,
+   "text": "or some cultures are notorious in that,"
+  },
+  {
+   "start": 2094.79,
+   "end": 2098.23,
+   "text": "but when it comes to Serbians, it's not that common?"
+  },
+  {
+   "start": 2098.93,
+   "end": 2104.21,
+   "text": "Not accepted. no it's not it's a it's a very very clear violation of"
+  },
+  {
+   "start": 2104.21,
+   "end": 2106.07,
+   "text": "the relationship code and it's not"
+  },
+  {
+   "start": 2106.07,
+   "end": 2111.09,
+   "text": "no one would be like well whatever they might do it I'm not saying"
+  },
+  {
+   "start": 2111.09,
+   "end": 2112.17,
+   "text": "that they wouldn't they would"
+  },
+  {
+   "start": 2112.17,
+   "end": 2117.55,
+   "text": "probably hide it but it's not like hey let's figure this out and maybe"
+  },
+  {
+   "start": 2117.55,
+   "end": 2118.65,
+   "text": "I'm not for a monogamous"
+  },
+  {
+   "start": 2118.65,
+   "end": 2122.17,
+   "text": "relationship I still want to be with you and be your partner but maybe"
+  },
+  {
+   "start": 2122.17,
+   "end": 2123.09,
+   "text": "I want to hang out with"
+  },
+  {
+   "start": 2123.09,
+   "end": 2127.11,
+   "text": "other people on the side I still love you so that's I don't think"
+  },
+  {
+   "start": 2127.11,
+   "end": 2128.37,
+   "text": "that's I don't think we're there"
+  },
+  {
+   "start": 2129.83,
+   "end": 2132.25,
+   "text": "I don't think with that I mean I'm not saying that that's a right"
+  },
+  {
+   "start": 2132.25,
+   "end": 2133.21,
+   "text": "or a wrong approach I'm just"
+  },
+  {
+   "start": 2133.21,
+   "end": 2136.43,
+   "text": "saying that that is an option in other countries I don't think that's an"
+  },
+  {
+   "start": 2136.43,
+   "end": 2143.69,
+   "text": "option in Serbia I see okay I mean that's that's"
+  },
+  {
+   "start": 2143.69,
+   "end": 2146.59,
+   "text": "something very important to know if you're coming from that"
+  },
+  {
+   "start": 2146.59,
+   "end": 2152.03,
+   "text": "kind of culture where everything is completely in a different level right yeah you"
+  },
+  {
+   "start": 2152.03,
+   "end": 2154.89,
+   "text": "would have to I think the best thing is just the to have that"
+  },
+  {
+   "start": 2154.89,
+   "end": 2160.77,
+   "text": "conversation because i was in the trap where when i went to austria and"
+  },
+  {
+   "start": 2160.77,
+   "end": 2164.71,
+   "text": "then uh i was expecting monogamy but that wasn't the case right it was"
+  },
+  {
+   "start": 2164.71,
+   "end": 2168.95,
+   "text": "like well not monogamy but like commitment right away you know like hey we're"
+  },
+  {
+   "start": 2168.95,
+   "end": 2169.51,
+   "text": "together and let's"
+  },
+  {
+   "start": 2169.51,
+   "end": 2172.59,
+   "text": "figure this out but it was kind of like but we never talked about"
+  },
+  {
+   "start": 2172.59,
+   "end": 2173.61,
+   "text": "being together i'm like oh"
+  },
+  {
+   "start": 2173.61,
+   "end": 2180.19,
+   "text": "okay sorry i come from a different culture uh yeah i see uh as"
+  },
+  {
+   "start": 2180.19,
+   "end": 2184.49,
+   "text": "i said body count right multiple sex partners from a past is"
+  },
+  {
+   "start": 2184.49,
+   "end": 2191.57,
+   "text": "a no-no it's a it takes a very secure man to be able to"
+  },
+  {
+   "start": 2191.57,
+   "end": 2194.03,
+   "text": "digest that you had many partners"
+  },
+  {
+   "start": 2195.51,
+   "end": 2199.47,
+   "text": "or like more than what he wanted so uh i'm not saying that it"
+  },
+  {
+   "start": 2199.47,
+   "end": 2199.95,
+   "text": "doesn't happen it happens"
+  },
+  {
+   "start": 2199.95,
+   "end": 2206.65,
+   "text": "i think currently like today probably even more but it would definitely bother them"
+  },
+  {
+   "start": 2208.33,
+   "end": 2208.43,
+   "text": "in their mind"
+  },
+  {
+   "start": 2208.43,
+   "end": 2215.57,
+   "text": "you have to be willing to explain a lot because they can't read"
+  },
+  {
+   "start": 2215.57,
+   "end": 2216.89,
+   "text": "your mind that's what i wrote"
+  },
+  {
+   "start": 2216.89,
+   "end": 2224.41,
+   "text": "yes again i think guys are not really taught to look"
+  },
+  {
+   "start": 2224.41,
+   "end": 2226.67,
+   "text": "at things from our perspective i think they"
+  },
+  {
+   "start": 2226.67,
+   "end": 2230.77,
+   "text": "look at us from like as a puzzle that cannot be solved right and"
+  },
+  {
+   "start": 2230.77,
+   "end": 2235.33,
+   "text": "sure no one can read our mind i can't really read their mind but"
+  },
+  {
+   "start": 2235.33,
+   "end": 2242.13,
+   "text": "there's not even like an effort to try to understand you know so"
+  },
+  {
+   "start": 2242.13,
+   "end": 2247.75,
+   "text": "you have to initiate that you have to initiate those conversations yeah so be"
+  },
+  {
+   "start": 2247.75,
+   "end": 2248.35,
+   "text": "open as much as"
+  },
+  {
+   "start": 2248.35,
+   "end": 2255.07,
+   "text": "possible say things that that you want clearly you're saying exactly explain everything that"
+  },
+  {
+   "start": 2255.07,
+   "end": 2259.55,
+   "text": "you want how you want it what do you expect i think that's universal"
+  },
+  {
+   "start": 2259.55,
+   "end": 2262.93,
+   "text": "but the thing on their side it's going to be like oh i didn't"
+  },
+  {
+   "start": 2262.93,
+   "end": 2264.55,
+   "text": "think well this was an issue oh okay they're going to be"
+  },
+  {
+   "start": 2264.55,
+   "end": 2269.61,
+   "text": "surprised all the time because they genuinely don't even think about what we could"
+  },
+  {
+   "start": 2269.61,
+   "end": 2269.75,
+   "text": "have thought"
+  },
+  {
+   "start": 2269.75,
+   "end": 2274.43,
+   "text": "or like they're just going to be wanted why yeah like why why are"
+  },
+  {
+   "start": 2274.43,
+   "end": 2275.21,
+   "text": "you angry like why are you saying"
+  },
+  {
+   "start": 2275.21,
+   "end": 2280.67,
+   "text": "this you know uh or sometimes they can just ignore you being like a"
+  },
+  {
+   "start": 2280.67,
+   "end": 2282.29,
+   "text": "like in a bad mood they're going"
+  },
+  {
+   "start": 2282.29,
+   "end": 2285.05,
+   "text": "to be like just like oh she's in a bad mood i'm gonna let"
+  },
+  {
+   "start": 2285.05,
+   "end": 2287.97,
+   "text": "her go they're probably not going to be like, hey, what's up?"
+  },
+  {
+   "start": 2287.97,
+   "end": 2289.07,
+   "text": "Why are you in a bad mood?"
+  },
+  {
+   "start": 2289.07,
+   "end": 2291.11,
+   "text": "They're going to be like, oh, she's just in a bad"
+  },
+  {
+   "start": 2291.11,
+   "end": 2291.75,
+   "text": "mood."
+  },
+  {
+   "start": 2291.75,
+   "end": 2294.37,
+   "text": "like who knows like just like whatever"
+  },
+  {
+   "start": 2294.37,
+   "end": 2299.85,
+   "text": "women you know complicated beings so tell them why you're in a bad mood"
+  },
+  {
+   "start": 2299.85,
+   "end": 2301.39,
+   "text": "don't hide it tell them"
+  },
+  {
+   "start": 2301.39,
+   "end": 2305.69,
+   "text": "and then it's going to be much easier i'm sure that's a very useful"
+  },
+  {
+   "start": 2305.69,
+   "end": 2313.63,
+   "text": "advice yeah and um expect them to be not so touchy so"
+  },
+  {
+   "start": 2313.63,
+   "end": 2320.99,
+   "text": "yeah they are really they uh they"
+  },
+  {
+   "start": 2320.99,
+   "end": 2323.69,
+   "text": "they really love you and they really"
+  },
+  {
+   "start": 2323.69,
+   "end": 2329.07,
+   "text": "care about you but they're probably not gonna be so touchy especially in public"
+  },
+  {
+   "start": 2329.07,
+   "end": 2336.55,
+   "text": "so holding hands especially with friends it's like oh my god so so"
+  },
+  {
+   "start": 2336.55,
+   "end": 2339.51,
+   "text": "yeah uh not so just not so affectionate"
+  },
+  {
+   "start": 2339.51,
+   "end": 2346.35,
+   "text": "i'm guessing on average uh but but yeah so vocalize if you need that"
+  },
+  {
+   "start": 2346.35,
+   "end": 2351.69,
+   "text": "or want that i see that goes in line with the traditional values or"
+  },
+  {
+   "start": 2351.69,
+   "end": 2354.77,
+   "text": "like having a pack around or yes"
+  },
+  {
+   "start": 2354.77,
+   "end": 2361.53,
+   "text": "so obviously the the others opinions are important and you don't want to show"
+  },
+  {
+   "start": 2361.53,
+   "end": 2367.15,
+   "text": "everything off right yeah and i think it also goes like first of all"
+  },
+  {
+   "start": 2367.15,
+   "end": 2368.27,
+   "text": "because society wise"
+  },
+  {
+   "start": 2368.27,
+   "end": 2372.13,
+   "text": "it's just not expected of them you know so they're not really encouraged to"
+  },
+  {
+   "start": 2372.13,
+   "end": 2377.65,
+   "text": "change that and also uh obviously they want to feel like masculine and so on so"
+  },
+  {
+   "start": 2377.65,
+   "end": 2378.75,
+   "text": "that's not like such a"
+  },
+  {
+   "start": 2378.75,
+   "end": 2385.15,
+   "text": "masculine trait like you know touching and kissing and so on um so what"
+  },
+  {
+   "start": 2385.15,
+   "end": 2386.13,
+   "text": "else did i want to say"
+  },
+  {
+   "start": 2387.79,
+   "end": 2391.05,
+   "text": "Yeah, and it was so I think that you just, and also it's like"
+  },
+  {
+   "start": 2391.05,
+   "end": 2391.43,
+   "text": "a pack thing as well."
+  },
+  {
+   "start": 2391.43,
+   "end": 2397.53,
+   "text": "And I think that if you are, if it comes with age and probably"
+  },
+  {
+   "start": 2397.53,
+   "end": 2402.71,
+   "text": "more, well, it doesn't necessarily have to come with age or with security, but"
+  },
+  {
+   "start": 2402.71,
+   "end": 2404.12,
+   "text": "if they are secure in"
+  },
+  {
+   "start": 2404.12,
+   "end": 2408.68,
+   "text": "themselves, they have that maturity, then they would probably, they wouldn't really care about"
+  },
+  {
+   "start": 2408.68,
+   "end": 2409.94,
+   "text": "it that much."
+  },
+  {
+   "start": 2409.94,
+   "end": 2414.5,
+   "text": "I'm guessing, but, or they're just, maybe they're on average, just not really touchy."
+  },
+  {
+   "start": 2414.5,
+   "end": 2416.36,
+   "text": "I don't know."
+  },
+  {
+   "start": 2416.36,
+   "end": 2422.12,
+   "text": "Okay. So all in all, what I'm seeing as the big picture is romance"
+  },
+  {
+   "start": 2422.12,
+   "end": 2427.68,
+   "text": "out of 10 is like around five or lower when it comes to trust"
+  },
+  {
+   "start": 2427.68,
+   "end": 2431.6,
+   "text": "it's over five like maybe seven eight yeah i think i"
+  },
+  {
+   "start": 2431.6,
+   "end": 2438.54,
+   "text": "would trust the serbian men more than um some other men because yeah i"
+  },
+  {
+   "start": 2438.54,
+   "end": 2444.12,
+   "text": "don't know they they really because they do have these values very traditional values"
+  },
+  {
+   "start": 2444.12,
+   "end": 2450.58,
+   "text": "uh of like honor and respect and love and and you know um uh"
+  },
+  {
+   "start": 2450.58,
+   "end": 2456.84,
+   "text": "how do you say when you say not not uh fidelity that's what i'd"
+  },
+  {
+   "start": 2456.84,
+   "end": 2464.06,
+   "text": "say um the reason why that might not like pan out properly"
+  },
+  {
+   "start": 2464.06,
+   "end": 2465.56,
+   "text": "is because they're just biological"
+  },
+  {
+   "start": 2465.56,
+   "end": 2470.4,
+   "text": "they don't really like dig deep i think and then they just are led"
+  },
+  {
+   "start": 2470.4,
+   "end": 2476.7,
+   "text": "by biology you know and then but but yeah i would say definitely uh"
+  },
+  {
+   "start": 2476.7,
+   "end": 2483.0,
+   "text": "trust is is a high one yeah cool okay i want to end with"
+  },
+  {
+   "start": 2483.0,
+   "end": 2489.88,
+   "text": "a couple of vocabulary right so when you're flirting like first of all you"
+  },
+  {
+   "start": 2489.88,
+   "end": 2490.22,
+   "text": "sure that he's not dating anyone right so would you ask like dalimash tecka want to make"
+  },
+  {
+   "start": 2497.42,
+   "end": 2500.42,
+   "text": "or yeah yeah i would I would ask like that."
+  },
+  {
+   "start": 2500.42,
+   "end": 2502.2,
+   "text": "Do you have a..."
+  },
+  {
+   "start": 2503.4,
+   "end": 2504.74,
+   "text": "And they will be honest."
+  },
+  {
+   "start": 2505.76,
+   "end": 2508.36,
+   "text": "What? Wezi? Dali si u vezi."
+  },
+  {
+   "start": 2509.0,
+   "end": 2510.9,
+   "text": "U vezi, like in a relationship."
+  },
+  {
+   "start": 2510.9,
+   "end": 2511.48,
+   "text": "Yes."
+  },
+  {
+   "start": 2512.68,
+   "end": 2513.78,
+   "text": "Dali si u vezi."
+  },
+  {
+   "start": 2513.78,
+   "end": 2514.22,
+   "text": "Veza is"
+  },
+  {
+   "start": 2514.22,
+   "end": 2519.34,
+   "text": "a relationship a vasa is a connection uh-huh and a relationship yeah"
+  },
+  {
+   "start": 2522.92,
+   "end": 2531.06,
+   "text": "yeah and honest question yeah yeah that's a question maybe not maybe"
+  },
+  {
+   "start": 2531.06,
+   "end": 2531.32,
+   "text": "maybe not you can't"
+  },
+  {
+   "start": 2531.32,
+   "end": 2535.66,
+   "text": "guarantee of course you just met you who cares maybe they don't maybe they're"
+  },
+  {
+   "start": 2535.66,
+   "end": 2541.24,
+   "text": "you know as again in the beginning they're just not committed so they maybe"
+  },
+  {
+   "start": 2541.24,
+   "end": 2542.4,
+   "text": "just want to see if they can"
+  },
+  {
+   "start": 2543.74,
+   "end": 2551.24,
+   "text": "reach to you you know but yeah you can ask dali see single single"
+  },
+  {
+   "start": 2551.24,
+   "end": 2553.38,
+   "text": "like single yeah because i think"
+  },
+  {
+   "start": 2553.38,
+   "end": 2558.24,
+   "text": "if you ask dali see some that means like uh are you alone right"
+  },
+  {
+   "start": 2558.24,
+   "end": 2561.86,
+   "text": "now like it can be many things i think you can say Dalis is"
+  },
+  {
+   "start": 2561.86,
+   "end": 2567.88,
+   "text": "single I see good and we can hear or they can we can say"
+  },
+  {
+   "start": 2567.88,
+   "end": 2574.52,
+   "text": "right is Gledas lepo prelepo or would it be weird to say it to"
+  },
+  {
+   "start": 2574.52,
+   "end": 2576.78,
+   "text": "a Serbian guy no I think yeah"
+  },
+  {
+   "start": 2576.78,
+   "end": 2584.44,
+   "text": "lepo is actually yeah maybe the flipping one lepo is okay"
+  },
+  {
+   "start": 2584.44,
+   "end": 2587.74,
+   "text": "so when they flirt with you I don't"
+  },
+  {
+   "start": 2587.74,
+   "end": 2592.0,
+   "text": "because i haven't really like flirted a lot in so but i can tell"
+  },
+  {
+   "start": 2592.0,
+   "end": 2598.32,
+   "text": "you what guys say behind the girls back they say oh like oh she's"
+  },
+  {
+   "start": 2598.32,
+   "end": 2605.48,
+   "text": "good oh that's not bad like i heard the"
+  },
+  {
+   "start": 2605.48,
+   "end": 2614.54,
+   "text": "riba yeah something like"
+  },
+  {
+   "start": 2614.54,
+   "end": 2617.28,
+   "text": "that so that's what they would say behind your back and they would be"
+  },
+  {
+   "start": 2617.28,
+   "end": 2618.62,
+   "text": "like oh let's put it"
+  },
+  {
+   "start": 2621.61,
+   "end": 2623.95,
+   "text": "Something like that."
+  },
+  {
+   "start": 2625.47,
+   "end": 2626.97,
+   "text": "Good. Very good to know."
+  },
+  {
+   "start": 2627.19,
+   "end": 2629.09,
+   "text": "So they have to be a bit more censored, right?"
+  },
+  {
+   "start": 2630.07,
+   "end": 2636.05,
+   "text": "Of course. Not to, you know, scare you away, I guess."
+  },
+  {
+   "start": 2636.61,
+   "end": 2641.95,
+   "text": "And I see on the walls, I think, like young, very young people writing."
+  },
+  {
+   "start": 2643.71,
+   "end": 2650.75,
+   "text": "So is it like a message to your partner to say, like, what"
+  },
+  {
+   "start": 2650.75,
+   "end": 2654.81,
+   "text": "are we doing tonight is it like a very common phrase why are they"
+  },
+  {
+   "start": 2654.81,
+   "end": 2660.07,
+   "text": "writing it on the walls well yeah sure yeah it is a common phrase"
+  },
+  {
+   "start": 2660.07,
+   "end": 2661.43,
+   "text": "i'm just thinking that you can use it in a"
+  },
+  {
+   "start": 2661.43,
+   "end": 2665.79,
+   "text": "in a setting like in a relationship like that but yeah if you're for"
+  },
+  {
+   "start": 2665.79,
+   "end": 2666.41,
+   "text": "example if you're flirting"
+  },
+  {
+   "start": 2666.41,
+   "end": 2670.51,
+   "text": "and then you tell them that you will tell us i'd be i'm guessing"
+  },
+  {
+   "start": 2670.51,
+   "end": 2671.31,
+   "text": "it will be like oh"
+  },
+  {
+   "start": 2672.59,
+   "end": 2676.07,
+   "text": "oh I don't know where we going that's him look that's him look"
+  },
+  {
+   "start": 2676.07,
+   "end": 2683.83,
+   "text": "so that that kind of um excites someone"
+  },
+  {
+   "start": 2683.83,
+   "end": 2686.51,
+   "text": "when they think anything so especially when you're"
+  },
+  {
+   "start": 2686.51,
+   "end": 2691.13,
+   "text": "in that phase like you're flirting right and then when they are saying something"
+  },
+  {
+   "start": 2691.13,
+   "end": 2691.37,
+   "text": "where they include"
+  },
+  {
+   "start": 2691.37,
+   "end": 2698.43,
+   "text": "you uh that's like a really exciting thing because it's like"
+  },
+  {
+   "start": 2698.43,
+   "end": 2704.07,
+   "text": "oh oh oh we're maybe starting Yeah, we, us, like the two, us, okay."
+  },
+  {
+   "start": 2704.25,
+   "end": 2707.97,
+   "text": "Čemo. Mi, mi, nas dvoje."
+  },
+  {
+   "start": 2708.99,
+   "end": 2711.76,
+   "text": "Kde to hot wherever you want yeah"
+  },
+  {
+   "start": 2711.76,
+   "end": 2717.78,
+   "text": "okay i'm writing these down because i'm gonna make a quiz later"
+  },
+  {
+   "start": 2717.78,
+   "end": 2724.84,
+   "text": "okay cool thanks a lot iwana i think that's it but do you"
+  },
+  {
+   "start": 2724.84,
+   "end": 2725.42,
+   "text": "want to add anything else"
+  },
+  {
+   "start": 2725.42,
+   "end": 2731.14,
+   "text": "uh no just to say serbian guys like any other guys from any other"
+  },
+  {
+   "start": 2731.14,
+   "end": 2734.62,
+   "text": "country they have their pros and cons you just have to pick if this"
+  },
+  {
+   "start": 2734.62,
+   "end": 2737.4,
+   "text": "is something that fits for you if these values fit you and if"
+  },
+  {
+   "start": 2737.4,
+   "end": 2742.8,
+   "text": "you're okay with you know uh figuring things on the way figure things out"
+  },
+  {
+   "start": 2742.8,
+   "end": 2744.16,
+   "text": "on the way so uh there's"
+  },
+  {
+   "start": 2744.16,
+   "end": 2747.3,
+   "text": "no good and bad good or bad to me you just have to find"
+  },
+  {
+   "start": 2747.3,
+   "end": 2750.94,
+   "text": "your thing so try it try one don't be scared"
+  },
+  {
+   "start": 2750.94,
+   "end": 2757.18,
+   "text": "that's not gonna be something hard yeah you're enjoying for sure you're not at"
+  },
+  {
+   "start": 2757.18,
+   "end": 2757.98,
+   "text": "risk yeah"
+  },
+  {
+   "start": 2760.06,
+   "end": 2767.22,
+   "text": "yeah okay thank you for joining"
+  },
+  {
+   "start": 2767.22,
+   "end": 2770.28,
+   "text": "us today we hope you enjoyed our podcast and learned something new"
+  },
+  {
+   "start": 2770.28,
+   "end": 2775.38,
+   "text": "in case you have any comments suggestions or questions make sure to share them"
+  },
+  {
+   "start": 2775.38,
+   "end": 2778.18,
+   "text": "on our instagram page mozekafa podcast"
+  }
+ ],
+ "title": "Ep.1: Serbian Guys",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939255/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075921-44100-1-c5c4950a9858fe68.mp3"
+}

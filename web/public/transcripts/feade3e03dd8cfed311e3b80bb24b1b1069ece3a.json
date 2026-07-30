@@ -1,1590 +1,2048 @@
 {
- "duration": 1417.33,
+ "duration": 1417.3,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
  "cues": [
   {
-   "start": 0.0,
-   "end": 8.08,
-   "text": "Zdravo svima! Welcome to our new episode. Today we're talking about New Year's plans"
+   "start": 0.32,
+   "end": 2.92,
+   "text": "Здраво свима! Welcome to our new episode."
   },
   {
-   "start": 8.08,
-   "end": 13.96,
+   "start": 2.92,
+   "end": 7.28,
+   "text": "Today we're talking about New Year's plans"
+  },
+  {
+   "start": 7.28,
+   "end": 13.76,
    "text": "or how to talk about New Year's plans in three different levels, beginner, intermediate"
   },
   {
-   "start": 13.96,
-   "end": 22.56,
-   "text": "and advanced. I am Nikola and here is Maki. Maki. Zdravo svima! Kako si Maki? Dobro"
+   "start": 13.76,
+   "end": 17.78,
+   "text": "and advanced. I'm Nikola and here is Maki."
   },
   {
-   "start": 22.56,
-   "end": 29.92,
-   "text": "svam. Vala, a ti? Dobro. I'm making plans for the New Year. So maybe we can, you can"
+   "start": 17.88,
+   "end": 19.96,
+   "text": "Maki, здраво свима!"
   },
   {
-   "start": 29.92,
-   "end": 35.96,
-   "text": "help, we can do it together. Yeah, that's a huge topic right now, right? People are"
+   "start": 21.06,
+   "end": 22.34,
+   "text": "Како си, Маки?"
   },
   {
-   "start": 35.96,
+   "start": 22.84,
+   "end": 24.44,
+   "text": "Добро сам, хвала, а ти?"
+  },
+  {
+   "start": 25.26,
+   "end": 30.2,
+   "text": "i'm making plans for the new year so maybe we can you can help"
+  },
+  {
+   "start": 30.2,
+   "end": 30.66,
+   "text": "we can do it together"
+  },
+  {
+   "start": 30.66,
+   "end": 36.52,
+   "text": "yeah that's a that's a huge topic right now right people are always like"
+  },
+  {
+   "start": 36.52,
+   "end": 36.64,
+   "text": "talking about"
+  },
+  {
+   "start": 36.64,
    "end": 41.16,
-   "text": "always like talking about New Year's resolutions. And I heard, I mean, I read somewhere that"
+   "text": "new year resolutions uh and i heard uh i mean i read somewhere that"
   },
   {
    "start": 41.16,
-   "end": 50.24,
-   "text": "only 10% of, you know, the population, like all people, all the people actually do their,"
+   "end": 42.58,
+   "text": "only 10 percent of"
   },
   {
-   "start": 50.72,
-   "end": 58.72,
-   "text": "their resolutions come true. So. That seems, that seems kind of true. That's why it's better"
+   "start": 42.58,
+   "end": 49.72,
+   "text": "you know the population like all people all the people um actually do their"
   },
   {
-   "start": 58.72,
-   "end": 67.12,
-   "text": "to have like a more generic or, you know, more broad, let's say, plans for the New Year, maybe."
+   "start": 49.72,
+   "end": 58.1,
+   "text": "make their resolutions come true so that seems that seems kind of true that's"
   },
   {
-   "start": 68.32,
-   "end": 75.52,
-   "text": "So we have three levels. Level one is a beginner one. So do you want to read it together?"
+   "start": 58.1,
+   "end": 59.2,
+   "text": "why it's better to have like"
   },
   {
-   "start": 76.24,
-   "end": 80.56,
-   "text": "Yes, let's do it. Okay. The topic is vacation plans."
+   "start": 59.2,
+   "end": 66.38,
+   "text": "a more generic or you know more like broad let's say plans for"
   },
   {
-   "start": 83.04,
-   "end": 86.4,
-   "text": "You want to be a? Yeah, I can be."
+   "start": 66.38,
+   "end": 69.08,
+   "text": "the new year maybe yeah so we have"
   },
   {
-   "start": 106.32,
-   "end": 114.08,
-   "text": "a beginner. So it's a very nice dialogue, but for the year, let's just have a quick review."
+   "start": 69.08,
+   "end": 74.78,
+   "text": "three levels levels level one is a beginner one so do you want to"
   },
   {
-   "start": 118.48,
-   "end": 120.96,
-   "text": "From the five on, it's going to be"
+   "start": 74.78,
+   "end": 77.42,
+   "text": "read it together yes let's do it"
   },
   {
-   "start": 124.48,
-   "end": 132.88,
-   "text": "before. How is it going to be? Before? If it was 2023, if it was 2024."
+   "start": 78.92,
+   "end": 80.86,
+   "text": "The topic is vacation plans."
   },
   {
-   "start": 132.96,
-   "end": 138.64,
-   "text": "2023. Yeah. Always the last number will be ordinal number. So first, second, third,"
+   "start": 83.14,
+   "end": 83.9,
+   "text": "You wanna be A?"
   },
   {
-   "start": 138.64,
-   "end": 146.72,
-   "text": "but in genitive, feminine gender. So pete. Godine is optional. You can leave out godine."
+   "start": 84.7,
+   "end": 85.54,
+   "text": "Yeah, I can be."
   },
   {
-   "start": 149.28,
-   "end": 154.48,
-   "text": "That's still fine. But it's ordinal number, feminine, genitive, singular."
+   "start": 86.48,
+   "end": 88.12,
+   "text": "Gde ćeš ići na Old Moor?"
   },
   {
-   "start": 155.76,
-   "end": 157.68,
-   "text": "So if it was 2021, it would be"
+   "start": 88.62,
+   "end": 89.12,
+   "text": "2025."
   },
   {
-   "start": 158.4,
-   "end": 163.68,
-   "text": "2021. Okay. It's not that confusing now. Good."
+   "start": 91.4,
+   "end": 96.14,
+   "text": "Exactly. Ići će na more u Crnu Goru."
   },
   {
-   "start": 165.6,
-   "end": 168.8,
-   "text": "Good. And one thing,"
+   "start": 97.02,
+   "end": 98.24,
+   "text": "To je super."
   },
   {
-   "start": 170.96,
-   "end": 173.84,
-   "text": "this is one way of asking, right? Will you stay long?"
+   "start": 98.5,
+   "end": 100.3,
+   "text": "Hoćeš li ostati dugo?"
   },
   {
-   "start": 175.92,
-   "end": 177.2,
-   "text": "Or I can also say,"
+   "start": 101.42,
+   "end": 103.74,
+   "text": "Da, ostat ćemo dve nedelje."
   },
   {
-   "start": 177.92,
-   "end": 179.92,
-   "text": "will you stay long? Will you stay long?"
+   "start": 104.96,
+   "end": 107.48,
+   "text": "Nice. That sounds nice like a beginner."
   },
   {
-   "start": 182.56,
-   "end": 187.68,
-   "text": "The most formal one is, will you stay long? It doesn't have to be formal. Like,"
+   "start": 108.28,
+   "end": 110.16,
+   "text": "So it's a very nice dialogue"
   },
   {
-   "start": 187.68,
-   "end": 193.44,
-   "text": "it's the most common with dalí. So you can either do that or put li after the verb."
+   "start": 110.16,
+   "end": 112.7,
+   "text": "for the year let's just have a"
   },
   {
-   "start": 194.16,
-   "end": 195.44,
-   "text": "Or jeli, right?"
+   "start": 112.7,
+   "end": 116.8,
+   "text": "quick review 25 godine"
   },
   {
-   "start": 197.6,
-   "end": 201.52,
-   "text": "Yeah. Or, will you stay long?"
+   "start": 116.8,
+   "end": 118.9,
+   "text": "right from the"
   },
   {
-   "start": 202.08,
-   "end": 208.0,
-   "text": "Yeah. Okay. Zrnogora, of course, Montenegro, everyone."
+   "start": 118.9,
+   "end": 120.58,
+   "text": "5 on it's going to be"
   },
   {
-   "start": 209.2,
-   "end": 213.36,
-   "text": "Just to underline that. Next one is intermediate level."
+   "start": 120.58,
+   "end": 122.8,
+   "text": "6 godine 7 godine"
   },
   {
-   "start": 214.32,
-   "end": 219.04,
-   "text": "Yes. Topic is New Year's resolutions. I can start?"
+   "start": 122.8,
+   "end": 124.64,
+   "text": "yeah right before"
   },
   {
-   "start": 219.04,
-   "end": 221.44,
-   "text": "Okay. Yeah. You can start this time."
+   "start": 124.64,
+   "end": 128.56,
+   "text": "how is it going to be before"
   },
   {
-   "start": 222.4,
-   "end": 226.0,
-   "text": "Kakve su tvoje planovi za 2025 godinu?"
+   "start": 128.56,
+   "end": 130.38,
+   "text": "if it was 2023"
   },
   {
-   "start": 227.84,
-   "end": 231.04,
-   "text": "So I changed everything here. Sorry, but we will come back to this."
+   "start": 130.38,
+   "end": 134.2,
+   "text": "if it was 2024 23."
   },
   {
-   "start": 232.72,
-   "end": 236.16,
-   "text": "Počet ću da učim novi jezik i više ću tren vratit."
+   "start": 134.2,
+   "end": 138.94,
+   "text": "Yeah, always the last number will be ordinal number, so first, second, third, but"
   },
   {
-   "start": 237.44,
-   "end": 239.44,
-   "text": "Sjajno. Koji jezik ćeš učiti?"
+   "start": 138.94,
+   "end": 141.46,
+   "text": "in genitive, feminine gender."
   },
   {
-   "start": 240.56,
-   "end": 242.24,
-   "text": "Učit ću španski. A ti?"
+   "start": 142.32,
+   "end": 146.86,
+   "text": "So, pet-te. Godine is optional, you can leave out godine."
   },
   {
-   "start": 243.44,
-   "end": 247.68,
-   "text": "Planiram da se predužim času kuvanja i da se više bavim jogom."
+   "start": 147.06,
+   "end": 149.34,
+   "text": "Djećeš iće on, but 2025."
   },
   {
-   "start": 248.08,
-   "end": 251.92,
-   "text": "Hmm. That was my answer, actually, but now you have to do it."
+   "start": 149.34,
+   "end": 150.06,
+   "text": "That's still fine."
   },
   {
-   "start": 252.96,
-   "end": 260.48,
-   "text": "Okay. So what we said is your plans for 2025."
+   "start": 150.64,
+   "end": 154.66,
+   "text": "But it's ordinal number, feminine, genitive, singular."
   },
   {
-   "start": 261.28,
-   "end": 264.72,
+   "start": 155.92,
+   "end": 159.46,
+   "text": "So, if it was 2021, it would be 21, right?"
+  },
+  {
+   "start": 159.8,
+   "end": 161.5,
+   "text": "Yeah, 2021, yeah."
+  },
+  {
+   "start": 161.56,
+   "end": 163.52,
+   "text": "Okay, it's not that confusing now."
+  },
+  {
+   "start": 163.58,
+   "end": 163.76,
+   "text": "Good."
+  },
+  {
+   "start": 165.06,
+   "end": 168.94,
+   "text": "Good. And one thing."
+  },
+  {
+   "start": 168.94,
+   "end": 170.56,
+   "text": "Hočeš li ostati dugo?"
+  },
+  {
+   "start": 171.1,
+   "end": 172.86,
+   "text": "This is one way of asking, right?"
+  },
+  {
+   "start": 172.86,
+   "end": 173.96,
+   "text": "Will you stay long?"
+  },
+  {
+   "start": 174.16,
+   "end": 175.5,
+   "text": "Hočeš li ostati dugo?"
+  },
+  {
+   "start": 176.06,
+   "end": 178.46,
+   "text": "Or I can also say, ostačeš dugo?"
+  },
+  {
+   "start": 178.94,
+   "end": 180.08,
+   "text": "Ostačeš li dugo?"
+  },
+  {
+   "start": 181.04,
+   "end": 185.38,
+   "text": "Ostačeš li, the most formal one is daličeš ostati dugo."
+  },
+  {
+   "start": 186.42,
+   "end": 187.0,
+   "text": "It doesn't have to be formal."
+  },
+  {
+   "start": 187.0,
+   "end": 189.32,
+   "text": "Like, it's the most common with dali."
+  },
+  {
+   "start": 190.56,
+   "end": 195.46,
+   "text": "so you can either do that or putli after the verb or yeli right"
+  },
+  {
+   "start": 195.46,
+   "end": 198.1,
+   "text": "yeah yeah yeah"
+  },
+  {
+   "start": 199.44,
+   "end": 205.06,
+   "text": "yeah or yel cesh ostati dugo yel cesh ostati dugo yeah okay okay okay"
+  },
+  {
+   "start": 205.06,
+   "end": 212.2,
+   "text": "sir nagora offers montenegro everyone uh just to underline that next one"
+  },
+  {
+   "start": 212.2,
+   "end": 217.7,
+   "text": "is intermediate level Yes, topic is New Year's resolutions."
+  },
+  {
+   "start": 218.58,
+   "end": 218.87,
+   "text": "I can start."
+  },
+  {
+   "start": 218.87,
+   "end": 221.73,
+   "text": "start? Yeah, you can start this time."
+  },
+  {
+   "start": 222.47,
+   "end": 225.69,
+   "text": "Kakve su tvoje planovi za 2025."
+  },
+  {
+   "start": 225.69,
+   "end": 226.15,
+   "text": "godinu?"
+  },
+  {
+   "start": 227.93,
+   "end": 231.39,
+   "text": "Zaj changed everything here, sorry, but we will come back to this."
+  },
+  {
+   "start": 232.81,
+   "end": 236.27,
+   "text": "Počet ću da učim novi jezik i više ću trenirati."
+  },
+  {
+   "start": 237.59,
+   "end": 239.59,
+   "text": "Sjajno, koji jezik ćeš učiti?"
+  },
+  {
+   "start": 240.71,
+   "end": 242.43,
+   "text": "Učit ću španski, a ti?"
+  },
+  {
+   "start": 243.57,
+   "end": 247.85,
+   "text": "Planeram da se predružim času kuvanja i da se više bavim jogom."
+  },
+  {
+   "start": 250.29,
+   "end": 253.27,
+   "text": "That was my answer, actually, but now you have to do it."
+  },
+  {
+   "start": 253.99,
+   "end": 254.17,
+   "text": "Okay."
+  },
+  {
+   "start": 255.47,
+   "end": 260.09,
+   "text": "So what we said is your plans were 2025."
+  },
+  {
+   "start": 262.61,
+   "end": 266.43,
    "text": "Again, do we say it in a different way?"
   },
   {
-   "start": 265.36,
-   "end": 270.56,
-   "text": "Yes, we do. Because of za. Because of preposition za, which demands acquisitive."
+   "start": 266.61,
+   "end": 268.51,
+   "text": "Yes, we do, because of za."
   },
   {
-   "start": 270.56,
-   "end": 275.12,
-   "text": "So it's still feminine ordinal number, but now acquisitive."
+   "start": 268.77,
+   "end": 271.63,
+   "text": "Because of preposition za, which demands zakuzati."
   },
   {
-   "start": 275.2,
-   "end": 276.24,
-   "text": "Za 2025 godinu."
+   "start": 271.95,
+   "end": 273.01,
+   "text": "So it's still feminine"
   },
   {
-   "start": 276.24,
-   "end": 288.0,
-   "text": "Hmm. Without godini also, we can say, right, za 2025 godinu would be enough?"
+   "start": 274.31,
+   "end": 274.57,
+   "text": "Ordinal number"
   },
   {
-   "start": 288.0,
-   "end": 291.52,
-   "text": "Yeah. Okay. All right."
+   "start": 274.57,
+   "end": 281.79,
+   "text": "But now acquisitive P2 2025 godinu Without"
   },
   {
-   "start": 292.32,
-   "end": 296.56,
-   "text": "And počet ću da učim. Počet ću means I will start."
+   "start": 281.79,
+   "end": 282.13,
+   "text": "godini also"
   },
   {
-   "start": 299.6,
-   "end": 301.2,
-   "text": "Short version, future tense."
+   "start": 282.13,
+   "end": 283.85,
+   "text": "We can say right"
   },
   {
-   "start": 301.76,
-   "end": 305.44,
-   "text": "Mm-hmm. I više ću trenirati."
+   "start": 283.85,
+   "end": 288.11,
+   "text": "Za 2025 Would be enough"
   },
   {
-   "start": 305.44,
-   "end": 309.76,
-   "text": "As the second part started više, now ću is separate, right?"
+   "start": 289.81,
+   "end": 291.15,
+   "text": "Okay Alright"
   },
   {
-   "start": 310.56,
-   "end": 312.4,
-   "text": "Yeah. We can say that."
+   "start": 291.15,
+   "end": 293.51,
+   "text": "And počeću da učim"
   },
   {
-   "start": 312.4,
-   "end": 319.92,
-   "text": "So after adverbs, više is an adverb. After adverbs used in critics, which is like short"
+   "start": 293.51,
+   "end": 296.19,
+   "text": "Počeću I will start"
   },
   {
-   "start": 319.92,
-   "end": 325.6,
-   "text": "forms, ću, ćeš, će, sam si je, you use them immediately after adverbs."
+   "start": 296.19,
+   "end": 299.87,
+   "text": "Short version"
   },
   {
-   "start": 326.56,
-   "end": 331.68,
-   "text": "Yeah. Makes sense. I mean, if it's in the beginning, you put the ću at the end. If"
+   "start": 299.87,
+   "end": 301.15,
+   "text": "Future tense"
   },
   {
-   "start": 331.68,
-   "end": 338.0,
-   "text": "it's not in the beginning, you just separate them. Like in the next one, koji jezik ćeš učiti."
+   "start": 303.55,
+   "end": 306.41,
+   "text": "i više ču trenirati as the second part started"
   },
   {
-   "start": 338.0,
-   "end": 343.28,
-   "text": "So ćeš is again separated because koji jezik is in the beginning."
+   "start": 306.41,
+   "end": 308.77,
+   "text": "više, now ču is separate"
   },
   {
-   "start": 343.28,
-   "end": 345.6,
-   "text": "Yeah. You cannot start a sentence with ćeš."
+   "start": 308.77,
+   "end": 315.83,
+   "text": "right? yeah so after adverbs više"
   },
   {
-   "start": 346.56,
-   "end": 357.84,
-   "text": "Mm-hmm. Okay. And the last sentence was in present tense, planiram, because I'm planning,"
+   "start": 315.83,
+   "end": 316.55,
+   "text": "is an adverb"
   },
   {
-   "start": 357.84,
-   "end": 362.48,
-   "text": "right? Planiram da pridružim i više bavim jogom."
+   "start": 316.55,
+   "end": 318.57,
+   "text": "after adverbs we use in critics"
   },
   {
-   "start": 362.48,
-   "end": 366.16,
-   "text": "Mm-hmm. It's all present."
+   "start": 318.57,
+   "end": 322.83,
+   "text": "which is like short forms ču, češće, sam sije"
   },
   {
-   "start": 366.16,
-   "end": 369.28,
-   "text": "All present bavim could be also radim, uradim."
+   "start": 322.83,
+   "end": 329.71,
+   "text": "you use them immediately after adverbs yeah makes sense, I mean, if it's in"
   },
   {
-   "start": 370.24,
-   "end": 379.68,
-   "text": "Da više vežbam, then jogu, or radim jogu, sure, but baviti se, it means to engage, to"
+   "start": 329.71,
+   "end": 331.61,
+   "text": "the beginning, you put the two at the end."
   },
   {
-   "start": 379.68,
-   "end": 383.92,
-   "text": "do something, it means instrumental. That's why it's jogom."
+   "start": 331.61,
+   "end": 333.95,
+   "text": "If it's not in the beginning, you just separate them."
   },
   {
-   "start": 383.92,
-   "end": 387.12,
-   "text": "Yeah. Se više bavim jogom. Yeah."
+   "start": 334.39,
+   "end": 337.67,
+   "text": "Like in the next one, koyu yezik, çeş uçiti."
   },
   {
-   "start": 389.36,
-   "end": 393.36,
-   "text": "Does it sound formal to you? Bavim se jogom?"
+   "start": 338.17,
+   "end": 342.77,
+   "text": "So, çeş is again separated because koyu yezik is in the beginning."
   },
   {
-   "start": 394.24,
-   "end": 398.16,
-   "text": "No, it doesn't have to be. Formal part is pridružim, maybe."
+   "start": 343.39,
+   "end": 343.73,
+   "text": "You cannot start a sentence with çeş. Yeah."
   },
   {
-   "start": 399.28,
-   "end": 404.0,
-   "text": "Mm-hmm. What would you say, dobijem, maybe?"
+   "start": 346.63,
+   "end": 348.09,
+   "text": "Mm-hmm. Okay."
   },
   {
-   "start": 404.0,
-   "end": 409.2,
-   "text": "Planiram da idem na čas kuhanja."
+   "start": 349.45,
+   "end": 349.75,
+   "text": "and the last"
   },
   {
-   "start": 409.2,
-   "end": 414.32,
-   "text": "Ah, I see. Yeah, idem na čas kuhanja. Okay, cooking class, by the way."
+   "start": 349.75,
+   "end": 349.8,
+   "text": "and"
   },
   {
-   "start": 414.32,
-   "end": 421.12,
-   "text": "Yeah, cooking class. Okay, good. Now let's go to the advanced level."
+   "start": 353.87,
+   "end": 354.09,
+   "text": "sentence was"
   },
   {
-   "start": 422.56,
-   "end": 426.8,
-   "text": "Yes, career and personal goals. I start-"
+   "start": 354.09,
+   "end": 355.39,
+   "text": "in present tense"
   },
   {
-   "start": 426.8,
-   "end": 428.72,
-   "text": "I can be- Okay, you can be."
+   "start": 355.39,
+   "end": 355.97,
+   "text": "planiram"
   },
   {
-   "start": 430.08,
-   "end": 437.92,
-   "text": "Yeah. Kako planiraš da unaprediš svoj život u 2025 godini?"
+   "start": 355.97,
+   "end": 357.29,
+   "text": "because I'm planning"
   },
   {
-   "start": 438.48,
+   "start": 357.29,
+   "end": 357.69,
+   "text": "right"
+  },
+  {
+   "start": 357.69,
+   "end": 358.91,
+   "text": "planiram"
+  },
+  {
+   "start": 358.91,
+   "end": 361.65,
+   "text": "da pridrušim i više bavim"
+  },
+  {
+   "start": 361.65,
+   "end": 362.55,
+   "text": "jogom"
+  },
+  {
+   "start": 363.81,
+   "end": 364.19,
+   "text": "it's all bavim"
+  },
+  {
+   "start": 364.19,
+   "end": 366.31,
+   "text": "all present"
+  },
+  {
+   "start": 366.31,
+   "end": 366.79,
+   "text": "bavim"
+  },
+  {
+   "start": 366.79,
+   "end": 367.47,
+   "text": "could be also"
+  },
+  {
+   "start": 367.47,
+   "end": 368.27,
+   "text": "radim"
+  },
+  {
+   "start": 368.27,
+   "end": 370.67,
+   "text": "uradim da više"
+  },
+  {
+   "start": 370.67,
+   "end": 373.07,
+   "text": "vežbam"
+  },
+  {
+   "start": 373.07,
+   "end": 373.79,
+   "text": "than"
+  },
+  {
+   "start": 373.79,
+   "end": 375.37,
+   "text": "jogu or"
+  },
+  {
+   "start": 375.37,
+   "end": 375.63,
+   "text": "radim"
+  },
+  {
+   "start": 375.63,
+   "end": 376.05,
+   "text": "jogu"
+  },
+  {
+   "start": 376.05,
+   "end": 379.07,
+   "text": "sure but baviti se it means to engage"
+  },
+  {
+   "start": 379.07,
+   "end": 380.91,
+   "text": "to do something"
+  },
+  {
+   "start": 380.91,
+   "end": 389.65,
+   "text": "it means instrumental that's why it's yoga se više bavim yogom does"
+  },
+  {
+   "start": 389.65,
+   "end": 391.69,
+   "text": "it sound formal to you?"
+  },
+  {
+   "start": 392.29,
+   "end": 396.69,
+   "text": "bavim se yogom no it doesn't have to be formal part is"
+  },
+  {
+   "start": 396.69,
+   "end": 398.19,
+   "text": "pridružim maybe"
+  },
+  {
+   "start": 401.01,
+   "end": 401.43,
+   "text": "what would you say?"
+  },
+  {
+   "start": 401.43,
+   "end": 402.69,
+   "text": "dobijem"
+  },
+  {
+   "start": 402.69,
+   "end": 409.29,
+   "text": "maybe I plan to go to the cooking time."
+  },
+  {
+   "start": 409.29,
+   "end": 410.89,
+   "text": "Ah, I see."
+  },
+  {
+   "start": 410.89,
+   "end": 411.91,
+   "text": "Yeah, I go to the cooking time."
+  },
+  {
+   "start": 412.71,
+   "end": 414.19,
+   "text": "Cooking class, by the way."
+  },
+  {
+   "start": 414.41,
+   "end": 415.57,
+   "text": "Yeah, cooking class."
+  },
+  {
+   "start": 416.29,
+   "end": 421.57,
+   "text": "Okay, good. Now let's go to the advanced level."
+  },
+  {
+   "start": 422.71,
+   "end": 425.07,
+   "text": "Yes, career and personal goals."
+  },
+  {
+   "start": 426.61,
+   "end": 427.39,
+   "text": "I can be."
+  },
+  {
+   "start": 428.15,
+   "end": 428.37,
+   "text": "Okay, you can be."
+  },
+  {
+   "start": 428.37,
+   "end": 429.03,
+   "text": "Yeah."
+  },
+  {
+   "start": 431.05,
+   "end": 437.06,
+   "text": "How do you plan to build your life in 2020?"
+  },
+  {
+   "start": 437.06,
+   "end": 439.82,
+   "text": "Peti godini? Petoj godini."
+  },
+  {
+   "start": 439.94,
    "end": 442.4,
-   "text": "Petoj godini. Petoj godini, because now it's locative."
+   "text": "Petoj godini, znaju slučaj."
   },
   {
-   "start": 442.4,
-   "end": 447.84,
-   "text": "Yes. Zavrašavam master studije u junu,"
+   "start": 445.0,
+   "end": 451.36,
+   "text": "Završavam master studije u junu, a posle toga ću tražiti posao u IT sektoru."
   },
   {
-   "start": 447.84,
-   "end": 451.2,
-   "text": "a posle toga ću tražiti posov u IT sektoru."
+   "start": 452.5,
+   "end": 455.22,
+   "text": "Odlično. Gde planiraš što radiš?"
   },
   {
-   "start": 452.32,
-   "end": 454.88,
-   "text": "Odlično. Gde planiraš da radeš?"
+   "start": 456.16,
+   "end": 460.36,
+   "text": "Ako bude prilike, zaposliju ću se u Beogradu, a ako ne, selit ću se"
   },
   {
-   "start": 455.84,
-   "end": 460.96,
-   "text": "Ako bude prelike, zaposliću se u Beogradu, a ako ne, seliću se u inostranjstvo."
+   "start": 460.36,
+   "end": 461.16,
+   "text": "u inostranstvo."
   },
   {
-   "start": 462.32,
-   "end": 465.68,
+   "start": 462.6,
+   "end": 464.62,
    "text": "Šta još planiraš za 2025?"
   },
   {
-   "start": 466.96,
-   "end": 469.68,
-   "text": "Išu vi petu. Petu, yes."
+   "start": 467.24,
+   "end": 468.6,
+   "text": "Išli bi pet tu."
   },
   {
-   "start": 470.96,
-   "end": 475.04,
-   "text": "Planiram da idem na nekoliko konferencija i da razvijem svoj start-up."
+   "start": 468.82,
+   "end": 469.98,
+   "text": "Pet tu, jas."
   },
   {
-   "start": 476.32,
-   "end": 479.52,
-   "text": "To su ozbiljni planovi. Želim te puno sreće."
+   "start": 471.28,
+   "end": 475.32,
+   "text": "Planiram da idem na nekoliko konferencija i da razvijem svoj startup."
   },
   {
-   "start": 480.96,
-   "end": 481.92,
-   "text": "Hvala. Okay."
+   "start": 476.66,
+   "end": 478.32,
+   "text": "To su ozbiljni planovi."
   },
   {
-   "start": 482.72,
-   "end": 488.16,
-   "text": "Kada su puno sreće, želimo da imamo koktajl od svih,"
+   "start": 478.32,
+   "end": 479.84,
+   "text": "Želim te puno sreće."
   },
   {
-   "start": 488.16,
-   "end": 491.76,
-   "text": "mislim, padeži ovdje, ali učinkovito."
+   "start": 481.28,
+   "end": 481.66,
+   "text": "Hvala."
   },
   {
-   "start": 492.4,
-   "end": 496.56,
-   "text": "Ovdje, kako planiraš da razvijem svoj život?"
+   "start": 483.88,
+   "end": 489.48,
+   "text": "As the numbers are confusing, we wanted to have a cocktail of every, I"
   },
   {
-   "start": 497.92,
-   "end": 499.36,
-   "text": "Ovo je vrlo dobro vjerojatno."
+   "start": 489.48,
+   "end": 491.66,
+   "text": "guess, by Deji here, but still useful."
   },
   {
-   "start": 499.36,
-   "end": 502.16,
-   "text": "Zakon. Unaprediš svoj život."
+   "start": 492.54,
+   "end": 496.88,
+   "text": "So this time, how do you plan to improve your life?"
   },
   {
-   "start": 502.16,
-   "end": 502.96,
-   "text": "Unaprediš."
+   "start": 497.84,
+   "end": 502.02,
+   "text": "that's a very deep question unapredeš svoj život"
   },
   {
-   "start": 505.92,
-   "end": 510.32,
-   "text": "2025 je u locativu zbog prepozicije u"
+   "start": 502.02,
+   "end": 507.16,
+   "text": "dvijeljede dvadeset peta"
   },
   {
-   "start": 511.04,
-   "end": 514.16,
-   "text": "i u ovoj godini."
+   "start": 507.16,
+   "end": 508.04,
+   "text": "here is in locativ"
   },
   {
-   "start": 514.16,
-   "end": 517.2,
-   "text": "Tako da meseca i godine kao ovo može biti u locativu."
+   "start": 508.04,
+   "end": 510.28,
+   "text": "because of preposition u"
   },
   {
-   "start": 518.08,
-   "end": 518.32,
-   "text": "Da."
+   "start": 510.28,
+   "end": 511.52,
+   "text": "and"
   },
   {
-   "start": 524.28,
-   "end": 533.72,
-   "text": "Okay, and here the answer is like, završavam, I'm finishing my master's degree, my studies,"
+   "start": 512.86,
+   "end": 513.74,
+   "text": "it's in this year"
   },
   {
-   "start": 533.72,
-   "end": 543.68,
-   "text": "master's studie u junu, a posle toga, and after that, cu tražiti posao u IT sektoru?"
+   "start": 513.74,
+   "end": 515.66,
+   "text": "so months and years like that"
   },
   {
-   "start": 543.68,
-   "end": 550.08,
-   "text": "So we will, cu tražiti is I will look for, I will search for, right?"
+   "start": 515.66,
+   "end": 523.34,
+   "text": "can be locativ yeah za petoj godini godina vikim godini mhm"
   },
   {
-   "start": 551.08,
-   "end": 557.08,
-   "text": "Again, posle toga, construction, that's why we use cu after it."
+   "start": 525.14,
+   "end": 526.22,
+   "text": "ok and"
   },
   {
-   "start": 557.08,
-   "end": 565.08,
-   "text": "Yeah, nice, and I like this format, ako bude prilike, right?"
+   "start": 527.76,
+   "end": 528.88,
+   "text": "here the answer is like"
   },
   {
-   "start": 565.08,
-   "end": 574.08,
-   "text": "Conditional sentences with ako, if, yes, you can use, we'll talk about it after, but there's a couple ways to do that."
+   "start": 528.88,
+   "end": 530.72,
+   "text": "završavam, i'm finishing"
   },
   {
-   "start": 574.08,
-   "end": 581.08,
-   "text": "Yeah, but ako bude prilike is like a phrase that goes, like, all the words go together like this."
+   "start": 530.72,
+   "end": 536.5,
+   "text": "my master's degree master studije u junu a posle toga"
   },
   {
-   "start": 581.08,
-   "end": 587.08,
-   "text": "Yeah, yeah, it can be a phrase, yeah, if there is opportunity."
+   "start": 536.5,
+   "end": 540.02,
+   "text": "and after that ču tražeti posao"
   },
   {
-   "start": 587.08,
-   "end": 591.08,
-   "text": "Ako ne, if not, se liču se."
+   "start": 540.02,
+   "end": 547.32,
+   "text": "u IT sektoru so we will ču tražeti is will look for"
   },
   {
-   "start": 591.08,
-   "end": 595.08,
-   "text": "Ino stransvo, ino stransvo is a very difficult word for me."
+   "start": 547.32,
+   "end": 550.44,
+   "text": "yeah i will search for search for"
   },
   {
-   "start": 595.08,
-   "end": 598.08,
-   "text": "Ino stransvo, abroad, yeah."
+   "start": 551.8,
+   "end": 559.04,
+   "text": "again post the dog construction that's why we use true after it yeah nice"
   },
   {
-   "start": 598.08,
-   "end": 606.08,
-   "text": "Yeah, I don't know, it doesn't, like, remind me of any other word that I know, it's completely new, you know."
+   "start": 559.04,
+   "end": 561.14,
+   "text": "and i like this format"
   },
   {
-   "start": 606.08,
-   "end": 614.08,
-   "text": "Strana is an old Slavic word for country, and that's the root of it."
+   "start": 561.14,
+   "end": 568.16,
+   "text": "right if i have additional sentences with aqua if"
   },
   {
-   "start": 614.08,
-   "end": 620.08,
-   "text": "Ino means other, other countries, it's all old roots, it doesn't have that meaning now."
+   "start": 568.16,
+   "end": 572.68,
+   "text": "yes you can use we'll talk about it after but there's a couple ways"
   },
   {
-   "start": 620.08,
-   "end": 626.08,
-   "text": "I just know strankinje, stranac, so it's foreigner."
+   "start": 572.68,
+   "end": 573.22,
+   "text": "to do that"
   },
   {
-   "start": 627.08,
-   "end": 632.08,
-   "text": "Okay, and we have here a nice wish at the end."
+   "start": 574.44,
+   "end": 576.98,
+   "text": "yeah but akobu the prilike is like a phrase"
   },
   {
-   "start": 632.08,
-   "end": 635.08,
-   "text": "To su ozbiljni planovi, very serious plans."
+   "start": 576.98,
+   "end": 579.06,
+   "text": "that goes like all the words"
   },
   {
-   "start": 635.08,
-   "end": 637.08,
-   "text": "Želim ti puno sreče."
+   "start": 579.06,
+   "end": 580.4,
+   "text": "go together like this"
   },
   {
-   "start": 637.08,
-   "end": 640.08,
+   "start": 580.4,
+   "end": 582.22,
+   "text": "yeah it can be a phrase"
+  },
+  {
+   "start": 582.22,
+   "end": 584.86,
+   "text": "if there is opportunity"
+  },
+  {
+   "start": 587.28,
+   "end": 587.4,
+   "text": "akone"
+  },
+  {
+   "start": 587.4,
+   "end": 594.56,
+   "text": "if not selicuse inostransvo inostransvo is a very difficult"
+  },
+  {
+   "start": 594.56,
+   "end": 596.54,
+   "text": "word for me inostransvo abroad"
+  },
+  {
+   "start": 596.54,
+   "end": 603.22,
+   "text": "yeah I don't know it doesn't like remind me of any new any other"
+  },
+  {
+   "start": 603.22,
+   "end": 605.96,
+   "text": "word that i know that's completely new you know"
+  },
+  {
+   "start": 607.5,
+   "end": 614.24,
+   "text": "strana is an old slavic word for country and that's what the root of"
+  },
+  {
+   "start": 614.24,
+   "end": 615.0,
+   "text": "it you know means other"
+  },
+  {
+   "start": 615.0,
+   "end": 621.12,
+   "text": "other countries it's all old roots it doesn't have that meaning now i just"
+  },
+  {
+   "start": 621.12,
+   "end": 623.84,
+   "text": "know strankinia strana so Yeah, yeah."
+  },
+  {
+   "start": 623.84,
+   "end": 625.24,
+   "text": "Foreigner."
+  },
+  {
+   "start": 627.1,
+   "end": 631.62,
+   "text": "Okay. And we have here a nice wish at the end."
+  },
+  {
+   "start": 631.62,
+   "end": 633.36,
+   "text": "To su ozbilni planavi."
+  },
+  {
+   "start": 633.48,
+   "end": 634.52,
+   "text": "Very serious plans."
+  },
+  {
+   "start": 634.98,
+   "end": 636.62,
+   "text": "Želim ti puno sreće."
+  },
+  {
+   "start": 637.66,
+   "end": 639.46,
    "text": "Wishing you very good luck."
   },
   {
-   "start": 640.08,
-   "end": 643.08,
+   "start": 639.9,
+   "end": 641.8,
    "text": "Yeah, a lot of luck, literally."
   },
   {
-   "start": 643.08,
-   "end": 645.08,
+   "start": 642.74,
+   "end": 643.88,
    "text": "Yeah, that's true."
   },
   {
-   "start": 645.08,
-   "end": 649.08,
-   "text": "So, I want to do a little bit of practice with you."
+   "start": 644.54,
+   "end": 648.32,
+   "text": "So I want to do a little bit of practice with you."
   },
   {
-   "start": 649.08,
-   "end": 654.08,
-   "text": "I want you to tell me some verbs, very common verbs in present tense."
+   "start": 649.4,
+   "end": 653.56,
+   "text": "I want you to tell me some verbs, very common verbs in present tense"
   },
   {
-   "start": 654.08,
-   "end": 660.08,
+   "start": 653.56,
+   "end": 658.59,
    "text": "I will try to tell them in the future tense."
   },
   {
-   "start": 660.08,
-   "end": 662.08,
-   "text": "So, I give you verbs?"
+   "start": 660.67,
+   "end": 661.63,
+   "text": "So I give you verbs?"
   },
   {
-   "start": 662.08,
-   "end": 664.08,
-   "text": "Yes, please."
+   "start": 662.41,
+   "end": 666.85,
+   "text": "Yes, please. Okay, let's start with idem."
   },
   {
-   "start": 664.08,
-   "end": 668.08,
-   "text": "Okay, let's start with idem."
+   "start": 668.31,
+   "end": 670.63,
+   "text": "Idem, ya. Ichi chu, yes."
   },
   {
-   "start": 668.08,
-   "end": 671.08,
-   "text": "Idem, ja, ičiču."
+   "start": 670.63,
+   "end": 675.85,
+   "text": "Yes, but the only thing is if you use ichi chu, don't start with"
   },
   {
-   "start": 671.08,
-   "end": 678.08,
-   "text": "Yes, but the only thing is, if you use ičiču, don't start with ja, so just ičiču."
+   "start": 675.85,
+   "end": 677.71,
+   "text": "ya. So just ichi chu."
   },
   {
-   "start": 679.08,
-   "end": 681.08,
-   "text": "The other options are ja, iču, iči."
+   "start": 677.71,
+   "end": 682.05,
+   "text": "the other options are so there's always three ways to"
   },
   {
-   "start": 681.08,
-   "end": 685.08,
-   "text": "So, there's always three ways to make future."
+   "start": 682.05,
+   "end": 685.29,
+   "text": "make future yeah"
   },
   {
-   "start": 685.08,
-   "end": 687.08,
-   "text": "Ja, iču, iči."
+   "start": 685.29,
+   "end": 692.97,
+   "text": "without yeah and even which is not standard but"
   },
   {
-   "start": 687.08,
-   "end": 689.08,
-   "text": "Ičiču without ja."
+   "start": 692.97,
+   "end": 695.61,
+   "text": "very frequent colloquially yeah that's true"
   },
   {
-   "start": 689.08,
-   "end": 695.08,
-   "text": "And even jačuta idem, which is not standard, but very frequent colloquially."
+   "start": 695.61,
+   "end": 696.89,
+   "text": "I hear it a lot"
   },
   {
-   "start": 695.08,
-   "end": 698.08,
-   "text": "Yeah, that's true. I hear it a lot."
+   "start": 698.65,
+   "end": 699.95,
+   "text": "okay without pronouns I will try"
   },
   {
-   "start": 698.08,
-   "end": 701.08,
-   "text": "Okay, without pronouns, I will try."
+   "start": 699.95,
+   "end": 703.53,
+   "text": "go on should I pick like random verb"
   },
   {
-   "start": 701.08,
-   "end": 703.08,
-   "text": "Go on."
+   "start": 703.53,
+   "end": 705.43,
+   "text": "you can do"
   },
   {
-   "start": 703.08,
-   "end": 705.08,
-   "text": "Should I pick a random verb?"
+   "start": 705.43,
+   "end": 707.53,
+   "text": "you can choose from the list"
   },
   {
-   "start": 705.08,
-   "end": 709.08,
-   "text": "You can do, you can choose from the list."
+   "start": 709.51,
+   "end": 712.49,
+   "text": "Spavam. Ja spavam in future."
   },
   {
-   "start": 709.08,
-   "end": 712.08,
-   "text": "Spavam, ja spavam, in future."
+   "start": 712.49,
+   "end": 714.83,
+   "text": "Spavat ću. Dobro."
   },
   {
-   "start": 712.08,
-   "end": 714.08,
-   "text": "Spavaču."
+   "start": 714.83,
+   "end": 718.99,
+   "text": "Maybe on jede."
   },
   {
-   "start": 714.08,
-   "end": 716.08,
-   "text": "Dobra."
+   "start": 721.77,
+   "end": 724.23,
+   "text": "Jeće. Yeah, with š."
   },
   {
-   "start": 716.08,
-   "end": 720.08,
-   "text": "Maybe, on jede."
+   "start": 724.23,
+   "end": 726.95,
+   "text": "Ješće. Ješće, yes."
   },
   {
-   "start": 720.08,
-   "end": 723.08,
-   "text": "Ječe."
+   "start": 727.17,
+   "end": 730.17,
+   "text": "What happened there, you have jesti plus će."
   },
   {
-   "start": 723.08,
-   "end": 725.08,
-   "text": "Yeah, with še, ješče."
+   "start": 731.07,
+   "end": 732.61,
+   "text": "Ti falls out."
   },
   {
-   "start": 725.08,
-   "end": 727.08,
-   "text": "Ješče, yes, that's true."
+   "start": 732.61,
+   "end": 735.23,
+   "text": "You have jest će and so we'll change to š."
   },
   {
-   "start": 727.08,
-   "end": 731.08,
-   "text": "What happened there, you have jesti plus če."
+   "start": 735.23,
+   "end": 737.75,
+   "text": "Ješće. then yesh-chu"
   },
   {
-   "start": 731.08,
-   "end": 735.08,
-   "text": "T falls out, you have ješče and so we'll change to še."
+   "start": 737.75,
+   "end": 738.95,
+   "text": "if it was"
   },
   {
-   "start": 735.08,
-   "end": 737.08,
-   "text": "Ješče."
+   "start": 740.25,
+   "end": 742.35,
+   "text": "yesh-chu, yesh-che-š okay"
   },
   {
-   "start": 737.08,
-   "end": 739.08,
-   "text": "Then ješču, if it was..."
+   "start": 744.01,
+   "end": 744.51,
+   "text": "читam"
   },
   {
-   "start": 739.08,
-   "end": 741.08,
-   "text": "Ješču, ješčeš."
+   "start": 745.77,
+   "end": 748.19,
+   "text": "читat-chu okay and maybe"
   },
   {
-   "start": 741.08,
-   "end": 743.08,
-   "text": "Okay, good."
+   "start": 750.03,
+   "end": 751.01,
+   "text": "oni like they"
   },
   {
-   "start": 743.08,
-   "end": 745.08,
-   "text": "Čitam?"
+   "start": 751.01,
+   "end": 751.61,
+   "text": "oni"
   },
   {
-   "start": 745.08,
-   "end": 747.08,
-   "text": "Čitaču."
+   "start": 751.61,
+   "end": 756.93,
+   "text": "piu"
   },
   {
-   "start": 747.08,
-   "end": 758.08,
-   "text": "Okay, and maybe oni, like they, oni piju?"
+   "start": 756.93,
+   "end": 758.83,
+   "text": "hmm"
   },
   {
-   "start": 759.08,
-   "end": 763.08,
-   "text": "For they, it would be..."
+   "start": 758.83,
+   "end": 761.35,
+   "text": "for they it would be"
   },
   {
-   "start": 763.08,
-   "end": 765.08,
-   "text": "What was it? Wait a second."
+   "start": 763.57,
+   "end": 764.95,
+   "text": "what was it Wait a second."
   },
   {
-   "start": 765.08,
-   "end": 768.08,
-   "text": "Piti is infinity, right?"
+   "start": 765.41,
+   "end": 766.75,
+   "text": "PT Pt is infinity, right?"
   },
   {
-   "start": 768.08,
-   "end": 771.08,
-   "text": "So it's going to be the same for he, she, it then, right?"
+   "start": 768.69,
+   "end": 771.31,
+   "text": "So it's going to be the same for he, she, then, right?"
   },
   {
-   "start": 771.08,
-   "end": 772.08,
-   "text": "Piče?"
+   "start": 771.61,
+   "end": 773.53,
+   "text": "Ptče? Yeah. Ptče?"
   },
   {
-   "start": 772.08,
-   "end": 773.08,
+   "start": 774.13,
+   "end": 779.17,
+   "text": "Ptče. Because pt, you do a t, a če, and that's the word."
+  },
+  {
+   "start": 780.33,
+   "end": 784.93,
+   "text": "So if it was on, also ptče, right?"
+  },
+  {
+   "start": 784.93,
+   "end": 785.51,
    "text": "Yeah."
   },
   {
-   "start": 773.08,
-   "end": 774.08,
-   "text": "Pišče?"
+   "start": 787.31,
+   "end": 793.29,
+   "text": "So it's important to know if the infinitive ends on ČI, write auxiliary verb"
   },
   {
-   "start": 774.08,
-   "end": 775.08,
-   "text": "Piče."
+   "start": 793.29,
+   "end": 794.07,
+   "text": "separately."
   },
   {
-   "start": 775.08,
-   "end": 780.08,
-   "text": "Because piti, you do a t, a če, and that's the word."
+   "start": 794.07,
+   "end": 796.23,
+   "text": "So ČI ČU, two words."
   },
   {
-   "start": 780.08,
-   "end": 785.08,
-   "text": "So on, if it was on, also piče, right?"
+   "start": 796.89,
+   "end": 798.99,
+   "text": "If it ends on T, write it together."
   },
   {
-   "start": 785.08,
-   "end": 787.08,
-   "text": "Yeah."
+   "start": 799.65,
+   "end": 800.37,
+   "text": "Kupi ČU."
   },
   {
-   "start": 787.08,
-   "end": 794.08,
-   "text": "So it's important to know if the infinitive ends on či, write auxiliary verb separately,"
-  },
-  {
-   "start": 794.08,
-   "end": 797.08,
-   "text": "so iči, ču, two words."
-  },
-  {
-   "start": 797.08,
-   "end": 802.08,
-   "text": "If it ends on ti, write it together, kupiču."
-  },
-  {
-   "start": 802.08,
-   "end": 804.08,
+   "start": 802.27,
+   "end": 803.13,
    "text": "How will we say..."
   },
   {
-   "start": 804.08,
-   "end": 807.08,
+   "start": 803.13,
+   "end": 804.85,
    "text": "Okay, now it's my turn."
   },
   {
-   "start": 807.08,
-   "end": 809.08,
-   "text": "On ide."
+   "start": 807.49,
+   "end": 809.63,
+   "text": "On ide. IDI."
   },
   {
-   "start": 809.08,
-   "end": 811.08,
-   "text": "Idi."
-  },
-  {
-   "start": 811.08,
-   "end": 814.08,
+   "start": 811.25,
+   "end": 812.17,
    "text": "On ide in future?"
   },
   {
-   "start": 814.08,
-   "end": 816.08,
-   "text": "Iči če."
+   "start": 814.35,
+   "end": 820.21,
+   "text": "ČI ČE. ah okay not it this time of course it has to be"
   },
   {
-   "start": 816.08,
-   "end": 817.08,
-   "text": "Ah, okay."
+   "start": 820.21,
+   "end": 822.63,
+   "text": "separate okay because infinitive is it"
   },
   {
-   "start": 817.08,
-   "end": 822.08,
-   "text": "Not iče this time, iči če, of course, it has to be separate, okay."
+   "start": 822.63,
+   "end": 829.77,
+   "text": "that's true we don't change the infinitive but pt is just a"
   },
   {
-   "start": 822.08,
-   "end": 825.08,
-   "text": "Because infinitive is iči."
+   "start": 829.77,
+   "end": 831.05,
+   "text": "very short word that's why"
   },
   {
-   "start": 825.08,
-   "end": 826.08,
-   "text": "That's true."
+   "start": 831.05,
+   "end": 838.67,
+   "text": "yes yes and est because you have so that changes to sure okay okay"
   },
   {
-   "start": 826.08,
-   "end": 832.08,
-   "text": "We don't change the infinitive, but piti is just a very short word, that's why."
+   "start": 838.67,
+   "end": 840.73,
+   "text": "then i will say"
   },
   {
-   "start": 832.08,
-   "end": 836.08,
-   "text": "Yes, yes, and iesti, because you have so, that changes to še."
+   "start": 843.23,
+   "end": 844.01,
+   "text": "Zaposlim."
   },
   {
-   "start": 836.08,
-   "end": 838.08,
-   "text": "Okay."
+   "start": 846.23,
+   "end": 848.87,
+   "text": "Zaposlim se. Yeah, it's right."
   },
   {
-   "start": 838.08,
-   "end": 845.08,
-   "text": "Okay, then I will say zaposlim."
+   "start": 849.25,
+   "end": 852.69,
+   "text": "Zaposliću se. Okay."
   },
   {
-   "start": 846.08,
-   "end": 848.08,
-   "text": "Zaposlim se."
+   "start": 853.39,
+   "end": 856.81,
+   "text": "Tražeju. No, traže."
   },
   {
-   "start": 848.08,
-   "end": 849.08,
-   "text": "Yeah, it's a fact."
+   "start": 857.21,
+   "end": 857.69,
+   "text": "They."
   },
   {
-   "start": 849.08,
-   "end": 851.08,
-   "text": "Zaposliću se."
+   "start": 859.67,
+   "end": 863.53,
+   "text": "Tražiće. Okay, good."
   },
   {
-   "start": 851.08,
-   "end": 853.08,
-   "text": "Okay."
+   "start": 865.17,
+   "end": 868.21,
+   "text": "Okay. And what was this nice word?"
   },
   {
-   "start": 853.08,
-   "end": 855.08,
-   "text": "Tražeju."
-  },
-  {
-   "start": 855.08,
-   "end": 857.08,
-   "text": "No, traže."
-  },
-  {
-   "start": 857.08,
-   "end": 859.08,
-   "text": "Dej."
-  },
-  {
-   "start": 859.08,
-   "end": 861.08,
-   "text": "Traži će."
-  },
-  {
-   "start": 861.08,
-   "end": 863.08,
-   "text": "Traži će."
-  },
-  {
-   "start": 863.08,
-   "end": 865.08,
-   "text": "Okay, good."
-  },
-  {
-   "start": 865.08,
-   "end": 866.08,
-   "text": "Okay."
-  },
-  {
-   "start": 866.08,
-   "end": 868.08,
-   "text": "And what was this nice word?"
-  },
-  {
-   "start": 868.08,
-   "end": 869.08,
+   "start": 868.21,
+   "end": 869.11,
    "text": "Wait a second."
   },
   {
-   "start": 869.08,
-   "end": 870.08,
+   "start": 869.51,
+   "end": 869.81,
    "text": "Unapred."
   },
   {
-   "start": 870.08,
-   "end": 872.08,
+   "start": 869.81,
+   "end": 870.71,
    "text": "Okay."
   },
   {
-   "start": 872.08,
-   "end": 874.08,
-   "text": "Unaprediš."
+   "start": 874.78,
+   "end": 874.94,
+   "text": "to"
   },
   {
-   "start": 875.08,
-   "end": 877.08,
-   "text": "To..."
+   "start": 876.96,
+   "end": 877.42,
+   "text": "how do we translate"
   },
   {
-   "start": 877.08,
-   "end": 879.08,
-   "text": "How do we translate to..."
+   "start": 877.42,
+   "end": 878.82,
+   "text": "to improve"
   },
   {
-   "start": 879.08,
-   "end": 880.08,
-   "text": "Improve."
+   "start": 878.82,
+   "end": 882.2,
+   "text": "improve unapredite"
   },
   {
-   "start": 880.08,
-   "end": 881.08,
-   "text": "Improve."
+   "start": 882.2,
+   "end": 889.18,
+   "text": "unapredite infinite unapredite"
   },
   {
-   "start": 881.08,
-   "end": 884.08,
-   "text": "Unapredićeš."
+   "start": 889.18,
+   "end": 889.3,
+   "text": "sounds like"
   },
   {
-   "start": 884.08,
-   "end": 886.08,
-   "text": "Unapredićeš."
+   "start": 889.3,
+   "end": 889.58,
+   "text": "to me"
   },
   {
-   "start": 886.08,
-   "end": 888.08,
-   "text": "Unapredi is infinitive."
+   "start": 892.68,
+   "end": 895.48,
+   "text": "I don't know not location but"
   },
   {
-   "start": 888.08,
-   "end": 889.08,
-   "text": "Yeah."
+   "start": 895.48,
+   "end": 899.94,
+   "text": "an adverb for location unapred yes because napred means forward"
   },
   {
-   "start": 889.08,
-   "end": 898.08,
-   "text": "Unapred to me sounds like, I don't know, not location, but let's say an adverb for location."
+   "start": 899.94,
+   "end": 906.24,
+   "text": "yeah yeah i wouldn't guess it's gonna when i put it as a word"
   },
   {
-   "start": 898.08,
-   "end": 901.08,
-   "text": "Ah, unapred, yes, because napred means forward."
+   "start": 906.24,
+   "end": 913.36,
+   "text": "uh means uh in advance okay so i heard it somewhere else that's"
   },
   {
-   "start": 901.08,
-   "end": 903.08,
-   "text": "Yeah, yeah."
+   "start": 913.36,
+   "end": 916.52,
+   "text": "why yeah so it means like forward as a verb here then"
   },
   {
-   "start": 904.08,
-   "end": 909.08,
-   "text": "Unapred as a word means in advance."
+   "start": 916.52,
+   "end": 924.02,
+   "text": "right improve yeah moving forward yeah yeah okay okay"
   },
   {
-   "start": 911.08,
-   "end": 913.08,
-   "text": "Okay, so I heard it somewhere else, that's why."
+   "start": 924.02,
+   "end": 926.1,
+   "text": "one more uh"
   },
   {
-   "start": 913.08,
-   "end": 914.08,
-   "text": "Yeah."
+   "start": 928.62,
+   "end": 932.1,
+   "text": "this is an irregular verb."
   },
   {
-   "start": 914.08,
-   "end": 917.08,
-   "text": "So it means like forward as a verb here then, right?"
-  },
-  {
-   "start": 917.08,
-   "end": 919.08,
-   "text": "Improve."
-  },
-  {
-   "start": 919.08,
-   "end": 921.08,
-   "text": "Yeah, moving forward, yeah."
-  },
-  {
-   "start": 921.08,
-   "end": 923.08,
-   "text": "Yeah, okay."
-  },
-  {
-   "start": 923.08,
-   "end": 924.08,
-   "text": "Okay."
-  },
-  {
-   "start": 924.08,
-   "end": 926.08,
-   "text": "One more."
-  },
-  {
-   "start": 927.08,
-   "end": 930.08,
-   "text": "Završ..."
-  },
-  {
-   "start": 930.08,
-   "end": 932.08,
-   "text": "This is an irregular verb."
-  },
-  {
-   "start": 932.08,
-   "end": 933.08,
-   "text": "Okay."
-  },
-  {
-   "start": 933.08,
-   "end": 935.08,
+   "start": 933.14,
+   "end": 934.12,
    "text": "Završava."
   },
   {
-   "start": 935.08,
-   "end": 937.08,
-   "text": "He, she?"
+   "start": 935.8,
+   "end": 937.96,
+   "text": "Ki, ši? Mm-hmm."
   },
   {
-   "start": 937.08,
-   "end": 938.08,
-   "text": "Mhm."
-  },
-  {
-   "start": 938.08,
-   "end": 943.08,
+   "start": 938.78,
+   "end": 943.36,
    "text": "So, završavaće is the imperfective."
   },
   {
-   "start": 943.08,
-   "end": 948.08,
-   "text": "But you have also završi, which is perfective, and then završiće."
+   "start": 943.98,
+   "end": 946.18,
+   "text": "But you have also završi, which is perfective,"
   },
   {
-   "start": 948.08,
-   "end": 949.08,
-   "text": "That's true."
+   "start": 946.18,
+   "end": 947.82,
+   "text": "and then završiće."
   },
   {
-   "start": 949.08,
-   "end": 952.08,
-   "text": "Imperfective and perfective aspect, sadly."
+   "start": 949.14,
+   "end": 951.74,
+   "text": "That's true. Imperfective and perfective aspects, sadly."
   },
   {
-   "start": 952.08,
-   "end": 954.08,
+   "start": 952.7,
+   "end": 953.86,
    "text": "Yeah, different topic."
   },
   {
-   "start": 954.08,
-   "end": 958.08,
-   "text": "But both of them can be done the same way, by putting č at the end, right?"
+   "start": 953.96,
+   "end": 957.2,
+   "text": "But both of them can be done the same way by putting Če at"
   },
   {
-   "start": 958.08,
-   "end": 959.08,
+   "start": 957.2,
+   "end": 957.82,
+   "text": "the end."
+  },
+  {
+   "start": 957.82,
+   "end": 958.38,
    "text": "Yeah."
   },
   {
-   "start": 959.08,
-   "end": 960.08,
-   "text": "Okay."
+   "start": 959.62,
+   "end": 961.24,
+   "text": "Okay. Želim."
   },
   {
-   "start": 960.08,
-   "end": 962.08,
-   "text": "Želim."
+   "start": 962.6,
+   "end": 967.6,
+   "text": "Želeću. Okay. Easy."
   },
   {
-   "start": 962.08,
-   "end": 964.08,
-   "text": "Želeću."
+   "start": 968.86,
+   "end": 969.0,
+   "text": "And."
   },
   {
-   "start": 964.08,
-   "end": 966.08,
-   "text": "Želeću, okay."
-  },
-  {
-   "start": 966.08,
-   "end": 968.08,
-   "text": "Easy."
-  },
-  {
-   "start": 968.08,
-   "end": 970.08,
-   "text": "And..."
-  },
-  {
-   "start": 970.08,
-   "end": 973.08,
+   "start": 971.04,
+   "end": 972.02,
    "text": "Seliš se."
   },
   {
-   "start": 973.08,
-   "end": 975.08,
-   "text": "Setiš, remember?"
+   "start": 973.3,
+   "end": 975.48,
+   "text": "Setiš. Remember? No."
   },
   {
-   "start": 975.08,
-   "end": 977.08,
-   "text": "No, seliš."
+   "start": 975.48,
+   "end": 979.84,
+   "text": "Seliš. Seličeš se."
   },
   {
-   "start": 977.08,
-   "end": 978.08,
-   "text": "Seliš, move."
+   "start": 980.62,
+   "end": 981.86,
+   "text": "Seličeš se. Okay."
   },
   {
-   "start": 978.08,
-   "end": 980.08,
-   "text": "Selićeš se."
+   "start": 981.86,
+   "end": 988.2,
+   "text": "Good. Nice. And I want to do a little bit of practice with ako"
   },
   {
-   "start": 980.08,
-   "end": 982.08,
-   "text": "Selićeš se."
+   "start": 988.2,
+   "end": 989.76,
+   "text": "dobijem priliku."
   },
   {
-   "start": 982.08,
-   "end": 984.08,
-   "text": "Okay, good."
-  },
-  {
-   "start": 984.08,
-   "end": 985.08,
-   "text": "Nice."
-  },
-  {
-   "start": 985.08,
-   "end": 991.08,
-   "text": "And I want to do a little bit of practice with ako dobijem priliku."
-  },
-  {
-   "start": 991.08,
-   "end": 994.08,
+   "start": 991.06,
+   "end": 992.82,
    "text": "Okay, conditional clauses."
   },
   {
-   "start": 994.08,
-   "end": 1001.08,
+   "start": 993.64,
+   "end": 994.0,
    "text": "Ako can be formed with present, future, second."
   },
   {
-   "start": 1001.08,
-   "end": 1004.08,
-   "text": "Yeah, present, future, second, I think."
-  },
-  {
-   "start": 1004.08,
-   "end": 1009.08,
-   "text": "Yeah, so if we say ako dobijem priliku, we can make the rest of the sentence in future"
-  },
-  {
-   "start": 1009.08,
-   "end": 1012.08,
-   "text": "tense, or also in present tense, right?"
-  },
-  {
-   "start": 1012.08,
-   "end": 1013.08,
-   "text": "Can we?"
-  },
-  {
-   "start": 1013.08,
-   "end": 1016.08,
-   "text": "Yeah, you can do both, yeah."
-  },
-  {
-   "start": 1016.08,
-   "end": 1019.08,
-   "text": "I think in English you have to agree the tenses, right?"
-  },
-  {
-   "start": 1019.08,
-   "end": 1021.08,
-   "text": "You have to be the same tense?"
-  },
-  {
-   "start": 1021.08,
-   "end": 1026.08,
-   "text": "Yeah, but there's a mixed option as well, so it depends on the context."
-  },
-  {
-   "start": 1026.08,
-   "end": 1027.08,
+   "start": 994.0,
+   "end": 994.12,
    "text": "Yeah."
   },
   {
-   "start": 1028.08,
-   "end": 1034.08,
-   "text": "So, the example here is ako dobijem priliku, posećujem prijatelje."
+   "start": 1001.32,
+   "end": 1002.84,
+   "text": "Yeah, present, future, second, I think."
   },
   {
-   "start": 1034.08,
-   "end": 1036.08,
-   "text": "I will visit friends."
+   "start": 1003.84,
+   "end": 1008.84,
+   "text": "Yeah. So if we say, we can make the rest of the sentence in"
   },
   {
-   "start": 1036.08,
-   "end": 1040.08,
-   "text": "Ako dobijem priliku, ha, posećujem prijatelje, yes."
+   "start": 1008.84,
+   "end": 1011.76,
+   "text": "future tense or also in present tense, right?"
   },
   {
-   "start": 1040.08,
-   "end": 1041.08,
-   "text": "Exactly."
+   "start": 1012.88,
+   "end": 1015.44,
+   "text": "Can we? Yeah, you can do both."
   },
   {
-   "start": 1041.08,
-   "end": 1047.08,
-   "text": "But if I say ako dobijem priliku, posećujem prijatelje?"
+   "start": 1015.44,
+   "end": 1019.06,
+   "text": "I think in English you have to agree the tenses, right?"
   },
   {
-   "start": 1047.08,
-   "end": 1048.08,
+   "start": 1019.06,
+   "end": 1020.76,
+   "text": "You have to be the same tense."
+  },
+  {
+   "start": 1022.06,
+   "end": 1024.0,
+   "text": "Yeah, but there's a mixed option as well."
+  },
+  {
+   "start": 1024.26,
+   "end": 1025.64,
+   "text": "It depends on the context."
+  },
+  {
+   "start": 1028.0,
+   "end": 1030.12,
+   "text": "So the example here is,"
+  },
+  {
+   "start": 1030.12,
+   "end": 1035.88,
+   "text": "I will visit France."
+  },
+  {
+   "start": 1039.1,
+   "end": 1041.5,
+   "text": "But if I say"
+  },
+  {
+   "start": 1041.5,
+   "end": 1046.2,
    "text": "No."
   },
   {
-   "start": 1048.56,
-   "end": 1058.56,
-   "text": "Because posetim, posetim is perfective aspect and it has to go with another verb, hoču da posetim."
+   "start": 1049.32,
+   "end": 1049.56,
+   "text": "Because"
   },
   {
-   "start": 1058.56,
-   "end": 1063.56,
-   "text": "I see. Okay, good."
+   "start": 1051.16,
+   "end": 1053.76,
+   "text": "is perfective aspect."
   },
   {
-   "start": 1063.56,
-   "end": 1069.56,
-   "text": "Okay, so I'm gonna ask you to use this in answering the question."
+   "start": 1054.04,
+   "end": 1054.14,
+   "text": "And"
   },
   {
-   "start": 1070.56,
-   "end": 1079.56,
-   "text": "Kakvi su tvoji planovi za 2025 godinu?"
+   "start": 1055.6,
+   "end": 1056.98,
+   "text": "it has to go with another verb."
   },
   {
-   "start": 1079.56,
-   "end": 1093.56,
-   "text": "Ako budem imao vremena, radiću novi kurs."
+   "start": 1056.98,
+   "end": 1058.22,
+   "text": "I want to visit."
   },
   {
-   "start": 1093.56,
-   "end": 1097.56,
-   "text": "Radiću neki kurs."
+   "start": 1091.78,
+   "end": 1092.98,
+   "text": "Radiću novi kurs I will do a new course"
   },
   {
-   "start": 1098.56,
-   "end": 1102.56,
-   "text": "Kao profesor ili kao učenik?"
+   "start": 1095.72,
+   "end": 1095.82,
+   "text": "Radiću neki kurs"
   },
   {
-   "start": 1102.56,
-   "end": 1105.56,
-   "text": "Kao učenik, da."
+   "start": 1095.82,
+   "end": 1096.82,
+   "text": "I will do a new course"
   },
   {
-   "start": 1105.56,
-   "end": 1109.56,
-   "text": "Super. Još nešto?"
+   "start": 1099.08,
+   "end": 1102.72,
+   "text": "Kao profesoru ili kao učenik?"
   },
   {
-   "start": 1109.56,
-   "end": 1133.56,
-   "text": "Ako bude lepo vreme u proleće, putovaću negde u prirodu."
+   "start": 1102.88,
+   "end": 1103.68,
+   "text": "Kao učenik"
   },
   {
-   "start": 1133.56,
-   "end": 1140.56,
-   "text": "U prirodu, let me ask you. Inostransko ili u Srbiji?"
+   "start": 1106.38,
+   "end": 1106.56,
+   "text": "Super"
   },
   {
-   "start": 1140.56,
-   "end": 1150.56,
-   "text": "Može i jedno i drugo, ali nisam išao na taru skoro."
+   "start": 1108.42,
+   "end": 1109.5,
+   "text": "Još nešto?"
   },
   {
-   "start": 1150.56,
-   "end": 1156.56,
-   "text": "Možda ću ići. Ako bude lepo vreme, možda idem na taru."
+   "start": 1112.0,
+   "end": 1114.08,
+   "text": "Let me see what can I say with if"
   },
   {
-   "start": 1156.56,
-   "end": 1162.56,
-   "text": "Super, super. Moraš. Moraš ti to."
+   "start": 1116.52,
+   "end": 1117.28,
+   "text": "Ako bude"
   },
   {
-   "start": 1162.56,
-   "end": 1172.56,
-   "text": "Okay, good. I know you published a book, so I think there is also a plan about that one."
+   "start": 1119.38,
+   "end": 1120.66,
+   "text": "Ako bude lepo vreme"
   },
   {
-   "start": 1172.56,
-   "end": 1178.56,
-   "text": "Šta planiraš da radiš za tvoju knjigu?"
+   "start": 1122.72,
+   "end": 1123.44,
+   "text": "U proleće"
   },
   {
-   "start": 1178.56,
-   "end": 1181.56,
-   "text": "Aha, još sa tvojom knjigom."
+   "start": 1128.22,
+   "end": 1130.34,
+   "text": "Putovaću negde"
   },
   {
-   "start": 1181.56,
-   "end": 1184.56,
-   "text": "Let's do future second."
+   "start": 1132.0,
+   "end": 1139.22,
+   "text": "U prirodu Let me ask you Inostranstvo ili u"
   },
   {
-   "start": 1184.56,
-   "end": 1201.56,
-   "text": "Ako budem imao vremena, ako budem imao energije, ja ću napraviti novu verziju knjige."
+   "start": 1139.22,
+   "end": 1140.22,
+   "text": "Srbiji?"
   },
   {
-   "start": 1201.56,
-   "end": 1206.56,
-   "text": "Štampanu, like printed, štampanu verziju knjige."
+   "start": 1141.68,
+   "end": 1147.24,
+   "text": "Može i jedno i drugo ali nisam išao na taru"
   },
   {
-   "start": 1206.56,
-   "end": 1209.56,
-   "text": "Super. Želim ti puno sreće."
+   "start": 1149.06,
+   "end": 1157.42,
+   "text": "skoro so možda ću ići ako bude lepo vreme možda idem na taru super,"
   },
   {
-   "start": 1209.56,
-   "end": 1212.56,
-   "text": "Hvala."
+   "start": 1157.42,
+   "end": 1160.78,
+   "text": "super moraš moraš ti to"
   },
   {
-   "start": 1212.56,
-   "end": 1215.56,
+   "start": 1163.22,
+   "end": 1164.28,
+   "text": "ok, good"
+  },
+  {
+   "start": 1166.38,
+   "end": 1167.48,
+   "text": "I know you published a book"
+  },
+  {
+   "start": 1167.48,
+   "end": 1174.38,
+   "text": "so I think there's also a plan about that one Šta planiraš, šta radiš"
+  },
+  {
+   "start": 1174.38,
+   "end": 1178.1,
+   "text": "za tvoju knjigu?"
+  },
+  {
+   "start": 1178.88,
+   "end": 1180.42,
+   "text": "Aha, oš sa tvojom knjigom."
+  },
+  {
+   "start": 1181.32,
+   "end": 1182.92,
+   "text": "Let's do a future second."
+  },
+  {
+   "start": 1184.38,
+   "end": 1192.94,
+   "text": "Ako budem imao vremena, ako budem imao energije,"
+  },
+  {
+   "start": 1194.14,
+   "end": 1200.68,
+   "text": "ja ću napraviti novu verziju knjige."
+  },
+  {
+   "start": 1202.34,
+   "end": 1203.79,
+   "text": "Stampan, ali printed."
+  },
+  {
+   "start": 1203.79,
+   "end": 1204.13,
+   "text": "Štampanu"
+  },
+  {
+   "start": 1204.13,
+   "end": 1207.37,
+   "text": "verziju knjige. Super."
+  },
+  {
+   "start": 1207.37,
+   "end": 1208.23,
+   "text": "Želim ti"
+  },
+  {
+   "start": 1208.23,
+   "end": 1210.73,
+   "text": "puno sreće. Hvala."
+  },
+  {
+   "start": 1212.45,
+   "end": 1213.95,
    "text": "I'm copying from the text."
   },
   {
-   "start": 1215.56,
-   "end": 1219.56,
-   "text": "Let's see what I will say."
+   "start": 1214.67,
+   "end": 1219.05,
+   "text": "Ok. I... Let's see what I will say."
   },
   {
-   "start": 1219.56,
-   "end": 1223.56,
-   "text": "Šta ćeš ti raditi sljedeće godine?"
+   "start": 1219.39,
+   "end": 1220.65,
+   "text": "Ok. Šta ćeš ti"
   },
   {
-   "start": 1223.56,
-   "end": 1237.56,
-   "text": "Sljedeće godine, ako dobijem priliku,"
+   "start": 1220.65,
+   "end": 1223.01,
+   "text": "raditi sljedećeg godine?"
   },
   {
-   "start": 1237.56,
-   "end": 1245.56,
-   "text": "počeću da dajem časove joge."
+   "start": 1223.79,
+   "end": 1225.03,
+   "text": "Ok. Sljedećeg godine"
   },
   {
-   "start": 1245.56,
-   "end": 1248.56,
-   "text": "Ah, okay."
+   "start": 1226.77,
+   "end": 1228.43,
+   "text": "Ako dobijem priliku..."
   },
   {
-   "start": 1248.56,
-   "end": 1250.56,
+   "start": 1237.55,
+   "end": 1245.19,
+   "text": "Počeću da dajem časove joge."
+  },
+  {
+   "start": 1245.93,
+   "end": 1246.67,
+   "text": "Ah, ok."
+  },
+  {
+   "start": 1248.41,
+   "end": 1250.61,
    "text": "Does it sound correct?"
   },
   {
-   "start": 1250.56,
-   "end": 1254.56,
+   "start": 1250.95,
+   "end": 1252.93,
    "text": "Yeah, počeću da dajem, počeću da..."
   },
   {
-   "start": 1254.56,
-   "end": 1256.56,
-   "text": "Radim, dajem."
+   "start": 1254.07,
+   "end": 1256.57,
+   "text": "Yeah. Radim, dajem."
   },
   {
-   "start": 1256.56,
-   "end": 1261.56,
-   "text": "Radim časoroge, dajem, predajem."
+   "start": 1256.65,
+   "end": 1259.61,
+   "text": "Radim, časoroge dajem, predajem."
   },
   {
-   "start": 1261.56,
-   "end": 1266.56,
-   "text": "Časove joge was correct."
+   "start": 1261.71,
+   "end": 1263.71,
+   "text": "Časove yoga was correct."
   },
   {
-   "start": 1266.56,
-   "end": 1267.56,
-   "text": "Super."
+   "start": 1264.07,
+   "end": 1264.61,
+   "text": "I think that."
   },
   {
-   "start": 1267.56,
-   "end": 1277.56,
-   "text": "I ako budem imao vremena, nastavit ću da učim srpski, naravno."
+   "start": 1266.35,
+   "end": 1271.93,
+   "text": "I ako budem imao vremena,"
   },
   {
-   "start": 1277.56,
-   "end": 1279.56,
-   "text": "Ako treba."
+   "start": 1273.65,
+   "end": 1276.57,
+   "text": "nastavit ću da ućem srpski, naravno."
   },
   {
-   "start": 1289.56,
-   "end": 1292.56,
-   "text": "Dobro pričaš sada."
+   "start": 1277.33,
+   "end": 1281.17,
+   "text": "Ako treba. That's always a good thing to do."
   },
   {
-   "start": 1292.56,
-   "end": 1294.56,
-   "text": "Hvala."
+   "start": 1281.61,
+   "end": 1281.91,
+   "text": "it's because"
   },
   {
-   "start": 1294.56,
-   "end": 1299.56,
-   "text": "Zahvaljujući tebe i profesorima."
+   "start": 1285.99,
+   "end": 1287.65,
+   "text": "so hard already"
   },
   {
-   "start": 1299.56,
-   "end": 1301.56,
-   "text": "I teško je."
+   "start": 1290.41,
+   "end": 1297.85,
+   "text": "Dobro pričaš sada Zahmanjući tebe i drugi profesori"
   },
   {
-   "start": 1322.56,
-   "end": 1326.56,
-   "text": "Ovo je malo stvar koja mi radi, da sam u pravom traku."
+   "start": 1299.63,
+   "end": 1300.67,
+   "text": "i teško je, it's hard"
   },
   {
-   "start": 1326.56,
-   "end": 1330.56,
-   "text": "Najpomemnojša cilj je da radiš to skupno."
+   "start": 1300.67,
+   "end": 1302.33,
+   "text": "it's hard to do it"
   },
   {
-   "start": 1330.56,
-   "end": 1332.56,
-   "text": "Reći, poslušati, napisati."
+   "start": 1302.33,
+   "end": 1303.19,
+   "text": "constantly"
   },
   {
-   "start": 1332.56,
-   "end": 1334.56,
-   "text": "Gramir će se doći."
+   "start": 1303.19,
+   "end": 1305.29,
+   "text": "but you know"
   },
   {
-   "start": 1334.56,
-   "end": 1336.56,
-   "text": "Moraš razumjeti gramir."
+   "start": 1305.29,
+   "end": 1307.99,
+   "text": "it's hard but you still"
   },
   {
-   "start": 1336.56,
-   "end": 1338.56,
-   "text": "Ali ovo je najpomemnojša cilj."
+   "start": 1307.99,
+   "end": 1310.59,
+   "text": "right now for example, Akob"
   },
   {
-   "start": 1338.56,
-   "end": 1340.56,
-   "text": "Praktika."
+   "start": 1310.69,
+   "end": 1317.63,
+   "text": "You know, that was so confusing one year ago for me."
   },
   {
-   "start": 1340.56,
-   "end": 1346.56,
-   "text": "Ali moraš uzmetiti, ovo je najzavršeniji gramir."
+   "start": 1317.71,
+   "end": 1321.31,
+   "text": "Now, when I hear it, I automatically know what it means and I can"
   },
   {
-   "start": 1347.56,
-   "end": 1349.56,
-   "text": "Ima smisla."
+   "start": 1321.31,
+   "end": 1325.05,
+   "text": "use it. That's the little thing that makes me, okay, I'm on the right"
   },
   {
-   "start": 1350.56,
-   "end": 1352.56,
-   "text": "Ima smisla."
+   "start": 1325.05,
+   "end": 1328.83,
+   "text": "track. Yeah. The most important part is like doing it consistently."
   },
   {
-   "start": 1354.56,
-   "end": 1356.56,
-   "text": "Ima smisla."
+   "start": 1329.97,
+   "end": 1331.31,
+   "text": "Reading, listening, writing."
   },
   {
-   "start": 1374.56,
-   "end": 1376.56,
-   "text": "Nadam se da je pomoglo."
+   "start": 1332.07,
+   "end": 1333.17,
+   "text": "Grammar will come along."
   },
   {
-   "start": 1380.56,
-   "end": 1384.56,
-   "text": "Hvala što ste slušali."
+   "start": 1333.87,
+   "end": 1335.85,
+   "text": "You have to understand grammar, how to use it."
   },
   {
-   "start": 1388.56,
-   "end": 1390.56,
-   "text": "I vidimo se u sljedećoj epizodi."
+   "start": 1335.85,
+   "end": 1339.59,
+   "text": "But this is more important, practical use."
   },
   {
-   "start": 1393.56,
-   "end": 1395.56,
-   "text": "I srećna Nova godina."
+   "start": 1339.73,
+   "end": 1344.21,
+   "text": "Yeah. But you must accept this is the weirdest grammar part."
   },
   {
-   "start": 1395.56,
-   "end": 1397.56,
-   "text": "Srećna Nova godina."
+   "start": 1346.43,
+   "end": 1348.91,
+   "text": "There's a can, there's a past tense."
   },
   {
-   "start": 1401.56,
-   "end": 1407.56,
-   "text": "Vidimo se u 2025. godini."
+   "start": 1350.45,
+   "end": 1352.77,
+   "text": "So confusing, but still."
   },
   {
-   "start": 1409.56,
-   "end": 1411.56,
-   "text": "Ima smisla."
+   "start": 1354.59,
+   "end": 1356.15,
+   "text": "Ima sinisla, let me say."
   },
   {
-   "start": 1413.56,
-   "end": 1415.56,
-   "text": "Ok, vidimo se."
+   "start": 1357.49,
+   "end": 1364.85,
+   "text": "Okay, so I want our listeners to write their plans for 2025 in Serbian"
   },
   {
-   "start": 1415.56,
-   "end": 1417.56,
-   "text": "Ćao!"
+   "start": 1364.85,
+   "end": 1366.89,
+   "text": "in the comment section."
+  },
+  {
+   "start": 1367.77,
+   "end": 1371.93,
+   "text": "and I hope you will use these new words and structures that you hear"
+  },
+  {
+   "start": 1371.93,
+   "end": 1372.71,
+   "text": "in this episode."
+  },
+  {
+   "start": 1372.83,
+   "end": 1380.35,
+   "text": "Yes, I hope it helped you as a simulation how the dialogue"
+  },
+  {
+   "start": 1380.35,
+   "end": 1381.39,
+   "text": "will be in three levels."
+  },
+  {
+   "start": 1382.31,
+   "end": 1386.09,
+   "text": "Thank you for listening or watching."
+  },
+  {
+   "start": 1387.57,
+   "end": 1389.85,
+   "text": "And we'll see you in the next episode."
+  },
+  {
+   "start": 1389.85,
+   "end": 1391.29,
+   "text": "See you in the next one, Maki."
+  },
+  {
+   "start": 1391.29,
+   "end": 1394.59,
+   "text": "And Happy New Year!"
+  },
+  {
+   "start": 1395.49,
+   "end": 1396.81,
+   "text": "Oh yeah, the new year."
+  },
+  {
+   "start": 1398.67,
+   "end": 1404.51,
+   "text": "And we'll see, well, let me say it, we'll see in 2020."
+  },
+  {
+   "start": 1406.35,
+   "end": 1406.91,
+   "text": "That year."
+  },
+  {
+   "start": 1408.13,
+   "end": 1409.03,
+   "text": "There you go, great."
+  },
+  {
+   "start": 1410.15,
+   "end": 1412.09,
+   "text": "What a way to start a new year."
+  },
+  {
+   "start": 1413.17,
+   "end": 1414.21,
+   "text": "Okay, we'll see you."
+  },
+  {
+   "start": 1414.85,
+   "end": 1416.95,
+   "text": "Ciao. Ciao. Uživajte."
   }
  ],
  "title": "Learn Serbian & Može kafa podcast: Episode 14 - New Year's Resolutions",

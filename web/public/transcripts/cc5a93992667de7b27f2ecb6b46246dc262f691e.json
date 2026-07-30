@@ -1,0 +1,2875 @@
+{
+ "duration": 2366.96,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 31.14,
+   "end": 38.18,
+   "text": "yeah we are your hosts"
+  },
+  {
+   "start": 38.18,
+   "end": 41.58,
+   "text": "and hope you're having a great day you know what i forgot to say"
+  },
+  {
+   "start": 41.58,
+   "end": 48.58,
+   "text": "thank you for coming what thank you patreons oh yeah i always forget to"
+  },
+  {
+   "start": 48.58,
+   "end": 49.62,
+   "text": "think that right like we"
+  },
+  {
+   "start": 49.62,
+   "end": 55.2,
+   "text": "are still active on patreon thank you to everyone who buys us a coffee"
+  },
+  {
+   "start": 55.2,
+   "end": 61.12,
+   "text": "ad buy me a coffee yeah so it's really helping us also stay motivated"
+  },
+  {
+   "start": 61.12,
+   "end": 64.2,
+   "text": "you know everyone's quite busy and knowing that people"
+  },
+  {
+   "start": 64.2,
+   "end": 70.02,
+   "text": "are listening to us now watching us and um and also supporting us is"
+  },
+  {
+   "start": 70.02,
+   "end": 73.28,
+   "text": "is a really good feeling we really appreciate it how do we say we"
+  },
+  {
+   "start": 73.28,
+   "end": 80.42,
+   "text": "really appreciate it in serbian we are yeah because it's it's two women"
+  },
+  {
+   "start": 80.42,
+   "end": 87.64,
+   "text": "right we are grateful oh good good yeah right"
+  },
+  {
+   "start": 87.64,
+   "end": 91.92,
+   "text": "and today we are having a vocabulary episode for you"
+  },
+  {
+   "start": 91.92,
+   "end": 97.78,
+   "text": "but it is a different one because this time we are talking about Turkish"
+  },
+  {
+   "start": 97.78,
+   "end": 99.44,
+   "text": "too how Turkish words"
+  },
+  {
+   "start": 99.44,
+   "end": 105.82,
+   "text": "still are used in Serbia some some of them are used in a different"
+  },
+  {
+   "start": 105.82,
+   "end": 110.52,
+   "text": "way some of them are having a different accent some of them uh"
+  },
+  {
+   "start": 110.52,
+   "end": 114.3,
+   "text": "you know are the same so we are going to look at them compare"
+  },
+  {
+   "start": 114.3,
+   "end": 116.84,
+   "text": "them and we will maybe use them in"
+  },
+  {
+   "start": 116.84,
+   "end": 123.36,
+   "text": "in contacts as well so hopefully you will like it yes and i'm pretty"
+  },
+  {
+   "start": 123.36,
+   "end": 124.6,
+   "text": "sure i'm gonna find out"
+  },
+  {
+   "start": 124.6,
+   "end": 129.32,
+   "text": "that a lot of our words are turkish i'll be like this word is"
+  },
+  {
+   "start": 129.32,
+   "end": 132.86,
+   "text": "turkish what um yeah many people tell"
+  },
+  {
+   "start": 132.86,
+   "end": 136.3,
+   "text": "me oh you're gonna learn serbian so easily because we have so many turkish"
+  },
+  {
+   "start": 136.3,
+   "end": 141.64,
+   "text": "words i'm like yeah words yes i can learn but it's not the whole"
+  },
+  {
+   "start": 141.64,
+   "end": 143.16,
+   "text": "thing about the language but still they are like"
+  },
+  {
+   "start": 143.16,
+   "end": 148.92,
+   "text": "oh we have so many turkish words that's true the vocabulary like especially in"
+  },
+  {
+   "start": 148.92,
+   "end": 149.32,
+   "text": "nouns now that i"
+  },
+  {
+   "start": 149.32,
+   "end": 153.96,
+   "text": "realize are quite um and it's kind of like everyday things right and i"
+  },
+  {
+   "start": 153.96,
+   "end": 161.74,
+   "text": "wanted to say this is your episode after four seasons yes finally we"
+  },
+  {
+   "start": 161.74,
+   "end": 164.6,
+   "text": "got we should do actually I felt a little bit it's my"
+  },
+  {
+   "start": 164.6,
+   "end": 169.62,
+   "text": "episode when we talked about the southern part of Serbia because I'm more familiar"
+  },
+  {
+   "start": 169.62,
+   "end": 169.86,
+   "text": "with it now"
+  },
+  {
+   "start": 169.86,
+   "end": 174.94,
+   "text": "and in the south they use Turkish words more as far as I realize"
+  },
+  {
+   "start": 174.94,
+   "end": 176.3,
+   "text": "especially when I talk to people"
+  },
+  {
+   "start": 176.3,
+   "end": 181.78,
+   "text": "from Nobisad they're not that familiar with some of the words that they use"
+  },
+  {
+   "start": 181.78,
+   "end": 186.74,
+   "text": "that they still use here i think yeah i mean i think so too"
+  },
+  {
+   "start": 186.74,
+   "end": 189.94,
+   "text": "because it makes sense like uh history wise because that"
+  },
+  {
+   "start": 189.94,
+   "end": 197.44,
+   "text": "part was really uh more under the ottoman empire than the north um but"
+  },
+  {
+   "start": 197.44,
+   "end": 198.02,
+   "text": "also there's a really big"
+  },
+  {
+   "start": 198.02,
+   "end": 204.1,
+   "text": "difference in bosnia of course right where they even use even more so i"
+  },
+  {
+   "start": 204.1,
+   "end": 208.1,
+   "text": "probably yeah so i remember when I do talk I had one class where"
+  },
+  {
+   "start": 208.1,
+   "end": 213.1,
+   "text": "it was like a class on Serbian slash Bosnian slash"
+  },
+  {
+   "start": 213.1,
+   "end": 219.95,
+   "text": "slash Croatian authors and would go through texts and I would learn new words"
+  },
+  {
+   "start": 219.95,
+   "end": 220.39,
+   "text": "and then I would"
+  },
+  {
+   "start": 220.39,
+   "end": 224.77,
+   "text": "realize that there are synonyms and then there is a Turkish kind of synonym"
+  },
+  {
+   "start": 224.77,
+   "end": 225.83,
+   "text": "for a Serbian maybe"
+  },
+  {
+   "start": 225.83,
+   "end": 232.27,
+   "text": "version so or just the completely new concepts or something like that so yeah"
+  },
+  {
+   "start": 232.27,
+   "end": 238.13,
+   "text": "that was interesting and Ivo Andri's book that you have still not I guess"
+  },
+  {
+   "start": 238.13,
+   "end": 243.95,
+   "text": "right I haven't read it I haven't yeah I But that one is also"
+  },
+  {
+   "start": 243.95,
+   "end": 247.21,
+   "text": "like showing all the Turkish words in brackets."
+  },
+  {
+   "start": 247.21,
+   "end": 250.69,
+   "text": "Like it is actually a Turkish word meaning that it says."
+  },
+  {
+   "start": 250.69,
+   "end": 254.03,
+   "text": "So it has a lot of because it's just in the border."
+  },
+  {
+   "start": 254.37,
+   "end": 258.79,
+   "text": "Right. So, so many words that probably you don't use now."
+  },
+  {
+   "start": 260.33,
+   "end": 263.03,
+   "text": "So I wanted to talk about these words in categories."
+  },
+  {
+   "start": 263.03,
+   "end": 269.19,
+   "text": "So the most, like most of the words are about household things."
+  },
+  {
+   "start": 269.31,
+   "end": 270.21,
+   "text": "Right. Yeah."
+  },
+  {
+   "start": 270.21,
+   "end": 271.23,
+   "text": "Because."
+  },
+  {
+   "start": 271.23,
+   "end": 276.23,
+   "text": "Everyday things. yeah everyday things are shared more when turks and serbs live together"
+  },
+  {
+   "start": 276.23,
+   "end": 276.87,
+   "text": "so that's why"
+  },
+  {
+   "start": 276.87,
+   "end": 284.05,
+   "text": "lots of options there yeah a lot let's go actually yeah i'm gonna let"
+  },
+  {
+   "start": 284.05,
+   "end": 285.13,
+   "text": "you i'm not gonna look because"
+  },
+  {
+   "start": 285.13,
+   "end": 289.37,
+   "text": "i really want to be surprised now because i i skimmed a bit but"
+  },
+  {
+   "start": 289.37,
+   "end": 290.35,
+   "text": "i didn't see all of them let's"
+  },
+  {
+   "start": 290.35,
+   "end": 295.95,
+   "text": "start i'm gonna try to say them in serbian way because obviously the way"
+  },
+  {
+   "start": 295.95,
+   "end": 302.75,
+   "text": "we say them is a bit different but sat yeah it's sat a clock"
+  },
+  {
+   "start": 302.75,
+   "end": 307.97,
+   "text": "right also watch you use in both ways right yeah we use it"
+  },
+  {
+   "start": 307.97,
+   "end": 314.21,
+   "text": "like hour and uh and the watch yeah a clock clock yeah like watch"
+  },
+  {
+   "start": 314.21,
+   "end": 317.21,
+   "text": "right and um of course to make"
+  },
+  {
+   "start": 317.21,
+   "end": 322.67,
+   "text": "coffee we make the same coffee that the tool is the same as well"
+  },
+  {
+   "start": 322.67,
+   "end": 325.97,
+   "text": "which is jesva which you say right yes"
+  },
+  {
+   "start": 325.97,
+   "end": 332.27,
+   "text": "yes jesva which is basically like the equivalent in"
+  },
+  {
+   "start": 332.27,
+   "end": 337.17,
+   "text": "serbian like in serbian english is it's like a it's literally like a coffee"
+  },
+  {
+   "start": 337.17,
+   "end": 338.13,
+   "text": "pot right it's like"
+  },
+  {
+   "start": 338.13,
+   "end": 343.53,
+   "text": "it's just like a pod like a tiny pot that's it and this is"
+  },
+  {
+   "start": 343.53,
+   "end": 345.77,
+   "text": "the handle yeah with the handle that's it"
+  },
+  {
+   "start": 345.77,
+   "end": 352.71,
+   "text": "anyway and you use kashika kashika the same way we just don't add i"
+  },
+  {
+   "start": 352.71,
+   "end": 352.83,
+   "text": "at the end"
+  },
+  {
+   "start": 352.83,
+   "end": 359.59,
+   "text": "yeah we say kashika oh wait this is interesting sat is how do you"
+  },
+  {
+   "start": 359.59,
+   "end": 360.01,
+   "text": "say it in turkish though"
+  },
+  {
+   "start": 360.01,
+   "end": 366.07,
+   "text": "so two a's we have sat yeah which is kind of long here as"
+  },
+  {
+   "start": 366.07,
+   "end": 367.49,
+   "text": "well we don't say sat but like sat"
+  },
+  {
+   "start": 367.49,
+   "end": 372.15,
+   "text": "yeah it's just the the accent is slightly we have four accents and this"
+  },
+  {
+   "start": 372.15,
+   "end": 377.03,
+   "text": "one is like kind of like ah two different yeah the same the same"
+  },
+  {
+   "start": 377.03,
+   "end": 380.17,
+   "text": "we have side yeah okay so this one is"
+  },
+  {
+   "start": 380.17,
+   "end": 386.29,
+   "text": "masculine and then uh kashika is feminine so if it ends in ah so"
+  },
+  {
+   "start": 386.29,
+   "end": 387.67,
+   "text": "okay what you do have you don't"
+  },
+  {
+   "start": 387.67,
+   "end": 392.21,
+   "text": "have gender do you grammatical gender we don't we don't even have he she"
+  },
+  {
+   "start": 392.21,
+   "end": 394.05,
+   "text": "we don't even have them"
+  },
+  {
+   "start": 394.05,
+   "end": 400.77,
+   "text": "in pronouns so let alone the word so that's why it's different okay the"
+  },
+  {
+   "start": 400.77,
+   "end": 407.15,
+   "text": "other most common the first thing that i heard was kesa so that's why"
+  },
+  {
+   "start": 407.15,
+   "end": 409.57,
+   "text": "i was like i don't know what they're saying but they're"
+  },
+  {
+   "start": 409.57,
+   "end": 416.57,
+   "text": "saying kese so kese in turkish kesa which is bag um we"
+  },
+  {
+   "start": 416.57,
+   "end": 420.07,
+   "text": "forgot to say kashica is spoon a spoon right"
+  },
+  {
+   "start": 420.07,
+   "end": 425.27,
+   "text": "we have to translate it in english uh kesa or kese for us would"
+  },
+  {
+   "start": 425.27,
+   "end": 428.83,
+   "text": "be the plastic bag usually the but the one you're carrying."
+  },
+  {
+   "start": 428.83,
+   "end": 431.83,
+   "text": "So it will be, yeah, that's like,"
+  },
+  {
+   "start": 431.83,
+   "end": 433.25,
+   "text": "that's what I think of like, you know,"
+  },
+  {
+   "start": 433.25,
+   "end": 435.27,
+   "text": "when you go to a supermarket and you have like this,"
+  },
+  {
+   "start": 435.27,
+   "end": 436.9,
+   "text": "this is the see-through,"
+  },
+  {
+   "start": 436.9,
+   "end": 442.08,
+   "text": "plastic bag but yeah yeah that's that's the same for us because we also"
+  },
+  {
+   "start": 442.08,
+   "end": 443.06,
+   "text": "have torba which is the"
+  },
+  {
+   "start": 443.06,
+   "end": 449.94,
+   "text": "other one hey so i now i just realized torba torba right yeah yeah"
+  },
+  {
+   "start": 449.94,
+   "end": 451.1,
+   "text": "there you go there's there's the"
+  },
+  {
+   "start": 451.1,
+   "end": 457.04,
+   "text": "pattern there so torba is again back but the paper one or not paper"
+  },
+  {
+   "start": 457.04,
+   "end": 461.76,
+   "text": "one you don't say paper one torba i would be it can also be"
+  },
+  {
+   "start": 461.76,
+   "end": 468.86,
+   "text": "like a torba you that you bring for work or like torba torba"
+  },
+  {
+   "start": 468.86,
+   "end": 472.22,
+   "text": "can even be yeah anything that you that you carry it can even be"
+  },
+  {
+   "start": 472.22,
+   "end": 472.62,
+   "text": "like something for"
+  },
+  {
+   "start": 472.62,
+   "end": 479.62,
+   "text": "the trip yeah you know yeah definitely it's mostly cloth yeah cloth"
+  },
+  {
+   "start": 479.62,
+   "end": 480.64,
+   "text": "bag right something"
+  },
+  {
+   "start": 480.64,
+   "end": 484.88,
+   "text": "more substantial than like you know go to the store and buy like apples"
+  },
+  {
+   "start": 484.88,
+   "end": 491.96,
+   "text": "or something and again from the kitchen i don't think you use"
+  },
+  {
+   "start": 491.96,
+   "end": 495.74,
+   "text": "chasma in that way like as a faucet you use it as"
+  },
+  {
+   "start": 495.74,
+   "end": 503.3,
+   "text": "i guess uh for like this authentic historic um water"
+  },
+  {
+   "start": 503.3,
+   "end": 508.76,
+   "text": "source right chasma oh no we so if it's if it's outside i have"
+  },
+  {
+   "start": 508.76,
+   "end": 514.06,
+   "text": "one tesma in my my backyard right so it's a yeah it's like a"
+  },
+  {
+   "start": 514.06,
+   "end": 514.72,
+   "text": "it's a faucet"
+  },
+  {
+   "start": 514.72,
+   "end": 519.8,
+   "text": "yeah yeah it's faucet so the kitchen also has chestma for you well inside"
+  },
+  {
+   "start": 519.8,
+   "end": 520.16,
+   "text": "it's not called"
+  },
+  {
+   "start": 520.16,
+   "end": 525.38,
+   "text": "chestma yeah that's what i'm saying for us it's still the same outside inside"
+  },
+  {
+   "start": 525.38,
+   "end": 527.5,
+   "text": "ah okay okay okay"
+  },
+  {
+   "start": 527.5,
+   "end": 532.22,
+   "text": "so it's usually when it's outside so you have uh like big uh you"
+  },
+  {
+   "start": 532.22,
+   "end": 536.72,
+   "text": "can find like at on the square like public chess but then you have"
+  },
+  {
+   "start": 536.72,
+   "end": 542.18,
+   "text": "the it's always outside yeah yeah this is what i heard okay these were"
+  },
+  {
+   "start": 542.18,
+   "end": 547.72,
+   "text": "about the kitchen and the other rooms now yastuk yorgan"
+  },
+  {
+   "start": 547.72,
+   "end": 554.82,
+   "text": "yeah these three combinations is sad which is pillow killed"
+  },
+  {
+   "start": 554.82,
+   "end": 558.26,
+   "text": "and sheet yeah exactly yeah"
+  },
+  {
+   "start": 558.26,
+   "end": 563.42,
+   "text": "isn't it that if you think about it like there's a lot of like"
+  },
+  {
+   "start": 563.42,
+   "end": 568.54,
+   "text": "words with uh also as soon as you see i i know it's turkish"
+  },
+  {
+   "start": 568.54,
+   "end": 574.4,
+   "text": "i'm like this is turkish yeah yeah j as well is a very good"
+  },
+  {
+   "start": 574.4,
+   "end": 578.92,
+   "text": "indication that it's turkish as well i mean obviously it can be very you know"
+  },
+  {
+   "start": 578.92,
+   "end": 579.88,
+   "text": "it doesn't have to be because we"
+  },
+  {
+   "start": 579.88,
+   "end": 586.5,
+   "text": "have which is german but uh but yeah i i i when i hear"
+  },
+  {
+   "start": 586.5,
+   "end": 593.06,
+   "text": "of uh what was it which one yorgan or tarsav yeah i just hear"
+  },
+  {
+   "start": 593.06,
+   "end": 600.0,
+   "text": "my turkish friend saying it i'm like that sounds turkish yeah so your gun"
+  },
+  {
+   "start": 600.0,
+   "end": 604.28,
+   "text": "uh is the kilt right you blanket is also your gun for you"
+  },
+  {
+   "start": 604.28,
+   "end": 612.54,
+   "text": "blanket is um no we would say chebe chebe chebe"
+  },
+  {
+   "start": 612.54,
+   "end": 615.22,
+   "text": "which would be in other areas like in"
+  },
+  {
+   "start": 615.22,
+   "end": 622.76,
+   "text": "i think croatia they say deka cool and from that to peskir which"
+  },
+  {
+   "start": 622.76,
+   "end": 628.6,
+   "text": "is towel exactly but is it the big towel pesky any kind of towel"
+  },
+  {
+   "start": 628.6,
+   "end": 632.98,
+   "text": "any kind of towel pesky uh you can say mali pesky velik pesky"
+  },
+  {
+   "start": 632.98,
+   "end": 640.12,
+   "text": "anything that's fluffy and you know you know like it's not it's not a"
+  },
+  {
+   "start": 640.12,
+   "end": 642.4,
+   "text": "cloth like um uh for"
+  },
+  {
+   "start": 642.4,
+   "end": 648.34,
+   "text": "the dishes right it's it's always like this fluffy with like little you know"
+  },
+  {
+   "start": 648.34,
+   "end": 649.68,
+   "text": "that that soaks in the"
+  },
+  {
+   "start": 649.68,
+   "end": 653.04,
+   "text": "water i don't know how to explain it so that's used in the bathroom"
+  },
+  {
+   "start": 653.04,
+   "end": 657.85,
+   "text": "right you don't use it in the kitchen or for cleaning."
+  },
+  {
+   "start": 657.85,
+   "end": 659.85,
+   "text": "It's just for the bathroom."
+  },
+  {
+   "start": 661.47,
+   "end": 664.71,
+   "text": "And pamuk, we say the same thing for pamuk."
+  },
+  {
+   "start": 664.99,
+   "end": 666.07,
+   "text": "Cotton, yeah."
+  },
+  {
+   "start": 667.87,
+   "end": 671.57,
+   "text": "Pamuk, which is important to know if you want to buy something in Serbia."
+  },
+  {
+   "start": 671.57,
+   "end": 673.91,
+   "text": "You want to make sure to have cotton, yeah."
+  },
+  {
+   "start": 674.81,
+   "end": 676.65,
+   "text": "And in the bathroom, one more thing, tush."
+  },
+  {
+   "start": 678.71,
+   "end": 683.87,
+   "text": "yeah and tush it's interesting because in german it's dusha yeah i think it's"
+  },
+  {
+   "start": 683.87,
+   "end": 684.19,
+   "text": "it's coming from"
+  },
+  {
+   "start": 684.19,
+   "end": 691.45,
+   "text": "german because in turkish is tush as well yeah i'm pretty sure we're"
+  },
+  {
+   "start": 691.45,
+   "end": 693.21,
+   "text": "gonna have some uh someone"
+  },
+  {
+   "start": 693.21,
+   "end": 697.71,
+   "text": "who's who's experienced how is it how do you say etymologist who's gonna be"
+  },
+  {
+   "start": 697.71,
+   "end": 698.35,
+   "text": "like who's gonna be"
+  },
+  {
+   "start": 698.35,
+   "end": 702.95,
+   "text": "like no this is not a turkish this is from this language sorry guys"
+  },
+  {
+   "start": 702.95,
+   "end": 708.03,
+   "text": "we just found some similarities So maybe it's not 100% true."
+  },
+  {
+   "start": 708.41,
+   "end": 713.75,
+   "text": "Definitely. We should say that they are common words, not always borrowed, but we are"
+  },
+  {
+   "start": 713.75,
+   "end": 713.93,
+   "text": "just assuming"
+  },
+  {
+   "start": 713.93,
+   "end": 717.81,
+   "text": "that somehow Turks brought these words."
+  },
+  {
+   "start": 718.13,
+   "end": 720.91,
+   "text": "We don't know the origin for some of them."
+  },
+  {
+   "start": 721.21,
+   "end": 724.19,
+   "text": "Some of them are meaningful in Turkish."
+  },
+  {
+   "start": 724.19,
+   "end": 726.35,
+   "text": "That's why I can say, oh, this is completely Turkish."
+  },
+  {
+   "start": 726.35,
+   "end": 728.67,
+   "text": "But for Dursh, definitely, I can't say that."
+  },
+  {
+   "start": 729.17,
+   "end": 730.89,
+   "text": "We don't know who took it from whom, right?"
+  },
+  {
+   "start": 731.39,
+   "end": 732.01,
+   "text": "Yeah, that's true."
+  },
+  {
+   "start": 733.85,
+   "end": 740.97,
+   "text": "and from that to neighborhood let's go oh or the buildings what i saw"
+  },
+  {
+   "start": 740.97,
+   "end": 741.45,
+   "text": "uh"
+  },
+  {
+   "start": 741.45,
+   "end": 749.17,
+   "text": "on the buildings was cut like kati par kati doa"
+  },
+  {
+   "start": 749.17,
+   "end": 752.89,
+   "text": "a cut cut is like floor right oh but that's in"
+  },
+  {
+   "start": 752.89,
+   "end": 757.79,
+   "text": "croatia but here as well i see in the buildings like cut cut cut"
+  },
+  {
+   "start": 757.79,
+   "end": 760.67,
+   "text": "that's interesting because we say Sprat."
+  },
+  {
+   "start": 762.15,
+   "end": 764.45,
+   "text": "Yeah, Sprat is also another one I see."
+  },
+  {
+   "start": 764.45,
+   "end": 766.67,
+   "text": "That's true. But Kat is also common here."
+  },
+  {
+   "start": 767.41,
+   "end": 770.01,
+   "text": "That's weird. Yeah, I would not."
+  },
+  {
+   "start": 770.01,
+   "end": 771.01,
+   "text": "I think. Yeah, yeah."
+  },
+  {
+   "start": 771.01,
+   "end": 772.61,
+   "text": "That would always connect it to creation."
+  },
+  {
+   "start": 772.61,
+   "end": 773.65,
+   "text": "Okay, Kat. Yeah."
+  },
+  {
+   "start": 773.65,
+   "end": 775.05,
+   "text": "Kat is floor."
+  },
+  {
+   "start": 775.05,
+   "end": 778.09,
+   "text": "So in the buildings, you can see those signs like Kat"
+  },
+  {
+   "start": 778.09,
+   "end": 779.91,
+   "text": "one, Kat two."
+  },
+  {
+   "start": 779.91,
+   "end": 781.23,
+   "text": "That means floor one, floor two."
+  },
+  {
+   "start": 781.23,
+   "end": 784.17,
+   "text": "Sorry, it sounds like Kat one, Kat two."
+  },
+  {
+   "start": 784.17,
+   "end": 784.47,
+   "text": "But yeah,"
+  },
+  {
+   "start": 784.47,
+   "end": 791.55,
+   "text": "yeah yeah okay uh now next"
+  },
+  {
+   "start": 791.55,
+   "end": 796.43,
+   "text": "one is i'm not sure who took it from whom as well but it"
+  },
+  {
+   "start": 796.43,
+   "end": 800.67,
+   "text": "comes from conmark so i think it's kind of turkish but maybe it also"
+  },
+  {
+   "start": 800.67,
+   "end": 801.05,
+   "text": "means something in"
+  },
+  {
+   "start": 801.05,
+   "end": 808.55,
+   "text": "serbian so komsia is neighbor i think it's turkish uh yeah komsia komsiluk"
+  },
+  {
+   "start": 808.55,
+   "end": 813.87,
+   "text": "which is neighborhood um uh you can also say we would be doing um"
+  },
+  {
+   "start": 813.87,
+   "end": 816.23,
+   "text": "my area instead of saying komcia you could say"
+  },
+  {
+   "start": 816.23,
+   "end": 823.43,
+   "text": "um komcia like we kind of shorten it komcia um yeah all"
+  },
+  {
+   "start": 823.43,
+   "end": 824.95,
+   "text": "of my neighbors uh like guy friends"
+  },
+  {
+   "start": 824.95,
+   "end": 829.55,
+   "text": "would be like komcia it's a komcia it was like a thing so i"
+  },
+  {
+   "start": 829.55,
+   "end": 830.71,
+   "text": "think little neighbor right"
+  },
+  {
+   "start": 830.71,
+   "end": 837.41,
+   "text": "no no komcia is is a female version female version okay yeah komcia komcia"
+  },
+  {
+   "start": 837.41,
+   "end": 839.11,
+   "text": "and from that"
+  },
+  {
+   "start": 840.49,
+   "end": 842.59,
+   "text": "in the neighborhood we can see Chupria."
+  },
+  {
+   "start": 843.27,
+   "end": 845.51,
+   "text": "Oh, Chupria. Yeah, that's true."
+  },
+  {
+   "start": 845.53,
+   "end": 847.87,
+   "text": "Although we don't really use it"
+  },
+  {
+   "start": 847.87,
+   "end": 849.65,
+   "text": "that much in my area."
+  },
+  {
+   "start": 851.15,
+   "end": 854.55,
+   "text": "Chupria. I think Chupria is a bridge."
+  },
+  {
+   "start": 855.45,
+   "end": 856.33,
+   "text": "You don't use it,"
+  },
+  {
+   "start": 856.33,
+   "end": 857.83,
+   "text": "for example, in Belgrade,"
+  },
+  {
+   "start": 857.83,
+   "end": 860.15,
+   "text": "the bridges are not called Chupria as well,"
+  },
+  {
+   "start": 860.15,
+   "end": 860.29,
+   "text": "Most."
+  },
+  {
+   "start": 860.29,
+   "end": 860.59,
+   "text": "I guess."
+  },
+  {
+   "start": 862.17,
+   "end": 864.69,
+   "text": "Most, yeah. Yeah, so that's, I think,"
+  },
+  {
+   "start": 864.69,
+   "end": 867.97,
+   "text": "more in the South or maybe..."
+  },
+  {
+   "start": 868.11,
+   "end": 869.27,
+   "text": "I'm not questioning the South,"
+  },
+  {
+   "start": 869.27,
+   "end": 870.15,
+   "text": "but definitely in Bosnia,"
+  },
+  {
+   "start": 870.15,
+   "end": 870.95,
+   "text": "they use it."
+  },
+  {
+   "start": 870.95,
+   "end": 871.27,
+   "text": "But yeah."
+  },
+  {
+   "start": 873.07,
+   "end": 873.8,
+   "text": "And in the neighborhood,"
+  },
+  {
+   "start": 873.8,
+   "end": 880.26,
+   "text": "again uh duchan duchan i had we do use it other people in in"
+  },
+  {
+   "start": 880.26,
+   "end": 885.24,
+   "text": "my area but we do use it idemo duchan idemo duchan duchan is a"
+  },
+  {
+   "start": 885.24,
+   "end": 888.42,
+   "text": "store especially small stores right yeah but you"
+  },
+  {
+   "start": 888.42,
+   "end": 892.82,
+   "text": "basically we just use it as a synonym i'm going shopping like uh but"
+  },
+  {
+   "start": 892.82,
+   "end": 894.04,
+   "text": "like grocery shopping not"
+  },
+  {
+   "start": 894.04,
+   "end": 900.6,
+   "text": "like you know buying clothes can i add i actually can actually connected to"
+  },
+  {
+   "start": 900.6,
+   "end": 906.96,
+   "text": "the neighborhood and so on we also have a sockak which is uh street"
+  },
+  {
+   "start": 906.96,
+   "end": 914.42,
+   "text": "yes the street and uh avalia yep which"
+  },
+  {
+   "start": 914.42,
+   "end": 915.24,
+   "text": "is i think you"
+  },
+  {
+   "start": 915.24,
+   "end": 920.6,
+   "text": "use it a bit different avalia is like the patio the entrance of your"
+  },
+  {
+   "start": 920.6,
+   "end": 922.12,
+   "text": "garden like from your garden"
+  },
+  {
+   "start": 922.12,
+   "end": 929.14,
+   "text": "to to your i forgot now what avalia meant because i personally don't use"
+  },
+  {
+   "start": 929.14,
+   "end": 933.46,
+   "text": "it but i think that's the place uh like in your garden or in"
+  },
+  {
+   "start": 933.46,
+   "end": 937.66,
+   "text": "front of your house where you chill out like maybe it's like a"
+  },
+  {
+   "start": 937.66,
+   "end": 942.76,
+   "text": "sofa outdoors and you sit there this is how they use it guys sorry"
+  },
+  {
+   "start": 942.76,
+   "end": 947.1,
+   "text": "i'm gonna have to check it but avalia i think is it's a dvorish"
+  },
+  {
+   "start": 947.1,
+   "end": 950.56,
+   "text": "it's it's backyard or something like that i think so yeah"
+  },
+  {
+   "start": 950.56,
+   "end": 957.76,
+   "text": "if i'm not mistaken and um do you use zanat as a craft"
+  },
+  {
+   "start": 957.76,
+   "end": 959.56,
+   "text": "yes uh-huh"
+  },
+  {
+   "start": 961.04,
+   "end": 968.08,
+   "text": "how do you say zanat or zanat zanat for us zanat so"
+  },
+  {
+   "start": 968.08,
+   "end": 969.16,
+   "text": "the second part is longer"
+  },
+  {
+   "start": 970.48,
+   "end": 976.84,
+   "text": "zanat we usually yeah it's usually like most of our stress is on the"
+  },
+  {
+   "start": 976.84,
+   "end": 977.22,
+   "text": "first syllable"
+  },
+  {
+   "start": 977.22,
+   "end": 982.56,
+   "text": "um yeah i mean not not all the time obviously but i just noticed"
+  },
+  {
+   "start": 982.56,
+   "end": 984.46,
+   "text": "even my name is ivana is on the"
+  },
+  {
+   "start": 984.46,
+   "end": 989.68,
+   "text": "first syllable so we have that tendency to have uh yeah stress in the"
+  },
+  {
+   "start": 989.68,
+   "end": 998.4,
+   "text": "first syllable okay yeah yeah"
+  },
+  {
+   "start": 998.4,
+   "end": 1004.86,
+   "text": "these are about the house and neighborhood and we can go to food now"
+  },
+  {
+   "start": 1004.86,
+   "end": 1010.0,
+   "text": "as we share so much food names and we share our food right like"
+  },
+  {
+   "start": 1010.0,
+   "end": 1011.56,
+   "text": "we we have we make some of your food"
+  },
+  {
+   "start": 1011.56,
+   "end": 1016.56,
+   "text": "actually quite a lot before we continue with the show here's a quick reminder"
+  },
+  {
+   "start": 1016.56,
+   "end": 1017.9,
+   "text": "this podcast is free"
+  },
+  {
+   "start": 1017.9,
+   "end": 1022.64,
+   "text": "for everyone and supported by listeners like you we hope that this podcast is"
+  },
+  {
+   "start": 1022.64,
+   "end": 1022.76,
+   "text": "useful and"
+  },
+  {
+   "start": 1022.76,
+   "end": 1027.2,
+   "text": "companion to you this is a labor of love for both of us to"
+  },
+  {
+   "start": 1027.2,
+   "end": 1028.7,
+   "text": "help us continue creating useful content"
+  },
+  {
+   "start": 1028.7,
+   "end": 1033.46,
+   "text": "for everyone we will appreciate your help if you have the means you can"
+  },
+  {
+   "start": 1033.46,
+   "end": 1040.36,
+   "text": "support us in different ways You may just go to buymeacoffee.com slash mozecafapodcast and"
+  },
+  {
+   "start": 1040.36,
+   "end": 1041.86,
+   "text": "send us some cups of coffee."
+  },
+  {
+   "start": 1042.46,
+   "end": 1047.86,
+   "text": "You may also become a member of our show on patreon.com slash mozecafapodcast and"
+  },
+  {
+   "start": 1047.86,
+   "end": 1048.12,
+   "text": "extra benefits like bonus content, full transcripts of the show in Serbian, or even"
+  },
+  {
+   "start": 1048.12,
+   "end": 1048.3,
+   "text": "get"
+  },
+  {
+   "start": 1053.22,
+   "end": 1053.68,
+   "text": "join us on"
+  },
+  {
+   "start": 1053.68,
+   "end": 1058.68,
+   "text": "the show. We rely on your support to help everyone more in learning Serbian"
+  },
+  {
+   "start": 1058.68,
+   "end": 1059.8,
+   "text": "language and culture."
+  },
+  {
+   "start": 1060.6,
+   "end": 1061.48,
+   "text": "Thanks for joining us today."
+  },
+  {
+   "start": 1061.48,
+   "end": 1064.04,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1064.48,
+   "end": 1069.92,
+   "text": "quite a lot yeah in in the Balkans yeah but I'm so glad because"
+  },
+  {
+   "start": 1069.92,
+   "end": 1071.46,
+   "text": "you created your own version of it"
+  },
+  {
+   "start": 1071.46,
+   "end": 1078.64,
+   "text": "it's not the same cherbabi here and kebab in Turkish are presented differently it's"
+  },
+  {
+   "start": 1078.64,
+   "end": 1079.22,
+   "text": "yeah I"
+  },
+  {
+   "start": 1079.22,
+   "end": 1083.96,
+   "text": "mean the taste is similar maybe but many things are a little bit different"
+  },
+  {
+   "start": 1083.96,
+   "end": 1085.06,
+   "text": "yeah well it's also"
+  },
+  {
+   "start": 1085.06,
+   "end": 1089.04,
+   "text": "like a slightly different meat right we use you can use slightly different meat"
+  },
+  {
+   "start": 1089.04,
+   "end": 1094.02,
+   "text": "but I think for you kebab is like like a um it's like a"
+  },
+  {
+   "start": 1094.02,
+   "end": 1099.3,
+   "text": "bit of like a luxury thing you make it you assemble it really nicely"
+  },
+  {
+   "start": 1099.3,
+   "end": 1102.72,
+   "text": "for us it's kind of like oh just just grab it you know to"
+  },
+  {
+   "start": 1102.72,
+   "end": 1108.14,
+   "text": "go yeah and for you it's like actually you know something yeah it takes"
+  },
+  {
+   "start": 1108.14,
+   "end": 1108.3,
+   "text": "lot of time to prepare it so not everyone can prepare it at home"
+  },
+  {
+   "start": 1108.3,
+   "end": 1108.46,
+   "text": "a"
+  },
+  {
+   "start": 1112.02,
+   "end": 1116.26,
+   "text": "for sure exactly which this is like ah just flip it and that's it"
+  },
+  {
+   "start": 1116.26,
+   "end": 1120.44,
+   "text": "yeah and i realized looking at those words like our k"
+  },
+  {
+   "start": 1120.44,
+   "end": 1127.26,
+   "text": "is too in in your case like kebab chevap uh you say dukan you"
+  },
+  {
+   "start": 1127.26,
+   "end": 1127.48,
+   "text": "say duchan"
+  },
+  {
+   "start": 1127.48,
+   "end": 1134.68,
+   "text": "that's a good observation yeah there was something else"
+  },
+  {
+   "start": 1134.68,
+   "end": 1138.64,
+   "text": "but we will come to that is another one you say shechere which is"
+  },
+  {
+   "start": 1138.64,
+   "end": 1145.44,
+   "text": "sugar you say shekash ah shekash okay i see shekash and"
+  },
+  {
+   "start": 1145.44,
+   "end": 1152.68,
+   "text": "you say shekash right it's in the second syllable yeah yeah torba is"
+  },
+  {
+   "start": 1152.68,
+   "end": 1154.94,
+   "text": "the same yeah torba is the same"
+  },
+  {
+   "start": 1154.94,
+   "end": 1163.02,
+   "text": "which is soup which is also creamy yes yeah creamy for you"
+  },
+  {
+   "start": 1163.02,
+   "end": 1167.46,
+   "text": "torba is specific for us always it's creamy it's dense we don't have that"
+  },
+  {
+   "start": 1167.46,
+   "end": 1172.4,
+   "text": "your uh like liquid soup bistra soup we don't yeah"
+  },
+  {
+   "start": 1172.4,
+   "end": 1178.4,
+   "text": "this bistra soup is super right with noodles but everything else like with milk"
+  },
+  {
+   "start": 1178.4,
+   "end": 1178.68,
+   "text": "or like"
+  },
+  {
+   "start": 1178.68,
+   "end": 1186.02,
+   "text": "cream or even flour yeah or maybe uh yeah"
+  },
+  {
+   "start": 1186.02,
+   "end": 1193.6,
+   "text": "even tomatoes paradise right oh that's paradise tomato soup yep and"
+  },
+  {
+   "start": 1193.6,
+   "end": 1199.13,
+   "text": "another take a difference truth that you say yeah i realized that yeah a"
+  },
+  {
+   "start": 1199.13,
+   "end": 1199.43,
+   "text": "köfte right"
+  },
+  {
+   "start": 1199.43,
+   "end": 1200.21,
+   "text": "köfte"
+  },
+  {
+   "start": 1200.21,
+   "end": 1207.63,
+   "text": "i think the same like the same kind"
+  },
+  {
+   "start": 1207.63,
+   "end": 1210.79,
+   "text": "of pronunciation for two foot names biber"
+  },
+  {
+   "start": 1212.85,
+   "end": 1212.95,
+   "text": "again pepper"
+  },
+  {
+   "start": 1212.95,
+   "end": 1218.29,
+   "text": "yeah for you biber biber"
+  },
+  {
+   "start": 1218.29,
+   "end": 1225.35,
+   "text": "it's a bit shorter yeah and"
+  },
+  {
+   "start": 1225.35,
+   "end": 1232.39,
+   "text": "caranfil yeah what is it cauliflower what is no"
+  },
+  {
+   "start": 1232.39,
+   "end": 1234.53,
+   "text": "what is caranfil oh my god caranfil"
+  },
+  {
+   "start": 1234.53,
+   "end": 1239.85,
+   "text": "it's actually a flower oh my god i said people are gonna kill me"
+  },
+  {
+   "start": 1239.85,
+   "end": 1247.11,
+   "text": "it's not cauliflower it's not it's not but the"
+  },
+  {
+   "start": 1247.11,
+   "end": 1251.63,
+   "text": "seed is used as well in the restaurants to refresh like a mint"
+  },
+  {
+   "start": 1253.09,
+   "end": 1257.35,
+   "text": "thing like you put it in your mouth and it kind of cleans and"
+  },
+  {
+   "start": 1257.35,
+   "end": 1259.77,
+   "text": "gives you a nice taste in the mouth"
+  },
+  {
+   "start": 1259.77,
+   "end": 1264.07,
+   "text": "the seed of that flower I just can't remember how you see it in"
+  },
+  {
+   "start": 1264.07,
+   "end": 1264.23,
+   "text": "English though"
+  },
+  {
+   "start": 1264.23,
+   "end": 1270.01,
+   "text": "we will check it out but I don't use it in English at all"
+  },
+  {
+   "start": 1270.01,
+   "end": 1270.29,
+   "text": "yeah maybe it's just not omnipresent"
+  },
+  {
+   "start": 1270.29,
+   "end": 1270.45,
+   "text": "so"
+  },
+  {
+   "start": 1276.63,
+   "end": 1283.99,
+   "text": "next one is uh castan oh castan chestnut"
+  },
+  {
+   "start": 1283.99,
+   "end": 1287.89,
+   "text": "chestnut is that how it is yes not in english oh my god"
+  },
+  {
+   "start": 1287.89,
+   "end": 1293.23,
+   "text": "it's so weird because i don't use it in chestnut yeah yeah and one"
+  },
+  {
+   "start": 1293.23,
+   "end": 1296.97,
+   "text": "of the main things in turkish cuisine and serbian cuisine used a lot in"
+  },
+  {
+   "start": 1296.97,
+   "end": 1304.51,
+   "text": "the kitchen sirce oh sirce what wait you say sirke definitely yeah"
+  },
+  {
+   "start": 1304.51,
+   "end": 1310.57,
+   "text": "you got it sir sirke or sirke sirke sirke"
+  },
+  {
+   "start": 1310.69,
+   "end": 1317.21,
+   "text": "okay there you go so that's um vinegar vinegar yeah which i find this"
+  },
+  {
+   "start": 1317.21,
+   "end": 1322.87,
+   "text": "yeah i find this one funny because i we don't have the color for"
+  },
+  {
+   "start": 1322.87,
+   "end": 1323.63,
+   "text": "that and you added a color"
+  },
+  {
+   "start": 1323.63,
+   "end": 1331.25,
+   "text": "to this vegetable which is uh patlican you say plavi patlican"
+  },
+  {
+   "start": 1331.25,
+   "end": 1337.61,
+   "text": "oh yeah i've never used it but yeah I think it's plavi probably there"
+  },
+  {
+   "start": 1337.61,
+   "end": 1342.85,
+   "text": "are many there are some more because actually no uh okay it's"
+  },
+  {
+   "start": 1342.85,
+   "end": 1349.85,
+   "text": "purple yeah actually but you know the thing is that also I think uh"
+  },
+  {
+   "start": 1349.85,
+   "end": 1351.85,
+   "text": "cabbage we don't say"
+  },
+  {
+   "start": 1351.85,
+   "end": 1357.99,
+   "text": "purple cabbage I think I'm trying to think of like if that is in"
+  },
+  {
+   "start": 1357.99,
+   "end": 1358.65,
+   "text": "Serbian or if that it's like"
+  },
+  {
+   "start": 1358.65,
+   "end": 1362.73,
+   "text": "in English or some other languages that I learned but it seems to me"
+  },
+  {
+   "start": 1362.73,
+   "end": 1366.03,
+   "text": "like a lot of foods that are purple that are just called blue for"
+  },
+  {
+   "start": 1366.03,
+   "end": 1368.77,
+   "text": "some reason i don't know if there was before like the color"
+  },
+  {
+   "start": 1368.77,
+   "end": 1374.79,
+   "text": "purple was existent but yeah we say plavi patlyjan so they you say blue"
+  },
+  {
+   "start": 1374.79,
+   "end": 1377.41,
+   "text": "eggplant yeah and when i"
+  },
+  {
+   "start": 1377.41,
+   "end": 1381.23,
+   "text": "heard this i asked so do you have other colors like plavi patlyjan i"
+  },
+  {
+   "start": 1381.23,
+   "end": 1383.11,
+   "text": "don't know uh like brown"
+  },
+  {
+   "start": 1383.11,
+   "end": 1388.95,
+   "text": "patlyjan or something like that no it's just plavi patlyjan okay well there are"
+  },
+  {
+   "start": 1388.95,
+   "end": 1393.25,
+   "text": "other types of but i just think we don't have it right and for"
+  },
+  {
+   "start": 1393.25,
+   "end": 1395.27,
+   "text": "some reason yeah we had to say i don't know don't"
+  },
+  {
+   "start": 1395.27,
+   "end": 1400.07,
+   "text": "ask me don't ask me but it's still when i say patlican they understand"
+  },
+  {
+   "start": 1400.07,
+   "end": 1400.53,
+   "text": "obviously because"
+  },
+  {
+   "start": 1400.53,
+   "end": 1406.05,
+   "text": "there's only one color for that yeah yeah and from that to bakery let's"
+  },
+  {
+   "start": 1406.05,
+   "end": 1406.65,
+   "text": "go brick"
+  },
+  {
+   "start": 1407.87,
+   "end": 1412.67,
+   "text": "good oh yeah because you have a wait buric right Börek."
+  },
+  {
+   "start": 1412.83,
+   "end": 1416.07,
+   "text": "Börek. Börek."
+  },
+  {
+   "start": 1416.07,
+   "end": 1417.97,
+   "text": "Börek or börek?"
+  },
+  {
+   "start": 1418.05,
+   "end": 1418.83,
+   "text": "Börek."
+  },
+  {
+   "start": 1418.83,
+   "end": 1419.83,
+   "text": "Börek."
+  },
+  {
+   "start": 1419.83,
+   "end": 1420.83,
+   "text": "Börek."
+  },
+  {
+   "start": 1420.83,
+   "end": 1425.26,
+   "text": "And we don't have Ö, Ü and so on, so it's börek."
+  },
+  {
+   "start": 1426.32,
+   "end": 1427.3,
+   "text": "Yes, you have Ö."
+  },
+  {
+   "start": 1428.76,
+   "end": 1433.66,
+   "text": "And in the bakery, let's say, I think this is also sold in bakery,"
+  },
+  {
+   "start": 1433.66,
+   "end": 1433.9,
+   "text": "Baklava. Yeah, of course. right?"
+  },
+  {
+   "start": 1436.7,
+   "end": 1438.52,
+   "text": "And in this case, no, we say baklava."
+  },
+  {
+   "start": 1439.56,
+   "end": 1444.9,
+   "text": "So if it's three syllables, usually it's on the second syllable."
+  },
+  {
+   "start": 1444.92,
+   "end": 1451.92,
+   "text": "syllable the accent but clava um oh actually no that's totally wrong"
+  },
+  {
+   "start": 1451.92,
+   "end": 1453.26,
+   "text": "because i think that was the"
+  },
+  {
+   "start": 1453.26,
+   "end": 1460.38,
+   "text": "the old way of pronouncing things therefore morava but nowadays i think it's mostly"
+  },
+  {
+   "start": 1460.38,
+   "end": 1460.58,
+   "text": "it's"
+  },
+  {
+   "start": 1460.58,
+   "end": 1464.44,
+   "text": "like a new version of kind of serbian switch to the first syllable so"
+  },
+  {
+   "start": 1464.44,
+   "end": 1466.34,
+   "text": "it's morava right but"
+  },
+  {
+   "start": 1466.34,
+   "end": 1471.02,
+   "text": "apparently certain things stayed hey i don't know the rules about this but yeah"
+  },
+  {
+   "start": 1471.02,
+   "end": 1478.4,
+   "text": "we this case we say baklava okay that's cool and some"
+  },
+  {
+   "start": 1478.4,
+   "end": 1484.22,
+   "text": "um fruits we have the same names kaisiya i just realized that"
+  },
+  {
+   "start": 1484.22,
+   "end": 1491.56,
+   "text": "i didn't know that kaisiya how do you say it kaisa kaisa um"
+  },
+  {
+   "start": 1491.56,
+   "end": 1498.78,
+   "text": "apricot apricot yes they make lots of uh different things with kaisiya from"
+  },
+  {
+   "start": 1498.78,
+   "end": 1505.58,
+   "text": "rakia to to rechelle is the same peckmas to peckmas yeah yeah do you"
+  },
+  {
+   "start": 1505.58,
+   "end": 1513.12,
+   "text": "say rechelle for jam no for what what uh rechelle for jam"
+  },
+  {
+   "start": 1513.12,
+   "end": 1513.8,
+   "text": "no i think"
+  },
+  {
+   "start": 1513.8,
+   "end": 1521.06,
+   "text": "we say jam marmelada or marmelada i think it's a german we use marmelada"
+  },
+  {
+   "start": 1521.06,
+   "end": 1527.46,
+   "text": "yeah yeah so and peckness Yeah, but the thing is, for us, pekmez is"
+  },
+  {
+   "start": 1527.46,
+   "end": 1529.96,
+   "text": "only one type, and that's from grapes."
+  },
+  {
+   "start": 1530.16,
+   "end": 1535.08,
+   "text": "But you have different Pecmas here."
+  },
+  {
+   "start": 1535.08,
+   "end": 1538.38,
+   "text": "I don't think I've ever tried Pecmas made out of grapes."
+  },
+  {
+   "start": 1538.66,
+   "end": 1539.66,
+   "text": "I don't think so."
+  },
+  {
+   "start": 1540.12,
+   "end": 1541.6,
+   "text": "Yeah, I haven't seen it here."
+  },
+  {
+   "start": 1541.6,
+   "end": 1545.6,
+   "text": "From mulberries, not mulberries, from berries generally."
+  },
+  {
+   "start": 1546.64,
+   "end": 1550.5,
+   "text": "So Pecmas, for me at least now, again, I'm not an expert, but I"
+  },
+  {
+   "start": 1550.5,
+   "end": 1553.32,
+   "text": "would say Pecmas is something that is like only one fruit, right?"
+  },
+  {
+   "start": 1553.7,
+   "end": 1560.14,
+   "text": "so it's either uh vishnia right from vishnia from kaisiya from whatever whichever fruit"
+  },
+  {
+   "start": 1560.14,
+   "end": 1560.24,
+   "text": "it really just depends what you have in your in that area right and"
+  },
+  {
+   "start": 1560.24,
+   "end": 1560.56,
+   "text": "and"
+  },
+  {
+   "start": 1564.62,
+   "end": 1568.2,
+   "text": "for some reason we don't have with grapes i don't know but it's very"
+  },
+  {
+   "start": 1568.2,
+   "end": 1573.4,
+   "text": "common to have shneve right so plums and so on but then"
+  },
+  {
+   "start": 1573.4,
+   "end": 1578.52,
+   "text": "gem actually now i can't really think of what i would say for gem"
+  },
+  {
+   "start": 1578.52,
+   "end": 1584.64,
+   "text": "because for me marmelada is like a mixture i see so maybe jam is"
+  },
+  {
+   "start": 1584.64,
+   "end": 1589.7,
+   "text": "also a mixture i don't know jam which one is dancer peck mass or"
+  },
+  {
+   "start": 1590.02,
+   "end": 1595.94,
+   "text": "jam man i have no idea i'm gonna have to google this no worries"
+  },
+  {
+   "start": 1595.94,
+   "end": 1596.04,
+   "text": "there is"
+  },
+  {
+   "start": 1596.04,
+   "end": 1602.96,
+   "text": "for us peck mass is liquid so you you put in a bottle and"
+  },
+  {
+   "start": 1602.96,
+   "end": 1604.92,
+   "text": "you add it like a sweetener that's why"
+  },
+  {
+   "start": 1604.92,
+   "end": 1609.52,
+   "text": "i think for you peck mass is a bit different it's denser that makes"
+  },
+  {
+   "start": 1609.52,
+   "end": 1612.74,
+   "text": "sense because yeah peck is definitely dense i i went some months ago i"
+  },
+  {
+   "start": 1612.74,
+   "end": 1616.5,
+   "text": "went to the turkish store here and i bought a pacmus and it was"
+  },
+  {
+   "start": 1616.5,
+   "end": 1623.7,
+   "text": "literally like syrup with a bit of like fruits yeah yeah uh wait"
+  },
+  {
+   "start": 1623.7,
+   "end": 1624.2,
+   "text": "i really need to"
+  },
+  {
+   "start": 1624.2,
+   "end": 1630.46,
+   "text": "find this for a second so okay yeah pacmus is thick um and you"
+  },
+  {
+   "start": 1630.46,
+   "end": 1634.18,
+   "text": "can add sugar a bit of sugar not a lot."
+  },
+  {
+   "start": 1634.18,
+   "end": 1639.13,
+   "text": "Marmelada, okay. But it doesn't say anything for jam"
+  },
+  {
+   "start": 1642.49,
+   "end": 1648.11,
+   "text": "jam maybe has chunks in it because uh normally it's like half or the"
+  },
+  {
+   "start": 1648.11,
+   "end": 1648.21,
+   "text": "of the fruit is used maybe for me jam and packers are pretty much"
+  },
+  {
+   "start": 1648.21,
+   "end": 1648.53,
+   "text": "quarter"
+  },
+  {
+   "start": 1654.15,
+   "end": 1654.95,
+   "text": "the same i'm but i'm pretty sure"
+  },
+  {
+   "start": 1654.95,
+   "end": 1659.39,
+   "text": "they there are as you said like differences in in like the chunk is"
+  },
+  {
+   "start": 1659.39,
+   "end": 1663.67,
+   "text": "it like cut a lot like you know and is it just big chunks"
+  },
+  {
+   "start": 1663.67,
+   "end": 1666.69,
+   "text": "and so on yeah i don't buy them as well that much that's why"
+  },
+  {
+   "start": 1666.69,
+   "end": 1666.85,
+   "text": "i'm not sure"
+  },
+  {
+   "start": 1666.85,
+   "end": 1674.61,
+   "text": "and for the main dish last things sarma moussaka"
+  },
+  {
+   "start": 1674.61,
+   "end": 1678.39,
+   "text": "oh i thought it was that was uh i thought it was"
+  },
+  {
+   "start": 1678.39,
+   "end": 1683.47,
+   "text": "greek moussaka greek and turkish is the same word as well yeah yeah maybe"
+  },
+  {
+   "start": 1683.47,
+   "end": 1688.65,
+   "text": "it's it comes from greek but a couple of places I checked it's Turkish"
+  },
+  {
+   "start": 1688.65,
+   "end": 1692.03,
+   "text": "it says but I'm not sure okay I have two I want more"
+  },
+  {
+   "start": 1692.03,
+   "end": 1700.51,
+   "text": "at least or two more uh Jewish Jewish definitely right"
+  },
+  {
+   "start": 1700.51,
+   "end": 1707.51,
+   "text": "and uh that's us too by the way Jewish right for"
+  },
+  {
+   "start": 1707.51,
+   "end": 1714.39,
+   "text": "you no truth that we had uh right we had yeah yeah but oh"
+  },
+  {
+   "start": 1714.39,
+   "end": 1716.45,
+   "text": "do you have pilav no yes"
+  },
+  {
+   "start": 1716.45,
+   "end": 1719.63,
+   "text": "yeah there you go that's the one that i wanted to say you say"
+  },
+  {
+   "start": 1719.63,
+   "end": 1721.29,
+   "text": "pilaf with f at the end right"
+  },
+  {
+   "start": 1721.29,
+   "end": 1728.75,
+   "text": "with the love oh the same maiden yeah maybe in"
+  },
+  {
+   "start": 1728.75,
+   "end": 1733.13,
+   "text": "bosnia i'm not sure"
+  },
+  {
+   "start": 1734.45,
+   "end": 1736.25,
+   "text": "Pilav is rice."
+  },
+  {
+   "start": 1737.67,
+   "end": 1740.65,
+   "text": "Rice is fried a little bit and then boiled and it's dense."
+  },
+  {
+   "start": 1740.65,
+   "end": 1743.61,
+   "text": "Like it's the result."
+  },
+  {
+   "start": 1743.61,
+   "end": 1744.15,
+   "text": "It's not like risotto."
+  },
+  {
+   "start": 1744.15,
+   "end": 1747.59,
+   "text": "It's kind of like a risotto because if you think of it,"
+  },
+  {
+   "start": 1747.59,
+   "end": 1750.71,
+   "text": "about it i i you don't really add you have just a little bit"
+  },
+  {
+   "start": 1750.71,
+   "end": 1752.17,
+   "text": "of like salt and pepper maybe vegeta"
+  },
+  {
+   "start": 1752.17,
+   "end": 1757.61,
+   "text": "right and um and but it should stay like that kind of white yellowish"
+  },
+  {
+   "start": 1757.61,
+   "end": 1759.43,
+   "text": "um color and you add a bit of"
+  },
+  {
+   "start": 1759.43,
+   "end": 1765.59,
+   "text": "like some veggies that don't like let the color out so like peas a"
+  },
+  {
+   "start": 1765.59,
+   "end": 1766.69,
+   "text": "bit of peas you can add a bit"
+  },
+  {
+   "start": 1766.69,
+   "end": 1772.05,
+   "text": "of mead like some boiled mead or whatever well uh juvich is like with"
+  },
+  {
+   "start": 1772.05,
+   "end": 1777.91,
+   "text": "um what was it with paprika like yeah so you add so it's red"
+  },
+  {
+   "start": 1777.91,
+   "end": 1780.83,
+   "text": "right that's the that's the point and with slightly different"
+  },
+  {
+   "start": 1780.83,
+   "end": 1786.73,
+   "text": "ingredients but that's the difference yeah okay all right from that let's go into"
+  },
+  {
+   "start": 1786.73,
+   "end": 1786.91,
+   "text": "clothes"
+  },
+  {
+   "start": 1786.91,
+   "end": 1794.35,
+   "text": "okay i'm curious parts of clothes not the whole clothes i guess only"
+  },
+  {
+   "start": 1794.35,
+   "end": 1795.97,
+   "text": "for footwear we have the"
+  },
+  {
+   "start": 1795.97,
+   "end": 1802.97,
+   "text": "same names interestingly yeah okay so papuche yeah i remember that one"
+  },
+  {
+   "start": 1802.97,
+   "end": 1811.85,
+   "text": "papuche yeah you say without the e yes papuc yeah that means shoes but"
+  },
+  {
+   "start": 1811.85,
+   "end": 1815.53,
+   "text": "for you yeah for us i mean it wouldn't be like the"
+  },
+  {
+   "start": 1815.53,
+   "end": 1820.99,
+   "text": "high heels wouldn't be papuche right uh we have a different name um shoe"
+  },
+  {
+   "start": 1820.99,
+   "end": 1821.31,
+   "text": "is a different thing in"
+  },
+  {
+   "start": 1821.31,
+   "end": 1826.29,
+   "text": "but papuche is like a little bit old way of saying it and it's"
+  },
+  {
+   "start": 1826.29,
+   "end": 1828.41,
+   "text": "mostly flat foot the flat shoes"
+  },
+  {
+   "start": 1829.91,
+   "end": 1837.37,
+   "text": "papucha for us is slippers indoor shoes it can also be outdoor"
+  },
+  {
+   "start": 1837.37,
+   "end": 1839.99,
+   "text": "shoes but the but still slippers like you know"
+  },
+  {
+   "start": 1839.99,
+   "end": 1845.47,
+   "text": "they're kind of like hanging from your feet but uh and also flip-flops even"
+  },
+  {
+   "start": 1845.47,
+   "end": 1845.87,
+   "text": "you can call them"
+  },
+  {
+   "start": 1845.87,
+   "end": 1850.73,
+   "text": "papucha we just don't you you there is a way how to say flip-flops"
+  },
+  {
+   "start": 1850.73,
+   "end": 1851.83,
+   "text": "we call them yapanke"
+  },
+  {
+   "start": 1853.11,
+   "end": 1858.16,
+   "text": "which means like Chinese, like Japanese, but you can still"
+  },
+  {
+   "start": 1858.16,
+   "end": 1861.66,
+   "text": "still call them for example so anything that's kind of like free off your"
+  },
+  {
+   "start": 1861.66,
+   "end": 1863.08,
+   "text": "and hanging on a string or something like"
+  },
+  {
+   "start": 1863.08,
+   "end": 1870.52,
+   "text": "that I see and inside the shoe we have the same oh sure like"
+  },
+  {
+   "start": 1870.52,
+   "end": 1878.14,
+   "text": "yeah sucks yeah and chisme another type of shoe boots jeez"
+  },
+  {
+   "start": 1878.14,
+   "end": 1883.46,
+   "text": "man yeah it's it's kind of like winter boots like that's nothing"
+  },
+  {
+   "start": 1883.46,
+   "end": 1890.68,
+   "text": "and um these are all about shoes we have dugme"
+  },
+  {
+   "start": 1890.68,
+   "end": 1897.76,
+   "text": "which is yeah do you remember that yeah it was you had"
+  },
+  {
+   "start": 1897.76,
+   "end": 1898.28,
+   "text": "the weddings"
+  },
+  {
+   "start": 1901.0,
+   "end": 1912.1,
+   "text": "what was it white button the group the band and jeff"
+  },
+  {
+   "start": 1912.1,
+   "end": 1918.28,
+   "text": "jeff yeah yeah yeah i forgot about that yeah i feel like our yeah"
+  },
+  {
+   "start": 1918.28,
+   "end": 1924.92,
+   "text": "i feel like our is much stronger than yours or or in any other"
+  },
+  {
+   "start": 1924.92,
+   "end": 1927.54,
+   "text": "language honestly jep"
+  },
+  {
+   "start": 1927.54,
+   "end": 1934.68,
+   "text": "and kais i think that's an old word right"
+  },
+  {
+   "start": 1934.68,
+   "end": 1941.12,
+   "text": "kais oh no i still use yeah i use it kais that's belt like"
+  },
+  {
+   "start": 1941.12,
+   "end": 1948.44,
+   "text": "yeah that's a belt for the for the like uh seat belt it's kaiish"
+  },
+  {
+   "start": 1948.44,
+   "end": 1954.04,
+   "text": "again no uh oh man no it's not kaiish uh kaiish"
+  },
+  {
+   "start": 1954.04,
+   "end": 1959.06,
+   "text": "is only the thing that has the around your waist and or hips or"
+  },
+  {
+   "start": 1959.06,
+   "end": 1959.9,
+   "text": "whatever that has these little"
+  },
+  {
+   "start": 1959.9,
+   "end": 1964.3,
+   "text": "holes and that's it you so that you can also use that for example"
+  },
+  {
+   "start": 1964.3,
+   "end": 1967.66,
+   "text": "with if there's kais on i don't know maybe"
+  },
+  {
+   "start": 1967.66,
+   "end": 1973.98,
+   "text": "on like um when you're riding your whole riding horse horse is that how"
+  },
+  {
+   "start": 1973.98,
+   "end": 1976.88,
+   "text": "i say riding a horse yeah so there you know you have this little"
+  },
+  {
+   "start": 1976.88,
+   "end": 1980.5,
+   "text": "like um kais that can also be so anything that's like that"
+  },
+  {
+   "start": 1980.5,
+   "end": 1986.16,
+   "text": "but anything uh else is like oh man i can't really remember the belt"
+  },
+  {
+   "start": 1986.16,
+   "end": 1986.5,
+   "text": "now"
+  },
+  {
+   "start": 1987.74,
+   "end": 1994.08,
+   "text": "anyway but it's not it's not cash no it's not cash okay and um"
+  },
+  {
+   "start": 1994.08,
+   "end": 1997.52,
+   "text": "we have also burma but a bit"
+  },
+  {
+   "start": 1997.52,
+   "end": 2002.44,
+   "text": "different burma is a wedding ring for you right yes it's not an engagement"
+  },
+  {
+   "start": 2002.44,
+   "end": 2003.36,
+   "text": "it's a wedding ring"
+  },
+  {
+   "start": 2003.36,
+   "end": 2010.38,
+   "text": "for us it's not wedding ring burma is um burmak is like to bend"
+  },
+  {
+   "start": 2010.38,
+   "end": 2011.1,
+   "text": "something so"
+  },
+  {
+   "start": 2012.42,
+   "end": 2017.86,
+   "text": "the jewelry that are like that have this shape like going over each other"
+  },
+  {
+   "start": 2017.86,
+   "end": 2019.22,
+   "text": "like a chain that's"
+  },
+  {
+   "start": 2019.22,
+   "end": 2025.78,
+   "text": "burma it's mostly used for the bracelets but it does make sense that it"
+  },
+  {
+   "start": 2025.78,
+   "end": 2026.68,
+   "text": "is derived from there"
+  },
+  {
+   "start": 2026.68,
+   "end": 2032.1,
+   "text": "because someone was like burma you know like oh okay yeah so that means"
+  },
+  {
+   "start": 2032.1,
+   "end": 2035.74,
+   "text": "ring it's like no it means bend it bend it you know or whatever"
+  },
+  {
+   "start": 2035.74,
+   "end": 2042.88,
+   "text": "and one thing that i like is boya it's color oh boy"
+  },
+  {
+   "start": 2042.88,
+   "end": 2048.42,
+   "text": "i didn't know that boy yeah color you use it as color we use"
+  },
+  {
+   "start": 2048.42,
+   "end": 2051.74,
+   "text": "it as a paint as a noun and as a verb"
+  },
+  {
+   "start": 2051.74,
+   "end": 2058.96,
+   "text": "paint a verb you have yeah to color but not to to color"
+  },
+  {
+   "start": 2058.96,
+   "end": 2064.12,
+   "text": "like a yeah you wouldn't color your wall right you would just cover the"
+  },
+  {
+   "start": 2064.12,
+   "end": 2069.5,
+   "text": "something in your notebook right but that's for you yeah just color it's not"
+  },
+  {
+   "start": 2069.5,
+   "end": 2075.52,
+   "text": "like painting yeah okay cool that was about the clothes and the last one"
+  },
+  {
+   "start": 2075.52,
+   "end": 2080.77,
+   "text": "is the verbs boeti is one of them but oh yeah yes so i"
+  },
+  {
+   "start": 2080.77,
+   "end": 2084.11,
+   "text": "and i think they're slightly different so i added the divanity"
+  },
+  {
+   "start": 2084.11,
+   "end": 2091.21,
+   "text": "which i think is derived from bivan right which is basically actually what"
+  },
+  {
+   "start": 2091.21,
+   "end": 2095.39,
+   "text": "is it is it like a kind of like a sofa that's low or"
+  },
+  {
+   "start": 2095.39,
+   "end": 2101.11,
+   "text": "yeah that's low and mostly in avlia inside as well but avlia"
+  },
+  {
+   "start": 2101.11,
+   "end": 2107.17,
+   "text": "has divan in Turkish and it really makes sense because it is designed to"
+  },
+  {
+   "start": 2107.17,
+   "end": 2107.91,
+   "text": "chill over there right"
+  },
+  {
+   "start": 2107.91,
+   "end": 2112.17,
+   "text": "and to enjoy and what do you do when you enjoy you're talking so"
+  },
+  {
+   "start": 2112.17,
+   "end": 2114.83,
+   "text": "when you say ah divanim or"
+  },
+  {
+   "start": 2114.83,
+   "end": 2121.01,
+   "text": "me divanimo we can say now we're maki a divanimo basically that can be"
+  },
+  {
+   "start": 2121.01,
+   "end": 2127.67,
+   "text": "our slogan actually yes for this episode divanima let's divanima hi did the divan"
+  },
+  {
+   "start": 2127.67,
+   "end": 2130.21,
+   "text": "it is a nama that's what we can"
+  },
+  {
+   "start": 2130.21,
+   "end": 2136.37,
+   "text": "say so it's basically just chatting like casually chatting nothing serious like oh we"
+  },
+  {
+   "start": 2136.37,
+   "end": 2136.47,
+   "text": "are chilling"
+  },
+  {
+   "start": 2136.47,
+   "end": 2143.25,
+   "text": "and enjoying our life and just chatting chatting our life out that's cool and"
+  },
+  {
+   "start": 2143.25,
+   "end": 2150.05,
+   "text": "then we have um what does it mean oh it has several meanings the"
+  },
+  {
+   "start": 2150.05,
+   "end": 2153.89,
+   "text": "first one that i think about is to show off"
+  },
+  {
+   "start": 2153.89,
+   "end": 2161.17,
+   "text": "um but it also means just to live freely uh"
+  },
+  {
+   "start": 2161.17,
+   "end": 2165.59,
+   "text": "with no worries or to just chill like"
+  },
+  {
+   "start": 2165.59,
+   "end": 2172.11,
+   "text": "it's not like taking a nap but like just lying down and relaxing something"
+  },
+  {
+   "start": 2172.11,
+   "end": 2174.03,
+   "text": "like that So it has several meanings."
+  },
+  {
+   "start": 2174.71,
+   "end": 2179.05,
+   "text": "That's interesting because means different, separate."
+  },
+  {
+   "start": 2179.05,
+   "end": 2179.73,
+   "text": "What else?"
+  },
+  {
+   "start": 2179.73,
+   "end": 2184.49,
+   "text": "In Turkish. We don't use it as a verb, but as like a..."
+  },
+  {
+   "start": 2184.49,
+   "end": 2189.81,
+   "text": "adjective and network like bashka wait i just realized that there is a song"
+  },
+  {
+   "start": 2189.81,
+   "end": 2190.37,
+   "text": "by dino medley"
+  },
+  {
+   "start": 2190.37,
+   "end": 2194.31,
+   "text": "he's by the way he's i think he's from sarajevo sarajevo if i'm not"
+  },
+  {
+   "start": 2194.31,
+   "end": 2196.01,
+   "text": "mistaken yeah um and he has a"
+  },
+  {
+   "start": 2196.01,
+   "end": 2203.11,
+   "text": "song and i think that means you are different everything is"
+  },
+  {
+   "start": 2203.11,
+   "end": 2204.81,
+   "text": "different right definitely"
+  },
+  {
+   "start": 2204.81,
+   "end": 2211.03,
+   "text": "probably i guess i mean makes sense yeah and the last one is uh"
+  },
+  {
+   "start": 2211.03,
+   "end": 2217.51,
+   "text": "wow that's sweet but we don't use kardashian verbs so how what does it"
+  },
+  {
+   "start": 2217.51,
+   "end": 2221.27,
+   "text": "mean it means to so pre is usually like"
+  },
+  {
+   "start": 2221.27,
+   "end": 2228.29,
+   "text": "pre means before but in a context of a verb it's usually too"
+  },
+  {
+   "start": 2228.29,
+   "end": 2232.97,
+   "text": "much of something or maybe a finished action or something like that so here"
+  },
+  {
+   "start": 2232.97,
+   "end": 2236.05,
+   "text": "in this case is to cross the the line the"
+  },
+  {
+   "start": 2236.05,
+   "end": 2242.33,
+   "text": "the line like the threshold like a normal average threshold uh but i don't"
+  },
+  {
+   "start": 2242.33,
+   "end": 2248.05,
+   "text": "really use it so i don't really you can say maybe which means like"
+  },
+  {
+   "start": 2248.05,
+   "end": 2252.43,
+   "text": "oh you you crossed the line something like that but older people would probably"
+  },
+  {
+   "start": 2252.43,
+   "end": 2256.29,
+   "text": "use it more okay because kardash means brother and sister in"
+  },
+  {
+   "start": 2256.29,
+   "end": 2262.07,
+   "text": "turkish so sibling i mean so you're being closer than my sibling that means"
+  },
+  {
+   "start": 2262.07,
+   "end": 2262.49,
+   "text": "that in your case"
+  },
+  {
+   "start": 2262.49,
+   "end": 2269.25,
+   "text": "so yeah that's true and i say a thought of kardash kardashians there you"
+  },
+  {
+   "start": 2269.25,
+   "end": 2269.55,
+   "text": "go"
+  },
+  {
+   "start": 2270.97,
+   "end": 2276.02,
+   "text": "here we go there you go but the connection which basically means brothers and"
+  },
+  {
+   "start": 2276.02,
+   "end": 2277.64,
+   "text": "sisters, kind of like, right?"
+  },
+  {
+   "start": 2278.38,
+   "end": 2280.72,
+   "text": "Kardashian. Yeah. Yeah."
+  },
+  {
+   "start": 2280.72,
+   "end": 2282.74,
+   "text": "Anyway. Guys, this is all."
+  },
+  {
+   "start": 2282.74,
+   "end": 2285.44,
+   "text": "One or two extra things."
+  },
+  {
+   "start": 2287.2,
+   "end": 2288.08,
+   "text": "Do you use Shaitan?"
+  },
+  {
+   "start": 2290.34,
+   "end": 2292.02,
+   "text": "I've never used it, but yes."
+  },
+  {
+   "start": 2292.02,
+   "end": 2295.56,
+   "text": "There's even a movie."
+  },
+  {
+   "start": 2295.56,
+   "end": 2296.02,
+   "text": "Yeah. That's why I saw it. Movie."
+  },
+  {
+   "start": 2298.38,
+   "end": 2300.66,
+   "text": "That means devil or evil."
+  },
+  {
+   "start": 2300.72,
+   "end": 2303.76,
+   "text": "shaitan yeah we would say javo"
+  },
+  {
+   "start": 2304.98,
+   "end": 2312.14,
+   "text": "if you guys know or use"
+  },
+  {
+   "start": 2312.14,
+   "end": 2316.36,
+   "text": "any of them please let us know we would like to learn more add"
+  },
+  {
+   "start": 2316.36,
+   "end": 2324.08,
+   "text": "to our list exactly yes that"
+  },
+  {
+   "start": 2324.08,
+   "end": 2329.32,
+   "text": "means be chilled out we talked exactly and uh yeah thanks you thank you"
+  },
+  {
+   "start": 2329.32,
+   "end": 2331.98,
+   "text": "everyone and see you in the next episode."
+  },
+  {
+   "start": 2332.84,
+   "end": 2333.42,
+   "text": "We did not say."
+  },
+  {
+   "start": 2334.02,
+   "end": 2338.3,
+   "text": "Thank you for joining us today."
+  },
+  {
+   "start": 2338.3,
+   "end": 2339.36,
+   "text": "We hope you enjoyed our podcast"
+  },
+  {
+   "start": 2339.36,
+   "end": 2341.14,
+   "text": "and learned something new."
+  },
+  {
+   "start": 2341.22,
+   "end": 2342.62,
+   "text": "In case you have any comments,"
+  },
+  {
+   "start": 2342.62,
+   "end": 2345.3,
+   "text": "suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 2345.3,
+   "end": 2348.8,
+   "text": "on our Instagram page mozekafapodcast."
+  },
+  {
+   "start": 2349.06,
+   "end": 2349.72,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.5: Turkish Borrowings in Serbian",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939257/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075918-44100-1-e6981a0589483ac8.mp3"
+}

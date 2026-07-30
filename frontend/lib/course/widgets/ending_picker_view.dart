@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../models/answer.dart';
 import '../models/exercise.dart';
+import '../services/exercise_shuffle.dart';
 import 'course_chip.dart';
 
 class EndingPickerView extends StatelessWidget {
@@ -108,7 +109,11 @@ class EndingPickerView extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (final option in exercise.options)
+            // Верное окончание в материалах записано первым — перемешиваем.
+            for (final option in seededShuffle(
+              exercise.options,
+              seedFromString(exercise.id),
+            ))
               CourseChip(
                 label: option.text,
                 selected: option.id == selected,

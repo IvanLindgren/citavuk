@@ -17,15 +17,23 @@ const DEFAULT_COURSE_ID = 'sr_grammar_prosvirina';
 let bundlePromise: Promise<CourseBundle> | null = null;
 
 export function loadCourse(): Promise<CourseBundle> {
-  bundlePromise ??= getPublishedCourse(DEFAULT_COURSE_ID)
-    .then((bundle) => bundle ?? loadBundledCourse())
-    .catch(loadBundledCourse)
+  if (bundlePromise) return bundlePromise;
+
+  const bundled = loadBundledCourse();
+  const loading = getPublishedCourse(DEFAULT_COURSE_ID)
+    .then((bundle) => bundle ?? bundled)
+    .catch(() => bundled)
     .then((bundle) => {
       if (!bundle.courseId || !Array.isArray(bundle.units)) {
         throw new Error('Файл курса повреждён.');
       }
       return bundle;
     });
+
+  bundlePromise = loading.catch((error) => {
+    bundlePromise = null;
+    throw error;
+  });
   return bundlePromise;
 }
 

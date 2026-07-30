@@ -533,24 +533,36 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     );
   }
 
-  Widget _buildArrow(ColorScheme scheme, {required bool left}) => Positioned(
-        left: left ? 6 : null,
-        right: left ? null : 6,
-        top: 0,
-        bottom: 0,
-        child: Center(
-          child: Material(
-            color: scheme.surface.withValues(alpha: 0.55),
-            shape: const CircleBorder(),
-            elevation: 1,
-            child: IconButton(
-              icon: Icon(left ? Icons.chevron_left : Icons.chevron_right),
-              color: scheme.primary,
-              onPressed: () => _goToPage(left ? -1 : 1),
-            ),
+  Widget _buildArrow(ColorScheme scheme, {required bool left}) {
+    // Кнопки нельзя ставить у самой кромки экрана. На Android с жестовой
+    // навигацией полоса шириной около двух десятков точек по краям отдана
+    // системному жесту «назад»: нажатие там до приложения не доходит вовсе, и
+    // кнопка выглядит нерабочей. Отступ берём у самой системы, а не константой,
+    // потому что у разных прошивок полоса разной ширины.
+    final gestures = MediaQuery.of(context).systemGestureInsets;
+    final inset = (left ? gestures.left : gestures.right) + 6;
+
+    return Positioned(
+      left: left ? inset : null,
+      right: left ? null : inset,
+      top: 0,
+      bottom: 0,
+      child: Center(
+        child: Material(
+          color: scheme.surface.withValues(alpha: 0.75),
+          shape: const CircleBorder(),
+          elevation: 2,
+          child: IconButton(
+            iconSize: 28,
+            tooltip: left ? 'Предыдущая страница' : 'Следующая страница',
+            icon: Icon(left ? Icons.chevron_left : Icons.chevron_right),
+            color: scheme.primary,
+            onPressed: () => _goToPage(left ? -1 : 1),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 /// Прокрутка/листание читалки.
@@ -914,11 +926,21 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Padding(
+        // Отступ снизу складывается из клавиатуры и системной навигации.
+        // Приложение рисует под строку навигации (edgeToEdge), и без второго
+        // слагаемого низ панели — кнопка «в словарь», таблица форм — уезжал под
+        // кнопки Android. На Android 15 режим edge-to-edge включён всегда,
+        // поэтому это видно у всех.
+        //
+        // MediaQuery.padding уже вычитает viewInsets, так что при открытой
+        // клавиатуре слагаемые не складываются дважды.
         padding: EdgeInsets.only(
           left: 20,
           right: 20,
           top: 8,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+          bottom: MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.of(context).padding.bottom +
+              24,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

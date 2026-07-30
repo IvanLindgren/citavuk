@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.6.4+23
+version: 1.6.5+24
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -43,6 +43,10 @@ dependencies:
   # с flutter_web_auth_2; объявлен явно, потому что используется напрямую.
   window_to_front: ^0.0.4
   desktop_drop: ^0.7.1
+  # Чтение файла по пути одинаково на всех платформах, включая веб, где dart:io
+  # нет. Приходил транзитивно с desktop_drop; объявлен явно, потому что
+  # используется напрямую при импорте книги.
+  cross_file: ^0.3.4
   flutter_local_notifications: ^22.2.0
   timezone: ^0.11.1
   flutter_timezone: ^5.1.0
@@ -119,7 +123,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.6.4
+  version: 1.6.5
   publisher: Denis Kornilov
   languages:
     - english

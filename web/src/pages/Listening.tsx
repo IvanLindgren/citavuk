@@ -148,7 +148,11 @@ function LessonPreview({
             </p>
             <div className="mt-3 flex flex-wrap gap-3 text-xs font-semibold text-[var(--text-muted)]">
               {minutes && <span>{minutes} мин</span>}
-              <span>{lesson.transcript_url ? 'Полный транскрипт' : `${lesson.cues.length} фраз`}</span>
+              <span>
+                {lesson.transcript_url
+                  ? 'Транскрипт по аудио'
+                  : 'Транскрипт готовится'}
+              </span>
             </div>
           </div>
         </div>

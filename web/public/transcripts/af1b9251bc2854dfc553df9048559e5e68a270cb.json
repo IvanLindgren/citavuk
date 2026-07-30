@@ -1,0 +1,2775 @@
+{
+ "duration": 1871.23,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.62,
+   "end": 32.82,
+   "text": "Hello everyone! Hello everyone!"
+  },
+  {
+   "start": 32.82,
+   "end": 33.84,
+   "text": "Here's Ivana and..."
+  },
+  {
+   "start": 34.24,
+   "end": 36.1,
+   "text": "Here's Maki. How are you?"
+  },
+  {
+   "start": 36.68,
+   "end": 38.18,
+   "text": "Good. We did it."
+  },
+  {
+   "start": 38.54,
+   "end": 39.68,
+   "text": "Yes, we did it."
+  },
+  {
+   "start": 39.68,
+   "end": 40.4,
+   "text": "You?"
+  },
+  {
+   "start": 42.62,
+   "end": 47.5,
+   "text": "I'm comfortable. That means..."
+  },
+  {
+   "start": 47.5,
+   "end": 49.94,
+   "text": "How comfortable? Like hardworking."
+  },
+  {
+   "start": 50.42,
+   "end": 51.66,
+   "text": "Hardworking. Ah, okay."
+  },
+  {
+   "start": 51.66,
+   "end": 52.62,
+   "text": "Alright."
+  },
+  {
+   "start": 54.96,
+   "end": 59.04,
+   "text": "That's why I wanted to say like, you know, you're tired because you're hardworking."
+  },
+  {
+   "start": 59.76,
+   "end": 66.72,
+   "text": "oh that's kind of true so but we are brave enough to dive into"
+  },
+  {
+   "start": 66.72,
+   "end": 67.8,
+   "text": "cases today with you"
+  },
+  {
+   "start": 67.8,
+   "end": 72.7,
+   "text": "i wanted to say you're gonna work some more sorry you're tired we're gonna"
+  },
+  {
+   "start": 72.7,
+   "end": 72.92,
+   "text": "work some more"
+  },
+  {
+   "start": 72.92,
+   "end": 79.92,
+   "text": "but i'm prepared a little bit so cases padiji padiji"
+  },
+  {
+   "start": 79.92,
+   "end": 85.08,
+   "text": "oh by the way did you know that there's a town called Padezh here"
+  },
+  {
+   "start": 85.08,
+   "end": 85.2,
+   "text": "South Serbia. No."
+  },
+  {
+   "start": 85.2,
+   "end": 85.5,
+   "text": "in the"
+  },
+  {
+   "start": 87.18,
+   "end": 89.22,
+   "text": "Is it near? Yes, near Khrushchev."
+  },
+  {
+   "start": 89.22,
+   "end": 91.12,
+   "text": "I don't know how close, but"
+  },
+  {
+   "start": 91.12,
+   "end": 92.84,
+   "text": "I just saw it on map."
+  },
+  {
+   "start": 92.84,
+   "end": 95.82,
+   "text": "Padezh! They have a town called Kays."
+  },
+  {
+   "start": 96.06,
+   "end": 96.9,
+   "text": "We have to hear how many"
+  },
+  {
+   "start": 96.9,
+   "end": 98.44,
+   "text": "Kays they use."
+  },
+  {
+   "start": 98.44,
+   "end": 99.08,
+   "text": "Maybe they just use"
+  },
+  {
+   "start": 99.08,
+   "end": 100.8,
+   "text": "one. Because"
+  },
+  {
+   "start": 100.8,
+   "end": 103.64,
+   "text": "Padezh, it's singular, right?"
+  },
+  {
+   "start": 103.7,
+   "end": 104.88,
+   "text": "Padezh is plural."
+  },
+  {
+   "start": 104.88,
+   "end": 105.18,
+   "text": "So maybe it's like"
+  },
+  {
+   "start": 105.18,
+   "end": 107.14,
+   "text": "over here we use"
+  },
+  {
+   "start": 107.14,
+   "end": 109.9,
+   "text": "one Kays. Yeah, makes sense."
+  },
+  {
+   "start": 110.28,
+   "end": 111.76,
+   "text": "I need to visit and ask them."
+  },
+  {
+   "start": 112.34,
+   "end": 113.66,
+   "text": "Everyone needs to visit."
+  },
+  {
+   "start": 114.48,
+   "end": 115.5,
+   "text": "Okay, yeah, cases."
+  },
+  {
+   "start": 115.5,
+   "end": 120.68,
+   "text": "And I think it's maybe the most, I don't want to say hated aspect."
+  },
+  {
+   "start": 121.52,
+   "end": 122.88,
+   "text": "Challenging, I would say."
+  },
+  {
+   "start": 122.88,
+   "end": 126.5,
+   "text": "But challenging. I think it's like you just need time."
+  },
+  {
+   "start": 126.76,
+   "end": 129.88,
+   "text": "You just need time and practice and, you know, because there's so many rules."
+  },
+  {
+   "start": 131.44,
+   "end": 132.62,
+   "text": "I don't blame cases."
+  },
+  {
+   "start": 132.82,
+   "end": 137.36,
+   "text": "It's themselves. I blame the gender more because cases are understandable."
+  },
+  {
+   "start": 137.36,
+   "end": 139.3,
+   "text": "They exist in almost every language."
+  },
+  {
+   "start": 139.3,
+   "end": 144.28,
+   "text": "But when you add the gender case together, that makes it challenging for me."
+  },
+  {
+   "start": 145.04,
+   "end": 148.36,
+   "text": "Yeah, three genders and then seven cases."
+  },
+  {
+   "start": 149.5,
+   "end": 150.06,
+   "text": "And then plurals."
+  },
+  {
+   "start": 150.42,
+   "end": 154.64,
+   "text": "Because if you think about it, for example, in Germany, or like in German,"
+  },
+  {
+   "start": 154.64,
+   "end": 156.36,
+   "text": "you have three genders."
+  },
+  {
+   "start": 156.94,
+   "end": 159.04,
+   "text": "But in plural, you only use one gender."
+  },
+  {
+   "start": 160.0,
+   "end": 166.64,
+   "text": "so there's a massive massive like deduction of what i need to learn perfect"
+  },
+  {
+   "start": 166.64,
+   "end": 167.42,
+   "text": "deduction i love it"
+  },
+  {
+   "start": 167.42,
+   "end": 173.94,
+   "text": "yeah so that's true quite quite challenging so that's why i'm saying it's gonna"
+  },
+  {
+   "start": 173.94,
+   "end": 174.32,
+   "text": "take a while but"
+  },
+  {
+   "start": 174.32,
+   "end": 178.62,
+   "text": "honestly i feel like even with english like i've been learning it for such"
+  },
+  {
+   "start": 178.62,
+   "end": 179.0,
+   "text": "a long time and"
+  },
+  {
+   "start": 179.0,
+   "end": 185.6,
+   "text": "i still make mistakes you know still like forget and relearn so it's uh"
+  },
+  {
+   "start": 185.6,
+   "end": 192.44,
+   "text": "it's okay it's okay be compassionate start from somewhere that's it yeah so i"
+  },
+  {
+   "start": 192.44,
+   "end": 193.92,
+   "text": "haven't really like i learned"
+  },
+  {
+   "start": 193.92,
+   "end": 197.9,
+   "text": "about cases in my school and it was literally what we would learn would"
+  },
+  {
+   "start": 197.9,
+   "end": 198.9,
+   "text": "just be like the question"
+  },
+  {
+   "start": 198.9,
+   "end": 203.54,
+   "text": "words right so it would be who what and so on and because it"
+  },
+  {
+   "start": 203.54,
+   "end": 209.1,
+   "text": "was so intuitive for us um we didn't need to understand exactly when you"
+  },
+  {
+   "start": 209.1,
+   "end": 213.9,
+   "text": "use it like all the yeah the uses all the meanings so yeah That's"
+  },
+  {
+   "start": 213.9,
+   "end": 215.6,
+   "text": "funny though, like as a foreigner,"
+  },
+  {
+   "start": 215.6,
+   "end": 218.19,
+   "text": "those questions do not make the same sense to you."
+  },
+  {
+   "start": 218.19,
+   "end": 218.37,
+   "text": "they are not helpful actually i just wrote them there because i know you"
+  },
+  {
+   "start": 218.37,
+   "end": 218.65,
+   "text": "so"
+  },
+  {
+   "start": 222.17,
+   "end": 223.13,
+   "text": "guys learn because whenever"
+  },
+  {
+   "start": 223.13,
+   "end": 227.45,
+   "text": "i ask which part is it they are like they're going over the questions"
+  },
+  {
+   "start": 227.45,
+   "end": 228.91,
+   "text": "and like to me those"
+  },
+  {
+   "start": 228.91,
+   "end": 233.85,
+   "text": "questions are even also they make no sense because for you how can they"
+  },
+  {
+   "start": 233.85,
+   "end": 234.49,
+   "text": "make any sense because if you"
+  },
+  {
+   "start": 234.49,
+   "end": 238.61,
+   "text": "ask the question you don't have the grammar necessary to answer it so how"
+  },
+  {
+   "start": 238.61,
+   "end": 242.75,
+   "text": "does it make sense for you so they were tailored for us and um"
+  },
+  {
+   "start": 242.75,
+   "end": 246.77,
+   "text": "also i never learned the endings of of cases"
+  },
+  {
+   "start": 246.77,
+   "end": 253.73,
+   "text": "right so because i knew what the endings were yeah yeah you were not"
+  },
+  {
+   "start": 253.73,
+   "end": 254.31,
+   "text": "asked multiple choice"
+  },
+  {
+   "start": 254.31,
+   "end": 258.99,
+   "text": "questions on which adding which ending would come there no the only thing is"
+  },
+  {
+   "start": 258.99,
+   "end": 259.79,
+   "text": "that we would learn some"
+  },
+  {
+   "start": 259.79,
+   "end": 266.73,
+   "text": "uses like um you know nominative is usually like the subject of sentences and"
+  },
+  {
+   "start": 266.73,
+   "end": 271.15,
+   "text": "stuff like that but really wasn't in a lot of depth and uh so"
+  },
+  {
+   "start": 271.15,
+   "end": 274.67,
+   "text": "these are the kind of two things uses and uh question"
+  },
+  {
+   "start": 274.67,
+   "end": 278.83,
+   "text": "words but everything else like i'm actually curious to see what you're gonna say"
+  },
+  {
+   "start": 278.83,
+   "end": 279.17,
+   "text": "about cases"
+  },
+  {
+   "start": 279.17,
+   "end": 285.67,
+   "text": "so when i was trying to get some information online about them i realized"
+  },
+  {
+   "start": 285.67,
+   "end": 286.97,
+   "text": "yeah they're like"
+  },
+  {
+   "start": 286.97,
+   "end": 292.97,
+   "text": "when you call them seven cases they are very scary right but i learned"
+  },
+  {
+   "start": 292.97,
+   "end": 299.67,
+   "text": "that actually those dative and locative ones are not that different and um the"
+  },
+  {
+   "start": 299.67,
+   "end": 301.85,
+   "text": "vocative one is is only used when you"
+  },
+  {
+   "start": 301.85,
+   "end": 306.73,
+   "text": "call out someone so that's why i just took them out i mean not"
+  },
+  {
+   "start": 306.73,
+   "end": 308.71,
+   "text": "to fill out but i i lowered the"
+  },
+  {
+   "start": 308.71,
+   "end": 313.95,
+   "text": "number for me yeah i think i put the vocative back in but just"
+  },
+  {
+   "start": 313.95,
+   "end": 314.83,
+   "text": "to mention it but not to"
+  },
+  {
+   "start": 314.83,
+   "end": 320.71,
+   "text": "like one sentence about it sorry i was like why isn't vocative there but"
+  },
+  {
+   "start": 320.71,
+   "end": 324.87,
+   "text": "uh there was it was quite funny, you asked me one question, like you"
+  },
+  {
+   "start": 324.87,
+   "end": 327.69,
+   "text": "wrote it in the notes, which was, does it matter what the"
+  },
+  {
+   "start": 327.69,
+   "end": 331.87,
+   "text": "order is of the cases and actually it really does matter because this is"
+  },
+  {
+   "start": 331.87,
+   "end": 337.67,
+   "text": "the only order like we learn it by heart you know and uh so"
+  },
+  {
+   "start": 337.67,
+   "end": 345.31,
+   "text": "it's always nominative genitive bativ accusative vocative instrumental locative"
+  },
+  {
+   "start": 345.31,
+   "end": 350.35,
+   "text": "so why is the order important i don't really know but it's i think"
+  },
+  {
+   "start": 350.35,
+   "end": 355.31,
+   "text": "just the you just pick like the what the rule is going to be"
+  },
+  {
+   "start": 355.31,
+   "end": 356.01,
+   "text": "in grammar obviously"
+  },
+  {
+   "start": 356.01,
+   "end": 360.03,
+   "text": "it doesn't really matter for you when you use it but for example in"
+  },
+  {
+   "start": 360.03,
+   "end": 361.77,
+   "text": "german they have an obsolete"
+  },
+  {
+   "start": 361.77,
+   "end": 367.23,
+   "text": "order and a new or a way of of like teaching that or like"
+  },
+  {
+   "start": 367.23,
+   "end": 369.37,
+   "text": "ordering them so you just pick what the"
+  },
+  {
+   "start": 369.37,
+   "end": 372.25,
+   "text": "standard is going to be but as far as i know in serbian this"
+  },
+  {
+   "start": 372.25,
+   "end": 377.31,
+   "text": "is the only one that i've heard the only order i see so nominative"
+  },
+  {
+   "start": 377.31,
+   "end": 380.21,
+   "text": "is the first one makes sense you first need to learn the nouns"
+  },
+  {
+   "start": 380.21,
+   "end": 385.93,
+   "text": "right yeah you need to learn the basic form so and when you think"
+  },
+  {
+   "start": 385.93,
+   "end": 387.07,
+   "text": "of english accusative should"
+  },
+  {
+   "start": 387.07,
+   "end": 392.41,
+   "text": "come the second because it's the object like direct object that's why i was"
+  },
+  {
+   "start": 392.41,
+   "end": 393.13,
+   "text": "like for me i"
+  },
+  {
+   "start": 393.13,
+   "end": 398.35,
+   "text": "wanted to learn accusative first but then i realized genitive is used differently in"
+  },
+  {
+   "start": 398.35,
+   "end": 403.03,
+   "text": "serbian so let's go for genitive in the second place yeah i think genitive"
+  },
+  {
+   "start": 403.03,
+   "end": 406.11,
+   "text": "is really useful you know um"
+  },
+  {
+   "start": 408.13,
+   "end": 412.35,
+   "text": "anyway did you want to mention these things before um in the intro before"
+  },
+  {
+   "start": 412.35,
+   "end": 413.19,
+   "text": "uh we start"
+  },
+  {
+   "start": 413.19,
+   "end": 417.29,
+   "text": "naming them or do you want to give some tips as a learner like"
+  },
+  {
+   "start": 417.29,
+   "end": 424.01,
+   "text": "before we start talking about yeah actually my tip was like i said first"
+  },
+  {
+   "start": 424.01,
+   "end": 428.27,
+   "text": "of all try to put them in and uh try to lower the number"
+  },
+  {
+   "start": 428.27,
+   "end": 432.65,
+   "text": "like try to put them in similar, find the similarities in between"
+  },
+  {
+   "start": 432.65,
+   "end": 434.69,
+   "text": "and then work on them that way."
+  },
+  {
+   "start": 434.69,
+   "end": 436.79,
+   "text": "So instead of diving it"
+  },
+  {
+   "start": 436.9,
+   "end": 441.84,
+   "text": "one by one so try to categorize them was useful kind of useful for"
+  },
+  {
+   "start": 441.84,
+   "end": 442.98,
+   "text": "me at least i wasn't scared"
+  },
+  {
+   "start": 442.98,
+   "end": 447.94,
+   "text": "after doing that and in the one interesting thing what you said is like"
+  },
+  {
+   "start": 447.94,
+   "end": 452.18,
+   "text": "a dative and locative were have the same form i never thought about that"
+  },
+  {
+   "start": 452.18,
+   "end": 455.72,
+   "text": "ever and only when i checked the forms like"
+  },
+  {
+   "start": 455.72,
+   "end": 461.1,
+   "text": "later i was like oh wow it is the same form um right dative"
+  },
+  {
+   "start": 461.1,
+   "end": 467.16,
+   "text": "and locative if i'm not mistaken yeah okay so um the first one that"
+  },
+  {
+   "start": 467.16,
+   "end": 468.6,
+   "text": "we're going to talk about because nominative we're not going"
+  },
+  {
+   "start": 468.6,
+   "end": 473.94,
+   "text": "to talk about nominative right so yeah uh genitive you wrote the case for"
+  },
+  {
+   "start": 473.94,
+   "end": 480.24,
+   "text": "prepositions yes this was the important aspect of it for me because i never"
+  },
+  {
+   "start": 480.24,
+   "end": 480.58,
+   "text": "thought of genitive"
+  },
+  {
+   "start": 480.58,
+   "end": 486.94,
+   "text": "for prepositions like in turkish or in english but now when i learned it"
+  },
+  {
+   "start": 486.94,
+   "end": 489.0,
+   "text": "i was wow enlightened"
+  },
+  {
+   "start": 490.58,
+   "end": 494.2,
+   "text": "and if you're interested in more information we're going to put all of the"
+  },
+  {
+   "start": 494.8,
+   "end": 498.78,
+   "text": "positions in the transcript on patreon so you can check that out uh but"
+  },
+  {
+   "start": 498.78,
+   "end": 499.62,
+   "text": "we don't want to overwhelm"
+  },
+  {
+   "start": 499.62,
+   "end": 504.58,
+   "text": "you right now with all of this so we use genitive i wrote down"
+  },
+  {
+   "start": 504.58,
+   "end": 507.72,
+   "text": "like two uses obviously has way more"
+  },
+  {
+   "start": 507.72,
+   "end": 513.12,
+   "text": "we're not going to focus on everything so i wrote possessions or belonging and"
+  },
+  {
+   "start": 513.12,
+   "end": 519.94,
+   "text": "or possession belonging or a part of something you remember like kafa cafe and"
+  },
+  {
+   "start": 519.94,
+   "end": 522.74,
+   "text": "uh origin so these are some of"
+  },
+  {
+   "start": 522.74,
+   "end": 527.48,
+   "text": "the most important uses for me more frequent ones yeah so what do we"
+  },
+  {
+   "start": 527.48,
+   "end": 528.14,
+   "text": "mean by possession"
+  },
+  {
+   "start": 528.14,
+   "end": 534.5,
+   "text": "for belonging is like this is my mom's house when you say that you"
+  },
+  {
+   "start": 534.5,
+   "end": 537.02,
+   "text": "need the genitive form in Serbian."
+  },
+  {
+   "start": 538.14,
+   "end": 540.28,
+   "text": "Ovo je kuća moje mame."
+  },
+  {
+   "start": 540.84,
+   "end": 542.3,
+   "text": "Moje mame, yes."
+  },
+  {
+   "start": 543.26,
+   "end": 544.68,
+   "text": "Mama od koga čega?"
+  },
+  {
+   "start": 544.68,
+   "end": 546.16,
+   "text": "Od mame. Sorry."
+  },
+  {
+   "start": 546.58,
+   "end": 548.0,
+   "text": "Oh, we didn't mention the questions,"
+  },
+  {
+   "start": 548.0,
+   "end": 549.3,
+   "text": "but we can mention them separately."
+  },
+  {
+   "start": 550.02,
+   "end": 551.12,
+   "text": "Yeah, koga čega."
+  },
+  {
+   "start": 551.36,
+   "end": 552.08,
+   "text": "What does it mean?"
+  },
+  {
+   "start": 552.18,
+   "end": 553.06,
+   "text": "What do they mean?"
+  },
+  {
+   "start": 553.68,
+   "end": 556.42,
+   "text": "So I can try to translate it literally,"
+  },
+  {
+   "start": 556.42,
+   "end": 558.36,
+   "text": "but honestly, in the context,"
+  },
+  {
+   "start": 558.36,
+   "end": 559.14,
+   "text": "it only makes sense."
+  },
+  {
+   "start": 559.14,
+   "end": 562.28,
+   "text": "Od koga čega or od koga čega"
+  },
+  {
+   "start": 562.28,
+   "end": 565.1,
+   "text": "means from whom, from what."
+  },
+  {
+   "start": 566.08,
+   "end": 567.22,
+   "text": "From whom, from what."
+  },
+  {
+   "start": 567.94,
+   "end": 570.14,
+   "text": "Or of whom, of what, maybe."
+  },
+  {
+   "start": 570.14,
+   "end": 574.92,
+   "text": "or of whom yeah because odd for me would always be like more used"
+  },
+  {
+   "start": 574.92,
+   "end": 576.34,
+   "text": "as from but in this context it"
+  },
+  {
+   "start": 576.34,
+   "end": 582.44,
+   "text": "will probably be of but the tricky thing is those prepositions sometimes can appear"
+  },
+  {
+   "start": 582.44,
+   "end": 582.88,
+   "text": "in locative as"
+  },
+  {
+   "start": 582.88,
+   "end": 590.58,
+   "text": "well right yeah that's the thing i think then the verb has"
+  },
+  {
+   "start": 590.58,
+   "end": 595.88,
+   "text": "the role yeah no i want to say because it's possession and belonging uh"
+  },
+  {
+   "start": 595.88,
+   "end": 600.08,
+   "text": "you wrote down the word verb imati right to have it actually"
+  },
+  {
+   "start": 600.08,
+   "end": 605.74,
+   "text": "makes sense doesn't it yeah yeah i mean when you have something it's part"
+  },
+  {
+   "start": 605.74,
+   "end": 607.64,
+   "text": "of you so it belongs to"
+  },
+  {
+   "start": 607.64,
+   "end": 612.06,
+   "text": "you that's why it's in genital form but when i look at the structure"
+  },
+  {
+   "start": 612.06,
+   "end": 616.08,
+   "text": "it look it should be accusative in my mind so that's why i worked"
+  },
+  {
+   "start": 616.08,
+   "end": 621.44,
+   "text": "hard to change it so and i think this is the part where it"
+  },
+  {
+   "start": 621.44,
+   "end": 624.94,
+   "text": "will be it's like a part of something or like you remember when i"
+  },
+  {
+   "start": 624.94,
+   "end": 626.34,
+   "text": "talked to you about coffee like"
+  },
+  {
+   "start": 626.34,
+   "end": 631.66,
+   "text": "just a bit uh a lot if you want to don't want to specify"
+  },
+  {
+   "start": 631.66,
+   "end": 635.36,
+   "text": "like one or two or anything like that or like some give me some"
+  },
+  {
+   "start": 635.36,
+   "end": 640.14,
+   "text": "coffee then it will be um genitive that's the part of something bigger or"
+  },
+  {
+   "start": 640.14,
+   "end": 645.84,
+   "text": "smaller part okay so so i don't have any coffee then it would be"
+  },
+  {
+   "start": 645.84,
+   "end": 647.8,
+   "text": "genitive again Nemam kafe."
+  },
+  {
+   "start": 649.42,
+   "end": 651.02,
+   "text": "can say nemam kafe, nemam kafu."
+  },
+  {
+   "start": 651.56,
+   "end": 652.32,
+   "text": "It's fine."
+  },
+  {
+   "start": 652.32,
+   "end": 652.96,
+   "text": "Both are fine."
+  },
+  {
+   "start": 653.14,
+   "end": 656.64,
+   "text": "Yeah. Okay. And then we actually have..."
+  },
+  {
+   "start": 656.96,
+   "end": 658.01,
+   "text": "So this is the genitive."
+  },
+  {
+   "start": 658.01,
+   "end": 658.29,
+   "text": "is like part of something origin possessions belonging. So this"
+  },
+  {
+   "start": 661.31,
+   "end": 663.91,
+   "text": "Can we move to dative?"
+  },
+  {
+   "start": 663.91,
+   "end": 664.35,
+   "text": "Yeah, we can."
+  },
+  {
+   "start": 664.35,
+   "end": 671.55,
+   "text": "Okay. Dative again also is used with some prepositions and it's usually"
+  },
+  {
+   "start": 671.55,
+   "end": 678.09,
+   "text": "used as like an indirect object um another one that i know is quite"
+  },
+  {
+   "start": 678.09,
+   "end": 681.65,
+   "text": "frequent is uh for directions so uh if"
+  },
+  {
+   "start": 681.65,
+   "end": 687.51,
+   "text": "whenever you think i'm going towards something or someone it is dative so that"
+  },
+  {
+   "start": 687.51,
+   "end": 687.93,
+   "text": "action that you are"
+  },
+  {
+   "start": 687.93,
+   "end": 693.45,
+   "text": "moving and um so if you want to say i'm going in your direction"
+  },
+  {
+   "start": 693.45,
+   "end": 696.59,
+   "text": "or actually it would be i'm going"
+  },
+  {
+   "start": 697.83,
+   "end": 700.31,
+   "text": "to you. That's how it will be translated."
+  },
+  {
+   "start": 700.93,
+   "end": 702.17,
+   "text": "Idem ka tebi."
+  },
+  {
+   "start": 703.05,
+   "end": 704.03,
+   "text": "Hmm, ka tebi."
+  },
+  {
+   "start": 704.27,
+   "end": 706.59,
+   "text": "Tebi is the data form there."
+  },
+  {
+   "start": 706.67,
+   "end": 706.93,
+   "text": "Yeah."
+  },
+  {
+   "start": 708.31,
+   "end": 711.01,
+   "text": "The question word is kome cemu."
+  },
+  {
+   "start": 712.99,
+   "end": 714.07,
+   "text": "To where, to whom."
+  },
+  {
+   "start": 714.67,
+   "end": 717.71,
+   "text": "Exactly, exactly. And then the indirect object,"
+  },
+  {
+   "start": 717.71,
+   "end": 720.69,
+   "text": "which is a typical example."
+  },
+  {
+   "start": 720.69,
+   "end": 722.11,
+   "text": "Yeah, but I have a question."
+  },
+  {
+   "start": 722.11,
+   "end": 723.15,
+   "text": "Which one is the indirect?"
+  },
+  {
+   "start": 723.53,
+   "end": 724.41,
+   "text": "Her or gift?"
+  },
+  {
+   "start": 724.67,
+   "end": 726.69,
+   "text": "Like I gave her a gift."
+  },
+  {
+   "start": 726.95,
+   "end": 728.47,
+   "text": "Her is the indirect one."
+  },
+  {
+   "start": 729.03,
+   "end": 730.63,
+   "text": "And a gift is a direct object."
+  },
+  {
+   "start": 731.27,
+   "end": 735.87,
+   "text": "So her or in this case, it is actually, again, to her."
+  },
+  {
+   "start": 735.87,
+   "end": 736.93,
+   "text": "Because that's how we say it in..."
+  },
+  {
+   "start": 736.93,
+   "end": 739.17,
+   "text": "You can say I gave a gift to her."
+  },
+  {
+   "start": 740.75,
+   "end": 742.11,
+   "text": "Dala samyo poklon."
+  },
+  {
+   "start": 744.61,
+   "end": 745.95,
+   "text": "So that yo is..."
+  },
+  {
+   "start": 746.51,
+   "end": 747.55,
+   "text": "It's actually a funny word."
+  },
+  {
+   "start": 748.07,
+   "end": 749.03,
+   "text": "Yeah, yo, yo, yo."
+  },
+  {
+   "start": 750.35,
+   "end": 754.09,
+   "text": "Because you can use it like, oh, yo, you know, like, oh, man."
+  },
+  {
+   "start": 754.09,
+   "end": 761.01,
+   "text": "Like, yo. So, for example, you said direction."
+  },
+  {
+   "start": 761.01,
+   "end": 764.19,
+   "text": "So, what is nasuprot?"
+  },
+  {
+   "start": 765.03,
+   "end": 766.75,
+   "text": "Nasuprot. Oh, my God."
+  },
+  {
+   "start": 766.75,
+   "end": 771.03,
+   "text": "In this case, it would be like the opposite, if I remember."
+  },
+  {
+   "start": 772.25,
+   "end": 772.39,
+   "text": "Okay. But I think, yeah, but here it would be like, oh, you can Yeah."
+  },
+  {
+   "start": 777.73,
+   "end": 778.97,
+   "text": "also use, instead of ka, you can"
+  },
+  {
+   "start": 778.97,
+   "end": 781.33,
+   "text": "use prema. Prema."
+  },
+  {
+   "start": 781.33,
+   "end": 782.69,
+   "text": "And then prema tebi."
+  },
+  {
+   "start": 783.47,
+   "end": 784.61,
+   "text": "So it's like towards."
+  },
+  {
+   "start": 784.93,
+   "end": 788.61,
+   "text": "Yeah. These are more frequent than..."
+  },
+  {
+   "start": 788.61,
+   "end": 793.13,
+   "text": "You're not going to hear nasuprot quite often, actually, but it is still used."
+  },
+  {
+   "start": 793.71,
+   "end": 795.17,
+   "text": "I see. Okay, good."
+  },
+  {
+   "start": 796.75,
+   "end": 799.21,
+   "text": "Before we continue with the show, here's a quick reminder."
+  },
+  {
+   "start": 799.77,
+   "end": 803.29,
+   "text": "This podcast is free for everyone and supported by listeners like you."
+  },
+  {
+   "start": 803.75,
+   "end": 806.63,
+   "text": "We hope that this podcast is useful and companion to you."
+  },
+  {
+   "start": 807.21,
+   "end": 809.15,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 809.61,
+   "end": 811.91,
+   "text": "To help us continue creating useful content for everyone,"
+  },
+  {
+   "start": 811.91,
+   "end": 814.11,
+   "text": "we will appreciate your help."
+  },
+  {
+   "start": 814.55,
+   "end": 817.61,
+   "text": "If you have the means, you can support us in different ways."
+  },
+  {
+   "start": 818.07,
+   "end": 823.95,
+   "text": "You may just go to buymeacoffee.com slash mozdecafapodcast and send us some cups of"
+  },
+  {
+   "start": 823.95,
+   "end": 829.71,
+   "text": "coffee. You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 829.71,
+   "end": 835.27,
+   "text": "and get extra benefits like bonus content, full transcripts of the show in Serbian,"
+  },
+  {
+   "start": 835.39,
+   "end": 836.89,
+   "text": "or even join us on the show."
+  },
+  {
+   "start": 837.75,
+   "end": 841.91,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 841.91,
+   "end": 846.53,
+   "text": "culture. thanks for joining us today and now let's get back to our episode"
+  },
+  {
+   "start": 846.53,
+   "end": 848.39,
+   "text": "and my favorite i love this"
+  },
+  {
+   "start": 848.39,
+   "end": 856.63,
+   "text": "case more than the others because it's because it makes more sense yeah so"
+  },
+  {
+   "start": 856.63,
+   "end": 856.87,
+   "text": "accusative"
+  },
+  {
+   "start": 856.87,
+   "end": 863.99,
+   "text": "which is uh for the direct object right yes and yes that is"
+  },
+  {
+   "start": 863.99,
+   "end": 865.79,
+   "text": "important because the when you start"
+  },
+  {
+   "start": 865.79,
+   "end": 871.09,
+   "text": "learning like what a sentence is you start learning like okay verb subject and"
+  },
+  {
+   "start": 871.09,
+   "end": 873.55,
+   "text": "then object You know, like that's what you learn."
+  },
+  {
+   "start": 874.44,
+   "end": 881.54,
+   "text": "so um the questions are koga shita koga shita we didn't mention for"
+  },
+  {
+   "start": 881.54,
+   "end": 882.22,
+   "text": "nominative it's"
+  },
+  {
+   "start": 882.22,
+   "end": 889.22,
+   "text": "and for accusative it's koga shita so it doesn't change the what"
+  },
+  {
+   "start": 889.22,
+   "end": 896.44,
+   "text": "doesn't change the the form but um so i still i said"
+  },
+  {
+   "start": 896.44,
+   "end": 900.78,
+   "text": "an object of the sentence with transitive verbs but I also wanted to add"
+  },
+  {
+   "start": 900.78,
+   "end": 904.72,
+   "text": "for wishes because I think this is such a never even thought about it"
+  },
+  {
+   "start": 904.72,
+   "end": 912.04,
+   "text": "this is such a beginning beginners like like lesson you know like"
+  },
+  {
+   "start": 912.04,
+   "end": 912.94,
+   "text": "you it's like one of the"
+  },
+  {
+   "start": 912.94,
+   "end": 916.9,
+   "text": "first things you learn how to say and that's why you use accusative and"
+  },
+  {
+   "start": 916.9,
+   "end": 917.82,
+   "text": "then also I wanted to"
+  },
+  {
+   "start": 917.82,
+   "end": 924.12,
+   "text": "mention the adverb of time because uh again that's used a lot yeah quite"
+  },
+  {
+   "start": 924.12,
+   "end": 928.58,
+   "text": "a lot so a very simple thing I wrote a novel"
+  },
+  {
+   "start": 929.82,
+   "end": 931.1,
+   "text": "novel right is the direct object"
+  },
+  {
+   "start": 931.1,
+   "end": 937.4,
+   "text": "and you would say napisala sam roman for women napisao sam"
+  },
+  {
+   "start": 937.4,
+   "end": 940.7,
+   "text": "roman for men exactly so roman"
+  },
+  {
+   "start": 940.7,
+   "end": 942.76,
+   "text": "if you say it in nominative"
+  },
+  {
+   "start": 942.76,
+   "end": 945.08,
+   "text": "it is roman and if you say"
+  },
+  {
+   "start": 945.08,
+   "end": 947.1,
+   "text": "accusative koga šta"
+  },
+  {
+   "start": 947.1,
+   "end": 952.66,
+   "text": "roman again so that's šta as an example roman"
+  },
+  {
+   "start": 952.66,
+   "end": 959.22,
+   "text": "also didn't change as the question did not because yeah okay but with people"
+  },
+  {
+   "start": 959.22,
+   "end": 965.48,
+   "text": "that can change right uh yeah i texted you for example"
+  },
+  {
+   "start": 965.48,
+   "end": 970.84,
+   "text": "how do you know how would you say uh ivana in accusative"
+  },
+  {
+   "start": 972.4,
+   "end": 976.06,
+   "text": "i need to see the table here but i don't have"
+  },
+  {
+   "start": 976.06,
+   "end": 980.76,
+   "text": "so actually that was one of the first Ivanu?"
+  },
+  {
+   "start": 981.04,
+   "end": 981.74,
+   "text": "Yeah, exactly."
+  },
+  {
+   "start": 981.74,
+   "end": 983.76,
+   "text": "Good. Vitella sam."
+  },
+  {
+   "start": 984.42,
+   "end": 985.22,
+   "text": "Ivanu. Yes. Good."
+  },
+  {
+   "start": 987.74,
+   "end": 989.82,
+   "text": "This is one of the first rules my boyfriend learned."
+  },
+  {
+   "start": 990.7,
+   "end": 992.42,
+   "text": "And he's not even like learning Serbia."
+  },
+  {
+   "start": 992.9,
+   "end": 996.42,
+   "text": "But because it was kind of like, as you said, like object is just"
+  },
+  {
+   "start": 996.42,
+   "end": 998.16,
+   "text": "like one of the first things that you learn."
+  },
+  {
+   "start": 998.66,
+   "end": 1000.88,
+   "text": "Yeah. And then wishes."
+  },
+  {
+   "start": 1000.9,
+   "end": 1006.34,
+   "text": "and the reason why i use that is because i did not like out"
+  },
+  {
+   "start": 1006.34,
+   "end": 1007.5,
+   "text": "of this because i was not aware of"
+  },
+  {
+   "start": 1007.5,
+   "end": 1016.02,
+   "text": "that at all because uh if you say dobar dan that's actually accusative because"
+  },
+  {
+   "start": 1016.02,
+   "end": 1016.3,
+   "text": "you're saying"
+  },
+  {
+   "start": 1016.3,
+   "end": 1023.44,
+   "text": "i'm wishing you a good day yeah in short yeah no but then so"
+  },
+  {
+   "start": 1023.44,
+   "end": 1028.06,
+   "text": "uh for example i wrote down something like i wish all the best to"
+  },
+  {
+   "start": 1028.06,
+   "end": 1038.56,
+   "text": "you like for a birthday or anything or whatever it is um is"
+  },
+  {
+   "start": 1038.56,
+   "end": 1046.72,
+   "text": "the best and then sve is all what"
+  },
+  {
+   "start": 1046.72,
+   "end": 1054.36,
+   "text": "is the nominative version of nai bolje that's actually a good question but"
+  },
+  {
+   "start": 1054.36,
+   "end": 1058.08,
+   "text": "it's adjective it's the same but I think because this is again"
+  },
+  {
+   "start": 1058.08,
+   "end": 1061.1,
+   "text": "the what, shta, right which doesn't really change"
+  },
+  {
+   "start": 1061.1,
+   "end": 1068.14,
+   "text": "so it should be the naipoli yes that's true želim ti, or like želim"
+  },
+  {
+   "start": 1068.14,
+   "end": 1069.38,
+   "text": "ti lako noć"
+  },
+  {
+   "start": 1070.84,
+   "end": 1071.0,
+   "text": "divandan"
+  },
+  {
+   "start": 1071.0,
+   "end": 1073.4,
+   "text": "and stuff like that"
+  },
+  {
+   "start": 1073.4,
+   "end": 1078.5,
+   "text": "so like all of these things that you hear they're just that's good and"
+  },
+  {
+   "start": 1078.5,
+   "end": 1084.28,
+   "text": "this one uh the adverb of time like on monday on saturday so whenever"
+  },
+  {
+   "start": 1084.28,
+   "end": 1084.76,
+   "text": "you talk about"
+  },
+  {
+   "start": 1084.76,
+   "end": 1088.88,
+   "text": "what you have done or what you're planning to do on some days yeah"
+  },
+  {
+   "start": 1088.88,
+   "end": 1089.6,
+   "text": "you say"
+  },
+  {
+   "start": 1089.6,
+   "end": 1092.62,
+   "text": "yeah this is"
+  },
+  {
+   "start": 1092.62,
+   "end": 1094.14,
+   "text": "like a very specific also to"
+  },
+  {
+   "start": 1094.14,
+   "end": 1101.26,
+   "text": "the days of the week so uh and the nominative"
+  },
+  {
+   "start": 1101.26,
+   "end": 1102.04,
+   "text": "version is subota"
+  },
+  {
+   "start": 1102.04,
+   "end": 1108.5,
+   "text": "yeah so actually it's quite funny because here if you think about what it"
+  },
+  {
+   "start": 1108.5,
+   "end": 1109.06,
+   "text": "does change right"
+  },
+  {
+   "start": 1109.06,
+   "end": 1114.64,
+   "text": "it's kind of like treating it as who in a way yes yes subota"
+  },
+  {
+   "start": 1114.64,
+   "end": 1119.68,
+   "text": "u subotu see you on saturday Do all the days have U suffix?"
+  },
+  {
+   "start": 1119.68,
+   "end": 1124.46,
+   "text": "Like u nedalju, u petaku."
+  },
+  {
+   "start": 1125.08,
+   "end": 1125.36,
+   "text": "No, it's..."
+  },
+  {
+   "start": 1125.36,
+   "end": 1126.54,
+   "text": "Petak."
+  },
+  {
+   "start": 1126.54,
+   "end": 1127.98,
+   "text": "It doesn't change."
+  },
+  {
+   "start": 1128.2,
+   "end": 1128.88,
+   "text": "Well, let me see."
+  },
+  {
+   "start": 1129.28,
+   "end": 1134.44,
+   "text": "U ponedeljak, u utorak, u sredu, u četvrtak."
+  },
+  {
+   "start": 1134.44,
+   "end": 1135.56,
+   "text": "Because it's sreda, right?"
+  },
+  {
+   "start": 1136.18,
+   "end": 1138.3,
+   "text": "The ones who are ending with ak are not changing."
+  },
+  {
+   "start": 1139.06,
+   "end": 1141.82,
+   "text": "So, if it ends with a consonant, then no."
+  },
+  {
+   "start": 1142.14,
+   "end": 1142.74,
+   "text": "So, if it is..."
+  },
+  {
+   "start": 1142.74,
+   "end": 1145.52,
+   "text": "Only if it's a, then it changes to u."
+  },
+  {
+   "start": 1146.12,
+   "end": 1150.46,
+   "text": "I see. A u četvrtak, u petak, u subotu, u?"
+  },
+  {
+   "start": 1151.36,
+   "end": 1153.98,
+   "text": "Medalju. Yay! Exactly."
+  },
+  {
+   "start": 1154.16,
+   "end": 1156.52,
+   "text": "So it's usually for feminine nouns, like ending in A."
+  },
+  {
+   "start": 1158.34,
+   "end": 1158.46,
+   "text": "That's good."
+  },
+  {
+   "start": 1158.46,
+   "end": 1164.56,
+   "text": "Okay. And then vocative, of course, it's just say hi, like greet or call"
+  },
+  {
+   "start": 1164.56,
+   "end": 1164.68,
+   "text": "someone."
+  },
+  {
+   "start": 1164.68,
+   "end": 1167.3,
+   "text": "So you can say..."
+  },
+  {
+   "start": 1167.3,
+   "end": 1168.76,
+   "text": "Čao, Ivane."
+  },
+  {
+   "start": 1171.04,
+   "end": 1172.86,
+   "text": "Actually, for me, it wouldn't work Ivan."
+  },
+  {
+   "start": 1173.06,
+   "end": 1175.22,
+   "text": "Ivane is for guy."
+  },
+  {
+   "start": 1176.02,
+   "end": 1177.64,
+   "text": "Yeah. Ivan and then ciao Ivan"
+  },
+  {
+   "start": 1177.64,
+   "end": 1178.74,
+   "text": "yeah exactly"
+  },
+  {
+   "start": 1178.74,
+   "end": 1183.36,
+   "text": "we usually use the it's not a question word kind of but"
+  },
+  {
+   "start": 1183.36,
+   "end": 1185.46,
+   "text": "we say hey hey like hey"
+  },
+  {
+   "start": 1185.46,
+   "end": 1187.82,
+   "text": "hey you know like hey you"
+  },
+  {
+   "start": 1187.82,
+   "end": 1189.5,
+   "text": "hey you so"
+  },
+  {
+   "start": 1189.5,
+   "end": 1191.56,
+   "text": "that would basically be it so also you can"
+  },
+  {
+   "start": 1191.56,
+   "end": 1197.4,
+   "text": "if you want to say oh Gdesi Gdesi Maki you know Maki doesn't change"
+  },
+  {
+   "start": 1197.4,
+   "end": 1197.5,
+   "text": "as well"
+  },
+  {
+   "start": 1197.5,
+   "end": 1199.8,
+   "text": "no it doesn't a lot of like the names"
+  },
+  {
+   "start": 1199.8,
+   "end": 1201.47,
+   "text": "don't change actually i think a"
+  },
+  {
+   "start": 1201.47,
+   "end": 1206.71,
+   "text": "lot of the uh let me think i guess when you call mom dad"
+  },
+  {
+   "start": 1206.71,
+   "end": 1209.61,
+   "text": "them then they need to change right no"
+  },
+  {
+   "start": 1209.61,
+   "end": 1213.57,
+   "text": "because um it's i think it's the words that end in now i forgot"
+  },
+  {
+   "start": 1213.57,
+   "end": 1214.21,
+   "text": "the rules but i think it's the"
+  },
+  {
+   "start": 1214.21,
+   "end": 1220.19,
+   "text": "words that end in a that don't really change so uh ciao or desi"
+  },
+  {
+   "start": 1220.19,
+   "end": 1227.43,
+   "text": "ivana jovana marina whatever they don't change a lot of the guys"
+  },
+  {
+   "start": 1227.43,
+   "end": 1230.97,
+   "text": "names right change because they end in a consonant that's true"
+  },
+  {
+   "start": 1230.97,
+   "end": 1236.49,
+   "text": "but there are some certain exceptions for the words that end in a and"
+  },
+  {
+   "start": 1236.49,
+   "end": 1236.67,
+   "text": "these are like"
+  },
+  {
+   "start": 1236.67,
+   "end": 1241.75,
+   "text": "there's a specific accent which we're not going to discuss today um but it's"
+  },
+  {
+   "start": 1241.75,
+   "end": 1248.75,
+   "text": "um maya and sarah hey or that's is sarah hey mayo it's"
+  },
+  {
+   "start": 1248.75,
+   "end": 1254.49,
+   "text": "this like accent yeah i know it's a bit prolonged Yeah."
+  },
+  {
+   "start": 1254.49,
+   "end": 1258.49,
+   "text": "Majo. Okay. So, how would you say, hey, mom?"
+  },
+  {
+   "start": 1258.79,
+   "end": 1260.43,
+   "text": "Zdravo, mama. Mama."
+  },
+  {
+   "start": 1260.43,
+   "end": 1261.51,
+   "text": "So, you know, okay."
+  },
+  {
+   "start": 1261.51,
+   "end": 1262.81,
+   "text": "Mama says mama."
+  },
+  {
+   "start": 1264.39,
+   "end": 1269.63,
+   "text": "But it is interesting because I have a friend, Ljubica, and her, and in"
+  },
+  {
+   "start": 1269.63,
+   "end": 1272.43,
+   "text": "A, I would say, ciao, Ljubice."
+  },
+  {
+   "start": 1273.29,
+   "end": 1274.33,
+   "text": "Only you or everyone?"
+  },
+  {
+   "start": 1275.45,
+   "end": 1275.85,
+   "text": "No, no, no, everyone."
+  },
+  {
+   "start": 1275.85,
+   "end": 1279.15,
+   "text": "It's normal. It's a rule."
+  },
+  {
+   "start": 1279.61,
+   "end": 1287.07,
+   "text": "but uh ljubice slavice the maybe this sound maybe maybe"
+  },
+  {
+   "start": 1287.07,
+   "end": 1288.27,
+   "text": "it is that maybe that affects it"
+  },
+  {
+   "start": 1288.27,
+   "end": 1294.93,
+   "text": "okay what about instrumental i like that because yeah it's size used a lot"
+  },
+  {
+   "start": 1294.93,
+   "end": 1295.07,
+   "text": "yeah so the question is with whom with what yes and uh scheme"
+  },
+  {
+   "start": 1295.07,
+   "end": 1295.37,
+   "text": "with"
+  },
+  {
+   "start": 1302.33,
+   "end": 1309.39,
+   "text": "scheme scheme yeah you can say Sakim's actually that was a debate as"
+  },
+  {
+   "start": 1309.39,
+   "end": 1310.69,
+   "text": "some people have used the"
+  },
+  {
+   "start": 1310.69,
+   "end": 1312.35,
+   "text": "slightly different proposition."
+  },
+  {
+   "start": 1312.35,
+   "end": 1316.19,
+   "text": "So someone said that they learned sakim, chime."
+  },
+  {
+   "start": 1316.79,
+   "end": 1318.23,
+   "text": "That's what they would ask."
+  },
+  {
+   "start": 1318.23,
+   "end": 1319.97,
+   "text": "I learned it as a skim,"
+  },
+  {
+   "start": 1319.97,
+   "end": 1320.83,
+   "text": "shchim."
+  },
+  {
+   "start": 1322.11,
+   "end": 1325.33,
+   "text": "So that's why you have sa or s, which is a shortened."
+  },
+  {
+   "start": 1325.75,
+   "end": 1328.35,
+   "text": "And you use it for like, if it's like,"
+  },
+  {
+   "start": 1329.67,
+   "end": 1333.15,
+   "text": "if it's a thing, that it's, you're using something as an instrument."
+  },
+  {
+   "start": 1333.67,
+   "end": 1334.97,
+   "text": "So that's when you should use it."
+  },
+  {
+   "start": 1335.27,
+   "end": 1336.33,
+   "text": "But if it's with people,"
+  },
+  {
+   "start": 1336.33,
+   "end": 1337.71,
+   "text": "then it's a company."
+  },
+  {
+   "start": 1338.53,
+   "end": 1338.71,
+   "text": "For example, Well, to go somewhere by bus, by train, by car. Yeah."
+  },
+  {
+   "start": 1342.21,
+   "end": 1344.67,
+   "text": "In this case, you will use instrumental."
+  },
+  {
+   "start": 1345.79,
+   "end": 1346.71,
+   "text": "So that's an instrument."
+  },
+  {
+   "start": 1346.71,
+   "end": 1350.97,
+   "text": "And then you would say, I came by bus, došla sam autobusom."
+  },
+  {
+   "start": 1351.83,
+   "end": 1354.75,
+   "text": "So autobus becomes autobusom."
+  },
+  {
+   "start": 1355.09,
+   "end": 1358.25,
+   "text": "That som, om suffix is instrumental."
+  },
+  {
+   "start": 1358.61,
+   "end": 1358.77,
+   "text": "Yeah."
+  },
+  {
+   "start": 1360.13,
+   "end": 1362.25,
+   "text": "And then if you want to say, I'm meeting my friends,"
+  },
+  {
+   "start": 1362.25,
+   "end": 1368.03,
+   "text": "then it would be nalazim se, that's meeting, sa drugovima."
+  },
+  {
+   "start": 1369.15,
+   "end": 1376.37,
+   "text": "with friends and they're not instruments but they're actually a company right so okay"
+  },
+  {
+   "start": 1376.37,
+   "end": 1382.73,
+   "text": "uh locator now which is where the question right uh-huh oh that was that"
+  },
+  {
+   "start": 1382.73,
+   "end": 1383.53,
+   "text": "one is quite difficult"
+  },
+  {
+   "start": 1383.53,
+   "end": 1388.51,
+   "text": "because positions are so different um in every language they have no rules but"
+  },
+  {
+   "start": 1388.51,
+   "end": 1388.61,
+   "text": "here you would"
+  },
+  {
+   "start": 1388.61,
+   "end": 1393.57,
+   "text": "ask questions like that's how i learned it by the way o come na"
+  },
+  {
+   "start": 1393.57,
+   "end": 1399.95,
+   "text": "cemu and the reason for that is o come means about whom so probably"
+  },
+  {
+   "start": 1399.95,
+   "end": 1403.93,
+   "text": "talking about someone right and then actually not probably"
+  },
+  {
+   "start": 1403.93,
+   "end": 1407.85,
+   "text": "but definitely and then na cemu is"
+  },
+  {
+   "start": 1407.85,
+   "end": 1411.71,
+   "text": "on what so it is used for location but"
+  },
+  {
+   "start": 1411.71,
+   "end": 1413.85,
+   "text": "you can't really use it all the time for"
+  },
+  {
+   "start": 1413.85,
+   "end": 1415.43,
+   "text": "location but with certain"
+  },
+  {
+   "start": 1415.43,
+   "end": 1416.45,
+   "text": "prepositions"
+  },
+  {
+   "start": 1416.45,
+   "end": 1419.95,
+   "text": "yeah and in this case"
+  },
+  {
+   "start": 1419.95,
+   "end": 1426.04,
+   "text": "na works as a preposition so you have not all and so on and"
+  },
+  {
+   "start": 1426.04,
+   "end": 1432.14,
+   "text": "oh and oh and there's other ones yeah um so obviously use it for"
+  },
+  {
+   "start": 1432.14,
+   "end": 1432.66,
+   "text": "location i use it"
+  },
+  {
+   "start": 1432.66,
+   "end": 1438.56,
+   "text": "um as an object uh for with verbs like to talk or to think"
+  },
+  {
+   "start": 1438.56,
+   "end": 1439.26,
+   "text": "about someone"
+  },
+  {
+   "start": 1440.48,
+   "end": 1445.98,
+   "text": "talk about something yeah yeah let's give the example of glass glasses on the"
+  },
+  {
+   "start": 1445.98,
+   "end": 1446.86,
+   "text": "table yeah"
+  },
+  {
+   "start": 1448.18,
+   "end": 1455.52,
+   "text": "uh chasha yena stolu chasha yena stolu so stolu became stolu yes"
+  },
+  {
+   "start": 1455.52,
+   "end": 1457.92,
+   "text": "so yeah um and then i'm just"
+  },
+  {
+   "start": 1457.92,
+   "end": 1464.98,
+   "text": "thinking because i tried to write some example for location without a na and"
+  },
+  {
+   "start": 1464.98,
+   "end": 1469.58,
+   "text": "if you want to say next is something you cannot use a locative right"
+  },
+  {
+   "start": 1469.58,
+   "end": 1472.48,
+   "text": "so it does have its limits that's why we use"
+  },
+  {
+   "start": 1472.48,
+   "end": 1479.16,
+   "text": "so you know already which prepositions so and if you want to say that"
+  },
+  {
+   "start": 1479.16,
+   "end": 1480.3,
+   "text": "you talked about something"
+  },
+  {
+   "start": 1480.3,
+   "end": 1488.42,
+   "text": "then uh for example we talked about work uh or is"
+  },
+  {
+   "start": 1488.42,
+   "end": 1492.46,
+   "text": "about or post so posao became post"
+  },
+  {
+   "start": 1493.7,
+   "end": 1496.42,
+   "text": "Yeah, that one is quite difficult actually."
+  },
+  {
+   "start": 1496.66,
+   "end": 1499.54,
+   "text": "Like, it's the same to me."
+  },
+  {
+   "start": 1499.6,
+   "end": 1501.9,
+   "text": "Stolu, poslu. That's true."
+  },
+  {
+   "start": 1503.3,
+   "end": 1505.24,
+   "text": "Sto, poslu. Yeah."
+  },
+  {
+   "start": 1505.24,
+   "end": 1509.72,
+   "text": "So they all, both and, with all, and then they are irregular."
+  },
+  {
+   "start": 1510.26,
+   "end": 1515.32,
+   "text": "So, lu. Okay, let me think about, we talked about you."
+  },
+  {
+   "start": 1516.3,
+   "end": 1516.94,
+   "text": "Ti, right?"
+  },
+  {
+   "start": 1518.64,
+   "end": 1520.08,
+   "text": "O komen no cemu tebi."
+  },
+  {
+   "start": 1520.48,
+   "end": 1521.68,
+   "text": "Tijelismo tebi."
+  },
+  {
+   "start": 1523.44,
+   "end": 1523.96,
+   "text": "Yeah, so it's probably just depends on the ending, right? Gabi."
+  },
+  {
+   "start": 1529.74,
+   "end": 1533.04,
+   "text": "How... We talked about language, let's say."
+  },
+  {
+   "start": 1535.26,
+   "end": 1538.8,
+   "text": "Prichalismo o Yeziku?"
+  },
+  {
+   "start": 1539.14,
+   "end": 1541.74,
+   "text": "Yeah. Okay, Yeziku."
+  },
+  {
+   "start": 1542.38,
+   "end": 1543.18,
+   "text": "Oh, Yeziku, exactly."
+  },
+  {
+   "start": 1544.1,
+   "end": 1548.16,
+   "text": "Okay, good. That's it for the cases."
+  },
+  {
+   "start": 1548.64,
+   "end": 1554.62,
+   "text": "We will write, of course, these sentences on our Instagram and on Patreon in"
+  },
+  {
+   "start": 1554.62,
+   "end": 1555.0,
+   "text": "detail."
+  },
+  {
+   "start": 1556.26,
+   "end": 1561.46,
+   "text": "I feel like these are the most basic, essential uses that you should know"
+  },
+  {
+   "start": 1561.48,
+   "end": 1562.48,
+   "text": "and like information."
+  },
+  {
+   "start": 1562.48,
+   "end": 1565.98,
+   "text": "And then you can, you know, go from here and then learn more."
+  },
+  {
+   "start": 1567.26,
+   "end": 1567.54,
+   "text": "Definitely."
+  },
+  {
+   "start": 1569.08,
+   "end": 1570.28,
+   "text": "And you can ask me,"
+  },
+  {
+   "start": 1570.28,
+   "end": 1572.12,
+   "text": "I can send you my table, everyone."
+  },
+  {
+   "start": 1574.32,
+   "end": 1575.28,
+   "text": "My case prepared."
+  },
+  {
+   "start": 1575.28,
+   "end": 1576.4,
+   "text": "Which is half full sometimes."
+  },
+  {
+   "start": 1577.72,
+   "end": 1584.04,
+   "text": "Yeah. Okay. Did you want to talk about the, illustration yeah just to hear"
+  },
+  {
+   "start": 1584.04,
+   "end": 1590.8,
+   "text": "all everything so i wanted to say like uh a friend prietel so prietel"
+  },
+  {
+   "start": 1590.8,
+   "end": 1594.48,
+   "text": "in all cases let's just hear them how they sound in difference so the"
+  },
+  {
+   "start": 1594.48,
+   "end": 1594.94,
+   "text": "order is"
+  },
+  {
+   "start": 1594.94,
+   "end": 1602.56,
+   "text": "genitive dative accusative vocative and so on so first koshtapriety"
+  },
+  {
+   "start": 1604.1,
+   "end": 1610.38,
+   "text": "uh prijatelj is masculine type um and then genitive okay and this one is"
+  },
+  {
+   "start": 1610.38,
+   "end": 1616.12,
+   "text": "belonging petar petar peter does not have a friend in this case i mean"
+  },
+  {
+   "start": 1616.12,
+   "end": 1616.4,
+   "text": "you could say does not have"
+  },
+  {
+   "start": 1616.4,
+   "end": 1623.44,
+   "text": "friends right but we want singular um petar name prijatelja but koga check out"
+  },
+  {
+   "start": 1623.44,
+   "end": 1623.96,
+   "text": "prijatelja"
+  },
+  {
+   "start": 1625.56,
+   "end": 1628.7,
+   "text": "So, dative, which is direction."
+  },
+  {
+   "start": 1629.1,
+   "end": 1631.42,
+   "text": "Yeah, writes to his friend."
+  },
+  {
+   "start": 1631.42,
+   "end": 1633.8,
+   "text": "Peter writes to his friend, will get dative."
+  },
+  {
+   "start": 1633.8,
+   "end": 1634.8,
+   "text": "Mm-hmm."
+  },
+  {
+   "start": 1634.8,
+   "end": 1637.8,
+   "text": "Peter pises svom prijatelju."
+  },
+  {
+   "start": 1638.76,
+   "end": 1639.36,
+   "text": "Svom prijatelju."
+  },
+  {
+   "start": 1639.36,
+   "end": 1641.01,
+   "text": "And this is a tricky one."
+  },
+  {
+   "start": 1642.35,
+   "end": 1643.85,
+   "text": "We have to talk about this episode."
+  },
+  {
+   "start": 1643.85,
+   "end": 1646.27,
+   "text": "Svom. This is a tricky, tricky word."
+  },
+  {
+   "start": 1646.27,
+   "end": 1650.23,
+   "text": "I know. Okay, piše, so writes to his friend."
+  },
+  {
+   "start": 1650.47,
+   "end": 1650.65,
+   "text": "Okay."
+  },
+  {
+   "start": 1652.01,
+   "end": 1655.99,
+   "text": "Accusative, which is sees his friend."
+  },
+  {
+   "start": 1655.99,
+   "end": 1657.45,
+   "text": "Petar sees his friend."
+  },
+  {
+   "start": 1658.81,
+   "end": 1660.63,
+   "text": "Petar vidi svog prijatelja."
+  },
+  {
+   "start": 1662.53,
+   "end": 1663.99,
+   "text": "Koga šta prijatelja."
+  },
+  {
+   "start": 1664.27,
+   "end": 1667.77,
+   "text": "Okay. And then vocative."
+  },
+  {
+   "start": 1667.77,
+   "end": 1669.51,
+   "text": "Peter calls his friend."
+  },
+  {
+   "start": 1669.51,
+   "end": 1671.23,
+   "text": "Hey, friend. Yeah."
+  },
+  {
+   "start": 1671.77,
+   "end": 1673.57,
+   "text": "So I wrote down shouts because I'm like,"
+  },
+  {
+   "start": 1673.57,
+   "end": 1677.09,
+   "text": "calls, zove. Or maybe calls, zove, zove, yeah."
+  },
+  {
+   "start": 1677.79,
+   "end": 1678.67,
+   "text": "Peter zove."
+  },
+  {
+   "start": 1678.67,
+   "end": 1680.23,
+   "text": "I wrote down shouts, vije."
+  },
+  {
+   "start": 1681.61,
+   "end": 1682.59,
+   "text": "Hey, prijatelju."
+  },
+  {
+   "start": 1684.07,
+   "end": 1686.11,
+   "text": "Okay. Prijatelju. Yeah."
+  },
+  {
+   "start": 1686.11,
+   "end": 1686.57,
+   "text": "All right."
+  },
+  {
+   "start": 1688.59,
+   "end": 1692.01,
+   "text": "Instrumental, right? and this is for company."
+  },
+  {
+   "start": 1692.35,
+   "end": 1695.67,
+   "text": "Yeah, sees his friend with a woman."
+  },
+  {
+   "start": 1696.65,
+   "end": 1699.23,
+   "text": "Wait, wait, you wrote down sees a woman with his friend."
+  },
+  {
+   "start": 1699.41,
+   "end": 1701.75,
+   "text": "Yeah, sorry, sees a woman with his friend, yes."
+  },
+  {
+   "start": 1702.57,
+   "end": 1705.61,
+   "text": "Okay, vidi ženu sa svojim prijateljem."
+  },
+  {
+   "start": 1707.69,
+   "end": 1708.97,
+   "text": "Yeah, with his friend,"
+  },
+  {
+   "start": 1708.97,
+   "end": 1710.45,
+   "text": "because we are not changing the friend."
+  },
+  {
+   "start": 1710.97,
+   "end": 1713.59,
+   "text": "Exactly, exactly. Oh, wait, wait."
+  },
+  {
+   "start": 1714.37,
+   "end": 1717.87,
+   "text": "Vidi ženu koga šta ženu sa svojim prijateljem."
+  },
+  {
+   "start": 1718.13,
+   "end": 1718.75,
+   "text": "and prijatelj is"
+  },
+  {
+   "start": 1718.75,
+   "end": 1719.97,
+   "text": "that's in instrumental"
+  },
+  {
+   "start": 1719.97,
+   "end": 1722.01,
+   "text": "yes"
+  },
+  {
+   "start": 1722.01,
+   "end": 1722.33,
+   "text": "with whom"
+  },
+  {
+   "start": 1722.33,
+   "end": 1723.89,
+   "text": "with his friend"
+  },
+  {
+   "start": 1723.89,
+   "end": 1724.27,
+   "text": "yeah"
+  },
+  {
+   "start": 1724.27,
+   "end": 1725.99,
+   "text": "and then"
+  },
+  {
+   "start": 1725.99,
+   "end": 1726.99,
+   "text": "lokativ"
+  },
+  {
+   "start": 1726.99,
+   "end": 1728.09,
+   "text": "about"
+  },
+  {
+   "start": 1728.09,
+   "end": 1732.93,
+   "text": "so Peter talks about his friend yeah"
+  },
+  {
+   "start": 1734.33,
+   "end": 1734.83,
+   "text": "Petar"
+  },
+  {
+   "start": 1736.07,
+   "end": 1736.19,
+   "text": "we can say"
+  },
+  {
+   "start": 1736.19,
+   "end": 1737.05,
+   "text": "Petar govori"
+  },
+  {
+   "start": 1737.05,
+   "end": 1738.23,
+   "text": "or priča"
+  },
+  {
+   "start": 1738.23,
+   "end": 1742.73,
+   "text": "o svom prijatelju see"
+  },
+  {
+   "start": 1742.73,
+   "end": 1743.75,
+   "text": "deitiv and lokativ"
+  },
+  {
+   "start": 1743.75,
+   "end": 1744.35,
+   "text": "are the same"
+  },
+  {
+   "start": 1744.35,
+   "end": 1745.53,
+   "text": "svom prijatelju"
+  },
+  {
+   "start": 1745.53,
+   "end": 1747.43,
+   "text": "oh even"
+  },
+  {
+   "start": 1747.71,
+   "end": 1749.73,
+   "text": "Even in evocative, it's prietelju."
+  },
+  {
+   "start": 1749.77,
+   "end": 1754.13,
+   "text": "In this case, this is not a rule, but accidentally it became, hey, prietelju."
+  },
+  {
+   "start": 1754.77,
+   "end": 1757.45,
+   "text": "And genitive and accusative, like, prietelja."
+  },
+  {
+   "start": 1758.47,
+   "end": 1759.81,
+   "text": "You see lots of similarities."
+  },
+  {
+   "start": 1760.47,
+   "end": 1761.21,
+   "text": "Yeah, that's the thing."
+  },
+  {
+   "start": 1761.21,
+   "end": 1765.03,
+   "text": "I mean, it's kind of, like, easier because, you know, you don't have so"
+  },
+  {
+   "start": 1765.03,
+   "end": 1766.05,
+   "text": "many suffixes."
+  },
+  {
+   "start": 1766.05,
+   "end": 1769.73,
+   "text": "But then, again, you know, you probably mix up, okay, which ones are the"
+  },
+  {
+   "start": 1769.73,
+   "end": 1770.07,
+   "text": "same?"
+  },
+  {
+   "start": 1770.07,
+   "end": 1772.33,
+   "text": "Is it accusative with genitive?"
+  },
+  {
+   "start": 1772.33,
+   "end": 1773.45,
+   "text": "Oh, no, it's not."
+  },
+  {
+   "start": 1773.45,
+   "end": 1776.31,
+   "text": "Okay, like, you know, and then maybe you can, like, get a bit mixed"
+  },
+  {
+   "start": 1776.31,
+   "end": 1780.97,
+   "text": "up. But I would really suggest just to really focus on the uses rather"
+  },
+  {
+   "start": 1780.97,
+   "end": 1785.95,
+   "text": "than like the forms, because if something is really like frequent, if you use"
+  },
+  {
+   "start": 1785.95,
+   "end": 1791.35,
+   "text": "it quite often, then it's going to become really logical in your head and"
+  },
+  {
+   "start": 1791.35,
+   "end": 1796.07,
+   "text": "it's going to become more automatic rather than just focusing on all the exceptions"
+  },
+  {
+   "start": 1796.07,
+   "end": 1799.37,
+   "text": "or like all the possible uses that you can have."
+  },
+  {
+   "start": 1799.37,
+   "end": 1802.09,
+   "text": "Just focus on the ones that are useful for you right now."
+  },
+  {
+   "start": 1804.03,
+   "end": 1808.99,
+   "text": "Yeah, definitely. And that's why I wanted to have this illustration because then they"
+  },
+  {
+   "start": 1808.99,
+   "end": 1815.51,
+   "text": "can make their own sentences with the same subject or object in different cases,"
+  },
+  {
+   "start": 1815.83,
+   "end": 1818.37,
+   "text": "so that they can have the general picture."
+  },
+  {
+   "start": 1819.83,
+   "end": 1821.87,
+   "text": "You're going to get quiz on Instagram."
+  },
+  {
+   "start": 1822.61,
+   "end": 1824.19,
+   "text": "Yeah, a hard one."
+  },
+  {
+   "start": 1825.57,
+   "end": 1827.79,
+   "text": "Okay. Okay, hvala ti puno, Ivana."
+  },
+  {
+   "start": 1827.85,
+   "end": 1830.39,
+   "text": "Nemana čemu. Uvek."
+  },
+  {
+   "start": 1831.49,
+   "end": 1833.95,
+   "text": "Yeah. Always. Thanks a lot."
+  },
+  {
+   "start": 1833.95,
+   "end": 1836.15,
+   "text": "and see you in the next one."
+  },
+  {
+   "start": 1836.15,
+   "end": 1842.51,
+   "text": "Vidimo se! Vidimo Thank you for joining us today."
+  },
+  {
+   "start": 1842.55,
+   "end": 1843.61,
+   "text": "We hope you enjoyed our podcast"
+  },
+  {
+   "start": 1843.61,
+   "end": 1845.39,
+   "text": "and learned something new."
+  },
+  {
+   "start": 1845.49,
+   "end": 1846.87,
+   "text": "In case you have any comments,"
+  },
+  {
+   "start": 1846.87,
+   "end": 1849.55,
+   "text": "suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 1849.55,
+   "end": 1853.03,
+   "text": "on our Instagram page možekafa podcast."
+  },
+  {
+   "start": 1853.31,
+   "end": 1853.97,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.1: Cases in a Nutshell",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939243/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075914-44100-1-b499d0a33bf15dd8.mp3"
+}

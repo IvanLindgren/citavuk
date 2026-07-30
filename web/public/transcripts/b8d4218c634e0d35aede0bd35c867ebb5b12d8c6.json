@@ -1,374 +1,362 @@
 {
- "duration": 274.26,
+ "duration": 274.23,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
  "cues": [
   {
-   "start": 0.0,
-   "end": 21.32,
-   "text": "Zdravo!"
+   "start": 20.14,
+   "end": 24.1,
+   "text": "Hello! Welcome to the new episode of Serbian for Beginners."
   },
   {
-   "start": 21.32,
-   "end": 24.6,
-   "text": "Welcome to the new episode of Serbian for Beginners."
-  },
-  {
-   "start": 24.6,
-   "end": 27.68,
+   "start": 24.48,
+   "end": 26.8,
    "text": "I'm your only Serbian tutor, Nikola."
   },
   {
-   "start": 27.68,
-   "end": 34.28,
-   "text": "Before we start, make sure to follow my Instagram page, Learn Serbian or Serbian Language Network,"
+   "start": 27.5,
+   "end": 32.84,
+   "text": "Before we start, make sure to follow my Instagram page, Learn Serbian or Serbian"
   },
   {
-   "start": 34.28,
-   "end": 39.5,
-   "text": "where you can book your free trial lesson and find even more learning materials."
+   "start": 32.84,
+   "end": 37.36,
+   "text": "Language Network, where you can book your free trial lesson and find even more"
   },
   {
-   "start": 39.5,
-   "end": 45.92,
-   "text": "If you have any question, you can also write me at email in the description of each episode."
+   "start": 37.36,
+   "end": 42.36,
+   "text": "learning materials. If you have any question, you can also write me an email"
   },
   {
-   "start": 45.92,
-   "end": 49.88,
-   "text": "Today you are going to learn how to introduce yourself in Serbian."
+   "start": 42.36,
+   "end": 44.46,
+   "text": "in the description of each episode."
   },
   {
-   "start": 49.88,
-   "end": 55.76,
-   "text": "We will read text in three levels of difficulty, each more advanced than the one before."
+   "start": 45.94,
+   "end": 48.84,
+   "text": "Today, you are going to learn how to introduce yourself in Serbian."
   },
   {
-   "start": 55.76,
-   "end": 58.04,
-   "text": "The topic will mostly stay the same."
+   "start": 48.84,
+   "end": 54.38,
+   "text": "We will read text in three levels of difficulty, each more advanced than the"
   },
   {
-   "start": 58.04,
-   "end": 61.36,
+   "start": 54.38,
+   "end": 57.58,
+   "text": "one before. However, the topic will mostly stay the same."
+  },
+  {
+   "start": 57.58,
+   "end": 60.88,
    "text": "We will only change and add certain types of words."
   },
   {
-   "start": 61.36,
-   "end": 65.08,
-   "text": "There will be a list of words you can read at the end of the transcript."
+   "start": 61.16,
+   "end": 63.94,
+   "text": "There will be the list of words you can read at the end of"
   },
   {
-   "start": 65.08,
-   "end": 69.32,
-   "text": "Ok, let's start with the easiest text."
+   "start": 63.94,
+   "end": 67.62,
+   "text": "the transcript. Ok, let's start with the easiest text."
   },
   {
-   "start": 69.32,
-   "end": 70.32,
-   "text": "Level one."
+   "start": 69.02,
+   "end": 74.84,
+   "text": "Level 1. Здраво, ja sam Nikola, imam 24 годine."
   },
   {
-   "start": 70.32,
-   "end": 71.32,
-   "text": "Zdravo!"
+   "start": 75.4,
+   "end": 77.98,
+   "text": "Ja živim u Beogradu, u Srbiji."
   },
   {
-   "start": 71.32,
-   "end": 75.56,
-   "text": "Ja sam Nikola, imam dvadeset četiri godine."
-  },
-  {
-   "start": 75.56,
-   "end": 79.08,
-   "text": "Ja živem u Beogradu, u Srbiji."
-  },
-  {
-   "start": 79.08,
-   "end": 82.12,
+   "start": 78.82,
+   "end": 81.28,
    "text": "Studiram srpski jezik na univerzitetu."
   },
   {
-   "start": 82.12,
-   "end": 86.16,
-   "text": "Volem da čitam, pišem i slušam muziku."
+   "start": 82.06,
+   "end": 85.22,
+   "text": "Volim da čitam, pišem i slušam muziku."
   },
   {
-   "start": 86.16,
-   "end": 90.04,
-   "text": "Ja sviram gitaru, a dugo neigram tenis."
+   "start": 86.12,
+   "end": 89.34,
+   "text": "Ja sviram gitaru, a dugo ne igram tenis."
   },
   {
-   "start": 90.04,
-   "end": 92.72,
+   "start": 89.98,
+   "end": 91.3,
    "text": "Hoću da idem u London."
   },
   {
-   "start": 92.72,
-   "end": 94.44,
+   "start": 92.68,
+   "end": 94.04,
    "text": "Could you understand anything?"
   },
   {
-   "start": 94.44,
-   "end": 100.16,
-   "text": "I tried to use short sentences, limited vocabulary and present tense only."
+   "start": 94.04,
+   "end": 99.06,
+   "text": "I try to use short sentences, limited vocabulary and present tense only."
   },
   {
-   "start": 100.16,
-   "end": 104.24,
-   "text": "Even though nothing is wrong with this text, it's always better to expand it and include"
+   "start": 99.9,
+   "end": 103.72,
+   "text": "Even though nothing is wrong with this text, it's always better to expand it"
   },
   {
-   "start": 104.24,
-   "end": 106.52,
-   "text": "more diverse vocabulary."
+   "start": 103.72,
+   "end": 105.82,
+   "text": "and include more diverse vocabulary."
   },
   {
-   "start": 106.52,
-   "end": 109.76,
+   "start": 106.26,
+   "end": 107.9,
    "text": "Let's try to do just that."
   },
   {
-   "start": 109.76,
-   "end": 110.76,
-   "text": "Level two."
+   "start": 109.48,
+   "end": 109.98,
+   "text": "Level 2"
   },
   {
-   "start": 110.76,
-   "end": 111.76,
-   "text": "Zdravo!"
+   "start": 111.2,
+   "end": 112.8,
+   "text": "Здраво! Како си?"
   },
   {
-   "start": 112.28,
-   "end": 113.28,
-   "text": "Kako si?"
+   "start": 113.14,
+   "end": 116.24,
+   "text": "Я сам Никола и я имам 24 године."
   },
   {
-   "start": 113.28,
-   "end": 116.76,
-   "text": "Ja sam Nikola i ja imam dvadeset četiri godine."
+   "start": 116.72,
+   "end": 118.66,
+   "text": "Сада живем у Београду, у Срби."
   },
   {
-   "start": 116.76,
-   "end": 119.32,
-   "text": "Sada živim u Beogradu, u Srbiji."
+   "start": 119.36,
+   "end": 123.58,
+   "text": "I am a student, studying Spanish language at University of Beograd."
   },
   {
-   "start": 119.32,
-   "end": 124.28,
-   "text": "Ja sam student, studiram srpski jezik na univerzitetu u Beogradu."
+   "start": 124.3,
+   "end": 126.9,
+   "text": "I love reading, but I love writing."
   },
   {
-   "start": 124.28,
-   "end": 128.12,
-   "text": "Mnogo volim da čitam, ali volim i da pišem."
+   "start": 131.04,
+   "end": 132.12,
+   "text": "I know that I'm playing guitar, but I'm playing tennis, but I'm playing tennis"
   },
   {
-   "start": 128.12,
-   "end": 131.08,
-   "text": "Mnogo volim da slušam muziku svaki dan."
+   "start": 132.12,
+   "end": 135.42,
+   "text": "A volim da igram i tenis, ali nisam igrao tenis baš dugo."
   },
   {
-   "start": 131.08,
-   "end": 137.2,
-   "text": "Ja znam da sviram gitaru, a volim da igram i tenis, ali nisam igrao tenis baš dugo."
+   "start": 135.42,
+   "end": 136.18,
+   "text": "for a long time."
   },
   {
    "start": 137.2,
-   "end": 140.04,
-   "text": "Želim da putujem i da idem u London."
+   "end": 139.56,
+   "text": "I want to travel and go to London. Želim da putujem i da idem u London."
   },
   {
-   "start": 140.04,
-   "end": 141.6,
-   "text": "Kako se ti zoveš?"
+   "start": 139.96,
+   "end": 140.68,
+   "text": "Kako se ti zoveš? How do you call me?"
   },
   {
-   "start": 141.6,
-   "end": 144.6,
+   "start": 140.68,
+   "end": 141.56,
+   "text": "Where do you live?"
+  },
+  {
+   "start": 141.56,
+   "end": 142.38,
    "text": "Gde živiš?"
   },
   {
-   "start": 144.6,
-   "end": 147.08,
-   "text": "For some students this can be more challenging."
+   "start": 144.48,
+   "end": 146.52,
+   "text": "For some students, this can be more challenging."
   },
   {
-   "start": 147.08,
-   "end": 153.72,
-   "text": "I included new vocabulary, adverbs, verbs and some common expressions like kako si."
+   "start": 147.1,
+   "end": 152.78,
+   "text": "I included new vocabulary, adverbs, verbs, and some common expressions like kako si."
   },
   {
-   "start": 153.72,
-   "end": 157.96,
-   "text": "Let's take a look at the level three."
+   "start": 153.5,
+   "end": 155.58,
+   "text": "Let's take a look at the level 3."
   },
   {
-   "start": 157.96,
-   "end": 158.96,
-   "text": "Level three."
+   "start": 157.7,
+   "end": 158.24,
+   "text": "Level 3"
   },
   {
-   "start": 158.96,
-   "end": 159.96,
-   "text": "Zdravo!"
+   "start": 159.6,
+   "end": 161.2,
+   "text": "Zdravo, kako si?"
   },
   {
-   "start": 159.96,
-   "end": 160.96,
-   "text": "Kako si?"
+   "start": 161.72,
+   "end": 165.18,
+   "text": "Ja se zovem Nikola i imam 24 godine."
   },
   {
-   "start": 160.96,
-   "end": 165.32,
-   "text": "Ja se zovem Nikola i imam dvadeset četiri godine."
+   "start": 165.18,
+   "end": 168.3,
+   "text": "Trenutno sam u Beogradu u Srbiji."
   },
   {
-   "start": 165.32,
-   "end": 168.44,
-   "text": "Trenutno sam u Beogradu, u Srbiji."
+   "start": 168.3,
+   "end": 171.84,
+   "text": "Ovde studiram srpski jezik na Beogradskom univerzitetu."
   },
   {
-   "start": 168.44,
-   "end": 172.6,
-   "text": "Ovdje studiram srpski jezik na Beogradskom univerzitetu."
+   "start": 171.84,
+   "end": 175.28,
+   "text": "Ja sam na poslanjoj godini studija."
   },
   {
-   "start": 172.6,
-   "end": 175.84,
-   "text": "Ja sam na poslednjoj godini studija."
-  },
-  {
-   "start": 175.84,
-   "end": 180.28,
+   "start": 175.28,
+   "end": 179.84,
    "text": "Baš volim da čitam, ali još uvek nemam omiljenu knjigu."
   },
   {
-   "start": 180.28,
-   "end": 183.36,
-   "text": "Volim i da pišem također."
+   "start": 179.84,
+   "end": 182.24,
+   "text": "Volim i da pišem, također."
   },
   {
-   "start": 183.36,
-   "end": 186.64,
-   "text": "Svaki dan kada odmaram slušam muziku."
+   "start": 183.26,
+   "end": 186.08,
+   "text": "Svaki dan kada odmaram, slušam muziku."
   },
   {
-   "start": 186.64,
-   "end": 190.64,
+   "start": 186.62,
+   "end": 189.92,
    "text": "Znam da sviram gitaru, ali ne sviram trenutno."
   },
   {
-   "start": 190.64,
-   "end": 196.04,
+   "start": 190.56,
+   "end": 195.28,
    "text": "Kada sam bio mali, trenirao sam tenis, ali sada više ne treniram."
   },
   {
    "start": 196.04,
-   "end": 197.76,
+   "end": 197.56,
    "text": "Želim da putujem."
   },
   {
-   "start": 197.76,
-   "end": 200.72,
+   "start": 197.7,
+   "end": 200.02,
    "text": "Ići ću u London sljedeće godine."
   },
   {
-   "start": 200.72,
-   "end": 202.4,
+   "start": 200.66,
+   "end": 202.08,
    "text": "Kako se ti zoveš?"
   },
   {
-   "start": 202.4,
-   "end": 203.64,
-   "text": "Gdje živiš?"
+   "start": 202.38,
+   "end": 204.78,
+   "text": "Gdje živiš? Da li voliš Srbiju?"
   },
   {
-   "start": 203.64,
-   "end": 206.64,
-   "text": "Dali voliš Srbiju?"
+   "start": 206.58,
+   "end": 212.14,
+   "text": "At this last level we used longer sentences, adjectives, more verbs and adverbs,"
   },
   {
-   "start": 206.64,
-   "end": 212.12,
-   "text": "Na ovoj ostalijnoj niveli učinili smo dolje sentanse, adjektive, više verbi i adverbi"
+   "start": 212.14,
+   "end": 215.16,
+   "text": "and three tenses, past, present and future."
   },
   {
-   "start": 212.12,
-   "end": 213.68,
-   "text": "i tri tence."
-  },
-  {
-   "start": 213.68,
-   "end": 215.88,
-   "text": "Prvi, predenski i budućni."
-  },
-  {
-   "start": 215.88,
-   "end": 220.16,
-   "text": "Možete također objaviti više frekventnih učinjenja konektora."
+   "start": 215.78,
+   "end": 218.42,
+   "text": "You can also notice more frequent use of connectors."
   },
   {
    "start": 220.16,
-   "end": 222.44,
-   "text": "Znači, što mislite na koniec?"
+   "end": 221.42,
+   "text": "So what do you think at the end?"
   },
   {
-   "start": 222.44,
-   "end": 224.64,
-   "text": "Je ovaj različaj pomoćan?"
+   "start": 221.42,
+   "end": 223.76,
+   "text": "Is this comparison helpful?"
   },
   {
    "start": 224.64,
-   "end": 228.88,
-   "text": "Znači, možete definitivno probiti da napisate svoju prijeđanje."
+   "end": 227.66,
+   "text": "Of course, you should definitely try to write your own introduction."
   },
   {
-   "start": 228.88,
-   "end": 233.68,
-   "text": "Ako ste bolji, probajte da upgrajate sentanse i freze dok dođete do svojeg najvišeg"
+   "start": 228.78,
+   "end": 232.64,
+   "text": "If you're more comfortable, try upgrading sentences and phrases until you reach your"
   },
   {
-   "start": 233.68,
-   "end": 235.72,
-   "text": "nivela proficijensije."
+   "start": 232.64,
+   "end": 235.02,
+   "text": "highest level of proficiency."
   },
   {
-   "start": 235.72,
-   "end": 240.04,
-   "text": "Učinite listu na koncu transkripta."
+   "start": 235.48,
+   "end": 237.7,
+   "text": "Use the list at the end of the transcript."
   },
   {
-   "start": 240.04,
-   "end": 242.52,
-   "text": "To bi bilo sve za ovaj čudoviti početak."
+   "start": 239.5,
+   "end": 241.98,
+   "text": "That would be all for this short beginner episode."
   },
   {
-   "start": 242.52,
-   "end": 248.76,
-   "text": "Planujem da učinim i uključim više frekvenstva sve mjesece, zbog ostavite se napisani."
+   "start": 241.98,
+   "end": 247.8,
+   "text": "I plan on expanding and uploading more frequently each month, so stay updated."
   },
   {
-   "start": 248.76,
-   "end": 254.04,
-   "text": "Hvala na Instagramu Learn Serbian ili Serbian Language Network, gdje možete"
+   "start": 248.58,
+   "end": 253.44,
+   "text": "Please follow the Instagram page LearnSerbian or Serbian Language Network where you can"
   },
   {
-   "start": 254.04,
-   "end": 256.52,
-   "text": "napisati svoju prijeđanje učinjenja."
+   "start": 253.44,
+   "end": 255.54,
+   "text": "book your free trial lesson."
   },
   {
-   "start": 256.52,
-   "end": 262.68,
-   "text": "Ako imate nekakve pitanje, možete i napisati mi na e-maila u opisu svojeg epizoda."
+   "start": 256.48,
+   "end": 259.94,
+   "text": "If you have any question, you can also write me an email in the"
   },
   {
-   "start": 262.68,
-   "end": 264.16,
-   "text": "Vidimo se uskoro!"
+   "start": 259.94,
+   "end": 261.68,
+   "text": "description of each episode."
   },
   {
-   "start": 264.16,
-   "end": 264.66,
+   "start": 262.62,
+   "end": 263.78,
+   "text": "Vidimo se uskoro."
+  },
+  {
+   "start": 264.06,
+   "end": 264.52,
    "text": "Ćao!"
   }
  ],

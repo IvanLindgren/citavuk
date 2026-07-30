@@ -1,0 +1,3275 @@
+{
+ "duration": 2405.96,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.56,
+   "end": 31.66,
+   "text": "Hello everyone!"
+  },
+  {
+   "start": 31.66,
+   "end": 33.52,
+   "text": "Hello everyone! is Ivana."
+  },
+  {
+   "start": 33.94,
+   "end": 35.18,
+   "text": "And here is Maki."
+  },
+  {
+   "start": 35.38,
+   "end": 36.6,
+   "text": "Yes, such a synchronic."
+  },
+  {
+   "start": 38.62,
+   "end": 38.76,
+   "text": "You wanted to ask me. How are you?"
+  },
+  {
+   "start": 40.8,
+   "end": 41.62,
+   "text": "I'm good, you are."
+  },
+  {
+   "start": 42.3,
+   "end": 43.5,
+   "text": "Thank you, thank you."
+  },
+  {
+   "start": 43.82,
+   "end": 45.18,
+   "text": "I'm good. You?"
+  },
+  {
+   "start": 45.5,
+   "end": 46.26,
+   "text": "I'm good."
+  },
+  {
+   "start": 47.64,
+   "end": 47.74,
+   "text": "Oh, I'm good."
+  },
+  {
+   "start": 47.74,
+   "end": 48.9,
+   "text": "I'm good. I'm good."
+  },
+  {
+   "start": 50.16,
+   "end": 51.66,
+   "text": "no, it should be I'm good, but I'm good."
+  },
+  {
+   "start": 51.66,
+   "end": 52.5,
+   "text": "I'm good."
+  },
+  {
+   "start": 52.5,
+   "end": 59.86,
+   "text": "Yeah, anyway. so today we are here with a very new"
+  },
+  {
+   "start": 59.86,
+   "end": 65.7,
+   "text": "idea yeah and we are going to introduce someone super super"
+  },
+  {
+   "start": 65.7,
+   "end": 72.9,
+   "text": "uh nice hilarious and famous yeah even though okay"
+  },
+  {
+   "start": 72.9,
+   "end": 74.6,
+   "text": "even though i don't understand most of"
+  },
+  {
+   "start": 74.6,
+   "end": 80.74,
+   "text": "her sentences i am a fan already so yeah so it's not an interview"
+  },
+  {
+   "start": 80.74,
+   "end": 85.32,
+   "text": "guys it's just that we are i'm going to show like some person serbian"
+  },
+  {
+   "start": 85.32,
+   "end": 87.64,
+   "text": "person that we're following so i think this will be really"
+  },
+  {
+   "start": 87.64,
+   "end": 93.74,
+   "text": "useful for you too yeah so okay first how did we choose her what's"
+  },
+  {
+   "start": 93.74,
+   "end": 94.82,
+   "text": "her name how did we choose her"
+  },
+  {
+   "start": 94.82,
+   "end": 101.42,
+   "text": "why did we choose her okay so her name is sandra silajev i thought"
+  },
+  {
+   "start": 101.42,
+   "end": 102.28,
+   "text": "it was maybe silajev but it's"
+  },
+  {
+   "start": 102.28,
+   "end": 108.58,
+   "text": "silajev i think slagev okay on the second syllable and actually her maiden name"
+  },
+  {
+   "start": 108.58,
+   "end": 114.34,
+   "text": "or like last name is uh which is a bit more common i think"
+  },
+  {
+   "start": 114.34,
+   "end": 119.36,
+   "text": "than silage um and she's a serbian actor and i think currently"
+  },
+  {
+   "start": 119.36,
+   "end": 126.44,
+   "text": "she's like a stand-up comedian basically um short stories comedian um known as"
+  },
+  {
+   "start": 126.44,
+   "end": 133.66,
+   "text": "dina that's her nickname i don't know why yeah maybe from um the old"
+  },
+  {
+   "start": 133.66,
+   "end": 136.18,
+   "text": "tv series or i don't know maybe for her role"
+  },
+  {
+   "start": 136.18,
+   "end": 141.8,
+   "text": "in in a show maybe i was also curious but right now sandra is"
+  },
+  {
+   "start": 141.8,
+   "end": 144.54,
+   "text": "used a lot i guess yeah and um"
+  },
+  {
+   "start": 144.54,
+   "end": 149.44,
+   "text": "she's like you know she studied theater and so on so she's doing like"
+  },
+  {
+   "start": 149.44,
+   "end": 150.7,
+   "text": "sketches and i don't know"
+  },
+  {
+   "start": 150.7,
+   "end": 155.08,
+   "text": "if she was necessarily in movies but she's mostly in theater and like tv"
+  },
+  {
+   "start": 155.08,
+   "end": 161.92,
+   "text": "shows like short tv shows i haven't been watching um serbian channel so i"
+  },
+  {
+   "start": 161.92,
+   "end": 164.0,
+   "text": "don't really know about her that much but i"
+  },
+  {
+   "start": 164.0,
+   "end": 170.46,
+   "text": "definitely notice her on instagram and on youtube according to imdb she was on"
+  },
+  {
+   "start": 170.46,
+   "end": 172.54,
+   "text": "taxi blues that film"
+  },
+  {
+   "start": 172.54,
+   "end": 178.54,
+   "text": "serbian film i haven't watched it yet and nowadays she is on a tour"
+  },
+  {
+   "start": 178.54,
+   "end": 182.82,
+   "text": "actually she was in london uh on a tour in theater like she's doing"
+  },
+  {
+   "start": 182.82,
+   "end": 189.1,
+   "text": "um stand-up or mom how do we call that like well it is it"
+  },
+  {
+   "start": 189.1,
+   "end": 189.18,
+   "text": "kind of like a monologue but it is supposed to be funny i think"
+  },
+  {
+   "start": 189.18,
+   "end": 189.54,
+   "text": "is a"
+  },
+  {
+   "start": 192.84,
+   "end": 194.88,
+   "text": "so it's kind of like a"
+  },
+  {
+   "start": 194.88,
+   "end": 201.36,
+   "text": "critic of the modern dating world and like modern times and so the name"
+  },
+  {
+   "start": 201.36,
+   "end": 207.54,
+   "text": "is date by the way d-e-j-t like serbian date the way how we pronounce"
+  },
+  {
+   "start": 207.54,
+   "end": 209.72,
+   "text": "it this is how we write it yeah date exactly with"
+  },
+  {
+   "start": 209.72,
+   "end": 215.32,
+   "text": "the j have you ever watched istine ilazi the tv series she was in"
+  },
+  {
+   "start": 215.32,
+   "end": 216.14,
+   "text": "istine ilazi"
+  },
+  {
+   "start": 216.14,
+   "end": 216.29,
+   "text": "ilazi yeah"
+  },
+  {
+   "start": 216.29,
+   "end": 223.41,
+   "text": "lies the truth and lies um no no i haven't"
+  },
+  {
+   "start": 223.41,
+   "end": 223.67,
+   "text": "you"
+  },
+  {
+   "start": 223.67,
+   "end": 229.45,
+   "text": "no i thought maybe it was very popular when you were you know younger"
+  },
+  {
+   "start": 229.45,
+   "end": 230.43,
+   "text": "and i thought maybe you"
+  },
+  {
+   "start": 230.43,
+   "end": 234.43,
+   "text": "watched who knows even though you didn't want to but it was always on"
+  },
+  {
+   "start": 234.43,
+   "end": 235.53,
+   "text": "tv maybe you just saw it"
+  },
+  {
+   "start": 235.53,
+   "end": 240.55,
+   "text": "what i feel like with my generation there wasn't a lot of tv watching"
+  },
+  {
+   "start": 240.55,
+   "end": 244.69,
+   "text": "i mean there was but not as much as it was like 30 years"
+  },
+  {
+   "start": 244.69,
+   "end": 248.03,
+   "text": "ago 40 years ago so it's like we got this is my the first"
+  },
+  {
+   "start": 248.03,
+   "end": 248.43,
+   "text": "where we got laptops I mean laptops computers right so it's like internet was generation"
+  },
+  {
+   "start": 253.19,
+   "end": 253.35,
+   "text": "the thing and"
+  },
+  {
+   "start": 253.35,
+   "end": 259.51,
+   "text": "then since then I've just only been online honestly so yeah I'm pretty bad"
+  },
+  {
+   "start": 259.51,
+   "end": 260.47,
+   "text": "pretty bad"
+  },
+  {
+   "start": 260.47,
+   "end": 266.13,
+   "text": "but I'm curious I'd like to try to find it on YouTube later like"
+  },
+  {
+   "start": 266.13,
+   "end": 269.39,
+   "text": "now I want to watch all of her stuff because she's so hilarious in"
+  },
+  {
+   "start": 269.39,
+   "end": 272.53,
+   "text": "in so many different ways um she's not like she's"
+  },
+  {
+   "start": 272.53,
+   "end": 277.35,
+   "text": "portraying one person but she's portraying so many people representing so many people in"
+  },
+  {
+   "start": 277.35,
+   "end": 281.45,
+   "text": "Serbia so many kind of like stereotypes I think I told you that I"
+  },
+  {
+   "start": 281.45,
+   "end": 283.03,
+   "text": "would watch these sketches and I'm like"
+  },
+  {
+   "start": 283.03,
+   "end": 287.75,
+   "text": "I literally know a person like that in Serbia or like I identify you"
+  },
+  {
+   "start": 287.75,
+   "end": 288.39,
+   "text": "know with with this sketch"
+  },
+  {
+   "start": 288.39,
+   "end": 293.91,
+   "text": "totally uh or at least the version who I was before you know yeah"
+  },
+  {
+   "start": 293.91,
+   "end": 299.71,
+   "text": "the one that was quite recent about eastern uh uskris uh the way she"
+  },
+  {
+   "start": 299.71,
+   "end": 304.39,
+   "text": "was doing it like 10 second like instagram story or past"
+  },
+  {
+   "start": 304.39,
+   "end": 311.55,
+   "text": "she was doing uskris waskris uskris just you know like she didn't know and"
+  },
+  {
+   "start": 311.55,
+   "end": 316.75,
+   "text": "i have the same feeling like each time i always checked my notes to"
+  },
+  {
+   "start": 316.75,
+   "end": 318.97,
+   "text": "see how to say it and i'm seeing that even"
+  },
+  {
+   "start": 318.97,
+   "end": 323.99,
+   "text": "serbians have that issue oh i'm kind of relieved i also thought i was"
+  },
+  {
+   "start": 323.99,
+   "end": 327.05,
+   "text": "alone like it's kind of like that comforting thing, you know,"
+  },
+  {
+   "start": 327.05,
+   "end": 327.25,
+   "text": "that she shares"
+  },
+  {
+   "start": 327.25,
+   "end": 331.33,
+   "text": "that because the thing is that as far as i remember uh when i"
+  },
+  {
+   "start": 331.33,
+   "end": 332.61,
+   "text": "was younger um so i learned"
+  },
+  {
+   "start": 332.61,
+   "end": 335.95,
+   "text": "how to say like stretch and us right so for you guys that don't"
+  },
+  {
+   "start": 335.95,
+   "end": 336.45,
+   "text": "know there are so many different"
+  },
+  {
+   "start": 336.45,
+   "end": 340.79,
+   "text": "ways to say happy easter so there's like a very general way which is"
+  },
+  {
+   "start": 340.79,
+   "end": 341.51,
+   "text": "happy easter stretch and"
+  },
+  {
+   "start": 341.51,
+   "end": 347.83,
+   "text": "us but there are also two ways which is um christos vascarce and christos"
+  },
+  {
+   "start": 347.83,
+   "end": 348.57,
+   "text": "vascarce"
+  },
+  {
+   "start": 349.79,
+   "end": 357.23,
+   "text": "and i always hated saying bosk because kresnuti has a very sexual connotation so"
+  },
+  {
+   "start": 357.23,
+   "end": 364.91,
+   "text": "yeah means to have sex so or like to to to buck"
+  },
+  {
+   "start": 364.91,
+   "end": 369.23,
+   "text": "someone you know not to say the full word but um"
+  },
+  {
+   "start": 369.23,
+   "end": 376.35,
+   "text": "so but actually i think that bosk is the this one version of of"
+  },
+  {
+   "start": 376.35,
+   "end": 383.53,
+   "text": "sloven not slovenian or of like slavic um rusko-slovensky um and vasco is"
+  },
+  {
+   "start": 383.53,
+   "end": 387.27,
+   "text": "a sr-slovensky i think or or reverse i'm not quite"
+  },
+  {
+   "start": 387.27,
+   "end": 390.49,
+   "text": "sure which one is which one now i forgot but it's like a legit"
+  },
+  {
+   "start": 390.49,
+   "end": 391.51,
+   "text": "way how people used to say it which"
+  },
+  {
+   "start": 391.51,
+   "end": 397.73,
+   "text": "is like the christ has risen right is that i think yeah yeah and"
+  },
+  {
+   "start": 397.73,
+   "end": 398.37,
+   "text": "then there's a formula how"
+  },
+  {
+   "start": 398.37,
+   "end": 405.77,
+   "text": "you reply as well which is vajstinu vasco so it's just no"
+  },
+  {
+   "start": 405.77,
+   "end": 409.83,
+   "text": "one really explicitly told me so whenever they would be like oh christos vaskrse"
+  },
+  {
+   "start": 409.83,
+   "end": 413.27,
+   "text": "i'll be like what do i say now vice you know you could"
+  },
+  {
+   "start": 413.27,
+   "end": 417.85,
+   "text": "just say vice actually that's perfect to be on the same side yeah but"
+  },
+  {
+   "start": 417.85,
+   "end": 419.91,
+   "text": "uh sandra silajev"
+  },
+  {
+   "start": 419.91,
+   "end": 427.01,
+   "text": "right silajev i think she studied not only um you know"
+  },
+  {
+   "start": 427.01,
+   "end": 430.03,
+   "text": "dramatic like not only drama but"
+  },
+  {
+   "start": 430.03,
+   "end": 436.89,
+   "text": "sociology pedagogy yeah and peace studies so she's into"
+  },
+  {
+   "start": 436.9,
+   "end": 441.86,
+   "text": "to all you know parts of the culture and she finds so many authentic"
+  },
+  {
+   "start": 441.86,
+   "end": 447.8,
+   "text": "resources from you know but non-stop she's producing things right she's producing new clips"
+  },
+  {
+   "start": 447.8,
+   "end": 449.08,
+   "text": "every day so"
+  },
+  {
+   "start": 449.08,
+   "end": 454.56,
+   "text": "i think that really helps right because like sociology pedagogy and that's why she"
+  },
+  {
+   "start": 454.56,
+   "end": 454.9,
+   "text": "actually comment on these things because she can recognize them and understand where they're"
+  },
+  {
+   "start": 454.9,
+   "end": 455.04,
+   "text": "could"
+  },
+  {
+   "start": 458.98,
+   "end": 464.14,
+   "text": "coming from and um in a way it is a social critic again or"
+  },
+  {
+   "start": 464.14,
+   "end": 467.64,
+   "text": "social criticism to all of these things which i"
+  },
+  {
+   "start": 467.64,
+   "end": 474.74,
+   "text": "find so refreshing so yeah i do want to say that because"
+  },
+  {
+   "start": 474.74,
+   "end": 476.02,
+   "text": "she does sometimes like bosnian"
+  },
+  {
+   "start": 476.02,
+   "end": 482.04,
+   "text": "like bosnians imitate them as well and she has an amazing accent so actually"
+  },
+  {
+   "start": 482.04,
+   "end": 488.98,
+   "text": "her mom is macedonian her dad is bosnian and then they were i think"
+  },
+  {
+   "start": 488.98,
+   "end": 492.14,
+   "text": "they she was born in macedonia they lived in bosnia"
+  },
+  {
+   "start": 492.14,
+   "end": 497.34,
+   "text": "and then they came to serbia uh something like that so she spent like"
+  },
+  {
+   "start": 497.34,
+   "end": 497.86,
+   "text": "a lot of time everywhere"
+  },
+  {
+   "start": 497.86,
+   "end": 504.2,
+   "text": "so no wonder she has so much richness in her uh videos exactly exactly"
+  },
+  {
+   "start": 504.2,
+   "end": 507.86,
+   "text": "imagine me like i i she's"
+  },
+  {
+   "start": 507.86,
+   "end": 512.38,
+   "text": "already i think she speeds her videos up a little bit yes right i"
+  },
+  {
+   "start": 512.38,
+   "end": 516.34,
+   "text": "think it's an it gives you an effect like of of this like talker"
+  },
+  {
+   "start": 516.34,
+   "end": 520.26,
+   "text": "you know yes yes but for me for someone who is learning"
+  },
+  {
+   "start": 520.26,
+   "end": 524.26,
+   "text": "serbine it's like why do you do that it's already like i i'm almost"
+  },
+  {
+   "start": 524.26,
+   "end": 529.14,
+   "text": "got it but then it's yeah quite fast but still from her mimics she"
+  },
+  {
+   "start": 529.14,
+   "end": 533.86,
+   "text": "doesn't by the way use this you know uh big gestures and"
+  },
+  {
+   "start": 533.86,
+   "end": 540.6,
+   "text": "mimics she's like herself like just facial expression there like not not an exaggeration"
+  },
+  {
+   "start": 540.68,
+   "end": 545.58,
+   "text": "at all. But still, you understand, you can follow from her tone, I don't"
+  },
+  {
+   "start": 545.72,
+   "end": 547.66,
+   "text": "something something easy for me"
+  },
+  {
+   "start": 547.66,
+   "end": 552.2,
+   "text": "to follow her I don't know what it is I think oh I just"
+  },
+  {
+   "start": 552.2,
+   "end": 553.38,
+   "text": "noticed this is just looks weird it's my"
+  },
+  {
+   "start": 553.38,
+   "end": 558.78,
+   "text": "mic guys it's my mic um well I think I was so happy that"
+  },
+  {
+   "start": 558.78,
+   "end": 559.84,
+   "text": "you said that you could understand her"
+  },
+  {
+   "start": 559.84,
+   "end": 564.16,
+   "text": "but because I was because of these things because she speeds everything up like"
+  },
+  {
+   "start": 564.16,
+   "end": 568.96,
+   "text": "some of the clips up and it's again it has this like feeling of"
+  },
+  {
+   "start": 568.96,
+   "end": 571.48,
+   "text": "like someone is a fast talker like just a gossip girl"
+  },
+  {
+   "start": 571.48,
+   "end": 575.76,
+   "text": "whatever you know just like a button everywhere needs to know everything all the"
+  },
+  {
+   "start": 575.76,
+   "end": 581.36,
+   "text": "information um yeah so it's I thought like you would not be able to understand"
+  },
+  {
+   "start": 581.36,
+   "end": 582.52,
+   "text": "but then there are some videos"
+  },
+  {
+   "start": 582.52,
+   "end": 587.1,
+   "text": "that are quite slow as well but I think it's such a good way"
+  },
+  {
+   "start": 587.1,
+   "end": 588.54,
+   "text": "to have a feeling of like different"
+  },
+  {
+   "start": 588.54,
+   "end": 593.8,
+   "text": "personalities in Serbia and I think and also with every it's not like she's"
+  },
+  {
+   "start": 593.8,
+   "end": 600.22,
+   "text": "the same everywhere she portrays different people so she uses slightly different phrases intonations"
+  },
+  {
+   "start": 600.22,
+   "end": 606.42,
+   "text": "and so on and like words and accents and so you really like oh"
+  },
+  {
+   "start": 606.42,
+   "end": 610.08,
+   "text": "this is so authentic and I love that you you could"
+  },
+  {
+   "start": 610.08,
+   "end": 615.0,
+   "text": "understand everything that you find it funny even you know so I would definitely"
+  },
+  {
+   "start": 615.0,
+   "end": 616.32,
+   "text": "suggest this like"
+  },
+  {
+   "start": 616.32,
+   "end": 621.02,
+   "text": "recommend this to everyone learning we by the way we will let you hear"
+  },
+  {
+   "start": 621.02,
+   "end": 627.22,
+   "text": "her voice now like we will share the video clips from YouTube she has"
+  },
+  {
+   "start": 627.22,
+   "end": 630.84,
+   "text": "YouTube account and Instagram account huge number of"
+  },
+  {
+   "start": 630.84,
+   "end": 638.02,
+   "text": "followers on Instagram I see and I've seen that like that hole in London"
+  },
+  {
+   "start": 638.02,
+   "end": 639.72,
+   "text": "like so many people came"
+  },
+  {
+   "start": 639.72,
+   "end": 644.62,
+   "text": "and she does it in Serbian so so many people you know many of"
+  },
+  {
+   "start": 644.62,
+   "end": 646.56,
+   "text": "our people it's so weird that's a bit"
+  },
+  {
+   "start": 646.56,
+   "end": 650.54,
+   "text": "weird I actually wanted to go on tour but because I thought of that"
+  },
+  {
+   "start": 650.54,
+   "end": 655.7,
+   "text": "well not on tour I wanted to to like go to her show."
+  },
+  {
+   "start": 656.3,
+   "end": 657.47,
+   "text": "Yeah, I was like I wanted to go on tour"
+  },
+  {
+   "start": 657.47,
+   "end": 660.87,
+   "text": "but the thing is that so I thought that it's going to be a"
+  },
+  {
+   "start": 660.87,
+   "end": 663.35,
+   "text": "European tour which it is in a sense it is"
+  },
+  {
+   "start": 663.35,
+   "end": 666.93,
+   "text": "but I thought she would get to Germany as well because there's a lot"
+  },
+  {
+   "start": 666.93,
+   "end": 667.55,
+   "text": "of our people over there"
+  },
+  {
+   "start": 667.55,
+   "end": 673.27,
+   "text": "so I was looking like but I think she went like came to Austria"
+  },
+  {
+   "start": 673.27,
+   "end": 676.77,
+   "text": "and that that was the UK and I think that was it like the"
+  },
+  {
+   "start": 676.77,
+   "end": 681.47,
+   "text": "furthest that she's like somewhere between I don't think she went to Switzerland or"
+  },
+  {
+   "start": 681.47,
+   "end": 685.79,
+   "text": "like to Germany I'm not quite sure but anyway it didn't really matter because"
+  },
+  {
+   "start": 685.79,
+   "end": 685.99,
+   "text": "like"
+  },
+  {
+   "start": 685.99,
+   "end": 690.37,
+   "text": "from today on she will not be she will again be on the Balkan"
+  },
+  {
+   "start": 690.37,
+   "end": 693.73,
+   "text": "peninsula so yeah I will go for you"
+  },
+  {
+   "start": 693.73,
+   "end": 698.43,
+   "text": "then oh man I'm so I was like this is a ticket I will"
+  },
+  {
+   "start": 698.43,
+   "end": 702.33,
+   "text": "buy so fast like I would create a bot to buy it literally like"
+  },
+  {
+   "start": 702.33,
+   "end": 708.23,
+   "text": "it was it was definitely something yeah uh and actually her like i got"
+  },
+  {
+   "start": 708.23,
+   "end": 712.31,
+   "text": "her i got the how do i say it oh my god i got"
+  },
+  {
+   "start": 712.31,
+   "end": 715.69,
+   "text": "her profile recommended because my mom my mom is on"
+  },
+  {
+   "start": 715.69,
+   "end": 721.25,
+   "text": "instagram guys my mom liked her videos and that's how i saw it so"
+  },
+  {
+   "start": 721.25,
+   "end": 722.99,
+   "text": "i was like mom i can learn some"
+  },
+  {
+   "start": 722.99,
+   "end": 729.13,
+   "text": "things my mom knows podcasts my mom knows like these like instagram actors or"
+  },
+  {
+   "start": 729.13,
+   "end": 734.51,
+   "text": "whatever so funny memes so yeah that's cool yeah parents are on instagram right"
+  },
+  {
+   "start": 734.51,
+   "end": 741.59,
+   "text": "now yeah first it was facebook now it's instagram moved next twitter i don't"
+  },
+  {
+   "start": 741.59,
+   "end": 746.81,
+   "text": "know yeah okay anyway so we talked about what"
+  },
+  {
+   "start": 746.81,
+   "end": 750.87,
+   "text": "she says more or less but if we just give the titles of her"
+  },
+  {
+   "start": 750.87,
+   "end": 759.09,
+   "text": "you know um topics it's like topics I see lots of women issues."
+  },
+  {
+   "start": 759.09,
+   "end": 761.73,
+   "text": "Is she criticizing the women or is she"
+  },
+  {
+   "start": 764.21,
+   "end": 766.39,
+   "text": "not you know for not"
+  },
+  {
+   "start": 766.39,
+   "end": 772.21,
+   "text": "giving enough rights or enough place for women i think both because i think"
+  },
+  {
+   "start": 772.21,
+   "end": 772.75,
+   "text": "what she's doing is"
+  },
+  {
+   "start": 772.75,
+   "end": 778.31,
+   "text": "like criticizing the society and uh again like a lot of what she's doing"
+  },
+  {
+   "start": 778.31,
+   "end": 778.57,
+   "text": "is from a female"
+  },
+  {
+   "start": 778.57,
+   "end": 784.45,
+   "text": "perspective there are maybe some rare clips where she's portraying a man i think"
+  },
+  {
+   "start": 784.45,
+   "end": 788.87,
+   "text": "but like very rarely so she's criticizing the society why they put a woman"
+  },
+  {
+   "start": 788.87,
+   "end": 791.55,
+   "text": "in that situation um why they're glorifying"
+  },
+  {
+   "start": 791.55,
+   "end": 798.51,
+   "text": "these things that should not be glorified but also women that are um like"
+  },
+  {
+   "start": 798.51,
+   "end": 799.59,
+   "text": "taking that role"
+  },
+  {
+   "start": 799.59,
+   "end": 803.91,
+   "text": "you know when they don't have to why should they they don't have to"
+  },
+  {
+   "start": 803.91,
+   "end": 805.21,
+   "text": "comply right so for women"
+  },
+  {
+   "start": 805.21,
+   "end": 811.83,
+   "text": "wanting these things that are actually detrimental to them so she's doing both and"
+  },
+  {
+   "start": 811.83,
+   "end": 814.55,
+   "text": "i think it's working honestly I think there's going to be a lot more"
+  },
+  {
+   "start": 814.55,
+   "end": 816.73,
+   "text": "awareness yeah okay we will give some"
+  },
+  {
+   "start": 816.73,
+   "end": 824.11,
+   "text": "examples but one example that um I surprised myself by understanding it she"
+  },
+  {
+   "start": 824.11,
+   "end": 824.53,
+   "text": "was doing a woman"
+  },
+  {
+   "start": 824.53,
+   "end": 829.95,
+   "text": "who really likes a man but that man is a colleague I guess but"
+  },
+  {
+   "start": 829.95,
+   "end": 831.81,
+   "text": "he's such a nice polite funny"
+  },
+  {
+   "start": 831.81,
+   "end": 837.61,
+   "text": "social guy she keeps talking about him and they say you seem to like"
+  },
+  {
+   "start": 837.61,
+   "end": 843.13,
+   "text": "him so like I just translate basically roughly yeah so she says I know"
+  },
+  {
+   "start": 843.13,
+   "end": 846.23,
+   "text": "I'm a married woman as well can't I say like nice things"
+  },
+  {
+   "start": 846.23,
+   "end": 850.79,
+   "text": "about another man like yeah even if he or she's married or you know"
+  },
+  {
+   "start": 850.79,
+   "end": 852.85,
+   "text": "she was criticizing the way"
+  },
+  {
+   "start": 852.85,
+   "end": 857.99,
+   "text": "we should talk about other men or women you know if you are with"
+  },
+  {
+   "start": 857.99,
+   "end": 859.71,
+   "text": "someone or without someone yeah"
+  },
+  {
+   "start": 859.71,
+   "end": 864.95,
+   "text": "yeah so I got that idea and then I translated the comments the at"
+  },
+  {
+   "start": 864.95,
+   "end": 869.97,
+   "text": "the bottom so I understood that It was correct interpretation."
+  },
+  {
+   "start": 870.51,
+   "end": 873.69,
+   "text": "So she portrays women, but the issues"
+  },
+  {
+   "start": 874.14,
+   "end": 879.02,
+   "text": "they're not necessarily have to be related to just women so there are general"
+  },
+  {
+   "start": 879.02,
+   "end": 883.84,
+   "text": "issues there so yeah a lot of things are related to just only women"
+  },
+  {
+   "start": 883.84,
+   "end": 885.78,
+   "text": "which is i think great that we have a"
+  },
+  {
+   "start": 885.78,
+   "end": 889.58,
+   "text": "spokesperson for these things but also a lot of the issues are just very"
+  },
+  {
+   "start": 889.58,
+   "end": 890.72,
+   "text": "in general issues in"
+  },
+  {
+   "start": 890.72,
+   "end": 895.08,
+   "text": "in serbia so that's why i think like guys would also love it love"
+  },
+  {
+   "start": 895.08,
+   "end": 900.14,
+   "text": "some of her sketches some more than others maybe before we continue with the"
+  },
+  {
+   "start": 900.14,
+   "end": 904.5,
+   "text": "show here's a quick reminder this podcast is free for everyone and supported by"
+  },
+  {
+   "start": 904.5,
+   "end": 905.66,
+   "text": "listeners like you."
+  },
+  {
+   "start": 905.66,
+   "end": 907.46,
+   "text": "We hope that this podcast is useful and"
+  },
+  {
+   "start": 907.46,
+   "end": 908.96,
+   "text": "companion to you."
+  },
+  {
+   "start": 908.96,
+   "end": 911.44,
+   "text": "This is a labor of love for both of us."
+  },
+  {
+   "start": 911.44,
+   "end": 913.4,
+   "text": "To help us continue creating useful content"
+  },
+  {
+   "start": 913.4,
+   "end": 916.32,
+   "text": "for everyone, we will appreciate your help."
+  },
+  {
+   "start": 916.32,
+   "end": 918.78,
+   "text": "If you have the means, you can support us in different"
+  },
+  {
+   "start": 918.78,
+   "end": 925.94,
+   "text": "ways. You may just go to buymeacoffee.com slash mosekafapodcast and send us some cups"
+  },
+  {
+   "start": 925.94,
+   "end": 930.86,
+   "text": "of coffee. You may also become a member of our show on patreon.com slash"
+  },
+  {
+   "start": 930.86,
+   "end": 936.56,
+   "text": "mozda cafe podcast and get extra benefits like bonus content, full transcripts of the"
+  },
+  {
+   "start": 936.56,
+   "end": 939.16,
+   "text": "show in Serbian, or even join us on the show."
+  },
+  {
+   "start": 939.94,
+   "end": 944.1,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 944.1,
+   "end": 946.6,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 946.6,
+   "end": 948.74,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 949.8,
+   "end": 953.62,
+   "text": "So I tried to, again, a lot of the ones that I loved were"
+  },
+  {
+   "start": 953.62,
+   "end": 955.48,
+   "text": "related mostly to women."
+  },
+  {
+   "start": 956.08,
+   "end": 959.52,
+   "text": "so guys is probably you're not gonna you know relate to this too much"
+  },
+  {
+   "start": 959.52,
+   "end": 959.92,
+   "text": "but maybe you"
+  },
+  {
+   "start": 959.92,
+   "end": 966.14,
+   "text": "would understand our point of view um so it was there was one just"
+  },
+  {
+   "start": 966.14,
+   "end": 966.9,
+   "text": "to kind of preface there was"
+  },
+  {
+   "start": 966.9,
+   "end": 970.94,
+   "text": "one about women's day which we say dan jenna or osmi mart we just"
+  },
+  {
+   "start": 970.94,
+   "end": 973.08,
+   "text": "say like osmi mart the uh 8th"
+  },
+  {
+   "start": 973.08,
+   "end": 978.5,
+   "text": "of march um and the the whole point of this is that she's saying"
+  },
+  {
+   "start": 978.5,
+   "end": 983.76,
+   "text": "how you know like men they usually they like give flowers to the woman,"
+  },
+  {
+   "start": 983.76,
+   "end": 984.14,
+   "text": "some gifts or whatever."
+  },
+  {
+   "start": 984.14,
+   "end": 984.26,
+   "text": "like"
+  },
+  {
+   "start": 984.78,
+   "end": 990.62,
+   "text": "And then the woman should be, should feel so grateful that she should even"
+  },
+  {
+   "start": 990.62,
+   "end": 996.72,
+   "text": "work harder. So like at home or in the office when her colleagues give"
+  },
+  {
+   "start": 996.72,
+   "end": 997.56,
+   "text": "her like some gifts and then"
+  },
+  {
+   "start": 997.56,
+   "end": 1003.38,
+   "text": "she's like, oh my God, I'm so thankful these flowers and your, your affections."
+  },
+  {
+   "start": 1003.38,
+   "end": 1006.96,
+   "text": "And now I'm going to do double or triple what I usually do in"
+  },
+  {
+   "start": 1006.96,
+   "end": 1007.86,
+   "text": "the office out of gratitude."
+  },
+  {
+   "start": 1007.86,
+   "end": 1012.14,
+   "text": "And at home, I'm going to like make three cakes."
+  },
+  {
+   "start": 1012.14,
+   "end": 1017.24,
+   "text": "And like, you know, instead of that being a day where you actually celebrate"
+  },
+  {
+   "start": 1017.24,
+   "end": 1021.28,
+   "text": "a woman and treat her like a queen or like, you know, you actually"
+  },
+  {
+   "start": 1021.28,
+   "end": 1024.92,
+   "text": "putting more pressure on her to do all of these things, you know."
+  },
+  {
+   "start": 1024.92,
+   "end": 1027.16,
+   "text": "So because if she doesn't do it, then she's ungrateful."
+  },
+  {
+   "start": 1028.24,
+   "end": 1030.64,
+   "text": "You know, if she's just like sitting and like, oh, this is my day,"
+  },
+  {
+   "start": 1030.64,
+   "end": 1032.1,
+   "text": "whatever, treat me nicely."
+  },
+  {
+   "start": 1032.1,
+   "end": 1033.1,
+   "text": "then it's like"
+  },
+  {
+   "start": 1033.1,
+   "end": 1035.58,
+   "text": "why she's so selfish"
+  },
+  {
+   "start": 1035.58,
+   "end": 1037.76,
+   "text": "and self-centered. She has kids,"
+  },
+  {
+   "start": 1037.76,
+   "end": 1039.78,
+   "text": "she has a husband, she needs to work"
+  },
+  {
+   "start": 1039.78,
+   "end": 1041.04,
+   "text": "for them too, right?"
+  },
+  {
+   "start": 1041.04,
+   "end": 1046.36,
+   "text": "So yeah. Thank you, 8th and March."
+  },
+  {
+   "start": 1047.78,
+   "end": 1051.3,
+   "text": "She says, today on the job of the chef, please, let me give you"
+  },
+  {
+   "start": 1051.3,
+   "end": 1052.42,
+   "text": "a bucket of flowers."
+  },
+  {
+   "start": 1052.5,
+   "end": 1054.06,
+   "text": "Do you know how many flowers I gave?"
+  },
+  {
+   "start": 1055.22,
+   "end": 1059.82,
+   "text": "I'm crying, now I'm crying, I'm crying, I'm crying,"
+  },
+  {
+   "start": 1061.24,
+   "end": 1066.14,
+   "text": "and I was just doing it a lot more than what I did."
+  },
+  {
+   "start": 1067.32,
+   "end": 1071.64,
+   "text": "And I said, don't do that, and I said, no, no, no, no, no,"
+  },
+  {
+   "start": 1071.64,
+   "end": 1074.62,
+   "text": "no, this is beautiful, I said, I got home, I said,"
+  },
+  {
+   "start": 1074.62,
+   "end": 1080.34,
+   "text": "I said, don't do that, and I said, don't do that,"
+  },
+  {
+   "start": 1080.34,
+   "end": 1118.56,
+   "text": "I said, tomorrow you will be pregnant, tomorrow you will be pregnant, okay"
+  },
+  {
+   "start": 1118.56,
+   "end": 1124.42,
+   "text": "yeah okay of flowers yeah and then the son the father the husband gave"
+  },
+  {
+   "start": 1124.42,
+   "end": 1131.04,
+   "text": "her yeah she says um i'm gonna do duplo you use duplo yeah yeah"
+  },
+  {
+   "start": 1131.04,
+   "end": 1133.8,
+   "text": "double i'm gonna do everything double from tomorrow on"
+  },
+  {
+   "start": 1133.8,
+   "end": 1140.08,
+   "text": "because i'm so happy to have to have these so with the parish subject"
+  },
+  {
+   "start": 1140.08,
+   "end": 1144.16,
+   "text": "actually this is important them so i'll get to that so it starts with"
+  },
+  {
+   "start": 1144.16,
+   "end": 1146.92,
+   "text": "like someone is congratulating her uh for the women's"
+  },
+  {
+   "start": 1146.92,
+   "end": 1150.9,
+   "text": "day and then she says thank you thank you like so gratefully right she's"
+  },
+  {
+   "start": 1150.9,
+   "end": 1151.78,
+   "text": "so grateful thank you"
+  },
+  {
+   "start": 1151.78,
+   "end": 1155.56,
+   "text": "to you as well probably her friend or something like that or maybe i"
+  },
+  {
+   "start": 1155.56,
+   "end": 1156.32,
+   "text": "don't know her whatever"
+  },
+  {
+   "start": 1156.32,
+   "end": 1161.4,
+   "text": "yeah and then um and then she's like she got the flowers at the"
+  },
+  {
+   "start": 1161.4,
+   "end": 1162.7,
+   "text": "office and she was crying"
+  },
+  {
+   "start": 1162.7,
+   "end": 1168.06,
+   "text": "so much she's she was even teary-eyed now when she was talking about it"
+  },
+  {
+   "start": 1168.06,
+   "end": 1173.6,
+   "text": "it was so moving and um and she she purposely out of gratitude she"
+  },
+  {
+   "start": 1173.6,
+   "end": 1176.68,
+   "text": "did double visha right double what she usually do"
+  },
+  {
+   "start": 1176.68,
+   "end": 1181.02,
+   "text": "um and they're like don't work so much and she's like no no no"
+  },
+  {
+   "start": 1181.02,
+   "end": 1184.0,
+   "text": "i have to like i have to work that's"
+  },
+  {
+   "start": 1184.0,
+   "end": 1189.04,
+   "text": "why it's yeah no no no yeah so um and then she goes home"
+  },
+  {
+   "start": 1189.04,
+   "end": 1190.36,
+   "text": "and then she gets flowers for her from"
+  },
+  {
+   "start": 1190.36,
+   "end": 1197.5,
+   "text": "her husband and her son and they're like don't wash the dishes today"
+  },
+  {
+   "start": 1197.5,
+   "end": 1200.65,
+   "text": "you will do it tomorrow You'll do it tomorrow."
+  },
+  {
+   "start": 1200.65,
+   "end": 1204.53,
+   "text": "this is critical because it's not like"
+  },
+  {
+   "start": 1204.53,
+   "end": 1208.89,
+   "text": "don't do the dishes we will do it for you but it's like the"
+  },
+  {
+   "start": 1208.89,
+   "end": 1210.49,
+   "text": "dishes will wait till tomorrow that you"
+  },
+  {
+   "start": 1210.49,
+   "end": 1214.67,
+   "text": "can do today you don't have to but tomorrow you're gonna have to right"
+  },
+  {
+   "start": 1214.67,
+   "end": 1216.01,
+   "text": "so this is important this is"
+  },
+  {
+   "start": 1216.01,
+   "end": 1220.77,
+   "text": "the critical point and then today is a holiday and then um and then"
+  },
+  {
+   "start": 1220.77,
+   "end": 1226.15,
+   "text": "she said yeah today i'm gonna do um the wash double um like iron"
+  },
+  {
+   "start": 1226.15,
+   "end": 1229.81,
+   "text": "double i'm even gonna make a cake uh when you've been so nice to"
+  },
+  {
+   "start": 1229.81,
+   "end": 1236.69,
+   "text": "me you gave me a bouquet of flowers yeah so sweet yeah good criticism"
+  },
+  {
+   "start": 1236.69,
+   "end": 1238.11,
+   "text": "yeah that is i mean there's"
+  },
+  {
+   "start": 1238.11,
+   "end": 1243.85,
+   "text": "another one similar to that but basically it's the same message yeah okay should"
+  },
+  {
+   "start": 1243.85,
+   "end": 1247.93,
+   "text": "i play that you can but i can do mine and then you can"
+  },
+  {
+   "start": 1247.93,
+   "end": 1252.45,
+   "text": "switch back okay so the one that hopefully i will find"
+  },
+  {
+   "start": 1252.45,
+   "end": 1257.47,
+   "text": "the audio file of that um but i will just say the english version"
+  },
+  {
+   "start": 1257.47,
+   "end": 1259.75,
+   "text": "of course because i have only that"
+  },
+  {
+   "start": 1259.75,
+   "end": 1266.99,
+   "text": "one um so she's criticizing um the way we post on social media especially"
+  },
+  {
+   "start": 1266.99,
+   "end": 1270.93,
+   "text": "on instagram okay you know the woman you have to you need to be"
+  },
+  {
+   "start": 1270.93,
+   "end": 1274.65,
+   "text": "the goddess yeah the goddess yeah yeah and she says smile"
+  },
+  {
+   "start": 1274.65,
+   "end": 1279.81,
+   "text": "take a selfie put on some makeup get dolled up drink some water smile"
+  },
+  {
+   "start": 1279.81,
+   "end": 1282.09,
+   "text": "meditate yoga quick"
+  },
+  {
+   "start": 1282.09,
+   "end": 1287.49,
+   "text": "and then she says heavy exercise how much at least five push-ups ring the"
+  },
+  {
+   "start": 1287.49,
+   "end": 1287.99,
+   "text": "application is ringing"
+  },
+  {
+   "start": 1287.99,
+   "end": 1294.31,
+   "text": "so she is saying have you drank everything for immunity smile take a selfie"
+  },
+  {
+   "start": 1294.31,
+   "end": 1299.23,
+   "text": "for instagram have you posted on in Facebook too put a hashtag"
+  },
+  {
+   "start": 1299.23,
+   "end": 1300.41,
+   "text": "hedonism"
+  },
+  {
+   "start": 1303.13,
+   "end": 1303.43,
+   "text": "find smiling"
+  },
+  {
+   "start": 1303.43,
+   "end": 1305.75,
+   "text": "go get yourself did you see there's discount"
+  },
+  {
+   "start": 1305.75,
+   "end": 1306.63,
+   "text": "or quick run"
+  },
+  {
+   "start": 1306.63,
+   "end": 1308.31,
+   "text": "they'll grab everything away from you"
+  },
+  {
+   "start": 1308.31,
+   "end": 1310.17,
+   "text": "smile, exercise, exercise"
+  },
+  {
+   "start": 1311.93,
+   "end": 1318.07,
+   "text": "so pray if nothing else say pray or breathe in breathe it's impossible impossible"
+  },
+  {
+   "start": 1318.07,
+   "end": 1318.93,
+   "text": "to do all of"
+  },
+  {
+   "start": 1318.93,
+   "end": 1325.83,
+   "text": "these things and it's like the point should not be you know to to"
+  },
+  {
+   "start": 1325.83,
+   "end": 1327.31,
+   "text": "do these things are nice but to"
+  },
+  {
+   "start": 1327.31,
+   "end": 1332.31,
+   "text": "do it for the sake of instagram is yeah the way something is wrong"
+  },
+  {
+   "start": 1332.31,
+   "end": 1334.29,
+   "text": "i guess yeah it's just the the"
+  },
+  {
+   "start": 1334.29,
+   "end": 1338.73,
+   "text": "way the reality is portrayed on instagram i guess and it's like if you"
+  },
+  {
+   "start": 1338.73,
+   "end": 1342.47,
+   "text": "are maybe depressed and there's a lot of smiling right like smile smile smile"
+  },
+  {
+   "start": 1342.47,
+   "end": 1344.13,
+   "text": "and I think the culture it comes from like"
+  },
+  {
+   "start": 1344.13,
+   "end": 1349.45,
+   "text": "women should smile they should be like pleasant you know um and I do"
+  },
+  {
+   "start": 1349.45,
+   "end": 1350.35,
+   "text": "like but I also like guys"
+  },
+  {
+   "start": 1350.35,
+   "end": 1354.19,
+   "text": "smiling like it's not only women like I love to smile but I also"
+  },
+  {
+   "start": 1354.19,
+   "end": 1354.93,
+   "text": "like to see a guy smiling that"
+  },
+  {
+   "start": 1354.93,
+   "end": 1360.27,
+   "text": "would be nice so yeah I think it's just the the expectations on on"
+  },
+  {
+   "start": 1360.27,
+   "end": 1361.55,
+   "text": "social platforms that is just"
+  },
+  {
+   "start": 1361.55,
+   "end": 1366.55,
+   "text": "and this is not only for women the same things are valid for men"
+  },
+  {
+   "start": 1366.55,
+   "end": 1371.31,
+   "text": "as well like to have this strong positive always doing the right thing kind"
+  },
+  {
+   "start": 1371.31,
+   "end": 1375.15,
+   "text": "of person you have to be right so that's why it's"
+  },
+  {
+   "start": 1375.15,
+   "end": 1382.43,
+   "text": "it's not only for women I think yeah some of some of her shorts"
+  },
+  {
+   "start": 1382.43,
+   "end": 1383.29,
+   "text": "or like sketches are"
+  },
+  {
+   "start": 1383.29,
+   "end": 1390.03,
+   "text": "more or less funny you know you'll see but but a lot everything is"
+  },
+  {
+   "start": 1390.03,
+   "end": 1395.75,
+   "text": "a criticism so yeah by the way she doesn't use any censorship."
+  },
+  {
+   "start": 1395.75,
+   "end": 1397.31,
+   "text": "So she says all the swear words."
+  },
+  {
+   "start": 1397.39,
+   "end": 1398.25,
+   "text": "Yes, they are."
+  },
+  {
+   "start": 1398.71,
+   "end": 1400.45,
+   "text": "And it might be too much,"
+  },
+  {
+   "start": 1400.45,
+   "end": 1406.07,
+   "text": "but it is the reality of some people like, you know, using that."
+  },
+  {
+   "start": 1406.07,
+   "end": 1410.35,
+   "text": "And I think it's necessary as a tool to portray someone because it would"
+  },
+  {
+   "start": 1410.35,
+   "end": 1411.03,
+   "text": "not be real."
+  },
+  {
+   "start": 1411.03,
+   "end": 1412.45,
+   "text": "It would not feel real, you know."
+  },
+  {
+   "start": 1412.45,
+   "end": 1415.47,
+   "text": "So yeah, some of the things are a bit more, I think especially there's"
+  },
+  {
+   "start": 1415.47,
+   "end": 1415.67,
+   "text": "she's portraying this one, Draga Saveta."
+  },
+  {
+   "start": 1415.67,
+   "end": 1415.99,
+   "text": "this,"
+  },
+  {
+   "start": 1418.95,
+   "end": 1419.14,
+   "text": "I don't know if you know"
+  },
+  {
+   "start": 1419.14,
+   "end": 1424.3,
+   "text": "about it but it's like dear um it's a person um you know in"
+  },
+  {
+   "start": 1424.3,
+   "end": 1426.34,
+   "text": "like some magazines you have some"
+  },
+  {
+   "start": 1426.34,
+   "end": 1430.1,
+   "text": "person like consulting person yeah and then you write to her i have an"
+  },
+  {
+   "start": 1430.1,
+   "end": 1434.28,
+   "text": "issue my husband i don't doesn't want to kiss me anymore like so we"
+  },
+  {
+   "start": 1434.28,
+   "end": 1437.04,
+   "text": "call this draga saveta uh because draga is"
+  },
+  {
+   "start": 1437.04,
+   "end": 1441.5,
+   "text": "dear like when you write a letter and savit savit is actually advice advice"
+  },
+  {
+   "start": 1441.5,
+   "end": 1447.2,
+   "text": "yeah so savita is like a a noun made out of advice in serbian"
+  },
+  {
+   "start": 1447.2,
+   "end": 1450.1,
+   "text": "so that's like a very very old thing and typical draga"
+  },
+  {
+   "start": 1450.1,
+   "end": 1457.2,
+   "text": "and draga saveta and saveta is actually quite a she swears quite"
+  },
+  {
+   "start": 1457.2,
+   "end": 1459.9,
+   "text": "a lot so if you encounter this"
+  },
+  {
+   "start": 1459.9,
+   "end": 1464.54,
+   "text": "you will encounter a lot of swear words okay cool yeah and the other"
+  },
+  {
+   "start": 1464.54,
+   "end": 1466.46,
+   "text": "one that you said quite similar"
+  },
+  {
+   "start": 1466.46,
+   "end": 1471.32,
+   "text": "is about what the second one is dating and i think it's just the"
+  },
+  {
+   "start": 1471.32,
+   "end": 1476.26,
+   "text": "expectation that women And like women, some women can, I mean, I can definitely"
+  },
+  {
+   "start": 1476.26,
+   "end": 1479.38,
+   "text": "am included in this a lot."
+  },
+  {
+   "start": 1479.68,
+   "end": 1483.36,
+   "text": "So some women are just too optimistic too soon."
+  },
+  {
+   "start": 1484.12,
+   "end": 1485.54,
+   "text": "You know, they commit too soon."
+  },
+  {
+   "start": 1486.4,
+   "end": 1489.34,
+   "text": "And the guy is like full of issues, you know, and she's like, no,"
+  },
+  {
+   "start": 1489.34,
+   "end": 1489.72,
+   "text": "it doesn't matter."
+  },
+  {
+   "start": 1490.16,
+   "end": 1490.74,
+   "text": "You're perfect. You're"
+  },
+  {
+   "start": 1490.74,
+   "end": 1491.62,
+   "text": "I love you."
+  },
+  {
+   "start": 1491.62,
+   "end": 1496.6,
+   "text": "I know, so like too soon, instead of just like, hey, let's see, you"
+  },
+  {
+   "start": 1496.6,
+   "end": 1500.2,
+   "text": "know, let's meet, let you know each other and see if we're a good"
+  },
+  {
+   "start": 1500.2,
+   "end": 1503.6,
+   "text": "fit. but it's like right away, no, you are the person for me."
+  },
+  {
+   "start": 1503.74,
+   "end": 1505.02,
+   "text": "So that's the criticism."
+  },
+  {
+   "start": 1505.98,
+   "end": 1509.98,
+   "text": "And I won't, yeah, I'll try not to go through all of it, but"
+  },
+  {
+   "start": 1509.98,
+   "end": 1510.98,
+   "text": "it is so funny."
+  },
+  {
+   "start": 1510.98,
+   "end": 1513.12,
+   "text": "She does it, like literally she does it in less than a minute."
+  },
+  {
+   "start": 1514.02,
+   "end": 1514.62,
+   "text": "So let's start."
+  },
+  {
+   "start": 1514.82,
+   "end": 1517.04,
+   "text": "It's called, yeah, it talks about date."
+  },
+  {
+   "start": 1517.5,
+   "end": 1520.5,
+   "text": "Like, date, date ends with statement in Serbian."
+  },
+  {
+   "start": 1521.06,
+   "end": 1523.16,
+   "text": "Okay. It's really nice to be on a date."
+  },
+  {
+   "start": 1523.76,
+   "end": 1524.14,
+   "text": "You're so much like you get."
+  },
+  {
+   "start": 1524.14,
+   "end": 1525.06,
+   "text": "se dopadaš. Čekaj, čekaj, polako, ne znaš me, baš sam htio da ti kažem,"
+  },
+  {
+   "start": 1525.06,
+   "end": 1526.8,
+   "text": "Wait, wait, wait, don't know me."
+  },
+  {
+   "start": 1527.26,
+   "end": 1528.36,
+   "text": "I just wanted to tell you, I have problems with alcohol."
+  },
+  {
+   "start": 1528.36,
+   "end": 1531.66,
+   "text": "ja imam probleme s alkoholom."
+  },
+  {
+   "start": 1531.98,
+   "end": 1532.24,
+   "text": "What? What?"
+  },
+  {
+   "start": 1532.24,
+   "end": 1537.44,
+   "text": "Pa šta, pa šta, to je zato što si emotivac, ali meni se sviđa"
+  },
+  {
+   "start": 1537.44,
+   "end": 1539.02,
+   "text": "koliko si pametan."
+  },
+  {
+   "start": 1539.2,
+   "end": 1540.64,
+   "text": "Čekaj čoveče, ali ja sam ne lečen."
+  },
+  {
+   "start": 1540.64,
+   "end": 1542.12,
+   "text": "Šta ima veze što se lečiš?"
+  },
+  {
+   "start": 1542.12,
+   "end": 1544.66,
+   "text": "Pa nije sramota lečiti se, što?"
+  },
+  {
+   "start": 1545.48,
+   "end": 1548.48,
+   "text": "Imam probleme sa narkoticima, razumeš, ne samo sve."
+  },
+  {
+   "start": 1548.48,
+   "end": 1550.5,
+   "text": "Svi imamo neke probleme s nečim."
+  },
+  {
+   "start": 1551.42,
+   "end": 1554.02,
+   "text": "Ali meni se sviđa što si ti pametan i visok."
+  },
+  {
+   "start": 1554.46,
+   "end": 1558.62,
+   "text": "I baš zato što imaš probleme s alkoholom i sa narkoticima, govori da imaš"
+  },
+  {
+   "start": 1558.62,
+   "end": 1561.14,
+   "text": "dušu, da si emotivac, da si empata."
+  },
+  {
+   "start": 1561.62,
+   "end": 1564.7,
+   "text": "Znamo li, nekad imam i veće probleme, nisam siguran da li postojim, recimo."
+  },
+  {
+   "start": 1566.44,
+   "end": 1571.34,
+   "text": "Postojiš. Postojiš. Ja sam ti živi dokaz da postojiš."
+  },
+  {
+   "start": 1571.34,
+   "end": 1572.24,
+   "text": "Gledam u tebe."
+  },
+  {
+   "start": 1573.2,
+   "end": 1576.12,
+   "text": "Evo, videli smo se tri puta, ali ja sam nekako ubeđena da smo mi"
+  },
+  {
+   "start": 1576.72,
+   "end": 1579.56,
+   "text": "Bukvalno urođeni jedno za drugom Ustojim"
+  },
+  {
+   "start": 1606.18,
+   "end": 1613.28,
+   "text": "emotional guy like yes and then he continues but i have some narquitic problems"
+  },
+  {
+   "start": 1613.28,
+   "end": 1613.94,
+   "text": "you know like not"
+  },
+  {
+   "start": 1613.94,
+   "end": 1621.04,
+   "text": "only alcohol and they're still like everyone of us has problems so it's"
+  },
+  {
+   "start": 1621.04,
+   "end": 1621.98,
+   "text": "not important like"
+  },
+  {
+   "start": 1621.98,
+   "end": 1628.98,
+   "text": "pametan you are smart right you are a smart person that's why these"
+  },
+  {
+   "start": 1628.98,
+   "end": 1631.54,
+   "text": "kind of things happen to you you're empathetic"
+  },
+  {
+   "start": 1631.54,
+   "end": 1632.34,
+   "text": "i guess"
+  },
+  {
+   "start": 1632.34,
+   "end": 1634.74,
+   "text": "and then the last part"
+  },
+  {
+   "start": 1634.74,
+   "end": 1641.51,
+   "text": "he says nisam siguranda posto em retimo like retimo retimo oh this"
+  },
+  {
+   "start": 1641.51,
+   "end": 1641.77,
+   "text": "like just a filler word retimo like so to speak something like that yeah"
+  },
+  {
+   "start": 1641.77,
+   "end": 1641.93,
+   "text": "is"
+  },
+  {
+   "start": 1646.85,
+   "end": 1648.43,
+   "text": "yeah okay she keeps"
+  },
+  {
+   "start": 1648.43,
+   "end": 1655.53,
+   "text": "telling like postoish postoish like you you exist you exist that's why yeah"
+  },
+  {
+   "start": 1655.53,
+   "end": 1660.95,
+   "text": "as if she's giving the meaning of life to this man you know and"
+  },
+  {
+   "start": 1660.95,
+   "end": 1663.41,
+   "text": "it is totally true so they start she's like oh i'm"
+  },
+  {
+   "start": 1663.41,
+   "end": 1666.53,
+   "text": "having so much fun and the guy is already like it is something also"
+  },
+  {
+   "start": 1666.53,
+   "end": 1667.25,
+   "text": "about the guy because the guy is"
+  },
+  {
+   "start": 1667.25,
+   "end": 1672.03,
+   "text": "like they have this tendency like whoa whoa whoa like too soon too soon"
+  },
+  {
+   "start": 1672.03,
+   "end": 1672.85,
+   "text": "even if you say i like you"
+  },
+  {
+   "start": 1672.85,
+   "end": 1678.49,
+   "text": "it's like oh my god the fear of a commitment right exactly but then"
+  },
+  {
+   "start": 1678.49,
+   "end": 1679.69,
+   "text": "she takes it a bit too far because"
+  },
+  {
+   "start": 1679.69,
+   "end": 1683.53,
+   "text": "she he's like hey wait like you actually you don't really know me like"
+  },
+  {
+   "start": 1683.53,
+   "end": 1687.15,
+   "text": "i actually have issues with alcohol he's like so what so what we all"
+  },
+  {
+   "start": 1687.15,
+   "end": 1689.19,
+   "text": "have issues it's fine he's about to have issues with"
+  },
+  {
+   "start": 1689.19,
+   "end": 1695.67,
+   "text": "narcotics so what this is exactly because you feel so much you're such an"
+  },
+  {
+   "start": 1695.67,
+   "end": 1696.49,
+   "text": "empathetic empathetic"
+  },
+  {
+   "start": 1696.49,
+   "end": 1702.07,
+   "text": "person you know um and and then she says um but i like uh"
+  },
+  {
+   "start": 1702.07,
+   "end": 1703.87,
+   "text": "but i really like you that you're smart"
+  },
+  {
+   "start": 1703.87,
+   "end": 1704.77,
+   "text": "and tall"
+  },
+  {
+   "start": 1707.83,
+   "end": 1712.15,
+   "text": "out of everything she's like i really like you i mean as i say"
+  },
+  {
+   "start": 1712.15,
+   "end": 1716.01,
+   "text": "something to someone i really like you that you're emotional and muscular you know"
+  },
+  {
+   "start": 1716.01,
+   "end": 1718.61,
+   "text": "like it's like why is that such a i mean sure it's"
+  },
+  {
+   "start": 1718.61,
+   "end": 1722.35,
+   "text": "it's cool but is it connected right yeah but i think there's this thing"
+  },
+  {
+   "start": 1722.35,
+   "end": 1723.61,
+   "text": "about tall guys you know"
+  },
+  {
+   "start": 1723.61,
+   "end": 1726.95,
+   "text": "it's like oh my god you're tall um and then he's like yeah but"
+  },
+  {
+   "start": 1726.95,
+   "end": 1728.25,
+   "text": "like now he's like i don't know if"
+  },
+  {
+   "start": 1728.25,
+   "end": 1731.69,
+   "text": "he's lying or whatever he's like saying but i sometimes i feel like i"
+  },
+  {
+   "start": 1731.69,
+   "end": 1733.03,
+   "text": "don't exist like i'm not"
+  },
+  {
+   "start": 1733.03,
+   "end": 1737.67,
+   "text": "living you know and he's like you do she's like you do exist you"
+  },
+  {
+   "start": 1737.67,
+   "end": 1743.41,
+   "text": "do exist the fact that i'm looking I can tell you because of me,"
+  },
+  {
+   "start": 1743.41,
+   "end": 1743.85,
+   "text": "you know, you exist."
+  },
+  {
+   "start": 1743.85,
+   "end": 1747.49,
+   "text": "So she's being a part of this, you know,"
+  },
+  {
+   "start": 1747.59,
+   "end": 1749.05,
+   "text": "creating this bigger than it actually is."
+  },
+  {
+   "start": 1749.05,
+   "end": 1753.15,
+   "text": "Like he has obviously has some mental issues or like,"
+  },
+  {
+   "start": 1753.15,
+   "end": 1755.29,
+   "text": "just like life questions, you know?"
+  },
+  {
+   "start": 1755.29,
+   "end": 1756.43,
+   "text": "And she's like, that's okay."
+  },
+  {
+   "start": 1756.43,
+   "end": 1758.49,
+   "text": "I will fix you, you know?"
+  },
+  {
+   "start": 1759.29,
+   "end": 1760.43,
+   "text": "And then at the end she says,"
+  },
+  {
+   "start": 1760.43,
+   "end": 1761.31,
+   "text": "oh, we've seen each other three times,"
+  },
+  {
+   "start": 1761.31,
+   "end": 1763.55,
+   "text": "but I feel like we're meant for each other."
+  },
+  {
+   "start": 1763.81,
+   "end": 1764.09,
+   "text": "I feel like that's-"
+  },
+  {
+   "start": 1764.09,
+   "end": 1765.83,
+   "text": "And the guy runs away."
+  },
+  {
+   "start": 1765.93,
+   "end": 1768.41,
+   "text": "The guy is like, exactly."
+  },
+  {
+   "start": 1768.69,
+   "end": 1772.09,
+   "text": "I think there's another video like this, something with like, but I was in"
+  },
+  {
+   "start": 1772.09,
+   "end": 1772.41,
+   "text": "jail."
+  },
+  {
+   "start": 1772.41,
+   "end": 1773.87,
+   "text": "And she's like, how was in jail?"
+  },
+  {
+   "start": 1774.19,
+   "end": 1774.81,
+   "text": "Like, how was jail?"
+  },
+  {
+   "start": 1775.91,
+   "end": 1780.31,
+   "text": "instead of instead of reacting like whoa what happened she's like so how was"
+  },
+  {
+   "start": 1780.31,
+   "end": 1781.27,
+   "text": "jail what did"
+  },
+  {
+   "start": 1781.27,
+   "end": 1785.99,
+   "text": "you like about like you know so just completely being yeah in a different"
+  },
+  {
+   "start": 1785.99,
+   "end": 1787.03,
+   "text": "mindset exactly yeah"
+  },
+  {
+   "start": 1787.03,
+   "end": 1794.09,
+   "text": "so that's why she's really really good at um like she"
+  },
+  {
+   "start": 1794.09,
+   "end": 1796.11,
+   "text": "always observes people obviously to"
+  },
+  {
+   "start": 1796.11,
+   "end": 1800.79,
+   "text": "have these right i mean it's your job as well like as an actor"
+  },
+  {
+   "start": 1800.79,
+   "end": 1805.77,
+   "text": "you need to portray you you you shouldn't act you should like transform at"
+  },
+  {
+   "start": 1805.77,
+   "end": 1808.03,
+   "text": "that other person like you know feel what they're"
+  },
+  {
+   "start": 1808.03,
+   "end": 1812.13,
+   "text": "feeling it's not like she's you actually need to feel these emotions to be"
+  },
+  {
+   "start": 1812.13,
+   "end": 1812.39,
+   "text": "able to check them out"
+  },
+  {
+   "start": 1812.39,
+   "end": 1817.99,
+   "text": "and keeping them less than one minute is also very effective i guess you"
+  },
+  {
+   "start": 1817.99,
+   "end": 1818.79,
+   "text": "just you know keep"
+  },
+  {
+   "start": 1818.79,
+   "end": 1824.13,
+   "text": "watching when it's less than one minute so that's why i guess many followers"
+  },
+  {
+   "start": 1824.13,
+   "end": 1825.35,
+   "text": "uh immediately watch"
+  },
+  {
+   "start": 1825.35,
+   "end": 1831.13,
+   "text": "everything as soon as she publishes yeah actually that's perfect because this is the"
+  },
+  {
+   "start": 1831.13,
+   "end": 1834.29,
+   "text": "culture right now like a minute culture like instead of like you don't need"
+  },
+  {
+   "start": 1834.29,
+   "end": 1835.41,
+   "text": "to skip right because it's just one"
+  },
+  {
+   "start": 1835.41,
+   "end": 1839.05,
+   "text": "minute can I just do the last one the one is really short actually"
+  },
+  {
+   "start": 1839.05,
+   "end": 1840.87,
+   "text": "kind of sure because uh"
+  },
+  {
+   "start": 1840.87,
+   "end": 1845.51,
+   "text": "I think it's very um important nowadays um I think there's a pressure on"
+  },
+  {
+   "start": 1845.51,
+   "end": 1847.25,
+   "text": "breastfeeding um guys again"
+  },
+  {
+   "start": 1847.25,
+   "end": 1850.85,
+   "text": "probably not relevant to you but I found it so funny even though I"
+  },
+  {
+   "start": 1850.85,
+   "end": 1852.65,
+   "text": "am not a woman that has a kid"
+  },
+  {
+   "start": 1852.65,
+   "end": 1858.34,
+   "text": "or has breastfed or is in a in a group where this is an"
+  },
+  {
+   "start": 1858.34,
+   "end": 1859.22,
+   "text": "important question but i"
+  },
+  {
+   "start": 1859.22,
+   "end": 1864.54,
+   "text": "just still find it very interesting because like people like women are getting shamed"
+  },
+  {
+   "start": 1864.54,
+   "end": 1865.36,
+   "text": "because they're"
+  },
+  {
+   "start": 1865.36,
+   "end": 1869.88,
+   "text": "not breastfeeding which is by the way guys this is a like one of"
+  },
+  {
+   "start": 1869.88,
+   "end": 1871.2,
+   "text": "the toughest things about being"
+  },
+  {
+   "start": 1871.2,
+   "end": 1876.86,
+   "text": "um like giving birth actually yeah the birth itself hurts and then after that"
+  },
+  {
+   "start": 1876.86,
+   "end": 1884.06,
+   "text": "breastfeeding hurts and it's like a like not like 24 7 job um and"
+  },
+  {
+   "start": 1884.06,
+   "end": 1886.02,
+   "text": "not everyone can do it actually because you"
+  },
+  {
+   "start": 1886.02,
+   "end": 1891.98,
+   "text": "can't have complications so this is basically about that and then if you breastfeed"
+  },
+  {
+   "start": 1891.98,
+   "end": 1892.44,
+   "text": "that's also inappropriate especially in serbia so there's like you cannot win you know in public"
+  },
+  {
+   "start": 1896.62,
+   "end": 1897.06,
+   "text": "whatever"
+  },
+  {
+   "start": 1897.06,
+   "end": 1903.7,
+   "text": "you do you cannot win um so breastfeeding in serbian is called dojenje um"
+  },
+  {
+   "start": 1903.7,
+   "end": 1904.64,
+   "text": "and like giving"
+  },
+  {
+   "start": 1906.66,
+   "end": 1909.7,
+   "text": "no that would be da-ti da-ti"
+  },
+  {
+   "start": 1909.7,
+   "end": 1914.38,
+   "text": "da-ti to breastfeed is"
+  },
+  {
+   "start": 1914.38,
+   "end": 1918.48,
+   "text": "da-ti so this is gonna be like"
+  },
+  {
+   "start": 1918.48,
+   "end": 1920.38,
+   "text": "so basically what's happening in the video"
+  },
+  {
+   "start": 1920.38,
+   "end": 1924.58,
+   "text": "is she's talking to someone about some other friend"
+  },
+  {
+   "start": 1924.58,
+   "end": 1926.24,
+   "text": "about someone who"
+  },
+  {
+   "start": 1927.98,
+   "end": 1928.42,
+   "text": "they're commenting on someone"
+  },
+  {
+   "start": 1928.42,
+   "end": 1929.44,
+   "text": "not breastfeeding"
+  },
+  {
+   "start": 1929.44,
+   "end": 1931.92,
+   "text": "and they have kids and the friend has kids"
+  },
+  {
+   "start": 1931.92,
+   "end": 1935.3,
+   "text": "and they're all both breastfeeding I think or something like that."
+  },
+  {
+   "start": 1935.86,
+   "end": 1937.72,
+   "text": "So you're going to hear that word quite a lot"
+  },
+  {
+   "start": 1937.72,
+   "end": 1941.6,
+   "text": "and I think this is for a reason, like, dojti, like, quite a lot."
+  },
+  {
+   "start": 1961.04,
+   "end": 1962.7,
+   "text": "Pošto sam je dugo dojila, onda se zove dojila."
+  },
+  {
+   "start": 1962.86,
+   "end": 1964.44,
+   "text": "Pa lepo ime se čerkuje starija dojila, a mlađa dojlica."
+  },
+  {
+   "start": 1964.44,
+   "end": 1965.78,
+   "text": "Dojla, a young lady."
+  },
+  {
+   "start": 1966.0,
+   "end": 1966.12,
+   "text": "Dojka doj. Dojka doj."
+  },
+  {
+   "start": 1966.12,
+   "end": 1968.0,
+   "text": "Kad doji, dojka doji."
+  },
+  {
+   "start": 1968.34,
+   "end": 1968.94,
+   "text": "Kako je divno, dojka doji, žena dojke ima."
+  },
+  {
+   "start": 1968.94,
+   "end": 1969.48,
+   "text": "Dojka doj."
+  },
+  {
+   "start": 1970.86,
+   "end": 1973.56,
+   "text": "Žena ima dojke da doji, dojlja je žena."
+  },
+  {
+   "start": 1973.76,
+   "end": 1975.36,
+   "text": "Žena doji, žena doji."
+  },
+  {
+   "start": 1975.56,
+   "end": 1978.12,
+   "text": "Ona koja ne doji, ona nije dojda, to ne valja."
+  },
+  {
+   "start": 1978.4,
+   "end": 1981.3,
+   "text": "Jer žena ima dojke koje doje i svakog treba pitati."
+  },
+  {
+   "start": 1981.5,
+   "end": 1983.52,
+   "text": "Prvo kad upoznaš ženu, pitaš je jel dojila?"
+  },
+  {
+   "start": 1984.3,
+   "end": 1986.66,
+   "text": "Ako nije dojila, kažeš je moraš da dojiš."
+  },
+  {
+   "start": 1987.0,
+   "end": 1989.66,
+   "text": "Onda je pitaš, ako kaže da je dojila, pitaš je koliko si dojila?"
+  },
+  {
+   "start": 1989.66,
+   "end": 1990.5,
+   "text": "A sad dojiš?"
+  },
+  {
+   "start": 1990.5,
+   "end": 1992.0,
+   "text": "Jao, ja bih što dojila."
+  },
+  {
+   "start": 1992.7,
+   "end": 1993.8,
+   "text": "Dojenje je smisao."
+  },
+  {
+   "start": 2017.14,
+   "end": 2020.32,
+   "text": "like because female names"
+  },
+  {
+   "start": 2020.32,
+   "end": 2027.46,
+   "text": "end with Allah a lot so she says I'm going to give my daughter"
+  },
+  {
+   "start": 2027.46,
+   "end": 2032.48,
+   "text": "Doila the name Doila and she's going to be old Doila and young"
+  },
+  {
+   "start": 2032.48,
+   "end": 2036.52,
+   "text": "Doilica so this is"
+  },
+  {
+   "start": 2036.52,
+   "end": 2040.34,
+   "text": "pretty much on point she basically starts like oh are you breastfeeding and then"
+  },
+  {
+   "start": 2040.34,
+   "end": 2042.34,
+   "text": "she comments oh she is not"
+  },
+  {
+   "start": 2042.34,
+   "end": 2046.8,
+   "text": "someone else she's not breastfeeding I said, this is actually really cool for learners"
+  },
+  {
+   "start": 2046.8,
+   "end": 2048.24,
+   "text": "Because she says in this one"
+  },
+  {
+   "start": 2048.24,
+   "end": 2055.26,
+   "text": "I breastfed I am breastfeeding and I will breastfeed So you have three"
+  },
+  {
+   "start": 2055.26,
+   "end": 2063.32,
+   "text": "tenses Dojla sam Deutschu i doim So like past, future, present And"
+  },
+  {
+   "start": 2063.32,
+   "end": 2063.68,
+   "text": "then like she asked"
+  },
+  {
+   "start": 2063.68,
+   "end": 2068.78,
+   "text": "How much have you breastfed Blah, blah, blah And how much have you Did"
+  },
+  {
+   "start": 2068.78,
+   "end": 2069.7,
+   "text": "you, are you, blah, blah, blah"
+  },
+  {
+   "start": 2069.7,
+   "end": 2070.56,
+   "text": "And then she said"
+  },
+  {
+   "start": 2070.56,
+   "end": 2074.51,
+   "text": "Oh, I'm thinking of giving the name of my kid, Doila."
+  },
+  {
+   "start": 2074.93,
+   "end": 2079.31,
+   "text": "It's an amazing, because I've breastfed her for so long that your name should"
+  },
+  {
+   "start": 2079.31,
+   "end": 2080.33,
+   "text": "be Doila, right?"
+  },
+  {
+   "start": 2080.75,
+   "end": 2083.81,
+   "text": "And then the older one, Doila, and the younger one, Doilica."
+  },
+  {
+   "start": 2085.03,
+   "end": 2086.13,
+   "text": "Ah, two kids."
+  },
+  {
+   "start": 2086.27,
+   "end": 2086.47,
+   "text": "Yeah."
+  },
+  {
+   "start": 2088.37,
+   "end": 2091.07,
+   "text": "So really, really hilarious, guys."
+  },
+  {
+   "start": 2091.07,
+   "end": 2091.89,
+   "text": "You need to."
+  },
+  {
+   "start": 2093.35,
+   "end": 2096.99,
+   "text": "Yes, and I'm glad that she also has YouTube, because I can slow down"
+  },
+  {
+   "start": 2096.99,
+   "end": 2097.87,
+   "text": "on YouTube."
+  },
+  {
+   "start": 2097.87,
+   "end": 2100.01,
+   "text": "On Instagram, I can't, but on YouTube, I do."
+  },
+  {
+   "start": 2100.01,
+   "end": 2105.65,
+   "text": "So sometimes it helps to me when she's speeding the videos up."
+  },
+  {
+   "start": 2105.97,
+   "end": 2109.77,
+   "text": "But how do you slow down shorts on YouTube?"
+  },
+  {
+   "start": 2109.77,
+   "end": 2112.71,
+   "text": "Because sometimes she has shorts on YouTube, like reels."
+  },
+  {
+   "start": 2114.31,
+   "end": 2114.95,
+   "text": "Those ones? No."
+  },
+  {
+   "start": 2114.95,
+   "end": 2117.75,
+   "text": "Like the ones that are YouTube videos I can do, but not shorts."
+  },
+  {
+   "start": 2117.75,
+   "end": 2119.49,
+   "text": "Yeah, that's true."
+  },
+  {
+   "start": 2119.49,
+   "end": 2120.35,
+   "text": "Actually, that's true."
+  },
+  {
+   "start": 2120.61,
+   "end": 2122.15,
+   "text": "So there's that."
+  },
+  {
+   "start": 2123.27,
+   "end": 2124.51,
+   "text": "They are short."
+  },
+  {
+   "start": 2124.51,
+   "end": 2128.33,
+   "text": "And as long as you get the basic words, you understand the message."
+  },
+  {
+   "start": 2128.33,
+   "end": 2133.19,
+   "text": "and i think it's useful to understand like to follow at least those phrases"
+  },
+  {
+   "start": 2133.19,
+   "end": 2134.81,
+   "text": "common data phrases"
+  },
+  {
+   "start": 2134.81,
+   "end": 2140.15,
+   "text": "answering the phone asking the question answering the question all the time so that's"
+  },
+  {
+   "start": 2140.15,
+   "end": 2140.59,
+   "text": "quite useful"
+  },
+  {
+   "start": 2140.59,
+   "end": 2145.91,
+   "text": "so important and especially because she's so authentically like portraying other people"
+  },
+  {
+   "start": 2145.91,
+   "end": 2152.09,
+   "text": "on point on point like i wouldn't even say she's acting really amazing yeah"
+  },
+  {
+   "start": 2154.07,
+   "end": 2157.83,
+   "text": "exactly i hope she joined us on the oh my god that would be"
+  },
+  {
+   "start": 2157.83,
+   "end": 2159.05,
+   "text": "great that would be great oh i would"
+  },
+  {
+   "start": 2159.05,
+   "end": 2164.15,
+   "text": "just laugh all the time she's incredible but um you wrote down like uh"
+  },
+  {
+   "start": 2164.15,
+   "end": 2164.65,
+   "text": "what about other stand-up"
+  },
+  {
+   "start": 2164.65,
+   "end": 2169.87,
+   "text": "comedians and i only have one and again it's i don't know if we"
+  },
+  {
+   "start": 2169.87,
+   "end": 2170.67,
+   "text": "should call them stand-up comedians"
+  },
+  {
+   "start": 2170.67,
+   "end": 2175.55,
+   "text": "because um they you know there's instagram right now so you can just do"
+  },
+  {
+   "start": 2175.55,
+   "end": 2176.31,
+   "text": "it on your own it's not"
+  },
+  {
+   "start": 2176.31,
+   "end": 2180.33,
+   "text": "like you're actually having a show but you are a comedian um i mean"
+  },
+  {
+   "start": 2180.33,
+   "end": 2183.29,
+   "text": "in that sense you know so i I think people like testing it out."
+  },
+  {
+   "start": 2183.63,
+   "end": 2184.49,
+   "text": "There's another action."
+  },
+  {
+   "start": 2184.49,
+   "end": 2186.27,
+   "text": "called Zoran Paj."
+  },
+  {
+   "start": 2186.97,
+   "end": 2188.17,
+   "text": "I think he's from Niche."
+  },
+  {
+   "start": 2190.31,
+   "end": 2192.81,
+   "text": "And he has a slightly different,"
+  },
+  {
+   "start": 2192.81,
+   "end": 2194.05,
+   "text": "he is also really funny."
+  },
+  {
+   "start": 2194.93,
+   "end": 2198.29,
+   "text": "And he has a slightly different, he has slightly different topics,"
+  },
+  {
+   "start": 2198.29,
+   "end": 2199.89,
+   "text": "like mostly like family dynamic."
+  },
+  {
+   "start": 2200.61,
+   "end": 2206.03,
+   "text": "And also he comments on our people in Germany, which is really, yeah,"
+  },
+  {
+   "start": 2206.03,
+   "end": 2208.13,
+   "text": "really like relates to me."
+  },
+  {
+   "start": 2208.13,
+   "end": 2211.39,
+   "text": "And I find it incredibly funny and incredibly true."
+  },
+  {
+   "start": 2211.97,
+   "end": 2216.09,
+   "text": "so um but yeah so it's a bit difficult to I think a bit"
+  },
+  {
+   "start": 2216.09,
+   "end": 2218.53,
+   "text": "more difficult to relate to him that much"
+  },
+  {
+   "start": 2218.53,
+   "end": 2224.69,
+   "text": "just because he portrays every character the son the the wife the grandma and"
+  },
+  {
+   "start": 2224.69,
+   "end": 2225.25,
+   "text": "so on so visually"
+  },
+  {
+   "start": 2225.25,
+   "end": 2231.11,
+   "text": "obviously there's like a disconnect but the way he's acting is like you know"
+  },
+  {
+   "start": 2231.11,
+   "end": 2231.81,
+   "text": "amazing and I'm like"
+  },
+  {
+   "start": 2231.81,
+   "end": 2235.31,
+   "text": "a lot of these I've sent a lot of them to my parents I'm"
+  },
+  {
+   "start": 2235.31,
+   "end": 2240.91,
+   "text": "like really totally us this is us so yeah I love him too I"
+  },
+  {
+   "start": 2240.91,
+   "end": 2245.91,
+   "text": "have some like a couple of people as well on Mojaka podcast Instagram"
+  },
+  {
+   "start": 2245.91,
+   "end": 2251.19,
+   "text": "account some other comedians I can't recall their names but I don't know what"
+  },
+  {
+   "start": 2251.19,
+   "end": 2251.67,
+   "text": "they are actually"
+  },
+  {
+   "start": 2251.67,
+   "end": 2257.87,
+   "text": "saying but maybe I can also share some links on the story after sharing"
+  },
+  {
+   "start": 2257.87,
+   "end": 2258.45,
+   "text": "this episode on"
+  },
+  {
+   "start": 2258.45,
+   "end": 2265.67,
+   "text": "our social platforms cool well I'm so happy we talked about her I"
+  },
+  {
+   "start": 2265.67,
+   "end": 2270.55,
+   "text": "think well she brightens my day so exactly and you know what i realized"
+  },
+  {
+   "start": 2270.55,
+   "end": 2272.77,
+   "text": "this is not something that you can find in english about"
+  },
+  {
+   "start": 2272.77,
+   "end": 2277.37,
+   "text": "serbian culture no so i think we found some kind of hidden gem for"
+  },
+  {
+   "start": 2277.37,
+   "end": 2279.97,
+   "text": "serbian the holy grail yeah"
+  },
+  {
+   "start": 2279.97,
+   "end": 2284.05,
+   "text": "that's true i i think people are gonna love it if you are skeptical"
+  },
+  {
+   "start": 2284.05,
+   "end": 2287.53,
+   "text": "don't be don't be i yeah and i"
+  },
+  {
+   "start": 2287.53,
+   "end": 2291.79,
+   "text": "i really i watch her videos and i laugh out loud and that doesn't"
+  },
+  {
+   "start": 2291.79,
+   "end": 2295.98,
+   "text": "happen that much i'm just like you know i cannot hold it because it's"
+  },
+  {
+   "start": 2295.98,
+   "end": 2301.28,
+   "text": "so so funny uh so yeah i truly i share some of hers to"
+  },
+  {
+   "start": 2301.28,
+   "end": 2302.82,
+   "text": "my serbian friends here and they're like"
+  },
+  {
+   "start": 2302.82,
+   "end": 2309.76,
+   "text": "they they are always reacting so genuinely i happily yeah they everybody male female"
+  },
+  {
+   "start": 2309.76,
+   "end": 2310.18,
+   "text": "i guess"
+  },
+  {
+   "start": 2310.18,
+   "end": 2315.46,
+   "text": "everybody likes her videos i think she found her niche i think she found"
+  },
+  {
+   "start": 2315.46,
+   "end": 2318.36,
+   "text": "her niche and found what her what she's doing well and i think what"
+  },
+  {
+   "start": 2318.36,
+   "end": 2321.36,
+   "text": "the society needs so i think that's really cool so"
+  },
+  {
+   "start": 2321.36,
+   "end": 2327.26,
+   "text": "yeah hope you guys enjoyed it yeah let us know how you find her"
+  },
+  {
+   "start": 2327.26,
+   "end": 2330.02,
+   "text": "yes please comment we we'd love"
+  },
+  {
+   "start": 2330.02,
+   "end": 2335.16,
+   "text": "tell us um if you like her tell us what your favorite video or"
+  },
+  {
+   "start": 2335.16,
+   "end": 2336.04,
+   "text": "like topic was and"
+  },
+  {
+   "start": 2336.04,
+   "end": 2343.08,
+   "text": "the quotes i love the quotes as well um yeah I hope you enjoyed"
+  },
+  {
+   "start": 2343.08,
+   "end": 2346.02,
+   "text": "today. We are great."
+  },
+  {
+   "start": 2347.94,
+   "end": 2351.86,
+   "text": "It was fun, it was funny, it was funny, it was emotional."
+  },
+  {
+   "start": 2353.94,
+   "end": 2356.86,
+   "text": "And funny was funny."
+  },
+  {
+   "start": 2357.06,
+   "end": 2357.6,
+   "text": "It was funny."
+  },
+  {
+   "start": 2358.02,
+   "end": 2362.46,
+   "text": "It It Okay."
+  },
+  {
+   "start": 2364.6,
+   "end": 2365.66,
+   "text": "I agree with you."
+  },
+  {
+   "start": 2366.74,
+   "end": 2368.8,
+   "text": "Also, yeah. Also, I agree."
+  },
+  {
+   "start": 2369.34,
+   "end": 2376.58,
+   "text": "I agree. Thank you for joining"
+  },
+  {
+   "start": 2376.58,
+   "end": 2380.14,
+   "text": "us today. We hope you enjoyed our podcast and learned something new."
+  },
+  {
+   "start": 2380.2,
+   "end": 2384.74,
+   "text": "In case you have any comments, suggestions or questions, make sure to share them"
+  },
+  {
+   "start": 2384.74,
+   "end": 2386.14,
+   "text": "on our Instagram page,"
+  },
+  {
+   "start": 2386.14,
+   "end": 2388.72,
+   "text": "mozekafatpodcast. Prijatno!"
+  }
+ ],
+ "title": "Ep.9: Sandra Silađev",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939250/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075929-44100-1-26b976830eaa8dfd.mp3"
+}

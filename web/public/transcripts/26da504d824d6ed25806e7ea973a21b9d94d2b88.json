@@ -1,0 +1,2780 @@
+{
+ "duration": 2150.22,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "timing": "word",
+ "cues": [
+  {
+   "start": 0.58,
+   "end": 3.02,
+   "text": "Welcome to our podcast, Može Kafa."
+  },
+  {
+   "start": 3.02,
+   "end": 5.58,
+   "text": "We are Ivana and Maki, your hosts."
+  },
+  {
+   "start": 5.98,
+   "end": 10.82,
+   "text": "In this podcast, we discuss interesting details about Serbian language and culture from a"
+  },
+  {
+   "start": 10.82,
+   "end": 12.26,
+   "text": "learner's and teacher's perspective."
+  },
+  {
+   "start": 12.8,
+   "end": 16.02,
+   "text": "We offer new and fun resources for learners of Serbian."
+  },
+  {
+   "start": 16.26,
+   "end": 21.34,
+   "text": "To follow each episode with annotated scripts, vocabulary and quizzes, join us also at"
+  },
+  {
+   "start": 21.34,
+   "end": 23.04,
+   "text": "Može Kafa podcast on Instagram."
+  },
+  {
+   "start": 23.56,
+   "end": 26.8,
+   "text": "So if you're ready, grab a cup of coffee and enjoy the podcast."
+  },
+  {
+   "start": 30.14,
+   "end": 32.84,
+   "text": "Hello everyone! Oh, I'm a bit too close."
+  },
+  {
+   "start": 32.84,
+   "end": 34.16,
+   "text": "Welcome. Hello everyone."
+  },
+  {
+   "start": 35.12,
+   "end": 36.42,
+   "text": "Good evening. I'm the translator."
+  },
+  {
+   "start": 36.42,
+   "end": 37.14,
+   "text": "Hello everyone."
+  },
+  {
+   "start": 38.58,
+   "end": 39.82,
+   "text": "Hello everyone. How are you?"
+  },
+  {
+   "start": 39.82,
+   "end": 41.06,
+   "text": "How are you, Maki?"
+  },
+  {
+   "start": 41.84,
+   "end": 44.52,
+   "text": "Good. You? Super."
+  },
+  {
+   "start": 45.16,
+   "end": 45.7,
+   "text": "I'm going to sleep."
+  },
+  {
+   "start": 46.76,
+   "end": 51.68,
+   "text": "Oh, great. Guys, we're not doing this in the morning, so it's like after"
+  },
+  {
+   "start": 51.68,
+   "end": 52.16,
+   "text": "our work."
+  },
+  {
+   "start": 52.16,
+   "end": 53.12,
+   "text": "So it is what it is."
+  },
+  {
+   "start": 53.64,
+   "end": 55.48,
+   "text": "We're not drinking coffee, but..."
+  },
+  {
+   "start": 56.5,
+   "end": 58.48,
+   "text": "Yeah, I had two cups of coffee today."
+  },
+  {
+   "start": 59.22,
+   "end": 63.46,
+   "text": "oh wow that's intense yeah that was yeah i found this tasty coffee and"
+  },
+  {
+   "start": 63.46,
+   "end": 68.92,
+   "text": "i like the taste so i think no it's a filtered coffee okay okay"
+  },
+  {
+   "start": 68.92,
+   "end": 72.54,
+   "text": "a bio coffee so it was i hope it's not that unhealthy"
+  },
+  {
+   "start": 72.54,
+   "end": 79.8,
+   "text": "it's just uh it's just coffee you'll be fine like students who"
+  },
+  {
+   "start": 79.8,
+   "end": 85.18,
+   "text": "you know who work who study a lot right were you a coffee drinker"
+  },
+  {
+   "start": 85.18,
+   "end": 90.04,
+   "text": "when you were a student no never no never it's actually quite"
+  },
+  {
+   "start": 90.04,
+   "end": 97.06,
+   "text": "funny because a lot of my friends after their study days they were they"
+  },
+  {
+   "start": 97.06,
+   "end": 98.18,
+   "text": "like regular like"
+  },
+  {
+   "start": 98.18,
+   "end": 104.52,
+   "text": "religiously drank coffee and I don't know my flatmate just and I didn't as"
+  },
+  {
+   "start": 104.52,
+   "end": 104.76,
+   "text": "far as I remember"
+  },
+  {
+   "start": 104.76,
+   "end": 108.04,
+   "text": "we never needed to it's not that we never did."
+  },
+  {
+   "start": 108.34,
+   "end": 112.88,
+   "text": "Sometimes, sure. I don't even think we had Jesva in our apartment, actually."
+  },
+  {
+   "start": 113.86,
+   "end": 117.02,
+   "text": "But we were having less coffee when we were in high schools."
+  },
+  {
+   "start": 117.88,
+   "end": 118.32,
+   "text": "That is true."
+  },
+  {
+   "start": 118.36,
+   "end": 120.02,
+   "text": "That I don't remember buying them."
+  },
+  {
+   "start": 120.28,
+   "end": 121.72,
+   "text": "It was kind of like survival mode."
+  },
+  {
+   "start": 121.72,
+   "end": 122.54,
+   "text": "Like, I just need food."
+  },
+  {
+   "start": 123.26,
+   "end": 126.46,
+   "text": "I didn't have money for all these coffees."
+  },
+  {
+   "start": 127.4,
+   "end": 129.98,
+   "text": "I did when I went to my master studies in Austria."
+  },
+  {
+   "start": 130.64,
+   "end": 131.62,
+   "text": "For a while, I did."
+  },
+  {
+   "start": 131.62,
+   "end": 132.18,
+   "text": "Like a while."
+  },
+  {
+   "start": 132.32,
+   "end": 133.52,
+   "text": "Like a month or two."
+  },
+  {
+   "start": 133.78,
+   "end": 138.1,
+   "text": "not a lot because they have these like um machine um what are they"
+  },
+  {
+   "start": 138.1,
+   "end": 140.56,
+   "text": "called what machine sorry coffee"
+  },
+  {
+   "start": 140.56,
+   "end": 146.56,
+   "text": "machines coffee machines yeah so instant ones they were like just like coffee and"
+  },
+  {
+   "start": 146.56,
+   "end": 147.02,
+   "text": "it's the coffee sugar maybe a bit of milk so that was quite cheap sugar like"
+  },
+  {
+   "start": 151.08,
+   "end": 152.78,
+   "text": "so i did that for a while but then"
+  },
+  {
+   "start": 152.78,
+   "end": 158.98,
+   "text": "i was like well i don't need coffee so just had that but it's"
+  },
+  {
+   "start": 158.98,
+   "end": 160.18,
+   "text": "different exam period"
+  },
+  {
+   "start": 161.88,
+   "end": 167.16,
+   "text": "it's a different thing yes then we did but only like one yeah it's"
+  },
+  {
+   "start": 167.16,
+   "end": 167.86,
+   "text": "not because you love it but"
+  },
+  {
+   "start": 167.86,
+   "end": 171.98,
+   "text": "you need it because you need to stay awake we had a specific way"
+  },
+  {
+   "start": 171.98,
+   "end": 173.26,
+   "text": "like we would make coffee and we"
+  },
+  {
+   "start": 173.26,
+   "end": 177.9,
+   "text": "heard that if you uh you know how we do like we put water"
+  },
+  {
+   "start": 177.9,
+   "end": 179.24,
+   "text": "and then boil it and take it off and"
+  },
+  {
+   "start": 179.24,
+   "end": 182.6,
+   "text": "then we put coffee and then put it back on and then and then"
+  },
+  {
+   "start": 182.6,
+   "end": 186.0,
+   "text": "if you want it to be stronger to have more coffee that you would"
+  },
+  {
+   "start": 186.0,
+   "end": 191.4,
+   "text": "do that several times like so like the more you kind of like put"
+  },
+  {
+   "start": 191.4,
+   "end": 195.32,
+   "text": "it back on the stove apparently at least that's what we heard that would"
+  },
+  {
+   "start": 195.32,
+   "end": 196.08,
+   "text": "like give you even more"
+  },
+  {
+   "start": 196.08,
+   "end": 199.84,
+   "text": "like you wouldn't be able to sleep because we had sometimes we pulled all"
+  },
+  {
+   "start": 199.84,
+   "end": 200.68,
+   "text": "all-nighters right"
+  },
+  {
+   "start": 200.68,
+   "end": 206.34,
+   "text": "so uh so yeah so but that was only during exams it was like"
+  },
+  {
+   "start": 206.34,
+   "end": 213.14,
+   "text": "hardcore okay exams because today we're going to talk about education, right?"
+  },
+  {
+   "start": 213.14,
+   "end": 215.42,
+   "text": "Yeah, we answered the topic with coffee."
+  },
+  {
+   "start": 215.68,
+   "end": 217.93,
+   "text": "First coffee part of education, done."
+  },
+  {
+   "start": 218.95,
+   "end": 219.13,
+   "text": "Exactly."
+  },
+  {
+   "start": 220.33,
+   "end": 222.19,
+   "text": "And now the system."
+  },
+  {
+   "start": 223.15,
+   "end": 225.93,
+   "text": "We're not going to talk about the university."
+  },
+  {
+   "start": 225.93,
+   "end": 228.83,
+   "text": "I think we should save that for another time because this will be a"
+  },
+  {
+   "start": 228.83,
+   "end": 228.99,
+   "text": "long episode."
+  },
+  {
+   "start": 228.99,
+   "end": 235.99,
+   "text": "But we are going to talk about education up to the"
+  },
+  {
+   "start": 235.99,
+   "end": 240.61,
+   "text": "university, which is called obrazovanie."
+  },
+  {
+   "start": 241.15,
+   "end": 247.67,
+   "text": "oh brazovanie yes i heard that too yeah and there are lots of uh"
+  },
+  {
+   "start": 247.67,
+   "end": 250.23,
+   "text": "parts you know different levels of"
+  },
+  {
+   "start": 250.23,
+   "end": 255.85,
+   "text": "schooling and one thing that i learned recently i didn't know that um like"
+  },
+  {
+   "start": 255.85,
+   "end": 256.75,
+   "text": "preschool is compulsory"
+  },
+  {
+   "start": 256.75,
+   "end": 263.39,
+   "text": "here yeah i think it is actually yeah which i i think that's great"
+  },
+  {
+   "start": 263.39,
+   "end": 268.21,
+   "text": "that's great yeah in turkey I don't know if the rules changed, but I"
+  },
+  {
+   "start": 268.21,
+   "end": 269.73,
+   "text": "wish it was compulsory."
+  },
+  {
+   "start": 269.73,
+   "end": 276.61,
+   "text": "Well, I don't really know what you would do without preschool because for us,"
+  },
+  {
+   "start": 276.61,
+   "end": 279.91,
+   "text": "like it's very common that both parents work."
+  },
+  {
+   "start": 280.77,
+   "end": 282.67,
+   "text": "But grandparents are always there."
+  },
+  {
+   "start": 283.07,
+   "end": 290.47,
+   "text": "They are, but now the age of retiring is much more pushed,"
+  },
+  {
+   "start": 290.47,
+   "end": 291.99,
+   "text": "right? So lifted."
+  },
+  {
+   "start": 291.99,
+   "end": 294.23,
+   "text": "So it's very difficult."
+  },
+  {
+   "start": 294.27,
+   "end": 298.23,
+   "text": "it would be very difficult not to have preschool and i mean i mean"
+  },
+  {
+   "start": 298.23,
+   "end": 298.75,
+   "text": "i don't really know if it's"
+  },
+  {
+   "start": 298.75,
+   "end": 303.65,
+   "text": "obligatory but but i i mean that's i think that's great and also because"
+  },
+  {
+   "start": 303.65,
+   "end": 304.73,
+   "text": "for many reasons i think"
+  },
+  {
+   "start": 304.73,
+   "end": 309.01,
+   "text": "it's amazing for them to be in social situation and so on exactly exactly"
+  },
+  {
+   "start": 309.01,
+   "end": 311.39,
+   "text": "so preschool how do we"
+  },
+  {
+   "start": 311.39,
+   "end": 318.09,
+   "text": "say nursery nursery and i went to nursery as well um i remember it"
+  },
+  {
+   "start": 318.09,
+   "end": 322.73,
+   "text": "vividly because i hit one guy Like one little boy, he was pulling my"
+  },
+  {
+   "start": 322.73,
+   "end": 325.49,
+   "text": "ponytail and I just hit him."
+  },
+  {
+   "start": 325.49,
+   "end": 331.61,
+   "text": "So it's called jaslitze yes let's say is it plural yes yes"
+  },
+  {
+   "start": 331.61,
+   "end": 337.35,
+   "text": "um i don't know why don't ask me don't worry don't worry it's just"
+  },
+  {
+   "start": 338.67,
+   "end": 343.87,
+   "text": "yeah because i hear it we have a lot of actually like plural uh"
+  },
+  {
+   "start": 343.87,
+   "end": 345.47,
+   "text": "nouns that don't have a singular i"
+  },
+  {
+   "start": 345.47,
+   "end": 350.73,
+   "text": "mean they are derived from a usually from a feminine singular so that's why"
+  },
+  {
+   "start": 350.73,
+   "end": 355.15,
+   "text": "a right but you can't say jaslice as far as I know."
+  },
+  {
+   "start": 355.15,
+   "end": 355.89,
+   "text": "I see."
+  },
+  {
+   "start": 357.17,
+   "end": 358.53,
+   "text": "That's from six months"
+  },
+  {
+   "start": 358.53,
+   "end": 360.79,
+   "text": "to three years, something like that."
+  },
+  {
+   "start": 360.99,
+   "end": 366.13,
+   "text": "And then you get to zabavishte, which is kindergarten."
+  },
+  {
+   "start": 367.83,
+   "end": 368.97,
+   "text": "I'm going to be honest."
+  },
+  {
+   "start": 368.97,
+   "end": 370.45,
+   "text": "We have several ways of saying"
+  },
+  {
+   "start": 370.45,
+   "end": 372.37,
+   "text": "zabavishte, and I'm not"
+  },
+  {
+   "start": 372.37,
+   "end": 376.19,
+   "text": "quite sure if there is a clear difference, but"
+  },
+  {
+   "start": 376.19,
+   "end": 381.25,
+   "text": "they call it zabavishte, obdanihte, and vrtic."
+  },
+  {
+   "start": 382.51,
+   "end": 387.97,
+   "text": "hmm yes completely different roots different words but it usually means the same thing"
+  },
+  {
+   "start": 387.97,
+   "end": 388.33,
+   "text": "i don't think that we have like different levels um so it still means because"
+  },
+  {
+   "start": 393.31,
+   "end": 395.17,
+   "text": "kindergarten but uh quite"
+  },
+  {
+   "start": 395.17,
+   "end": 398.57,
+   "text": "recently i talked to my sister and she said she was like i think"
+  },
+  {
+   "start": 398.57,
+   "end": 404.07,
+   "text": "there's a difference between and i'm and she's like i'm not quite sure like"
+  },
+  {
+   "start": 404.07,
+   "end": 406.73,
+   "text": "one of them is like a structured kind of like"
+  },
+  {
+   "start": 406.73,
+   "end": 410.51,
+   "text": "more like a school system i think and one of them is like more"
+  },
+  {
+   "start": 410.51,
+   "end": 415.73,
+   "text": "just like a social whatever but for this purpose i think if you say"
+  },
+  {
+   "start": 415.73,
+   "end": 419.91,
+   "text": "it means the same thing everybody will understand"
+  },
+  {
+   "start": 419.91,
+   "end": 424.81,
+   "text": "everybody will understand i don't think anyone will see so from three years old"
+  },
+  {
+   "start": 424.81,
+   "end": 425.57,
+   "text": "to six years old"
+  },
+  {
+   "start": 425.57,
+   "end": 433.19,
+   "text": "kids six seven depends where when you're born right and so on um important"
+  },
+  {
+   "start": 433.19,
+   "end": 433.89,
+   "text": "there the teacher"
+  },
+  {
+   "start": 433.89,
+   "end": 436.33,
+   "text": "is called a male"
+  },
+  {
+   "start": 437.02,
+   "end": 440.16,
+   "text": "and female"
+  },
+  {
+   "start": 440.16,
+   "end": 446.54,
+   "text": "yeah i learned that in the course serbian course actually yeah the teacher for"
+  },
+  {
+   "start": 447.46,
+   "end": 452.14,
+   "text": "kindergarten and primary school are not teachers like they're different names"
+  },
+  {
+   "start": 452.14,
+   "end": 458.24,
+   "text": "called different yeah because they're they're they're not really teaching you a lot they're"
+  },
+  {
+   "start": 458.24,
+   "end": 458.44,
+   "text": "like like being there like making sure that everyone's okay and like guiding you"
+  },
+  {
+   "start": 458.44,
+   "end": 458.54,
+   "text": "just"
+  },
+  {
+   "start": 463.68,
+   "end": 465.38,
+   "text": "maybe through some songs."
+  },
+  {
+   "start": 465.94,
+   "end": 469.44,
+   "text": "Does it mean like somebody carer or take care?"
+  },
+  {
+   "start": 470.16,
+   "end": 473.06,
+   "text": "Someone who's like a, it's like a babysitter in essence."
+  },
+  {
+   "start": 473.06,
+   "end": 474.8,
+   "text": "And sure, we do sing over there"
+  },
+  {
+   "start": 474.8,
+   "end": 477.58,
+   "text": "and play some games sometimes,"
+  },
+  {
+   "start": 477.58,
+   "end": 479.9,
+   "text": "but you're not really learning anything."
+  },
+  {
+   "start": 480.22,
+   "end": 482.12,
+   "text": "And I mean, you are learning many things,"
+  },
+  {
+   "start": 482.12,
+   "end": 484.34,
+   "text": "but like in a structured way, right?"
+  },
+  {
+   "start": 484.88,
+   "end": 488.48,
+   "text": "And you can do extracurricular kind of things."
+  },
+  {
+   "start": 488.48,
+   "end": 490.1,
+   "text": "You can learn how to play,"
+  },
+  {
+   "start": 490.1,
+   "end": 493.48,
+   "text": "you can learn English, but it's not obligatory."
+  },
+  {
+   "start": 494.48,
+   "end": 502.08,
+   "text": "Yeah. And what I realized here in Khrushchev, there is this public kindergarten and"
+  },
+  {
+   "start": 502.08,
+   "end": 505.44,
+   "text": "it doesn't have walls like it's inside the park."
+  },
+  {
+   "start": 506.22,
+   "end": 510.36,
+   "text": "And, you know, the other one in the center, which is not in the"
+  },
+  {
+   "start": 510.36,
+   "end": 512.62,
+   "text": "park, it has like the door and everything."
+  },
+  {
+   "start": 512.62,
+   "end": 513.58,
+   "text": "You can't just go in."
+  },
+  {
+   "start": 513.58,
+   "end": 519.1,
+   "text": "But where I run most of the time, I see the kids, I can"
+  },
+  {
+   "start": 519.1,
+   "end": 520.98,
+   "text": "see the classrooms inside."
+  },
+  {
+   "start": 521.12,
+   "end": 525.64,
+   "text": "and you know the playground is open to the park and the park is"
+  },
+  {
+   "start": 525.64,
+   "end": 527.76,
+   "text": "open to the public so that was like"
+  },
+  {
+   "start": 527.76,
+   "end": 534.86,
+   "text": "quite eye-opening for me because you know safety issues and stuff were crazy"
+  },
+  {
+   "start": 534.86,
+   "end": 535.36,
+   "text": "in turkey about that"
+  },
+  {
+   "start": 535.36,
+   "end": 541.08,
+   "text": "here it's just open public the parents come whenever they want you know yeah"
+  },
+  {
+   "start": 541.08,
+   "end": 541.66,
+   "text": "i found it"
+  },
+  {
+   "start": 541.66,
+   "end": 546.64,
+   "text": "like this is a secure place yeah because i don't think we have a"
+  },
+  {
+   "start": 546.64,
+   "end": 549.34,
+   "text": "lot of like instances of like crazy things happening."
+  },
+  {
+   "start": 549.34,
+   "end": 552.2,
+   "text": "At least I don't really remember stories of that."
+  },
+  {
+   "start": 552.2,
+   "end": 553.56,
+   "text": "Maybe now, but I don't know."
+  },
+  {
+   "start": 554.06,
+   "end": 558.14,
+   "text": "But before when I was, we have a fence, like we had a fence"
+  },
+  {
+   "start": 558.14,
+   "end": 558.98,
+   "text": "when I was younger."
+  },
+  {
+   "start": 559.82,
+   "end": 565.76,
+   "text": "But for example, we had three kindergartens in the same, on the same plot."
+  },
+  {
+   "start": 566.2,
+   "end": 568.56,
+   "text": "And they were not physically separated."
+  },
+  {
+   "start": 569.74,
+   "end": 576.58,
+   "text": "each had their own like little playground playground yeah but yeah we were like"
+  },
+  {
+   "start": 576.58,
+   "end": 576.8,
+   "text": "mingling so and now now they started locking the kindergarten you know it's"
+  },
+  {
+   "start": 576.8,
+   "end": 577.02,
+   "text": "all"
+  },
+  {
+   "start": 583.62,
+   "end": 585.12,
+   "text": "quite weird but I want"
+  },
+  {
+   "start": 585.12,
+   "end": 591.74,
+   "text": "at least in my city this happened like druggies would hang out in kindergartens"
+  },
+  {
+   "start": 591.74,
+   "end": 596.08,
+   "text": "after like in the night during the night and I think this is because"
+  },
+  {
+   "start": 596.08,
+   "end": 599.04,
+   "text": "we don't have like a lot of parks or like"
+  },
+  {
+   "start": 601.26,
+   "end": 607.58,
+   "text": "benches that are like complete benches but they're like half taken like the wood"
+  },
+  {
+   "start": 607.58,
+   "end": 607.68,
+   "text": "like the"
+  },
+  {
+   "start": 607.68,
+   "end": 612.3,
+   "text": "this has been taken or stolen or whatever or sometimes they steal benches from"
+  },
+  {
+   "start": 612.3,
+   "end": 612.64,
+   "text": "the the ground"
+  },
+  {
+   "start": 612.64,
+   "end": 618.08,
+   "text": "so yeah so I think this is just like they all you always have"
+  },
+  {
+   "start": 618.08,
+   "end": 622.52,
+   "text": "somewhere to sit over there and like you know you're secluded no one's going"
+  },
+  {
+   "start": 622.52,
+   "end": 629.58,
+   "text": "to the kindergarten sometimes they're like a shady shady people yeah completely different venue"
+  },
+  {
+   "start": 629.58,
+   "end": 634.16,
+   "text": "for yeah during the day and during the night the same for the one"
+  },
+  {
+   "start": 634.16,
+   "end": 637.38,
+   "text": "that i'm mentioning because it's in the park park is open so obviously people"
+  },
+  {
+   "start": 637.38,
+   "end": 642.8,
+   "text": "go there to smoke or you know yeah well smoking as well it doesn't"
+  },
+  {
+   "start": 642.8,
+   "end": 645.28,
+   "text": "have to be drug smoke weed i I mean, or."
+  },
+  {
+   "start": 645.28,
+   "end": 646.14,
+   "text": "Oh, okay."
+  },
+  {
+   "start": 646.14,
+   "end": 647.56,
+   "text": "Yeah, but I think when, you know,"
+  },
+  {
+   "start": 647.56,
+   "end": 650.18,
+   "text": "it can be also just like teenagers"
+  },
+  {
+   "start": 650.18,
+   "end": 652.2,
+   "text": "that are like trying smoking for the first time."
+  },
+  {
+   "start": 652.2,
+   "end": 653.28,
+   "text": "And they're like, aha."
+  },
+  {
+   "start": 653.28,
+   "end": 655.05,
+   "text": "Yeah, we also also used to hang out over there"
+  },
+  {
+   "start": 655.05,
+   "end": 658.71,
+   "text": "when i was in my uh like when i was like 14 or something"
+  },
+  {
+   "start": 658.71,
+   "end": 660.99,
+   "text": "and then we would like uh hang out with"
+  },
+  {
+   "start": 660.99,
+   "end": 664.39,
+   "text": "friends and then we would go there as well so it's not just druggies"
+  },
+  {
+   "start": 664.39,
+   "end": 668.97,
+   "text": "of course but it's like a because it's such a such a convenient place"
+  },
+  {
+   "start": 668.97,
+   "end": 673.61,
+   "text": "right it has everything in the trenches it has like all these playgrounds nice"
+  },
+  {
+   "start": 673.61,
+   "end": 680.69,
+   "text": "view yeah beautiful place exactly good and then we come"
+  },
+  {
+   "start": 680.69,
+   "end": 680.97,
+   "text": "to elementary"
+  },
+  {
+   "start": 680.97,
+   "end": 686.23,
+   "text": "yes which i think i didn't quite know how to call it because for"
+  },
+  {
+   "start": 686.23,
+   "end": 692.27,
+   "text": "us this is like eight years last for eight years i think elementary or"
+  },
+  {
+   "start": 692.27,
+   "end": 695.93,
+   "text": "primary in in the uk is i think it's like four or five years"
+  },
+  {
+   "start": 695.93,
+   "end": 701.41,
+   "text": "i'm not really sure or maybe six yeah but there are some four plus"
+  },
+  {
+   "start": 701.41,
+   "end": 702.75,
+   "text": "four plus fours or five"
+  },
+  {
+   "start": 702.75,
+   "end": 709.75,
+   "text": "plus threes like different uh strategies we have but here it is eight"
+  },
+  {
+   "start": 709.75,
+   "end": 716.45,
+   "text": "together or eight all together these years will like differ a bit but it's"
+  },
+  {
+   "start": 716.45,
+   "end": 719.99,
+   "text": "one school that you're going to so it's one one"
+  },
+  {
+   "start": 719.99,
+   "end": 724.41,
+   "text": "building one institution you're not changing it right so you're still going to the"
+  },
+  {
+   "start": 724.41,
+   "end": 731.45,
+   "text": "same school and uh we call it osnovna skola which is osnovna"
+  },
+  {
+   "start": 731.45,
+   "end": 734.89,
+   "text": "osnova is like a base so it's like a"
+  },
+  {
+   "start": 736.13,
+   "end": 742.23,
+   "text": "element it's basically like elementary primary like i see yeah so the the the"
+  },
+  {
+   "start": 742.23,
+   "end": 742.53,
+   "text": "interesting thing"
+  },
+  {
+   "start": 742.53,
+   "end": 750.25,
+   "text": "starts that from the first till the till the fourth grade um it's"
+  },
+  {
+   "start": 750.25,
+   "end": 752.35,
+   "text": "you are with one teacher"
+  },
+  {
+   "start": 753.81,
+   "end": 761.49,
+   "text": "and that is and he is or yeah okay"
+  },
+  {
+   "start": 761.49,
+   "end": 763.17,
+   "text": "so you have only one teacher"
+  },
+  {
+   "start": 763.17,
+   "end": 768.35,
+   "text": "that comes from uchiti so that's like teacher exactly that's"
+  },
+  {
+   "start": 768.35,
+   "end": 775.51,
+   "text": "teacher right exactly then from the fifth till the eighth or to the eighth"
+  },
+  {
+   "start": 775.51,
+   "end": 775.89,
+   "text": "how do you say till"
+  },
+  {
+   "start": 775.89,
+   "end": 782.35,
+   "text": "the eighth today from the fifth to the eighth grade you have um one"
+  },
+  {
+   "start": 782.35,
+   "end": 783.41,
+   "text": "teacher per"
+  },
+  {
+   "start": 785.55,
+   "end": 792.63,
+   "text": "topic like per subject yeah yeah did you have that too definitely but"
+  },
+  {
+   "start": 792.63,
+   "end": 793.23,
+   "text": "in my time it was from"
+  },
+  {
+   "start": 793.23,
+   "end": 797.17,
+   "text": "one to five five to eight now it's also in tzachy one to four"
+  },
+  {
+   "start": 797.17,
+   "end": 800.19,
+   "text": "okay and four to eight but you mean"
+  },
+  {
+   "start": 800.19,
+   "end": 805.69,
+   "text": "you wrote nostalmik so that nostalmik means um even if you are an english"
+  },
+  {
+   "start": 805.69,
+   "end": 806.67,
+   "text": "teacher or math teacher"
+  },
+  {
+   "start": 806.67,
+   "end": 811.89,
+   "text": "or biology teacher you are nostalmik or is it like two like one class"
+  },
+  {
+   "start": 811.89,
+   "end": 817.01,
+   "text": "has one teacher still like Maybe some class has a main teacher, like the"
+  },
+  {
+   "start": 817.01,
+   "end": 817.87,
+   "text": "head teacher or something."
+  },
+  {
+   "start": 817.87,
+   "end": 821.85,
+   "text": "Okay, you have one teacher that's responsible for your class."
+  },
+  {
+   "start": 822.81,
+   "end": 825.67,
+   "text": "And that's called Razredni or Razredna."
+  },
+  {
+   "start": 826.11,
+   "end": 827.09,
+   "text": "I will actually write it down."
+  },
+  {
+   "start": 827.91,
+   "end": 831.05,
+   "text": "Razredni, Razredna. Razredna, yeah."
+  },
+  {
+   "start": 833.17,
+   "end": 838.77,
+   "text": "They are responsible for you, but they are a teacher for only one subject."
+  },
+  {
+   "start": 839.49,
+   "end": 844.21,
+   "text": "so that means that they're only there as a figure if there's some issue"
+  },
+  {
+   "start": 844.21,
+   "end": 845.59,
+   "text": "with like our class then"
+  },
+  {
+   "start": 845.59,
+   "end": 851.35,
+   "text": "people come to them but we still have one um nastavnik or nastavnica for"
+  },
+  {
+   "start": 851.35,
+   "end": 857.07,
+   "text": "each subject okay when it comes to subject i was curious and i also"
+  },
+  {
+   "start": 857.07,
+   "end": 857.93,
+   "text": "checked the curriculum here"
+  },
+  {
+   "start": 857.93,
+   "end": 864.93,
+   "text": "i think you wrote the like the main courses but there's also"
+  },
+  {
+   "start": 864.93,
+   "end": 872.09,
+   "text": "i think how to call them like uh compulsory elective courses,"
+  },
+  {
+   "start": 872.09,
+   "end": 873.8,
+   "text": "right? Like courses..."
+  },
+  {
+   "start": 873.8,
+   "end": 876.14,
+   "text": "compulsory courses, compulsory elective courses."
+  },
+  {
+   "start": 876.44,
+   "end": 878.06,
+   "text": "Okay, so it depends."
+  },
+  {
+   "start": 878.06,
+   "end": 880.32,
+   "text": "Well, for Osnanda Skola?"
+  },
+  {
+   "start": 881.08,
+   "end": 882.24,
+   "text": "Mm-hmm, for Osnanda Skola."
+  },
+  {
+   "start": 882.38,
+   "end": 885.06,
+   "text": "You have some additional ones if you want to,"
+  },
+  {
+   "start": 885.06,
+   "end": 887.66,
+   "text": "but yeah, there are some compulsory."
+  },
+  {
+   "start": 887.66,
+   "end": 889.48,
+   "text": "It's like these you have to have."
+  },
+  {
+   "start": 890.0,
+   "end": 894.98,
+   "text": "So the two main ones are Serbian."
+  },
+  {
+   "start": 894.98,
+   "end": 895.58,
+   "text": "Serbski."
+  },
+  {
+   "start": 898.1,
+   "end": 900.06,
+   "text": "So yeah, I wrote, I think I hear,"
+  },
+  {
+   "start": 900.06,
+   "end": 904.16,
+   "text": "I wrote a lot of like shortened versions of everything because I think it"
+  },
+  {
+   "start": 904.16,
+   "end": 909.46,
+   "text": "would just be like a lot of text but Serbsky языk right so Serbsky"
+  },
+  {
+   "start": 909.46,
+   "end": 910.06,
+   "text": "we just say"
+  },
+  {
+   "start": 911.4,
+   "end": 918.42,
+   "text": "um math matematica matematica there's no shortcut they'll"
+  },
+  {
+   "start": 918.42,
+   "end": 925.5,
+   "text": "just say mat yeah we say matish matish that's funny it's"
+  },
+  {
+   "start": 925.5,
+   "end": 927.06,
+   "text": "like making joke of it you know"
+  },
+  {
+   "start": 928.84,
+   "end": 931.96,
+   "text": "yeah let me it's actually i found it i was like trying to think"
+  },
+  {
+   "start": 931.96,
+   "end": 933.0,
+   "text": "like how do we say it you know"
+  },
+  {
+   "start": 933.0,
+   "end": 940.04,
+   "text": "matish matish okay good then we have a combined uh lecture or like"
+  },
+  {
+   "start": 940.04,
+   "end": 941.06,
+   "text": "a subject which is natural"
+  },
+  {
+   "start": 941.06,
+   "end": 948.74,
+   "text": "and social sciences which we call priroda is"
+  },
+  {
+   "start": 948.74,
+   "end": 952.56,
+   "text": "nature right and društvo is society"
+  },
+  {
+   "start": 954.62,
+   "end": 962.0,
+   "text": "yeah okay is to hang out like hanging out then we have"
+  },
+  {
+   "start": 966.12,
+   "end": 969.72,
+   "text": "i think there we still don't we don't have to know how to play"
+  },
+  {
+   "start": 969.72,
+   "end": 971.16,
+   "text": "an instrument i think that's a"
+  },
+  {
+   "start": 971.16,
+   "end": 977.24,
+   "text": "not a compulsory thing but we do need to actually wait i think we"
+  },
+  {
+   "start": 977.24,
+   "end": 981.4,
+   "text": "need to know how to play like the simplest songs on the keyboard and"
+  },
+  {
+   "start": 981.4,
+   "end": 983.48,
+   "text": "to do this like, I don't"
+  },
+  {
+   "start": 983.48,
+   "end": 983.84,
+   "text": "i don't know how you'd"
+  },
+  {
+   "start": 983.84,
+   "end": 989.0,
+   "text": "call it you know like to follow the rhythm the rhythm exercise and for"
+  },
+  {
+   "start": 989.0,
+   "end": 991.18,
+   "text": "us it's flute oh flute"
+  },
+  {
+   "start": 991.18,
+   "end": 996.02,
+   "text": "interesting yeah i don't know why i think we can i think we can"
+  },
+  {
+   "start": 996.02,
+   "end": 997.98,
+   "text": "pick which one we can but i don't"
+  },
+  {
+   "start": 997.98,
+   "end": 1004.28,
+   "text": "remember really playing it a lot actually so anyway okay actually yes we need"
+  },
+  {
+   "start": 1004.28,
+   "end": 1010.02,
+   "text": "we call this synthesizer which is yeah which is like the keyboard like the"
+  },
+  {
+   "start": 1010.02,
+   "end": 1011.08,
+   "text": "like you know these like"
+  },
+  {
+   "start": 1011.08,
+   "end": 1018.64,
+   "text": "basic ones yeah then we have painting uh which is likovna"
+  },
+  {
+   "start": 1018.64,
+   "end": 1021.24,
+   "text": "that's interesting name i was expecting"
+  },
+  {
+   "start": 1021.24,
+   "end": 1027.7,
+   "text": "something about boya or something yeah and actually it's like art um but i"
+  },
+  {
+   "start": 1027.7,
+   "end": 1032.54,
+   "text": "don't know why it's likovno i i can't really figure it out does likovno"
+  },
+  {
+   "start": 1032.54,
+   "end": 1035.96,
+   "text": "mean like art or no umetnost is art"
+  },
+  {
+   "start": 1035.96,
+   "end": 1042.08,
+   "text": "likovno oh man i don't know but it's mostly focused on painting uh we"
+  },
+  {
+   "start": 1042.08,
+   "end": 1043.4,
+   "text": "do we do a bit of"
+  },
+  {
+   "start": 1043.4,
+   "end": 1049.4,
+   "text": "like sculpturing as well and so on like basic things right but uh like"
+  },
+  {
+   "start": 1049.4,
+   "end": 1050.9,
+   "text": "with terracotta you"
+  },
+  {
+   "start": 1050.9,
+   "end": 1056.38,
+   "text": "know like the ones that you can bake uh but it's mostly just painting"
+  },
+  {
+   "start": 1056.38,
+   "end": 1057.52,
+   "text": "i don't know why it's like"
+  },
+  {
+   "start": 1059.2,
+   "end": 1066.36,
+   "text": "then a leak of no i i'm guessing it's um before we continue with"
+  },
+  {
+   "start": 1066.36,
+   "end": 1067.28,
+   "text": "the show here's a quick reminder"
+  },
+  {
+   "start": 1067.28,
+   "end": 1072.72,
+   "text": "this podcast is free for everyone and supported by listeners like you we hope"
+  },
+  {
+   "start": 1072.72,
+   "end": 1072.96,
+   "text": "that this podcast"
+  },
+  {
+   "start": 1072.96,
+   "end": 1077.26,
+   "text": "is useful and companion to you this is a labor of love for both"
+  },
+  {
+   "start": 1077.26,
+   "end": 1079.02,
+   "text": "of us to help us continue creating"
+  },
+  {
+   "start": 1079.02,
+   "end": 1084.02,
+   "text": "useful content for everyone we will appreciate your help if you have the means"
+  },
+  {
+   "start": 1084.02,
+   "end": 1086.26,
+   "text": "you can support us in different ways."
+  },
+  {
+   "start": 1086.62,
+   "end": 1088.32,
+   "text": "You may just go to buymeacoffee.com"
+  },
+  {
+   "start": 1088.32,
+   "end": 1090.46,
+   "text": "slash mosecafapodcast"
+  },
+  {
+   "start": 1090.46,
+   "end": 1093.06,
+   "text": "and send us some cups of coffee."
+  },
+  {
+   "start": 1093.56,
+   "end": 1098.24,
+   "text": "You may also become a member of our show on patreon.com slash mozdecafapodcast"
+  },
+  {
+   "start": 1098.24,
+   "end": 1103.8,
+   "text": "and get extra benefits like bonus content, full transcripts of the show in Serbian,"
+  },
+  {
+   "start": 1103.92,
+   "end": 1105.42,
+   "text": "or even join us on the show."
+  },
+  {
+   "start": 1106.28,
+   "end": 1110.46,
+   "text": "We rely on your support to help everyone more in learning Serbian language and"
+  },
+  {
+   "start": 1110.46,
+   "end": 1112.96,
+   "text": "culture. Thanks for joining us today."
+  },
+  {
+   "start": 1113.26,
+   "end": 1115.68,
+   "text": "And now let's get back to our episode."
+  },
+  {
+   "start": 1124.18,
+   "end": 1125.02,
+   "text": "have to check the the full"
+  },
+  {
+   "start": 1125.02,
+   "end": 1130.94,
+   "text": "name but but this is like how we by default use it um p.e."
+  },
+  {
+   "start": 1130.94,
+   "end": 1133.32,
+   "text": "uh physico"
+  },
+  {
+   "start": 1135.86,
+   "end": 1142.68,
+   "text": "yeah that sounds like physics but it's actually yeah it's physical physical right and"
+  },
+  {
+   "start": 1142.68,
+   "end": 1142.84,
+   "text": "then"
+  },
+  {
+   "start": 1142.84,
+   "end": 1149.96,
+   "text": "physical but it's not i see physical yeah you know"
+  },
+  {
+   "start": 1149.96,
+   "end": 1152.0,
+   "text": "what i mean i was like trying to figure it out"
+  },
+  {
+   "start": 1152.0,
+   "end": 1158.8,
+   "text": "then uh i didn't have this but now i think they have a foreign"
+  },
+  {
+   "start": 1158.8,
+   "end": 1161.06,
+   "text": "language and i think it's usually"
+  },
+  {
+   "start": 1161.06,
+   "end": 1167.18,
+   "text": "english so it's angloskey i think okay and then you can have but you"
+  },
+  {
+   "start": 1175.88,
+   "end": 1180.22,
+   "text": "so they it really just depends on the on the school and so on"
+  },
+  {
+   "start": 1180.22,
+   "end": 1182.14,
+   "text": "if they were at like they offer"
+  },
+  {
+   "start": 1182.14,
+   "end": 1187.36,
+   "text": "uh i don't know how it's called i don't know if it's dopunskanastava or"
+  },
+  {
+   "start": 1187.36,
+   "end": 1188.34,
+   "text": "i don't know but it's like"
+  },
+  {
+   "start": 1188.34,
+   "end": 1193.96,
+   "text": "someone would approach you and tell you hey this teacher like what this or"
+  },
+  {
+   "start": 1193.96,
+   "end": 1199.0,
+   "text": "they're organizing a So do you want to audition, right?"
+  },
+  {
+   "start": 1199.0,
+   "end": 1200.65,
+   "text": "And then you would just go there"
+  },
+  {
+   "start": 1200.65,
+   "end": 1202.21,
+   "text": "or they say hey there's"
+  },
+  {
+   "start": 1202.21,
+   "end": 1206.85,
+   "text": "like i went to when i was younger like uh to my like uh"
+  },
+  {
+   "start": 1206.85,
+   "end": 1208.63,
+   "text": "up until my fourth grade i went to actually"
+  },
+  {
+   "start": 1208.63,
+   "end": 1214.45,
+   "text": "for painting so i think i would have an additional hour hour and a"
+  },
+  {
+   "start": 1214.45,
+   "end": 1216.37,
+   "text": "half something like that on one"
+  },
+  {
+   "start": 1216.37,
+   "end": 1221.09,
+   "text": "day i would stay after school and i would i would paint yeah theater"
+  },
+  {
+   "start": 1221.09,
+   "end": 1225.93,
+   "text": "plays would be another option probably i guess so i'm guessing i don't no"
+  },
+  {
+   "start": 1225.93,
+   "end": 1228.71,
+   "text": "one offered me i mean no one offered us but i think"
+  },
+  {
+   "start": 1228.71,
+   "end": 1233.19,
+   "text": "it just really depends on is there someone who's doing that like you know"
+  },
+  {
+   "start": 1233.19,
+   "end": 1233.95,
+   "text": "exactly yeah on the"
+  },
+  {
+   "start": 1233.95,
+   "end": 1238.07,
+   "text": "teacher and on the school they have time they want to do it and"
+  },
+  {
+   "start": 1238.07,
+   "end": 1241.15,
+   "text": "so on cool good and five to eight"
+  },
+  {
+   "start": 1241.15,
+   "end": 1246.81,
+   "text": "five to eight you have nastavnik or nastavnica and now you have subject more"
+  },
+  {
+   "start": 1246.81,
+   "end": 1254.51,
+   "text": "subjects obviously serbia some of them stay the same like serbski serbski matematica matis"
+  },
+  {
+   "start": 1254.51,
+   "end": 1255.57,
+   "text": "yeah these are the ones"
+  },
+  {
+   "start": 1255.57,
+   "end": 1259.97,
+   "text": "that you have like uh that you after eight years we have like this"
+  },
+  {
+   "start": 1259.97,
+   "end": 1261.97,
+   "text": "thing called mala matura which"
+  },
+  {
+   "start": 1261.97,
+   "end": 1265.57,
+   "text": "is where you have to pass the exam and based on that you get"
+  },
+  {
+   "start": 1265.57,
+   "end": 1268.95,
+   "text": "into high school um so yeah and you"
+  },
+  {
+   "start": 1268.95,
+   "end": 1273.95,
+   "text": "have that celebration right so how is it called prom prom yeah uh and"
+  },
+  {
+   "start": 1273.95,
+   "end": 1277.07,
+   "text": "so mala matura is both it's like doing the exam and then going out"
+  },
+  {
+   "start": 1277.07,
+   "end": 1279.93,
+   "text": "and celebrating like the prom so and we used to do"
+  },
+  {
+   "start": 1279.93,
+   "end": 1285.73,
+   "text": "that for srpski and matematika i think now they have more subjects so that's"
+  },
+  {
+   "start": 1285.73,
+   "end": 1286.25,
+   "text": "why srpski matematika"
+  },
+  {
+   "start": 1286.25,
+   "end": 1290.99,
+   "text": "they're like stay always for some reason they're like by default like two the"
+  },
+  {
+   "start": 1290.99,
+   "end": 1291.13,
+   "text": "most important"
+  },
+  {
+   "start": 1291.13,
+   "end": 1298.01,
+   "text": "subjects was that the same in turkey yeah turkish and math i always like"
+  },
+  {
+   "start": 1298.01,
+   "end": 1302.95,
+   "text": "even even when you go to university still you take some Turkish literature whatever"
+  },
+  {
+   "start": 1302.95,
+   "end": 1310.27,
+   "text": "you're studying and psychology is one of them as well but one"
+  },
+  {
+   "start": 1310.27,
+   "end": 1310.67,
+   "text": "question"
+  },
+  {
+   "start": 1310.69,
+   "end": 1317.57,
+   "text": "there uh srpski this time it has more like literature side or is it"
+  },
+  {
+   "start": 1317.57,
+   "end": 1318.73,
+   "text": "still like a grammar"
+  },
+  {
+   "start": 1318.73,
+   "end": 1326.39,
+   "text": "side or a combination in five to eight grades it's uh"
+  },
+  {
+   "start": 1326.39,
+   "end": 1329.59,
+   "text": "five to eight it's half half i have to say"
+  },
+  {
+   "start": 1329.59,
+   "end": 1335.11,
+   "text": "grammar and and reading maybe it's a bit more grammar actually maybe it's a"
+  },
+  {
+   "start": 1335.11,
+   "end": 1340.31,
+   "text": "bit more grammar i see okay and then you have reading which we call"
+  },
+  {
+   "start": 1340.31,
+   "end": 1344.47,
+   "text": "lectia lectia is like books that are allocated"
+  },
+  {
+   "start": 1344.47,
+   "end": 1351.51,
+   "text": "to read for each like it's great yeah exactly compulsory"
+  },
+  {
+   "start": 1351.51,
+   "end": 1356.41,
+   "text": "books right yes yes yeah then foreign"
+  },
+  {
+   "start": 1356.41,
+   "end": 1360.79,
+   "text": "language right um and you call it as you call the language it's either"
+  },
+  {
+   "start": 1360.79,
+   "end": 1367.93,
+   "text": "englesky or nematki which is german or francusky or maybe spansky"
+  },
+  {
+   "start": 1367.93,
+   "end": 1373.79,
+   "text": "rusky and then you have the second uh now i think you have"
+  },
+  {
+   "start": 1373.79,
+   "end": 1377.73,
+   "text": "the second foreign language and then it just really depends on what it is"
+  },
+  {
+   "start": 1377.73,
+   "end": 1378.75,
+   "text": "right again cool"
+  },
+  {
+   "start": 1378.75,
+   "end": 1385.67,
+   "text": "that's true i was thinking of mine yeah we also have german and french"
+  },
+  {
+   "start": 1389.31,
+   "end": 1396.59,
+   "text": "okay so that history historia just take h out historia historia"
+  },
+  {
+   "start": 1396.59,
+   "end": 1398.69,
+   "text": "yeah exactly historia like"
+  },
+  {
+   "start": 1398.69,
+   "end": 1406.07,
+   "text": "spanish i'm just thinking i think in creation they use historia anyway um"
+  },
+  {
+   "start": 1406.07,
+   "end": 1414.61,
+   "text": "geografia geografia okay easy to say biologia biologia"
+  },
+  {
+   "start": 1414.61,
+   "end": 1419.34,
+   "text": "yeah i'm not translating these because i guess that you guys know what it's"
+  },
+  {
+   "start": 1419.34,
+   "end": 1419.72,
+   "text": "so clear"
+  },
+  {
+   "start": 1421.32,
+   "end": 1428.12,
+   "text": "i can definitely say that physica versus physico yes exactly physico"
+  },
+  {
+   "start": 1428.12,
+   "end": 1433.16,
+   "text": "then we get to the tricky one which i don't know how to translate"
+  },
+  {
+   "start": 1433.16,
+   "end": 1435.26,
+   "text": "because we call it technico"
+  },
+  {
+   "start": 1435.26,
+   "end": 1441.66,
+   "text": "and it sounds like tech and so on we we focus on many things"
+  },
+  {
+   "start": 1441.66,
+   "end": 1445.7,
+   "text": "we do focus like on tech so we focus a bit on like i"
+  },
+  {
+   "start": 1445.7,
+   "end": 1449.6,
+   "text": "think we did a bit of computer not nothing much just like typing but"
+  },
+  {
+   "start": 1449.6,
+   "end": 1457.06,
+   "text": "it's like mostly uh learning about your surrounding learning about like uh how"
+  },
+  {
+   "start": 1457.06,
+   "end": 1457.56,
+   "text": "to use tools"
+  },
+  {
+   "start": 1457.56,
+   "end": 1464.64,
+   "text": "learning how to draw like uh dimensions right like uh you know like"
+  },
+  {
+   "start": 1464.64,
+   "end": 1465.88,
+   "text": "a how do you call it"
+  },
+  {
+   "start": 1465.88,
+   "end": 1470.46,
+   "text": "like a car printer i don't know how to explain it like like do"
+  },
+  {
+   "start": 1470.46,
+   "end": 1475.42,
+   "text": "these practical things uh also think about oh yeah we learned about um the"
+  },
+  {
+   "start": 1475.42,
+   "end": 1480.82,
+   "text": "like the signs on the roads so it's like kind of just"
+  },
+  {
+   "start": 1480.82,
+   "end": 1485.58,
+   "text": "getting a familiar with your surrounding and the society like the rules in the"
+  },
+  {
+   "start": 1485.58,
+   "end": 1491.66,
+   "text": "society i guess i see that's a cool class i think yeah moja razredna"
+  },
+  {
+   "start": 1491.66,
+   "end": 1498.74,
+   "text": "je bila is the you know the head uh the head teacher"
+  },
+  {
+   "start": 1498.74,
+   "end": 1500.54,
+   "text": "yeah so she was she was doing"
+  },
+  {
+   "start": 1500.54,
+   "end": 1506.52,
+   "text": "that yeah that's cool we had like arts and crafts where we learned the"
+  },
+  {
+   "start": 1506.52,
+   "end": 1511.72,
+   "text": "materials and produce something out of them that could have been yeah so but"
+  },
+  {
+   "start": 1511.72,
+   "end": 1513.2,
+   "text": "but this one was not a lot about like"
+  },
+  {
+   "start": 1513.2,
+   "end": 1516.1,
+   "text": "you had didn't really have a lot of freedom right it was just like"
+  },
+  {
+   "start": 1516.1,
+   "end": 1519.84,
+   "text": "do the dimensions and cut it and I will grade you on how well"
+  },
+  {
+   "start": 1519.84,
+   "end": 1522.76,
+   "text": "you cut it and like, you know, sand it basically."
+  },
+  {
+   "start": 1522.76,
+   "end": 1526.64,
+   "text": "So it wasn't like be creative, you know, it's just like,"
+  },
+  {
+   "start": 1533.42,
+   "end": 1540.74,
+   "text": "and uh hemiya hemiya hemiya comes"
+  },
+  {
+   "start": 1540.74,
+   "end": 1545.74,
+   "text": "in yes hemiya comes in uh in the seventh grade"
+  },
+  {
+   "start": 1547.6,
+   "end": 1552.32,
+   "text": "because uh well i i was i was also surprised why uh but i"
+  },
+  {
+   "start": 1552.32,
+   "end": 1554.5,
+   "text": "think it i think it has something to do"
+  },
+  {
+   "start": 1554.5,
+   "end": 1560.4,
+   "text": "with like conceptualization and that you can't really like get these things while you're"
+  },
+  {
+   "start": 1560.4,
+   "end": 1560.54,
+   "text": "i don't know like 10 and that's why it comes in in the seventh"
+  },
+  {
+   "start": 1560.54,
+   "end": 1560.84,
+   "text": "like"
+  },
+  {
+   "start": 1565.3,
+   "end": 1566.96,
+   "text": "grade i think that's the reason why"
+  },
+  {
+   "start": 1566.96,
+   "end": 1571.64,
+   "text": "maybe they just thought it's not as as like important so we didn't want"
+  },
+  {
+   "start": 1571.64,
+   "end": 1574.7,
+   "text": "to burden them but we still wanted to introduce them into it so maybe"
+  },
+  {
+   "start": 1574.7,
+   "end": 1576.9,
+   "text": "that's the reason yeah i see cool so for"
+  },
+  {
+   "start": 1576.9,
+   "end": 1583.22,
+   "text": "the last two years you have hemia hemia yeah and uh informatica and rational"
+  },
+  {
+   "start": 1583.22,
+   "end": 1584.78,
+   "text": "actually i think uh"
+  },
+  {
+   "start": 1584.78,
+   "end": 1589.0,
+   "text": "i made a mistake with technical so this is where we would do like"
+  },
+  {
+   "start": 1589.0,
+   "end": 1595.78,
+   "text": "um uh yeah so it's like touch typing how fast you type using paint"
+  },
+  {
+   "start": 1595.78,
+   "end": 1602.6,
+   "text": "using like uh like editing photos or uh also learning like"
+  },
+  {
+   "start": 1602.6,
+   "end": 1607.02,
+   "text": "now when I think about learning the algorithms like it's like actually some advanced"
+  },
+  {
+   "start": 1607.02,
+   "end": 1607.82,
+   "text": "stuff but"
+  },
+  {
+   "start": 1607.82,
+   "end": 1612.04,
+   "text": "I think yeah so that's what we had but I don't remember it that"
+  },
+  {
+   "start": 1612.04,
+   "end": 1613.02,
+   "text": "much I feel like we didn't really"
+  },
+  {
+   "start": 1613.02,
+   "end": 1617.6,
+   "text": "do much with it probably that was like one hour per week kind of"
+  },
+  {
+   "start": 1617.6,
+   "end": 1624.32,
+   "text": "class right yeah oh our classes 45 minutes actually yeah so it's a 45"
+  },
+  {
+   "start": 1624.32,
+   "end": 1629.8,
+   "text": "minutes and then uh breaks are five minutes and then uh we"
+  },
+  {
+   "start": 1629.8,
+   "end": 1633.9,
+   "text": "would from the grade one to four we would say in one room and"
+  },
+  {
+   "start": 1633.9,
+   "end": 1635.7,
+   "text": "from grade five to eight we would have"
+  },
+  {
+   "start": 1635.7,
+   "end": 1639.37,
+   "text": "to change rooms yeah and uh so those five minutes"
+  },
+  {
+   "start": 1639.37,
+   "end": 1644.93,
+   "text": "you basically used to change the room and uh and so you have and"
+  },
+  {
+   "start": 1644.93,
+   "end": 1646.77,
+   "text": "the the the bigger break is 15"
+  },
+  {
+   "start": 1646.77,
+   "end": 1653.05,
+   "text": "minutes only i see and also so that there are two semester you call"
+  },
+  {
+   "start": 1653.05,
+   "end": 1659.83,
+   "text": "them polygodish yeah yeah that's true and those two semesters are divided into two"
+  },
+  {
+   "start": 1659.83,
+   "end": 1660.23,
+   "text": "quarters"
+  },
+  {
+   "start": 1661.67,
+   "end": 1668.07,
+   "text": "is it oh that's good what did you i forgot about that yes i'm"
+  },
+  {
+   "start": 1668.07,
+   "end": 1669.79,
+   "text": "a teacher so i'm curious about all"
+  },
+  {
+   "start": 1669.79,
+   "end": 1675.27,
+   "text": "these things obviously how many public holidays they have you have five holidays yes"
+  },
+  {
+   "start": 1675.27,
+   "end": 1676.25,
+   "text": "that's oh"
+  },
+  {
+   "start": 1676.25,
+   "end": 1682.67,
+   "text": "you're there i'm very impressed but yeah that's true and uh yeah yeah exactly"
+  },
+  {
+   "start": 1682.67,
+   "end": 1687.57,
+   "text": "uh yeah so and then you have if you if you get accepted you"
+  },
+  {
+   "start": 1687.57,
+   "end": 1691.83,
+   "text": "have the choir yeah but you don't have to do that that's"
+  },
+  {
+   "start": 1691.83,
+   "end": 1698.27,
+   "text": "not necessary okay for i saw that for the fifth to eighth grades um"
+  },
+  {
+   "start": 1698.27,
+   "end": 1700.47,
+   "text": "those compulsory elective courses"
+  },
+  {
+   "start": 1700.47,
+   "end": 1707.53,
+   "text": "on the you know ministry of education's website that's why um maybe it's"
+  },
+  {
+   "start": 1707.53,
+   "end": 1708.19,
+   "text": "not updated or maybe"
+  },
+  {
+   "start": 1708.19,
+   "end": 1713.69,
+   "text": "it's something new that you didn't have those uh courses elective but compulsory elective"
+  },
+  {
+   "start": 1713.69,
+   "end": 1720.91,
+   "text": "courses are religious education languages and civics it says and what"
+  },
+  {
+   "start": 1720.91,
+   "end": 1723.17,
+   "text": "civics oh what was oh yeah yeah i"
+  },
+  {
+   "start": 1723.17,
+   "end": 1727.49,
+   "text": "know what that is yeah no uh we didn't have that no and now"
+  },
+  {
+   "start": 1727.49,
+   "end": 1729.49,
+   "text": "maybe now they may they might have"
+  },
+  {
+   "start": 1729.49,
+   "end": 1734.73,
+   "text": "because i was curious about the religious courses which is kind of compulsory in"
+  },
+  {
+   "start": 1734.73,
+   "end": 1738.07,
+   "text": "turkish system and we always have a quarrel about it we don't want to"
+  },
+  {
+   "start": 1738.07,
+   "end": 1740.55,
+   "text": "have them stuff some people want to have them on."
+  },
+  {
+   "start": 1740.55,
+   "end": 1741.37,
+   "text": "So."
+  },
+  {
+   "start": 1741.37,
+   "end": 1745.65,
+   "text": "So we have that in like compulsory,"
+  },
+  {
+   "start": 1745.65,
+   "end": 1747.47,
+   "text": "but like you choose between the two"
+  },
+  {
+   "start": 1747.59,
+   "end": 1750.81,
+   "text": "them and we don't get the grade in high school so it would be"
+  },
+  {
+   "start": 1750.81,
+   "end": 1754.45,
+   "text": "religion or civics yeah nice i like it"
+  },
+  {
+   "start": 1754.45,
+   "end": 1761.75,
+   "text": "more which we say yeah we say um uh gradiansko is civics so gradient"
+  },
+  {
+   "start": 1761.75,
+   "end": 1764.21,
+   "text": "is like uh uh oh my god"
+  },
+  {
+   "start": 1764.21,
+   "end": 1770.79,
+   "text": "citizens so it's like like our like what are our rights so we talked"
+  },
+  {
+   "start": 1770.79,
+   "end": 1774.37,
+   "text": "a lot about that we debated a lot and so on I think it"
+  },
+  {
+   "start": 1774.37,
+   "end": 1777.45,
+   "text": "was I think it was great and then oh my god"
+  },
+  {
+   "start": 1777.45,
+   "end": 1784.51,
+   "text": "is a religion I see so"
+  },
+  {
+   "start": 1784.51,
+   "end": 1786.97,
+   "text": "at the end of the eighth year they have this final exam you called"
+  },
+  {
+   "start": 1786.97,
+   "end": 1794.75,
+   "text": "is like small small yes yes yeah it's"
+  },
+  {
+   "start": 1794.75,
+   "end": 1799.61,
+   "text": "that so it's important for them it's big for those kids probably yeah it"
+  },
+  {
+   "start": 1799.61,
+   "end": 1802.81,
+   "text": "is actually a bit because it's based on that you would get in the"
+  },
+  {
+   "start": 1802.81,
+   "end": 1803.03,
+   "text": "high school"
+  },
+  {
+   "start": 1803.03,
+   "end": 1806.25,
+   "text": "you want and based on the high school you would get into the university"
+  },
+  {
+   "start": 1806.25,
+   "end": 1807.41,
+   "text": "so it's like it's like a"
+  },
+  {
+   "start": 1807.41,
+   "end": 1812.15,
+   "text": "big deal you know so I mean especially for the families as well yes"
+  },
+  {
+   "start": 1812.15,
+   "end": 1814.29,
+   "text": "and uh exactly so you have"
+  },
+  {
+   "start": 1814.29,
+   "end": 1818.85,
+   "text": "before how it was it was Serbian and math and then you get like"
+  },
+  {
+   "start": 1818.85,
+   "end": 1821.45,
+   "text": "a like a book with many like"
+  },
+  {
+   "start": 1821.45,
+   "end": 1827.15,
+   "text": "it's actually questions and answers well actually it's questions and answers um so the"
+  },
+  {
+   "start": 1827.15,
+   "end": 1830.79,
+   "text": "answers you can check and then some of them don't have answers obviously but"
+  },
+  {
+   "start": 1830.79,
+   "end": 1832.99,
+   "text": "um and then there was like some of"
+  },
+  {
+   "start": 1832.99,
+   "end": 1837.51,
+   "text": "the questions there and there's like hundreds and hundreds of questions you might get"
+  },
+  {
+   "start": 1837.51,
+   "end": 1842.45,
+   "text": "some of them so at least you can prepare you know because uh you had all the"
+  },
+  {
+   "start": 1842.45,
+   "end": 1843.87,
+   "text": "questions and answers you just"
+  },
+  {
+   "start": 1843.87,
+   "end": 1848.45,
+   "text": "have to sit down and and do them study them is that exam like"
+  },
+  {
+   "start": 1848.45,
+   "end": 1850.55,
+   "text": "held on one specific day where"
+  },
+  {
+   "start": 1850.55,
+   "end": 1856.47,
+   "text": "all the kids to everywhere yeah okay everywhere and it's a i think it's"
+  },
+  {
+   "start": 1856.47,
+   "end": 1858.49,
+   "text": "the same in every in in"
+  },
+  {
+   "start": 1858.49,
+   "end": 1863.67,
+   "text": "the whole of serbia whole country i see i think we have left a"
+  },
+  {
+   "start": 1863.67,
+   "end": 1864.95,
+   "text": "secondary education i would just go"
+  },
+  {
+   "start": 1864.95,
+   "end": 1869.27,
+   "text": "quickly through that because that might be an interesting thing for next time uh"
+  },
+  {
+   "start": 1869.27,
+   "end": 1874.11,
+   "text": "but we have high school we call them high schools um and it's it"
+  },
+  {
+   "start": 1874.11,
+   "end": 1877.47,
+   "text": "can be three to four years and uh there we still"
+  },
+  {
+   "start": 1877.47,
+   "end": 1884.17,
+   "text": "have a nastavonikin nastavonita so okay no change this time good no it's still"
+  },
+  {
+   "start": 1884.17,
+   "end": 1884.55,
+   "text": "i was thinking like"
+  },
+  {
+   "start": 1884.55,
+   "end": 1888.43,
+   "text": "oh maybe we said professor but no professor is only at the university professor"
+  },
+  {
+   "start": 1888.43,
+   "end": 1890.31,
+   "text": "oh okay and it"
+  },
+  {
+   "start": 1890.31,
+   "end": 1895.85,
+   "text": "doesn't matter if that person is actually an assistant they're still called professor because"
+  },
+  {
+   "start": 1895.91,
+   "end": 1897.39,
+   "text": "it's like a respecting"
+  },
+  {
+   "start": 1897.39,
+   "end": 1901.57,
+   "text": "I don't know and so you have a four year"
+  },
+  {
+   "start": 1901.57,
+   "end": 1904.03,
+   "text": "grammar school or gymnasium"
+  },
+  {
+   "start": 1904.03,
+   "end": 1907.45,
+   "text": "which we call gymnasium which I didn't write that one down"
+  },
+  {
+   "start": 1907.45,
+   "end": 1909.55,
+   "text": "and you usually have"
+  },
+  {
+   "start": 1909.55,
+   "end": 1911.01,
+   "text": "not necessarily but usually like"
+  },
+  {
+   "start": 1911.01,
+   "end": 1913.35,
+   "text": "general direction"
+  },
+  {
+   "start": 1913.35,
+   "end": 1915.13,
+   "text": "course like obstismir"
+  },
+  {
+   "start": 1915.13,
+   "end": 1917.11,
+   "text": "which is like it's kind of like a"
+  },
+  {
+   "start": 1917.11,
+   "end": 1919.39,
+   "text": "continuation of your primary"
+  },
+  {
+   "start": 1919.39,
+   "end": 1921.09,
+   "text": "school all of these subjects like"
+  },
+  {
+   "start": 1921.09,
+   "end": 1923.07,
+   "text": "physica, chemia, blah blah blah"
+  },
+  {
+   "start": 1924.39,
+   "end": 1928.57,
+   "text": "so you focus on all of that social sciences if you go to that"
+  },
+  {
+   "start": 1928.57,
+   "end": 1933.49,
+   "text": "course i went there um to course to the direction the department"
+  },
+  {
+   "start": 1933.49,
+   "end": 1937.13,
+   "text": "or direction yeah it's like a direction i don't know how you call it"
+  },
+  {
+   "start": 1937.13,
+   "end": 1938.81,
+   "text": "but yeah if you choose that"
+  },
+  {
+   "start": 1938.81,
+   "end": 1944.63,
+   "text": "area then you focus you have more lessons on social sciences and less on"
+  },
+  {
+   "start": 1944.63,
+   "end": 1945.57,
+   "text": "like natural sciences"
+  },
+  {
+   "start": 1945.57,
+   "end": 1950.16,
+   "text": "and natural sciences is just the reverse so social sciences"
+  },
+  {
+   "start": 1950.16,
+   "end": 1957.78,
+   "text": "and natural is okay and"
+  },
+  {
+   "start": 1957.78,
+   "end": 1961.92,
+   "text": "then you have professional schools like when i say professional i mean like"
+  },
+  {
+   "start": 1961.92,
+   "end": 1966.0,
+   "text": "you have actually a dedicated topic so it's not a grammar school so that"
+  },
+  {
+   "start": 1966.0,
+   "end": 1973.74,
+   "text": "can be medicine meditinska škola that can be electrotechnical, electrotechnica"
+  },
+  {
+   "start": 1973.74,
+   "end": 1976.98,
+   "text": "škola. What else?"
+  },
+  {
+   "start": 1977.28,
+   "end": 1980.34,
+   "text": "Ekonomska. Yeah, I see that a lot here in Prussia."
+  },
+  {
+   "start": 1980.34,
+   "end": 1984.96,
+   "text": "Ekonomska, yeah. Poljoprivredna, which is agriculture."
+  },
+  {
+   "start": 1984.96,
+   "end": 1987.36,
+   "text": "Technica and so on."
+  },
+  {
+   "start": 1987.36,
+   "end": 1990.3,
+   "text": "And then you have vocational scores that are like,"
+  },
+  {
+   "start": 1990.3,
+   "end": 1992.82,
+   "text": "I think, up to three years."
+  },
+  {
+   "start": 1992.82,
+   "end": 1993.86,
+   "text": "Actually, just three years."
+  },
+  {
+   "start": 1993.86,
+   "end": 1997.58,
+   "text": "And that's like to go for, to be a cook, Or what did I"
+  },
+  {
+   "start": 1997.58,
+   "end": 2004.98,
+   "text": "write? Tourism. So, or and"
+  },
+  {
+   "start": 2004.98,
+   "end": 2007.12,
+   "text": "with these"
+  },
+  {
+   "start": 2007.12,
+   "end": 2009.3,
+   "text": "schools, three years, you cannot"
+  },
+  {
+   "start": 2009.3,
+   "end": 2010.82,
+   "text": "go to the university."
+  },
+  {
+   "start": 2012.28,
+   "end": 2013.42,
+   "text": "You cannot? No."
+  },
+  {
+   "start": 2013.66,
+   "end": 2015.98,
+   "text": "So there is no department for tourism management"
+  },
+  {
+   "start": 2015.98,
+   "end": 2022.54,
+   "text": "or something? Yes, there is, but you have to do, I think, yes, you"
+  },
+  {
+   "start": 2022.54,
+   "end": 2023.24,
+   "text": "have to go to gymnasia"
+  },
+  {
+   "start": 2023.24,
+   "end": 2028.86,
+   "text": "in order to, so usually people that go to grammar school, then they, it"
+  },
+  {
+   "start": 2028.86,
+   "end": 2032.8,
+   "text": "is a given that they will continue something specific, right?"
+  },
+  {
+   "start": 2033.52,
+   "end": 2038.52,
+   "text": "So, so you get like more of like a general education and then, so"
+  },
+  {
+   "start": 2038.52,
+   "end": 2039.24,
+   "text": "broaden that and then"
+  },
+  {
+   "start": 2039.24,
+   "end": 2041.1,
+   "text": "you build on that."
+  },
+  {
+   "start": 2041.1,
+   "end": 2045.84,
+   "text": "Because it's all about the points that you get."
+  },
+  {
+   "start": 2045.84,
+   "end": 2046.98,
+   "text": "So you get specific points"
+  },
+  {
+   "start": 2046.98,
+   "end": 2051.64,
+   "text": "from, I don't know how to explain but yeah anyway so I"
+  },
+  {
+   "start": 2051.64,
+   "end": 2055.96,
+   "text": "think with three years you can't really go to the university you would have"
+  },
+  {
+   "start": 2055.96,
+   "end": 2057.1,
+   "text": "to do an additional year"
+  },
+  {
+   "start": 2057.1,
+   "end": 2064.66,
+   "text": "somehow like I see like a prep year and stuff yeah okay was"
+  },
+  {
+   "start": 2064.66,
+   "end": 2066.82,
+   "text": "it easy I hope for me as a teacher"
+  },
+  {
+   "start": 2066.82,
+   "end": 2071.6,
+   "text": "everything is okay but maybe for some listeners like what are they saying but"
+  },
+  {
+   "start": 2071.6,
+   "end": 2074.9,
+   "text": "I mean if they are going to move into here or if they're going"
+  },
+  {
+   "start": 2074.9,
+   "end": 2076.36,
+   "text": "to send their kids to schools here they should know"
+  },
+  {
+   "start": 2076.36,
+   "end": 2080.56,
+   "text": "especially for those people it's important or if even if you're dating with a"
+  },
+  {
+   "start": 2080.56,
+   "end": 2081.06,
+   "text": "serbian guy or girl"
+  },
+  {
+   "start": 2081.06,
+   "end": 2086.56,
+   "text": "you know what kind of education they got so useful for everybody very much"
+  },
+  {
+   "start": 2086.56,
+   "end": 2088.18,
+   "text": "grammar oriented like how"
+  },
+  {
+   "start": 2088.18,
+   "end": 2093.86,
+   "text": "can i say theory oriented very much theory oriented so we are very educated"
+  },
+  {
+   "start": 2093.86,
+   "end": 2095.56,
+   "text": "but not a lot of practical"
+  },
+  {
+   "start": 2095.56,
+   "end": 2101.52,
+   "text": "knowledge so fortunately that's just what it is it's changing probably right now at"
+  },
+  {
+   "start": 2101.52,
+   "end": 2106.86,
+   "text": "least it is it is i'm sure yeah it's been it's been 86 years"
+  },
+  {
+   "start": 2106.86,
+   "end": 2110.58,
+   "text": "you know like when i went to school so yeah i'm"
+  },
+  {
+   "start": 2110.58,
+   "end": 2120.56,
+   "text": "pretty sure things change a lot yeah okay thank you for"
+  },
+  {
+   "start": 2120.56,
+   "end": 2122.1,
+   "text": "joining us today we hope you enjoyed our"
+  },
+  {
+   "start": 2122.1,
+   "end": 2127.22,
+   "text": "podcast and learned something new in case you have any comments suggestions or questions"
+  },
+  {
+   "start": 2127.92,
+   "end": 2131.96,
+   "text": "make sure to share them on our Instagram page, mozekáfapodcast."
+  },
+  {
+   "start": 2132.32,
+   "end": 2132.98,
+   "text": "Prijatno!"
+  }
+ ],
+ "title": "Ep.2: Education System In Serbia",
+ "audio": "https://anchor.fm/s/aef64434/podcast/play/55939248/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2022-7-9%2F280075927-44100-1-10c95670940cdb25.mp3"
+}
