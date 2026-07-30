@@ -84,6 +84,11 @@ class ApiClient {
         timeout: timeout,
       );
 
+  Future<dynamic> delete(String path, {Duration? timeout}) => _send(
+        () => _client.delete(_uri(path), headers: _headers(json: false)),
+        timeout: timeout,
+      );
+
   /// Загружает двоичный ответ: PDF или DOCX из прокси документов.
   ///
   /// Отдельно от [get], потому что тот разбирает тело как JSON. Разбирать

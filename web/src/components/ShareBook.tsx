@@ -1,29 +1,90 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import {
+  FaInstagram,
+  FaThreads,
+  FaTelegram,
+  FaViber,
+  FaVk,
+  FaWhatsapp,
+} from 'react-icons/fa6';
+import { HiLink, HiOutlinePaperAirplane } from 'react-icons/hi2';
 
 import { ApiError } from '../api/client';
-import {
-  createShare,
-  shareUrl,
-  SOCIALS,
-  type SharedBook,
-} from '../api/share';
+import { createShare, shareUrl, type SharedBook } from '../api/share';
 import type { BookMeta } from '../lib/books';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
 import { Spinner } from './ui';
 
+interface ShareBookProps {
+  book: BookMeta;
+  /** Вызывается только после того, как человек действительно скопировал ссылку. */
+  onLinkCopied?: (token: string) => void;
+}
+
+interface SocialAction {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  href?: (url: string, text: string) => string;
+  copyThenOpen?: string;
+}
+
+const SOCIALS: SocialAction[] = [
+  {
+    id: 'telegram',
+    label: 'Telegram',
+    icon: <FaTelegram />,
+    href: (url, text) =>
+      `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+  },
+  {
+    id: 'vk',
+    label: 'ВКонтакте',
+    icon: <FaVk />,
+    href: (url, text) =>
+      `https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`,
+  },
+  {
+    id: 'whatsapp',
+    label: 'WhatsApp',
+    icon: <FaWhatsapp />,
+    href: (url, text) =>
+      `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`,
+  },
+  {
+    id: 'viber',
+    label: 'Viber',
+    icon: <FaViber />,
+    href: (url, text) =>
+      `viber://forward?text=${encodeURIComponent(`${text} ${url}`)}`,
+  },
+  {
+    id: 'threads',
+    label: 'Threads',
+    icon: <FaThreads />,
+    href: (url, text) =>
+      `https://www.threads.net/intent/post?text=${encodeURIComponent(`${text} ${url}`)}`,
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    icon: <FaInstagram />,
+    // У Instagram нет публичного web-intent для произвольной ссылки.
+    // Ссылка копируется, после чего открывается сам Instagram.
+    copyThenOpen: 'https://www.instagram.com/',
+  },
+];
+
 /**
- * Кнопка «поделиться книгой».
+ * Непубличная ссылка на книгу.
  *
- * Ссылка непубличная: каталога таких книг нет и в поиске они не появляются.
- * Причина не в приватности, а в праве — текст загрузил человек, и мы не знаем,
- * вправе ли он его распространять. Ссылка равносильна пересылке файла знакомому.
- *
- * Поделиться можно только тем, что успело выгрузиться на сервер: получатель
- * читает тот же текст, а не копию, поэтому без выгрузки ссылка вела бы в пустоту.
+ * Создание ссылки ещё не включает обсуждение в читалке: человек мог открыть
+ * меню случайно. Волк появляется только после явного нажатия на кнопку-цепочку,
+ * когда ссылка уже скопирована и её действительно собираются отправить.
  */
-export function ShareBook({ book }: { book: BookMeta }) {
+export function ShareBook({ book, onLinkCopied }: ShareBookProps) {
   const { account } = useAuth();
   const { sync } = useSync();
   const [open, setOpen] = useState(false);
@@ -35,7 +96,7 @@ export function ShareBook({ book }: { book: BookMeta }) {
 
   useEffect(() => {
     if (!open) return;
-    const onOutside = (event: MouseEvent) => {
+    const onOutside = (event: globalThis.MouseEvent) => {
       if (!box.current?.contains(event.target as Node)) setOpen(false);
     };
     const onKey = (event: KeyboardEvent) => {
@@ -51,15 +112,14 @@ export function ShareBook({ book }: { book: BookMeta }) {
 
   async function prepare() {
     setOpen(true);
-    if (share || busy) return;
+    if (share || busy || !account) return;
     setError('');
     setBusy(true);
     try {
       if (!book.contentSha) {
-        // Текста на сервере ещё нет — просим синхронизацию и говорим об этом.
         await sync();
         throw new ApiError(
-          'Книга ещё не выгружена на сервер. Подождите синхронизации и попробуйте снова.',
+          'Книга ещё не выгружена на сервер. Дождитесь синхронизации и попробуйте снова.',
           409,
         );
       }
@@ -76,13 +136,30 @@ export function ShareBook({ book }: { book: BookMeta }) {
   const url = share ? shareUrl(share.token) : '';
   const text = `«${book.title}» — читаю в Читавуке`;
 
-  async function copy() {
+  async function copy(markAsShared = true): Promise<boolean> {
+    if (!share) return false;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
+      if (markAsShared) onLinkCopied?.(share.token);
       window.setTimeout(() => setCopied(false), 2000);
+      return true;
     } catch {
-      setError('Браузер не дал скопировать. Выделите ссылку и скопируйте вручную.');
+      setError(
+        'Браузер не дал скопировать ссылку. Выделите её и скопируйте вручную.',
+      );
+      return false;
+    }
+  }
+
+  async function openSocial(
+    event: MouseEvent<HTMLButtonElement>,
+    social: SocialAction,
+  ) {
+    event.preventDefault();
+    if (!social.copyThenOpen) return;
+    if (await copy(false)) {
+      window.open(social.copyThenOpen, '_blank', 'noopener,noreferrer');
     }
   }
 
@@ -93,13 +170,10 @@ export function ShareBook({ book }: { book: BookMeta }) {
         onClick={() => void prepare()}
         aria-label="Поделиться книгой"
         title="Поделиться книгой"
-        className="flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2.5 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+        className="flex min-h-11 items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
       >
-        {/* Самолётик — привычный знак «отправить». */}
-        <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
-          <path d="M2.3 11.3 21 3.2c.8-.3 1.6.5 1.3 1.3l-8.1 18.7c-.3.8-1.5.8-1.8 0l-2.7-6.6-6.6-2.7c-.8-.3-.8-1.5 0-1.8zm7.9 3.1 1.9 4.6 5.8-13.4-7.7 8.8z" />
-        </svg>
-        Поделиться
+        <HiOutlinePaperAirplane className="size-5 -rotate-12" aria-hidden="true" />
+        <span className="hidden sm:inline">Поделиться</span>
       </button>
 
       <AnimatePresence>
@@ -109,14 +183,14 @@ export function ShareBook({ book }: { book: BookMeta }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 z-40 mt-2 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-4 shadow-[var(--shadow-lift)]"
+            className="absolute right-0 z-40 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-4 shadow-[var(--shadow-lift)]"
             role="dialog"
             aria-label="Поделиться книгой"
           >
             {!account ? (
               <p className="text-sm text-[var(--text-muted)]">
-                Чтобы поделиться книгой, войдите в аккаунт: ссылка ведёт на текст,
-                выгруженный в ваш аккаунт.
+                Чтобы поделиться книгой, войдите в аккаунт. Ссылка ведёт на
+                текст, выгруженный в ваш аккаунт.
               </p>
             ) : busy ? (
               <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
@@ -124,25 +198,40 @@ export function ShareBook({ book }: { book: BookMeta }) {
               </div>
             ) : error ? (
               <p className="text-sm text-[var(--text)]">{error}</p>
-            ) : (
+            ) : share ? (
               <>
-                <p className="text-xs text-[var(--text-muted)]">
-                  Ссылка открывает книгу и даёт добавить её себе. В каталог она не
-                  попадает — только тот, кому вы её отправите.
+                <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+                  В каталог она не попадает, она будет только у вас и тому кому
+                  вы скинете
                 </p>
 
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  {SOCIALS.map((social) => (
-                    <a
-                      key={social.id}
-                      href={social.href(url, text)}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] px-3 py-2 text-center text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                    >
-                      {social.label}
-                    </a>
-                  ))}
+                <div className="mt-4 grid grid-cols-6 gap-2">
+                  {SOCIALS.map((social) =>
+                    social.href ? (
+                      <a
+                        key={social.id}
+                        href={social.href(url, text)}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={`Поделиться через ${social.label}`}
+                        title={social.label}
+                        className="flex aspect-square items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] text-xl text-[var(--text-muted)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                      >
+                        {social.icon}
+                      </a>
+                    ) : (
+                      <button
+                        key={social.id}
+                        type="button"
+                        onClick={(event) => void openSocial(event, social)}
+                        aria-label={`Скопировать ссылку и открыть ${social.label}`}
+                        title={`${social.label}: ссылка будет скопирована`}
+                        className="flex aspect-square items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] text-xl text-[var(--text-muted)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                      >
+                        {social.icon}
+                      </button>
+                    ),
+                  )}
                 </div>
 
                 <div className="mt-3 flex items-center gap-2">
@@ -150,28 +239,25 @@ export function ShareBook({ book }: { book: BookMeta }) {
                     readOnly
                     value={url}
                     onFocus={(event) => event.currentTarget.select()}
-                    className="min-w-0 flex-1 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] px-3 py-2 text-xs text-[var(--text-muted)]"
+                    className="min-w-0 flex-1 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] px-3 py-2.5 text-xs text-[var(--text-muted)]"
                   />
                   <button
                     type="button"
                     onClick={() => void copy()}
-                    aria-label="Скопировать ссылку"
+                    aria-label="Скопировать ссылку и открыть обсуждение страниц"
                     title="Скопировать ссылку"
-                    className="shrink-0 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] p-2.5 text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] text-lg text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   >
-                    {/* Цепь — «просто ссылка», без соцсетей. */}
-                    <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
-                      <path d="M10.6 13.4a1 1 0 0 1 0-1.4l1.4-1.4a1 1 0 0 1 1.4 1.4l-1.4 1.4a1 1 0 0 1-1.4 0zm-2.1 4.9-1.4 1.4a3 3 0 0 1-4.2-4.2l3.5-3.6a3 3 0 0 1 4.3 0 1 1 0 0 1-1.5 1.4 1 1 0 0 0-1.4 0l-3.5 3.6a1 1 0 0 0 1.4 1.4l1.4-1.5a1 1 0 0 1 1.4 1.5zm12.6-12.6a3 3 0 0 1 0 4.2l-3.5 3.6a3 3 0 0 1-4.3 0 1 1 0 0 1 1.5-1.4 1 1 0 0 0 1.4 0l3.5-3.6a1 1 0 0 0-1.4-1.4l-1.4 1.5a1 1 0 0 1-1.4-1.5l1.4-1.4a3 3 0 0 1 4.2 0z" />
-                    </svg>
+                    <HiLink aria-hidden="true" />
                   </button>
                 </div>
                 {copied && (
                   <p className="mt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                    Ссылка скопирована
+                    Ссылка скопирована. Волк ждёт рядом со страницей.
                   </p>
                 )}
               </>
-            )}
+            ) : null}
           </motion.div>
         )}
       </AnimatePresence>

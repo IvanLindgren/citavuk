@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
 
 import { downloadContent } from '../api/sync';
+import { Discussion } from '../components/Discussion';
 import { Mascot } from '../components/Mascot';
 import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
 import { ShareBook } from '../components/ShareBook';
@@ -44,6 +45,8 @@ export function Reader() {
   const [downloading, setDownloading] = useState(false);
   const [page, setPage] = useState(0);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [discussionToken, setDiscussionToken] = useState('');
+  const [discussionOpen, setDiscussionOpen] = useState(false);
   // Направление последнего перехода: страница уезжает туда, откуда пришла
   // следующая, иначе перелистывание «вперёд» и «назад» выглядят одинаково.
   const [direction, setDirection] = useState(1);
@@ -67,6 +70,10 @@ export function Reader() {
       if (paragraphs.length === 0 && book.contentSha) {
         setState({ kind: 'needsDownload', book });
         return;
+      }
+      if (book.sourceKey.startsWith('share:')) {
+        setDiscussionToken(book.sourceKey.slice('share:'.length));
+        setDiscussionOpen(true);
       }
       setState({ kind: 'ready', book, paragraphs });
     })();
@@ -315,7 +322,13 @@ export function Reader() {
               </IconButton>
             </div>
 
-            <ShareBook book={state.book} />
+            <ShareBook
+              book={state.book}
+              onLinkCopied={(token) => {
+                setDiscussionToken(token);
+                setDiscussionOpen(true);
+              }}
+            />
 
             <button
               type="button"
@@ -332,7 +345,7 @@ export function Reader() {
 
         {/* Перспектива нужна повороту страницы: без неё rotateY выглядит
             как обычное сжатие по горизонтали. */}
-        <div style={{ perspective: 1600 }}>
+        <div className="relative" style={{ perspective: 1600 }}>
           <AnimatePresence mode="wait" initial={false} custom={direction}>
             <motion.article
               key={page}
@@ -364,7 +377,59 @@ export function Reader() {
               </div>
             </motion.article>
           </AnimatePresence>
+
+          <AnimatePresence>
+            {discussionToken && (
+              <motion.button
+                type="button"
+                initial={{ opacity: 0, scale: 0.82, x: 12 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                onClick={() => setDiscussionOpen((value) => !value)}
+                aria-expanded={discussionOpen}
+                aria-label={
+                  discussionOpen
+                    ? 'Скрыть обсуждение этой страницы'
+                    : 'Открыть обсуждение этой страницы'
+                }
+                title="Обсуждение этой страницы"
+                className="mx-auto mt-4 flex w-28 items-end justify-center rounded-2xl outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:absolute lg:-right-28 lg:bottom-2 lg:mt-0"
+              >
+                <img
+                  src="/img/citavuk_zadumch.png"
+                  alt=""
+                  width={236}
+                  height={236}
+                  draggable={false}
+                  className="w-full select-none drop-shadow-md"
+                />
+                <span className="sr-only">Обсуждение страницы</span>
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
+
+        <AnimatePresence mode="wait">
+          {discussionToken && discussionOpen && (
+            <motion.section
+              key={`${discussionToken}:${pageStarts[page] ?? 0}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="mx-auto mt-5"
+              style={{
+                maxWidth:
+                  settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
+              }}
+            >
+              <Discussion
+                token={discussionToken}
+                paragraph={pageStarts[page] ?? 0}
+              />
+            </motion.section>
+          )}
+        </AnimatePresence>
 
         <nav className="mx-auto mt-6 flex items-center justify-between gap-4"
              style={{ maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth }}>

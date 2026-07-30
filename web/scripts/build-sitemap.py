@@ -31,6 +31,7 @@ OUT = os.path.join(ROOT, "public", "sitemap.xml")
 STATIC = [
     ("/", "1.0", "weekly"),
     ("/books", "0.9", "weekly"),
+    ("/public-library", "0.9", "monthly"),
     ("/materials", "0.9", "weekly"),
     ("/course", "0.8", "monthly"),
     ("/trainer", "0.8", "monthly"),

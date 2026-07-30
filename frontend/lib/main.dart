@@ -29,6 +29,7 @@ import 'screens/grammar_cards_screen.dart';
 import 'screens/home_shell.dart';
 import 'screens/materials_screen.dart';
 import 'screens/news_screen.dart';
+import 'screens/public_library_screen.dart';
 import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
 import 'state/app_settings.dart';
@@ -120,7 +121,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Map<String, dynamic>> _books = [];
   List<String> _recentWords = [];
-  List<String> _libraryAssets = [];
   bool _isLoading = true;
   double _loadProgress = 0.0;
 
@@ -131,7 +131,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _initAndLoad();
-    _loadLibraryAssets();
     // Приветствие при первом запуске: объясняем онлайн/офлайн и предлагаем
     // скачать словарь.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -155,23 +154,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context,
       MaterialPageRoute(builder: (_) => const AccountScreen()),
     );
-  }
-
-  Future<void> _loadLibraryAssets() async {
-    try {
-      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-      final pdfs = manifest
-          .listAssets()
-          .where((k) =>
-              k.startsWith('assets/library/') &&
-              (k.endsWith('.pdf') || k.endsWith('.docx')))
-          .toList();
-      setState(() {
-        _libraryAssets = pdfs;
-      });
-    } catch (e) {
-      // no library folder or manifest error
-    }
   }
 
   Future<void> _initAndLoad() async {
@@ -246,8 +228,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bytes = await XFile(path).readAsBytes();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Не удалось прочитать файл: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Не удалось прочитать файл: $e')));
       return;
     }
     await _importBytes(name, path, bytes);
@@ -284,9 +266,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   /// Файлы, брошенные в окно приложения.
   Future<void> _onFilesDropped(DropDoneDetails details) async {
     setState(() => _dragging = false);
-    final files = details.files
-        .where((f) => DocumentParser.isSupported(f.name))
-        .toList();
+    final files =
+        details.files.where((f) => DocumentParser.isSupported(f.name)).toList();
     if (files.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -345,41 +326,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Ошибка загрузки теста: $e')));
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  Future<void> _loadLibraryStory(String assetPath, String title) async {
-    setState(() {
-      _isLoading = true;
-      _loadProgress = 0.0;
-    });
-    try {
-      final data = await rootBundle.load(assetPath);
-      final bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      final paragraphs = assetPath.endsWith('.pdf')
-          ? await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress)
-          : await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
-
-      final id = await UserDb.instance.insertBook(title, assetPath, paragraphs);
-      await UserDb.instance.setBookFolder(id, 'Бесплатная библиотека');
-      await _loadBooks();
-
-      if (mounted) {
-        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
-          _showNonSerbianWarning();
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Книга «$title» добавлена в библиотеку")),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Ошибка загрузки: $e')));
         setState(() => _isLoading = false);
       }
     }
@@ -466,6 +412,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: title,
           paragraphs: paragraphs,
           initialParagraph: lastPara,
+          contentSha: book['content_sha'] as String? ?? '',
+          sourceKey: book['filepath'] as String? ?? '',
         ),
       ),
     ).then((_) => _loadBooks());
@@ -495,8 +443,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _snack(String text) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(text)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   void _openAllCards() {
@@ -644,6 +591,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 MaterialPageRoute(builder: (_) => const NewsScreen()),
               ),
             ),
+          if (!compactAppBar)
+            _DashboardAction(
+              showLabel: showActionLabels,
+              label: 'Публичная',
+              tooltip: 'Публичная библиотека',
+              icon: Icons.local_library_outlined,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicLibraryScreen()),
+              ),
+            ),
           // «Слушание» и «Курс сербского» живут в нижней навигации, поэтому
           // в верхней панели их больше нет.
           if (!compactAppBar) ...[
@@ -692,6 +650,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const MaterialsScreen()));
               }
+              if (v == 'publicLibrary') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const PublicLibraryScreen()),
+                );
+              }
               if (v == 'video') _openVideoSite();
               if (v == 'grammar') _openGrammarReference();
               if (v == 'reminders') _openReminderDialog();
@@ -717,6 +682,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: ListTile(
                     leading: Icon(Icons.newspaper_outlined),
                     title: Text('Новости'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'publicLibrary',
+                  child: ListTile(
+                    leading: Icon(Icons.local_library_outlined),
+                    title: Text('Публичная библиотека'),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -992,71 +965,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildFreeLibrary(ColorScheme scheme) {
-    if (_libraryAssets.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(16, 12, 16, 8),
-          child: Text('Бесплатная библиотека',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        ),
-        SizedBox(
-          height: 120,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            itemCount: _libraryAssets.length,
-            itemBuilder: (ctx, i) {
-              final path = _libraryAssets[i];
-              final filename = path.split('/').last;
-              final name = filename
-                  .replaceAll('.pdf', '')
-                  .replaceAll('.docx', '')
-                  .replaceAll('_', ' ');
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                child: InkWell(
-                  onTap: () {
-                    if (_books.any((b) =>
-                        ((b['folder'] as String?) ?? '').trim() ==
-                            'Бесплатная библиотека' &&
-                        b['title'] == name)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Книга уже добавлена')));
-                      return;
-                    }
-                    _loadLibraryStory(path, name);
-                  },
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    width: 110,
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                            path.endsWith('.pdf')
-                                ? Icons.picture_as_pdf
-                                : Icons.text_snippet,
-                            color: scheme.primary,
-                            size: 32),
-                        const SizedBox(height: 8),
-                        Text(name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Card(
+        child: ListTile(
+          leading: Icon(Icons.local_library_outlined,
+              color: scheme.primary, size: 34),
+          title: const Text(
+            'Публичная библиотека',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          subtitle: const Text(
+            'Классика и фольклор в общественном достоянии',
+          ),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PublicLibraryScreen()),
+          ).then((_) => _loadBooks()),
         ),
-      ],
+      ),
     );
   }
 

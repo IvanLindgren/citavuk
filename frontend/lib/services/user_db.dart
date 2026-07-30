@@ -253,6 +253,7 @@ class UserDb {
           'folder',
           'para_count',
           'added_at',
+          'content_sha',
           // Книга пришла с другого устройства, а её текст ещё не скачан.
           'text_missing',
         ],
@@ -260,6 +261,23 @@ class UserDb {
         // синхронизация, но показывать их нельзя.
         where: 'deleted = 0',
         orderBy: 'added_at DESC');
+  }
+
+  Future<({String contentSha, String filepath})?> getBookShareMeta(
+      int bookId) async {
+    final db = await database;
+    final rows = await db.query(
+      'books',
+      columns: ['content_sha', 'filepath'],
+      where: 'id = ? AND deleted = 0',
+      whereArgs: [bookId],
+      limit: 1,
+    );
+    if (rows.isEmpty) return null;
+    return (
+      contentSha: rows.first['content_sha'] as String? ?? '',
+      filepath: rows.first['filepath'] as String? ?? '',
+    );
   }
 
   /// Текст книги (список абзацев) — грузится только когда книгу открывают.

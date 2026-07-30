@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/grammar.dart';
 import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
@@ -10,6 +12,10 @@ import '../services/analysis_repository.dart';
 import '../services/grammar_engine.dart';
 import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
+import '../services/api_client.dart';
+import '../services/auth_service.dart';
+import '../services/share_service.dart';
+import '../services/sync_service.dart';
 import '../services/user_db.dart';
 import '../state/app_settings.dart';
 import '../utils/tokenizer.dart';
@@ -27,6 +33,8 @@ class BookReaderScreen extends StatefulWidget {
   final String title;
   final List<String> paragraphs;
   final int initialParagraph;
+  final String contentSha;
+  final String sourceKey;
 
   /// Заглавная картинка (для новостных статей) — показывается над текстом на
   /// первой странице. Для обычных книг null.
@@ -38,6 +46,8 @@ class BookReaderScreen extends StatefulWidget {
     required this.title,
     required this.paragraphs,
     required this.initialParagraph,
+    this.contentSha = '',
+    this.sourceKey = '',
     this.leadImageUrl,
   });
 
@@ -57,6 +67,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
 
   int _startPage = 0;
   bool _resumeHintVisible = false;
+  String _discussionToken = '';
+  bool _discussionOpen = false;
+  bool _sharingBusy = false;
 
   // Состояние выделения (страница/абзац/диапазон токенов).
   int? _selPage;
@@ -75,6 +88,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
     _startPage = startPage;
     _pageController = PageController(initialPage: startPage);
+    if (widget.sourceKey.startsWith('share:')) {
+      _discussionToken = widget.sourceKey.substring('share:'.length);
+      _discussionOpen = true;
+    }
     if (startPage > 0) {
       _resumeHintVisible = true; // лапка-указатель «вы остановились здесь»
       Future.delayed(const Duration(seconds: 5), () {
@@ -110,8 +127,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void _changeFontSize(double delta) {
     final settings = context.read<AppSettings>();
     final s = settings.reader;
-    settings.update(
-        s.copyWith(fontSize: (s.fontSize + delta).clamp(14.0, 32.0)));
+    settings
+        .update(s.copyWith(fontSize: (s.fontSize + delta).clamp(14.0, 32.0)));
   }
 
   KeyEventResult _onKey(FocusNode node, KeyEvent e) {
@@ -313,6 +330,70 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     );
   }
 
+  Future<void> _openShareSheet() async {
+    final auth = context.read<AuthService>();
+    final syncService = context.read<SyncService>();
+    final shareService = ShareService(context.read<ApiClient>());
+    if (!auth.isSignedIn) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Войдите в аккаунт, чтобы поделиться книгой'),
+        ),
+      );
+      return;
+    }
+    setState(() => _sharingBusy = true);
+    try {
+      var meta = await UserDb.instance.getBookShareMeta(widget.bookId);
+      if (meta == null) throw ApiException('Книга не найдена');
+      if (meta.contentSha.isEmpty) {
+        await syncService.sync(uploadContent: true);
+        meta = await UserDb.instance.getBookShareMeta(widget.bookId);
+      }
+      final sha = meta?.contentSha ?? '';
+      if (sha.isEmpty || sha == 'too-large') {
+        throw ApiException(
+          'Текст ещё не выгружен. Запустите синхронизацию и повторите.',
+        );
+      }
+      final share = await shareService.create(
+        contentSha: sha,
+        title: widget.title,
+        paragraphs: widget.paragraphs.length,
+      );
+      if (!mounted) return;
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (sheetContext) => _ShareSheet(
+          share: share,
+          onLinkCopied: () {
+            if (mounted) {
+              setState(() {
+                _discussionToken = share.token;
+                _discussionOpen = true;
+              });
+            }
+          },
+        ),
+      );
+    } on ApiException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.message)));
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Не удалось создать ссылку: $error')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _sharingBusy = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -353,6 +434,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
         actions: [
           const RadioAppBarButton(),
+          IconButton(
+            tooltip: 'Поделиться книгой',
+            icon: _sharingBusy
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const FaIcon(FontAwesomeIcons.paperPlane, size: 18),
+            onPressed: _sharingBusy ? null : _openShareSheet,
+          ),
           IconButton(
             tooltip: 'Настройки чтения',
             icon: const Icon(Icons.text_fields),
@@ -398,59 +489,93 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                         final paras = _pages[pageIndex];
                         return SingleChildScrollView(
                           padding: const EdgeInsets.fromLTRB(40, 18, 40, 60),
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: settings.fullWidth
-                                    ? double.infinity
-                                    : settings.maxWidth,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (pageIndex == 0 &&
-                                      widget.leadImageUrl != null)
-                                    _leadImage(),
-                                  if (pageIndex == _startPage &&
-                                      _resumeHintVisible)
-                                    _resumeHint(scheme, settings.fontSize),
-                                  ...List.generate(paras.length, (pIndex) {
-                                    final isSel = _selPage == pageIndex &&
-                                        _selPara == pIndex;
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: settings.paragraphSpacing),
-                                      child: ReaderParagraph(
-                                        text: paras[pIndex],
-                                        settings: settings,
-                                        textColor: textColor,
-                                        highlightColor: scheme.primary,
-                                        highlightTextColor: scheme.onPrimary,
-                                        selStart: isSel ? _selStart : null,
-                                        selEnd: isSel ? _selEnd : null,
-                                        justify: settings.justify,
-                                        firstLineIndent:
-                                            settings.firstLineIndent,
-                                        dragToSelect: dragToSelect,
-                                        onTapWord: (ti, token, tokens) =>
-                                            _onTapWord(pageIndex, pIndex, ti,
-                                                token, tokens),
-                                        onPhraseSelectionStart: (ti) =>
-                                            _onPhraseSelectionStart(
-                                                pageIndex, pIndex, ti),
-                                        onPhraseSelectionUpdate: (ti) =>
-                                            _onPhraseSelectionUpdate(
-                                                pageIndex, pIndex, ti),
-                                        onPhraseSelectionEnd:
-                                            _onPhraseSelectionEnd,
-                                        onPhraseSelectionCancel:
-                                            _onPhraseSelectionCancel,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final showWolfAside =
+                                  constraints.maxWidth >= 900 &&
+                                      _discussionToken.isNotEmpty;
+                              final content = ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: settings.fullWidth
+                                      ? double.infinity
+                                      : settings.maxWidth,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (pageIndex == 0 &&
+                                        widget.leadImageUrl != null)
+                                      _leadImage(),
+                                    if (pageIndex == _startPage &&
+                                        _resumeHintVisible)
+                                      _resumeHint(scheme, settings.fontSize),
+                                    ...List.generate(paras.length, (pIndex) {
+                                      final isSel = _selPage == pageIndex &&
+                                          _selPara == pIndex;
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: settings.paragraphSpacing),
+                                        child: ReaderParagraph(
+                                          text: paras[pIndex],
+                                          settings: settings,
+                                          textColor: textColor,
+                                          highlightColor: scheme.primary,
+                                          highlightTextColor: scheme.onPrimary,
+                                          selStart: isSel ? _selStart : null,
+                                          selEnd: isSel ? _selEnd : null,
+                                          justify: settings.justify,
+                                          firstLineIndent:
+                                              settings.firstLineIndent,
+                                          dragToSelect: dragToSelect,
+                                          onTapWord: (ti, token, tokens) =>
+                                              _onTapWord(pageIndex, pIndex, ti,
+                                                  token, tokens),
+                                          onPhraseSelectionStart: (ti) =>
+                                              _onPhraseSelectionStart(
+                                                  pageIndex, pIndex, ti),
+                                          onPhraseSelectionUpdate: (ti) =>
+                                              _onPhraseSelectionUpdate(
+                                                  pageIndex, pIndex, ti),
+                                          onPhraseSelectionEnd:
+                                              _onPhraseSelectionEnd,
+                                          onPhraseSelectionCancel:
+                                              _onPhraseSelectionCancel,
+                                        ),
+                                      );
+                                    }),
+                                    if (_discussionToken.isNotEmpty &&
+                                        !showWolfAside)
+                                      Center(
+                                        child: _discussionWolf(),
                                       ),
-                                    );
-                                  }),
+                                    if (_discussionToken.isNotEmpty &&
+                                        _discussionOpen) ...[
+                                      const SizedBox(height: 12),
+                                      _DiscussionPanel(
+                                        key: ValueKey(
+                                            '$_discussionToken:${_pageStartPara[pageIndex]}'),
+                                        token: _discussionToken,
+                                        paragraph: _pageStartPara[pageIndex],
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              );
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(child: content),
+                                  if (showWolfAside) ...[
+                                    const SizedBox(width: 10),
+                                    SizedBox(
+                                      width: 120,
+                                      child: _discussionWolf(),
+                                    ),
+                                  ],
                                 ],
-                              ),
-                            ),
+                              );
+                            },
                           ),
                         );
                       },
@@ -463,6 +588,20 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             ),
     );
   }
+
+  Widget _discussionWolf() => Tooltip(
+        message: 'Обсуждение этой страницы',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => setState(() => _discussionOpen = !_discussionOpen),
+          child: Image.asset(
+            'assets/imgs/citavuk_zadumch.png',
+            width: 118,
+            cacheWidth: 236,
+            semanticLabel: 'Обсуждение этой страницы',
+          ),
+        ),
+      );
 
   Widget _leadImage() {
     return Padding(
@@ -586,6 +725,332 @@ class _DragScrollBehavior extends MaterialScrollBehavior {
       PointerDeviceKind.stylus,
       PointerDeviceKind.trackpad,
     };
+  }
+}
+
+class _ShareSheet extends StatefulWidget {
+  const _ShareSheet({
+    required this.share,
+    required this.onLinkCopied,
+  });
+
+  final BookShare share;
+  final VoidCallback onLinkCopied;
+
+  @override
+  State<_ShareSheet> createState() => _ShareSheetState();
+}
+
+class _ShareSheetState extends State<_ShareSheet> {
+  bool _copied = false;
+
+  Future<void> _copy({bool unlockDiscussion = true}) async {
+    await Clipboard.setData(ClipboardData(text: widget.share.url));
+    if (unlockDiscussion) widget.onLinkCopied();
+    if (mounted) setState(() => _copied = true);
+  }
+
+  Future<void> _open(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication) &&
+        mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не удалось открыть приложение')),
+      );
+    }
+  }
+
+  Future<void> _instagram() async {
+    await _copy(unlockDiscussion: false);
+    await _open('https://www.instagram.com/');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottom = MediaQuery.viewInsetsOf(context).bottom;
+    final text = '«${widget.share.title}» — читаю в Читавуке';
+    final encodedUrl = Uri.encodeComponent(widget.share.url);
+    final encodedText = Uri.encodeComponent(text);
+    final combined = Uri.encodeComponent('$text ${widget.share.url}');
+    final socials = <({
+      String label,
+      FaIconData icon,
+      String? url,
+      Future<void> Function()? action
+    })>[
+      (
+        label: 'Telegram',
+        icon: FontAwesomeIcons.telegram,
+        url: 'https://t.me/share/url?url=$encodedUrl&text=$encodedText',
+        action: null,
+      ),
+      (
+        label: 'ВКонтакте',
+        icon: FontAwesomeIcons.vk,
+        url: 'https://vk.com/share.php?url=$encodedUrl&title=$encodedText',
+        action: null,
+      ),
+      (
+        label: 'WhatsApp',
+        icon: FontAwesomeIcons.whatsapp,
+        url: 'https://wa.me/?text=$combined',
+        action: null,
+      ),
+      (
+        label: 'Viber',
+        icon: FontAwesomeIcons.viber,
+        url: 'viber://forward?text=$combined',
+        action: null,
+      ),
+      (
+        label: 'Threads',
+        icon: FontAwesomeIcons.threads,
+        url: 'https://www.threads.net/intent/post?text=$combined',
+        action: null,
+      ),
+      (
+        label: 'Instagram',
+        icon: FontAwesomeIcons.instagram,
+        url: null,
+        action: _instagram,
+      ),
+    ];
+
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 20 + bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Поделиться книгой',
+                style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              'В каталог она не попадает, она будет только у вас и тому кому вы скинете',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                for (final social in socials)
+                  SizedBox.square(
+                    dimension: 48,
+                    child: IconButton.filledTonal(
+                      tooltip: social.label,
+                      onPressed: () {
+                        if (social.action != null) {
+                          social.action!();
+                        } else if (social.url != null) {
+                          _open(social.url!);
+                        }
+                      },
+                      icon: FaIcon(social.icon, size: 20),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: SelectableText(
+                    widget.share.url,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                IconButton.filledTonal(
+                  tooltip: 'Скопировать ссылку',
+                  onPressed: _copy,
+                  icon: const Icon(Icons.link),
+                ),
+              ],
+            ),
+            if (_copied)
+              const Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Text(
+                  'Ссылка скопирована. Волк ждёт рядом со страницей.',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DiscussionPanel extends StatefulWidget {
+  const _DiscussionPanel({
+    super.key,
+    required this.token,
+    required this.paragraph,
+  });
+
+  final String token;
+  final int paragraph;
+
+  @override
+  State<_DiscussionPanel> createState() => _DiscussionPanelState();
+}
+
+class _DiscussionPanelState extends State<_DiscussionPanel> {
+  final _controller = TextEditingController();
+  List<BookComment>? _comments;
+  bool _sending = false;
+  String _error = '';
+
+  ShareService get _service => ShareService(context.read<ApiClient>());
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final comments = await _service.comments(widget.token, widget.paragraph);
+      if (mounted) setState(() => _comments = comments);
+    } catch (_) {
+      if (mounted) setState(() => _comments = const []);
+    }
+  }
+
+  Future<void> _send() async {
+    final body = _controller.text.trim();
+    if (body.isEmpty) return;
+    setState(() {
+      _sending = true;
+      _error = '';
+    });
+    try {
+      final comment =
+          await _service.addComment(widget.token, widget.paragraph, body);
+      if (!mounted) return;
+      setState(() {
+        _comments = [...?_comments, comment];
+        _controller.clear();
+      });
+    } on ApiException catch (error) {
+      if (mounted) setState(() => _error = error.message);
+    } finally {
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  Future<void> _delete(BookComment comment) async {
+    await _service.deleteComment(comment.id);
+    if (mounted) {
+      setState(() => _comments =
+          _comments?.where((item) => item.id != comment.id).toList());
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final signedIn = context.watch<AuthService>().isSignedIn;
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Обсуждение этой страницы',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                const Text(
+                  'само по-сербски',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            if (_comments == null)
+              const Center(child: CircularProgressIndicator())
+            else if (_comments!.isEmpty)
+              Text(
+                'Здесь пока тихо. Напишите первым.',
+                style: TextStyle(color: scheme.onSurfaceVariant),
+              )
+            else
+              for (final comment in _comments!)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(comment.author,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(comment.body),
+                  trailing: comment.mine
+                      ? IconButton(
+                          tooltip: 'Убрать сообщение',
+                          onPressed: () => _delete(comment),
+                          icon: const Icon(Icons.delete_outline),
+                        )
+                      : null,
+                ),
+            if (signedIn) ...[
+              const SizedBox(height: 10),
+              TextField(
+                controller: _controller,
+                minLines: 2,
+                maxLines: 5,
+                maxLength: 1000,
+                decoration: const InputDecoration(
+                  hintText: 'Napišite nešto o ovoj strani…',
+                ),
+              ),
+              if (_error.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(_error,
+                      style: TextStyle(color: scheme.error, fontSize: 12)),
+                ),
+              FilledButton.icon(
+                onPressed: _sending ? null : _send,
+                icon: _sending
+                    ? const SizedBox.square(
+                        dimension: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.send_outlined),
+                label: const Text('Отправить'),
+              ),
+            ] else
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  'Войдите в аккаунт, чтобы писать.',
+                  style: TextStyle(color: scheme.onSurfaceVariant),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

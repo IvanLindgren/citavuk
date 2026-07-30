@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.6.5+24
+version: 1.7.0+25
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -50,6 +50,9 @@ dependencies:
   flutter_local_notifications: ^22.2.0
   timezone: ^0.11.1
   flutter_timezone: ^5.1.0
+  # Брендовые значки соцсетей в окне «Поделиться». Material Icons не содержит
+  # Telegram/VK/Viber/Threads, а текстовые кнопки плохо сканировались.
+  font_awesome_flutter: ^11.0.0
 
 # path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
 # под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
@@ -123,7 +126,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.6.5
+  version: 1.7.0
   publisher: Denis Kornilov
   languages:
     - english

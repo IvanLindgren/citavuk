@@ -26,6 +26,9 @@ const Login = lazy(() =>
 const Library = lazy(() =>
   import("./pages/Library").then((m) => ({ default: m.Library })),
 );
+const PublicLibrary = lazy(() =>
+  import("./pages/PublicLibrary").then((m) => ({ default: m.PublicLibrary })),
+);
 const Reader = lazy(() =>
   import("./pages/Reader").then((m) => ({ default: m.Reader })),
 );
@@ -88,6 +91,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
   { pattern: "/login", element: <Login /> },
   { pattern: "/library", element: <Library /> },
+  { pattern: "/public-library", element: <PublicLibrary /> },
   { pattern: "/reader/:id", element: <Reader /> },
   { pattern: "/cards", element: <Cards /> },
   { pattern: "/palace", element: <Palace /> },

@@ -9,6 +9,7 @@ import { useTheme } from '../state/theme';
 /** Основные разделы — то, ради чего заходят каждый день. */
 const NAV = [
   { to: '/library', label: 'Моя библиотека' },
+  { to: '/public-library', label: 'Публичная' },
   { to: '/course', label: 'Курс' },
   { to: '/trainer', label: 'Тренажёрка' },
   { to: '/cards', label: 'Словарь' },

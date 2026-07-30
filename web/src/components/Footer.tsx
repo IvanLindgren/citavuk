@@ -20,7 +20,8 @@ const COLUMNS = [
     title: 'Заниматься',
     links: [
       { to: '/books', label: 'Что читать на сербском' },
-      { to: '/library', label: 'Библиотека' },
+      { to: '/library', label: 'Моя библиотека' },
+      { to: '/public-library', label: 'Публичная библиотека' },
       { to: '/cards', label: 'Карточки' },
       { to: '/palace', label: 'Дворец памяти' },
       { to: '/listening', label: 'Слушание' },

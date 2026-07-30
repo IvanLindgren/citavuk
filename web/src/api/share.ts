@@ -115,31 +115,3 @@ export async function hideComment(id: string): Promise<void> {
     method: 'DELETE',
   });
 }
-
-/** Куда отправлять ссылку. Адреса — обычные web-intent сети. */
-export const SOCIALS = [
-  {
-    id: 'telegram',
-    label: 'Телеграм',
-    href: (url: string, text: string) =>
-      `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
-  },
-  {
-    id: 'vk',
-    label: 'ВКонтакте',
-    href: (url: string, text: string) =>
-      `https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`,
-  },
-  {
-    id: 'whatsapp',
-    label: 'WhatsApp',
-    href: (url: string, text: string) =>
-      `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`,
-  },
-  {
-    id: 'viber',
-    label: 'Viber',
-    href: (url: string, text: string) =>
-      `viber://forward?text=${encodeURIComponent(`${text} ${url}`)}`,
-  },
-] as const;
