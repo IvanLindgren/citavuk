@@ -5,16 +5,22 @@ import sqlite3
 import hashlib
 from pathlib import Path
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Dict, Optional
 import logging
 
 try:
     from .redis_cache import redis_cache
+    from .urlguard import UrlRejected, check_url, open_checked
+    from .ratelimit import make_limiter
+    from . import analysis_cache
 except ImportError:
     from redis_cache import redis_cache
+    from urlguard import UrlRejected, check_url, open_checked
+    from ratelimit import make_limiter
+    import analysis_cache
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -68,7 +74,18 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Serbian NLP Backend", lifespan=lifespan)
+# Swagger в проде закрыт — схема API посторонним не нужна.
+# Локально включить: CITAVUK_ENABLE_DOCS=1.
+if os.environ.get("CITAVUK_ENABLE_DOCS") == "1":
+    app = FastAPI(title="Serbian NLP Backend", lifespan=lifespan)
+else:
+    app = FastAPI(
+        title="Serbian NLP Backend",
+        lifespan=lifespan,
+        docs_url=None,
+        redoc_url=None,
+        openapi_url=None,
+    )
 # Разрешаем доступ из Flutter (web — другой origin/порт; desktop/mobile — не мешает).
 app.add_middleware(
     CORSMiddleware,
@@ -76,6 +93,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Per-IP лимиты тяжёлых эндпоинтов (rate/мин, стартовый burst).
+_analyze_limit = make_limiter(30, 10)
+_extract_limit = make_limiter(10, 3)
+_translate_limit = make_limiter(30, 10)
+_img_limit = make_limiter(60, 20)
+_article_limit = make_limiter(20, 5)
+_tts_limit = make_limiter(30, 10)
 
 # ---------------------------------------------------------------------------
 # Извлечение документов. Обычные PDF и DOCX веб-клиент разбирает локально,
@@ -215,7 +240,10 @@ def _extract_document_bytes(filename: str, data: bytes) -> dict:
 
 
 @app.post("/documents/extract")
-async def extract_document(file: UploadFile = File(...)):
+async def extract_document(
+    file: UploadFile = File(...),
+    _: None = Depends(_extract_limit),
+):
     data = await file.read(_DOCUMENT_MAX_BYTES + 1)
     if len(data) > _DOCUMENT_MAX_BYTES:
         raise HTTPException(
@@ -295,10 +323,10 @@ def to_latin(text: str) -> str:
     return "".join(res)
 
 class AnalyzeRequest(BaseModel):
-    sentence: str
+    sentence: str = Field(max_length=2000)
     start_offset: int
     end_offset: int
-    token_text: str
+    token_text: str = Field(max_length=100)
 
 def _parse_feats(s: str) -> Dict[str, str]:
     d: Dict[str, str] = {}
@@ -387,7 +415,7 @@ def fetch_online_translation(word: str) -> str:
         return "[Перевод недоступен]"
 
 @app.post("/analyze")
-def analyze_token(req: AnalyzeRequest):
+def analyze_token(req: AnalyzeRequest, _: None = Depends(_analyze_limit)):
     analysis_key = hashlib.sha256(
         (
             f"{req.sentence}\0{req.start_offset}\0"
@@ -396,6 +424,11 @@ def analyze_token(req: AnalyzeRequest):
     ).hexdigest()
     cached_analysis = redis_cache.get_json(f"analysis:{analysis_key}")
     if isinstance(cached_analysis, dict):
+        return cached_analysis
+    # L2: устойчивый SQLite-кеш, переживает перезапуск и отсутствие Redis.
+    cached_analysis = analysis_cache.get(analysis_key)
+    if isinstance(cached_analysis, dict):
+        redis_cache.set_json(f"analysis:{analysis_key}", cached_analysis, 24 * 3600)
         return cached_analysis
 
     word_lat = to_latin(req.token_text).strip()
@@ -411,6 +444,7 @@ def analyze_token(req: AnalyzeRequest):
             "translation": translation
         }
         redis_cache.set_json(f"analysis:{analysis_key}", result, 24 * 3600)
+        analysis_cache.set(analysis_key, result)
         return result
         
     lemma = word_lat.lower()
@@ -510,6 +544,7 @@ def analyze_token(req: AnalyzeRequest):
         "contextual_translation": contextual_translation
     }
     redis_cache.set_json(f"analysis:{analysis_key}", result, 24 * 3600)
+    analysis_cache.set(analysis_key, result)
     return result
 
 import urllib.parse
@@ -715,9 +750,19 @@ def news(topic: str = "general", limit: int = 25):
     return {"topic": topic, "items": items[:limit]}
 
 
+_TRANSLATE_LANGS = {"sr", "ru", "en"}
+
+
 @app.get("/translate")
-def translate(q: str, sl: str = "sr", tl: str = "ru"):
+def translate(
+    q: str = Query(..., max_length=500),
+    sl: str = "sr",
+    tl: str = "ru",
+    _: None = Depends(_translate_limit),
+):
     """Перевод текста (для веба, где прямой запрос к Google блокируется CORS)."""
+    if sl not in _TRANSLATE_LANGS or tl not in _TRANSLATE_LANGS:
+        raise HTTPException(status_code=400, detail="Неподдерживаемый язык.")
     cache_key = hashlib.sha256(
         f"{sl.strip().lower()}:{tl.strip().lower()}:{q.strip().lower()}".encode("utf-8")
     ).hexdigest()
@@ -736,16 +781,28 @@ def translate(q: str, sl: str = "sr", tl: str = "ru"):
 
 
 @app.get("/img")
-def img_proxy(url: str):
+def img_proxy(url: str, _: None = Depends(_img_limit)):
     """Прокси картинок: грузим на сервере и отдаём приложению — чтобы новостные
-    изображения работали и в вебе (нет CORS)."""
+    изображения работали и в вебе (нет CORS). Только хосты лент (urlguard)."""
     from fastapi.responses import Response
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            content = r.read()
-            ctype = r.headers.get("Content-Type", "image/jpeg")
-            return Response(content=content, media_type=ctype)
+        check_url(url)
+    except UrlRejected as ex:
+        logging.warning(f"Image proxy rejected ({url}): {ex}")
+        return Response(status_code=404)
+    try:
+        with open_checked(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=10,
+        ) as r:
+            content = r.read(10 * 1024 * 1024 + 1)
+            ctype = r.headers.get("Content-Type", "")
+        if len(content) > 10 * 1024 * 1024:
+            return Response(status_code=404)
+        if not ctype.lower().startswith("image/"):
+            return Response(status_code=404)
+        return Response(content=content, media_type=ctype)
     except Exception as ex:
         logging.error(f"Image proxy failed ({url}): {ex}")
         from fastapi.responses import Response as _R
@@ -753,8 +810,13 @@ def img_proxy(url: str):
 
 
 @app.get("/article")
-def article(url: str):
+def article(url: str, _: None = Depends(_article_limit)):
     """Извлекает основной текст статьи и заглавную картинку по ссылке."""
+    try:
+        check_url(url)
+    except UrlRejected as ex:
+        logging.warning(f"Article rejected ({url}): {ex}")
+        return {"error": "fetch_failed"}
     cache_key = hashlib.sha256(url.strip().encode("utf-8")).hexdigest()
     cached = redis_cache.get_json(f"article:{cache_key}")
     if isinstance(cached, dict) and isinstance(cached.get("paragraphs"), list):
@@ -762,10 +824,13 @@ def article(url: str):
     try:
         import trafilatura
         # Use urllib request to avoid python signal errors inside threads
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=15) as r:
-            downloaded = r.read()
-        if not downloaded:
+        with open_checked(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=15,
+        ) as r:
+            downloaded = r.read(5 * 1024 * 1024 + 1)
+        if not downloaded or len(downloaded) > 5 * 1024 * 1024:
             return {"error": "fetch_failed"}
         from trafilatura.settings import use_config
         newconfig = use_config()
@@ -810,7 +875,7 @@ def article(url: str):
         return result
     except Exception as ex:
         logging.error(f"Article extraction failed ({url}): {ex}")
-        return {"error": str(ex)}
+        return {"error": "fetch_failed"}
 
 
 # ---------------------------------------------------------------------------
@@ -824,12 +889,14 @@ _TTS_CACHE_MAX = 600  # ~ десятки минут речи; примитивн
 
 
 @app.get("/audio/tts")
-def audio_tts(text: str, lang: str = "sr"):
+def audio_tts(text: str, lang: str = "sr", _: None = Depends(_tts_limit)):
     """Озвучивает короткий текст (одно предложение) через gTTS, отдаёт mp3.
 
     Клиент шлёт по одному предложению — так у него точные тайминги реплик
     (каждая реплика = свой файл) для караоке-подсветки.
     """
+    if lang not in ("sr", "ru", "en"):
+        raise HTTPException(status_code=400, detail="Неподдерживаемый язык.")
     text = (text or "").strip()
     if not text or len(text) > 400:
         return Response(status_code=400)
@@ -1080,23 +1147,46 @@ def _own_transcript_url(audio_url: str) -> Optional[str]:
     return f"{TRANSCRIPTS_BASE}/{name}" if name else None
 
 
+def _check_transcript_url(url: str) -> str:
+    """Разрешает только два источника и сохраняет правило на редиректах."""
+    candidate = (url or "").strip()
+    parsed = urllib.parse.urlparse(candidate)
+    host = (parsed.hostname or "").lower()
+    if parsed.scheme not in ("http", "https"):
+        raise UrlRejected("недопустимая схема транскрипта")
+    if host == "citavuk.ru" and parsed.path.startswith("/transcripts/"):
+        return candidate
+    if host == "www.serbianlanguagelessons.com":
+        return candidate
+    raise UrlRejected("источник транскрипта вне списка")
+
+
 @app.get("/audio/transcript")
 def audio_transcript(url: str, duration: float = 0.0):
     """Полный транскрипт эпизода.
 
     Домен ограничен — это не открытый прокси.
     """
-    if url.startswith(TRANSCRIPTS_BASE):
+    try:
+        _check_transcript_url(url)
+    except UrlRejected:
+        return {"cues": []}
+    parsed = urllib.parse.urlparse(url)
+    host = (parsed.hostname or "").lower()
+    if host == "citavuk.ru":
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "citavuk"})
-            data = json.loads(urllib.request.urlopen(req, timeout=25).read())
+            with open_checked(
+                url,
+                headers={"User-Agent": "citavuk"},
+                timeout=25,
+                validator=_check_transcript_url,
+            ) as response:
+                data = json.loads(response.read())
             cues = data.get("cues")
             return {"cues": cues if isinstance(cues, list) else []}
         except Exception as ex:
             logging.error(f"Own transcript failed ({url}): {ex}")
             return {"cues": []}
-    if "serbianlanguagelessons.com" not in url:
-        return {"cues": []}
     cache_key = hashlib.sha256(
         f"{url.strip()}:{round(duration, 2)}".encode("utf-8")
     ).hexdigest()
@@ -1104,8 +1194,13 @@ def audio_transcript(url: str, duration: float = 0.0):
     if isinstance(cached, dict) and isinstance(cached.get("cues"), list):
         return cached
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        raw = urllib.request.urlopen(req, timeout=25).read()
+        with open_checked(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=25,
+            validator=_check_transcript_url,
+        ) as response:
+            raw = response.read()
         html_str = raw.decode("utf-8", "ignore") if isinstance(
             raw, (bytes, bytearray)) else raw
         text = _extract_transcript_text(html_str)

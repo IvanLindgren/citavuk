@@ -260,6 +260,7 @@ func TestRegisterValidatesInput(t *testing.T) {
 		{"без собаки", "не-почта", "нормальный-пароль"},
 		{"пустая почта", "", "нормальный-пароль"},
 		{"домен без точки", "a@localhost", "нормальный-пароль"},
+		{"одноразовая почта", "temporary@Mailinator.com", "нормальный-пароль"},
 		{"короткий пароль", newEmail(), "1234567"},
 		{"пустой пароль", newEmail(), ""},
 	}
@@ -280,6 +281,7 @@ func TestProtectedRoutesRequireToken(t *testing.T) {
 
 	paths := []struct{ method, path string }{
 		{http.MethodGet, "/v1/auth/me"},
+		{http.MethodGet, "/v1/translate/usage"},
 		{http.MethodGet, "/v1/sync/changes"},
 		{http.MethodPost, "/v1/sync/push"},
 		{http.MethodGet, "/v1/sync/content/" + fmt.Sprintf("%064d", 1)},

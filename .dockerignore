@@ -2,6 +2,7 @@ frontend/
 data/
 __pycache__/
 *.pyc
+backend/analysis_cache.db
 .git/
 .vscode/
 .idea/

@@ -36,11 +36,12 @@ type Server struct {
 	quiz         *quiz.Generator
 	podcasts     *podcast.Service
 
-	authLimit      *limiter
-	translateLimit *limiter
-	generalLimit   *limiter
-	quizLimit      *limiter
-	stop           chan struct{}
+	authLimit          *limiter
+	anonTranslateLimit *limiter
+	userTranslateLimit *limiter
+	generalLimit       *limiter
+	quizLimit          *limiter
+	stop               chan struct{}
 }
 
 // New собирает сервер.
@@ -89,9 +90,12 @@ func New(
 		podcasts:     podcast.New(),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
-		authLimit:      newLimiter("auth", 20, 10, redisClient),
-		translateLimit: newLimiter("translate", 120, 40, redisClient),
-		generalLimit:   newLimiter("general", 600, 120, redisClient),
+		authLimit: newLimiter("auth", 20, 10, redisClient),
+		// Перевод разделён по гостю и вошедшему пользователю: анонимный бот не
+		// должен выесть общую квоту DeepL раньше, чем ей пользуются читатели.
+		anonTranslateLimit: newLimiter("anon_translate", 30, 10, redisClient),
+		userTranslateLimit: newLimiter("user_translate", 300, 60, redisClient),
+		generalLimit:       newLimiter("general", 600, 120, redisClient),
 		// Каждый вызов модели стоит денег и занимает минуту, поэтому предел
 		// куда ниже общего: десяток новых тестов в час — это уже много.
 		quizLimit: newLimiter("quiz", 10, 3, redisClient),
@@ -107,7 +111,8 @@ func New(
 	}
 
 	go s.authLimit.runCleanup(s.stop)
-	go s.translateLimit.runCleanup(s.stop)
+	go s.anonTranslateLimit.runCleanup(s.stop)
+	go s.userTranslateLimit.runCleanup(s.stop)
 	go s.generalLimit.runCleanup(s.stop)
 	go s.quizLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
@@ -135,6 +140,11 @@ func (s *Server) purgeSessionsPeriodically() {
 				slog.Warn("очистка одноразовых auth-токенов не удалась", "err", err)
 			} else if n > 0 {
 				slog.Info("удалены просроченные auth-токены", "count", n)
+			}
+			if n, err := s.store.PurgeUnverifiedUsers(ctx, 7*24*time.Hour); err != nil {
+				slog.Warn("очистка неподтверждённых аккаунтов не удалась", "err", err)
+			} else if n > 0 {
+				slog.Info("удалены неподтверждённые аккаунты", "count", n)
 			}
 			cancel()
 		case <-s.stop:
@@ -222,18 +232,18 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/admin/courses/{id}", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleUpdateAdminCourse)))
 	mux.HandleFunc("POST /v1/admin/courses/{id}/publish", s.rateLimit(s.generalLimit, s.requireAdmin(s.handlePublishAdminCourse)))
 
-	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но частота
-	// ограничена — квота DeepL общая на всех.
-	mux.HandleFunc("POST /v1/translate", s.rateLimit(s.translateLimit, s.handleTranslate))
-	mux.HandleFunc("POST /v1/translate/context", s.rateLimit(s.translateLimit, s.handleTranslateInContext))
-	mux.HandleFunc("GET /v1/translate/usage", s.rateLimit(s.generalLimit, s.handleUsage))
+	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но гость
+	// ограничен жёстче вошедшего — квота DeepL общая на всех.
+	mux.HandleFunc("POST /v1/translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslate)))
+	mux.HandleFunc("POST /v1/translate/context", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateInContext)))
+	mux.HandleFunc("GET /v1/translate/usage", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleUsage)))
 
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не
 	// требует: приложение делает то же офлайн, сайту нужен сервер.
 	mux.HandleFunc("POST /v1/analyze", s.rateLimit(s.generalLimit, s.handleAnalyze))
 	mux.HandleFunc("GET /v1/grammar/cases", s.rateLimit(s.generalLimit, s.handleGrammarCases))
 	// Совместимость с уже установленными версиями приложения.
-	mux.HandleFunc("GET /translate", s.rateLimit(s.translateLimit, s.handleTranslateLegacy))
+	mux.HandleFunc("GET /translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateLegacy)))
 
 	// Остальное — на прежний Python-бэкенд.
 	mux.HandleFunc("/", s.handleFallback)

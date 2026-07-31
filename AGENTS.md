@@ -87,6 +87,9 @@ C:\Citavuk\
 │  └─ pubspec.yaml
 ├─ backend/
 │  ├─ main.py                # FastAPI: /analyze (CLASSLA + лексикон + перевод), /health
+│  ├─ urlguard.py            # allowlist URL + защита SSRF и редиректов
+│  ├─ ratelimit.py           # локальные per-IP лимиты дорогих ручек
+│  ├─ analysis_cache.py      # SQLite L2-кеш результатов CLASSLA
 │  ├─ requirements.txt
 │  └─ audio_lessons.json     # курируемые аудио-уроки для /audio/lessons
 ├─ build_lexicon.py          # сборка assets/lexicon.db из UD_Serbian-SET (data/ud)
@@ -616,6 +619,14 @@ FastAPI, `lifespan` загружает CLASSLA (`classla.Pipeline('sr')`). Эн�
 синхронный (FastAPI крутит в threadpool, чтобы блокирующий перевод не вешал loop).
 CORS открыт (нужно для Flutter web/desktop). Лексикон-фолбэк читает `../lexicon.db`
 (колонки `upos`/`feats`). Перевод: словарь → `deep_translator` (Google).
+
+Swagger/OpenAPI в проде отключён; локально включается
+`CITAVUK_ENABLE_DOCS=1`. Дорогие ручки ограничены per-IP token bucket.
+`/img` и `/article` принимают только домены новостных лент и проверяют DNS и
+каждый редирект; не заменять это обычным `urlopen`, иначе вернётся SSRF.
+Разбор кешируется Redis → локальный `analysis_cache.py` → CLASSLA. SQLite-кеш
+переживает перезапуск процесса, но без постоянного диска Space может исчезнуть
+при пересборке, поэтому Redis остаётся основным межпроцессным кешем.
 
 Аудирование:
 - Go `/audio/lessons` читает RSS `Learn Serbian` и `Može Kafa`, но отдаёт

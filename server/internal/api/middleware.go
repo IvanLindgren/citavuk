@@ -81,14 +81,39 @@ func (s *Server) requireAdmin(next http.HandlerFunc) http.HandlerFunc {
 
 // rateLimit ограничивает частоту запросов по адресу клиента.
 func (s *Server) rateLimit(l *limiter, next http.HandlerFunc) http.HandlerFunc {
+	return s.rateLimitKey(l, func(r *http.Request) string {
+		return clientIP(r, s.cfg.TrustProxy)
+	}, next)
+}
+
+// rateLimitKey ограничивает частоту запросов по произвольному ключу.
+func (s *Server) rateLimitKey(l *limiter, key func(*http.Request) string, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if !l.allow(r.Context(), clientIP(r, s.cfg.TrustProxy)) {
+		if !l.allow(r.Context(), key(r)) {
 			w.Header().Set("Retry-After", "60")
 			writeError(w, http.StatusTooManyRequests, codeRateLimited,
 				"Слишком много запросов. Подождите минуту.")
 			return
 		}
 		next(w, r)
+	}
+}
+
+// rateLimitTranslate выбирает ограничитель по тому, вошёл ли пользователь.
+// Вызывается после optionalAuth: у гостя предел намного жёстче, чем у
+// аккаунта, потому что квота DeepL общая и анонимный бот не должен выесть
+// её целиком.
+func (s *Server) rateLimitTranslate(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if u := userFrom(r.Context()); u != nil {
+			s.rateLimitKey(s.userTranslateLimit, func(*http.Request) string {
+				return "user:" + u.ID.String()
+			}, next)(w, r)
+			return
+		}
+		s.rateLimitKey(s.anonTranslateLimit, func(r *http.Request) string {
+			return "ip:" + clientIP(r, s.cfg.TrustProxy)
+		}, next)(w, r)
 	}
 }
 

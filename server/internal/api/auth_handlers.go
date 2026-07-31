@@ -77,6 +77,11 @@ func (s *Server) handleRegister(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, codeBadRequest, err.Error())
 		return
 	}
+	if store.IsDisposableEmail(email) {
+		writeError(w, http.StatusBadRequest, codeBadRequest,
+			"Этот почтовый сервис не подходит для регистрации. Укажите постоянный адрес.")
+		return
+	}
 	if err := auth.ValidatePassword(req.Password); err != nil {
 		writeError(w, http.StatusBadRequest, codeBadRequest, err.Error())
 		return

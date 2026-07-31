@@ -12,6 +12,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+backend/analysis_cache.db
 
 # Большие/генерируемые артефакты (слишком велики для git, легко пересобираются)
 # srLex.tsv — исходник SrLex (~1.2 ГБ), скачивается download_srlex.py
