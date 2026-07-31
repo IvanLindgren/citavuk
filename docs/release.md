@@ -115,6 +115,13 @@ beta-сборку и обновляет asset `citavuk-macos.zip` в rolling pre
 нотарифицирован, поэтому Gatekeeper потребует запуск через «Открыть» в
 контекстном меню.
 
+Перед общим `publish-apps.sh` скачай готовый asset в ожидаемый путь:
+
+```bash
+curl -L --fail -o frontend/build/citavuk-macos.zip \
+  https://github.com/IvanLindgren/citavuk/releases/download/macos-latest/citavuk-macos.zip
+```
+
 ---
 
 ## 3. Выложить
@@ -157,7 +164,7 @@ linux/amd64, кладёт его рядом и переименовывает п
 целиком, а сборки лежат рядом, в `/var/www/citavuk-files`, и переживают любое
 число выкладок страницы «Скачать».
 
-Скрипт требует **все четыре** файла разом и останавливается, если какого-то
+Скрипт требует **все пять** файлов разом и останавливается, если какого-то
 нет, подсказывая нужную команду:
 
 | Файл | Имя на сайте |
@@ -166,6 +173,7 @@ linux/amd64, кладёт его рядом и переименовывает п
 | `build/windows/x64/installer/Release/Citavuk-x86_64-<версия>-Installer.exe` | `citavuk-setup.exe` |
 | `build/citavuk-windows.zip` | `citavuk-windows.zip` |
 | `build/citavuk-linux-x64.tar.gz` | `citavuk-linux-x64.tar.gz` |
+| `build/citavuk-macos.zip` | `citavuk-macos.zip` |
 
 Имена на сайте постоянные — ссылки со страницы «Скачать» не меняются от выпуска
 к выпуску. Заодно собирается `latest.json` с версией из `pubspec.yaml` и текстом

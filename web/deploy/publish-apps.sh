@@ -33,6 +33,7 @@ FILES=(
     "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe|citavuk-setup.exe|dart run inno_bundle:build --release"
     "$FRONTEND/build/citavuk-windows.zip|citavuk-windows.zip|упакуй build/windows/x64/runner/Release в zip"
     "$FRONTEND/build/citavuk-linux-x64.tar.gz|citavuk-linux-x64.tar.gz|./deploy/linux/build.sh"
+    "$FRONTEND/build/citavuk-macos.zip|citavuk-macos.zip|скачай asset из GitHub prerelease macos-latest"
 )
 
 for entry in "${FILES[@]}"; do
@@ -89,6 +90,7 @@ if [[ -f "$NOTES_FILE" ]]; then
 fi
 WIN_SIZE=$(stat -c%s "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe")
 LINUX_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-linux-x64.tar.gz")
+MACOS_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-macos.zip")
 
 echo "==> Манифест обновлений latest.json"
 cat >/tmp/citavuk-latest.json <<JSON
@@ -102,6 +104,10 @@ cat >/tmp/citavuk-latest.json <<JSON
   "linux": {
     "url": "https://citavuk.ru/files/citavuk-linux-x64.tar.gz",
     "size": $LINUX_SIZE
+  },
+  "macos": {
+    "url": "https://citavuk.ru/files/citavuk-macos.zip",
+    "size": $MACOS_SIZE
   }
 }
 JSON
