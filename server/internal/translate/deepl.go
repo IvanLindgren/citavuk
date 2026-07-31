@@ -36,7 +36,7 @@ var (
 )
 
 // MaxTextRunes ограничивает длину одного переводимого фрагмента.
-const MaxTextRunes = 4000
+const MaxTextRunes = 1000
 
 // DeepL — клиент DeepL API.
 type DeepL struct {

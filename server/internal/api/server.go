@@ -36,12 +36,13 @@ type Server struct {
 	quiz         *quiz.Generator
 	podcasts     *podcast.Service
 
-	authLimit          *limiter
-	anonTranslateLimit *limiter
-	userTranslateLimit *limiter
-	generalLimit       *limiter
-	quizLimit          *limiter
-	stop               chan struct{}
+	authLimit            *limiter
+	anonTranslateLimit   *limiter
+	userTranslateLimit   *limiter
+	translateGlobalLimit *limiter
+	generalLimit         *limiter
+	quizLimit            *limiter
+	stop                 chan struct{}
 }
 
 // New собирает сервер.
@@ -90,12 +91,13 @@ func New(
 		podcasts:     podcast.New(),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
-		authLimit: newLimiter("auth", 20, 10, redisClient),
+		authLimit: newLimiter("auth", 10, 5, redisClient),
 		// Перевод разделён по гостю и вошедшему пользователю: анонимный бот не
 		// должен выесть общую квоту DeepL раньше, чем ей пользуются читатели.
-		anonTranslateLimit: newLimiter("anon_translate", 30, 10, redisClient),
-		userTranslateLimit: newLimiter("user_translate", 300, 60, redisClient),
-		generalLimit:       newLimiter("general", 600, 120, redisClient),
+		anonTranslateLimit:   newLimiter("anon_translate", 12, 4, redisClient),
+		userTranslateLimit:   newLimiter("user_translate", 30, 8, redisClient),
+		translateGlobalLimit: newLimiter("translate_global", 60, 15, redisClient),
+		generalLimit:         newLimiter("general", 180, 40, redisClient),
 		// Каждый вызов модели стоит денег и занимает минуту, поэтому предел
 		// куда ниже общего: десяток новых тестов в час — это уже много.
 		quizLimit: newLimiter("quiz", 10, 3, redisClient),
@@ -113,6 +115,7 @@ func New(
 	go s.authLimit.runCleanup(s.stop)
 	go s.anonTranslateLimit.runCleanup(s.stop)
 	go s.userTranslateLimit.runCleanup(s.stop)
+	go s.translateGlobalLimit.runCleanup(s.stop)
 	go s.generalLimit.runCleanup(s.stop)
 	go s.quizLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
@@ -172,22 +175,22 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/auth/verify-email", s.rateLimit(s.authLimit, s.handleVerifyEmail))
 	mux.HandleFunc("POST /v1/auth/resend-verification", s.rateLimit(s.authLimit, s.handleResendVerification))
 	mux.HandleFunc("POST /v1/auth/logout", s.handleLogout)
-	mux.HandleFunc("GET /v1/auth/me", s.requireAuth(s.handleMe))
+	mux.HandleFunc("GET /v1/auth/me", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleMe)))
 	mux.HandleFunc("POST /v1/auth/password", s.rateLimit(s.authLimit, s.requireAuth(s.handleChangePassword)))
 	// Удаление аккаунта — требование Google Play к приложениям с регистрацией.
 	mux.HandleFunc("POST /v1/auth/account/delete", s.rateLimit(s.authLimit, s.requireAuth(s.handleDeleteAccount)))
 
 	// Синхронизация.
-	mux.HandleFunc("GET /v1/sync/changes", s.rateLimit(s.generalLimit, s.requireAuth(s.handlePull)))
-	mux.HandleFunc("POST /v1/sync/push", s.rateLimit(s.generalLimit, s.requireAuth(s.handlePush)))
-	mux.HandleFunc("POST /v1/sync/content/check", s.rateLimit(s.generalLimit, s.requireAuth(s.handleContentCheck)))
-	mux.HandleFunc("PUT /v1/sync/content/{sha}", s.rateLimit(s.generalLimit, s.requireAuth(s.handlePutContent)))
-	mux.HandleFunc("GET /v1/sync/content/{sha}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleGetContent)))
-	mux.HandleFunc("POST /v1/sync/content/purge", s.rateLimit(s.generalLimit, s.requireAuth(s.handlePurgeContent)))
+	mux.HandleFunc("GET /v1/sync/changes", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePull)))
+	mux.HandleFunc("POST /v1/sync/push", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePush)))
+	mux.HandleFunc("POST /v1/sync/content/check", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleContentCheck)))
+	mux.HandleFunc("PUT /v1/sync/content/{sha}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutContent)))
+	mux.HandleFunc("GET /v1/sync/content/{sha}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetContent)))
+	mux.HandleFunc("POST /v1/sync/content/purge", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePurgeContent)))
 
 	// Прогресс игрового курса. Документ общий для Flutter и web.
-	mux.HandleFunc("GET /v1/course/progress/{courseId}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleGetCourseProgress)))
-	mux.HandleFunc("PUT /v1/course/progress/{courseId}", s.rateLimit(s.generalLimit, s.requireAuth(s.handlePutCourseProgress)))
+	mux.HandleFunc("GET /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetCourseProgress)))
+	mux.HandleFunc("PUT /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutCourseProgress)))
 	mux.HandleFunc("GET /v1/course/bundle/{courseId}", s.rateLimit(s.generalLimit, s.handlePublishedCourse))
 
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
@@ -199,13 +202,13 @@ func (s *Server) Handler() http.Handler {
 	// книгу они должны увидеть до регистрации. Писать в обсуждение и создавать
 	// ссылки — только с аккаунтом: под сообщением стоит имя, а безымянные
 	// сообщения превращают раздел в свалку.
-	mux.HandleFunc("POST /v1/share/books", s.rateLimit(s.generalLimit, s.requireAuth(s.handleCreateShare)))
+	mux.HandleFunc("POST /v1/share/books", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCreateShare)))
 	mux.HandleFunc("GET /v1/share/books/{token}", s.rateLimit(s.generalLimit, s.handleGetShare))
 	mux.HandleFunc("GET /v1/share/books/{token}/content", s.rateLimit(s.generalLimit, s.handleShareContent))
-	mux.HandleFunc("DELETE /v1/share/books/{token}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleDeleteShare)))
-	mux.HandleFunc("GET /v1/share/books/{token}/comments", s.rateLimit(s.generalLimit, s.optionalAuth(s.handleComments)))
-	mux.HandleFunc("POST /v1/share/books/{token}/comments", s.rateLimit(s.generalLimit, s.requireAuth(s.handleAddComment)))
-	mux.HandleFunc("DELETE /v1/share/comments/{id}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleHideComment)))
+	mux.HandleFunc("DELETE /v1/share/books/{token}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDeleteShare)))
+	mux.HandleFunc("GET /v1/share/books/{token}/comments", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleComments)))
+	mux.HandleFunc("POST /v1/share/books/{token}/comments", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleAddComment)))
+	mux.HandleFunc("DELETE /v1/share/comments/{id}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleHideComment)))
 
 	// Подкасты. Раньше уходили на прежний Python-бэкенд: он засыпал (502), а
 	// тайминги реплик там выдумывались пропорционально длине текста.
@@ -215,28 +218,28 @@ func (s *Server) Handler() http.Handler {
 	// Тесты по материалам. Составление и попытки требуют аккаунта: без него
 	// некому вести статистику, а обращение к модели ещё и стоит денег. Список
 	// готовых тестов открыт всем — он нужен странице материалов до входа.
-	mux.HandleFunc("GET /v1/quizzes/materials", s.rateLimit(s.generalLimit, s.optionalAuth(s.handleMaterialQuizzes)))
-	mux.HandleFunc("POST /v1/quizzes", s.rateLimit(s.quizLimit, s.requireAuth(s.handleGenerateQuiz)))
-	mux.HandleFunc("GET /v1/quizzes/stats", s.rateLimit(s.generalLimit, s.requireAuth(s.handleQuizStats)))
-	mux.HandleFunc("GET /v1/quizzes/{id}", s.rateLimit(s.generalLimit, s.requireAuth(s.handleGetQuiz)))
-	mux.HandleFunc("POST /v1/quizzes/{id}/attempts", s.rateLimit(s.generalLimit, s.requireAuth(s.handleSaveAttempt)))
+	mux.HandleFunc("GET /v1/quizzes/materials", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMaterialQuizzes)))
+	mux.HandleFunc("POST /v1/quizzes", s.requireAuth(s.rateLimitIdentity(s.quizLimit, s.handleGenerateQuiz)))
+	mux.HandleFunc("GET /v1/quizzes/stats", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleQuizStats)))
+	mux.HandleFunc("GET /v1/quizzes/{id}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetQuiz)))
+	mux.HandleFunc("POST /v1/quizzes/{id}/attempts", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSaveAttempt)))
 
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
-	mux.HandleFunc("GET /v1/admin/overview", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminOverview)))
-	mux.HandleFunc("GET /v1/admin/users", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminUsers)))
-	mux.HandleFunc("GET /v1/admin/incidents", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminIncidents)))
-	mux.HandleFunc("POST /v1/admin/incidents/{id}/resolve", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleResolveIncident)))
-	mux.HandleFunc("GET /v1/admin/courses", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminCourses)))
-	mux.HandleFunc("GET /v1/admin/courses/{id}", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleAdminCourse)))
-	mux.HandleFunc("POST /v1/admin/courses", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleCreateAdminCourse)))
-	mux.HandleFunc("PUT /v1/admin/courses/{id}", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleUpdateAdminCourse)))
-	mux.HandleFunc("POST /v1/admin/courses/{id}/publish", s.rateLimit(s.generalLimit, s.requireAdmin(s.handlePublishAdminCourse)))
+	mux.HandleFunc("GET /v1/admin/overview", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminOverview)))
+	mux.HandleFunc("GET /v1/admin/users", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminUsers)))
+	mux.HandleFunc("GET /v1/admin/incidents", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminIncidents)))
+	mux.HandleFunc("POST /v1/admin/incidents/{id}/resolve", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleResolveIncident)))
+	mux.HandleFunc("GET /v1/admin/courses", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCourses)))
+	mux.HandleFunc("GET /v1/admin/courses/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCourse)))
+	mux.HandleFunc("POST /v1/admin/courses", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleCreateAdminCourse)))
+	mux.HandleFunc("PUT /v1/admin/courses/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUpdateAdminCourse)))
+	mux.HandleFunc("POST /v1/admin/courses/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handlePublishAdminCourse)))
 
 	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но гость
 	// ограничен жёстче вошедшего — квота DeepL общая на всех.
 	mux.HandleFunc("POST /v1/translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslate)))
 	mux.HandleFunc("POST /v1/translate/context", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateInContext)))
-	mux.HandleFunc("GET /v1/translate/usage", s.rateLimit(s.generalLimit, s.requireAdmin(s.handleUsage)))
+	mux.HandleFunc("GET /v1/translate/usage", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUsage)))
 
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не
 	// требует: приложение делает то же офлайн, сайту нужен сервер.

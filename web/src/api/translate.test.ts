@@ -1,6 +1,57 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { sentenceWindow, utf8ByteOffset } from './translate';
+import { setToken } from './client';
+import { sentenceWindow, translateText, utf8ByteOffset } from './translate';
+
+afterEach(() => {
+  setToken(null);
+  vi.unstubAllGlobals();
+});
+
+describe('идентификация переводов', () => {
+  it('передаёт токен вошедшего пользователя для персонального лимита', async () => {
+    setToken('session-token');
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          text: 'дом',
+          provider: 'cache',
+          cached: true,
+          aligned: true,
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await translateText('kuća');
+
+    const options = fetchMock.mock.calls[0]?.[1] as RequestInit;
+    expect(options.headers).toMatchObject({
+      Authorization: 'Bearer session-token',
+    });
+  });
+
+  it('оставляет перевод доступным гостю без фиктивного токена', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          text: 'дом',
+          provider: 'cache',
+          cached: true,
+          aligned: true,
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await translateText('kuća');
+
+    const options = fetchMock.mock.calls[0]?.[1] as RequestInit;
+    expect(options.headers).not.toHaveProperty('Authorization');
+  });
+});
 
 describe('пересчёт смещений в байты UTF-8', () => {
   // Сервер написан на Go, где строка — это байты UTF-8, а JavaScript индексирует

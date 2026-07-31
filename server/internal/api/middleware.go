@@ -90,13 +90,23 @@ func (s *Server) rateLimit(l *limiter, next http.HandlerFunc) http.HandlerFunc {
 func (s *Server) rateLimitKey(l *limiter, key func(*http.Request) string, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !l.allow(r.Context(), key(r)) {
-			w.Header().Set("Retry-After", "60")
-			writeError(w, http.StatusTooManyRequests, codeRateLimited,
-				"Слишком много запросов. Подождите минуту.")
+			writeRateLimited(w)
 			return
 		}
 		next(w, r)
 	}
+}
+
+// rateLimitIdentity считает вошедшего пользователя по ID, а гостя — по IP.
+// Middleware должен стоять после requireAuth/optionalAuth, чтобы пользователь
+// уже находился в контексте. Так соседи за одним NAT не делят общий bucket.
+func (s *Server) rateLimitIdentity(l *limiter, next http.HandlerFunc) http.HandlerFunc {
+	return s.rateLimitKey(l, func(r *http.Request) string {
+		if u := userFrom(r.Context()); u != nil {
+			return "user:" + u.ID.String()
+		}
+		return "ip:" + clientIP(r, s.cfg.TrustProxy)
+	}, next)
 }
 
 // rateLimitTranslate выбирает ограничитель по тому, вошёл ли пользователь.
@@ -106,15 +116,31 @@ func (s *Server) rateLimitKey(l *limiter, key func(*http.Request) string, next h
 func (s *Server) rateLimitTranslate(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if u := userFrom(r.Context()); u != nil {
-			s.rateLimitKey(s.userTranslateLimit, func(*http.Request) string {
-				return "user:" + u.ID.String()
-			}, next)(w, r)
+			if !s.userTranslateLimit.allow(r.Context(), "user:"+u.ID.String()) {
+				writeRateLimited(w)
+				return
+			}
+		} else if !s.anonTranslateLimit.allow(
+			r.Context(), "ip:"+clientIP(r, s.cfg.TrustProxy),
+		) {
+			writeRateLimited(w)
 			return
 		}
-		s.rateLimitKey(s.anonTranslateLimit, func(r *http.Request) string {
-			return "ip:" + clientIP(r, s.cfg.TrustProxy)
-		}, next)(w, r)
+		// Последний рубеж защищает общую квоту провайдера даже при атаке через
+		// множество аккаунтов и IP. Проверяем его после личного bucket, чтобы
+		// один уже заблокированный клиент не отнимал токены у остальных.
+		if !s.translateGlobalLimit.allow(r.Context(), "all") {
+			writeRateLimited(w)
+			return
+		}
+		next(w, r)
 	}
+}
+
+func writeRateLimited(w http.ResponseWriter) {
+	w.Header().Set("Retry-After", "60")
+	writeError(w, http.StatusTooManyRequests, codeRateLimited,
+		"Слишком много запросов. Подождите минуту.")
 }
 
 // withCORS добавляет заголовки для браузерной версии приложения.

@@ -18,6 +18,8 @@ func TestIsDisposableEmail(t *testing.T) {
 		"user@maildrop.cc",
 		"user@trashmail.net",
 		"user@emailondeck.com",
+		"user@jbsze.com",
+		"user@subdomain.mailinator.com",
 		// Регистр букв значения не имеет.
 		"user@Mailinator.COM",
 		"USER@YOPMAIL.com",

@@ -28,7 +28,6 @@ export function translateText(
   return request<TranslationResult>('/v1/translate', {
     method: 'POST',
     body: { text },
-    anonymous: true,
     signal,
   });
 }
@@ -54,7 +53,6 @@ export function translateInContext(
       start: utf8ByteOffset(sentence, start),
       end: utf8ByteOffset(sentence, end),
     },
-    anonymous: true,
     signal,
   });
 }

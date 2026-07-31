@@ -70,6 +70,10 @@ func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// Интеграционные тесты проверяют содержимое ответов и выполняют много
+	// запросов с одного loopback-IP. Сами лимитеры покрыты отдельными unit-тестами.
+	srv.authLimit = newLimiter("test_auth", 10_000, 10_000, nil)
+	srv.generalLimit = newLimiter("test_general", 10_000, 10_000, nil)
 	srv.mailer = &testMailer{store: st}
 	t.Cleanup(srv.Close)
 
@@ -261,6 +265,7 @@ func TestRegisterValidatesInput(t *testing.T) {
 		{"пустая почта", "", "нормальный-пароль"},
 		{"домен без точки", "a@localhost", "нормальный-пароль"},
 		{"одноразовая почта", "temporary@Mailinator.com", "нормальный-пароль"},
+		{"одноразовая почта из полного списка", "temporary@jbsze.com", "нормальный-пароль"},
 		{"короткий пароль", newEmail(), "1234567"},
 		{"пустой пароль", newEmail(), ""},
 	}
