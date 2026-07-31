@@ -1214,10 +1214,18 @@ web/sqflite_sw.js
 
 ### iOS/macOS/Linux
 
-Платформенные папки существуют, но этот Windows environment не подтверждает
-их сборку. iOS launcher icons в `pubspec.yaml` не генерируются автоматически
-(`ios: false`). Перед заявлением о поддержке App Store нужна отдельная
-проверка на macOS с Xcode, signing и privacy declarations.
+Windows environment не может собирать приложения Apple: для этого нужны Xcode
+и Apple SDK. macOS beta проверяется и собирается на `macos-14` в
+`.github/workflows/build-macos.yml`; workflow обновляет постоянный prerelease
+asset `citavuk-macos.zip`. Сборка универсальная (`x86_64` + `arm64`), подписана
+ad-hoc и не нотарифицирована: до появления Apple Developer ID пользователю
+нужно запускать её через «Открыть» в контекстном меню. Разрешения sandbox для
+сети, локального OAuth callback и выбранных пользователем файлов находятся в
+`macos/Runner/*.entitlements`.
+
+iOS launcher icons в `pubspec.yaml` не генерируются автоматически (`ios:
+false`). Перед заявлением о поддержке App Store всё ещё нужны signing,
+privacy declarations и ручная проверка на устройствах Apple.
 
 ## 24. Иконки и бренд
 

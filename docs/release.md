@@ -105,6 +105,16 @@ Compress-Archive -Path build\windows\x64\runner\Release\* `
 # → build/citavuk-linux-x64.tar.gz
 ```
 
+**macOS — через GitHub Actions:**
+
+Локально на Windows или в Linux-контейнере macOS собрать нельзя: сборке нужны
+Xcode и Apple SDK. Workflow `.github/workflows/build-macos.yml` запускается при
+изменении `frontend/` в `main` или вручную, собирает универсальную Flutter
+beta-сборку и обновляет asset `citavuk-macos.zip` в rolling prerelease
+`macos-latest`. До появления Apple Developer ID архив подписан ad-hoc и не
+нотарифицирован, поэтому Gatekeeper потребует запуск через «Открыть» в
+контекстном меню.
+
 ---
 
 ## 3. Выложить

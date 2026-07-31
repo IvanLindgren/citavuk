@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = srbski_read
+PRODUCT_NAME = Citavuk
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.srbskiread.srbskiRead
+PRODUCT_BUNDLE_IDENTIFIER = ru.citavuk.app
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.srbskiread. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Denis Kornilov. All rights reserved.

@@ -50,12 +50,14 @@ abstract final class DesktopOAuth {
   /// Сколько ждать возвращения из браузера.
   static const _timeout = Duration(minutes: 5);
 
-  /// Windows и Linux. На macOS принято возвращаться по зарегистрированной
-  /// схеме приложения, а не на петлевой адрес.
+  /// Настольные системы возвращаются на случайный локальный порт. Такой
+  /// loopback redirect разрешён OAuth для установленных приложений и не
+  /// требует регистрировать отдельную системную URL-схему.
   static bool get supported =>
       !kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.windows ||
-          defaultTargetPlatform == TargetPlatform.linux);
+          defaultTargetPlatform == TargetPlatform.linux ||
+          defaultTargetPlatform == TargetPlatform.macOS);
 
   /// Проводит вход и возвращает адрес, на который вернулся браузер.
   ///

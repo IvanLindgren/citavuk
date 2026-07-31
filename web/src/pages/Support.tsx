@@ -2,6 +2,12 @@ import { Card, Reveal } from '../components/ui';
 import { useSeo } from '../lib/seo';
 
 const FUND_URL = 'https://yoomoney.ru/fundraise/1JBLJQ46SFR.260730';
+const CONTACTS = [
+  { label: 'чат Читавука', href: 'https://t.me/citavukchat' },
+  { label: 'разработчику в Telegram', href: 'https://t.me/ivanlindgren' },
+  { label: 'разработчику во ВКонтакте', href: 'https://vk.com/denkorni' },
+  { label: 'по почте', href: 'mailto:denis.kornilov12@yandex.ru' },
+] as const;
 
 export function Support() {
   useSeo({
@@ -54,6 +60,51 @@ export function Support() {
               Если вам небезразлична судьба проекта и вам нравится его
               функционал, то вот виджет для сбора:
             </p>
+
+            <section className="mt-7 rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)]/55 p-5 sm:p-6">
+              <h2 className="text-2xl">Что получают поддержавшие проект</h2>
+              <ul className="mt-4 space-y-3 leading-relaxed">
+                <li className="flex gap-3">
+                  <span className="font-bold text-[var(--accent)]" aria-hidden="true">✓</span>
+                  <span>
+                    Вы сможете предложить свою идею, и разработчик реализует её,
+                    если она находится в пределах возможного и дозволенного.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-[var(--accent)]" aria-hidden="true">✓</span>
+                  <span>
+                    Ваше имя появится на отдельной странице людей, поддержавших
+                    Читавук.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-[var(--accent)]" aria-hidden="true">✓</span>
+                  <span>
+                    При пожертвовании от 200 ₽ вы получите доступ к эксклюзивной
+                    библиотеке сербских книг.
+                  </span>
+                </li>
+              </ul>
+              <p className="mt-5 leading-relaxed text-[var(--text-muted)]">
+                После пожертвования напишите в{' '}
+                {CONTACTS.map((contact, index) => (
+                  <span key={contact.href}>
+                    {index > 0 && (index === CONTACTS.length - 1 ? ' или ' : ', ')}
+                    <a
+                      href={contact.href}
+                      target={contact.href.startsWith('mailto:') ? undefined : '_blank'}
+                      rel="noreferrer noopener"
+                      className="font-semibold text-[var(--accent)] underline underline-offset-2"
+                    >
+                      {contact.label}
+                    </a>
+                  </span>
+                ))}
+                . Укажите имя, которое можно опубликовать, и приложите
+                подтверждение перевода.
+              </p>
+            </section>
 
             <div className="mt-7 rounded-2xl border border-[var(--accent)]/35 bg-[var(--accent)]/8 p-5 text-center sm:p-7">
               <p className="font-display text-2xl font-bold">Сбор на развитие</p>

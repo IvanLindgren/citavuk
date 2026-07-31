@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
+import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { PageErrorBoundary } from "./components/PageErrorBoundary";
@@ -150,6 +151,7 @@ function AppFrame() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
+      <CommunityAnnouncement />
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>

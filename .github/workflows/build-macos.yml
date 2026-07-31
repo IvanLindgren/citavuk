@@ -1,0 +1,75 @@
+name: Build macOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/build-macos.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: citavuk-macos-release
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: frontend
+        run: flutter analyze lib
+
+      - name: Build macOS release
+        working-directory: frontend
+        run: flutter build macos --release
+
+      - name: Package application
+        working-directory: frontend
+        run: |
+          APP='build/macos/Build/Products/Release/Citavuk.app'
+          test -d "$APP"
+          codesign --force --deep --sign - "$APP"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" build/citavuk-macos.zip
+          shasum -a 256 build/citavuk-macos.zip > build/citavuk-macos.zip.sha256
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-macos
+          path: |
+            frontend/build/citavuk-macos.zip
+            frontend/build/citavuk-macos.zip.sha256
+
+      - name: Publish rolling beta release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view macos-latest >/dev/null 2>&1; then
+            gh release create macos-latest \
+              --target "$GITHUB_SHA" \
+              --title 'Citavuk for macOS (beta)' \
+              --notes 'Автоматическая beta-сборка без Apple Developer ID и нотарификации.' \
+              --prerelease
+          fi
+          gh release upload macos-latest \
+            frontend/build/citavuk-macos.zip \
+            frontend/build/citavuk-macos.zip.sha256 \
+            --clobber
