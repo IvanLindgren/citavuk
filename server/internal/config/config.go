@@ -95,6 +95,15 @@ type Config struct {
 	// Список хранится в окружении, чтобы роль нельзя было получить регистрацией
 	// с особым именем или подменой клиентского запроса.
 	AdminEmails []string
+
+	// S3 stores teacher lesson images. The public base may be a CDN or the
+	// bucket's own HTTPS address and is never derived from secret credentials.
+	S3Endpoint         string
+	S3Region           string
+	S3Bucket           string
+	S3AccessKey        string
+	S3SecretKey        string
+	PublicMediaBaseURL string
 }
 
 // Load читает конфигурацию. Если envPath не пуст и файл существует, его
@@ -107,20 +116,26 @@ func Load(envPath string) (*Config, error) {
 	}
 
 	c := &Config{
-		Addr:           envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
-		DatabaseURL:    firstEnv("DATABASE_URL", "DB_URL"),
-		RedisURL:       firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
-		RedisPrefix:    envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
-		RedisCacheTTL:  envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
-		DeepLKey:       firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
-		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
-		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
-		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
-		MaxBookBytes:   int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
-		TrustProxy:     envBool("CITAVUK_TRUST_PROXY", false),
-		AdminEmails:    splitList(os.Getenv("CITAVUK_ADMIN_EMAILS")),
-		QuizAPIKey:     firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		QuizModel:      envOr("CITAVUK_QUIZ_MODEL", "google/gemma-4-31b-it"),
+		Addr:               envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
+		DatabaseURL:        firstEnv("DATABASE_URL", "DB_URL"),
+		RedisURL:           firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
+		RedisPrefix:        envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
+		RedisCacheTTL:      envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
+		DeepLKey:           firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
+		UpstreamURL:        envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
+		AllowedOrigins:     splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
+		SessionTTLDays:     envInt("CITAVUK_SESSION_TTL_DAYS", 90),
+		MaxBookBytes:       int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
+		TrustProxy:         envBool("CITAVUK_TRUST_PROXY", false),
+		AdminEmails:        splitList(os.Getenv("CITAVUK_ADMIN_EMAILS")),
+		S3Endpoint:         strings.TrimRight(strings.TrimSpace(os.Getenv("S3_ENDPOINT")), "/"),
+		S3Region:           strings.TrimSpace(os.Getenv("S3_REGION")),
+		S3Bucket:           strings.TrimSpace(os.Getenv("S3_BUCKET")),
+		S3AccessKey:        strings.TrimSpace(os.Getenv("S3_ACCESS_KEY_ID")),
+		S3SecretKey:        strings.TrimSpace(os.Getenv("S3_SECRET_ACCESS_KEY")),
+		PublicMediaBaseURL: strings.TrimRight(strings.TrimSpace(os.Getenv("PUBLIC_MEDIA_BASE_URL")), "/"),
+		QuizAPIKey:         firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
+		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "google/gemma-4-31b-it"),
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
 			"https://api.polza.ai/api/v1/chat/completions",

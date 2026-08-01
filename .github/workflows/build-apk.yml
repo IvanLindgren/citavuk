@@ -1,10 +1,10 @@
-name: Build APK
+name: Build release apps
 
 on:
   workflow_dispatch: # Позволяет запускать сборку вручную по кнопке
 
 jobs:
-  build:
+  android:
     runs-on: ubuntu-latest
 
     steps:
@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -28,9 +28,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: |
-          sed -i '/dependency_overrides:/,+1d' pubspec.yaml
-          flutter pub get
+        run: flutter pub get
 
       - name: Generate App Icon
         working-directory: ./frontend
@@ -53,17 +51,102 @@ jobs:
             -alias "$KEY_ALIAS" \
             | grep -E 'SHA1:|SHA256:'
 
-      - name: Build APK
+      - name: Build signed APK and Google Play bundle
         working-directory: ./frontend
         env:
           KEYSTORE_FILE: release-keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release
+          flutter build appbundle --release
 
-      - name: Upload APK artifact
+      - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: citavuk-release-apk
-          path: frontend/build/app/outputs/flutter-apk/app-release.apk
+          name: citavuk-android
+          path: |
+            frontend/build/app/outputs/flutter-apk/app-release.apk
+            frontend/build/app/outputs/bundle/release/app-release.aab
+
+  windows:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies and analyze
+        working-directory: frontend
+        run: |
+          flutter pub get
+          flutter analyze lib
+
+      - name: Build Windows release and installer
+        working-directory: frontend
+        shell: pwsh
+        run: |
+          flutter build windows --release
+          dart run inno_bundle:build --release
+          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath build/citavuk-windows.zip -Force
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-windows
+          path: |
+            frontend/build/windows/x64/installer/Release/*.exe
+            frontend/build/citavuk-windows.zip
+
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev \
+            libstdc++-11-dev libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev libwebkit2gtk-4.1-dev \
+            libsoup-3.0-dev libsecret-1-dev
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies and analyze
+        working-directory: frontend
+        run: |
+          flutter pub get
+          flutter analyze lib
+
+      - name: Build and package Linux release
+        working-directory: frontend
+        run: |
+          flutter build linux --release
+          version="$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' pubspec.yaml)"
+          root="build/package/citavuk-$version-linux-x64"
+          mkdir -p "$root"
+          cp -r build/linux/x64/release/bundle/. "$root/"
+          cp deploy/linux/citavuk.desktop deploy/linux/README.txt "$root/"
+          install -m 755 deploy/linux/install.sh "$root/install.sh"
+          tar -C build/package -czf build/citavuk-linux-x64.tar.gz "citavuk-$version-linux-x64"
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-linux
+          path: frontend/build/citavuk-linux-x64.tar.gz

@@ -22,6 +22,12 @@ SOURCE_URL = (
 EVENTS_DIR = Path(__file__).resolve().parents[1] / "src" / "events"
 MANIFEST_OUTPUT = EVENTS_DIR / "odyssey-manifest.json"
 CHAPTERS_DIR = EVENTS_DIR / "odyssey-chapters"
+# Приложение читает те же песни из своих ассетов. Один источник на две
+# реализации: разошедшийся текст означал бы разный прогресс на сайте и в
+# приложении при общем документе event-odyssey-2026.
+FLUTTER_DIR = (
+    Path(__file__).resolve().parents[2] / "frontend" / "assets" / "events" / "odyssey"
+)
 
 HEADINGS = [
     "PRVO", "DRUGO", "TRECE", "CETVRTO", "PETO", "SESTO", "SEDMO", "OSMO",
@@ -162,17 +168,16 @@ def main() -> None:
         ],
     }
     CHAPTERS_DIR.mkdir(parents=True, exist_ok=True)
-    MANIFEST_OUTPUT.write_text(
-        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8",
-    )
+    FLUTTER_DIR.mkdir(parents=True, exist_ok=True)
+    manifest = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    MANIFEST_OUTPUT.write_text(manifest, encoding="utf-8")
+    (FLUTTER_DIR / "manifest.json").write_text(manifest, encoding="utf-8")
     for chapter in chapters:
-        target = CHAPTERS_DIR / f"chapter-{chapter['number']:02d}.json"
-        target.write_text(
-            json.dumps(chapter, ensure_ascii=False, separators=(",", ":")),
-            encoding="utf-8",
-        )
-    print(f"Wrote {len(chapters)} songs and {MANIFEST_OUTPUT}")
+        name = f"chapter-{chapter['number']:02d}.json"
+        body = json.dumps(chapter, ensure_ascii=False, separators=(",", ":"))
+        (CHAPTERS_DIR / name).write_text(body, encoding="utf-8")
+        (FLUTTER_DIR / name).write_text(body, encoding="utf-8")
+    print(f"Wrote {len(chapters)} songs to {CHAPTERS_DIR} and {FLUTTER_DIR}")
 
 
 if __name__ == "__main__":

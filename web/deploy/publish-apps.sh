@@ -30,6 +30,7 @@ ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 VERSION=$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' "$FRONTEND/pubspec.yaml")
 FILES=(
     "$FRONTEND/build/app/outputs/flutter-apk/app-release.apk|citavuk.apk|flutter build apk --release"
+    "$FRONTEND/build/app/outputs/bundle/release/app-release.aab|citavuk-google-play.aab|flutter build appbundle --release"
     "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe|citavuk-setup.exe|dart run inno_bundle:build --release"
     "$FRONTEND/build/citavuk-windows.zip|citavuk-windows.zip|упакуй build/windows/x64/runner/Release в zip"
     "$FRONTEND/build/citavuk-linux-x64.tar.gz|citavuk-linux-x64.tar.gz|./deploy/linux/build.sh"

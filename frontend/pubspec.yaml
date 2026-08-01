@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.8.1+27
+version: 1.9.0+28
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -103,6 +103,10 @@ flutter:
     # Каталог материалов для поступления. Собирается общим для сайта и
     # приложения скриптом web/scripts/build-materials.py.
     - assets/materials/
+    # Тексты и иллюстрации временных событий. Песни «Одиссеи» собираются тем же
+    # скриптом, что и для сайта (web/scripts/prepare-odyssey-event.py).
+    - assets/events/odyssey/
+    - assets/english/
 
   fonts:
     - family: NotoSerif
@@ -127,7 +131,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.8.1
+  version: 1.9.0
   publisher: Denis Kornilov
   languages:
     - english

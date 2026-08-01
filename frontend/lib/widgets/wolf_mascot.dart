@@ -14,6 +14,8 @@ class Wolf {
       'assets/imgs/citavuk_gram.png'; // перевод слова/фразы (тёмный фон)
   static const rule =
       'assets/imgs/citavuk_rule.png'; // грамматика, лупа (светлый)
+  static const english =
+      'assets/imgs/citavuk_english.png'; // английское слово (светлый)
 
   /// Арты-стикеры, у которых фон вокруг волка тёмный (нарисован в самом PNG).
   /// Их красивее показывать в тёмной «рамке-стикере», светлые — в светлой.

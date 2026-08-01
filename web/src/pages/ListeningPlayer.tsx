@@ -19,7 +19,9 @@ import {
   translateInContext,
   type TranslationResult,
 } from '../api/translate';
+import { analyzeWord, type WordAnalysis } from '../api/analyze';
 import { Mascot } from '../components/Mascot';
+import { EnglishNotice } from '../components/WordReader';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isHardToHear } from '../listening/language';
 import type { AudioCue, AudioLesson } from '../listening/types';
@@ -467,11 +469,21 @@ function ListeningWordCard({
 }) {
   const { sync } = useSync();
   const [result, setResult] = useState<TranslationResult | null>(null);
+  const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
+    setAnalysis(null);
+    // Подкасты «Learn Serbian» ведутся по-английски, и реплика целиком бывает
+    // английской. Разбор идёт параллельно переводу и своей ошибкой его не
+    // рушит: язык определяется по всей реплике, а не по одному слову.
+    void analyzeWord(token.text, controller.signal, cue.text)
+      .then((parsed) => {
+        if (!controller.signal.aborted) setAnalysis(parsed);
+      })
+      .catch(() => {});
     void translateInContext(cue.text, token.start, token.end, controller.signal)
       .then(setResult)
       .catch((caught) => {
@@ -507,6 +519,9 @@ function ListeningWordCard({
             <>
               <p className="text-lg font-semibold">{result.text}</p>
               {result.sentence && <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{result.sentence}</p>}
+              {/* Пометка идёт после перевода: нажимали ради него, объяснение —
+                  уточнение. */}
+              {analysis?.english && <EnglishNotice className="mt-4" />}
               <Button
                 className="mt-5 w-full"
                 variant={saved ? 'secondary' : 'primary'}

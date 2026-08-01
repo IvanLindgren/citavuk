@@ -1,9 +1,10 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import {
   analyzeWord,
+  type EnglishAnalysis,
   type ParadigmTable,
   type WordAnalysis,
 } from '../api/analyze';
@@ -15,11 +16,19 @@ import {
   type TranslationResult,
 } from '../api/translate';
 import { BIONIC_RATIO, type BionicLevel } from '../lib/readerSettings';
+import { Mascot } from './Mascot';
 import { Link } from '../lib/router';
 import { saveVocabularyWord } from '../lib/vocabulary';
 import { tokenize, type Token } from '../lib/tokenize';
 import { useSync } from '../state/sync';
 import { Spinner } from './ui';
+
+export interface ReaderMark {
+  start: number;
+  end: number;
+  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size';
+  value?: string;
+}
 
 /**
  * Сербский текст, в котором можно нажать любое слово и увидеть его перевод.
@@ -37,6 +46,7 @@ export function WordReader({
   bionic = 0,
   paragraphClassName = '',
   paragraphStyle,
+  paragraphMarks,
 }: {
   paragraphs: string[];
   bookId?: string | null;
@@ -46,6 +56,8 @@ export function WordReader({
   /** Оформление абзаца задаёт читалка: кегль, интерлиньяж, отступы. */
   paragraphClassName?: string;
   paragraphStyle?: CSSProperties;
+  /** Inline Markdown formatting ranges for each source paragraph. */
+  paragraphMarks?: ReaderMark[][];
 }) {
   const { sync } = useSync();
   const readerRef = useRef<HTMLDivElement | null>(null);
@@ -112,7 +124,10 @@ export function WordReader({
 
       // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
       // словарь знает не каждое слово, а перевод нужен всегда.
-      void analyzeWord(token.text, controller.signal)
+      // Предложение уходит вместе со словом: по нему сервер выбирает язык —
+      // «on», «to», «most» одновременно сербские и английские слова.
+      const analysisWindow = sentenceWindow(text, token.start, token.end);
+      void analyzeWord(token.text, controller.signal, analysisWindow.text)
         .then((parsed) => {
           if (!controller.signal.aborted) setAnalysis(parsed);
         })
@@ -205,6 +220,7 @@ export function WordReader({
             bionic={bionic}
             className={paragraphClassName}
             style={paragraphStyle}
+            marks={paragraphMarks?.[paragraphIndex] ?? []}
             selectedStart={
               selected?.paragraph === paragraphIndex ? selected.token.start : null
             }
@@ -242,11 +258,25 @@ export function WordReader({
             onClose={close}
             onSave={
               result
-                ? async () => {
+                ? async (asLemma) => {
+                    const surface = activePhrase ?? selected!.token.text;
+                    const lemma = analysis?.lemma ?? '';
+                    const label = formLabelOf(analysis);
+                    // При сохранении словоформы в карточку кладётся ещё и
+                    // разбор этой формы: иначе через неделю непонятно, почему
+                    // в словаре «svira», а не «svirati».
+                    const forms: Record<string, unknown> = {};
+                    if (!asLemma && label) {
+                      forms['форма в тексте'] = label;
+                      if (lemma) forms['начальная форма'] = lemma;
+                    }
                     await saveVocabularyWord({
                       bookId,
-                      word: activePhrase ?? selected!.token.text,
+                      word: asLemma && lemma ? lemma : surface,
+                      lemma,
+                      pos: analysis?.upos,
                       translation: result.text,
+                      forms,
                     });
                     void sync();
                   }
@@ -266,6 +296,7 @@ function Paragraph({
   bionic,
   className,
   style,
+  marks,
 }: {
   text: string;
   selectedStart: number | null;
@@ -273,10 +304,11 @@ function Paragraph({
   bionic: BionicLevel;
   className: string;
   style?: CSSProperties;
+  marks: ReaderMark[];
 }) {
   // Разбор строки не зависит от состояния, но и не бесплатен — считаем один раз
   // на текст, а не на каждую отрисовку выделения.
-  const [tokens] = useState(() => tokenize(text));
+  const tokens = useMemo(() => tokenize(text), [text]);
 
   const activate = (token: Token, element: HTMLElement) => {
     if (!shouldOpenWord(window.getSelection())) return;
@@ -305,14 +337,56 @@ function Paragraph({
                 : '',
             ].join(' ')}
           >
-            {bionic > 0 ? <BionicWord text={token.text} level={bionic} /> : token.text}
+            {marks.length > 0
+              ? <MarkedToken text={text} token={token} marks={marks} />
+              : bionic > 0
+                ? <BionicWord text={token.text} level={bionic} />
+                : token.text}
           </span>
         ) : (
-          <span key={index}>{token.text}</span>
+          <span key={index}>
+            {marks.length > 0
+              ? <MarkedToken text={text} token={token} marks={marks} />
+              : token.text}
+          </span>
         ),
       )}
     </p>
   );
+}
+
+function MarkedToken({ text, token, marks }: { text: string; token: Token; marks: ReaderMark[] }) {
+  const boundaries = new Set([token.start, token.end]);
+  for (const mark of marks) {
+    if (mark.start > token.start && mark.start < token.end) boundaries.add(mark.start);
+    if (mark.end > token.start && mark.end < token.end) boundaries.add(mark.end);
+  }
+  const points = [...boundaries].sort((a, b) => a - b);
+  const pieces: ReactNode[] = [];
+  for (let index = 0; index < points.length - 1; index++) {
+    const start = points[index];
+    const end = points[index + 1];
+    if (start === undefined || end === undefined || start >= end) continue;
+    const active = marks.filter((mark) => mark.start <= start && mark.end >= end);
+    const value = text.slice(start, end);
+    const style: CSSProperties = {};
+    const classes: string[] = [];
+    let href: string | undefined;
+    for (const mark of active) {
+      if (mark.kind === 'strong') style.fontWeight = 700;
+      if (mark.kind === 'emphasis') style.fontStyle = 'italic';
+      if (mark.kind === 'strike') style.textDecoration = 'line-through';
+      if (mark.kind === 'font') style.fontFamily = mark.value === 'sans' ? 'var(--font-sans)' : 'var(--font-display)';
+      if (mark.kind === 'size' && mark.value) style.fontSize = `${mark.value}px`;
+      if (mark.kind === 'code') classes.push('rounded bg-[var(--bg-sunken)] px-1 py-0.5 font-mono text-[0.9em]');
+      if (mark.kind === 'link') href = mark.value;
+    }
+    const key = `${start}-${end}`;
+    pieces.push(href
+      ? <a key={key} href={href} target="_blank" rel="noreferrer" className="text-[var(--accent)] underline decoration-1 underline-offset-2" style={style} onClick={(event) => event.stopPropagation()}>{value}</a>
+      : <span key={key} className={classes.join(' ')} style={style}>{value}</span>);
+  }
+  return <>{pieces}</>;
 }
 
 /**
@@ -466,12 +540,17 @@ function WordCard({
   error: string | null;
   loading: boolean;
   onClose: () => void;
-  onSave?: () => Promise<void>;
+  onSave?: (asLemma: boolean) => Promise<void>;
 }) {
   const reduceMotion = useReducedMotion();
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState('');
+  // Что уйдёт в словарь: начальная форма или словоформа из текста. По
+  // умолчанию начальная — это словарная статья, и повторять её карточкой
+  // полезнее, чем одну случайную форму.
+  const [saveLemma, setSaveLemma] = useState(true);
   const placement = useCardPlacement(anchor);
+  const formChoice = hasFormChoice(kind, word, analysis);
 
   const card = (
     <motion.div
@@ -539,6 +618,13 @@ function WordCard({
 
           {error && <p className="text-sm text-[var(--text-muted)]">{error}</p>}
 
+          {/* Перевода нет (ошибка или ещё грузится), но язык уже определён —
+              пометку показываем всё равно, иначе непонятно, почему разбор
+              английский. */}
+          {!result && !loading && kind === 'word' && analysis?.english && (
+            <EnglishNotice className={error ? 'mt-4' : ''} />
+          )}
+
           {result && !loading && (
             <div className="space-y-4">
               <Field
@@ -562,14 +648,28 @@ function WordCard({
                 </p>
               )}
 
+              {/* Пометка про английский идёт ПОСЛЕ перевода: человек нажал
+                  слово ради перевода, а объяснение — уже уточнение. */}
+              {kind === 'word' && analysis?.english && <EnglishNotice />}
+
               {kind === 'word' && analysis && <GrammarPanel analysis={analysis} />}
+              {onSave && formChoice && (
+                <SaveChoice
+                  surface={word}
+                  lemma={analysis!.lemma}
+                  formLabel={formLabelOf(analysis)}
+                  saveLemma={saveLemma}
+                  disabled={saved}
+                  onChange={setSaveLemma}
+                />
+              )}
               {onSave && (
                 <button
                   type="button"
                   disabled={saved}
                   onClick={() => {
                     setSaveError('');
-                    void onSave()
+                    void onSave(formChoice ? saveLemma : true)
                       .then(() => setSaved(true))
                       .catch(() =>
                         setSaveError(
@@ -592,7 +692,9 @@ function WordCard({
                       : 'Слово сохранено'
                     : kind === 'phrase'
                       ? 'Добавить фразу в словарь'
-                      : 'Добавить в словарь'}
+                      : formChoice
+                        ? 'Сохранить'
+                        : 'Добавить в словарь'}
                 </button>
               )}
               {/* Куда именно попало сохранённое — вопрос, который возникает
@@ -742,11 +844,185 @@ function useCardPlacement(anchor: DOMRect | null) {
 }
 
 /**
+ * Короткое описание формы: «мн. ч.», «3 л. ед., презент».
+ * Пустая строка — слово и так начальная форма.
+ */
+export function formLabelOf(analysis: WordAnalysis | null): string {
+  if (!analysis) return '';
+  if (analysis.english) return analysis.english.formLabel ?? '';
+  return analysis.facts.map((fact) => fact.value).join(', ');
+}
+
+/** Есть ли из чего выбирать: словоформа отличается от начальной формы. */
+export function hasFormChoice(
+  kind: 'word' | 'phrase',
+  word: string,
+  analysis: WordAnalysis | null,
+): boolean {
+  if (kind !== 'word' || !analysis?.lemma) return false;
+  return analysis.lemma.toLocaleLowerCase('sr') !== word.toLocaleLowerCase('sr');
+}
+
+/**
+ * Объяснение, почему сербская читалка разбирает английское слово.
+ *
+ * Английский в сербских учебниках работает языком-посредником, и молча выдать
+ * английский разбор там, где человек ждёт сербский, значило бы оставить его в
+ * недоумении.
+ */
+export function EnglishNotice({ className = '' }: { className?: string }) {
+  return (
+    <div
+      className={`flex gap-3 rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4 ${className}`}
+    >
+      <Mascot
+        pose="citavuk_english"
+        alt="Читавук с чашкой зелёного чая"
+        className="size-16 shrink-0 self-start object-contain"
+      />
+      <div className="min-w-0 space-y-2 text-sm leading-relaxed">
+        <p className="font-semibold text-[var(--text)]">
+          Кажется, это английское слово.
+        </p>
+        <p className="text-[var(--text-muted)]">
+          Хоть основное предназначение для Читавука это анализ сербских слов, но без
+          международного языка общения не могут обойтись даже материалы с основой на
+          сербском. Да и очень много учебников сербского содержат английский как
+          основной язык-посредник. Читавук постарался — и отчаянно проанализировал
+          слово с чашечкой зеленого чая.
+        </p>
+        <p className="text-xs italic text-[var(--text-muted)]">
+          (А для обучения английскому всё же лучше выбрать другой ресурс, к примеру,
+          знаменитую зеленую сову.)
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Разбор английской формы: признаки, объяснение и оговорка про омонимы. */
+function EnglishGrammarPanel({ english }: { english: EnglishAnalysis }) {
+  const facts = [
+    ...english.facts,
+    ...(english.formLabel
+      ? [{ label: 'Форма', value: english.formLabel }]
+      : []),
+  ];
+
+  return (
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4">
+      <div className="text-sm">
+        <span className="text-[var(--text-muted)]">Начальная форма: </span>
+        <b className="font-display">{english.lemma}</b>
+        <span className="text-[var(--text-muted)]"> · {english.posFull}</span>
+      </div>
+
+      {facts.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {facts.map((fact) => (
+            <span
+              key={`${fact.label}-${fact.value}`}
+              className="rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-1 text-sm"
+            >
+              <span className="text-[var(--text-muted)]">{fact.label}: </span>
+              {fact.value}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {english.why && (
+        <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+          {english.why}
+        </p>
+      )}
+
+      {/* «saw» — и прошедшее от «see», и «пила». Молчать об этом нельзя,
+          иначе разбор выглядит уверенной ошибкой. */}
+      {english.alsoLemma && (
+        <p className="mt-2 text-xs italic text-[var(--text-muted)]">
+          «{english.surface}» бывает и самостоятельным словом — здесь показан разбор
+          формы.
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Выбор, что уходит в словарь: словоформа из текста или начальная форма.
+ *
+ * Спрашиваем каждый раз, а не прячем в настройки: выбор зависит от слова.
+ * Неправильный глагол полезнее запомнить формой, а незнакомое существительное —
+ * словарной статьёй.
+ */
+function SaveChoice({
+  surface,
+  lemma,
+  formLabel,
+  saveLemma,
+  disabled,
+  onChange,
+}: {
+  surface: string;
+  lemma: string;
+  formLabel: string;
+  saveLemma: boolean;
+  disabled: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  const options: { value: boolean; title: string; subtitle: string }[] = [
+    {
+      value: false,
+      title: surface,
+      subtitle: formLabel ? `форма — ${formLabel}` : 'форма из текста',
+    },
+    { value: true, title: lemma, subtitle: 'начальная форма' },
+  ];
+
+  return (
+    <fieldset
+      className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4"
+      disabled={disabled}
+    >
+      <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        Добавить в словарь
+      </legend>
+      <div className="space-y-1.5">
+        {options.map((option) => (
+          <label
+            key={String(option.value)}
+            className="flex cursor-pointer items-center gap-2.5 text-sm"
+          >
+            <input
+              type="radio"
+              name="citavuk-save-form"
+              checked={saveLemma === option.value}
+              onChange={() => onChange(option.value)}
+              className="size-4 accent-[var(--accent)]"
+            />
+            <span className="min-w-0">
+              <b className="font-display">{option.title}</b>
+              <span className="text-[var(--text-muted)]"> · {option.subtitle}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+/**
  * Грамматический разбор: признаки формы, объяснение и таблицы склонения или
  * спряжения. Разбор считает сервер по тому же словарю, что лежит в приложении.
  */
 function GrammarPanel({ analysis }: { analysis: WordAnalysis }) {
   const [open, setOpen] = useState(false);
+
+  // У английского слова свой набор признаков: склонений и падежей у него нет,
+  // и сербские таблицы здесь были бы пустой рамкой.
+  if (analysis.english) return <EnglishGrammarPanel english={analysis.english} />;
+
   const hasContent =
     analysis.facts.length > 0 ||
     analysis.paradigms.length > 0 ||

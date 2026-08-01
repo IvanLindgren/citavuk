@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { bionicSplit, readerSelectionText, shouldOpenWord } from './WordReader';
+import type { WordAnalysis } from '../api/analyze';
+import {
+  bionicSplit,
+  formLabelOf,
+  hasFormChoice,
+  readerSelectionText,
+  shouldOpenWord,
+} from './WordReader';
 
 function selection(text: string, collapsed: boolean): Selection {
   return {
@@ -87,5 +94,89 @@ describe('выделение основы слова', () => {
     const [head, tail] = bionicSplit('аб\u{1F600}вг', 2);
     expect(head + tail).toBe('аб\u{1F600}вг');
     expect([...head].length + [...tail].length).toBe(5);
+  });
+});
+
+describe('formLabelOf', () => {
+  const base = {
+    surface: 'svira',
+    lemma: 'svirati',
+    upos: 'VERB',
+    posFull: 'глагол',
+    posShort: 'глаг.',
+    feats: {},
+    known: true,
+    facts: [],
+    summary: '',
+    why: '',
+    paradigms: [],
+  } satisfies WordAnalysis;
+
+  it('склеивает сербские признаки формы', () => {
+    expect(
+      formLabelOf({
+        ...base,
+        facts: [
+          { label: 'Лицо', value: '3-е' },
+          { label: 'Число', value: 'единственное' },
+        ],
+      }),
+    ).toBe('3-е, единственное');
+  });
+
+  it('у английского слова берёт готовую подпись формы', () => {
+    expect(
+      formLabelOf({
+        ...base,
+        english: {
+          surface: 'books',
+          lemma: 'book',
+          upos: 'NOUN',
+          posFull: 'существительное',
+          posShort: 'сущ.',
+          formKind: 'regular',
+          facts: [],
+          formLabel: 'мн. ч.',
+        },
+      }),
+    ).toBe('мн. ч.');
+  });
+
+  it('без разбора возвращает пустую строку', () => {
+    expect(formLabelOf(null)).toBe('');
+  });
+});
+
+describe('hasFormChoice', () => {
+  const analysis = {
+    surface: 'svira',
+    lemma: 'svirati',
+    upos: 'VERB',
+    posFull: 'глагол',
+    posShort: 'глаг.',
+    feats: {},
+    known: true,
+    facts: [],
+    summary: '',
+    why: '',
+    paradigms: [],
+  } satisfies WordAnalysis;
+
+  it('предлагает выбор, когда форма отличается от начальной', () => {
+    expect(hasFormChoice('word', 'svira', analysis)).toBe(true);
+  });
+
+  it('не предлагает выбор, когда слово и есть начальная форма', () => {
+    expect(hasFormChoice('word', 'svirati', analysis)).toBe(false);
+    // Регистр не создаёт мнимого выбора.
+    expect(hasFormChoice('word', 'Svirati', analysis)).toBe(false);
+  });
+
+  it('у фразы начальной формы нет', () => {
+    expect(hasFormChoice('phrase', 'svira neku lepu muziku', analysis)).toBe(false);
+  });
+
+  it('без разбора выбора нет', () => {
+    expect(hasFormChoice('word', 'svira', null)).toBe(false);
   });
 });

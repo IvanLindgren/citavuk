@@ -72,6 +72,11 @@ class ReaderSettings {
   final double
       maxWidth; // комфортная ширина колонки (>=1100 => без ограничения)
   final int bgColor; // 0 => фон из темы; иначе ARGB-значение цвета
+
+  /// Текстура страницы, полученная как награда события. Пустая строка — обычный
+  /// однотонный фон. Значение — id награды (`odyssey`), а не путь: путь к
+  /// ассету меняется при пересборке, а сохранённый выбор меняться не должен.
+  final String bgTexture;
   final bool pageTurnSound; // шелест страницы при перелистывании
 
   const ReaderSettings({
@@ -86,6 +91,7 @@ class ReaderSettings {
     this.justify = true,
     this.maxWidth = 700,
     this.bgColor = 0,
+    this.bgTexture = '',
     this.pageTurnSound = true,
   });
 
@@ -104,6 +110,7 @@ class ReaderSettings {
     bool? justify,
     double? maxWidth,
     int? bgColor,
+    String? bgTexture,
     bool? pageTurnSound,
   }) =>
       ReaderSettings(
@@ -118,6 +125,7 @@ class ReaderSettings {
         justify: justify ?? this.justify,
         maxWidth: maxWidth ?? this.maxWidth,
         bgColor: bgColor ?? this.bgColor,
+        bgTexture: bgTexture ?? this.bgTexture,
         pageTurnSound: pageTurnSound ?? this.pageTurnSound,
       );
 
@@ -133,6 +141,7 @@ class ReaderSettings {
         'justify': justify,
         'maxWidth': maxWidth,
         'bgColor': bgColor,
+        'bgTexture': bgTexture,
         'pageTurnSound': pageTurnSound,
       };
 
@@ -154,6 +163,7 @@ class ReaderSettings {
       justify: m['justify'] as bool? ?? true,
       maxWidth: (m['maxWidth'] as num?)?.toDouble() ?? 700,
       bgColor: (m['bgColor'] as num?)?.toInt() ?? 0,
+      bgTexture: m['bgTexture'] as String? ?? '',
       pageTurnSound: m['pageTurnSound'] as bool? ?? true,
     );
   }

@@ -11,6 +11,7 @@ import (
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
 	"github.com/citavuk/server/internal/mailer"
+	"github.com/citavuk/server/internal/media"
 	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
 	"github.com/citavuk/server/internal/store"
@@ -35,6 +36,7 @@ type Server struct {
 	documentHTTP *http.Client
 	quiz         *quiz.Generator
 	podcasts     *podcast.Service
+	media        *media.Service
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -52,6 +54,14 @@ func New(
 	redisClients ...*rediscache.Redis,
 ) (*Server, error) {
 	deepl := translate.NewDeepL(cfg.DeepLKey)
+	mediaService, err := media.New(media.Config{
+		Endpoint: cfg.S3Endpoint, Region: cfg.S3Region, Bucket: cfg.S3Bucket,
+		AccessKey: cfg.S3AccessKey, SecretKey: cfg.S3SecretKey,
+		PublicBaseURL: cfg.PublicMediaBaseURL,
+	})
+	if err != nil {
+		return nil, err
+	}
 	var redisClient *rediscache.Redis
 	if len(redisClients) > 0 {
 		redisClient = redisClients[0]
@@ -89,6 +99,7 @@ func New(
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
 		podcasts:     podcast.New(),
+		media:        mediaService,
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),
@@ -193,6 +204,29 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutCourseProgress)))
 	mux.HandleFunc("GET /v1/course/bundle/{courseId}", s.rateLimit(s.generalLimit, s.handlePublishedCourse))
 
+	// Авторские уроки. Заявка доступна любому вошедшему пользователю, редактор
+	// только одобренному преподавателю, каталог и unlisted-ссылка открыты гостям.
+	mux.HandleFunc("GET /v1/teachers/application", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleTeacherApplication)))
+	mux.HandleFunc("PUT /v1/teachers/application", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSubmitTeacherApplication)))
+	mux.HandleFunc("GET /v1/teachers/lessons", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherLessons)))
+	mux.HandleFunc("GET /v1/teachers/profile", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherProfile)))
+	mux.HandleFunc("PUT /v1/teachers/profile", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleUpdateTeacherProfile)))
+	mux.HandleFunc("GET /v1/teachers/{id}", s.rateLimit(s.generalLimit, s.handlePublicTeacherProfile))
+	mux.HandleFunc("POST /v1/teachers/lessons", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleCreateTeacherLesson)))
+	mux.HandleFunc("PUT /v1/teachers/lessons/{id}", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleUpdateTeacherLesson)))
+	mux.HandleFunc("POST /v1/teachers/lessons/{id}/publish-unlisted", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handlePublishUnlistedLesson)))
+	mux.HandleFunc("POST /v1/teachers/lessons/{id}/submit", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleSubmitPublicLesson)))
+	mux.HandleFunc("POST /v1/teachers/media/upload-policy", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherMediaPolicy)))
+	mux.HandleFunc("GET /v1/teachers/submissions", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherSubmissions)))
+	mux.HandleFunc("POST /v1/teachers/submissions/{id}/review", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleReviewSubmission)))
+	mux.HandleFunc("GET /v1/lessons", s.rateLimit(s.generalLimit, s.handlePublicLessons))
+	mux.HandleFunc("GET /v1/lessons/{slug}", s.rateLimit(s.generalLimit, s.handlePublicLesson))
+	mux.HandleFunc("GET /v1/lesson-links/{token}", s.rateLimit(s.generalLimit, s.handleUnlistedLesson))
+	mux.HandleFunc("GET /v1/lessons/{id}/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleLessonProgress)))
+	mux.HandleFunc("PUT /v1/lessons/{id}/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutLessonProgress)))
+	mux.HandleFunc("POST /v1/lessons/{id}/submissions", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCreateLessonSubmission)))
+	mux.HandleFunc("POST /v1/lessons/{id}/reports", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReportLesson)))
+
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
 	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
 
@@ -234,6 +268,12 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/admin/courses", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleCreateAdminCourse)))
 	mux.HandleFunc("PUT /v1/admin/courses/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUpdateAdminCourse)))
 	mux.HandleFunc("POST /v1/admin/courses/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handlePublishAdminCourse)))
+	mux.HandleFunc("GET /v1/admin/teacher-applications", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminTeacherApplications)))
+	mux.HandleFunc("POST /v1/admin/teacher-applications/{userId}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewTeacherApplication)))
+	mux.HandleFunc("GET /v1/admin/lesson-revisions", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonQueue)))
+	mux.HandleFunc("POST /v1/admin/lesson-revisions/{revisionId}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLesson)))
+	mux.HandleFunc("GET /v1/admin/lesson-reports", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonReports)))
+	mux.HandleFunc("POST /v1/admin/lesson-reports/{id}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLessonReport)))
 
 	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но гость
 	// ограничен жёстче вошедшего — квота DeepL общая на всех.

@@ -28,6 +28,24 @@ export interface PrepositionGovernment {
   meaning: string;
 }
 
+/** Как английское слово соотносится со своей начальной формой. */
+export type EnglishFormKind = 'lemma' | 'regular' | 'irregular';
+
+export interface EnglishAnalysis {
+  surface: string;
+  lemma: string;
+  upos: string;
+  posFull: string;
+  posShort: string;
+  formKind: EnglishFormKind;
+  facts: GrammarFact[];
+  /** Короткое имя формы для словаря: «мн. ч.», «прош. вр.». */
+  formLabel?: string;
+  why?: string;
+  /** Слово бывает и самостоятельным: «saw» — и «пила», и прошедшее от «see». */
+  alsoLemma?: boolean;
+}
+
 export interface WordAnalysis {
   surface: string;
   lemma: string;
@@ -44,6 +62,8 @@ export interface WordAnalysis {
   why: string;
   paradigms: ParadigmTable[];
   prepositions?: PrepositionGovernment[];
+  /** Заполнено, если слово опознано английским. */
+  english?: EnglishAnalysis;
 }
 
 /**
@@ -51,14 +71,19 @@ export interface WordAnalysis {
  *
  * Приложение разбирает слово офлайн по своей копии лексикона; в браузере такой
  * копии нет, поэтому тот же словарь живёт на сервере.
+ *
+ * [sentence] нужно серверу, чтобы выбрать язык: «on», «to», «most» —
+ * одновременно сербские и английские слова, и в отрыве от фразы они
+ * неразличимы в принципе.
  */
 export function analyzeWord(
   word: string,
   signal?: AbortSignal,
+  sentence?: string,
 ): Promise<WordAnalysis> {
   return request<WordAnalysis>('/v1/analyze', {
     method: 'POST',
-    body: { word },
+    body: sentence ? { word, sentence } : { word },
     anonymous: true,
     signal,
   });

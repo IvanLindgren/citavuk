@@ -67,6 +67,9 @@ const ListeningPlayer = lazy(() =>
 const Admin = lazy(() =>
   import("./pages/Admin").then((m) => ({ default: m.Admin })),
 );
+const AdminLessons = lazy(() =>
+  import("./pages/AdminLessons").then((m) => ({ default: m.AdminLessons })),
+);
 const Books = lazy(() =>
   import("./pages/Books").then((m) => ({ default: m.Books })),
 );
@@ -103,6 +106,18 @@ const Events = lazy(() =>
 const OdysseyGate = lazy(() =>
   import("./pages/OdysseyGate").then((m) => ({ default: m.OdysseyGate })),
 );
+const Teachers = lazy(() =>
+  import("./pages/Teachers").then((m) => ({ default: m.Teachers })),
+);
+const LessonEditor = lazy(() =>
+  import("./pages/LessonEditor").then((m) => ({ default: m.LessonEditor })),
+);
+const Lessons = lazy(() =>
+  import("./pages/Lessons").then((m) => ({ default: m.Lessons })),
+);
+const LessonView = lazy(() =>
+  import("./pages/LessonView").then((m) => ({ default: m.LessonView })),
+);
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
@@ -118,6 +133,12 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/events", element: <Events /> },
   { pattern: "/events/odyssey", element: <OdysseyGate /> },
   { pattern: "/course", element: <Course /> },
+  { pattern: "/lessons", element: <Lessons /> },
+  { pattern: "/lessons/:slug", element: <LessonView /> },
+  { pattern: "/lesson/link/:token", element: <LessonView unlisted /> },
+  { pattern: "/teachers", element: <Teachers /> },
+  { pattern: "/teachers/lessons/new", element: <LessonEditor /> },
+  { pattern: "/teachers/lessons/:id", element: <LessonEditor /> },
   { pattern: "/course/lesson/:id", element: <CourseLesson /> },
   { pattern: "/dialogues", element: <Dialogues /> },
   { pattern: "/dialogues/:id", element: <CourseDialogue /> },
@@ -135,6 +156,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/about", element: <About /> },
   { pattern: "/support", element: <Support /> },
   { pattern: "/auth/yandex", element: <YandexCallback /> },
+  { pattern: "/admin/lessons", element: <AdminLessons /> },
   { pattern: "/admin", element: <Admin /> },
   // Перехватывающий маршрут обязан быть последним.
   { pattern: "/*", element: <NotFound /> },

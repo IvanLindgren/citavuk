@@ -5,12 +5,18 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/citavuk/server/internal/english"
 	"github.com/citavuk/server/internal/grammar"
 	"github.com/citavuk/server/internal/lexicon"
 )
 
 type analyzeRequest struct {
 	Word string `json:"word"`
+	// Sentence — предложение, в котором стоит слово. Нужно для выбора языка:
+	// «on», «to», «most» — одновременно сербские и английские слова, и в
+	// отрыве от фразы они неразличимы в принципе. Поле необязательное: старый
+	// клиент его не шлёт, и разбор остаётся сербским, как раньше.
+	Sentence string `json:"sentence"`
 }
 
 type analyzeResponse struct {
@@ -28,6 +34,9 @@ type analyzeResponse struct {
 	Why          string               `json:"why"`
 	Paradigms    []grammar.Table      `json:"paradigms"`
 	Prepositions []grammar.Government `json:"prepositions,omitempty"`
+	// English заполнен, если слово опознано английским. Тогда сербские поля
+	// разбора пустые, а карточка на клиенте показывает английскую ветку.
+	English *english.Analysis `json:"english,omitempty"`
 }
 
 // handleAnalyze разбирает одну словоформу по встроенному лексикону.
@@ -57,7 +66,45 @@ func (s *Server) handleAnalyze(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Английская ветка идёт первой: сербский разбор для английского слова
+	// выдаёт мусор, а лексикон его всё равно не знает. Ошибка загрузки
+	// английского словаря не должна ломать сербский разбор — он основной.
+	if eng, err := english.Shared(); err == nil && eng != nil {
+		known := func(form string) bool {
+			for _, row := range lex.LookupForm(form) {
+				if row.UPOS != "X" {
+					return true
+				}
+			}
+			return false
+		}
+		if eng.IsEnglish(word, req.Sentence, known) {
+			if parsed := eng.Analyze(word); parsed != nil {
+				writeJSON(w, http.StatusOK, englishResponse(parsed))
+				return
+			}
+		}
+	}
+
 	writeJSON(w, http.StatusOK, analyze(lex, word))
+}
+
+// englishResponse укладывает английский разбор в общий контракт ответа.
+func englishResponse(parsed *english.Analysis) analyzeResponse {
+	return analyzeResponse{
+		Surface:   parsed.Surface,
+		Lemma:     parsed.Lemma,
+		UPOS:      parsed.UPOS,
+		PosFull:   parsed.PosFull,
+		PosShort:  parsed.PosShort,
+		Feats:     map[string]string{},
+		Known:     true,
+		Facts:     []grammar.Fact{},
+		Summary:   parsed.PosFull,
+		Why:       parsed.Why,
+		Paradigms: []grammar.Table{},
+		English:   parsed,
+	}
 }
 
 // handleGrammarCases отдаёт справочник падежей для шпаргалки на сайте.

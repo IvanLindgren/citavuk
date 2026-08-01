@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../events/events_controller.dart';
+import '../events/reader_rewards.dart';
+import '../models/english_analysis.dart';
 import '../models/grammar.dart';
 import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
@@ -409,13 +412,22 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         platform == TargetPlatform.linux ||
         platform == TargetPlatform.macOS;
 
+    // Фон-награда (событие) главнее выбранного цвета: это отдельная текстура со
+    // своим цветом текста. Доступность проверяется по текущему аккаунту —
+    // сохранённый в настройках id ещё не означает право на награду.
+    final reward = context.watch<EventsController>().hasReward(settings.bgTexture)
+        ? readerRewardById(settings.bgTexture)
+        : null;
+
     // Пользовательский фон чтения (если выбран) + контрастный цвет текста.
     final customBg = settings.bgColor != 0 ? Color(settings.bgColor) : null;
-    final textColor = customBg != null
-        ? (customBg.computeLuminance() > 0.5
-            ? const Color(0xFF20160E)
-            : const Color(0xFFECE3D2))
-        : scheme.onSurface;
+    final textColor = reward != null
+        ? reward.text
+        : customBg != null
+            ? (customBg.computeLuminance() > 0.5
+                ? const Color(0xFF20160E)
+                : const Color(0xFFECE3D2))
+            : scheme.onSurface;
 
     // До первого layout контроллер ещё не привязан — берём стартовую страницу
     // (а не initialParagraph: это индекс абзаца и он может превышать число страниц).
@@ -428,7 +440,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             1;
 
     return Scaffold(
-      backgroundColor: customBg,
+      backgroundColor: reward?.background ?? customBg,
       appBar: AppBar(
         title: Text('${widget.title}  ($pageNum/${_pages.length})',
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
@@ -462,7 +474,11 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
           ),
         ],
       ),
-      body: _pages.isEmpty
+      body: DecoratedBox(
+        decoration: reward == null
+            ? const BoxDecoration()
+            : rewardDecoration(reward.id)!,
+        child: _pages.isEmpty
           ? const Center(child: Text('Нет текста для отображения'))
           : Focus(
               focusNode: _kbFocus,
@@ -586,6 +602,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 ],
               ),
             ),
+      ),
     );
   }
 
@@ -1231,6 +1248,9 @@ class ReaderSettingsSheet extends StatelessWidget {
                   for (final c in _bgPresets) _bgSwatch(context, s, c),
                 ],
               ),
+              // Фоны-награды показываются, только когда они открыты текущим
+              // аккаунтом: чужая награда на общем устройстве видна быть не должна.
+              ..._rewardSection(context, s, scheme),
               const SizedBox(height: 10),
               Text('Свой оттенок',
                   style: TextStyle(
@@ -1268,13 +1288,72 @@ class ReaderSettingsSheet extends StatelessWidget {
   double _hueOf(int argb) =>
       argb == 0 ? 0 : HSVColor.fromColor(Color(argb)).hue;
 
+  /// Фоны-награды. Пустой список — раздела нет вовсе: обещать награду, которой
+  /// у человека ещё нет, в настройках незачем, для этого есть экран событий.
+  List<Widget> _rewardSection(
+      BuildContext context, ReaderSettings s, ColorScheme scheme) {
+    final rewards = context.watch<EventsController>().rewards;
+    if (rewards.isEmpty) return const [];
+    return [
+      const SizedBox(height: 14),
+      _label('Фон из события', scheme),
+      Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: [
+          for (final reward in rewards) _rewardSwatch(context, s, reward),
+        ],
+      ),
+    ];
+  }
+
+  Widget _rewardSwatch(
+      BuildContext context, ReaderSettings s, ReaderReward reward) {
+    final scheme = Theme.of(context).colorScheme;
+    final selected = s.bgTexture == reward.id;
+    return Tooltip(
+      message: reward.label,
+      child: GestureDetector(
+        onTap: () => context
+            .read<AppSettings>()
+            .update(s.copyWith(bgTexture: selected ? '' : reward.id)),
+        child: Container(
+          width: 40,
+          height: 40,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: reward.background,
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: AssetImage(reward.asset),
+              repeat: ImageRepeat.repeat,
+              alignment: Alignment.topLeft,
+            ),
+            border: Border.all(
+              color: selected
+                  ? scheme.primary
+                  : scheme.onSurface.withValues(alpha: 0.2),
+              width: selected ? 3 : 1,
+            ),
+          ),
+          child: selected
+              ? const Icon(Icons.check, size: 18, color: Colors.black87)
+              : null,
+        ),
+      ),
+    );
+  }
+
   Widget _bgSwatch(BuildContext context, ReaderSettings s, int argb) {
     final scheme = Theme.of(context).colorScheme;
-    final selected = s.bgColor == argb;
+    // Текстура рисуется поверх цвета, поэтому выбор обычного фона её снимает —
+    // иначе нажатие на цвет выглядело бы как «ничего не произошло».
+    final selected = s.bgColor == argb && s.bgTexture.isEmpty;
     final color = argb == 0 ? scheme.surface : Color(argb);
     return GestureDetector(
-      onTap: () =>
-          context.read<AppSettings>().update(s.copyWith(bgColor: argb)),
+      onTap: () => context
+          .read<AppSettings>()
+          .update(s.copyWith(bgColor: argb, bgTexture: '')),
       child: Container(
         width: 40,
         height: 40,
@@ -1350,6 +1429,11 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
   late Future<WordAnalysis> _future;
   bool _isSaved = false;
 
+  /// Что уйдёт в словарь: начальная форма или словоформа из текста.
+  /// По умолчанию начальная — это словарная статья, и повторять её карточкой
+  /// полезнее, чем одну случайную форму.
+  bool _saveLemma = true;
+
   @override
   void initState() {
     super.initState();
@@ -1361,7 +1445,22 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
     );
   }
 
-  Future<void> _save(WordAnalysis data) async {
+  /// Короткое описание формы: «мн. ч.», «3 л. ед., презент».
+  /// Пустое, если слово и так начальная форма.
+  static String formLabelOf(WordAnalysis data) {
+    if (data.english != null) return data.english!.formLabel;
+    if (data.feats.isEmpty) return '';
+    final facts = GrammarEngine.humanFacts(data.upos, data.feats);
+    return facts.map((f) => f.value).join(', ');
+  }
+
+  /// Есть ли из чего выбирать: словоформа отличается от начальной формы.
+  static bool hasFormChoice(WordAnalysis data) =>
+      !data.isPhrase &&
+      data.lemma.isNotEmpty &&
+      data.surface.toLowerCase() != data.lemma.toLowerCase();
+
+  Future<void> _save(WordAnalysis data, {required bool asLemma}) async {
     String translation = data.translation;
     final ctx = data.contextualTranslation?.trim();
     final gen = data.translation.trim();
@@ -1371,13 +1470,22 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
       translation = 'В тексте: $ctx\nВ общем: $gen';
     }
 
+    // При сохранении словоформы в карточку кладётся ещё и разбор этой формы:
+    // иначе через неделю непонятно, почему в словаре «svira», а не «svirati».
+    final forms = Map<String, dynamic>.from(data.forms);
+    final label = formLabelOf(data);
+    if (!asLemma && label.isNotEmpty) {
+      forms['форма в тексте'] = label;
+      forms['начальная форма'] = data.lemma;
+    }
+
     await UserDb.instance.addVocabulary(
       bookId: widget.bookId,
-      word: data.surface,
+      word: asLemma && data.lemma.isNotEmpty ? data.lemma : data.surface,
       lemma: data.lemma,
       pos: data.upos,
       translation: translation,
-      forms: data.forms,
+      forms: forms,
     );
     setState(() => _isSaved = true);
   }
@@ -1519,28 +1627,40 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                 ],
                               ),
                             ),
-                            ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: _isSaved
-                                    ? scheme.surfaceContainerHighest
-                                    : scheme.primary,
-                                foregroundColor: _isSaved
-                                    ? scheme.onSurface
-                                    : scheme.onPrimary,
+                            // Когда есть из чего выбирать (форма ≠ начальная
+                            // форма), сохранение живёт в блоке выбора ниже —
+                            // двух кнопок «в словарь» в одной карточке быть
+                            // не должно.
+                            if (!hasFormChoice(data))
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _isSaved
+                                      ? scheme.surfaceContainerHighest
+                                      : scheme.primary,
+                                  foregroundColor: _isSaved
+                                      ? scheme.onSurface
+                                      : scheme.onPrimary,
+                                ),
+                                icon: Icon(
+                                    _isSaved ? Icons.check : Icons.bookmark_add,
+                                    size: 18),
+                                label:
+                                    Text(_isSaved ? 'В словаре' : 'В словарь'),
+                                onPressed: _isSaved
+                                    ? null
+                                    : () => _save(data, asLemma: true),
                               ),
-                              icon: Icon(
-                                  _isSaved ? Icons.check : Icons.bookmark_add,
-                                  size: 18),
-                              label: Text(_isSaved ? 'В словаре' : 'В словарь'),
-                              onPressed: _isSaved ? null : () => _save(data),
-                            ),
                           ],
                         ),
                         const SizedBox(height: 18),
+                        if (data.isEnglish) ...[
+                          _englishNotice(scheme),
+                          const SizedBox(height: 14),
+                        ],
                         WolfBubble(
                           title: hasContext ? 'В этом тексте' : 'Перевод',
                           text: primaryTranslation,
-                          asset: Wolf.gram,
+                          asset: data.isEnglish ? Wolf.english : Wolf.gram,
                         ),
                         if (hasContext) ...[
                           const SizedBox(height: 10),
@@ -1555,7 +1675,12 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                           PrepositionGovernmentCard(
                               preposition: prepWord, government: government),
                         ],
-                        if (!isPhrase &&
+                        if (data.isEnglish) ...[
+                          const SizedBox(height: 18),
+                          _englishGrammar(scheme, data.english!),
+                        ],
+                        if (!data.isEnglish &&
+                            !isPhrase &&
                             const {
                               'NOUN',
                               'PROPN',
@@ -1586,7 +1711,7 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                             ),
                           ),
                         ],
-                        if (feats.isNotEmpty && !isPhrase) ...[
+                        if (feats.isNotEmpty && !isPhrase && !data.isEnglish) ...[
                           const SizedBox(height: 18),
                           _section('Грамматика', scheme),
                           const SizedBox(height: 6),
@@ -1598,7 +1723,11 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                             scheme.secondary,
                           ),
                         ],
-                        if (forms.isNotEmpty && !isPhrase) ...[
+                        if (hasFormChoice(data)) ...[
+                          const SizedBox(height: 18),
+                          _saveChoice(context, scheme, data),
+                        ],
+                        if (forms.isNotEmpty && !isPhrase && !data.isEnglish) ...[
                           const SizedBox(height: 18),
                           _section('Основные формы', scheme),
                           const SizedBox(height: 6),
@@ -1616,6 +1745,219 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                     ),
                   );
                 },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Объяснение, почему сербская читалка разбирает английское слово.
+  Widget _englishNotice(ColorScheme scheme) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: scheme.tertiary.withValues(alpha: 0.07),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.tertiary.withValues(alpha: 0.25)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.translate, size: 16, color: scheme.tertiary),
+              const SizedBox(width: 6),
+              Text('Кажется, это английское слово.',
+                  style: TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.bold,
+                      color: scheme.tertiary)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Хоть основное предназначение для Читавука это анализ сербских '
+            'слов, но без международного языка общения не могут обойтись даже '
+            'материалы с основой на сербском.\n'
+            'Да и очень много учебников сербского содержат английский как '
+            'основной язык-посредник.\n'
+            'Читавук постарался — и отчаянно проанализировал слово с чашечкой '
+            'зеленого чая.',
+            style: TextStyle(
+                fontSize: 12.5,
+                height: 1.4,
+                color: scheme.onSurface.withValues(alpha: 0.8)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '(А для обучения английскому всё же лучше выбрать другой ресурс, '
+            'к примеру, знаменитую зеленую сову.)',
+            style: TextStyle(
+                fontSize: 11.5,
+                height: 1.35,
+                fontStyle: FontStyle.italic,
+                color: scheme.onSurface.withValues(alpha: 0.6)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Разбор английской формы: часть речи, признаки и «почему так».
+  Widget _englishGrammar(ColorScheme scheme, EnglishAnalysis english) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _section('Разбор формы', scheme),
+        const SizedBox(height: 6),
+        _chips(
+          [
+            for (final fact in english.facts) '${fact.label}: ${fact.value}',
+            if (english.formLabel.isNotEmpty) 'Форма: ${english.formLabel}',
+          ],
+          scheme,
+          scheme.secondary,
+        ),
+        if (english.why.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          Text(english.why,
+              style: TextStyle(
+                  fontSize: 12.5,
+                  height: 1.4,
+                  color: scheme.onSurface.withValues(alpha: 0.75))),
+        ],
+        // Омоним: «saw» — и прошедшее от «see», и «пила». Молчать об этом
+        // нельзя, иначе разбор выглядит уверенной ошибкой.
+        if (english.alsoLemma) ...[
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.info_outline, size: 13, color: scheme.tertiary),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  '«${english.surface}» бывает и самостоятельным словом — '
+                  'здесь показан разбор формы.',
+                  style: TextStyle(
+                      fontSize: 11.5,
+                      fontStyle: FontStyle.italic,
+                      color: scheme.onSurface.withValues(alpha: 0.6)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  /// Выбор, что уходит в словарь: словоформа из текста или начальная форма.
+  ///
+  /// Спрашиваем каждый раз, а не прячем в настройки: выбор зависит от слова.
+  /// Неправильный глагол полезнее запомнить формой, а незнакомое
+  /// существительное — словарной статьёй.
+  Widget _saveChoice(
+      BuildContext context, ColorScheme scheme, WordAnalysis data) {
+    final label = formLabelOf(data);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.primary.withValues(alpha: 0.22)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _section('Добавить в словарь', scheme),
+          const SizedBox(height: 8),
+          _saveOption(
+            selected: !_saveLemma,
+            title: data.surface,
+            subtitle:
+                label.isEmpty ? 'форма из текста' : 'форма — $label',
+            scheme: scheme,
+            onTap: () => setState(() => _saveLemma = false),
+          ),
+          const SizedBox(height: 6),
+          _saveOption(
+            selected: _saveLemma,
+            title: data.lemma,
+            subtitle: 'начальная форма',
+            scheme: scheme,
+            onTap: () => setState(() => _saveLemma = true),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isSaved
+                    ? scheme.surfaceContainerHighest
+                    : scheme.primary,
+                foregroundColor:
+                    _isSaved ? scheme.onSurface : scheme.onPrimary,
+              ),
+              icon: Icon(_isSaved ? Icons.check : Icons.bookmark_add, size: 18),
+              label: Text(_isSaved ? 'Слово сохранено' : 'Сохранить'),
+              onPressed:
+                  _isSaved ? null : () => _save(data, asLemma: _saveLemma),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _saveOption({
+    required bool selected,
+    required String title,
+    required String subtitle,
+    required ColorScheme scheme,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: _isSaved ? null : onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        child: Row(
+          children: [
+            Icon(
+              selected ? Icons.radio_button_checked : Icons.radio_button_off,
+              size: 20,
+              color: selected
+                  ? scheme.primary
+                  : scheme.onSurface.withValues(alpha: 0.4),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'NotoSerif',
+                        fontWeight: FontWeight.bold,
+                        color: scheme.onSurface,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '  ·  $subtitle',
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        color: scheme.onSurface.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

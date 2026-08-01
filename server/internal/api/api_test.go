@@ -32,6 +32,10 @@ func (m *testMailer) SendVerification(
 	return err
 }
 
+func (m *testMailer) SendNotification(context.Context, string, string, string, string, string, string) error {
+	return nil
+}
+
 // testServer поднимает настоящий HTTP-сервер поверх настоящей базы.
 // Без базы тест пропускается.
 func testServer(t *testing.T) (*httptest.Server, *store.Store) {

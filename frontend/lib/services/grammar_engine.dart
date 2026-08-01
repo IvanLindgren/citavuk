@@ -909,6 +909,88 @@ class GrammarEngine {
     }
   }
 
+  /// Возможные начальные формы для словоформы.
+  ///
+  /// Лексикон хранит в среднем две формы на лемму, поэтому «kućom» в нём
+  /// просто нет, и слово оставалось без основы. Вместо угадывания разбора по
+  /// окончанию проверяем обратное: строим от каждого кандидата его парадигму и
+  /// смотрим, получилась ли из неё эта форма. Правило то же, что на сервере
+  /// (`server/internal/grammar/resolve.go`), — иначе сайт и приложение
+  /// показывали бы разную начальную форму.
+  static List<String> lemmaCandidates(String form) {
+    final low = form.toLowerCase();
+    final seen = <String>{low};
+    final out = <String>[low];
+
+    void add(String word) {
+      if (word.length < 2 || !seen.add(word)) return;
+      out.add(word);
+    }
+
+    const endings = [
+      '', 'a', 'o', 'e', 'ti', 'iti', 'ati', 'eti', 'nuti', 'ovati' //
+    ];
+    for (var cut = 1; cut <= 4 && cut < low.length; cut++) {
+      final base = low.substring(0, low.length - cut);
+      for (final ending in endings) {
+        add(base + ending);
+      }
+    }
+    return out;
+  }
+
+  /// Падеж и число, при которых лемма даёт эту форму.
+  static Map<String, String>? matchNoun(
+      String lemma, String gender, String form) {
+    final low = form.toLowerCase();
+    for (final number in const ['Sing', 'Plur']) {
+      for (final c in _caseOrder) {
+        if (_declension(lemma, gender, number, c) != low) continue;
+        return {'Case': c, 'Number': number, 'Gender': gender};
+      }
+    }
+    return null;
+  }
+
+  /// Лицо и число презента или род и число причастия.
+  static Map<String, String>? matchVerb(String lemma, String form) {
+    final low = form.toLowerCase();
+
+    final present = _presentForms(lemma);
+    for (var i = 0; i < present.length; i++) {
+      if (present[i] == null || present[i] != low) continue;
+      return {
+        'Tense': 'Pres',
+        'Person': '${i % 3 + 1}',
+        'Number': i >= 3 ? 'Plur' : 'Sing',
+        'VerbForm': 'Fin',
+        'Mood': 'Ind',
+      };
+    }
+
+    final participle = _pastParticiple(lemma);
+    if (participle != null) {
+      const genders = ['Masc', 'Fem', 'Neut', 'Masc', 'Fem', 'Neut'];
+      for (var i = 0; i < participle.length; i++) {
+        if (participle[i] != low) continue;
+        return {
+          'VerbForm': 'Part',
+          'Tense': 'Past',
+          'Gender': genders[i],
+          'Number': i >= 3 ? 'Plur' : 'Sing',
+        };
+      }
+    }
+
+    if (lemma == low) return {'VerbForm': 'Inf'};
+    return null;
+  }
+
+  /// Род существительного по лемме и известным формам — для [matchNoun].
+  static String guessGender(
+      String lemma, List<({String form, String msd, Map<String, String> feats})> parsed) =>
+      _gender(lemma, const {}, parsed);
+
   static String _gender(String lemma, Map<String, String> feats,
       List<({String form, String msd, Map<String, String> feats})> parsed) {
     if (feats['Gender'] != null) return feats['Gender']!;

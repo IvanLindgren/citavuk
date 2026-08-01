@@ -51,9 +51,14 @@ class TranslationClient {
   }
 
   /// Переводит связный фрагмент: фразу, предложение или абзац.
-  Future<TranslationResult?> translate(String text) async {
+  ///
+  /// [source] по умолчанию сербский. Английский нужен для слов-посредников из
+  /// учебников: сербский текст объясняют по-английски, и «run» без указания
+  /// языка сервер переводил бы как сербское слово.
+  Future<TranslationResult?> translate(String text,
+      {String source = 'sr'}) async {
     if (text.trim().isEmpty) return null;
-    return _post('/v1/translate', {'text': text});
+    return _post('/v1/translate', {'text': text, 'source': source});
   }
 
   /// Переводит слово вместе с предложением, в котором оно стоит.
@@ -66,6 +71,7 @@ class TranslationClient {
     required String sentence,
     required int start,
     required int end,
+    String source = 'sr',
   }) async {
     if (sentence.isEmpty ||
         start < 0 ||
@@ -77,6 +83,7 @@ class TranslationClient {
       'sentence': sentence,
       'start': utf8ByteOffset(sentence, start),
       'end': utf8ByteOffset(sentence, end),
+      'source': source,
     });
   }
 

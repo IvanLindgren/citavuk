@@ -8,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'events/events_controller.dart';
+import 'events/odyssey.dart';
+import 'events/odyssey_content.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/db_init.dart';
@@ -27,9 +30,11 @@ import 'screens/all_cards_screen.dart';
 import 'screens/book_reader_screen.dart';
 import 'screens/grammar_cards_screen.dart';
 import 'screens/home_shell.dart';
+import 'screens/events_screen.dart';
 import 'screens/materials_screen.dart';
 import 'screens/news_screen.dart';
 import 'screens/public_library_screen.dart';
+import 'screens/community_lessons_screen.dart';
 import 'screens/about_screen.dart';
 import 'models/reader_settings.dart';
 import 'state/app_settings.dart';
@@ -66,6 +71,10 @@ Future<void> main() async {
   CourseProgressStore.configure(api: api, auth: auth);
   CourseContentLoader.configure(api: api);
   final sync = SyncService(api: api, auth: auth);
+  final events = EventsController(api: api, auth: auth);
+  // Локальный прогресс события нужен ещё до сети: от него зависит, показывать
+  // ли награду-фон в настройках чтения.
+  unawaited(events.refresh());
 
   await NotificationService.instance.init();
   if (settings.notificationsEnabled) {
@@ -84,6 +93,7 @@ Future<void> main() async {
         ChangeNotifierProvider.value(value: settings),
         ChangeNotifierProvider.value(value: auth),
         ChangeNotifierProvider.value(value: sync),
+        ChangeNotifierProvider.value(value: events),
         // Клиент нужен экранам, которые ходят на сервер напрямую (например,
         // загрузка материалов через прокси документов), а не только через
         // синхронизацию.
@@ -594,6 +604,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (!compactAppBar)
             _DashboardAction(
               showLabel: showActionLabels,
+              label: 'Уроки',
+              tooltip: 'Уроки преподавателей',
+              icon: Icons.cast_for_education_outlined,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const CommunityLessonsScreen()),
+              ),
+            ),
+          if (!compactAppBar)
+            _DashboardAction(
+              showLabel: showActionLabels,
               label: 'Публичная',
               tooltip: 'Публичная библиотека',
               icon: Icons.local_library_outlined,
@@ -658,6 +680,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 );
               }
               if (v == 'video') _openVideoSite();
+              if (v == 'communityLessons') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const CommunityLessonsScreen()));
+              }
               if (v == 'grammar') _openGrammarReference();
               if (v == 'reminders') _openReminderDialog();
               if (v == 'theme') _toggleTheme();
@@ -743,6 +771,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               const PopupMenuItem(
+                value: 'communityLessons',
+                child: ListTile(
+                  leading: Icon(Icons.cast_for_education_outlined),
+                  title: Text('Уроки преподавателей'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
                 value: 'video',
                 child: ListTile(
                   leading: Icon(Icons.smart_display_outlined),
@@ -806,6 +842,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: Column(
         children: [
           const OrnamentDivider(height: 22),
+          const _EventBanner(),
           Expanded(
             child: _isLoading
                 ? Center(
@@ -1364,6 +1401,95 @@ class _DashboardAction extends StatelessWidget {
         ),
         icon: Icon(icon, size: 18),
         label: Text(label),
+      ),
+    );
+  }
+}
+
+/// Баннер временного события над списком книг.
+///
+/// Событие ограничено по времени, поэтому баннер сам исчезает после окончания
+/// окна: постоянного места в навигации ради месяца жизни он не занимает.
+class _EventBanner extends StatelessWidget {
+  const _EventBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!odysseyAvailable()) return const SizedBox.shrink();
+
+    final events = context.watch<EventsController>();
+    final signedIn = context.watch<AuthService>().isSignedIn;
+    final progress = events.odyssey;
+    final percent = (progress.fraction * 100).round();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppTheme.radiusCard),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const EventsScreen()),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppTheme.radiusCard),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  OdysseyContent.coverAsset,
+                  fit: BoxFit.cover,
+                  color: Colors.black.withValues(alpha: 0.5),
+                  colorBlendMode: BlendMode.darken,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'СОБЫТИЕ · ДО 1 СЕНТЯБРЯ',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                              color: Color(0xFFF2CA81),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Одиссея',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            !signedIn
+                                ? 'Войдите, чтобы участвовать'
+                                : progress.rewardUnlocked
+                                    ? 'Награда получена — можно перечитать'
+                                    : percent > 0
+                                        ? 'Пройдено $percent% · 24 песни'
+                                        : '24 песни на сербской кириллице',
+                            style: const TextStyle(
+                                fontSize: 12.5, color: Color(0xFFE7DDCB)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right, color: Colors.white70),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

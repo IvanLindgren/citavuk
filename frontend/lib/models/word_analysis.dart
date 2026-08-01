@@ -1,3 +1,4 @@
+import 'english_analysis.dart';
 import 'grammar.dart';
 
 /// Типизированный результат разбора слова/фразы (онлайн или офлайн).
@@ -15,6 +16,10 @@ class WordAnalysis {
   /// Грамматика фразы (составное время/энклитики) — только для isPhrase.
   final PhraseInsight? phraseInsight;
 
+  /// Разбор английского слова. Не null — значит слово опознано английским, и
+  /// карточка показывает английскую ветку вместо сербской.
+  final EnglishAnalysis? english;
+
   const WordAnalysis({
     required this.surface,
     required this.lemma,
@@ -26,7 +31,10 @@ class WordAnalysis {
     this.isOffline = false,
     this.isPhrase = false,
     this.phraseInsight,
+    this.english,
   });
+
+  bool get isEnglish => english != null;
 
   WordAnalysis copyWith({
     String? lemma,
@@ -37,6 +45,7 @@ class WordAnalysis {
     String? contextualTranslation,
     bool? isOffline,
     PhraseInsight? phraseInsight,
+    EnglishAnalysis? english,
   }) =>
       WordAnalysis(
         surface: surface,
@@ -50,6 +59,7 @@ class WordAnalysis {
         isOffline: isOffline ?? this.isOffline,
         isPhrase: isPhrase,
         phraseInsight: phraseInsight ?? this.phraseInsight,
+        english: english ?? this.english,
       );
 
   /// Разбирает строку признаков UD ("Case=Nom|Gender=Masc|Number=Sing").

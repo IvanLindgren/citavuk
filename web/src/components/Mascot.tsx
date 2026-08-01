@@ -7,6 +7,7 @@ export type MascotPose =
   | 'citavuk_rule'
   | 'citavuk_povtor'
   | 'citavuk_ukaz'
+  | 'citavuk_english'
   | 'sluhao_zdravo'
   | 'sluhao_slusa'
   | 'sluhao_savet';

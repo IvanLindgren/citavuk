@@ -84,6 +84,31 @@ class LexiconDb {
     }
   }
 
+  /// Формы, которые словарь знает как сербские, — одним запросом.
+  ///
+  /// Строки с `upos = 'X'` не считаются: это иноязычные вставки из трибанка
+  /// (там лежит и «the»), и принимать их за сербские слова нельзя — иначе
+  /// английский текст никогда не опознается английским. Таких строк 145.
+  Future<Set<String>> knownSerbianForms(Iterable<String> forms) async {
+    final keys = {for (final f in forms) _lat(f)}..removeWhere((f) => f.isEmpty);
+    if (keys.isEmpty) return const {};
+    try {
+      final db = await _database;
+      if (db == null) return const {};
+      final placeholders = List.filled(keys.length, '?').join(',');
+      final rows = await db.query(
+        'lexicon',
+        columns: ['form'],
+        where: "form IN ($placeholders) AND upos <> 'X'",
+        whereArgs: keys.toList(),
+        distinct: true,
+      );
+      return {for (final r in rows) r['form'].toString()};
+    } catch (_) {
+      return const {};
+    }
+  }
+
   Future<String?> getOfflineTranslation(String word, String lemma) async {
     try {
       final db = await _database;

@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import '../models/grammar.dart';
 import '../models/word_analysis.dart';
 import '../state/app_settings.dart';
+import 'english_engine.dart';
+import 'grammar_engine.dart';
+import 'language_router.dart';
 import 'translation_client.dart';
 import '../utils/transliteration.dart';
 import 'lexicon_db.dart';
@@ -47,6 +50,17 @@ class AnalysisRepository {
     if (tokenText.trim().contains(' ')) {
       return _offlineOrOnline(tokenText);
     }
+
+    // Английское слово разбирается своим движком. Проверка идёт до сербского
+    // пути целиком: CLASSLA на английском слове выдаёт мусор, а сербский
+    // лексикон его всё равно не знает.
+    final english = await _englishAnalysis(
+      tokenText: tokenText,
+      sentence: sentence,
+      startOffset: startOffset,
+      endOffset: endOffset,
+    );
+    if (english != null) return english;
 
     // Авто-починка «битых» букв (š/č/ć/ž/đ, ставшие закорючками при извлечении).
     final repaired = await LexiconDb.instance.repair(tokenText);
@@ -121,6 +135,68 @@ class AnalysisRepository {
     }
     return _offlineOrOnline(token,
         sentence: sent, startOffset: startOffset, endOffset: end);
+  }
+
+  /// Разбор английского слова: словарь + перевод en→ru.
+  ///
+  /// null — слово не английское, и работает обычный сербский путь. Решение
+  /// принимается по предложению вокруг слова (см. [LanguageRouter]): в отрыве
+  /// от фразы «on», «to», «most» неразличимы в принципе.
+  Future<WordAnalysis?> _englishAnalysis({
+    required String tokenText,
+    required String sentence,
+    required int startOffset,
+    required int endOffset,
+  }) async {
+    try {
+      final isEnglish = await LanguageRouter.isEnglish(
+        word: tokenText,
+        sentence: sentence,
+      );
+      if (!isEnglish) return null;
+
+      final parsed = EnglishEngine.instance.analyze(tokenText);
+      if (parsed == null) return null;
+
+      // Словарное значение берём у начальной формы — как и в сербском пути:
+      // «ran» в словаре нет, там «run».
+      var general = await UserDb.instance.getCachedTranslation(parsed.lemma);
+      final needGeneral = general == null;
+
+      final results = await Future.wait<String?>([
+        needGeneral
+            ? _translateOnline(parsed.lemma, source: 'en')
+            : Future<String?>.value(general),
+        _translateContextualOnline(
+          sentence: sentence,
+          startOffset: startOffset,
+          endOffset: endOffset,
+          tokenText: tokenText,
+          source: 'en',
+        ),
+      ]);
+
+      final generalNet = needGeneral ? results[0] : null;
+      final contextual = results[1];
+      if (generalNet != null) {
+        await UserDb.instance.cacheTranslation(parsed.lemma, generalNet);
+      }
+      general ??= generalNet;
+
+      return WordAnalysis(
+        surface: tokenText,
+        lemma: parsed.lemma,
+        upos: parsed.upos,
+        translation: general ?? '[Перевод недоступен — нет интернета]',
+        contextualTranslation: contextual,
+        isOffline: generalNet == null && contextual == null,
+        english: parsed,
+      );
+    } catch (_) {
+      // Английская ветка — надстройка. Любая её поломка не должна мешать
+      // разобрать слово как сербское.
+      return null;
+    }
   }
 
   String _splice(String s, int start, int end, String repl) {
@@ -226,6 +302,7 @@ class AnalysisRepository {
     required int startOffset,
     required int endOffset,
     required String tokenText,
+    String source = 'sr',
   }) async {
     try {
       if (startOffset < 0 ||
@@ -245,6 +322,7 @@ class AnalysisRepository {
         sentence: w.text,
         start: w.start,
         end: w.end,
+        source: source,
       );
       if (viaServer != null && viaServer.aligned && viaServer.text.isNotEmpty) {
         return viaServer.text;
@@ -301,11 +379,11 @@ class AnalysisRepository {
 
   /// sr→ru перевод. Нативно — напрямую через Google web endpoint (быстро).
   /// В вебе прямой запрос к Google блокируется CORS, поэтому идём через бэкенд.
-  Future<String?> _translateOnline(String text) async {
+  Future<String?> _translateOnline(String text, {String source = 'sr'}) async {
     // Сервер Citavuk выбирает провайдера сам: связный текст уходит в DeepL,
     // одиночное слово — в запасной, потому что на словах без контекста DeepL
     // ненадёжен. Заодно работает общий кеш, экономящий квоту.
-    final viaServer = await _translationClient.translate(text);
+    final viaServer = await _translationClient.translate(text, source: source);
     if (viaServer != null && viaServer.text.isNotEmpty) {
       return viaServer.text;
     }
@@ -324,7 +402,7 @@ class AnalysisRepository {
         return null;
       }
       final uri = Uri.parse(
-          'https://translate.googleapis.com/translate_a/single?client=gtx&sl=sr&tl=ru&dt=t&q=${Uri.encodeComponent(text)}');
+          'https://translate.googleapis.com/translate_a/single?client=gtx&sl=$source&tl=ru&dt=t&q=${Uri.encodeComponent(text)}');
       final resp = await http.get(uri).timeout(const Duration(seconds: 4));
       if (resp.statusCode == 200) {
         final segments = (jsonDecode(resp.body) as List).first as List;
@@ -557,6 +635,62 @@ class AnalysisRepository {
             .first
             .key;
         return (lemma: lat, upos: upos, feats: const <String, String>{});
+      }
+    }
+    // Формы нет ни в колонке form, ни в колонке lemma. Раньше здесь разбор
+    // заканчивался, и слово показывалось без начальной формы. Достраиваем её
+    // правилом — но не угадыванием: кандидат обязан ПОСТРОИТЬ эту же форму.
+    return _resolveByRule(lat);
+  }
+
+  /// Достройка начальной формы для слова, которого нет в лексиконе.
+  ///
+  /// Лексикон хранит в среднем две формы на лемму, поэтому «kućom» в нём нет.
+  /// Проверяем обратное: от каждого кандидата строим парадигму и смотрим,
+  /// получилась ли из неё эта форма. Тот же порядок, что на сервере.
+  Future<({String lemma, String upos, Map<String, String> feats})?>
+      _resolveByRule(String form) async {
+    for (final candidate in GrammarEngine.lemmaCandidates(form)) {
+      final rows = await LexiconDb.instance.getLexiconRowsForLemma(candidate);
+      if (rows.isEmpty) continue;
+
+      final counts = <String, int>{};
+      for (final r in rows) {
+        final u = (r['upos'] ?? '').toString();
+        if (u.isNotEmpty && u != 'UNKNOWN') counts[u] = (counts[u] ?? 0) + 1;
+      }
+      if (counts.isEmpty) continue;
+      final upos = (counts.entries.toList()
+            ..sort((a, b) => b.value.compareTo(a.value)))
+          .first
+          .key;
+
+      final parsed = [
+        for (final r in rows)
+          (
+            form: (r['form'] ?? '').toString(),
+            msd: (r['msd'] ?? '').toString(),
+            feats: WordAnalysis.parseFeats(r['feats'] as String?),
+          )
+      ];
+
+      if (upos == 'NOUN' || upos == 'PROPN') {
+        var gender = '';
+        for (final p in parsed) {
+          final g = p.feats['Gender'];
+          if (g != null && g.isNotEmpty) {
+            gender = g;
+            break;
+          }
+        }
+        if (gender.isEmpty) {
+          gender = GrammarEngine.guessGender(candidate, parsed);
+        }
+        final feats = GrammarEngine.matchNoun(candidate, gender, form);
+        if (feats != null) return (lemma: candidate, upos: upos, feats: feats);
+      } else if (upos == 'VERB' || upos == 'AUX') {
+        final feats = GrammarEngine.matchVerb(candidate, form);
+        if (feats != null) return (lemma: candidate, upos: upos, feats: feats);
       }
     }
     return null;

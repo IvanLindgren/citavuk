@@ -16,18 +16,27 @@ import {
   type Incident,
 } from '../api/admin';
 import { ApiError } from '../api/client';
+import {
+  getAdminLessonReports,
+  getAdminTeacherApplications,
+  reviewLessonReport,
+  reviewTeacherApplication,
+  type LessonReport,
+  type TeacherApplication,
+} from '../api/lessons';
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
 import type { CourseBundle } from '../course/types';
-import { useRouter } from '../lib/router';
+import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 
-type AdminTab = 'overview' | 'users' | 'incidents' | 'courses';
+type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers';
 
 const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'overview', label: 'Обзор' },
   { id: 'users', label: 'Пользователи' },
   { id: 'incidents', label: 'Инциденты' },
   { id: 'courses', label: 'Курсы' },
+  { id: 'teachers', label: 'Преподаватели' },
 ];
 
 export function Admin() {
@@ -65,7 +74,7 @@ export function Admin() {
         </div>
 
         <div
-          className="mb-7 grid grid-cols-2 gap-1 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 sm:grid-cols-4"
+          className="mb-7 grid grid-cols-2 gap-1 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 sm:grid-cols-5"
           role="tablist"
         >
           {TABS.map((item) => (
@@ -91,9 +100,40 @@ export function Admin() {
         {tab === 'users' && <UsersPanel />}
         {tab === 'incidents' && <IncidentsPanel />}
         {tab === 'courses' && <CoursesPanel />}
+        {tab === 'teachers' && <TeacherModerationPanel />}
       </div>
     </main>
   );
+}
+
+function TeacherModerationPanel() {
+  const [applications, setApplications] = useState<TeacherApplication[] | null>(null);
+  const [reports, setReports] = useState<LessonReport[] | null>(null);
+  const [comments, setComments] = useState<Record<string, string>>({});
+  const [error, setError] = useState('');
+  const load = useCallback(async () => {
+    setError('');
+    try {
+      const [nextApplications, nextReports] = await Promise.all([
+        getAdminTeacherApplications(), getAdminLessonReports(),
+      ]);
+      setApplications(nextApplications); setReports(nextReports);
+    } catch (caught) { setError(messageOf(caught)); }
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+  const decideApplication = async (item: TeacherApplication, status: 'approved' | 'rejected') => {
+    if (!item.userId) return;
+    try { await reviewTeacherApplication(item.userId, status, comments[item.userId] ?? ''); await load(); }
+    catch (caught) { setError(messageOf(caught)); }
+  };
+  if (!applications || !reports) return <PanelLoader />;
+  const pending = applications.filter((item) => item.status === 'pending');
+  return <div className="space-y-10">
+    {error && <ErrorNote>{error}</ErrorNote>}
+    <section><h2 className="text-2xl">Заявки преподавателей</h2><div className="mt-4 space-y-3">{pending.length === 0 ? <p className="text-[var(--text-muted)]">Очередь пуста.</p> : pending.map((item) => <div key={item.userId} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="text-lg">{item.displayName || item.email}</h3><p className="mt-1 text-sm text-[var(--text-muted)]">{item.email} · сербский {item.serbianLevel}</p></div><span className="text-sm">{item.nativeSpeaker ? 'Носитель' : `Русский ${item.russianLevel || 'не указан'}`}</span></div><p className="mt-4 whitespace-pre-wrap text-sm">{item.teachingExperience}</p>{item.certificates && <p className="mt-2 text-sm text-[var(--text-muted)]">Образование: {item.certificates}</p>}<textarea className={`${inputClass('')} mt-4`} rows={2} placeholder="Комментарий автору" value={comments[item.userId ?? ''] ?? ''} onChange={(event) => item.userId && setComments({ ...comments, [item.userId]: event.target.value })} /><div className="mt-3 flex gap-2"><Button size="sm" onClick={() => void decideApplication(item, 'approved')}>Одобрить</Button><Button size="sm" variant="secondary" onClick={() => void decideApplication(item, 'rejected')}>Отклонить</Button></div></div>)}</div></section>
+    <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Уроки на модерации</h2><p className="mt-2 text-[var(--text-muted)]">Очередь уроков вынесена в отдельный экран с полным ученическим предпросмотром.</p><Link to="/admin/lessons" className="mt-4 inline-flex rounded-md bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-white">Открыть модерацию уроков</Link></section>
+    <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Жалобы на уроки</h2><div className="mt-4 space-y-3">{reports.length === 0 ? <p className="text-[var(--text-muted)]">Открытых жалоб нет.</p> : reports.map((item) => <div key={item.id} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><h3 className="text-lg">{item.lessonTitle}</h3><p className="mt-2 font-semibold">{item.reason}</p>{item.details && <p className="mt-2 text-sm text-[var(--text-muted)]">{item.details}</p>}<div className="mt-3 flex gap-2"><Button size="sm" onClick={async () => { await reviewLessonReport(item.id, 'resolved'); await load(); }}>Решено</Button><Button size="sm" variant="secondary" onClick={async () => { await reviewLessonReport(item.id, 'dismissed'); await load(); }}>Отклонить</Button></div></div>)}</div></section>
+  </div>;
 }
 
 function OverviewPanel() {

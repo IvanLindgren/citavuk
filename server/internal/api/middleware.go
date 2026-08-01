@@ -79,6 +79,24 @@ func (s *Server) requireAdmin(next http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
+// requireTeacher checks the approved application on every protected request.
+// The role is deliberately not trusted to a client-side flag: an administrator
+// can suspend publishing without waiting for a new login session.
+func (s *Server) requireTeacher(next http.HandlerFunc) http.HandlerFunc {
+	return s.requireAuth(func(w http.ResponseWriter, r *http.Request) {
+		approved, err := s.store.IsApprovedTeacher(r.Context(), userFrom(r.Context()).ID)
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось проверить права преподавателя.")
+			return
+		}
+		if !approved {
+			writeError(w, http.StatusForbidden, codeForbidden, "Для редактора нужна одобренная заявка преподавателя.")
+			return
+		}
+		next(w, r)
+	})
+}
+
 // rateLimit ограничивает частоту запросов по адресу клиента.
 func (s *Server) rateLimit(l *limiter, next http.HandlerFunc) http.HandlerFunc {
 	return s.rateLimitKey(l, func(r *http.Request) string {

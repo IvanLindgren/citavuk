@@ -14,6 +14,8 @@ import {
   LuMenu,
   LuNotebookTabs,
   LuSparkles,
+  LuPresentation,
+  LuShieldCheck,
   LuX,
 } from 'react-icons/lu';
 
@@ -25,7 +27,6 @@ import { useTheme } from '../state/theme';
 /** Основные разделы — то, ради чего заходят каждый день. */
 const NAV = [
   { to: '/library', label: 'Моя библиотека' },
-  { to: '/public-library', label: 'Публичная' },
   { to: '/course', label: 'Курс' },
   { to: '/trainer', label: 'Тренажёрка' },
   { to: '/cards', label: 'Словарь' },
@@ -34,6 +35,7 @@ const NAV = [
 
 /** Остальное живёт в «Ещё»: семь равноправных пунктов в строку не читались. */
 const MORE = [
+  { to: '/public-library', label: 'Публичная библиотека' },
   { to: '/events', label: 'События' },
   { to: '/dialogues', label: 'Диалоги' },
   { to: '/books', label: 'Что читать' },
@@ -61,7 +63,9 @@ const MOBILE_GROUPS = [
       { to: '/cards', label: 'Словарь', icon: LuLanguages },
       { to: '/listening', label: 'Слушание', icon: LuHeadphones },
       { to: '/dialogues', label: 'Диалоги', icon: LuBoxes },
+      { to: '/lessons', label: 'Уроки преподавателей', icon: LuGraduationCap },
       { to: '/materials', label: 'Материалы', icon: LuNotebookTabs },
+      { to: '/teachers', label: 'Для учителей', icon: LuPresentation },
     ],
   },
   {
@@ -139,7 +143,7 @@ export function Header() {
           Читавук
         </Link>
 
-        <nav className="ml-5 hidden items-center lg:flex">
+        <nav className="ml-5 hidden items-center xl:flex">
           {NAV.map((item) => (
             <NavItem key={item.to} to={item.to} active={path.startsWith(item.to)}>
               {item.label}
@@ -149,9 +153,23 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <Link
+            to="/lessons"
+            aria-current={path.startsWith('/lessons') ? 'page' : undefined}
+            className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-3 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
+          >
+            <LuGraduationCap className="size-4" aria-hidden="true" />
+            Уроки преподавателей
+          </Link>
+          <Link
+            to="/teachers"
+            className="hidden whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--bg-sunken)] xl:inline-flex"
+          >
+            Для учителей
+          </Link>
           <VideoLink />
           <span
-            className="hidden h-6 w-px bg-[var(--line)] lg:block"
+            className="hidden h-6 w-px bg-[var(--line)] 2xl:block"
             aria-hidden="true"
           />
           <ThemeToggle />
@@ -166,7 +184,7 @@ export function Header() {
 
           <button
             type="button"
-            className="rounded-xl p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] lg:hidden"
+            className="rounded-xl p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] xl:hidden"
             onClick={() => {
               if (!menuOpen) {
                 setMenuTop(headerRef.current?.getBoundingClientRect().bottom ?? 64);
@@ -192,7 +210,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 bottom-0 z-50 bg-black/35 lg:hidden"
+            className="fixed inset-x-0 bottom-0 z-50 bg-black/35 xl:hidden"
             style={{ top: menuTop }}
             onClick={() => setMenuOpen(false)}
           >
@@ -241,8 +259,9 @@ export function Header() {
 
                 <div className="grid grid-cols-2 gap-1.5 border-t border-[var(--line)] pt-4">
                   {account?.isAdmin && (
-                    <Link to="/admin" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-[var(--bg-sunken)]">
-                      Админка
+                    <Link to="/admin/lessons" className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-[var(--bg-sunken)]">
+                      <LuShieldCheck className="size-4" aria-hidden="true" />
+                      Модерация
                     </Link>
                   )}
                   <Link
@@ -279,7 +298,9 @@ function shortName(value: string): string {
 
 function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
-  const items = isAdmin ? [...MORE, { to: '/admin', label: 'Админка' }] : MORE;
+  const items = isAdmin
+    ? [...MORE, { to: '/admin/lessons', label: 'Модерация уроков' }, { to: '/admin', label: 'Админка' }]
+    : MORE;
   const active = items.some((item) => path.startsWith(item.to));
 
   useEffect(() => setOpen(false), [path]);
@@ -409,7 +430,7 @@ function VideoLink() {
       href={VIDEO_URL}
       target="_blank"
       rel="noreferrer noopener"
-      className="hidden items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] lg:inline-flex"
+      className="hidden items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] 2xl:inline-flex"
       title="Сербские фильмы и сериалы с субтитрами — отдельный сайт"
     >
       <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
