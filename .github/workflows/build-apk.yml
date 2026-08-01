@@ -1,10 +1,22 @@
 name: Build release apps
 
 on:
-  workflow_dispatch: # Позволяет запускать сборку вручную по кнопке
+  workflow_dispatch:
+    inputs:
+      target:
+        description: What to build
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - android
+          - windows
+          - linux
 
 jobs:
   android:
+    if: inputs.target == 'all' || inputs.target == 'android'
     runs-on: ubuntu-latest
 
     steps:
@@ -71,6 +83,7 @@ jobs:
             frontend/build/app/outputs/bundle/release/app-release.aab
 
   windows:
+    if: inputs.target == 'all' || inputs.target == 'windows'
     runs-on: windows-2022
     steps:
       - name: Checkout repository
@@ -106,44 +119,21 @@ jobs:
             frontend/build/citavuk-windows.zip
 
   linux:
+    if: inputs.target == 'all' || inputs.target == 'linux'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Linux build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev \
-            libstdc++-11-dev libgstreamer1.0-dev \
-            libgstreamer-plugins-base1.0-dev libwebkit2gtk-4.1-dev \
-            libsoup-3.0-dev libsecret-1-dev
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.44.x'
-          channel: stable
-          cache: true
-
-      - name: Install dependencies and analyze
+      - name: Build and package in clean Ubuntu container
         working-directory: frontend
         run: |
-          flutter pub get
-          flutter analyze lib
-
-      - name: Build and package Linux release
-        working-directory: frontend
-        run: |
-          flutter build linux --release
-          version="$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' pubspec.yaml)"
-          root="build/package/citavuk-$version-linux-x64"
-          mkdir -p "$root"
-          cp -r build/linux/x64/release/bundle/. "$root/"
-          cp deploy/linux/citavuk.desktop deploy/linux/README.txt "$root/"
-          install -m 755 deploy/linux/install.sh "$root/install.sh"
-          tar -C build/package -czf build/citavuk-linux-x64.tar.gz "citavuk-$version-linux-x64"
+          docker build \
+            --file deploy/linux/Dockerfile \
+            --build-arg FLUTTER_VERSION=3.44.0 \
+            --target artifact \
+            --output type=local,dest=build \
+            .
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
