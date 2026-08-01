@@ -17,6 +17,7 @@ export function Login() {
   });
 
   const { navigate, path } = useRouter();
+  const destination = loginDestination(path);
   const {
     account,
     login,
@@ -42,8 +43,8 @@ export function Login() {
 
   // Уже вошедшему здесь делать нечего.
   useEffect(() => {
-    if (account) navigate('/library', { replace: true });
-  }, [account, navigate]);
+    if (account) navigate(destination, { replace: true });
+  }, [account, destination, navigate]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -64,7 +65,7 @@ export function Login() {
       } else {
         await login(email, password);
       }
-      navigate('/library', { replace: true });
+      navigate(destination, { replace: true });
     } catch (caught) {
       if (
         !isRegister &&
@@ -235,7 +236,7 @@ export function Login() {
               setError(null);
               try {
                 await loginWithGoogle(idToken);
-                navigate('/library', { replace: true });
+                navigate(destination, { replace: true });
               } catch (caught) {
                 setError(
                   caught instanceof ApiError
@@ -265,6 +266,13 @@ export function Login() {
       </motion.div>
     </main>
   );
+}
+
+/** Only local absolute paths may be used after authentication. */
+function loginDestination(path: string): string {
+  const query = path.includes('?') ? path.slice(path.indexOf('?') + 1) : '';
+  const next = new URLSearchParams(query).get('next');
+  return next?.startsWith('/') && !next.startsWith('//') ? next : '/library';
 }
 
 function Field({

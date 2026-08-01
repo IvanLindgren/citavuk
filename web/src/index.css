@@ -161,6 +161,12 @@
     -webkit-touch-callout: default;
   }
 
+  .event-verse {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 19rem;
+    margin-bottom: 2rem;
+  }
+
   .reader-word {
     cursor: text;
   }

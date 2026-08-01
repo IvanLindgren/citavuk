@@ -27,12 +27,14 @@ export function ReaderSettingsPanel({
   onChange,
   onReset,
   onClose,
+  odysseyRewardUnlocked = false,
 }: {
   open: boolean;
   settings: ReaderSettings;
   onChange: <K extends keyof ReaderSettings>(key: K, value: ReaderSettings[K]) => void;
   onReset: () => void;
   onClose: () => void;
+  odysseyRewardUnlocked?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
 
@@ -89,11 +91,15 @@ export function ReaderSettingsPanel({
                 <Chips<ReaderTheme>
                   value={settings.theme}
                   options={(
-                    ['auto', 'paper', 'sepia', 'gray', 'night'] as const
+                    ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey'] as const
                   ).map((id) => ({
                     id,
-                    label: THEME_LABELS[id],
+                    label: id === 'odyssey' && !odysseyRewardUnlocked
+                      ? 'Спартанские шлемы · закрыто'
+                      : THEME_LABELS[id],
                     swatch: paletteFor(id)?.background,
+                    swatchImage: paletteFor(id)?.backgroundImage,
+                    disabled: id === 'odyssey' && !odysseyRewardUnlocked,
                   }))}
                   onSelect={(value) => onChange('theme', value)}
                 />
@@ -233,7 +239,14 @@ function Chips<T extends string | number>({
   onSelect,
 }: {
   value: T;
-  options: Array<{ id: T; label: string; swatch?: string; font?: string }>;
+  options: Array<{
+    id: T;
+    label: string;
+    swatch?: string;
+    swatchImage?: string;
+    font?: string;
+    disabled?: boolean;
+  }>;
   onSelect: (value: T) => void;
 }) {
   return (
@@ -243,18 +256,24 @@ function Chips<T extends string | number>({
           key={String(option.id)}
           type="button"
           onClick={() => onSelect(option.id)}
+          disabled={option.disabled}
+          title={option.disabled ? 'Награда за завершение события «Одиссея»' : undefined}
           style={option.font ? { fontFamily: option.font } : undefined}
           className={[
             'inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
             value === option.id
               ? 'bg-[var(--accent)] text-parchment'
-              : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
+              : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-55',
           ].join(' ')}
         >
           {option.swatch && (
             <span
               className="size-3.5 rounded-full border border-[var(--line)]"
-              style={{ background: option.swatch }}
+              style={{
+                background: option.swatch,
+                backgroundImage: option.swatchImage,
+                backgroundSize: option.swatchImage ? '26px 21px' : undefined,
+              }}
               aria-hidden="true"
             />
           )}

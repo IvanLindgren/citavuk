@@ -1,7 +1,24 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  LuBookOpen,
+  LuBoxes,
+  LuDownload,
+  LuDumbbell,
+  LuGraduationCap,
+  LuHeadphones,
+  LuHeartHandshake,
+  LuInfo,
+  LuLanguages,
+  LuLibrary,
+  LuMenu,
+  LuNotebookTabs,
+  LuSparkles,
+  LuX,
+} from 'react-icons/lu';
 
 import { Link, useRouter } from '../lib/router';
+import { odysseyAvailable } from '../events/odyssey';
 import { useAuth } from '../state/auth';
 import { useTheme } from '../state/theme';
 
@@ -17,6 +34,7 @@ const NAV = [
 
 /** Остальное живёт в «Ещё»: семь равноправных пунктов в строку не читались. */
 const MORE = [
+  { to: '/events', label: 'События' },
   { to: '/dialogues', label: 'Диалоги' },
   { to: '/books', label: 'Что читать' },
   { to: '/materials', label: 'Материалы' },
@@ -25,7 +43,36 @@ const MORE = [
   { to: '/about', label: 'О разработчике' },
 ] as const;
 
-const ALL_NAV = [...NAV, ...MORE];
+const MOBILE_GROUPS = [
+  {
+    title: 'Читать',
+    items: [
+      { to: '/library', label: 'Моя библиотека', icon: LuLibrary },
+      { to: '/public-library', label: 'Публичная', icon: LuBookOpen },
+      { to: '/events', label: 'События', icon: LuSparkles, featured: true },
+      { to: '/books', label: 'Что читать', icon: LuNotebookTabs },
+    ],
+  },
+  {
+    title: 'Учиться',
+    items: [
+      { to: '/course', label: 'Курс', icon: LuGraduationCap },
+      { to: '/trainer', label: 'Тренажёрка', icon: LuDumbbell },
+      { to: '/cards', label: 'Словарь', icon: LuLanguages },
+      { to: '/listening', label: 'Слушание', icon: LuHeadphones },
+      { to: '/dialogues', label: 'Диалоги', icon: LuBoxes },
+      { to: '/materials', label: 'Материалы', icon: LuNotebookTabs },
+    ],
+  },
+  {
+    title: 'Читавук',
+    items: [
+      { to: '/support', label: 'Поддержать', icon: LuHeartHandshake },
+      { to: '/downloads', label: 'Скачать', icon: LuDownload },
+      { to: '/about', label: 'О разработчике', icon: LuInfo },
+    ],
+  },
+] as const;
 
 /**
  * Видео живёт на отдельном сайте, поэтому и в меню стоит наособицу: рядом с
@@ -39,6 +86,8 @@ export function Header() {
   const { account } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuTop, setMenuTop] = useState(64);
+  const headerRef = useRef<HTMLElement>(null);
 
   // Шапка «прилипает» и уплотняется после прокрутки: на длинной странице это
   // подсказывает, что верх остался позади.
@@ -53,8 +102,23 @@ export function Header() {
   // экрана.
   useEffect(() => setMenuOpen(false), [path]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
   return (
     <header
+      ref={headerRef}
       className={[
         'sticky top-0 z-40 border-b transition-all duration-300',
         scrolled
@@ -103,17 +167,18 @@ export function Header() {
           <button
             type="button"
             className="rounded-xl p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] lg:hidden"
-            onClick={() => setMenuOpen((open) => !open)}
+            onClick={() => {
+              if (!menuOpen) {
+                setMenuTop(headerRef.current?.getBoundingClientRect().bottom ?? 64);
+              }
+              setMenuOpen((open) => !open);
+            }}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
           >
-            <svg viewBox="0 0 24 24" className="size-6 fill-current" aria-hidden="true">
-              {menuOpen ? (
-                <path d="M6.4 5L5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6z" />
-              ) : (
-                <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
-              )}
-            </svg>
+            {menuOpen
+              ? <LuX className="size-6" aria-hidden="true" />
+              : <LuMenu className="size-6" aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -122,57 +187,82 @@ export function Header() {
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.nav
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-[var(--line)] bg-[var(--bg-raised)] lg:hidden"
+            className="fixed inset-x-0 bottom-0 z-50 bg-black/35 lg:hidden"
+            style={{ top: menuTop }}
+            onClick={() => setMenuOpen(false)}
           >
-            <div className="flex flex-col p-3">
-              {ALL_NAV.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="rounded-xl px-4 py-3 font-semibold transition-colors hover:bg-[var(--bg-sunken)]"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {account?.isAdmin && (
-                <Link
-                  to="/admin"
-                  className="rounded-xl px-4 py-3 font-semibold transition-colors hover:bg-[var(--bg-sunken)]"
-                >
-                  Админка
-                </Link>
-              )}
-              <Link
-                to={account ? '/account' : '/login'}
-                className="rounded-xl px-4 py-3 font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--bg-sunken)]"
-              >
-                {account ? 'Аккаунт' : 'Войти'}
-              </Link>
+            <motion.nav
+              initial={{ y: -18 }}
+              animate={{ y: 0 }}
+              exit={{ y: -18 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="max-h-full overflow-y-auto border-t border-[var(--line)] bg-[var(--bg-raised)] px-4 pb-6 pt-4 shadow-[var(--shadow-lift)]"
+              onClick={(event) => event.stopPropagation()}
+              aria-label="Разделы Читавука"
+            >
+              <div className="mx-auto max-w-xl space-y-4">
+                {MOBILE_GROUPS.map((group) => (
+                  <div key={group.title}>
+                    <p className="mb-1.5 px-1 text-xs font-bold uppercase text-[var(--text-muted)]">
+                      {group.title}
+                    </p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {group.items.map((item) => {
+                        const Icon = item.icon;
+                        const active = path.startsWith(item.to);
+                        return (
+                          <Link
+                            key={item.to}
+                            to={item.to}
+                            aria-current={active ? 'page' : undefined}
+                            className={[
+                              'flex min-h-12 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors',
+                              active
+                                ? 'bg-[var(--accent)] text-white'
+                                : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
+                              'featured' in item && item.featured && !active
+                                ? 'border border-[#b68a4e] text-[var(--accent)]'
+                                : '',
+                            ].join(' ')}
+                          >
+                            <Icon className="size-4 shrink-0" aria-hidden="true" />
+                            <span className="min-w-0 leading-tight">{item.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
 
-              <span className="my-2 h-px bg-[var(--line)]" aria-hidden="true" />
-
-              <a
-                href={VIDEO_URL}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-xl px-4 py-3 font-semibold text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)]"
-              >
-                Видео с субтитрами
-                <svg
-                  viewBox="0 0 24 24"
-                  className="size-3.5 fill-current opacity-60"
-                  aria-hidden="true"
-                >
-                  <path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h5v2H6v11h11v-4h2v5a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-                </svg>
-              </a>
-            </div>
-          </motion.nav>
+                <div className="grid grid-cols-2 gap-1.5 border-t border-[var(--line)] pt-4">
+                  {account?.isAdmin && (
+                    <Link to="/admin" className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-[var(--bg-sunken)]">
+                      Админка
+                    </Link>
+                  )}
+                  <Link
+                    to={account ? '/account' : '/login'}
+                    className="rounded-xl px-3 py-2.5 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)]"
+                  >
+                    {account ? 'Аккаунт' : 'Войти'}
+                  </Link>
+                  <a
+                    href={VIDEO_URL}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="flex items-center gap-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-semibold text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]"
+                  >
+                    Видео с субтитрами ↗
+                  </a>
+                </div>
+              </div>
+            </motion.nav>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
@@ -248,7 +338,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
 
 function SupportStrip() {
   const { path } = useRouter();
-  if (path.startsWith('/support')) return null;
+  if (odysseyAvailable() || path.startsWith('/support')) return null;
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">

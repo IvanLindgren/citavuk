@@ -9,6 +9,7 @@ import { ShareBook } from '../components/ShareBook';
 import { Button, Spinner } from '../components/ui';
 import { WordReader } from '../components/WordReader';
 import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
+import { odysseyRewardUnlocked } from '../events/odyssey';
 import { playPageTurn, releasePageTurn } from '../lib/pageTurn';
 import {
   FONT_STACKS,
@@ -245,7 +246,11 @@ export function Reader() {
 
   const current = pages[page] ?? [];
   const progress = pages.length > 1 ? ((page + 1) / pages.length) * 100 : 100;
-  const palette = paletteFor(settings.theme);
+  const hasOdysseyReward = odysseyRewardUnlocked(account?.id);
+  const effectiveTheme = settings.theme === 'odyssey' && !hasOdysseyReward
+    ? 'auto'
+    : settings.theme;
+  const palette = paletteFor(effectiveTheme);
   const flip = settings.animate && !reduceMotion;
 
   // Отступ между абзацами задаётся переменной, а не полем `marginBottom`:
@@ -253,6 +258,9 @@ export function Reader() {
   // последним абзацем, из-за чего низ страницы выглядел бы кривым.
   const pageStyle = {
     background: palette?.background,
+    backgroundImage: palette?.backgroundImage,
+    backgroundSize: palette?.backgroundSize,
+    backgroundRepeat: palette?.backgroundImage ? 'repeat' : undefined,
     color: palette?.text,
     borderColor: palette?.border,
     maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
@@ -483,6 +491,7 @@ export function Reader() {
         onChange={update}
         onReset={reset}
         onClose={() => setPanelOpen(false)}
+        odysseyRewardUnlocked={hasOdysseyReward}
       />
     </main>
   );

@@ -3,6 +3,7 @@ import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
+import { EventBanner } from "./components/EventBanner";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { PageErrorBoundary } from "./components/PageErrorBoundary";
@@ -96,6 +97,12 @@ const Privacy = lazy(() =>
 const YandexCallback = lazy(() =>
   import("./pages/YandexCallback").then((m) => ({ default: m.YandexCallback })),
 );
+const Events = lazy(() =>
+  import("./pages/Events").then((m) => ({ default: m.Events })),
+);
+const OdysseyGate = lazy(() =>
+  import("./pages/OdysseyGate").then((m) => ({ default: m.OdysseyGate })),
+);
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
@@ -108,6 +115,8 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/account", element: <Account /> },
   { pattern: "/listening", element: <Listening /> },
   { pattern: "/listening/:id", element: <ListeningPlayer /> },
+  { pattern: "/events", element: <Events /> },
+  { pattern: "/events/odyssey", element: <OdysseyGate /> },
   { pattern: "/course", element: <Course /> },
   { pattern: "/course/lesson/:id", element: <CourseLesson /> },
   { pattern: "/dialogues", element: <Dialogues /> },
@@ -150,6 +159,7 @@ function AppFrame() {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <EventBanner />
       <Header />
       <CommunityAnnouncement />
       <div className="flex-1">
