@@ -131,7 +131,7 @@ func fill(
 		}
 
 		needed := opts.target - current.Published
-		queueTarget := needed + max(80, opts.workers*8)
+		queueTarget := min(needed+max(40, opts.workers*4), 200)
 		if err := ensureQueue(ctx, st, fetcher, sources, queueTarget); err != nil {
 			return err
 		}
@@ -142,7 +142,18 @@ func fill(
 		if len(imports) == 0 {
 			return errors.New("approved sources did not yield any queued material")
 		}
+		// Source collection is much cheaper than Luna generation. Keep the next
+		// batch warm in parallel instead of waiting to collect the entire target
+		// before publishing the first new cards.
+		prefill := make(chan error, 1)
+		go func() {
+			prefillTarget := min(needed+max(80, opts.workers*8), 400)
+			prefill <- ensureQueue(ctx, st, fetcher, sources, prefillTarget)
+		}()
 		result := generateBatch(ctx, st, generator, sources, admin, imports, opts)
+		if err := <-prefill; err != nil {
+			return err
+		}
 		slog.Info("batch completed", "published", result.published, "rejected", result.rejected)
 		current, err = readCounts(ctx, st)
 		if err != nil {
