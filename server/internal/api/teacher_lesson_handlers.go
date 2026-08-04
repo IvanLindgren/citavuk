@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -49,6 +48,7 @@ func (s *Server) handleTeacherApplication(w http.ResponseWriter, r *http.Request
 		return
 	}
 	if err != nil {
+		slog.Error("handleTeacherApplication", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось прочитать заявку.")
 		return
 	}
@@ -95,6 +95,7 @@ func (s *Server) handleSubmitTeacherApplication(w http.ResponseWriter, r *http.R
 		MonetizationIntent: req.MonetizationIntent,
 	})
 	if err != nil {
+		slog.Error("handleSubmitTeacherApplication", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось отправить заявку.")
 		return
 	}
@@ -104,6 +105,7 @@ func (s *Server) handleSubmitTeacherApplication(w http.ResponseWriter, r *http.R
 type lessonRequest struct {
 	Title            string          `json:"title"`
 	Summary          string          `json:"summary"`
+	CoverURL         string          `json:"coverUrl"`
 	Level            string          `json:"level"`
 	LessonType       string          `json:"lessonType"`
 	Topic            string          `json:"topic"`
@@ -116,12 +118,16 @@ type lessonRequest struct {
 func validateLessonRequest(req *lessonRequest) error {
 	req.Title = strings.TrimSpace(req.Title)
 	req.Summary = strings.TrimSpace(req.Summary)
+	req.CoverURL = strings.TrimSpace(req.CoverURL)
 	req.Topic = strings.TrimSpace(req.Topic)
 	if req.Title == "" || utf8.RuneCountInString(req.Title) > 160 {
 		return errors.New("название должно содержать от 1 до 160 символов")
 	}
 	if utf8.RuneCountInString(req.Summary) > 500 || req.Topic == "" || utf8.RuneCountInString(req.Topic) > 80 {
 		return errors.New("проверьте краткое описание и тему")
+	}
+	if err := checkImageURL(req.CoverURL); err != nil {
+		return errors.New("обложка урока должна иметь безопасную HTTPS-ссылку")
 	}
 	if !validLevels[req.Level] || !validLessonType[req.LessonType] || !validScripts[req.Script] {
 		return errors.New("неверно указан уровень, тип урока или письменность")
@@ -171,11 +177,18 @@ func normalizeLessonContent(raw json.RawMessage) (json.RawMessage, error) {
 			if !ok || !validExercises[stringValue(exercise["type"])] {
 				return nil, errors.New("в уроке есть неизвестный тип упражнения")
 			}
+			// Картинка упражнения показывается ученику как <img src>. Теория
+			// такую ссылку проверяет, а упражнения раньше нет — и адрес по
+			// http сажал смешанное содержимое на страницу, а чужой хост
+			// получал IP каждого, кто открыл урок.
+			if err := checkImageURL(exercise["imageUrl"]); err != nil {
+				return nil, err
+			}
 		}
 	}
 	if dialogue, ok := root["dialogue"].(map[string]any); ok {
-		if _, ok := dialogue["nodes"].([]any); !ok {
-			return nil, errors.New("у диалога нет реплик")
+		if err := normalizeDialogue(dialogue); err != nil {
+			return nil, err
 		}
 	}
 	out, err := json.Marshal(root)
@@ -205,6 +218,75 @@ func normalizeBlocks(blocks []any, chars *int) error {
 			u, err := url.Parse(stringValue(block["url"]))
 			if err != nil || u.Scheme != "https" || u.Host == "" {
 				return errors.New("изображение должно иметь безопасную HTTPS-ссылку")
+			}
+		}
+	}
+	return nil
+}
+
+// checkImageURL требует от картинки безопасной HTTPS-ссылки. Пустое значение
+// допустимо: картинка у упражнения необязательна.
+func checkImageURL(raw any) error {
+	value := stringValue(raw)
+	if value == "" {
+		return nil
+	}
+	u, err := url.Parse(value)
+	if err != nil || u.Scheme != "https" || u.Host == "" {
+		return errors.New("картинка задания должна иметь безопасную HTTPS-ссылку")
+	}
+	return nil
+}
+
+// normalizeDialogue проверяет связность ветвящегося диалога.
+//
+// Раньше проверялось только то, что `nodes` вообще массив, и урок с висячим
+// `startId` спокойно уходил на модерацию: плееру было неоткуда начать, и
+// ученик видел пустой экран вместо диалога. Заодно обрубаем переходы на
+// несуществующие реплики — они появляются, когда автор удаляет реплику,
+// на которую кто-то ссылался.
+func normalizeDialogue(dialogue map[string]any) error {
+	nodes, ok := dialogue["nodes"].([]any)
+	if !ok || len(nodes) == 0 {
+		return errors.New("у диалога нет реплик")
+	}
+
+	ids := make(map[string]bool, len(nodes))
+	for _, item := range nodes {
+		node, ok := item.(map[string]any)
+		if !ok {
+			return errors.New("в диалоге есть повреждённая реплика")
+		}
+		id := stringValue(node["id"])
+		if id == "" {
+			return errors.New("у каждой реплики диалога должен быть идентификатор")
+		}
+		if ids[id] {
+			return errors.New("идентификаторы реплик диалога повторяются")
+		}
+		ids[id] = true
+	}
+
+	start := stringValue(dialogue["startId"])
+	if start == "" || !ids[start] {
+		return errors.New("начальная реплика диалога не найдена")
+	}
+
+	for _, item := range nodes {
+		node, _ := item.(map[string]any)
+		choices, ok := node["choices"].([]any)
+		if !ok {
+			continue
+		}
+		for _, raw := range choices {
+			choice, ok := raw.(map[string]any)
+			if !ok {
+				return errors.New("в диалоге есть повреждённый вариант ответа")
+			}
+			// Переход в никуда — это законный конец ветки, а вот ссылка на
+			// удалённую реплику завела бы ученика в тупик. Такую обнуляем.
+			if next := stringValue(choice["nextId"]); next != "" && !ids[next] {
+				choice["nextId"] = ""
 			}
 		}
 	}
@@ -283,7 +365,7 @@ func normalizeVideoURL(raw string) (string, string, error) {
 }
 
 func lessonInput(req lessonRequest) store.LessonInput {
-	return store.LessonInput{Title: req.Title, Summary: req.Summary, Level: req.Level,
+	return store.LessonInput{Title: req.Title, Summary: req.Summary, CoverURL: req.CoverURL, Level: req.Level,
 		LessonType: req.LessonType, Topic: req.Topic, Tags: req.Tags,
 		EstimatedMinutes: req.EstimatedMinutes, Script: req.Script, Content: req.Content}
 }
@@ -291,6 +373,7 @@ func lessonInput(req lessonRequest) store.LessonInput {
 func (s *Server) handleTeacherLessons(w http.ResponseWriter, r *http.Request) {
 	items, err := s.store.ListOwnLessons(r.Context(), userFrom(r.Context()).ID)
 	if err != nil {
+		slog.Error("handleTeacherLessons", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить уроки.")
 		return
 	}
@@ -304,6 +387,7 @@ func (s *Server) handleTeacherProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		slog.Error("handleTeacherProfile", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить профиль.")
 		return
 	}
@@ -318,6 +402,7 @@ func (s *Server) handlePublicTeacherProfile(w http.ResponseWriter, r *http.Reque
 	}
 	approved, err := s.store.IsApprovedTeacher(r.Context(), id)
 	if err != nil {
+		slog.Error("handlePublicTeacherProfile", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить профиль.")
 		return
 	}
@@ -331,6 +416,7 @@ func (s *Server) handlePublicTeacherProfile(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	if err != nil {
+		slog.Error("handlePublicTeacherProfile", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить профиль.")
 		return
 	}
@@ -368,6 +454,7 @@ func (s *Server) handleUpdateTeacherProfile(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	if err := s.store.UpsertTeacherProfile(r.Context(), p); err != nil {
+		slog.Error("handleUpdateTeacherProfile", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить профиль.")
 		return
 	}
@@ -375,6 +462,7 @@ func (s *Server) handleUpdateTeacherProfile(w http.ResponseWriter, r *http.Reque
 }
 
 type mediaPolicyRequest struct {
+	SHA256   string `json:"sha256"`
 	MimeType string `json:"mimeType"`
 	Size     int64  `json:"size"`
 }
@@ -389,7 +477,9 @@ func (s *Server) handleTeacherMediaPolicy(w http.ResponseWriter, r *http.Request
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать параметры файла.")
 		return
 	}
-	policy, err := s.media.CreateUploadPolicy(r.Context(), userFrom(r.Context()).ID, req.MimeType, req.Size)
+	policy, err := s.media.CreateUploadPolicy(
+		r.Context(), userFrom(r.Context()).ID,
+		strings.ToLower(strings.TrimSpace(req.SHA256)), req.MimeType, req.Size)
 	if err != nil {
 		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, err.Error())
 		return
@@ -410,6 +500,7 @@ func (s *Server) handleCreateTeacherLesson(w http.ResponseWriter, r *http.Reques
 	l, err := s.store.CreateLesson(r.Context(), userFrom(r.Context()).ID, store.SlugifyLessonTitle(req.Title), lessonInput(req))
 	if err != nil {
 		slog.Warn("создание урока", "err", err)
+		slog.Error("handleCreateTeacherLesson", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось создать урок.")
 		return
 	}
@@ -437,10 +528,30 @@ func (s *Server) handleUpdateTeacherLesson(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	if err != nil {
+		slog.Error("handleUpdateTeacherLesson", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить урок.")
 		return
 	}
 	writeJSON(w, 200, l)
+}
+
+func (s *Server) handleDeleteTeacherLesson(w http.ResponseWriter, r *http.Request) {
+	id, err := uuid.Parse(r.PathValue("id"))
+	if err != nil {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Неверный адрес урока.")
+		return
+	}
+	err = s.store.ArchiveLesson(r.Context(), userFrom(r.Context()).ID, id)
+	if errors.Is(err, store.ErrLessonNotFound) {
+		writeError(w, http.StatusNotFound, codeNotFound, "Урок не найден.")
+		return
+	}
+	if err != nil {
+		slog.Error("handleDeleteTeacherLesson", "err", err)
+		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось удалить урок.")
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
 
 type revisionRequest struct {
@@ -474,6 +585,7 @@ func (s *Server) handleLessonPublication(w http.ResponseWriter, r *http.Request,
 		return
 	}
 	if err != nil {
+		slog.Error("handleLessonPublication", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось опубликовать урок.")
 		return
 	}
@@ -492,6 +604,7 @@ func (s *Server) handlePublicLessons(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	items, err := s.store.ListPublicLessons(r.Context(), store.LessonFilter{Level: q.Get("level"), LessonType: q.Get("type"), Topic: q.Get("topic"), Author: q.Get("author"), Script: q.Get("script"), Limit: limit, Offset: offset})
 	if err != nil {
+		slog.Error("handlePublicLessons", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить каталог.")
 		return
 	}
@@ -505,6 +618,7 @@ func (s *Server) handlePublicLesson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		slog.Error("handlePublicLesson", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить урок.")
 		return
 	}
@@ -517,6 +631,7 @@ func (s *Server) handleUnlistedLesson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		slog.Error("handleUnlistedLesson", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить урок.")
 		return
 	}
@@ -531,6 +646,7 @@ type reviewRequest struct {
 func (s *Server) handleAdminTeacherApplications(w http.ResponseWriter, r *http.Request) {
 	items, err := s.store.ListTeacherApplications(r.Context(), r.URL.Query().Get("status"))
 	if err != nil {
+		slog.Error("handleAdminTeacherApplications", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить заявки.")
 		return
 	}
@@ -557,6 +673,7 @@ func (s *Server) handleAdminReviewTeacherApplication(w http.ResponseWriter, r *h
 		return
 	}
 	if err != nil {
+		slog.Error("handleAdminReviewTeacherApplication", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить решение.")
 		return
 	}
@@ -568,6 +685,7 @@ func (s *Server) handleAdminReviewTeacherApplication(w http.ResponseWriter, r *h
 func (s *Server) handleAdminLessonQueue(w http.ResponseWriter, r *http.Request) {
 	items, err := s.store.PendingLessonRevisions(r.Context())
 	if err != nil {
+		slog.Error("handleAdminLessonQueue", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить очередь.")
 		return
 	}
@@ -596,6 +714,9 @@ func (s *Server) handleAdminReviewLesson(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	if err != nil {
+		// Без причины в журнале такой 500 неотличим от любого другого, и
+		// разбираться приходится вслепую — так и вышло с этой публикацией.
+		slog.Error("модерация урока", "revision", id, "status", req.Status, "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить решение.")
 		return
 	}
@@ -615,6 +736,7 @@ func (s *Server) handleLessonProgress(w http.ResponseWriter, r *http.Request) {
 	}
 	payload, err := s.store.LessonProgress(r.Context(), userFrom(r.Context()).ID, id)
 	if err != nil {
+		slog.Error("handleLessonProgress", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить прогресс.")
 		return
 	}
@@ -634,6 +756,7 @@ func (s *Server) handlePutLessonProgress(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	if err = s.store.PutLessonProgress(r.Context(), userFrom(r.Context()).ID, id, payload); err != nil {
+		slog.Error("handlePutLessonProgress", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить прогресс.")
 		return
 	}
@@ -669,6 +792,7 @@ func (s *Server) handleCreateLessonSubmission(w http.ResponseWriter, r *http.Req
 		return
 	}
 	if err != nil {
+		slog.Error("handleCreateLessonSubmission", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось отправить работу.")
 		return
 	}
@@ -678,6 +802,7 @@ func (s *Server) handleCreateLessonSubmission(w http.ResponseWriter, r *http.Req
 func (s *Server) handleTeacherSubmissions(w http.ResponseWriter, r *http.Request) {
 	items, err := s.store.ListTeacherSubmissions(r.Context(), userFrom(r.Context()).ID, r.URL.Query().Get("status"))
 	if err != nil {
+		slog.Error("handleTeacherSubmissions", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить работы.")
 		return
 	}
@@ -716,6 +841,7 @@ func (s *Server) handleReviewSubmission(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	if err != nil {
+		slog.Error("handleReviewSubmission", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить отзыв.")
 		return
 	}
@@ -771,6 +897,7 @@ func (s *Server) handleReportLesson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		slog.Error("handleReportLesson", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось отправить жалобу.")
 		return
 	}
@@ -780,6 +907,7 @@ func (s *Server) handleReportLesson(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleAdminLessonReports(w http.ResponseWriter, r *http.Request) {
 	items, err := s.store.ListLessonReports(r.Context(), r.URL.Query().Get("status"))
 	if err != nil {
+		slog.Error("handleAdminLessonReports", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось загрузить жалобы.")
 		return
 	}
@@ -806,17 +934,9 @@ func (s *Server) handleAdminReviewLessonReport(w http.ResponseWriter, r *http.Re
 		return
 	}
 	if err != nil {
+		slog.Error("handleAdminReviewLessonReport", "err", err)
 		writeError(w, 500, codeInternal, "Не удалось сохранить решение.")
 		return
 	}
 	writeJSON(w, 200, map[string]any{"status": req.Status})
 }
-
-func lessonURL(webURL string, l *store.Lesson) string {
-	if l.Visibility == "unlisted" {
-		return strings.TrimRight(webURL, "/") + "/lesson/link/" + l.ShareToken
-	}
-	return strings.TrimRight(webURL, "/") + "/lessons/" + l.Slug
-}
-
-var _ = fmt.Sprintf

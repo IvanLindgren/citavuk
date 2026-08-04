@@ -19,6 +19,7 @@ class AppSettings extends ChangeNotifier {
   static const _kFirstRunDone = 'first_run_done';
   static const _kCourseSound = 'course_sound_enabled';
   static const _kAutoUpdate = 'auto_update_check';
+  static const _kKeepScreenOn = 'keep_screen_on';
 
   /// Сервер разбора/перевода по умолчанию — твой Hugging Face Space.
   /// На реальном телефоне localhost (10.0.2.2/127.0.0.1) недоступен, поэтому
@@ -78,6 +79,22 @@ class AppSettings extends ChangeNotifier {
     await prefs.setBool(_kCourseSound, value);
   }
 
+  /// Не давать экрану гаснуть в читалке и в плеере.
+  ///
+  /// Чтение — редкое занятие, при котором экрана не касаются минутами, и
+  /// системный тайм-аут гасит его посреди страницы. Выключатель существует
+  /// потому, что батарея — расходуемый ресурс: телефон, забытый открытым на
+  /// книге, иначе разрядится за ночь, и виноватым окажется приложение.
+  bool _keepScreenOn = true;
+  bool get keepScreenOn => _keepScreenOn;
+
+  Future<void> setKeepScreenOn(bool value) async {
+    _keepScreenOn = value;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kKeepScreenOn, value);
+  }
+
   /// Проверять обновления при запуске (только Windows и Linux).
   bool _autoUpdateCheck = true;
   bool get autoUpdateCheck => _autoUpdateCheck;
@@ -115,6 +132,7 @@ class AppSettings extends ChangeNotifier {
       _firstRunDone = prefs.getBool(_kFirstRunDone) ?? false;
       _courseSoundEnabled = prefs.getBool(_kCourseSound) ?? true;
       _autoUpdateCheck = prefs.getBool(_kAutoUpdate) ?? true;
+      _keepScreenOn = prefs.getBool(_kKeepScreenOn) ?? true;
     } catch (_) {
       // Повреждённые настройки — откатываемся к дефолтам.
     }

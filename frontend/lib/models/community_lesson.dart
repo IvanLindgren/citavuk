@@ -5,6 +5,7 @@ class CommunityLesson {
     required this.slug,
     required this.title,
     required this.summary,
+    this.coverUrl = '',
     required this.level,
     required this.lessonType,
     required this.topic,
@@ -24,6 +25,7 @@ class CommunityLesson {
         shareToken: json['shareToken']?.toString() ?? '',
         title: json['title']?.toString() ?? '',
         summary: json['summary']?.toString() ?? '',
+        coverUrl: json['coverUrl']?.toString() ?? '',
         level: json['level']?.toString() ?? '',
         lessonType: json['lessonType']?.toString() ?? '',
         topic: json['topic']?.toString() ?? '',
@@ -44,6 +46,7 @@ class CommunityLesson {
   final String shareToken;
   final String title;
   final String summary;
+  final String coverUrl;
   final String level;
   final String lessonType;
   final String topic;
@@ -60,6 +63,7 @@ class CommunityLesson {
         'shareToken': shareToken,
         'title': title,
         'summary': summary,
+        'coverUrl': coverUrl,
         'level': level,
         'lessonType': lessonType,
         'topic': topic,

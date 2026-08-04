@@ -7,12 +7,27 @@ import { SyncBadge } from "../components/SyncBadge";
 import { Button, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
 import {
   deleteBook,
+  importParagraphs,
   importText,
   listBooks,
   plural,
   readingMinutes,
   type BookMeta,
 } from "../lib/books";
+import { splitParagraphs } from "../lib/tokenize";
+import {
+  detectLanguage,
+  translateDocument,
+  type DocumentLanguage,
+} from "../api/documents";
+import { plainParagraphs } from "../lib/blocks";
+import { ApiError } from "../api/client";
+import {
+  ImportLanguageDialog,
+  SkippedImagesNote,
+  TranslationProgressCard,
+  type ImportChoice,
+} from "../components/ImportLanguageDialog";
 import {
   addDraftFolder,
   countWithoutFolder,
@@ -23,8 +38,10 @@ import {
   renameFolder,
 } from "../lib/folders";
 import {
+  attachImages,
   extractDocument,
   IMPORT_STAGE_LABELS,
+  type ImportedDocument,
   type ImportStage,
 } from "../lib/documentImport";
 import { Link, useQuery, useRouter } from "../lib/router";
@@ -45,6 +62,45 @@ Jednog dana vuk je sreo orla koji je voleo da sluša. Zajedno su proveli mnogo s
 /** Какие книги показывать: все, без папки или из конкретной папки. */
 type View = { kind: "all" } | { kind: "loose" } | { kind: "folder"; name: string };
 
+/** Разобранный документ, ждущий решения о языке. */
+interface PendingImport {
+  document: ImportedDocument;
+  paragraphs: string[];
+  detected: DocumentLanguage;
+  /** Остаться в библиотеке после сохранения — есть что сообщить. */
+  stay: boolean;
+}
+
+/**
+ * Определяет язык документа.
+ *
+ * Отказ сервера не должен мешать импорту: без сети перевод всё равно
+ * невозможен, а книга обязана добавиться. Но молчать об отказе нельзя —
+ * человек видит, что предложения перевести не было, и не может отличить
+ * «книга и так на сербском» от «проверка не сработала». Именно это уже стоило
+ * впустую потраченного времени на поиск причины.
+ *
+ * Поэтому обрыв связи проходит молча (перевод в офлайне и так невозможен), а
+ * отказ на живой сети возвращается вызывающему для показа.
+ */
+async function detectDocumentLanguage(
+  paragraphs: string[],
+): Promise<{ detected: DocumentLanguage | null; problem: string }> {
+  try {
+    return { detected: await detectLanguage(plainParagraphs(paragraphs)), problem: "" };
+  } catch (caught) {
+    const offline = caught instanceof ApiError && caught.isOffline;
+    if (offline || !navigator.onLine) return { detected: null, problem: "" };
+    return {
+      detected: null,
+      problem:
+        caught instanceof Error
+          ? `Не удалось проверить язык документа: ${caught.message} Книга добавлена как есть.`
+          : "Не удалось проверить язык документа. Книга добавлена как есть.",
+    };
+  }
+}
+
 export function Library() {
   useSeo({
     title: 'Моя библиотека — Читавук',
@@ -59,6 +115,15 @@ export function Library() {
   const [books, setBooks] = useState<BookMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [importStage, setImportStage] = useState<ImportStage | null>(null);
+  // Документ разобран, но язык оказался не сербским: ждём решения человека.
+  const [pending, setPending] = useState<PendingImport | null>(null);
+  const [progress, setProgress] = useState<{ ratio: number; note: string } | null>(
+    null,
+  );
+  const [notice, setNotice] = useState<{ skipped: number; signedIn: boolean } | null>(
+    null,
+  );
+  const abortRef = useRef<AbortController | null>(null);
   const [view, setView] = useState<View>(() =>
     query.folder ? { kind: "folder", name: query.folder } : { kind: "all" },
   );
@@ -107,17 +172,31 @@ export function Library() {
     if (account) void sync();
   }, [reload, account, sync]);
 
+  /** Сохраняет готовые абзацы книгой и открывает её. */
+  const save = useCallback(
+    async (title: string, paragraphs: string[], stay = false) => {
+      const book = await importParagraphs(title, paragraphs);
+      // Документ, добавленный внутри папки, в ней и остаётся: иначе
+      // раскладку пришлось бы поправлять после каждого импорта.
+      if (view.kind === "folder") await moveToFolder(book.id, view.name);
+      await reload();
+      // Новая книга уходит на сервер сразу, а не через две минуты: закрой
+      // пользователь вкладку — она осталась бы только здесь.
+      if (account) void sync();
+      // Если по дороге есть что сказать (например, пропущены картинки),
+      // остаёмся в библиотеке: в читалке эту фразу показать негде.
+      if (!stay) navigate(`/reader/${book.id}`);
+    },
+    [navigate, reload, account, sync, view],
+  );
+
   const addText = useCallback(
     async (title: string, text: string) => {
       setError(null);
       try {
         const book = await importText(title, text);
-        // Документ, добавленный внутри папки, в ней и остаётся: иначе
-        // раскладку пришлось бы поправлять после каждого импорта.
         if (view.kind === "folder") await moveToFolder(book.id, view.name);
         await reload();
-        // Новая книга уходит на сервер сразу, а не через две минуты: закрой
-        // пользователь вкладку — она осталась бы только здесь.
         if (account) void sync();
         navigate(`/reader/${book.id}`);
       } catch (caught) {
@@ -134,11 +213,31 @@ export function Library() {
   const readFile = useCallback(
     async (file: File) => {
       setError(null);
+      setNotice(null);
       setImportStage("reading");
       try {
         const document = await extractDocument(file, setImportStage);
         setImportStage("saving");
-        await addText(document.title, document.text);
+
+        const { paragraphs: withImages, skipped } = await attachImages(
+          document,
+          Boolean(account),
+        );
+        const paragraphs = withImages ?? splitParagraphs(document.text);
+        if (paragraphs.length === 0) {
+          throw new Error("В файле не нашлось текста.");
+        }
+        if (skipped > 0) setNotice({ skipped, signedIn: Boolean(account) });
+
+        const { detected, problem } = await detectDocumentLanguage(paragraphs);
+        if (problem) setError(problem);
+        if (detected && !detected.serbian) {
+          // Дальше решает человек: диалог остаётся на экране, а импорт
+          // продолжится из choose().
+          setPending({ document, paragraphs, detected, stay: skipped > 0 });
+          return;
+        }
+        await save(document.title, paragraphs, skipped > 0);
       } catch (caught) {
         setError(
           caught instanceof Error
@@ -149,7 +248,43 @@ export function Library() {
         setImportStage(null);
       }
     },
-    [addText],
+    [account, save],
+  );
+
+  /** Ответ на вопрос «переводить или оставить как есть». */
+  const choose = useCallback(
+    async (choice: ImportChoice) => {
+      if (!pending) return;
+      const { document, paragraphs, detected, stay } = pending;
+      setPending(null);
+
+      try {
+        if (choice === "original") {
+          await save(document.title, paragraphs, stay);
+          return;
+        }
+
+        const controller = new AbortController();
+        abortRef.current = controller;
+        setProgress({ ratio: 0, note: "" });
+        const translated = await translateDocument(
+          document.title,
+          paragraphs,
+          (update) => setProgress({ ratio: update.ratio, note: update.providerNote }),
+          detected.language,
+          controller.signal,
+        );
+        await save(document.title, translated, stay);
+      } catch (caught) {
+        setError(
+          caught instanceof Error ? caught.message : "Не удалось перевести документ.",
+        );
+      } finally {
+        setProgress(null);
+        abortRef.current = null;
+      }
+    },
+    [pending, save],
   );
 
   // Зона броска — вся страница: целиться в узкую полосу между карточками книг
@@ -173,6 +308,25 @@ export function Library() {
   return (
     <main className="overflow-x-hidden px-4 py-8 sm:px-5 sm:py-14">
       <DropOverlay visible={dragging} />
+
+      {pending && (
+        <ImportLanguageDialog
+          detected={pending.detected}
+          title={pending.document.title}
+          signedIn={Boolean(account)}
+          onChoose={(choice) => void choose(choice)}
+          onCancel={() => setPending(null)}
+        />
+      )}
+
+      {progress && (
+        <TranslationProgressCard
+          ratio={progress.ratio}
+          note={progress.note}
+          onCancel={() => abortRef.current?.abort()}
+        />
+      )}
+
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -225,6 +379,12 @@ export function Library() {
           <div className="mb-6">
             <ErrorNote>{error}</ErrorNote>
           </div>
+        )}
+
+        {notice && (
+          <Card className="mb-6 p-5">
+            <SkippedImagesNote count={notice.skipped} signedIn={notice.signedIn} />
+          </Card>
         )}
 
         {!account && books !== null && books.length > 0 && (
@@ -455,6 +615,7 @@ function BookCard({
 
   return (
     <motion.div
+      className="min-w-0 w-full"
       layout
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
@@ -481,7 +642,7 @@ function BookCard({
             )}
           </div>
 
-          <p className="mt-2 text-sm text-[var(--text-muted)]">
+          <p className="mt-2 min-w-0 break-words text-sm text-[var(--text-muted)] [overflow-wrap:anywhere]">
             {book.paragraphCount}{" "}
             {plural(book.paragraphCount, "абзац", "абзаца", "абзацев")} ·{" "}
             {readingMinutes(book.paragraphCount)} мин

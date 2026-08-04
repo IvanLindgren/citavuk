@@ -1,7 +1,12 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+  HandwritingPad,
+  type HandwritingPadHandle,
+} from '../components/HandwritingPad';
 import { Mascot } from '../components/Mascot';
+import { writable } from '../lib/writing';
 import { SyncBadge } from '../components/SyncBadge';
 import { Button, Card, Reveal, Spinner } from '../components/ui';
 import { playCourseSound } from '../course/sounds';
@@ -37,7 +42,7 @@ import { useSeo } from '../lib/seo';
  * попеременно на телефоне и в браузере, не сбивая расписание.
  */
 
-type Tab = 'review' | 'all';
+type Tab = 'review' | 'writing' | 'all';
 
 interface Row {
   entry: VocabEntry;
@@ -104,6 +109,13 @@ export function Cards() {
     return rows.filter((row) => ready.has(row.entry.id));
   }, [rows, now]);
 
+  // Письмом повторяются только слова: писать рукой фразу долго, и вспоминается
+  // она не так, как слово.
+  const dueWriting = useMemo(
+    () => due.filter((row) => writable(row.entry.word)),
+    [due],
+  );
+
   const grade = useCallback(
     async (row: Row, value: Grade) => {
       const updated = gradeReview(row.review, value, Date.now());
@@ -166,11 +178,17 @@ export function Cards() {
           <EmptyState />
         ) : (
           <>
-            <div className="mb-6 flex gap-1.5">
+            <div className="mb-6 flex flex-wrap gap-1.5">
               <TabChip active={tab === 'review'} onClick={() => setTab('review')}>
                 Повторение
                 {due.length > 0 && (
                   <span className="ml-1.5 opacity-70">{due.length}</span>
+                )}
+              </TabChip>
+              <TabChip active={tab === 'writing'} onClick={() => setTab('writing')}>
+                Письмом
+                {dueWriting.length > 0 && (
+                  <span className="ml-1.5 opacity-70">{dueWriting.length}</span>
                 )}
               </TabChip>
               <TabChip active={tab === 'all'} onClick={() => setTab('all')}>
@@ -179,9 +197,17 @@ export function Cards() {
               </TabChip>
             </div>
 
-            {tab === 'review' ? (
+            {tab === 'review' && (
               <ReviewSession due={due} total={rows.length} onGrade={grade} />
-            ) : (
+            )}
+            {tab === 'writing' && (
+              <WritingSession
+                due={dueWriting}
+                skipped={due.length - dueWriting.length}
+                onGrade={grade}
+              />
+            )}
+            {tab === 'all' && (
               <WordList rows={rows} books={books} now={now} onDelete={remove} />
             )}
           </>
@@ -304,6 +330,159 @@ function ReviewSession({
         пробел показывает перевод, цифры 1–3 оценивают
       </p>
     </div>
+  );
+}
+
+/**
+ * Повторение письмом от руки.
+ *
+ * Направление обратное обычной карточке: показывается перевод, а вспомнить надо
+ * сербское слово — и не узнать среди вариантов, а написать. Это и есть смысл
+ * упражнения: узнавание даётся куда легче воспроизведения, и слово, которое
+ * «вроде знаешь», на письме часто не вспоминается вовсе.
+ *
+ * Проверяет человек сам. Почему не программа — см. lib/writing.ts.
+ */
+function WritingSession({
+  due,
+  skipped,
+  onGrade,
+}: {
+  due: Row[];
+  skipped: number;
+  onGrade: (row: Row, grade: Grade) => Promise<void>;
+}) {
+  const reduceMotion = useReducedMotion();
+  const pad = useRef<HandwritingPadHandle>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [empty, setEmpty] = useState(true);
+  const row = due[0];
+
+  // Новое слово — чистый лист. Оставить чужие штрихи под следующим словом
+  // значит сделать упражнение бессмысленным.
+  useEffect(() => {
+    pad.current?.clear();
+    setRevealed(false);
+    setEmpty(true);
+  }, [row?.entry.id]);
+
+  if (!row) {
+    return (
+      <Card className="paper-grain px-6 py-14 text-center">
+        <div className="mx-auto mb-6 w-36">
+          <Mascot pose="citavuk_povtor" alt="" width={288} float />
+        </div>
+        <h2 className="text-2xl">Писать пока нечего</h2>
+        <p className="mx-auto mt-3 max-w-md leading-relaxed text-[var(--text-muted)]">
+          {skipped > 0
+            ? 'К повторению остались только фразы, а письмом повторяются отдельные слова.'
+            : 'Все слова повторены. Новые появятся, когда подойдёт срок.'}
+        </p>
+        <Link to="/library">
+          <Button className="mt-7">К чтению</Button>
+        </Link>
+      </Card>
+    );
+  }
+
+  return (
+    <div>
+      <Card className="paper-grain px-5 py-8 sm:px-10">
+        <p className="text-center text-sm text-[var(--text-muted)]">
+          Напишите по-сербски
+        </p>
+        <div className="mt-2 text-center font-display text-3xl font-bold sm:text-4xl">
+          {row.entry.translation || '—'}
+        </div>
+
+        <div className="mt-6">
+          <HandwritingPad
+            ref={pad}
+            ariaLabel={`Напишите сербское слово со значением «${row.entry.translation}»`}
+            onChange={setEmpty}
+          />
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex gap-2">
+            <SmallButton onClick={() => pad.current?.undo()} disabled={empty}>
+              Отменить штрих
+            </SmallButton>
+            <SmallButton onClick={() => pad.current?.clear()} disabled={empty}>
+              Стереть
+            </SmallButton>
+          </div>
+          {!revealed && (
+            <Button variant="secondary" onClick={() => setRevealed(true)}>
+              Показать ответ
+            </Button>
+          )}
+        </div>
+
+        <AnimatePresence>
+          {revealed && (
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-6 border-t border-[var(--line)] pt-5 text-center">
+                <div className="font-display text-4xl font-bold text-[var(--accent)] sm:text-5xl">
+                  {row.entry.word}
+                </div>
+                <p className="mt-2 text-sm text-[var(--text-muted)]">
+                  Сравните с написанным выше
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Card>
+
+      {revealed && (
+        <div className="mt-5 grid gap-2 sm:grid-cols-3">
+          <GradeButton tone="hard" hint="1" onClick={() => void onGrade(row, 0)}>
+            Не вспомнил
+          </GradeButton>
+          <GradeButton tone="ok" hint="2" onClick={() => void onGrade(row, 1)}>
+            Написал верно
+          </GradeButton>
+          <GradeButton tone="easy" hint="3" onClick={() => void onGrade(row, 2)}>
+            Легко
+          </GradeButton>
+        </div>
+      )}
+
+      <p className="mt-6 text-center text-sm leading-relaxed text-[var(--text-muted)]">
+        Осталось {due.length}{' '}
+        {plural(due.length, 'слово', 'слова', 'слов')}
+        {skipped > 0 && (
+          <> · фраз пропущено: {skipped}, их письмом не повторяем</>
+        )}
+      </p>
+    </div>
+  );
+}
+
+function SmallButton({
+  onClick,
+  disabled,
+  children,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="rounded-xl border border-[var(--line)] px-3 py-1.5 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text)] disabled:opacity-40"
+    >
+      {children}
+    </button>
   );
 }
 

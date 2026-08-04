@@ -65,6 +65,7 @@ export function LessonPlayer({ lesson, preview = false, previewMode, onExit }: L
     <main className="mx-auto w-full max-w-5xl px-5 py-8 sm:py-12">
       <button type="button" onClick={onExit} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]"><LuArrowLeft />{isModeration ? 'Вернуться в очередь' : isPreview ? 'Вернуться в редактор' : 'Каталог уроков'}</button>
       {isPreview && <div className="mt-5 rounded-md border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-4 py-3 text-sm"><strong>{isModeration ? 'Предпросмотр модератора.' : 'Предпросмотр преподавателя.'}</strong> Урок работает как у ученика, но ответы и письма никуда не отправляются.</div>}
+      {stage === 'theory' && lesson.coverUrl && <div className="mt-7 aspect-[16/7] w-full overflow-hidden rounded-md bg-[var(--bg-sunken)]"><img src={lesson.coverUrl} alt="" className="size-full object-cover" /></div>}
       <header className="mt-7 max-w-3xl">
         <div className="flex flex-wrap gap-2 text-xs font-bold uppercase text-[var(--accent)]"><span>{lesson.level}</span><span>·</span><span>{typeLabel(lesson.lessonType)}</span>{lesson.topic && <><span>·</span><span>{lesson.topic}</span></>}</div>
         <h1 className={`mt-3 text-3xl ${stage === 'theory' ? 'sm:text-5xl' : 'sm:text-4xl'}`}>{lesson.title || 'Урок без названия'}</h1>

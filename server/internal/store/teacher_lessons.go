@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/citavuk/server/internal/lexicon"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 )
@@ -213,6 +214,7 @@ type Lesson struct {
 	ShareToken        string          `json:"shareToken,omitempty"`
 	Title             string          `json:"title"`
 	Summary           string          `json:"summary"`
+	CoverURL          string          `json:"coverUrl,omitempty"`
 	Level             string          `json:"level"`
 	LessonType        string          `json:"lessonType"`
 	Topic             string          `json:"topic"`
@@ -230,6 +232,7 @@ type Lesson struct {
 type LessonInput struct {
 	Title            string
 	Summary          string
+	CoverURL         string
 	Level            string
 	LessonType       string
 	Topic            string
@@ -249,10 +252,10 @@ func (s *Store) CreateLesson(ctx context.Context, authorID uuid.UUID, slug strin
 	err = s.InTx(ctx, func(tx pgx.Tx) error {
 		_, err := tx.Exec(ctx, `
             INSERT INTO teacher_lessons
-                (id,author_id,slug,share_token,title,summary,level,lesson_type,topic,tags,estimated_minutes,script)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`, id, authorID, slug,
-			share, in.Title, in.Summary, in.Level, in.LessonType, in.Topic,
-			in.Tags, in.EstimatedMinutes, in.Script)
+                (id,author_id,slug,share_token,title,summary,cover_url,level,lesson_type,topic,tags,estimated_minutes,script)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`, id, authorID, slug,
+			share, in.Title, in.Summary, in.CoverURL, in.Level, in.LessonType,
+			in.Topic, in.Tags, in.EstimatedMinutes, in.Script)
 		if err != nil {
 			return err
 		}
@@ -271,10 +274,10 @@ func (s *Store) SaveLesson(ctx context.Context, authorID, lessonID uuid.UUID, in
 	err := s.InTx(ctx, func(tx pgx.Tx) error {
 		tag, err := tx.Exec(ctx, `
             UPDATE teacher_lessons SET title=$3,summary=$4,level=$5,lesson_type=$6,
-                   topic=$7,tags=$8,estimated_minutes=$9,script=$10,updated_at=now()
+                   topic=$7,tags=$8,estimated_minutes=$9,script=$10,cover_url=$11,updated_at=now()
              WHERE id=$1 AND author_id=$2 AND NOT archived`, lessonID, authorID,
 			in.Title, in.Summary, in.Level, in.LessonType, in.Topic, in.Tags,
-			in.EstimatedMinutes, in.Script)
+			in.EstimatedMinutes, in.Script, in.CoverURL)
 		if err != nil {
 			return err
 		}
@@ -296,7 +299,7 @@ func (s *Store) SaveLesson(ctx context.Context, authorID, lessonID uuid.UUID, in
 func (s *Store) OwnLesson(ctx context.Context, authorID, lessonID uuid.UUID) (*Lesson, error) {
 	return s.scanLesson(ctx, `
         SELECT l.id,l.author_id,coalesce(nullif(p.public_name,''),u.display_name),coalesce(p.avatar_url,''),
-               l.slug,l.share_token,l.title,l.summary,l.level,l.lesson_type,l.topic,l.tags,
+               l.slug,l.share_token,l.title,l.summary,l.cover_url,l.level,l.lesson_type,l.topic,l.tags,
                l.estimated_minutes,l.script,l.visibility,l.published_revision_id,l.updated_at,
                r.id,r.status,r.content
           FROM teacher_lessons l JOIN users u ON u.id=l.author_id
@@ -309,7 +312,7 @@ func (s *Store) OwnLesson(ctx context.Context, authorID, lessonID uuid.UUID) (*L
 func (s *Store) ListOwnLessons(ctx context.Context, authorID uuid.UUID) ([]Lesson, error) {
 	return s.listLessons(ctx, `
         SELECT l.id,l.author_id,coalesce(nullif(p.public_name,''),u.display_name),coalesce(p.avatar_url,''),
-               l.slug,l.share_token,l.title,l.summary,l.level,l.lesson_type,l.topic,l.tags,
+               l.slug,l.share_token,l.title,l.summary,l.cover_url,l.level,l.lesson_type,l.topic,l.tags,
                l.estimated_minutes,l.script,l.visibility,l.published_revision_id,l.updated_at,
                r.id,r.status,r.content
           FROM teacher_lessons l JOIN users u ON u.id=l.author_id
@@ -335,18 +338,60 @@ func (s *Store) SubmitPublicLesson(ctx context.Context, authorID, lessonID, revi
 	return err
 }
 
+// ArchiveLesson removes a lesson from every reader-facing surface while
+// retaining its revisions and submissions for audit and teacher history.
+func (s *Store) ArchiveLesson(ctx context.Context, authorID, lessonID uuid.UUID) error {
+	return s.InTx(ctx, func(tx pgx.Tx) error {
+		tag, err := tx.Exec(ctx, `
+            UPDATE teacher_lessons
+               SET archived=true,visibility='draft',published_revision_id=NULL,updated_at=now()
+             WHERE id=$1 AND author_id=$2 AND NOT archived`, lessonID, authorID)
+		if err != nil {
+			return err
+		}
+		if tag.RowsAffected() == 0 {
+			return ErrLessonNotFound
+		}
+		_, err = tx.Exec(ctx, `
+            UPDATE lesson_revisions
+               SET status='rejected',admin_comment='Урок удалён автором.',reviewed_at=now()
+             WHERE lesson_id=$1 AND status='pending'`, lessonID)
+		return err
+	})
+}
+
+// publishRevisionQuery собирает запрос публикации версии урока.
+//
+// Условия у автора и у модератора разные: автор публикует только свой урок и
+// только из черновика, модератор — любой, но лишь отправленный на проверку.
+//
+// Плейсхолдеры нумеруются по факту использования, а НЕ фиксированным списком.
+// PostgreSQL в расширенном протоколе обязан вывести тип каждого параметра, и
+// для параметра, которого нет в тексте запроса, вывести его неоткуда: запрос
+// падает с «could not determine data type of parameter $N». Именно так и
+// ломалась публикация модератором — `author_id` в её ветке не упоминается.
+func publishRevisionQuery(
+	authorID, lessonID, revisionID uuid.UUID,
+	admin bool,
+	reviewer uuid.UUID,
+	comment string,
+) (string, []any) {
+	query := `UPDATE lesson_revisions r SET status='published',admin_comment=$3,
+                    reviewed_by=NULLIF($4,'00000000-0000-0000-0000-000000000000'::uuid),
+                    reviewed_at=CASE WHEN $5 THEN now() ELSE reviewed_at END,published_at=now()
+              FROM teacher_lessons l WHERE r.id=$1 AND r.lesson_id=$2 AND l.id=r.lesson_id`
+	args := []any{revisionID, lessonID, comment, reviewer, admin}
+	if admin {
+		query += ` AND r.status='pending'`
+		return query, args
+	}
+	query += ` AND l.author_id=$6 AND r.status IN ('draft','rejected','published')`
+	return query, append(args, authorID)
+}
+
 func (s *Store) publishRevision(ctx context.Context, authorID, lessonID, revisionID uuid.UUID, visibility string, admin bool, reviewer uuid.UUID, comment string) error {
 	return s.InTx(ctx, func(tx pgx.Tx) error {
-		query := `UPDATE lesson_revisions r SET status='published',admin_comment=$4,
-                    reviewed_by=NULLIF($5,'00000000-0000-0000-0000-000000000000'::uuid),
-                    reviewed_at=CASE WHEN $6 THEN now() ELSE reviewed_at END,published_at=now()
-              FROM teacher_lessons l WHERE r.id=$1 AND r.lesson_id=$2 AND l.id=r.lesson_id`
-		args := []any{revisionID, lessonID, authorID, comment, reviewer, admin}
-		if !admin {
-			query += ` AND l.author_id=$3 AND r.status IN ('draft','rejected','published')`
-		} else {
-			query += ` AND r.status='pending'`
-		}
+		query, args := publishRevisionQuery(authorID, lessonID, revisionID, admin, reviewer, comment)
 		tag, err := tx.Exec(ctx, query, args...)
 		if err != nil {
 			return err
@@ -401,7 +446,7 @@ type LessonFilter struct {
 func (s *Store) ListPublicLessons(ctx context.Context, f LessonFilter) ([]Lesson, error) {
 	return s.listLessons(ctx, `
         SELECT l.id,l.author_id,coalesce(nullif(p.public_name,''),u.display_name),coalesce(p.avatar_url,''),
-               l.slug,''::text,l.title,l.summary,l.level,l.lesson_type,l.topic,l.tags,
+               l.slug,''::text,l.title,l.summary,l.cover_url,l.level,l.lesson_type,l.topic,l.tags,
                l.estimated_minutes,l.script,l.visibility,l.published_revision_id,l.updated_at,
                r.id,r.status,NULL::jsonb
           FROM teacher_lessons l JOIN users u ON u.id=l.author_id
@@ -426,7 +471,7 @@ func (s *Store) UnlistedLesson(ctx context.Context, token string) (*Lesson, erro
 func (s *Store) publishedLesson(ctx context.Context, where string, arg any) (*Lesson, error) {
 	return s.scanLesson(ctx, fmt.Sprintf(`
         SELECT l.id,l.author_id,coalesce(nullif(p.public_name,''),u.display_name),coalesce(p.avatar_url,''),
-               l.slug,''::text,l.title,l.summary,l.level,l.lesson_type,l.topic,l.tags,
+               l.slug,''::text,l.title,l.summary,l.cover_url,l.level,l.lesson_type,l.topic,l.tags,
                l.estimated_minutes,l.script,l.visibility,l.published_revision_id,l.updated_at,
                r.id,r.status,r.content
           FROM teacher_lessons l JOIN users u ON u.id=l.author_id
@@ -435,15 +480,46 @@ func (s *Store) publishedLesson(ctx context.Context, where string, arg any) (*Le
          WHERE %s AND NOT l.archived`, where), arg)
 }
 
+// SitemapLesson — строка карты сайта для опубликованного урока.
+type SitemapLesson struct {
+	Slug      string
+	UpdatedAt time.Time
+}
+
+// PublicLessonSitemap отдаёт адреса уроков для карты сайта.
+//
+// Отдельный запрос вместо ListPublicLessons: карте нужны только адрес и дата,
+// а тянуть ради неё содержимое всех уроков — лишняя работа и память.
+func (s *Store) PublicLessonSitemap(ctx context.Context) ([]SitemapLesson, error) {
+	rows, err := s.Pool.Query(ctx, `
+        SELECT l.slug,l.updated_at FROM teacher_lessons l
+          JOIN lesson_revisions r ON r.id=l.published_revision_id
+         WHERE l.visibility='public' AND NOT l.archived
+         ORDER BY l.updated_at DESC LIMIT 5000`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SitemapLesson{}
+	for rows.Next() {
+		var item SitemapLesson
+		if err := rows.Scan(&item.Slug, &item.UpdatedAt); err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+	return items, rows.Err()
+}
+
 func (s *Store) PendingLessonRevisions(ctx context.Context) ([]Lesson, error) {
 	return s.listLessons(ctx, `
         SELECT l.id,l.author_id,coalesce(nullif(p.public_name,''),u.display_name),coalesce(p.avatar_url,''),
-               l.slug,l.share_token,l.title,l.summary,l.level,l.lesson_type,l.topic,l.tags,
+               l.slug,l.share_token,l.title,l.summary,l.cover_url,l.level,l.lesson_type,l.topic,l.tags,
                l.estimated_minutes,l.script,l.visibility,l.published_revision_id,l.updated_at,
                r.id,r.status,r.content
           FROM lesson_revisions r JOIN teacher_lessons l ON l.id=r.lesson_id
           JOIN users u ON u.id=l.author_id LEFT JOIN teacher_profiles p ON p.user_id=l.author_id
-         WHERE r.status='pending' ORDER BY r.submitted_at`)
+         WHERE r.status='pending' AND NOT l.archived ORDER BY r.submitted_at`)
 }
 
 func (s *Store) scanLesson(ctx context.Context, query string, args ...any) (*Lesson, error) {
@@ -460,7 +536,7 @@ type rowScanner interface{ Scan(...any) error }
 func scanLessonRow(row rowScanner) (*Lesson, error) {
 	var l Lesson
 	err := row.Scan(&l.ID, &l.AuthorID, &l.AuthorName, &l.AuthorAvatar, &l.Slug,
-		&l.ShareToken, &l.Title, &l.Summary, &l.Level, &l.LessonType, &l.Topic,
+		&l.ShareToken, &l.Title, &l.Summary, &l.CoverURL, &l.Level, &l.LessonType, &l.Topic,
 		&l.Tags, &l.EstimatedMinutes, &l.Script, &l.Visibility,
 		&l.PublishedRevision, &l.UpdatedAt, &l.RevisionID, &l.RevisionStatus, &l.Content)
 	return &l, err
@@ -566,6 +642,13 @@ func (s *Store) ReviewLessonSubmission(ctx context.Context, teacherID, submissio
 		if err != nil {
 			return err
 		}
+		// Уведомление — только о завершённой проверке. Статус `reviewing`
+		// означает «преподаватель взял работу», и сообщать ученику, что её уже
+		// проверили, нельзя: отзыва ещё нет, и письмо на этом статусе тоже не
+		// уходит — два канала расходились бы между собой.
+		if status != "reviewed" {
+			return nil
+		}
 		_, err = tx.Exec(ctx, `INSERT INTO user_notifications (id,user_id,kind,title,body,target_url)
             VALUES ($1,$2,'letter_review',$3,$4,'/account')`, uuid.New(), studentID, "Преподаватель проверил письменную работу", feedback)
 		return err
@@ -625,10 +708,26 @@ func (s *Store) ReviewLessonReport(ctx context.Context, adminID, reportID uuid.U
 	return err
 }
 
+// asciiFold убирает диакритику сербской латиницы: в адресе урока её быть не
+// может, а выбрасывать букву целиком нельзя — «Čitanje» превратилось бы в
+// «itanje».
+var asciiFold = strings.NewReplacer(
+	"š", "s", "đ", "dj", "ž", "z", "č", "c", "ć", "c",
+	"Š", "s", "Đ", "dj", "Ž", "z", "Č", "c", "Ć", "c",
+)
+
+// SlugifyLessonTitle строит адрес урока из названия.
+//
+// Кириллица сначала переводится в латиницу, а не выбрасывается: сайт про
+// сербский, и большинство названий кириллические. Без этого шага от названия
+// не оставалось ничего, и все такие уроки получали адреса вида
+// «lesson-3f2a91bc», неразличимые ни для человека, ни для поиска.
 func SlugifyLessonTitle(title string) string {
+	normalized := asciiFold.Replace(lexicon.ToLatin(strings.TrimSpace(title)))
+
 	var b strings.Builder
 	dash := false
-	for _, r := range strings.ToLower(strings.TrimSpace(title)) {
+	for _, r := range strings.ToLower(normalized) {
 		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
 			b.WriteRune(r)
 			dash = false
@@ -638,6 +737,14 @@ func SlugifyLessonTitle(title string) string {
 		}
 	}
 	slug := strings.Trim(b.String(), "-")
+	// Длинное название не должно давать бесконечный адрес; режем по границе
+	// слова, чтобы обрывок оставался читаемым.
+	if len(slug) > 80 {
+		slug = strings.Trim(slug[:80], "-")
+		if cut := strings.LastIndexByte(slug, '-'); cut > 20 {
+			slug = slug[:cut]
+		}
+	}
 	if slug == "" {
 		slug = "lesson"
 	}

@@ -14,3 +14,6 @@ Disallow: /verify-email
 Disallow: /auth/
 
 Sitemap: https://citavuk.ru/sitemap.xml
+# Уроки преподавателей публикуются между выкладками сайта, поэтому их карту
+# отдаёт сервер из базы, а не статический файл сборки.
+Sitemap: https://citavuk.ru/sitemap-lessons.xml

@@ -78,19 +78,49 @@ describe('развеска слов', () => {
 });
 
 describe('порядок обхода', () => {
-  const filled = palace({
-    pins: {
-      lampa: { word: 'лампа', translation: 'лампа', vocabId: null },
-      prozor: { word: 'прозор', translation: 'окно', vocabId: null },
-    },
+  it('идёт в порядке развески, а не в порядке предметов сцены', () => {
+    // Человек расставляет слова осознанно: сначала то, с чего начнёт. Обход
+    // обязан следовать его замыслу, иначе приходится держать в голове ещё и
+    // авторскую нумерацию предметов.
+    const filled = palace({
+      pins: {
+        lampa: { word: 'лампа', translation: 'лампа', vocabId: null, at: 10 },
+        prozor: { word: 'прозор', translation: 'окно', vocabId: null, at: 20 },
+      },
+    });
+    const route = walkOrder(filled, ['prozor', 'frizider', 'lampa']);
+    expect(route.map((step) => step.objectId)).toEqual(['lampa', 'prozor']);
   });
 
-  it('идёт в порядке предметов сцены, а не развески', () => {
-    // Ключи объекта перечисляются в порядке вставки — «лампа» первой. Обход
-    // обязан следовать сцене: маршрут должен быть один и тот же каждый раз,
-    // иначе место перестаёт быть подсказкой.
-    const route = walkOrder(filled, ['prozor', 'frizider', 'lampa']);
-    expect(route.map((step) => step.objectId)).toEqual(['prozor', 'lampa']);
+  // Маршрут, выученный до появления порядка развески, менять задним числом
+  // нельзя: человек его уже запомнил.
+  it('старая развеска без пометки времени идёт по сцене и первой', () => {
+    const filled = palace({
+      pins: {
+        lampa: { word: 'лампа', translation: 'лампа', vocabId: null },
+        prozor: { word: 'прозор', translation: 'окно', vocabId: null },
+        sto: { word: 'сто', translation: 'стол', vocabId: null, at: 99 },
+      },
+    });
+    const route = walkOrder(filled, ['prozor', 'sto', 'lampa']);
+    expect(route.map((step) => step.objectId)).toEqual(['prozor', 'lampa', 'sto']);
+  });
+
+  it('замена слова на предмете не переносит его в конец маршрута', () => {
+    let filled = palace({
+      pins: {
+        lampa: { word: 'лампа', translation: 'лампа', vocabId: null, at: 10 },
+        prozor: { word: 'прозор', translation: 'окно', vocabId: null, at: 20 },
+      },
+    });
+    filled = withPin(filled, 'lampa', {
+      word: 'сијалица',
+      translation: 'лампочка',
+      vocabId: null,
+    });
+    const route = walkOrder(filled, ['prozor', 'lampa']);
+    expect(route.map((step) => step.objectId)).toEqual(['lampa', 'prozor']);
+    expect(filled.pins.lampa!.at).toBe(10);
   });
 
   it('пропускает предметы без слова', () => {

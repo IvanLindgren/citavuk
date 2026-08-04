@@ -80,6 +80,22 @@ export function playableAudioUrl(url: string): string {
   return `${API_BASE}/audio/proxy?url=${encodeURIComponent(url)}`;
 }
 
-export function ttsAudioUrl(text: string): string {
-  return `${API_BASE}/audio/tts?text=${encodeURIComponent(text)}`;
+export type SerbianTtsVoice = 'sophie' | 'nicholas';
+
+const TTS_VOICE_KEY = 'citavuk-tts-voice';
+export const TTS_VOICE_EVENT = 'citavuk:tts-voice';
+
+export function getTtsVoice(): SerbianTtsVoice {
+  if (typeof localStorage === 'undefined') return 'sophie';
+  return localStorage.getItem(TTS_VOICE_KEY) === 'nicholas' ? 'nicholas' : 'sophie';
+}
+
+export function setTtsVoice(voice: SerbianTtsVoice): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(TTS_VOICE_KEY, voice);
+  window.dispatchEvent(new CustomEvent(TTS_VOICE_EVENT, { detail: voice }));
+}
+
+export function ttsAudioUrl(text: string, lang = 'sr', voice = getTtsVoice()): string {
+  return `${API_BASE}/audio/tts?text=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}&voice=${encodeURIComponent(voice)}`;
 }

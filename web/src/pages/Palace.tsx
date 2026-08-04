@@ -330,11 +330,17 @@ function PalaceRoom({
             palace={palace}
             activeId={active}
             onPick={(objectId) => setActive((current) => (current === objectId ? null : objectId))}
+            onDropWord={(objectId, word) =>
+              void pin(objectId, word.word, word.translation, word.vocabId)
+            }
           />
         </Card>
 
+        <WordStrip palace={palace} vocabulary={vocabulary} />
+
         <p className="mt-3 text-center text-sm text-[var(--text-muted)]">
-          Нажмите на предмет, чтобы повесить на него слово.
+          Перетащите слово на предмет — или нажмите на предмет, чтобы вписать
+          своё.
         </p>
 
         <AnimatePresence mode="wait">
@@ -362,6 +368,112 @@ function PalaceRoom({
         </AnimatePresence>
       </div>
     </main>
+  );
+}
+
+/** Слово, которое тащат на предмет. */
+interface DraggedWord {
+  word: string;
+  translation: string;
+  vocabId: string | null;
+}
+
+const DRAG_TYPE = 'application/x-citavuk-word';
+
+/**
+ * Читает перетаскиваемое слово.
+ *
+ * В `dataTransfer` может оказаться что угодно — текст с другой вкладки, файл,
+ * ссылка. Разбор поэтому защитный: чужое перетаскивание должно ничего не
+ * сделать, а не повесить на полку строку «https://».
+ */
+function readDraggedWord(data: DataTransfer): DraggedWord | null {
+  try {
+    const raw = data.getData(DRAG_TYPE);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) return null;
+    const value = parsed as Record<string, unknown>;
+    if (typeof value.word !== 'string' || value.word.trim() === '') return null;
+    return {
+      word: value.word,
+      translation: typeof value.translation === 'string' ? value.translation : '',
+      vocabId: typeof value.vocabId === 'string' ? value.vocabId : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Полоса слов под комнатой: отсюда слова перетаскиваются на предметы.
+ *
+ * Прежде слово можно было повесить только через выбор предмета и поиск по
+ * словарю — два шага и переключение внимания на каждое слово. Перетаскивание
+ * ближе к самому приёму: человек смотрит на комнату и кладёт слово туда, где
+ * оно, по его замыслу, должно лежать.
+ *
+ * Уже развешанные слова из полосы убираются: одно слово на двух предметах
+ * сделало бы маршрут неоднозначным, а именно однозначность маршрута тут и
+ * работает.
+ */
+function WordStrip({
+  palace,
+  vocabulary,
+}: {
+  palace: PalaceRecord;
+  vocabulary: VocabEntry[];
+}) {
+  const free = useMemo(() => {
+    const used = new Set(Object.values(palace.pins).map((pin) => pin.word));
+    return vocabulary.filter((entry) => !used.has(entry.word));
+  }, [palace.pins, vocabulary]);
+
+  if (vocabulary.length === 0) {
+    return (
+      <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
+        Словарь пока пуст. Отмечайте слова в читалке — и они появятся здесь.
+      </p>
+    );
+  }
+
+  if (free.length === 0) {
+    return (
+      <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
+        Все слова словаря уже развешаны.
+      </p>
+    );
+  }
+
+  return (
+    <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+      {free.map((entry) => (
+        <button
+          key={entry.id}
+          type="button"
+          draggable
+          onDragStart={(event) => {
+            event.dataTransfer.effectAllowed = 'copy';
+            event.dataTransfer.setData(
+              DRAG_TYPE,
+              JSON.stringify({
+                word: entry.word,
+                translation: entry.translation,
+                vocabId: entry.id,
+              }),
+            );
+          }}
+          className="shrink-0 cursor-grab rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-left transition-colors hover:border-[var(--accent)] active:cursor-grabbing"
+        >
+          <span className="block font-bold">{entry.word}</span>
+          {entry.translation && (
+            <span className="block text-xs text-[var(--text-muted)]">
+              {entry.translation}
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -641,6 +753,7 @@ function SceneView({
   spotlight = false,
   hideLabels = false,
   onPick,
+  onDropWord,
 }: {
   scene: PalaceScene;
   palace: PalaceRecord | null;
@@ -649,7 +762,12 @@ function SceneView({
   spotlight?: boolean;
   hideLabels?: boolean;
   onPick?: (objectId: string) => void;
+  onDropWord?: (objectId: string, word: DraggedWord) => void;
 }) {
+  // Предмет под курсором во время перетаскивания. Без подсветки человек
+  // отпускает слово вслепую и промахивается мимо соседнего предмета.
+  const [over, setOver] = useState<string | null>(null);
+
   return (
     <svg
       viewBox={`0 0 ${SCENE_WIDTH} ${SCENE_HEIGHT}`}
@@ -673,6 +791,28 @@ function SceneView({
               cursor: onPick ? 'pointer' : undefined,
               transition: 'opacity 0.3s',
             }}
+            onDragOver={
+              onDropWord
+                ? (event) => {
+                    // preventDefault здесь обязателен: без него браузер
+                    // считает область запрещённой для сброса и курсор
+                    // показывает перечёркнутый круг.
+                    event.preventDefault();
+                    setOver(object.id);
+                  }
+                : undefined
+            }
+            onDragLeave={onDropWord ? () => setOver(null) : undefined}
+            onDrop={
+              onDropWord
+                ? (event) => {
+                    event.preventDefault();
+                    setOver(null);
+                    const word = readDraggedWord(event.dataTransfer);
+                    if (word) onDropWord(object.id, word);
+                  }
+                : undefined
+            }
             onClick={onPick ? () => onPick(object.id) : undefined}
             role={onPick ? 'button' : undefined}
             tabIndex={onPick ? 0 : undefined}
@@ -687,10 +827,26 @@ function SceneView({
                 : undefined
             }
           >
+            {/* Прозрачная площадка под предметом: рисунок бывает тонким —
+                стебель цветка, ножка лампы, — и попасть в него перетаскиванием
+                почти невозможно. Она же ловит нажатие мимо самого рисунка. */}
+            {(onPick || onDropWord) && (
+              <rect
+                x={-90}
+                y={-90}
+                width={180}
+                height={180}
+                fill="transparent"
+              />
+            )}
+
             {object.art}
 
-            {/* Кольцо вокруг выбранного предмета: без него непонятно, о каком
-                именно месте сейчас идёт речь. */}
+            {/* Кольцо вокруг предмета: у выбранного — чтобы было понятно, о
+                каком месте речь; под перетаскиванием — куда упадёт слово. */}
+            {over === object.id && (
+              <circle r={92} fill="#c23b33" opacity={0.16} />
+            )}
             {active && (
               <circle
                 r={92}

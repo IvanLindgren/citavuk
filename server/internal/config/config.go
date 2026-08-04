@@ -65,6 +65,11 @@ type Config struct {
 	WebURL               string
 	EmailVerificationTTL time.Duration
 
+	// WebRoot — каталог собранного сайта на этой же машине. Из него берётся
+	// index.html, когда сервер отдаёт страницу урока с готовой разметкой:
+	// ссылки на бандлы должны быть теми же, что у остального сайта.
+	WebRoot string
+
 	// UpstreamURL — старый Python-бэкенд. Go пока не умеет CLASSLA, новости и
 	// TTS, поэтому такие запросы проксируются. Пустая строка выключает проксирование.
 	UpstreamURL string
@@ -79,6 +84,12 @@ type Config struct {
 	// MaxBookBytes ограничивает размер загружаемого текста книги.
 	MaxBookBytes int64
 
+	// DocumentTranslationsPerDay — сколько документов один пользователь вправе
+	// перевести на сербский за сутки. Предел существует не ради жадности:
+	// перевод книги — это десятки тысяч знаков у внешнего провайдера, и без
+	// предела один человек занял бы его для всех остальных.
+	DocumentTranslationsPerDay int
+
 	// TrustProxy включает чтение X-Forwarded-For. Включать только когда перед
 	// сервером действительно стоит nginx, иначе клиент подделает свой IP и
 	// обойдёт ограничение частоты запросов.
@@ -90,6 +101,15 @@ type Config struct {
 	QuizAPIKey string
 	QuizModel  string
 	QuizURL    string
+
+	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
+	// separate because chat and vector models may use different providers.
+	FeedAIKey          string
+	FeedAIModel        string
+	FeedAIURL          string
+	FeedEmbeddingKey   string
+	FeedEmbeddingModel string
+	FeedEmbeddingURL   string
 
 	// AdminEmails — аккаунты, которым при старте выдаётся роль администратора.
 	// Список хранится в окружении, чтобы роль нельзя было получить регистрацией
@@ -116,16 +136,19 @@ func Load(envPath string) (*Config, error) {
 	}
 
 	c := &Config{
-		Addr:               envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
-		DatabaseURL:        firstEnv("DATABASE_URL", "DB_URL"),
-		RedisURL:           firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
-		RedisPrefix:        envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
-		RedisCacheTTL:      envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
-		DeepLKey:           firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
-		UpstreamURL:        envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
-		AllowedOrigins:     splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
-		SessionTTLDays:     envInt("CITAVUK_SESSION_TTL_DAYS", 90),
-		MaxBookBytes:       int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
+		Addr:           envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
+		DatabaseURL:    firstEnv("DATABASE_URL", "DB_URL"),
+		RedisURL:       firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
+		RedisPrefix:    envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
+		RedisCacheTTL:  envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
+		DeepLKey:       firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
+		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
+		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
+		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
+		MaxBookBytes:   int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
+
+		DocumentTranslationsPerDay: envInt("CITAVUK_DOC_TRANSLATIONS_PER_DAY", 1),
+
 		TrustProxy:         envBool("CITAVUK_TRUST_PROXY", false),
 		AdminEmails:        splitList(os.Getenv("CITAVUK_ADMIN_EMAILS")),
 		S3Endpoint:         strings.TrimRight(strings.TrimSpace(os.Getenv("S3_ENDPOINT")), "/"),
@@ -139,6 +162,20 @@ func Load(envPath string) (*Config, error) {
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-31b-it"),
+		FeedAIURL: envOr(
+			"CITAVUK_FEED_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		FeedEmbeddingKey: firstEnv(
+			"CITAVUK_FEED_EMBEDDING_KEY", "POLZA_AI_KEY", "CITAVUK_FEED_AI_KEY",
+		),
+		FeedEmbeddingModel: envOr("CITAVUK_FEED_EMBEDDING_MODEL", "text-embedding-3-small"),
+		FeedEmbeddingURL: envOr(
+			"CITAVUK_FEED_EMBEDDING_URL",
+			"https://polza.ai/api/v1/embeddings",
 		),
 		GoogleClientIDs:       googleClientIDs(),
 		GoogleWebClientID:     strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID_WEB")),
@@ -157,6 +194,7 @@ func Load(envPath string) (*Config, error) {
 		),
 		WebURL:               strings.TrimRight(envOr("CITAVUK_WEB_URL", "https://citavuk.ru"), "/"),
 		EmailVerificationTTL: envDuration("CITAVUK_EMAIL_VERIFICATION_TTL", 24*time.Hour),
+		WebRoot:              envOr("CITAVUK_WEB_ROOT", "/var/www/citavuk"),
 	}
 
 	if c.DatabaseURL == "" {

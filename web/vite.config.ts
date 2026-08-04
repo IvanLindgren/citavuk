@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
     rootEnv.VITE_GOOGLE_CLIENT_ID?.trim() ||
     rootEnv.GOOGLE_CLIENT_ID_WEB?.trim() ||
     '';
+  const devApiTarget =
+    rootEnv.CITAVUK_DEV_API?.trim() ||
+    'https://api.citavuk.ru';
 
   return {
     define: {
@@ -42,19 +45,18 @@ export default defineConfig(({ mode }) => {
       // приходится думать про CORS.
       //
       // По умолчанию — боевой сервер, чтобы `npm run dev` работал сразу, без
-      // поднятого рядом Go. Если правите сам сервер, поменяйте адрес на
-      // http://127.0.0.1:8090 (переменная окружения потребовала бы типов Node
-      // ради одной строки).
+      // поднятого рядом Go. Для локального сервера задайте
+      // CITAVUK_DEV_API=http://127.0.0.1:8090.
       '/v1': {
-        target: 'https://api.citavuk.ru',
+        target: devApiTarget,
         changeOrigin: true,
       },
       '/audio': {
-        target: 'https://api.citavuk.ru',
+        target: devApiTarget,
         changeOrigin: true,
       },
       '/documents': {
-        target: 'https://api.citavuk.ru',
+        target: devApiTarget,
         changeOrigin: true,
       },
     },

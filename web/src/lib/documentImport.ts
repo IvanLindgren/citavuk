@@ -1,4 +1,7 @@
 import { API_BASE } from '../api/client';
+import { MAX_BOOK_IMAGES, uploadBookImage } from '../api/bookImages';
+import { isBlock, plainParagraphs } from './blocks';
+import { applyImageUrls } from './formats/htmlBlocks';
 import { cleanLatexLayout } from './latexText';
 import { reflowDocumentWithLayout, type LayoutLine } from './reflow';
 import { fixSerbianDocument, fixSerbianText } from './serbianEncodingFix';
@@ -18,6 +21,18 @@ export interface ImportedDocument {
   format: 'text' | 'docx' | 'pdf' | 'fb2' | 'epub' | 'djvu';
   pages?: number;
   ocrUsed?: boolean;
+  /**
+   * Готовые абзацы книги, включая картинки и таблицы.
+   *
+   * Заполняются только для размеченных источников — DOCX и HTML. У остальных
+   * форматов разбиение на абзацы делает splitParagraphs из текста, как и
+   * раньше: PDF хранит строки страницы, а не структуру документа, а FB2 и EPUB
+   * держат картинки отдельными файлами внутри архива, и разбирать их пришлось
+   * бы вместе с путями и оглавлением.
+   */
+  paragraphs?: string[];
+  /** Найденные картинки в порядке появления. Адреса им ещё не назначены. */
+  images?: Blob[];
 }
 
 interface OcrResponse {
@@ -55,7 +70,17 @@ export async function extractDocument(
   const document = await readDocument(file, onStage);
   // Испорченные шрифтом đ, č и ž чинятся на выходе, а не в каждом разборщике:
   // поломка приходит из PDF, DOCX и FB2 одинаково.
-  return { ...document, text: fixSerbianText(document.text) };
+  //
+  // Абзацы чинятся по одному, а не склейкой в общий текст: среди них есть
+  // метки картинок, и адрес в такой метке чинить нечего — там нет сербских
+  // букв, зато есть проценты и дефисы, которые починка могла бы задеть.
+  return {
+    ...document,
+    text: fixSerbianText(document.text),
+    paragraphs: document.paragraphs?.map((paragraph) =>
+      isBlock(paragraph) ? paragraph : fixSerbianText(paragraph),
+    ),
+  };
 }
 
 async function readDocument(
@@ -93,8 +118,7 @@ async function readDocument(
 
   if (extension === 'docx' || signature.startsWith(ZIP_MAGIC)) {
     onStage('docx');
-    const text = await extractDocx(file);
-    return { title, text, format: 'docx' };
+    return { title, format: 'docx', ...(await extractDocx(file)) };
   }
 
   if (extension === 'doc') {
@@ -147,6 +171,50 @@ async function extractEbook(
   }
   const { extractHtml } = await import('./formats/ebook');
   return { text: extractHtml(await file.text()), format: 'text' };
+}
+
+/**
+ * Даёт картинкам постоянные адреса и подставляет их в абзацы.
+ *
+ * Без аккаунта картинки выбрасываются, и это не оплошность, а следствие
+ * модели данных: адрес книги при синхронизации считается от её абзацев, а
+ * адреса картинок лежат прямо в них. Временный адрес, заменённый после входа,
+ * поменял бы адрес уже сохранённой книги — и та превратилась бы во вторую
+ * копию себя самой.
+ *
+ * Неудача с отдельной картинкой не срывает импорт: текст важнее иллюстрации.
+ */
+export async function attachImages(
+  document: ImportedDocument,
+  signedIn: boolean,
+): Promise<{ paragraphs: string[] | undefined; skipped: number }> {
+  const { paragraphs, images } = document;
+  if (!paragraphs) return { paragraphs: undefined, skipped: 0 };
+  if (!images || images.length === 0) {
+    return { paragraphs, skipped: 0 };
+  }
+  if (!signedIn) {
+    return {
+      paragraphs: applyImageUrls(paragraphs, []),
+      skipped: images.length,
+    };
+  }
+
+  const taken = images.slice(0, MAX_BOOK_IMAGES);
+  const urls = await Promise.all(
+    taken.map(async (blob) => {
+      try {
+        return await uploadBookImage(blob);
+      } catch {
+        return '';
+      }
+    }),
+  );
+
+  return {
+    paragraphs: applyImageUrls(paragraphs, urls),
+    skipped: images.length - urls.filter(Boolean).length,
+  };
 }
 
 /**
@@ -301,14 +369,55 @@ async function responseError(response: Response, fallback: string): Promise<stri
   }
 }
 
-async function extractDocx(file: File): Promise<string> {
+/**
+ * DOCX разбирается через HTML, а не через голый текст.
+ *
+ * extractRawText отдаёт только слова, теряя ровно то, ради чего учебник и
+ * открывают: таблицу склонений и картинку с картой. Промежуточный HTML эти
+ * структуры сохраняет, а разбор его в абзацы книги — общий с веб-страницами
+ * (formats/htmlBlocks.ts).
+ *
+ * Содержимое картинок mammoth отдаёт прямо в обработчике, но постоянный адрес
+ * им назначается позже: это сетевая операция, а разбор идёт синхронно.
+ */
+async function extractDocx(
+  file: File,
+): Promise<{ text: string; paragraphs: string[]; images: Blob[] }> {
   const mammoth = await import('mammoth');
-  const result = await mammoth.extractRawText({
-    arrayBuffer: await file.arrayBuffer(),
-  });
-  const text = cleanExtractedText(result.value);
-  if (!text) throw new Error('В DOCX не нашлось текста.');
-  return text;
+  const { htmlToBlocks } = await import('./formats/htmlBlocks');
+
+  // mammoth зовёт обработчик картинки асинхронно и ждёт его, поэтому данные
+  // здесь уже готовы, а обход HTML ниже остаётся синхронным.
+  const found = new Map<string, Blob>();
+  const result = await mammoth.convertToHtml(
+    { arrayBuffer: await file.arrayBuffer() },
+    {
+      convertImage: mammoth.images.imgElement(async (image) => {
+        const key = `docx-image-${found.size}`;
+        try {
+          const buffer = await image.read();
+          found.set(key, new Blob([buffer as BlobPart], { type: image.contentType }));
+        } catch {
+          // Битая картинка не повод отказываться от всего документа.
+        }
+        return { src: key };
+      }),
+    },
+  );
+
+  const parsed = htmlToBlocks(result.value, (element) =>
+    found.get(element.getAttribute('src') ?? '') ?? null,
+  );
+  const paragraphs = parsed.paragraphs.filter((paragraph) => paragraph !== '');
+  if (paragraphs.length === 0) throw new Error('В DOCX не нашлось текста.');
+
+  return {
+    // Текст остаётся для определения языка и подсчёта объёма — там разметка
+    // только мешает.
+    text: cleanExtractedText(plainParagraphs(paragraphs).join('\n\n')),
+    paragraphs,
+    images: parsed.images,
+  };
 }
 
 

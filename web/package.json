@@ -7,12 +7,13 @@
   "scripts": {
     "dev": "npm run prepare:worker && vite",
     "prepare:course": "node scripts/prepare-course-assets.mjs",
-    "build": "python scripts/build-sitemap.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build",
+    "build": "python scripts/build-sitemap.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build && npm run prerender",
     "preview": "vite preview",
     "lint": "tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare:worker": "node scripts/copy-pdf-worker.mjs"
+    "prepare:worker": "node scripts/copy-pdf-worker.mjs",
+    "prerender": "node scripts/prerender.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",
@@ -32,6 +33,7 @@
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.2",
     "jsdom": "^26.1.0",
+    "puppeteer": "^25.4.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "vite": "^7.1.5",

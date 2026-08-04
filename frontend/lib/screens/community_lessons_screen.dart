@@ -143,7 +143,19 @@ class _CommunityLessonsScreenState extends State<CommunityLessonsScreen> {
           return Card(
             child: ListTile(
               contentPadding: const EdgeInsets.all(16),
-              leading: CircleAvatar(child: Text(lesson.level)),
+              leading: lesson.coverUrl.isEmpty
+                  ? CircleAvatar(child: Text(lesson.level))
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        lesson.coverUrl,
+                        width: 64,
+                        height: 64,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            CircleAvatar(child: Text(lesson.level)),
+                      ),
+                    ),
               title: Text(lesson.title,
                   maxLines: 2, overflow: TextOverflow.ellipsis),
               subtitle: Padding(

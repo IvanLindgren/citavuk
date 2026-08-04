@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   LuBookOpen,
   LuBoxes,
@@ -13,44 +14,85 @@ import {
   LuLibrary,
   LuMenu,
   LuNotebookTabs,
+  LuSettings,
   LuSparkles,
   LuPresentation,
+  LuRows3,
   LuShieldCheck,
+  LuVideo,
   LuX,
 } from 'react-icons/lu';
+import type { IconType } from 'react-icons';
 
 import { Link, useRouter } from '../lib/router';
+import { NotificationBell } from './ServerAnnouncements';
 import { odysseyAvailable } from '../events/odyssey';
 import { useAuth } from '../state/auth';
 import { useTheme } from '../state/theme';
 
-/** Основные разделы — то, ради чего заходят каждый день. */
-const NAV = [
-  { to: '/library', label: 'Моя библиотека' },
-  { to: '/course', label: 'Курс' },
-  { to: '/trainer', label: 'Тренажёрка' },
-  { to: '/cards', label: 'Словарь' },
-  { to: '/listening', label: 'Слушание' },
-] as const;
+/**
+ * Видео живёт на отдельном сайте. В списке разделов оно помечено внешним,
+ * потому что уводит на другой продукт, и человек должен понимать это до
+ * нажатия, а не после.
+ */
+const VIDEO_URL = 'https://serbiansubtitles.online/';
 
-/** Остальное живёт в «Ещё»: семь равноправных пунктов в строку не читались. */
-const MORE = [
-  { to: '/public-library', label: 'Публичная библиотека' },
-  { to: '/events', label: 'События' },
-  { to: '/dialogues', label: 'Диалоги' },
-  { to: '/books', label: 'Что читать' },
-  { to: '/materials', label: 'Материалы' },
-  { to: '/support', label: 'Поддержать проект' },
-  { to: '/downloads', label: 'Скачать' },
-  { to: '/about', label: 'О разработчике' },
-] as const;
+/**
+ * Где раздел показывается в шапке на широком экране.
+ *
+ * - `nav` — верхний ряд: то, ради чего заходят каждый день;
+ * - `pill` — выделенная кнопка справа: витрина раздела, который надо заметить;
+ * - без пометки — панель «Ещё».
+ *
+ * На узком экране разница не важна: там показываются все разделы одинаково,
+ * сгруппированные по смыслу.
+ */
+type Place = 'nav' | 'pill';
 
-const MOBILE_GROUPS = [
+interface Section {
+  to: string;
+  label: string;
+  /** Короткая подпись для тесных мест: в панели колонка узкая. */
+  short?: string;
+  icon: IconType;
+  place?: Place;
+  /** Временное событие — его надо заметить среди прочего. */
+  featured?: boolean;
+  /** Ведёт на другой сайт: обычная ссылка, а не переход роутера. */
+  external?: boolean;
+}
+
+/**
+ * Разделы сайта — ОДИН список на все размеры экрана.
+ *
+ * Раньше их было два: плоский `MORE` для десктопного «Ещё» и сгруппированный
+ * `MOBILE_GROUPS` для телефона. Они закономерно разъехались — в десктопном не
+ * оказалось ни «Уроков преподавателей», ни «Для учителей», — и заметить это
+ * было неоткуда. Теперь список один, а `place` решает, где раздел показать.
+ *
+ * Группы те же, что на телефоне. Длинный вертикальный список из десяти
+ * равноправных пунктов не читается ни на каком экране: глазу не за что
+ * зацепиться, и нужный раздел приходится искать перебором.
+ */
+const GROUPS: { title: string; items: Section[] }[] = [
   {
     title: 'Читать',
     items: [
-      { to: '/library', label: 'Моя библиотека', icon: LuLibrary },
-      { to: '/public-library', label: 'Публичная', icon: LuBookOpen },
+      { to: '/library', label: 'Моя библиотека', icon: LuLibrary, place: 'nav' },
+      {
+        to: '/micro-feed',
+        label: 'Микро-лента',
+        short: 'Лента',
+        icon: LuRows3,
+        place: 'pill',
+        featured: true,
+      },
+      {
+        to: '/public-library',
+        label: 'Публичная библиотека',
+        short: 'Публичная',
+        icon: LuBookOpen,
+      },
       { to: '/events', label: 'События', icon: LuSparkles, featured: true },
       { to: '/books', label: 'Что читать', icon: LuNotebookTabs },
     ],
@@ -58,12 +100,18 @@ const MOBILE_GROUPS = [
   {
     title: 'Учиться',
     items: [
-      { to: '/course', label: 'Курс', icon: LuGraduationCap },
-      { to: '/trainer', label: 'Тренажёрка', icon: LuDumbbell },
-      { to: '/cards', label: 'Словарь', icon: LuLanguages },
-      { to: '/listening', label: 'Слушание', icon: LuHeadphones },
+      { to: '/course', label: 'Курс', icon: LuGraduationCap, place: 'nav' },
+      { to: '/trainer', label: 'Тренажёрка', icon: LuDumbbell, place: 'nav' },
+      { to: '/cards', label: 'Словарь', icon: LuLanguages, place: 'nav' },
+      { to: '/listening', label: 'Слушание', icon: LuHeadphones, place: 'nav' },
+      {
+        to: '/lessons',
+        label: 'Уроки преподавателей',
+        short: 'Уроки',
+        icon: LuGraduationCap,
+        place: 'pill',
+      },
       { to: '/dialogues', label: 'Диалоги', icon: LuBoxes },
-      { to: '/lessons', label: 'Уроки преподавателей', icon: LuGraduationCap },
       { to: '/materials', label: 'Материалы', icon: LuNotebookTabs },
       { to: '/teachers', label: 'Для учителей', icon: LuPresentation },
     ],
@@ -71,19 +119,43 @@ const MOBILE_GROUPS = [
   {
     title: 'Читавук',
     items: [
-      { to: '/support', label: 'Поддержать', icon: LuHeartHandshake },
+      { to: '/support', label: 'Поддержать проект', short: 'Поддержать', icon: LuHeartHandshake },
       { to: '/downloads', label: 'Скачать', icon: LuDownload },
       { to: '/about', label: 'О разработчике', icon: LuInfo },
+      {
+        to: VIDEO_URL,
+        label: 'Видео с субтитрами',
+        // В колонке панели полное название переносится на две строки и ломает
+        // ряд; на телефоне места хватает, и там остаётся длинное.
+        short: 'Видео',
+        icon: LuVideo,
+        external: true,
+      },
     ],
   },
-] as const;
+];
 
 /**
- * Видео живёт на отдельном сайте, поэтому и в меню стоит наособицу: рядом с
- * разделами Читавука оно читалось бы как ещё одна его страница, а уводит на
- * другой продукт.
+ * Разделы администратора.
+ *
+ * Держатся отдельно от общих намеренно: в прежнем плоском списке «Админка»
+ * стояла впритык к «Поддержать проект», и служебный инструмент выглядел как
+ * ещё один раздел для читателя.
  */
-const VIDEO_URL = 'https://serbiansubtitles.online/';
+const ADMIN: Section[] = [
+  { to: '/admin/lessons', label: 'Модерация уроков', short: 'Модерация', icon: LuShieldCheck },
+  { to: '/admin', label: 'Админка', icon: LuSettings },
+];
+
+const NAV = GROUPS.flatMap((group) =>
+  group.items.filter((item) => item.place === 'nav'),
+);
+
+/** Разделы для панели «Ещё»: всё, что не вынесено в шапку отдельно. */
+const MORE_GROUPS = GROUPS.map((group) => ({
+  title: group.title,
+  items: group.items.filter((item) => !item.place),
+})).filter((group) => group.items.length > 0);
 
 export function Header() {
   const { path } = useRouter();
@@ -154,25 +226,28 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-2">
           <Link
+            to="/micro-feed"
+            aria-current={path.startsWith('/micro-feed') ? 'page' : undefined}
+            title="Микро-лента · эксперимент"
+            className="inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-[var(--accent)]/35 bg-[var(--accent)] px-2.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
+          >
+            <LuRows3 className="size-4" aria-hidden="true" />
+            <span className="hidden sm:inline xl:hidden">Лента</span>
+            <span className="hidden xl:inline">Микро-лента</span>
+          </Link>
+          <Link
             to="/lessons"
             aria-current={path.startsWith('/lessons') ? 'page' : undefined}
             className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-3 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
           >
             <LuGraduationCap className="size-4" aria-hidden="true" />
-            Уроки преподавателей
+            <span className="2xl:hidden">Уроки</span>
+            <span className="hidden 2xl:inline">Уроки преподавателей</span>
           </Link>
-          <Link
-            to="/teachers"
-            className="hidden whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--bg-sunken)] xl:inline-flex"
-          >
-            Для учителей
-          </Link>
-          <VideoLink />
-          <span
-            className="hidden h-6 w-px bg-[var(--line)] 2xl:block"
-            aria-hidden="true"
-          />
+          {/* «Для учителей» и «Видео» уехали в панель «Ещё»: вместе с яркой
+              кнопкой уроков они не помещались, и правый край обрезался. */}
           <ThemeToggle />
+          <NotificationBell />
 
           <Link
             to={account ? '/account' : '/login'}
@@ -203,7 +278,7 @@ export function Header() {
 
       <SupportStrip />
 
-      <AnimatePresence>
+      {typeof document !== 'undefined' && createPortal(<AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -224,66 +299,45 @@ export function Header() {
               aria-label="Разделы Читавука"
             >
               <div className="mx-auto max-w-xl space-y-4">
-                {MOBILE_GROUPS.map((group) => (
+                {/* Список разделов общий с панелью «Ещё» — см. GROUPS. */}
+                {GROUPS.map((group) => (
                   <div key={group.title}>
                     <p className="mb-1.5 px-1 text-xs font-bold uppercase text-[var(--text-muted)]">
                       {group.title}
                     </p>
                     <div className="grid grid-cols-2 gap-1.5">
-                      {group.items.map((item) => {
-                        const Icon = item.icon;
-                        const active = path.startsWith(item.to);
-                        return (
-                          <Link
-                            key={item.to}
-                            to={item.to}
-                            aria-current={active ? 'page' : undefined}
-                            className={[
-                              'flex min-h-12 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors',
-                              active
-                                ? 'bg-[var(--accent)] text-white'
-                                : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
-                              'featured' in item && item.featured && !active
-                                ? 'border border-[#b68a4e] text-[var(--accent)]'
-                                : '',
-                            ].join(' ')}
-                          >
-                            <Icon className="size-4 shrink-0" aria-hidden="true" />
-                            <span className="min-w-0 leading-tight">{item.label}</span>
-                          </Link>
-                        );
-                      })}
+                      {group.items.map((item) => (
+                        <SectionTile
+                          key={item.to}
+                          item={item}
+                          active={!item.external && path.startsWith(item.to)}
+                        />
+                      ))}
                     </div>
                   </div>
                 ))}
 
                 <div className="grid grid-cols-2 gap-1.5 border-t border-[var(--line)] pt-4">
-                  {account?.isAdmin && (
-                    <Link to="/admin/lessons" className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-[var(--bg-sunken)]">
-                      <LuShieldCheck className="size-4" aria-hidden="true" />
-                      Модерация
-                    </Link>
-                  )}
+                  {account?.isAdmin &&
+                    ADMIN.map((item) => (
+                      <SectionTile
+                        key={item.to}
+                        item={item}
+                        active={path.startsWith(item.to)}
+                      />
+                    ))}
                   <Link
                     to={account ? '/account' : '/login'}
                     className="rounded-xl px-3 py-2.5 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)]"
                   >
                     {account ? 'Аккаунт' : 'Войти'}
                   </Link>
-                  <a
-                    href={VIDEO_URL}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="flex items-center gap-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-semibold text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]"
-                  >
-                    Видео с субтитрами ↗
-                  </a>
                 </div>
               </div>
             </motion.nav>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </header>
   );
 }
@@ -296,14 +350,83 @@ function shortName(value: string): string {
   return second ? `${first} ${second.slice(0, 1)}.` : first;
 }
 
+/**
+ * Плитка раздела: значок и подпись.
+ *
+ * Одна и та же и в панели «Ещё», и в меню на телефоне — иначе один и тот же
+ * раздел выглядел бы на двух экранах по-разному, а список у них теперь общий.
+ */
+function SectionTile({
+  item,
+  active,
+  compact = false,
+}: {
+  item: Section;
+  active: boolean;
+  compact?: boolean;
+}) {
+  const Icon = item.icon;
+  const label = compact ? item.short ?? item.label : item.label;
+
+  const className = [
+    'flex items-center gap-2 rounded-xl text-sm font-semibold transition-colors',
+    compact ? 'whitespace-nowrap px-2.5 py-1.5' : 'min-h-12 gap-2.5 px-3 py-2.5',
+    active
+      ? 'bg-[var(--accent)] text-white'
+      : compact
+        ? 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]'
+        : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
+    // Временное событие обведено рамкой: среди полутора десятков разделов
+    // одного цвета текста мало, чтобы его заметили, пока оно идёт.
+    item.featured && !active ? 'border border-[#b68a4e] text-[var(--accent)]' : '',
+  ].join(' ');
+
+  const content = (
+    <>
+      <Icon className="size-4 shrink-0" aria-hidden="true" />
+      <span className="min-w-0 leading-tight">{label}</span>
+      {item.external && (
+        <span className="ml-auto shrink-0 text-xs opacity-60" aria-hidden="true">
+          ↗
+        </span>
+      )}
+    </>
+  );
+
+  // Внешняя ссылка — обычный <a>: роутер увёл бы её внутрь приложения и
+  // показал бы пустую страницу вместо чужого сайта.
+  if (item.external) {
+    return (
+      <a href={item.to} target="_blank" rel="noreferrer noopener" className={className}>
+        {content}
+      </a>
+    );
+  }
+  return (
+    <Link to={item.to} aria-current={active ? 'page' : undefined} className={className}>
+      {content}
+    </Link>
+  );
+}
+
 function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
-  const items = isAdmin
-    ? [...MORE, { to: '/admin/lessons', label: 'Модерация уроков' }, { to: '/admin', label: 'Админка' }]
-    : MORE;
-  const active = items.some((item) => path.startsWith(item.to));
+  const active = MORE_GROUPS.some((group) =>
+    group.items.some((item) => !item.external && path.startsWith(item.to)),
+  );
 
   useEffect(() => setOpen(false), [path]);
+
+  // Escape закрывает панель: она перекрывает страницу, и без клавиши её
+  // приходится закрывать мышью, уводя курсор.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   return (
     <div
@@ -323,10 +446,18 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
         ].join(' ')}
       >
         Ещё
-        <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          className={[
+            'size-3.5 fill-current transition-transform duration-200',
+            open ? 'rotate-180' : '',
+          ].join(' ')}
+          aria-hidden="true"
+        >
           <path d="M7 10l5 5 5-5z" />
         </svg>
       </button>
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -334,22 +465,47 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.16 }}
-            className="absolute left-0 top-full z-50 min-w-44 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-2 shadow-lg"
+            // Ширина по содержимому, а не «побольше»: в широкой панели колонки
+            // расходятся так далеко, что перестают читаться как один список.
+            // Ограничение по окну оставлено на случай узкого экрана.
+            className="absolute left-0 top-full z-50 max-w-[calc(100vw-3rem)] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]"
           >
-            {items.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={[
-                  'block rounded-xl px-3 py-2 text-sm font-semibold transition-colors hover:bg-[var(--bg-sunken)]',
-                  path.startsWith(item.to)
-                    ? 'text-[var(--accent)]'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text)]',
-                ].join(' ')}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <nav aria-label="Остальные разделы">
+              <div className="flex gap-1">
+                {MORE_GROUPS.map((group) => (
+                  <div key={group.title} className="min-w-0">
+                    <p className="mb-1 px-2.5 text-[0.68rem] font-bold uppercase tracking-wide text-[var(--text-muted)]/70">
+                      {group.title}
+                    </p>
+                    <div className="space-y-px">
+                      {group.items.map((item) => (
+                        <SectionTile
+                          key={item.to}
+                          item={item}
+                          compact
+                          active={!item.external && path.startsWith(item.to)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {isAdmin && (
+                // Ряд, а не сетка: двух пунктов в трёхколоночной сетке не
+                // хватало, и треть ширины оставалась пустой.
+                <div className="mt-2 flex flex-wrap gap-1 border-t border-[var(--line)] pt-2">
+                  {ADMIN.map((item) => (
+                    <SectionTile
+                      key={item.to}
+                      item={item}
+                      compact
+                      active={path.startsWith(item.to)}
+                    />
+                  ))}
+                </div>
+              )}
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
@@ -359,7 +515,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
 
 function SupportStrip() {
   const { path } = useRouter();
-  if (odysseyAvailable() || path.startsWith('/support')) return null;
+  if (odysseyAvailable() || path.startsWith('/support') || path.startsWith('/micro-feed')) return null;
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
@@ -415,32 +571,6 @@ function NavItem({
         />
       )}
     </Link>
-  );
-}
-
-/**
- * Ссылка на отдельный сайт с видео и субтитрами.
- *
- * Это внешний переход, поэтому обычная ссылка, а не Link роутера, плюс явная
- * иконка: человек должен понимать, что уходит с Читавука, до нажатия.
- */
-function VideoLink() {
-  return (
-    <a
-      href={VIDEO_URL}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="hidden items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] 2xl:inline-flex"
-      title="Сербские фильмы и сериалы с субтитрами — отдельный сайт"
-    >
-      <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
-        <path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1zm6 3.5v7l6-3.5z" />
-      </svg>
-      Видео
-      <svg viewBox="0 0 24 24" className="size-3 fill-current opacity-60" aria-hidden="true">
-        <path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h5v2H6v11h11v-4h2v5a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-      </svg>
-    </a>
   );
 }
 

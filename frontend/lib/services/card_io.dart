@@ -17,7 +17,7 @@ class CardsIo {
   }) async {
     final md = MarkdownCards.export(vocab, source: source);
     final bytes = Uint8List.fromList(utf8.encode(md));
-    final path = await FilePicker.platform.saveFile(
+    final path = await FilePicker.saveFile(
       dialogTitle: 'Сохранить карточки (.md)',
       fileName: 'chitavuk_${_slug(source)}.md',
       type: FileType.custom,
@@ -41,7 +41,7 @@ class CardsIo {
   /// Импортирует карточки из выбранного .md/.txt в книгу [bookId].
   /// Возвращает (найдено, добавлено-новых) или null, если отменено.
   static Future<({int found, int added})?> import({required int bookId}) async {
-    final res = await FilePicker.platform.pickFiles(
+    final res = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: const ['md', 'markdown', 'txt'],
       withData: true,

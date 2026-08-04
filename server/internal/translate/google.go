@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 // Google — запасной провайдер для одиночных слов.
@@ -50,15 +51,7 @@ func (g *Google) TranslateWord(ctx context.Context, text, source, target string)
 		target = "ru"
 	}
 
-	endpoint := "https://translate.googleapis.com/translate_a/single?" + url.Values{
-		"client": {"gtx"},
-		"sl":     {strings.ToLower(source)},
-		"tl":     {strings.ToLower(target)},
-		"dt":     {"t"},
-		"q":      {text},
-	}.Encode()
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
+	req, err := g.request(ctx, text, source, target)
 	if err != nil {
 		return "", err
 	}
@@ -76,6 +69,39 @@ func (g *Google) TranslateWord(ctx context.Context, text, source, target string)
 		return "", err
 	}
 	return parseGoogleResponse(body)
+}
+
+// getLimitRunes — до какой длины запрос уходит обычным GET.
+//
+// Кириллица в адресе кодируется тремя байтами на букву, поэтому строка из
+// тысячи знаков даёт адрес длиной шесть килобайт — такой запрос отвергают и
+// прокси, и сам Google. Слово и предложение в предел укладываются с большим
+// запасом, и путь для них остаётся прежним; длинный текст уходит телом POST.
+const getLimitRunes = 400
+
+func (g *Google) request(ctx context.Context, text, source, target string) (*http.Request, error) {
+	params := url.Values{
+		"client": {"gtx"},
+		"sl":     {strings.ToLower(source)},
+		"tl":     {strings.ToLower(target)},
+		"dt":     {"t"},
+	}
+
+	if utf8.RuneCountInString(text) <= getLimitRunes {
+		params.Set("q", text)
+		return http.NewRequestWithContext(ctx, http.MethodGet,
+			"https://translate.googleapis.com/translate_a/single?"+params.Encode(), nil)
+	}
+
+	body := url.Values{"q": {text}}.Encode()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
+		"https://translate.googleapis.com/translate_a/single?"+params.Encode(),
+		strings.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	return req, nil
 }
 
 // parseGoogleResponse достаёт перевод из вложенных массивов ответа.

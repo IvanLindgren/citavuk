@@ -87,7 +87,7 @@ class _PublicLibraryScreenState extends State<PublicLibraryScreen> {
     try {
       final text = await PublicLibraryService.loadText(item);
       final bytes = Uint8List.fromList(utf8.encode(text));
-      final selected = await FilePicker.platform.saveFile(
+      final selected = await FilePicker.saveFile(
         dialogTitle: 'Скачать текст',
         fileName: '${_safeName(item.title)}.txt',
         type: FileType.custom,

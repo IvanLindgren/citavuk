@@ -108,6 +108,12 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 // Слово помечается тегом и переводится внутри фразы: так «kuća» получает
 // значение «дом», а не «собака», которое DeepL выдаёт на слово без контекста.
 // Один запрос даёт и перевод предложения, и выровненное слово.
+//
+// Этот запрос — самая дорогая операция во всём приложении. У DeepL Free пятьсот
+// тысяч знаков в МЕСЯЦ на всех, а сюда уходит целое предложение (около сотни
+// знаков) на каждое нажатие: без кеша месячной квоты хватает примерно на четыре
+// тысячи нажатий, то есть на одного активного читателя. Поэтому результат
+// раскладывается в кеш по трём ключам, и каждый экономит квоту в своём случае.
 func (s *Service) InContext(ctx context.Context, sentence string, start, end int, source, target string) (*Result, error) {
 	if strings.TrimSpace(sentence) == "" {
 		return nil, ErrEmptyText
@@ -130,10 +136,35 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 		return s.word(ctx, word, source, target)
 	}
 
+	// Готовый ответ ровно на это нажатие. Ключом служит помеченное предложение:
+	// оно однозначно задаёт и фразу, и слово внутри неё, поэтому из одной записи
+	// восстанавливаются оба перевода сразу.
+	//
+	// Без этой проверки повторное нажатие на то же слово стоило бы ещё одного
+	// запроса к DeepL. А повторов много: человек возвращается к абзацу, читает
+	// книгу второй раз, и — главное — кеш общий на всех, поэтому вторым и
+	// сотым читателем одной книги квота уже не тратится вовсе.
+	if s.cache != nil {
+		if cached, provider, ok := s.cache.Get(ctx, source, target, marked); ok {
+			if full, aligned := SplitMarked(cached); aligned != "" {
+				return &Result{
+					Text:     aligned,
+					Sentence: full,
+					Provider: provider,
+					Cached:   true,
+					Aligned:  true,
+				}, nil
+			}
+		}
+	}
+
 	out, err := s.deepl.TranslateTexts(ctx, []string{marked}, source, target, Options{XMLTags: true})
 	if err != nil || len(out) != 1 {
 		if fallback, ferr := s.word(ctx, word, source, target); ferr == nil {
 			return fallback, nil
+		}
+		if err == nil {
+			err = fmt.Errorf("переводчик вернул %d фрагментов вместо одного", len(out))
 		}
 		return nil, err
 	}
@@ -143,9 +174,22 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	if aligned != "" {
 		res.Text = aligned
 		res.Aligned = true
-		// В кеш попадает только выровненное слово: оно привязано к контексту,
-		// поэтому кешируется как перевод предложения, а не слова.
+		// Один запрос к DeepL наполняет кеш тремя разными ключами. Записи идут
+		// подряд и только здесь — на этой ветке уже сделан сетевой запрос к
+		// переводчику, рядом с которым три обращения к базе незаметны. На ветке
+		// попадания в кеш записей нет ни одной.
+		s.store(ctx, source, target, marked, out[0], s.deepl.Name())
 		s.store(ctx, source, target, sentence, full, s.deepl.Name())
+		// Слово отдельно от предложения — общий словарь.
+		//
+		// Сербская лексика повторяется от текста к тексту, а предложения — почти
+		// никогда. Пока слово живёт только внутри записи о своём предложении,
+		// его перевод бесполезен всем остальным. Отдельная запись превращает
+		// потраченную квоту в общее достояние: когда DeepL откажет — по месячному
+		// пределу или просто по недоступности, — запасной путь возьмёт отсюда
+		// перевод, выровненный настоящим DeepL, вместо заведомо ненадёжного
+		// перевода одиночного слова.
+		s.store(ctx, source, target, word, aligned, s.deepl.Name())
 		return res, nil
 	}
 
@@ -159,6 +203,13 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 }
 
 // word переводит одиночное слово запасным провайдером.
+//
+// Сначала общий словарь. В нём лежат не только прежние ответы запасного
+// провайдера, но и слова, выровненные DeepL внутри предложения (см. InContext),
+// — то есть перевод заметно лучше того, что запасной провайдер выдаёт на слово
+// в отрыве от текста. Признак Aligned при этом не выставляется: слово было
+// выровнено в другом предложении, а не в этом, и выдавать чужой контекст за
+// свой нечестно.
 func (s *Service) word(ctx context.Context, word, source, target string) (*Result, error) {
 	word = strings.TrimSpace(word)
 	if word == "" {

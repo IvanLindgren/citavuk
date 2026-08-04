@@ -2,7 +2,10 @@ package translate
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"sync"
 	"testing"
@@ -388,5 +391,153 @@ func TestInContextAcceptsCyrillicOffsets(t *testing.T) {
 	}
 	if res.Text != "дом" {
 		t.Errorf("перевод = %q", res.Text)
+	}
+}
+
+// --- Кеш вокруг перевода в контексте ---
+//
+// Здесь проверяется не удобство, а бюджет. Месячной квоты DeepL Free хватает
+// примерно на четыре тысячи нажатий на слово НА ВСЕХ пользователей сразу, и
+// каждый лишний запрос отнимает их у кого-то другого.
+
+// stubDeepL поднимает подставной DeepL и считает обращения.
+func stubDeepL(t *testing.T, reply func(texts []string) []string) (*DeepL, *int) {
+	t.Helper()
+	calls := 0
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		if err := r.ParseForm(); err != nil {
+			t.Errorf("подставной DeepL не разобрал запрос: %v", err)
+		}
+		out := reply(r.Form["text"])
+		items := make([]map[string]string, 0, len(out))
+		for _, text := range out {
+			items = append(items, map[string]string{"text": text})
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"translations": items})
+	}))
+	t.Cleanup(server.Close)
+
+	client := NewDeepL("тестовый-ключ:fx")
+	client.host = server.URL
+	return client, &calls
+}
+
+const (
+	testSentence   = "Ovo je velika kuća sa baštom."
+	testTranslated = "Это большой <w>дом</w> с садом."
+)
+
+func markedReply([]string) []string { return []string{testTranslated} }
+
+func wordAt(t *testing.T, sentence, word string) (int, int) {
+	t.Helper()
+	start := strings.Index(sentence, word)
+	if start < 0 {
+		t.Fatalf("слово %q не найдено в %q", word, sentence)
+	}
+	return start, start + len(word)
+}
+
+// Второе нажатие на то же слово обязано обойтись без DeepL.
+//
+// Без этого чтение книги во второй раз стоит ровно столько же, сколько в
+// первый, а второй читатель той же книги — как первый. Кеш общий, поэтому
+// экономия растёт с числом читателей, а не с усидчивостью одного.
+func TestInContextRepeatedTapSkipsDeepL(t *testing.T) {
+	deepl, calls := stubDeepL(t, markedReply)
+	cache := &fakeCache{}
+	svc := NewService(deepl, &fakeWords{err: errors.New("запасной провайдер не нужен")}, cache)
+
+	start, end := wordAt(t, testSentence, "kuća")
+
+	first, err := svc.InContext(context.Background(), testSentence, start, end, "sr", "ru")
+	if err != nil {
+		t.Fatalf("первое нажатие: %v", err)
+	}
+	if first.Text != "дом" || first.Sentence != "Это большой дом с садом." {
+		t.Fatalf("первое нажатие вернуло %q / %q", first.Text, first.Sentence)
+	}
+	if first.Cached {
+		t.Error("первое нажатие помечено как взятое из кеша")
+	}
+
+	second, err := svc.InContext(context.Background(), testSentence, start, end, "sr", "ru")
+	if err != nil {
+		t.Fatalf("второе нажатие: %v", err)
+	}
+	if *calls != 1 {
+		t.Errorf("обращений к DeepL: %d, ожидалось 1", *calls)
+	}
+	if !second.Cached {
+		t.Error("повтор не помечен как взятый из кеша")
+	}
+	// Ответ из кеша обязан быть полным: клиент показывает поле «Всё
+	// предложение», и молчаливая потеря контекста выглядела бы поломкой.
+	if second.Text != first.Text || second.Sentence != first.Sentence {
+		t.Errorf("ответ из кеша %q / %q не совпал с живым %q / %q",
+			second.Text, second.Sentence, first.Text, first.Sentence)
+	}
+	if !second.Aligned {
+		t.Error("ответ из кеша потерял признак выравнивания")
+	}
+}
+
+// Выровненное слово попадает в общий словарь отдельной записью.
+//
+// Предложения не повторяются почти никогда, а сербские слова — постоянно.
+// Пока слово хранится только внутри записи о своём предложении, оплаченный
+// перевод не достаётся больше никому.
+func TestInContextStoresWordSeparately(t *testing.T) {
+	deepl, _ := stubDeepL(t, markedReply)
+	cache := &fakeCache{}
+	svc := NewService(deepl, &fakeWords{out: "не должен пригодиться"}, cache)
+
+	start, end := wordAt(t, testSentence, "kuća")
+	if _, err := svc.InContext(context.Background(), testSentence, start, end, "sr", "ru"); err != nil {
+		t.Fatalf("InContext: %v", err)
+	}
+
+	if got := cache.data["kuća"]; got != "дом" {
+		t.Errorf("слово в словаре = %q, ожидалось \"дом\"", got)
+	}
+	if got := cache.data[testSentence]; got != "Это большой дом с садом." {
+		t.Errorf("предложение в кеше = %q", got)
+	}
+	if _, ok := cache.data["Ovo je velika <w>kuća</w> sa baštom."]; !ok {
+		t.Error("помеченное предложение не сохранено — повтор нажатия снова уйдёт в DeepL")
+	}
+}
+
+// Когда DeepL отказывает — по месячному пределу или недоступности, — запасной
+// путь обязан взять слово из словаря, а не идти к запасному провайдеру за
+// заведомо ненадёжным переводом одиночного слова.
+func TestWordCacheServesFallbackAfterDeepLFails(t *testing.T) {
+	cache := &fakeCache{data: map[string]string{"kuća": "дом"}}
+	words := &fakeWords{err: errors.New("запасной провайдер не должен вызываться")}
+
+	failing, _ := stubDeepL(t, func([]string) []string { return nil })
+	svc := NewService(failing, words, cache)
+
+	start, end := wordAt(t, testSentence, "kuća")
+	res, err := svc.InContext(context.Background(), testSentence, start, end, "sr", "ru")
+	if err != nil {
+		t.Fatalf("InContext: %v", err)
+	}
+	if res.Text != "дом" {
+		t.Errorf("перевод = %q, ожидался \"дом\" из словаря", res.Text)
+	}
+	if !res.Cached {
+		t.Error("ответ не помечен как взятый из кеша")
+	}
+	// Слово выровнено в ЧУЖОМ предложении, поэтому выдавать его за
+	// выровненное в этом нельзя: клиент на этом признаке строит предупреждение.
+	if res.Aligned {
+		t.Error("слово из словаря выдано за выровненное в этом предложении")
+	}
+	if len(words.calls) != 0 {
+		t.Errorf("запасной провайдер вызван зря: %v", words.calls)
 	}
 }

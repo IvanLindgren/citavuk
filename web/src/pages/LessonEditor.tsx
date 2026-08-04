@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   LuChevronDown,
   LuChevronUp,
   LuEye,
+  LuImagePlus,
   LuLink,
   LuMessageCircle,
   LuPlus,
@@ -15,10 +16,12 @@ import {
 
 import {
   createTeacherLesson,
+  deleteTeacherLesson,
   getTeacherLessons,
   publishUnlistedLesson,
   submitPublicLesson,
   updateTeacherLesson,
+  uploadLessonImage,
   type DialogueNode,
   type Lesson,
   type LessonContent,
@@ -48,6 +51,7 @@ const emptyContent = (): LessonContent => ({
 const emptyDraft = (): LessonDraft => ({
   title: '',
   summary: '',
+  coverUrl: '',
   level: 'A1',
   lessonType: 'lexicon',
   topic: '',
@@ -65,10 +69,12 @@ export function LessonEditor() {
   const [tagsText, setTagsText] = useState('');
   const [loading, setLoading] = useState(id !== 'new');
   const [busy, setBusy] = useState(false);
+  const [coverBusy, setCoverBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [propertiesOpen, setPropertiesOpen] = useState(true);
   const [preview, setPreview] = useState(false);
+  const coverInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (id === 'new') return;
@@ -81,6 +87,7 @@ export function LessonEditor() {
       setDraft({
         title: found.title,
         summary: found.summary,
+        coverUrl: found.coverUrl ?? '',
         level: found.level,
         lessonType: found.lessonType,
         topic: found.topic,
@@ -95,7 +102,15 @@ export function LessonEditor() {
   const setContent = (content: LessonContent) => setDraft((old) => ({ ...old, content }));
   const markdown = markdownFromContent(draft.content);
 
+  // Сохранение защищено ref, а не состоянием `busy`: setState асинхронный, и
+  // два быстрых Ctrl+S успевают войти в функцию до перерисовки. Для нового
+  // урока это создавало два урока сразу — оба вызова видели `lesson === null`
+  // и оба уходили в createTeacherLesson.
+  const saving = useRef(false);
+
   const save = async () => {
+    if (saving.current) return null;
+    saving.current = true;
     setBusy(true); setError(''); setMessage('');
     try {
       const content = { ...draft.content, markdown, theory: markdownToTheory(markdown) };
@@ -110,6 +125,7 @@ export function LessonEditor() {
       setError(messageOf(caught));
       return null;
     } finally {
+      saving.current = false;
       setBusy(false);
     }
   };
@@ -134,6 +150,31 @@ export function LessonEditor() {
     }
   };
 
+  const uploadCover = async (file: File) => {
+    setCoverBusy(true); setError('');
+    try {
+      const coverUrl = await uploadLessonImage(file);
+      setDraft((old) => ({ ...old, coverUrl }));
+      setMessage('Обложка загружена. Сохраните урок, чтобы применить её.');
+    } catch (caught) {
+      setError(messageOf(caught));
+    } finally {
+      setCoverBusy(false);
+    }
+  };
+
+  const removeLesson = async () => {
+    if (!lesson || !window.confirm(`Удалить урок «${lesson.title}»? Он сразу исчезнет из публичного доступа.`)) return;
+    setBusy(true); setError('');
+    try {
+      await deleteTeacherLesson(lesson.id);
+      navigate('/teachers', { replace: true });
+    } catch (caught) {
+      setError(messageOf(caught));
+      setBusy(false);
+    }
+  };
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
@@ -153,6 +194,7 @@ export function LessonEditor() {
     slug: lesson?.slug ?? 'preview',
     title: draft.title,
     summary: draft.summary,
+    coverUrl: draft.coverUrl,
     level: draft.level,
     lessonType: draft.lessonType,
     topic: draft.topic,
@@ -176,6 +218,7 @@ export function LessonEditor() {
         <div className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-end">
           <ActionButton title="Пройти урок" onClick={() => setPreview(true)}><LuEye /><span className="hidden sm:inline">Пройти урок</span></ActionButton>
           <ActionButton title="Сохранить" onClick={() => void save()} disabled={busy}><LuSave /><span className="hidden sm:inline">Сохранить</span></ActionButton>
+          {lesson && <ActionButton title="Удалить урок" onClick={() => void removeLesson()} disabled={busy}><LuTrash2 /></ActionButton>}
           <ActionButton title="Опубликовать по ссылке" onClick={() => void publish('unlisted')} disabled={busy}><LuUpload /><span className="hidden lg:inline">По ссылке</span></ActionButton>
           <button type="button" title="Отправить в каталог" aria-label="Отправить в каталог" onClick={() => void publish('public')} disabled={busy} className="inline-flex h-10 items-center gap-2 rounded-md bg-[var(--accent)] px-4 font-semibold text-white hover:bg-[var(--accent-hover)] disabled:opacity-50"><LuSend /><span className="hidden sm:inline">В каталог</span></button>
         </div>
@@ -192,6 +235,20 @@ export function LessonEditor() {
         <section className="mt-6 border-y border-[var(--line)] py-3">
           <button type="button" onClick={() => setPropertiesOpen((open) => !open)} className="flex w-full items-center gap-2 py-1 text-left text-sm font-semibold"><LuSettings2 className="text-[var(--accent)]" />Свойства урока<span className="ml-auto text-[var(--text-muted)]">{propertiesOpen ? <LuChevronUp /> : <LuChevronDown />}</span></button>
           {propertiesOpen && <div className="mt-4 grid gap-4 pb-2 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="sm:col-span-2 lg:col-span-4">
+              <p className="mb-2 text-sm font-semibold">Обложка</p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button type="button" onClick={() => coverInputRef.current?.click()} disabled={coverBusy} className="group relative aspect-[16/7] w-full max-w-sm overflow-hidden rounded-md border border-dashed border-[var(--line)] bg-[var(--bg-sunken)] text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] sm:w-72">
+                  {draft.coverUrl ? <img src={draft.coverUrl} alt="Обложка урока" className="size-full object-cover" /> : <span className="grid h-full place-items-center"><span className="inline-flex items-center gap-2 text-sm font-semibold"><LuImagePlus />Добавить обложку</span></span>}
+                  {coverBusy && <span className="absolute inset-0 grid place-items-center bg-black/45 text-sm font-semibold text-white">Загружаем…</span>}
+                </button>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => coverInputRef.current?.click()} disabled={coverBusy} className="inline-flex items-center gap-2 rounded-md border border-[var(--line)] px-3 py-2 text-sm font-semibold hover:border-[var(--accent)]"><LuImagePlus />{draft.coverUrl ? 'Заменить' : 'Выбрать файл'}</button>
+                  {draft.coverUrl && <button type="button" onClick={() => setDraft((old) => ({ ...old, coverUrl: '' }))} className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-700/10"><LuTrash2 />Убрать</button>}
+                </div>
+                <input ref={coverInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadCover(file); event.target.value = ''; }} />
+              </div>
+            </div>
             <Property label="Уровень"><select className={field} value={draft.level} onChange={(event) => setDraft({ ...draft, level: event.target.value })}>{['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => <option key={level}>{level}</option>)}</select></Property>
             <Property label="Тип"><select className={field} value={draft.lessonType} onChange={(event) => setDraft({ ...draft, lessonType: event.target.value as LessonDraft['lessonType'] })}><option value="lexicon">Лексика</option><option value="grammar">Грамматика</option><option value="speaking">Говорение</option><option value="writing">Письмо</option></select></Property>
             <Property label="Тема"><input className={field} value={draft.topic} onChange={(event) => setDraft({ ...draft, topic: event.target.value })} /></Property>

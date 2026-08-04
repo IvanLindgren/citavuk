@@ -3,6 +3,7 @@ import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
+import { ServerAnnouncements } from "./components/ServerAnnouncements";
 import { EventBanner } from "./components/EventBanner";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -17,6 +18,7 @@ import {
 } from "./lib/router";
 import { Landing } from "./pages/Landing";
 import { AuthProvider } from "./state/auth";
+import { AnnouncementProvider } from "./state/announcements";
 import { SyncProvider } from "./state/sync";
 import { ThemeProvider } from "./state/theme";
 
@@ -118,6 +120,9 @@ const Lessons = lazy(() =>
 const LessonView = lazy(() =>
   import("./pages/LessonView").then((m) => ({ default: m.LessonView })),
 );
+const MicroFeed = lazy(() =>
+  import("./pages/MicroFeed").then((m) => ({ default: m.MicroFeed })),
+);
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
@@ -135,6 +140,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/course", element: <Course /> },
   { pattern: "/lessons", element: <Lessons /> },
   { pattern: "/lessons/:slug", element: <LessonView /> },
+  { pattern: "/micro-feed", element: <MicroFeed /> },
   { pattern: "/lesson/link/:token", element: <LessonView unlisted /> },
   { pattern: "/teachers", element: <Teachers /> },
   { pattern: "/teachers/lessons/new", element: <LessonEditor /> },
@@ -166,11 +172,13 @@ export function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <SyncProvider>
-          <RouterProvider>
-            <AppFrame />
-          </RouterProvider>
-        </SyncProvider>
+        <AnnouncementProvider>
+          <SyncProvider>
+            <RouterProvider>
+              <AppFrame />
+            </RouterProvider>
+          </SyncProvider>
+        </AnnouncementProvider>
       </AuthProvider>
     </ThemeProvider>
   );
@@ -178,12 +186,14 @@ export function App() {
 
 function AppFrame() {
   const { path } = useRouter();
+  const microFeed = path.split("?")[0] === "/micro-feed";
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <EventBanner />
+      {!microFeed && <EventBanner />}
       <Header />
-      <CommunityAnnouncement />
+      {!microFeed && <ServerAnnouncements />}
+      {!microFeed && <CommunityAnnouncement />}
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>
@@ -193,8 +203,8 @@ function AppFrame() {
           </PageTransition>
         </PageErrorBoundary>
       </div>
-      <Footer />
-      <AppPrompt />
+      {!microFeed && <Footer />}
+      {!microFeed && <AppPrompt />}
     </div>
   );
 }

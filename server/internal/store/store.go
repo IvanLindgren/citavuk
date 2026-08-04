@@ -61,6 +61,36 @@ func (s *Store) Close() {
 	}
 }
 
+// KnownMigrations возвращает имена всех встроенных миграций.
+//
+// Нужна выкатке для отчёта: по одному лишь числу применённых миграций не
+// видно, попал ли новый файл в сборку вообще. Каталог здесь ровно один —
+// `internal/store/migrations`, тот, что указан в go:embed выше. Второго
+// каталога с миграциями в репозитории быть не должно: файл, положенный мимо
+// встроенного, молча не доедет до базы.
+func KnownMigrations() []string {
+	names, err := migrationNames()
+	if err != nil {
+		return nil
+	}
+	return names
+}
+
+func migrationNames() ([]string, error) {
+	entries, err := fs.ReadDir(migrationsFS, "migrations")
+	if err != nil {
+		return nil, err
+	}
+	names := make([]string, 0, len(entries))
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(e.Name(), ".sql") {
+			names = append(names, e.Name())
+		}
+	}
+	sort.Strings(names)
+	return names, nil
+}
+
 // Migrate применяет неприменённые миграции по возрастанию имени файла.
 //
 // Каждая миграция выполняется в своей транзакции вместе с записью в
@@ -93,17 +123,10 @@ func (s *Store) Migrate(ctx context.Context) ([]string, error) {
 		return nil, err
 	}
 
-	entries, err := fs.ReadDir(migrationsFS, "migrations")
+	names, err := migrationNames()
 	if err != nil {
 		return nil, err
 	}
-	names := make([]string, 0, len(entries))
-	for _, e := range entries {
-		if !e.IsDir() && strings.HasSuffix(e.Name(), ".sql") {
-			names = append(names, e.Name())
-		}
-	}
-	sort.Strings(names)
 
 	var ran []string
 	for _, name := range names {

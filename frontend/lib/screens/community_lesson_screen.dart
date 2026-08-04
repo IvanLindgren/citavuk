@@ -97,6 +97,20 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
         child: ListView(
             padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
             children: [
+          if (lesson.coverUrl.isNotEmpty) ...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: AspectRatio(
+                aspectRatio: 16 / 7,
+                child: Image.network(
+                  lesson.coverUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
           Wrap(spacing: 8, runSpacing: 6, children: [
             Chip(label: Text(lesson.level)),
             Chip(label: Text(_typeLabel(lesson.lessonType))),

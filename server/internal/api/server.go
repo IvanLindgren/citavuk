@@ -10,6 +10,7 @@ import (
 	"github.com/citavuk/server/internal/auth"
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
+	"github.com/citavuk/server/internal/feed"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
 	"github.com/citavuk/server/internal/podcast"
@@ -37,6 +38,8 @@ type Server struct {
 	quiz         *quiz.Generator
 	podcasts     *podcast.Service
 	media        *media.Service
+	microFeed    *feed.Generator
+	feedSources  *feed.SourceFetcher
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -100,6 +103,11 @@ func New(
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
 		podcasts:     podcast.New(),
 		media:        mediaService,
+		microFeed: feed.NewGenerator(
+			cfg.FeedAIKey, cfg.FeedAIModel, cfg.FeedAIURL,
+			cfg.FeedEmbeddingKey, cfg.FeedEmbeddingModel, cfg.FeedEmbeddingURL,
+		),
+		feedSources: feed.NewSourceFetcher(),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),
@@ -214,11 +222,17 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/teachers/{id}", s.rateLimit(s.generalLimit, s.handlePublicTeacherProfile))
 	mux.HandleFunc("POST /v1/teachers/lessons", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleCreateTeacherLesson)))
 	mux.HandleFunc("PUT /v1/teachers/lessons/{id}", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleUpdateTeacherLesson)))
+	mux.HandleFunc("DELETE /v1/teachers/lessons/{id}", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleDeleteTeacherLesson)))
 	mux.HandleFunc("POST /v1/teachers/lessons/{id}/publish-unlisted", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handlePublishUnlistedLesson)))
 	mux.HandleFunc("POST /v1/teachers/lessons/{id}/submit", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleSubmitPublicLesson)))
 	mux.HandleFunc("POST /v1/teachers/media/upload-policy", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherMediaPolicy)))
 	mux.HandleFunc("GET /v1/teachers/submissions", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleTeacherSubmissions)))
 	mux.HandleFunc("POST /v1/teachers/submissions/{id}/review", s.requireTeacher(s.rateLimitIdentity(s.generalLimit, s.handleReviewSubmission)))
+	// Карта и страницы уроков для поисковика. Статические разделы сайта
+	// отрисовываются на сборке, а уроки появляются между выкладками — их
+	// разметку отдаёт сервер (см. internal/api/seo_handlers.go).
+	mux.HandleFunc("GET /sitemap-lessons.xml", s.rateLimit(s.generalLimit, s.handleLessonSitemap))
+	mux.HandleFunc("GET /lessons/{slug}", s.rateLimit(s.generalLimit, s.handleLessonPage))
 	mux.HandleFunc("GET /v1/lessons", s.rateLimit(s.generalLimit, s.handlePublicLessons))
 	mux.HandleFunc("GET /v1/lessons/{slug}", s.rateLimit(s.generalLimit, s.handlePublicLesson))
 	mux.HandleFunc("GET /v1/lesson-links/{token}", s.rateLimit(s.generalLimit, s.handleUnlistedLesson))
@@ -227,8 +241,33 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/lessons/{id}/submissions", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCreateLessonSubmission)))
 	mux.HandleFunc("POST /v1/lessons/{id}/reports", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReportLesson)))
 
+	// Серверные объявления и центр уведомлений. Баннер доступен гостю, но
+	// состояние, уведомления и награды принадлежат конкретному аккаунту.
+	mux.HandleFunc("GET /v1/announcements", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleAnnouncements)))
+	mux.HandleFunc("POST /v1/announcements/{id}/read", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReadAnnouncement)))
+	mux.HandleFunc("POST /v1/announcements/{id}/dismiss", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDismissAnnouncement)))
+	mux.HandleFunc("POST /v1/announcements/{id}/claim", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleClaimAnnouncement)))
+	mux.HandleFunc("GET /v1/notifications", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleNotifications)))
+	mux.HandleFunc("POST /v1/notifications/read-all", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReadAllNotifications)))
+	mux.HandleFunc("POST /v1/notifications/{id}/read", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReadNotification)))
+
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
 	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
+
+	// Перевод не-сербского документа на сербский. Определение языка открыто
+	// всем: это обращение к встроенному словарю, и спрашивать про вход раньше,
+	// чем выяснилось, что перевод вообще нужен, значило бы спрашивать зря у
+	// каждого, кто добавляет обычную сербскую книгу. Сам перевод — только с
+	// аккаунтом и не чаще предела: он стоит квоты внешнего провайдера.
+	mux.HandleFunc("POST /v1/documents/language", s.rateLimit(s.generalLimit, s.handleDocumentLanguage))
+	mux.HandleFunc("GET /v1/documents/translation/quota", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleTranslationQuota)))
+	mux.HandleFunc("POST /v1/documents/translation", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleStartTranslation)))
+	mux.HandleFunc("POST /v1/documents/translation/{id}/chunk", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleTranslateChunk)))
+	mux.HandleFunc("POST /v1/documents/translation/{id}/finish", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleFinishTranslation)))
+	// Картинки из книги. Ключ считается от содержимого, поэтому одна и та же
+	// книга с разных устройств остаётся одной книгой (см. media.BookImagePolicy).
+	mux.HandleFunc("POST /v1/books/media/upload-policy", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleBookImagePolicy)))
+	mux.HandleFunc("PUT /v1/media/upload", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleMediaUpload)))
 
 	// Книга по ссылке и обсуждение её страниц.
 	//
@@ -258,6 +297,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/quizzes/{id}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetQuiz)))
 	mux.HandleFunc("POST /v1/quizzes/{id}/attempts", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSaveAttempt)))
 
+	// Experimental web micro-feed. Reading and anonymous recommendations are
+	// public; moderation and source synchronization remain admin-only.
+	mux.HandleFunc("GET /v1/micro-feed", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeed)))
+	mux.HandleFunc("POST /v1/micro-feed/{id}/interactions", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedInteraction)))
+
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
 	mux.HandleFunc("GET /v1/admin/overview", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminOverview)))
 	mux.HandleFunc("GET /v1/admin/users", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminUsers)))
@@ -273,6 +317,22 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/admin/lesson-revisions", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonQueue)))
 	mux.HandleFunc("POST /v1/admin/lesson-revisions/{revisionId}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLesson)))
 	mux.HandleFunc("GET /v1/admin/lesson-reports", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonReports)))
+	mux.HandleFunc("GET /v1/admin/announcements", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminAnnouncements)))
+	mux.HandleFunc("POST /v1/admin/announcements", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleCreateAnnouncement)))
+	mux.HandleFunc("PUT /v1/admin/announcements/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUpdateAnnouncement)))
+	mux.HandleFunc("POST /v1/admin/announcements/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handlePublishAnnouncement)))
+	mux.HandleFunc("POST /v1/admin/announcements/{id}/archive", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleArchiveAnnouncement)))
+	mux.HandleFunc("GET /v1/admin/micro-feed/sources", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminMicroFeedSources)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/sources/{slug}/sync", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSyncMicroFeedSource)))
+	mux.HandleFunc("GET /v1/admin/micro-feed/imports", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminMicroFeedImports)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/imports/{id}/generate", s.requireAdmin(s.rateLimitIdentity(s.quizLimit, s.handleAdminGenerateMicroFeedItem)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/imports/{id}/reject", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminRejectMicroFeedImport)))
+	mux.HandleFunc("GET /v1/admin/micro-feed/items", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminMicroFeedItems)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/items", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCreateMicroFeedItem)))
+	mux.HandleFunc("PUT /v1/admin/micro-feed/items/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminUpdateMicroFeedItem)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/items/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminPublishMicroFeedItem)))
+	mux.HandleFunc("POST /v1/admin/micro-feed/items/{id}/archive", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminArchiveMicroFeedItem)))
+	mux.HandleFunc("DELETE /v1/admin/micro-feed/items/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteMicroFeedItem)))
 	mux.HandleFunc("POST /v1/admin/lesson-reports/{id}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLessonReport)))
 
 	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но гость

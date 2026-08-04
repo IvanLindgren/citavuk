@@ -15,6 +15,7 @@ import {
   playableAudioUrl,
   ttsAudioUrl,
 } from '../api/listening';
+import { TtsVoicePicker } from '../components/TtsVoicePicker';
 import {
   translateInContext,
   type TranslationResult,
@@ -312,6 +313,7 @@ export function ListeningPlayer() {
         cue={cueIndex}
         count={cues.length}
         speed={speed}
+        isTts={isTts}
         onPrevious={() => void playCue(Math.max(0, cueIndex - 1))}
         onNext={() => void playCue(Math.min(cues.length - 1, cueIndex + 1))}
         onToggle={() => void toggle()}
@@ -357,12 +359,39 @@ function KaraokeCue({
       onClick={onPlay}
       style={{ contentVisibility: 'auto', containIntrinsicSize: '0 76px' }}
       className={[
-        'cursor-pointer rounded-xl border px-4 py-3 transition-colors',
+        'flex cursor-pointer items-start gap-2 rounded-xl border py-3 pl-2 pr-4 transition-colors',
         current
           ? 'border-[var(--accent)]/35 bg-[var(--accent)]/7'
           : 'border-transparent hover:bg-[var(--bg-raised)]',
       ].join(' ')}
     >
+      {/*
+        Отдельная кнопка воспроизведения, а не нажатие по всей строке.
+        Слова ниже — тоже кнопки, и они закрывают почти всю площадь строки:
+        на телефоне палец практически всегда попадал в слово, открывался
+        перевод, и начать слушать с нужной фразы было нельзя вовсе. Мышью на
+        компьютере получалось попасть в промежуток между словами, поэтому
+        поломка выглядела как «работает».
+      */}
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onPlay();
+        }}
+        aria-label="Слушать с этой фразы"
+        className={[
+          'mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full transition-colors',
+          current
+            ? 'bg-[var(--accent)] text-white'
+            : 'text-[var(--text-muted)] hover:bg-[var(--accent)]/15 hover:text-[var(--accent)]',
+        ].join(' ')}
+      >
+        <svg viewBox="0 0 24 24" className="ml-0.5 size-4 fill-current" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+
       <p className={`font-display text-lg leading-relaxed ${current ? '' : 'text-[var(--text-muted)]'}`}>
         {tokens.map((token, index) => {
           if (!token.isWord) return <span key={index}>{token.text}</span>;
@@ -399,6 +428,7 @@ function PlayerControls({
   cue,
   count,
   speed,
+  isTts,
   onPrevious,
   onNext,
   onToggle,
@@ -408,6 +438,7 @@ function PlayerControls({
   cue: number;
   count: number;
   speed: number;
+  isTts: boolean;
   onPrevious: () => void;
   onNext: () => void;
   onToggle: () => void;
@@ -435,7 +466,8 @@ function PlayerControls({
             {count > 0 ? `${cue + 1}/${count}` : 'без текста'}
           </span>
         </div>
-        <div className="flex items-center gap-1 sm:ml-auto" aria-label="Скорость воспроизведения">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:ml-auto" aria-label="Настройки воспроизведения">
+          {isTts && <TtsVoicePicker />}
           {[0.5, 1, 1.5, 2].map((value) => (
             <button
               key={value}

@@ -169,6 +169,23 @@ class UserDb {
     await addColumn('reviews', 'updated_at INTEGER NOT NULL DEFAULT 0');
     await addColumn('reviews', 'dirty INTEGER NOT NULL DEFAULT 1');
 
+    // Дворцы памяти. Развеска лежит одним значением JSON, а не таблицей
+    // «предмет — слово»: дворец синхронизируется целиком, как книга, и
+    // сливать его по отдельным предметам не нужно и вредно.
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS palaces (
+        uuid TEXT PRIMARY KEY,
+        name TEXT NOT NULL DEFAULT '',
+        scene_id TEXT NOT NULL DEFAULT '',
+        pins TEXT NOT NULL DEFAULT '{}',
+        deleted INTEGER NOT NULL DEFAULT 0,
+        updated_at INTEGER NOT NULL DEFAULT 0,
+        dirty INTEGER NOT NULL DEFAULT 1
+      )
+    ''');
+    await db.execute(
+        'CREATE INDEX IF NOT EXISTS palaces_dirty_idx ON palaces (dirty)');
+
     await db.execute('''
       CREATE TABLE IF NOT EXISTS sync_state (
         id INTEGER PRIMARY KEY CHECK (id = 1),

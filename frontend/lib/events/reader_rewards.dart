@@ -15,7 +15,8 @@ class ReaderReward {
   const ReaderReward({
     required this.id,
     required this.label,
-    required this.asset,
+    this.asset = '',
+    this.networkAsset = '',
     required this.tile,
     required this.background,
     required this.text,
@@ -25,6 +26,12 @@ class ReaderReward {
   final String id;
   final String label;
   final String asset;
+  final String networkAsset;
+  bool get isNetworkSvg => networkAsset.toLowerCase().endsWith('.svg');
+
+  ImageProvider get image => networkAsset.isNotEmpty
+      ? NetworkImage(networkAsset)
+      : AssetImage(asset) as ImageProvider;
 
   /// Размер плитки в логических пикселях — при повторе картинка не должна
   /// растягиваться под экран.
@@ -46,6 +53,17 @@ const List<ReaderReward> kReaderRewards = [
     text: Color(0xFF2B2118),
   ),
 ];
+
+ReaderReward serverReaderReward(String key, String assetUrl) => ReaderReward(
+      id: key,
+      label: key == 'reader_background_100'
+          ? 'Первые 100 читателей'
+          : 'Фон из акции',
+      networkAsset: assetUrl,
+      tile: const Size(420, 420),
+      background: const Color(0xFFF3E9D2),
+      text: const Color(0xFF241A14),
+    );
 
 ReaderReward? readerRewardById(String id) {
   if (id.isEmpty) return null;
@@ -78,3 +96,14 @@ BoxDecoration? rewardDecoration(String id) {
     ),
   );
 }
+
+BoxDecoration rewardDecorationFor(ReaderReward reward) => BoxDecoration(
+      color: reward.background,
+      image: reward.isNetworkSvg
+          ? null
+          : DecorationImage(
+              image: reward.image,
+              repeat: ImageRepeat.repeat,
+              alignment: Alignment.topLeft,
+            ),
+    );

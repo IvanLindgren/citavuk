@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useAnnouncements } from '../state/announcements';
 
 const DISMISSED_KEY = 'citavuk-community-announcement-v1';
 const CHAT_URL = 'https://t.me/citavukchat';
@@ -14,6 +15,7 @@ function wasDismissed(): boolean {
 
 /** Одноразовый анонс сообщества. Новому важному объявлению нужен новый ключ. */
 export function CommunityAnnouncement() {
+  const { activeBanner } = useAnnouncements();
   const [open, setOpen] = useState(() => !wasDismissed());
   const reduceMotion = useReducedMotion();
 
@@ -34,6 +36,8 @@ export function CommunityAnnouncement() {
     }
     setOpen(false);
   }
+
+  if (activeBanner) return null;
 
   return (
     <AnimatePresence initial={!reduceMotion}>

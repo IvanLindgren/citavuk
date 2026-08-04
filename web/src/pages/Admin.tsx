@@ -25,11 +25,13 @@ import {
   type TeacherApplication,
 } from '../api/lessons';
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
+import { AdminAnnouncementsPanel } from '../components/AdminAnnouncementsPanel';
+import { AdminMicroFeedPanel } from '../components/AdminMicroFeedPanel';
 import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 
-type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers';
+type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers' | 'announcements' | 'micro-feed';
 
 const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'overview', label: 'Обзор' },
@@ -37,6 +39,8 @@ const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'incidents', label: 'Инциденты' },
   { id: 'courses', label: 'Курсы' },
   { id: 'teachers', label: 'Преподаватели' },
+  { id: 'announcements', label: 'Объявления' },
+  { id: 'micro-feed', label: 'Микро-лента' },
 ];
 
 export function Admin() {
@@ -74,7 +78,7 @@ export function Admin() {
         </div>
 
         <div
-          className="mb-7 grid grid-cols-2 gap-1 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 sm:grid-cols-5"
+          className="mb-7 grid grid-cols-2 gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-1 sm:grid-cols-4 lg:grid-cols-7"
           role="tablist"
         >
           {TABS.map((item) => (
@@ -101,6 +105,8 @@ export function Admin() {
         {tab === 'incidents' && <IncidentsPanel />}
         {tab === 'courses' && <CoursesPanel />}
         {tab === 'teachers' && <TeacherModerationPanel />}
+        {tab === 'announcements' && <AdminAnnouncementsPanel />}
+        {tab === 'micro-feed' && <AdminMicroFeedPanel />}
       </div>
     </main>
   );

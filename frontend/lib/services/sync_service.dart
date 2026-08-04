@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../utils/uuid.dart';
 import 'api_client.dart';
+import 'palace_store.dart';
 import 'auth_service.dart';
 import 'user_db.dart';
 
@@ -105,7 +106,13 @@ class SyncService extends ChangeNotifier {
         "JOIN vocabulary v ON v.id = r.vocab_id "
         "WHERE r.dirty = 1 AND v.uuid <> '' ORDER BY r.updated_at LIMIT 150",
       );
-      if (books.isEmpty && words.isEmpty && reviews.isEmpty) return;
+      final palaces = await PalaceStore.instance.dirty(limit: 50);
+      if (books.isEmpty &&
+          words.isEmpty &&
+          reviews.isEmpty &&
+          palaces.isEmpty) {
+        return;
+      }
 
       // uuid книги нужен, чтобы связать с ним слова. Локальный id на сервере
       // бессмыслен: он свой на каждом устройстве.
@@ -118,6 +125,7 @@ class SyncService extends ChangeNotifier {
         'books': books.map(_bookToJson).toList(),
         'vocabulary': words.map((w) => _wordToJson(w, bookUuid)).toList(),
         'reviews': reviews.map(_reviewToJson).toList(),
+        'palaces': palaces.map(_palaceToJson).toList(),
       };
       await api.post('/v1/sync/push', payload);
 
@@ -126,8 +134,12 @@ class SyncService extends ChangeNotifier {
       await _clearDirty(db, 'books', books);
       await _clearDirty(db, 'vocabulary', words);
       await _clearDirty(db, 'reviews', reviews, idColumn: 'vocab_id');
+      await PalaceStore.instance.clearDirty(palaces);
 
-      if (books.length < 150 && words.length < 200 && reviews.length < 150) {
+      if (books.length < 150 &&
+          words.length < 200 &&
+          reviews.length < 150 &&
+          palaces.length < 50) {
         return;
       }
     }
@@ -189,6 +201,17 @@ class SyncService extends ChangeNotifier {
         'updatedAt': _iso(row['updated_at']),
       };
 
+  Map<String, dynamic> _palaceToJson(Palace palace) => {
+        'id': palace.uuid,
+        'name': palace.name,
+        'sceneId': palace.sceneId,
+        // Сервер хранит vocabId строкой: отсутствие связи со словарём — это
+        // пустая строка, а не null. Преобразование делает PalacePin.toJson.
+        'pins': palace.pins.map((spot, pin) => MapEntry(spot, pin.toJson())),
+        'deleted': palace.deleted,
+        'updatedAt': _iso(palace.updatedAt),
+      };
+
   Map<String, dynamic> _decodeForms(Object? raw) {
     if (raw is! String || raw.isEmpty) return {};
     try {
@@ -233,6 +256,7 @@ class SyncService extends ChangeNotifier {
     final books = (response['books'] as List?) ?? const [];
     final words = (response['vocabulary'] as List?) ?? const [];
     final reviews = (response['reviews'] as List?) ?? const [];
+    final palaces = (response['palaces'] as List?) ?? const [];
 
     await db.transaction((txn) async {
       for (final item in books) {
@@ -245,6 +269,39 @@ class SyncService extends ChangeNotifier {
         if (item is Map) await _applyReview(txn, item);
       }
     });
+
+    // Дворцы идут вне общей транзакции: их хранилище работает со своим
+    // подключением, и вкладывать его вызовы внутрь чужой транзакции значит
+    // получить взаимную блокировку на sqflite.
+    for (final item in palaces) {
+      if (item is Map) await _applyPalace(item);
+    }
+  }
+
+  /// Применяет дворец с сервера.
+  Future<void> _applyPalace(Map<dynamic, dynamic> item) async {
+    final uuid = item['id'] as String? ?? '';
+    if (!isUuid(uuid)) return;
+
+    final pins = <String, PalacePin>{};
+    final raw = item['pins'];
+    if (raw is Map) {
+      raw.forEach((spot, value) {
+        if (value is Map) {
+          pins['$spot'] = PalacePin.fromJson(Map<String, dynamic>.from(value));
+        }
+      });
+    }
+
+    await PalaceStore.instance.applyRemote(Palace(
+      uuid: uuid,
+      name: (item['name'] as String?) ?? '',
+      sceneId: (item['sceneId'] as String?) ?? '',
+      pins: pins,
+      updatedAt: _parseTime(item['updatedAt']),
+      deleted: item['deleted'] == true,
+      dirty: false,
+    ));
   }
 
   /// Применяет книгу с сервера.
@@ -510,7 +567,7 @@ class SyncService extends ChangeNotifier {
     final db = await UserDb.instance.database;
     await db.update('sync_state', {'cursor': 0, 'user_id': userId},
         where: 'id = 1');
-    for (final table in ['books', 'vocabulary', 'reviews']) {
+    for (final table in ['books', 'vocabulary', 'reviews', 'palaces']) {
       await db.update(table, {'dirty': 1});
     }
     _lastSyncAt = null;
@@ -521,7 +578,7 @@ class SyncService extends ChangeNotifier {
   Future<int> pendingCount() async {
     final db = await UserDb.instance.database;
     var total = 0;
-    for (final table in ['books', 'vocabulary', 'reviews']) {
+    for (final table in ['books', 'vocabulary', 'reviews', 'palaces']) {
       final rows =
           await db.rawQuery('SELECT COUNT(*) AS c FROM $table WHERE dirty = 1');
       total += (rows.first['c'] as int?) ?? 0;

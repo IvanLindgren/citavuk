@@ -6,6 +6,7 @@ deep-translator
 feedparser
 trafilatura
 gTTS
+edge-tts>=7.0,<8.0
 redis>=5.0,<7.0
 python-multipart
 python-docx

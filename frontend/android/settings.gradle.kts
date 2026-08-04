@@ -19,10 +19,10 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    // Новые транзитивные AndroidX (core 1.17, browser 1.9) требуют AGP 8.9.1+ и
-    // compileSdk 36. Согласованная связка: AGP 8.9.1 ↔ Gradle 8.11.1 ↔ Kotlin 2.1.20.
-    id("com.android.application") version "8.9.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.1.20" apply false
+    // Штатная связка Flutter 3.44: AGP 9 включает новый оптимизированный
+    // resource shrinker R8, который проверяет Google Play.
+    id("com.android.application") version "9.0.1" apply false
+    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
 }
 
 include(":app")

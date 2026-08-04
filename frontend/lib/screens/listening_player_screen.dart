@@ -6,6 +6,7 @@ import '../models/audio_lesson.dart';
 import '../services/listening_service.dart';
 import '../services/user_db.dart';
 import '../utils/tokenizer.dart';
+import '../widgets/keep_awake.dart';
 import '../widgets/eagle_mascot.dart';
 import 'book_reader_screen.dart' show WordAnalysisSheet;
 
@@ -38,6 +39,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
   bool _started = false; // потоковый режим: play() уже вызывался
   bool _finished = false;
   double _speed = 1.0;
+  String _voice = ListeningService.instance.voice;
   Duration _cueDuration = Duration.zero;
   int? _bookId; // приёмник сохранённых слов («🎧 Аудирование»)
 
@@ -252,80 +254,83 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Expanded(
-              child: Text(lesson.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w600)),
-            ),
-            _betaChip(scheme),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(14, 10, 14, 4),
-            child: EagleBubble(
-              asset: Eagle.slusa,
-              title: 'Слухао слушает с тобой',
-              text: 'Следи за подсветкой. Красные слова — их труднее всего '
-                  'поймать на слух. Тапни любое слово — разберём и добавим '
-                  'в словарь.',
-              eagleSize: 92,
-            ),
+    // Экран не гаснет, пока идёт прослушивание, — см. widgets/keep_awake.dart.
+    return KeepAwake(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(lesson.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
+              ),
+              _betaChip(scheme),
+            ],
           ),
-          if (_loadingTranscript)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 4, 18, 8),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: scheme.primary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Загружаю полный транскрипт эпизода…',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        color: scheme.onSurface.withValues(alpha: 0.65),
-                      ),
-                    ),
-                  ),
-                ],
+        ),
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(14, 10, 14, 4),
+              child: EagleBubble(
+                asset: Eagle.slusa,
+                title: 'Слухао слушает с тобой',
+                text: 'Следи за подсветкой. Красные слова — их труднее всего '
+                    'поймать на слух. Тапни любое слово — разберём и добавим '
+                    'в словарь.',
+                eagleSize: 92,
               ),
             ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
-              itemCount: _cues.length,
-              itemBuilder: (context, i) => Padding(
-                key: _cueKeys[i],
-                padding: const EdgeInsets.only(bottom: 14),
-                child: _KaraokeCue(
-                  tokens: _cueTokens[i],
-                  hardFlags: _hardFlags[i],
-                  isCurrent: i == _cue,
-                  activeChar: i == _cue ? _activeChar : -1,
-                  onTapWord: (t) => _onTapWord(i, t),
-                  onTapCue: () => _playCue(i),
+            if (_loadingTranscript)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18, 4, 18, 8),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: scheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Загружаю полный транскрипт эпизода…',
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          color: scheme.onSurface.withValues(alpha: 0.65),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
+                itemCount: _cues.length,
+                itemBuilder: (context, i) => Padding(
+                  key: _cueKeys[i],
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: _KaraokeCue(
+                    tokens: _cueTokens[i],
+                    hardFlags: _hardFlags[i],
+                    isCurrent: i == _cue,
+                    activeChar: i == _cue ? _activeChar : -1,
+                    onTapWord: (t) => _onTapWord(i, t),
+                    onTapCue: () => _playCue(i),
+                  ),
                 ),
               ),
             ),
-          ),
-          _controls(scheme),
-        ],
+            _controls(scheme),
+          ],
+        ),
       ),
     );
   }
@@ -390,6 +395,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
+              runSpacing: 6,
               children: [
                 for (final v in const [0.5, 1.0, 1.5, 2.0])
                   ChoiceChip(
@@ -400,6 +406,30 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
                   ),
               ],
             ),
+            if (lesson.isTts) ...[
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                children: [
+                  for (final entry in ListeningService.serbianVoices.entries)
+                    ChoiceChip(
+                      avatar: const Icon(Icons.record_voice_over_outlined,
+                          size: 18),
+                      label: Text(entry.value),
+                      selected: _voice == entry.key,
+                      onSelected: (_) async {
+                        await ListeningService.instance.setVoice(entry.key);
+                        if (!mounted) return;
+                        setState(() {
+                          _voice = entry.key;
+                          _started = false;
+                        });
+                        await _playCue(_cue);
+                      },
+                    ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

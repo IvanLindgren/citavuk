@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/audio_lesson.dart';
 import '../utils/transliteration.dart';
 import 'analysis_repository.dart';
@@ -9,6 +10,29 @@ import 'analysis_repository.dart';
 class ListeningService {
   ListeningService._();
   static final ListeningService instance = ListeningService._();
+
+  static const Map<String, String> serbianVoices = {
+    'sophie': 'София',
+    'nicholas': 'Никола',
+  };
+  static const _voicePreferenceKey = 'citavuk_tts_voice';
+  String _voice = 'sophie';
+
+  String get voice => _voice;
+  String get voiceLabel => serbianVoices[_voice] ?? serbianVoices.values.first;
+
+  Future<void> loadPreferences() async {
+    final value = (await SharedPreferences.getInstance())
+        .getString(_voicePreferenceKey);
+    if (value != null && serbianVoices.containsKey(value)) _voice = value;
+  }
+
+  Future<void> setVoice(String value) async {
+    if (!serbianVoices.containsKey(value)) return;
+    _voice = value;
+    await (await SharedPreferences.getInstance())
+        .setString(_voicePreferenceKey, value);
+  }
 
   /// Аудио берётся с собственного сервера, а не со Space.
   ///
@@ -43,9 +67,9 @@ class ListeningService {
         .toList();
   }
 
-  /// URL озвучки одной реплики (mp3 с бэкенда, gTTS).
-  String ttsUrl(String text) =>
-      '$_base/audio/tts?text=${Uri.encodeComponent(text)}';
+  /// URL озвучки одной реплики (нейросетевой голос с серверным fallback).
+  String ttsUrl(String text, {String lang = 'sr'}) =>
+      '$_base/audio/tts?text=${Uri.encodeComponent(text)}&lang=${Uri.encodeComponent(lang)}&voice=${Uri.encodeComponent(_voice)}';
 
   /// На web HTMLAudioElement требует CORS от финального mp3/m4a-хоста.
   /// Podcast CDN часто CORS не отдаёт, поэтому внешние RSS-аудио гоняем через

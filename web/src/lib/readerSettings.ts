@@ -20,7 +20,7 @@ import { useCallback, useEffect, useState } from 'react';
 const STORAGE_KEY = 'citavuk-reader-settings';
 
 export type ReaderFont = 'lora' | 'serif' | 'sans';
-export type ReaderTheme = 'auto' | 'paper' | 'sepia' | 'gray' | 'night' | 'odyssey';
+export type ReaderTheme = 'auto' | 'paper' | 'sepia' | 'gray' | 'night' | 'odyssey' | 'campaign100';
 
 /** Уровень «бионического» выделения: доля слова от начала, набранная жирным. */
 export type BionicLevel = 0 | 1 | 2 | 3;
@@ -110,6 +110,7 @@ export const THEME_LABELS: Record<ReaderTheme, string> = {
   gray: 'Серая',
   night: 'Ночь',
   odyssey: 'Спартанские шлемы',
+  campaign100: 'Первые 100 читателей',
 };
 
 const PALETTES: Record<Exclude<ReaderTheme, 'auto'>, ReaderPalette> = {
@@ -144,6 +145,12 @@ const PALETTES: Record<Exclude<ReaderTheme, 'auto'>, ReaderPalette> = {
     border: 'rgb(67 42 30 / 0.18)',
     backgroundImage: "url('/events/odyssey/spartan-helmets.webp')",
     backgroundSize: '320px 258px',
+  },
+  campaign100: {
+    background: '#f3e9d2',
+    text: '#241a14',
+    muted: '#66513f',
+    border: 'rgb(67 42 30 / 0.18)',
   },
 };
 
@@ -192,7 +199,7 @@ export function sanitize(raw: unknown): ReaderSettings {
     firstLineIndent: num('firstLineIndent', 0, 64),
     justify: flag('justify'),
     maxWidth: num('maxWidth', 480, FULL_WIDTH),
-    theme: pick('theme', ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey'] as const),
+    theme: pick('theme', ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey', 'campaign100'] as const),
     bionic: (bionic === 1 || bionic === 2 || bionic === 3 ? bionic : 0) as BionicLevel,
     sound: flag('sound'),
     animate: flag('animate'),

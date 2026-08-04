@@ -889,31 +889,59 @@ _TTS_CACHE_MAX = 600  # ~ десятки минут речи; примитивн
 
 
 @app.get("/audio/tts")
-def audio_tts(text: str, lang: str = "sr", _: None = Depends(_tts_limit)):
-    """Озвучивает короткий текст (одно предложение) через gTTS, отдаёт mp3.
+def audio_tts(
+    text: str,
+    lang: str = "sr",
+    voice: str = "sophie",
+    _: None = Depends(_tts_limit),
+):
+    """Озвучивает короткий текст нейросетевым голосом, отдаёт mp3.
 
     Клиент шлёт по одному предложению — так у него точные тайминги реплик
     (каждая реплика = свой файл) для караоке-подсветки.
     """
     if lang not in ("sr", "ru", "en"):
         raise HTTPException(status_code=400, detail="Неподдерживаемый язык.")
+    if voice not in ("sophie", "nicholas"):
+        raise HTTPException(status_code=400, detail="Неподдерживаемый диктор.")
     text = (text or "").strip()
     if not text or len(text) > 400:
         return Response(status_code=400)
-    key = hashlib.sha1(f"{lang}:{text}".encode("utf-8")).hexdigest()
+    serbian_name = "SophieNeural" if voice == "sophie" else "NicholasNeural"
+    voices = {
+        # edge-tts 7.x отклоняет трёхчастный locale sr-Latn-RS ещё до
+        # запроса, хотя Azure публикует такой alias. sr-RS принимает обе
+        # сербские письменности и не сваливается на роботизированный gTTS.
+        "sr": f"sr-RS-{serbian_name}",
+        "ru": "ru-RU-SvetlanaNeural",
+        "en": "en-US-JennyNeural",
+    }
+    voice = voices[lang]
+    key = hashlib.sha1(f"neural-v2:{voice}:{text}".encode("utf-8")).hexdigest()
     data = _TTS_CACHE.get(key)
     if data is None:
         data = redis_cache.get_bytes(f"tts:{key}")
     if data is None:
         try:
-            from io import BytesIO
-            from gtts import gTTS
-            buf = BytesIO()
-            gTTS(text=text, lang=lang).write_to_fp(buf)
-            data = buf.getvalue()
-        except Exception as e:
-            logging.error(f"TTS failed: {e}")
-            return Response(status_code=502)
+            import edge_tts
+            chunks = []
+            for message in edge_tts.Communicate(text, voice, rate="-4%").stream_sync():
+                if message["type"] == "audio":
+                    chunks.append(message["data"])
+            data = b"".join(chunks)
+            if not data:
+                raise RuntimeError("neural TTS returned no audio")
+        except Exception as neural_error:
+            logging.warning(f"Neural TTS failed, falling back to gTTS: {neural_error}")
+            try:
+                from io import BytesIO
+                from gtts import gTTS
+                buf = BytesIO()
+                gTTS(text=text, lang=lang).write_to_fp(buf)
+                data = buf.getvalue()
+            except Exception as fallback_error:
+                logging.error(f"TTS failed: {fallback_error}")
+                return Response(status_code=502)
         if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
             _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
         _TTS_CACHE[key] = data

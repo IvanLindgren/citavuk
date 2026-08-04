@@ -6,6 +6,7 @@ import '../services/user_db.dart';
 import '../widgets/animated_widgets.dart';
 import '../widgets/shortcuts_sheet.dart';
 import '../widgets/wolf_mascot.dart';
+import 'writing_review_screen.dart';
 
 class FlashcardsScreen extends StatefulWidget {
   final int bookId;
@@ -128,6 +129,24 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     style: const TextStyle(fontSize: 14)),
               ),
             ),
+          IconButton(
+            tooltip: 'Повторять письмом',
+            icon: const Icon(Icons.draw_outlined),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => WritingReviewScreen(
+                    bookId: widget.bookId,
+                    bookTitle: widget.bookTitle,
+                  ),
+                ),
+              );
+              // Срок карточки мог измениться в том режиме: очередь здесь
+              // обязана это увидеть, иначе слово покажется второй раз подряд.
+              if (mounted) await _load();
+            },
+          ),
           IconButton(
             tooltip: 'Клавиши и жесты',
             icon: const Icon(Icons.keyboard_outlined),

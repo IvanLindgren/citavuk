@@ -1,4 +1,4 @@
-import { request } from './client';
+import { API_BASE, getToken, request } from './client';
 
 export type TeacherStatus = 'none' | 'pending' | 'approved' | 'rejected' | 'suspended';
 
@@ -92,6 +92,7 @@ export interface Lesson {
   shareToken?: string;
   title: string;
   summary: string;
+  coverUrl?: string;
   level: string;
   lessonType: 'lexicon' | 'grammar' | 'speaking' | 'writing';
   topic: string;
@@ -106,7 +107,7 @@ export interface Lesson {
   updatedAt: string;
 }
 
-export type LessonDraft = Pick<Lesson, 'title' | 'summary' | 'level' | 'lessonType' | 'topic' | 'tags' | 'estimatedMinutes' | 'script'> & {
+export type LessonDraft = Pick<Lesson, 'title' | 'summary' | 'coverUrl' | 'level' | 'lessonType' | 'topic' | 'tags' | 'estimatedMinutes' | 'script'> & {
   content: LessonContent;
 };
 
@@ -118,6 +119,7 @@ export const getTeacherProfile = () => request<Partial<TeacherProfile>>('/v1/tea
 export const updateTeacherProfile = (body:TeacherProfile) => request<TeacherProfile>('/v1/teachers/profile',{method:'PUT',body});
 export const createTeacherLesson = (body: LessonDraft) => request<Lesson>('/v1/teachers/lessons', { method: 'POST', body });
 export const updateTeacherLesson = (id: string, body: LessonDraft) => request<Lesson>(`/v1/teachers/lessons/${id}`, { method: 'PUT', body });
+export const deleteTeacherLesson = (id: string) => request<void>(`/v1/teachers/lessons/${id}`, { method: 'DELETE' });
 export const publishUnlistedLesson = (id: string, revisionId: string) => request(`/v1/teachers/lessons/${id}/publish-unlisted`, { method: 'POST', body: { revisionId } });
 export const submitPublicLesson = (id: string, revisionId: string) => request(`/v1/teachers/lessons/${id}/submit`, { method: 'POST', body: { revisionId } });
 
@@ -128,18 +130,46 @@ export async function getPublicLessons(filters: Record<string, string> = {}): Pr
 export const getPublicLesson = (slug: string) => request<Lesson>(`/v1/lessons/${encodeURIComponent(slug)}`, { anonymous: true });
 export const getUnlistedLesson = (token: string) => request<Lesson>(`/v1/lesson-links/${encodeURIComponent(token)}`, { anonymous: true });
 
-interface UploadPolicy { url: string; fields: Record<string, string>; publicUrl: string }
+interface UploadPolicy {
+  url: string;
+  method?: 'PUT' | 'POST';
+  headers?: Record<string, string>;
+  fields?: Record<string, string>;
+  publicUrl: string;
+}
 
 export async function uploadLessonImage(file: File): Promise<string> {
+  const sha256 = await sha256Hex(new Uint8Array(await file.arrayBuffer()));
   const policy = await request<UploadPolicy>('/v1/teachers/media/upload-policy', {
-    method: 'POST', body: { mimeType: file.type, size: file.size },
+    method: 'POST', body: { sha256, mimeType: file.type, size: file.size },
   });
+  if (policy.method === 'PUT') {
+    const internal = policy.url.startsWith('/');
+    const token = internal ? getToken() : null;
+    const response = await fetch(internal ? API_BASE + policy.url : policy.url, {
+      method: 'PUT',
+      headers: {
+        ...policy.headers,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: file,
+    });
+    if (!response.ok) throw new Error(`Хранилище отклонило файл (${response.status}).`);
+    return policy.publicUrl;
+  }
   const form = new FormData();
-  Object.entries(policy.fields).forEach(([key, value]) => form.append(key, value));
+  Object.entries(policy.fields ?? {}).forEach(([key, value]) => form.append(key, value));
   form.append('file', file);
   const response = await fetch(policy.url, { method: 'POST', body: form });
   if (!response.ok) throw new Error(`Хранилище отклонило файл (${response.status}).`);
   return policy.publicUrl;
+}
+
+async function sha256Hex(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', bytes as BufferSource);
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 export const getAdminTeacherApplications = async () => (await request<{ items: TeacherApplication[] }>('/v1/admin/teacher-applications')).items;

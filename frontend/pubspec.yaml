@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.9.0+28
+version: 1.12.0+31
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  file_picker: ^8.0.0
+  file_picker: ^11.0.2
   syncfusion_flutter_pdf: ^25.1.37
   archive: ^3.6.1
   xml: ^6.5.0
@@ -42,6 +42,14 @@ dependencies:
   # Возврат окна на передний план после входа в браузере. Приходил транзитивно
   # с flutter_web_auth_2; объявлен явно, потому что используется напрямую.
   window_to_front: ^0.0.4
+  # Экран не гаснет в читалке и в плеере. Пакет работает на Android, Windows и
+  # Linux; на вебе он опирается на Screen Wake Lock API и молча ничего не
+  # делает там, где API нет, — отдельной ветки для этого не нужно.
+  wakelock_plus: ^1.2.8
+  # Комнаты дворца памяти. Рисунки выгружаются из React-версии скриптом
+  # web/scripts/export-palace.tsx, поэтому картинка и координаты предметов
+  # получены из одного источника и не могут разойтись.
+  flutter_svg: ^2.0.10
   desktop_drop: ^0.7.1
   # Чтение файла по пути одинаково на всех платформах, включая веб, где dart:io
   # нет. Приходил транзитивно с desktop_drop; объявлен явно, потому что
@@ -100,6 +108,7 @@ flutter:
     - assets/course/dialogues/
     - assets/animations/generated/
     - assets/sounds/
+    - assets/palace/
     # Каталог материалов для поступления. Собирается общим для сайта и
     # приложения скриптом web/scripts/build-materials.py.
     - assets/materials/
@@ -131,7 +140,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.9.0
+  version: 1.12.0
   publisher: Denis Kornilov
   languages:
     - english

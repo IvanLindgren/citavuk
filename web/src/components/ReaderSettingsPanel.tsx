@@ -28,6 +28,7 @@ export function ReaderSettingsPanel({
   onReset,
   onClose,
   odysseyRewardUnlocked = false,
+  campaignRewardUrl = '',
 }: {
   open: boolean;
   settings: ReaderSettings;
@@ -35,6 +36,7 @@ export function ReaderSettingsPanel({
   onReset: () => void;
   onClose: () => void;
   odysseyRewardUnlocked?: boolean;
+  campaignRewardUrl?: string;
 }) {
   const reduceMotion = useReducedMotion();
 
@@ -91,15 +93,24 @@ export function ReaderSettingsPanel({
                 <Chips<ReaderTheme>
                   value={settings.theme}
                   options={(
-                    ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey'] as const
+                    ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey', 'campaign100'] as const
                   ).map((id) => ({
                     id,
-                    label: id === 'odyssey' && !odysseyRewardUnlocked
-                      ? 'Спартанские шлемы · закрыто'
-                      : THEME_LABELS[id],
+                    label: (id === 'odyssey' && !odysseyRewardUnlocked) ||
+                      (id === 'campaign100' && !campaignRewardUrl)
+                        ? `${THEME_LABELS[id]} · закрыто`
+                        : THEME_LABELS[id],
                     swatch: paletteFor(id)?.background,
-                    swatchImage: paletteFor(id)?.backgroundImage,
-                    disabled: id === 'odyssey' && !odysseyRewardUnlocked,
+                    swatchImage: id === 'campaign100' && campaignRewardUrl
+                      ? `url(${JSON.stringify(campaignRewardUrl)})`
+                      : paletteFor(id)?.backgroundImage,
+                    disabled: (id === 'odyssey' && !odysseyRewardUnlocked) ||
+                      (id === 'campaign100' && !campaignRewardUrl),
+                    title: id === 'campaign100'
+                      ? 'Награда за участие в акции «Первые 100 читателей»'
+                      : id === 'odyssey'
+                        ? 'Награда за завершение события «Одиссея»'
+                        : undefined,
                   }))}
                   onSelect={(value) => onChange('theme', value)}
                 />
@@ -246,6 +257,7 @@ function Chips<T extends string | number>({
     swatchImage?: string;
     font?: string;
     disabled?: boolean;
+    title?: string;
   }>;
   onSelect: (value: T) => void;
 }) {
@@ -257,7 +269,7 @@ function Chips<T extends string | number>({
           type="button"
           onClick={() => onSelect(option.id)}
           disabled={option.disabled}
-          title={option.disabled ? 'Награда за завершение события «Одиссея»' : undefined}
+          title={option.disabled ? option.title : undefined}
           style={option.font ? { fontFamily: option.font } : undefined}
           className={[
             'inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',

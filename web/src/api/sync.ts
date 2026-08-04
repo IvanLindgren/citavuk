@@ -76,7 +76,10 @@ interface RemotePalace {
   id: string;
   name: string;
   sceneId: string;
-  pins: Record<string, { word: string; translation: string; vocabId: string }> | null;
+  pins: Record<
+    string,
+    { word: string; translation: string; vocabId: string; at?: number }
+  > | null;
   deleted: boolean;
   updatedAt: string;
 }
@@ -224,6 +227,9 @@ function toRemotePalace(palace: Palace): Record<string, unknown> {
           word: pin.word,
           translation: pin.translation,
           vocabId: pin.vocabId ?? '',
+          // Порядок развески обязан пережить синхронизацию: без него телефон
+          // и браузер обходили бы один дворец в разном порядке.
+          at: pin.at ?? 0,
         },
       ]),
     ),
@@ -289,6 +295,7 @@ async function pullChanges(): Promise<number> {
                 word: pin.word,
                 translation: pin.translation,
                 vocabId: pin.vocabId || null,
+                at: pin.at,
               },
             ]),
           ),

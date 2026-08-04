@@ -3,7 +3,6 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -41,9 +40,9 @@ android {
     namespace = "com.srbskiread.srbski_read"
     // Новые транзитивные AndroidX (core 1.17, browser 1.9) требуют compileSdk 36.
     compileSdk = 36
-    // Плагины (audioplayers, file_picker, path_provider и др.) требуют NDK 25.1+.
-    // Берём заведомо более высокую версию — они обратно совместимы.
-    ndkVersion = "27.0.12077973"
+    // Актуальные Flutter-плагины собираются против этой версии NDK; более
+    // высокая версия обратно совместима с нативными библиотеками пакетов.
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -83,6 +82,12 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }

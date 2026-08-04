@@ -106,7 +106,21 @@ export async function importText(
   text: string,
   sourceKey = '',
 ): Promise<BookMeta> {
-  const paragraphs = splitParagraphs(text);
+  return importParagraphs(title, splitParagraphs(text), sourceKey);
+}
+
+/**
+ * Создаёт книгу из готовых абзацев.
+ *
+ * Нужен размеченным источникам: у DOCX и веб-страницы абзацы уже известны и
+ * среди них есть картинки и таблицы, а склейка в текст и обратный разбор
+ * потеряла бы и то и другое.
+ */
+export async function importParagraphs(
+  title: string,
+  paragraphs: string[],
+  sourceKey = '',
+): Promise<BookMeta> {
   if (paragraphs.length === 0) {
     throw new Error('В файле не нашлось текста.');
   }

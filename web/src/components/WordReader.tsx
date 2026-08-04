@@ -15,6 +15,7 @@ import {
   translateText,
   type TranslationResult,
 } from '../api/translate';
+import { parseBlock } from '../lib/blocks';
 import { BIONIC_RATIO, type BionicLevel } from '../lib/readerSettings';
 import { Mascot } from './Mascot';
 import { Link } from '../lib/router';
@@ -22,11 +23,15 @@ import { saveVocabularyWord } from '../lib/vocabulary';
 import { tokenize, type Token } from '../lib/tokenize';
 import { useSync } from '../state/sync';
 import { Spinner } from './ui';
+import { TtsVoicePicker } from './TtsVoicePicker';
+import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
+import { ttsAudioUrl } from '../api/listening';
+import { serbianIpa } from '../lib/serbianPronunciation';
 
 export interface ReaderMark {
   start: number;
   end: number;
-  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size';
+  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size' | 'audio';
   value?: string;
 }
 
@@ -63,6 +68,8 @@ export function WordReader({
   const readerRef = useRef<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<{
     paragraph: number;
+    /** Номер ячейки, если слово нажали внутри таблицы. */
+    cell?: number;
     token: Token;
   } | null>(null);
   // Куда ставить карточку: прямоугольник нажатого слова на экране.
@@ -105,8 +112,16 @@ export function WordReader({
   }, []);
 
   const selectWord = useCallback(
-    async (paragraphIndex: number, token: Token, rect: DOMRect) => {
-      const text = paragraphs[paragraphIndex];
+    async (
+      paragraphIndex: number,
+      token: Token,
+      rect: DOMRect,
+      // Ячейка таблицы: сам абзац там — служебная метка, поэтому и текст для
+      // контекста, и номер ячейки приходят снаружи. Без номера выделение
+      // подсветило бы одинаковое слово сразу во всех ячейках таблицы.
+      cell?: { index: number; text: string },
+    ) => {
+      const text = cell?.text ?? paragraphs[paragraphIndex];
       if (!text) return;
 
       pending.current?.abort();
@@ -115,12 +130,15 @@ export function WordReader({
 
       setActivePhrase(null);
       setSelectedPhrase(null);
-      setSelected({ paragraph: paragraphIndex, token });
+      setSelected({ paragraph: paragraphIndex, cell: cell?.index, token });
       setAnchor(rect);
       setResult(null);
       setAnalysis(null);
       setError(null);
       setLoading(true);
+
+      // Запуск внутри пользовательского клика не блокируется политикой autoplay.
+      playAudio(new Audio(ttsAudioUrl(token.text)));
 
       // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
       // словарь знает не каждое слово, а перевод нужен всегда.
@@ -213,20 +231,53 @@ export function WordReader({
   return (
     <div className={className}>
       <div ref={readerRef} className={paragraphClassName ? '' : 'space-y-4'}>
-        {paragraphs.map((paragraph, paragraphIndex) => (
-          <Paragraph
-            key={paragraphIndex}
-            text={paragraph}
-            bionic={bionic}
-            className={paragraphClassName}
-            style={paragraphStyle}
-            marks={paragraphMarks?.[paragraphIndex] ?? []}
-            selectedStart={
-              selected?.paragraph === paragraphIndex ? selected.token.start : null
-            }
-            onSelect={(token, rect) => selectWord(paragraphIndex, token, rect)}
-          />
-        ))}
+        {paragraphs.map((paragraph, paragraphIndex) => {
+          // Картинка и таблица — те же абзацы, но с меткой в начале
+          // (см. lib/blocks.ts). Разбор идёт здесь, а не в читалке, чтобы
+          // книга с иллюстрациями одинаково открывалась везде, где
+          // используется WordReader: и в читалке, и в уроке, и в общей ссылке.
+          const block = parseBlock(paragraph);
+          if (block.kind === 'image') {
+            return <BookImage key={paragraphIndex} url={block.url} alt={block.alt} />;
+          }
+          if (block.kind === 'table') {
+            return (
+              <BookTable
+                key={paragraphIndex}
+                rows={block.rows}
+                bionic={bionic}
+                style={paragraphStyle}
+                selectedCell={
+                  selected?.paragraph === paragraphIndex ? selected.cell ?? null : null
+                }
+                selectedStart={
+                  selected?.paragraph === paragraphIndex ? selected.token.start : null
+                }
+                onSelect={(cellIndex, cellText, token, rect) =>
+                  selectWord(paragraphIndex, token, rect, {
+                    index: cellIndex,
+                    text: cellText,
+                  })
+                }
+              />
+            );
+          }
+
+          return (
+            <Paragraph
+              key={paragraphIndex}
+              text={block.text}
+              bionic={bionic}
+              className={paragraphClassName}
+              style={paragraphStyle}
+              marks={paragraphMarks?.[paragraphIndex] ?? []}
+              selectedStart={
+                selected?.paragraph === paragraphIndex ? selected.token.start : null
+              }
+              onSelect={(token, rect) => selectWord(paragraphIndex, token, rect)}
+            />
+          );
+        })}
       </div>
 
       <AnimatePresence>
@@ -246,7 +297,7 @@ export function WordReader({
             key={
               activePhrase
                 ? `phrase-${activePhrase}`
-                : `${selected!.paragraph}-${selected!.token.start}`
+                : `${selected!.paragraph}-${selected!.cell ?? ''}-${selected!.token.start}`
             }
             word={activePhrase ?? selected!.token.text}
             kind={activePhrase ? 'phrase' : 'word'}
@@ -285,6 +336,135 @@ export function WordReader({
           />
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/**
+ * Иллюстрация из книги.
+ *
+ * Картинка лежит в общем хранилище и грузится лениво: в учебнике их десятки, и
+ * тянуть их все при открытии книги значит потратить чужой трафик на страницы,
+ * до которых читатель может и не дойти.
+ *
+ * Битая ссылка прячет картинку целиком, а не оставляет значок «нет файла»:
+ * серый прямоугольник посреди текста выглядит как поломка читалки, хотя дело в
+ * исходном документе.
+ */
+function BookImage({ url, alt }: { url: string; alt: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return null;
+
+  return (
+    <figure className="my-[var(--reader-gap)]">
+      <img
+        src={url}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+        className="mx-auto max-h-[70vh] w-auto max-w-full rounded-xl"
+      />
+      {alt && (
+        <figcaption className="mt-2 text-center text-sm italic opacity-70">
+          {alt}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+/**
+ * Таблица из книги.
+ *
+ * Ячейки остаются разбираемыми: в сербском учебнике таблица — это чаще всего
+ * склонение или спряжение, то есть ровно то место, где по слову и хочется
+ * нажать.
+ *
+ * Прокрутка своя, а не общая для страницы: широкая таблица иначе растянула бы
+ * весь лист и увела текст за край экрана телефона.
+ */
+function BookTable({
+  rows,
+  bionic,
+  style,
+  selectedCell,
+  selectedStart,
+  onSelect,
+}: {
+  rows: string[][];
+  bionic: BionicLevel;
+  style?: CSSProperties;
+  selectedCell: number | null;
+  selectedStart: number | null;
+  onSelect: (
+    cellIndex: number,
+    cellText: string,
+    token: Token,
+    anchor: DOMRect,
+  ) => void;
+}) {
+  const [header, ...body] = rows;
+  let cellIndex = 0;
+
+  const cell = (text: string, index: number) => (
+    <Paragraph
+      text={text}
+      bionic={bionic}
+      className=""
+      marks={[]}
+      selectedStart={selectedCell === index ? selectedStart : null}
+      onSelect={(token, rect) => onSelect(index, text, token, rect)}
+    />
+  );
+
+  return (
+    <div
+      className="my-[var(--reader-gap)] overflow-x-auto"
+      style={style}
+      // Прокрутку таблицы нужно уметь достать с клавиатуры, иначе её правая
+      // часть недоступна тем, кто не пользуется мышью.
+      tabIndex={0}
+      role="group"
+      aria-label="Таблица из книги"
+    >
+      <table className="w-full border-collapse text-[0.92em]">
+        {header && (
+          <thead>
+            <tr>
+              {header.map((text) => {
+                const index = cellIndex++;
+                return (
+                  <th
+                    key={index}
+                    scope="col"
+                    className="border border-current/20 px-3 py-2 text-left align-top font-semibold"
+                  >
+                    {cell(text, index)}
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+        )}
+        <tbody>
+          {body.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((text) => {
+                const index = cellIndex++;
+                return (
+                  <td
+                    key={index}
+                    className="border border-current/20 px-3 py-2 align-top"
+                  >
+                    {cell(text, index)}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -379,6 +559,7 @@ function MarkedToken({ text, token, marks }: { text: string; token: Token; marks
       if (mark.kind === 'font') style.fontFamily = mark.value === 'sans' ? 'var(--font-sans)' : 'var(--font-display)';
       if (mark.kind === 'size' && mark.value) style.fontSize = `${mark.value}px`;
       if (mark.kind === 'code') classes.push('rounded bg-[var(--bg-sunken)] px-1 py-0.5 font-mono text-[0.9em]');
+      if (mark.kind === 'audio') classes.push('rounded bg-[var(--accent)] px-0.5 text-white');
       if (mark.kind === 'link') href = mark.value;
     }
     const key = `${start}-${end}`;
@@ -551,6 +732,25 @@ function WordCard({
   const [saveLemma, setSaveLemma] = useState(true);
   const placement = useCardPlacement(anchor);
   const formChoice = hasFormChoice(kind, word, analysis);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [speaking, setSpeaking] = useState(false);
+
+  const pronounce = useCallback(() => {
+    audioRef.current?.pause();
+    const audio = new Audio(ttsAudioUrl(word, analysis?.english ? 'en' : 'sr'));
+    audioRef.current = audio;
+    setSpeaking(true);
+    audio.addEventListener('ended', () => setSpeaking(false), { once: true });
+    audio.addEventListener('error', () => setSpeaking(false), { once: true });
+    try {
+      const started = audio.play();
+      void started?.catch(() => setSpeaking(false));
+    } catch {
+      setSpeaking(false);
+    }
+  }, [analysis?.english, word]);
+
+  useEffect(() => () => audioRef.current?.pause(), []);
 
   const card = (
     <motion.div
@@ -577,9 +777,30 @@ function WordCard({
       >
         <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--line)] px-5 py-4">
           <div className="min-w-0">
-            <div className="font-display text-2xl font-bold text-[var(--accent)]">
-              {word}
+            <div className="flex items-center gap-2">
+              <div className="font-display text-2xl font-bold text-[var(--accent)]">
+                {word}
+              </div>
+              {kind === 'word' && (
+                <button
+                  type="button"
+                  onClick={pronounce}
+                  className="rounded-full p-2 text-[var(--accent)] hover:bg-[var(--bg-sunken)]"
+                  aria-label="Произнести слово"
+                  title="Произнести слово"
+                >
+                  {speaking ? <HiStop className="size-5" /> : <HiSpeakerWave className="size-5" />}
+                </button>
+              )}
             </div>
+            {kind === 'word' && !analysis?.english && (
+              <>
+                <div className="mt-0.5 text-sm text-[var(--text-muted)]">
+                  {serbianIpa(word)} <span className="text-xs">без ударения</span>
+                </div>
+                <div className="mt-2"><TtsVoicePicker /></div>
+              </>
+            )}
             {/* Часть речи и основа — то, что нужно раньше перевода: по ним
                 слово ищется в словаре и узнаётся в другой форме. */}
             {analysis?.known && (
@@ -724,6 +945,15 @@ function WordCard({
   );
 
   return typeof document === 'undefined' ? card : createPortal(card, document.body);
+}
+
+function playAudio(audio: HTMLAudioElement): void {
+  try {
+    const started = audio.play();
+    void started?.catch(() => {});
+  } catch {
+    // Браузер может запретить autoplay; ручная кнопка остаётся доступна.
+  }
 }
 
 const CARD_WIDTH = 420;

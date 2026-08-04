@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getTranscript } from './listening';
+import { getTranscript, getTtsVoice, setTtsVoice, ttsAudioUrl } from './listening';
 import type { AudioLesson } from '../listening/types';
 
 const lesson = (overrides: Partial<AudioLesson> = {}): AudioLesson => ({
@@ -17,6 +17,21 @@ const lesson = (overrides: Partial<AudioLesson> = {}): AudioLesson => ({
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  localStorage.clear();
+});
+
+describe('TTS voice', () => {
+  it('persists the selected Serbian speaker and includes it in the URL', () => {
+    setTtsVoice('nicholas');
+
+    expect(getTtsVoice()).toBe('nicholas');
+    expect(ttsAudioUrl('Dobar dan')).toContain('voice=nicholas');
+  });
+
+  it('uses Sophie for existing users without a saved preference', () => {
+    expect(getTtsVoice()).toBe('sophie');
+    expect(ttsAudioUrl('Добар дан')).toContain('voice=sophie');
+  });
 });
 
 describe('getTranscript', () => {

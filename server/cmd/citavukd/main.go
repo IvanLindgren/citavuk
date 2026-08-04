@@ -85,9 +85,15 @@ func run(envPath string, migrateOnly bool) error {
 	if err != nil {
 		return fmt.Errorf("миграции: %w", err)
 	}
-	if len(applied) > 0 {
-		slog.Info("применены миграции", "count", len(applied), "names", applied)
-	}
+	// Отчёт печатается всегда, а не только когда что-то применилось. Молчание
+	// при нуле применённых миграций уже стоило сломанного выпуска: файл лежал
+	// не в том каталоге, в сборку не попал, а выкатка бодро сообщила «миграции
+	// применены» — и таблицы не оказалось. Общее число встроенных миграций
+	// показывает такую пропажу сразу.
+	slog.Info("миграции",
+		"всего", len(store.KnownMigrations()),
+		"применено", len(applied),
+		"имена", applied)
 	adminCtx, cancelAdmins := context.WithTimeout(context.Background(), 10*time.Second)
 	promoted, err := st.ConfigureAdmins(adminCtx, cfg.AdminEmails)
 	cancelAdmins()

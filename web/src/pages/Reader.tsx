@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { HiBackward, HiForward, HiPause, HiPlay, HiSpeakerWave, HiXMark } from 'react-icons/hi2';
 
 import { downloadContent } from '../api/sync';
 import { Discussion } from '../components/Discussion';
@@ -7,9 +8,10 @@ import { Mascot } from '../components/Mascot';
 import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
 import { ShareBook } from '../components/ShareBook';
 import { Button, Spinner } from '../components/ui';
-import { WordReader } from '../components/WordReader';
+import { WordReader, type ReaderMark } from '../components/WordReader';
 import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
 import { odysseyRewardUnlocked } from '../events/odyssey';
+import { paginate } from '../lib/pages';
 import { playPageTurn, releasePageTurn } from '../lib/pageTurn';
 import {
   FONT_STACKS,
@@ -20,15 +22,24 @@ import {
 import { Link, useParams, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useSeo } from '../lib/seo';
-
-/** Сколько символов помещается на логическую страницу. */
-const PAGE_CHARS = 1500;
+import { useAnnouncements } from '../state/announcements';
+import { ttsAudioUrl } from '../api/listening';
+import { TtsVoicePicker } from '../components/TtsVoicePicker';
+import { parseBlock } from '../lib/blocks';
+import { tokenize } from '../lib/tokenize';
 
 type LoadState =
   | { kind: 'loading' }
   | { kind: 'missing' }
   | { kind: 'needsDownload'; book: BookMeta }
   | { kind: 'ready'; book: BookMeta; paragraphs: string[] };
+
+interface AudiobookCue {
+  text: string;
+  page: number;
+  paragraph: number;
+  start: number;
+}
 
 export function Reader() {
   useSeo({
@@ -39,6 +50,7 @@ export function Reader() {
   const { id } = useParams();
   const { navigate } = useRouter();
   const { account } = useAuth();
+  const { rewards } = useAnnouncements();
   const reduceMotion = useReducedMotion();
   const { settings, update, reset } = useReaderSettings();
 
@@ -51,6 +63,18 @@ export function Reader() {
   // Направление последнего перехода: страница уезжает туда, откуда пришла
   // следующая, иначе перелистывание «вперёд» и «назад» выглядят одинаково.
   const [direction, setDirection] = useState(1);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playCueRef = useRef<(index: number) => void>(() => {});
+  const [audiobookEnabled, setAudiobookEnabled] = useState(false);
+  const [audiobookPlaying, setAudiobookPlaying] = useState(false);
+  const [audiobookCue, setAudiobookCue] = useState(0);
+  const [audiobookSpeed, setAudiobookSpeed] = useState(1);
+  const [audioMark, setAudioMark] = useState<{
+    page: number;
+    paragraph: number;
+    start: number;
+    end: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -107,40 +131,35 @@ export function Reader() {
 
   const paragraphs = state.kind === 'ready' ? state.paragraphs : [];
 
-  /**
-   * Абзацы группируются в страницы примерно равной длины.
-   *
-   * Границей всегда остаётся абзац: разрывать его нельзя, иначе предложение
-   * окажется на двух страницах и перевод слова потеряет свой контекст.
-   */
-  const pages = useMemo(() => {
-    const result: string[][] = [];
-    let current: string[] = [];
-    let length = 0;
+  /** Абзацы группируются в страницы примерно равной длины (см. lib/pages). */
+  const pages = useMemo(() => paginate(paragraphs), [paragraphs]);
 
-    for (const paragraph of paragraphs) {
-      if (length > 0 && length + paragraph.length > PAGE_CHARS) {
-        result.push(current);
-        current = [];
-        length = 0;
-      }
-      current.push(paragraph);
-      length += paragraph.length;
-    }
-    if (current.length > 0) result.push(current);
-    return result;
-  }, [paragraphs]);
+  const audiobookCues = useMemo(() => {
+    const cues: AudiobookCue[] = [];
+    const sentence = /[^.!?…]+[.!?…]*/g;
+    pages.forEach((entry, pageIndex) => {
+      entry.texts.forEach((raw, paragraph) => {
+        const block = parseBlock(raw);
+        if (block.kind !== 'text') return;
+        for (const match of block.text.matchAll(sentence)) {
+          const full = match[0];
+          const text = full.trim();
+          if (!text) continue;
+          const leading = full.length - full.trimStart().length;
+          cues.push({
+            text,
+            page: pageIndex,
+            paragraph,
+            start: (match.index ?? 0) + leading,
+          });
+        }
+      });
+    });
+    return cues;
+  }, [pages]);
 
   /** Первый абзац каждой страницы — прогресс хранится в абзацах, не в страницах. */
-  const pageStarts = useMemo(() => {
-    const starts: number[] = [];
-    let index = 0;
-    for (const pageParagraphs of pages) {
-      starts.push(index);
-      index += pageParagraphs.length;
-    }
-    return starts;
-  }, [pages]);
+  const pageStarts = useMemo(() => pages.map((entry) => entry.start), [pages]);
 
   // Открываем на том месте, где остановились.
   useEffect(() => {
@@ -162,6 +181,88 @@ export function Reader() {
     },
     [pages.length, state, pageStarts, page, settings.sound],
   );
+
+  const audiobookStorageKey = `citavuk-audiobook-${id ?? 'unknown'}`;
+
+  const saveAudiobook = useCallback((enabled: boolean, cue: number, speed: number) => {
+    localStorage.setItem(
+      audiobookStorageKey,
+      JSON.stringify({ enabled, cue, speed }),
+    );
+  }, [audiobookStorageKey]);
+
+  const showAudiobookCue = useCallback((index: number) => {
+    const cue = audiobookCues[index];
+    if (!cue || state.kind !== 'ready') return;
+    setDirection(cue.page >= page ? 1 : -1);
+    setPage(cue.page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    void saveProgress(state.book.id, pageStarts[cue.page] ?? 0);
+  }, [audiobookCues, page, pageStarts, state]);
+
+  const playAudiobookCue = useCallback((index: number) => {
+    const cue = audiobookCues[index];
+    if (!cue) {
+      setAudiobookPlaying(false);
+      return;
+    }
+    audioRef.current?.pause();
+    const audio = new Audio(ttsAudioUrl(cue.text));
+    audio.playbackRate = audiobookSpeed;
+    audioRef.current = audio;
+    setAudiobookEnabled(true);
+    setAudiobookCue(index);
+    setAudioMark(null);
+    showAudiobookCue(index);
+    saveAudiobook(true, index, audiobookSpeed);
+    audio.onplay = () => setAudiobookPlaying(true);
+    audio.onpause = () => setAudiobookPlaying(false);
+    audio.onended = () => playCueRef.current(index + 1);
+    audio.ontimeupdate = () => {
+      if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+      const ratio = Math.min(0.999, audio.currentTime / audio.duration);
+      const char = cue.start + Math.floor(cue.text.length * ratio);
+      const source = pages[cue.page]?.texts[cue.paragraph] ?? '';
+      const block = parseBlock(source);
+      if (block.kind !== 'text') return;
+      const token = tokenize(block.text).find(
+        (item) => item.isWord && char >= item.start && char < item.end,
+      );
+      if (token) {
+        setAudioMark({
+          page: cue.page,
+          paragraph: cue.paragraph,
+          start: token.start,
+          end: token.end,
+        });
+      }
+    };
+    void audio.play().catch(() => setAudiobookPlaying(false));
+  }, [audiobookCues, audiobookSpeed, pages, saveAudiobook, showAudiobookCue]);
+
+  playCueRef.current = playAudiobookCue;
+
+  useEffect(() => {
+    if (audiobookCues.length === 0) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem(audiobookStorageKey) ?? '{}') as {
+        enabled?: boolean;
+        cue?: number;
+        speed?: number;
+      };
+      if (!saved.enabled) return;
+      const cue = Math.max(0, Math.min(saved.cue ?? 0, audiobookCues.length - 1));
+      const speed = Math.max(0.7, Math.min(saved.speed ?? 1, 1.8));
+      setAudiobookEnabled(true);
+      setAudiobookCue(cue);
+      setAudiobookSpeed(speed);
+      showAudiobookCue(cue);
+    } catch {
+      localStorage.removeItem(audiobookStorageKey);
+    }
+  }, [audiobookCues, audiobookStorageKey, showAudiobookCue]);
+
+  useEffect(() => () => audioRef.current?.pause(), []);
 
   // Листание с клавиатуры — на десктопе это основной способ читать.
   useEffect(() => {
@@ -244,13 +345,23 @@ export function Reader() {
     );
   }
 
-  const current = pages[page] ?? [];
+  const current = pages[page]?.texts ?? [];
+  const audioMarks = current.map<ReaderMark[]>((_, paragraph) =>
+    audioMark && audioMark.page === page && audioMark.paragraph === paragraph
+      ? [{ ...audioMark, kind: 'audio' }]
+      : [],
+  );
   const progress = pages.length > 1 ? ((page + 1) / pages.length) * 100 : 100;
   const hasOdysseyReward = odysseyRewardUnlocked(account?.id);
-  const effectiveTheme = settings.theme === 'odyssey' && !hasOdysseyReward
+  const campaignRewardUrl = rewards.reader_background_100 ?? '';
+  const effectiveTheme = (settings.theme === 'odyssey' && !hasOdysseyReward) ||
+    (settings.theme === 'campaign100' && !campaignRewardUrl)
     ? 'auto'
     : settings.theme;
   const palette = paletteFor(effectiveTheme);
+  const campaignBackground = effectiveTheme === 'campaign100' && campaignRewardUrl
+    ? `url(${JSON.stringify(campaignRewardUrl)})`
+    : undefined;
   const flip = settings.animate && !reduceMotion;
 
   // Отступ между абзацами задаётся переменной, а не полем `marginBottom`:
@@ -258,9 +369,10 @@ export function Reader() {
   // последним абзацем, из-за чего низ страницы выглядел бы кривым.
   const pageStyle = {
     background: palette?.background,
-    backgroundImage: palette?.backgroundImage,
-    backgroundSize: palette?.backgroundSize,
-    backgroundRepeat: palette?.backgroundImage ? 'repeat' : undefined,
+    backgroundImage: campaignBackground ?? palette?.backgroundImage,
+    backgroundSize: campaignBackground ? 'cover' : palette?.backgroundSize,
+    backgroundRepeat: campaignBackground ? 'no-repeat' : palette?.backgroundImage ? 'repeat' : undefined,
+    backgroundPosition: campaignBackground ? 'center' : undefined,
     color: palette?.text,
     borderColor: palette?.border,
     maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
@@ -281,7 +393,7 @@ export function Reader() {
   };
 
   return (
-    <main className="px-5 py-8">
+    <main className={`px-5 py-8 ${audiobookEnabled ? 'pb-28' : ''}`}>
       {/* Полоса прогресса книги вверху — привычный ориентир в читалках. */}
       <div className="fixed inset-x-0 top-16 z-30 h-1 bg-transparent">
         <motion.div
@@ -308,6 +420,16 @@ export function Reader() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => playAudiobookCue(audiobookCue)}
+              disabled={audiobookCues.length === 0}
+              className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] p-2.5 text-[var(--text-muted)] hover:text-[var(--accent)] disabled:opacity-40"
+              aria-label="Включить аудиокнигу"
+              title="Аудиокнига"
+            >
+              <HiSpeakerWave className="size-5" />
+            </button>
             <div className="flex items-center gap-1 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1">
               <IconButton
                 label="Уменьшить шрифт"
@@ -388,6 +510,7 @@ export function Reader() {
                   bionic={settings.bionic}
                   paragraphClassName="reader-selectable"
                   paragraphStyle={paragraphStyle}
+                  paragraphMarks={audioMarks}
                 />
               </div>
             </motion.article>
@@ -492,10 +615,86 @@ export function Reader() {
         onReset={reset}
         onClose={() => setPanelOpen(false)}
         odysseyRewardUnlocked={hasOdysseyReward}
+        campaignRewardUrl={campaignRewardUrl}
       />
+
+      {audiobookEnabled && audiobookCues[audiobookCue] && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--line)] bg-[var(--bg-raised)] shadow-[0_-8px_24px_rgba(0,0,0,0.12)]">
+          <div className="mx-auto flex max-w-5xl items-center gap-1 px-3 py-2 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => playAudiobookCue(audiobookCue - 1)}
+              disabled={audiobookCue === 0}
+              className="rounded-full p-2 disabled:opacity-35"
+              aria-label="Предыдущая фраза"
+            >
+              <HiBackward className="size-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const audio = audioRef.current;
+                if (!audio || audio.ended) playAudiobookCue(audiobookCue);
+                else if (audio.paused) void audio.play();
+                else audio.pause();
+              }}
+              className="rounded-full bg-[var(--accent)] p-3 text-white"
+              aria-label={audiobookPlaying ? 'Пауза' : 'Продолжить'}
+            >
+              {audiobookPlaying ? <HiPause className="size-5" /> : <HiPlay className="size-5" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => playAudiobookCue(audiobookCue + 1)}
+              disabled={audiobookCue + 1 >= audiobookCues.length}
+              className="rounded-full p-2 disabled:opacity-35"
+              aria-label="Следующая фраза"
+            >
+              <HiForward className="size-5" />
+            </button>
+            <div className="min-w-0 flex-1 px-1">
+              <div className="truncate text-sm font-semibold">{state.book.title}</div>
+              <div className="truncate text-xs text-[var(--text-muted)]">
+                {audiobookCues[audiobookCue]?.text}
+              </div>
+            </div>
+            <select
+              value={audiobookSpeed}
+              onChange={(event) => {
+                const speed = Number(event.target.value);
+                setAudiobookSpeed(speed);
+                if (audioRef.current) audioRef.current.playbackRate = speed;
+                saveAudiobook(true, audiobookCue, speed);
+              }}
+              aria-label="Скорость воспроизведения"
+              className="rounded-md border border-[var(--line)] bg-[var(--bg-sunken)] px-2 py-2 text-sm"
+            >
+              {[0.7, 0.85, 1, 1.15, 1.3, 1.5, 1.8].map((speed) => (
+                <option key={speed} value={speed}>{speed}x</option>
+              ))}
+            </select>
+            <TtsVoicePicker compact />
+            <button
+              type="button"
+              onClick={() => {
+                audioRef.current?.pause();
+                setAudiobookEnabled(false);
+                setAudiobookPlaying(false);
+                setAudioMark(null);
+                saveAudiobook(false, audiobookCue, audiobookSpeed);
+              }}
+              className="rounded-full p-2"
+              aria-label="Закрыть плеер"
+            >
+              <HiXMark className="size-5" />
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
+
 
 /** Долистана ли страница до низа. */
 function atBottom(): boolean {

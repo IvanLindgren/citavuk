@@ -21,8 +21,11 @@ import 'services/user_db.dart';
 import 'screens/account_screen.dart';
 import 'services/card_io.dart';
 import 'services/analysis_repository.dart';
+import 'services/announcements_controller.dart';
 import 'services/document_parser.dart';
+import 'services/document_translation_service.dart';
 import 'services/local_file.dart';
+import 'services/listening_service.dart';
 import 'services/notification_service.dart';
 import 'widgets/update_dialog.dart';
 import 'screens/onboarding_screen.dart';
@@ -40,6 +43,10 @@ import 'models/reader_settings.dart';
 import 'state/app_settings.dart';
 import 'theme/app_theme.dart';
 import 'widgets/animated_widgets.dart';
+import 'widgets/server_announcements.dart';
+import 'widgets/import_language_dialog.dart';
+import 'screens/palace_screen.dart';
+import 'widgets/more_menu_sheet.dart';
 import 'widgets/radio_sheet.dart';
 import 'widgets/serbian_ornament.dart';
 import 'widgets/server_settings_sheet.dart';
@@ -62,6 +69,7 @@ Future<void> main() async {
   // Сервер разбора/перевода — из настроек (по умолчанию публичный HF Space).
   AnalysisRepository.baseUrl = settings.backendUrl;
   AnalysisRepository.translationUrl = settings.syncUrl;
+  await ListeningService.instance.loadPreferences();
 
   // Аккаунт и синхронизация. Сессия восстанавливается из локального хранилища
   // без обращения к сети: приложение обязано открываться офлайн.
@@ -72,9 +80,13 @@ Future<void> main() async {
   CourseContentLoader.configure(api: api);
   final sync = SyncService(api: api, auth: auth);
   final events = EventsController(api: api, auth: auth);
+  final announcements = AnnouncementsController(api: api, auth: auth);
   // Локальный прогресс события нужен ещё до сети: от него зависит, показывать
   // ли награду-фон в настройках чтения.
   unawaited(events.refresh());
+  unawaited(announcements.refresh().catchError(
+        (Object error) => debugPrint('announcements: $error'),
+      ));
 
   await NotificationService.instance.init();
   if (settings.notificationsEnabled) {
@@ -94,6 +106,7 @@ Future<void> main() async {
         ChangeNotifierProvider.value(value: auth),
         ChangeNotifierProvider.value(value: sync),
         ChangeNotifierProvider.value(value: events),
+        ChangeNotifierProvider.value(value: announcements),
         // Клиент нужен экранам, которые ходят на сервер напрямую (например,
         // загрузка материалов через прокси документов), а не только через
         // синхронизацию.
@@ -202,7 +215,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // сохранить копию в кеш. Для книги на несколько десятков мегабайт это два
     // одновременных снимка файла в памяти, и Android убивал приложение прямо
     // при выборе книги. С путём файл читается один раз и одним куском.
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: DocumentParser.supportedExtensions,
       withData: kIsWeb,
@@ -252,18 +265,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _loadProgress = 0.0;
     });
     try {
-      final paragraphs =
+      var paragraphs =
           await DocumentParser.parseAny(name, bytes, _onParseProgress);
+      if (!mounted) return;
+
+      // Язык определяется до сохранения. Спросить после — значит либо оставить
+      // в библиотеке лишнюю книгу на чужом языке, либо удалять и создавать её
+      // заново, меняя адрес содержимого и путая синхронизацию.
+      //
+      // Проверка местная, без сети: приложение обязано импортировать книгу
+      // офлайн, и обращение к серверу здесь сделало бы импорт зависимым от
+      // связи. Перевод сети требует, но его человек уже выбирает сам.
+      if (!LanguageDetector.isLikelySerbian(paragraphs)) {
+        final translated = await _offerTranslation(name, paragraphs);
+        if (translated == null) {
+          setState(() => _isLoading = false);
+          return;
+        }
+        paragraphs = translated;
+      }
+
       await UserDb.instance.insertBook(name, path, paragraphs);
       await _loadBooks();
       if (!mounted) return;
-      if (!LanguageDetector.isLikelySerbian(paragraphs)) {
-        _showNonSerbianWarning();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Книга «$name» импортирована')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Книга «$name» импортирована')),
+      );
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -290,6 +317,72 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final bytes = await file.readAsBytes();
       if (!mounted) return;
       await _importBytes(file.name, file.path, bytes);
+    }
+  }
+
+  /// Спрашивает, что делать с документом не на сербском.
+  ///
+  /// Возвращает абзацы для сохранения либо null, если импорт отменён. Отказ
+  /// перевода — не ошибка импорта: книга сохраняется как есть, и об этом
+  /// говорит выбор «оставить как есть».
+  Future<List<String>?> _offerTranslation(
+    String name,
+    List<String> paragraphs,
+  ) async {
+    final auth = context.read<AuthService>();
+    final service = DocumentTranslationService(auth.api);
+
+    final choice = await showImportLanguageDialog(
+      context,
+      title: name,
+      signedIn: auth.isSignedIn,
+      loadQuota: () async {
+        try {
+          return await service.quota();
+        } on ApiException {
+          return null;
+        }
+      },
+    );
+    if (choice == null) return null;
+    if (choice == ImportChoice.original) return paragraphs;
+    if (!mounted) return paragraphs;
+
+    // Полоса хода живёт в отдельном диалоге и перерисовывается своим
+    // состоянием: перерисовывать ради неё весь экран библиотеки незачем.
+    final progress = ValueNotifier<(double, String)>((0, ''));
+    unawaited(showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => PopScope(
+        canPop: false,
+        child: ValueListenableBuilder<(double, String)>(
+          valueListenable: progress,
+          builder: (_, value, __) =>
+              TranslationProgressDialog(ratio: value.$1, note: value.$2),
+        ),
+      ),
+    ));
+
+    try {
+      return await service.translate(
+        title: name,
+        paragraphs: paragraphs,
+        onProgress: (ratio, note) => progress.value = (ratio, note),
+      );
+    } on ApiException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Перевод не удался: ${e.message}')));
+      }
+      // Непереведённая книга всё же лучше, чем никакой: текст уже разобран, а
+      // предел на сегодня израсходован в любом случае.
+      return paragraphs;
+    } finally {
+      // Диалог закрывается ПЕРЕД освобождением: пока он на экране, его
+      // ValueListenableBuilder слушает этот же notifier.
+      if (mounted) Navigator.of(context, rootNavigator: true).pop();
+      progress.dispose();
     }
   }
 
@@ -660,188 +753,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               onPressed: _toggleTheme,
             ),
           ],
-          PopupMenuButton<String>(
-            tooltip: 'Карточки и обновление',
+          const ServerNotificationButton(),
+          IconButton(
+            tooltip: 'Ещё',
             icon: const Icon(Icons.more_vert),
-            onSelected: (v) {
-              if (v == 'news') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const NewsScreen()));
-              }
-              if (v == 'materials') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const MaterialsScreen()));
-              }
-              if (v == 'publicLibrary') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const PublicLibraryScreen()),
-                );
-              }
-              if (v == 'video') _openVideoSite();
-              if (v == 'communityLessons') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const CommunityLessonsScreen()));
-              }
-              if (v == 'grammar') _openGrammarReference();
-              if (v == 'reminders') _openReminderDialog();
-              if (v == 'theme') _toggleTheme();
-              if (v == 'cards') _openAllCards();
-              if (v == 'import') _importCards();
-              if (v == 'export') _exportAllCards();
-              if (v == 'refresh') _loadBooks();
-              if (v == 'server') _openServerSettings();
-              if (v == 'account') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const AccountScreen()));
-              }
-              if (v == 'about') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const AboutScreen()));
-              }
-            },
-            itemBuilder: (_) => [
-              if (compactAppBar) ...[
-                const PopupMenuItem(
-                  value: 'news',
-                  child: ListTile(
-                    leading: Icon(Icons.newspaper_outlined),
-                    title: Text('Новости'),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'publicLibrary',
-                  child: ListTile(
-                    leading: Icon(Icons.local_library_outlined),
-                    title: Text('Публичная библиотека'),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'materials',
-                  child: ListTile(
-                    leading: Icon(Icons.assignment_outlined),
-                    title: Text('Материалы для поступления'),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'grammar',
-                  child: ListTile(
-                    leading: Icon(Icons.school_outlined),
-                    title: Text('Справочник правил'),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-                if (NotificationService.instance.supported)
-                  PopupMenuItem(
-                    value: 'reminders',
-                    child: ListTile(
-                      leading: Icon(settings.notificationsEnabled
-                          ? Icons.notifications_active
-                          : Icons.notifications_none),
-                      title: const Text('Напоминания'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                PopupMenuItem(
-                  value: 'theme',
-                  child: ListTile(
-                    leading: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-                    title: Text(isDark ? 'Светлая тема' : 'Тёмная тема'),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-                const PopupMenuDivider(height: 8),
-              ],
-              PopupMenuItem(
-                value: 'account',
-                child: ListTile(
-                  leading: Icon(context.watch<AuthService>().isSignedIn
-                      ? Icons.cloud_done_outlined
-                      : Icons.account_circle_outlined),
-                  title: Text(context.watch<AuthService>().isSignedIn
-                      ? 'Аккаунт и синхронизация'
-                      : 'Войти и синхронизировать'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'communityLessons',
-                child: ListTile(
-                  leading: Icon(Icons.cast_for_education_outlined),
-                  title: Text('Уроки преподавателей'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'video',
-                child: ListTile(
-                  leading: Icon(Icons.smart_display_outlined),
-                  title: Text('Видео с субтитрами'),
-                  subtitle: Text('Откроется в браузере'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'about',
-                child: ListTile(
-                  leading: Icon(Icons.info_outline),
-                  title: Text('О приложении'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'server',
-                child: ListTile(
-                  leading: Icon(Icons.cloud_outlined),
-                  title: Text('Сервер и словарь'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'cards',
-                child: ListTile(
-                  leading: Icon(Icons.style_outlined),
-                  title: Text('Все слова и карточки'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'import',
-                child: ListTile(
-                  leading: Icon(Icons.download_outlined),
-                  title: Text('Импорт карточек (.md)'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'export',
-                child: ListTile(
-                  leading: Icon(Icons.upload_file_outlined),
-                  title: Text('Экспорт всех карточек'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'refresh',
-                child: ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Обновить'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-            ],
+            onPressed: () => _openMoreMenu(compactAppBar, isDark),
           ),
         ],
       ),
       body: Column(
         children: [
           const OrnamentDivider(height: 22),
+          const ServerAnnouncementBanner(),
           const _EventBanner(),
           Expanded(
             child: _isLoading
@@ -1260,6 +1183,121 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   /// Справочник грамматических правил. Сам курс живёт в отдельной вкладке
   /// нижней навигации (master-prompt §26).
+  /// Меню «ещё»: разделы вместо плоского списка из четырнадцати строк.
+  ///
+  /// Часть пунктов дублирует кнопки верхней панели и показывается только там,
+  /// где панель узкая и этих кнопок нет, — иначе одно и то же действие
+  /// предлагается дважды на одном экране.
+  void _openMoreMenu(bool compactAppBar, bool isDark) {
+    final signedIn = context.read<AuthService>().isSignedIn;
+
+    void open(Widget screen) {
+      Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+    }
+
+    showMoreMenu(context, [
+      MoreMenuSection('ЧИТАТЬ', [
+        if (compactAppBar) ...[
+          MoreMenuItem(
+            label: 'Публичная библиотека',
+            icon: Icons.local_library_outlined,
+            onTap: () => open(const PublicLibraryScreen()),
+          ),
+          MoreMenuItem(
+            label: 'Новости',
+            icon: Icons.newspaper_outlined,
+            onTap: () => open(const NewsScreen()),
+          ),
+          MoreMenuItem(
+            label: 'Материалы',
+            icon: Icons.assignment_outlined,
+            onTap: () => open(const MaterialsScreen()),
+          ),
+        ],
+        MoreMenuItem(
+          label: 'Видео с субтитрами',
+          note: 'Откроется в браузере',
+          icon: Icons.smart_display_outlined,
+          onTap: _openVideoSite,
+        ),
+      ]),
+      MoreMenuSection('УЧИТЬСЯ', [
+        if (compactAppBar)
+          MoreMenuItem(
+            label: 'Справочник правил',
+            icon: Icons.school_outlined,
+            onTap: _openGrammarReference,
+          ),
+        MoreMenuItem(
+          label: 'Уроки преподавателей',
+          icon: Icons.cast_for_education_outlined,
+          onTap: () => open(const CommunityLessonsScreen()),
+        ),
+        MoreMenuItem(
+          label: 'Дворец памяти',
+          icon: Icons.castle_outlined,
+          onTap: () => open(const PalaceScreen()),
+        ),
+        MoreMenuItem(
+          label: 'Все слова и карточки',
+          icon: Icons.style_outlined,
+          onTap: _openAllCards,
+        ),
+      ]),
+      MoreMenuSection('КАРТОЧКИ', [
+        MoreMenuItem(
+          label: 'Импорт (.md)',
+          icon: Icons.download_outlined,
+          onTap: _importCards,
+        ),
+        MoreMenuItem(
+          label: 'Экспорт всех',
+          icon: Icons.upload_file_outlined,
+          onTap: _exportAllCards,
+        ),
+      ]),
+      MoreMenuSection('ПРИЛОЖЕНИЕ', [
+        MoreMenuItem(
+          label: signedIn ? 'Аккаунт' : 'Войти',
+          note: signedIn ? 'и синхронизация' : null,
+          icon: signedIn ? Icons.cloud_done_outlined : Icons.login,
+          onTap: () => open(const AccountScreen()),
+        ),
+        if (compactAppBar) ...[
+          if (NotificationService.instance.supported)
+            MoreMenuItem(
+              label: 'Напоминания',
+              icon: NotificationService.instance.supported &&
+                      context.read<AppSettings>().notificationsEnabled
+                  ? Icons.notifications_active
+                  : Icons.notifications_none,
+              onTap: _openReminderDialog,
+            ),
+          MoreMenuItem(
+            label: isDark ? 'Светлая тема' : 'Тёмная тема',
+            icon: isDark ? Icons.light_mode : Icons.dark_mode,
+            onTap: _toggleTheme,
+          ),
+        ],
+        MoreMenuItem(
+          label: 'Сервер и словарь',
+          icon: Icons.cloud_outlined,
+          onTap: _openServerSettings,
+        ),
+        MoreMenuItem(
+          label: 'Обновить',
+          icon: Icons.refresh,
+          onTap: _loadBooks,
+        ),
+        MoreMenuItem(
+          label: 'О приложении',
+          icon: Icons.info_outline,
+          onTap: () => open(const AboutScreen()),
+        ),
+      ]),
+    ]);
+  }
+
   void _openGrammarReference() {
     Navigator.push(
       context,
