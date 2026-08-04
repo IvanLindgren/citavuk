@@ -371,10 +371,7 @@ func (s *Server) handleAdminPublishMicroFeedItem(w http.ResponseWriter, r *http.
 		embedding, embedErr := s.microFeed.Embed(r.Context(), item)
 		if embedErr != nil {
 			slog.Warn("micro-feed publish embedding failed", "item", id, "err", embedErr)
-			writeError(w, http.StatusBadGateway, codeUpstream, "Не удалось построить профиль карточки. Попробуйте ещё раз.")
-			return
-		}
-		if err := s.store.SetMicroFeedEmbedding(r.Context(), id, embedding); err != nil {
+		} else if err := s.store.SetMicroFeedEmbedding(r.Context(), id, embedding); err != nil {
 			writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось сохранить профиль карточки.")
 			return
 		}

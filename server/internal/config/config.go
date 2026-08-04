@@ -164,7 +164,7 @@ func Load(envPath string) (*Config, error) {
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-31b-it"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -175,7 +175,7 @@ func Load(envPath string) (*Config, error) {
 		FeedEmbeddingModel: envOr("CITAVUK_FEED_EMBEDDING_MODEL", "text-embedding-3-small"),
 		FeedEmbeddingURL: envOr(
 			"CITAVUK_FEED_EMBEDDING_URL",
-			"https://polza.ai/api/v1/embeddings",
+			"https://api.polza.ai/api/v1/embeddings",
 		),
 		GoogleClientIDs:       googleClientIDs(),
 		GoogleWebClientID:     strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID_WEB")),
