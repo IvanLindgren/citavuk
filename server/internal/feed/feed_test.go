@@ -1,6 +1,7 @@
 package feed
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -23,5 +24,20 @@ func TestParseGenerationRejectsShortCard(t *testing.T) {
 	_, err := parseGeneration(`{"kind":"fact","category":"culture","title_cyrillic":"Тест","title_latin":"Test","text_cyrillic":"Кратко.","text_latin":"Kratko.","original_script":"latin","cefr":"A2","tags":["a","b","c"],"difficult_words":[{"word":"a","translation_ru":"а"},{"word":"b","translation_ru":"б"},{"word":"c","translation_ru":"в"}]}`)
 	if err == nil {
 		t.Fatal("short card must be rejected")
+	}
+}
+
+func TestParseGenerationAcceptsPromptTranslationField(t *testing.T) {
+	latin := strings.TrimSpace(strings.Repeat("rec ", 80))
+	cyrillic := strings.TrimSpace(strings.Repeat("реч ", 80))
+	raw := fmt.Sprintf(`{"kind":"fact","category":"culture","title_cyrillic":"Тест","title_latin":"Test","text_cyrillic":%q,"text_latin":%q,"original_script":"translated","cefr":"A2","tags":["a","b","c"],"difficult_words":[{"word":"реч","lemma":"реч","transcription":"/retʃ/","translation_ru":"слово"},{"word":"тест","lemma":"тест","transcription":"/test/","translation_ru":"тест"},{"word":"пример","lemma":"пример","transcription":"/primer/","translationRu":"пример"}]}`, cyrillic, latin)
+
+	result, err := parseGeneration(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	words := storeDifficultWords(result.DifficultWords)
+	if words[0].TranslationRU != "слово" || words[2].TranslationRU != "пример" {
+		t.Fatalf("translations were not decoded: %#v", words)
 	}
 }

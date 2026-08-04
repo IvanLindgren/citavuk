@@ -87,16 +87,48 @@ func (g *Generator) EmbeddingsEnabled() bool {
 }
 
 type generationResult struct {
-	Kind           string                `json:"kind"`
-	Category       string                `json:"category"`
-	TitleCyrillic  string                `json:"title_cyrillic"`
-	TitleLatin     string                `json:"title_latin"`
-	TextCyrillic   string                `json:"text_cyrillic"`
-	TextLatin      string                `json:"text_latin"`
-	OriginalScript string                `json:"original_script"`
-	CEFR           string                `json:"cefr"`
-	Tags           []string              `json:"tags"`
-	DifficultWords []store.DifficultWord `json:"difficult_words"`
+	Kind           string                    `json:"kind"`
+	Category       string                    `json:"category"`
+	TitleCyrillic  string                    `json:"title_cyrillic"`
+	TitleLatin     string                    `json:"title_latin"`
+	TextCyrillic   string                    `json:"text_cyrillic"`
+	TextLatin      string                    `json:"text_latin"`
+	OriginalScript string                    `json:"original_script"`
+	CEFR           string                    `json:"cefr"`
+	Tags           []string                  `json:"tags"`
+	DifficultWords []generationDifficultWord `json:"difficult_words"`
+}
+
+// The generation prompt uses snake_case, while the public API exposes
+// DifficultWord in camelCase. Accept both spellings so changing providers or
+// replaying an older response cannot silently discard the translation.
+type generationDifficultWord struct {
+	Word               string `json:"word"`
+	Lemma              string `json:"lemma"`
+	Transcription      string `json:"transcription"`
+	TranslationRU      string `json:"translation_ru"`
+	TranslationRUCamel string `json:"translationRu"`
+}
+
+func (word generationDifficultWord) storeValue() store.DifficultWord {
+	translation := strings.TrimSpace(word.TranslationRU)
+	if translation == "" {
+		translation = strings.TrimSpace(word.TranslationRUCamel)
+	}
+	return store.DifficultWord{
+		Word:          strings.TrimSpace(word.Word),
+		Lemma:         strings.TrimSpace(word.Lemma),
+		Transcription: strings.TrimSpace(word.Transcription),
+		TranslationRU: translation,
+	}
+}
+
+func storeDifficultWords(words []generationDifficultWord) []store.DifficultWord {
+	result := make([]store.DifficultWord, 0, len(words))
+	for _, word := range words {
+		result = append(result, word.storeValue())
+	}
+	return result
 }
 
 type chatMessage struct {
@@ -174,8 +206,9 @@ SOURCE TEXT:
 		TitleCyrillic: result.TitleCyrillic, TitleLatin: result.TitleLatin,
 		TextCyrillic: result.TextCyrillic, TextLatin: result.TextLatin,
 		OriginalLanguage: source.Language, OriginalScript: result.OriginalScript,
-		CEFR: result.CEFR, Tags: result.Tags, DifficultWords: result.DifficultWords,
-		SourceSlug: source.Slug, SourceTitle: input.Title,
+		CEFR: result.CEFR, Tags: result.Tags,
+		DifficultWords: storeDifficultWords(result.DifficultWords),
+		SourceSlug:     source.Slug, SourceTitle: input.Title,
 		SourceURL: input.SourceURL, SourcePublishedAt: input.SourcePublishedAt,
 		LicenseCode:     source.LicenseCode,
 		AttributionText: source.AttributionName,
@@ -215,7 +248,8 @@ func parseGeneration(content string) (*generationResult, error) {
 		TitleCyrillic: result.TitleCyrillic, TitleLatin: result.TitleLatin,
 		TextCyrillic: result.TextCyrillic, TextLatin: result.TextLatin,
 		OriginalLanguage: "sr", OriginalScript: result.OriginalScript,
-		CEFR: result.CEFR, Tags: result.Tags, DifficultWords: result.DifficultWords,
+		CEFR: result.CEFR, Tags: result.Tags,
+		DifficultWords: storeDifficultWords(result.DifficultWords),
 	}
 	if err := ValidateItem(item); err != nil {
 		return nil, fmt.Errorf("%w: %v", ErrBadAnswer, err)
