@@ -16,8 +16,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	awsconfig "github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/google/uuid"
-	"github.com/minio/minio-go/v7/pkg/signer"
 )
 
 type Config struct {
@@ -25,13 +28,10 @@ type Config struct {
 }
 
 type Service struct {
-	endpoint   *url.URL
-	region     string
 	bucket     string
-	accessKey  string
 	secretKey  string
 	publicBase string
-	httpClient *http.Client
+	s3         *awss3.Client
 }
 
 type UploadPolicy struct {
@@ -63,15 +63,26 @@ func New(cfg Config) (*Service, error) {
 	if u.Scheme != "http" && u.Scheme != "https" {
 		return nil, errors.New("S3_ENDPOINT должен начинаться с http:// или https://")
 	}
-	return &Service{
-		endpoint:   u,
-		region:     cfg.Region,
+	httpClient := &http.Client{Timeout: 10 * time.Second}
+	awsCfg, err := awsconfig.LoadDefaultConfig(
+		context.Background(),
+		awsconfig.WithRegion(cfg.Region),
+		awsconfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(cfg.AccessKey, cfg.SecretKey, "")),
+		awsconfig.WithHTTPClient(httpClient),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("configure S3 client: %w", err)
+	}
+	service := &Service{
 		bucket:     cfg.Bucket,
-		accessKey:  cfg.AccessKey,
 		secretKey:  cfg.SecretKey,
 		publicBase: strings.TrimRight(cfg.PublicBaseURL, "/"),
-		httpClient: &http.Client{Timeout: 10 * time.Second},
-	}, nil
+	}
+	service.s3 = awss3.NewFromConfig(awsCfg, func(options *awss3.Options) {
+		options.BaseEndpoint = aws.String(u.String())
+		options.UsePathStyle = true
+	})
+	return service, nil
 }
 
 func (s *Service) CreateUploadPolicy(ctx context.Context, owner uuid.UUID, sha256Hex, mimeType string, size int64) (*UploadPolicy, error) {
@@ -202,44 +213,23 @@ func (s *Service) Upload(
 		return errors.New("содержимое файла не совпадает с заявленным sha256")
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPut, s.objectURL(key), bytes.NewReader(data))
+	_, err := s.s3.PutObject(ctx, &awss3.PutObjectInput{
+		Bucket:        aws.String(s.bucket),
+		Key:           aws.String(key),
+		Body:          bytes.NewReader(data),
+		ContentLength: aws.Int64(int64(len(data))),
+		ContentType:   aws.String(mimeType),
+	})
 	if err != nil {
-		return err
-	}
-	req.ContentLength = int64(len(data))
-	req.Header.Set("Content-Type", mimeType)
-	req.Header.Set("X-Amz-Content-Sha256", sha256Hex)
-	signed := signer.PreSignV4(*req, s.accessKey, s.secretKey, "", s.region, 60)
-	response, err := s.httpClient.Do(signed)
-	if err != nil {
-		return err
-	}
-	defer response.Body.Close()
-	if response.StatusCode < 200 || response.StatusCode >= 300 {
-		return fmt.Errorf("S3 upload returned %s", response.Status)
+		return fmt.Errorf("S3 upload failed: %w", err)
 	}
 	return nil
 }
 
-func (s *Service) objectURL(key string) string {
-	u := *s.endpoint
-	u.Path = path.Join(u.Path, s.bucket, key)
-	u.RawPath = ""
-	u.RawQuery = ""
-	u.Fragment = ""
-	return u.String()
-}
-
 func (s *Service) objectExists(ctx context.Context, key string) bool {
-	req, err := http.NewRequestWithContext(ctx, http.MethodHead, s.objectURL(key), nil)
-	if err != nil {
-		return false
-	}
-	signed := signer.PreSignV4(*req, s.accessKey, s.secretKey, "", s.region, 60)
-	response, err := s.httpClient.Do(signed)
-	if err != nil {
-		return false
-	}
-	defer response.Body.Close()
-	return response.StatusCode == http.StatusOK
+	_, err := s.s3.HeadObject(ctx, &awss3.HeadObjectInput{
+		Bucket: aws.String(s.bucket),
+		Key:    aws.String(key),
+	})
+	return err == nil
 }

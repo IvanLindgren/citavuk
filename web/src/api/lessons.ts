@@ -154,15 +154,26 @@ export async function uploadLessonImage(file: File): Promise<string> {
       },
       body: file,
     });
-    if (!response.ok) throw new Error(`Хранилище отклонило файл (${response.status}).`);
+    if (!response.ok) await throwUploadError(response);
     return policy.publicUrl;
   }
   const form = new FormData();
   Object.entries(policy.fields ?? {}).forEach(([key, value]) => form.append(key, value));
   form.append('file', file);
   const response = await fetch(policy.url, { method: 'POST', body: form });
-  if (!response.ok) throw new Error(`Хранилище отклонило файл (${response.status}).`);
+  if (!response.ok) await throwUploadError(response);
   return policy.publicUrl;
+}
+
+async function throwUploadError(response: Response): Promise<never> {
+  let message = `Хранилище отклонило файл (${response.status}).`;
+  try {
+    const payload = await response.json() as { message?: string };
+    if (payload.message) message = payload.message;
+  } catch {
+    // S3-compatible providers may return an empty or non-JSON error response.
+  }
+  throw new Error(message);
 }
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
