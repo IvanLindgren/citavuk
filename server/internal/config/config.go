@@ -164,10 +164,10 @@ func Load(envPath string) (*Config, error) {
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "openai/gpt-5.6-luna"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
-			"https://api.polza.ai/api/v1/chat/completions",
+			"https://polza.ai/api/v1/chat/completions",
 		),
 		FeedEmbeddingKey: firstEnv(
 			"CITAVUK_FEED_EMBEDDING_KEY", "POLZA_AI_KEY", "CITAVUK_FEED_AI_KEY",
