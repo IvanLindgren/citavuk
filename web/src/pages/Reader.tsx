@@ -369,10 +369,9 @@ export function Reader() {
   // последним абзацем, из-за чего низ страницы выглядел бы кривым.
   const pageStyle = {
     background: palette?.background,
-    backgroundImage: campaignBackground ?? palette?.backgroundImage,
-    backgroundSize: campaignBackground ? 'cover' : palette?.backgroundSize,
-    backgroundRepeat: campaignBackground ? 'no-repeat' : palette?.backgroundImage ? 'repeat' : undefined,
-    backgroundPosition: campaignBackground ? 'center' : undefined,
+    backgroundImage: palette?.backgroundImage,
+    backgroundSize: palette?.backgroundSize,
+    backgroundRepeat: palette?.backgroundImage ? 'repeat' : undefined,
     color: palette?.text,
     borderColor: palette?.border,
     maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
@@ -501,9 +500,21 @@ export function Reader() {
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
               lang="sr"
               style={{ ...pageStyle, transformOrigin: direction > 0 ? 'left center' : 'right center' }}
-              className="paper-grain relative mx-auto rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] p-6 shadow-[var(--shadow-soft)] [&_p]:mb-[var(--reader-gap)] [&_p:last-child]:mb-0 sm:p-10"
+              className="paper-grain relative mx-auto overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] p-6 shadow-[var(--shadow-soft)] [&_p]:mb-[var(--reader-gap)] [&_p:last-child]:mb-0 sm:p-10"
             >
-              <div className="relative">
+              {campaignBackground && (
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 opacity-[0.09]"
+                  style={{
+                    backgroundImage: campaignBackground,
+                    backgroundPosition: 'center top',
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: '320px 320px',
+                  }}
+                />
+              )}
+              <div className="relative z-[1]">
                 <WordReader
                   paragraphs={current}
                   bookId={state.book.id}

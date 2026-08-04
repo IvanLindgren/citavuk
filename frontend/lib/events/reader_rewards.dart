@@ -18,6 +18,7 @@ class ReaderReward {
     this.asset = '',
     this.networkAsset = '',
     required this.tile,
+    this.opacity = 1,
     required this.background,
     required this.text,
   });
@@ -29,13 +30,19 @@ class ReaderReward {
   final String networkAsset;
   bool get isNetworkSvg => networkAsset.toLowerCase().endsWith('.svg');
 
-  ImageProvider get image => networkAsset.isNotEmpty
-      ? NetworkImage(networkAsset)
-      : AssetImage(asset) as ImageProvider;
+  /// SVG нельзя передавать в [NetworkImage]: desktop codec ожидает PNG/JPEG
+  /// и на некоторых версиях Windows падает внутри native image decoder.
+  ImageProvider? get image {
+    if (isNetworkSvg) return null;
+    if (networkAsset.isNotEmpty) return NetworkImage(networkAsset);
+    if (asset.isNotEmpty) return AssetImage(asset);
+    return null;
+  }
 
   /// Размер плитки в логических пикселях — при повторе картинка не должна
   /// растягиваться под экран.
   final Size tile;
+  final double opacity;
 
   /// Цвет под текстурой: пока картинка не декодирована, страница не должна
   /// мигать белым.
@@ -54,16 +61,24 @@ const List<ReaderReward> kReaderRewards = [
   ),
 ];
 
-ReaderReward serverReaderReward(String key, String assetUrl) => ReaderReward(
-      id: key,
-      label: key == 'reader_background_100'
-          ? 'Первые 100 читателей'
-          : 'Фон из акции',
-      networkAsset: assetUrl,
-      tile: const Size(420, 420),
-      background: const Color(0xFFF3E9D2),
-      text: const Color(0xFF241A14),
-    );
+const _campaign100TileAsset = 'assets/imgs/citavuk_100_readers_tile.png';
+
+ReaderReward serverReaderReward(String key, String assetUrl) {
+  final campaign100 = key == 'reader_background_100';
+  return ReaderReward(
+    id: key,
+    label: campaign100 ? 'Первые 100 читателей' : 'Фон из акции',
+    // Этот SVG сложный и приходит с сервера. В релизе используем его
+    // проверенную растровую копию: фон доступен офлайн и не проходит через
+    // нестабильный desktop SVG/network decoder.
+    asset: campaign100 ? _campaign100TileAsset : '',
+    networkAsset: campaign100 ? '' : assetUrl,
+    tile: campaign100 ? const Size(320, 320) : const Size(420, 420),
+    opacity: campaign100 ? 0.09 : 1,
+    background: const Color(0xFFF3E9D2),
+    text: const Color(0xFF241A14),
+  );
+}
 
 ReaderReward? readerRewardById(String id) {
   if (id.isEmpty) return null;
@@ -99,11 +114,12 @@ BoxDecoration? rewardDecoration(String id) {
 
 BoxDecoration rewardDecorationFor(ReaderReward reward) => BoxDecoration(
       color: reward.background,
-      image: reward.isNetworkSvg
+      image: reward.image == null
           ? null
           : DecorationImage(
-              image: reward.image,
+              image: reward.image!,
               repeat: ImageRepeat.repeat,
               alignment: Alignment.topLeft,
+              opacity: reward.opacity,
             ),
     );

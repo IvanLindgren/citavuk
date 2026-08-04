@@ -972,8 +972,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                     child: Text('Диктор',
                         style: TextStyle(fontWeight: FontWeight.w700)),
                   ),
-                  for (final entry
-                      in ListeningService.serbianVoices.entries)
+                  for (final entry in ListeningService.serbianVoices.entries)
                     CheckedPopupMenuItem<String>(
                       value: 'voice:${entry.key}',
                       checked: ListeningService.instance.voice == entry.key,
@@ -1747,6 +1746,7 @@ class ReaderSettingsSheet extends StatelessWidget {
       BuildContext context, ReaderSettings s, ReaderReward reward) {
     final scheme = Theme.of(context).colorScheme;
     final selected = s.bgTexture == reward.id;
+    final rewardImage = reward.image;
     return Tooltip(
       message: reward.label,
       child: GestureDetector(
@@ -1760,11 +1760,14 @@ class ReaderSettingsSheet extends StatelessWidget {
           decoration: BoxDecoration(
             color: reward.background,
             shape: BoxShape.circle,
-            image: DecorationImage(
-              image: reward.image,
-              repeat: ImageRepeat.repeat,
-              alignment: Alignment.topLeft,
-            ),
+            image: rewardImage == null
+                ? null
+                : DecorationImage(
+                    image: rewardImage,
+                    repeat: ImageRepeat.repeat,
+                    alignment: Alignment.topLeft,
+                    opacity: reward.opacity < 0.25 ? 0.35 : reward.opacity,
+                  ),
             border: Border.all(
               color: selected
                   ? scheme.primary
@@ -2088,7 +2091,8 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                                 child: Text(entry.value),
                                               ),
                                           ],
-                                          icon: const Icon(Icons.record_voice_over_outlined),
+                                          icon: const Icon(
+                                              Icons.record_voice_over_outlined),
                                         ),
                                     ],
                                   ),
