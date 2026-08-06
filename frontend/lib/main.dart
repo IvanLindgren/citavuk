@@ -850,51 +850,63 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
 
   Widget _buildEmpty(ColorScheme scheme) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const WolfBubble(
-              title: 'Здраво!',
-              text:
-                  'Я волк Читавук. Импортируй книгу (PDF/DOCX) или открой тестовую историю — и начнём читать по-сербски.',
-              asset: Wolf.zdravo,
+    // Приветствие, кнопки и карточка библиотеки на невысоком телефоне в экран
+    // не помещаются, а `Center` обрезает их сразу с двух сторон и прокрутить
+    // нечего — снаружи это выглядит как «всё съехало и не листается».
+    // Пока места хватает, содержимое остаётся по центру, как было.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final minHeight = constraints.maxHeight - 48;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: minHeight > 0 ? minHeight : 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const WolfBubble(
+                  title: 'Здраво!',
+                  text:
+                      'Я волк Читавук. Импортируй книгу (PDF/DOCX) или открой тестовую историю — и начнём читать по-сербски.',
+                  asset: Wolf.zdravo,
+                ),
+                const SizedBox(height: 28),
+                FadeSlideIn(
+                  delay: const Duration(milliseconds: 260),
+                  child: Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.add),
+                        label: const Text('Импорт PDF/DOCX'),
+                        onPressed: _importFile,
+                      ),
+                      OutlinedButton.icon(
+                        icon: const Icon(Icons.text_snippet_outlined),
+                        label: const Text('Тест DOCX'),
+                        onPressed: () => _loadTestStory(
+                            'assets/test_story.docx',
+                            'Тестовая история (DOCX)'),
+                      ),
+                      OutlinedButton.icon(
+                        icon: const Icon(Icons.picture_as_pdf_outlined),
+                        label: const Text('Тест PDF'),
+                        onPressed: () => _loadTestStory(
+                            'assets/test_story.pdf', 'Тестовая история (PDF)'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+                _buildFreeLibrary(scheme),
+              ],
             ),
-            const SizedBox(height: 28),
-            FadeSlideIn(
-              delay: const Duration(milliseconds: 260),
-              child: Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.add),
-                    label: const Text('Импорт PDF/DOCX'),
-                    onPressed: _importFile,
-                  ),
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.text_snippet_outlined),
-                    label: const Text('Тест DOCX'),
-                    onPressed: () => _loadTestStory(
-                        'assets/test_story.docx', 'Тестовая история (DOCX)'),
-                  ),
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.picture_as_pdf_outlined),
-                    label: const Text('Тест PDF'),
-                    onPressed: () => _loadTestStory(
-                        'assets/test_story.pdf', 'Тестовая история (PDF)'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-            _buildFreeLibrary(scheme),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
