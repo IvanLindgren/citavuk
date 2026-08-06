@@ -52,16 +52,28 @@ jobs:
         run: |
           printf '%s' "$KEYSTORE_BASE64" | base64 --decode > ./frontend/android/app/release-keystore.jks
 
+      # Google Play принимает бандл только от ключа выгрузки, а вход через
+      # Google на Android привязан к отпечатку подписи приложения. Ключ не тот —
+      # сборка не нужна: она всё равно будет отвергнута, а APK с сайта потеряет
+      # вход через Google. Отпечаток не секрет, он публикуется в Play Console.
       - name: Verify release signing certificate
         env:
           KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          EXPECTED_SHA1: 8D:0E:21:B5:7E:46:5A:8A:C8:3C:FD:11:ED:C1:2C:48:14:DE:D5:ED
         run: |
-          keytool -list -v \
+          set -o pipefail
+          actual=$(keytool -list -v \
             -keystore ./frontend/android/app/release-keystore.jks \
             -storepass "$KEYSTORE_PASSWORD" \
             -alias "$KEY_ALIAS" \
-            | grep -E 'SHA1:|SHA256:'
+            | sed -n 's/.*SHA1: *//p' | head -n 1)
+          echo "SHA1: $actual"
+          if [ "$actual" != "$EXPECTED_SHA1" ]; then
+            echo "::error::Ключ подписи не тот. Play ждёт $EXPECTED_SHA1." \
+                 "Обновите секрет RELEASE_KEYSTORE_BASE64 (и пароли с алиасом)."
+            exit 1
+          fi
 
       - name: Build signed APK and Google Play bundle
         working-directory: ./frontend

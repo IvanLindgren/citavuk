@@ -26,6 +26,26 @@ export CITAVUK_SSH_KEY=~/.ssh/serbiansubtitles_vps_ed25519
 `frontend/android/key.properties`. Оба закрыты от git. Без них сборка пройдёт,
 но с отладочным ключом, и Play Console такой файл не примет.
 
+Ключ выгрузки один — отпечаток
+`SHA1: 8D:0E:21:B5:7E:46:5A:8A:C8:3C:FD:11:ED:C1:2C:48:14:DE:D5:ED`. Сборка в
+GitHub Actions берёт свою копию из секрета `RELEASE_KEYSTORE_BASE64`, и это
+отдельный экземпляр: локальный ключ можно перевыпустить, а секрет останется
+старым. Так и вышло — секрет от 3 июня, а ключ, зарегистрированный в Play, от
+5 июня; полгода бандлы уезжали с чужой подписью. Теперь шаг «Verify release
+signing certificate» сверяет отпечаток и валит сборку при расхождении.
+
+Обновить секрет после смены ключа:
+
+```bash
+base64 -w 0 frontend/android/app/citavuk-release.jks | gh secret set RELEASE_KEYSTORE_BASE64
+```
+
+От той же подписи зависит вход через Google: на Android работает нативный SDK,
+и он требует OAuth-клиента типа Android с парой «пакет + SHA1». Клиентов нужно
+два — на отпечаток ключа выгрузки (для APK с сайта) и на отпечаток ключа
+подписи Google Play (Play Console → Целостность приложения), потому что Play
+пересобирает подпись своим ключом.
+
 Для Linux нужен запущенный Docker с движком Linux (на Windows — Docker Desktop).
 
 ---
