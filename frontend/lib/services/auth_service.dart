@@ -216,15 +216,25 @@ class AuthService extends ChangeNotifier {
       }
       await loginWithGoogle(idToken);
     } on GoogleSignInException catch (e) {
-      if (e.code == GoogleSignInExceptionCode.canceled) {
-        throw ApiException('Вход через Google отменён.');
-      }
-      throw ApiException(
-        e.description?.trim().isNotEmpty == true
-            ? e.description!
-            : 'Не удалось войти через Google.',
-      );
+      throw ApiException(_googleFailure(e));
     }
+  }
+
+  /// Причина отказа Google — фразой, но с кодом.
+  ///
+  /// Код в скобках оставлен намеренно. Пока сообщение было просто «Не удалось
+  /// войти через Google», сломанный релиз выглядел как проблема с ключами
+  /// подписи, и искали её неделю; настоящая причина (`providerConfigurationError`
+  /// — R8 вырезал провайдера Credential Manager) читалась в одном слове.
+  /// Разбираться приходится по чужому телефону, где ни логов, ни отладчика нет.
+  String _googleFailure(GoogleSignInException e) {
+    if (e.code == GoogleSignInExceptionCode.canceled) {
+      return 'Вход через Google отменён.';
+    }
+    final description = e.description?.trim() ?? '';
+    return description.isEmpty
+        ? 'Не удалось войти через Google (${e.code.name}).'
+        : 'Не удалось войти через Google (${e.code.name}): $description';
   }
 
   /// Вход через Google на Windows и Linux.
