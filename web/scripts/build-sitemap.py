@@ -28,17 +28,27 @@ SITE = "https://citavuk.ru"
 OUT = os.path.join(ROOT, "public", "sitemap.xml")
 
 # Статические разделы: адрес, приоритет, частота обновления.
+#
+# Список важен не только для поисковика: по нему же идёт пререндер
+# (scripts/prerender.mjs). Раздел, забытый здесь, не получает своего HTML —
+# nginx отдаёт на его адресе index.html, то есть побайтовую копию главной с
+# её заголовком. Так было с /lessons, /teachers, /about и /privacy: для робота
+# без JS это были четыре копии одной страницы.
 STATIC = [
     ("/", "1.0", "weekly"),
+    ("/vukotok", "0.9", "daily"),
     ("/books", "0.9", "weekly"),
     ("/public-library", "0.9", "monthly"),
     ("/materials", "0.9", "weekly"),
     ("/course", "0.8", "monthly"),
     ("/trainer", "0.8", "monthly"),
+    ("/lessons", "0.8", "weekly"),
     ("/listening", "0.7", "weekly"),
     ("/events", "0.9", "weekly"),
     ("/downloads", "0.7", "monthly"),
     ("/support", "0.7", "monthly"),
+    ("/about", "0.5", "yearly"),
+    ("/privacy", "0.3", "yearly"),
     ("/dialogues", "0.8", "monthly"),
     ("/dialogues/drinkit", "0.7", "monthly"),
 ]

@@ -12,6 +12,9 @@ Disallow: /admin
 Disallow: /login
 Disallow: /verify-email
 Disallow: /auth/
+# Кабинет преподавателя без входа сразу уводит на /login — показывать роботу
+# нечего.
+Disallow: /teachers
 
 Sitemap: https://citavuk.ru/sitemap.xml
 # Уроки преподавателей публикуются между выкладками сайта, поэтому их карту

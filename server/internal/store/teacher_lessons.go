@@ -750,3 +750,66 @@ func SlugifyLessonTitle(title string) string {
 	}
 	return slug + "-" + strings.ToLower(uuid.NewString()[:8])
 }
+
+// PublicDialogue — диалог из опубликованного урока для страницы диалогов.
+//
+// Отдельный тип, а не Lesson: странице нужны обложка, автор и размер сценария,
+// а содержимое урока целиком — это теория, упражнения и сам диалог, то есть
+// десятки килобайт на каждую карточку списка.
+type PublicDialogue struct {
+	Slug       string `json:"slug"`
+	Title      string `json:"title"`
+	Summary    string `json:"summary"`
+	AuthorName string `json:"authorName"`
+	CoverURL   string `json:"coverUrl,omitempty"`
+	Level      string `json:"level"`
+	Script     string `json:"script"`
+	// Lines — сколько реплик в сценарии. По нему видно, это короткая сценка
+	// или разговор на десять минут.
+	Lines     int       `json:"lines"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+// ListPublicDialogues возвращает диалоги опубликованных уроков.
+//
+// Отбор идёт по тому же правилу, что и каталог уроков: только `public` и не
+// архивные. Урок «по ссылке» на общую страницу попадать не должен — автор
+// намеренно не делал его публичным, и вынести его в общий список значило бы
+// решить за него.
+func (s *Store) ListPublicDialogues(ctx context.Context, limit int) ([]PublicDialogue, error) {
+	if limit <= 0 || limit > 200 {
+		limit = 60
+	}
+	rows, err := s.Pool.Query(ctx, `
+        SELECT l.slug, l.title, l.summary,
+               coalesce(nullif(p.public_name,''), u.display_name),
+               l.cover_url, l.level, l.script,
+               coalesce(jsonb_array_length(r.content->'dialogue'->'nodes'), 0),
+               l.updated_at
+          FROM teacher_lessons l
+          JOIN users u ON u.id = l.author_id
+          LEFT JOIN teacher_profiles p ON p.user_id = l.author_id
+          JOIN lesson_revisions r ON r.id = l.published_revision_id
+         WHERE l.visibility = 'public' AND NOT l.archived
+           AND jsonb_typeof(r.content->'dialogue'->'nodes') = 'array'
+           AND jsonb_array_length(r.content->'dialogue'->'nodes') > 0
+         ORDER BY l.updated_at DESC
+         LIMIT $1`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	items := make([]PublicDialogue, 0)
+	for rows.Next() {
+		var item PublicDialogue
+		if err := rows.Scan(
+			&item.Slug, &item.Title, &item.Summary, &item.AuthorName,
+			&item.CoverURL, &item.Level, &item.Script, &item.Lines, &item.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+	return items, rows.Err()
+}

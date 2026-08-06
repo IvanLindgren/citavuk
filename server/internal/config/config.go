@@ -14,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/citavuk/server/internal/translate"
 )
 
 // Config — полный набор настроек сервера.
@@ -38,6 +40,15 @@ type Config struct {
 	// DeepLKey — ключ DeepL. Ключи с суффиксом ":fx" относятся к free-плану и
 	// требуют другого хоста API, см. translate.DeepL.
 	DeepLKey string
+
+	// DeepLRunesPerDay — сколько знаков в сутки разрешено отдать DeepL.
+	//
+	// Ограничение частоты считает запросы, а провайдер берёт деньги за знаки:
+	// 60 переводов в минуту по 1000 знаков — это вся месячная квота free-плана
+	// за девять минут. Бюджет ограничивает именно знаки, а при исчерпании
+	// перевод не ломается, а переходит на запасного провайдера.
+	// Ноль выключает ограничение.
+	DeepLRunesPerDay int
 
 	// GoogleClientIDs — все допустимые audience для Google ID token. У desktop,
 	// web и Android разные client_id, но все они принадлежат одному проекту и
@@ -136,12 +147,14 @@ func Load(envPath string) (*Config, error) {
 	}
 
 	c := &Config{
-		Addr:           envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
-		DatabaseURL:    firstEnv("DATABASE_URL", "DB_URL"),
-		RedisURL:       firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
-		RedisPrefix:    envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
-		RedisCacheTTL:  envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
-		DeepLKey:       firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
+		Addr:          envOr("CITAVUK_ADDR", "127.0.0.1:8090"),
+		DatabaseURL:   firstEnv("DATABASE_URL", "DB_URL"),
+		RedisURL:      firstEnv("REDIS_URL", "CITAVUK_REDIS_URL"),
+		RedisPrefix:   envOr("CITAVUK_REDIS_PREFIX", "citavuk"),
+		RedisCacheTTL: envDuration("CITAVUK_REDIS_CACHE_TTL", 24*time.Hour),
+		DeepLKey:      firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
+		DeepLRunesPerDay: envIntAllowZero(
+			"CITAVUK_DEEPL_RUNES_PER_DAY", translate.DefaultRunesPerDay),
 		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
 		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
 		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
@@ -164,7 +177,7 @@ func Load(envPath string) (*Config, error) {
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "openai/gpt-5.6-luna"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-26b-a4b-it"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
 			"https://polza.ai/api/v1/chat/completions",
@@ -307,6 +320,22 @@ func envInt(key string, def int) int {
 	}
 	n, err := strconv.Atoi(v)
 	if err != nil || n <= 0 {
+		return def
+	}
+	return n
+}
+
+// envIntAllowZero отличается от envInt тем, что принимает ноль.
+//
+// Для предела «сколько чего-то можно» ноль — осмысленное значение «выключить»,
+// и молча заменять его умолчанием нельзя: администратор написал 0 намеренно.
+func envIntAllowZero(key string, def int) int {
+	v := strings.TrimSpace(os.Getenv(key))
+	if v == "" {
+		return def
+	}
+	n, err := strconv.Atoi(v)
+	if err != nil || n < 0 {
 		return def
 	}
 	return n

@@ -43,8 +43,7 @@ func BuildParadigms(upos, lemma string, feats map[string]string, entries []Entry
 	case "PRON", "NUM":
 		return declensionTables("", "", entries, surface)
 	case "ADJ":
-		return append(adjectiveGenders(entries, surface),
-			declensionTables("", "", entries, surface)...)
+		return adjectiveTables(lemma, feats, entries, surface)
 	case "VERB", "AUX":
 		return conjugation(lemma, entries, surface)
 	}
@@ -97,6 +96,130 @@ func declensionTables(lemma, gender string, entries []Entry, surface string) []T
 		})
 	}
 	return tables
+}
+
+// adjectiveTables собирает таблицы прилагательного: род, склонение по видам и
+// степени сравнения.
+//
+// Склонение показывается для того рода и числа, в которых стоит разобранное
+// слово: полная сетка «три рода × два числа × семь падежей» — это 42 строки, и
+// нужную человек в ней не найдёт.
+func adjectiveTables(lemma string, feats map[string]string, entries []Entry, surface string) []Table {
+	tables := adjectiveGenders(entries, surface)
+
+	gender := feats["Gender"]
+	if gender == "" {
+		gender = "Masc"
+	}
+	number := feats["Number"]
+	if number != "Plur" {
+		number = "Sing"
+	}
+	if table := adjectiveDeclension(lemma, gender, number, entries, surface); table != nil {
+		tables = append(tables, *table)
+	}
+	if table := comparisonTable(lemma, entries, surface); table != nil {
+		tables = append(tables, *table)
+	}
+	return tables
+}
+
+// adjectiveDeclension строит склонение в обоих видах.
+//
+// Точная форма из лексикона всегда важнее достроенной, поэтому сначала
+// спрашивается он. Определённость в лексиконе размечена как Definite=Def|Ind.
+func adjectiveDeclension(lemma, gender, number string, entries []Entry, surface string) *Table {
+	if adjectiveStem(lemma) == "" {
+		return nil
+	}
+	fromLexicon := func(caseKey, definite string) string {
+		return find(entries, func(f map[string]string) bool {
+			return f["Gender"] == gender && f["Number"] == number &&
+				f["Case"] == caseKey && f["Definite"] == definite
+		})
+	}
+
+	rows := make([]Cell, 0, len(CaseOrder))
+	for _, caseKey := range CaseOrder {
+		indefinite := fromLexicon(caseKey, "Ind")
+		definite := fromLexicon(caseKey, "Def")
+		generated := indefinite == "" || definite == ""
+		if indefinite == "" {
+			indefinite = AdjectiveForm(lemma, gender, number, caseKey, false)
+		}
+		if definite == "" {
+			definite = AdjectiveForm(lemma, gender, number, caseKey, true)
+		}
+		if indefinite == "" && definite == "" {
+			continue
+		}
+		// Совпали — показываем одну форму. Это не экономия места, а факт языка:
+		// в женском роде и во множественном числе вид не различается вовсе.
+		form := indefinite
+		if definite != "" && definite != indefinite {
+			form = indefinite + " / " + definite
+		}
+		rows = append(rows, Cell{
+			Label:     caseRu[caseKey],
+			Form:      form,
+			Current:   surface != "" && (indefinite == surface || definite == surface),
+			Generated: generated,
+			CaseKey:   caseKey,
+		})
+	}
+	if len(rows) == 0 {
+		return nil
+	}
+	return &Table{
+		Title:            "Склонение — " + genderRu[gender] + " род, " + numberRu[number] + " число",
+		Subtitle:         adjectiveSubtitle(number),
+		Rows:             rows,
+		HighlightEndings: true,
+	}
+}
+
+// adjectiveSubtitle объясняет, что означают две формы в клетке.
+func adjectiveSubtitle(number string) string {
+	if number == "Plur" {
+		return "во множественном числе вид не различается"
+	}
+	return "неопределённый вид / определённый вид " +
+		"(«dobar čovek» — какой-то, «dobri čovek» — тот самый)"
+}
+
+// comparisonTable — позитив, компаратив, суперлатив.
+func comparisonTable(lemma string, entries []Entry, surface string) *Table {
+	lexicalDegree := func(degree string) string {
+		return find(entries, func(f map[string]string) bool {
+			return f["Degree"] == degree && f["Gender"] == "Masc" &&
+				f["Number"] == "Sing" && f["Case"] == "Nom"
+		})
+	}
+	comparative := lexicalDegree("Cmp")
+	generatedCmp := comparative == ""
+	if comparative == "" {
+		comparative = Comparative(lemma)
+	}
+	if comparative == "" {
+		return nil
+	}
+	superlative := lexicalDegree("Sup")
+	generatedSup := superlative == ""
+	if superlative == "" {
+		superlative = Superlative(comparative)
+	}
+
+	return &Table{
+		Title:    "Степени сравнения",
+		Subtitle: "компаратив -iji/-ši/-ji; суперлатив = naj- + компаратив",
+		Rows: []Cell{
+			{Label: "положительная", Form: lemma, Current: lemma == surface},
+			{Label: "сравнительная", Form: comparative,
+				Generated: generatedCmp, Current: comparative == surface},
+			{Label: "превосходная", Form: superlative,
+				Generated: generatedSup, Current: superlative == surface},
+		},
+	}
 }
 
 func adjectiveGenders(entries []Entry, surface string) []Table {

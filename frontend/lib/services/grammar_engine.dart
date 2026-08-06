@@ -772,6 +772,87 @@ class GrammarEngine {
   // ---------------------------------------------------------------------------
   // Объяснение «Почему так?».
   // ---------------------------------------------------------------------------
+  /// Степень сравнения. Без неё «bolji» описывался как обычное прилагательное.
+  static const _degreeRu = {
+    'Pos': 'положительная (dobar)',
+    'Cmp': 'сравнительная (bolji)',
+    'Sup': 'превосходная (najbolji)',
+  };
+
+  /// Вид прилагательного — то, чем сербское прилагательное отличается от
+  /// русского сильнее всего.
+  static const _definiteRu = {
+    'Ind': 'неопределённый (dobar čovek — какой-то)',
+    'Def': 'определённый (dobri čovek — тот самый)',
+  };
+
+  /// Короткие названия для строки-сводки: в ней перечисление, и развёрнутые
+  /// пояснения с примерами читались бы как каша.
+  static const _degreeSummary = {
+    'Cmp': 'сравнительная степень',
+    'Sup': 'превосходная степень',
+  };
+  static const _definiteSummary = {
+    'Ind': 'неопределённый вид',
+    'Def': 'определённый вид',
+  };
+
+  /// Название именной формы глагола. Раньше их не было вовсе: `VerbForm=Conv`
+  /// давал пустую карточку, а трпни придев показывался как прилагательное.
+  static String? _verbFormLabel(String? verbForm, String? voice) {
+    switch (verbForm) {
+      case 'Inf':
+        return 'инфинитив';
+      case 'Conv':
+        return 'деепричастие (глаголски прилог)';
+      case 'Part':
+        return voice == 'Pass'
+            ? 'страдательное причастие (трпни глаголски придев)'
+            : 'причастие (радни глаголски придев)';
+      case 'Ger':
+        return 'отглагольное существительное (глаголска именица)';
+    }
+    return null;
+  }
+
+  static String? _verbFormSummary(String? verbForm, String? voice) {
+    switch (verbForm) {
+      case 'Inf':
+        return 'инфинитив';
+      case 'Conv':
+        return 'деепричастие';
+      case 'Part':
+        return voice == 'Pass' ? 'страдательное причастие' : 'причастие';
+    }
+    return null;
+  }
+
+  /// Дописывает то, чего нет в русском языке и о чём поэтому нужно сказать
+  /// словами: вид прилагательного и степень сравнения.
+  static String _adjectiveExplain(Map<String, String> feats) {
+    final parts = <String>[];
+    switch (feats['Definite']) {
+      case 'Ind':
+        parts.add('Неопределённый вид (neodređeni): называет признак впервые, '
+            'отвечает на «kakav?». «Ovo je dobar čovek» — это хороший человек.');
+      case 'Def':
+        parts.add('Определённый вид (određeni): указывает на уже известный '
+            'предмет, отвечает на «koji?». «Dobri čovek je došao» — тот самый '
+            'хороший человек пришёл. В родительном и дательном виды различаются '
+            'окончанием: «dobra» против «dobrog», «dobru» против «dobrom».');
+    }
+    switch (feats['Degree']) {
+      case 'Cmp':
+        parts.add('Сравнительная степень (komparativ): образуется суффиксами '
+            '-iji, -ji или -ši. Сравнение вводится словом «od» с родительным '
+            'падежом либо «nego»: «viši od mene», «viši nego ja».');
+      case 'Sup':
+        parts.add('Превосходная степень (superlativ): приставка naj- к '
+            'сравнительной степени, всегда слитно — «najviši», «najbolji».');
+    }
+    return parts.join('\n\n');
+  }
+
   static GrammarInfo describe(String upos, Map<String, String> feats) {
     final posLabel = _posRu[upos] ?? upos;
     final facts = <GrammarFact>[];
@@ -783,8 +864,23 @@ class GrammarEngine {
     final person = feats['Person'];
     final verbForm = feats['VerbForm'];
     final mood = feats['Mood'];
+    final degree = feats['Degree'];
+    final definite = feats['Definite'];
+    final voice = feats['Voice'];
 
+    // Именная форма глагола называется первой: без этого «radeći» показывалось
+    // пустой карточкой, а «urađen» — как обычное прилагательное.
+    final formLabel = _verbFormLabel(verbForm, voice);
+    if (formLabel != null) facts.add(GrammarFact('Форма', formLabel));
     if (gcase != null) facts.add(GrammarFact('Падеж', _caseRu[gcase] ?? gcase));
+    // Положительная степень не отмечается: «прилагательное в положительной
+    // степени» — это просто прилагательное.
+    if (degree != null && degree != 'Pos' && _degreeRu[degree] != null) {
+      facts.add(GrammarFact('Степень сравнения', _degreeRu[degree]!));
+    }
+    if (definite != null && _definiteRu[definite] != null) {
+      facts.add(GrammarFact('Вид прилагательного', _definiteRu[definite]!));
+    }
     if (tense != null) {
       facts.add(GrammarFact(
           'Время', _verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense));
@@ -795,6 +891,9 @@ class GrammarEngine {
     if (mood == 'Cnd') {
       facts.add(const GrammarFact('Наклонение', 'условное (потенцијал)'));
     }
+    if (voice == 'Pass') {
+      facts.add(const GrammarFact('Залог', 'страдательный'));
+    }
     if (person != null) {
       facts.add(GrammarFact('Лицо', _personRu[person] ?? person));
     }
@@ -804,24 +903,53 @@ class GrammarEngine {
     if (gender != null) {
       facts.add(GrammarFact('Род', _genderRu[gender] ?? gender));
     }
-    if (verbForm == 'Inf') facts.add(const GrammarFact('Форма', 'инфинитив'));
 
     final summaryParts = [
+      _verbFormSummary(verbForm, voice),
       if (gcase != null) (_caseRu[gcase] ?? gcase).toLowerCase(),
+      if (degree != null && degree != 'Pos') _degreeSummary[degree],
+      if (definite != null) _definiteSummary[definite],
       if (tense != null) (_verbTenseLabel(feats) ?? _tenseRu[tense] ?? tense),
       if (mood == 'Imp') 'повелительное наклонение',
       if (mood == 'Cnd') 'условное наклонение',
       if (person != null) _personRu[person],
       if (number != null) _numberRu[number],
-      if (gender != null) 'род: $gender',
+      // Раньше сюда попадал сырой тег: «род: Masc» вместо «род: мужской».
+      if (gender != null) 'род: ${_genderRu[gender] ?? gender}',
     ].whereType<String>().toList();
 
     String why;
-    if (gcase != null) {
+    // Именные формы глагола проверяются РАНЬШЕ падежа: у страдательного
+    // причастия падеж есть, и без этой ветки «urađen» объяснялся бы как
+    // обычное прилагательное в именительном падеже.
+    if (verbForm == 'Conv') {
+      why = 'Это деепричастие (глаголски прилог) — неизменяемая форма глагола, '
+          'которая называет побочное действие: «radeći» — работая, '
+          '«ušavši» — войдя.\n\n'
+          'Настоящего времени (садашњи) образуется от 3-го лица множественного '
+          'презента с -ći: rade → radeći. Прошедшего (прошли) — от инфинитива '
+          'с -vši: uraditi → uradivši. Деепричастие не склоняется и не '
+          'спрягается.';
+    } else if (verbForm == 'Part' && voice == 'Pass') {
+      why = 'Это страдательное причастие (трпни глаголски придев) — форма '
+          'глагола, которая ведёт себя как прилагательное: склоняется по родам, '
+          'числам и падежам («urađen posao», «urađena kuća»).\n\n'
+          'Образуется от инфинитива суффиксами -n/-en/-t: pisati → pisan, '
+          'uraditi → urađen, otvoriti → otvoren. Именно из него строится '
+          'страдательный залог: «Posao je urađen» — работа сделана.';
+    } else if (verbForm == 'Part') {
+      why = 'Это радни глаголски придев — причастие на -o/-la/-lo, из которого '
+          'строится прошедшее время.\n\nСамо по себе оно не употребляется: '
+          'перфекат — это вспомогательный глагол biti плюс это причастие '
+          '(«ja sam radio», «ona je radila»). Род и число причастие берёт от '
+          'подлежащего, а лицо выражает вспомогательный глагол.';
+    } else if (gcase != null) {
       why = 'Это $posLabel в форме «${(_caseRu[gcase] ?? gcase).toLowerCase()} '
           'падеж», ${_numberRu[number] ?? ''} число'
           '${gender != null ? ', ${_genderRu[gender]} род' : ''}.\n\n'
           'Зачем нужен этот падеж: ${_caseUse[gcase] ?? '—'}.';
+      final extra = _adjectiveExplain(feats);
+      if (extra.isNotEmpty) why = '$why\n\n$extra';
     } else if (verbForm == 'Inf' ||
         (tense != null && mood != 'Imp' && mood != 'Cnd')) {
       if (verbForm == 'Inf') {
@@ -900,7 +1028,7 @@ class GrammarEngine {
       case 'PROPN':
         return _nounParadigm(lemmaLat, feats, parsed, fromLexicon, surfaceLat);
       case 'ADJ':
-        return _adjParadigm(lemmaLat, parsed, fromLexicon, surfaceLat);
+        return _adjParadigm(lemmaLat, feats, parsed, fromLexicon, surfaceLat);
       case 'VERB':
       case 'AUX':
         return _verbParadigm(lemmaLat, feats, fromLexicon, surfaceLat);
@@ -940,12 +1068,16 @@ class GrammarEngine {
   }
 
   /// Падеж и число, при которых лемма даёт эту форму.
+  ///
+  /// Перебирается список форм, а не строка для показа: там варианты склеены
+  /// через «/», и сравнение со склеенной строкой не совпало бы никогда —
+  /// «čoveka» так и не опозналось бы винительным падежом.
   static Map<String, String>? matchNoun(
       String lemma, String gender, String form) {
     final low = form.toLowerCase();
     for (final number in const ['Sing', 'Plur']) {
       for (final c in _caseOrder) {
-        if (_declension(lemma, gender, number, c) != low) continue;
+        if (!_declensionForms(lemma, gender, number, c).contains(low)) continue;
         return {'Case': c, 'Number': number, 'Gender': gender};
       }
     }
@@ -1070,7 +1202,103 @@ class GrammarEngine {
     'blizak': 'bliži',
     'sladak': 'slađi',
     'redak': 'ređi',
+    'žut': 'žući',
+    'krut': 'krući',
+    'glup': 'gluplji',
+    'suv': 'suvlji',
+    'grub': 'grublji',
+    'čvrst': 'čvršći',
+    'gorak': 'gorči',
+    'uzak': 'uži',
+    'debeo': 'deblji',
+    'beo': 'belji',
+    'star': 'stariji',
+    'nov': 'noviji',
+    'jeftin': 'jeftiniji',
+    'pametan': 'pametniji',
   };
+
+  /// Основы прилагательных, которые правилом не выводятся из-за чередований:
+  /// nizak → niska (z→s), redak → retka (d→t).
+  static const Map<String, String> _irregularAdjStem = {
+    'nizak': 'nisk',
+    'redak': 'retk',
+    'blizak': 'blisk',
+    'težak': 'tešk',
+    'uzak': 'usk',
+    'sladak': 'slatk',
+    'gorak': 'gork',
+    'zao': 'zl',
+  };
+
+  /// Основа прилагательного.
+  ///
+  /// Лемма бывает и определённой («veliki»), и неопределённой («dobar»). У
+  /// неопределённой обычно есть беглое «а», и его надо убрать: dobar → dobr,
+  /// hladan → hladn, topao → topl. Повторяет adjectiveStem в
+  /// server/internal/grammar/adjective.go.
+  static String _adjectiveStem(String lemma) {
+    final irr = _irregularAdjStem[lemma];
+    if (irr != null) return irr;
+    if (lemma.length < 3) return lemma;
+    String cut(int n, String add) =>
+        lemma.substring(0, lemma.length - n) + add;
+    // Определённый вид уже содержит окончание -i: veliki → velik.
+    if (lemma.endsWith('i')) return cut(1, '');
+    // -ao/-eo восходят к основе на -l: topao → topl, veseo → vesel.
+    if (lemma.endsWith('eo')) return cut(2, 'el');
+    if (lemma.endsWith('ao')) return cut(2, 'l');
+    // Беглое «а» только у многосложных: «hladan» → hladn, но «stran» → stran.
+    if (lemma.endsWith('an') && _syllables(lemma) >= 2) return cut(2, 'n');
+    if (lemma.endsWith('ar') && _syllables(lemma) >= 2) return cut(2, 'r');
+    if (lemma.endsWith('ak') && _syllables(lemma) >= 2) return cut(2, 'k');
+    return lemma;
+  }
+
+  /// Окончания прилагательного. Женский род и всё множественное у обоих видов
+  /// совпадают; расходятся только мужской и средний род в единственном числе —
+  /// именно там вид и виден.
+  static const Map<String, Map<String, String>> _adjIndefSing = {
+    'Masc': {'Nom': '', 'Gen': 'a', 'Dat': 'u', 'Acc': '', 'Voc': '', 'Ins': 'im', 'Loc': 'u'},
+    'Fem': {'Nom': 'a', 'Gen': 'e', 'Dat': 'oj', 'Acc': 'u', 'Voc': 'a', 'Ins': 'om', 'Loc': 'oj'},
+    'Neut': {'Nom': 'o', 'Gen': 'a', 'Dat': 'u', 'Acc': 'o', 'Voc': 'o', 'Ins': 'im', 'Loc': 'u'},
+  };
+  static const Map<String, Map<String, String>> _adjDefSing = {
+    'Masc': {'Nom': 'i', 'Gen': 'og', 'Dat': 'om', 'Acc': 'i', 'Voc': 'i', 'Ins': 'im', 'Loc': 'om'},
+    'Fem': {'Nom': 'a', 'Gen': 'e', 'Dat': 'oj', 'Acc': 'u', 'Voc': 'a', 'Ins': 'om', 'Loc': 'oj'},
+    'Neut': {'Nom': 'o', 'Gen': 'og', 'Dat': 'om', 'Acc': 'o', 'Voc': 'o', 'Ins': 'im', 'Loc': 'om'},
+  };
+  static const Map<String, Map<String, String>> _adjPlural = {
+    'Masc': {'Nom': 'i', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'e', 'Voc': 'i', 'Ins': 'im', 'Loc': 'im'},
+    'Fem': {'Nom': 'e', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'e', 'Voc': 'e', 'Ins': 'im', 'Loc': 'im'},
+    'Neut': {'Nom': 'a', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'a', 'Voc': 'a', 'Ins': 'im', 'Loc': 'im'},
+  };
+
+  /// Форма прилагательного. [definite] выбирает вид; для женского рода и
+  /// множественного числа он не влияет ни на что — так устроен язык.
+  static String? adjectiveForm(
+      String lemma, String gender, String number, String c, bool definite) {
+    final stem = _adjectiveStem(lemma);
+    if (stem.isEmpty || gender.isEmpty) return null;
+    final table = number == 'Sing'
+        ? (definite ? _adjDefSing : _adjIndefSing)
+        : _adjPlural;
+    final ending = table[gender]?[c];
+    if (ending == null) return null;
+    // Нулевое окончание — неопределённый именительный мужского рода, и беглое
+    // «а» в нём НА МЕСТЕ: «dobar», а не «dobr».
+    if (ending.isEmpty) return lemma.endsWith('i') ? stem : lemma;
+    return stem + _softenAdjEnding(stem, gender, ending);
+  }
+
+  /// После мягкой основы «о» переходит в «е»: vruć → vrućeg, vruće. Женского
+  /// рода это не касается — там «vrućoj» и «vrućom».
+  static String _softenAdjEnding(String stem, String gender, String ending) {
+    if (gender == 'Fem' || !_softFinal(stem) || !ending.startsWith('o')) {
+      return ending;
+    }
+    return 'e${ending.substring(1)}';
+  }
 
   /// Компаратив по правилу: -iji (star → stariji); беглое «a» в -an выпадает
   /// (pametan → pametniji). Для нерегулярных — таблица выше.
@@ -1087,6 +1315,7 @@ class GrammarEngine {
 
   static List<ParadigmTable> _adjParadigm(
     String lemma,
+    Map<String, String> feats,
     List<({String form, String msd, Map<String, String> feats})> parsed,
     String? Function(bool Function(Map<String, String>)) fromLexicon,
     String surface,
@@ -1116,6 +1345,40 @@ class GrammarEngine {
         f['Case'] == 'Nom');
     final sup = lexSup ?? (cmp == null ? null : 'naj$cmp');
 
+    // Склонение показывается для того рода и числа, в которых стоит
+    // разобранное слово: полная сетка «три рода × два числа × семь падежей» —
+    // это 42 строки, и нужную человек в ней не найдёт.
+    final gender = feats['Gender'] ?? 'Masc';
+    final number = feats['Number'] == 'Plur' ? 'Plur' : 'Sing';
+    final declensionRows = <ParadigmCell>[];
+    for (final c in _caseOrder) {
+      final lexIndef = fromLexicon((f) =>
+          f['Gender'] == gender &&
+          f['Number'] == number &&
+          f['Case'] == c &&
+          f['Definite'] == 'Ind');
+      final lexDef = fromLexicon((f) =>
+          f['Gender'] == gender &&
+          f['Number'] == number &&
+          f['Case'] == c &&
+          f['Definite'] == 'Def');
+      final indefinite =
+          lexIndef ?? adjectiveForm(lemma, gender, number, c, false);
+      final definite = lexDef ?? adjectiveForm(lemma, gender, number, c, true);
+      if (indefinite == null && definite == null) continue;
+      // Совпали — показываем одну форму. Это не экономия места, а факт языка:
+      // в женском роде и во множественном числе вид не различается вовсе.
+      final form = (definite != null && definite != indefinite)
+          ? '$indefinite / $definite'
+          : (indefinite ?? definite)!;
+      declensionRows.add(ParadigmCell(
+        label: _caseRu[c] ?? c,
+        form: form,
+        generated: lexIndef == null || lexDef == null,
+        current: indefinite == surface || definite == surface,
+      ));
+    }
+
     return [
       ParadigmTable(
         title: 'Именительный падеж',
@@ -1130,6 +1393,17 @@ class GrammarEngine {
           cell('ср. мн.', 'Neut', 'Plur'),
         ],
       ),
+      if (declensionRows.isNotEmpty)
+        ParadigmTable(
+          title: 'Склонение — ${_genderRu[gender]} род, '
+              '${_numberRu[number]} число',
+          subtitle: number == 'Plur'
+              ? 'во множественном числе вид не различается'
+              : 'неопределённый вид / определённый вид '
+                  '(«dobar čovek» — какой-то, «dobri čovek» — тот самый)',
+          highlightEndings: true,
+          rows: declensionRows,
+        ),
       if (cmp != null)
         ParadigmTable(
           title: 'Степени сравнения',
@@ -1511,6 +1785,19 @@ class GrammarEngine {
     return ['${s}h', '$sše', '$sše', '${s}smo', '${s}ste', '${s}hu'];
   }
 
+  /// Глаголы на -ati, спрягающиеся по i-типу: držati → držim, а не «držam».
+  ///
+  /// Список, а не правило по окончанию основы. Правило напрашивается — почти у
+  /// всех этих глаголов основа кончается на č/ž/š, — но оно неверно: «slušati»
+  /// даёт «slušam», и по форме эти два класса неразличимы. Повторяет
+  /// iConjugationAti в server/internal/grammar/generate.go.
+  static const Set<String> _iConjugationAti = {
+    'bežati', 'bojati', 'brujati', 'ćutati',
+    'držati', 'klečati', 'ležati', 'pištati',
+    'škripati', 'trčati', 'vrištati', 'zviždati',
+    'zvučati', 'šuštati',
+  };
+
   static List<String?> _presentForms(String inf) {
     inf = inf.toLowerCase();
     final irr = _irregularPresent[inf];
@@ -1532,6 +1819,11 @@ class GrammarEngine {
       end = ['em', 'eš', 'e', 'emo', 'ete', 'u'];
     } else if (inf.endsWith('sti')) {
       return List.filled(6, null); // jesti → jedem: правилом не выводится
+    } else if (inf.endsWith('ati') && _iConjugationAti.contains(inf)) {
+      // Часть глаголов на -ati спрягается по i-типу: držati → držim,
+      // trčati → trčim. Правило «всё на -ati даёт -am» учило «držam».
+      stem = inf.substring(0, inf.length - 3);
+      end = ['im', 'iš', 'i', 'imo', 'ite', 'e'];
     } else if (inf.endsWith('ati')) {
       stem = inf.substring(0, inf.length - 3);
       end = ['am', 'aš', 'a', 'amo', 'ate', 'aju'];
@@ -1634,99 +1926,283 @@ class GrammarEngine {
     },
   };
 
-  static String? _declension(
+  /// Средний род с расширением основы. Оба класса закрытые и по форме не
+  /// выводятся: -e одинаково у «selo/polje», «ime» (-en-) и «tele» (-et-).
+  /// Повторяет neuterMenStems/neuterEtStems в server/internal/grammar.
+  static const Set<String> _neuterMenStems = {
+    'ime', 'vreme', 'breme', 'pleme', 'seme',
+    'teme', 'rame', 'vime', 'sleme', 'prezime',
+  };
+  static const Set<String> _neuterEtStems = {
+    'dete', 'tele', 'jagnje', 'pile', 'prase',
+    'mače', 'štene', 'kuče', 'momče', 'unuče',
+    'dugme', 'uže', 'bure', 'đubre',
+  };
+
+  /// Беглое «а», которое не выводится правилом: «dan» и «znak» его не имеют, и
+  /// отличить их от «starac» по форме нельзя.
+  static const Map<String, String> _irregularFugitive = {
+    'otac': 'oc',
+    'pas': 'ps',
+    'san': 'sn',
+    'vetar': 'vetr',
+    'metar': 'metr',
+    'litar': 'litr',
+    'mozak': 'mozg',
+    'nokat': 'nokt',
+    'lakat': 'lakt',
+    'vosak': 'vosk',
+    'orao': 'orl',
+    'posao': 'posl',
+    'ugao': 'ugl',
+  };
+
+  /// Односложные слова, множественное которых обходится без -ov-/-ev-.
+  /// «ključ», «muž», «nož» сюда НЕ входят — у них правило работает.
+  static const Set<String> _shortPluralNouns = {
+    'dan', 'zub', 'gost', 'konj', 'prst',
+    'crv', 'mrav', 'vuk', 'sat', 'zec',
+  };
+
+  /// Считает слоги. Слоговое «р» («prst», «vrt») даёт слог без единой гласной.
+  static int _syllables(String word) {
+    var count = 0;
+    var hasR = false;
+    for (final ch in word.split('')) {
+      if (const {'a', 'e', 'i', 'o', 'u'}.contains(ch)) count++;
+      if (ch == 'r') hasR = true;
+    }
+    if (count == 0 && hasR) return 1;
+    return count;
+  }
+
+  /// Основа без беглого «а». Второе значение говорит, что «а» действительно
+  /// беглое: от этого зависит и звательный падеж (starac → starče).
+  static (String, bool) _fugitiveStem(String lemma) {
+    final irr = _irregularFugitive[lemma];
+    if (irr != null) return (irr, true);
+    if (lemma.length < 4) return (lemma, false);
+    if (lemma.endsWith('ac')) {
+      return ('${lemma.substring(0, lemma.length - 2)}c', true);
+    }
+    if (lemma.endsWith('ak') && _syllables(lemma) >= 2) {
+      return ('${lemma.substring(0, lemma.length - 2)}k', true);
+    }
+    return (lemma, false);
+  }
+
+  /// Йотование основы на согласный в творительном: kost → košću,
+  /// ljubav → ljubavlju, noć → noću. Пустой результат = правила нет
+  /// (после «р» йотования не бывает: «stvar» → только «stvari»).
+  static String? _femInstrumental(String lemma) {
+    String cut(int n, String add) =>
+        lemma.substring(0, lemma.length - n) + add;
+    if (lemma.endsWith('st')) return cut(2, 'šću');
+    if (lemma.endsWith('zd')) return cut(2, 'ždu');
+    for (final soft in const ['ć', 'č', 'š', 'ž', 'j', 'lj', 'nj']) {
+      if (lemma.endsWith(soft)) return '${lemma}u';
+    }
+    if (lemma.endsWith('t')) return cut(1, 'ću');
+    if (lemma.endsWith('d')) return cut(1, 'đu');
+    if (lemma.endsWith('s')) return cut(1, 'šu');
+    if (lemma.endsWith('z')) return cut(1, 'žu');
+    if (lemma.endsWith('n')) return cut(1, 'nju');
+    if (lemma.endsWith('l')) return cut(1, 'lju');
+    for (final labial in const ['b', 'p', 'm', 'v', 'f']) {
+      if (lemma.endsWith(labial)) return '${lemma}lju';
+    }
+    return null;
+  }
+
+  /// Все допустимые формы падежа, канонической первой.
+  ///
+  /// Опознание словоформы обязано перебирать ИМЕННО этот список, а не строку
+  /// для показа: там варианты склеены через «/», и «čoveka» не опозналось бы
+  /// винительным никогда. Правила повторяют declensionForms в
+  /// server/internal/grammar/generate.go — иначе сайт и приложение назвали бы
+  /// для одного слова разную начальную форму.
+  static List<String> _declensionForms(
       String lemma, String gender, String number, String c) {
     if (number == 'Plur') {
       final irr = _irregularPlural[lemma];
-      if (irr != null) return irr[c];
+      if (irr != null) return [if (irr[c] != null) irr[c]!];
     }
-    if (gender == 'Fem' && lemma.endsWith('a')) {
-      final s = lemma.substring(0, lemma.length - 1);
-      if (number == 'Sing') {
-        switch (c) {
-          case 'Nom':
-            return lemma;
-          case 'Gen':
-            return '${s}e';
-          // Датив/локатив -i с сибиларизацией: ruka → ruci, knjiga → knjizi
-          // (но mačka → mački — см. блокираторы в _sibilarize).
-          case 'Dat':
-          case 'Loc':
-            return '${_sibilarize(s)}i';
-          case 'Acc':
-            return '${s}u';
-          case 'Voc':
-            return '${s}o';
-          case 'Ins':
-            return '${s}om';
-        }
-        return null;
-      }
-      const pl = {
-        'Nom': 'e',
-        'Gen': 'a',
-        'Dat': 'ama',
-        'Acc': 'e',
-        'Voc': 'e',
-        'Ins': 'ama',
-        'Loc': 'ama'
-      };
-      final suf = pl[c];
-      return suf == null ? null : s + suf;
+    // Мужской род на -a («tata», «sudija») склоняется по женскому типу, а
+    // согласуется по мужскому. Без этой ветки получалось «tataa».
+    if (lemma.endsWith('a') && (gender == 'Fem' || gender == 'Masc')) {
+      final form = _femAForm(lemma, number, c);
+      return [if (form != null) form];
     }
-    if (gender == 'Masc') {
-      final soft = _softFinal(lemma);
-      if (number == 'Sing') {
-        switch (c) {
-          case 'Nom':
-            return lemma;
-          case 'Gen':
-            return '${lemma}a';
-          case 'Dat':
-          case 'Loc':
-            return '${lemma}u';
-          // Акузатив зависит от одушевлённости: vidim grad (неодуш. = Ном.),
-          // но vidim čoveka (одуш. = Ген.). Без словаря не угадать — даём оба.
-          case 'Acc':
-            return '$lemma / ${lemma}a';
-          // Вокатив: после мягкого финала -u (prijatelju), иначе -e с
-          // палатализацией (čovek → čoveče, bog → bože).
-          case 'Voc':
-            return soft ? '${lemma}u' : '${_palatalize(lemma)}e';
-          case 'Ins':
-            return soft ? '${lemma}em' : '${lemma}om';
-        }
-        return null;
-      }
-      // Мн. число: короткие (односложные) основы расширяются -ov-/-ev-
-      // (grad → gradovi, muž → muževi); k/g/h перед -i/-ima → c/z/s.
-      final stem = lemma.length <= 4 ? lemma + (soft ? 'ev' : 'ov') : lemma;
+    if (gender == 'Fem') return _femConsonantForms(lemma, number, c);
+    if (gender == 'Masc') return _mascForms(lemma, number, c);
+    if (gender == 'Neut') {
+      final form = _neuterForm(lemma, number, c);
+      return [if (form != null) form];
+    }
+    return const [];
+  }
+
+  /// Форма падежа для показа. Где норма допускает два варианта, показываются
+  /// оба через «/»: винительный мужского зависит от одушевлённости, а
+  /// творительный женского на согласный — от йотования.
+  static String? _declension(
+      String lemma, String gender, String number, String c) {
+    final forms = _declensionForms(lemma, gender, number, c);
+    return forms.isEmpty ? null : forms.join(' / ');
+  }
+
+  /// Первая врста: kuća, žena, knjiga.
+  static String? _femAForm(String lemma, String number, String c) {
+    final s = lemma.substring(0, lemma.length - 1);
+    if (number == 'Sing') {
       switch (c) {
         case 'Nom':
-        case 'Voc':
-          return '${_sibilarize(stem)}i';
+          return lemma;
         case 'Gen':
-          return '${stem}a';
+          return '${s}e';
+        // Датив/локатив -i с сибиларизацией: ruka → ruci, knjiga → knjizi
+        // (но mačka → mački — см. блокираторы в _sibilarize).
         case 'Dat':
-        case 'Ins':
         case 'Loc':
-          return '${_sibilarize(stem)}ima';
+          return '${_sibilarize(s)}i';
         case 'Acc':
-          return '${stem}e';
+          return '${s}u';
+        case 'Voc':
+          return '${s}o';
+        case 'Ins':
+          return '${s}om';
       }
       return null;
     }
-    if (gender == 'Neut' && (lemma.endsWith('o') || lemma.endsWith('e'))) {
-      final s = lemma.substring(0, lemma.length - 1);
-      const sg = {
-        'Nom': '',
-        'Gen': 'a',
-        'Dat': 'u',
-        'Acc': '',
-        'Voc': '',
-        'Ins': 'om',
-        'Loc': 'u'
-      };
+    const pl = {
+      'Nom': 'e',
+      'Gen': 'a',
+      'Dat': 'ama',
+      'Acc': 'e',
+      'Voc': 'e',
+      'Ins': 'ama',
+      'Loc': 'ama'
+    };
+    final suf = pl[c];
+    return suf == null ? null : s + suf;
+  }
+
+  /// Третья врста: noć, stvar, ljubav, kost, reč. Раньше весь класс возвращал
+  /// пустоту, и таблица состояла из прочерков.
+  static List<String> _femConsonantForms(
+      String lemma, String number, String c) {
+    if (number == 'Sing') {
+      switch (c) {
+        case 'Nom':
+        case 'Acc':
+          return [lemma];
+        case 'Gen':
+        case 'Dat':
+        case 'Voc':
+        case 'Loc':
+          return ['${lemma}i'];
+        case 'Ins':
+          // Норма даёт и йотованную форму, и форму на -i. Йотованная первая:
+          // именно она стоит в словарях.
+          final jotated = _femInstrumental(lemma);
+          return [if (jotated != null) jotated, '${lemma}i'];
+      }
+      return const [];
+    }
+    switch (c) {
+      case 'Nom':
+      case 'Gen':
+      case 'Acc':
+      case 'Voc':
+        return ['${lemma}i'];
+      case 'Dat':
+      case 'Ins':
+      case 'Loc':
+        return ['${lemma}ima'];
+    }
+    return const [];
+  }
+
+  /// Вторая врста: grad, čovek, konj, starac.
+  static List<String> _mascForms(String lemma, String number, String c) {
+    final (stem, fugitive) = _fugitiveStem(lemma);
+    final soft = _softFinal(stem);
+
+    if (number == 'Sing') {
+      switch (c) {
+        case 'Nom':
+          return [lemma];
+        case 'Gen':
+          return ['${stem}a'];
+        case 'Dat':
+        case 'Loc':
+          return ['${stem}u'];
+        // Акузатив зависит от одушевлённости: vidim grad (неодуш. = Ном.),
+        // но vidim čoveka (одуш. = Ген.). Без словаря не угадать — даём оба.
+        case 'Acc':
+          return [lemma, '${stem}a'];
+        case 'Voc':
+          // У слов с беглым «а» звательный всегда на -e с чередованием:
+          // starac → starče, momak → momče, otac → oče. Мягкость основы,
+          // возникшая после выпадения «а», здесь ни при чём.
+          if (fugitive) return ['${_palatalize(stem)}e'];
+          return [soft ? '${stem}u' : '${_palatalize(stem)}e'];
+        case 'Ins':
+          return [soft ? '${stem}em' : '${stem}om'];
+      }
+      return const [];
+    }
+
+    // Мн. число: односложные основы расширяются -ov-/-ev- (grad → gradovi,
+    // muž → muževi). Считаем СЛОГИ, а не буквы: по буквам «sport» получал
+    // «sporti», а «dan» — «danovi».
+    var plural = stem;
+    if (!fugitive && _syllables(lemma) == 1 && !_shortPluralNouns.contains(lemma)) {
+      plural += soft ? 'ev' : 'ov';
+    }
+    switch (c) {
+      case 'Nom':
+      case 'Voc':
+        return ['${_sibilarize(plural)}i'];
+      case 'Gen':
+        // Родительный множественного — единственное место, где беглое «а»
+        // возвращается: momak → momaka, starac → staraca.
+        return [fugitive ? '${lemma}a' : '${plural}a'];
+      case 'Dat':
+      case 'Ins':
+      case 'Loc':
+        return ['${_sibilarize(plural)}ima'];
+      case 'Acc':
+        return ['${plural}e'];
+    }
+    return const [];
+  }
+
+  /// Третья врста среднего рода: selo, polje, ime, tele.
+  static String? _neuterForm(String lemma, String number, String c) {
+    if (!lemma.endsWith('o') && !lemma.endsWith('e')) return null;
+    var stem = lemma.substring(0, lemma.length - 1);
+
+    // Расширение достраивается к ЦЕЛОЙ лемме: -e остаётся частью основы.
+    // ime → imen-, vreme → vremen-, dete → detet-. Без него получалось «ima».
+    var extended = false;
+    if (_neuterMenStems.contains(lemma)) {
+      stem = '${lemma}n';
+      extended = true;
+    } else if (_neuterEtStems.contains(lemma)) {
+      stem = '${lemma}t';
+      extended = true;
+      // Множественное у этого класса собирательное («telad», «dugmad») и
+      // склоняется по женскому типу. Что есть — лежит в _irregularPlural;
+      // правилом такое не достраивается, и молчание честнее выдумки.
+      if (number == 'Plur') return null;
+    }
+
+    // Мягкость решает окончание: -o даёт «selom», -e даёт «poljem» и «morem».
+    // Расширенная основа кончается на согласный и ведёт себя как твёрдая.
+    final soft = !extended && lemma.endsWith('e');
+
+    if (number == 'Plur') {
       const pl = {
         'Nom': 'a',
         'Gen': 'a',
@@ -1736,9 +2212,21 @@ class GrammarEngine {
         'Ins': 'ima',
         'Loc': 'ima'
       };
-      final suf = (number == 'Sing' ? sg : pl)[c];
-      if (suf == null) return null;
-      return suf.isEmpty ? lemma : s + suf;
+      final suf = pl[c];
+      return suf == null ? null : stem + suf;
+    }
+    switch (c) {
+      case 'Nom':
+      case 'Acc':
+      case 'Voc':
+        return lemma;
+      case 'Gen':
+        return '${stem}a';
+      case 'Dat':
+      case 'Loc':
+        return '${stem}u';
+      case 'Ins':
+        return soft ? '${stem}em' : '${stem}om';
     }
     return null;
   }

@@ -25,6 +25,15 @@ export interface Seo {
    * сайт в глазах поисковика набором страниц ни о чём.
    */
   noindex?: boolean;
+  /**
+   * Канонический адрес, если он отличается от текущего.
+   *
+   * Нужен там, где у одной страницы два адреса. Вукоток переехал с
+   * `/micro-feed` на `/vukotok`, а прежний адрес остался работать — он разослан
+   * в чате и стоит в закладках. Без явного указания оба адреса объявляли бы
+   * каноническим себя, и поисковик делил бы вес страницы надвое.
+   */
+  canonical?: string;
 }
 
 function meta(selector: string, attribute: string, value: string): void {
@@ -48,7 +57,7 @@ function link(rel: string, href: string): void {
   tag.href = href;
 }
 
-export function useSeo({ title, description, noindex = false }: Seo): void {
+export function useSeo({ title, description, noindex = false, canonical }: Seo): void {
   const { path } = useRouter();
 
   useEffect(() => {
@@ -65,7 +74,7 @@ export function useSeo({ title, description, noindex = false }: Seo): void {
     // Канонический адрес — без строки запроса: /materials?level=fakultet и
     // /materials — одна и та же страница, и делить её вес между двумя адресами
     // незачем.
-    const clean = path.split('?')[0] ?? '/';
+    const clean = canonical ?? path.split('?')[0] ?? '/';
     link('canonical', `${SITE}${clean}`);
     meta('meta[property="og:url"]', 'content', `${SITE}${clean}`);
 
@@ -76,5 +85,5 @@ export function useSeo({ title, description, noindex = false }: Seo): void {
         ? 'noindex, nofollow'
         : 'index, follow, max-image-preview:large, max-snippet:-1',
     );
-  }, [title, description, noindex, path]);
+  }, [title, description, noindex, canonical, path]);
 }

@@ -17,7 +17,7 @@ export function Support() {
   });
 
   return (
-    <main className="paper-grain min-h-[calc(100vh-4rem)] overflow-x-hidden px-4 py-10 sm:px-5 sm:py-16">
+    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-4 py-10 sm:px-5 sm:py-16">
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <p className="text-sm font-bold uppercase text-[var(--accent)]">

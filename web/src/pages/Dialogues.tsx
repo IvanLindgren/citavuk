@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { HiSpeakerWave } from 'react-icons/hi2';
 
+import { listDialogues, type PublicDialogue } from '../api/dialogues';
 import { loadCourse, loadProgress, syncCourseProgress } from '../course/data';
 import type { DialogueProgress } from '../course/types';
 import { Link } from '../lib/router';
@@ -12,6 +13,7 @@ export function Dialogues() {
   const { account } = useAuth();
   const reduceMotion = useReducedMotion();
   const [progress, setProgress] = useState<DialogueProgress | null>(null);
+  const [lessons, setLessons] = useState<PublicDialogue[]>([]);
 
   useSeo({
     title: 'Игровые диалоги на сербском — Читавук',
@@ -37,6 +39,18 @@ export function Dialogues() {
     };
   }, [account]);
 
+  // Диалоги преподавателей — часть того же раздела, а не отдельного мира.
+  // Отбор делает сервер: сюда попадают только опубликованные уроки.
+  useEffect(() => {
+    const controller = new AbortController();
+    void listDialogues(controller.signal)
+      .then(setLessons)
+      // Молча: без сети раздел остаётся с встроенным диалогом, и это лучше,
+      // чем красное сообщение об ошибке над работающей страницей.
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
   const action = progress?.status === 'completed'
     ? 'Пройти снова'
     : progress
@@ -44,7 +58,7 @@ export function Dialogues() {
       : 'Начать';
 
   return (
-    <main className="paper-grain min-h-[calc(100dvh-4rem)] px-4 py-10 sm:px-5 sm:py-14">
+    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] px-4 py-10 sm:px-5 sm:py-14">
       <div className="mx-auto max-w-5xl">
         <header className="max-w-3xl">
           <p className="text-sm font-bold uppercase text-[var(--accent)]">Бета</p>
@@ -98,7 +112,68 @@ export function Dialogues() {
             диалог с того же места на другом устройстве.
           </p>
         )}
+
+        {lessons.length > 0 && (
+          <section className="mt-14">
+            <h2 className="text-2xl sm:text-3xl">Диалоги преподавателей</h2>
+            <p className="mt-2 max-w-3xl text-[var(--text-muted)]">
+              Сценарии из уроков, которые ведут преподаватели Читавука. Диалог
+              открывается вместе со своим уроком.
+            </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {lessons.map((dialogue) => (
+                <LessonDialogueCard key={dialogue.slug} dialogue={dialogue} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
+}
+
+function LessonDialogueCard({ dialogue }: { dialogue: PublicDialogue }) {
+  return (
+    <Link
+      to={`/lessons/${dialogue.slug}`}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] transition-transform hover:-translate-y-1"
+    >
+      {dialogue.coverUrl && (
+        <img
+          src={dialogue.coverUrl}
+          alt=""
+          loading="lazy"
+          className="h-32 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      )}
+      <div className="flex min-w-0 flex-1 flex-col p-5">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase text-[var(--accent)]">
+          <HiSpeakerWave aria-hidden="true" />
+          {dialogue.level}
+          <span aria-hidden="true" className="text-[var(--text-muted)]">·</span>
+          <span className="text-[var(--text-muted)]">{linesLabel(dialogue.lines)}</span>
+        </div>
+        <h3 className="mt-2 text-lg leading-snug">{dialogue.title}</h3>
+        {dialogue.summary && (
+          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[var(--text-muted)]">
+            {dialogue.summary}
+          </p>
+        )}
+        <p className="mt-auto pt-4 text-sm text-[var(--text-muted)]">{dialogue.authorName}</p>
+      </div>
+    </Link>
+  );
+}
+
+/** «1 реплика», «2 реплики», «5 реплик» — три формы, иначе читается небрежно. */
+function linesLabel(lines: number): string {
+  const word =
+    lines % 100 >= 11 && lines % 100 <= 14
+      ? 'реплик'
+      : lines % 10 === 1
+        ? 'реплика'
+        : lines % 10 >= 2 && lines % 10 <= 4
+          ? 'реплики'
+          : 'реплик';
+  return `${lines} ${word}`;
 }

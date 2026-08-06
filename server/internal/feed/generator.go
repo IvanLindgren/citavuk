@@ -40,7 +40,10 @@ Editorial rules:
 6. For a book_excerpt, do not rewrite the excerpt and do not invent book/chapter coordinates. Book linkage is supplied separately by the server.
 7. Classify CEFR as A1, A2, B1, B2 or C1. Prefer A2-B1 wording unless the subject requires more advanced language.
 8. Select 3-5 lowercase Serbian tags and exactly 3 genuinely useful difficult Serbian words. For each word provide the lemma, Serbian IPA and a concise Russian translation.
-9. Categories: history, culture, science, fiction, society, news.
+9. Categories: history, culture, science, fiction, society, news, travel, food, sport, music, language.
+   Prefer the most specific one: a text about a Serbian dish is "food", not "culture"; about a
+   town worth visiting — "travel"; about a singer or a song — "music"; about a Serbian word,
+   idiom or grammar quirk — "language". Use "culture" only when nothing narrower fits.
 10. Kinds: news, fact, culture, science, fiction, society, book_excerpt.
 
 JSON schema:
@@ -213,6 +216,9 @@ SOURCE TEXT:
 		LicenseCode:     source.LicenseCode,
 		AttributionText: source.AttributionName,
 		SourceImportID:  &input.ID,
+		// Картинку модель не видит и придумать не может: адрес идёт мимо неё,
+		// прямо из заготовки.
+		ImageURL: input.ImageURL,
 	}
 	return item, nil
 }
@@ -266,7 +272,10 @@ func ValidateItem(item *store.MicroFeedItem) error {
 	if !slices.Contains([]string{"news", "fact", "culture", "science", "fiction", "society", "book_excerpt"}, item.Kind) {
 		return errors.New("неверный тип карточки")
 	}
-	if !slices.Contains([]string{"history", "culture", "science", "fiction", "society", "news"}, item.Category) {
+	// Список тем один на весь сервер: он же в CHECK на колонке и в анкете
+	// читателя. Разъезд здесь тише всего: карточка проходит проверку, а база её
+	// не принимает — или наоборот, тема существует, но модель о ней не знает.
+	if !slices.Contains(store.MicroFeedCategories, item.Category) {
 		return errors.New("неверная категория")
 	}
 	if !slices.Contains([]string{"A1", "A2", "B1", "B2", "C1"}, item.CEFR) {

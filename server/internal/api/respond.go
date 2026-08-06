@@ -78,17 +78,26 @@ var errTooLarge = errors.New("тело запроса слишком велик�
 //
 // X-Forwarded-For читается только при trustProxy: без обратного прокси клиент
 // сам проставит любой заголовок и обойдёт ограничение частоты запросов.
+//
+// Даже за прокси доверять можно НЕ ВСЕЙ цепочке, а только тому, что дописал
+// наш nginx. Он ставит `X-Forwarded-For $proxy_add_x_forwarded_for`, то есть
+// «то, что прислал клиент» + «настоящий адрес соединения», — и настоящий
+// адрес оказывается ПОСЛЕДНИМ. Пока брался первый, любой запрос с
+// «X-Forwarded-For: 1.2.3.4» получал новое ведро токенов: ограничение частоты
+// для гостей, перебор паролей и общий лимит API обходились одним заголовком.
+//
+// X-Real-IP спрашивается первым: proxy_set_header ЗАМЕНЯЕТ заголовок целиком,
+// поэтому клиентское значение до нас не доходит вовсе.
 func clientIP(r *http.Request, trustProxy bool) string {
 	if trustProxy {
-		if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-			// Первый адрес в цепочке — исходный клиент.
-			if first, _, ok := strings.Cut(xff, ","); ok {
-				return strings.TrimSpace(first)
-			}
-			return strings.TrimSpace(xff)
-		}
 		if real := strings.TrimSpace(r.Header.Get("X-Real-IP")); real != "" {
 			return real
+		}
+		if xff := strings.TrimSpace(r.Header.Get("X-Forwarded-For")); xff != "" {
+			if i := strings.LastIndex(xff, ","); i >= 0 {
+				return strings.TrimSpace(xff[i+1:])
+			}
+			return xff
 		}
 	}
 	host := r.RemoteAddr

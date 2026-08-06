@@ -138,3 +138,166 @@ func TestAnalyzeResolvesMissingForm(t *testing.T) {
 		t.Errorf("перевод = %q, ожидался «дом»", res.Translation)
 	}
 }
+
+// «se» — самая частая частица сербского, и в словаре она есть ещё и строкой
+// имени собственного. Без учёта регистра разбор выдавал «имя собственное,
+// именительный падеж» — уверенную чепуху на слове, которое видно в каждом
+// втором предложении.
+func TestAnalyzeSeIsReflexivePronoun(t *testing.T) {
+	res := analyze(testLexicon(t), "se")
+
+	if res.UPOS == "PROPN" {
+		t.Fatalf("«se» разобрано как имя собственное: %+v", res.Feats)
+	}
+	if res.Lemma != "sebe" {
+		t.Errorf("лемма = %q, ожидалась «sebe»", res.Lemma)
+	}
+}
+
+// Глагол с частицей: клиент присылает границы слова, сервер отвечает разбором
+// пары «zove se» вместе с объяснением места клитики.
+func TestReflexiveOfAttachesParticle(t *testing.T) {
+	const sentence = "On se zove Marko."
+	res := analyze(testLexicon(t), "zove")
+	start := strings.Index(sentence, "zove")
+
+	got := reflexiveOf(testLexicon(t), &res, "zove", sentence, start, start+len("zove"))
+	if got == nil {
+		t.Fatal("частица не найдена")
+	}
+	if got.Phrase != "zove se" {
+		t.Errorf("фраза = %q, ожидалась «zove se»", got.Phrase)
+	}
+	if !got.Before || !got.Adjacent {
+		t.Errorf("ожидалась частица вплотную слева: %+v", got)
+	}
+}
+
+// Существительное рядом с «se» возвратным не становится: в «kuća se prodaje»
+// частица относится к глаголу, а не к дому.
+func TestReflexiveOfSkipsNouns(t *testing.T) {
+	const sentence = "Kuća se prodaje."
+	res := analyze(testLexicon(t), "kuća")
+	if got := reflexiveOf(testLexicon(t), &res, "kuća", sentence, 0, len("Kuća")); got != nil {
+		t.Fatalf("частица приписана существительному: %+v", got)
+	}
+}
+
+// Границы слова необязательны: старый клиент их не шлёт, и разбор всё равно
+// обязан находить частицу.
+func TestReflexiveOfWithoutOffsets(t *testing.T) {
+	const sentence = "On se zove Marko."
+	res := analyze(testLexicon(t), "zove")
+	if got := reflexiveOf(testLexicon(t), &res, "zove", sentence, 0, 0); got == nil {
+		t.Fatal("без смещений частица потеряна")
+	}
+}
+
+// Перевод спрашивается о паре «se zove», а не об одном «zove»: отдельно это
+// «зовёт», вместе — «называется».
+func TestWithSeParticleExtendsRange(t *testing.T) {
+	const sentence = "On se zove Marko."
+	start := strings.Index(sentence, "zove")
+	gotStart, gotEnd := withSeParticle(sentence, start, start+len("zove"), "sr")
+	if sentence[gotStart:gotEnd] != "se zove" {
+		t.Errorf("помечено %q, ожидалось «se zove»", sentence[gotStart:gotEnd])
+	}
+}
+
+func TestWithSeParticleLeavesOtherLanguages(t *testing.T) {
+	const sentence = "He se zove Marko."
+	start := strings.Index(sentence, "zove")
+	gotStart, gotEnd := withSeParticle(sentence, start, start+len("zove"), "en")
+	if gotStart != start || gotEnd != start+len("zove") {
+		t.Error("границы изменены для несербского исходного языка")
+	}
+}
+
+// «Bližila se ponoć» — первое попавшееся предложение из книги. Глагола
+// «bližiti» в своём лексиконе нет вовсе, и без списка глагольных форм из
+// Викисловаря частица не находила своего глагола.
+func TestReflexiveOfUsesWiktionaryVerbs(t *testing.T) {
+	const sentence = "Bližila se ponoć, a on je ležao na krevetu."
+	lex := testLexicon(t)
+	res := analyze(lex, "Bližila")
+
+	got := reflexiveOf(lex, &res, "Bližila", sentence, 0, len("Bližila"))
+	if got == nil {
+		t.Fatal("частица не найдена")
+	}
+	if got.Phrase != "Bližila se" {
+		t.Errorf("фраза = %q, ожидалась «Bližila se»", got.Phrase)
+	}
+	if res.Lemma != "bližiti" {
+		t.Errorf("начальная форма = %q, ожидалась «bližiti»", res.Lemma)
+	}
+}
+
+// Нажатие по самой частице ведёт к её глаголу: отдельно «se» разбирается как
+// местоимение «sebe» и переводится случайным словом.
+func TestReflexiveOfFromParticle(t *testing.T) {
+	const sentence = "Bližila se ponoć, a on je ležao na krevetu."
+	lex := testLexicon(t)
+	res := analyze(lex, "se")
+	start := strings.Index(sentence, "se")
+
+	got := reflexiveOf(lex, &res, "se", sentence, start, start+2)
+	if got == nil {
+		t.Fatal("глагол для частицы не найден")
+	}
+	if !got.OnParticle || got.Verb != "Bližila" {
+		t.Fatalf("получено %+v", got)
+	}
+	if got.Lemma != "bližiti se" {
+		t.Errorf("начальная форма = %q, ожидалась «bližiti se»", got.Lemma)
+	}
+}
+
+func TestWithSeParticleFromParticle(t *testing.T) {
+	const sentence = "Bližila se ponoć."
+	start := strings.Index(sentence, "se")
+	gotStart, gotEnd := withSeParticle(sentence, start, start+2, "sr")
+	if sentence[gotStart:gotEnd] != "Bližila se" {
+		t.Errorf("помечено %q, ожидалось «Bližila se»", sentence[gotStart:gotEnd])
+	}
+}
+
+// Ударение берётся из словаря, а не достраивается: по написанию его не
+// восстановить.
+func TestAccentFromDictionary(t *testing.T) {
+	lex := testLexicon(t)
+	accent := accentOf(lex, "knjiga", "knjiga")
+	if accent == nil {
+		t.Fatal("ударение «knjiga» не найдено")
+	}
+	if accent.Written != "knjȉga" {
+		t.Errorf("написание = %q, ожидалось «knjȉga»", accent.Written)
+	}
+	if accent.IPA == "" || accent.Source == "" {
+		t.Errorf("нет транскрипции или источника: %+v", accent)
+	}
+}
+
+// Кириллический текст получает кириллическое ударение: подменять азбуку в
+// ответе нельзя.
+func TestAccentKeepsScript(t *testing.T) {
+	accent := accentOf(testLexicon(t), "књига", "књига")
+	if accent == nil || accent.Written != "књи̏га" {
+		t.Fatalf("получено %+v", accent)
+	}
+}
+
+// Словоформы в словаре ударений нет — показывается ударение начальной формы, но
+// с пометкой: по парадигме ударение переезжает.
+func TestAccentFallsBackToLemma(t *testing.T) {
+	accent := accentOf(testLexicon(t), "knjigama", "knjiga")
+	if accent == nil {
+		t.Fatal("запасное ударение не найдено")
+	}
+	if !accent.OfLemma || accent.Lemma != "knjȉga" {
+		t.Errorf("получено %+v", accent)
+	}
+	if accent.Written != "" {
+		t.Error("ударение начальной формы выдано за ударение словоформы")
+	}
+}

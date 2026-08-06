@@ -13,7 +13,11 @@ class LexiconDb {
   static final LexiconDb instance = LexiconDb._();
 
   static const _asset = 'assets/lexicon.db';
-  static const _version = 4;
+  // 5 — добавлены таблицы accents (ударения из Викисловаря) и verb_forms
+  // (словоформы глаголов оттуда же). Номер обязан расти при смене содержимого
+  // ассета: иначе на уже установленных приложениях останется старая копия в
+  // кэше, и новых таблиц там просто не будет.
+  static const _version = 5;
   Database? _db;
 
   /// БД словаря или null, если недоступна (веб — офлайн-словарь там не работает,
@@ -173,5 +177,48 @@ class LexiconDb {
       results = next;
     }
     return results.toSet().toList();
+  }
+
+  /// Ударение словоформы: ударное написание в обоих алфавитах и транскрипция.
+  ///
+  /// По написанию место ударения в сербском не восстанавливается: ударений
+  /// четыре (краткое и долгое, восходящее и нисходящее), поэтому нужен словарь.
+  /// Данные — из Викисловаря (CC BY-SA 4.0), см. tools/build_wiktionary.py.
+  /// Пусто — значит этой формы в словаре нет; достраивать ударение правилом
+  /// нельзя, оно переезжает по парадигме («knjȉga», но «knjȋgā»).
+  Future<Map<String, String>?> accent(String form) async {
+    try {
+      final db = await _database;
+      if (db == null) return null;
+      final rows = await db.query('accents',
+          columns: ['latin', 'cyrillic', 'ipa'],
+          where: 'form = ?',
+          whereArgs: [_lat(form)],
+          limit: 1);
+      if (rows.isEmpty) return null;
+      return {
+        'latin': (rows.first['latin'] ?? '').toString(),
+        'cyrillic': (rows.first['cyrillic'] ?? '').toString(),
+        'ipa': (rows.first['ipa'] ?? '').toString(),
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Начальная форма, если словоформа известна как глагольная.
+  ///
+  /// Свой лексикон разрежен — целых глаголов вроде «bližiti» в нём нет вовсе, —
+  /// а без опознания глагола частица «se» не находит, к чему относится.
+  Future<String?> verbLemma(String form) async {
+    try {
+      final db = await _database;
+      if (db == null) return null;
+      final rows = await db.query('verb_forms',
+          columns: ['lemma'], where: 'form = ?', whereArgs: [_lat(form)], limit: 1);
+      return rows.isEmpty ? null : rows.first['lemma']?.toString();
+    } catch (_) {
+      return null;
+    }
   }
 }

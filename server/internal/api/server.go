@@ -47,6 +47,7 @@ type Server struct {
 	translateGlobalLimit *limiter
 	generalLimit         *limiter
 	quizLimit            *limiter
+	documentFetchLimit   *limiter
 	stop                 chan struct{}
 }
 
@@ -97,7 +98,11 @@ func New(
 		// Порядок провайдеров задаёт translate.Service: связный текст идёт в
 		// DeepL, одиночное слово — в запасной, потому что DeepL на словах без
 		// контекста ошибается.
-		translator:   translate.NewService(deepl, translate.NewGoogle(), translationCache),
+		// Бюджет знаков защищает месячную квоту DeepL: ограничение частоты
+		// считает запросы, а провайдер берёт деньги за знаки, и без этого
+		// счётчика квота выносилась за девять минут.
+		translator: translate.NewService(deepl, translate.NewGoogle(), translationCache).
+			WithBudget(translate.NewBudget(cfg.DeepLRunesPerDay)),
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
@@ -120,7 +125,12 @@ func New(
 		// Каждый вызов модели стоит денег и занимает минуту, поэтому предел
 		// куда ниже общего: десяток новых тестов в час — это уже много.
 		quizLimit: newLimiter("quiz", 10, 3, redisClient),
-		stop:      make(chan struct{}),
+		// Скачивание документа по чужой ссылке — до 32 МБ трафика и до 45
+		// секунд соединения на один запрос. Под общим пределом в 180 запросов
+		// в минуту ручка превращается в средство качать чужие файлы через наш
+		// канал, а машина на VPS общая с почтой и чужими сайтами.
+		documentFetchLimit: newLimiter("document_fetch", 20, 5, redisClient),
+		stop:               make(chan struct{}),
 	}
 
 	if cfg.UpstreamURL != "" {
@@ -137,6 +147,7 @@ func New(
 	go s.translateGlobalLimit.runCleanup(s.stop)
 	go s.generalLimit.runCleanup(s.stop)
 	go s.quizLimit.runCleanup(s.stop)
+	go s.documentFetchLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
 
 	return s, nil
@@ -234,6 +245,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /sitemap-lessons.xml", s.rateLimit(s.generalLimit, s.handleLessonSitemap))
 	mux.HandleFunc("GET /lessons/{slug}", s.rateLimit(s.generalLimit, s.handleLessonPage))
 	mux.HandleFunc("GET /v1/lessons", s.rateLimit(s.generalLimit, s.handlePublicLessons))
+	mux.HandleFunc("GET /v1/dialogues", s.rateLimit(s.generalLimit, s.handlePublicDialogues))
 	mux.HandleFunc("GET /v1/lessons/{slug}", s.rateLimit(s.generalLimit, s.handlePublicLesson))
 	mux.HandleFunc("GET /v1/lesson-links/{token}", s.rateLimit(s.generalLimit, s.handleUnlistedLesson))
 	mux.HandleFunc("GET /v1/lessons/{id}/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleLessonProgress)))
@@ -252,7 +264,13 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/notifications/{id}/read", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleReadNotification)))
 
 	// Безопасная загрузка пользовательского документа по публичной ссылке.
-	mux.HandleFunc("GET /v1/documents/fetch", s.rateLimit(s.generalLimit, s.handleDocumentFetch))
+	//
+	// Аккаунт не требуется: по ссылке из раздела материалов приходят и те, кто
+	// ещё не регистрировался. Зато предел свой и жёсткий — один запрос тянет до
+	// 32 МБ чужого трафика через наш канал. optionalAuth стоит здесь ради ключа
+	// ограничителя: вошедшего считаем по аккаунту, а не по общему для NAT адресу.
+	mux.HandleFunc("GET /v1/documents/fetch",
+		s.optionalAuth(s.rateLimitIdentity(s.documentFetchLimit, s.handleDocumentFetch)))
 
 	// Перевод не-сербского документа на сербский. Определение языка открыто
 	// всем: это обращение к встроенному словарю, и спрашивать про вход раньше,
@@ -301,6 +319,15 @@ func (s *Server) Handler() http.Handler {
 	// public; moderation and source synchronization remain admin-only.
 	mux.HandleFunc("GET /v1/micro-feed", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeed)))
 	mux.HandleFunc("POST /v1/micro-feed/{id}/interactions", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedInteraction)))
+	mux.HandleFunc("GET /v1/micro-feed/liked", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedLiked)))
+	mux.HandleFunc("PUT /v1/micro-feed/preferences", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedPreferences)))
+	// Картинка идёт через сервер, а не прямой ссылкой: см. micro_feed_image.go.
+	mux.HandleFunc("GET /v1/micro-feed/{id}/image", s.rateLimit(s.generalLimit, s.handleMicroFeedImage))
+	// Обсуждение читают все, пишут только вошедшие: анонимная запись, видимая
+	// всем, — приглашение для спама, а модератор в проекте один.
+	mux.HandleFunc("GET /v1/micro-feed/{id}/comments", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedComments)))
+	mux.HandleFunc("POST /v1/micro-feed/{id}/comments", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleAddMicroFeedComment)))
+	mux.HandleFunc("DELETE /v1/micro-feed/comments/{commentId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDeleteMicroFeedComment)))
 
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
 	mux.HandleFunc("GET /v1/admin/overview", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminOverview)))

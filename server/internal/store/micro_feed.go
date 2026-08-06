@@ -31,12 +31,16 @@ type MicroFeedSource struct {
 }
 
 type MicroFeedImport struct {
-	ID                uuid.UUID  `json:"id"`
-	SourceSlug        string     `json:"sourceSlug"`
-	SourceTitle       string     `json:"sourceTitle"`
-	ExternalID        string     `json:"externalId"`
-	Title             string     `json:"title"`
-	SourceURL         string     `json:"sourceUrl"`
+	ID          uuid.UUID `json:"id"`
+	SourceSlug  string    `json:"sourceSlug"`
+	SourceTitle string    `json:"sourceTitle"`
+	ExternalID  string    `json:"externalId"`
+	Title       string    `json:"title"`
+	SourceURL   string    `json:"sourceUrl"`
+	// ImageURL — картинка из источника. Хранится у заготовки, потому что
+	// карточку делает модель, а картинку она не видит и передать не может:
+	// без этого поля адрес терялся бы между выборкой и созданием карточки.
+	ImageURL          string     `json:"imageUrl"`
 	RawText           string     `json:"rawText"`
 	SourcePublishedAt *time.Time `json:"sourcePublishedAt"`
 	Status            string     `json:"status"`
@@ -81,6 +85,7 @@ type MicroFeedItem struct {
 	LikesCount        int64           `json:"likesCount"`
 	DislikesCount     int64           `json:"dislikesCount"`
 	ReadMoreCount     int64           `json:"readMoreCount"`
+	CommentsCount     int64           `json:"commentsCount"`
 	Reaction          int             `json:"reaction"`
 	HasEmbedding      bool            `json:"hasEmbedding"`
 	PublishedAt       *time.Time      `json:"publishedAt"`
@@ -143,11 +148,12 @@ func (s *Store) SaveMicroFeedImports(
 			tag, err := tx.Exec(ctx, `
 				INSERT INTO micro_feed_imports (
 					id, source_slug, external_id, source_title, source_url,
-					raw_text, source_published_at
-				) VALUES ($1,$2,$3,$4,$5,$6,$7)
+					raw_text, source_published_at, image_url
+				) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
 				ON CONFLICT (source_slug, external_id) DO UPDATE SET
 					source_title = EXCLUDED.source_title,
 					source_url = EXCLUDED.source_url,
+					image_url = EXCLUDED.image_url,
 					raw_text = CASE
 						WHEN micro_feed_imports.status = 'queued' THEN EXCLUDED.raw_text
 						ELSE micro_feed_imports.raw_text
@@ -156,7 +162,7 @@ func (s *Store) SaveMicroFeedImports(
 					updated_at = now()
 				WHERE micro_feed_imports.status = 'queued'`,
 				item.ID, sourceSlug, item.ExternalID, item.Title, item.SourceURL,
-				item.RawText, item.SourcePublishedAt,
+				item.RawText, item.SourcePublishedAt, item.ImageURL,
 			)
 			if err != nil {
 				return err
@@ -180,8 +186,8 @@ func (s *Store) ListMicroFeedImports(ctx context.Context, status string, limit i
 	}
 	rows, err := s.Pool.Query(ctx, `
 		SELECT i.id, i.source_slug, s.title, i.external_id, i.source_title,
-		       i.source_url, i.raw_text, i.source_published_at, i.status,
-		       i.rejection_reason, i.created_at
+		       i.source_url, i.image_url, i.raw_text, i.source_published_at,
+		       i.status, i.rejection_reason, i.created_at
 		FROM micro_feed_imports i
 		JOIN micro_feed_sources s ON s.slug = i.source_slug
 		WHERE ($1 = '' OR i.status = $1)
@@ -205,8 +211,8 @@ func (s *Store) ListMicroFeedImports(ctx context.Context, status string, limit i
 func (s *Store) GetMicroFeedImport(ctx context.Context, id uuid.UUID) (*MicroFeedImport, error) {
 	item, err := scanMicroFeedImport(s.Pool.QueryRow(ctx, `
 		SELECT i.id, i.source_slug, s.title, i.external_id, i.source_title,
-		       i.source_url, i.raw_text, i.source_published_at, i.status,
-		       i.rejection_reason, i.created_at
+		       i.source_url, i.image_url, i.raw_text, i.source_published_at,
+		       i.status, i.rejection_reason, i.created_at
 		FROM micro_feed_imports i
 		JOIN micro_feed_sources s ON s.slug = i.source_slug
 		WHERE i.id = $1`, id))
@@ -222,8 +228,9 @@ func scanMicroFeedImport(row microRow) (*MicroFeedImport, error) {
 	var item MicroFeedImport
 	err := row.Scan(
 		&item.ID, &item.SourceSlug, &item.SourceTitle, &item.ExternalID,
-		&item.Title, &item.SourceURL, &item.RawText, &item.SourcePublishedAt,
-		&item.Status, &item.RejectionReason, &item.CreatedAt,
+		&item.Title, &item.SourceURL, &item.ImageURL, &item.RawText,
+		&item.SourcePublishedAt, &item.Status, &item.RejectionReason,
+		&item.CreatedAt,
 	)
 	return &item, err
 }
@@ -387,7 +394,8 @@ const microFeedItemColumns = `
 	COALESCE(i.source_slug,''), i.source_import_id, i.source_title, i.source_url,
 	i.source_published_at, i.license_code, i.attribution_text, i.source_book_id,
 	i.chapter_id, i.start_position_char, i.book_target_url, i.views_count,
-	i.likes_count, i.dislikes_count, i.read_more_count, COALESCE(r.reaction,0),
+	i.likes_count, i.dislikes_count, i.read_more_count, i.comments_count,
+	COALESCE(r.reaction,0),
 	(i.embedding IS NOT NULL), i.published_at, i.created_at, i.updated_at`
 
 func (s *Store) GetMicroFeedItem(ctx context.Context, id uuid.UUID, actorKey string) (*MicroFeedItem, error) {
@@ -432,7 +440,7 @@ func scanMicroFeedItem(row microRow) (*MicroFeedItem, error) {
 		&item.AttributionText, &item.SourceBookID, &item.ChapterID,
 		&item.StartPositionChar, &item.BookTargetURL, &item.ViewsCount,
 		&item.LikesCount, &item.DislikesCount, &item.ReadMoreCount,
-		&item.Reaction, &item.HasEmbedding, &item.PublishedAt,
+		&item.CommentsCount, &item.Reaction, &item.HasEmbedding, &item.PublishedAt,
 		&item.CreatedAt, &item.UpdatedAt,
 	)
 	if err != nil {
@@ -470,20 +478,186 @@ func collectMicroFeedItems(rows rowsScanner) ([]MicroFeedItem, error) {
 	return items, rows.Err()
 }
 
+// actorUserID — учётная запись за ключом читателя, если он вошёл.
+//
+// Ключ имеет вид `user:<uuid>` для аккаунта и `guest:<uuid>` для браузера
+// (см. microFeedActor). Комментарии хранятся по учётной записи, а не по ключу:
+// гостю писать нельзя, и связать его записи с ключом не через что.
+func actorUserID(actorKey string) any {
+	rest, found := strings.CutPrefix(actorKey, "user:")
+	if !found {
+		return nil
+	}
+	id, err := uuid.Parse(rest)
+	if err != nil {
+		return nil
+	}
+	return id
+}
+
+// MicroFeedPreferences — то, что читатель сказал о себе сам.
+type MicroFeedPreferences struct {
+	Categories []string `json:"categories"`
+	CEFR       string   `json:"cefr"`
+	Onboarded  bool     `json:"onboarded"`
+}
+
+// MicroFeedCategories — темы, о которых спрашивают в анкете. Список повторяет
+// CHECK на колонке category (0014 + 0021): тема не из него никогда ничего не
+// найдёт, а карточка с такой темой не сохранится вовсе.
+var MicroFeedCategories = []string{
+	"history", "culture", "science", "fiction", "society", "news",
+	"travel", "food", "sport", "music", "language",
+}
+
+// MicroFeedLevels — уровни, из которых читатель выбирает свой.
+var MicroFeedLevels = []string{"A1", "A2", "B1", "B2", "C1"}
+
+// feedLevelIndex переводит уровень в номер ступени, как в array_position.
+// Неизвестный уровень считается B1 — серединой шкалы.
+func feedLevelIndex(cefr string) int {
+	for index, level := range MicroFeedLevels {
+		if level == cefr {
+			return index + 1
+		}
+	}
+	return 3
+}
+
+func allowedFeedValue(value string, allowed []string) bool {
+	for _, item := range allowed {
+		if item == value {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *Store) GetMicroFeedPreferences(ctx context.Context, actorKey string) (MicroFeedPreferences, error) {
+	prefs := MicroFeedPreferences{Categories: []string{}, CEFR: "B1"}
+	var onboardedAt *time.Time
+	err := s.Pool.QueryRow(ctx, `
+		SELECT declared_categories, cefr, onboarded_at
+		FROM micro_feed_profiles_embeddings WHERE actor_key=$1`, actorKey).Scan(
+		&prefs.Categories, &prefs.CEFR, &onboardedAt)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return prefs, nil
+	}
+	if err != nil {
+		return prefs, err
+	}
+	prefs.Onboarded = onboardedAt != nil
+	return prefs, nil
+}
+
+// SaveMicroFeedPreferences записывает ответы анкеты.
+//
+// Именно UPDATE полей анкеты, а не полная перезапись строки: рядом в ней лежат
+// вектор и накопленные темы, и затереть их ответом на анкету значило бы
+// обнулить всю историю чтения одним нажатием.
+func (s *Store) SaveMicroFeedPreferences(
+	ctx context.Context,
+	actorKey string,
+	userID uuid.UUID,
+	categories []string,
+	cefr string,
+) (MicroFeedPreferences, error) {
+	clean := make([]string, 0, len(MicroFeedCategories))
+	seen := map[string]bool{}
+	for _, value := range categories {
+		value = strings.ToLower(strings.TrimSpace(value))
+		if allowedFeedValue(value, MicroFeedCategories) && !seen[value] {
+			seen[value] = true
+			clean = append(clean, value)
+		}
+	}
+	cefr = strings.ToUpper(strings.TrimSpace(cefr))
+	if !allowedFeedValue(cefr, MicroFeedLevels) {
+		cefr = "B1"
+	}
+	var user any
+	if userID != uuid.Nil {
+		user = userID
+	}
+
+	_, err := s.Pool.Exec(ctx, `
+		INSERT INTO micro_feed_profiles_embeddings
+			(actor_key, user_id, declared_categories, cefr, onboarded_at)
+		VALUES ($1,$2,$3,$4,now())
+		ON CONFLICT (actor_key) DO UPDATE SET
+			user_id=COALESCE(EXCLUDED.user_id, micro_feed_profiles_embeddings.user_id),
+			declared_categories=EXCLUDED.declared_categories,
+			cefr=EXCLUDED.cefr,
+			onboarded_at=now(),
+			updated_at=now()`, actorKey, user, clean, cefr)
+	if err != nil {
+		return MicroFeedPreferences{}, err
+	}
+	return MicroFeedPreferences{Categories: clean, CEFR: cefr, Onboarded: true}, nil
+}
+
+// ListLikedMicroFeed возвращает карточки, которые читатель отметил лайком.
+//
+// Лайк в ленте до сих пор был сигналом подбора и ничем больше: нажал — карточка
+// уехала вверх и найти её было негде. Раздел с сохранённым делает лайк ещё и
+// закладкой, а это ровно то, зачем его чаще всего и нажимают на чужом языке —
+// «вернусь и разберу».
+func (s *Store) ListLikedMicroFeed(
+	ctx context.Context,
+	actorKey string,
+	limit int,
+) ([]MicroFeedItem, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 50
+	}
+	rows, err := s.Pool.Query(ctx, `
+		SELECT `+microFeedItemColumns+`
+		FROM micro_feed_reactions r
+		JOIN micro_feed_content_items i ON i.id=r.item_id
+		WHERE r.actor_key=$1 AND r.reaction=1 AND i.status='published'
+		ORDER BY r.updated_at DESC
+		LIMIT $2`, actorKey, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return collectMicroFeedItems(rows)
+}
+
 type microProfile struct {
 	Embedding string
 	Tags      []string
-	Warm      bool
+	// Avoided — темы, которые читатель раз за разом пролистывает не читая.
+	Avoided []string
+	// Declared — темы и уровень, названные читателем в анкете.
+	Declared []string
+	CEFR     string
+	Warm     bool
 }
 
 func (s *Store) microFeedProfile(ctx context.Context, actorKey string) microProfile {
-	var profile microProfile
+	profile := microProfile{CEFR: "B1"}
 	var embedding *string
+	// «Тёплым» читатель становится по любому осмысленному сигналу, а не по
+	// трём лайкам. Лайк ставит меньшинство: большинство листает, дочитывает
+	// то, что зацепило, и не нажимает ничего. По прежнему условию такой
+	// читатель оставался холодным навсегда, сколько бы он ни читал.
 	err := s.Pool.QueryRow(ctx, `
-		SELECT embedding::text, preferred_tags,
-		       (SELECT count(*) >= 3 FROM micro_feed_reactions WHERE actor_key=$1 AND reaction=1)
-		FROM micro_feed_profiles_embeddings WHERE actor_key=$1`, actorKey).Scan(
-		&embedding, &profile.Tags, &profile.Warm,
+		SELECT embedding::text, preferred_tags, avoided_tags,
+		       declared_categories, cefr,
+		       (
+		         (SELECT count(*) FROM micro_feed_reactions
+		           WHERE actor_key=$1 AND reaction=1)
+		         + (SELECT count(*) FROM micro_feed_interactions
+		             WHERE actor_key=$1 AND event IN ('complete','read_more_clicked')
+		               AND created_at > now()-interval '90 days')
+		         + (SELECT count(*) FROM micro_feed_comments c
+		            WHERE c.user_id=$2 AND c.deleted_at IS NULL
+		              AND c.created_at > now()-interval '90 days')
+		       ) >= 3
+		FROM micro_feed_profiles_embeddings WHERE actor_key=$1`, actorKey, actorUserID(actorKey)).Scan(
+		&embedding, &profile.Tags, &profile.Avoided,
+		&profile.Declared, &profile.CEFR, &profile.Warm,
 	)
 	if err == nil && embedding != nil {
 		profile.Embedding = *embedding
@@ -521,6 +695,19 @@ func (s *Store) ListMicroFeed(
 	}
 
 	strategy := "cold"
+	// Названные темы работают, ПОКА нет поведения: анкета — это обещание, а
+	// подбор по прочитанному знает про читателя больше, чем он сам сказал о
+	// себе в первую минуту. Поэтому у «тёплого» она уходит в фон и остаётся
+	// лишь подстраховкой, если своих карточек не набралось.
+	if !profile.Warm && len(profile.Declared) > 0 {
+		strategy = "declared"
+		declaredWant := int(math.Ceil(float64(limit) * .7))
+		items, err := s.microFeedCandidates(ctx, actorKey, exclude, "declared", profile, declaredWant*3)
+		if err != nil {
+			return nil, strategy, err
+		}
+		add(items, declaredWant)
+	}
 	if profile.Warm {
 		strategy = "personalized"
 		semanticWant := int(math.Ceil(float64(limit) * .7))
@@ -569,7 +756,63 @@ func (s *Store) ListMicroFeed(
 		}
 		add(items, limit-len(result))
 	}
-	return result, strategy, nil
+	return spreadCategories(result), strategy, nil
+}
+
+// spreadCategories растаскивает подряд идущие карточки одной темы.
+//
+// Порция собирается из нескольких выборок, и каждая отсортирована по-своему:
+// «популярное» вперемешку не идёт, поэтому пять новостей подряд — обычный
+// исход. Листать такую ленту скучно ровно так же, как смотреть пять роликов
+// одного автора подряд.
+//
+// Порядок внутри темы сохраняется: подбор решает, ЧТО показать, а эта
+// перестановка — лишь когда именно, и переставлять карточки внутри одной темы
+// значило бы спорить с подбором.
+func spreadCategories(items []MicroFeedItem) []MicroFeedItem {
+	if len(items) < 3 {
+		return items
+	}
+	queues := make(map[string][]MicroFeedItem, 6)
+	order := make([]string, 0, 6)
+	for _, item := range items {
+		if _, seen := queues[item.Category]; !seen {
+			order = append(order, item.Category)
+		}
+		queues[item.Category] = append(queues[item.Category], item)
+	}
+	if len(order) < 2 {
+		return items
+	}
+
+	out := make([]MicroFeedItem, 0, len(items))
+	previous := ""
+	for len(out) < len(items) {
+		// Из самой длинной очереди, кроме темы предыдущей карточки: длинная
+		// очередь, оставленная напоследок, всё равно вылилась бы подряд.
+		best := ""
+		for _, category := range order {
+			if category == previous || len(queues[category]) == 0 {
+				continue
+			}
+			if best == "" || len(queues[category]) > len(queues[best]) {
+				best = category
+			}
+		}
+		// Осталась одна тема — расставлять больше нечего.
+		if best == "" {
+			for _, category := range order {
+				if len(queues[category]) > 0 {
+					best = category
+					break
+				}
+			}
+		}
+		out = append(out, queues[best][0])
+		queues[best] = queues[best][1:]
+		previous = best
+	}
+	return out
 }
 
 func (s *Store) microFeedCandidates(
@@ -584,24 +827,64 @@ func (s *Store) microFeedCandidates(
 		return []MicroFeedItem{}, nil
 	}
 	extra := ""
-	order := "(ln(2 + i.likes_count*3 + i.read_more_count*4) - i.dislikes_count*.25 + 1/(1+extract(epoch from (now()-COALESCE(i.published_at,i.created_at)))/86400)) DESC"
 	args := []any{actorKey, exclude, limit}
+
+	// Номер следующего параметра. Раньше здесь стояла зашитая «$4», и добавить
+	// хоть один параметр было нельзя, не сломав молча соседний режим.
+	next := func(value any) string {
+		args = append(args, value)
+		return fmt.Sprintf("$%d", len(args))
+	}
+
+	// Обсуждение весит больше всего: комментарий стоит написанной фразы на
+	// чужом языке, и карточка, вокруг которой спорят, интереснее карточки,
+	// которую молча лайкнули. Дизлайк вычитается вдвое заметнее прежнего —
+	// внутри логарифма он бы почти ничего не значил, поэтому стоит снаружи.
+	trending := "(ln(2 + i.comments_count*10 + i.likes_count*3 + i.read_more_count*4)" +
+		" - i.dislikes_count*.5" +
+		" + 1/(1+extract(epoch from (now()-COALESCE(i.published_at,i.created_at)))/86400)) DESC"
+	order := trending
+
 	switch mode {
 	case "semantic":
 		extra = " AND i.embedding IS NOT NULL"
-		order = "i.embedding <=> $4::vector, i.published_at DESC"
-		args = append(args, profile.Embedding)
+		order = "i.embedding <=> " + next(profile.Embedding) + "::vector, i.published_at DESC"
 	case "tags":
 		if len(profile.Tags) == 0 {
 			return []MicroFeedItem{}, nil
 		}
-		order = "(SELECT count(*) FROM unnest(i.tags) tag WHERE tag=ANY($4::text[])) DESC, i.likes_count DESC"
-		args = append(args, profile.Tags)
+		order = "(SELECT count(*) FROM unnest(i.tags) tag WHERE tag=ANY(" +
+			next(profile.Tags) + "::text[])) DESC, i.likes_count DESC"
+	case "declared":
+		if len(profile.Declared) == 0 {
+			return []MicroFeedItem{}, nil
+		}
+		extra = " AND i.category = ANY(" + next(profile.Declared) + "::text[])"
+		// Внутри названных тем — сначала подходящие по уровню, потом свежесть.
+		// Уровень выражен расстоянием по шкале, а не точным совпадением: карточек
+		// ровно своего уровня может не быть вовсе, и требовать их значило бы
+		// показать пустую ленту вместо соседней ступени.
+		order = "abs(" + next(feedLevelIndex(profile.CEFR)) +
+			" - array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr)), " + trending
 	case "easy":
-		extra = " AND i.cefr IN ('A2','B1')"
+		// «Лёгкое» отсчитывается от названного уровня: для C1 «лёгкое» — это B1,
+		// а не A2, и подсовывать ему детские тексты незачем.
+		extra = " AND array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr) <= " +
+			next(feedLevelIndex(profile.CEFR))
 		order = "md5(i.id::text || $1 || current_date::text)"
 	case "explore":
 		order = "md5(i.category || i.id::text || $1 || current_date::text)"
+	}
+
+	// Темы, которые читатель раз за разом пролистывает, отодвигаются в конец
+	// выборки, но не вычёркиваются. Вычеркнуть значило бы запереть человека в
+	// том, что он читал в первый вечер: интерес меняется, а узнать об этом
+	// иначе, чем изредка показав такую тему снова, нельзя.
+	//
+	// В режиме «explore» отодвигать нечего: он и существует ради того, чтобы
+	// показать непохожее.
+	if len(profile.Avoided) > 0 && mode != "explore" {
+		order = "(i.tags && " + next(profile.Avoided) + "::text[]), " + order
 	}
 
 	query := `SELECT ` + microFeedItemColumns + `
@@ -664,7 +947,22 @@ func (s *Store) RecordMicroFeedInteraction(
 		case "read_more_clicked":
 			_, err = tx.Exec(ctx, `UPDATE micro_feed_content_items SET read_more_count=read_more_count+1 WHERE id=$1`, itemID)
 		}
-		return err
+		if err != nil {
+			return err
+		}
+
+		// Профиль пересобирается и от поведения, а не только от лайков.
+		// Реакции обработаны выше и профиль уже обновили; здесь остаются
+		// события, которые раньше записывались и не влияли ни на что.
+		//
+		// «view» и «impression» сюда не входят намеренно: карточка попала на
+		// экран не потому, что читатель её выбрал, и считать это одобрением
+		// значит подстраивать ленту под собственную выдачу.
+		switch event {
+		case "complete", "read_more_clicked", "quick_skip":
+			return refreshMicroFeedProfile(ctx, tx, actorKey, user)
+		}
+		return nil
 	})
 }
 
@@ -702,37 +1000,119 @@ func updateMicroFeedReaction(
 	if err != nil {
 		return err
 	}
-	likesDelta := boolInt(next == 1) - boolInt(previous == 1)
-	dislikesDelta := boolInt(next == -1) - boolInt(previous == -1)
-	_, err = tx.Exec(ctx, `
-		UPDATE micro_feed_content_items SET
-			likes_count=greatest(0,likes_count+$2),
-			dislikes_count=greatest(0,dislikes_count+$3)
-		WHERE id=$1`, itemID, likesDelta, dislikesDelta)
-	if err != nil {
-		return err
+
+	// Публичный счётчик растёт только от вошедших.
+	//
+	// Реакция гостя по-прежнему сохраняется и по-прежнему формирует ЕГО подбор:
+	// лайк ставит меньшинство, и требовать вход ради рекомендаций значило бы
+	// оставить большинство читателей без них. Но «популярное» — это общий
+	// рейтинг, а не личная лента: гостевой токен подписан сервером, однако
+	// набрать пачку токенов может кто угодно, и накрутить выдачу для ВСЕХ так
+	// было бы по-прежнему дёшево. Аккаунт стоит подтверждённой почты, и это
+	// единственная граница, которая здесь действительно держит.
+	if user != nil {
+		likesDelta := boolInt(next == 1) - boolInt(previous == 1)
+		dislikesDelta := boolInt(next == -1) - boolInt(previous == -1)
+		_, err = tx.Exec(ctx, `
+			UPDATE micro_feed_content_items SET
+				likes_count=greatest(0,likes_count+$2),
+				dislikes_count=greatest(0,dislikes_count+$3)
+			WHERE id=$1`, itemID, likesDelta, dislikesDelta)
+		if err != nil {
+			return err
+		}
 	}
 
-	// A profile is rebuilt from recent positive reactions. This avoids drift
-	// after unlikes and keeps one bad early choice from defining the feed.
-	_, err = tx.Exec(ctx, `
-		INSERT INTO micro_feed_profiles_embeddings (actor_key,user_id,embedding,preferred_tags)
-		SELECT $1,$2,
-		       (SELECT avg(i.embedding) FROM (
-				SELECT item_id FROM micro_feed_reactions
-				WHERE actor_key=$1 AND reaction=1 ORDER BY updated_at DESC LIMIT 50
-			) liked JOIN micro_feed_content_items i ON i.id=liked.item_id
-			WHERE i.embedding IS NOT NULL),
+	return refreshMicroFeedProfile(ctx, tx, actorKey, user)
+}
+
+// refreshMicroFeedProfile пересобирает профиль читателя по его поведению.
+//
+// Профиль строится заново, а не дополняется: так он не уползает после снятого
+// лайка, и одна случайная карточка в начале не определяет ленту навсегда.
+//
+// Сигналы взвешены по тому, чего они стоили читателю.
+//
+//	комментарий  6 — написанная фраза на чужом языке, дороже всего остального;
+//	лайк         6 — намеренное «да», одно нажатие;
+//	«дальше»     2 — человек открыл полный текст, но ничего не сказал;
+//	дочитывание  1 — самый слабый по отдельности и самый частый.
+//
+// Разрыв между лайком и дочитыванием намеренно шестикратный: дочитывание
+// делает подбор возможным для тех, кто не нажимает ничего, но приравнивать
+// молчаливое «прочитал» к сказанному «нравится» неверно — шесть дочитанных
+// карточек одной темы весят ровно один лайк.
+//
+// Вес выражен повторами строки: pgvector умеет усреднять векторы, но не
+// взвешивать их, а собирать взвешенную сумму вручную здесь незачем.
+func refreshMicroFeedProfile(ctx context.Context, tx pgx.Tx, actorKey string, user any) error {
+	_, err := tx.Exec(ctx, `
+		WITH signals AS (
+			-- Скобки обязательны: ORDER BY с LIMIT внутри ветки UNION ALL
+			-- без них относится ко всему объединению, а не к ветке.
+			(SELECT item_id, 6 AS weight FROM micro_feed_reactions
+			  WHERE actor_key=$1 AND reaction=1
+			  ORDER BY updated_at DESC LIMIT 50)
+			UNION ALL
+			(SELECT c.item_id, 6 FROM micro_feed_comments c
+			  WHERE c.user_id=$2 AND c.deleted_at IS NULL
+			  ORDER BY c.created_at DESC LIMIT 50)
+			UNION ALL
+			(SELECT item_id, 2 FROM micro_feed_interactions
+			  WHERE actor_key=$1 AND event='read_more_clicked'
+			    AND created_at > now()-interval '90 days'
+			  ORDER BY created_at DESC LIMIT 50)
+			UNION ALL
+			(SELECT item_id, 1 FROM micro_feed_interactions
+			  WHERE actor_key=$1 AND event='complete'
+			    AND created_at > now()-interval '90 days'
+			  ORDER BY created_at DESC LIMIT 100)
+		),
+		weighted AS (
+			SELECT s.item_id FROM signals s, generate_series(1, s.weight)
+		),
+		liked AS (
+			SELECT i.* FROM weighted w JOIN micro_feed_content_items i ON i.id=w.item_id
+		),
+		-- Отталкивающие темы: читатель раз за разом пролистывает их не читая
+		-- или прямо отмечает «не показывать похожее».
+		--
+		-- Пролистывание весит 1, и одного мало: пролистать можно и по
+		-- случайности. Дизлайк весит 3 и закрывает тему сразу — это сказанное
+		-- вслух «не показывать похожее», и просить сказать это трижды значит
+		-- не слушать с первого раза.
+		avoided AS (
+			SELECT tag FROM (
+				SELECT unnest(i.tags) tag, count(*) AS hits
+				  FROM micro_feed_interactions x
+				  JOIN micro_feed_content_items i ON i.id=x.item_id
+				 WHERE x.actor_key=$1 AND x.event='quick_skip'
+				   AND x.created_at > now()-interval '90 days'
+				 GROUP BY tag
+				UNION ALL
+				SELECT unnest(i.tags) tag, count(*)*3 AS hits
+				  FROM micro_feed_reactions r
+				  JOIN micro_feed_content_items i ON i.id=r.item_id
+				 WHERE r.actor_key=$1 AND r.reaction=-1
+				 GROUP BY tag
+			) skipped
+			GROUP BY tag HAVING sum(hits) >= 3
+			ORDER BY sum(hits) DESC LIMIT 12
+		)
+		INSERT INTO micro_feed_profiles_embeddings
+			(actor_key, user_id, embedding, preferred_tags, avoided_tags)
+		SELECT $1, $2,
+		       (SELECT avg(embedding) FROM liked WHERE embedding IS NOT NULL),
 		       COALESCE((SELECT array_agg(tag ORDER BY uses DESC, tag) FROM (
-				SELECT tag, count(*) uses FROM (
-					SELECT unnest(i.tags) tag FROM micro_feed_reactions r
-					JOIN micro_feed_content_items i ON i.id=r.item_id
-					WHERE r.actor_key=$1 AND r.reaction=1
-				) tags GROUP BY tag ORDER BY uses DESC LIMIT 12
-			) preferred),'{}'::text[])
+					SELECT tag, count(*) uses FROM (
+						SELECT unnest(tags) tag FROM liked
+					) tags GROUP BY tag ORDER BY uses DESC LIMIT 12
+				) preferred), '{}'::text[]),
+		       COALESCE((SELECT array_agg(tag) FROM avoided), '{}'::text[])
 		ON CONFLICT (actor_key) DO UPDATE SET
 			user_id=EXCLUDED.user_id, embedding=EXCLUDED.embedding,
-			preferred_tags=EXCLUDED.preferred_tags, updated_at=now()`, actorKey, user)
+			preferred_tags=EXCLUDED.preferred_tags,
+			avoided_tags=EXCLUDED.avoided_tags, updated_at=now()`, actorKey, user)
 	return err
 }
 
@@ -761,4 +1141,52 @@ func microVectorLiteral(values []float32) (any, error) {
 	}
 	b.WriteByte(']')
 	return b.String(), nil
+}
+
+// MicroFeedImageURL возвращает адрес картинки опубликованной карточки.
+//
+// Отдельный запрос вместо чтения всей карточки нужен ручке-прокси: ей нужен
+// один адрес, а карточка — это ещё и два варианта текста по тысяче знаков.
+//
+// Здесь же лежит вся защита прокси: наружу передаётся не адрес, а
+// идентификатор карточки, и сервер идёт только туда, куда он сам когда-то
+// записал при выборке из источника. Принимай ручка адрес от браузера — она
+// стала бы открытым прокси, через который можно постучаться и во внутреннюю
+// сеть.
+func (s *Store) MicroFeedImageURL(ctx context.Context, id uuid.UUID) (string, error) {
+	var image string
+	err := s.Pool.QueryRow(ctx, `
+		SELECT image_url FROM micro_feed_content_items
+		WHERE id = $1 AND status = 'published'`, id).Scan(&image)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return "", ErrMicroFeedNotFound
+	}
+	return image, err
+}
+
+// MicroFeedItemsWithoutEmbedding возвращает опубликованные карточки без профиля.
+//
+// Нужен для дозаполнения: рекомендатель подбирает похожее по embedding, и
+// карточка без него участвует только в «случайной» части ленты. Пока
+// пакетный наполнитель создавал карточки без профиля, такими оказались почти
+// все — раздел выглядел работающим, а подбор молча не работал.
+func (s *Store) MicroFeedItemsWithoutEmbedding(
+	ctx context.Context,
+	limit int,
+) ([]MicroFeedItem, error) {
+	if limit <= 0 || limit > 500 {
+		limit = 200
+	}
+	rows, err := s.Pool.Query(ctx, `
+		SELECT `+microFeedItemColumns+`
+		FROM micro_feed_content_items i
+		LEFT JOIN micro_feed_reactions r ON false
+		WHERE i.status='published' AND i.embedding IS NULL
+		ORDER BY i.created_at
+		LIMIT $1`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return collectMicroFeedItems(rows)
 }

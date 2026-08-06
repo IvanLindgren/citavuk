@@ -25,6 +25,8 @@ import {
 import type { IconType } from 'react-icons';
 
 import { Link, useRouter } from '../lib/router';
+import { focusableInside, useFocusTrap, useScrollLock } from '../lib/overlay';
+import { WolfGlyph } from './WolfGlyph';
 import { NotificationBell } from './ServerAnnouncements';
 import { odysseyAvailable } from '../events/odyssey';
 import { useAuth } from '../state/auth';
@@ -36,6 +38,14 @@ import { useTheme } from '../state/theme';
  * нажатия, а не после.
  */
 const VIDEO_URL = 'https://serbiansubtitles.online/';
+
+/**
+ * Вукоток — лента коротких сербских текстов.
+ *
+ * Прежний адрес `/micro-feed` продолжает работать: он разослан в чате и стоит в
+ * закладках, а переименование раздела — не причина ломать чужие ссылки.
+ */
+export const VUKOTOK_PATH = '/vukotok';
 
 /**
  * Где раздел показывается в шапке на широком экране.
@@ -55,6 +65,8 @@ interface Section {
   /** Короткая подпись для тесных мест: в панели колонка узкая. */
   short?: string;
   icon: IconType;
+  /** Свой нарисованный значок вместо значка из набора. */
+  glyph?: boolean;
   place?: Place;
   /** Временное событие — его надо заметить среди прочего. */
   featured?: boolean;
@@ -80,10 +92,10 @@ const GROUPS: { title: string; items: Section[] }[] = [
     items: [
       { to: '/library', label: 'Моя библиотека', icon: LuLibrary, place: 'nav' },
       {
-        to: '/micro-feed',
-        label: 'Микро-лента',
-        short: 'Лента',
+        to: VUKOTOK_PATH,
+        label: 'Вукоток',
         icon: LuRows3,
+        glyph: true,
         place: 'pill',
         featured: true,
       },
@@ -164,6 +176,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuTop, setMenuTop] = useState(64);
   const headerRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
 
   // Шапка «прилипает» и уплотняется после прокрутки: на длинной странице это
   // подсказывает, что верх остался позади.
@@ -174,22 +187,45 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Настоящая высота шапки уезжает в CSS-переменную.
+  //
+  // Ею пользуются слои, которые обязаны стоять ВПЛОТНУЮ под шапкой, — прежде
+  // всего полоса прогресса книги. Она была прибита к `top-16`, то есть к
+  // высоте нерасжатой шапки без полосы поддержки, и на деле почти никогда с
+  // ней не совпадала: при прокрутке шапка ужимается до 56 точек, и полоса
+  // повисала в воздухе, а с полосой поддержки (на телефоне это две-три строки)
+  // и вовсе оказывалась посреди шапки. Со стороны это выглядело как отрыв
+  // красной черты и подтормаживание всей шапки, потому что она свою высоту
+  // анимирует, а прибитая полоса за ней не поспевала.
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return;
+    const apply = () => {
+      document.documentElement.style.setProperty(
+        '--header-height', `${Math.round(node.getBoundingClientRect().height)}px`);
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   // Смена страницы закрывает мобильное меню — иначе оно останется поверх нового
   // экрана.
   useEffect(() => setMenuOpen(false), [path]);
 
+  // Замок прокрутки — общий на все слои (см. lib/overlay): каждый слой,
+  // запоминавший «прежнее» значение сам, ломал соседа при наложении.
+  useScrollLock(menuOpen);
+  useFocusTrap(menuOpen, menuRef);
+
   useEffect(() => {
     if (!menuOpen) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setMenuOpen(false);
     };
     document.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = previous;
-      document.removeEventListener('keydown', onKey);
-    };
+    return () => document.removeEventListener('keydown', onKey);
   }, [menuOpen]);
 
   return (
@@ -202,20 +238,25 @@ export function Header() {
           : 'border-transparent bg-transparent',
       ].join(' ')}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
-        <Link to="/" className="flex items-center gap-2.5 font-display text-xl font-bold">
+      <div
+        className={[
+          'mx-auto flex max-w-6xl items-center gap-3 px-5 transition-[height] duration-300',
+          scrolled ? 'h-14' : 'h-16',
+        ].join(' ')}
+      >
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5 font-display text-xl font-bold">
           <img
             src="/img/citavuk_icon.webp"
             srcSet="/img/citavuk_icon.webp 1x, /img/citavuk_icon@2x.webp 2x"
             alt=""
             width={32}
             height={32}
-            className="size-8 rounded-lg"
+            className="size-8 rounded-lg transition-transform duration-300 ease-[var(--ease-soft)] group-hover:-rotate-6 group-hover:scale-110"
           />
           Читавук
         </Link>
 
-        <nav className="ml-5 hidden items-center xl:flex">
+        <nav className="ml-3 hidden items-center xl:flex">
           {NAV.map((item) => (
             <NavItem key={item.to} to={item.to} active={path.startsWith(item.to)}>
               {item.label}
@@ -224,26 +265,28 @@ export function Header() {
           <MoreMenu path={path} isAdmin={Boolean(account?.isAdmin)} />
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
           <Link
-            to="/micro-feed"
-            aria-current={path.startsWith('/micro-feed') ? 'page' : undefined}
-            title="Микро-лента · эксперимент"
-            className="inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-[var(--accent)]/35 bg-[var(--accent)] px-2.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
+            to={VUKOTOK_PATH}
+            aria-current={isVukotok(path) ? 'page' : undefined}
+            aria-label="Вукоток"
+            title="Вукоток · лента коротких сербских текстов"
+            className="group inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-[var(--accent)]/35 bg-[var(--accent)] px-2.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
           >
-            <LuRows3 className="size-4" aria-hidden="true" />
-            <span className="hidden sm:inline xl:hidden">Лента</span>
-            <span className="hidden xl:inline">Микро-лента</span>
+            <WolfGlyph className="size-5 transition-transform duration-300 ease-[var(--ease-soft)] group-hover:-rotate-12 group-hover:scale-110" />
+            <span className="hidden sm:inline">Вукоток</span>
           </Link>
           <Link
             to="/lessons"
             aria-current={path.startsWith('/lessons') ? 'page' : undefined}
-            className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-3 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
+            title="Уроки преподавателей"
+            className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-2.5 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
           >
             <LuGraduationCap className="size-4" aria-hidden="true" />
-            <span className="2xl:hidden">Уроки</span>
-            <span className="hidden 2xl:inline">Уроки преподавателей</span>
+            Уроки
           </Link>
+
+          <span className="mx-0.5 hidden h-6 w-px bg-[var(--line)] sm:block" aria-hidden="true" />
           {/* «Для учителей» и «Видео» уехали в панель «Ещё»: вместе с яркой
               кнопкой уроков они не помещались, и правый край обрезался. */}
           <ThemeToggle />
@@ -251,7 +294,7 @@ export function Header() {
 
           <Link
             to={account ? '/account' : '/login'}
-            className="hidden max-w-[10rem] truncate whitespace-nowrap rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] sm:block"
+            className="hidden max-w-[9rem] truncate whitespace-nowrap rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-1.5 text-sm font-semibold transition-colors hover:border-[var(--accent)] sm:block"
             title={account ? account.displayName || account.email : 'Войти'}
           >
             {account ? shortName(account.displayName || account.email) : 'Войти'}
@@ -290,6 +333,7 @@ export function Header() {
             onClick={() => setMenuOpen(false)}
           >
             <motion.nav
+              ref={menuRef}
               initial={{ y: -18 }}
               animate={{ y: 0 }}
               exit={{ y: -18 }}
@@ -297,6 +341,10 @@ export function Header() {
               className="max-h-full overflow-y-auto border-t border-[var(--line)] bg-[var(--bg-raised)] px-4 pb-6 pt-4 shadow-[var(--shadow-lift)]"
               onClick={(event) => event.stopPropagation()}
               aria-label="Разделы Читавука"
+              // Слой перекрывает страницу целиком, и скринридер обязан об этом
+              // знать: без role/aria-modal он продолжает читать контент под ним.
+              role="dialog"
+              aria-modal="true"
             >
               <div className="mx-auto max-w-xl space-y-4">
                 {/* Список разделов общий с панелью «Ещё» — см. GROUPS. */}
@@ -342,6 +390,12 @@ export function Header() {
   );
 }
 
+/** Оба адреса Вукотока: новый и прежний, который ещё ходит по чужим закладкам. */
+export function isVukotok(path: string): boolean {
+  const clean = path.split('?')[0] ?? '';
+  return clean === VUKOTOK_PATH || clean === '/micro-feed';
+}
+
 /** Длинное «Денис Корнилов» ломало кнопку на две строки. */
 function shortName(value: string): string {
   const name = (value.split('@')[0] ?? value).trim();
@@ -383,7 +437,9 @@ function SectionTile({
 
   const content = (
     <>
-      <Icon className="size-4 shrink-0" aria-hidden="true" />
+      {item.glyph
+        ? <WolfGlyph className="size-4" />
+        : <Icon className="size-4 shrink-0" aria-hidden="true" />}
       <span className="min-w-0 leading-tight">{label}</span>
       {item.external && (
         <span className="ml-auto shrink-0 text-xs opacity-60" aria-hidden="true">
@@ -409,35 +465,70 @@ function SectionTile({
   );
 }
 
+/**
+ * Панель «Ещё».
+ *
+ * Открывается КЛИКОМ, а не наведением. Наведение здесь было двумя проблемами
+ * сразу. Во-первых, панель недостижима с клавиатуры: `onMouseEnter` не имеет
+ * клавиатурного соответствия, и до трёх колонок ссылок нельзя было добраться
+ * табом вовсе. Во-вторых, `onMouseLeave` на контейнере закрывал её, когда
+ * курсор шёл к дальней колонке по диагонали и на миг выходил за границу, —
+ * пункт «убегал» из-под курсора.
+ */
 function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const active = MORE_GROUPS.some((group) =>
     group.items.some((item) => !item.external && path.startsWith(item.to)),
   );
 
   useEffect(() => setOpen(false), [path]);
+  useFocusTrap(open, panelRef);
 
-  // Escape закрывает панель: она перекрывает страницу, и без клавиши её
-  // приходится закрывать мышью, уводя курсор.
   useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        setOpen(false);
+        return;
+      }
+      // Стрелки водят по пунктам меню — так работает любое меню в системе, и
+      // ждать этого от нашего человек вправе.
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const items = focusableInside(panel);
+      if (items.length === 0) return;
+      event.preventDefault();
+      const at = items.indexOf(document.activeElement as HTMLElement);
+      const step = event.key === 'ArrowDown' ? 1 : -1;
+      const next = at < 0 ? 0 : (at + step + items.length) % items.length;
+      items[next]!.focus();
+    };
+    // Клик мимо панели закрывает её. Без этого единственным способом закрыть
+    // остаётся повторный клик по кнопке — а он не очевиден.
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (panelRef.current?.contains(target) || buttonRef.current?.contains(target)) return;
+      setOpen(false);
     };
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
   }, [open]);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <div className="relative">
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
+        aria-haspopup="menu"
         className={[
           'flex items-center gap-1 whitespace-nowrap rounded-xl px-2.5 py-2 text-sm font-semibold transition-colors',
           active
@@ -461,6 +552,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={panelRef}
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -470,7 +562,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
             // Ограничение по окну оставлено на случай узкого экрана.
             className="absolute left-0 top-full z-50 max-w-[calc(100vw-3rem)] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]"
           >
-            <nav aria-label="Остальные разделы">
+            <nav aria-label="Остальные разделы" role="menu">
               <div className="flex gap-1">
                 {MORE_GROUPS.map((group) => (
                   <div key={group.title} className="min-w-0">
@@ -513,14 +605,33 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
   );
 }
 
+/** Ключ отметки «полосу поддержки закрыли». */
+const SUPPORT_STRIP_DISMISSED = 'citavuk-support-strip-dismissed';
+
+/**
+ * Полоса поддержки под шапкой.
+ *
+ * Закрывается насовсем. Полоса живёт ВНУТРИ `sticky`-шапки и на телефоне
+ * переносится на две-три строки, поэтому несколько десятков пикселей верха
+ * экрана она занимает на каждой странице и на всех прокрутках. Просьба, которую
+ * нельзя убрать, перестаёт читаться примерно на третий раз и начинает
+ * восприниматься как реклама — а раздел «Поддержать» никуда не девается: он
+ * есть и в панели «Ещё», и в подвале.
+ */
 function SupportStrip() {
   const { path } = useRouter();
-  if (odysseyAvailable() || path.startsWith('/support') || path.startsWith('/micro-feed')) return null;
+  const [dismissed, setDismissed] = useState(
+    () => localStorage.getItem(SUPPORT_STRIP_DISMISSED) === '1',
+  );
+
+  if (dismissed || odysseyAvailable() || path.startsWith('/support') || isVukotok(path)) {
+    return null;
+  }
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-2">
-        <p className="min-w-0 flex-1 text-xs font-semibold leading-relaxed text-[var(--text-muted)] sm:text-sm">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-5 py-1.5">
+        <p className="min-w-0 flex-1 text-xs font-semibold leading-snug text-[var(--text-muted)]">
           Читавук продолжает быть бесплатным. Скорее вступай в Telegram-чат
           обсуждения Читавука, а то волк укусит за бочок!{' '}
           <a
@@ -532,12 +643,26 @@ function SupportStrip() {
             t.me/citavukchat
           </a>
         </p>
-        <Link
-          to="/support"
-          className="shrink-0 rounded-xl bg-[var(--accent)] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[var(--accent-hover)] sm:text-sm"
-        >
-          Поддержать развитие
-        </Link>
+        <div className="flex shrink-0 items-center gap-1">
+          <Link
+            to="/support"
+            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+          >
+            Поддержать развитие
+          </Link>
+          <button
+            type="button"
+            aria-label="Скрыть полосу поддержки"
+            title="Скрыть"
+            onClick={() => {
+              localStorage.setItem(SUPPORT_STRIP_DISMISSED, '1');
+              setDismissed(true);
+            }}
+            className="grid size-6 place-items-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
+          >
+            <LuX className="size-3.5" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -557,6 +682,7 @@ function NavItem({
       to={to}
       className={[
         'relative whitespace-nowrap rounded-xl px-2.5 py-2 text-sm font-semibold transition-colors',
+        'hover:bg-[var(--bg-sunken)]',
         active ? 'text-[var(--accent)]' : 'text-[var(--text-muted)] hover:text-[var(--text)]',
       ].join(' ')}
     >
@@ -581,17 +707,30 @@ function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="rounded-xl p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
+      className="grid size-9 place-items-center overflow-hidden rounded-xl text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
       aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
       title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
     >
-      <svg viewBox="0 0 24 24" className="size-5 fill-current" aria-hidden="true">
+      {/*
+        Значок не подменяется мгновенно, а проворачивается: смена темы —
+        единственное действие в шапке, которое меняет всю страницу, и мгновенный
+        подскок значка читался как сбой отрисовки.
+      */}
+      <motion.svg
+        key={theme}
+        initial={{ rotate: -90, opacity: 0, scale: .6 }}
+        animate={{ rotate: 0, opacity: 1, scale: 1 }}
+        transition={{ duration: .35, ease: [0.22, 1, 0.36, 1] }}
+        viewBox="0 0 24 24"
+        className="size-5 fill-current"
+        aria-hidden="true"
+      >
         {theme === 'dark' ? (
           <path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0-5h0a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 17a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zM3 11h2a1 1 0 110 2H3a1 1 0 110-2zm16 0h2a1 1 0 110 2h-2a1 1 0 110-2zM5.6 4.2l1.4 1.4A1 1 0 015.6 7L4.2 5.6a1 1 0 011.4-1.4zm11.4 12.8l1.4 1.4a1 1 0 01-1.4 1.4L15.6 18a1 1 0 011.4-1zm1.4-12.8a1 1 0 010 1.4L17 7a1 1 0 01-1.4-1.4l1.4-1.4a1 1 0 011.4 0zM7 17l-1.4 1.4a1 1 0 01-1.4-1.4L5.6 15.6A1 1 0 017 17z" />
         ) : (
           <path d="M21.6 13.3A9 9 0 1110.7 2.4a1 1 0 011.2 1.3 7 7 0 008.4 8.4 1 1 0 011.3 1.2z" />
         )}
-      </svg>
+      </motion.svg>
     </button>
   );
 }

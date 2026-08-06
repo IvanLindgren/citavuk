@@ -37,7 +37,7 @@ export function YandexCallback() {
   }, [completeYandex, navigate]);
 
   return (
-    <main className="paper-grain flex min-h-[calc(100vh-4rem)] items-center justify-center px-5 py-12">
+    <main className="paper-grain relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-5 py-12">
       <Card className="w-full max-w-md p-8 text-center">
         {error ? (
           <>

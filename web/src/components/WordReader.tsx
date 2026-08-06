@@ -6,6 +6,8 @@ import {
   analyzeWord,
   type EnglishAnalysis,
   type ParadigmTable,
+  type ReflexiveParticle,
+  type WordAccent,
   type WordAnalysis,
 } from '../api/analyze';
 import { ApiError } from '../api/client';
@@ -26,7 +28,7 @@ import { Spinner } from './ui';
 import { TtsVoicePicker } from './TtsVoicePicker';
 import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 import { ttsAudioUrl } from '../api/listening';
-import { serbianIpa } from '../lib/serbianPronunciation';
+import { serbianIpa, serbianIpaParts, splitAccented } from '../lib/serbianPronunciation';
 
 export interface ReaderMark {
   start: number;
@@ -80,16 +82,9 @@ export function WordReader({
   // ещё и терял место, куда смотрел.
   const [phraseAnchor, setPhraseAnchor] = useState<DOMRect | null>(null);
   const [activePhrase, setActivePhrase] = useState<string | null>(null);
-  const [result, setResult] = useState<TranslationResult | null>(null);
-  const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  // Прошлый запрос отменяется: пользователь может быстро тыкать по словам, и
-  // ответ на устаревший запрос не должен перебить свежий.
-  const pending = useRef<AbortController | null>(null);
-
-  useEffect(() => () => pending.current?.abort(), []);
+  const lookup = useWordLookup();
+  const { result, analysis, error, loading } = lookup;
 
   useEffect(() => {
     let frame = 0;
@@ -124,99 +119,38 @@ export function WordReader({
       const text = cell?.text ?? paragraphs[paragraphIndex];
       if (!text) return;
 
-      pending.current?.abort();
-      const controller = new AbortController();
-      pending.current = controller;
-
       setActivePhrase(null);
       setSelectedPhrase(null);
       setSelected({ paragraph: paragraphIndex, cell: cell?.index, token });
       setAnchor(rect);
-      setResult(null);
-      setAnalysis(null);
-      setError(null);
-      setLoading(true);
 
       // Запуск внутри пользовательского клика не блокируется политикой autoplay.
       playAudio(new Audio(ttsAudioUrl(token.text)));
 
-      // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
-      // словарь знает не каждое слово, а перевод нужен всегда.
-      // Предложение уходит вместе со словом: по нему сервер выбирает язык —
-      // «on», «to», «most» одновременно сербские и английские слова.
-      const analysisWindow = sentenceWindow(text, token.start, token.end);
-      void analyzeWord(token.text, controller.signal, analysisWindow.text)
-        .then((parsed) => {
-          if (!controller.signal.aborted) setAnalysis(parsed);
-        })
-        .catch(() => {});
-
-      try {
-        const window = sentenceWindow(text, token.start, token.end);
-        const translation = await translateInContext(
-          window.text,
-          window.start,
-          window.end,
-          controller.signal,
-        );
-        if (controller.signal.aborted) return;
-        setResult(translation);
-      } catch (caught) {
-        if (controller.signal.aborted) return;
-        setError(
-          caught instanceof ApiError
-            ? caught.message
-            : 'Не удалось перевести слово.',
-        );
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
+      await lookup.lookupWord(text, token);
     },
-    [paragraphs],
+    [lookup, paragraphs],
   );
 
-  const translatePhrase = useCallback(async (phrase: string, rect: DOMRect | null) => {
-    pending.current?.abort();
-    const controller = new AbortController();
-    pending.current = controller;
-
-    setSelected(null);
-    // Карточка перевода встаёт там же, где стояло предложение перевести, —
-    // у самой фразы.
-    setAnchor(rect);
-    setActivePhrase(phrase);
-    setResult(null);
-    setAnalysis(null);
-    setError(null);
-    setLoading(true);
-
-    try {
-      const translation = await translateText(phrase, controller.signal);
-      if (controller.signal.aborted) return;
-      setResult(translation);
-    } catch (caught) {
-      if (controller.signal.aborted) return;
-      setError(
-        caught instanceof ApiError
-          ? caught.message
-          : 'Не удалось перевести выделенную фразу.',
-      );
-    } finally {
-      if (!controller.signal.aborted) setLoading(false);
-    }
-  }, []);
+  const translatePhrase = useCallback(
+    async (phrase: string, rect: DOMRect | null) => {
+      setSelected(null);
+      // Карточка перевода встаёт там же, где стояло предложение перевести, —
+      // у самой фразы.
+      setAnchor(rect);
+      setActivePhrase(phrase);
+      await lookup.lookupPhrase(phrase);
+    },
+    [lookup],
+  );
 
   const close = useCallback(() => {
-    pending.current?.abort();
+    lookup.reset();
     setSelected(null);
     setSelectedPhrase(null);
     setActivePhrase(null);
-    setResult(null);
-    setAnalysis(null);
-    setError(null);
-    setLoading(false);
     window.getSelection()?.removeAllRanges();
-  }, []);
+  }, [lookup]);
 
   // Escape закрывает карточку — привычное поведение для всплывающих панелей.
   useEffect(() => {
@@ -227,6 +161,17 @@ export function WordReader({
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [selected, activePhrase, close]);
+
+  // Возвратный глагол подсвечивается вместе со своей частицей: «se» — часть
+  // слова, а не соседнее слово, и подсветка одного «zove» показывала бы разбор
+  // не того, что переведено в карточке.
+  const cliticStart = useMemo(() => {
+    if (!selected || !analysis?.reflexive) return null;
+    const paragraph = paragraphs[selected.paragraph] ?? '';
+    const source =
+      selected.cell === undefined ? plainTextOf(paragraph) : cellTextAt(paragraph, selected.cell);
+    return companionStart(source, selected.token, analysis.reflexive);
+  }, [analysis, paragraphs, selected]);
 
   return (
     <div className={className}>
@@ -253,6 +198,7 @@ export function WordReader({
                 selectedStart={
                   selected?.paragraph === paragraphIndex ? selected.token.start : null
                 }
+                cliticStart={selected?.paragraph === paragraphIndex ? cliticStart : null}
                 onSelect={(cellIndex, cellText, token, rect) =>
                   selectWord(paragraphIndex, token, rect, {
                     index: cellIndex,
@@ -274,6 +220,7 @@ export function WordReader({
               selectedStart={
                 selected?.paragraph === paragraphIndex ? selected.token.start : null
               }
+              cliticStart={selected?.paragraph === paragraphIndex ? cliticStart : null}
               onSelect={(token, rect) => selectWord(paragraphIndex, token, rect)}
             />
           );
@@ -311,24 +258,7 @@ export function WordReader({
               result
                 ? async (asLemma) => {
                     const surface = activePhrase ?? selected!.token.text;
-                    const lemma = analysis?.lemma ?? '';
-                    const label = formLabelOf(analysis);
-                    // При сохранении словоформы в карточку кладётся ещё и
-                    // разбор этой формы: иначе через неделю непонятно, почему
-                    // в словаре «svira», а не «svirati».
-                    const forms: Record<string, unknown> = {};
-                    if (!asLemma && label) {
-                      forms['форма в тексте'] = label;
-                      if (lemma) forms['начальная форма'] = lemma;
-                    }
-                    await saveVocabularyWord({
-                      bookId,
-                      word: asLemma && lemma ? lemma : surface,
-                      lemma,
-                      pos: analysis?.upos,
-                      translation: result.text,
-                      forms,
-                    });
+                    await saveFromCard(bookId, surface, analysis, result, asLemma);
                     void sync();
                   }
                 : undefined
@@ -338,6 +268,188 @@ export function WordReader({
       </AnimatePresence>
     </div>
   );
+}
+
+/**
+ * Загрузка разбора и перевода — одна на все места, где можно нажать слово.
+ *
+ * Раньше у подкаста был свой упрощённый запрос и своя карточка: без разбора
+ * формы, без таблиц склонения, без произношения и без выбора, что сохранить в
+ * словарь. Одно и то же действие давало разный результат в зависимости от
+ * раздела, и это выглядело поломкой, а не задумкой.
+ */
+export function useWordLookup() {
+  const [result, setResult] = useState<TranslationResult | null>(null);
+  const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Прошлый запрос отменяется: пользователь может быстро тыкать по словам, и
+  // ответ на устаревший запрос не должен перебить свежий.
+  const pending = useRef<AbortController | null>(null);
+
+  useEffect(() => () => pending.current?.abort(), []);
+
+  const begin = useCallback(() => {
+    pending.current?.abort();
+    const controller = new AbortController();
+    pending.current = controller;
+    setResult(null);
+    setAnalysis(null);
+    setError(null);
+    setLoading(true);
+    return controller;
+  }, []);
+
+  const reset = useCallback(() => {
+    pending.current?.abort();
+    pending.current = null;
+    setResult(null);
+    setAnalysis(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  const lookupWord = useCallback(
+    async (text: string, token: Token) => {
+      const controller = begin();
+      const window = sentenceWindow(text, token.start, token.end);
+
+      // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
+      // словарь знает не каждое слово, а перевод нужен всегда.
+      // Предложение уходит вместе со словом: по нему сервер выбирает язык
+      // («on», «to», «most» — одновременно сербские и английские слова) и
+      // находит возвратную частицу «se», если она относится к этому глаголу.
+      void analyzeWord(token.text, controller.signal, window.text, window.start, window.end)
+        .then((parsed) => {
+          if (!controller.signal.aborted) setAnalysis(parsed);
+        })
+        .catch(() => {});
+
+      try {
+        const translation = await translateInContext(
+          window.text,
+          window.start,
+          window.end,
+          controller.signal,
+        );
+        if (controller.signal.aborted) return;
+        setResult(translation);
+      } catch (caught) {
+        if (controller.signal.aborted) return;
+        setError(caught instanceof ApiError ? caught.message : 'Не удалось перевести слово.');
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    },
+    [begin],
+  );
+
+  const lookupPhrase = useCallback(
+    async (phrase: string) => {
+      const controller = begin();
+      try {
+        const translation = await translateText(phrase, controller.signal);
+        if (controller.signal.aborted) return;
+        setResult(translation);
+      } catch (caught) {
+        if (controller.signal.aborted) return;
+        setError(
+          caught instanceof ApiError ? caught.message : 'Не удалось перевести выделенную фразу.',
+        );
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    },
+    [begin],
+  );
+
+  return { result, analysis, error, loading, lookupWord, lookupPhrase, reset };
+}
+
+/**
+ * Разбор одного слова вне читалки: та же карточка, что в книгах.
+ *
+ * Нужна там, где текст выводится своей вёрсткой — в караоке подкаста строка
+ * подсвечивается по ходу звука, и заменить её на WordReader целиком нельзя.
+ */
+export function WordLookupCard({
+  sentence,
+  token,
+  anchor = null,
+  bookId = null,
+  onClose,
+}: {
+  sentence: string;
+  token: Token;
+  anchor?: DOMRect | null;
+  bookId?: string | null;
+  onClose: () => void;
+}) {
+  const { sync } = useSync();
+  const { result, analysis, error, loading, lookupWord, reset } = useWordLookup();
+
+  useEffect(() => {
+    void lookupWord(sentence, token);
+    return reset;
+  }, [lookupWord, reset, sentence, token]);
+
+  return (
+    <WordCard
+      word={token.text}
+      kind="word"
+      anchor={anchor}
+      result={result}
+      analysis={analysis}
+      error={error}
+      loading={loading}
+      onClose={onClose}
+      onSave={result ? (asLemma) => saveFromCard(bookId, token.text, analysis, result, asLemma).then(sync) : undefined}
+    />
+  );
+}
+
+/**
+ * Сохранение слова в словарь: одинаковое для читалки и для подкаста.
+ *
+ * При сохранении словоформы в карточку кладётся ещё и разбор этой формы: иначе
+ * через неделю непонятно, почему в словаре «svira», а не «svirati».
+ */
+async function saveFromCard(
+  bookId: string | null,
+  surface: string,
+  analysis: WordAnalysis | null,
+  result: TranslationResult,
+  asLemma: boolean,
+): Promise<void> {
+  const lemma = analysis?.lemma ?? '';
+  const label = formLabelOf(analysis);
+  const forms: Record<string, unknown> = {};
+  if (!asLemma && label) {
+    forms['форма в тексте'] = label;
+    if (lemma) forms['начальная форма'] = lemma;
+  }
+  // Возвратный глагол уходит в словарь вместе с частицей: «vratiti» и
+  // «vratiti se» — разные слова, и карточка без «se» учила бы не тому.
+  if (asLemma && analysis?.reflexive?.lemma) {
+    await saveVocabularyWord({
+      bookId,
+      word: analysis.reflexive.lemma,
+      lemma: analysis.reflexive.lemma,
+      pos: analysis.upos,
+      translation: result.text,
+      forms,
+    });
+    return;
+  }
+  await saveVocabularyWord({
+    bookId,
+    word: asLemma && lemma ? lemma : surface,
+    lemma,
+    pos: analysis?.upos,
+    translation: result.text,
+    forms,
+  });
 }
 
 /**
@@ -390,6 +502,7 @@ function BookTable({
   style,
   selectedCell,
   selectedStart,
+  cliticStart,
   onSelect,
 }: {
   rows: string[][];
@@ -397,6 +510,7 @@ function BookTable({
   style?: CSSProperties;
   selectedCell: number | null;
   selectedStart: number | null;
+  cliticStart: number | null;
   onSelect: (
     cellIndex: number,
     cellText: string,
@@ -414,6 +528,7 @@ function BookTable({
       className=""
       marks={[]}
       selectedStart={selectedCell === index ? selectedStart : null}
+      cliticStart={selectedCell === index ? cliticStart : null}
       onSelect={(token, rect) => onSelect(index, text, token, rect)}
     />
   );
@@ -472,6 +587,7 @@ function BookTable({
 function Paragraph({
   text,
   selectedStart,
+  cliticStart,
   onSelect,
   bionic,
   className,
@@ -480,6 +596,8 @@ function Paragraph({
 }: {
   text: string;
   selectedStart: number | null;
+  /** Начало возвратной частицы «se», если она относится к выбранному глаголу. */
+  cliticStart: number | null;
   onSelect: (token: Token, anchor: DOMRect) => void;
   bionic: BionicLevel;
   className: string;
@@ -514,6 +632,11 @@ function Paragraph({
               'hover:bg-gold/35',
               selectedStart === token.start
                 ? 'bg-gold/55 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]'
+                : '',
+              // Частица подсвечивается слабее глагола: она относится к нему,
+              // но нажали всё-таки не на неё.
+              cliticStart === token.start
+                ? 'bg-gold/30 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]'
                 : '',
             ].join(' ')}
           >
@@ -605,6 +728,47 @@ function BionicWord({ text, level }: { text: string; level: BionicLevel }) {
 }
 
 /**
+ * Где в тексте лежит второе слово пары «глагол + se».
+ *
+ * Нажали глагол — ищется частица, нажали частицу — её глагол. Сервер называет
+ * спутника написанием и стороной, а не смещением: пересылать байтовые смещения
+ * Go в индексы JavaScript значит пересчитывать UTF-8 в UTF-16 в обе стороны и
+ * ошибиться на кириллице.
+ */
+export function companionStart(
+  text: string,
+  token: Token,
+  reflexive: ReflexiveParticle,
+): number | null {
+  const tokens = tokenize(text).filter((item) => item.isWord);
+  const index = tokens.findIndex((item) => item.start === token.start);
+  if (index < 0) return null;
+
+  const wanted = reflexive.companion.toLocaleLowerCase('sr');
+  const step = reflexive.before ? -1 : 1;
+  for (let at = index + step; at >= 0 && at < tokens.length; at += step) {
+    const candidate = tokens[at]!;
+    if (candidate.text.toLocaleLowerCase('sr') === wanted) return candidate.start;
+    // Дальше одного соседнего слова спутник ищется, только если сервер сказал,
+    // что пара стоит не вплотную.
+    if (reflexive.adjacent) return null;
+  }
+  return null;
+}
+
+/** Текст ячейки таблицы по её сквозному номеру — тому же, что в BookTable. */
+function cellTextAt(paragraph: string, cell: number): string {
+  const block = parseBlock(paragraph);
+  return block.kind === 'table' ? block.rows.flat()[cell] ?? '' : '';
+}
+
+/** Текст обычного абзаца без служебной метки блока. */
+function plainTextOf(paragraph: string): string {
+  const block = parseBlock(paragraph);
+  return block.kind === 'text' ? block.text : '';
+}
+
+/**
  * Одиночный клик открывает разбор, а протягивание мышью или долгое нажатие
  * остаётся нативным выделением текста. Проверяем не только `isCollapsed`:
  * Safari иногда сохраняет непустой текст в Selection ещё один тик после
@@ -666,7 +830,10 @@ function PhraseSelectionBar({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       className={[
-        'fixed z-40 flex items-center gap-3 rounded-2xl border border-[var(--line)]',
+        // Слой выше всех шторок приложения: разбор вызывается ИЗ них — из
+        // шторки Вукотока, из панели урока, — и панель «перевести выделенное»
+        // на z-40 уходила под ту самую шторку, в которой её и вызвали.
+        'fixed z-[85] flex items-center gap-3 rounded-2xl border border-[var(--line)]',
         'bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]',
         placement.floating ? '' : 'inset-x-3 bottom-5 mx-auto max-w-xl',
       ].join(' ')}
@@ -732,6 +899,7 @@ function WordCard({
   const [saveLemma, setSaveLemma] = useState(true);
   const placement = useCardPlacement(anchor);
   const formChoice = hasFormChoice(kind, word, analysis);
+  const reflexive = kind === 'word' ? analysis?.reflexive : undefined;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [speaking, setSpeaking] = useState(false);
 
@@ -760,8 +928,8 @@ function WordCard({
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       className={
         placement.floating
-          ? 'fixed z-50 p-2'
-          : 'fixed inset-x-0 bottom-0 z-50 mx-auto max-w-2xl p-3 sm:p-5'
+          ? 'fixed z-[90] p-2'
+          : 'fixed inset-x-0 bottom-0 z-[90] mx-auto max-w-2xl p-3 sm:p-5'
       }
       style={placement.style}
       role="dialog"
@@ -778,8 +946,21 @@ function WordCard({
         <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--line)] px-5 py-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
+              {/* Пара идёт в заголовок целиком: «zove» и «zove se» — разные
+                  слова, и показывать одно, а переводить другое нельзя. Слабее
+                  набрано то, на что не нажимали: при нажатии на частицу это
+                  глагол, при нажатии на глагол — частица. */}
               <div className="font-display text-2xl font-bold text-[var(--accent)]">
+                {reflexive?.onParticle && (
+                  <span className="text-[var(--text-muted)]">{reflexive.verb} </span>
+                )}
                 {word}
+                {reflexive && !reflexive.onParticle && (
+                  <span className="text-[var(--text-muted)]">
+                    {' '}
+                    {reflexive.particle.toLocaleLowerCase('sr')}
+                  </span>
+                )}
               </div>
               {kind === 'word' && (
                 <button
@@ -796,7 +977,12 @@ function WordCard({
             {kind === 'word' && !analysis?.english && (
               <>
                 <div className="mt-0.5 text-sm text-[var(--text-muted)]">
-                  {serbianIpa(word)} <span className="text-xs">без ударения</span>
+                  {/* У частицы «se» своего ударения нет — она клитика, и
+                      показывать транскрипцию нужно для глагола пары. */}
+                  <Transcription
+                    word={reflexive?.onParticle ? reflexive.verb : word}
+                    accent={analysis?.accent}
+                  />
                 </div>
                 <div className="mt-2"><TtsVoicePicker /></div>
               </>
@@ -805,10 +991,14 @@ function WordCard({
                 слово ищется в словаре и узнаётся в другой форме. */}
             {analysis?.known && (
               <div className="mt-0.5 text-sm text-[var(--text-muted)]">
-                <span className="font-semibold">{analysis.posShort}</span>
-                {analysis.lemma !== analysis.surface.toLowerCase() && (
-                  <> · основа <b>{analysis.lemma}</b></>
-                )}
+                <span className="font-semibold">
+                  {reflexive ? 'возвратный глагол' : analysis.posShort}
+                </span>
+                {reflexive?.lemma
+                  ? <> · основа <b>{reflexive.lemma}</b></>
+                  : analysis.lemma !== analysis.surface.toLowerCase() && (
+                      <> · основа <b>{analysis.lemma}</b></>
+                    )}
               </div>
             )}
             {result?.provider && (
@@ -873,11 +1063,23 @@ function WordCard({
                   слово ради перевода, а объяснение — уже уточнение. */}
               {kind === 'word' && analysis?.english && <EnglishNotice />}
 
+              {reflexive && <ReflexivePanel reflexive={reflexive} />}
               {kind === 'word' && analysis && <GrammarPanel analysis={analysis} />}
+              {/* Читавук в углу карточки: разбор — самое частое действие в
+                  продукте, и единственное живое в нём место должно быть там,
+                  куда чаще всего смотрят. Гладится, как в приложении. */}
+              {kind === 'word' && !analysis?.english && (
+                <div className="flex justify-end">
+                  <Mascot pose="citavuk_gram" alt="" className="w-16 shrink-0 object-contain" />
+                </div>
+              )}
               {onSave && formChoice && (
                 <SaveChoice
                   surface={word}
-                  lemma={analysis!.lemma}
+                  // В словарь уходит именно возвратная форма: «vratiti» и
+                  // «vratiti se» — разные слова, и подпись обязана показывать
+                  // то, что сохранится.
+                  lemma={reflexive?.lemma ?? analysis!.lemma}
                   formLabel={formLabelOf(analysis)}
                   saveLemma={saveLemma}
                   disabled={saved}
@@ -1126,6 +1328,97 @@ export function EnglishNotice({ className = '' }: { className?: string }) {
           знаменитую зеленую сову.)
         </p>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Написание с ударением и транскрипция.
+ *
+ * Ударение показывается жирным на самой букве, а не описывается словами:
+ * подпись вроде «ударение не на последнем слоге» — это рассуждение о
+ * произношении, а не произношение.
+ *
+ * Порядок источников — от точного к приблизительному:
+ *
+ *  1. словарь знает эту словоформу — её ударение и показываем;
+ *  2. знает только начальную форму — показываем её, но так и подписываем: в
+ *     сербском ударение переезжает по парадигме («knjȉga», но «knjȋgā»), и
+ *     выдать одно за другое значит научить неправильно;
+ *  3. не знает ничего — остаётся правило, верное для коротких слов: ударение
+ *     никогда не падает на последний слог, значит в одно- и двусложном слове
+ *     ударен первый.
+ */
+function Transcription({ word, accent }: { word: string; accent?: WordAccent }) {
+  if (accent?.written) {
+    return (
+      <span>
+        <Accented written={accent.written} />
+        {accent.ipa && <span className="ml-1.5">{accent.ipa}</span>}
+      </span>
+    );
+  }
+  if (accent?.ofLemma && accent.lemma) {
+    return (
+      <span>
+        {serbianIpa(word)}
+        <span className="ml-1.5">
+          · начальная форма <Accented written={accent.lemma} />
+        </span>
+      </span>
+    );
+  }
+
+  const { before, stressed, after } = serbianIpaParts(word);
+  if (!before && !stressed) return null;
+  return (
+    <span>
+      {before}
+      {stressed && <b className="font-bold text-[var(--text)]">{stressed}</b>}
+      {after}
+    </span>
+  );
+}
+
+/** Написание из словаря ударений: ударная буква — жирная. */
+function Accented({ written }: { written: string }) {
+  const { before, stressed, after } = splitAccented(written);
+  return (
+    <span>
+      {before}
+      {stressed && <b className="font-bold text-[var(--text)]">{stressed}</b>}
+      {after}
+    </span>
+  );
+}
+
+/**
+ * Возвратный глагол: что здесь делает «se» и почему оно стоит именно там.
+ *
+ * Место частицы — первое, обо что спотыкается читающий по-сербски: «On se zove
+ * Marko» выглядит так, будто «se» относится к «on». Объяснение даётся не общей
+ * справкой, а по этой самой фразе — сервер называет слово, за которым встала
+ * клитика.
+ */
+function ReflexivePanel({ reflexive }: { reflexive: ReflexiveParticle }) {
+  return (
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4">
+      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        Возвратный глагол
+      </div>
+      <div className="mt-1.5 font-display text-lg font-bold text-[var(--text)]">
+        {reflexive.phrase}
+        {reflexive.lemma && (
+          <span className="font-sans text-sm font-normal text-[var(--text-muted)]">
+            {' '}
+            · начальная форма {reflexive.lemma}
+          </span>
+        )}
+      </div>
+      <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{reflexive.meaning}</p>
+      <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">
+        {reflexive.why}
+      </p>
     </div>
   );
 }

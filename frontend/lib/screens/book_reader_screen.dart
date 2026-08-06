@@ -2096,15 +2096,37 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                                         ),
                                     ],
                                   ),
+                                  // Ударение выделяется жирным прямо в
+                                  // транскрипции. Подпись словами («ударение не
+                                  // на последнем слоге») — это рассуждение о
+                                  // произношении, а не само произношение.
                                   if (!isPhrase && !data.isEnglish)
-                                    Text(
-                                      '${SerbianPronunciation.ipa(surface)} · без ударения',
-                                      style: TextStyle(
+                                    Builder(builder: (context) {
+                                      final (before, stressed, after) =
+                                          SerbianPronunciation.ipaParts(
+                                              surface);
+                                      final style = TextStyle(
                                         color: scheme.onSurface
                                             .withValues(alpha: 0.65),
                                         fontSize: 13,
-                                      ),
-                                    ),
+                                      );
+                                      return Text.rich(
+                                        TextSpan(
+                                          style: style,
+                                          children: [
+                                            TextSpan(text: before),
+                                            TextSpan(
+                                              text: stressed,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: scheme.onSurface,
+                                              ),
+                                            ),
+                                            TextSpan(text: after),
+                                          ],
+                                        ),
+                                      );
+                                    }),
                                   const SizedBox(height: 6),
                                   Wrap(
                                     spacing: 8,

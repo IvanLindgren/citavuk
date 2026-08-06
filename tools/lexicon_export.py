@@ -52,9 +52,45 @@ def main() -> int:
             out.write(f"{clean(word)}\t{clean(translation)}\n")
             entries += 1
 
+    # Ударения и формы глаголов кладёт tools/build_wiktionary.py. Их может не
+    # быть — тогда файлы не обновляются: сервер обязан собираться и без них.
+    accents = OUT_DIR / "accents.tsv.gz"
+    stresses = 0
+    try:
+        rows_accents = db.execute(
+            "SELECT form, latin, cyrillic, ipa FROM accents ORDER BY form"
+        ).fetchall()
+    except sqlite3.OperationalError:
+        rows_accents = []
+    if rows_accents:
+        with gzip.open(accents, "wt", encoding="utf-8", newline="\n") as out:
+            for form, latin, cyrillic, ipa in rows_accents:
+                out.write(
+                    f"{clean(form)}\t{clean(latin)}\t{clean(cyrillic)}\t{clean(ipa)}\n"
+                )
+                stresses += 1
+
+    verbs = OUT_DIR / "verbs.tsv.gz"
+    verb_rows = 0
+    try:
+        rows_verbs = db.execute(
+            "SELECT form, lemma FROM verb_forms ORDER BY form"
+        ).fetchall()
+    except sqlite3.OperationalError:
+        rows_verbs = []
+    if rows_verbs:
+        with gzip.open(verbs, "wt", encoding="utf-8", newline="\n") as out:
+            for form, lemma in rows_verbs:
+                out.write(f"{clean(form)}\t{clean(lemma)}\n")
+                verb_rows += 1
+
     db.close()
     print(f"{forms.name}: {rows} форм, {forms.stat().st_size // 1024} КБ")
     print(f"{words.name}: {entries} статей, {words.stat().st_size // 1024} КБ")
+    if stresses:
+        print(f"{accents.name}: {stresses} ударений, {accents.stat().st_size // 1024} КБ")
+    if verb_rows:
+        print(f"{verbs.name}: {verb_rows} форм глаголов, {verbs.stat().st_size // 1024} КБ")
     return 0
 
 

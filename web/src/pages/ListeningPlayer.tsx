@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import {
   useCallback,
   useEffect,
@@ -16,20 +16,13 @@ import {
   ttsAudioUrl,
 } from '../api/listening';
 import { TtsVoicePicker } from '../components/TtsVoicePicker';
-import {
-  translateInContext,
-  type TranslationResult,
-} from '../api/translate';
-import { analyzeWord, type WordAnalysis } from '../api/analyze';
 import { Mascot } from '../components/Mascot';
-import { EnglishNotice } from '../components/WordReader';
+import { WordLookupCard } from '../components/WordReader';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isHardToHear } from '../listening/language';
 import type { AudioCue, AudioLesson } from '../listening/types';
-import { saveVocabularyWord } from '../lib/vocabulary';
 import { tokenize, type Token } from '../lib/tokenize';
 import { Link, useParams } from '../lib/router';
-import { useSync } from '../state/sync';
 
 type LoadState =
   | { kind: 'loading' }
@@ -72,7 +65,9 @@ export function ListeningPlayer() {
   const [activeCharacter, setActiveCharacter] = useState(-1);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [selected, setSelected] = useState<{ cue: number; token: Token } | null>(null);
+  const [selected, setSelected] = useState<
+    { cue: number; token: Token; anchor: DOMRect } | null
+  >(null);
   const audio = useRef<HTMLAudioElement>(null);
   const cueElements = useRef<Array<HTMLElement | null>>([]);
   const started = useRef(false);
@@ -296,9 +291,9 @@ export function ListeningPlayer() {
               current={index === cueIndex}
               activeCharacter={index === cueIndex ? activeCharacter : -1}
               onPlay={() => void playCue(index)}
-              onWord={(token) => {
+              onWord={(token, rect) => {
                 audio.current?.pause();
-                setSelected({ cue: index, token });
+                setSelected({ cue: index, token, anchor: rect });
               }}
               element={(element) => {
                 cueElements.current[index] = element;
@@ -325,10 +320,11 @@ export function ListeningPlayer() {
 
       <AnimatePresence>
         {selected && (
-          <ListeningWordCard
+          <WordLookupCard
             key={`${selected.cue}-${selected.token.start}`}
-            cue={cues[selected.cue]!}
+            sentence={cues[selected.cue]!.text}
             token={selected.token}
+            anchor={selected.anchor}
             onClose={() => setSelected(null)}
           />
         )}
@@ -349,7 +345,7 @@ function KaraokeCue({
   current: boolean;
   activeCharacter: number;
   onPlay: () => void;
-  onWord: (token: Token) => void;
+  onWord: (token: Token, anchor: DOMRect) => void;
   element: (element: HTMLElement | null) => void;
 }) {
   const tokens = useMemo(() => tokenize(cue.text), [cue.text]);
@@ -406,7 +402,7 @@ function KaraokeCue({
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
-                onWord(token);
+                onWord(token, event.currentTarget.getBoundingClientRect());
               }}
               className={[
                 'rounded px-0.5 transition-colors',
@@ -490,94 +486,6 @@ function PlayerControls({
   );
 }
 
-function ListeningWordCard({
-  cue,
-  token,
-  onClose,
-}: {
-  cue: AudioCue;
-  token: Token;
-  onClose: () => void;
-}) {
-  const { sync } = useSync();
-  const [result, setResult] = useState<TranslationResult | null>(null);
-  const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
-  const [error, setError] = useState('');
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setAnalysis(null);
-    // Подкасты «Learn Serbian» ведутся по-английски, и реплика целиком бывает
-    // английской. Разбор идёт параллельно переводу и своей ошибкой его не
-    // рушит: язык определяется по всей реплике, а не по одному слову.
-    void analyzeWord(token.text, controller.signal, cue.text)
-      .then((parsed) => {
-        if (!controller.signal.aborted) setAnalysis(parsed);
-      })
-      .catch(() => {});
-    void translateInContext(cue.text, token.start, token.end, controller.signal)
-      .then(setResult)
-      .catch((caught) => {
-        if (controller.signal.aborted) return;
-        setError(caught instanceof Error ? caught.message : 'Не удалось перевести слово.');
-      });
-    return () => controller.abort();
-  }, [cue.text, token]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 18 }}
-      className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-2xl p-3 sm:p-5"
-      role="dialog"
-      aria-label={`Перевод слова ${token.text}`}
-    >
-      <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-5 shadow-[var(--shadow-lift)]">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-display text-2xl font-bold text-[var(--accent)]">{token.text}</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)]">в этой фразе</p>
-          </div>
-          <button type="button" onClick={onClose} className="rounded-lg p-2 text-[var(--text-muted)]" aria-label="Закрыть">
-            <CloseIcon />
-          </button>
-        </div>
-        <div className="mt-4">
-          {!result && !error && <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]"><Spinner />Переводим…</div>}
-          {error && <ErrorNote>{error}</ErrorNote>}
-          {result && (
-            <>
-              <p className="text-lg font-semibold">{result.text}</p>
-              {result.sentence && <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{result.sentence}</p>}
-              {/* Пометка идёт после перевода: нажимали ради него, объяснение —
-                  уточнение. */}
-              {analysis?.english && <EnglishNotice className="mt-4" />}
-              <Button
-                className="mt-5 w-full"
-                variant={saved ? 'secondary' : 'primary'}
-                disabled={saved}
-                onClick={() => {
-                  void saveVocabularyWord({
-                    word: token.text,
-                    translation: result.text,
-                  }).then(() => {
-                    setSaved(true);
-                    void sync();
-                  });
-                }}
-              >
-                {saved ? 'Слово сохранено' : 'Добавить в словарь'}
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 function IconButton({
   label,
   children,
@@ -611,7 +519,4 @@ function SkipPreviousIcon() {
 }
 function SkipNextIcon() {
   return <svg viewBox="0 0 24 24" className="size-5 fill-current"><path d="M16 6h2v12h-2zM6 6l9 6-9 6z" /></svg>;
-}
-function CloseIcon() {
-  return <svg viewBox="0 0 24 24" className="size-5 fill-current"><path d="M6.4 5L5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6z" /></svg>;
 }

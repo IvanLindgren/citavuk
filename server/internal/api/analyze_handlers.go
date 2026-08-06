@@ -17,6 +17,11 @@ type analyzeRequest struct {
 	// отрыве от фразы они неразличимы в принципе. Поле необязательное: старый
 	// клиент его не шлёт, и разбор остаётся сербским, как раньше.
 	Sentence string `json:"sentence"`
+	// Границы слова в байтах внутри Sentence — по ним ищется возвратная
+	// частица «se». Без них берётся первое вхождение слова во фразу: этого
+	// достаточно, чтобы старый клиент тоже получил разбор с частицей.
+	Start int `json:"start"`
+	End   int `json:"end"`
 }
 
 type analyzeResponse struct {
@@ -34,9 +39,71 @@ type analyzeResponse struct {
 	Why          string               `json:"why"`
 	Paradigms    []grammar.Table      `json:"paradigms"`
 	Prepositions []grammar.Government `json:"prepositions,omitempty"`
+	// Reflexive заполнен, если при глаголе во фразе стоит частица «se».
+	Reflexive *grammar.Reflexive `json:"reflexive,omitempty"`
+	// Accent — ударение из словаря. Пусто, если слова в нём нет: достроить
+	// ударение правилом нельзя, оно гуляет по парадигме.
+	Accent *accentInfo `json:"accent,omitempty"`
 	// English заполнен, если слово опознано английским. Тогда сербские поля
 	// разбора пустые, а карточка на клиенте показывает английскую ветку.
 	English *english.Analysis `json:"english,omitempty"`
+}
+
+// accentInfo — ударение словоформы и, если её самой в словаре нет, ударение
+// начальной формы.
+//
+// Разница важна и показывается честно: «knjȉga» — это ударение именно этого
+// слова, а для «knjigama» словарь знает только начальную форму, и выдавать её
+// ударение за ударение словоформы нельзя — по парадигме оно гуляет.
+type accentInfo struct {
+	// Written — ударное написание в том же алфавите, что и разбираемое слово.
+	Written string `json:"written,omitempty"`
+	// IPA — транскрипция с тоном: «/kɲîɡa/».
+	IPA string `json:"ipa,omitempty"`
+	// OfLemma — ударение относится к начальной форме, а не к слову из текста.
+	OfLemma bool `json:"ofLemma,omitempty"`
+	// Lemma — та самая начальная форма, ударная.
+	Lemma string `json:"lemma,omitempty"`
+	// Source — указание источника, обязательное по лицензии CC BY-SA.
+	Source string `json:"source"`
+}
+
+// accentOf подбирает ударение для слова.
+//
+// Сначала ищется сама словоформа: только её ударение и можно показать как
+// ударение этого слова. Если её нет — берётся начальная форма, но с честной
+// пометкой: в сербском ударение переезжает по парадигме («knjȉga», но
+// «knjȋgā»), и выдать одно за другое значит научить неправильно.
+func accentOf(lex *lexicon.Lexicon, word, lemma string) *accentInfo {
+	cyrillic := lexicon.ToLatin(word) != word
+	pick := func(accent lexicon.Accent) string {
+		if cyrillic && accent.Cyrillic != "" {
+			return accent.Cyrillic
+		}
+		if !cyrillic && accent.Latin != "" {
+			return accent.Latin
+		}
+		return ""
+	}
+
+	if accent, ok := lex.Accent(word); ok {
+		written := pick(accent)
+		if written != "" || accent.IPA != "" {
+			return &accentInfo{Written: written, IPA: accent.IPA, Source: lexicon.AccentSource}
+		}
+	}
+	if lemma == "" || lexicon.Normalize(lemma) == lexicon.Normalize(word) {
+		return nil
+	}
+	if accent, ok := lex.Accent(lemma); ok {
+		if written := pick(accent); written != "" {
+			return &accentInfo{
+				OfLemma: true, Lemma: written,
+				IPA: accent.IPA, Source: lexicon.AccentSource,
+			}
+		}
+	}
+	return nil
 }
 
 // handleAnalyze разбирает одну словоформу по встроенному лексикону.
@@ -86,7 +153,90 @@ func (s *Server) handleAnalyze(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	writeJSON(w, http.StatusOK, analyze(lex, word))
+	res := analyze(lex, word)
+	res.Reflexive = reflexiveOf(lex, &res, word, req.Sentence, req.Start, req.End)
+	// Ударение подбирается ПОСЛЕ разбора: тот мог уточнить начальную форму по
+	// списку глагольных форм, и без неё запасной вариант не нашёлся бы.
+	res.Accent = accentOf(lex, word, res.Lemma)
+	writeJSON(w, http.StatusOK, res)
+}
+
+// verbForm сообщает, что словоформа известна как глагольная, и даёт её
+// начальную форму.
+//
+// Свой лексикон разрежен — целых глаголов вроде «bližiti» в нём нет вовсе, —
+// поэтому рядом лежит список глагольных форм из Викисловаря. Без него частица
+// «se» не находила своего глагола в первом же попавшемся предложении.
+func verbLemma(lex *lexicon.Lexicon, word string) (string, bool) {
+	for _, row := range lex.LookupForm(word) {
+		if row.UPOS == "VERB" || row.UPOS == "AUX" {
+			return row.Lemma, true
+		}
+	}
+	if lemma, upos, _, ok := resolveByRule(lex, lexicon.Normalize(word)); ok &&
+		(upos == "VERB" || upos == "AUX") {
+		return lemma, true
+	}
+	return lex.VerbLemma(word)
+}
+
+// reflexiveOf связывает нажатое слово с его парой: глагол с частицей «se» или
+// частицу с её глаголом.
+//
+// К существительному частица не привязывается: в «kuća se prodaje» она
+// относится к глаголу, и подписать дом возвратным было бы прямой ошибкой
+// разбора. Само «se» — исключение: нажали именно на него, и ответ обязан
+// объяснить, при каком оно глаголе.
+func reflexiveOf(
+	lex *lexicon.Lexicon,
+	res *analyzeResponse,
+	word, sentence string,
+	start, end int,
+) *grammar.Reflexive {
+	if sentence == "" || res.English != nil {
+		return nil
+	}
+	isVerb := func(candidate string) bool {
+		_, ok := verbLemma(lex, candidate)
+		return ok
+	}
+	onParticle := lexicon.Normalize(word) == "se"
+	if !onParticle && !isVerb(word) {
+		return nil
+	}
+	if start >= end || start < 0 || end > len(sentence) || sentence[start:end] != word {
+		// Смещений нет или они не сходятся с текстом — ищем слово сами.
+		found := strings.Index(sentence, word)
+		if found < 0 {
+			return nil
+		}
+		start, end = found, found+len(word)
+	}
+
+	lemma := res.Lemma
+	if onParticle {
+		lemma = ""
+	} else if known, ok := verbLemma(lex, word); ok && !res.Known {
+		// Лексикон слова не знает, а список глагольных форм знает — начальная
+		// форма берётся оттуда, иначе в карточке стояло бы само слово.
+		lemma = known
+		res.Lemma = known
+		res.UPOS = "VERB"
+		res.Known = true
+		res.PosFull = grammar.PosFull("VERB")
+		res.PosShort = grammar.PosShort("VERB")
+	}
+
+	out := grammar.AttachSe(sentence, start, end, word, lemma, isVerb)
+	// Нажали частицу: разбор относится к глаголу, а не к ней. «se» в отрыве от
+	// глагола — это местоимение «sebe», и такой ответ читателю бесполезен.
+	if out != nil && out.OnParticle {
+		if verb, ok := verbLemma(lex, out.Verb); ok {
+			out.Lemma = verb + " se"
+			out.Meaning = grammar.SeMeaning(verb)
+		}
+	}
+	return out
 }
 
 // englishResponse укладывает английский разбор в общий контракт ответа.
@@ -126,7 +276,7 @@ func analyze(lex *lexicon.Lexicon, word string) analyzeResponse {
 	rows := lex.LookupForm(normalized)
 	switch {
 	case len(rows) > 0:
-		best := bestReading(rows)
+		best := bestReading(rows, word)
 		res.Known = true
 		res.Lemma = best.Lemma
 		res.UPOS = best.UPOS
@@ -220,14 +370,25 @@ func paradigmEntries(lex *lexicon.Lexicon, lemma string) []grammar.Entry {
 //
 // Служебные слова важнее знаменательных: «da» — это союз, а не форма глагола
 // «dati», и спрягать его не нужно. Контекстного снятия омонимии здесь нет.
-func bestReading(rows []lexicon.Form) lexicon.Form {
+//
+// Имя собственное со строчной буквы не бывает, и написание слова — это всё, что
+// нужно, чтобы отсечь такой разбор. Без проверки «se» разбиралось как имя (в
+// словаре есть и такая строка), и самая частая частица сербского языка
+// описывалась карточкой «имя собственное, именительный падеж».
+func bestReading(rows []lexicon.Form, surface string) lexicon.Form {
+	lower := surface != "" && surface == strings.ToLower(surface)
 	score := func(row lexicon.Form) int {
 		s := 3
 		switch row.UPOS {
 		case "ADP", "CCONJ", "SCONJ", "PART":
 			s = 10
+		case "PRON", "DET":
+			s = 6
 		case "NOUN", "VERB", "ADJ", "PROPN", "ADV", "NUM":
 			s = 5
+		}
+		if row.UPOS == "PROPN" && lower {
+			s = 1
 		}
 		if row.Feats != "" {
 			s++

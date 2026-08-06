@@ -38,17 +38,22 @@ func LemmaCandidates(form string) []string {
 }
 
 // MatchNoun ищет падеж и число, при которых лемма даёт эту форму.
+//
+// Перебирается список форм, а не строка для показа: там варианты склеены через
+// «/», и сравнение со склеенной строкой не совпало бы никогда — «čoveka» так и
+// не опозналось бы винительным падежом.
 func MatchNoun(lemma, gender, form string) (map[string]string, bool) {
 	form = strings.ToLower(form)
 	for _, number := range []string{"Sing", "Plur"} {
 		for _, caseKey := range CaseOrder {
-			generated := declension(lemma, gender, number, caseKey)
-			if generated == "" || generated != form {
-				continue
+			for _, candidate := range declensionForms(lemma, gender, number, caseKey) {
+				if candidate != form {
+					continue
+				}
+				return map[string]string{
+					"Case": caseKey, "Number": number, "Gender": gender,
+				}, true
 			}
-			return map[string]string{
-				"Case": caseKey, "Number": number, "Gender": gender,
-			}, true
 		}
 	}
 	return nil, false

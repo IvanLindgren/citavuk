@@ -40,7 +40,7 @@ const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'courses', label: 'Курсы' },
   { id: 'teachers', label: 'Преподаватели' },
   { id: 'announcements', label: 'Объявления' },
-  { id: 'micro-feed', label: 'Микро-лента' },
+  { id: 'micro-feed', label: 'Вукоток' },
 ];
 
 export function Admin() {

@@ -26,7 +26,7 @@ export function MarkdownLesson({ content, className = '' }: { content: LessonCon
   }
 
   return (
-    <div className={`lesson-markdown space-y-6 ${className}`} style={style}>
+    <div className={`lesson-markdown space-y-5 ${className}`} style={style}>
       {blocks.map((block) => <MarkdownBlockView key={block.id} block={block} />)}
     </div>
   );
@@ -38,8 +38,17 @@ function MarkdownBlockView({ block }: { block: MarkdownBlock }) {
   }
   if (block.type === 'heading') {
     const size = block.depth === 1 ? 'text-4xl' : block.depth === 2 ? 'text-3xl' : 'text-2xl';
+    // Отступ СВЕРХУ заметно больше, чем снизу: заголовок должен примыкать к
+    // своему тексту и отделяться от предыдущего. При одинаковом шаге между
+    // всеми блоками (было `space-y-6` и `pt-3`) заголовок висел ровно посреди
+    // двух разделов, и текст читался сплошным полотном без структуры.
+    // Первый заголовок лишнего отступа не получает: он и так наверху листа.
     return (
-      <div role="heading" aria-level={Math.min(6, block.depth)} className="pt-3">
+      <div
+        role="heading"
+        aria-level={Math.min(6, block.depth)}
+        className="pt-6 first:pt-0"
+      >
         <InteractiveInline content={block.content} className={`font-display font-bold leading-tight ${size}`} />
       </div>
     );

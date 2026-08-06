@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/citavuk/server/internal/grammar"
+	"github.com/citavuk/server/internal/lexicon"
 	"github.com/citavuk/server/internal/translate"
 )
 
@@ -75,12 +77,45 @@ func (s *Server) handleTranslateInContext(w http.ResponseWriter, r *http.Request
 	}
 	source, target := langs(req.Source, req.Target)
 
-	res, err := s.translator.InContext(r.Context(), req.Sentence, req.Start, req.End, source, target)
+	start, end := withSeParticle(req.Sentence, req.Start, req.End, source)
+	res, err := s.translator.InContext(r.Context(), req.Sentence, start, end, source, target)
 	if err != nil {
 		writeTranslateError(w, err)
 		return
 	}
 	writeJSON(w, http.StatusOK, res)
+}
+
+// withSeParticle расширяет границы слова на возвратную частицу «se».
+//
+// «zove» отдельно переводится как «зовёт», а «zove se» — как «называется»: это
+// разные слова, и разрывать пару перед отправкой в переводчик значит спрашивать
+// не о том. Частица захватывается только вплотную стоящая — помеченный
+// фрагмент обязан быть сплошным.
+func withSeParticle(sentence string, start, end int, source string) (int, int) {
+	if source != "sr" || start < 0 || end > len(sentence) || start >= end {
+		return start, end
+	}
+	lex, err := lexicon.Shared()
+	if err != nil {
+		return start, end
+	}
+	word := sentence[start:end]
+	isVerb := func(candidate string) bool {
+		_, ok := verbLemma(lex, candidate)
+		return ok
+	}
+	// Расширять границы можно от глагола к частице и от частицы к глаголу:
+	// одиночное «se» переводится случайным словом, и нажатие по нему — самый
+	// заметный случай, ради которого всё это и делается.
+	if lexicon.Normalize(word) != "se" && !isVerb(word) {
+		return start, end
+	}
+	seStart, seEnd, ok := grammar.SeSpan(sentence, start, end, isVerb)
+	if !ok {
+		return start, end
+	}
+	return seStart, seEnd
 }
 
 func writeTranslateError(w http.ResponseWriter, err error) {
@@ -121,6 +156,10 @@ func (s *Server) handleTranslateLegacy(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleUsage показывает расход квоты переводчика.
+//
+// Рядом с месячным счётчиком провайдера идёт остаток суточного бюджета: по
+// нему видно, почему переводы вдруг пошли запасным провайдером. Без этой
+// строки такое выглядело бы как поломка качества на ровном месте.
 func (s *Server) handleUsage(w http.ResponseWriter, r *http.Request) {
 	if s.deepl == nil {
 		writeError(w, http.StatusServiceUnavailable, codeUpstream, "DeepL не настроен.")
@@ -131,5 +170,12 @@ func (s *Server) handleUsage(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadGateway, codeUpstream, "Не удалось получить расход квоты.")
 		return
 	}
-	writeJSON(w, http.StatusOK, usage)
+	budget := s.translator.Budget()
+	writeJSON(w, http.StatusOK, map[string]any{
+		"characterCount": usage.CharacterCount,
+		"characterLimit": usage.CharacterLimit,
+		"budgetEnabled":  budget != nil,
+		"dailyBudget":    budget.PerDay(),
+		"dailyRemaining": budget.Available(),
+	})
 }

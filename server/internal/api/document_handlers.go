@@ -182,6 +182,11 @@ func (s *Server) handleDocumentFetch(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Cache-Control", "private, no-store")
 	w.Header().Set("Content-Type", contentType)
+	// Тип пришёл с чужого сайта, и доверять ему можно ровно настолько,
+	// насколько доверяем сайту. Заголовок запрещает браузеру гадать: без него
+	// файл, отданный под видом text/plain, но содержащий разметку, мог бы
+	// отрисоваться как страница нашего домена.
+	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("Content-Disposition", mime.FormatMediaType(
 		"attachment",
 		map[string]string{"filename": filename},

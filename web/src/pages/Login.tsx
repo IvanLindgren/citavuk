@@ -101,7 +101,7 @@ export function Login() {
 
   if (verificationEmail) {
     return (
-      <main className="paper-grain flex min-h-[calc(100vh-4rem)] items-center justify-center px-5 py-12">
+      <main className="paper-grain relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-5 py-12">
         <Card className="w-full max-w-md p-8 text-center sm:p-10">
           <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-[var(--accent-soft)] text-2xl">
             ✉
@@ -144,7 +144,7 @@ export function Login() {
   }
 
   return (
-    <main className="paper-grain relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-5 py-12">
+    <main className="paper-grain relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-5 py-12">
       <div className="glow-warm pointer-events-none absolute inset-0" aria-hidden="true" />
 
       <motion.div

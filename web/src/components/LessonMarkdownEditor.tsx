@@ -203,8 +203,15 @@ export function LessonMarkdownEditor({
             </div>
           )}
           {mode !== 'write' && (
-            <div className="min-h-[36rem] bg-[var(--bg)] px-6 py-7 sm:px-8">
-              <MarkdownLesson content={{ theory: [], exercises: [], markdown: value, documentStyle }} />
+            <div className="paper-grain relative min-h-[36rem] overflow-hidden bg-[var(--bg-raised)] px-6 py-7 sm:px-8">
+              {/* Ограничение длины строки то же, что в опубликованном уроке
+                  (LessonPlayer): предпросмотр, выглядящий иначе, хуже, чем
+                  никакого — автор верстает под одну ширину, а ученик видит
+                  другую. */}
+              <MarkdownLesson
+                content={{ theory: [], exercises: [], markdown: value, documentStyle }}
+                className="mx-auto max-w-[62ch]"
+              />
             </div>
           )}
         </div>

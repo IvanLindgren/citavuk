@@ -5,6 +5,7 @@ import {
   bionicSplit,
   formLabelOf,
   hasFormChoice,
+  companionStart,
   readerSelectionText,
   shouldOpenWord,
 } from './WordReader';
@@ -178,5 +179,80 @@ describe('hasFormChoice', () => {
 
   it('без разбора выбора нет', () => {
     expect(hasFormChoice('word', 'svira', null)).toBe(false);
+  });
+});
+
+describe('companionStart', () => {
+  const reflexive = {
+    particle: 'se',
+    verb: 'zove',
+    onParticle: false,
+    companion: 'se',
+    before: true,
+    adjacent: true,
+    phrase: 'zove se',
+    meaning: '',
+    why: '',
+  };
+
+  function tokenAt(text: string, word: string) {
+    const start = text.indexOf(word);
+    return { text: word, start, end: start + word.length, isWord: true };
+  }
+
+  it('находит частицу слева от глагола', () => {
+    const text = 'On se zove Marko.';
+    expect(companionStart(text, tokenAt(text, 'zove'), reflexive)).toBe(text.indexOf('se'));
+  });
+
+  it('находит частицу справа от глагола', () => {
+    const text = 'Zove se Marko.';
+    expect(
+      companionStart(text, tokenAt(text, 'Zove'), { ...reflexive, before: false }),
+    ).toBe(text.indexOf('se'));
+  });
+
+  it('ищет через слова, когда частица оторвана от глагола', () => {
+    const text = 'Moj brat se sinoć vratio kući.';
+    expect(
+      companionStart(text, tokenAt(text, 'vratio'), { ...reflexive, adjacent: false }),
+    ).toBe(text.indexOf('se'));
+  });
+
+  // Ближе одного слова смотреть нельзя: сервер сказал «вплотную», и «se» из
+  // другого конца фразы подсветило бы чужую частицу.
+  it('не тянется дальше соседа, когда частица объявлена соседней', () => {
+    const text = 'Moj brat se sinoć vratio kući.';
+    expect(companionStart(text, tokenAt(text, 'vratio'), reflexive)).toBeNull();
+  });
+
+  // Сервер называет спутника так, как он написан в тексте, — в своей азбуке.
+  it('понимает кириллицу', () => {
+    const text = 'Он се зове Марко.';
+    expect(
+      companionStart(text, tokenAt(text, 'зове'), { ...reflexive, particle: 'се', companion: 'се' }),
+    ).toBe(text.indexOf('се'));
+  });
+});
+
+// Нажатие по самой частице ведёт к её глаголу — спутником становится он.
+describe('companionStart от частицы', () => {
+  it('находит глагол слева от «se»', () => {
+    const text = 'Bližila se ponoć.';
+    const start = text.indexOf('se');
+    const token = { text: 'se', start, end: start + 2, isWord: true };
+    expect(
+      companionStart(text, token, {
+        particle: 'se',
+        verb: 'Bližila',
+        onParticle: true,
+        companion: 'Bližila',
+        before: true,
+        adjacent: true,
+        phrase: 'Bližila se',
+        meaning: '',
+        why: '',
+      }),
+    ).toBe(0);
   });
 });

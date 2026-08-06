@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { VUKOTOK_PATH } from '../components/Header';
 import { Mascot } from '../components/Mascot';
 import { Ornament } from '../components/Ornament';
 import { DocumentImportBox } from '../components/DocumentImportBox';
@@ -18,9 +19,9 @@ const DEMO_PARAGRAPHS = [
 
 export function Landing() {
   useSeo({
-    title: 'Читавук: сербский через чтение и перевод слова в контексте',
+    title: 'Читавук — учить сербский язык через чтение: перевод слова в контексте',
     description:
-      'Читайте книги и новости на сербском. Нажмите на слово, и увидите перевод в этом предложении, разбор падежа и времени, объяснение по-русски. Карточки повторения, курс грамматики, аудирование.',
+      'Учите сербский язык чтением: откройте книгу или новость на сербском и нажмите любое слово — Читавук покажет перевод в этом предложении, разберёт падеж и время, объяснит правило. Бесплатно: сербские тексты, курс грамматики, карточки повторения и лента Вукоток.',
   });
 
   const { account, loading } = useAuth();
@@ -49,9 +50,27 @@ function DocumentImport() {
   );
 }
 
+/**
+ * Слайды первого экрана.
+ *
+ * Первый — то, чем Читавук является всегда. Остальные — новости: раздел,
+ * который иначе заметят только те, кто дочитал главную до конца. Слайд, а не
+ * ещё один блок ниже, именно поэтому: новость должна попасть на первый экран,
+ * не отняв его у главного.
+ */
+const HERO_SLIDES = ['reading', 'vukotok'] as const;
+
+/** Сколько новость держится на экране, прежде чем сменится. */
+const HERO_INTERVAL = 9000;
+
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
+  const [slide, setSlide] = useState(0);
+  // Взявшись за точки, человек листает сам. Возвращать автолистание после
+  // этого значило бы уводить страницу из-под того, кто её только что выбрал.
+  const [manual, setManual] = useState(false);
+  const [paused, setPaused] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -62,88 +81,169 @@ function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  useEffect(() => {
+    if (manual || paused || reduceMotion) return;
+    const timer = window.setInterval(
+      () => setSlide((current) => (current + 1) % HERO_SLIDES.length),
+      HERO_INTERVAL,
+    );
+    return () => window.clearInterval(timer);
+  }, [manual, paused, reduceMotion]);
+
   return (
     <section
       ref={ref}
       className="paper-grain relative overflow-hidden px-5 pt-16 pb-20 sm:pt-24 sm:pb-28"
+      aria-roledescription="карусель"
+      aria-label="Читавук и новости"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
     >
       <div className="glow-warm pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-        <motion.div style={reduceMotion ? undefined : { y: textY, opacity: fade }}>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-1.5 text-sm text-[var(--text-muted)]"
-          >
-            <span className="size-2 rounded-full bg-serb-red" aria-hidden="true" />
-            Сербский через чтение
-          </motion.p>
+      {/*
+        Слайды лежат в одной ячейке сетки, а не сменяют друг друга в потоке:
+        высота секции остаётся наибольшей из двух, и страница не прыгает под
+        курсором в момент смены.
+      */}
+      <div className="relative mx-auto grid max-w-6xl">
+        {HERO_SLIDES.map((id, index) => {
+          const active = index === slide;
+          return (
+            <motion.div
+              key={id}
+              className="grid items-center gap-10 [grid-area:1/1] lg:grid-cols-[1.1fr_0.9fr] lg:gap-16"
+              animate={active
+                ? { opacity: 1, visibility: 'visible' }
+                : { opacity: 0, transitionEnd: { visibility: 'hidden' } }}
+              transition={{ duration: reduceMotion ? 0 : 0.5 }}
+              aria-hidden={!active}
+            >
+              <motion.div style={reduceMotion ? undefined : { y: textY, opacity: fade }}>
+                {id === 'reading' ? <ReadingSlide /> : <VukotokSlide />}
+              </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl"
-          >
-            Читайте по-сербски.{' '}
-            <span className="text-[var(--accent)]">Слово за словом.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12 }}
-            className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]"
-          >
-            Откройте книгу или новость на сербском и нажмите любое слово.
-            Читавук покажет перевод <em className="not-italic text-[var(--text)]">в этом
-            предложении</em>, разберёт форму и объяснит правило.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a href="#import">
-              <Button size="lg">Открыть документ</Button>
-            </a>
-            <Link to="/library">
-              <Button variant="secondary" size="lg">
-                Моя библиотека
-              </Button>
-            </Link>
-            <a href="#demo">
-              <Button variant="ghost" size="lg">
-                Посмотреть, как работает
-              </Button>
-            </a>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          style={reduceMotion ? undefined : { y: mascotY }}
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-full max-w-sm lg:max-w-md"
-        >
-          <Mascot
-            pose="citavuk_zdravo"
-            alt="Волк Читавук приветственно машет лапой"
-            float
-            priority
-          />
-        </motion.div>
+              <motion.div
+                style={reduceMotion ? undefined : { y: mascotY }}
+                className="relative mx-auto w-full max-w-sm lg:max-w-md"
+              >
+                {id === 'reading' ? (
+                  <Mascot
+                    pose="citavuk_zdravo"
+                    alt="Волк Читавук приветственно машет лапой"
+                    float
+                    priority
+                  />
+                ) : (
+                  <Mascot
+                    pose="citavuk_vukotok"
+                    alt="Волк Читавук читает ленту с телефона"
+                    float
+                  />
+                )}
+              </motion.div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      <div className="relative mx-auto mt-16 max-w-3xl text-[var(--accent)] opacity-70">
+      <div className="relative mx-auto mt-10 flex max-w-6xl justify-center gap-2 lg:justify-start">
+        {HERO_SLIDES.map((id, index) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => { setSlide(index); setManual(true); }}
+            aria-label={index === 0 ? 'Читавук' : 'Новость про Вукоток'}
+            aria-current={index === slide ? 'true' : undefined}
+            className={[
+              'h-2 rounded-full transition-all duration-300',
+              index === slide
+                ? 'w-8 bg-[var(--accent)]'
+                : 'w-2 bg-[var(--line)] hover:bg-[var(--text-muted)]',
+            ].join(' ')}
+          />
+        ))}
+      </div>
+
+      <div className="relative mx-auto mt-10 max-w-3xl text-[var(--accent)] opacity-70">
         <Ornament />
       </div>
     </section>
+  );
+}
+
+function ReadingSlide() {
+  return (
+    <>
+      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-1.5 text-sm text-[var(--text-muted)]">
+        <span className="size-2 rounded-full bg-serb-red" aria-hidden="true" />
+        Сербский через чтение
+      </p>
+
+      <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+        Читайте по-сербски.{' '}
+        <span className="text-[var(--accent)]">Слово за словом.</span>
+      </h1>
+
+      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+        Откройте книгу или новость на сербском и нажмите любое слово.
+        Читавук покажет перевод <em className="not-italic text-[var(--text)]">в этом
+        предложении</em>, разберёт форму и объяснит правило.
+      </p>
+
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <a href="#import">
+          <Button size="lg">Открыть документ</Button>
+        </a>
+        <Link to="/library">
+          <Button variant="secondary" size="lg">
+            Моя библиотека
+          </Button>
+        </Link>
+        <a href="#demo">
+          <Button variant="ghost" size="lg">
+            Посмотреть, как работает
+          </Button>
+        </a>
+      </div>
+    </>
+  );
+}
+
+function VukotokSlide() {
+  return (
+    <>
+      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-4 py-1.5 text-sm font-semibold text-[var(--accent)]">
+        <span className="size-2 animate-pulse rounded-full bg-[var(--accent)]" aria-hidden="true" />
+        Новое в Читавуке
+      </p>
+
+      <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+        <span className="text-[var(--accent)]">Вукоток</span> — лента,
+        которую хочется листать.
+      </h2>
+
+      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+        Читайте небольшие статьи на сербском, как будто вы в тиктоке, но вместо
+        видео — текст. Лента подстраивается под то, что вы дочитываете
+        до конца.
+      </p>
+
+      <p className="mt-3 text-sm text-[var(--text-muted)]">Проект экспериментальный.</p>
+
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <Link to={VUKOTOK_PATH}>
+          <Button size="lg">Открыть Вукоток</Button>
+        </Link>
+        <Link to="/books">
+          <Button variant="ghost" size="lg">
+            Что ещё читать
+          </Button>
+        </Link>
+      </div>
+    </>
   );
 }
 
@@ -220,6 +320,13 @@ function Features() {
 
 const SECTIONS = [
   {
+    to: VUKOTOK_PATH,
+    pose: 'citavuk_vukotok',
+    title: 'Вукоток',
+    text: 'Небольшие статьи на сербском лентой: листаете, читаете то, что зацепило, а лента подстраивается под вас. Проект экспериментальный.',
+    alt: 'Волк Читавук читает ленту с телефона',
+  },
+  {
     to: '/books',
     pose: 'citavuk_zdravo',
     title: 'Чтение',
@@ -247,28 +354,42 @@ function Sections() {
     <section className="px-5 py-16 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-12 text-center">
-          <h2 className="text-3xl sm:text-4xl">Три способа заниматься</h2>
+          <h2 className="text-3xl sm:text-4xl">Четыре способа заниматься</h2>
         </Reveal>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SECTIONS.map((section, index) => (
             <Reveal key={section.to} delay={index * 0.1}>
               <Link to={section.to} className="block h-full">
-                <Card className="group h-full p-6 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)]">
+                {/*
+                  Карточка — колонка, «Открыть» прижато книзу (`mt-auto`).
+                  Тексты у разделов разной длины, и без этого ссылка вставала у
+                  каждой карточки на своей высоте: ряд читался как сбитая вёрстка.
+                */}
+                <Card className="group flex h-full flex-col p-6 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)]">
                   <div className="mx-auto mb-5 w-40 transition-transform duration-500 group-hover:scale-105">
                     <Mascot pose={section.pose} alt={section.alt} width={320} />
                   </div>
                   <h3 className="mb-2 text-2xl">{section.title}</h3>
                   <p className="leading-relaxed text-[var(--text-muted)]">{section.text}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 font-semibold text-[var(--accent)]">
-                    Открыть
-                    <svg
-                      viewBox="0 0 20 20"
-                      className="size-4 fill-current transition-transform duration-300 group-hover:translate-x-1"
-                      aria-hidden="true"
-                    >
-                      <path d="M11 4l6 6-6 6-1.4-1.4 3.6-3.6H3v-2h10.2L9.6 5.4z" />
-                    </svg>
+                  {/*
+                    Кнопка, а не ссылка со стрелкой: во всех остальных местах
+                    сайта действие выглядит именно так, и текстовая строчка
+                    внизу карточки читалась как подпись, а не как «нажми сюда».
+                    Настоящий <button> здесь нельзя — карточка целиком лежит
+                    внутри <a>, и кнопка внутри ссылки невалидна.
+                  */}
+                  <span className="mt-auto pt-5">
+                    <span className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-6 py-3 font-semibold text-parchment shadow-[0_4px_0_0_color-mix(in_srgb,var(--accent)_60%,black)] transition-colors duration-150 group-hover:bg-[var(--accent-hover)]">
+                      Открыть
+                      <svg
+                        viewBox="0 0 20 20"
+                        className="size-4 fill-current transition-transform duration-300 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      >
+                        <path d="M11 4l6 6-6 6-1.4-1.4 3.6-3.6H3v-2h10.2L9.6 5.4z" />
+                      </svg>
+                    </span>
                   </span>
                 </Card>
               </Link>

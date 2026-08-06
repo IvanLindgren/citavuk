@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.12.1+32
+version: 1.13.0+33
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -140,7 +140,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.12.1
+  version: 1.13.0
   publisher: Denis Kornilov
   languages:
     - english

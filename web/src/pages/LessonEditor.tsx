@@ -5,8 +5,6 @@ import {
   LuEye,
   LuImagePlus,
   LuLink,
-  LuMessageCircle,
-  LuPlus,
   LuSave,
   LuSend,
   LuSettings2,
@@ -22,12 +20,12 @@ import {
   submitPublicLesson,
   updateTeacherLesson,
   uploadLessonImage,
-  type DialogueNode,
   type Lesson,
   type LessonContent,
   type LessonDraft,
 } from '../api/lessons';
 import { ApiError } from '../api/client';
+import { LessonDialogueEditor } from '../components/LessonDialogueEditor';
 import { LessonExerciseEditor } from '../components/LessonExerciseEditor';
 import { LessonMarkdownEditor } from '../components/LessonMarkdownEditor';
 import { LessonPlayer } from '../components/LessonPlayer';
@@ -265,42 +263,10 @@ export function LessonEditor() {
           onStyleChange={(documentStyle) => setContent({ ...draft.content, documentStyle })}
         />
         <LessonExerciseEditor exercises={draft.content.exercises} onChange={(exercises) => setContent({ ...draft.content, exercises })} />
-        <DialogueEditor content={draft.content} onChange={setContent} />
+        <LessonDialogueEditor content={draft.content} onChange={setContent} />
       </div>
     </main>
   );
-}
-
-function DialogueEditor({ content, onChange }: { content: LessonContent; onChange: (content: LessonContent) => void }) {
-  const nodes = content.dialogue?.nodes ?? [];
-  const enabled = Boolean(content.dialogue);
-  const addNode = () => {
-    const id = `replica-${crypto.randomUUID().slice(0, 8)}`;
-    const node: DialogueNode = { id, speaker: 'Преподаватель', avatar: 'teacher', text: '', choices: [] };
-    onChange({ ...content, dialogue: { startId: content.dialogue?.startId ?? id, nodes: [...nodes, node] } });
-  };
-  const toggle = () => {
-    if (enabled) onChange({ ...content, dialogue: undefined });
-    else {
-      const node: DialogueNode = { id: 'start', speaker: 'Преподаватель', avatar: 'teacher', text: '', choices: [] };
-      onChange({ ...content, dialogue: { startId: node.id, nodes: [node] } });
-    }
-  };
-  const updateNode = (index: number, node: DialogueNode) => {
-    if (!content.dialogue) return;
-    onChange({ ...content, dialogue: { ...content.dialogue, nodes: nodes.map((item, itemIndex) => itemIndex === index ? node : item) } });
-  };
-  const deleteNode = (id: string) => {
-    if (!content.dialogue || nodes.length <= 1) return;
-    const next = nodes.filter((node) => node.id !== id).map((node) => ({ ...node, choices: node.choices?.filter((choice) => choice.nextId !== id) }));
-    onChange({ ...content, dialogue: { startId: content.dialogue.startId === id ? next[0]!.id : content.dialogue.startId, nodes: next } });
-  };
-  return <section className="mt-12 border-t border-[var(--line)] pt-8"><div className="flex items-center justify-between gap-4"><div><h2 className="text-2xl">Диалог</h2><p className="mt-1 text-sm text-[var(--text-muted)]">Необязательный ветвящийся сценарий</p></div><button type="button" role="switch" aria-checked={enabled} onClick={toggle} className={`relative h-7 w-12 rounded-full transition-colors ${enabled ? 'bg-[var(--accent)]' : 'bg-[var(--line)]'}`}><span className={`absolute top-1 size-5 rounded-full bg-white transition-transform ${enabled ? 'left-6' : 'left-1'}`} /></button></div>{enabled && <div className="mt-6 space-y-4">{nodes.map((node, index) => <DialogueNodeEditor key={node.id} node={node} index={index} nodes={nodes} isStart={content.dialogue?.startId === node.id} onStart={() => content.dialogue && onChange({ ...content, dialogue: { ...content.dialogue, startId: node.id } })} onChange={(value) => updateNode(index, value)} onDelete={() => deleteNode(node.id)} />)}<button type="button" onClick={addNode} className="inline-flex items-center gap-2 rounded-md px-3 py-2 font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)]"><LuPlus />Добавить реплику</button></div>}</section>;
-}
-
-function DialogueNodeEditor({ node, index, nodes, isStart, onStart, onChange, onDelete }: { node: DialogueNode; index: number; nodes: DialogueNode[]; isStart: boolean; onStart: () => void; onChange: (node: DialogueNode) => void; onDelete: () => void }) {
-  const choices = node.choices ?? [];
-  return <div className="rounded-md border border-[var(--line)] bg-[var(--bg-raised)]"><div className="flex items-center gap-3 border-b border-[var(--line)] px-4 py-3"><LuMessageCircle className="text-[var(--accent)]" /><span className="text-sm font-semibold">Реплика {index + 1}</span><label className="ml-auto flex items-center gap-2 text-xs text-[var(--text-muted)]"><input type="radio" name="dialogue-start" checked={isStart} onChange={onStart} />Начало</label><button type="button" title="Удалить реплику" aria-label="Удалить реплику" disabled={nodes.length <= 1} onClick={onDelete} className="grid size-8 place-items-center rounded text-[var(--text-muted)] hover:text-red-600 disabled:opacity-30"><LuTrash2 /></button></div><div className="grid gap-4 p-4 sm:grid-cols-3"><Property label="Говорящий"><input className={field} value={node.speaker} onChange={(event) => onChange({ ...node, speaker: event.target.value })} /></Property><Property label="Персонаж"><select className={field} value={node.avatar} onChange={(event) => onChange({ ...node, avatar: event.target.value as DialogueNode['avatar'] })}><option value="teacher">Преподаватель</option><option value="student">Ученик</option><option value="woman">Женщина</option><option value="man">Мужчина</option></select></Property><label className="grid gap-2 text-sm font-semibold sm:col-span-3">Текст<textarea rows={3} className={field} value={node.text} onChange={(event) => onChange({ ...node, text: event.target.value })} /></label><div className="sm:col-span-3"><p className="text-sm font-semibold">Варианты ответа</p><div className="mt-2 space-y-2">{choices.map((choice, choiceIndex) => <div key={choiceIndex} className="grid grid-cols-[1fr_1fr_auto] gap-2"><input aria-label={`Ответ ${choiceIndex + 1}`} className={field} value={choice.label} onChange={(event) => onChange({ ...node, choices: choices.map((item, itemIndex) => itemIndex === choiceIndex ? { ...item, label: event.target.value } : item) })} placeholder="Текст ответа" /><select aria-label={`Следующая реплика ${choiceIndex + 1}`} className={field} value={choice.nextId} onChange={(event) => onChange({ ...node, choices: choices.map((item, itemIndex) => itemIndex === choiceIndex ? { ...item, nextId: event.target.value } : item) })}><option value="">Завершить</option>{nodes.filter((item) => item.id !== node.id).map((item, itemIndex) => <option key={item.id} value={item.id}>Реплика {itemIndex + 1}: {item.speaker}</option>)}</select><button type="button" title="Удалить вариант" aria-label="Удалить вариант" onClick={() => onChange({ ...node, choices: choices.filter((_, itemIndex) => itemIndex !== choiceIndex) })} className="grid size-10 place-items-center rounded text-[var(--text-muted)] hover:text-red-600"><LuTrash2 /></button></div>)}</div><button type="button" onClick={() => onChange({ ...node, choices: [...choices, { label: '', nextId: '' }] })} className="mt-2 inline-flex items-center gap-1.5 rounded px-2 py-2 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)]"><LuPlus />Вариант ответа</button></div></div></div>;
 }
 
 function Property({ label, children }: { label: string; children: React.ReactNode }) { return <label className="grid gap-1.5 text-xs font-bold uppercase text-[var(--text-muted)]">{label}<div className="font-normal normal-case text-[var(--text)]">{children}</div></label>; }

@@ -96,26 +96,43 @@ func (f *SourceFetcher) get(ctx context.Context, rawURL string) ([]byte, error) 
 	return io.ReadAll(io.LimitReader(response.Body, 5<<20))
 }
 
+// mediaRef — общая форма ссылки на вложение в RSS.
+//
+// Лента может назвать картинку четырьмя разными способами, и какой из них
+// выберет конкретное издание, заранее неизвестно: RTS кладёт enclosure,
+// Википедия — thumbnail, кто-то вставляет <img> прямо в описание. Разбираем
+// все и берём первое подходящее.
+type mediaRef struct {
+	URL    string `xml:"url,attr"`
+	Type   string `xml:"type,attr"`
+	Medium string `xml:"medium,attr"`
+}
+
 type rssDocument struct {
 	Channel struct {
 		Items []struct {
-			Title       string `xml:"title"`
-			Link        string `xml:"link"`
-			GUID        string `xml:"guid"`
-			Description string `xml:"description"`
-			Content     string `xml:"encoded"`
-			PubDate     string `xml:"pubDate"`
+			Title        string     `xml:"title"`
+			Link         string     `xml:"link"`
+			GUID         string     `xml:"guid"`
+			Description  string     `xml:"description"`
+			Content      string     `xml:"encoded"`
+			PubDate      string     `xml:"pubDate"`
+			Enclosures   []mediaRef `xml:"enclosure"`
+			Thumbnails   []mediaRef `xml:"thumbnail"`
+			MediaContent []mediaRef `xml:"content"`
 		} `xml:"item"`
 	} `xml:"channel"`
 	Entries []struct {
-		ID      string `xml:"id"`
-		Title   string `xml:"title"`
-		Summary string `xml:"summary"`
-		Content string `xml:"content"`
-		Updated string `xml:"updated"`
-		Links   []struct {
+		ID         string     `xml:"id"`
+		Title      string     `xml:"title"`
+		Summary    string     `xml:"summary"`
+		Content    string     `xml:"content"`
+		Updated    string     `xml:"updated"`
+		Thumbnails []mediaRef `xml:"thumbnail"`
+		Links      []struct {
 			Href string `xml:"href,attr"`
 			Rel  string `xml:"rel,attr"`
+			Type string `xml:"type,attr"`
 		} `xml:"link"`
 	} `xml:"entry"`
 }
@@ -157,6 +174,10 @@ func parseRSS(raw []byte) ([]store.MicroFeedImport, error) {
 			ID: uuid.New(), ExternalID: stableID(key), Title: title,
 			SourceURL: link, RawText: limitRunes(body, 24000),
 			SourcePublishedAt: parseFeedTime(entry.PubDate),
+			ImageURL: pickImage(
+				append(append(entry.Enclosures, entry.Thumbnails...), entry.MediaContent...),
+				entry.Content, entry.Description,
+			),
 		})
 	}
 	for _, entry := range document.Entries {
@@ -172,10 +193,19 @@ func parseRSS(raw []byte) ([]store.MicroFeedImport, error) {
 		if title == "" || len([]rune(body)) < 120 || !validPublicURL(link) {
 			continue
 		}
+		enclosures := make([]mediaRef, 0, len(entry.Links))
+		for _, candidate := range entry.Links {
+			if candidate.Rel == "enclosure" {
+				enclosures = append(enclosures, mediaRef{URL: candidate.Href, Type: candidate.Type})
+			}
+		}
 		items = append(items, store.MicroFeedImport{
 			ID: uuid.New(), ExternalID: stableID(firstNonEmpty(entry.ID, link, title)),
 			Title: title, SourceURL: link, RawText: limitRunes(body, 24000),
 			SourcePublishedAt: parseFeedTime(entry.Updated),
+			ImageURL: pickImage(
+				append(enclosures, entry.Thumbnails...), entry.Content, entry.Summary,
+			),
 		})
 	}
 	return items, nil
@@ -184,10 +214,13 @@ func parseRSS(raw []byte) ([]store.MicroFeedImport, error) {
 type mediaWikiResponse struct {
 	Query struct {
 		Pages []struct {
-			PageID  int64  `json:"pageid"`
-			Title   string `json:"title"`
-			Extract string `json:"extract"`
-			FullURL string `json:"fullurl"`
+			PageID    int64  `json:"pageid"`
+			Title     string `json:"title"`
+			Extract   string `json:"extract"`
+			FullURL   string `json:"fullurl"`
+			Thumbnail struct {
+				Source string `json:"source"`
+			} `json:"thumbnail"`
 		} `json:"pages"`
 	} `json:"query"`
 }
@@ -203,7 +236,12 @@ func (f *SourceFetcher) fetchMediaWiki(
 	query.Set("generator", "random")
 	query.Set("grnnamespace", "0")
 	query.Set("grnlimit", strconvInt(limit*2))
-	query.Set("prop", "extracts|info")
+	// pageimages добавляет заглавную картинку статьи. Ширина ограничена здесь,
+	// а не в вёрстке: тащить оригинал в несколько мегабайт ради карточки
+	// высотой в треть экрана — расход трафика читателя ни за что.
+	query.Set("prop", "extracts|info|pageimages")
+	query.Set("piprop", "thumbnail")
+	query.Set("pithumbsize", "1024")
 	query.Set("inprop", "url")
 	query.Set("explaintext", "1")
 	query.Set("exintro", "1")
@@ -239,10 +277,14 @@ func parseMediaWiki(raw []byte) ([]store.MicroFeedImport, error) {
 			strings.Contains(lower, "may refer to") {
 			continue
 		}
+		image := strings.TrimSpace(page.Thumbnail.Source)
+		if !AllowedImageURL(image) {
+			image = ""
+		}
 		items = append(items, store.MicroFeedImport{
 			ID: uuid.New(), ExternalID: fmt.Sprintf("page:%d", page.PageID),
 			Title: cleanText(page.Title), SourceURL: page.FullURL,
-			RawText: limitRunes(text, 24000),
+			RawText: limitRunes(text, 24000), ImageURL: image,
 		})
 	}
 	return items, nil
@@ -335,3 +377,93 @@ func limitRunes(value string, limit int) string {
 }
 
 func strconvInt(value int) string { return fmt.Sprintf("%d", value) }
+
+// --- Картинка из источника ------------------------------------------------
+//
+// Поле картинки у карточки было с самого начала, но заполнять его было нечем:
+// разбор адрес не доставал вовсе, и лента оставалась стеной текста.
+//
+// Адрес только запоминается. Забирает картинку сам сервер, по требованию и
+// через собственную ручку (см. handleMicroFeedImage): отдавать браузеру прямую
+// ссылку на чужой сайт значит рассказывать этому сайту, кто именно из наших
+// читателей открыл карточку.
+
+// imageHosts — где мы согласны брать картинки.
+//
+// Список отдельный от sourceHosts и намеренно узкий. Ссылка на картинку
+// приходит из чужого XML, то есть это данные, которым нельзя верить: без
+// списка сервер по первой же подсунутой ссылке пошёл бы хоть в свою локальную
+// сеть, хоть в облачные метаданные.
+var imageHosts = map[string]bool{
+	"upload.wikimedia.org": true,
+	"rts.rs":               true,
+	"www.rts.rs":           true,
+	"img.rts.rs":           true,
+	"static.rts.rs":        true,
+}
+
+// AllowedImageURL проверяет, что по адресу можно идти за картинкой.
+func AllowedImageURL(raw string) bool {
+	parsed, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil || parsed.Scheme != "https" {
+		return false
+	}
+	return imageHosts[strings.ToLower(parsed.Hostname())]
+}
+
+// pickImage выбирает картинку: сначала явные вложения, затем первая картинка
+// внутри самого текста.
+func pickImage(refs []mediaRef, htmlParts ...string) string {
+	for _, ref := range refs {
+		candidate := strings.TrimSpace(ref.URL)
+		if candidate == "" || !AllowedImageURL(candidate) {
+			continue
+		}
+		// Тип указан не всегда. Когда указан — верим ему: enclosure в RSS
+		// сплошь и рядом оказывается аудио или видео, и ставить в карточку
+		// mp3 вместо картинки было бы хуже, чем не ставить ничего.
+		if ref.Type != "" && !strings.HasPrefix(strings.ToLower(ref.Type), "image/") {
+			continue
+		}
+		if ref.Medium != "" && strings.ToLower(ref.Medium) != "image" {
+			continue
+		}
+		return candidate
+	}
+	for _, part := range htmlParts {
+		if found := firstHTMLImage(part); found != "" {
+			return found
+		}
+	}
+	return ""
+}
+
+// firstHTMLImage достаёт адрес первой картинки из куска HTML.
+func firstHTMLImage(value string) string {
+	if !strings.Contains(strings.ToLower(value), "<img") {
+		return ""
+	}
+	tokenizer := html.NewTokenizer(strings.NewReader(value))
+	for {
+		switch tokenizer.Next() {
+		case html.ErrorToken:
+			return ""
+		case html.StartTagToken, html.SelfClosingTagToken:
+			name, hasAttr := tokenizer.TagName()
+			if string(name) != "img" {
+				continue
+			}
+			for hasAttr {
+				var key, value []byte
+				key, value, hasAttr = tokenizer.TagAttr()
+				if string(key) != "src" {
+					continue
+				}
+				candidate := strings.TrimSpace(string(value))
+				if AllowedImageURL(candidate) {
+					return candidate
+				}
+			}
+		}
+	}
+}

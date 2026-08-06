@@ -5,10 +5,16 @@ import { getPublicLessons, type Lesson } from '../api/lessons';
 import { ApiError } from '../api/client';
 import { ErrorNote, Spinner } from '../components/ui';
 import { Link } from '../lib/router';
+import { useSeo } from '../lib/seo';
 
 const selectClass = 'rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]';
 
 export function Lessons() {
+  useSeo({
+    title: 'Уроки сербского языка от преподавателей — бесплатно',
+    description:
+      'Бесплатные уроки сербского языка от преподавателей: лексика, грамматика, говорение и письмо с упражнениями. Уровни от A1 до C2, латиница и кириллица.',
+  });
   const [filters, setFilters] = useState({ level:'', type:'', script:'' });
   const [items, setItems] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);

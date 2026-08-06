@@ -15,7 +15,9 @@ export interface MicroFeedItem {
   id: string;
   status: MicroFeedStatus;
   kind: 'news' | 'fact' | 'culture' | 'science' | 'fiction' | 'society' | 'book_excerpt';
-  category: 'history' | 'culture' | 'science' | 'fiction' | 'society' | 'news';
+  category:
+    | 'history' | 'culture' | 'science' | 'fiction' | 'society' | 'news'
+    | 'travel' | 'food' | 'sport' | 'music' | 'language';
   titleCyrillic: string;
   titleLatin: string;
   textCyrillic: string;
@@ -42,6 +44,7 @@ export interface MicroFeedItem {
   likesCount: number;
   dislikesCount: number;
   readMoreCount: number;
+  commentsCount: number;
   reaction: MicroFeedReaction;
   hasEmbedding: boolean;
   publishedAt: string | null;
@@ -86,33 +89,86 @@ export type MicroFeedItemDraft = Pick<MicroFeedItem,
   | 'bookTargetUrl'
 >;
 
-const VISITOR_KEY = 'citavuk-micro-feed-visitor';
+/**
+ * Идентификатор гостя выдаёт СЕРВЕР и подписывает своим ключом.
+ *
+ * Раньше его придумывал браузер: любой UUID принимался как новый читатель, и
+ * лайк накручивался сменой строки в запросе. Здесь браузер только хранит то,
+ * что ему выдали, вместе с лентой (`visitorToken` в ответе `/v1/micro-feed`).
+ *
+ * Прежний ключ localStorage намеренно другой: сохранённый самодельный UUID
+ * сервер всё равно не примет, и подсовывать его в новый обмен незачем.
+ */
+const VISITOR_TOKEN_KEY = 'citavuk-micro-feed-visitor-token';
 
-export function microFeedVisitorId(): string {
-  const saved = localStorage.getItem(VISITOR_KEY);
-  if (saved && /^[0-9a-f-]{36}$/i.test(saved)) return saved;
-  const id = typeof crypto.randomUUID === 'function'
-    ? crypto.randomUUID()
-    : fallbackUUID();
-  localStorage.setItem(VISITOR_KEY, id);
-  return id;
+export function microFeedVisitorToken(): string {
+  return localStorage.getItem(VISITOR_TOKEN_KEY) ?? '';
 }
 
-function fallbackUUID(): string {
-  const bytes = crypto.getRandomValues(new Uint8Array(16));
-  bytes[6] = (bytes[6]! & 0x0f) | 0x40;
-  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
-  const hex = Array.from(bytes, (value) => value.toString(16).padStart(2, '0')).join('');
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+function rememberVisitorToken(token: string | undefined) {
+  if (token) localStorage.setItem(VISITOR_TOKEN_KEY, token);
 }
 
 export async function getMicroFeed(exclude: string[], signal?: AbortSignal) {
-  const query = new URLSearchParams({ visitorId: microFeedVisitorId(), limit: '8' });
+  const query = new URLSearchParams({ limit: '8' });
+  // Первый заход идёт без токена — сервер заведёт его и вернёт вместе с лентой.
+  const token = microFeedVisitorToken();
+  if (token) query.set('visitorToken', token);
   if (exclude.length > 0) query.set('exclude', exclude.slice(-80).join(','));
-  return request<{ items: MicroFeedItem[]; strategy: 'cold' | 'personalized' }>(
-    `/v1/micro-feed?${query}`,
+
+  const response = await request<{
+    items: MicroFeedItem[];
+    strategy: MicroFeedStrategy;
+    preferences?: MicroFeedPreferences;
+    visitorToken?: string;
+  }>(`/v1/micro-feed?${query}`, { signal });
+  rememberVisitorToken(response.visitorToken);
+  return response;
+}
+
+export type MicroFeedStrategy = 'cold' | 'declared' | 'personalized';
+
+/** Темы и уровень, названные читателем в анкете. */
+export interface MicroFeedPreferences {
+  categories: MicroFeedItem['category'][];
+  cefr: MicroFeedItem['cefr'];
+  /** Анкета пройдена. Пустой список тем — тоже ответ, а не «не спрашивали». */
+  onboarded: boolean;
+}
+
+export const MICRO_FEED_LEVELS: MicroFeedItem['cefr'][] = ['A1', 'A2', 'B1', 'B2', 'C1'];
+
+export function saveMicroFeedPreferences(
+  categories: MicroFeedItem['category'][],
+  cefr: MicroFeedItem['cefr'],
+) {
+  return request<MicroFeedPreferences>('/v1/micro-feed/preferences', {
+    method: 'PUT',
+    body: { visitorToken: microFeedVisitorToken(), categories, cefr },
+  });
+}
+
+/** Карточки, отмеченные лайком: лайк работает ещё и закладкой. */
+export async function getLikedMicroFeed(signal?: AbortSignal) {
+  const query = new URLSearchParams({ visitorToken: microFeedVisitorToken() });
+  const response = await request<{ items: MicroFeedItem[] }>(
+    `/v1/micro-feed/liked?${query}`,
     { signal },
   );
+  return response.items;
+}
+
+/**
+ * Автоматический браузер: пререндер сборки, проверка ссылок, обход поисковика.
+ *
+ * Его показы и дочитывания в профиль идти не должны. Лента учится на поведении
+ * читателя, а робот «дочитывает» каждую карточку за долю секунды и одинаково —
+ * это не интерес, это шум, и в подборе он растворяет настоящие сигналы.
+ * Пререндер сайта прогоняет ленту на каждой сборке, то есть шум был бы
+ * регулярным.
+ */
+function automated(): boolean {
+  return typeof navigator !== 'undefined' && navigator.webdriver === true;
 }
 
 export function recordMicroFeedInteraction(
@@ -120,11 +176,47 @@ export function recordMicroFeedInteraction(
   event: 'view' | 'like' | 'dislike' | 'reaction_cleared' | 'read_more_clicked' | 'quick_skip' | 'complete' | 'audio_play',
   dwellMs = 0,
 ) {
+  if (automated()) return Promise.resolve();
+  // Без токена действие учитывать не за кем. Он приходит вместе с лентой, то
+  // есть к первому действию уже есть; отсутствие означает, что лента вообще не
+  // загрузилась, и слать действие незачем.
+  const token = microFeedVisitorToken();
+  if (!token) return Promise.resolve();
   return request<void>(`/v1/micro-feed/${encodeURIComponent(itemId)}/interactions`, {
     method: 'POST',
-    body: { visitorId: microFeedVisitorId(), event, dwellMs: Math.max(0, Math.round(dwellMs)) },
+    body: { visitorToken: token, event, dwellMs: Math.max(0, Math.round(dwellMs)) },
   });
 }
+
+export interface MicroFeedComment {
+  id: string;
+  itemId: string;
+  userId: string;
+  author: string;
+  body: string;
+  createdAt: string;
+  /** Своя реплика: её можно удалить. Решает сервер, а не браузер. */
+  mine: boolean;
+}
+
+/** Предел длины реплики. Тот же стоит на сервере и в базе. */
+export const COMMENT_MAX = 600;
+
+export const getMicroFeedComments = async (itemId: string, signal?: AbortSignal) =>
+  (await request<{ items: MicroFeedComment[] }>(
+    `/v1/micro-feed/${encodeURIComponent(itemId)}/comments`,
+    { signal },
+  )).items;
+
+export const addMicroFeedComment = (itemId: string, body: string) =>
+  request<MicroFeedComment>(`/v1/micro-feed/${encodeURIComponent(itemId)}/comments`, {
+    method: 'POST', body: { body },
+  });
+
+export const deleteMicroFeedComment = (commentId: string) =>
+  request<void>(`/v1/micro-feed/comments/${encodeURIComponent(commentId)}`, {
+    method: 'DELETE',
+  });
 
 export const getAdminMicroFeedSources = () =>
   request<{ items: MicroFeedSource[]; generatorEnabled: boolean; embeddingsEnabled: boolean }>(

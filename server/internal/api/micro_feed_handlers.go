@@ -13,7 +13,11 @@ import (
 )
 
 func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
-	actorKey, _, ok := microFeedActor(w, r, r.URL.Query().Get("visitorId"))
+	// Гость приходит с подписанным токеном; если его ещё нет или он не прошёл
+	// проверку — выдаём новый и возвращаем клиенту вместе с лентой. Отказывать
+	// нельзя: первый заход всегда без токена, и лента обязана открыться.
+	actorKey, _, issued, ok := s.microFeedActor(
+		w, r, r.URL.Query().Get("visitorToken"), true)
 	if !ok {
 		return
 	}
@@ -33,15 +37,86 @@ func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось собрать микро-ленту.")
 		return
 	}
-	writeJSON(w, http.StatusOK, map[string]any{
-		"items": items, "strategy": strategy,
-	})
+	// Адрес картинки подменяется на собственную ручку: прямая ссылка на чужой
+	// сайт рассказала бы ему, кто из наших читателей открыл карточку.
+	for i := range items {
+		if strings.TrimSpace(items[i].ImageURL) != "" {
+			items[i].ImageURL = "/v1/micro-feed/" + items[i].ID.String() + "/image"
+		}
+	}
+	// Анкета едет вместе с лентой: клиенту нужно решить, показывать ли опрос,
+	// ещё до первой карточки, и отдельный запрос ради этого поставил бы опрос
+	// поверх уже открытой ленты — то есть с опозданием.
+	prefs, err := s.store.GetMicroFeedPreferences(r.Context(), actorKey)
+	if err != nil {
+		slog.Warn("handleMicroFeed preferences", "err", err)
+	}
+	response := map[string]any{"items": items, "strategy": strategy, "preferences": prefs}
+	if issued != "" {
+		response["visitorToken"] = issued
+	}
+	writeJSON(w, http.StatusOK, response)
+}
+
+type microFeedPreferencesRequest struct {
+	VisitorToken string   `json:"visitorToken"`
+	Categories   []string `json:"categories"`
+	CEFR         string   `json:"cefr"`
+}
+
+// handleMicroFeedPreferences сохраняет ответы анкеты.
+//
+// Токен обязателен и новый не выдаётся: анкету заполняют уже внутри ленты, то
+// есть после того, как токен пришёл вместе с первой порцией карточек.
+func (s *Server) handleMicroFeedPreferences(w http.ResponseWriter, r *http.Request) {
+	var request microFeedPreferencesRequest
+	if err := decodeJSON(w, r, &request, 4<<10); err != nil {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать ответы.")
+		return
+	}
+	actorKey, userID, _, ok := s.microFeedActor(w, r, request.VisitorToken, false)
+	if !ok {
+		return
+	}
+	if len(request.Categories) > len(store.MicroFeedCategories) {
+		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, "Слишком много тем.")
+		return
+	}
+	prefs, err := s.store.SaveMicroFeedPreferences(
+		r.Context(), actorKey, userID, request.Categories, request.CEFR)
+	if err != nil {
+		slog.Error("handleMicroFeedPreferences", "err", err)
+		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось сохранить ответы.")
+		return
+	}
+	writeJSON(w, http.StatusOK, prefs)
+}
+
+// handleMicroFeedLiked отдаёт карточки, отмеченные лайком.
+func (s *Server) handleMicroFeedLiked(w http.ResponseWriter, r *http.Request) {
+	actorKey, _, _, ok := s.microFeedActor(w, r, r.URL.Query().Get("visitorToken"), false)
+	if !ok {
+		return
+	}
+	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+	items, err := s.store.ListLikedMicroFeed(r.Context(), actorKey, limit)
+	if err != nil {
+		slog.Error("handleMicroFeedLiked", "err", err)
+		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось загрузить сохранённое.")
+		return
+	}
+	for i := range items {
+		if strings.TrimSpace(items[i].ImageURL) != "" {
+			items[i].ImageURL = "/v1/micro-feed/" + items[i].ID.String() + "/image"
+		}
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"items": items})
 }
 
 type microFeedInteractionRequest struct {
-	VisitorID string `json:"visitorId"`
-	Event     string `json:"event"`
-	DwellMS   int    `json:"dwellMs"`
+	VisitorToken string `json:"visitorToken"`
+	Event        string `json:"event"`
+	DwellMS      int    `json:"dwellMs"`
 }
 
 func (s *Server) handleMicroFeedInteraction(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +129,10 @@ func (s *Server) handleMicroFeedInteraction(w http.ResponseWriter, r *http.Reque
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать действие.")
 		return
 	}
-	actorKey, userID, ok := microFeedActor(w, r, request.VisitorID)
+	// Здесь токен обязателен и новый не выдаётся: действие без действующего
+	// идентификатора учитывать не за кем. Клиент получает токен вместе с
+	// лентой, то есть до любого действия он уже есть.
+	actorKey, userID, _, ok := s.microFeedActor(w, r, request.VisitorToken, false)
 	if !ok {
 		return
 	}
@@ -85,16 +163,39 @@ func (s *Server) handleMicroFeedInteraction(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func microFeedActor(w http.ResponseWriter, r *http.Request, visitor string) (string, uuid.UUID, bool) {
+// microFeedActor определяет, чьи это действия.
+//
+// Вошедший читатель узнаётся по сессии, гость — по подписанному серверным HMAC
+// токену. Самодельный идентификатор больше не принимается: пока его придумывал
+// браузер, лайки накручивались сменой строки в запросе.
+//
+// Третье возвращаемое значение — выданный токен. Оно не пустое только когда
+// сервер завёл новый и клиенту нужно его сохранить.
+func (s *Server) microFeedActor(
+	w http.ResponseWriter,
+	r *http.Request,
+	token string,
+	issueWhenMissing bool,
+) (string, uuid.UUID, string, bool) {
 	if user := userFrom(r.Context()); user != nil {
-		return "user:" + user.ID.String(), user.ID, true
+		return "user:" + user.ID.String(), user.ID, "", true
 	}
-	id, err := uuid.Parse(strings.TrimSpace(visitor))
-	if err != nil || id == uuid.Nil {
-		writeError(w, http.StatusBadRequest, codeBadRequest, "Браузеру нужен анонимный идентификатор ленты.")
-		return "", uuid.Nil, false
+	if id, err := s.parseVisitorToken(token); err == nil {
+		return "guest:" + id, uuid.Nil, "", true
 	}
-	return "guest:" + id.String(), uuid.Nil, true
+	if !issueWhenMissing {
+		writeError(w, http.StatusBadRequest, codeBadRequest,
+			"Обновите страницу: идентификатор ленты устарел.")
+		return "", uuid.Nil, "", false
+	}
+	issued := s.issueVisitorToken()
+	id, err := s.parseVisitorToken(issued)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, codeInternal,
+			"Не удалось завести идентификатор ленты.")
+		return "", uuid.Nil, "", false
+	}
+	return "guest:" + id, uuid.Nil, issued, true
 }
 
 func (s *Server) handleAdminMicroFeedSources(w http.ResponseWriter, r *http.Request) {

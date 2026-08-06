@@ -1,8 +1,12 @@
-/// Корневая оболочка приложения: три основных раздела в нижней навигации.
+/// Корневая оболочка приложения: четыре основных раздела в нижней навигации.
 ///
-/// Чтение | Слушание | Курс сербского. Разделы держатся живыми, поэтому
-/// переключение не теряет позицию списка книг, состояние плеера и загруженный
-/// курс.
+/// Чтение | Вукоток | Слушание | Курс сербского. Разделы держатся живыми,
+/// поэтому переключение не теряет позицию списка книг, состояние плеера и
+/// загруженный курс.
+///
+/// Вукоток стоит вторым, а не последним: это самый лёгкий вход в язык из всех —
+/// карточку читают минуту и без всякой подготовки, — и прятать его за курсом
+/// значит показывать его тем, кто и так уже занимается.
 library;
 
 import 'package:flutter/material.dart';
@@ -11,10 +15,12 @@ import '../course/screens/course_path_screen.dart';
 import '../course/state/course_controller.dart';
 import '../course/widgets/mascot_view.dart';
 import 'listening_screen.dart';
+import 'vukotok_screen.dart';
 
 /// Раздел нижней навигации.
 enum HomeTab {
   reading('Чтение', Icons.menu_book_outlined, Icons.menu_book),
+  vukotok('Вукоток', Icons.bolt_outlined, Icons.bolt),
   listening('Слушание', Icons.headphones_outlined, Icons.headphones),
   course('Курс сербского', Icons.school_outlined, Icons.school);
 
@@ -87,6 +93,7 @@ class _HomeShellState extends State<HomeShell> {
         onPageChanged: (i) => setState(() => _index = i),
         children: [
           widget.reading,
+          const VukotokScreen(),
           const ListeningScreen(),
           CoursePathScreen(controller: _course),
         ],

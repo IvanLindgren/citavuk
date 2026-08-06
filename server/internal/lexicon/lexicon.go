@@ -14,7 +14,7 @@ import (
 	"sync"
 )
 
-//go:embed data/forms.tsv.gz data/dictionary.tsv.gz
+//go:embed data/forms.tsv.gz data/dictionary.tsv.gz data/accents.tsv.gz data/verbs.tsv.gz
 var files embed.FS
 
 // Form — одна строка парадигмы.
@@ -25,11 +25,33 @@ type Form struct {
 	Feats string `json:"feats"`
 }
 
-// Lexicon — словарь форм и переводов лемм.
+// Accent — ударение словоформы.
+//
+// Место ударения в сербском по написанию не восстанавливается: ударений четыре
+// (краткое и долгое, восходящее и нисходящее), и нужен настоящий словарь.
+// Данные собраны из Викисловаря (CC BY-SA 4.0) — см. tools/build_accents.py.
+type Accent struct {
+	// Latin, Cyrillic — ударное написание в своём алфавите: читатель видит
+	// текст в одном из них, и подменять азбуку в ответе нельзя.
+	Latin    string `json:"latin,omitempty"`
+	Cyrillic string `json:"cyrillic,omitempty"`
+	// IPA — транскрипция с тоном: «/kɲîɡa/».
+	IPA string `json:"ipa,omitempty"`
+}
+
+// AccentSource — указание источника, обязательное по лицензии CC BY-SA.
+const AccentSource = "Викисловарь (CC BY-SA 4.0)"
+
+// Lexicon — словарь форм, переводов лемм и ударений.
 type Lexicon struct {
 	byForm  map[string][]Form
 	byLemma map[string][]Form
 	words   map[string]string
+	accents map[string]Accent
+	// verbs — словоформа глагола → начальная форма. Свой лексикон разрежен, и
+	// целых глаголов вроде «bližiti» в нём нет вовсе; без этого списка частица
+	// «se» не находила своего глагола в первом же попавшемся предложении.
+	verbs map[string]string
 }
 
 var (
@@ -49,6 +71,8 @@ func load() (*Lexicon, error) {
 		byForm:  make(map[string][]Form, 24000),
 		byLemma: make(map[string][]Form, 12000),
 		words:   make(map[string]string, 9000),
+		accents: make(map[string]Accent, 60000),
+		verbs:   make(map[string]string, 130000),
 	}
 
 	if err := readLines("data/forms.tsv.gz", func(parts []string) {
@@ -69,6 +93,27 @@ func load() (*Lexicon, error) {
 			return
 		}
 		l.words[Normalize(parts[0])] = parts[1]
+	}); err != nil {
+		return nil, err
+	}
+
+	if err := readLines("data/accents.tsv.gz", func(parts []string) {
+		if len(parts) < 4 || parts[0] == "" {
+			return
+		}
+		if parts[1] == "" && parts[2] == "" && parts[3] == "" {
+			return
+		}
+		l.accents[parts[0]] = Accent{Latin: parts[1], Cyrillic: parts[2], IPA: parts[3]}
+	}); err != nil {
+		return nil, err
+	}
+
+	if err := readLines("data/verbs.tsv.gz", func(parts []string) {
+		if len(parts) < 2 || parts[0] == "" || parts[1] == "" {
+			return
+		}
+		l.verbs[parts[0]] = parts[1]
 	}); err != nil {
 		return nil, err
 	}
@@ -114,6 +159,20 @@ func (l *Lexicon) Paradigm(lemma string) []Form {
 // Translate возвращает словарный перевод леммы или пустую строку.
 func (l *Lexicon) Translate(word string) string {
 	return l.words[Normalize(word)]
+}
+
+// Accent возвращает ударение словоформы. Второе значение — false, если этой
+// формы в словаре ударений нет: достраивать ударение правилом нельзя, оно
+// гуляет по парадигме («knjȉga», но «knjȋgā»).
+func (l *Lexicon) Accent(word string) (Accent, bool) {
+	accent, ok := l.accents[Normalize(word)]
+	return accent, ok
+}
+
+// VerbLemma возвращает начальную форму, если словоформа известна как глагольная.
+func (l *Lexicon) VerbLemma(word string) (string, bool) {
+	lemma, ok := l.verbs[Normalize(word)]
+	return lemma, ok
 }
 
 // Size сообщает объём словаря — используется в /v1/health.

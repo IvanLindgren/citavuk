@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.11.0';
+const VERSION = '1.13.0';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
@@ -97,7 +97,7 @@ export function Downloads() {
   });
 
   return (
-    <main className="paper-grain min-h-[calc(100vh-4rem)] px-5 py-10 sm:py-16">
+    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] px-5 py-10 sm:py-16">
       <section className="mx-auto max-w-6xl">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_280px]">
           <motion.div

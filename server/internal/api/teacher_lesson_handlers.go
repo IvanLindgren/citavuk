@@ -611,6 +611,22 @@ func (s *Server) handlePublicLessons(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, map[string]any{"items": items})
 }
 
+// handlePublicDialogues отдаёт диалоги опубликованных уроков.
+//
+// Страница диалогов показывала ровно один зашитый сценарий, а диалоги, которые
+// пишут преподаватели, лежали внутри уроков и до неё не доходили. Разделу с
+// одной карточкой трудно быть разделом.
+func (s *Server) handlePublicDialogues(w http.ResponseWriter, r *http.Request) {
+	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+	items, err := s.store.ListPublicDialogues(r.Context(), limit)
+	if err != nil {
+		slog.Error("handlePublicDialogues", "err", err)
+		writeError(w, 500, codeInternal, "Не удалось загрузить диалоги.")
+		return
+	}
+	writeJSON(w, 200, map[string]any{"items": items})
+}
+
 func (s *Server) handlePublicLesson(w http.ResponseWriter, r *http.Request) {
 	l, err := s.store.PublicLesson(r.Context(), r.PathValue("slug"))
 	if errors.Is(err, store.ErrLessonNotFound) {

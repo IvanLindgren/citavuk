@@ -40,15 +40,47 @@ type Cache interface {
 
 // Service выбирает провайдера под конкретный запрос и ходит в кеш.
 type Service struct {
-	deepl *DeepL
-	words WordProvider
-	cache Cache
+	deepl  *DeepL
+	words  WordProvider
+	cache  Cache
+	budget *Budget
 }
 
 // NewService собирает переводчик. Любая из зависимостей может быть nil:
 // сервис деградирует, а не падает.
 func NewService(deepl *DeepL, words WordProvider, cache Cache) *Service {
 	return &Service{deepl: deepl, words: words, cache: cache}
+}
+
+// WithBudget подключает суточный бюджет знаков DeepL. Без него ограничение
+// выключено — так работают тесты и сервер без ключа.
+func (s *Service) WithBudget(b *Budget) *Service {
+	if s != nil {
+		s.budget = b
+	}
+	return s
+}
+
+// Budget отдаёт бюджет для отчёта в админке.
+func (s *Service) Budget() *Budget {
+	if s == nil {
+		return nil
+	}
+	return s.budget
+}
+
+// deeplAllowed списывает знаки под запрос к DeepL.
+//
+// Отказ — не ошибка: перевод уходит запасному провайдеру, и человек этого не
+// замечает. Именно поэтому бюджет проверяется ЗДЕСЬ, а не в обработчике: там
+// пришлось бы выбирать между «ответить ошибкой» и «переводить бесплатно», и
+// оба ответа хуже тихой замены провайдера.
+func (s *Service) deeplAllowed(text string) bool {
+	return s.budget.Allow(utf8.RuneCountInString(text))
+}
+
+func (s *Service) refundDeepL(text string) {
+	s.budget.Refund(utf8.RuneCountInString(text))
 }
 
 // Available сообщает, способен ли сервис хоть что-то перевести.
@@ -80,12 +112,15 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 		return s.word(ctx, text, source, target)
 	}
 
-	if s.deepl != nil {
+	// Бюджет спрашивается только тогда, когда запасной провайдер есть: иначе
+	// отказ бюджета означал бы «перевода не будет вовсе», а это хуже перерасхода.
+	if s.deepl != nil && (s.words == nil || s.deeplAllowed(text)) {
 		out, err := s.deepl.TranslateTexts(ctx, []string{text}, source, target, Options{})
 		if err == nil && len(out) == 1 && strings.TrimSpace(out[0]) != "" {
 			s.store(ctx, source, target, text, out[0], s.deepl.Name())
 			return &Result{Text: out[0], Provider: s.deepl.Name(), Aligned: true}, nil
 		}
+		s.refundDeepL(text)
 		if err != nil && s.words == nil {
 			return nil, err
 		}
@@ -135,6 +170,8 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	if err != nil {
 		return s.word(ctx, word, source, target)
 	}
+	// Кеш проверяется РАНЬШЕ бюджета: готовый ответ квоты не тратит, и
+	// списывать за него знаки значило бы наказывать за попадание в кеш.
 
 	// Готовый ответ ровно на это нажатие. Ключом служит помеченное предложение:
 	// оно однозначно задаёт и фразу, и слово внутри неё, поэтому из одной записи
@@ -158,8 +195,17 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 		}
 	}
 
+	// Бюджет исчерпан — слово переводится запасным провайдером. Это заметно
+	// хуже по качеству, но перевод остаётся, а месячная квота доживает до
+	// конца месяца. Без запасного провайдера бюджет не спрашивается: отказ
+	// означал бы «перевода нет», а это хуже перерасхода.
+	if s.words != nil && !s.deeplAllowed(marked) {
+		return s.word(ctx, word, source, target)
+	}
+
 	out, err := s.deepl.TranslateTexts(ctx, []string{marked}, source, target, Options{XMLTags: true})
 	if err != nil || len(out) != 1 {
+		s.refundDeepL(marked)
 		if fallback, ferr := s.word(ctx, word, source, target); ferr == nil {
 			return fallback, nil
 		}

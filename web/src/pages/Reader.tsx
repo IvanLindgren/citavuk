@@ -393,8 +393,14 @@ export function Reader() {
 
   return (
     <main className={`px-5 py-8 ${audiobookEnabled ? 'pb-28' : ''}`}>
-      {/* Полоса прогресса книги вверху — привычный ориентир в читалках. */}
-      <div className="fixed inset-x-0 top-16 z-30 h-1 bg-transparent">
+      {/* Полоса прогресса книги вверху — привычный ориентир в читалках.
+          Держится за настоящую высоту шапки (её ставит Header): шапка ужимается
+          при прокрутке и может нести полосу поддержки, и прибитая к постоянным
+          64 точкам полоса от неё отрывалась. */}
+      <div
+        className="fixed inset-x-0 z-30 h-1 bg-transparent"
+        style={{ top: 'var(--header-height, 4rem)' }}
+      >
         <motion.div
           className="h-full bg-[var(--accent)]"
           animate={{ width: `${progress}%` }}

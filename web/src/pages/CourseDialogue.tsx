@@ -216,7 +216,7 @@ export function CourseDialogue() {
 
   return (
     <main
-      className="paper-grain min-h-[calc(100dvh-4rem)] overflow-x-hidden px-3 py-5 sm:px-5 sm:py-8"
+      className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-3 py-5 sm:px-5 sm:py-8"
       style={{ paddingBottom: hasChoices ? 'min(46dvh, 22rem)' : undefined }}
     >
       <div className="mx-auto max-w-3xl">

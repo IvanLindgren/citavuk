@@ -105,7 +105,7 @@ export function AdminMicroFeedPanel() {
   async function reject(input: MicroFeedImport) {
     if (!confirm(`Убрать «${input.title}» из очереди?`)) return;
     setBusy(`import:${input.id}`); setError('');
-    try { await rejectMicroFeedImport(input.id, 'Не подходит для микро-ленты'); await load(); }
+    try { await rejectMicroFeedImport(input.id, 'Не подходит для Вукотока'); await load(); }
     catch (caught) { setError(messageOf(caught)); }
     finally { setBusy(''); }
   }
@@ -132,7 +132,7 @@ export function AdminMicroFeedPanel() {
   }
 
   async function publish() {
-    if (!selectedId || !confirm('Опубликовать карточку в микро-ленте?')) return;
+    if (!selectedId || !confirm('Опубликовать карточку в Вукотоке?')) return;
     setBusy('publish'); setError('');
     try {
       const published = await publishMicroFeedItem(selectedId);

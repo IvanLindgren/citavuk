@@ -6,7 +6,7 @@ import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
 import { ServerAnnouncements } from "./components/ServerAnnouncements";
 import { EventBanner } from "./components/EventBanner";
 import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
+import { Header, isVukotok } from "./components/Header";
 import { PageErrorBoundary } from "./components/PageErrorBoundary";
 import { Spinner } from "./components/ui";
 import {
@@ -140,6 +140,8 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/course", element: <Course /> },
   { pattern: "/lessons", element: <Lessons /> },
   { pattern: "/lessons/:slug", element: <LessonView /> },
+  { pattern: "/vukotok", element: <MicroFeed /> },
+  // Прежний адрес раздела: он разослан в чате и стоит в закладках.
   { pattern: "/micro-feed", element: <MicroFeed /> },
   { pattern: "/lesson/link/:token", element: <LessonView unlisted /> },
   { pattern: "/teachers", element: <Teachers /> },
@@ -186,14 +188,21 @@ export function App() {
 
 function AppFrame() {
   const { path } = useRouter();
-  const microFeed = path.split("?")[0] === "/micro-feed";
+  const vukotok = isVukotok(path);
 
   return (
     <div className="flex min-h-dvh flex-col">
-      {!microFeed && <EventBanner />}
-      <Header />
-      {!microFeed && <ServerAnnouncements />}
-      {!microFeed && <CommunityAnnouncement />}
+      {!vukotok && <EventBanner />}
+      {/*
+        На телефоне Вукоток занимает экран целиком: полоса навигации над лентой
+        оставляла её «страницей сайта с видео», а не тем, чем раздел является.
+        Уйти из ленты можно значком волка в её собственной шапке.
+      */}
+      <div className={vukotok ? 'hidden lg:block' : undefined}>
+        <Header />
+      </div>
+      {!vukotok && <ServerAnnouncements />}
+      {!vukotok && <CommunityAnnouncement />}
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>
@@ -203,8 +212,8 @@ function AppFrame() {
           </PageTransition>
         </PageErrorBoundary>
       </div>
-      {!microFeed && <Footer />}
-      {!microFeed && <AppPrompt />}
+      {!vukotok && <Footer />}
+      {!vukotok && <AppPrompt />}
     </div>
   );
 }

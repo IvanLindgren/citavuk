@@ -42,11 +42,16 @@ const (
 // PickProvider выбирает переводчика под объём документа.
 //
 // Пустая строка означает, что перевести документ нечем.
+//
+// Объём приходит от клиента, и врать им выгодно: заявив 19 999 знаков, можно
+// получить DeepL и увести под книгу заметную часть месячной квоты. Поэтому
+// решает не только заявленный размер, но и остаток суточного бюджета: когда
+// его не хватает, документ уходит запасному провайдеру целиком.
 func (s *Service) PickProvider(runes int) string {
 	if s == nil {
 		return ""
 	}
-	if s.deepl != nil && runes <= DeepLDocumentRunes {
+	if s.deepl != nil && runes <= DeepLDocumentRunes && s.deeplBudgetCovers(runes) {
 		return ProviderDeepL
 	}
 	if s.words != nil {
@@ -58,6 +63,19 @@ func (s *Service) PickProvider(runes int) string {
 		return ProviderDeepL
 	}
 	return ""
+}
+
+// deeplBudgetCovers сообщает, хватит ли суточного бюджета на весь документ.
+//
+// Спрашиваем ЗАРАНЕЕ и целиком: переводчик выбирается один раз на книгу, и
+// начать её DeepL, а закончить запасным нельзя — разнобой в передаче имён и
+// терминов виден невооружённым глазом. Без запасного провайдера бюджет не
+// спрашивается вовсе: тогда отказ означал бы «перевода не будет».
+func (s *Service) deeplBudgetCovers(runes int) bool {
+	if s.words == nil || s.budget == nil {
+		return true
+	}
+	return s.budget.Available() >= runes
 }
 
 // Paragraphs переводит абзацы, сохраняя их количество и порядок.
@@ -96,9 +114,19 @@ func (s *Service) Paragraphs(
 		if s.deepl == nil {
 			return nil, ErrNoProvider
 		}
+		// Знаки списываются безусловно (Spend, а не Allow): провайдер у начатой
+		// книги уже не меняется, и отказать посреди перевода означало бы бросить
+		// её на половине. Бюджет уходит в минус, и следующего читателя это
+		// отправит к запасному провайдеру — расход виден, а книга дочитана.
+		s.budget.Spend(CountRunes(payload))
 		// Пустой источник означает «определи сам»: DeepL делает это, когда поле
 		// source_lang просто не отправлено.
 		translated, err = translateWithDeepL(ctx, s.deepl, payload, source, target)
+		if err != nil {
+			// Кусок не переведён — знаки за ним не числятся. Тот же принцип, что
+			// у суточного предела заявок в store.ReleaseTranslatedChars.
+			s.budget.Refund(CountRunes(payload))
+		}
 	case ProviderGoogle:
 		if s.words == nil {
 			return nil, ErrNoProvider

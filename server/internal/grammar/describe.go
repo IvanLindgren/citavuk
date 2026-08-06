@@ -47,6 +47,51 @@ func verbTenseLabel(feats map[string]string) string {
 	}
 }
 
+// Короткие названия для строки-сводки: в ней перечисление, и развёрнутые
+// пояснения с примерами читались бы как каша.
+var (
+	degreeSummary   = map[string]string{"Cmp": "сравнительная степень", "Sup": "превосходная степень"}
+	definiteSummary = map[string]string{"Ind": "неопределённый вид", "Def": "определённый вид"}
+)
+
+// verbFormLabel называет именную форму глагола.
+//
+// Раньше их не было вовсе: `VerbForm=Conv` (глаголски прилог — деепричастие)
+// давал пустую карточку, а трпни придев показывался как обычное прилагательное,
+// потому что Voice не читался. Обе формы в сербском обычные, а не книжные:
+// «radeći» и «urađen» встречаются на первой же странице любого текста.
+func verbFormLabel(verbForm, voice string) string {
+	switch verbForm {
+	case "Inf":
+		return "инфинитив"
+	case "Conv":
+		return "деепричастие (глаголски прилог)"
+	case "Part":
+		if voice == "Pass" {
+			return "страдательное причастие (трпни глаголски придев)"
+		}
+		return "причастие (радни глаголски придев)"
+	case "Ger":
+		return "отглагольное существительное (глаголска именица)"
+	}
+	return ""
+}
+
+func verbFormSummary(verbForm, voice string) string {
+	switch verbForm {
+	case "Inf":
+		return "инфинитив"
+	case "Conv":
+		return "деепричастие"
+	case "Part":
+		if voice == "Pass" {
+			return "страдательное причастие"
+		}
+		return "причастие"
+	}
+	return ""
+}
+
 func tenseExplain(feats map[string]string) string {
 	switch {
 	case feats["Tense"] == "Imp":
@@ -77,9 +122,25 @@ func Describe(upos string, feats map[string]string) Info {
 	person := feats["Person"]
 	verbForm := feats["VerbForm"]
 	mood := feats["Mood"]
+	degree := feats["Degree"]
+	definite := feats["Definite"]
+	voice := feats["Voice"]
 
+	// Именная форма глагола называется первой: без этого «radeći» описывалось
+	// пустой карточкой, а «urađen» — как обычное прилагательное.
+	if label := verbFormLabel(verbForm, voice); label != "" {
+		facts = append(facts, Fact{"Форма", label})
+	}
 	if gcase != "" {
 		facts = append(facts, Fact{"Падеж", CaseName(gcase)})
+	}
+	// Степень сравнения не повторяется для положительной: «прилагательное в
+	// положительной степени» — это просто прилагательное.
+	if degree != "" && degree != "Pos" {
+		facts = append(facts, Fact{"Степень сравнения", value(degreeRu, degree)})
+	}
+	if definite != "" {
+		facts = append(facts, Fact{"Вид прилагательного", value(definiteRu, definite)})
 	}
 	if tense != "" {
 		facts = append(facts, Fact{"Время", verbTenseLabel(feats)})
@@ -90,6 +151,9 @@ func Describe(upos string, feats map[string]string) Info {
 	if mood == "Cnd" {
 		facts = append(facts, Fact{"Наклонение", "условное (потенцијал)"})
 	}
+	if voice == "Pass" {
+		facts = append(facts, Fact{"Залог", value(voiceRu, voice)})
+	}
 	if person != "" {
 		facts = append(facts, Fact{"Лицо", value(personRu, person)})
 	}
@@ -99,13 +163,19 @@ func Describe(upos string, feats map[string]string) Info {
 	if gender != "" {
 		facts = append(facts, Fact{"Род", value(genderRu, gender)})
 	}
-	if verbForm == "Inf" {
-		facts = append(facts, Fact{"Форма", "инфинитив"})
-	}
 
-	summary := make([]string, 0, 6)
+	summary := make([]string, 0, 8)
+	if label := verbFormSummary(verbForm, voice); label != "" {
+		summary = append(summary, label)
+	}
 	if gcase != "" {
 		summary = append(summary, strings.ToLower(CaseName(gcase)))
+	}
+	if degree != "" && degree != "Pos" {
+		summary = append(summary, degreeSummary[degree])
+	}
+	if definite != "" {
+		summary = append(summary, definiteSummary[definite])
 	}
 	if tense != "" {
 		summary = append(summary, verbTenseLabel(feats))
@@ -142,8 +212,34 @@ func why(posLabel string, feats map[string]string) string {
 	person := feats["Person"]
 	verbForm := feats["VerbForm"]
 	mood := feats["Mood"]
+	voice := feats["Voice"]
 
 	switch {
+	// Именные формы глагола проверяются РАНЬШЕ падежа: у страдательного
+	// причастия падеж есть, и без этой ветки «urađen» объяснялся бы как
+	// обычное прилагательное в именительном падеже.
+	case verbForm == "Conv":
+		return "Это деепричастие (глаголски прилог) — неизменяемая форма глагола, " +
+			"которая называет побочное действие: «radeći» — работая, «ušavši» — войдя.\n\n" +
+			"Настоящего времени (садашњи) образуется от 3-го лица множественного " +
+			"презента с -ći: rade → radeći. Прошедшего (прошли) — от инфинитива " +
+			"с -vši: uraditi → uradivši. Деепричастие не склоняется и не спрягается."
+
+	case verbForm == "Part" && voice == "Pass":
+		return "Это страдательное причастие (трпни глаголски придев) — форма глагола, " +
+			"которая ведёт себя как прилагательное: склоняется по родам, числам и " +
+			"падежам («urađen posao», «urađena kuća»).\n\n" +
+			"Образуется от инфинитива суффиксами -n/-en/-t: pisati → pisan, " +
+			"uraditi → urađen, otvoriti → otvoren. Именно из него строится " +
+			"страдательный залог: «Posao je urađen» — работа сделана."
+
+	case verbForm == "Part":
+		return "Это радни глаголски придев — причастие на -o/-la/-lo, из которого " +
+			"строится прошедшее время.\n\nСамо по себе оно не употребляется: " +
+			"перфекат — это вспомогательный глагол biti плюс это причастие " +
+			"(«ja sam radio», «ona je radila»). Род и число причастие берёт от " +
+			"подлежащего, а лицо выражает вспомогательный глагол."
+
 	case gcase != "":
 		genderPart := ""
 		if gender != "" {
@@ -153,10 +249,14 @@ func why(posLabel string, feats map[string]string) string {
 		if use == "" {
 			use = "—"
 		}
-		return fmt.Sprintf(
+		explain := fmt.Sprintf(
 			"Это %s в форме «%s падеж», %s число%s.\n\nЗачем нужен этот падеж: %s",
 			posLabel, strings.ToLower(CaseName(gcase)), value(numberRu, number),
 			genderPart, use)
+		if extra := adjectiveExplain(feats); extra != "" {
+			explain += "\n\n" + extra
+		}
+		return explain
 
 	case verbForm == "Inf":
 		return "Это инфинитив — начальная форма глагола (отвечает на «что делать?»). " +
@@ -191,6 +291,32 @@ func why(posLabel string, feats map[string]string) string {
 
 	return "Базовый разбор: " + posLabel + ". Полный разбор доступен для слов, " +
 		"которые есть в словаре форм."
+}
+
+// adjectiveExplain дописывает то, чего нет в русском языке и о чём поэтому
+// нужно сказать словами: вид прилагательного и степень сравнения.
+func adjectiveExplain(feats map[string]string) string {
+	var parts []string
+	switch feats["Definite"] {
+	case "Ind":
+		parts = append(parts, "Неопределённый вид (neodređeni): называет признак "+
+			"впервые, отвечает на «kakav?». «Ovo je dobar čovek» — это хороший человек.")
+	case "Def":
+		parts = append(parts, "Определённый вид (određeni): указывает на уже известный "+
+			"предмет, отвечает на «koji?». «Dobri čovek je došao» — тот самый хороший "+
+			"человек пришёл. В родительном и дательном виды различаются окончанием: "+
+			"«dobra» против «dobrog», «dobru» против «dobrom».")
+	}
+	switch feats["Degree"] {
+	case "Cmp":
+		parts = append(parts, "Сравнительная степень (komparativ): образуется "+
+			"суффиксами -iji, -ji или -ši. Сравнение вводится словом «od» с "+
+			"родительным падежом либо «nego»: «viši od mene», «viši nego ja».")
+	case "Sup":
+		parts = append(parts, "Превосходная степень (superlativ): приставка naj- "+
+			"к сравнительной степени, всегда слитно — «najviši», «najbolji».")
+	}
+	return strings.Join(parts, "\n\n")
 }
 
 func value(dict map[string]string, key string) string {

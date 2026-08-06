@@ -83,6 +83,8 @@
     --error: var(--color-serb-red);
     --error-soft: rgb(158 43 37 / 0.12);
     --line: rgb(43 33 24 / 0.12);
+    --scrollbar-thumb: rgb(43 33 24 / 0.28);
+    --scrollbar-thumb-hover: rgb(43 33 24 / 0.45);
     --shadow-soft: 0 2px 8px rgb(43 33 24 / 0.06), 0 12px 32px rgb(43 33 24 / 0.08);
     --shadow-lift: 0 4px 12px rgb(43 33 24 / 0.1), 0 20px 48px rgb(43 33 24 / 0.14);
   }
@@ -100,6 +102,8 @@
     --error: #ef7b73;
     --error-soft: rgb(239 123 115 / 0.14);
     --line: rgb(237 226 204 / 0.14);
+    --scrollbar-thumb: rgb(237 226 204 / 0.24);
+    --scrollbar-thumb-hover: rgb(237 226 204 / 0.42);
     --shadow-soft: 0 2px 8px rgb(0 0 0 / 0.3), 0 12px 32px rgb(0 0 0 / 0.35);
     --shadow-lift: 0 4px 12px rgb(0 0 0 / 0.4), 0 20px 48px rgb(0 0 0 / 0.5);
   }
@@ -121,6 +125,43 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+  }
+
+  /*
+    Полоса прокрутки в цветах сайта.
+    Системная серая полоса на пергаментном фоне выглядит куском чужого окна —
+    особенно в тёмной теме, где Windows рисует её светлой. Ширина оставлена
+    достаточной, чтобы за полосу можно было взяться мышью: тонкая ниточка
+    красивее ровно до того момента, как в неё надо попасть.
+  */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 999px;
+    /* Прозрачная рамка через background-clip: ползунок не липнет к краю. */
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
   h1, h2, h3, h4 {

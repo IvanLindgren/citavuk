@@ -72,7 +72,23 @@ export function LessonPlayer({ lesson, preview = false, previewMode, onExit }: L
         {stage === 'theory' && lesson.summary && <p className="mt-4 text-lg leading-8 text-[var(--text-muted)]">{lesson.summary}</p>}
         <div className="mt-5 flex flex-wrap gap-5 text-sm text-[var(--text-muted)]"><span className="inline-flex items-center gap-1.5"><LuGraduationCap />{lesson.authorName}</span><span className="inline-flex items-center gap-1.5"><LuClock3 />{lesson.estimatedMinutes} минут</span></div>
       </header>
-      {content && stage === 'theory' && <section className="mt-10 border-t border-[var(--line)] pt-8"><MarkdownLesson content={content} /><div className="mt-10 flex justify-end border-t border-[var(--line)] pt-6"><Button onClick={afterTheory}><LuBookOpen />{exercises.length > 0 ? 'Перейти к практике' : content.dialogue ? 'Перейти к диалогу' : 'Завершить урок'}<LuArrowRight /></Button></div></section>}
+      {/*
+        Теория лежит на том же «листе», что и книга в читалке.
+        Раньше она шла сплошным текстом прямо по фону страницы, отделённая
+        одной чертой сверху: на широком экране строка тянулась почти на тысячу
+        пикселей, и глаз терял начало следующей. Панель и ограничение длины
+        строки решают обе задачи сразу — а поверхность взята не новая, а та же,
+        что в читалке (`paper-grain` + `--bg-raised`): урок и книга в Читавуке
+        читаются одинаково, и заводить для них разное оформление незачем.
+      */}
+      {content && stage === 'theory' && <section className="mt-10">
+        <div className="paper-grain relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] px-5 py-8 shadow-[var(--shadow-soft)] sm:px-10 sm:py-12">
+          {/* Длина строки ограничена в знаках, а не в пикселях: при крупном
+              шрифте у преподавателя строка иначе снова становится длинной. */}
+          <MarkdownLesson content={content} className="mx-auto max-w-[62ch]" />
+        </div>
+        <div className="mt-8 flex justify-end"><Button onClick={afterTheory}><LuBookOpen />{exercises.length > 0 ? 'Перейти к практике' : content.dialogue ? 'Перейти к диалогу' : 'Завершить урок'}<LuArrowRight /></Button></div>
+      </section>}
       {content && stage === 'practice' && <section className="mt-10 border-t border-[var(--line)] pt-7">
         <div className="flex items-center justify-between gap-4 text-sm"><button type="button" onClick={() => openStage('theory')} className="font-semibold text-[var(--accent)]">К теории</button><span className="text-[var(--text-muted)]">Задание {exerciseIndex + 1} из {exercises.length}</span></div>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]"><div className="h-full bg-[var(--accent)]" style={{ width: `${((exerciseIndex + 1) / exercises.length) * 100}%` }} /></div>
@@ -188,7 +204,7 @@ function CheckRow({ disabled, checked, correct, compare = false, onCheck, onRese
 
 function ReferenceAnswer({ value }: { value: string }) { return <div className="mt-3 rounded-md bg-[var(--bg-sunken)] p-4"><p className="text-sm font-semibold"><LuLightbulb className="mr-1 inline" />Пример ответа</p><p className="mt-2 whitespace-pre-line">{value}</p></div>; }
 
-function Dialogue({ nodes, startId }: { nodes: DialogueNode[]; startId: string }) {
+export function Dialogue({ nodes, startId }: { nodes: DialogueNode[]; startId: string }) {
   const byId = useMemo(() => new Map(nodes.map((node) => [node.id, node])), [nodes]);
   const [current, setCurrent] = useState(startId); const [history, setHistory] = useState<string[]>([]);
   const node = byId.get(current); if (!node) return <p>Сценарий диалога повреждён.</p>;

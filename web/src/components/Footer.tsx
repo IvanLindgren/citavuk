@@ -1,5 +1,7 @@
 import { Link } from '../lib/router';
+import { VUKOTOK_PATH } from './Header';
 import { Ornament } from './Ornament';
+import { WolfGlyph } from './WolfGlyph';
 
 /**
  * Подвал сайта.
@@ -15,19 +17,34 @@ import { Ornament } from './Ornament';
 const VIDEO_URL = 'https://serbiansubtitles.online/';
 const TELEGRAM_URL = 'https://t.me/citavuk';
 
+/**
+ * Колонки повторяют группы из шапки: «Читать», «Учиться», «Читавук».
+ *
+ * Прежде разделы для занятий лежали одним списком из девяти пунктов рядом с
+ * колонкой из трёх. Колонка-башня и колонка-огрызок читались как недоделанная
+ * вёрстка, а найти нужное в списке из девяти равноправных строк можно было
+ * только перебором.
+ */
 const COLUMNS = [
   {
-    title: 'Заниматься',
+    title: 'Читать',
     links: [
-      { to: '/books', label: 'Что читать на сербском' },
+      { to: VUKOTOK_PATH, label: 'Вукоток' },
       { to: '/library', label: 'Моя библиотека' },
       { to: '/public-library', label: 'Публичная библиотека' },
+      { to: '/books', label: 'Что читать на сербском' },
+    ],
+  },
+  {
+    title: 'Учиться',
+    links: [
+      { to: '/course', label: 'Курс грамматики' },
+      { to: '/trainer', label: 'Тренажёрка' },
       { to: '/cards', label: 'Карточки' },
       { to: '/palace', label: 'Дворец памяти' },
       { to: '/listening', label: 'Слушание' },
       { to: '/dialogues', label: 'Игровые диалоги' },
-      { to: '/course', label: 'Курс грамматики' },
-      { to: '/trainer', label: 'Тренажёрка по грамматике' },
+      { to: '/lessons', label: 'Уроки преподавателей' },
     ],
   },
   {
@@ -36,12 +53,13 @@ const COLUMNS = [
       { to: '/materials', label: 'Для поступления' },
       { to: '/materials?level=gimnazija', label: 'Приём в гимназию' },
       { to: '/materials?level=fakultet', label: 'Вступительные на факультет' },
+      { to: '/teachers', label: 'Для учителей' },
     ],
   },
   {
-    title: 'Приложение',
+    title: 'Читавук',
     links: [
-      { to: '/downloads', label: 'Скачать' },
+      { to: '/downloads', label: 'Скачать приложение' },
       { to: '/support', label: 'Поддержать проект' },
       { to: '/account', label: 'Аккаунт' },
       { to: '/about', label: 'О разработчике' },
@@ -66,12 +84,12 @@ export function Footer() {
         <Ornament count={28} animated={false} />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_repeat(3,1fr)]">
+      <div className="relative mx-auto max-w-6xl px-5 pt-12 pb-8">
+        <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.25fr_repeat(4,1fr)]">
           <div>
             <Link
               to="/"
-              className="inline-flex items-center gap-2.5 font-display text-xl font-bold"
+              className="group inline-flex items-center gap-2.5 font-display text-xl font-bold"
             >
               <img
                 src="/img/citavuk_icon.webp"
@@ -79,7 +97,7 @@ export function Footer() {
                 alt=""
                 width={32}
                 height={32}
-                className="size-8 rounded-lg"
+                className="size-8 rounded-lg transition-transform duration-300 group-hover:-rotate-6"
               />
               Читавук
             </Link>
@@ -87,7 +105,7 @@ export function Footer() {
               Сербский через чтение. Открываете текст, нажимаете слово и видите
               перевод в этом предложении, разбор формы и объяснение по-русски.
             </p>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-2.5">
               <IconLink
                 href={TELEGRAM_URL}
                 label="Телеграм-канал Читавука"
@@ -99,42 +117,36 @@ export function Footer() {
                 path="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1zm6 3.5v7l6-3.5z"
               />
             </div>
+
+            {/* Витрина Вукотока и в подвале: раздел новый, и человеку, который
+                доскроллил до конца, о нём стоит сказать ещё раз. */}
+            <Link
+              to={VUKOTOK_PATH}
+              className="group mt-5 inline-flex items-center gap-2 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3 py-2 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/20"
+            >
+              <WolfGlyph className="size-4 transition-transform duration-300 group-hover:-rotate-12" />
+              Открыть Вукоток
+            </Link>
           </div>
 
           {COLUMNS.map((column) => (
             <nav key={column.title} aria-label={column.title}>
               <h2 className="mb-3 font-display text-sm font-bold uppercase tracking-wide text-[var(--text)]">
                 {column.title}
+                {/* Короткая черта под заголовком: четыре одинаковых столбца
+                    текста иначе сливаются в сплошную стену. */}
+                <span className="mt-1.5 block h-0.5 w-6 rounded-full bg-[var(--accent)]/45" aria-hidden="true" />
               </h2>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-1.5 text-sm">
                 {column.links.map((link) => (
                   <li key={link.to}>
-                    <Link
-                      to={link.to}
-                      className="text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
-                    >
-                      {link.label}
-                    </Link>
+                    <FooterLink to={link.to}>{link.label}</FooterLink>
                   </li>
                 ))}
                 {'external' in column &&
                   column.external.map((link) => (
                     <li key={link.href}>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="inline-flex items-center gap-1 text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
-                      >
-                        {link.label}
-                        <svg
-                          viewBox="0 0 24 24"
-                          className="size-3 fill-current opacity-60"
-                          aria-hidden="true"
-                        >
-                          <path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h5v2H6v11h11v-4h2v5a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-                        </svg>
-                      </a>
+                      <FooterLink href={link.href}>{link.label}</FooterLink>
                     </li>
                   ))}
               </ul>
@@ -142,41 +154,81 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-[var(--line)] pt-6 text-sm text-[var(--text-muted)]">
-          <p className="text-center sm:text-left">
-            Разработчиком приложения является Денис Корнилов. При возникших
-            вопросах при использовании сайта вы можете написать ему в телеграм:{' '}
-            <a
-              className="underline transition-colors hover:text-[var(--accent)]"
-              href="https://t.me/ivanlindgren"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              @ivanlindgren
-            </a>{' '}
-            или вконтакте (
-            <a
-              className="underline transition-colors hover:text-[var(--accent)]"
-              href="https://vk.com/denkorni"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              vk.com/denkorni
-            </a>
-            ).
-          </p>
-
-          <div className="mt-4 flex flex-col-reverse items-center gap-4 sm:flex-row sm:justify-between">
-            <span>© {new Date().getFullYear()} Читавук</span>
-            <span className="text-center sm:text-right">
-              Материалы для поступления взяты со страниц сербских учреждений и
+        <div className="mt-10 border-t border-[var(--line)] pt-5 text-xs leading-relaxed text-[var(--text-muted)]">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <p className="max-w-xl">
+              Разработчик — Денис Корнилов. Вопросы по сайту:{' '}
+              <a
+                className="underline underline-offset-2 transition-colors hover:text-[var(--accent)]"
+                href="https://t.me/ivanlindgren"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                @ivanlindgren
+              </a>{' '}
+              или{' '}
+              <a
+                className="underline underline-offset-2 transition-colors hover:text-[var(--accent)]"
+                href="https://vk.com/denkorni"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                vk.com/denkorni
+              </a>
+              . Материалы для поступления взяты со страниц сербских учреждений и
               факультетов, ссылками на первоисточник.
-            </span>
+            </p>
+            <span className="shrink-0 sm:text-right">© {new Date().getFullYear()} Читавук</span>
           </div>
         </div>
       </div>
     </footer>
   );
+}
+
+/**
+ * Ссылка подвала.
+ *
+ * При наведении показывает точку слева и отъезжает на волосок вправо. Два
+ * десятка одинаковых строк подряд иначе не дают понять, на какой из них
+ * курсор: смены одного цвета для этого мало.
+ */
+function FooterLink({
+  to,
+  href,
+  children,
+}: {
+  to?: string;
+  href?: string;
+  children: string;
+}) {
+  const className =
+    'group inline-flex items-center gap-1.5 text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]';
+  const content = (
+    <>
+      <span
+        className="size-1 shrink-0 rounded-full bg-[var(--accent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <span className="transition-transform duration-200 group-hover:translate-x-0.5">
+        {children}
+      </span>
+      {href && (
+        <svg viewBox="0 0 24 24" className="size-3 shrink-0 fill-current opacity-60" aria-hidden="true">
+          <path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h5v2H6v11h11v-4h2v5a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
+        </svg>
+      )}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer noopener" className={className}>
+        {content}
+      </a>
+    );
+  }
+  return <Link to={to ?? '/'} className={className}>{content}</Link>;
 }
 
 function IconLink({
@@ -195,7 +247,7 @@ function IconLink({
       rel="noreferrer noopener"
       aria-label={label}
       title={label}
-      className="flex size-10 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+      className="flex size-10 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--text-muted)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] hover:shadow-[var(--shadow-soft)]"
     >
       <svg viewBox="0 0 24 24" className="size-5 fill-current" aria-hidden="true">
         <path d={path} />
