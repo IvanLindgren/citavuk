@@ -10,6 +10,7 @@ import (
 	"github.com/citavuk/server/internal/auth"
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
+	"github.com/citavuk/server/internal/dictionary"
 	"github.com/citavuk/server/internal/feed"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
@@ -40,6 +41,7 @@ type Server struct {
 	media        *media.Service
 	microFeed    *feed.Generator
 	feedSources  *feed.SourceFetcher
+	dictionary   definitionLookup
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -113,6 +115,10 @@ func New(
 			cfg.FeedEmbeddingKey, cfg.FeedEmbeddingModel, cfg.FeedEmbeddingURL,
 		),
 		feedSources: feed.NewSourceFetcher(),
+		// Толкования берутся у чужого сайта по одному, на нажатие слова.
+		// Кеш на сутки: словарные статьи не меняются, а лишний поход к соседу
+		// на каждое повторное слово — просто невежливость.
+		dictionary: dictionary.New(24 * time.Hour),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),
@@ -371,6 +377,7 @@ func (s *Server) Handler() http.Handler {
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не
 	// требует: приложение делает то же офлайн, сайту нужен сервер.
 	mux.HandleFunc("POST /v1/analyze", s.rateLimit(s.generalLimit, s.handleAnalyze))
+	mux.HandleFunc("GET /v1/definition", s.rateLimit(s.generalLimit, s.handleDefinition))
 	mux.HandleFunc("GET /v1/grammar/cases", s.rateLimit(s.generalLimit, s.handleGrammarCases))
 	// Совместимость с уже установленными версиями приложения.
 	mux.HandleFunc("GET /translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateLegacy)))

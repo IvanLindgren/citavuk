@@ -28,6 +28,7 @@ import { Spinner } from './ui';
 import { TtsVoicePicker } from './TtsVoicePicker';
 import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 import { ttsAudioUrl } from '../api/listening';
+import { fetchDefinition, type Definition } from '../api/definition';
 import { serbianIpa, serbianIpaParts, splitAccented } from '../lib/serbianPronunciation';
 
 export interface ReaderMark {
@@ -902,6 +903,12 @@ function WordCard({
   const reflexive = kind === 'word' ? analysis?.reflexive : undefined;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [speaking, setSpeaking] = useState(false);
+  // Толкование ищется по начальной форме: словарь ведётся по заглавным словам.
+  // У возвратного глагола начальная форма своя — «vratiti se», а не «vratiti».
+  const { definition } = useDefinition(
+    reflexive?.lemma || analysis?.lemma || word,
+    kind === 'word' && !analysis?.english,
+  );
 
   const pronounce = useCallback(() => {
     audioRef.current?.pause();
@@ -1076,6 +1083,12 @@ function WordCard({
                   слово ради перевода, а объяснение — уже уточнение. */}
               {kind === 'word' && analysis?.english && <EnglishNotice />}
 
+              {/* Сбоку карточка встаёт только когда там есть место. На узком
+                  экране и у края текста её некуда деть, и толкование идёт
+                  сюда же — после перевода, перед разбором. */}
+              {definition && !placement.definitionStyle && (
+                <DefinitionCard definition={definition} compact />
+              )}
               {reflexive && <ReflexivePanel reflexive={reflexive} />}
               {kind === 'word' && analysis && <GrammarPanel analysis={analysis} />}
               {/* Разбора нет — и об этом надо сказать словом, а не пустым
@@ -1159,7 +1172,30 @@ function WordCard({
     </motion.div>
   );
 
-  return typeof document === 'undefined' ? card : createPortal(card, document.body);
+  // Толкование — отдельный слой, а не часть карточки перевода: та встаёт по
+  // слову и её ширина держит вёрстку, а пристёгнутая сбоку колонка сдвигала бы
+  // перевод от слова, на которое нажали.
+  const layers = (
+    <>
+      {card}
+      {definition && placement.definitionStyle && (
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -8 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed z-[88] p-2"
+          style={placement.definitionStyle}
+          role="complementary"
+          aria-label={`Значение слова ${definition.headword} по-сербски`}
+        >
+          <DefinitionCard definition={definition} maxHeight={placement.contentMaxHeight} />
+        </motion.div>
+      )}
+    </>
+  );
+
+  return typeof document === 'undefined' ? layers : createPortal(layers, document.body);
 }
 
 function playAudio(audio: HTMLAudioElement): void {
@@ -1173,6 +1209,8 @@ function playAudio(audio: HTMLAudioElement): void {
 
 const CARD_WIDTH = 420;
 const CARD_GAP = 10;
+/** Ширина карточки толкования, которая пристраивается сбоку от перевода. */
+const DEFINITION_WIDTH = 340;
 /** Ширина панели «перевести выделенное», когда она стоит у самой фразы. */
 const TOOLBAR_WIDTH = 380;
 /** Ниже этой ширины карточка встаёт листом снизу — рядом со словом ей тесно. */
@@ -1261,6 +1299,7 @@ function useCardPlacement(anchor: DOMRect | null) {
       floating: false,
       style: undefined as CSSProperties | undefined,
       contentMaxHeight: '80vh',
+      definitionStyle: undefined as CSSProperties | undefined,
     };
   }
 
@@ -1281,10 +1320,33 @@ function useCardPlacement(anchor: DOMRect | null) {
   } else {
     style.bottom = viewport.height - anchor.top + CARD_GAP;
   }
+
+  // Толкование пристраивается сбоку и по верхнему краю карточки перевода.
+  // Справа — если справа помещается; иначе слева. Не помещается нигде —
+  // карточки нет, и толкование уходит внутрь основной, под перевод: столбец
+  // шириной в полсотни точек читать нельзя.
+  const rightRoom = viewport.width - (left + CARD_WIDTH) - CARD_GAP * 2;
+  const leftRoom = left - CARD_GAP * 2;
+  let definitionStyle: CSSProperties | undefined;
+  if (rightRoom >= DEFINITION_WIDTH) {
+    definitionStyle = {
+      ...style,
+      left: left + CARD_WIDTH + CARD_GAP,
+      width: DEFINITION_WIDTH,
+    };
+  } else if (leftRoom >= DEFINITION_WIDTH) {
+    definitionStyle = {
+      ...style,
+      left: left - DEFINITION_WIDTH - CARD_GAP,
+      width: DEFINITION_WIDTH,
+    };
+  }
+
   return {
     floating: true,
     style,
     contentMaxHeight: `${Math.max(220, room - CARD_GAP * 2)}px`,
+    definitionStyle,
   };
 }
 
@@ -1306,6 +1368,130 @@ export function hasFormChoice(
 ): boolean {
   if (kind !== 'word' || !analysis?.lemma) return false;
   return analysis.lemma.toLocaleLowerCase('sr') !== word.toLocaleLowerCase('sr');
+}
+
+/**
+ * Толкование начальной формы слова из сербского толкового словаря.
+ *
+ * Запрашивается только начальная форма: словарь ведётся по заглавным словам.
+ * Английские слова и фразы пропускаются — там искать нечего.
+ *
+ * Слова в словаре может не быть, и это обычный исход: словарь толковый, в нём
+ * нет ни имён, ни свежих заимствований. Тогда возвращается null и карточка
+ * просто не появляется — сообщать «не нашли» не о чем.
+ */
+function useDefinition(
+  lemma: string,
+  enabled: boolean,
+): { definition: Definition | null; loading: boolean } {
+  const [definition, setDefinition] = useState<Definition | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setDefinition(null);
+    if (!enabled || !lemma.trim()) {
+      setLoading(false);
+      return;
+    }
+    // Слово могли сменить, пока шёл запрос: ответ на прежнее слово в карточке
+    // нового — хуже, чем пустая карточка.
+    const controller = new AbortController();
+    setLoading(true);
+    fetchDefinition(lemma, controller.signal)
+      .then((entry) => {
+        if (!controller.signal.aborted) setDefinition(entry);
+      })
+      .catch(() => {
+        // Сбой словаря молчаливый: перевод уже показан, и ругаться на
+        // недоступность соседнего сайта посреди чтения незачем.
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, [lemma, enabled]);
+
+  return { definition, loading };
+}
+
+/** Значения слова по-сербски. Отдельная карточка сбоку от перевода. */
+function DefinitionCard({
+  definition,
+  compact = false,
+  maxHeight,
+}: {
+  definition: Definition;
+  compact?: boolean;
+  maxHeight?: string;
+}) {
+  return (
+    <div
+      className={[
+        'flex flex-col overflow-hidden border border-[var(--line)] bg-[var(--bg-raised)]',
+        compact ? 'rounded-2xl' : 'rounded-3xl shadow-[var(--shadow-lift)]',
+      ].join(' ')}
+      style={{ maxHeight }}
+    >
+      <div className="shrink-0 border-b border-[var(--line)] px-4 py-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          Значение по-сербски
+        </div>
+        <div className="mt-1 font-display text-lg font-bold text-[var(--text)]">
+          {definition.headword}
+          {definition.grammar && (
+            <span className="ml-2 text-sm font-normal italic text-[var(--text-muted)]">
+              {definition.grammar}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="overflow-y-auto overscroll-contain px-4 py-3">
+        <ol className="space-y-3">
+          {definition.senses.map((sense, index) => (
+            <li key={`${sense.definition}-${index}`} className="text-sm leading-relaxed">
+              <span className="font-semibold text-[var(--text-muted)]">
+                {sense.number || (definition.senses.length > 1 ? index + 1 : '')}
+                {sense.number || definition.senses.length > 1 ? '. ' : ''}
+              </span>
+              {(sense.domain || sense.register) && (
+                <span className="italic text-[var(--text-muted)]">
+                  {[sense.domain, sense.register].filter(Boolean).join(', ')}{' '}
+                </span>
+              )}
+              {sense.definition}
+              {/* Цитаты набраны мельче: они иллюстрация, а не толкование, и
+                  читающему по слогам не должны мешать искать главное. */}
+              {sense.examples?.map((example) => (
+                <p
+                  key={example.text}
+                  className="mt-1.5 border-l-2 border-[var(--line)] pl-2 text-xs italic leading-relaxed text-[var(--text-muted)]"
+                >
+                  {example.text}
+                  {example.source && <span className="not-italic"> — {example.source}</span>}
+                </p>
+              ))}
+            </li>
+          ))}
+        </ol>
+
+        {/* Словарь чужой, и назвать его обязательно: статья показана как
+            цитата со ссылкой на источник, а не как наш собственный текст. */}
+        <p className="mt-3 border-t border-[var(--line)] pt-2 text-xs leading-relaxed text-[var(--text-muted)]">
+          <a
+            href={definition.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="font-semibold underline-offset-2 hover:underline"
+          >
+            {definition.sourceTitle}
+          </a>
+          {definition.volume ? `, том ${definition.volume}` : ''}
+          {definition.page ? `, с. ${definition.page}` : ''}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 /** Есть ли что показать в панели грамматики — иначе панели не будет вовсе. */
