@@ -39,7 +39,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
-    size: '90 МБ',
+    size: '97 МБ',
     note: 'Установка из файла: разрешите её для браузера в настройках Android.',
   },
   {
@@ -49,12 +49,12 @@ const PLATFORMS: Platform[] = [
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '33 МБ',
+    size: '37 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '36 МБ',
+      size: '42 МБ',
     },
   },
   {
@@ -64,7 +64,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
-    size: '34 МБ',
+    size: '39 МБ',
     note: 'Распакуйте архив и запустите ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1 — на обычном рабочем столе они уже стоят.',
   },
   {
@@ -74,10 +74,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Beta-версия читалки для Mac с синхронизацией, курсом, диалогами и аудированием.',
     href: '/files/citavuk-macos.zip',
-    // Своя версия: сборка под Mac делается отдельно, через GitHub Actions, и в
-    // выпуск 1.11.0 не попала. Общий номер обещал бы файл, которого нет.
-    version: '1.9.0',
-    size: '42 МБ',
+    size: '51 МБ',
     note: 'Beta пока не подписана Apple Developer ID. При первом запуске нажмите приложение правой кнопкой, выберите «Открыть» и подтвердите запуск.',
   },
   {
