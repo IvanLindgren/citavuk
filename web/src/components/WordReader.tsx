@@ -19,7 +19,7 @@ import {
 } from '../api/translate';
 import { parseBlock } from '../lib/blocks';
 import { BIONIC_RATIO, type BionicLevel } from '../lib/readerSettings';
-import { Mascot } from './Mascot';
+import { Mascot, type MascotPose } from './Mascot';
 import { Link } from '../lib/router';
 import { saveVocabularyWord } from '../lib/vocabulary';
 import { tokenize, type Token } from '../lib/tokenize';
@@ -1038,12 +1038,25 @@ function WordCard({
 
           {result && !loading && (
             <div className="space-y-4">
-              <Field
-                label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
-                emphasis
-              >
-                {result.text || '—'}
-              </Field>
+              {/* Перевод произносит сам Читавук — так это сделано в приложении
+                  («WolfBubble» в читалке). Маскот, стоящий отдельной картинкой
+                  в углу, занимает место и ничего не говорит; в реплике он
+                  занимает то же место осмысленно. У английского слова свой
+                  маскот ниже, в пояснении, — двух в карточке быть не должно. */}
+              {analysis?.english ? (
+                <Field
+                  label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
+                  emphasis
+                >
+                  {result.text || '—'}
+                </Field>
+              ) : (
+                <MascotSays
+                  label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
+                >
+                  {result.text || '—'}
+                </MascotSays>
+              )}
 
               {result.sentence && (
                 <Field label="Всё предложение">{result.sentence}</Field>
@@ -1065,13 +1078,13 @@ function WordCard({
 
               {reflexive && <ReflexivePanel reflexive={reflexive} />}
               {kind === 'word' && analysis && <GrammarPanel analysis={analysis} />}
-              {/* Читавук в углу карточки: разбор — самое частое действие в
-                  продукте, и единственное живое в нём место должно быть там,
-                  куда чаще всего смотрят. Гладится, как в приложении. */}
-              {kind === 'word' && !analysis?.english && (
-                <div className="flex justify-end">
-                  <Mascot pose="citavuk_gram" alt="" className="w-16 shrink-0 object-contain" />
-                </div>
+              {/* Разбора нет — и об этом надо сказать словом, а не пустым
+                  местом там, где обычно стоит панель грамматики. */}
+              {kind === 'word' && analysis && !analysis.english && !hasGrammar(analysis) && (
+                <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+                  Эту форму Читавук в словаре не нашёл: перевод есть, а разбора и
+                  склонения не будет.
+                </p>
               )}
               {onSave && formChoice && (
                 <SaveChoice
@@ -1293,6 +1306,68 @@ export function hasFormChoice(
 ): boolean {
   if (kind !== 'word' || !analysis?.lemma) return false;
   return analysis.lemma.toLocaleLowerCase('sr') !== word.toLocaleLowerCase('sr');
+}
+
+/** Есть ли что показать в панели грамматики — иначе панели не будет вовсе. */
+function hasGrammar(analysis: WordAnalysis): boolean {
+  if (analysis.english) return true;
+  return (
+    analysis.known ||
+    analysis.facts.length > 0 ||
+    analysis.paradigms.length > 0 ||
+    (analysis.prepositions?.length ?? 0) > 0
+  );
+}
+
+/**
+ * Реплика Читавука: маскот и облачко с хвостиком, как в приложении.
+ *
+ * Перевод — то единственное, ради чего слово нажимают, и произносит его
+ * маскот: так связка «нажал — Читавук ответил» читается сразу, а картинка
+ * перестаёт быть наклейкой в углу. Размер взят из приложения (там волк
+ * 130 px), потому что мелкий маскот в углу читался как случайный значок.
+ */
+function MascotSays({
+  label,
+  children,
+  pose = 'citavuk_gram',
+}: {
+  label: string;
+  children: ReactNode;
+  pose?: MascotPose;
+}) {
+  return (
+    <div className="flex items-center">
+      <Mascot
+        pose={pose}
+        alt="Читавук"
+        className="w-24 shrink-0 object-contain sm:w-28"
+      />
+      {/* Хвостик облачка смотрит на волка. Правая сторона не обводится —
+          она стоит вплотную к рамке облачка и удвоила бы линию. */}
+      <svg
+        viewBox="0 0 11 20"
+        className="-mr-px h-5 w-[11px] shrink-0"
+        aria-hidden="true"
+      >
+        <path
+          d="M11 1 L1 10 L11 19"
+          fill="var(--bg-sunken)"
+          stroke="var(--line)"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <div className="min-w-0 flex-1 rounded-2xl rounded-tl-sm border border-[var(--line)] bg-[var(--bg-sunken)] px-4 py-3">
+        <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          {label}
+        </div>
+        <div className="font-display text-lg font-semibold leading-snug">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 /**
@@ -1551,7 +1626,7 @@ function GrammarPanel({ analysis }: { analysis: WordAnalysis }) {
     analysis.paradigms.length > 0 ||
     (analysis.prepositions?.length ?? 0) > 0;
 
-  if (!analysis.known && !hasContent) return null;
+  if (!hasGrammar(analysis)) return null;
 
   return (
     <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4">

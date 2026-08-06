@@ -705,7 +705,22 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
               child: Center(child: Text('Не удалось перевести слово')),
             );
           }
+          // Контекстный перевод главный, словарный — ниже и мельче, но только
+          // если он отличается: два одинаковых перевода подряд выглядят сбоем.
           final contextual = data.contextualTranslation?.trim() ?? '';
+          final general = data.translation.trim();
+          final hasContext = contextual.isNotEmpty &&
+              contextual.toLowerCase() != general.toLowerCase();
+          final primary = hasContext
+              ? contextual
+              : (general.isNotEmpty ? general : contextual);
+          // Движок мог не узнать форму: тогда вместо «слово · » с висящей
+          // точкой не показываем ничего.
+          final subtitle = reflexive != null
+              ? 'возвратный глагол${reflexive.lemma.isEmpty ? '' : ' · ${reflexive.lemma}'}'
+              : data.lemma.trim().isEmpty
+                  ? ''
+                  : '${GrammarEngine.posShort(data.upos)} · ${data.lemma}';
           return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -719,28 +734,23 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                   const SizedBox(height: 4),
                   _AccentLine(accent: _accent!, fallback: data.surface),
                 ],
-                const SizedBox(height: 6),
-                Text(
-                  reflexive != null
-                      ? 'возвратный глагол${reflexive.lemma.isEmpty ? '' : ' · ${reflexive.lemma}'}'
-                      : '${GrammarEngine.posShort(data.upos)} · ${data.lemma}',
-                  style: TextStyle(color: scheme.onSurfaceVariant),
-                ),
-                const SizedBox(height: 16),
-                if (contextual.isNotEmpty) ...[
-                  Text('В этом предложении',
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: .6,
-                          color: scheme.onSurfaceVariant)),
-                  const SizedBox(height: 4),
-                  Text(contextual,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 14),
+                if (subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  Text(subtitle,
+                      style: TextStyle(color: scheme.onSurfaceVariant)),
                 ],
-                if (data.translation.trim().isNotEmpty) ...[
+                const SizedBox(height: 16),
+                // Перевод говорит сам Читавук — ровно как в читалке. Иначе в
+                // Вукотоке маскота нет вовсе, а карточка при неудачном разборе
+                // остаётся почти пустой.
+                WolfBubble(
+                  title: hasContext ? 'В этом предложении' : 'Перевод',
+                  text: primary.isEmpty ? 'Перевода нет' : primary,
+                  asset: Wolf.gram,
+                  wolfSize: 104,
+                ),
+                if (hasContext) ...[
+                  const SizedBox(height: 12),
                   Text('Словарное значение',
                       style: TextStyle(
                           fontSize: 11,
@@ -748,10 +758,23 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                           letterSpacing: .6,
                           color: scheme.onSurfaceVariant)),
                   const SizedBox(height: 4),
-                  Text(data.translation),
-                  const SizedBox(height: 14),
+                  Text(general),
                 ],
-                if (reflexive != null) _ReflexiveCard(reflexive: reflexive),
+                if (reflexive != null) ...[
+                  const SizedBox(height: 14),
+                  _ReflexiveCard(reflexive: reflexive),
+                ],
+                // Разбора не будет — говорим об этом словом, а не пустотой на
+                // месте, где обычно стоит грамматика.
+                if (subtitle.isEmpty) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    'Эту форму Читавук в словаре не нашёл: перевод есть, '
+                    'а разбора и склонения не будет.',
+                    style: TextStyle(
+                        fontSize: 13, color: scheme.onSurfaceVariant),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
