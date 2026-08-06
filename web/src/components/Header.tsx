@@ -26,6 +26,7 @@ import type { IconType } from 'react-icons';
 
 import { Link, useRouter } from '../lib/router';
 import { focusableInside, useFocusTrap, useScrollLock } from '../lib/overlay';
+import { useReadingProgress } from '../lib/readingProgress';
 import { WolfGlyph } from './WolfGlyph';
 import { NotificationBell } from './ServerAnnouncements';
 import { odysseyAvailable } from '../events/odyssey';
@@ -187,29 +188,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Настоящая высота шапки уезжает в CSS-переменную.
-  //
-  // Ею пользуются слои, которые обязаны стоять ВПЛОТНУЮ под шапкой, — прежде
-  // всего полоса прогресса книги. Она была прибита к `top-16`, то есть к
-  // высоте нерасжатой шапки без полосы поддержки, и на деле почти никогда с
-  // ней не совпадала: при прокрутке шапка ужимается до 56 точек, и полоса
-  // повисала в воздухе, а с полосой поддержки (на телефоне это две-три строки)
-  // и вовсе оказывалась посреди шапки. Со стороны это выглядело как отрыв
-  // красной черты и подтормаживание всей шапки, потому что она свою высоту
-  // анимирует, а прибитая полоса за ней не поспевала.
-  useEffect(() => {
-    const node = headerRef.current;
-    if (!node) return;
-    const apply = () => {
-      document.documentElement.style.setProperty(
-        '--header-height', `${Math.round(node.getBoundingClientRect().height)}px`);
-    };
-    apply();
-    const observer = new ResizeObserver(apply);
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
   // Смена страницы закрывает мобильное меню — иначе оно останется поверх нового
   // экрана.
   useEffect(() => setMenuOpen(false), [path]);
@@ -320,6 +298,7 @@ export function Header() {
       </div>
 
       <SupportStrip />
+      <ReadingProgressBar />
 
       {typeof document !== 'undefined' && createPortal(<AnimatePresence>
         {menuOpen && (
@@ -601,6 +580,28 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/**
+ * Полоса прогресса книги — нижняя строка шапки.
+ *
+ * Место у неё именно здесь, а не в читалке: полоса привязана к нижнему краю
+ * шапки, и удержать её там снаружи можно только повторяя чужую высоту. Пока
+ * книгу не читают, полосы нет вовсе и высоты она не занимает.
+ */
+function ReadingProgressBar() {
+  const progress = useReadingProgress();
+  if (progress == null) return null;
+
+  return (
+    <div className="h-1 bg-transparent" role="presentation">
+      <motion.div
+        className="h-full bg-[var(--accent)]"
+        animate={{ width: `${progress}%` }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      />
     </div>
   );
 }

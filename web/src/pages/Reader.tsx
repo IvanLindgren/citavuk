@@ -27,6 +27,7 @@ import { ttsAudioUrl } from '../api/listening';
 import { TtsVoicePicker } from '../components/TtsVoicePicker';
 import { parseBlock } from '../lib/blocks';
 import { tokenize } from '../lib/tokenize';
+import { setReadingProgress } from '../lib/readingProgress';
 
 type LoadState =
   | { kind: 'loading' }
@@ -264,6 +265,15 @@ export function Reader() {
 
   useEffect(() => () => audioRef.current?.pause(), []);
 
+  // Полосу прогресса рисует шапка — читалка только сообщает долю прочитанного.
+  // Полоса привязана к нижнему краю шапки, и держать её снаружи можно было
+  // только повторяя чужую высоту; отсюда она и уезжала.
+  const progress = pages.length > 1 ? ((page + 1) / pages.length) * 100 : 100;
+  useEffect(() => {
+    setReadingProgress(state.kind === 'ready' ? progress : null);
+  }, [progress, state.kind]);
+  useEffect(() => () => setReadingProgress(null), []);
+
   // Листание с клавиатуры — на десктопе это основной способ читать.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -351,7 +361,6 @@ export function Reader() {
       ? [{ ...audioMark, kind: 'audio' }]
       : [],
   );
-  const progress = pages.length > 1 ? ((page + 1) / pages.length) * 100 : 100;
   const hasOdysseyReward = odysseyRewardUnlocked(account?.id);
   const campaignRewardUrl = rewards.reader_background_100 ?? '';
   const effectiveTheme = (settings.theme === 'odyssey' && !hasOdysseyReward) ||
@@ -393,21 +402,6 @@ export function Reader() {
 
   return (
     <main className={`px-5 py-8 ${audiobookEnabled ? 'pb-28' : ''}`}>
-      {/* Полоса прогресса книги вверху — привычный ориентир в читалках.
-          Держится за настоящую высоту шапки (её ставит Header): шапка ужимается
-          при прокрутке и может нести полосу поддержки, и прибитая к постоянным
-          64 точкам полоса от неё отрывалась. */}
-      <div
-        className="fixed inset-x-0 z-30 h-1 bg-transparent"
-        style={{ top: 'var(--header-height, 4rem)' }}
-      >
-        <motion.div
-          className="h-full bg-[var(--accent)]"
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </div>
-
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
