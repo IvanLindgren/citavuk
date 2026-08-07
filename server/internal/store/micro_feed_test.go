@@ -125,6 +125,71 @@ func equal(left, right []string) bool {
 	return true
 }
 
+func TestFeedLevelCapAllowsOnlyOneStepUp(t *testing.T) {
+	for _, item := range []struct {
+		level string
+		want  int
+	}{
+		{"A1", 2},
+		{"A2", 3},
+		{"B1", 4},
+		{"B2", 5},
+		{"C1", 5},
+	} {
+		if got := maxFeedLevelIndex(item.level); got != item.want {
+			t.Errorf("%s: потолок %d, ожидался %d", item.level, got, item.want)
+		}
+	}
+}
+
+// У A2 есть сотня собственных карточек, однако раньше 70% холодной выдачи
+// обходили фильтр сложности и в ленту попадал B2. Проверяем весь настоящий SQL,
+// включая популярное, темы и exploration, а не только функцию шкалы выше.
+func TestBeginnerFeedPrefersOwnLevelAndNeverJumpsTwo(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+
+	var a2Count int
+	if err := s.Pool.QueryRow(ctx, `
+		SELECT count(*) FROM micro_feed_content_items
+		WHERE status='published' AND cefr='A2'`).Scan(&a2Count); err != nil {
+		t.Fatal(err)
+	}
+	if a2Count == 0 {
+		t.Skip("в базе нет опубликованных A2-карточек")
+	}
+
+	actor := "test-feed-a2-" + uuid.NewString()
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(),
+			`DELETE FROM micro_feed_profiles_embeddings WHERE actor_key=$1`, actor)
+	})
+	if _, err := s.SaveMicroFeedPreferences(
+		ctx, actor, uuid.Nil, []string{"culture", "history"}, "A2",
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	items, _, err := s.ListMicroFeed(ctx, actor, nil, 20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(items) == 0 {
+		t.Fatal("A2 получил пустую ленту при наличии A2-карточек")
+	}
+	for _, item := range items {
+		if feedLevelIndex(item.CEFR) > feedLevelIndex("B1") {
+			t.Errorf("читателю A2 выдана карточка %s: %s", item.ID, item.CEFR)
+		}
+	}
+	if items[0].CEFR != "A2" {
+		t.Errorf("первая карточка уровня %s, хотя A2-карточки есть", items[0].CEFR)
+	}
+}
+
 // --- Профиль по поведению ---------------------------------------------------
 //
 // Профиль собирался из одних лайков, а лайк ставит меньшинство: большинство

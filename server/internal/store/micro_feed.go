@@ -528,6 +528,13 @@ func feedLevelIndex(cefr string) int {
 	return 3
 }
 
+// maxFeedLevelIndex разрешает ленте осторожно дать текст на одну ступень выше,
+// но не устраивать новичку скачок A2 -> B2. Одна ступень полезна как небольшой
+// вызов; две превращают микро-чтение в расшифровку каждого предложения.
+func maxFeedLevelIndex(cefr string) int {
+	return min(feedLevelIndex(cefr)+1, len(MicroFeedLevels))
+}
+
 func allowedFeedValue(value string, allowed []string) bool {
 	for _, item := range allowed {
 		if item == value {
@@ -737,6 +744,20 @@ func (s *Store) microFeedProfile(ctx context.Context, actorKey string) microProf
 	if err == nil && embedding != nil {
 		profile.Embedding = *embedding
 	}
+	// У вошедшего уровень аккаунта — единственный источник истины. Профиль
+	// ленты мог сохраниться как B1 до того, как человек выбрал A2 в настройках;
+	// GetMicroFeedPreferences уже показывал A2, а подбор выше продолжал читать
+	// старое значение и без конца отдавал более сложные карточки.
+	if userID, ok := actorUserID(actorKey).(uuid.UUID); ok {
+		if account, accountErr := s.GetSerbianLevel(ctx, userID); accountErr == nil && account.Known() {
+			if level := ClampToFeedLevel(account.Level); level != "" {
+				profile.CEFR = level
+			}
+		}
+	}
+	if !allowedFeedValue(profile.CEFR, MicroFeedLevels) {
+		profile.CEFR = "B1"
+	}
 	return profile
 }
 
@@ -748,6 +769,11 @@ func (s *Store) ListMicroFeed(
 ) ([]MicroFeedItem, string, error) {
 	if limit <= 0 || limit > 20 {
 		limit = 8
+	}
+	// pgx кодирует nil-срез как SQL NULL; `NOT id=ANY(NULL)` тоже становится
+	// NULL и отбрасывает каждую строку. Пустой список означает «не исключать».
+	if exclude == nil {
+		exclude = []uuid.UUID{}
 	}
 	profile := s.microFeedProfile(ctx, actorKey)
 	seen := make(map[uuid.UUID]bool, len(exclude)+limit)
@@ -901,7 +927,6 @@ func (s *Store) microFeedCandidates(
 	if limit <= 0 {
 		return []MicroFeedItem{}, nil
 	}
-	extra := ""
 	args := []any{actorKey, exclude, limit}
 
 	// Номер следующего параметра. Раньше здесь стояла зашитая «$4», и добавить
@@ -911,6 +936,18 @@ func (s *Store) microFeedCandidates(
 		return fmt.Sprintf("$%d", len(args))
 	}
 
+	levelPosition := "array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr)"
+	readerLevel := next(feedLevelIndex(profile.CEFR))
+	maxLevel := next(maxFeedLevelIndex(profile.CEFR))
+	// Ограничение применяется ко ВСЕМ стратегиям: популярность, сходство
+	// векторов и исследование новой темы не делают B2 понятным читателю A2.
+	extra := " AND " + levelPosition + " <= " + maxLevel
+	// Ровно свой уровень идёт первым, затем более лёгкий и лишь после него —
+	// одна разрешённая ступень выше. Поэтому имеющиеся A2 не тонут в тысяче B1.
+	levelOrder := "CASE WHEN " + levelPosition + " = " + readerLevel +
+		" THEN 0 WHEN " + levelPosition + " < " + readerLevel +
+		" THEN 1 ELSE 2 END, abs(" + levelPosition + " - " + readerLevel + "), "
+
 	// Обсуждение весит больше всего: комментарий стоит написанной фразы на
 	// чужом языке, и карточка, вокруг которой спорят, интереснее карточки,
 	// которую молча лайкнули. Дизлайк вычитается вдвое заметнее прежнего —
@@ -918,37 +955,32 @@ func (s *Store) microFeedCandidates(
 	trending := "(ln(2 + i.comments_count*10 + i.likes_count*3 + i.read_more_count*4)" +
 		" - i.dislikes_count*.5" +
 		" + 1/(1+extract(epoch from (now()-COALESCE(i.published_at,i.created_at)))/86400)) DESC"
-	order := trending
+	order := levelOrder + trending
 
 	switch mode {
 	case "semantic":
-		extra = " AND i.embedding IS NOT NULL"
-		order = "i.embedding <=> " + next(profile.Embedding) + "::vector, i.published_at DESC"
+		extra += " AND i.embedding IS NOT NULL"
+		order = levelOrder + "i.embedding <=> " + next(profile.Embedding) + "::vector, i.published_at DESC"
 	case "tags":
 		if len(profile.Tags) == 0 {
 			return []MicroFeedItem{}, nil
 		}
-		order = "(SELECT count(*) FROM unnest(i.tags) tag WHERE tag=ANY(" +
+		order = levelOrder + "(SELECT count(*) FROM unnest(i.tags) tag WHERE tag=ANY(" +
 			next(profile.Tags) + "::text[])) DESC, i.likes_count DESC"
 	case "declared":
 		if len(profile.Declared) == 0 {
 			return []MicroFeedItem{}, nil
 		}
-		extra = " AND i.category = ANY(" + next(profile.Declared) + "::text[])"
-		// Внутри названных тем — сначала подходящие по уровню, потом свежесть.
-		// Уровень выражен расстоянием по шкале, а не точным совпадением: карточек
-		// ровно своего уровня может не быть вовсе, и требовать их значило бы
-		// показать пустую ленту вместо соседней ступени.
-		order = "abs(" + next(feedLevelIndex(profile.CEFR)) +
-			" - array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr)), " + trending
+		extra += " AND i.category = ANY(" + next(profile.Declared) + "::text[])"
+		order = levelOrder + trending
 	case "easy":
 		// «Лёгкое» отсчитывается от названного уровня: для C1 «лёгкое» — это B1,
 		// а не A2, и подсовывать ему детские тексты незачем.
-		extra = " AND array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr) <= " +
+		extra += " AND " + levelPosition + " <= " +
 			next(feedLevelIndex(profile.CEFR))
-		order = "md5(i.id::text || $1 || current_date::text)"
+		order = levelOrder + "md5(i.id::text || $1 || current_date::text)"
 	case "explore":
-		order = "md5(i.category || i.id::text || $1 || current_date::text)"
+		order = levelOrder + "md5(i.category || i.id::text || $1 || current_date::text)"
 	}
 
 	// Темы, которые читатель раз за разом пролистывает, отодвигаются в конец
