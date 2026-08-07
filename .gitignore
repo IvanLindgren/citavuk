@@ -58,3 +58,9 @@ tools/course_build/*.exe
 
 # Исходники спрайтов (16 МБ psd/png): в сборку идут готовые webp из assets
 animations/source/
+
+# Сборки, скачанные из Play Console, и сертификаты подписи — для разбора
+# инцидентов. Артефакты чужой сборки в репозитории не нужны.
+*.apk
+*.aab
+certificates*.zip
