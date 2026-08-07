@@ -146,6 +146,35 @@ func TestSentenceSurvivesUnknownWords(t *testing.T) {
 	}
 }
 
+// Термины здесь должны совпадать со школьной грамматикой сербского, а не с
+// внутренними категориями UD. Этот пример пришёл от преподавателя: `bio` —
+// радни глаголски придев, `mnogo` — прилог за количину, `Poter` — часть имени.
+func TestSentenceUsesEducationalSerbianLabels(t *testing.T) {
+	analysis := analyzeSentence(t,
+		"Hari Poter je po mnogo čemu bio vrlo neobičan dečak.")
+	want := map[string]struct{ upos, label string }{
+		"Poter": {"PROPN", "имя собств."},
+		"je":    {"AUX", "всп. глагол"},
+		"mnogo": {"ADV", "нареч."},
+		"bio":   {"VERB", "глаг. прил."},
+	}
+	for _, token := range analysis.Tokens {
+		expected, ok := want[token.Surface]
+		if !ok {
+			continue
+		}
+		if token.UPOS != expected.upos || token.PosShort != expected.label {
+			t.Errorf("%s: получено %s/%q, ожидалось %s/%q",
+				token.Surface, token.UPOS, token.PosShort,
+				expected.upos, expected.label)
+		}
+		delete(want, token.Surface)
+	}
+	if len(want) != 0 {
+		t.Errorf("не найдены проверяемые слова: %+v", want)
+	}
+}
+
 func TestAnalyzeEmptySentence(t *testing.T) {
 	if got := grammar.Analyze("", nil); len(got.Chunks) != 0 {
 		t.Errorf("на пустой фразе собраны группы: %+v", got.Chunks)

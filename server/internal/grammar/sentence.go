@@ -3,6 +3,7 @@ package grammar
 import (
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // Разбор целой фразы, а не одного слова.
@@ -111,6 +112,7 @@ var headPos = map[string]bool{"NOUN": true, "PROPN": true, "PRON": true, "NUM": 
 // правила языка. Функция чистая, и потому проверяемая на выдуманных разборах,
 // без словаря вовсе.
 func Analyze(sentence string, tokens []Token) SentenceAnalysis {
+	normalizeEducationalPOS(tokens)
 	result := SentenceAnalysis{Sentence: sentence, Tokens: tokens, Chunks: []Chunk{}}
 	if len(tokens) == 0 {
 		return result
@@ -123,6 +125,80 @@ func Analyze(sentence string, tokens []Token) SentenceAnalysis {
 	result.Chunks = append(result.Chunks, nounChunks(result.Tokens, taken)...)
 	sortChunks(result.Chunks)
 	return result
+}
+
+// normalizeEducationalPOS переводит технические категории UD в привычные
+// школьные названия сербской грамматики. UPOS удобен для синтаксического
+// движка, но показывать его дословно нельзя: DET — не «определение», а `bio`
+// с VerbForm=Part — радни глаголски придев, хотя в трибанке lemma `biti`
+// размечена как AUX.
+func normalizeEducationalPOS(tokens []Token) {
+	for i := range tokens {
+		token := &tokens[i]
+		if token.Feats["VerbForm"] == "Part" && token.Feats["Voice"] == "Act" {
+			// Для ученика это форма смыслового глагола. Конечная форма `je/sam/su`
+			// остаётся вспомогательным глаголом и образует с ней сложное время.
+			if token.UPOS == "AUX" {
+				token.UPOS = "VERB"
+			}
+			token.PosShort = "глаг. прил."
+			continue
+		}
+		if token.UPOS == "DET" && isUninflectedQuantity(token) {
+			// Традиционная сербская грамматика относит `mnogo`, `malo`,
+			// `dovoljno` к прилозима за количину. В UD они неоднозначны и
+			// иногда попадают в DET, если определяют именную группу.
+			token.UPOS = "ADV"
+			token.PosShort = PosShort("ADV")
+		}
+	}
+	promoteProperNameRuns(tokens)
+}
+
+var quantityAdverbs = map[string]bool{
+	"dosta": true, "dovoljno": true, "koliko": true, "malo": true,
+	"mnogo": true, "nekoliko": true, "onoliko": true, "previše": true,
+	"puno": true, "toliko": true, "više": true,
+}
+
+func isUninflectedQuantity(token *Token) bool {
+	if !quantityAdverbs[strings.ToLower(token.Lemma)] {
+		return false
+	}
+	return token.Feats["Case"] == "" && token.Feats["Gender"] == "" &&
+		token.Feats["Number"] == ""
+}
+
+// Два написанных с прописной слова подряд почти всегда составляют имя. Это
+// позволяет честно разобрать `Hari Poter`, даже если словарь знает Hari, но не
+// содержит фамилию Poter. Одиночное неизвестное слово в начале предложения
+// собственным именем не объявляется.
+func promoteProperNameRuns(tokens []Token) {
+	for i := range tokens {
+		if !isUnknownPOS(tokens[i].UPOS) || !startsWithUpper(tokens[i].Surface) {
+			continue
+		}
+		if (i > 0 && isNameNeighbour(tokens[i-1])) ||
+			(i+1 < len(tokens) && isNameNeighbour(tokens[i+1])) {
+			tokens[i].UPOS = "PROPN"
+			tokens[i].PosShort = PosShort("PROPN")
+			tokens[i].ChosenByContext = true
+		}
+	}
+}
+
+func isNameNeighbour(token Token) bool {
+	return startsWithUpper(token.Surface) &&
+		(token.UPOS == "PROPN" || isUnknownPOS(token.UPOS))
+}
+
+func isUnknownPOS(upos string) bool { return upos == "UNKNOWN" || upos == "X" }
+
+func startsWithUpper(word string) bool {
+	for _, char := range word {
+		return unicode.IsUpper(char)
+	}
+	return false
 }
 
 // prepositionChunks собирает группы «предлог + то, чем он управляет».
