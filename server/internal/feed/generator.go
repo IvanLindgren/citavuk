@@ -191,8 +191,11 @@ func (g *Generator) GenerateAtLevel(
 		}
 		levelInstruction = fmt.Sprintf(`
 TARGET READER: beginner, maximum CEFR %s.
-Use only common everyday Serbian words, short sentences (normally no more than 12 words), and one clear idea per sentence.
-Avoid jargon, figurative language, nested clauses and unexplained abbreviations.
+This beginner rule overrides the general 100-150 word target: write 85-110 Serbian words.
+Use mostly the 1,500 most common Serbian words. Write 8-12 short sentences and normally no more than 9 words per sentence.
+Keep only three topic-specific words; put those exact words into difficult_words. Explain every other specialist term with common everyday words.
+Prefer active voice, present tense and simple subject-verb-object order. Avoid jargon, figurative language, nested clauses, passive constructions, nominalisations and unexplained abbreviations.
+Before returning JSON, silently reread the text and replace every word that a beginner is unlikely to know.
 The JSON cefr value MUST be A1 or A2 and MUST NOT exceed %s.
 `, maxCEFR, maxCEFR)
 	}
