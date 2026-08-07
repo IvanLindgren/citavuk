@@ -11,6 +11,8 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"slices"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
@@ -22,9 +24,31 @@ import (
 )
 
 type options struct {
-	target  int
-	workers int
-	retries int
+	target                int
+	add                   int
+	workers               int
+	retries               int
+	fetchLimit            int
+	maxCEFR               string
+	publishExistingDrafts bool
+	budget                *callBudget
+}
+
+type callBudget struct {
+	limit int64
+	used  atomic.Int64
+}
+
+func (b *callBudget) take() bool {
+	if b == nil || b.limit <= 0 {
+		return true
+	}
+	used := b.used.Add(1)
+	if used <= b.limit {
+		return true
+	}
+	b.used.Add(-1)
+	return false
 }
 
 type counts struct {
@@ -47,13 +71,20 @@ type counts struct {
 
 func main() {
 	var (
-		envPath  = flag.String("env", ".env", "path to the server environment file")
-		target   = flag.Int("target", 1000, "minimum number of published cards")
-		workers  = flag.Int("workers", 8, "parallel generation requests")
-		retries  = flag.Int("retries", 4, "generation attempts per source item")
-		admin    = flag.String("admin", "deniskornilov12@gmail.com", "existing admin account recorded as creator")
-		status   = flag.Bool("status", false, "print database counters and exit")
-		backfill = flag.Bool("backfill-embeddings", false,
+		envPath       = flag.String("env", ".env", "path to the server environment file")
+		target        = flag.Int("target", 1000, "minimum number of published cards")
+		add           = flag.Int("add", 0, "publish exactly this many new cards from the selected sources")
+		workers       = flag.Int("workers", 8, "parallel generation requests")
+		retries       = flag.Int("retries", 4, "generation attempts per source item")
+		model         = flag.String("model", "", "override the configured feed generation model")
+		sourceCSV     = flag.String("sources", "", "comma-separated source slugs; empty selects every enabled source")
+		maxCEFR       = flag.String("max-cefr", "", "reject generated cards above this CEFR level")
+		maxCalls      = flag.Int64("max-calls", 0, "hard limit for paid generation calls; zero disables the limit")
+		fetchLimit    = flag.Int("fetch-limit", 40, "maximum imported items per selected source")
+		publishDrafts = flag.Bool("publish-existing-drafts", true, "publish valid existing drafts before generation")
+		admin         = flag.String("admin", "deniskornilov12@gmail.com", "existing admin account recorded as creator")
+		status        = flag.Bool("status", false, "print database counters and exit")
+		backfill      = flag.Bool("backfill-embeddings", false,
 			"compute missing embeddings for published cards and exit")
 		resync = flag.Bool("resync", false,
 			"collect a fresh pass from every source before generating")
@@ -97,8 +128,12 @@ func main() {
 		}
 		return
 	}
-	if *target < 1 || *workers < 1 || *workers > 24 || *retries < 1 || *retries > 8 {
-		fatal(errors.New("invalid target, workers, or retries"))
+	if *target < 1 || *add < 0 || *workers < 1 || *workers > 24 || *retries < 1 || *retries > 8 ||
+		*fetchLimit < 1 || *fetchLimit > 100 || *maxCalls < 0 {
+		fatal(errors.New("invalid target, add, workers, retries, fetch limit, or call budget"))
+	}
+	if *maxCEFR != "" && !slices.Contains([]string{"A1", "A2", "B1", "B2", "C1"}, strings.ToUpper(*maxCEFR)) {
+		fatal(errors.New("max-cefr must be A1, A2, B1, B2, or C1"))
 	}
 	user, err := st.UserByEmail(ctx, *admin)
 	if err != nil {
@@ -108,8 +143,12 @@ func main() {
 		fatal(fmt.Errorf("%s is not an administrator", user.Email))
 	}
 
+	selectedModel := cfg.FeedAIModel
+	if strings.TrimSpace(*model) != "" {
+		selectedModel = strings.TrimSpace(*model)
+	}
 	generator := feed.NewGenerator(
-		cfg.FeedAIKey, cfg.FeedAIModel, cfg.FeedAIURL,
+		cfg.FeedAIKey, selectedModel, cfg.FeedAIURL,
 		cfg.FeedEmbeddingKey, cfg.FeedEmbeddingModel, cfg.FeedEmbeddingURL,
 	)
 	if !generator.Enabled() {
@@ -124,6 +163,23 @@ func main() {
 		source := &sources[i]
 		sourceBySlug[source.Slug] = source
 	}
+	selectedSlugs := splitCSV(*sourceCSV)
+	if len(selectedSlugs) > 0 {
+		selected := make(map[string]*store.MicroFeedSource, len(selectedSlugs))
+		for _, slug := range selectedSlugs {
+			source := sourceBySlug[slug]
+			if source == nil {
+				fatal(fmt.Errorf("source %q is not registered", slug))
+			}
+			if !source.Enabled {
+				fatal(fmt.Errorf("source %q is disabled", slug))
+			}
+			selected[slug] = source
+		}
+		sourceBySlug = selected
+	}
+	slog.Info("generation configured", "model", selectedModel, "sources", len(sourceBySlug),
+		"max_cefr", strings.ToUpper(*maxCEFR), "max_calls", *maxCalls)
 
 	// Принудительный сбор из источников.
 	//
@@ -134,12 +190,17 @@ func main() {
 	// Свежий проход обновляет адрес у ещё не обработанных заготовок и добавляет
 	// новые — они и уходят в работу первыми, очередь разбирается с новых.
 	if *resync {
-		if err := resyncSources(ctx, st, feed.NewSourceFetcher(), sourceBySlug); err != nil {
+		if err := resyncSources(ctx, st, feed.NewSourceFetcher(), sourceBySlug, *fetchLimit); err != nil {
 			fatal(err)
 		}
 	}
 
-	opts := options{target: *target, workers: *workers, retries: *retries}
+	opts := options{
+		target: *target, add: *add, workers: *workers, retries: *retries,
+		fetchLimit: *fetchLimit, maxCEFR: strings.ToUpper(*maxCEFR),
+		publishExistingDrafts: *publishDrafts,
+		budget:                &callBudget{limit: *maxCalls},
+	}
 	if err := fill(ctx, st, feed.NewSourceFetcher(), generator, sourceBySlug, user, opts); err != nil {
 		fatal(err)
 	}
@@ -159,9 +220,15 @@ func fill(
 		return err
 	}
 	printCounts(current)
+	if opts.add > 0 {
+		opts.target = current.Published + opts.add
+		slog.Info("additive target fixed", "baseline", current.Published, "add", opts.add, "target", opts.target)
+	}
 	for current.Published < opts.target {
-		if err := publishDrafts(ctx, st, opts.target-current.Published); err != nil {
-			return err
+		if opts.publishExistingDrafts {
+			if err := publishDrafts(ctx, st, opts.target-current.Published); err != nil {
+				return err
+			}
 		}
 		current, err = readCounts(ctx, st)
 		if err != nil {
@@ -173,10 +240,10 @@ func fill(
 
 		needed := opts.target - current.Published
 		queueTarget := min(needed+max(40, opts.workers*4), 200)
-		if err := ensureQueue(ctx, st, fetcher, sources, queueTarget); err != nil {
+		if err := ensureQueue(ctx, st, fetcher, sources, queueTarget, opts.fetchLimit); err != nil {
 			return err
 		}
-		imports, err := st.ListMicroFeedImports(ctx, "queued", min(200, needed))
+		imports, err := st.ListMicroFeedImportsBySources(ctx, "queued", sourceSlugs(sources), min(200, needed))
 		if err != nil {
 			return err
 		}
@@ -189,13 +256,16 @@ func fill(
 		prefill := make(chan error, 1)
 		go func() {
 			prefillTarget := min(needed+max(80, opts.workers*8), 400)
-			prefill <- ensureQueue(ctx, st, fetcher, sources, prefillTarget)
+			prefill <- ensureQueue(ctx, st, fetcher, sources, prefillTarget, opts.fetchLimit)
 		}()
-		result := generateBatch(ctx, st, generator, sources, admin, imports, opts)
+		result, generationErr := generateBatch(ctx, st, generator, sources, admin, imports, opts)
 		if err := <-prefill; err != nil {
 			return err
 		}
 		slog.Info("batch completed", "published", result.published, "rejected", result.rejected)
+		if generationErr != nil {
+			return generationErr
+		}
 		current, err = readCounts(ctx, st)
 		if err != nil {
 			return err
@@ -213,6 +283,7 @@ func resyncSources(
 	st *store.Store,
 	fetcher *feed.SourceFetcher,
 	sources map[string]*store.MicroFeedSource,
+	limit int,
 ) error {
 	saved := 0
 	for _, source := range sources {
@@ -220,7 +291,7 @@ func resyncSources(
 			continue
 		}
 		fetchCtx, cancel := context.WithTimeout(ctx, 35*time.Second)
-		items, err := fetcher.Fetch(fetchCtx, source, 40)
+		items, err := fetcher.Fetch(fetchCtx, source, limit)
 		cancel()
 		if err != nil {
 			slog.Warn("source sync failed", "source", source.Slug, "err", err)
@@ -252,23 +323,24 @@ func ensureQueue(
 	fetcher *feed.SourceFetcher,
 	sources map[string]*store.MicroFeedSource,
 	target int,
+	fetchLimit int,
 ) error {
 	stalled := 0
 	for round := 1; ; round++ {
-		current, err := readCounts(ctx, st)
+		queued, err := queuedForSources(ctx, st, sourceSlugs(sources))
 		if err != nil {
 			return err
 		}
-		if current.Queued >= target {
+		if queued >= target {
 			return nil
 		}
-		before := current.Queued
+		before := queued
 		for _, source := range sources {
 			if !source.Enabled || (source.SourceKind != "rss" && source.SourceKind != "mediawiki") {
 				continue
 			}
 			fetchCtx, cancel := context.WithTimeout(ctx, 35*time.Second)
-			items, fetchErr := fetcher.Fetch(fetchCtx, source, 40)
+			items, fetchErr := fetcher.Fetch(fetchCtx, source, fetchLimit)
 			cancel()
 			if fetchErr != nil {
 				slog.Warn("source sync failed", "source", source.Slug, "err", fetchErr)
@@ -279,18 +351,18 @@ func ensureQueue(
 			}
 			time.Sleep(150 * time.Millisecond)
 		}
-		after, err := readCounts(ctx, st)
+		after, err := queuedForSources(ctx, st, sourceSlugs(sources))
 		if err != nil {
 			return err
 		}
-		slog.Info("source round completed", "round", round, "queued", after.Queued, "target", target)
-		if after.Queued <= before {
+		slog.Info("source round completed", "round", round, "queued", after, "target", target)
+		if after <= before {
 			stalled++
 		} else {
 			stalled = 0
 		}
 		if stalled >= 8 {
-			return fmt.Errorf("source queue stopped growing at %d items", after.Queued)
+			return fmt.Errorf("source queue stopped growing at %d items", after)
 		}
 	}
 }
@@ -308,16 +380,20 @@ func generateBatch(
 	admin *store.User,
 	imports []store.MicroFeedImport,
 	opts options,
-) batchResult {
+) (batchResult, error) {
 	jobs := make(chan store.MicroFeedImport)
 	var published atomic.Int64
 	var rejected atomic.Int64
+	var budgetExhausted atomic.Bool
 	var wg sync.WaitGroup
 	for worker := 1; worker <= opts.workers; worker++ {
 		wg.Add(1)
 		go func(worker int) {
 			defer wg.Done()
 			for input := range jobs {
+				if budgetExhausted.Load() {
+					continue
+				}
 				source := sources[input.SourceSlug]
 				if source == nil {
 					reject(ctx, st, input, errors.New("source is missing"), &rejected)
@@ -326,7 +402,11 @@ func generateBatch(
 				var item *store.MicroFeedItem
 				var err error
 				for attempt := 1; attempt <= opts.retries; attempt++ {
-					item, err = generator.Generate(ctx, &input, source)
+					if !opts.budget.take() {
+						budgetExhausted.Store(true)
+						break
+					}
+					item, err = generator.GenerateAtLevel(ctx, &input, source, opts.maxCEFR)
 					if err == nil {
 						break
 					}
@@ -334,6 +414,9 @@ func generateBatch(
 					if attempt < opts.retries {
 						time.Sleep(time.Duration(attempt*attempt) * time.Second)
 					}
+				}
+				if budgetExhausted.Load() {
+					continue
 				}
 				if err != nil {
 					reject(ctx, st, input, err, &rejected)
@@ -381,7 +464,43 @@ func generateBatch(
 	}
 	close(jobs)
 	wg.Wait()
-	return batchResult{published: published.Load(), rejected: rejected.Load()}
+	result := batchResult{published: published.Load(), rejected: rejected.Load()}
+	if budgetExhausted.Load() {
+		return result, fmt.Errorf("paid generation call budget exhausted after %d calls", opts.budget.used.Load())
+	}
+	return result, nil
+}
+
+func splitCSV(value string) []string {
+	seen := make(map[string]bool)
+	result := make([]string, 0)
+	for _, part := range strings.Split(value, ",") {
+		part = strings.TrimSpace(part)
+		if part == "" || seen[part] {
+			continue
+		}
+		seen[part] = true
+		result = append(result, part)
+	}
+	return result
+}
+
+func sourceSlugs(sources map[string]*store.MicroFeedSource) []string {
+	result := make([]string, 0, len(sources))
+	for slug := range sources {
+		result = append(result, slug)
+	}
+	slices.Sort(result)
+	return result
+}
+
+func queuedForSources(ctx context.Context, st *store.Store, slugs []string) (int, error) {
+	var count int
+	err := st.Pool.QueryRow(ctx, `
+		SELECT count(*) FROM micro_feed_imports
+		WHERE status = 'queued'
+		  AND (cardinality($1::text[]) = 0 OR source_slug = ANY($1::text[]))`, slugs).Scan(&count)
+	return count, err
 }
 
 func reject(ctx context.Context, st *store.Store, input store.MicroFeedImport, cause error, counter *atomic.Int64) {

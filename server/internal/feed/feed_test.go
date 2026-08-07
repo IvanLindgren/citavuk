@@ -140,6 +140,7 @@ func TestAllowedImageURL(t *testing.T) {
 	good := []string{
 		"https://upload.wikimedia.org/a.png",
 		"https://img.rts.rs/b.jpg",
+		"https://www.gradnja.rs/wp-content/uploads/example.jpg",
 	}
 	bad := []string{
 		"", "not a url", "http://img.rts.rs/a.jpg",
@@ -155,5 +156,15 @@ func TestAllowedImageURL(t *testing.T) {
 		if AllowedImageURL(value) {
 			t.Errorf("принят недопустимый адрес %q", value)
 		}
+	}
+}
+
+func TestRSSPageURLPreservesExistingQuery(t *testing.T) {
+	got := rssPageURL("https://putuj.rs/feed/?category=putovanja", 3)
+	if got != "https://putuj.rs/feed/?category=putovanja&paged=3" {
+		t.Fatalf("page URL = %q", got)
+	}
+	if got := rssPageURL("https://putuj.rs/feed/", 1); got != "https://putuj.rs/feed/" {
+		t.Fatalf("first page URL changed to %q", got)
 	}
 }

@@ -16,6 +16,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/citavuk/server/internal/level"
 	"github.com/citavuk/server/internal/lexicon"
 	"github.com/citavuk/server/internal/store"
 )
@@ -165,21 +166,46 @@ func (g *Generator) Generate(
 	input *store.MicroFeedImport,
 	source *store.MicroFeedSource,
 ) (*store.MicroFeedItem, error) {
+	return g.GenerateAtLevel(ctx, input, source, "")
+}
+
+// GenerateAtLevel prepares a card whose vocabulary does not exceed maxCEFR.
+// The model supplies the editorial label, then the local srLex frequency model
+// independently checks it before the card can be saved.
+func (g *Generator) GenerateAtLevel(
+	ctx context.Context,
+	input *store.MicroFeedImport,
+	source *store.MicroFeedSource,
+	maxCEFR string,
+) (*store.MicroFeedItem, error) {
 	if !g.Enabled() {
 		return nil, ErrNotConfigured
 	}
 	if input == nil || source == nil || len([]rune(strings.TrimSpace(input.RawText))) < 120 {
 		return nil, errors.New("в источнике слишком мало текста")
 	}
+	levelInstruction := ""
+	if maxCEFR != "" {
+		if !slices.Contains([]string{"A1", "A2", "B1", "B2", "C1"}, maxCEFR) {
+			return nil, fmt.Errorf("unsupported target CEFR %q", maxCEFR)
+		}
+		levelInstruction = fmt.Sprintf(`
+TARGET READER: beginner, maximum CEFR %s.
+Use only common everyday Serbian words, short sentences (normally no more than 12 words), and one clear idea per sentence.
+Avoid jargon, figurative language, nested clauses and unexplained abbreviations.
+The JSON cefr value MUST be A1 or A2 and MUST NOT exceed %s.
+`, maxCEFR, maxCEFR)
+	}
 	userPrompt := fmt.Sprintf(`SOURCE TITLE: %s
 SOURCE LANGUAGE: %s
 RIGHTS MODE: %s
 LICENSE: %s
 SOURCE URL: %s
+%s
 
 SOURCE TEXT:
 %s`, input.Title, source.Language, source.RightsMode, source.LicenseCode,
-		input.SourceURL, limitRunes(input.RawText, 24000))
+		input.SourceURL, levelInstruction, limitRunes(input.RawText, 24000))
 	request := chatRequest{
 		Model: g.model,
 		Messages: []chatMessage{
@@ -203,6 +229,23 @@ SOURCE TEXT:
 	result, err := parseGeneration(response.Choices[0].Message.Content)
 	if err != nil {
 		return nil, err
+	}
+	if maxCEFR != "" {
+		if store.SerbianLevelIndex(result.CEFR) > store.SerbianLevelIndex(maxCEFR) {
+			return nil, fmt.Errorf("%w: model marked the card as %s, maximum is %s", ErrBadAnswer, result.CEFR, maxCEFR)
+		}
+		lex, lexErr := lexicon.Shared()
+		if lexErr != nil {
+			return nil, fmt.Errorf("load frequency lexicon: %w", lexErr)
+		}
+		estimated := level.Estimate(lex, []string{result.TextLatin})
+		if estimated.Known() {
+			if store.SerbianLevelIndex(estimated.Level) > store.SerbianLevelIndex(maxCEFR) {
+				return nil, fmt.Errorf("%w: frequency check estimated %s, maximum is %s", ErrBadAnswer, estimated.Level, maxCEFR)
+			}
+			// Prefer the independent estimate when it finds an even easier A1 text.
+			result.CEFR = estimated.Level
+		}
 	}
 	item := &store.MicroFeedItem{
 		Kind: result.Kind, Category: result.Category,

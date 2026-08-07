@@ -181,6 +181,15 @@ func (s *Store) SaveMicroFeedImports(
 }
 
 func (s *Store) ListMicroFeedImports(ctx context.Context, status string, limit int) ([]MicroFeedImport, error) {
+	return s.ListMicroFeedImportsBySources(ctx, status, nil, limit)
+}
+
+func (s *Store) ListMicroFeedImportsBySources(
+	ctx context.Context,
+	status string,
+	sourceSlugs []string,
+	limit int,
+) ([]MicroFeedImport, error) {
 	if limit <= 0 || limit > 200 {
 		limit = 80
 	}
@@ -191,8 +200,9 @@ func (s *Store) ListMicroFeedImports(ctx context.Context, status string, limit i
 		FROM micro_feed_imports i
 		JOIN micro_feed_sources s ON s.slug = i.source_slug
 		WHERE ($1 = '' OR i.status = $1)
+		  AND (cardinality($2::text[]) = 0 OR i.source_slug = ANY($2::text[]))
 		ORDER BY i.created_at DESC
-		LIMIT $2`, status, limit)
+		LIMIT $3`, status, sourceSlugs, limit)
 	if err != nil {
 		return nil, err
 	}

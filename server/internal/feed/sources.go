@@ -39,10 +39,28 @@ func NewSourceFetcher() *SourceFetcher {
 }
 
 var sourceHosts = map[string]bool{
-	"rts.rs":               true,
-	"www.rts.rs":           true,
-	"sr.wikipedia.org":     true,
-	"simple.wikipedia.org": true,
+	"rts.rs":                true,
+	"www.rts.rs":            true,
+	"sr.wikipedia.org":      true,
+	"simple.wikipedia.org":  true,
+	"poljska.rs":            true,
+	"www.poljska.rs":        true,
+	"putuj.rs":              true,
+	"www.putuj.rs":          true,
+	"putriota.rs":           true,
+	"www.putriota.rs":       true,
+	"rokselana.com":         true,
+	"www.rokselana.com":     true,
+	"hranauoblacima.rs":     true,
+	"www.hranauoblacima.rs": true,
+	"srcesrbije.rs":         true,
+	"www.srcesrbije.rs":     true,
+	"gradnja.rs":            true,
+	"www.gradnja.rs":        true,
+	"kulturizam.com":        true,
+	"www.kulturizam.com":    true,
+	"danubeogradu.rs":       true,
+	"www.danubeogradu.rs":   true,
 }
 
 func allowedSourceURL(parsed *url.URL) error {
@@ -60,7 +78,7 @@ func (f *SourceFetcher) Fetch(
 	if source == nil || !source.Enabled {
 		return nil, ErrSourceNotSupported
 	}
-	if limit <= 0 || limit > 40 {
+	if limit <= 0 || limit > 100 {
 		limit = 20
 	}
 	parsed, err := url.Parse(source.SourceURL)
@@ -142,18 +160,55 @@ func (f *SourceFetcher) fetchRSS(
 	source *store.MicroFeedSource,
 	limit int,
 ) ([]store.MicroFeedImport, error) {
-	raw, err := f.get(ctx, source.SourceURL)
-	if err != nil {
-		return nil, err
-	}
-	items, err := parseRSS(raw)
-	if err != nil {
-		return nil, err
-	}
-	if len(items) > limit {
-		items = items[:limit]
+	items := make([]store.MicroFeedImport, 0, limit)
+	seen := make(map[string]bool, limit)
+	for page := 1; page <= 12 && len(items) < limit; page++ {
+		pageURL := source.SourceURL
+		if page > 1 {
+			pageURL = rssPageURL(source.SourceURL, page)
+		}
+		raw, err := f.get(ctx, pageURL)
+		if err != nil {
+			if page == 1 {
+				return nil, err
+			}
+			break
+		}
+		pageItems, err := parseRSS(raw)
+		if err != nil {
+			if page == 1 {
+				return nil, err
+			}
+			break
+		}
+		added := 0
+		for _, item := range pageItems {
+			if seen[item.ExternalID] {
+				continue
+			}
+			seen[item.ExternalID] = true
+			items = append(items, item)
+			added++
+			if len(items) == limit {
+				break
+			}
+		}
+		if page > 1 && added == 0 {
+			break
+		}
 	}
 	return items, nil
+}
+
+func rssPageURL(rawURL string, page int) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil || page <= 1 {
+		return rawURL
+	}
+	query := parsed.Query()
+	query.Set("paged", strconvInt(page))
+	parsed.RawQuery = query.Encode()
+	return parsed.String()
 }
 
 func parseRSS(raw []byte) ([]store.MicroFeedImport, error) {
@@ -395,11 +450,29 @@ func strconvInt(value int) string { return fmt.Sprintf("%d", value) }
 // списка сервер по первой же подсунутой ссылке пошёл бы хоть в свою локальную
 // сеть, хоть в облачные метаданные.
 var imageHosts = map[string]bool{
-	"upload.wikimedia.org": true,
-	"rts.rs":               true,
-	"www.rts.rs":           true,
-	"img.rts.rs":           true,
-	"static.rts.rs":        true,
+	"upload.wikimedia.org":  true,
+	"rts.rs":                true,
+	"www.rts.rs":            true,
+	"img.rts.rs":            true,
+	"static.rts.rs":         true,
+	"poljska.rs":            true,
+	"www.poljska.rs":        true,
+	"putuj.rs":              true,
+	"www.putuj.rs":          true,
+	"putriota.rs":           true,
+	"www.putriota.rs":       true,
+	"rokselana.com":         true,
+	"www.rokselana.com":     true,
+	"hranauoblacima.rs":     true,
+	"www.hranauoblacima.rs": true,
+	"srcesrbije.rs":         true,
+	"www.srcesrbije.rs":     true,
+	"gradnja.rs":            true,
+	"www.gradnja.rs":        true,
+	"kulturizam.com":        true,
+	"www.kulturizam.com":    true,
+	"danubeogradu.rs":       true,
+	"www.danubeogradu.rs":   true,
 }
 
 // AllowedImageURL проверяет, что по адресу можно идти за картинкой.
