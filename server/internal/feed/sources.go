@@ -78,7 +78,7 @@ func (f *SourceFetcher) Fetch(
 	if source == nil || !source.Enabled {
 		return nil, ErrSourceNotSupported
 	}
-	if limit <= 0 || limit > 100 {
+	if limit <= 0 || limit > 200 {
 		limit = 20
 	}
 	parsed, err := url.Parse(source.SourceURL)
@@ -162,7 +162,7 @@ func (f *SourceFetcher) fetchRSS(
 ) ([]store.MicroFeedImport, error) {
 	items := make([]store.MicroFeedImport, 0, limit)
 	seen := make(map[string]bool, limit)
-	for page := 1; page <= 12 && len(items) < limit; page++ {
+	for page := 1; page <= 25 && len(items) < limit; page++ {
 		pageURL := source.SourceURL
 		if page > 1 {
 			pageURL = rssPageURL(source.SourceURL, page)

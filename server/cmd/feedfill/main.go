@@ -129,7 +129,7 @@ func main() {
 		return
 	}
 	if *target < 1 || *add < 0 || *workers < 1 || *workers > 24 || *retries < 1 || *retries > 8 ||
-		*fetchLimit < 1 || *fetchLimit > 100 || *maxCalls < 0 {
+		*fetchLimit < 1 || *fetchLimit > 200 || *maxCalls < 0 {
 		fatal(errors.New("invalid target, add, workers, retries, fetch limit, or call budget"))
 	}
 	if *maxCEFR != "" && !slices.Contains([]string{"A1", "A2", "B1", "B2", "C1"}, strings.ToUpper(*maxCEFR)) {
@@ -401,16 +401,19 @@ func generateBatch(
 				}
 				var item *store.MicroFeedItem
 				var err error
+				retryHint := ""
 				for attempt := 1; attempt <= opts.retries; attempt++ {
 					if !opts.budget.take() {
 						budgetExhausted.Store(true)
 						break
 					}
-					item, err = generator.GenerateAtLevel(ctx, &input, source, opts.maxCEFR)
+					item, err = generator.GenerateAtLevelWithHint(ctx, &input, source, opts.maxCEFR, retryHint)
 					if err == nil {
 						break
 					}
-					slog.Warn("generation attempt failed", "worker", worker, "import", input.ID, "attempt", attempt, "err", err)
+					retryHint = err.Error()
+					slog.Warn("generation attempt failed", "worker", worker, "source", input.SourceSlug,
+						"import", input.ID, "attempt", attempt, "err", err)
 					if attempt < opts.retries {
 						time.Sleep(time.Duration(attempt*attempt) * time.Second)
 					}

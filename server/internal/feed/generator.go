@@ -178,6 +178,18 @@ func (g *Generator) GenerateAtLevel(
 	source *store.MicroFeedSource,
 	maxCEFR string,
 ) (*store.MicroFeedItem, error) {
+	return g.GenerateAtLevelWithHint(ctx, input, source, maxCEFR, "")
+}
+
+// GenerateAtLevelWithHint lets an operator retry a rejected draft with the
+// exact validator complaint, instead of paying for an unrelated second draft.
+func (g *Generator) GenerateAtLevelWithHint(
+	ctx context.Context,
+	input *store.MicroFeedImport,
+	source *store.MicroFeedSource,
+	maxCEFR string,
+	retryHint string,
+) (*store.MicroFeedItem, error) {
 	if !g.Enabled() {
 		return nil, ErrNotConfigured
 	}
@@ -191,13 +203,17 @@ func (g *Generator) GenerateAtLevel(
 		}
 		levelInstruction = fmt.Sprintf(`
 TARGET READER: beginner, maximum CEFR %s.
-This beginner rule overrides the general 100-150 word target: write 85-110 Serbian words.
-Use mostly the 1,500 most common Serbian words. Write 8-12 short sentences and normally no more than 9 words per sentence.
+Write 105-125 Serbian words. Count the words before returning JSON and never return fewer than 90.
+Use mostly the 1,500 most common Serbian words. Write 10-14 short sentences and normally no more than 10 words per sentence.
 Keep only three topic-specific words; put those exact words into difficult_words. Explain every other specialist term with common everyday words.
 Prefer active voice, present tense and simple subject-verb-object order. Avoid jargon, figurative language, nested clauses, passive constructions, nominalisations and unexplained abbreviations.
 Before returning JSON, silently reread the text and replace every word that a beginner is unlikely to know.
 The JSON cefr value MUST be A1 or A2 and MUST NOT exceed %s.
 `, maxCEFR, maxCEFR)
+		if strings.TrimSpace(retryHint) != "" {
+			levelInstruction += "\nTHE PREVIOUS DRAFT FAILED VALIDATION: " + limitRunes(retryHint, 600) +
+				"\nCorrect that exact problem in this new draft.\n"
+		}
 	}
 	userPrompt := fmt.Sprintf(`SOURCE TITLE: %s
 SOURCE LANGUAGE: %s
@@ -244,7 +260,12 @@ SOURCE TEXT:
 		estimated := level.Estimate(lex, []string{result.TextLatin})
 		if estimated.Known() {
 			if store.SerbianLevelIndex(estimated.Level) > store.SerbianLevelIndex(maxCEFR) {
-				return nil, fmt.Errorf("%w: frequency check estimated %s, maximum is %s", ErrBadAnswer, estimated.Level, maxCEFR)
+				hardWords := strings.Join(estimated.HardWords, ", ")
+				if hardWords == "" {
+					hardWords = "too many words outside the 3,000 most common Serbian lemmas"
+				}
+				return nil, fmt.Errorf("%w: frequency check estimated %s, maximum is %s; simplify or replace: %s",
+					ErrBadAnswer, estimated.Level, maxCEFR, hardWords)
 			}
 			// Prefer the independent estimate when it finds an even easier A1 text.
 			result.CEFR = estimated.Level
