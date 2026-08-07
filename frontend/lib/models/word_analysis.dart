@@ -1,5 +1,6 @@
 import 'english_analysis.dart';
 import 'grammar.dart';
+import 'sentence_analysis.dart';
 
 /// Типизированный результат разбора слова/фразы (онлайн или офлайн).
 class WordAnalysis {
@@ -16,6 +17,9 @@ class WordAnalysis {
   /// Грамматика фразы (составное время/энклитики) — только для isPhrase.
   final PhraseInsight? phraseInsight;
 
+  /// Контекстный пословный разбор и связи между словами во фразе.
+  final SentenceAnalysis? sentenceAnalysis;
+
   /// Разбор английского слова. Не null — значит слово опознано английским, и
   /// карточка показывает английскую ветку вместо сербской.
   final EnglishAnalysis? english;
@@ -31,6 +35,7 @@ class WordAnalysis {
     this.isOffline = false,
     this.isPhrase = false,
     this.phraseInsight,
+    this.sentenceAnalysis,
     this.english,
   });
 
@@ -45,6 +50,7 @@ class WordAnalysis {
     String? contextualTranslation,
     bool? isOffline,
     PhraseInsight? phraseInsight,
+    SentenceAnalysis? sentenceAnalysis,
     EnglishAnalysis? english,
   }) =>
       WordAnalysis(
@@ -59,6 +65,7 @@ class WordAnalysis {
         isOffline: isOffline ?? this.isOffline,
         isPhrase: isPhrase,
         phraseInsight: phraseInsight ?? this.phraseInsight,
+        sentenceAnalysis: sentenceAnalysis ?? this.sentenceAnalysis,
         english: english ?? this.english,
       );
 

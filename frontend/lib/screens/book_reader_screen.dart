@@ -10,12 +10,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../events/events_controller.dart';
 import '../events/reader_rewards.dart';
 import '../models/book_block.dart';
 import '../models/english_analysis.dart';
 import '../models/grammar.dart';
 import '../models/reader_settings.dart';
+import '../models/sentence_analysis.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
 import '../services/announcements_controller.dart';
@@ -74,6 +76,9 @@ class BookReaderScreen extends StatefulWidget {
 
 class _BookReaderScreenState extends State<BookReaderScreen> {
   late PageController _pageController;
+  final ItemScrollController _continuousController = ItemScrollController();
+  final ItemPositionsListener _continuousPositions =
+      ItemPositionsListener.create();
   final AudioPlayer _audiobookPlayer = AudioPlayer();
   final List<StreamSubscription<dynamic>> _audiobookSubscriptions = [];
   final List<List<String>> _pages = [];
@@ -86,6 +91,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   final FocusNode _kbFocus = FocusNode();
 
   int _startPage = 0;
+  int _visiblePage = 0;
+  ReaderFlow? _lastFlow;
   bool _resumeHintVisible = false;
   String _discussionToken = '';
   bool _discussionOpen = false;
@@ -169,7 +176,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     final startPage =
         _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
     _startPage = startPage;
+    _visiblePage = startPage;
     _pageController = PageController(initialPage: startPage);
+    _continuousPositions.itemPositions.addListener(_onContinuousPositions);
     if (widget.sourceKey.startsWith('share:')) {
       _discussionToken = widget.sourceKey.substring('share:'.length);
       _discussionOpen = true;
@@ -206,18 +215,62 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   void _goToPage(int delta) {
-    if (!_pageController.hasClients || _pages.isEmpty) return;
-    final cur = _pageController.page?.round() ?? _startPage;
+    if (_pages.isEmpty) return;
+    final flow = context.read<AppSettings>().reader.flow;
+    final cur = flow == ReaderFlow.scroll
+        ? _visiblePage
+        : (_pageController.hasClients
+            ? _pageController.page?.round() ?? _startPage
+            : _startPage);
     _jumpTo(cur + delta);
   }
 
   void _jumpTo(int target) {
-    if (!_pageController.hasClients || _pages.isEmpty) return;
-    final cur = _pageController.page?.round() ?? _startPage;
+    if (_pages.isEmpty) return;
+    final flow = context.read<AppSettings>().reader.flow;
+    final cur = flow == ReaderFlow.scroll
+        ? _visiblePage
+        : (_pageController.hasClients
+            ? _pageController.page?.round() ?? _startPage
+            : _startPage);
     final clamped = target.clamp(0, _pages.length - 1);
     if (clamped == cur) return;
-    _pageController.animateToPage(clamped,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    if (flow == ReaderFlow.scroll) {
+      if (_continuousController.isAttached) {
+        _continuousController.scrollTo(
+          index: clamped,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    } else if (_pageController.hasClients) {
+      _pageController.animateToPage(clamped,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
+  }
+
+  void _onContinuousPositions() {
+    if (!mounted ||
+        context.read<AppSettings>().reader.flow != ReaderFlow.scroll) {
+      return;
+    }
+    final visible = _continuousPositions.itemPositions.value
+        .where((item) => item.itemTrailingEdge > 0)
+        .toList()
+      ..sort((a, b) => a.itemLeadingEdge.compareTo(b.itemLeadingEdge));
+    if (visible.isEmpty) return;
+    final anchored = visible.where((item) => item.itemLeadingEdge <= 0.28);
+    final next =
+        anchored.isNotEmpty ? anchored.last.index : visible.first.index;
+    if (next == _visiblePage) return;
+    _visiblePage = next;
+    final paragraph = next < _pageStartPara.length ? _pageStartPara[next] : 0;
+    unawaited(UserDb.instance.updateBookProgress(widget.bookId, paragraph));
+    _selPage = null;
+    _selPara = null;
+    _selStart = null;
+    _selEnd = null;
+    setState(() {});
   }
 
   void _changeFontSize(double delta) {
@@ -231,6 +284,18 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     if (e is! KeyDownEvent) return KeyEventResult.ignored;
     final k = e.logicalKey;
     final shift = HardwareKeyboard.instance.isShiftPressed;
+    final flow = context.read<AppSettings>().reader.flow;
+
+    if (flow == ReaderFlow.scroll &&
+        (k == LogicalKeyboardKey.arrowRight ||
+            k == LogicalKeyboardKey.arrowLeft ||
+            k == LogicalKeyboardKey.pageDown ||
+            k == LogicalKeyboardKey.pageUp ||
+            k == LogicalKeyboardKey.space ||
+            k == LogicalKeyboardKey.home ||
+            k == LogicalKeyboardKey.end)) {
+      return KeyEventResult.ignored;
+    }
 
     if (k == LogicalKeyboardKey.arrowRight ||
         k == LogicalKeyboardKey.pageDown ||
@@ -348,14 +413,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   void _showAudiobookCue() {
-    if (!_pageController.hasClients || _audiobookCues.isEmpty) return;
+    if (_audiobookCues.isEmpty) return;
     final cue = _audiobookCues[_audiobookCue];
     final page = _pageForPara(cue.paragraph);
-    _pageController.animateToPage(
-      page,
-      duration: const Duration(milliseconds: 280),
-      curve: Curves.easeOut,
-    );
+    _jumpTo(page);
     unawaited(UserDb.instance.updateBookProgress(widget.bookId, cue.paragraph));
     if (mounted) setState(() {});
   }
@@ -412,6 +473,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       subscription.cancel();
     }
     _audiobookPlayer.dispose();
+    _continuousPositions.itemPositions.removeListener(_onContinuousPositions);
     _pageController.dispose();
     _kbFocus.dispose();
     super.dispose();
@@ -623,10 +685,166 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     }
   }
 
+  Widget _buildReaderPage({
+    required BuildContext context,
+    required int pageIndex,
+    required ReaderSettings settings,
+    required ColorScheme scheme,
+    required Color textColor,
+    required bool dragToSelect,
+    required bool continuous,
+  }) {
+    final paras = _pages[pageIndex];
+    final compact = MediaQuery.sizeOf(context).width < 600;
+    final horizontalPadding = compact ? 16.0 : 40.0;
+    final showDiscussion = _discussionToken.isNotEmpty &&
+        (!continuous || pageIndex == _visiblePage);
+
+    final content = LayoutBuilder(
+      builder: (context, constraints) {
+        final showWolfAside = constraints.maxWidth >= 900 && showDiscussion;
+        final textColumn = ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: settings.fullWidth ? double.infinity : settings.maxWidth,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (pageIndex == 0 && widget.leadImageUrl != null) _leadImage(),
+              if (pageIndex == _startPage && _resumeHintVisible)
+                _resumeHint(scheme, settings.fontSize),
+              ...List.generate(paras.length, (pIndex) {
+                final isSel = _selPage == pageIndex && _selPara == pIndex;
+                final globalPara = _pageStartPara[pageIndex] + pIndex;
+                final isAudiobook = _audiobookEnabled &&
+                    _audiobookCues.isNotEmpty &&
+                    _audiobookCues[_audiobookCue].paragraph == globalPara &&
+                    _audiobookToken >= 0;
+                final block = parseBookBlock(paras[pIndex]);
+                if (block.kind == BookBlockKind.image) {
+                  return BookImageView(
+                    url: block.url,
+                    caption: block.text,
+                    textColor: textColor,
+                    fontSize: settings.fontSize,
+                  );
+                }
+                if (block.kind == BookBlockKind.table) {
+                  return BookTableView(
+                    rows: block.rows,
+                    settings: settings,
+                    textColor: textColor,
+                    highlightColor: scheme.primary,
+                    highlightTextColor: scheme.onPrimary,
+                    selectedCell: isSel ? _selCell : null,
+                    selectedToken: isSel ? _selStart : null,
+                    onTapWord: (cellIndex, cellText, ti, token, tokens) =>
+                        _onTapCellWord(
+                      pageIndex,
+                      pIndex,
+                      cellIndex,
+                      cellText,
+                      ti,
+                      token,
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: EdgeInsets.only(bottom: settings.paragraphSpacing),
+                  child: ReaderParagraph(
+                    text: block.text,
+                    settings: settings,
+                    textColor: textColor,
+                    highlightColor: scheme.primary,
+                    highlightTextColor: scheme.onPrimary,
+                    selStart: isSel
+                        ? _selStart
+                        : isAudiobook
+                            ? _audiobookToken
+                            : null,
+                    selEnd: isSel
+                        ? _selEnd
+                        : isAudiobook
+                            ? _audiobookToken
+                            : null,
+                    justify: settings.justify,
+                    firstLineIndent: settings.firstLineIndent,
+                    dragToSelect: dragToSelect,
+                    onTapWord: (ti, token, tokens) =>
+                        _onTapWord(pageIndex, pIndex, ti, token, tokens),
+                    onPhraseSelectionStart: (ti) =>
+                        _onPhraseSelectionStart(pageIndex, pIndex, ti),
+                    onPhraseSelectionUpdate: (ti) =>
+                        _onPhraseSelectionUpdate(pageIndex, pIndex, ti),
+                    onPhraseSelectionEnd: _onPhraseSelectionEnd,
+                    onPhraseSelectionCancel: _onPhraseSelectionCancel,
+                  ),
+                );
+              }),
+              if (showDiscussion && !showWolfAside)
+                Center(child: _discussionWolf()),
+              if (showDiscussion && _discussionOpen) ...[
+                const SizedBox(height: 12),
+                _DiscussionPanel(
+                  key: ValueKey(
+                      '$_discussionToken:${_pageStartPara[pageIndex]}'),
+                  token: _discussionToken,
+                  paragraph: _pageStartPara[pageIndex],
+                ),
+              ],
+            ],
+          ),
+        );
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(child: textColumn),
+            if (showWolfAside) ...[
+              const SizedBox(width: 10),
+              SizedBox(width: 120, child: _discussionWolf()),
+            ],
+          ],
+        );
+      },
+    );
+
+    final padding = EdgeInsets.fromLTRB(
+      horizontalPadding,
+      continuous && pageIndex > 0 ? 0 : 18,
+      horizontalPadding,
+      continuous && pageIndex < _pages.length - 1
+          ? settings.paragraphSpacing
+          : 60,
+    );
+    if (continuous) return Padding(padding: padding, child: content);
+    return SingleChildScrollView(padding: padding, child: content);
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final settings = context.watch<AppSettings>().reader;
+    final previousFlow = _lastFlow;
+    if (previousFlow != null && previousFlow != settings.flow) {
+      final target = previousFlow == ReaderFlow.pages
+          ? (_pageController.hasClients
+              ? _pageController.page?.round() ?? _visiblePage
+              : _visiblePage)
+          : _visiblePage;
+      _visiblePage = target;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        if (settings.flow == ReaderFlow.scroll &&
+            _continuousController.isAttached) {
+          _continuousController.jumpTo(index: target);
+        } else if (settings.flow == ReaderFlow.pages &&
+            _pageController.hasClients) {
+          _pageController.jumpToPage(target);
+        }
+      });
+    }
+    _lastFlow = settings.flow;
 
     // На десктопе/вебе нет «долгого нажатия» мышью, а drag конфликтует с
     // листанием. Поэтому там выделяем фразу обычным «зажать и вести» мышью
@@ -662,15 +880,18 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 ? const Color(0xFF20160E)
                 : const Color(0xFFECE3D2))
             : scheme.onSurface;
+    final compactAppBar = MediaQuery.sizeOf(context).width < 720;
 
     // До первого layout контроллер ещё не привязан — берём стартовую страницу
     // (а не initialParagraph: это индекс абзаца и он может превышать число страниц).
     final pageNum = _pages.isEmpty
         ? 0
-        : ((_pageController.hasClients
-                    ? _pageController.page?.round()
-                    : null) ??
-                _startPage) +
+        : (settings.flow == ReaderFlow.scroll
+                ? _visiblePage
+                : ((_pageController.hasClients
+                        ? _pageController.page?.round()
+                        : null) ??
+                    _startPage)) +
             1;
 
     // Экран не гаснет, пока книга открыта, — см. widgets/keep_awake.dart.
@@ -679,6 +900,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         backgroundColor: reward?.background ?? customBg,
         appBar: AppBar(
           title: Text('${widget.title}  ($pageNum/${_pages.length})',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style:
                   const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
           actions: [
@@ -689,31 +912,72 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
               onPressed: _toggleAudiobook,
             ),
             IconButton(
-              tooltip: 'Поделиться книгой',
-              icon: _sharingBusy
-                  ? const SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const FaIcon(FontAwesomeIcons.paperPlane, size: 18),
-              onPressed: _sharingBusy ? null : _openShareSheet,
-            ),
-            IconButton(
               tooltip: 'Настройки чтения',
               icon: const Icon(Icons.text_fields),
               onPressed: _openReaderSettings,
             ),
-            IconButton(
-              tooltip: 'Словарь книги',
-              icon: const Icon(Icons.folder_open),
-              onPressed: _openVocabulary,
-            ),
-            IconButton(
-              tooltip: 'Горячие клавиши и жесты (F1)',
-              icon: const Icon(Icons.keyboard_outlined),
-              onPressed: () =>
-                  showShortcutsSheet(context, ReaderShortcuts.reader),
-            ),
+            if (!compactAppBar) ...[
+              IconButton(
+                tooltip: 'Поделиться книгой',
+                icon: _sharingBusy
+                    ? const SizedBox.square(
+                        dimension: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const FaIcon(FontAwesomeIcons.paperPlane, size: 18),
+                onPressed: _sharingBusy ? null : _openShareSheet,
+              ),
+              IconButton(
+                tooltip: 'Словарь книги',
+                icon: const Icon(Icons.folder_open),
+                onPressed: _openVocabulary,
+              ),
+              IconButton(
+                tooltip: 'Горячие клавиши и жесты (F1)',
+                icon: const Icon(Icons.keyboard_outlined),
+                onPressed: () =>
+                    showShortcutsSheet(context, ReaderShortcuts.reader),
+              ),
+            ] else
+              PopupMenuButton<String>(
+                tooltip: 'Ещё',
+                onSelected: (value) {
+                  switch (value) {
+                    case 'share':
+                      if (!_sharingBusy) unawaited(_openShareSheet());
+                      break;
+                    case 'vocabulary':
+                      _openVocabulary();
+                      break;
+                    case 'shortcuts':
+                      showShortcutsSheet(context, ReaderShortcuts.reader);
+                      break;
+                  }
+                },
+                itemBuilder: (_) => const [
+                  PopupMenuItem(
+                    value: 'share',
+                    child: ListTile(
+                      leading: Icon(Icons.send_outlined),
+                      title: Text('Поделиться'),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'vocabulary',
+                    child: ListTile(
+                      leading: Icon(Icons.folder_open),
+                      title: Text('Словарь книги'),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'shortcuts',
+                    child: ListTile(
+                      leading: Icon(Icons.keyboard_outlined),
+                      title: Text('Горячие клавиши'),
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
         body: DecoratedBox(
@@ -741,201 +1005,243 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                         children: [
                           ScrollConfiguration(
                             behavior: const _DragScrollBehavior(),
-                            child: PageView.builder(
-                              controller: _pageController,
-                              itemCount: _pages.length,
-                              onPageChanged: (i) {
-                                // Сохраняем индекс ПЕРВОГО АБЗАЦА страницы (см. _pageStartPara).
-                                UserDb.instance.updateBookProgress(
-                                    widget.bookId,
-                                    i < _pageStartPara.length
-                                        ? _pageStartPara[i]
-                                        : 0);
-                                PageTurnSound.instance
-                                  ..enabled = settings.pageTurnSound
-                                  ..play();
-                                _clearSelection();
-                                setState(() {});
-                              },
-                              itemBuilder: (context, pageIndex) {
-                                final paras = _pages[pageIndex];
-                                return SingleChildScrollView(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(40, 18, 40, 60),
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final showWolfAside =
-                                          constraints.maxWidth >= 900 &&
-                                              _discussionToken.isNotEmpty;
-                                      final content = ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: settings.fullWidth
-                                              ? double.infinity
-                                              : settings.maxWidth,
+                            child: settings.flow == ReaderFlow.scroll
+                                ? ScrollablePositionedList.builder(
+                                    itemCount: _pages.length,
+                                    initialScrollIndex: _startPage,
+                                    itemScrollController: _continuousController,
+                                    itemPositionsListener: _continuousPositions,
+                                    itemBuilder: (context, pageIndex) =>
+                                        _buildReaderPage(
+                                      context: context,
+                                      pageIndex: pageIndex,
+                                      settings: settings,
+                                      scheme: scheme,
+                                      textColor: textColor,
+                                      dragToSelect: dragToSelect,
+                                      continuous: true,
+                                    ),
+                                  )
+                                : PageView.builder(
+                                    controller: _pageController,
+                                    itemCount: _pages.length,
+                                    onPageChanged: (i) {
+                                      _visiblePage = i;
+                                      // Сохраняем индекс ПЕРВОГО АБЗАЦА страницы (см. _pageStartPara).
+                                      UserDb.instance.updateBookProgress(
+                                          widget.bookId,
+                                          i < _pageStartPara.length
+                                              ? _pageStartPara[i]
+                                              : 0);
+                                      PageTurnSound.instance
+                                        ..enabled = settings.pageTurnSound
+                                        ..play();
+                                      _clearSelection();
+                                      setState(() {});
+                                    },
+                                    itemBuilder: (context, pageIndex) {
+                                      final paras = _pages[pageIndex];
+                                      return SingleChildScrollView(
+                                        padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.sizeOf(context).width < 600
+                                              ? 16
+                                              : 40,
+                                          18,
+                                          MediaQuery.sizeOf(context).width < 600
+                                              ? 16
+                                              : 40,
+                                          60,
                                         ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (pageIndex == 0 &&
-                                                widget.leadImageUrl != null)
-                                              _leadImage(),
-                                            if (pageIndex == _startPage &&
-                                                _resumeHintVisible)
-                                              _resumeHint(
-                                                  scheme, settings.fontSize),
-                                            ...List.generate(paras.length,
-                                                (pIndex) {
-                                              final isSel =
-                                                  _selPage == pageIndex &&
-                                                      _selPara == pIndex;
-                                              final globalPara =
-                                                  _pageStartPara[pageIndex] +
-                                                      pIndex;
-                                              final isAudiobook =
-                                                  _audiobookEnabled &&
-                                                      _audiobookCues
+                                        child: LayoutBuilder(
+                                          builder: (context, constraints) {
+                                            final showWolfAside =
+                                                constraints.maxWidth >= 900 &&
+                                                    _discussionToken.isNotEmpty;
+                                            final content = ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                maxWidth: settings.fullWidth
+                                                    ? double.infinity
+                                                    : settings.maxWidth,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (pageIndex == 0 &&
+                                                      widget.leadImageUrl !=
+                                                          null)
+                                                    _leadImage(),
+                                                  if (pageIndex == _startPage &&
+                                                      _resumeHintVisible)
+                                                    _resumeHint(scheme,
+                                                        settings.fontSize),
+                                                  ...List.generate(paras.length,
+                                                      (pIndex) {
+                                                    final isSel =
+                                                        _selPage == pageIndex &&
+                                                            _selPara == pIndex;
+                                                    final globalPara =
+                                                        _pageStartPara[
+                                                                pageIndex] +
+                                                            pIndex;
+                                                    final isAudiobook =
+                                                        _audiobookEnabled &&
+                                                            _audiobookCues
+                                                                .isNotEmpty &&
+                                                            _audiobookCues[
+                                                                        _audiobookCue]
+                                                                    .paragraph ==
+                                                                globalPara &&
+                                                            _audiobookToken >=
+                                                                0;
+                                                    // Картинка и таблица — те же абзацы, но
+                                                    // с меткой в начале (models/book_block).
+                                                    final block =
+                                                        parseBookBlock(
+                                                            paras[pIndex]);
+                                                    if (block.kind ==
+                                                        BookBlockKind.image) {
+                                                      return BookImageView(
+                                                        url: block.url,
+                                                        caption: block.text,
+                                                        textColor: textColor,
+                                                        fontSize:
+                                                            settings.fontSize,
+                                                      );
+                                                    }
+                                                    if (block.kind ==
+                                                        BookBlockKind.table) {
+                                                      return BookTableView(
+                                                        rows: block.rows,
+                                                        settings: settings,
+                                                        textColor: textColor,
+                                                        highlightColor:
+                                                            scheme.primary,
+                                                        highlightTextColor:
+                                                            scheme.onPrimary,
+                                                        selectedCell: isSel
+                                                            ? _selCell
+                                                            : null,
+                                                        selectedToken: isSel
+                                                            ? _selStart
+                                                            : null,
+                                                        onTapWord: (cellIndex,
+                                                                cellText,
+                                                                ti,
+                                                                token,
+                                                                tokens) =>
+                                                            _onTapCellWord(
+                                                                pageIndex,
+                                                                pIndex,
+                                                                cellIndex,
+                                                                cellText,
+                                                                ti,
+                                                                token),
+                                                      );
+                                                    }
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: settings
+                                                              .paragraphSpacing),
+                                                      child: ReaderParagraph(
+                                                        text: block.text,
+                                                        settings: settings,
+                                                        textColor: textColor,
+                                                        highlightColor:
+                                                            scheme.primary,
+                                                        highlightTextColor:
+                                                            scheme.onPrimary,
+                                                        selStart: isSel
+                                                            ? _selStart
+                                                            : isAudiobook
+                                                                ? _audiobookToken
+                                                                : null,
+                                                        selEnd: isSel
+                                                            ? _selEnd
+                                                            : isAudiobook
+                                                                ? _audiobookToken
+                                                                : null,
+                                                        justify:
+                                                            settings.justify,
+                                                        firstLineIndent: settings
+                                                            .firstLineIndent,
+                                                        dragToSelect:
+                                                            dragToSelect,
+                                                        onTapWord: (ti, token,
+                                                                tokens) =>
+                                                            _onTapWord(
+                                                                pageIndex,
+                                                                pIndex,
+                                                                ti,
+                                                                token,
+                                                                tokens),
+                                                        onPhraseSelectionStart:
+                                                            (ti) =>
+                                                                _onPhraseSelectionStart(
+                                                                    pageIndex,
+                                                                    pIndex,
+                                                                    ti),
+                                                        onPhraseSelectionUpdate:
+                                                            (ti) =>
+                                                                _onPhraseSelectionUpdate(
+                                                                    pageIndex,
+                                                                    pIndex,
+                                                                    ti),
+                                                        onPhraseSelectionEnd:
+                                                            _onPhraseSelectionEnd,
+                                                        onPhraseSelectionCancel:
+                                                            _onPhraseSelectionCancel,
+                                                      ),
+                                                    );
+                                                  }),
+                                                  if (_discussionToken
                                                           .isNotEmpty &&
-                                                      _audiobookCues[
-                                                                  _audiobookCue]
-                                                              .paragraph ==
-                                                          globalPara &&
-                                                      _audiobookToken >= 0;
-                                              // Картинка и таблица — те же абзацы, но
-                                              // с меткой в начале (models/book_block).
-                                              final block =
-                                                  parseBookBlock(paras[pIndex]);
-                                              if (block.kind ==
-                                                  BookBlockKind.image) {
-                                                return BookImageView(
-                                                  url: block.url,
-                                                  caption: block.text,
-                                                  textColor: textColor,
-                                                  fontSize: settings.fontSize,
-                                                );
-                                              }
-                                              if (block.kind ==
-                                                  BookBlockKind.table) {
-                                                return BookTableView(
-                                                  rows: block.rows,
-                                                  settings: settings,
-                                                  textColor: textColor,
-                                                  highlightColor:
-                                                      scheme.primary,
-                                                  highlightTextColor:
-                                                      scheme.onPrimary,
-                                                  selectedCell:
-                                                      isSel ? _selCell : null,
-                                                  selectedToken:
-                                                      isSel ? _selStart : null,
-                                                  onTapWord: (cellIndex,
-                                                          cellText,
-                                                          ti,
-                                                          token,
-                                                          tokens) =>
-                                                      _onTapCellWord(
-                                                          pageIndex,
-                                                          pIndex,
-                                                          cellIndex,
-                                                          cellText,
-                                                          ti,
-                                                          token),
-                                                );
-                                              }
-                                              return Padding(
-                                                padding: EdgeInsets.only(
-                                                    bottom: settings
-                                                        .paragraphSpacing),
-                                                child: ReaderParagraph(
-                                                  text: block.text,
-                                                  settings: settings,
-                                                  textColor: textColor,
-                                                  highlightColor:
-                                                      scheme.primary,
-                                                  highlightTextColor:
-                                                      scheme.onPrimary,
-                                                  selStart: isSel
-                                                      ? _selStart
-                                                      : isAudiobook
-                                                          ? _audiobookToken
-                                                          : null,
-                                                  selEnd: isSel
-                                                      ? _selEnd
-                                                      : isAudiobook
-                                                          ? _audiobookToken
-                                                          : null,
-                                                  justify: settings.justify,
-                                                  firstLineIndent:
-                                                      settings.firstLineIndent,
-                                                  dragToSelect: dragToSelect,
-                                                  onTapWord:
-                                                      (ti, token, tokens) =>
-                                                          _onTapWord(
-                                                              pageIndex,
-                                                              pIndex,
-                                                              ti,
-                                                              token,
-                                                              tokens),
-                                                  onPhraseSelectionStart: (ti) =>
-                                                      _onPhraseSelectionStart(
-                                                          pageIndex,
-                                                          pIndex,
-                                                          ti),
-                                                  onPhraseSelectionUpdate: (ti) =>
-                                                      _onPhraseSelectionUpdate(
-                                                          pageIndex,
-                                                          pIndex,
-                                                          ti),
-                                                  onPhraseSelectionEnd:
-                                                      _onPhraseSelectionEnd,
-                                                  onPhraseSelectionCancel:
-                                                      _onPhraseSelectionCancel,
-                                                ),
-                                              );
-                                            }),
-                                            if (_discussionToken.isNotEmpty &&
-                                                !showWolfAside)
-                                              Center(
-                                                child: _discussionWolf(),
+                                                      !showWolfAside)
+                                                    Center(
+                                                      child: _discussionWolf(),
+                                                    ),
+                                                  if (_discussionToken
+                                                          .isNotEmpty &&
+                                                      _discussionOpen) ...[
+                                                    const SizedBox(height: 12),
+                                                    _DiscussionPanel(
+                                                      key: ValueKey(
+                                                          '$_discussionToken:${_pageStartPara[pageIndex]}'),
+                                                      token: _discussionToken,
+                                                      paragraph: _pageStartPara[
+                                                          pageIndex],
+                                                    ),
+                                                  ],
+                                                ],
                                               ),
-                                            if (_discussionToken.isNotEmpty &&
-                                                _discussionOpen) ...[
-                                              const SizedBox(height: 12),
-                                              _DiscussionPanel(
-                                                key: ValueKey(
-                                                    '$_discussionToken:${_pageStartPara[pageIndex]}'),
-                                                token: _discussionToken,
-                                                paragraph:
-                                                    _pageStartPara[pageIndex],
-                                              ),
-                                            ],
-                                          ],
+                                            );
+                                            return Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Flexible(child: content),
+                                                if (showWolfAside) ...[
+                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: 120,
+                                                    child: _discussionWolf(),
+                                                  ),
+                                                ],
+                                              ],
+                                            );
+                                          },
                                         ),
-                                      );
-                                      return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Flexible(child: content),
-                                          if (showWolfAside) ...[
-                                            const SizedBox(width: 10),
-                                            SizedBox(
-                                              width: 120,
-                                              child: _discussionWolf(),
-                                            ),
-                                          ],
-                                        ],
                                       );
                                     },
                                   ),
-                                );
-                              },
-                            ),
                           ),
-                          _buildArrow(scheme, left: true),
-                          _buildArrow(scheme, left: false),
+                          if (settings.flow == ReaderFlow.pages &&
+                              MediaQuery.sizeOf(context).width >= 600) ...[
+                            _buildArrow(scheme, left: true),
+                            _buildArrow(scheme, left: false),
+                          ],
                         ],
                       ),
                     ),
@@ -1612,6 +1918,18 @@ class ReaderSettingsSheet extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: scheme.onSurface)),
               const SizedBox(height: 16),
+              _label('Режим чтения', scheme),
+              Wrap(
+                spacing: 8,
+                children: ReaderFlow.values
+                    .map((flow) => ChoiceChip(
+                          label: Text(flow.label),
+                          selected: s.flow == flow,
+                          onSelected: (_) => set(s.copyWith(flow: flow)),
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 16),
               _label('Шрифт', scheme),
               Wrap(
                 spacing: 8,
@@ -1710,7 +2028,9 @@ class ReaderSettingsSheet extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Шелест при перелистывании'),
                 value: s.pageTurnSound,
-                onChanged: (v) => set(s.copyWith(pageTurnSound: v)),
+                onChanged: s.flow == ReaderFlow.pages
+                    ? (v) => set(s.copyWith(pageTurnSound: v))
+                    : null,
               ),
               // Настройка живёт в AppSettings, а не в ReaderSettings: она
               // действует и в плеере, а тот про настройки чтения не знает.
@@ -2262,7 +2582,10 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                           const SizedBox(height: 10),
                           _generalTranslationCard(scheme, gen),
                         ],
-                        if (isPhrase && data.phraseInsight != null) ...[
+                        if (isPhrase && data.sentenceAnalysis != null) ...[
+                          const SizedBox(height: 14),
+                          _sentenceAnalysisCard(scheme, data.sentenceAnalysis!),
+                        ] else if (isPhrase && data.phraseInsight != null) ...[
                           const SizedBox(height: 14),
                           _phraseGrammarCard(scheme, data.phraseInsight!),
                         ],
@@ -2555,6 +2878,203 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                     ),
                   ],
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _posColor(String upos, ColorScheme scheme) => switch (upos) {
+        'NOUN' => const Color(0xFF2563EB),
+        'PROPN' => const Color(0xFF0891B2),
+        'VERB' => const Color(0xFFDC2626),
+        'AUX' => const Color(0xFFEA580C),
+        'ADJ' => const Color(0xFF16A34A),
+        'ADV' => const Color(0xFF0D9488),
+        'PRON' => const Color(0xFF9333EA),
+        'DET' => const Color(0xFFC026D3),
+        'ADP' => const Color(0xFFA16207),
+        'NUM' => const Color(0xFF4F46E5),
+        'PART' => const Color(0xFFDB2777),
+        'INTJ' => const Color(0xFFE11D48),
+        _ => scheme.onSurface.withValues(alpha: 0.58),
+      };
+
+  Color _chunkColor(String kind, ColorScheme scheme) => switch (kind) {
+        'prep' => const Color(0xFF2563EB),
+        'verb' => const Color(0xFFF59E0B),
+        'noun' => const Color(0xFF10B981),
+        _ => scheme.onSurface.withValues(alpha: 0.55),
+      };
+
+  String _chunkKind(String kind) => switch (kind) {
+        'prep' => 'Предлог',
+        'verb' => 'Глагол',
+        'noun' => 'Согласование',
+        _ => 'Связь',
+      };
+
+  Widget _sentenceAnalysisCard(ColorScheme scheme, SentenceAnalysis analysis) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.42),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.onSurface.withValues(alpha: 0.12)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.account_tree_outlined,
+                  size: 17, color: scheme.secondary),
+              const SizedBox(width: 7),
+              Text(
+                'Грамматический разбор',
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.bold,
+                  color: scheme.secondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.end,
+            children: [
+              for (final token in analysis.tokens)
+                _sentenceToken(scheme, token),
+            ],
+          ),
+          if (analysis.chunks.isNotEmpty) ...[
+            const SizedBox(height: 14),
+            Divider(color: scheme.onSurface.withValues(alpha: 0.12)),
+            const SizedBox(height: 5),
+            for (final chunk in analysis.chunks)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.only(top: 5),
+                      decoration: BoxDecoration(
+                        color: _chunkColor(chunk.kind, scheme),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 9),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: chunk.text,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: scheme.onSurface,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '  ${_chunkKind(chunk.kind)}',
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    color: scheme.onSurface
+                                        .withValues(alpha: 0.58),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            chunk.label,
+                            style: TextStyle(
+                              fontSize: 12.5,
+                              height: 1.35,
+                              color: scheme.onSurface.withValues(alpha: 0.72),
+                            ),
+                          ),
+                          if (chunk.note.isNotEmpty)
+                            Text(
+                              chunk.note,
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1.35,
+                                color: scheme.onSurface.withValues(alpha: 0.62),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ] else ...[
+            const SizedBox(height: 12),
+            Text(
+              'Части речи определены, но устойчивых связей во фразе не найдено.',
+              style: TextStyle(
+                fontSize: 12,
+                color: scheme.onSurface.withValues(alpha: 0.62),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _sentenceToken(ColorScheme scheme, SentenceTokenAnalysis token) {
+    final color = _posColor(token.upos, scheme);
+    final details = <String>[
+      if (token.lemma.isNotEmpty) 'Начальная форма: ${token.lemma}',
+      if (token.translation.isNotEmpty) 'Перевод: ${token.translation}',
+    ].join('\n');
+    return Tooltip(
+      message: details,
+      child: Container(
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 54),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withValues(alpha: 0.36)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              token.posShort.isEmpty ? 'слово' : token.posShort,
+              style: TextStyle(
+                fontSize: 9.5,
+                height: 1.05,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 3),
+            Text(
+              token.surface,
+              style: TextStyle(
+                fontFamily: 'NotoSerif',
+                fontSize: 16,
+                height: 1.05,
+                fontWeight: FontWeight.bold,
+                color: scheme.onSurface,
               ),
             ),
           ],

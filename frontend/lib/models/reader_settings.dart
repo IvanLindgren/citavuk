@@ -7,6 +7,9 @@ enum AppThemeMode { light, dark, system }
 /// кириллицу + латиницу, поэтому «белых квадратов» больше нет).
 enum ReaderFont { serif, lora, sans }
 
+/// Способ перемещения по книге.
+enum ReaderFlow { pages, scroll }
+
 /// Уровень «диагонального»/бионического выделения основы слова.
 enum BionicLevel { off, low, medium, high }
 
@@ -21,6 +24,13 @@ extension ReaderFontX on ReaderFont {
         ReaderFont.serif => 'С засечками',
         ReaderFont.lora => 'Lora',
         ReaderFont.sans => 'Без засечек',
+      };
+}
+
+extension ReaderFlowX on ReaderFlow {
+  String get label => switch (this) {
+        ReaderFlow.pages => 'Страницы',
+        ReaderFlow.scroll => 'Прокрутка',
       };
 }
 
@@ -58,6 +68,7 @@ extension AppThemeModeX on AppThemeMode {
 /// Настройки чтения. Иммутабельны; меняются через copyWith и сохраняются
 /// в SharedPreferences (см. AppSettings).
 class ReaderSettings {
+  final ReaderFlow flow;
   final double fontSize;
   final double lineHeight;
   final double letterSpacing;
@@ -80,6 +91,7 @@ class ReaderSettings {
   final bool pageTurnSound; // шелест страницы при перелистывании
 
   const ReaderSettings({
+    this.flow = ReaderFlow.pages,
     this.fontSize = 19,
     this.lineHeight = 1.6,
     this.letterSpacing = 0.2,
@@ -99,6 +111,7 @@ class ReaderSettings {
   bool get fullWidth => maxWidth >= 1100;
 
   ReaderSettings copyWith({
+    ReaderFlow? flow,
     double? fontSize,
     double? lineHeight,
     double? letterSpacing,
@@ -114,6 +127,7 @@ class ReaderSettings {
     bool? pageTurnSound,
   }) =>
       ReaderSettings(
+        flow: flow ?? this.flow,
         fontSize: fontSize ?? this.fontSize,
         lineHeight: lineHeight ?? this.lineHeight,
         letterSpacing: letterSpacing ?? this.letterSpacing,
@@ -130,6 +144,7 @@ class ReaderSettings {
       );
 
   Map<String, dynamic> toMap() => {
+        'flow': flow.index,
         'fontSize': fontSize,
         'lineHeight': lineHeight,
         'letterSpacing': letterSpacing,
@@ -152,6 +167,7 @@ class ReaderSettings {
     }
 
     return ReaderSettings(
+      flow: pick(ReaderFlow.values, m['flow'], ReaderFlow.pages),
       fontSize: (m['fontSize'] as num?)?.toDouble() ?? 19,
       lineHeight: (m['lineHeight'] as num?)?.toDouble() ?? 1.6,
       letterSpacing: (m['letterSpacing'] as num?)?.toDouble() ?? 0.2,

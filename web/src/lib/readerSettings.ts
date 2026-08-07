@@ -21,11 +21,14 @@ const STORAGE_KEY = 'citavuk-reader-settings';
 
 export type ReaderFont = 'lora' | 'serif' | 'sans';
 export type ReaderTheme = 'auto' | 'paper' | 'sepia' | 'gray' | 'night' | 'odyssey' | 'campaign100';
+export type ReaderFlow = 'pages' | 'scroll';
 
 /** Уровень «бионического» выделения: доля слова от начала, набранная жирным. */
 export type BionicLevel = 0 | 1 | 2 | 3;
 
 export interface ReaderSettings {
+  /** Перелистывание экранов или непрерывная вертикальная лента. */
+  flow: ReaderFlow;
   fontSize: number;
   lineHeight: number;
   letterSpacing: number;
@@ -46,6 +49,7 @@ export interface ReaderSettings {
 export const FULL_WIDTH = 1100;
 
 export const DEFAULT_SETTINGS: ReaderSettings = {
+  flow: 'pages',
   fontSize: 19,
   lineHeight: 1.7,
   letterSpacing: 0.2,
@@ -191,6 +195,7 @@ export function sanitize(raw: unknown): ReaderSettings {
 
   const bionic = input.bionic;
   return {
+    flow: pick('flow', ['pages', 'scroll'] as const),
     fontSize: num('fontSize', 14, 32),
     lineHeight: num('lineHeight', 1.2, 2.4),
     letterSpacing: num('letterSpacing', -0.5, 2),

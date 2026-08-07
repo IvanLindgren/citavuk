@@ -20,10 +20,11 @@
     "framer-motion": "^12.23.12",
     "mammoth": "^1.12.0",
     "marked": "^16.4.2",
-    "pdfjs-dist": "^6.1.200",
+    "pdfjs-dist": "^6.2.108",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-icons": "^5.7.0",
+    "react-virtuoso": "^4.18.11",
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {

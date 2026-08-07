@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../models/sentence_analysis.dart';
+
 /// Результат перевода с сервера Citavuk.
 class TranslationResult {
   const TranslationResult({
@@ -87,21 +89,26 @@ class TranslationClient {
     });
   }
 
+  /// Разбирает фразу пословно и связывает предлоги, падежи и глагольные формы.
+  Future<SentenceAnalysis?> analyzeSentence(String sentence) async {
+    if (sentence.trim().isEmpty) return null;
+    final data = await _postJson(
+      '/v1/analyze/sentence',
+      {'sentence': sentence},
+    );
+    if (data == null) return null;
+    try {
+      return SentenceAnalysis.fromJson(data);
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<TranslationResult?> _post(
       String path, Map<String, dynamic> body) async {
+    final data = await _postJson(path, body);
+    if (data == null) return null;
     try {
-      final response = await _client
-          .post(
-            _uri(path),
-            headers: const {'Content-Type': 'application/json; charset=utf-8'},
-            body: jsonEncode(body),
-          )
-          .timeout(_timeout);
-      if (response.statusCode != 200) return null;
-
-      final data = jsonDecode(utf8.decode(response.bodyBytes));
-      if (data is! Map) return null;
-
       final text = (data['text'] as String?)?.trim() ?? '';
       final sentence = (data['sentence'] as String?)?.trim();
       if (text.isEmpty && (sentence == null || sentence.isEmpty)) return null;
@@ -112,6 +119,24 @@ class TranslationClient {
         provider: (data['provider'] as String?) ?? '',
         aligned: data['aligned'] == true,
       );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> _postJson(
+      String path, Map<String, dynamic> body) async {
+    try {
+      final response = await _client
+          .post(
+            _uri(path),
+            headers: const {'Content-Type': 'application/json; charset=utf-8'},
+            body: jsonEncode(body),
+          )
+          .timeout(_timeout);
+      if (response.statusCode != 200) return null;
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
+      return data is Map ? Map<String, dynamic>.from(data) : null;
     } catch (_) {
       // Сеть недоступна или сервер не ответил. Вызывающий код обязан иметь
       // запасной путь: приложение работает и офлайн.

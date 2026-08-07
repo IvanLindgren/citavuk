@@ -29,6 +29,7 @@ dependencies:
   # транзитивно, но используется теперь напрямую и потому объявлен явно.
   crypto: ^3.0.3
   provider: ^6.1.2
+  scrollable_positioned_list: ^0.3.8
   shared_preferences: ^2.2.3
   # Windows/Android. После добавления: flutter clean + flutter pub get.
   audioplayers: ^6.1.0

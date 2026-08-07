@@ -10,6 +10,7 @@ import {
   paletteFor,
   type BionicLevel,
   type ReaderFont,
+  type ReaderFlow,
   type ReaderSettings,
   type ReaderTheme,
 } from '../lib/readerSettings';
@@ -89,6 +90,17 @@ export function ReaderSettingsPanel({
             </div>
 
             <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5">
+              <Group title="Режим чтения">
+                <Chips<ReaderFlow>
+                  value={settings.flow}
+                  options={[
+                    { id: 'pages', label: 'Страницы' },
+                    { id: 'scroll', label: 'Прокрутка' },
+                  ]}
+                  onSelect={(value) => onChange('flow', value)}
+                />
+              </Group>
+
               <Group title="Страница">
                 <Chips<ReaderTheme>
                   value={settings.theme}

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { HiBackward, HiForward, HiPause, HiPlay, HiSpeakerWave, HiXMark } from 'react-icons/hi2';
+import { Virtuoso, type VirtuosoHandle } from 'react-virtuoso';
 
 import { downloadContent } from '../api/sync';
 import { Discussion } from '../components/Discussion';
@@ -66,6 +67,8 @@ export function Reader() {
   // следующая, иначе перелистывание «вперёд» и «назад» выглядят одинаково.
   const [direction, setDirection] = useState(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const continuousRef = useRef<VirtuosoHandle>(null);
+  const flowRef = useRef(settings.flow);
   const playCueRef = useRef<(index: number) => void>(() => {});
   const [audiobookEnabled, setAudiobookEnabled] = useState(false);
   const [audiobookPlaying, setAudiobookPlaying] = useState(false);
@@ -169,19 +172,42 @@ export function Reader() {
     const target = pageStarts.findLastIndex(
       (start) => start <= state.book.lastParagraph,
     );
-    setPage(target < 0 ? 0 : target);
+    const next = target < 0 ? 0 : target;
+    setPage(next);
+    if (settings.flow === 'scroll') {
+      requestAnimationFrame(() => {
+        continuousRef.current?.scrollToIndex({ index: next, align: 'start' });
+      });
+    }
   }, [state, pageStarts]);
+
+  useEffect(() => {
+    const switched = flowRef.current !== settings.flow;
+    flowRef.current = settings.flow;
+    if (!switched || settings.flow !== 'scroll') return;
+    requestAnimationFrame(() => {
+      continuousRef.current?.scrollToIndex({ index: page, align: 'start' });
+    });
+  }, [page, settings.flow]);
 
   const goTo = useCallback(
     (next: number) => {
       if (next < 0 || next >= pages.length || state.kind !== 'ready') return;
       setDirection(next > page ? 1 : -1);
       setPage(next);
-      playPageTurn(settings.sound);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (settings.flow === 'scroll') {
+        continuousRef.current?.scrollToIndex({
+          index: next,
+          align: 'start',
+          behavior: 'smooth',
+        });
+      } else {
+        playPageTurn(settings.sound);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
       void saveProgress(state.book.id, pageStarts[next] ?? 0);
     },
-    [pages.length, state, pageStarts, page, settings.sound],
+    [pages.length, state, pageStarts, page, settings.flow, settings.sound],
   );
 
   const audiobookStorageKey = `citavuk-audiobook-${id ?? 'unknown'}`;
@@ -198,9 +224,17 @@ export function Reader() {
     if (!cue || state.kind !== 'ready') return;
     setDirection(cue.page >= page ? 1 : -1);
     setPage(cue.page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (settings.flow === 'scroll') {
+      continuousRef.current?.scrollToIndex({
+        index: cue.page,
+        align: 'center',
+        behavior: 'smooth',
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     void saveProgress(state.book.id, pageStarts[cue.page] ?? 0);
-  }, [audiobookCues, page, pageStarts, state]);
+  }, [audiobookCues, page, pageStarts, settings.flow, state]);
 
   const playAudiobookCue = useCallback((index: number) => {
     const cue = audiobookCues[index];
@@ -287,6 +321,9 @@ export function Reader() {
       ) {
         return;
       }
+      // В непрерывном режиме стрелки, PageUp/PageDown и пробел принадлежат
+      // обычной прокрутке браузера.
+      if (settings.flow === 'scroll') return;
       switch (event.key) {
         case 'ArrowRight':
         case 'PageDown':
@@ -310,7 +347,22 @@ export function Reader() {
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [page, goTo]);
+  }, [page, goTo, settings.flow]);
+
+  const onContinuousRange = useCallback(
+    ({ startIndex }: { startIndex: number }) => {
+      if (
+        settings.flow !== 'scroll' ||
+        state.kind !== 'ready' ||
+        startIndex === page
+      ) {
+        return;
+      }
+      setPage(startIndex);
+      void saveProgress(state.book.id, pageStarts[startIndex] ?? 0);
+    },
+    [page, pageStarts, settings.flow, state],
+  );
 
   if (state.kind === 'loading') {
     return (
@@ -399,13 +451,74 @@ export function Reader() {
     // «дыры» между словами. Браузер переносит по правилам языка, поэтому
     // странице проставлен lang.
     hyphens: settings.justify ? 'auto' : undefined,
+    overflowWrap: 'anywhere',
+    wordBreak: 'normal',
+  };
+
+  const renderContinuousPage = (pageIndex: number) => {
+    const entry = pages[pageIndex];
+    const marks = (entry?.texts ?? []).map<ReaderMark[]>((_, paragraph) =>
+      audioMark &&
+      audioMark.page === pageIndex &&
+      audioMark.paragraph === paragraph
+        ? [{ ...audioMark, kind: 'audio' }]
+        : [],
+    );
+
+    return (
+      <section
+        data-reader-page={pageIndex}
+        className="min-w-0 px-4 [&_p]:mb-[var(--reader-gap)] [&_p:last-child]:mb-0 sm:px-10"
+        style={{
+          paddingTop: pageIndex === 0 ? 28 : 0,
+          paddingBottom:
+            pageIndex === pages.length - 1 ? 36 : settings.paragraphSpacing,
+        }}
+      >
+        <WordReader
+          paragraphs={entry?.texts ?? []}
+          bookId={state.book.id}
+          bionic={settings.bionic}
+          paragraphClassName="reader-selectable"
+          paragraphStyle={paragraphStyle}
+          paragraphMarks={marks}
+        />
+
+        {discussionToken && pageIndex === page && (
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setDiscussionOpen((value) => !value)}
+              aria-expanded={discussionOpen}
+              className="mx-auto flex w-40 items-end justify-center rounded-lg outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              <img
+                src="/img/citavuk_zadumch.png"
+                alt=""
+                width={236}
+                height={236}
+                draggable={false}
+                className="w-full select-none drop-shadow-md"
+              />
+              <span className="sr-only">Обсуждение этого места</span>
+            </button>
+            {discussionOpen && (
+              <Discussion
+                token={discussionToken}
+                paragraph={pageStarts[pageIndex] ?? 0}
+              />
+            )}
+          </div>
+        )}
+      </section>
+    );
   };
 
   return (
-    <main className={`px-5 py-8 ${audiobookEnabled ? 'pb-28' : ''}`}>
+    <main className={`px-3 py-5 sm:px-5 sm:py-8 ${audiobookEnabled ? 'pb-28' : ''}`}>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1 basis-full sm:basis-auto">
             <Link
               to={
                 state.book.folder
@@ -416,11 +529,11 @@ export function Reader() {
             >
               ← {state.book.folder || 'Библиотека'}
             </Link>
-            <h1 className="mt-1 truncate text-2xl">{state.book.title}</h1>
+            <h1 className="mt-1 truncate text-xl sm:text-2xl">{state.book.title}</h1>
           </div>
 
 
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => playAudiobookCue(audiobookCue)}
@@ -464,12 +577,14 @@ export function Reader() {
             <button
               type="button"
               onClick={() => setPanelOpen(true)}
+              aria-label="Настройки чтения"
+              title="Настройки чтения"
               className="flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2.5 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
             >
               <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
                 <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.4 4a8.4 8.4 0 01-.1 1.2l2 1.6-2 3.4-2.4-1a8.3 8.3 0 01-2 1.2l-.4 2.6h-4l-.4-2.6a8.3 8.3 0 01-2-1.2l-2.4 1-2-3.4 2-1.6a8.4 8.4 0 010-2.4l-2-1.6 2-3.4 2.4 1a8.3 8.3 0 012-1.2L9.5 3h4l.4 2.6c.7.3 1.4.7 2 1.2l2.4-1 2 3.4-2 1.6c.1.4.1.8.1 1.2z" />
               </svg>
-              Настройки
+              <span className="hidden sm:inline">Настройки</span>
             </button>
           </div>
         </div>
@@ -481,94 +596,126 @@ export function Reader() {
         */}
         <BookLevelNotice bookId={state.book.id} paragraphs={paragraphs} />
 
-        {/* Перспектива нужна повороту страницы: без неё rotateY выглядит
-            как обычное сжатие по горизонтали. */}
-        <div
-          className="relative mx-auto"
-          style={{
-            perspective: 1600,
-            maxWidth:
-              settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
-          }}
-        >
-          <AnimatePresence mode="wait" initial={false} custom={direction}>
-            <motion.article
-              key={page}
-              custom={direction}
-              initial={
-                flip
-                  ? { opacity: 0, rotateY: direction * 8, x: direction * 40 }
-                  : false
-              }
-              animate={{ opacity: 1, rotateY: 0, x: 0 }}
-              exit={
-                flip
-                  ? { opacity: 0, rotateY: direction * -6, x: direction * -30 }
-                  : { opacity: 0 }
-              }
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              lang="sr"
-              style={{ ...pageStyle, transformOrigin: direction > 0 ? 'left center' : 'right center' }}
-              className="paper-grain relative mx-auto overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] p-6 shadow-[var(--shadow-soft)] [&_p]:mb-[var(--reader-gap)] [&_p:last-child]:mb-0 sm:p-10"
-            >
-              {campaignBackground && (
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 opacity-[0.09]"
-                  style={{
-                    backgroundImage: campaignBackground,
-                    backgroundPosition: 'center top',
-                    backgroundRepeat: 'repeat',
-                    backgroundSize: '320px 320px',
-                  }}
-                />
-              )}
-              <div className="relative z-[1]">
-                <WordReader
-                  paragraphs={current}
-                  bookId={state.book.id}
-                  bionic={settings.bionic}
-                  paragraphClassName="reader-selectable"
-                  paragraphStyle={paragraphStyle}
-                  paragraphMarks={audioMarks}
-                />
-              </div>
-            </motion.article>
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {discussionToken && (
-              <motion.button
-                type="button"
-                initial={{ opacity: 0, scale: 0.82, x: 12 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                onClick={() => setDiscussionOpen((value) => !value)}
-                aria-expanded={discussionOpen}
-                aria-label={
-                  discussionOpen
-                    ? 'Скрыть обсуждение этой страницы'
-                    : 'Открыть обсуждение этой страницы'
-                }
-                title="Обсуждение этой страницы"
-                className="mx-auto mt-4 flex w-52 items-end justify-center rounded-2xl outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:absolute lg:-right-[19rem] lg:top-6 lg:mt-0 lg:w-72 xl:-right-[21rem] xl:w-80"
-              >
-                <img
-                  src="/img/citavuk_zadumch.png"
-                  alt=""
-                  width={236}
-                  height={236}
-                  draggable={false}
-                  className="w-full select-none drop-shadow-md"
-                />
-                <span className="sr-only">Обсуждение страницы</span>
-              </motion.button>
+        {settings.flow === 'scroll' ? (
+          <div
+            lang="sr"
+            style={pageStyle}
+            className="paper-grain relative mx-auto min-w-0 overflow-x-clip rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] shadow-[var(--shadow-soft)]"
+          >
+            {campaignBackground && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 opacity-[0.09]"
+                style={{
+                  backgroundImage: campaignBackground,
+                  backgroundPosition: 'center top',
+                  backgroundRepeat: 'repeat',
+                  backgroundSize: '320px 320px',
+                }}
+              />
             )}
-          </AnimatePresence>
-        </div>
+            <div className="relative z-[1] min-w-0">
+              <Virtuoso
+                ref={continuousRef}
+                useWindowScroll
+                totalCount={pages.length}
+                initialTopMostItemIndex={page}
+                rangeChanged={onContinuousRange}
+                increaseViewportBy={{ top: 0, bottom: 900 }}
+                itemContent={renderContinuousPage}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Перспектива нужна повороту страницы: без неё rotateY выглядит
+             как обычное сжатие по горизонтали. */
+          <div
+            className="relative mx-auto min-w-0"
+            style={{
+              perspective: 1600,
+              maxWidth:
+                settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth,
+            }}
+          >
+            <AnimatePresence mode="wait" initial={false} custom={direction}>
+              <motion.article
+                key={page}
+                custom={direction}
+                initial={
+                  flip
+                    ? { opacity: 0, rotateY: direction * 8, x: direction * 40 }
+                    : false
+                }
+                animate={{ opacity: 1, rotateY: 0, x: 0 }}
+                exit={
+                  flip
+                    ? { opacity: 0, rotateY: direction * -6, x: direction * -30 }
+                    : { opacity: 0 }
+                }
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                lang="sr"
+                style={{ ...pageStyle, transformOrigin: direction > 0 ? 'left center' : 'right center' }}
+                className="paper-grain relative mx-auto min-w-0 overflow-x-clip rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-4 shadow-[var(--shadow-soft)] [&_p]:mb-[var(--reader-gap)] [&_p:last-child]:mb-0 sm:p-10"
+              >
+                {campaignBackground && (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 opacity-[0.09]"
+                    style={{
+                      backgroundImage: campaignBackground,
+                      backgroundPosition: 'center top',
+                      backgroundRepeat: 'repeat',
+                      backgroundSize: '320px 320px',
+                    }}
+                  />
+                )}
+                <div className="relative z-[1] min-w-0">
+                  <WordReader
+                    paragraphs={current}
+                    bookId={state.book.id}
+                    bionic={settings.bionic}
+                    paragraphClassName="reader-selectable"
+                    paragraphStyle={paragraphStyle}
+                    paragraphMarks={audioMarks}
+                  />
+                </div>
+              </motion.article>
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {discussionToken && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.82, x: 12 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  onClick={() => setDiscussionOpen((value) => !value)}
+                  aria-expanded={discussionOpen}
+                  aria-label={
+                    discussionOpen
+                      ? 'Скрыть обсуждение этой страницы'
+                      : 'Открыть обсуждение этой страницы'
+                  }
+                  title="Обсуждение этой страницы"
+                  className="mx-auto mt-4 flex w-52 items-end justify-center rounded-lg outline-none transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:absolute lg:-right-[19rem] lg:top-6 lg:mt-0 lg:w-72 xl:-right-[21rem] xl:w-80"
+                >
+                  <img
+                    src="/img/citavuk_zadumch.png"
+                    alt=""
+                    width={236}
+                    height={236}
+                    draggable={false}
+                    className="w-full select-none drop-shadow-md"
+                  />
+                  <span className="sr-only">Обсуждение страницы</span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
-          {discussionToken && discussionOpen && (
+          {settings.flow === 'pages' && discussionToken && discussionOpen && (
             <motion.section
               key={`${discussionToken}:${pageStarts[page] ?? 0}`}
               initial={{ opacity: 0, y: 10 }}
@@ -589,22 +736,26 @@ export function Reader() {
           )}
         </AnimatePresence>
 
-        <nav className="mx-auto mt-6 flex items-center justify-between gap-4"
-             style={{ maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth }}>
-          <Button variant="secondary" onClick={() => goTo(page - 1)} disabled={page === 0}>
-            Назад
-          </Button>
-          <span className="text-sm text-[var(--text-muted)]">
-            {page + 1} из {pages.length}
-          </span>
-          <Button onClick={() => goTo(page + 1)} disabled={page >= pages.length - 1}>
-            Дальше
-          </Button>
-        </nav>
+        {settings.flow === 'pages' && (
+          <nav className="mx-auto mt-6 flex items-center justify-between gap-4"
+               style={{ maxWidth: settings.maxWidth >= FULL_WIDTH ? undefined : settings.maxWidth }}>
+            <Button variant="secondary" onClick={() => goTo(page - 1)} disabled={page === 0}>
+              Назад
+            </Button>
+            <span className="text-sm text-[var(--text-muted)]">
+              {page + 1} из {pages.length}
+            </span>
+            <Button onClick={() => goTo(page + 1)} disabled={page >= pages.length - 1}>
+              Дальше
+            </Button>
+          </nav>
+        )}
 
         <p className="mt-3 text-center text-xs text-[var(--text-muted)]">
-          Стрелки ← → листают страницы. Нажмите любое слово, чтобы увидеть
-          перевод в этом предложении.
+          {settings.flow === 'pages'
+            ? 'Стрелки ← → листают страницы.'
+            : 'Прокручивайте книгу вниз как обычный документ.'}{' '}
+          Нажмите любое слово, чтобы увидеть перевод в этом предложении.
         </p>
 
         {page >= pages.length - 1 && (

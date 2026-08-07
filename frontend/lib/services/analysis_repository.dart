@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import '../models/grammar.dart';
+import '../models/sentence_analysis.dart';
 import '../models/word_analysis.dart';
 import '../state/app_settings.dart';
 import 'english_engine.dart';
@@ -213,23 +214,31 @@ class AnalysisRepository {
     // Фразы: морфология не нужна — только перевод. Сначала кэш (офлайн),
     // потом сеть; удачный перевод кэшируем.
     if (tokenText.trim().contains(' ')) {
-      var tr = await UserDb.instance.getCachedTranslation(tokenText);
-      final cached = tr != null;
-      if (tr == null) {
-        tr = await _translateOnline(tokenText);
-        if (tr != null) await UserDb.instance.cacheTranslation(tokenText, tr);
+      final cachedTranslation =
+          await UserDb.instance.getCachedTranslation(tokenText);
+      final results = await Future.wait<Object?>([
+        cachedTranslation != null
+            ? Future<String?>.value(cachedTranslation)
+            : _translateOnline(tokenText),
+        // Локальная эвристика остаётся fallback для офлайн-режима.
+        _phraseInsight(tokenText),
+        _translationClient.analyzeSentence(tokenText),
+      ]);
+      final tr = results[0] as String?;
+      final insight = results[1] as PhraseInsight?;
+      final sentenceAnalysis = results[2] as SentenceAnalysis?;
+      if (cachedTranslation == null && tr != null) {
+        await UserDb.instance.cacheTranslation(tokenText, tr);
       }
-      // Грамматика фразы: составное время (video sam ga → перфекат) и
-      // энклитики с объяснением порядка (закон Ваккернагеля).
-      final insight = await _phraseInsight(tokenText);
       return WordAnalysis(
         surface: tokenText,
         lemma: tokenText.toLowerCase(),
         upos: 'PHRASE',
         translation: tr ?? '[Перевод доступен только онлайн]',
-        isOffline: tr == null || cached,
+        isOffline: tr == null || cachedTranslation != null,
         isPhrase: true,
         phraseInsight: insight,
+        sentenceAnalysis: sentenceAnalysis,
       );
     }
 

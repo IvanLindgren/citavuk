@@ -17,6 +17,7 @@ describe('разбор сохранённых настроек', () => {
   it('оставляет допустимые значения как есть', () => {
     const result = sanitize({
       fontSize: 24,
+      flow: 'scroll',
       lineHeight: 1.9,
       font: 'sans',
       justify: false,
@@ -24,6 +25,7 @@ describe('разбор сохранённых настроек', () => {
       bionic: 2,
     });
     expect(result.fontSize).toBe(24);
+    expect(result.flow).toBe('scroll');
     expect(result.lineHeight).toBe(1.9);
     expect(result.font).toBe('sans');
     expect(result.justify).toBe(false);
@@ -47,6 +49,7 @@ describe('разбор сохранённых настроек', () => {
   });
 
   it('не принимает неизвестный шрифт, тему и уровень выделения', () => {
+    expect(sanitize({ flow: 'карусель' }).flow).toBe(DEFAULT_SETTINGS.flow);
     expect(sanitize({ font: 'comic-sans' }).font).toBe(DEFAULT_SETTINGS.font);
     expect(sanitize({ theme: 'неон' }).theme).toBe(DEFAULT_SETTINGS.theme);
     expect(sanitize({ bionic: 7 }).bionic).toBe(0);

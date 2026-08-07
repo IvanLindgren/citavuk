@@ -1100,10 +1100,13 @@ function WordCard({
                   склонения не будет.
                 </p>
               )}
-              {/* Разбор фразы идёт после разбора слова: человек нажал слово
-                  ради него, а связи между словами — уже следующий вопрос. */}
-              {kind === 'word' && result.sentence && (
-                <SentenceAnalysisPanel sentence={result.sentence} />
+              {/* Для выделенной фразы разбор является частью основного ответа и
+                  открывается сразу. При тапе по одному слову он остаётся
+                  дополнительным уровнем и загружается только по запросу. */}
+              {kind === 'phrase' ? (
+                <SentenceAnalysisPanel sentence={word} defaultOpen />
+              ) : (
+                result.sentence && <SentenceAnalysisPanel sentence={result.sentence} />
               )}
               {onSave && formChoice && (
                 <SaveChoice
