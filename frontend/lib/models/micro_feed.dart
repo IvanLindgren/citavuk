@@ -105,10 +105,16 @@ class MicroFeedPreferences {
   /// Анкета пройдена. Пустой список тем — тоже ответ, а не «не спрашивали».
   final bool onboarded;
 
+  /// Уровень взят с аккаунта, где он задан один раз для всего приложения.
+  /// Тогда анкета про уровень не спрашивает: человек уже ответил, и повторный
+  /// вопрос выглядит так, будто его не услышали.
+  final bool levelFromAccount;
+
   const MicroFeedPreferences({
     required this.categories,
     required this.cefr,
     required this.onboarded,
+    this.levelFromAccount = false,
   });
 
   factory MicroFeedPreferences.fromJson(Map<String, dynamic> j) =>
@@ -118,7 +124,38 @@ class MicroFeedPreferences {
         ],
         cefr: (j['cefr'] ?? 'B1').toString(),
         onboarded: j['onboarded'] == true,
+        levelFromAccount: j['levelFromAccount'] == true,
       );
+}
+
+/// Реплика в обсуждении карточки.
+class MicroFeedComment {
+  final String id;
+  final String author;
+  final String body;
+  final DateTime? createdAt;
+
+  /// Своя реплика — её можно удалить.
+  final bool mine;
+
+  const MicroFeedComment({
+    required this.id,
+    required this.author,
+    required this.body,
+    required this.createdAt,
+    required this.mine,
+  });
+
+  factory MicroFeedComment.fromJson(Map<String, dynamic> j) {
+    String s(String key) => (j[key] ?? '').toString();
+    return MicroFeedComment(
+      id: s('id'),
+      author: s('author').isEmpty ? 'Читатель' : s('author'),
+      body: s('body'),
+      createdAt: DateTime.tryParse(s('createdAt'))?.toLocal(),
+      mine: j['mine'] == true,
+    );
+  }
 }
 
 class MicroFeedPage {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -18,6 +19,7 @@ class Account {
     required this.displayName,
     this.hasPassword = true,
     this.emailVerified = true,
+    this.serbianLevel = '',
   });
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -26,6 +28,7 @@ class Account {
         displayName: json['displayName'] as String? ?? '',
         hasPassword: json['hasPassword'] as bool? ?? true,
         emailVerified: json['emailVerified'] as bool? ?? true,
+        serbianLevel: json['serbianLevel'] as String? ?? '',
       );
 
   final String id;
@@ -36,6 +39,19 @@ class Account {
   final bool hasPassword;
   final bool emailVerified;
 
+  /// Уровень сербского: A1…C1 либо пусто, если ещё не спрашивали. Живёт на
+  /// аккаунте, а не в разделе: спросили один раз — знают везде.
+  final String serbianLevel;
+
+  Account withLevel(String level) => Account(
+        id: id,
+        email: email,
+        displayName: displayName,
+        hasPassword: hasPassword,
+        emailVerified: emailVerified,
+        serbianLevel: level,
+      );
+
   /// Что показать в интерфейсе: имя, а если его нет — почту.
   String get label => displayName.isNotEmpty ? displayName : email;
 
@@ -45,6 +61,7 @@ class Account {
         'displayName': displayName,
         'hasPassword': hasPassword,
         'emailVerified': emailVerified,
+        'serbianLevel': serbianLevel,
       };
 }
 
@@ -402,6 +419,28 @@ class AuthService extends ChangeNotifier {
     } finally {
       _busy = false;
       notifyListeners();
+    }
+  }
+
+  /// Запоминает уровень сербского, только что записанный на сервере.
+  ///
+  /// Сеть здесь не трогается: уровень уже сохранён тем, кто его спрашивал.
+  /// Здесь только приводится в порядок то, что приложение держит о человеке, —
+  /// иначе вопрос об уровне вернулся бы при следующем запуске.
+  void rememberLevel(String level) {
+    final account = _account;
+    if (account == null || account.serbianLevel == level) return;
+    _account = account.withLevel(level);
+    unawaited(_saveAccount(_account!));
+    notifyListeners();
+  }
+
+  Future<void> _saveAccount(Account account) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_kAccount, jsonEncode(account.toJson()));
+    } catch (_) {
+      // Не удалось сохранить: доживёт до перезапуска приложения.
     }
   }
 

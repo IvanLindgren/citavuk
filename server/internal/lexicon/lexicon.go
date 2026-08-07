@@ -14,8 +14,11 @@ import (
 	"sync"
 )
 
-//go:embed data/forms.tsv.gz data/dictionary.tsv.gz data/accents.tsv.gz data/verbs.tsv.gz
+//go:embed data/forms.tsv.gz data/dictionary.tsv.gz data/accents.tsv.gz data/verbs.tsv.gz data/frequency.tsv.gz data/wordranks.tsv.gz data/bigforms.tsv.gz
 var files embed.FS
+
+// FrequencySource — указание источника, обязательное по лицензии CC BY-SA.
+const FrequencySource = "srLex 1.3, ReLDI (CC BY-SA 4.0)"
 
 // Form — одна строка парадигмы.
 type Form struct {
@@ -52,6 +55,20 @@ type Lexicon struct {
 	// целых глаголов вроде «bližiti» в нём нет вовсе; без этого списка частица
 	// «se» не находила своего глагола в первом же попавшемся предложении.
 	verbs map[string]string
+	// rank — лемма → её место в частотном списке, начиная с единицы. Мера
+	// редкости слова: по ней оценивается сложность текста и разводятся омонимы.
+	// Сам srLex (6,9 млн словоформ) не встраивается — только 8 тысяч самых
+	// частых лемм заняли бы в памяти около 180 МБ, а сервер стоит на общей
+	// машине. Ранга для обеих задач достаточно.
+	rank map[string]int
+	// wordRank — то же для КАЖДОЙ словоформы этих лемм: «књигама» получает ранг
+	// «књига». Нужен охват, которого у byForm нет и близко (21 тысяча форм
+	// против 374 тысяч), иначе оценка сложности считает редким почти всё.
+	wordRank *wordRanks
+	// big — все формы двенадцати тысяч самых частых лемм из srLex. Свой словарь
+	// собран из трибанка и разрежен; этот добирает охват, на котором и держится
+	// разбор фразы (см. bigforms.go).
+	big *bigForms
 }
 
 var (
@@ -73,6 +90,7 @@ func load() (*Lexicon, error) {
 		words:   make(map[string]string, 9000),
 		accents: make(map[string]Accent, 60000),
 		verbs:   make(map[string]string, 130000),
+		rank:    make(map[string]int, 20000),
 	}
 
 	if err := readLines("data/forms.tsv.gz", func(parts []string) {
@@ -118,6 +136,34 @@ func load() (*Lexicon, error) {
 		return nil, err
 	}
 
+	// Порядок строк и есть ранг: файл отсортирован по убыванию частоты.
+	// Повторно встреченная лемма ранг не меняет — первое вхождение самое частое.
+	place := 0
+	if err := readLines("data/frequency.tsv.gz", func(parts []string) {
+		if len(parts) == 0 || parts[0] == "" {
+			return
+		}
+		place++
+		key := Normalize(parts[0])
+		if _, seen := l.rank[key]; !seen {
+			l.rank[key] = place
+		}
+	}); err != nil {
+		return nil, err
+	}
+
+	wordRank, err := loadWordRanks()
+	if err != nil {
+		return nil, err
+	}
+	l.wordRank = wordRank
+
+	big, err := loadBigForms()
+	if err != nil {
+		return nil, err
+	}
+	l.big = big
+
 	return l, nil
 }
 
@@ -147,8 +193,42 @@ func readLines(name string, fn func([]string)) error {
 }
 
 // LookupForm возвращает разборы словоформы.
+//
+// Два источника, и оба нужны. Свой словарь собран из трибанка: он точен, и его
+// разборы идут первыми — по ним выбирается самое вероятное прочтение. Но он
+// разрежен, и на нём разбор фразы задыхался: у формы, известной одной строкой,
+// выбирать между падежами не из чего. Расширенный словарь добирает остальные
+// разборы и слова, которых в трибанке нет вовсе.
+//
+// Совпадающие строки не повторяются: разбор один и тот же, а лишняя строка
+// перевесила бы выбор прочтения в сторону того, что просто есть в обоих
+// словарях.
 func (l *Lexicon) LookupForm(word string) []Form {
-	return l.byForm[Normalize(word)]
+	key := Normalize(word)
+	own := l.byForm[key]
+	if l.big == nil {
+		return own
+	}
+	extra := l.big.Lookup(key)
+	if len(extra) == 0 {
+		return own
+	}
+	seen := make(map[Form]bool, len(own))
+	out := make([]Form, 0, len(own)+len(extra))
+	for _, row := range own {
+		seen[Form{Lemma: row.Lemma, UPOS: row.UPOS, Feats: row.Feats}] = true
+		out = append(out, row)
+	}
+	for _, row := range extra {
+		if seen[Form{Lemma: row.Lemma, UPOS: row.UPOS, Feats: row.Feats}] {
+			continue
+		}
+		// Форма возвращается в том написании, о котором спросили: сравнивать
+		// её потом будут с исходным словом.
+		row.Form = key
+		out = append(out, row)
+	}
+	return out
 }
 
 // Paradigm возвращает все известные формы леммы.
@@ -167,6 +247,30 @@ func (l *Lexicon) Translate(word string) string {
 func (l *Lexicon) Accent(word string) (Accent, bool) {
 	accent, ok := l.accents[Normalize(word)]
 	return accent, ok
+}
+
+// Rank возвращает место леммы в частотном списке, начиная с единицы.
+//
+// Второе значение — false для слова за пределами списка. Это не «слова не
+// существует»: список обрезан двадцатью тысячами лемм, дальше начинается хвост,
+// где ранг уже ничего не различает. Для оценки сложности такое слово считается
+// редким, и этого достаточно.
+func (l *Lexicon) Rank(lemma string) (int, bool) {
+	place, ok := l.rank[Normalize(lemma)]
+	return place, ok
+}
+
+// WordRank возвращает место слова в частотном списке по его начальной форме:
+// «књигама» получает ранг «књига».
+//
+// Работает с любой словоформой, а не только со словарной, и в этом весь смысл:
+// начальную форму сначала надо найти, а морфологический словарь знает далеко не
+// всё. Второе значение — false для слова за пределами списка.
+func (l *Lexicon) WordRank(word string) (int, bool) {
+	if l.wordRank == nil {
+		return 0, false
+	}
+	return l.wordRank.lookup(Normalize(word))
 }
 
 // VerbLemma возвращает начальную форму, если словоформа известна как глагольная.

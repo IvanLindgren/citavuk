@@ -10,10 +10,14 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../course/screens/course_path_screen.dart';
 import '../course/state/course_controller.dart';
 import '../course/widgets/mascot_view.dart';
+import '../services/auth_service.dart';
+import '../services/level_service.dart';
+import 'level_prompt.dart';
 import 'listening_screen.dart';
 import 'vukotok_screen.dart';
 
@@ -45,6 +49,11 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   final PageController _pages = PageController();
 
+  /// Вопрос об уровне задаётся один раз за запуск и только вошедшему без
+  /// уровня. Флаг нужен потому, что build вызывается многократно, а окно,
+  /// открывающееся дважды, — это два окна друг на друге.
+  bool _levelAsked = false;
+
   /// Курс живёт столько же, сколько оболочка: контент и прогресс читаются
   /// один раз, а не при каждом переключении вкладки.
   final CourseController _course = CourseController();
@@ -52,10 +61,34 @@ class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // После первого кадра: до него нет ни Navigator, ни размеров экрана, а
+    // окно уровня — обычная нижняя шторка и требует и того и другого.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _askLevel());
+  }
+
+  @override
   void dispose() {
     _pages.dispose();
     _course.dispose();
     super.dispose();
+  }
+
+  /// Спрашивает уровень сербского, если он ещё неизвестен.
+  ///
+  /// Уровень живёт на аккаунте: спросили один раз — знают и лента, и
+  /// предупреждение о тяжёлой книге, и на другом устройстве тоже.
+  Future<void> _askLevel() async {
+    if (_levelAsked || !mounted) return;
+    final auth = context.read<AuthService>();
+    final account = auth.account;
+    if (!auth.isSignedIn || account == null || account.serbianLevel.isNotEmpty) {
+      return;
+    }
+    _levelAsked = true;
+    final chosen = await showLevelPrompt(context, context.read<LevelService>());
+    if (chosen != null && chosen.isNotEmpty) auth.rememberLevel(chosen);
   }
 
   void _select(int next) {

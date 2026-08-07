@@ -51,6 +51,10 @@ type userView struct {
 	HasPassword   bool   `json:"hasPassword"`
 	IsAdmin       bool   `json:"isAdmin"`
 	EmailVerified bool   `json:"emailVerified"`
+	// SerbianLevel едет вместе с аккаунтом, а не отдельным запросом: по нему
+	// клиент решает, показывать ли вопрос об уровне, ещё до первого экрана.
+	// Пусто — значит не спрашивали.
+	SerbianLevel string `json:"serbianLevel"`
 }
 
 func viewOf(u *store.User) userView {
@@ -62,6 +66,7 @@ func viewOf(u *store.User) userView {
 		HasPassword:   u.PasswordHash != "",
 		IsAdmin:       u.IsAdmin,
 		EmailVerified: u.EmailVerified,
+		SerbianLevel:  u.SerbianLevel,
 	}
 }
 

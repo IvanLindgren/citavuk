@@ -5,6 +5,7 @@ import { HiBackward, HiForward, HiPause, HiPlay, HiSpeakerWave, HiXMark } from '
 import { downloadContent } from '../api/sync';
 import { Discussion } from '../components/Discussion';
 import { Mascot } from '../components/Mascot';
+import { BookLevelNotice } from '../components/BookLevelNotice';
 import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
 import { ShareBook } from '../components/ShareBook';
 import { Button, Spinner } from '../components/ui';
@@ -418,6 +419,7 @@ export function Reader() {
             <h1 className="mt-1 truncate text-2xl">{state.book.title}</h1>
           </div>
 
+
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -471,6 +473,13 @@ export function Reader() {
             </button>
           </div>
         </div>
+
+        {/*
+          Предупреждение о тяжёлой книге стоит здесь, а не при импорте: путей
+          добавить книгу пять (файл, ссылка, материалы, публичная библиотека,
+          синхронизация), а читать её всё равно начинают отсюда.
+        */}
+        <BookLevelNotice bookId={state.book.id} paragraphs={paragraphs} />
 
         {/* Перспектива нужна повороту страницы: без неё rotateY выглядит
             как обычное сжатие по горизонтали. */}

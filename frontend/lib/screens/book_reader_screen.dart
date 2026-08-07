@@ -24,7 +24,9 @@ import '../services/listening_service.dart';
 import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
 import '../services/api_client.dart';
+import '../models/level.dart';
 import '../services/auth_service.dart';
+import '../services/level_service.dart';
 import '../services/share_service.dart';
 import '../services/sync_service.dart';
 import '../services/user_db.dart';
@@ -104,6 +106,58 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   int? _selStart;
   int? _selEnd;
 
+  /// Предупреждает, если книга сильно выше уровня читателя.
+  ///
+  /// Оценка идёт по редкости слов: сколько текста укладывается в словарь
+  /// ступени. Мера грубая и знает об этом — поэтому предупреждение
+  /// срабатывает только при разрыве в две ступени. На ступень выше своего
+  /// уровня читать как раз и полезно, и отговаривать от этого значит мешать
+  /// единственному способу вырасти.
+  ///
+  /// И это предупреждение, а не запрет: книга уже открыта, полоска убирается
+  /// одним нажатием и по этой книге больше не появляется.
+  Future<void> _warnIfTooHard() async {
+    if (!mounted) return;
+    final reader = context.read<AuthService>().account?.serbianLevel ?? '';
+    // Служба берётся до первого await: после него контекст может уже не
+    // относиться к этому экрану.
+    final levels = context.read<LevelService>();
+    if (reader.isEmpty || widget.paragraphs.length < 3) return;
+
+    final key = 'citavuk_book_level_warned_${widget.bookId}';
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool(key) ?? false) return;
+
+    TextLevel level;
+    try {
+      level = await levels.estimate(widget.paragraphs);
+    } catch (_) {
+      // Оценка — украшение поверх чтения; молчание тут уместнее ошибки.
+      return;
+    }
+    if (!mounted || !tooHardFor(level.level, reader)) return;
+
+    await prefs.setBool(key, true);
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showMaterialBanner(
+      MaterialBanner(
+        leading: const WolfSticker(asset: Wolf.zadumch, size: 44, frame: false),
+        content: Text(
+          'Читавук думает, что книга сейчас будет для вас тяжеловата! '
+          'Она рассчитана на уровень: ${level.level}, а ваш уровень: $reader. '
+          'Это просто предупреждение, вы можете читать книгу в любом случае.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: messenger.hideCurrentMaterialBanner,
+            child: const Text('Понятно'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -134,6 +188,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       RadioService.instance
           .configure(stationIndex: s.musicStation, volume: s.musicVolume);
       if (!s.musicPrompted) showMusicPrompt(context);
+      unawaited(_warnIfTooHard());
     });
     _audiobookSubscriptions.addAll([
       _audiobookPlayer.onPlayerStateChanged.listen((state) {

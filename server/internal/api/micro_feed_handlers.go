@@ -16,10 +16,23 @@ func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
 	// Гость приходит с подписанным токеном; если его ещё нет или он не прошёл
 	// проверку — выдаём новый и возвращаем клиенту вместе с лентой. Отказывать
 	// нельзя: первый заход всегда без токена, и лента обязана открыться.
-	actorKey, _, issued, ok := s.microFeedActor(
-		w, r, r.URL.Query().Get("visitorToken"), true)
+	token := r.URL.Query().Get("visitorToken")
+	actorKey, userID, issued, ok := s.microFeedActor(w, r, token, true)
 	if !ok {
 		return
+	}
+	// Вошедший приносит с собой профиль, накопленный до входа. Без переноса
+	// вход означал бы чистый лист: анкета, заполненная пять минут назад,
+	// спрашивалась заново. Ошибка не мешает ленте — в худшем случае анкета
+	// покажется ещё раз.
+	if userID != uuid.Nil {
+		if guestID, err := s.parseVisitorToken(token); err == nil {
+			if err := s.store.AdoptMicroFeedGuestProfile(
+				r.Context(), actorKey, "guest:"+guestID, userID,
+			); err != nil {
+				slog.Warn("handleMicroFeed adopt", "err", err)
+			}
+		}
 	}
 	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 	exclude := make([]uuid.UUID, 0, 32)
@@ -47,7 +60,7 @@ func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
 	// Анкета едет вместе с лентой: клиенту нужно решить, показывать ли опрос,
 	// ещё до первой карточки, и отдельный запрос ради этого поставил бы опрос
 	// поверх уже открытой ленты — то есть с опозданием.
-	prefs, err := s.store.GetMicroFeedPreferences(r.Context(), actorKey)
+	prefs, err := s.store.GetMicroFeedPreferences(r.Context(), actorKey, userID)
 	if err != nil {
 		slog.Warn("handleMicroFeed preferences", "err", err)
 	}

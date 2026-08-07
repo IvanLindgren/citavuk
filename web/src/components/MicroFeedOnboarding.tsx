@@ -49,12 +49,16 @@ const LEVELS: Record<Level, string> = {
  * лентой и так стоит между человеком и тем, зачем он пришёл.
  */
 export function MicroFeedOnboarding({
+  preferences,
   onDone,
 }: {
+  preferences: MicroFeedPreferences;
   onDone: (preferences: MicroFeedPreferences) => void;
 }) {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [level, setLevel] = useState<Level>('B1');
+  // Уровень с аккаунта — готовый ответ, а не подсказка: он задан один раз для
+  // всего приложения, и здесь остаётся только не спрашивать заново.
+  const [level, setLevel] = useState<Level>(preferences.cefr);
   const [saving, setSaving] = useState(false);
   const [failed, setFailed] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -134,6 +138,17 @@ export function MicroFeedOnboarding({
           </div>
         </fieldset>
 
+        {/*
+          Уровень спрашивается только у того, кого о нём ещё не спрашивали.
+          Вошедшему он уже известен по аккаунту, и второй вопрос значил бы, что
+          первый ответ никуда не записали.
+        */}
+        {preferences.levelFromAccount ? (
+          <p className="mt-6 text-sm text-white/60">
+            Уровень сербского беру из вашего аккаунта: <b>{level}</b>. Поменять его
+            можно в настройках.
+          </p>
+        ) : (
         <fieldset className="mt-6">
           <legend className="text-xs font-bold uppercase tracking-wide text-white/60">
             Сербский сейчас
@@ -157,6 +172,7 @@ export function MicroFeedOnboarding({
             ))}
           </div>
         </fieldset>
+        )}
 
         {failed && (
           <p className="mt-4 text-sm text-[#ffb4ae]" role="alert">

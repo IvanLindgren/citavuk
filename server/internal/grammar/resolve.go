@@ -59,6 +59,31 @@ func MatchNoun(lemma, gender, form string) (map[string]string, bool) {
 	return nil, false
 }
 
+// MatchNounAll возвращает ВСЕ падежи и числа, при которых лемма даёт эту форму.
+//
+// Отдельно от MatchNoun, потому что задачи разные. Разбору одного слова нужен
+// один ответ — самый вероятный, и он его и получает. Разбору фразы нужны все:
+// «parku» — это и дательный, и местный, а какой именно, решает предлог рядом.
+// Отдай мы сюда первый попавшийся, выбирать было бы не из чего.
+func MatchNounAll(lemma, gender, form string) []map[string]string {
+	form = strings.ToLower(form)
+	out := []map[string]string{}
+	for _, number := range []string{"Sing", "Plur"} {
+		for _, caseKey := range CaseOrder {
+			for _, candidate := range declensionForms(lemma, gender, number, caseKey) {
+				if candidate != form {
+					continue
+				}
+				out = append(out, map[string]string{
+					"Case": caseKey, "Number": number, "Gender": gender,
+				})
+				break
+			}
+		}
+	}
+	return out
+}
+
 // MatchVerb ищет лицо и число презента или род и число причастия.
 func MatchVerb(lemma, form string) (map[string]string, bool) {
 	form = strings.ToLower(form)

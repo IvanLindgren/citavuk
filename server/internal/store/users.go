@@ -17,6 +17,8 @@ var (
 	ErrEmailTaken   = errors.New("аккаунт с такой почтой уже существует")
 	ErrUserNotFound = errors.New("пользователь не найден")
 	ErrNoPassword   = errors.New("у аккаунта нет пароля")
+
+	ErrUnknownSerbianLevel = errors.New("неизвестный уровень сербского")
 )
 
 // pgUniqueViolation — код SQLSTATE нарушения уникального индекса.
@@ -32,6 +34,12 @@ type User struct {
 	IsAdmin       bool
 	EmailVerified bool
 	CreatedAt     time.Time
+	// SerbianLevel — уровень владения сербским: A1…C1 или пусто, если ещё не
+	// спрашивали. Пустая строка и A1 — разные вещи: слить их значит потерять
+	// право спросить у новичка.
+	SerbianLevel string
+	// SerbianLevelSource — «declared» (сказал сам) или «test» (прошёл тест).
+	SerbianLevelSource string
 }
 
 // NormalizeEmail приводит почту к каноническому виду для сравнения.
@@ -107,8 +115,8 @@ func (s *Store) CreateUser(
 	return u, nil
 }
 
-const userColumns = `id, email, coalesce(password_hash, ''), display_name, sync_rev, is_admin, email_verified_at IS NOT NULL, created_at`
-const qualifiedUserColumns = `u.id, u.email, coalesce(u.password_hash, ''), u.display_name, u.sync_rev, u.is_admin, u.email_verified_at IS NOT NULL, u.created_at`
+const userColumns = `id, email, coalesce(password_hash, ''), display_name, sync_rev, is_admin, email_verified_at IS NOT NULL, created_at, serbian_level, serbian_level_source`
+const qualifiedUserColumns = `u.id, u.email, coalesce(u.password_hash, ''), u.display_name, u.sync_rev, u.is_admin, u.email_verified_at IS NOT NULL, u.created_at, u.serbian_level, u.serbian_level_source`
 
 func scanUser(row pgx.Row) (*User, error) {
 	var u User
@@ -121,6 +129,8 @@ func scanUser(row pgx.Row) (*User, error) {
 		&u.IsAdmin,
 		&u.EmailVerified,
 		&u.CreatedAt,
+		&u.SerbianLevel,
+		&u.SerbianLevelSource,
 	)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, ErrUserNotFound

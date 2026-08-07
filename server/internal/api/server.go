@@ -224,6 +224,17 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/sync/content/{sha}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetContent)))
 	mux.HandleFunc("POST /v1/sync/content/purge", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePurgeContent)))
 
+	// Уровень сербского. Живёт на аккаунте и виден всем разделам сразу: до
+	// этого его знал один Вукоток и хранил при устройстве, поэтому один и тот
+	// же человек отвечал на один и тот же вопрос в каждом браузере заново.
+	// Тест открыт гостю — пройти его можно и до регистрации; записывается
+	// результат только вошедшему.
+	mux.HandleFunc("GET /v1/profile/level", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSerbianLevel)))
+	mux.HandleFunc("PUT /v1/profile/level", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSetSerbianLevel)))
+	mux.HandleFunc("GET /v1/profile/level/test", s.rateLimit(s.generalLimit, s.handleLevelTest))
+	mux.HandleFunc("POST /v1/profile/level/test", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleGradeLevelTest)))
+	mux.HandleFunc("POST /v1/analyze/text-level", s.rateLimit(s.generalLimit, s.handleTextLevel))
+
 	// Прогресс игрового курса. Документ общий для Flutter и web.
 	mux.HandleFunc("GET /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetCourseProgress)))
 	mux.HandleFunc("PUT /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutCourseProgress)))
@@ -377,6 +388,10 @@ func (s *Server) Handler() http.Handler {
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не
 	// требует: приложение делает то же офлайн, сайту нужен сервер.
 	mux.HandleFunc("POST /v1/analyze", s.rateLimit(s.generalLimit, s.handleAnalyze))
+	// Разбор фразы целиком: падеж при предлоге, время из вспомогательного
+	// глагола с причастием, согласование определения. По одному слову эти вещи
+	// не видны, а сербская форма сама по себе почти всегда неоднозначна.
+	mux.HandleFunc("POST /v1/analyze/sentence", s.rateLimit(s.generalLimit, s.handleAnalyzeSentence))
 	mux.HandleFunc("GET /v1/definition", s.rateLimit(s.generalLimit, s.handleDefinition))
 	mux.HandleFunc("GET /v1/grammar/cases", s.rateLimit(s.generalLimit, s.handleGrammarCases))
 	// Совместимость с уже установленными версиями приложения.

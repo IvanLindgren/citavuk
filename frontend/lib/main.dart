@@ -26,6 +26,7 @@ import 'services/document_parser.dart';
 import 'services/document_translation_service.dart';
 import 'services/local_file.dart';
 import 'services/listening_service.dart';
+import 'services/level_service.dart';
 import 'services/notification_service.dart';
 import 'widgets/update_dialog.dart';
 import 'screens/onboarding_screen.dart';
@@ -111,6 +112,9 @@ Future<void> main() async {
         // загрузка материалов через прокси документов), а не только через
         // синхронизацию.
         Provider<ApiClient>.value(value: api),
+        // Уровень сербского и оценка сложности текста. Живут на аккаунте, а
+        // не в разделе: спросили один раз — знают везде.
+        Provider<LevelService>.value(value: LevelService(api: api)),
       ],
       child: const ChitavukApp(),
     ),

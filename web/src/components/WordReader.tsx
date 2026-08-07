@@ -19,6 +19,7 @@ import {
 } from '../api/translate';
 import { parseBlock } from '../lib/blocks';
 import { BIONIC_RATIO, type BionicLevel } from '../lib/readerSettings';
+import { SentenceAnalysisPanel } from './SentenceAnalysisPanel';
 import { Mascot, type MascotPose } from './Mascot';
 import { Link } from '../lib/router';
 import { saveVocabularyWord } from '../lib/vocabulary';
@@ -1098,6 +1099,11 @@ function WordCard({
                   Эту форму Читавук в словаре не нашёл: перевод есть, а разбора и
                   склонения не будет.
                 </p>
+              )}
+              {/* Разбор фразы идёт после разбора слова: человек нажал слово
+                  ради него, а связи между словами — уже следующий вопрос. */}
+              {kind === 'word' && result.sentence && (
+                <SentenceAnalysisPanel sentence={result.sentence} />
               )}
               {onSave && formChoice && (
                 <SaveChoice

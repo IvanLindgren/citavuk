@@ -276,7 +276,7 @@ func analyze(lex *lexicon.Lexicon, word string) analyzeResponse {
 	rows := lex.LookupForm(normalized)
 	switch {
 	case len(rows) > 0:
-		best := bestReading(rows, word)
+		best := bestReading(lex, rows, word)
 		res.Known = true
 		res.Lemma = best.Lemma
 		res.UPOS = best.UPOS
@@ -369,18 +369,25 @@ func paradigmEntries(lex *lexicon.Lexicon, lemma string) []grammar.Entry {
 // bestReading выбирает наиболее вероятный разбор омонима.
 //
 // Служебные слова важнее знаменательных: «da» — это союз, а не форма глагола
-// «dati», и спрягать его не нужно. Контекстного снятия омонимии здесь нет.
+// «dati», и спрягать его не нужно. Вспомогательный глагол в том же ряду:
+// «sam», «je», «ću», «bih» — это почти всегда «я есть», «он есть», «я буду», а
+// не прилагательное «один» и не имя собственное. Без этого «Juče sam čitao»
+// разбиралось как «вчера один читал», и перфект не собирался вовсе.
+//
+// При равном весе решает частота леммы: «biti» стоит в корпусе первым, а
+// прилагательное «sam» — восемьдесят восьмым, и по этой разнице выбор виден.
+// Контекстного снятия омонимии здесь нет — им занимается разбор фразы.
 //
 // Имя собственное со строчной буквы не бывает, и написание слова — это всё, что
 // нужно, чтобы отсечь такой разбор. Без проверки «se» разбиралось как имя (в
 // словаре есть и такая строка), и самая частая частица сербского языка
 // описывалась карточкой «имя собственное, именительный падеж».
-func bestReading(rows []lexicon.Form, surface string) lexicon.Form {
+func bestReading(lex *lexicon.Lexicon, rows []lexicon.Form, surface string) lexicon.Form {
 	lower := surface != "" && surface == strings.ToLower(surface)
 	score := func(row lexicon.Form) int {
 		s := 3
 		switch row.UPOS {
-		case "ADP", "CCONJ", "SCONJ", "PART":
+		case "ADP", "CCONJ", "SCONJ", "PART", "AUX":
 			s = 10
 		case "PRON", "DET":
 			s = 6
@@ -395,10 +402,21 @@ func bestReading(rows []lexicon.Form, surface string) lexicon.Form {
 		}
 		return s
 	}
+	// Ранг вне списка считается бесконечно большим: редкое слово не должно
+	// обойти частое только потому, что частот для него нет.
+	rank := func(row lexicon.Form) int {
+		if place, ok := lex.Rank(row.Lemma); ok {
+			return place
+		}
+		return 1 << 30
+	}
 	sorted := make([]lexicon.Form, len(rows))
 	copy(sorted, rows)
 	sort.SliceStable(sorted, func(i, j int) bool {
-		return score(sorted[i]) > score(sorted[j])
+		if a, b := score(sorted[i]), score(sorted[j]); a != b {
+			return a > b
+		}
+		return rank(sorted[i]) < rank(sorted[j])
 	})
 	return sorted[0]
 }

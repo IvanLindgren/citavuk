@@ -156,3 +156,58 @@ export function analyzeWord(
     signal,
   });
 }
+
+/** Один из возможных разборов слова во фразе. */
+export interface SentenceToken {
+  index: number;
+  surface: string;
+  /** Границы слова в БАЙТАХ внутри фразы — так их считает сервер. */
+  start: number;
+  end: number;
+  lemma: string;
+  upos: string;
+  posShort: string;
+  feats: Record<string, string>;
+  known: boolean;
+  translation?: string;
+  /** Разбор выбран по соседям, а не как самый вероятный. */
+  chosenByContext: boolean;
+}
+
+/** Связанная группа слов: предложная, глагольная или именная. */
+export interface SentenceChunk {
+  kind: 'prep' | 'verb' | 'noun';
+  head: number;
+  tokens: number[];
+  text: string;
+  case?: string;
+  caseName?: string;
+  label: string;
+  note?: string;
+}
+
+export interface SentenceAnalysis {
+  sentence: string;
+  tokens: SentenceToken[];
+  chunks: SentenceChunk[];
+}
+
+/**
+ * Разбирает фразу целиком.
+ *
+ * Разбор по слову отвечает «что это за форма», но сербская форма сама по себе
+ * почти всегда неоднозначна: «kući» — и дательный, и местный. Что именно перед
+ * нами, решает соседство: предлог задаёт падеж, вспомогательный глагол вместе с
+ * причастием даёт время. Увидеть это соседство учащемуся больше негде.
+ */
+export function analyzeSentence(
+  sentence: string,
+  signal?: AbortSignal,
+): Promise<SentenceAnalysis> {
+  return request<SentenceAnalysis>('/v1/analyze/sentence', {
+    method: 'POST',
+    body: { sentence },
+    anonymous: true,
+    signal,
+  });
+}

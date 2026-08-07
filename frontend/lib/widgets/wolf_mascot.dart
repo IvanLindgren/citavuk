@@ -16,6 +16,8 @@ class Wolf {
       'assets/imgs/citavuk_rule.png'; // грамматика, лупа (светлый)
   static const english =
       'assets/imgs/citavuk_english.png'; // английское слово (светлый)
+  static const zadumch =
+      'assets/imgs/citavuk_zadumch.png'; // раздумье: книга не по зубам (светлый)
 
   /// Арты-стикеры, у которых фон вокруг волка тёмный (нарисован в самом PNG).
   /// Их красивее показывать в тёмной «рамке-стикере», светлые — в светлой.

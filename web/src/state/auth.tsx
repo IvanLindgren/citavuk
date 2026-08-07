@@ -19,6 +19,14 @@ export interface Account {
   hasPassword: boolean;
   isAdmin: boolean;
   emailVerified: boolean;
+  /**
+   * Уровень сербского: A1…C1 либо пусто, если ещё не спрашивали.
+   *
+   * Едет вместе с аккаунтом, а не отдельным запросом: по нему решается,
+   * показывать ли вопрос об уровне, ещё до первого экрана. Пустая строка и A1 —
+   * разные вещи, иначе у новичка не осталось бы права ответить.
+   */
+  serbianLevel: string;
 }
 
 interface AuthResponse {
@@ -48,6 +56,13 @@ interface AuthValue {
   startYandex: () => Promise<string>;
   completeYandex: (code: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
+  /**
+   * Запомнить уровень сербского на аккаунте.
+   *
+   * Живёт здесь, а не в отдельном хранилище, потому что уровень — часть
+   * аккаунта: ответив однажды, человек вправе не отвечать больше нигде.
+   */
+  saveSerbianLevel: (level: string, source: 'declared' | 'test') => Promise<void>;
   logout: () => Promise<void>;
   /** Удаление аккаунта со всеми данными на сервере. */
   deleteAccount: (password: string) => Promise<void>;
@@ -164,6 +179,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           body: { email },
           anonymous: true,
         });
+      },
+      saveSerbianLevel: async (level, source) => {
+        const saved = await request<{ level: string }>('/v1/profile/level', {
+          method: 'PUT',
+          body: { level, source },
+        });
+        setAccount((current) =>
+          current ? { ...current, serbianLevel: saved.level } : current,
+        );
       },
       deleteAccount: async (password: string) => {
         await request('/v1/auth/account/delete', {

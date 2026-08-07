@@ -134,6 +134,12 @@ export interface MicroFeedPreferences {
   cefr: MicroFeedItem['cefr'];
   /** Анкета пройдена. Пустой список тем — тоже ответ, а не «не спрашивали». */
   onboarded: boolean;
+  /**
+   * Уровень взят с аккаунта, где он задан один раз для всего приложения.
+   * Тогда анкета про уровень не спрашивает: человек уже ответил, и повторный
+   * вопрос выглядит так, будто его не услышали.
+   */
+  levelFromAccount: boolean;
 }
 
 export const MICRO_FEED_LEVELS: MicroFeedItem['cefr'][] = ['A1', 'A2', 'B1', 'B2', 'C1'];

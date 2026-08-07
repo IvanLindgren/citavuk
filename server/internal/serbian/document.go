@@ -162,6 +162,35 @@ func hasForeignCyrillic(word string) bool {
 // предисловие.
 const golden = 0.6180339887498949
 
+// SpreadIndexes возвращает номера абзацев в порядке, равномерно покрывающем
+// весь документ (см. комментарий к golden).
+//
+// Экспортируется, потому что по тому же принципу отбирает слова оценка
+// сложности текста: она судит о книге по всей книге ровно по той же причине —
+// первые страницы врут чаще прочих.
+func SpreadIndexes(count int) []int {
+	if count <= 0 {
+		return nil
+	}
+	out := make([]int, 0, count)
+	seen := make([]bool, count)
+	// Ограничение по числу шагов нужно потому, что последовательность может
+	// повторно указать на уже осмотренный абзац.
+	for n := 0; n < 8*count && len(out) < count; n++ {
+		fraction := float64(n) * golden
+		i := int((fraction - math.Floor(fraction)) * float64(count))
+		if i >= count {
+			i = count - 1
+		}
+		if seen[i] {
+			continue
+		}
+		seen[i] = true
+		out = append(out, i)
+	}
+	return out
+}
+
 // sampleWords берёт слова равномерно по всему документу.
 func sampleWords(paragraphs []string, limit int) []string {
 	if len(paragraphs) == 0 || limit <= 0 {
@@ -169,23 +198,10 @@ func sampleWords(paragraphs []string, limit int) []string {
 	}
 
 	out := make([]string, 0, limit)
-	seen := make(map[int]bool, min(len(paragraphs), limit))
-
-	// Обход прекращается, когда набрана выборка либо осмотрены все абзацы.
-	// Ограничение по числу шагов нужно потому, что последовательность может
-	// повторно указать на уже осмотренный абзац, и без него пустой документ из
-	// одних цифр крутил бы цикл вечно.
-	for n := 0; n < 8*len(paragraphs) && len(out) < limit && len(seen) < len(paragraphs); n++ {
-		fraction := float64(n) * golden
-		i := int((fraction - math.Floor(fraction)) * float64(len(paragraphs)))
-		if i >= len(paragraphs) {
-			i = len(paragraphs) - 1
+	for _, i := range SpreadIndexes(len(paragraphs)) {
+		if len(out) >= limit {
+			break
 		}
-		if seen[i] {
-			continue
-		}
-		seen[i] = true
-
 		for _, word := range words.FindAllString(strings.ToLower(paragraphs[i]), -1) {
 			if len(out) >= limit {
 				break

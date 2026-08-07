@@ -500,6 +500,10 @@ type MicroFeedPreferences struct {
 	Categories []string `json:"categories"`
 	CEFR       string   `json:"cefr"`
 	Onboarded  bool     `json:"onboarded"`
+	// LevelFromAccount — уровень взят из аккаунта, где он задан один раз для
+	// всего приложения. Тогда анкета ленты про уровень не спрашивает: человек
+	// уже ответил, и повторный вопрос выглядит так, будто его не услышали.
+	LevelFromAccount bool `json:"levelFromAccount"`
 }
 
 // MicroFeedCategories — темы, о которых спрашивают в анкете. Список повторяет
@@ -533,21 +537,62 @@ func allowedFeedValue(value string, allowed []string) bool {
 	return false
 }
 
-func (s *Store) GetMicroFeedPreferences(ctx context.Context, actorKey string) (MicroFeedPreferences, error) {
+// GetMicroFeedPreferences читает ответы анкеты.
+//
+// userID не пуст у вошедшего. Тогда уровень берётся с аккаунта — там он задан
+// один раз на всё приложение, — а профиль ленты хранит только темы. Иначе
+// уровень жил бы в двух местах и расходился: поменял в настройках, а лента
+// подбирает по старому.
+func (s *Store) GetMicroFeedPreferences(
+	ctx context.Context, actorKey string, userID uuid.UUID,
+) (MicroFeedPreferences, error) {
 	prefs := MicroFeedPreferences{Categories: []string{}, CEFR: "B1"}
 	var onboardedAt *time.Time
 	err := s.Pool.QueryRow(ctx, `
 		SELECT declared_categories, cefr, onboarded_at
 		FROM micro_feed_profiles_embeddings WHERE actor_key=$1`, actorKey).Scan(
 		&prefs.Categories, &prefs.CEFR, &onboardedAt)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return prefs, nil
-	}
-	if err != nil {
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return prefs, err
 	}
 	prefs.Onboarded = onboardedAt != nil
+
+	if userID != uuid.Nil {
+		account, err := s.GetSerbianLevel(ctx, userID)
+		if err != nil {
+			return prefs, err
+		}
+		if account.Known() {
+			prefs.CEFR = account.Level
+			prefs.LevelFromAccount = true
+		}
+	}
 	return prefs, nil
+}
+
+// AdoptMicroFeedGuestProfile переносит профиль гостя на аккаунт при входе.
+//
+// Профиль ленты ключуется актором: до входа это устройство («guest:…»), после —
+// аккаунт («user:…»). Без переноса вход означал бы чистый лист: анкета,
+// заполненная пять минут назад, спрашивалась заново — ровно на этом читатели и
+// спотыкались.
+//
+// Переносится только профиль, не реакции: лайк — публичный счётчик, и
+// переписывать его автора задним числом значит менять уже показанные цифры.
+// Профиль же виден одному человеку и никому кроме.
+func (s *Store) AdoptMicroFeedGuestProfile(
+	ctx context.Context, userKey, guestKey string, userID uuid.UUID,
+) error {
+	_, err := s.Pool.Exec(ctx, `
+		INSERT INTO micro_feed_profiles_embeddings
+			(actor_key, user_id, embedding, preferred_tags, avoided_tags,
+			 preferred_script, cefr, declared_categories, onboarded_at)
+		SELECT $1, $3, embedding, preferred_tags, avoided_tags,
+		       preferred_script, cefr, declared_categories, onboarded_at
+		  FROM micro_feed_profiles_embeddings
+		 WHERE actor_key = $2 AND onboarded_at IS NOT NULL
+		ON CONFLICT (actor_key) DO NOTHING`, userKey, guestKey, userID)
+	return err
 }
 
 // SaveMicroFeedPreferences записывает ответы анкеты.
@@ -593,7 +638,26 @@ func (s *Store) SaveMicroFeedPreferences(
 	if err != nil {
 		return MicroFeedPreferences{}, err
 	}
-	return MicroFeedPreferences{Categories: clean, CEFR: cefr, Onboarded: true}, nil
+
+	// Уровень, названный в анкете ленты, ложится и на аккаунт — но только если
+	// там его ещё нет. Спросили один раз, знают везде; а перетирать уже
+	// заданный уровень лента не вправе, он не её.
+	saved := MicroFeedPreferences{Categories: clean, CEFR: cefr, Onboarded: true}
+	if userID != uuid.Nil {
+		account, err := s.GetSerbianLevel(ctx, userID)
+		if err != nil {
+			return saved, err
+		}
+		if account.Known() {
+			saved.CEFR = account.Level
+			saved.LevelFromAccount = true
+		} else if _, err := s.SetSerbianLevel(
+			ctx, userID, cefr, LevelSourceDeclared,
+		); err == nil {
+			saved.LevelFromAccount = true
+		}
+	}
+	return saved, nil
 }
 
 // ListLikedMicroFeed возвращает карточки, которые читатель отметил лайком.

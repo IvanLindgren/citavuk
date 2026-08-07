@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
+import { LevelPrompt } from "./components/LevelPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
 import { ServerAnnouncements } from "./components/ServerAnnouncements";
 import { EventBanner } from "./components/EventBanner";
@@ -214,6 +215,12 @@ function AppFrame() {
       </div>
       {!vukotok && <Footer />}
       {!vukotok && <AppPrompt />}
+      {/*
+        Вопрос об уровне встаёт поверх любой страницы и ровно один раз за
+        аккаунт. Не в Вукотоке и не в настройках, потому что уровень нужен всем
+        разделам сразу: и подбору ленты, и предупреждению о тяжёлой книге.
+      */}
+      <LevelPrompt />
     </div>
   );
 }

@@ -238,7 +238,12 @@ export function MicroFeed() {
   // Анкета встаёт до ленты, а не поверх неё: спрашивать «что вам интересно» уже
   // после первой карточки — значит спрашивать с опозданием.
   if (preferences && !preferences.onboarded) {
-    return <MicroFeedOnboarding onDone={(saved) => { setPreferences(saved); void load(true); }} />;
+    return (
+      <MicroFeedOnboarding
+        preferences={preferences}
+        onDone={(saved) => { setPreferences(saved); void load(true); }}
+      />
+    );
   }
 
   if (items.length === 0) {

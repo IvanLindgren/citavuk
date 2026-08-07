@@ -13,6 +13,7 @@ import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
+import 'vukotok_comments.dart';
 
 /// Вукоток — лента коротких сербских текстов, которую листают как тикток.
 ///
@@ -110,6 +111,7 @@ class _VukotokScreenState extends State<VukotokScreen> {
     final prefs = _preferences;
     if (prefs != null && !prefs.onboarded) {
       return VukotokOnboarding(
+        preferences: prefs,
         onDone: (saved) {
           setState(() => _preferences = saved);
           _load(reset: true);
@@ -277,6 +279,7 @@ class _VukotokCardState extends State<_VukotokCard> {
   late int _reaction = widget.item.reaction;
   late int _likes = widget.item.likesCount;
   late int _dislikes = widget.item.dislikesCount;
+  late int _comments = widget.item.commentsCount;
   bool _justLiked = false;
   DateTime? _shownAt;
 
@@ -324,6 +327,21 @@ class _VukotokCardState extends State<_VukotokCard> {
       await Future<void>.delayed(const Duration(seconds: 4));
       if (mounted) setState(() => _justLiked = false);
     }
+  }
+
+  Future<void> _openComments() async {
+    // Счётчик обновляется по закрытию шторки: написал реплику — цифра на
+    // карточке обязана сойтись с тем, что человек только что видел.
+    final added = await showModalBottomSheet<int>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFF1C1814),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => VukotokCommentsSheet(itemId: widget.item.id),
+    );
+    if (added != null && mounted) setState(() => _comments = added);
   }
 
   void _openFull() {
@@ -440,6 +458,16 @@ class _VukotokCardState extends State<_VukotokCard> {
                       count: _dislikes,
                       label: 'Не показывать похожее',
                       onTap: () => _react(-1),
+                    ),
+                    // Обсуждение в приложении отсутствовало вовсе: на сайте оно
+                    // было, а здесь кнопки не существовало, и запросы ленты
+                    // уходили без токена сессии — писать всё равно было нечем.
+                    _Action(
+                      icon: Icons.mode_comment_outlined,
+                      active: false,
+                      count: _comments,
+                      label: 'Обсуждение',
+                      onTap: _openComments,
                     ),
                   ],
                 ),
@@ -963,8 +991,15 @@ class _LikedSheet extends StatelessWidget {
 /// налистает сигналов. На чужом языке это дорогая цена: карточка не
 /// тридцатисекундный ролик, её читают минуту.
 class VukotokOnboarding extends StatefulWidget {
-  const VukotokOnboarding({super.key, required this.onDone});
+  const VukotokOnboarding({
+    super.key,
+    required this.preferences,
+    required this.onDone,
+  });
 
+  /// Что уже известно о читателе. Уровень оттуда — готовый ответ, а не
+  /// подсказка: он задан один раз для всего приложения.
+  final MicroFeedPreferences preferences;
   final void Function(MicroFeedPreferences) onDone;
 
   @override
@@ -973,7 +1008,7 @@ class VukotokOnboarding extends StatefulWidget {
 
 class _VukotokOnboardingState extends State<VukotokOnboarding> {
   final Set<String> _categories = {};
-  String _level = 'B1';
+  late String _level = widget.preferences.cefr;
   bool _saving = false;
   bool _failed = false;
 
@@ -1047,25 +1082,33 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
               ],
             ),
             const SizedBox(height: 24),
-            const Text('Сербский сейчас',
-                style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: .6)),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final entry in microFeedLevels.entries)
-                  ChoiceChip(
-                    selected: _level == entry.key,
-                    label: Text('${entry.key} · ${entry.value}'),
-                    onSelected: (_) => setState(() => _level = entry.key),
-                  ),
-              ],
-            ),
+            // Уровень спрашивается только у того, кого о нём ещё не спрашивали.
+            // Вошедшему он известен по аккаунту, и второй вопрос значил бы, что
+            // первый ответ никуда не записали.
+            if (widget.preferences.levelFromAccount)
+              Text('Уровень сербского беру из твоего аккаунта: $_level.',
+                  style: const TextStyle(color: Colors.white54))
+            else ...[
+              const Text('Сербский сейчас',
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: .6)),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final entry in microFeedLevels.entries)
+                    ChoiceChip(
+                      selected: _level == entry.key,
+                      label: Text('${entry.key} · ${entry.value}'),
+                      onSelected: (_) => setState(() => _level = entry.key),
+                    ),
+                ],
+              ),
+            ],
             if (_failed) ...[
               const SizedBox(height: 14),
               const Text('Не удалось сохранить. Попробуй ещё раз.',
