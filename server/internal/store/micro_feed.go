@@ -617,6 +617,17 @@ func (s *Store) SaveMicroFeedPreferences(
 		}
 	}
 	cefr = strings.ToUpper(strings.TrimSpace(cefr))
+	// Уровень аккаунта главнее ответа анкеты: он задан один раз для всего
+	// приложения, а анкета вошедшего про уровень уже не спрашивает и просто
+	// возвращает то, что ей показали. C2 опускается до потолка шкалы ленты —
+	// иначе он не прошёл бы проверку и стал бы B1, то есть серединой.
+	if userID != uuid.Nil {
+		if account, err := s.GetSerbianLevel(ctx, userID); err == nil && account.Known() {
+			if clamped := ClampToFeedLevel(account.Level); clamped != "" {
+				cefr = clamped
+			}
+		}
+	}
 	if !allowedFeedValue(cefr, MicroFeedLevels) {
 		cefr = "B1"
 	}

@@ -144,6 +144,14 @@ func Grade(answers map[string]int) Result {
 
 	result.Level = store.SerbianLevels[0]
 	for _, name := range store.SerbianLevels {
+		// Ступень без вопросов не засчитывается и не обрывает подъём: шкала
+		// доходит до C2, а тест — до C1, и «ноль верных из нуля» иначе
+		// формально проходило бы условие и выдавало C2 всякому, кто дошёл до
+		// C1. Уровень выше того, что тест умеет проверить, человек может
+		// поставить себе сам.
+		if totalByLevel[name] == 0 {
+			continue
+		}
 		if correctByLevel[name]*2 < totalByLevel[name] {
 			break
 		}

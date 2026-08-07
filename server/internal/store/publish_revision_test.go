@@ -1,6 +1,8 @@
 package store
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -76,4 +78,81 @@ func TestPublishRevisionQueryScopes(t *testing.T) {
 func contains(haystack, needle string) bool {
 	return len(haystack) >= len(needle) &&
 		regexp.MustCompile(regexp.QuoteMeta(needle)).MatchString(haystack)
+}
+
+// Модератор не один, и решают они не по очереди. Между чтением «ревизия на
+// проверке» и записью решения ту же ревизию успевает рассудить второй, поэтому
+// условие обязано стоять в самом UPDATE. Одобрение его несло, отказ — нет:
+// пара «одобрил, следом отклонил» переводила ревизию в rejected, а
+// teacher_lessons.published_revision_id продолжал на неё ссылаться. Урок
+// оставался опубликованным ревизией, помеченной отклонённой.
+func TestReviewLessonRevisionRejectsOnlyPending(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+
+	author, err := s.CreateUser(ctx,
+		"review-race-"+uuid.NewString()+"@example.test", "", "Автор", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	admin, err := s.CreateUser(ctx,
+		"review-admin-"+uuid.NewString()+"@example.test", "", "Модератор", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(),
+			`DELETE FROM users WHERE id = ANY($1)`, []uuid.UUID{author.ID, admin.ID})
+	})
+
+	lesson, err := s.CreateLesson(ctx, author.ID, "race-"+uuid.NewString(), LessonInput{
+		Title: "Проверка гонки", Summary: "", Level: "A1", LessonType: "grammar",
+		Topic: "тест", Tags: []string{}, EstimatedMinutes: 5, Script: "latin",
+		Content: []byte(`{"theory":[],"exercises":[]}`),
+	})
+	if err != nil {
+		t.Fatalf("CreateLesson: %v", err)
+	}
+
+	var revisionID uuid.UUID
+	if err := s.Pool.QueryRow(ctx,
+		`SELECT id FROM lesson_revisions WHERE lesson_id=$1`, lesson.ID).Scan(&revisionID); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.SubmitPublicLesson(ctx, author.ID, lesson.ID, revisionID); err != nil {
+		t.Fatalf("SubmitPublicLesson: %v", err)
+	}
+
+	// Первый модератор одобряет.
+	if err := s.ReviewLessonRevision(ctx, revisionID, admin.ID, true, "хорошо"); err != nil {
+		t.Fatalf("одобрение: %v", err)
+	}
+
+	// Второй отклоняет ту же ревизию. Вызывается rejectRevision напрямую, а не
+	// ReviewLessonRevision: там впереди стоит чтение с тем же условием, и при
+	// последовательном вызове до записи дело не доходит. Но чтение и запись —
+	// два разных запроса, и в настоящей гонке оба модератора проходят чтение,
+	// пока ревизия ещё на проверке. Воспроизвести это расписанием нельзя, а
+	// проверить условие в самой записи — можно, и именно оно тут и защищает.
+	if err := s.rejectRevision(ctx, revisionID, admin.ID, "нет"); !errors.Is(err, ErrRevisionNotFound) {
+		t.Fatalf("отказ прошёл по уже опубликованной ревизии: err = %v", err)
+	}
+
+	var status string
+	var published *uuid.UUID
+	if err := s.Pool.QueryRow(ctx, `
+        SELECT r.status, l.published_revision_id
+          FROM lesson_revisions r JOIN teacher_lessons l ON l.id=r.lesson_id
+         WHERE r.id=$1`, revisionID).Scan(&status, &published); err != nil {
+		t.Fatal(err)
+	}
+	if status != "published" {
+		t.Errorf("ревизия в состоянии %q — опубликованный урок ссылается на отклонённую версию", status)
+	}
+	if published == nil || *published != revisionID {
+		t.Errorf("published_revision_id = %v", published)
+	}
 }

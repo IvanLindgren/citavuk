@@ -36,7 +36,10 @@ func (s *Server) handleMediaUpload(w http.ResponseWriter, r *http.Request) {
 		query.Get("signature"), data,
 	)
 	if err != nil {
-		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, err.Error())
+		// Отказ по проверке билета и содержимого объясняется, сбой S3 — нет:
+		// в нём адрес хранилища и имя бакета.
+		writeValidationError(w, http.StatusUnprocessableEntity, codeBadRequest,
+			err, "Не удалось загрузить изображение.")
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)

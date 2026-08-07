@@ -481,7 +481,10 @@ func (s *Server) handleTeacherMediaPolicy(w http.ResponseWriter, r *http.Request
 		r.Context(), userFrom(r.Context()).ID,
 		strings.ToLower(strings.TrimSpace(req.SHA256)), req.MimeType, req.Size)
 	if err != nil {
-		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, err.Error())
+		// Отказ по проверке файла объясняется, сбой S3 — нет: в нём адрес
+		// хранилища и имя бакета.
+		writeValidationError(w, http.StatusUnprocessableEntity, codeBadRequest,
+			err, "Не удалось подготовить загрузку изображения.")
 		return
 	}
 	writeJSON(w, http.StatusOK, policy)

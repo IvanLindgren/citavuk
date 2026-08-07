@@ -8,7 +8,7 @@ import { request } from './client';
  * человек отвечал на один и тот же вопрос в каждом браузере заново.
  */
 
-export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'] as const;
+export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
 export type Level = (typeof LEVELS)[number];
 
 /** Как называется ступень для человека — «B1» само по себе ничего не говорит. */
@@ -18,6 +18,7 @@ export const LEVEL_NAMES: Record<Level, string> = {
   B1: 'Читаю с переводчиком',
   B2: 'Читаю почти свободно',
   C1: 'Свободно',
+  C2: 'Как родной',
 };
 
 export interface LevelQuestion {

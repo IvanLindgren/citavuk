@@ -389,6 +389,26 @@ func publishRevisionQuery(
 	return query, append(args, authorID)
 }
 
+// rejectRevision отклоняет ревизию, если она всё ещё на проверке.
+//
+// Условие в самом UPDATE, а не только в предшествующем чтении: между ними
+// ревизию успевает одобрить другой администратор, и тогда отклонять уже нечего.
+// Ноль затронутых строк здесь — не сбой, а «кто-то был первым», и вызывающему
+// об этом сообщается тем же ErrRevisionNotFound, что и о пропавшей ревизии.
+func (s *Store) rejectRevision(ctx context.Context, revisionID, adminID uuid.UUID, comment string) error {
+	tag, err := s.Pool.Exec(ctx, `
+        UPDATE lesson_revisions SET status='rejected',admin_comment=$2,
+               reviewed_by=$3,reviewed_at=now()
+         WHERE id=$1 AND status='pending'`, revisionID, comment, adminID)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrRevisionNotFound
+	}
+	return nil
+}
+
 func (s *Store) publishRevision(ctx context.Context, authorID, lessonID, revisionID uuid.UUID, visibility string, admin bool, reviewer uuid.UUID, comment string) error {
 	return s.InTx(ctx, func(tx pgx.Tx) error {
 		query, args := publishRevisionQuery(authorID, lessonID, revisionID, admin, reviewer, comment)
@@ -406,6 +426,15 @@ func (s *Store) publishRevision(ctx context.Context, authorID, lessonID, revisio
 	})
 }
 
+// ReviewLessonRevision записывает решение модератора: одобрить или отклонить.
+//
+// «Ещё на проверке» проверяется дважды — при чтении и в самом UPDATE, — и
+// второй раз обязателен. Между чтением и записью ревизию успевает рассудить
+// другой администратор, а модераторов больше одного. Одобрение эту проверку
+// уже несло (см. publishRevisionQuery), отказ — нет: пара «одобрил, следом
+// отклонил» переводила ревизию в rejected, тогда как teacher_lessons.
+// published_revision_id продолжал на неё ссылаться. Урок оставался
+// опубликованным ревизией, помеченной отклонённой.
 func (s *Store) ReviewLessonRevision(ctx context.Context, revisionID, adminID uuid.UUID, approve bool, comment string) error {
 	var lessonID, authorID uuid.UUID
 	err := s.Pool.QueryRow(ctx, `
@@ -420,8 +449,7 @@ func (s *Store) ReviewLessonRevision(ctx context.Context, revisionID, adminID uu
 	if approve {
 		err = s.publishRevision(ctx, authorID, lessonID, revisionID, "public", true, adminID, comment)
 	} else {
-		_, err = s.Pool.Exec(ctx, `UPDATE lesson_revisions SET status='rejected',admin_comment=$2,
-            reviewed_by=$3,reviewed_at=now() WHERE id=$1`, revisionID, comment, adminID)
+		err = s.rejectRevision(ctx, revisionID, adminID, comment)
 	}
 	if err != nil {
 		return err

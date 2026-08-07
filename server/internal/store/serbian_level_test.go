@@ -201,3 +201,65 @@ func TestAdoptMicroFeedGuestProfile(t *testing.T) {
 		t.Errorf("повторный перенос затёр выбор аккаунта: %v", prefs.Categories)
 	}
 }
+
+// Шкала аккаунта доходит до C2, как и заявка преподавателя: колонки называются
+// одинаково и означают одно и то же, а разошедшиеся домены — ловушка. Первая же
+// попытка перенести уровень из заявки в аккаунт упёрлась бы в CHECK.
+func TestSerbianLevelAcceptsC2(t *testing.T) {
+	s := testStore(t)
+	user := newLevelUser(t, s)
+
+	saved, err := s.SetSerbianLevel(context.Background(), user.ID, "C2", LevelSourceDeclared)
+	if err != nil {
+		t.Fatalf("C2 не принят: %v", err)
+	}
+	if saved.Level != "C2" {
+		t.Errorf("сохранено %q", saved.Level)
+	}
+}
+
+// У ленты своя, более короткая шкала: там уровень стоит на карточке, а не на
+// человеке. C2 обязан опуститься до её потолка, а не стать серединой.
+func TestFeedLevelClampedFromAccount(t *testing.T) {
+	s := testStore(t)
+	user := newLevelUser(t, s)
+	ctx := context.Background()
+	actorKey := "user:" + user.ID.String()
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(),
+			`DELETE FROM micro_feed_profiles_embeddings WHERE actor_key = $1`, actorKey)
+	})
+
+	if _, err := s.SetSerbianLevel(ctx, user.ID, "C2", LevelSourceDeclared); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.SaveMicroFeedPreferences(
+		ctx, actorKey, user.ID, []string{"news"}, "C2",
+	); err != nil {
+		t.Fatalf("SaveMicroFeedPreferences: %v", err)
+	}
+
+	var stored string
+	if err := s.Pool.QueryRow(ctx,
+		`SELECT cefr FROM micro_feed_profiles_embeddings WHERE actor_key=$1`,
+		actorKey).Scan(&stored); err != nil {
+		t.Fatal(err)
+	}
+	if stored != "C1" {
+		t.Errorf("в ленте записан уровень %q, ожидался C1", stored)
+	}
+}
+
+func TestClampToFeedLevel(t *testing.T) {
+	for _, item := range []struct{ in, want string }{
+		{"C2", "C1"},
+		{"C1", "C1"},
+		{"A1", "A1"},
+		{"", ""},
+		{"чепуха", ""},
+	} {
+		if got := ClampToFeedLevel(item.in); got != item.want {
+			t.Errorf("ClampToFeedLevel(%q) = %q, ожидалось %q", item.in, got, item.want)
+		}
+	}
+}

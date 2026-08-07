@@ -20,6 +20,8 @@ import (
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
+
+	"github.com/citavuk/server/internal/apperr"
 	"github.com/google/uuid"
 )
 
@@ -91,7 +93,7 @@ func (s *Service) CreateUploadPolicy(ctx context.Context, owner uuid.UUID, sha25
 		return nil, err
 	}
 	if !isHex64(sha256Hex) {
-		return nil, errors.New("нужен sha256 картинки в шестнадцатеричном виде")
+		return nil, apperr.User("нужен sha256 картинки в шестнадцатеричном виде")
 	}
 	key := path.Join("lessons", owner.String(), time.Now().UTC().Format("2006/01"), uuid.NewString()+"."+ext)
 	return s.policyFor(ctx, key, sha256Hex, mimeType)
@@ -120,7 +122,7 @@ func (s *Service) BookImagePolicy(
 		return nil, false, err
 	}
 	if !isHex64(sha256Hex) {
-		return nil, false, errors.New("нужен sha256 картинки в шестнадцатеричном виде")
+		return nil, false, apperr.User("нужен sha256 картинки в шестнадцатеричном виде")
 	}
 
 	key := path.Join("books", owner.String(), sha256Hex+"."+ext)
@@ -139,10 +141,10 @@ func (s *Service) BookImagePolicy(
 func imageExtension(mimeType string, size int64) (string, error) {
 	ext := map[string]string{"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif"}[mimeType]
 	if ext == "" {
-		return "", errors.New("поддерживаются JPEG, PNG, WebP и GIF")
+		return "", apperr.User("поддерживаются JPEG, PNG, WebP и GIF")
 	}
 	if size < 1 || size > 10<<20 {
-		return "", errors.New("изображение должно быть не больше 10 МБ")
+		return "", apperr.User("изображение должно быть не больше 10 МБ")
 	}
 	return ext, nil
 }
@@ -194,23 +196,23 @@ func (s *Service) Upload(
 	data []byte,
 ) error {
 	if time.Now().UTC().Unix() > expires {
-		return errors.New("ссылка загрузки истекла")
+		return apperr.User("ссылка загрузки истекла")
 	}
 	wantSignature := s.uploadSignature(key, sha256Hex, mimeType, expires)
 	if subtle.ConstantTimeCompare([]byte(signature), []byte(wantSignature)) != 1 {
-		return errors.New("неверная подпись загрузки")
+		return apperr.User("неверная подпись загрузки")
 	}
 	ownerPart := "/" + owner.String() + "/"
 	if (!strings.HasPrefix(key, "lessons/") && !strings.HasPrefix(key, "books/")) ||
 		!strings.Contains("/"+key, ownerPart) {
-		return errors.New("файл не принадлежит пользователю")
+		return apperr.User("файл не принадлежит пользователю")
 	}
 	if _, err := imageExtension(mimeType, int64(len(data))); err != nil {
 		return err
 	}
 	digest := sha256.Sum256(data)
 	if hex.EncodeToString(digest[:]) != sha256Hex {
-		return errors.New("содержимое файла не совпадает с заявленным sha256")
+		return apperr.User("содержимое файла не совпадает с заявленным sha256")
 	}
 
 	_, err := s.s3.PutObject(ctx, &awss3.PutObjectInput{

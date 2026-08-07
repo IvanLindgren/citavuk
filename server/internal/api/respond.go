@@ -8,6 +8,8 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
+
+	"github.com/citavuk/server/internal/apperr"
 )
 
 // errorBody — единый формат ошибки. Клиент разбирает поле code программно, а
@@ -49,6 +51,25 @@ func writeJSON(w http.ResponseWriter, status int, payload any) {
 
 func writeError(w http.ResponseWriter, status int, code, message string) {
 	writeJSON(w, status, errorBody{Code: code, Message: message})
+}
+
+// writeValidationError показывает клиенту только то, что для него и написано.
+//
+// Раньше в таких местах стояло writeError(..., err.Error()), и это работало,
+// пока ошибка была проверкой ввода. Но по тому же пути наружу уходило и «S3
+// upload failed: …», и сообщение драйвера базы — то есть адреса, имена бакетов
+// и структура запросов. Отличить одно от другого по типу error нельзя, поэтому
+// показывается только помеченное (см. apperr), а остальное уходит в журнал и
+// заменяется общей фразой.
+func writeValidationError(
+	w http.ResponseWriter, status int, code string, err error, fallback string,
+) {
+	if message, ok := apperr.Message(err); ok {
+		writeError(w, status, code, message)
+		return
+	}
+	slog.Error("внутренняя ошибка вместо проверки ввода", "err", err)
+	writeError(w, http.StatusInternalServerError, codeInternal, fallback)
 }
 
 // decodeJSON читает тело запроса с ограничением размера.

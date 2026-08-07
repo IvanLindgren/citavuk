@@ -18,7 +18,27 @@ import (
 // он виден всем разделам и на всех устройствах.
 
 // SerbianLevels — шкала CEFR в порядке возрастания.
-var SerbianLevels = []string{"A1", "A2", "B1", "B2", "C1"}
+//
+// До C2, как и в заявке преподавателя: колонки называются одинаково и означают
+// одно и то же, и разошедшиеся домены — ловушка, а не решение. Лента при этом
+// остаётся с A1…C1 (MicroFeedLevels): там уровень стоит на карточке, а не на
+// человеке, и «текст уровня C2» никто не размечает.
+var SerbianLevels = []string{"A1", "A2", "B1", "B2", "C1", "C2"}
+
+// ClampToFeedLevel опускает уровень до шкалы ленты.
+//
+// Нужен ровно в одном месте — когда уровень аккаунта переносится в профиль
+// ленты, у которого своя, более короткая шкала. Без него C2 не проходил бы
+// проверку и молча становился B1, то есть серединой, а не потолком.
+func ClampToFeedLevel(level string) string {
+	if allowedFeedValue(level, MicroFeedLevels) {
+		return level
+	}
+	if SerbianLevelIndex(level) > SerbianLevelIndex(MicroFeedLevels[len(MicroFeedLevels)-1]) {
+		return MicroFeedLevels[len(MicroFeedLevels)-1]
+	}
+	return ""
+}
 
 // Откуда взялся уровень.
 const (
