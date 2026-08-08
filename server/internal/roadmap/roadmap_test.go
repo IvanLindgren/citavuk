@@ -38,17 +38,19 @@ func TestRatioClampsToTotal(t *testing.T) {
 	}
 }
 
-// Writing ещё не существует, и требовать по нему 80% значило бы закрыть
-// переход на всех уровнях сразу.
-func TestLevelPassedSkipsPlannedCategory(t *testing.T) {
+func TestLevelPassedRequiresWriting(t *testing.T) {
 	byCategory := map[string]Progress{
 		CategoryReading:    Ratio(9, 10),
 		CategoryGrammar:    Ratio(9, 10),
 		CategoryVocabulary: Ratio(9, 10),
-		// Writing не заполнен вовсе.
+		CategoryWriting:    Ratio(8, 10),
 	}
 	if !LevelPassed(byCategory) {
-		t.Error("уровень не взят, хотя все существующие разделы пройдены")
+		t.Error("уровень не взят, хотя все четыре раздела пройдены")
+	}
+	delete(byCategory, CategoryWriting)
+	if LevelPassed(byCategory) {
+		t.Error("уровень взят без письма")
 	}
 }
 
@@ -61,6 +63,7 @@ func TestLevelPassedNeedsContent(t *testing.T) {
 		CategoryReading:    Ratio(9, 10),
 		CategoryGrammar:    Ratio(0, 0),
 		CategoryVocabulary: Ratio(9, 10),
+		CategoryWriting:    Ratio(9, 10),
 	}
 	if LevelPassed(partial) {
 		t.Error("уровень с пустым разделом засчитан")
@@ -72,6 +75,7 @@ func TestLevelPassedFailsBelowThreshold(t *testing.T) {
 		CategoryReading:    Ratio(9, 10),
 		CategoryGrammar:    Ratio(5, 10),
 		CategoryVocabulary: Ratio(9, 10),
+		CategoryWriting:    Ratio(9, 10),
 	}
 	if LevelPassed(byCategory) {
 		t.Error("уровень взят при 50% по грамматике")

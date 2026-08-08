@@ -350,12 +350,12 @@ python main.py                          # uvicorn на 0.0.0.0:8000
 | Слой | Файлы |
 | --- | --- |
 | Каркас | `server/internal/roadmap/roadmap.go` (+ тест) |
-| База | миграции `0025_roadmap.sql`, `0026_roadmap_seed_words.sql`, `0027_roadmap_seed_grammar.sql`, профиль в `0028_profile_achievements.sql`, связи существующей базы с Тренажёркой в `0029_roadmap_trainer_links.sql` |
+| База | миграции `0025_roadmap.sql`–`0029_roadmap_trainer_links.sql`, восстановление старой профильной схемы в `0030_profile_schema_repair.sql`, русские названия падежей в `0031_roadmap_case_names.sql`, чтение и письмо в `0032_roadmap_seed_practice.sql` |
 | Запросы | `store/roadmap.go` (чтение, отметки, цель), `store/roadmap_admin.go` (правка, обсуждение) |
 | API | `api/roadmap_handlers.go`, `api/admin_roadmap_handlers.go`, `api/routes_test.go` |
 | Веб | `pages/Roadmap.tsx`, `components/RoadmapPath.tsx`, `RoadmapSectionPanel.tsx`, `RoadmapComments.tsx`, `AdminRoadmapPanel.tsx`, `api/roadmap.ts`, `api/adminRoadmap.ts` |
 | Flutter | `screens/roadmap_screen.dart`, `roadmap_section_screen.dart`, `roadmap_comments.dart`, `models/roadmap.dart`, `services/roadmap_service.dart` |
-| Наполнение | `tools/build_roadmap_words.py`, `tools/build_roadmap_grammar.py`, `tools/data/roadmap_*.tsv` |
+| Наполнение | `tools/build_roadmap_words.py`, `tools/build_roadmap_grammar.py`, `tools/build_trainer_catalog.py`, `tools/data/roadmap_*.tsv`, `tools/data/trainer_practice.json` |
 
 ### Каркас в коде, наполнение в базе
 
@@ -384,8 +384,8 @@ python main.py                          # uvicorn на 0.0.0.0:8000
 Порог — 80% по каждому разделу (`roadmap.PassingScore`). Правила, которые легко
 нарушить при доработке:
 
-- **Планируемые разделы в зачёт не идут.** Writing ещё нет; требовать по нему
-  80% значило бы закрыть переход на всех уровнях сразу.
+- **Планируемые разделы в зачёт не идут.** Сейчас все четыре раздела активны;
+  письмо A1–B2 наполнено собственными заданиями и участвует в пороге.
 - **Пустой раздел даёт ноль, а не сто процентов.** «Ничего из ничего» — не
   успех: иначе ненаполненная карта открывала бы дорогу сама собой.
 - **Отметок не может быть больше содержимого** (`roadmap.Ratio` подрезает):
@@ -401,6 +401,25 @@ python main.py                          # uvicorn на 0.0.0.0:8000
 клиент должен убирать `Authorization`. Иначе `PUT /v1/roadmap/target` проходит,
 но следующий публичный `GET /v1/roadmap` снова видит гостя и возвращает пустую
 цель. Пустая клетка карты — нормальный `200` с пустыми массивами, не `404`.
+
+`trainer_catalog.json` назначает каждой теме явный `domain`. Нельзя выводить
+`reading_qa` из грамматического урока в `Čitanje` или считать любой
+`fill_blank` письмом только по типу виджета. A1–B2 имеют собственные авторские
+темы чтения и письма; идеальный заход в любом режиме отмечает связанный пункт
+карты. Названия падежей показывают русское соответствие, но UUID старых тем не
+меняются.
+
+## 5d. Игра «Ты против переводчика»
+
+- Web: `/trainer/translation-duel`; Flutter:
+  `course/screens/translation_duel_screen.dart`. Вход находится в Тренажёрке.
+- Матч — три раунда по пять серверных фраз выбранного уровня A1–C2. Ручка
+  `/v1/translation-game/round` переводит их выбранным `deepl|google`; ключи и
+  заранее сделанный перевод в клиент не попадают.
+- Победителя каждой пары выбирает пользователь или `/v1/translation-game/judge`.
+  Весь раунд уходит одним запросом. Судья по умолчанию —
+  `google/gemma-4-31b-it` через Polza AI; env начинаются с
+  `CITAVUK_TRANSLATION_GAME_AI_`, AI-ручка защищена quiz limiter.
 
 ### Упражнения — тот же движок, что у уроков
 

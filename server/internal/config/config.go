@@ -113,6 +113,13 @@ type Config struct {
 	QuizModel  string
 	QuizURL    string
 
+	// TranslationGameAI* — судья игры «Ты против переводчика». Отдельная
+	// модель не зависит от модели Вукотока и всегда по умолчанию использует
+	// Gemma 4 через тот же серверный ключ Polza AI.
+	TranslationGameAIKey   string
+	TranslationGameAIModel string
+	TranslationGameAIURL   string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -174,6 +181,16 @@ func Load(envPath string) (*Config, error) {
 		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "google/gemma-4-31b-it"),
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		TranslationGameAIKey: firstEnv(
+			"CITAVUK_TRANSLATION_GAME_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		TranslationGameAIModel: envOr(
+			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "google/gemma-4-31b-it",
+		),
+		TranslationGameAIURL: envOr(
+			"CITAVUK_TRANSLATION_GAME_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),

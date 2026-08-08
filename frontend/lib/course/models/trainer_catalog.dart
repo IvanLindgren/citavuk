@@ -18,6 +18,7 @@ extension TrainerDomainLabel on TrainerDomain {
 class TrainerTopicSpec {
   const TrainerTopicSpec({
     required this.id,
+    required this.domain,
     required this.level,
     required this.title,
     required this.summary,
@@ -27,6 +28,7 @@ class TrainerTopicSpec {
   });
 
   final String id;
+  final TrainerDomain domain;
   final String level;
   final String title;
   final String summary;
@@ -37,6 +39,13 @@ class TrainerTopicSpec {
   factory TrainerTopicSpec.fromJson(Map<String, dynamic> json) =>
       TrainerTopicSpec(
         id: (json['id'] ?? '').toString(),
+        domain: switch ((json['domain'] ?? '').toString()) {
+          'grammar' => TrainerDomain.grammar,
+          'reading' => TrainerDomain.reading,
+          'writing' => TrainerDomain.writing,
+          final value =>
+            throw FormatException('Неизвестный раздел Тренажёрки: $value'),
+        },
         level: (json['level'] ?? '').toString(),
         title: (json['title'] ?? '').toString(),
         summary: (json['summary'] ?? '').toString(),
@@ -103,50 +112,19 @@ List<TrainerTopic> buildTrainerTopics(
     final courseExercises = _unique([
       for (final skillId in spec.skillIds) ...bySkill[skillId] ?? const [],
     ]);
-    final grammar = _unique([
+    final exercises = _unique([
       ...spec.supplementalExercises,
       ...courseExercises,
     ]);
-    if (grammar.isNotEmpty) {
+    if (exercises.isNotEmpty) {
       result.add(TrainerTopic(
         id: spec.id,
-        domain: TrainerDomain.grammar,
+        domain: spec.domain,
         level: spec.level,
         title: spec.title,
         summary: spec.summary,
         roadmapItemId: spec.roadmapItemId,
-        exercises: grammar,
-      ));
-    }
-
-    final reading = courseExercises.whereType<ReadingQaExercise>().toList();
-    if (reading.isNotEmpty) {
-      result.add(TrainerTopic(
-        id: '${spec.id}-reading',
-        domain: TrainerDomain.reading,
-        level: spec.level,
-        title: spec.title,
-        summary: 'Текст на сербском с вопросами на понимание.',
-        roadmapItemId: '',
-        exercises: reading,
-      ));
-    }
-
-    final writing = courseExercises
-        .where((exercise) =>
-            exercise is FillBlankExercise ||
-            exercise is SentenceBuilderExercise ||
-            exercise is LetterUnscrambleExercise)
-        .toList();
-    if (writing.isNotEmpty) {
-      result.add(TrainerTopic(
-        id: '${spec.id}-writing',
-        domain: TrainerDomain.writing,
-        level: spec.level,
-        title: spec.title,
-        summary: 'Наберите форму или соберите сербское предложение.',
-        roadmapItemId: '',
-        exercises: writing,
+        exercises: exercises,
       ));
     }
   }

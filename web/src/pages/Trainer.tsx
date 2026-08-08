@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LuBookOpen, LuLanguages, LuPencilLine } from 'react-icons/lu';
+import { LuBookOpen, LuLanguages, LuPencilLine, LuSwords } from 'react-icons/lu';
 
 import { markRoadmapDone } from '../api/roadmap';
 import { CourseSprite } from '../course/CourseSprite';
@@ -163,8 +163,8 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
           <div>
             <h1 className="text-3xl sm:text-4xl">Тренажёрка</h1>
             <p className="mt-3 max-w-2xl leading-relaxed text-[var(--text-muted)]">
-              Практика собрана по уровню и навыку. Полностью правильный заход по
-              грамматике сразу отмечает тему в дорожной карте. Сейчас доступно
+              Практика собрана по уровню и навыку. Полностью правильный заход
+              сразу отмечает тему в дорожной карте. Сейчас доступно
               {` ${total} `}упражнений выбранного раздела.
             </p>
           </div>
@@ -187,6 +187,21 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
             );
           })}
         </div>
+
+        <Link to="/trainer/translation-duel" className="mb-8 block">
+          <Card className="flex items-center gap-4 border-[var(--accent)]/35 bg-[var(--accent)]/8 p-5 transition-colors hover:bg-[var(--accent)]/12 sm:p-6">
+            <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-white">
+              <LuSwords className="size-6" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-xl">Ты против переводчика</h2>
+              <p className="mt-1 text-sm leading-relaxed text-[var(--text-muted)]">
+                Победите DeepL или Google Translate в трёх раундах. Судья — вы или Gemma 4.
+              </p>
+            </div>
+            <span className="hidden font-bold text-[var(--accent)] sm:block">Играть</span>
+          </Card>
+        </Link>
 
         <Card className="mb-8 flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -262,7 +277,7 @@ function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
   useEffect(() => {
     if (!done || reported.current || correctCount !== round.length) return;
     reported.current = true;
-    if (!account || topic.domain !== 'grammar' || !topic.roadmapItemId) return;
+    if (!account || !topic.roadmapItemId) return;
     void markRoadmapDone('item', topic.roadmapItemId, true, 1, 'trainer')
       .then(() => refreshNotifications())
       .catch(() => undefined);

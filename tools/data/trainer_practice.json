@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "reading-a1-everyday",
+      "domain": "reading",
+      "level": "A1",
+      "title": "Знакомство и распорядок дня",
+      "summary": "Короткие сообщения о себе, семье и обычном дне.",
+      "exercises": [
+        {
+          "kind": "reading",
+          "text": "Zovem se Mila i živim u Novom Sadu. Imam dvadeset godina. Ujutru pijem čaj, a zatim idem na fakultet. Uveče čitam knjigu.",
+          "translation": "Меня зовут Мила, и я живу в Нови-Саде. Мне двадцать лет. Утром я пью чай, затем иду в университет. Вечером я читаю книгу.",
+          "questions": [
+            {"prompt": "Gde Mila živi?", "options": ["U Novom Sadu.", "U Nišu.", "U Subotici."]},
+            {"prompt": "Šta radi uveče?", "options": ["Čita knjigu.", "Ide na fakultet.", "Pije kafu."]}
+          ]
+        },
+        {
+          "kind": "reading",
+          "text": "Pekara radi od sedam do devetnaest časova. Nedeljom ne radi. Hleb je na polici levo, a sokovi su pored kase.",
+          "translation": "Пекарня работает с семи до девятнадцати часов. По воскресеньям она не работает. Хлеб находится на полке слева, а соки — рядом с кассой.",
+          "questions": [
+            {"prompt": "Kada pekara ne radi?", "options": ["Nedeljom.", "Subotom.", "Ponedeljkom."]},
+            {"prompt": "Gde su sokovi?", "options": ["Pored kase.", "Na polici levo.", "Ispred pekare."]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-a1-messages",
+      "domain": "writing",
+      "level": "A1",
+      "title": "О себе и короткие сообщения",
+      "summary": "Напишите простую фразу о себе или бытовую записку.",
+      "exercises": [
+        {
+          "kind": "writing",
+          "prompt": "Напишите по-сербски: «Меня зовут Ана, и я живу в Белграде». Пунктуация не обязательна.",
+          "answers": ["Zovem se Ana i živim u Beogradu", "Zovem se Ana i živim u Beogradu."],
+          "explanation": "Zovem se Ana i živim u Beogradu. После предлога u со значением места нужен локатив: u Beogradu."
+        },
+        {
+          "kind": "writing",
+          "prompt": "Напишите короткую записку: «Я дома. Хлеб на столе». Пунктуация не обязательна.",
+          "answers": ["Ja sam kod kuće. Hleb je na stolu.", "Ja sam kod kuće, hleb je na stolu", "Kod kuće sam. Hleb je na stolu."],
+          "explanation": "Ja sam kod kuće. Hleb je na stolu. В естественной речи местоимение ja можно опустить: Kod kuće sam."
+        }
+      ]
+    },
+    {
+      "id": "reading-a2-plans",
+      "domain": "reading",
+      "level": "A2",
+      "title": "Поездки, расписания и планы",
+      "summary": "Поймите практическое сообщение и восстановите порядок событий.",
+      "exercises": [
+        {
+          "kind": "reading",
+          "text": "Voz za Novi Sad polazi sa trećeg perona u 14.20. Putnici treba da budu na peronu deset minuta ranije. Zbog radova, voz stiže petnaest minuta kasnije nego obično.",
+          "translation": "Поезд до Нови-Сада отправляется с третьей платформы в 14:20. Пассажирам нужно быть на платформе на десять минут раньше. Из-за работ поезд прибывает на пятнадцать минут позже обычного.",
+          "questions": [
+            {"prompt": "Sa kog perona polazi voz?", "options": ["Sa trećeg.", "Sa drugog.", "Sa petog."]},
+            {"prompt": "Zašto voz kasni?", "options": ["Zbog radova.", "Zbog snega.", "Zbog praznika."]}
+          ]
+        },
+        {
+          "kind": "reading",
+          "text": "Ćao, Marko! Sutra završavam posao u pet. Možemo da se nađemo ispred biblioteke u pola šest. Ako pada kiša, sačekaću te u kafiću preko puta.",
+          "translation": "Привет, Марко! Завтра я заканчиваю работу в пять. Мы можем встретиться перед библиотекой в половине шестого. Если пойдёт дождь, я подожду тебя в кафе напротив.",
+          "questions": [
+            {"prompt": "Kada je sastanak?", "options": ["U pola šest.", "U pet.", "U šest."]},
+            {"prompt": "Gde će osoba čekati ako pada kiša?", "options": ["U kafiću.", "U biblioteci.", "Na poslu."]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-a2-plans",
+      "domain": "writing",
+      "level": "A2",
+      "title": "Встреча и рассказ о прошедшем дне",
+      "summary": "Составьте цельное сообщение о планах или недавнем событии.",
+      "exercises": [
+        {
+          "kind": "writing",
+          "prompt": "Напишите по-сербски: «Давай встретимся завтра в шесть перед кинотеатром». Пунктуация не обязательна.",
+          "answers": ["Hajde da se nađemo sutra u šest ispred bioskopa", "Hajde da se nađemo sutra u šest ispred bioskopa."],
+          "explanation": "Hajde da se nađemo sutra u šest ispred bioskopa. После ispred используется генитив."
+        },
+        {
+          "kind": "writing",
+          "prompt": "Напишите: «Вчера я работал, а вечером гулял с друзьями». Допустимы мужская и женская формы.",
+          "answers": ["Juče sam radio, a uveče sam šetao sa prijateljima.", "Juče sam radila, a uveče sam šetala sa prijateljima.", "Juče sam radio a uveče sam šetao sa prijateljima", "Juče sam radila a uveče sam šetala sa prijateljima"],
+          "explanation": "Перфект согласуется с родом говорящего: radio/šetao или radila/šetala."
+        }
+      ]
+    },
+    {
+      "id": "reading-b1-city",
+      "domain": "reading",
+      "level": "B1",
+      "title": "Городские истории и полезные статьи",
+      "summary": "Найдите причину, следствие и позицию автора в связном тексте.",
+      "exercises": [
+        {
+          "kind": "reading",
+          "text": "Kada je stara pijaca obnovljena, stanovnici su se plašili da će izgubiti poznata mala mesta. Ipak, gradske vlasti su sačuvale tezge porodičnih prodavaca i dodale prostor za koncerte. Zbog toga je pijaca postala posećenija, a nije izgubila svoj karakter.",
+          "translation": "Когда старый рынок отремонтировали, жители боялись потерять знакомые маленькие места. Однако городские власти сохранили прилавки семейных продавцов и добавили пространство для концертов. Поэтому рынок стал посещаемее, не утратив свой характер.",
+          "questions": [
+            {"prompt": "Čega su se stanovnici plašili?", "options": ["Da će pijaca izgubiti svoj karakter.", "Da neće biti koncerata.", "Da će prodavci raditi duže."]},
+            {"prompt": "Šta je bio rezultat obnove?", "options": ["Pijaca je postala posećenija.", "Pijaca je zatvorena.", "Svi prodavci su otišli."]}
+          ]
+        },
+        {
+          "kind": "reading",
+          "text": "Stručnjaci savetuju da nove reči ne učimo kao usamljene stavke. Kada reč zapišemo u celoj rečenici, lakše pamtimo i značenje i oblik. Kratko ponavljanje svakog dana obično je korisnije od jednog dugog učenja nedeljno.",
+          "translation": "Специалисты советуют не учить новые слова как отдельные единицы. Записывая слово в целом предложении, мы легче запоминаем и значение, и форму. Короткое ежедневное повторение обычно полезнее одного долгого занятия в неделю.",
+          "questions": [
+            {"prompt": "Zašto treba zapisati celu rečenicu?", "options": ["Da bismo lakše pamtili značenje i oblik.", "Da bismo pisali duži tekst.", "Da bismo izbegli ponavljanje."]},
+            {"prompt": "Šta je korisnije prema tekstu?", "options": ["Kratko svakodnevno ponavljanje.", "Jedno dugo učenje nedeljno.", "Učenje bez primera."]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-b1-story",
+      "domain": "writing",
+      "level": "B1",
+      "title": "Личное письмо и связный рассказ",
+      "summary": "Соедините события и объясните причину своего решения.",
+      "exercises": [
+        {
+          "kind": "writing",
+          "prompt": "Напишите: «Я не пришёл вчера, потому что поезд опоздал, но сегодня у меня есть время». Допустимы формы обоих родов.",
+          "answers": ["Nisam došao juče jer je voz kasnio, ali danas imam vremena.", "Nisam došla juče jer je voz kasnio, ali danas imam vremena.", "Juče nisam došao jer je voz kasnio, ali danas imam vremena.", "Juče nisam došla jer je voz kasnio, ali danas imam vremena."],
+          "explanation": "Причину вводит jer, а противопоставление — ali. Перфект согласуется с родом говорящего."
+        },
+        {
+          "kind": "writing",
+          "prompt": "Напишите вежливую просьбу: «Не мог бы ты прислать мне фотографии, когда вернёшься домой?»",
+          "answers": ["Da li bi mogao da mi pošalješ fotografije kada se vratiš kući?", "Da li bi mogla da mi pošalješ fotografije kada se vratiš kući?", "Možeš li da mi pošalješ fotografije kada se vratiš kući?"],
+          "explanation": "Потенцијал da li bi mogao/mogla смягчает просьбу; после kada используется настоящее время."
+        }
+      ]
+    },
+    {
+      "id": "reading-b2-opinions",
+      "domain": "reading",
+      "level": "B2",
+      "title": "Мнения и культурная публицистика",
+      "summary": "Различайте тезис, оговорку и скрытое отношение автора.",
+      "exercises": [
+        {
+          "kind": "reading",
+          "text": "Digitalizacija biblioteka često se predstavlja kao zamena za čitaonice, premda joj je važnija uloga da građu učini dostupnom ljudima koji žive daleko. Fizički prostor zbog toga ne postaje suvišan: upravo tamo čitalac dobija stručnu pomoć i priliku da naiđe na knjigu koju nije ciljano tražio.",
+          "translation": "Цифровизацию библиотек часто представляют как замену читальным залам, хотя её более важная роль — сделать фонды доступными людям, живущим далеко. Физическое пространство от этого не становится лишним: именно там читатель получает профессиональную помощь и может наткнуться на книгу, которую не искал специально.",
+          "questions": [
+            {"prompt": "Koji stav zastupa autor?", "options": ["Digitalne i fizičke biblioteke imaju različite, dopunske uloge.", "Čitaonice više nisu potrebne.", "Digitalizacija koristi samo stručnjacima."]},
+            {"prompt": "Šta znači izraz „premda“ u tekstu?", "options": ["Uvodi suprotnost ili ogradu.", "Navodi posledicu.", "Označava vreme."]}
+          ]
+        },
+        {
+          "kind": "reading",
+          "text": "Turistički vodiči vole da grad svedu na nekoliko prepoznatljivih slika. Takav izbor jeste praktičan, ali lako prikriva svakodnevni život stanovnika. Ko želi da razume mesto, trebalo bi da obrati pažnju i na pijace, javni prevoz i razgovore u malim radnjama, a ne samo na spomenike.",
+          "translation": "Туристические путеводители любят сводить город к нескольким узнаваемым образам. Такой выбор практичен, но легко скрывает повседневную жизнь жителей. Тому, кто хочет понять место, стоит обращать внимание на рынки, общественный транспорт и разговоры в маленьких магазинах, а не только на памятники.",
+          "questions": [
+            {"prompt": "Šta autor zamera turističkim vodičima?", "options": ["Pojednostavljuju sliku grada.", "Ne opisuju spomenike.", "Previše govore o prevozu."]},
+            {"prompt": "Šta pomaže boljem razumevanju grada?", "options": ["Posmatranje svakodnevnog života.", "Samo obilazak spomenika.", "Čitanje jednog kratkog vodiča."]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-b2-argument",
+      "domain": "writing",
+      "level": "B2",
+      "title": "Аргумент и официальное обращение",
+      "summary": "Сформулируйте позицию с оговоркой или вежливое требование.",
+      "exercises": [
+        {
+          "kind": "writing",
+          "prompt": "Напишите: «Хотя онлайн-курсы удобны, живой разговор остаётся необходимым для изучения языка».",
+          "answers": ["Iako su onlajn kursevi praktični, razgovor uživo ostaje neophodan za učenje jezika.", "Premda su onlajn kursevi praktični, razgovor uživo ostaje neophodan za učenje jezika."],
+          "explanation": "Iako или premda вводят уступку; сказуемое su согласуется с множественным числом kursevi."
+        },
+        {
+          "kind": "writing",
+          "prompt": "Напишите официально: «Просим вас сообщить нам, когда решение будет принято».",
+          "answers": ["Molimo vas da nas obavestite kada odluka bude doneta.", "Molimo Vas da nas obavestite kada odluka bude doneta."],
+          "explanation": "Официальная просьба строится как molimo vas da; футур II bude doneta указывает на завершение будущего действия."
+        }
+      ]
+    }
+  ]
+}

@@ -38,6 +38,7 @@ const COLUMNS = [
   {
     title: 'Учиться',
     links: [
+      { to: '/roadmap', label: 'Дорожная карта' },
       { to: '/course', label: 'Курс грамматики' },
       { to: '/trainer', label: 'Тренажёрка' },
       { to: '/cards', label: 'Карточки' },

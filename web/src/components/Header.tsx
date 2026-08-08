@@ -176,7 +176,10 @@ const NAV = GROUPS.flatMap((group) =>
 /** Разделы для панели «Ещё»: всё, что не вынесено в шапку отдельно. */
 const MORE_GROUPS = GROUPS.map((group) => ({
   title: group.title,
-  items: group.items.filter((item) => !item.place),
+  // Карта остаётся заметной кнопкой в широкой шапке и одновременно живёт в
+  // ожидаемом месте «Ещё → Учиться». На узких экранах отдельная кнопка может
+  // не поместиться, поэтому единственный вход только через pill был бы хрупким.
+  items: group.items.filter((item) => !item.place || item.to === '/roadmap'),
 })).filter((group) => group.items.length > 0);
 
 export function Header() {

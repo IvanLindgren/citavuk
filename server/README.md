@@ -208,6 +208,9 @@ POST /v1/translate           {text, source, target}
 POST /v1/translate/context   {sentence, start, end, source, target}
 GET  /v1/translate/usage     только администратор
 GET  /translate?q=...        совместимость со старым клиентом
+
+POST /v1/translation-game/round  {level, round, translator: deepl|google}
+POST /v1/translation-game/judge  {entries:[{source,userTranslation,translatorTranslation}]}
 ```
 
 Ключевой факт, определивший устройство этой части: **DeepL отлично переводит

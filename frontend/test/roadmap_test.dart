@@ -10,9 +10,17 @@ RoadmapProgress _progress(int done, int total) => RoadmapProgress(
 
 const _categories = [
   RoadmapCategory(
-      key: 'reading', title: 'Reading', local: 'Čitanje', about: '', planned: false),
+      key: 'reading',
+      title: 'Reading',
+      local: 'Čitanje',
+      about: '',
+      planned: false),
   RoadmapCategory(
-      key: 'grammar', title: 'Grammar', local: 'Gramatika', about: '', planned: false),
+      key: 'grammar',
+      title: 'Grammar',
+      local: 'Gramatika',
+      about: '',
+      planned: false),
   RoadmapCategory(
       key: 'vocabulary',
       title: 'Vocabulary',
@@ -20,10 +28,15 @@ const _categories = [
       about: '',
       planned: false),
   RoadmapCategory(
-      key: 'writing', title: 'Writing', local: 'Pisanje', about: '', planned: true),
+      key: 'writing',
+      title: 'Writing',
+      local: 'Pisanje',
+      about: '',
+      planned: false),
 ];
 
-RoadmapLevelView _level(Map<String, RoadmapProgress> categories) => RoadmapLevelView(
+RoadmapLevelView _level(Map<String, RoadmapProgress> categories) =>
+    RoadmapLevelView(
       level: 'B1',
       name: 'Читаю с переводчиком',
       categories: categories,
@@ -31,11 +44,12 @@ RoadmapLevelView _level(Map<String, RoadmapProgress> categories) => RoadmapLevel
     );
 
 void main() {
-  test('уровень берётся по существующим разделам, минуя Writing', () {
+  test('уровень берётся по всем четырём разделам', () {
     final level = _level({
       'reading': _progress(9, 10),
       'grammar': _progress(8, 10),
       'vocabulary': _progress(90, 100),
+      'writing': _progress(8, 10),
     });
     expect(roadmapLevelPassed(level, _categories), isTrue);
   });
@@ -45,6 +59,7 @@ void main() {
       'reading': _progress(9, 10),
       'grammar': _progress(5, 10),
       'vocabulary': _progress(90, 100),
+      'writing': _progress(9, 10),
     });
     expect(roadmapLevelPassed(level, _categories), isFalse);
   });
@@ -55,6 +70,7 @@ void main() {
       'reading': _progress(9, 10),
       'grammar': _progress(0, 0),
       'vocabulary': _progress(90, 100),
+      'writing': _progress(9, 10),
     });
     expect(roadmapLevelPassed(level, _categories), isFalse);
   });
@@ -66,7 +82,8 @@ void main() {
   test('следующая ступень идёт по шкале, а с вершины пуста', () {
     final levels = [
       for (final name in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
-        RoadmapLevelView(level: name, name: name, categories: const {}, passed: false),
+        RoadmapLevelView(
+            level: name, name: name, categories: const {}, passed: false),
     ];
     expect(roadmapNextLevel('A1', levels), 'A2');
     expect(roadmapNextLevel('B2', levels), 'C1');

@@ -1,9 +1,39 @@
 package store
 
 import (
+	"context"
 	"testing"
 	"time"
+
+	"github.com/google/uuid"
 )
+
+func TestProfileStatsRunsOnMigratedDatabase(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	user, err := s.CreateUser(ctx,
+		"profile-stats-"+uuid.NewString()+"@example.test", "", "Profile Stats", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(), `DELETE FROM users WHERE id=$1`, user.ID)
+	})
+
+	stats, err := s.GetProfileStats(ctx, user.ID)
+	if err != nil {
+		t.Fatalf("GetProfileStats: %v", err)
+	}
+	if len(stats.Activity) != 14 {
+		t.Fatalf("activity days = %d, want 14", len(stats.Activity))
+	}
+	if len(stats.Achievements) == 0 {
+		t.Fatal("achievement catalogue is empty")
+	}
+}
 
 func TestCurrentStreakAllowsTodayOrYesterday(t *testing.T) {
 	now := time.Date(2026, 8, 9, 14, 0, 0, 0, time.UTC)

@@ -60,7 +60,7 @@ const categories: RoadmapCategory[] = [
   { key: 'reading', title: 'Reading', local: 'Čitanje', about: '' },
   { key: 'grammar', title: 'Grammar', local: 'Gramatika', about: '' },
   { key: 'vocabulary', title: 'Vocabulary', local: 'Vokabular', about: '' },
-  { key: 'writing', title: 'Writing', local: 'Pisanje', about: '', planned: true },
+  { key: 'writing', title: 'Writing', local: 'Pisanje', about: '' },
 ];
 
 const level = (
@@ -73,11 +73,12 @@ const level = (
 });
 
 describe('уровень дорожной карты', () => {
-  it('засчитывается по существующим разделам, минуя Writing', () => {
+  it('засчитывается по всем четырём разделам', () => {
     const view = level({
       reading: progress(9, 10),
       grammar: progress(8, 10),
       vocabulary: progress(90, 100),
+      writing: progress(8, 10),
     });
     expect(levelPassed(view, categories)).toBe(true);
   });
@@ -87,6 +88,7 @@ describe('уровень дорожной карты', () => {
       reading: progress(9, 10),
       grammar: progress(5, 10),
       vocabulary: progress(90, 100),
+      writing: progress(9, 10),
     });
     expect(levelPassed(view, categories)).toBe(false);
   });
@@ -97,6 +99,7 @@ describe('уровень дорожной карты', () => {
       reading: progress(9, 10),
       grammar: progress(0, 0),
       vocabulary: progress(90, 100),
+      writing: progress(9, 10),
     });
     expect(levelPassed(view, categories)).toBe(false);
   });

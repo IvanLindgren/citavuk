@@ -18,6 +18,7 @@ import (
 	"github.com/citavuk/server/internal/quiz"
 	"github.com/citavuk/server/internal/store"
 	"github.com/citavuk/server/internal/translate"
+	"github.com/citavuk/server/internal/translationgame"
 )
 
 // Version подставляется при сборке через -ldflags.
@@ -25,23 +26,24 @@ var Version = "dev"
 
 // Server связывает конфигурацию, хранилище и внешние сервисы.
 type Server struct {
-	cfg          *config.Config
-	store        *store.Store
-	google       *auth.GoogleVerifier
-	googleCode   *auth.GoogleCodeExchanger
-	yandex       *auth.YandexClient
-	mailer       mailer.Sender
-	deepl        *translate.DeepL
-	translator   *translate.Service
-	proxy        *httputil.ReverseProxy
-	redis        *rediscache.Redis
-	documentHTTP *http.Client
-	quiz         *quiz.Generator
-	podcasts     *podcast.Service
-	media        *media.Service
-	microFeed    *feed.Generator
-	feedSources  *feed.SourceFetcher
-	dictionary   definitionLookup
+	cfg             *config.Config
+	store           *store.Store
+	google          *auth.GoogleVerifier
+	googleCode      *auth.GoogleCodeExchanger
+	yandex          *auth.YandexClient
+	mailer          mailer.Sender
+	deepl           *translate.DeepL
+	translator      *translate.Service
+	proxy           *httputil.ReverseProxy
+	redis           *rediscache.Redis
+	documentHTTP    *http.Client
+	quiz            *quiz.Generator
+	podcasts        *podcast.Service
+	media           *media.Service
+	microFeed       *feed.Generator
+	translationGame *translationgame.Judge
+	feedSources     *feed.SourceFetcher
+	dictionary      definitionLookup
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -108,8 +110,13 @@ func New(
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
-		podcasts:     podcast.New(),
-		media:        mediaService,
+		translationGame: translationgame.NewJudge(
+			cfg.TranslationGameAIKey,
+			cfg.TranslationGameAIModel,
+			cfg.TranslationGameAIURL,
+		),
+		podcasts: podcast.New(),
+		media:    mediaService,
 		microFeed: feed.NewGenerator(
 			cfg.FeedAIKey, cfg.FeedAIModel, cfg.FeedAIURL,
 			cfg.FeedEmbeddingKey, cfg.FeedEmbeddingModel, cfg.FeedEmbeddingURL,
@@ -408,6 +415,8 @@ func (s *Server) Handler() http.Handler {
 	// ограничен жёстче вошедшего — квота DeepL общая на всех.
 	mux.HandleFunc("POST /v1/translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslate)))
 	mux.HandleFunc("POST /v1/translate/context", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateInContext)))
+	mux.HandleFunc("POST /v1/translation-game/round", s.optionalAuth(s.rateLimitTranslate(s.handleTranslationGameRound)))
+	mux.HandleFunc("POST /v1/translation-game/judge", s.optionalAuth(s.rateLimitIdentity(s.quizLimit, s.handleTranslationGameJudge)))
 	mux.HandleFunc("GET /v1/translate/usage", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUsage)))
 
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не

@@ -26,6 +26,7 @@ import '../../services/announcements_controller.dart';
 import '../../services/auth_service.dart';
 import '../../services/roadmap_service.dart';
 import 'lesson_screen.dart';
+import 'translation_duel_screen.dart';
 
 /// Сколько заданий в одном заходе. Больше двенадцати уже утомляет.
 const int _roundSize = 10;
@@ -112,7 +113,7 @@ class _TrainerScreenState extends State<TrainerScreen> {
         children: [
           Text(
             'Практика собрана по уровню и навыку. Полностью правильный заход '
-            'по грамматике сразу отмечает тему в дорожной карте. Сейчас '
+            'сразу отмечает тему в дорожной карте. Сейчас '
             'доступно $total упражнений выбранного раздела.',
             style: TextStyle(
               fontSize: 15,
@@ -124,6 +125,14 @@ class _TrainerScreenState extends State<TrainerScreen> {
           _DomainPicker(
             selected: _domain,
             onChanged: (value) => setState(() => _domain = value),
+          ),
+          const SizedBox(height: 18),
+          _TranslationDuelTile(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const TranslationDuelScreen(),
+              ),
+            ),
           ),
           const SizedBox(height: 18),
           _TopicTile(
@@ -184,7 +193,6 @@ class _TrainerScreenState extends State<TrainerScreen> {
           course: widget.course,
           onFinished: (summary) {
             if (summary.score != 1 ||
-                topic.domain != TrainerDomain.grammar ||
                 topic.roadmapItemId.isEmpty ||
                 !context.read<AuthService>().isSignedIn) {
               return;
@@ -210,6 +218,55 @@ class _TrainerScreenState extends State<TrainerScreen> {
     } catch (_) {
       // Результат самой тренировки не теряется из-за временной ошибки сети.
     }
+  }
+}
+
+class _TranslationDuelTile extends StatelessWidget {
+  const _TranslationDuelTile({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.primaryContainer.withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: scheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(Icons.sports_martial_arts, color: scheme.onPrimary),
+              ),
+              const SizedBox(width: 13),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Ты против переводчика',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w800)),
+                    SizedBox(height: 3),
+                    Text('Победите DeepL или Google. Судья — вы или Gemma 4.'),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

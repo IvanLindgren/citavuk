@@ -55,6 +55,9 @@ const Dialogues = lazy(() =>
 const Trainer = lazy(() =>
   import("./pages/Trainer").then((m) => ({ default: m.Trainer })),
 );
+const TranslationDuel = lazy(() =>
+  import("./pages/TranslationDuel").then((m) => ({ default: m.TranslationDuel })),
+);
 const SharedBook = lazy(() =>
   import("./pages/SharedBook").then((m) => ({ default: m.SharedBook })),
 );
@@ -158,6 +161,7 @@ const ROUTES: RouteDefinition[] = [
   // Старые сохранённые ссылки продолжают открываться после переноса раздела.
   { pattern: "/course/dialogue/:id", element: <CourseDialogue /> },
   { pattern: "/trainer", element: <Trainer /> },
+  { pattern: "/trainer/translation-duel", element: <TranslationDuel /> },
   { pattern: "/tests/:id", element: <TestRun /> },
   { pattern: "/shared/:token", element: <SharedBook /> },
   { pattern: "/books", element: <Books /> },
