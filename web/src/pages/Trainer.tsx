@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { LuBookOpen, LuLanguages, LuPencilLine } from 'react-icons/lu';
 
+import { markRoadmapDone } from '../api/roadmap';
 import { CourseSprite } from '../course/CourseSprite';
 import {
   canEvaluate,
@@ -14,9 +16,17 @@ import type {
   Evaluation,
   Exercise,
 } from '../course/types';
+import {
+  buildTrainerTopics,
+  loadTrainerCatalog,
+  type TrainerDomain,
+  type TrainerTopic,
+} from '../course/trainerCatalog';
 import { Button, Card, Spinner } from '../components/ui';
 import { Link, useQuery, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
+import { useAnnouncements } from '../state/announcements';
+import { useAuth } from '../state/auth';
 import {
   createSessionSeed,
   exerciseTypeLabel,
@@ -44,12 +54,7 @@ import {
 /** Сколько заданий в одном заходе. Больше двенадцати уже утомляет. */
 const ROUND_SIZE = 10;
 
-interface Topic {
-  id: string;
-  title: string;
-  unitTitle: string;
-  exercises: Exercise[];
-}
+type Topic = TrainerTopic;
 
 export function Trainer() {
   const { navigate } = useRouter();
@@ -57,6 +62,7 @@ export function Trainer() {
   const topicId = query.topic ?? '';
 
   const [bundle, setBundle] = useState<CourseBundle | null>(null);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [error, setError] = useState('');
 
   useSeo({
@@ -71,9 +77,11 @@ export function Trainer() {
 
   useEffect(() => {
     let active = true;
-    void loadCourse()
-      .then((course) => {
-        if (active) setBundle(course);
+    void Promise.all([loadCourse(), loadTrainerCatalog()])
+      .then(([course, catalog]) => {
+        if (!active) return;
+        setBundle(course);
+        setTopics(buildTrainerTopics(course, catalog));
       })
       .catch(() => {
         if (active) setError('Не удалось загрузить упражнения.');
@@ -82,8 +90,6 @@ export function Trainer() {
       active = false;
     };
   }, []);
-
-  const topics = useMemo(() => (bundle ? collectTopics(bundle) : []), [bundle]);
 
   if (error) {
     return (
@@ -104,13 +110,21 @@ export function Trainer() {
 
   // «Всё вперемешку» — не раздел курса, а собранная на лету тема из всех
   // упражнений сразу.
+  const allDomain = topicId.startsWith('all-')
+    ? (topicId.slice(4) as TrainerDomain)
+    : null;
   const topic =
-    topicId === 'all'
+    allDomain
       ? {
-          id: 'all',
+          id: `all-${allDomain}`,
+          domain: allDomain,
+          level: '',
           title: 'Всё вперемешку',
-          unitTitle: '',
-          exercises: topics.flatMap((item) => item.exercises),
+          summary: '',
+          roadmapItemId: '',
+          exercises: topics
+            .filter((item) => item.domain === allDomain)
+            .flatMap((item) => item.exercises),
         }
       : topics.find((item) => item.id === topicId);
 
@@ -126,39 +140,20 @@ export function Trainer() {
   return <TopicPicker topics={topics} />;
 }
 
-/**
- * Темы — это разделы курса (skill), а не уроки: «Винительный падеж» полезнее
- * как одна тема, чем как три урока с разными сторонами одного правила.
- */
-function collectTopics(bundle: CourseBundle): Topic[] {
-  const topics: Topic[] = [];
-  for (const unit of bundle.units) {
-    for (const skill of unit.skills) {
-      const exercises = skill.lessons.flatMap((lesson) => lesson.exercises);
-      if (exercises.length === 0) continue;
-      topics.push({
-        id: skill.id,
-        title: skill.title,
-        unitTitle: unit.title,
-        exercises,
-      });
-    }
-  }
-  return topics;
-}
-
 function TopicPicker({ topics }: { topics: Topic[] }) {
-  const byUnit = useMemo(() => {
+  const [domain, setDomain] = useState<TrainerDomain>('grammar');
+  const byLevel = useMemo(() => {
     const groups = new Map<string, Topic[]>();
-    for (const topic of topics) {
-      const group = groups.get(topic.unitTitle) ?? [];
+    for (const topic of topics.filter((item) => item.domain === domain)) {
+      const group = groups.get(topic.level) ?? [];
       group.push(topic);
-      groups.set(topic.unitTitle, group);
+      groups.set(topic.level, group);
     }
     return [...groups.entries()];
-  }, [topics]);
+  }, [domain, topics]);
 
-  const total = topics.reduce((sum, topic) => sum + topic.exercises.length, 0);
+  const activeTopics = topics.filter((topic) => topic.domain === domain);
+  const total = activeTopics.reduce((sum, topic) => sum + topic.exercises.length, 0);
 
   return (
     <main className="px-5 py-10 sm:py-14">
@@ -168,12 +163,30 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
           <div>
             <h1 className="text-3xl sm:text-4xl">Тренажёрка</h1>
             <p className="mt-3 max-w-2xl leading-relaxed text-[var(--text-muted)]">
-              Выберите тему и решайте задания по ней подряд. Порядок уроков тут
-              не действует: любая тема открыта сразу, даже если до неё в курсе
-              вы ещё не дошли. Всего {total} упражнений.
+              Практика собрана по уровню и навыку. Полностью правильный заход по
+              грамматике сразу отмечает тему в дорожной карте. Сейчас доступно
+              {` ${total} `}упражнений выбранного раздела.
             </p>
           </div>
         </header>
+
+        <div className="mb-8 grid grid-cols-3 gap-2 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] p-1.5">
+          {DOMAIN_OPTIONS.map((item) => {
+            const Icon = item.icon;
+            const active = item.id === domain;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setDomain(item.id)}
+                className={`flex min-h-12 items-center justify-center gap-1 rounded-lg px-1 text-xs font-bold transition-colors sm:gap-2 sm:px-2 sm:text-base ${active ? 'bg-[var(--bg-raised)] text-[var(--accent)] shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text)]'}`}
+              >
+                <Icon className="size-4 shrink-0" />
+                <span className="whitespace-nowrap">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
         <Card className="mb-8 flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -183,21 +196,24 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
               успело забыться.
             </p>
           </div>
-          <Link to="/trainer?topic=all">
+          <Link to={`/trainer?topic=all-${domain}`}>
             <Button size="lg">Начать</Button>
           </Link>
         </Card>
 
-        {byUnit.map(([unitTitle, unitTopics]) => (
-          <section key={unitTitle} className="mb-10">
+        {byLevel.map(([level, levelTopics]) => (
+          <section key={level} className="mb-10">
             <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
-              {unitTitle}
+              {level}
             </h2>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {unitTopics.map((topic) => (
+              {levelTopics.map((topic) => (
                 <Link key={topic.id} to={`/trainer?topic=${topic.id}`}>
                   <Card className="h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
                     <h3 className="text-lg leading-snug">{topic.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--text-muted)]">
+                      {topic.summary}
+                    </p>
                     <p className="mt-2 text-sm text-[var(--text-muted)]">
                       {topic.exercises.length}{' '}
                       {plural(topic.exercises.length, 'упражнение', 'упражнения', 'упражнений')}
@@ -213,7 +229,20 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
   );
 }
 
+const DOMAIN_OPTIONS: Array<{
+  id: TrainerDomain;
+  label: string;
+  icon: typeof LuLanguages;
+}> = [
+  { id: 'grammar', label: 'Gramatika', icon: LuLanguages },
+  { id: 'reading', label: 'Čitanje', icon: LuBookOpen },
+  { id: 'writing', label: 'Pisanje', icon: LuPencilLine },
+];
+
 function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
+  const { account } = useAuth();
+  const { refresh: refreshNotifications } = useAnnouncements();
+  const reported = useRef(false);
   const [seed, setSeed] = useState(() => createSessionSeed());
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<ExerciseDraft | null>(null);
@@ -231,6 +260,15 @@ function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
   const exercise = round[step] ?? null;
 
   useEffect(() => {
+    if (!done || reported.current || correctCount !== round.length) return;
+    reported.current = true;
+    if (!account || topic.domain !== 'grammar' || !topic.roadmapItemId) return;
+    void markRoadmapDone('item', topic.roadmapItemId, true, 1, 'trainer')
+      .then(() => refreshNotifications())
+      .catch(() => undefined);
+  }, [account, correctCount, done, refreshNotifications, round.length, topic]);
+
+  useEffect(() => {
     if (!exercise) return;
     setDraft(initialDraft(exercise));
     setEvaluation(null);
@@ -238,6 +276,7 @@ function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
   }, [exercise]);
 
   const restart = () => {
+    reported.current = false;
     setSeed(createSessionSeed());
     setStep(0);
     setCorrectCount(0);

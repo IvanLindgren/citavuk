@@ -43,7 +43,11 @@ export interface LessonExercise {
   id: string;
   type: 'multiple_choice' | 'ending_picker' | 'sentence_builder' | 'letter_unscramble' |
     'matching' | 'fill_blank' | 'image_description' | 'reading_qa' | 'form_hunt' |
-    'explain_word' | 'teacher_letter';
+    'explain_word' | 'teacher_letter' |
+    // Два вида добавлены дорожной картой. Формат тот же: редактор и
+    // проигрыватель у уроков и карты общие, второй набор означал бы второй
+    // проигрыватель на каждой из платформ.
+    'word_drill' | 'translator_duel';
   prompt: string;
   options?: string[];
   answer?: string;

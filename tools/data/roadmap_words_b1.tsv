@@ -1,0 +1,216 @@
+theme	lemma	translation	pos	note
+Общество	zajednica	сообщество	NOUN	ж
+Общество	stanovništvo	население	NOUN	с
+Общество	manjina	меньшинство	NOUN	ж
+Общество	većina	большинство	NOUN	ж
+Общество	jednakost	равенство	NOUN	ж
+Общество	sloboda	свобода	NOUN	ж
+Общество	odgovornost	ответственность	NOUN	ж
+Общество	obaveza	обязанность	NOUN	ж
+Общество	pravda	справедливость	NOUN	ж
+Общество	sukob	конфликт	NOUN	м
+Общество	saradnja	сотрудничество	NOUN	ж
+Общество	podrška	поддержка	NOUN	ж
+Общество	uticaj	влияние	NOUN	м
+Общество	posledica	последствие	NOUN	ж
+Общество	promena	перемена	NOUN	ж
+Общество	razvoj	развитие	NOUN	м
+Политика	politika	политика	NOUN	ж
+Политика	predsednik	президент	NOUN	м
+Политика	ministar	министр	NOUN	м
+Политика	stranka	партия	NOUN	ж
+Политика	glasanje	голосование	NOUN	с
+Политика	skupština	парламент	NOUN	ж
+Политика	odluka	решение	NOUN	ж
+Политика	pregovori	переговоры	NOUN	мн.
+Политика	sporazum	соглашение	NOUN	м
+Политика	reforma	реформа	NOUN	ж
+Политика	vlast	власть	NOUN	ж
+Политика	opozicija	оппозиция	NOUN	ж
+Экономика	privreda	экономика, хозяйство	NOUN	ж
+Экономика	tržište	рынок	NOUN	с
+Экономика	proizvodnja	производство	NOUN	ж
+Экономика	potrošnja	потребление	NOUN	ж
+Экономика	ulaganje	вложение	NOUN	с
+Экономика	dobit	прибыль	NOUN	ж
+Экономика	gubitak	убыток, потеря	NOUN	м
+Экономика	kredit	кредит	NOUN	м
+Экономика	kamata	процент по кредиту	NOUN	ж
+Экономика	dugovanje	задолженность	NOUN	с
+Экономика	trošak	расход	NOUN	м
+Экономика	prihod	доход	NOUN	м
+Экономика	nezaposlenost	безработица	NOUN	ж
+Экономика	štedeti	экономить	VERB	несврш.
+Экономика	uložiti	вложить	VERB	сврш.
+Экономика	povećati	увеличить	VERB	сврш.
+Экономика	smanjiti	уменьшить	VERB	сврш.
+Медиа	vest	новость	NOUN	ж
+Медиа	izveštaj	отчёт, репортаж	NOUN	м
+Медиа	članak	статья	NOUN	м
+Медиа	naslov	заголовок	NOUN	м
+Медиа	intervju	интервью	NOUN	м
+Медиа	izjava	заявление	NOUN	ж
+Медиа	javnost	общественность	NOUN	ж
+Медиа	istina	правда	NOUN	ж
+Медиа	laž	ложь	NOUN	ж
+Медиа	glasina	слух	NOUN	ж
+Медиа	izvor	источник	NOUN	м
+Медиа	objaviti	опубликовать	VERB	сврш.
+Медиа	tvrditi	утверждать	VERB	несврш.
+Медиа	poricati	отрицать	VERB	несврш.
+Медиа	preneti	передать	VERB	сврш.
+Наука	nauka	наука	NOUN	ж
+Наука	istraživanje	исследование	NOUN	с
+Наука	otkriće	открытие	NOUN	с
+Наука	teorija	теория	NOUN	ж
+Наука	dokaz	доказательство	NOUN	м
+Наука	metoda	метод	NOUN	ж
+Наука	rezultat	результат	NOUN	м
+Наука	merenje	измерение	NOUN	с
+Наука	podatak	данные	NOUN	м
+Наука	pojava	явление	NOUN	ж
+Наука	uzrok	причина	NOUN	м
+Наука	svrha	цель, назначение	NOUN	ж
+Наука	dokazati	доказать	VERB	сврш.
+Наука	proveriti	проверить	VERB	сврш.
+Наука	zaključiti	заключить	VERB	сврш.
+Культура	kultura	культура	NOUN	ж
+Культура	umetnost	искусство	NOUN	ж
+Культура	umetnik	художник, деятель искусства	NOUN	м
+Культура	književnost	литература	NOUN	ж
+Культура	pisac	писатель	NOUN	м
+Культура	roman	роман	NOUN	м
+Культура	priča	рассказ	NOUN	ж
+Культура	junak	герой	NOUN	м
+Культура	radnja	действие, сюжет	NOUN	ж
+Культура	predstava	спектакль; представление	NOUN	ж
+Культура	publika	публика	NOUN	ж
+Культура	nasleđe	наследие	NOUN	с
+Культура	folklor	фольклор	NOUN	м
+Культура	verovanje	верование	NOUN	с
+Отношения	poznanstvo	знакомство	NOUN	с
+Отношения	poverenje	доверие	NOUN	с
+Отношения	prijateljstvo	дружба	NOUN	с
+Отношения	svađa	ссора	NOUN	ж
+Отношения	pomirenje	примирение	NOUN	с
+Отношения	dogovor	договорённость	NOUN	м
+Отношения	savet	совет	NOUN	м
+Отношения	molba	просьба	NOUN	ж
+Отношения	zahvalnost	благодарность	NOUN	ж
+Отношения	izvinjenje	извинение	NOUN	с
+Отношения	uvreda	оскорбление	NOUN	ж
+Отношения	poštovanje	уважение	NOUN	с
+Отношения	svađati	ссориться	VERB	несврш.
+Отношения	pomiriti	помирить	VERB	сврш.
+Отношения	poštovati	уважать	VERB	несврш.
+Отношения	podržati	поддержать	VERB	сврш.
+Мышление	mišljenje	мнение	NOUN	с
+Мышление	stav	позиция, взгляд	NOUN	м
+Мышление	ideja	идея	NOUN	ж
+Мышление	pojam	понятие	NOUN	м
+Мышление	smisao	смысл	NOUN	м
+Мышление	značenje	значение	NOUN	с
+Мышление	sumnja	сомнение	NOUN	ж
+Мышление	pretpostavka	предположение	NOUN	ж
+Мышление	zaključak	вывод	NOUN	м
+Мышление	pažnja	внимание	NOUN	ж
+Мышление	sećanje	воспоминание	NOUN	с
+Мышление	svest	сознание	NOUN	ж
+Мышление	smatrati	считать, полагать	VERB	несврш.
+Мышление	sumnjati	сомневаться	VERB	несврш.
+Мышление	pretpostaviti	предположить	VERB	сврш.
+Мышление	primetiti	заметить	VERB	сврш.
+Мышление	shvatiti	осознать	VERB	сврш.
+Мышление	razmisliti	обдумать	VERB	сврш.
+Речь	dijalog	диалог	NOUN	м
+Речь	rasprava	обсуждение, спор	NOUN	ж
+Речь	tvrdnja	утверждение	NOUN	ж
+Речь	upit	запрос	NOUN	м
+Речь	replika	реплика	NOUN	ж
+Речь	objašnjenje	объяснение	NOUN	с
+Речь	opis	описание	NOUN	м
+Речь	primedba	замечание	NOUN	ж
+Речь	predlog	предложение (идея)	NOUN	м
+Речь	obećanje	обещание	NOUN	с
+Речь	spomenuti	упомянуть	VERB	сврш.
+Речь	naglasiti	подчеркнуть	VERB	сврш.
+Речь	opisati	описать	VERB	сврш.
+Речь	prigovoriti	возразить	VERB	сврш.
+Речь	složiti	согласиться	VERB	сврш.
+Право	zakonitost	законность	NOUN	ж
+Право	zakonik	кодекс	NOUN	м
+Право	sudija	судья	NOUN	м
+Право	advokat	адвокат	NOUN	м
+Право	tužba	иск	NOUN	ж
+Право	presuda	приговор	NOUN	ж
+Право	kazna	наказание, штраф	NOUN	ж
+Право	krivica	вина	NOUN	ж
+Право	svedok	свидетель	NOUN	м
+Право	dokumentacija	документация	NOUN	ж
+Право	potpis	подпись	NOUN	м
+Право	pečat	печать	NOUN	м
+Право	važiti	действовать, быть в силе	VERB	несврш.
+Право	prekršiti	нарушить	VERB	сврш.
+Право	kazniti	наказать	VERB	сврш.
+Природа	okolina	окружающая среда	NOUN	ж
+Природа	zagađenje	загрязнение	NOUN	с
+Природа	otpad	отходы	NOUN	м
+Природа	klima	климат	NOUN	ж
+Природа	vrsta	вид	NOUN	ж
+Природа	biljka	растение	NOUN	ж
+Природа	seme	семя	NOUN	с
+Природа	koren	корень	NOUN	м
+Природа	obala	берег	NOUN	ж
+Природа	dolina	долина	NOUN	ж
+Природа	polje	поле	NOUN	с
+Природа	potok	ручей	NOUN	м
+Природа	zaštita	защита	NOUN	ж
+Природа	očuvati	сберечь	VERB	сврш.
+Природа	uništiti	уничтожить	VERB	сврш.
+Медицина	lečenje	лечение	NOUN	с
+Медицина	dijagnoza	диагноз	NOUN	ж
+Медицина	simptom	симптом	NOUN	м
+Медицина	operacija	операция	NOUN	ж
+Медицина	terapija	терапия	NOUN	ж
+Медицина	pacijent	пациент	NOUN	м
+Медицина	zaraza	инфекция	NOUN	ж
+Медицина	vakcina	вакцина	NOUN	ж
+Медицина	ishrana	питание	NOUN	ж
+Медицина	san	сон	NOUN	м
+Медицина	lečiti	лечить	VERB	несврш.
+Медицина	izlečiti	вылечить	VERB	сврш.
+Медицина	sprečiti	предотвратить	VERB	сврш.
+Глаголы	omogućiti	дать возможность	VERB	сврш.
+Глаголы	obezbediti	обеспечить	VERB	сврш.
+Глаголы	zahtevati	требовать	VERB	несврш.
+Глаголы	ostvariti	осуществить	VERB	сврш.
+Глаголы	postići	достичь	VERB	сврш.
+Глаголы	izbeći	избежать	VERB	сврш.
+Глаголы	prihvatiti	принять	VERB	сврш.
+Глаголы	odbiti	отказать, отклонить	VERB	сврш.
+Глаголы	uporediti	сравнить	VERB	сврш.
+Глаголы	razlikovati	различать	VERB	несврш.
+Глаголы	zavisiti	зависеть	VERB	несврш.
+Глаголы	uključivati	включать	VERB	несврш.
+Глаголы	odnositi	относиться	VERB	несврш.
+Глаголы	predstavljati	представлять собой	VERB	несврш.
+Глаголы	sadržati	содержать	VERB	несврш.
+Глаголы	povezati	связать	VERB	сврш.
+Глаголы	razdvojiti	разделить	VERB	сврш.
+Глаголы	nadmašiti	превзойти	VERB	сврш.
+Признаки	značajan	значительный	ADJ
+Признаки	osnovni	основной	ADJ
+Признаки	dodatni	дополнительный	ADJ
+Признаки	stalan	постоянный	ADJ
+Признаки	privremen	временный	ADJ
+Признаки	jedinstven	уникальный	ADJ
+Признаки	uobičajen	привычный	ADJ
+Признаки	neophodan	необходимый	ADJ
+Признаки	dovoljan	достаточный	ADJ
+Признаки	pouzdan	надёжный	ADJ
+Признаки	složen	сложный	ADJ
+Признаки	jednostavan	простой	ADJ
+Признаки	očigledan	очевидный	ADJ
+Признаки	nejasan	неясный	ADJ
+Признаки	koristan	полезный	ADJ
+Признаки	štetan	вредный	ADJ

@@ -1,0 +1,3892 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "grammar-a1-01",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Алфавиты сербского языка",
+      "summary": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+      "roadmapItemId": "a85b6153-3029-532a-acf1-33a9fbbfda7b",
+      "skillIds": [
+        "sk_dve_grafike",
+        "sk_izgovor"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-01-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-01",
+          "lessonId": "trainer-a1-01-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-01-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Алфавиты сербского языка»?",
+          "explanation": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Алфавиты сербского языка",
+            "sourceAnchor": "roadmap:A1:1",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Настоящее время (хоћу / ћеш).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Три основные группы (-ам, -им, -ем).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-02",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Глагол бити (быть)",
+      "summary": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+      "roadmapItemId": "68d6a941-8016-5861-87c1-40a8b0e37227",
+      "skillIds": [
+        "sk_biti"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-02-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-02",
+          "lessonId": "trainer-a1-02-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-02-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Глагол бити (быть)»?",
+          "explanation": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Глагол бити (быть)",
+            "sourceAnchor": "roadmap:A1:2",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Мој, твој, наш; овај, тај, онај.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Три основные группы (-ам, -им, -ем).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-03",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Глагол хтети (хотеть) и будущие намерения",
+      "summary": "Настоящее время (хоћу / ћеш).",
+      "roadmapItemId": "3ef1a5d8-cf9b-517a-8419-715c0787426a",
+      "skillIds": [
+        "sk_futur"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-03-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-03",
+          "lessonId": "trainer-a1-03-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-03-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Глагол хтети (хотеть) и будущие намерения»?",
+          "explanation": "Настоящее время (хоћу / ћеш).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Глагол хтети (хотеть) и будущие намерения",
+            "sourceAnchor": "roadmap:A1:3",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Подлежащее в предложении, базовые формы имен.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Настоящее время (хоћу / ћеш).",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Мој, твој, наш; овај, тај, онај.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-04",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Спряжение глаголов в Present (Настоящее время)",
+      "summary": "Три основные группы (-ам, -им, -ем).",
+      "roadmapItemId": "e39d48bc-4985-57a0-a580-07c8164780ef",
+      "skillIds": [
+        "sk_prezent"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-04-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-04",
+          "lessonId": "trainer-a1-04-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-04-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Спряжение глаголов в Present (Настоящее время)»?",
+          "explanation": "Три основные группы (-ам, -им, -ем).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Спряжение глаголов в Present (Настоящее время)",
+            "sourceAnchor": "roadmap:A1:4",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Три основные группы (-ам, -им, -ем).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Мој, твој, наш; овај, тај, онај.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Подлежащее в предложении, базовые формы имен.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-05",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Род и число существительных",
+      "summary": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+      "roadmapItemId": "87f5135b-b53d-5cfc-9d82-f95f2a65288d",
+      "skillIds": [
+        "sk_rod"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-05-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-05",
+          "lessonId": "trainer-a1-05-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-05-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Род и число существительных»?",
+          "explanation": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Род и число существительных",
+            "sourceAnchor": "roadmap:A1:5",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Подлежащее в предложении, базовые формы имен.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Обозначение места (у граду, на столу).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Мужской, женский и средний род; базовые правила образования множественного числа.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-06",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Притяжательные и указательные местоимения",
+      "summary": "Мој, твој, наш; овај, тај, онај.",
+      "roadmapItemId": "0b595204-d91a-5a91-8f8f-e4ba36c0616a",
+      "skillIds": [
+        "sk_pokazne",
+        "sk_prisvojni"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-06-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-06",
+          "lessonId": "trainer-a1-06-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-06-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Притяжательные и указательные местоимения»?",
+          "explanation": "Мој, твој, наш; овај, тај, онај.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Притяжательные и указательные местоимения",
+            "sourceAnchor": "roadmap:A1:6",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Обозначение места (у граду, на столу).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Обозначение происхождения, принадлежности и отсутствия.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Мој, твој, наш; овај, тај, онај.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-07",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Номинатив (Номинатив)",
+      "summary": "Подлежащее в предложении, базовые формы имен.",
+      "roadmapItemId": "855231ae-a356-50d7-a4e0-19e12d7b025b",
+      "skillIds": [
+        "sk_nominativ_vokativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-07-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-07",
+          "lessonId": "trainer-a1-07-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-07-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Номинатив (Номинатив)»?",
+          "explanation": "Подлежащее в предложении, базовые формы имен.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Номинатив (Номинатив)",
+            "sourceAnchor": "roadmap:A1:7",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Подлежащее в предложении, базовые формы имен.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Обозначение места (у граду, на столу).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Обозначение происхождения, принадлежности и отсутствия.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-08",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Аккузатив (Акузатив) без предлогов",
+      "summary": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+      "roadmapItemId": "9a582a8a-ae0b-5781-8081-5ebd1997c8aa",
+      "skillIds": [
+        "sk_akuzativ_genitiv"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-08-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-08",
+          "lessonId": "trainer-a1-08-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-08-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Аккузатив (Акузатив) без предлогов»?",
+          "explanation": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Аккузатив (Акузатив) без предлогов",
+            "sourceAnchor": "roadmap:A1:8",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Прямое дополнение (неодушевленные и одушевленные существительные мужского рода).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Обозначение происхождения, принадлежности и отсутствия.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-09",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Локатив (Локатив) с предлогами у и на",
+      "summary": "Обозначение места (у граду, на столу).",
+      "roadmapItemId": "2694eb9c-f6d2-5d11-b2bb-5626287ca228",
+      "skillIds": [
+        "sk_dativ_lokativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-09-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-09",
+          "lessonId": "trainer-a1-09-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-09-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Локатив (Локатив) с предлогами у и на»?",
+          "explanation": "Обозначение места (у граду, на столу).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Локатив (Локатив) с предлогами у и на",
+            "sourceAnchor": "roadmap:A1:9",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Замена инфинитива в сербском языке (Желим да учим).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Обозначение места (у граду, на столу).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-10",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Генитив (Генитив) с предлогами из/изван/близу/од",
+      "summary": "Обозначение происхождения, принадлежности и отсутствия.",
+      "roadmapItemId": "3d087162-4f79-5c90-887b-5b1057e92328",
+      "skillIds": [
+        "sk_akuzativ_genitiv"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-10-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-10",
+          "lessonId": "trainer-a1-10-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-10-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Генитив (Генитив) с предлогами из/изван/близу/од»?",
+          "explanation": "Обозначение происхождения, принадлежности и отсутствия.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Генитив (Генитив) с предлогами из/изван/близу/од",
+            "sourceAnchor": "roadmap:A1:10",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Замена инфинитива в сербском языке (Желим да учим).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Обозначение происхождения, принадлежности и отсутствия.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-11",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Порядок слов в предложении",
+      "summary": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+      "roadmapItemId": "beef183f-29a1-50e4-851a-95ac66077180",
+      "skillIds": [
+        "sk_red_reci"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-11-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-11",
+          "lessonId": "trainer-a1-11-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-11-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Порядок слов в предложении»?",
+          "explanation": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Порядок слов в предложении",
+            "sourceAnchor": "roadmap:A1:11",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Согласование чисел 1, 2, 3, 4 с существительными.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Позиция кратких форм глаголов и местоимений (энклитик) — правило второго места.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Замена инфинитива в сербском языке (Желим да учим).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-12",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Перфект (Прошло време / Перфекат)",
+      "summary": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+      "roadmapItemId": "355d7da3-6d11-5c8e-9da1-0803d1cdee01",
+      "skillIds": [
+        "sk_perfekat"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-12-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-12",
+          "lessonId": "trainer-a1-12-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-12-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Перфект (Прошло време / Перфекат)»?",
+          "explanation": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Перфект (Прошло време / Перфекат)",
+            "sourceAnchor": "roadmap:A1:12",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Образование прошедшего времени с помощью бити + L-причастие (учио сам / учила сам).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Согласование чисел 1, 2, 3, 4 с существительными.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-13",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Конструкция да + Present",
+      "summary": "Замена инфинитива в сербском языке (Желим да учим).",
+      "roadmapItemId": "637164ba-6b16-5783-b24b-7de403159af1",
+      "skillIds": [
+        "sk_prezent"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-13-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-13",
+          "lessonId": "trainer-a1-13-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-13-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Конструкция да + Present»?",
+          "explanation": "Замена инфинитива в сербском языке (Желим да учим).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Конструкция да + Present",
+            "sourceAnchor": "roadmap:A1:13",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Согласование чисел 1, 2, 3, 4 с существительными.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Замена инфинитива в сербском языке (Желим да учим).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-14",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Вопросительные предложения и частицы",
+      "summary": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+      "roadmapItemId": "0f770bd6-b975-5f56-8a57-55fc8705152a",
+      "skillIds": [
+        "sk_pitanja"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-14-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-14",
+          "lessonId": "trainer-a1-14-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-14-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Вопросительные предложения и частицы»?",
+          "explanation": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Вопросительные предложения и частицы",
+            "sourceAnchor": "roadmap:A1:14",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Настоящее время (хоћу / ћеш).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Конструкции с Да ли...? и предложение с помощью частицы ли.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a1-15",
+      "domain": "grammar",
+      "level": "A1",
+      "title": "Количественные числительные (1–100)",
+      "summary": "Согласование чисел 1, 2, 3, 4 с существительными.",
+      "roadmapItemId": "0d164b72-c40f-5ea9-9f36-deacb9439739",
+      "skillIds": [
+        "sk_brojevi"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a1-15-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a1",
+          "skillId": "trainer-a1-15",
+          "lessonId": "trainer-a1-15-lesson",
+          "learningObjectiveIds": [
+            "trainer-a1-15-objective"
+          ],
+          "difficulty": 1,
+          "prompt": "Какое описание относится к теме «Количественные числительные (1–100)»?",
+          "explanation": "Согласование чисел 1, 2, 3, 4 с существительными.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Количественные числительные (1–100)",
+            "sourceAnchor": "roadmap:A1:15",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Настоящее время (хоћу / ћеш).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Согласование чисел 1, 2, 3, 4 с существительными.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Азбука (ћирилица) и латиница, правила чтения и фонетические особенности.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Полные и краткие формы в настоящем времени (јесам / сам), отрицание (нисам).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-01",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Датив (Датив)",
+      "summary": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+      "roadmapItemId": "078d0612-ef4e-51f0-b557-277a5b3d788b",
+      "skillIds": [
+        "sk_dativ_lokativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-01-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-01",
+          "lessonId": "trainer-a2-01-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-01-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Датив (Датив)»?",
+          "explanation": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Датив (Датив)",
+            "sourceAnchor": "roadmap:A2:1",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Формы обращения к людям и особенности их образования.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Склонение прилагательных по родам и падежам в единственном и множественном числе.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-02",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Инструментал (Инструментал)",
+      "summary": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+      "roadmapItemId": "9eefb736-ac08-5fdf-aeef-e4d683a17970",
+      "skillIds": [
+        "sk_instrumental"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-02-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-02",
+          "lessonId": "trainer-a2-02-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-02-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Инструментал (Инструментал)»?",
+          "explanation": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Инструментал (Инструментал)",
+            "sourceAnchor": "roadmap:A2:2",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Склонение прилагательных по родам и падежам в единственном и множественном числе.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-03",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Вокатив (Вокатив)",
+      "summary": "Формы обращения к людям и особенности их образования.",
+      "roadmapItemId": "d95550cb-6dbc-5062-8d58-7a282dd9b120",
+      "skillIds": [
+        "sk_nominativ_vokativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-03-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-03",
+          "lessonId": "trainer-a2-03-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-03-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Вокатив (Вокатив)»?",
+          "explanation": "Формы обращения к людям и особенности их образования.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Вокатив (Вокатив)",
+            "sourceAnchor": "roadmap:A2:3",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Формы обращения к людям и особенности их образования.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-04",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Падежная система прилагательных",
+      "summary": "Склонение прилагательных по родам и падежам в единственном и множественном числе.",
+      "roadmapItemId": "760226e2-8cfd-5bde-bc33-e8585e9f21a4",
+      "skillIds": [
+        "sk_pridevi_padezi_1",
+        "sk_pridevi_padezi_2"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-04-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-04",
+          "lessonId": "trainer-a2-04-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-04-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Падежная система прилагательных»?",
+          "explanation": "Склонение прилагательных по родам и падежам в единственном и множественном числе.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Падежная система прилагательных",
+            "sourceAnchor": "roadmap:A2:4",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Склонение прилагательных по родам и падежам в единственном и множественном числе.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-05",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Футур I (Футур први)",
+      "summary": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+      "roadmapItemId": "cb82e5e1-58aa-566b-acc5-34bbe8d4ab85",
+      "skillIds": [
+        "sk_futur"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-05-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-05",
+          "lessonId": "trainer-a2-05-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-05-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Футур I (Футур први)»?",
+          "explanation": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Футур I (Футур први)",
+            "sourceAnchor": "roadmap:A2:5",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование будущего времени (радићу / ћеш радити) и формы с инфинитивом.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-06",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Вид глагола (Свршени и несвршени глаголи)",
+      "summary": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+      "roadmapItemId": "8d77c366-4f3b-54e2-a850-d060611338c8",
+      "skillIds": [
+        "sk_vid",
+        "sk_vid_2"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-06-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-06",
+          "lessonId": "trainer-a2-06-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-06-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Вид глагола (Свршени и несвршени глаголи)»?",
+          "explanation": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Вид глагола (Свршени и несвршени глаголи)",
+            "sourceAnchor": "roadmap:A2:6",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Видовые пары (совершенный и несовершенный вид) и их употребление.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-07",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Генитив множественного числа",
+      "summary": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+      "roadmapItemId": "d5912c5e-96a1-5c50-a93c-e0f3267621a4",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-07-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-07",
+          "lessonId": "trainer-a2-07-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-07-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Генитив множественного числа»?",
+          "explanation": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Генитив множественного числа",
+            "sourceAnchor": "roadmap:A2:7",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Настоящие возвратные, взаимные и безличные глаголы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Особенности окончаний (-а, -и) и беглое А (града, сати, девојака).",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-08",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Личные местоимения во всех падежах",
+      "summary": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+      "roadmapItemId": "6847cace-7a11-5c0f-b23b-4f0a91f4ab13",
+      "skillIds": [
+        "sk_zamenice_padezi"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-08-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-08",
+          "lessonId": "trainer-a2-08-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-08-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Личные местоимения во всех падежах»?",
+          "explanation": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Личные местоимения во всех падежах",
+            "sourceAnchor": "roadmap:A2:8",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Полные и краткие (энклитические) формы (мене/ме, теби/ти).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Настоящие возвратные, взаимные и безличные глаголы.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование и склонение порядковых числительных.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-09",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Степени сравнения прилагательных",
+      "summary": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+      "roadmapItemId": "a4404c2e-21f7-5d9e-b4ae-98b6ce1689d5",
+      "skillIds": [
+        "sk_poredjenje"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-09-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-09",
+          "lessonId": "trainer-a2-09-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-09-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Степени сравнения прилагательных»?",
+          "explanation": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Степени сравнения прилагательных",
+            "sourceAnchor": "roadmap:A2:9",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Настоящие возвратные, взаимные и безличные глаголы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Образование и склонение порядковых числительных.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Сравнительная (компаратив) и превосходная (суперлатив) степени.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-10",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Модальные глаголы",
+      "summary": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+      "roadmapItemId": "2f01bbe9-1fc0-5172-b4a7-2daae74a9520",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-10-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-10",
+          "lessonId": "trainer-a2-10-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-10-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Модальные глаголы»?",
+          "explanation": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Модальные глаголы",
+            "sourceAnchor": "roadmap:A2:10",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Образование форм приказов и просьб (ради, радите, немој да...).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Употребление моћи, морати, смети, требати с конструкцией да + Present.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Образование и склонение порядковых числительных.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-11",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Возвратные глаголы и частица се",
+      "summary": "Настоящие возвратные, взаимные и безличные глаголы.",
+      "roadmapItemId": "70167318-43bf-54cb-b39d-2d2e9049d5ec",
+      "skillIds": [
+        "sk_povratni"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-11-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-11",
+          "lessonId": "trainer-a2-11-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-11-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Возвратные глаголы и частица се»?",
+          "explanation": "Настоящие возвратные, взаимные и безличные глаголы.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Возвратные глаголы и частица се",
+            "sourceAnchor": "roadmap:A2:11",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Выражение долга и необходимости.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Настоящие возвратные, взаимные и безличные глаголы.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование форм приказов и просьб (ради, радите, немој да...).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-12",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Порядковые числительные и даты",
+      "summary": "Образование и склонение порядковых числительных.",
+      "roadmapItemId": "0cd2263e-4624-52a8-93fc-fb9d709431df",
+      "skillIds": [
+        "sk_redni_brojevi"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-12-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-12",
+          "lessonId": "trainer-a2-12-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-12-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Порядковые числительные и даты»?",
+          "explanation": "Образование и склонение порядковых числительных.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Порядковые числительные и даты",
+            "sourceAnchor": "roadmap:A2:12",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Образование и склонение порядковых числительных.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Образование форм приказов и просьб (ради, радите, немој да...).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Выражение долга и необходимости.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-13",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Предлоги движения и места",
+      "summary": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+      "roadmapItemId": "6088fe31-7838-50c0-9679-73248ef4ba31",
+      "skillIds": [
+        "sk_akuzativ_genitiv",
+        "sk_dativ_lokativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-13-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-13",
+          "lessonId": "trainer-a2-13-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-13-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Предлоги движения и места»?",
+          "explanation": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Предлоги движения и места",
+            "sourceAnchor": "roadmap:A2:13",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Выражение долга и необходимости.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Разница использования падежей при вопросах Куда? (Аккузатив) и Где? (Локатив).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-14",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Повелительное наклонение (Императив)",
+      "summary": "Образование форм приказов и просьб (ради, радите, немој да...).",
+      "roadmapItemId": "16455711-ab6a-506f-81f8-2329c6110dc5",
+      "skillIds": [
+        "sk_imperativ"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-14-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-14",
+          "lessonId": "trainer-a2-14-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-14-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Повелительное наклонение (Императив)»?",
+          "explanation": "Образование форм приказов и просьб (ради, радите, немој да...).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Повелительное наклонение (Императив)",
+            "sourceAnchor": "roadmap:A2:14",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Формы обращения к людям и особенности их образования.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Образование форм приказов и просьб (ради, радите, немој да...).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-a2-15",
+      "domain": "grammar",
+      "level": "A2",
+      "title": "Конструкция треба да / требало би",
+      "summary": "Выражение долга и необходимости.",
+      "roadmapItemId": "092ba12f-2d58-5d6e-8a2e-ea635e965ea8",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-a2-15-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_a2",
+          "skillId": "trainer-a2-15",
+          "lessonId": "trainer-a2-15-lesson",
+          "learningObjectiveIds": [
+            "trainer-a2-15-objective"
+          ],
+          "difficulty": 2,
+          "prompt": "Какое описание относится к теме «Конструкция треба да / требало би»?",
+          "explanation": "Выражение долга и необходимости.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Конструкция треба да / требало би",
+            "sourceAnchor": "roadmap:A2:15",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Формы обращения к людям и особенности их образования.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Выражение долга и необходимости.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Дательный падеж направления (идти к кому-то) и адресата (дати некоме).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Творительный падеж компании (са пријатељем) и орудия действия (аутобусом).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-01",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Порядок энклитик в предложении",
+      "summary": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+      "roadmapItemId": "2b6fc8e1-001a-53e8-b9b2-5255f92f599d",
+      "skillIds": [
+        "sk_red_reci_2"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-01-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-01",
+          "lessonId": "trainer-b1-01-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-01-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Порядок энклитик в предложении»?",
+          "explanation": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Порядок энклитик в предложении",
+            "sourceAnchor": "roadmap:B1:1",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Будущее предшествующее время в придаточных предложениях условий и времени (Ако будем имао...).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Деепричастие на -ћи (радећи, чинећи).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-02",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Потенцијал (Сослагательное наклонение)",
+      "summary": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+      "roadmapItemId": "dfd298d6-ac39-5364-baa2-9ebc885f46ef",
+      "skillIds": [
+        "sk_kondicional"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-02-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-02",
+          "lessonId": "trainer-b1-02-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-02-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Потенцијал (Сослагательное наклонение)»?",
+          "explanation": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Потенцијал (Сослагательное наклонение)",
+            "sourceAnchor": "roadmap:B1:2",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Деепричастие на -ћи (радећи, чинећи).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Деепричастие на -вши (урадивши, рекавши).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Будущее предшествующее время в придаточных предложениях условий и времени (Ако будем имао...).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-03",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Условные предложения (I и II тип)",
+      "summary": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+      "roadmapItemId": "17fc45d1-a3b8-5c98-b6af-5cd45a577672",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-03-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-03",
+          "lessonId": "trainer-b1-03-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-03-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Условные предложения (I и II тип)»?",
+          "explanation": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Условные предложения (I и II тип)",
+            "sourceAnchor": "roadmap:B1:3",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Деепричастие на -ћи (радећи, чинећи).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Деепричастие на -вши (урадивши, рекавши).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-04",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Футур II (Футур други)",
+      "summary": "Будущее предшествующее время в придаточных предложениях условий и времени (Ако будем имао...).",
+      "roadmapItemId": "f2f6c1ae-41a2-5062-9249-6e6df8054b96",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-04-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-04",
+          "lessonId": "trainer-b1-04-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-04-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Футур II (Футур други)»?",
+          "explanation": "Будущее предшествующее время в придаточных предложениях условий и времени (Ако будем имао...).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Футур II (Футур други)",
+            "sourceAnchor": "roadmap:B1:4",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Будущее предшествующее время в придаточных предложениях условий и времени (Ако будем имао...).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Деепричастие на -вши (урадивши, рекавши).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-05",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Глагольный причастие настоящего времени (Глаголски прилог садашњи)",
+      "summary": "Деепричастие на -ћи (радећи, чинећи).",
+      "roadmapItemId": "ae8d7992-bc1f-57db-b854-55d5af1705ad",
+      "skillIds": [
+        "sk_participi"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-05-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-05",
+          "lessonId": "trainer-b1-05-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-05-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Глагольный причастие настоящего времени (Глаголски прилог садашњи)»?",
+          "explanation": "Деепричастие на -ћи (радећи, чинећи).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Глагольный причастие настоящего времени (Глаголски прилог садашњи)",
+            "sourceAnchor": "roadmap:B1:5",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Деепричастие на -ћи (радећи, чинећи).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-06",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Глагольный причастие прошедшего времени (Глаголски прилог прошли)",
+      "summary": "Деепричастие на -вши (урадивши, рекавши).",
+      "roadmapItemId": "5cb00544-4002-5fa2-9251-fbdd7d506d43",
+      "skillIds": [
+        "sk_participi"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-06-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-06",
+          "lessonId": "trainer-b1-06-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-06-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Глагольный причастие прошедшего времени (Глаголски прилог прошли)»?",
+          "explanation": "Деепричастие на -вши (урадивши, рекавши).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Глагольный причастие прошедшего времени (Глаголски прилог прошли)",
+            "sourceAnchor": "roadmap:B1:6",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Деепричастие на -вши (урадивши, рекавши).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-07",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Пассивный залог (Пасив)",
+      "summary": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+      "roadmapItemId": "1257ad40-4a5f-5100-9476-1e9915f2ca25",
+      "skillIds": [
+        "sk_pasiv"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-07-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-07",
+          "lessonId": "trainer-b1-07-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-07-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Пассивный залог (Пасив)»?",
+          "explanation": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Пассивный залог (Пасив)",
+            "sourceAnchor": "roadmap:B1:7",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Страдательный залог с причастием (-н/-т) и с помощью частицы се.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-08",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Относительные местоимения",
+      "summary": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+      "roadmapItemId": "afd6b46e-2355-5a1b-b593-ef0315e5c19b",
+      "skillIds": [
+        "sk_upitne_odnosne"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-08-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-08",
+          "lessonId": "trainer-b1-08-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-08-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Относительные местоимения»?",
+          "explanation": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Относительные местоимения",
+            "sourceAnchor": "roadmap:B1:8",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Склонение и употребление местоимений који, која, које в придаточных предложениях.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-09",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Неопределенные и отрицательные местоимения",
+      "summary": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+      "roadmapItemId": "3ae6a766-9682-5c97-b881-34e139e03f31",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-09-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-09",
+          "lessonId": "trainer-b1-09-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-09-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Неопределенные и отрицательные местоимения»?",
+          "explanation": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Неопределенные и отрицательные местоимения",
+            "sourceAnchor": "roadmap:B1:9",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование с приставками не-, ни-, и- (неко, нико, ико) и их падежные формы.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-10",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Отрицательные местоимения с предлогами",
+      "summary": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+      "roadmapItemId": "dae7e8e1-3f5d-5a23-9bbc-4d35317d63bc",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-10-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-10",
+          "lessonId": "trainer-b1-10-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-10-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Отрицательные местоимения с предлогами»?",
+          "explanation": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Отрицательные местоимения с предлогами",
+            "sourceAnchor": "roadmap:B1:10",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Особенность вставки предлога внутрь слова (ни са ким, ни о чему).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-11",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Собирательные существительные и числительные",
+      "summary": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+      "roadmapItemId": "9032fb91-bca6-5a08-a3ce-983dc157a0e7",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-11-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-11",
+          "lessonId": "trainer-b1-11-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-11-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Собирательные существительные и числительные»?",
+          "explanation": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Собирательные существительные и числительные",
+            "sourceAnchor": "roadmap:B1:11",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Использование слов браћа, деца, господа и числительных двоје, троје, двојица.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-12",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Чередования звуков (Гласовне промене)",
+      "summary": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+      "roadmapItemId": "b8d8c998-c702-567c-820f-ed8bfae5a653",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-12-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-12",
+          "lessonId": "trainer-b1-12-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-12-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Чередования звуков (Гласовне промене)»?",
+          "explanation": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Чередования звуков (Гласовне промене)",
+            "sourceAnchor": "roadmap:B1:12",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Палатализация, сибиляризация, гортанные согласные, беглое А, переход Л в О.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-13",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Управление предлогов (Падежная семантика)",
+      "summary": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+      "roadmapItemId": "0b460485-f604-5290-9a01-7f85e3886635",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-13-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-13",
+          "lessonId": "trainer-b1-13-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-13-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Управление предлогов (Падежная семантика)»?",
+          "explanation": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Управление предлогов (Падежная семантика)",
+            "sourceAnchor": "roadmap:B1:13",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Сложные случаи предложно-падежного управления (напр. осим, упркос, путем).",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-14",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Косвенная речь (Индиректни говор)",
+      "summary": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+      "roadmapItemId": "0f4de0c4-44a7-5b85-968c-a58df87f3f26",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-14-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-14",
+          "lessonId": "trainer-b1-14-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-14-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Косвенная речь (Индиректни говор)»?",
+          "explanation": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Косвенная речь (Индиректни говор)",
+            "sourceAnchor": "roadmap:B1:14",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Правила перевода прямой речи в косвенную и согласование времен/местоимений.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b1-15",
+      "domain": "grammar",
+      "level": "B1",
+      "title": "Безличные предложения",
+      "summary": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+      "roadmapItemId": "c5cdc115-e675-51e7-8d18-fc54cb28bdb6",
+      "skillIds": [
+        "sk_bezlicne"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b1-15-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b1",
+          "skillId": "trainer-b1-15",
+          "lessonId": "trainer-b1-15-lesson",
+          "learningObjectiveIds": [
+            "trainer-b1-15-objective"
+          ],
+          "difficulty": 3,
+          "prompt": "Какое описание относится к теме «Безличные предложения»?",
+          "explanation": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Безличные предложения",
+            "sourceAnchor": "roadmap:B1:15",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Реальное условие (Ако...) и потенциальное условие (Кад би...).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Конструкции типа Хладно ми је, Свиђа ми се, Говори се.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Жесткая иерархия следования кратких форм местоимений и глаголов (Дао сам му је).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Условие и желание с помощью частицы би (ја бих радио, ти би радио...).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-01",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Аорист (Аорист)",
+      "summary": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+      "roadmapItemId": "4adef3e9-3027-5f55-b2ed-905e26c1c422",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-01-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-01",
+          "lessonId": "trainer-b2-01-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-01-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Аорист (Аорист)»?",
+          "explanation": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Аорист (Аорист)",
+            "sourceAnchor": "roadmap:B2:1",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Нереальное условие в прошлом (Да сам знао, дошао бих).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-02",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Имперфект (Имперфекат)",
+      "summary": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+      "roadmapItemId": "c0241279-4516-5dc9-825a-da45de554f0c",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-02-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-02",
+          "lessonId": "trainer-b2-02-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-02-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Имперфект (Имперфекат)»?",
+          "explanation": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Имперфект (Имперфекат)",
+            "sourceAnchor": "roadmap:B2:2",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Разница между добар човек и добри човек и их склонение.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Нереальное условие в прошлом (Да сам знао, дошао бих).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-03",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Плюссквамперфект (Плусквамперфекат)",
+      "summary": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+      "roadmapItemId": "a13d870c-3376-5b12-bd34-bee2cb2dbdfd",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-03-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-03",
+          "lessonId": "trainer-b2-03-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-03-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Плюссквамперфект (Плусквамперфекат)»?",
+          "explanation": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Плюссквамперфект (Плусквамперфекат)",
+            "sourceAnchor": "roadmap:B2:3",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Разница между добар човек и добри човек и их склонение.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-04",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Условные предложения (III тип)",
+      "summary": "Нереальное условие в прошлом (Да сам знао, дошао бих).",
+      "roadmapItemId": "9127e2d6-2efc-5671-9a3f-1d7405c70cd8",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-04-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-04",
+          "lessonId": "trainer-b2-04-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-04-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Условные предложения (III тип)»?",
+          "explanation": "Нереальное условие в прошлом (Да сам знао, дошао бих).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Условные предложения (III тип)",
+            "sourceAnchor": "roadmap:B2:4",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Нереальное условие в прошлом (Да сам знао, дошао бих).",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Разница между добар човек и добри човек и их склонение.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Приставочный способ изменения значения глагола и смена вида.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-05",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Сложные союзы и союзные слова",
+      "summary": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+      "roadmapItemId": "a3fe6ed6-6736-524d-a0bc-a2f85e942921",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-05-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-05",
+          "lessonId": "trainer-b2-05-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-05-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Сложные союзы и союзные слова»?",
+          "explanation": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Сложные союзы и союзные слова",
+            "sourceAnchor": "roadmap:B2:5",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Приставочный способ изменения значения глагола и смена вида.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Употребление союзов будући да, будући да је, будући да су, с обзиром на то да, пре него што, након што.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-06",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Определенный и неопределенный вид прилагательных",
+      "summary": "Разница между добар човек и добри човек и их склонение.",
+      "roadmapItemId": "30ca2626-a19e-55fd-becc-c62d303a2fb3",
+      "skillIds": [
+        "sk_pridevi_osnove"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-06-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-06",
+          "lessonId": "trainer-b2-06-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-06-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Определенный и неопределенный вид прилагательных»?",
+          "explanation": "Разница между добар човек и добри човек и их склонение.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Определенный и неопределенный вид прилагательных",
+            "sourceAnchor": "roadmap:B2:6",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Разница между добар човек и добри човек и их склонение.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Приставочный способ изменения значения глагола и смена вида.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-07",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Словообразование существительных",
+      "summary": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+      "roadmapItemId": "d9e05a22-c206-59a6-a858-2a7462864241",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-07-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-07",
+          "lessonId": "trainer-b2-07-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-07-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Словообразование существительных»?",
+          "explanation": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Словообразование существительных",
+            "sourceAnchor": "roadmap:B2:7",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Суффиксы професий, абстрактных понятий, уменьшительно-ласкательные и увеличительные формы.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-08",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Словообразование глаголов",
+      "summary": "Приставочный способ изменения значения глагола и смена вида.",
+      "roadmapItemId": "59623726-f79e-53ce-b96a-8e95dc870c97",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-08-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-08",
+          "lessonId": "trainer-b2-08-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-08-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Словообразование глаголов»?",
+          "explanation": "Приставочный способ изменения значения глагола и смена вида.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Словообразование глаголов",
+            "sourceAnchor": "roadmap:B2:8",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Приставочный способ изменения значения глагола и смена вида.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-09",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Модальные частицы и экспрессивы",
+      "summary": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+      "roadmapItemId": "6e8355e0-8c48-5b6b-8b49-8d2c64af959a",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-09-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-09",
+          "lessonId": "trainer-b2-09-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-09-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Модальные частицы и экспрессивы»?",
+          "explanation": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Модальные частицы и экспрессивы",
+            "sourceAnchor": "roadmap:B2:9",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Нюансы значений частиц па, бре, ваљда, бар, чак, тек, дакле.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-10",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Сложносочиненные предложения",
+      "summary": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+      "roadmapItemId": "a1936c3d-a9ae-58ff-913d-51cfc8b57b2f",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-10-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-10",
+          "lessonId": "trainer-b2-10-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-10-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Сложносочиненные предложения»?",
+          "explanation": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Сложносочиненные предложения",
+            "sourceAnchor": "roadmap:B2:10",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Соединительные, противоположные, разделительные, градационные союзы (не само... већ и).",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-11",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Сложноподчиненное предложение",
+      "summary": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+      "roadmapItemId": "48cf50f7-f6ce-5431-ab49-7c3d19abe3e0",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-11-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-11",
+          "lessonId": "trainer-b2-11-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-11-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Сложноподчиненное предложение»?",
+          "explanation": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Сложноподчиненное предложение",
+            "sourceAnchor": "roadmap:B2:11",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Целевые, причинные, уступительные и следственные придаточные предложения.",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-12",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Плеоназмы и эллипсисы",
+      "summary": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+      "roadmapItemId": "40ef7595-0be5-52d0-8eb2-c8e2cfc76bbf",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-12-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-12",
+          "lessonId": "trainer-b2-12-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-12-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Плеоназмы и эллипсисы»?",
+          "explanation": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Плеоназмы и эллипсисы",
+            "sourceAnchor": "roadmap:B2:12",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Стилистические фигуры и допустимые опускания элементов речевой структуры.",
+              "correct": true
+            },
+            {
+              "id": "o2",
+              "text": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-13",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Глаголы движения с приставками",
+      "summary": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+      "roadmapItemId": "7d77704e-cdaf-5e80-bcc1-7ff0177e8c51",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-13-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-13",
+          "lessonId": "trainer-b2-13-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-13-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Глаголы движения с приставками»?",
+          "explanation": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Глаголы движения с приставками",
+            "sourceAnchor": "roadmap:B2:13",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Разница значений приставок у-, из-, про-, до-, од-, при-, пре- с глаголами движения.",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-14",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Согласование сказуемого с составным подлежащим",
+      "summary": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+      "roadmapItemId": "c273d326-204c-5b22-8981-2024f3cc53a9",
+      "skillIds": [],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-14-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-14",
+          "lessonId": "trainer-b2-14-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-14-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Согласование сказуемого с составным подлежащим»?",
+          "explanation": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Согласование сказуемого с составным подлежащим",
+            "sourceAnchor": "roadmap:B2:14",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+              "correct": false
+            },
+            {
+              "id": "o3",
+              "text": "Правила согласования, когда подлежащее выражено собирательными числительными или списками разных родов.",
+              "correct": true
+            },
+            {
+              "id": "o4",
+              "text": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-b2-15",
+      "domain": "grammar",
+      "level": "B2",
+      "title": "Особенности использования инфинитива vs. да + Present",
+      "summary": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+      "roadmapItemId": "4dcbb5ac-f483-5983-878b-4e12158794f4",
+      "skillIds": [
+        "sk_prezent"
+      ],
+      "supplementalExercises": [
+        {
+          "id": "trainer-b2-15-concept",
+          "type": "multiple_choice",
+          "unitId": "trainer_b2",
+          "skillId": "trainer-b2-15",
+          "lessonId": "trainer-b2-15-lesson",
+          "learningObjectiveIds": [
+            "trainer-b2-15-objective"
+          ],
+          "difficulty": 4,
+          "prompt": "Какое описание относится к теме «Особенности использования инфинитива vs. да + Present»?",
+          "explanation": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+          "hint": "Сопоставьте название конструкции с её функцией в предложении.",
+          "instructionLanguage": "ru",
+          "serbianScript": "both",
+          "contentReviewStatus": "machine_checked",
+          "sourceRef": {
+            "sourceBook": "Дорожная карта сербского языка Читавука",
+            "sourceHeading": "Особенности использования инфинитива vs. да + Present",
+            "sourceAnchor": "roadmap:B2:15",
+            "sourceEditionOrFileHash": "roadmap-grammar-v1",
+            "contentVersion": "1.0.0",
+            "reviewStatus": "machine_checked",
+            "reviewedBy": null,
+            "supplemental": true
+          },
+          "multi": false,
+          "options": [
+            {
+              "id": "o1",
+              "text": "Давнопрошедшее время (био сам урадио) и его функция в контексте ретроспективы.",
+              "correct": false
+            },
+            {
+              "id": "o2",
+              "text": "Региональные и стилистические различия (сербский норматив предпочитает да + Present, но инфинитив используется в определенных синтаксических конструкциях).",
+              "correct": true
+            },
+            {
+              "id": "o3",
+              "text": "Образование и стилистическое употребление мгновенного прошедшего времени в речи и литературе.",
+              "correct": false
+            },
+            {
+              "id": "o4",
+              "text": "Образование и контексты использования длительного прошедшего времени (архаичный/литературный пласт).",
+              "correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-c1-01",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Синтаксис деепричастных оборотов",
+      "summary": "Правила предотвращения синтаксической несогласованности подлежащего и деепричастия (абсолютные конструкции).",
+      "roadmapItemId": "b7aa7ffa-7817-5d9c-b908-9c9902d4a5da",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-02",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Семантика и стилистика падежных синонимов",
+      "summary": "Взаимозаменяемость предложно-падежных конструкций (ради + Genitive vs. зато што).",
+      "roadmapItemId": "797221b5-bf46-5b3d-99ea-87e0423cd515",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-03",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Историческая грамматика в современном языке",
+      "summary": "Остаточные явления двойственного числа (две руке), реликтовые формы склонений.",
+      "roadmapItemId": "f88cb105-81c3-53e8-b41a-f5e3a552ee4e",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-04",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Синтаксический статус энклитик в сложных академических предложениях",
+      "summary": "Порядок энклитик при наличии глубоких вводных и придаточных конструкций.",
+      "roadmapItemId": "6036c996-b1ec-5e55-bad3-3878c5722154",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-05",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Сложные явления акцентологии",
+      "summary": "Четыре типа сербских ударений, правила переноса ударения на предлог (у град -> у́град).",
+      "roadmapItemId": "371b9c21-5752-53a8-9e98-a8e1cf909ff6",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-06",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Стилистическое использование Аориста и Имперфекта",
+      "summary": "Экспрессивная функция в современной художественной прозе и публицистике.",
+      "roadmapItemId": "9eae1f72-32e7-5eae-8594-9c9438cbdaf5",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-07",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Абстрактная и метафорическая падежная семантика",
+      "summary": "Нестандартное использование локатива, творительного и родительного падежей в фразеологизмах.",
+      "roadmapItemId": "9c6a9f4e-73fa-52d4-ae57-205bf1a3f8f5",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c1-08",
+      "domain": "grammar",
+      "level": "C1",
+      "title": "Синтаксис инфинитивных и безличных оборотов в юридическом/официальном стиле",
+      "summary": "Специфика Службеног гласника и документов.",
+      "roadmapItemId": "181bff2c-b721-5dd3-b1e9-291d73b04a41",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-01",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Заимствования и их грамматическая адаптация",
+      "summary": "Интеграция англицизмов и интернационализмов в сербскую морфологию и систему спряжения/склонения.",
+      "roadmapItemId": "4cf76dc1-9d9f-5c23-93f5-e7e9126c11e0",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-02",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Пуризм и языковая норма (Стандардизација)",
+      "summary": "Различия между литературной нормой (стандардни српски) и разговорной / диалектной речью.",
+      "roadmapItemId": "6c4fcbc8-06f0-5abc-a755-979475b18e8f",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-03",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Вариантивность (Екавица vs. Ијекавица)",
+      "summary": "Систематические грамматические и фонетические правила перевода текста из екавицы в ијекавицу (млеко/млијеко, дете/дијете/дјеце).",
+      "roadmapItemId": "a893515a-9183-566e-b14d-6cc447fe3a38",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-04",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Сложное согласование по смыслу (Constructio ad sensum)",
+      "summary": "Грамматический анализ синтаксического согласования вопреки формальной морфологии.",
+      "roadmapItemId": "432057a3-f6e0-5701-a943-cbf657501da5",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-05",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Синтаксис уступительных и кондициональных конструкций высшего порядка",
+      "summary": "Использование архаичных союзов (макар, премда, акопаче).",
+      "roadmapItemId": "c9ac3cc6-5aac-5f19-ba9a-9335012283fb",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-06",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Пунктуация в сложносочиненных и сложноподчиненных предложениях",
+      "summary": "Особенности правил постановки запятых в сербском языке (отличия от русской пунктуации).",
+      "roadmapItemId": "096470c7-c91b-5ff5-9096-762da4d2ab64",
+      "skillIds": [],
+      "supplementalExercises": []
+    },
+    {
+      "id": "grammar-c2-07",
+      "domain": "grammar",
+      "level": "C2",
+      "title": "Фразеосинтаксис",
+      "summary": "Устойчивые синтаксические схемы разговорной речи, не поддающиеся стандартному грамматическому разбору.",
+      "roadmapItemId": "6933a9ba-5370-57a7-9c7b-b2a8c3dc3baa",
+      "skillIds": [],
+      "supplementalExercises": []
+    }
+  ]
+}

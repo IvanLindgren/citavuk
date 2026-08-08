@@ -21,7 +21,7 @@ class GrammarEngine {
     'CCONJ': 'союз',
     'SCONJ': 'союз',
     'PART': 'частица',
-    'DET': 'определитель',
+    'DET': 'определительное местоимение',
     'INTJ': 'междометие',
     'UNKNOWN': 'слово (часть речи не определена)',
     'X': 'слово (часть речи не определена)',
@@ -352,7 +352,7 @@ class GrammarEngine {
     'CCONJ': 'союз',
     'SCONJ': 'союз',
     'PART': 'частица',
-    'DET': 'опред.',
+    'DET': 'опред. местоимение',
     'INTJ': 'межд.',
     // Никогда не показываем пользователю сырые UD-теги неопределённости.
     'UNKNOWN': 'слово',
@@ -1120,7 +1120,9 @@ class GrammarEngine {
 
   /// Род существительного по лемме и известным формам — для [matchNoun].
   static String guessGender(
-      String lemma, List<({String form, String msd, Map<String, String> feats})> parsed) =>
+          String lemma,
+          List<({String form, String msd, Map<String, String> feats})>
+              parsed) =>
       _gender(lemma, const {}, parsed);
 
   static String _gender(String lemma, Map<String, String> feats,
@@ -1241,8 +1243,7 @@ class GrammarEngine {
     final irr = _irregularAdjStem[lemma];
     if (irr != null) return irr;
     if (lemma.length < 3) return lemma;
-    String cut(int n, String add) =>
-        lemma.substring(0, lemma.length - n) + add;
+    String cut(int n, String add) => lemma.substring(0, lemma.length - n) + add;
     // Определённый вид уже содержит окончание -i: veliki → velik.
     if (lemma.endsWith('i')) return cut(1, '');
     // -ao/-eo восходят к основе на -l: topao → topl, veseo → vesel.
@@ -1259,19 +1260,91 @@ class GrammarEngine {
   /// совпадают; расходятся только мужской и средний род в единственном числе —
   /// именно там вид и виден.
   static const Map<String, Map<String, String>> _adjIndefSing = {
-    'Masc': {'Nom': '', 'Gen': 'a', 'Dat': 'u', 'Acc': '', 'Voc': '', 'Ins': 'im', 'Loc': 'u'},
-    'Fem': {'Nom': 'a', 'Gen': 'e', 'Dat': 'oj', 'Acc': 'u', 'Voc': 'a', 'Ins': 'om', 'Loc': 'oj'},
-    'Neut': {'Nom': 'o', 'Gen': 'a', 'Dat': 'u', 'Acc': 'o', 'Voc': 'o', 'Ins': 'im', 'Loc': 'u'},
+    'Masc': {
+      'Nom': '',
+      'Gen': 'a',
+      'Dat': 'u',
+      'Acc': '',
+      'Voc': '',
+      'Ins': 'im',
+      'Loc': 'u'
+    },
+    'Fem': {
+      'Nom': 'a',
+      'Gen': 'e',
+      'Dat': 'oj',
+      'Acc': 'u',
+      'Voc': 'a',
+      'Ins': 'om',
+      'Loc': 'oj'
+    },
+    'Neut': {
+      'Nom': 'o',
+      'Gen': 'a',
+      'Dat': 'u',
+      'Acc': 'o',
+      'Voc': 'o',
+      'Ins': 'im',
+      'Loc': 'u'
+    },
   };
   static const Map<String, Map<String, String>> _adjDefSing = {
-    'Masc': {'Nom': 'i', 'Gen': 'og', 'Dat': 'om', 'Acc': 'i', 'Voc': 'i', 'Ins': 'im', 'Loc': 'om'},
-    'Fem': {'Nom': 'a', 'Gen': 'e', 'Dat': 'oj', 'Acc': 'u', 'Voc': 'a', 'Ins': 'om', 'Loc': 'oj'},
-    'Neut': {'Nom': 'o', 'Gen': 'og', 'Dat': 'om', 'Acc': 'o', 'Voc': 'o', 'Ins': 'im', 'Loc': 'om'},
+    'Masc': {
+      'Nom': 'i',
+      'Gen': 'og',
+      'Dat': 'om',
+      'Acc': 'i',
+      'Voc': 'i',
+      'Ins': 'im',
+      'Loc': 'om'
+    },
+    'Fem': {
+      'Nom': 'a',
+      'Gen': 'e',
+      'Dat': 'oj',
+      'Acc': 'u',
+      'Voc': 'a',
+      'Ins': 'om',
+      'Loc': 'oj'
+    },
+    'Neut': {
+      'Nom': 'o',
+      'Gen': 'og',
+      'Dat': 'om',
+      'Acc': 'o',
+      'Voc': 'o',
+      'Ins': 'im',
+      'Loc': 'om'
+    },
   };
   static const Map<String, Map<String, String>> _adjPlural = {
-    'Masc': {'Nom': 'i', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'e', 'Voc': 'i', 'Ins': 'im', 'Loc': 'im'},
-    'Fem': {'Nom': 'e', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'e', 'Voc': 'e', 'Ins': 'im', 'Loc': 'im'},
-    'Neut': {'Nom': 'a', 'Gen': 'ih', 'Dat': 'im', 'Acc': 'a', 'Voc': 'a', 'Ins': 'im', 'Loc': 'im'},
+    'Masc': {
+      'Nom': 'i',
+      'Gen': 'ih',
+      'Dat': 'im',
+      'Acc': 'e',
+      'Voc': 'i',
+      'Ins': 'im',
+      'Loc': 'im'
+    },
+    'Fem': {
+      'Nom': 'e',
+      'Gen': 'ih',
+      'Dat': 'im',
+      'Acc': 'e',
+      'Voc': 'e',
+      'Ins': 'im',
+      'Loc': 'im'
+    },
+    'Neut': {
+      'Nom': 'a',
+      'Gen': 'ih',
+      'Dat': 'im',
+      'Acc': 'a',
+      'Voc': 'a',
+      'Ins': 'im',
+      'Loc': 'im'
+    },
   };
 
   /// Форма прилагательного. [definite] выбирает вид; для женского рода и
@@ -1792,10 +1865,20 @@ class GrammarEngine {
   /// даёт «slušam», и по форме эти два класса неразличимы. Повторяет
   /// iConjugationAti в server/internal/grammar/generate.go.
   static const Set<String> _iConjugationAti = {
-    'bežati', 'bojati', 'brujati', 'ćutati',
-    'držati', 'klečati', 'ležati', 'pištati',
-    'škripati', 'trčati', 'vrištati', 'zviždati',
-    'zvučati', 'šuštati',
+    'bežati',
+    'bojati',
+    'brujati',
+    'ćutati',
+    'držati',
+    'klečati',
+    'ležati',
+    'pištati',
+    'škripati',
+    'trčati',
+    'vrištati',
+    'zviždati',
+    'zvučati',
+    'šuštati',
   };
 
   static List<String?> _presentForms(String inf) {
@@ -1930,13 +2013,32 @@ class GrammarEngine {
   /// выводятся: -e одинаково у «selo/polje», «ime» (-en-) и «tele» (-et-).
   /// Повторяет neuterMenStems/neuterEtStems в server/internal/grammar.
   static const Set<String> _neuterMenStems = {
-    'ime', 'vreme', 'breme', 'pleme', 'seme',
-    'teme', 'rame', 'vime', 'sleme', 'prezime',
+    'ime',
+    'vreme',
+    'breme',
+    'pleme',
+    'seme',
+    'teme',
+    'rame',
+    'vime',
+    'sleme',
+    'prezime',
   };
   static const Set<String> _neuterEtStems = {
-    'dete', 'tele', 'jagnje', 'pile', 'prase',
-    'mače', 'štene', 'kuče', 'momče', 'unuče',
-    'dugme', 'uže', 'bure', 'đubre',
+    'dete',
+    'tele',
+    'jagnje',
+    'pile',
+    'prase',
+    'mače',
+    'štene',
+    'kuče',
+    'momče',
+    'unuče',
+    'dugme',
+    'uže',
+    'bure',
+    'đubre',
   };
 
   /// Беглое «а», которое не выводится правилом: «dan» и «znak» его не имеют, и
@@ -1960,8 +2062,16 @@ class GrammarEngine {
   /// Односложные слова, множественное которых обходится без -ov-/-ev-.
   /// «ključ», «muž», «nož» сюда НЕ входят — у них правило работает.
   static const Set<String> _shortPluralNouns = {
-    'dan', 'zub', 'gost', 'konj', 'prst',
-    'crv', 'mrav', 'vuk', 'sat', 'zec',
+    'dan',
+    'zub',
+    'gost',
+    'konj',
+    'prst',
+    'crv',
+    'mrav',
+    'vuk',
+    'sat',
+    'zec',
   };
 
   /// Считает слоги. Слоговое «р» («prst», «vrt») даёт слог без единой гласной.
@@ -1995,8 +2105,7 @@ class GrammarEngine {
   /// ljubav → ljubavlju, noć → noću. Пустой результат = правила нет
   /// (после «р» йотования не бывает: «stvar» → только «stvari»).
   static String? _femInstrumental(String lemma) {
-    String cut(int n, String add) =>
-        lemma.substring(0, lemma.length - n) + add;
+    String cut(int n, String add) => lemma.substring(0, lemma.length - n) + add;
     if (lemma.endsWith('st')) return cut(2, 'šću');
     if (lemma.endsWith('zd')) return cut(2, 'ždu');
     for (final soft in const ['ć', 'č', 'š', 'ž', 'j', 'lj', 'nj']) {
@@ -2157,7 +2266,9 @@ class GrammarEngine {
     // muž → muževi). Считаем СЛОГИ, а не буквы: по буквам «sport» получал
     // «sporti», а «dan» — «danovi».
     var plural = stem;
-    if (!fugitive && _syllables(lemma) == 1 && !_shortPluralNouns.contains(lemma)) {
+    if (!fugitive &&
+        _syllables(lemma) == 1 &&
+        !_shortPluralNouns.contains(lemma)) {
       plural += soft ? 'ev' : 'ov';
     }
     switch (c) {

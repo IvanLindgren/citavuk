@@ -27,6 +27,8 @@ import 'services/document_translation_service.dart';
 import 'services/local_file.dart';
 import 'services/listening_service.dart';
 import 'services/level_service.dart';
+import 'services/roadmap_service.dart';
+import 'services/profile_service.dart';
 import 'services/notification_service.dart';
 import 'widgets/update_dialog.dart';
 import 'screens/onboarding_screen.dart';
@@ -115,6 +117,10 @@ Future<void> main() async {
         // Уровень сербского и оценка сложности текста. Живут на аккаунте, а
         // не в разделе: спросили один раз — знают везде.
         Provider<LevelService>.value(value: LevelService(api: api)),
+        // Дорожная карта: что учить на каждом уровне и как далеко человек
+        // продвинулся. Карта открыта и гостю — вход нужен только для отметок.
+        Provider<RoadmapService>.value(value: RoadmapService(api: api)),
+        Provider<ProfileService>.value(value: ProfileService(api: api)),
       ],
       child: const ChitavukApp(),
     ),

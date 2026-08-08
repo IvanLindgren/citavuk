@@ -48,6 +48,7 @@ IMAGES = {
     "citavuk_ukaz.png": 360,
     "citavuk_english.png": 360,
     "citavuk_vukotok.png": 420,
+    "citavuk_roadmap.png": 420,
     "citavuk_icon.png": 256,
     "sluhao_zdravo.png": 420,
     "sluhao_slusa.png": 420,

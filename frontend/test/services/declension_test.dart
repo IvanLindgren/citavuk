@@ -8,19 +8,26 @@ import 'package:srbski_read/services/grammar_engine.dart';
 /// Сайт и приложение обязаны называть одну и ту же форму — иначе человек,
 /// который разбирает слово на телефоне и повторяет в браузере, увидит разное.
 void main() {
+  test('DET подписан как определительное местоимение', () {
+    expect(GrammarEngine.posShort('DET'), 'опред. местоимение');
+    expect(GrammarEngine.posFull('DET'), 'определительное местоимение');
+  });
+
   group('существительные', () {
     test('первая врста — защита от регресса', () {
       expect(GrammarEngine.matchNoun('kuća', 'Fem', 'kućom')?['Case'], 'Ins');
-      expect(GrammarEngine.matchNoun('knjiga', 'Fem', 'knjizi')?['Case'], 'Dat');
+      expect(
+          GrammarEngine.matchNoun('knjiga', 'Fem', 'knjizi')?['Case'], 'Dat');
     });
 
     test('женский род на согласный склоняется', () {
       // Раньше весь класс возвращал пустоту: noć, stvar, ljubav, kost.
       expect(GrammarEngine.matchNoun('noć', 'Fem', 'noći')?['Case'], 'Gen');
       expect(GrammarEngine.matchNoun('noć', 'Fem', 'noću')?['Case'], 'Ins');
-      expect(GrammarEngine.matchNoun('noć', 'Fem', 'noćima')?['Number'], 'Plur');
       expect(
-          GrammarEngine.matchNoun('ljubav', 'Fem', 'ljubavlju')?['Case'], 'Ins');
+          GrammarEngine.matchNoun('noć', 'Fem', 'noćima')?['Number'], 'Plur');
+      expect(GrammarEngine.matchNoun('ljubav', 'Fem', 'ljubavlju')?['Case'],
+          'Ins');
       expect(GrammarEngine.matchNoun('kost', 'Fem', 'košću')?['Case'], 'Ins');
       // После «р» йотования нет — только форма на -i.
       expect(GrammarEngine.matchNoun('stvar', 'Fem', 'stvari')?['Case'], 'Gen');
@@ -35,17 +42,17 @@ void main() {
       expect(GrammarEngine.matchNoun('dete', 'Neut', 'deteta')?['Case'], 'Gen');
       // Средний род без расширения его не получает.
       expect(GrammarEngine.matchNoun('selo', 'Neut', 'sela')?['Case'], 'Gen');
-      expect(GrammarEngine.matchNoun('polje', 'Neut', 'poljem')?['Case'], 'Ins');
+      expect(
+          GrammarEngine.matchNoun('polje', 'Neut', 'poljem')?['Case'], 'Ins');
     });
 
     test('беглое «а»', () {
       expect(GrammarEngine.matchNoun('otac', 'Masc', 'oca')?['Case'], 'Gen');
       expect(GrammarEngine.matchNoun('pas', 'Masc', 'psa')?['Case'], 'Gen');
       expect(GrammarEngine.matchNoun('momak', 'Masc', 'momka')?['Case'], 'Gen');
-      expect(GrammarEngine.matchNoun('momak', 'Masc', 'momci')?['Number'],
-          'Plur');
       expect(
-          GrammarEngine.matchNoun('starac', 'Masc', 'starci')?['Number'],
+          GrammarEngine.matchNoun('momak', 'Masc', 'momci')?['Number'], 'Plur');
+      expect(GrammarEngine.matchNoun('starac', 'Masc', 'starci')?['Number'],
           'Plur');
       // Родительный множественного — единственное место, где «а» возвращается.
       final momaka = GrammarEngine.matchNoun('momak', 'Masc', 'momaka');
@@ -57,8 +64,8 @@ void main() {
 
     test('мужской род на -a склоняется по женскому типу', () {
       expect(GrammarEngine.matchNoun('tata', 'Masc', 'tate')?['Case'], 'Gen');
-      expect(GrammarEngine.matchNoun('sudija', 'Masc', 'sudiju')?['Case'],
-          'Acc');
+      expect(
+          GrammarEngine.matchNoun('sudija', 'Masc', 'sudiju')?['Case'], 'Acc');
     });
 
     test('множественное считает слоги, а не буквы', () {
@@ -67,18 +74,18 @@ void main() {
       // По буквам «sport» получал «sporti».
       expect(GrammarEngine.matchNoun('sport', 'Masc', 'sportovi')?['Number'],
           'Plur');
-      expect(GrammarEngine.matchNoun('muž', 'Masc', 'muževi')?['Number'],
-          'Plur');
+      expect(
+          GrammarEngine.matchNoun('muž', 'Masc', 'muževi')?['Number'], 'Plur');
       expect(GrammarEngine.matchNoun('prozor', 'Masc', 'prozori')?['Number'],
           'Plur');
       // Слоговое «р» — слог: «vrt» односложное и берёт -ov-.
-      expect(GrammarEngine.matchNoun('vrt', 'Masc', 'vrtovi')?['Number'],
-          'Plur');
+      expect(
+          GrammarEngine.matchNoun('vrt', 'Masc', 'vrtovi')?['Number'], 'Plur');
       // Исключения: по буквам получалось «danovi» и «zubovi».
       expect(GrammarEngine.matchNoun('dan', 'Masc', 'dani')?['Number'], 'Plur');
       expect(GrammarEngine.matchNoun('zub', 'Masc', 'zubi')?['Number'], 'Plur');
-      expect(GrammarEngine.matchNoun('konj', 'Masc', 'konji')?['Number'],
-          'Plur');
+      expect(
+          GrammarEngine.matchNoun('konj', 'Masc', 'konji')?['Number'], 'Plur');
     });
 
     test('винительный одушевлённого опознаётся', () {
@@ -90,8 +97,7 @@ void main() {
 
   group('прилагательные', () {
     test('вид различается в мужском и среднем роде', () {
-      expect(
-          GrammarEngine.adjectiveForm('dobar', 'Masc', 'Sing', 'Nom', false),
+      expect(GrammarEngine.adjectiveForm('dobar', 'Masc', 'Sing', 'Nom', false),
           'dobar');
       expect(GrammarEngine.adjectiveForm('dobar', 'Masc', 'Sing', 'Nom', true),
           'dobri');

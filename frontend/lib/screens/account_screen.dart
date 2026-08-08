@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/profile_stats.dart';
 import '../services/api_client.dart';
+import '../services/announcements_controller.dart';
 import '../services/auth_service.dart';
+import '../services/profile_service.dart';
 import 'privacy_screen.dart';
 import '../services/desktop_oauth.dart';
 import '../services/sync_service.dart';
 import '../widgets/google_logo.dart';
+import 'roadmap_screen.dart';
 
 /// Экран аккаунта: вход, регистрация и состояние синхронизации.
 ///
@@ -42,21 +47,43 @@ class _SignedInView extends StatefulWidget {
 
 class _SignedInViewState extends State<_SignedInView> {
   int _pending = 0;
+  ProfileStats? _stats;
+  String _statsError = '';
+  bool _loadingStats = true;
 
   @override
   void initState() {
     super.initState();
-    _refreshPending();
+    _refreshProfile();
   }
 
-  Future<void> _refreshPending() async {
-    final count = await context.read<SyncService>().pendingCount();
-    if (mounted) setState(() => _pending = count);
+  Future<void> _refreshProfile() async {
+    try {
+      final results = await Future.wait<Object>([
+        context.read<SyncService>().pendingCount(),
+        context.read<ProfileService>().stats(),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        _pending = results[0] as int;
+        _stats = results[1] as ProfileStats;
+        _statsError = '';
+        _loadingStats = false;
+      });
+      unawaited(
+          context.read<AnnouncementsController>().refresh().catchError((_) {}));
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _statsError = 'Статистика профиля не загрузилась.';
+        _loadingStats = false;
+      });
+    }
   }
 
   Future<void> _syncNow() async {
     await context.read<SyncService>().sync();
-    await _refreshPending();
+    await _refreshProfile();
   }
 
   Future<void> _logout() async {
@@ -108,6 +135,34 @@ class _SignedInViewState extends State<_SignedInView> {
           ),
         ),
         const SizedBox(height: 16),
+        if (_loadingStats)
+          const Padding(
+            padding: EdgeInsets.all(24),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if (_statsError.isNotEmpty)
+          Card(
+            child: ListTile(
+              leading:
+                  Icon(Icons.error_outline, color: theme.colorScheme.error),
+              title: Text(_statsError),
+              trailing: IconButton(
+                tooltip: 'Повторить',
+                onPressed: _refreshProfile,
+                icon: const Icon(Icons.refresh),
+              ),
+            ),
+          )
+        else if (_stats != null) ...[
+          _ProfileCounters(stats: _stats!),
+          const SizedBox(height: 16),
+          _GoalProgressCard(stats: _stats!),
+          const SizedBox(height: 16),
+          _ActivityCard(stats: _stats!),
+          const SizedBox(height: 16),
+          _AchievementsSection(stats: _stats!),
+          const SizedBox(height: 16),
+        ],
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -248,10 +303,9 @@ class _SignedInViewState extends State<_SignedInView> {
             FilledButton(
               style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(ctx).colorScheme.error),
-              onPressed:
-                  confirmField.text.trim().toUpperCase() == 'УДАЛИТЬ'
-                      ? () => Navigator.pop(ctx, true)
-                      : null,
+              onPressed: confirmField.text.trim().toUpperCase() == 'УДАЛИТЬ'
+                  ? () => Navigator.pop(ctx, true)
+                  : null,
               child: const Text('Удалить навсегда'),
             ),
           ],
@@ -284,6 +338,336 @@ class _SignedInViewState extends State<_SignedInView> {
     return '${two(local.hour)}:${two(local.minute)}, ${two(local.day)}.${two(local.month)}';
   }
 }
+
+class _ProfileCounters extends StatelessWidget {
+  const _ProfileCounters({required this.stats});
+
+  final ProfileStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      (Icons.bookmark_added_outlined, stats.words.added, 'слов добавлено'),
+      (Icons.auto_awesome_outlined, stats.words.learned, 'слов выучено'),
+      (Icons.replay_outlined, stats.words.due, 'ждут повторения'),
+      (Icons.local_fire_department_outlined, stats.streakDays, 'дней в серии'),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth >= 680 ? 4 : 2;
+        return GridView.count(
+          crossAxisCount: columns,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: columns == 4 ? 1.35 : 1.45,
+          children: [
+            for (final item in items)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(item.$1,
+                          size: 22,
+                          color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(height: 8),
+                      Text(
+                        '${item.$2}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        item.$3,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _GoalProgressCard extends StatelessWidget {
+  const _GoalProgressCard({required this.stats});
+
+  final ProfileStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final goal = stats.goal;
+    final ratio = goal.ratio.clamp(0.0, 1.0);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.route_outlined,
+                    color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    goal.target.isEmpty
+                        ? 'Цель языка не выбрана'
+                        : 'Путь к ${goal.target}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                IconButton(
+                  tooltip: 'Открыть дорожную карту',
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => const RoadmapScreen()),
+                  ),
+                  icon: const Icon(Icons.chevron_right),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            LinearProgressIndicator(value: ratio, minHeight: 10),
+            const SizedBox(height: 8),
+            Text(
+              goal.target.isEmpty
+                  ? 'Выберите ступень на карте, чтобы видеть общий прогресс.'
+                  : '${goal.done} из ${goal.total} доступных шагов · '
+                      '${(ratio * 100).round()}%',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ActivityCard extends StatelessWidget {
+  const _ActivityCard({required this.stats});
+
+  final ProfileStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final maxValue = stats.activity.fold<int>(1, (value, item) {
+      return max(value, max(item.added, item.reviewed));
+    });
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Последние 14 дней',
+                style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 16,
+              children: [
+                _Legend(color: scheme.primary, label: 'добавлено'),
+                const _Legend(color: Color(0xFF16835B), label: 'повторено'),
+              ],
+            ),
+            const SizedBox(height: 14),
+            SizedBox(
+              height: 138,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  for (final item in stats.activity)
+                    Expanded(
+                      child: Tooltip(
+                        message:
+                            '${item.day}: +${item.added}, повторено ${item.reviewed}',
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: item.added == 0
+                                      ? 0
+                                      : max(5, 128 * item.added / maxValue),
+                                  decoration: BoxDecoration(
+                                    color: scheme.primary,
+                                    borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(3)),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 1),
+                              Expanded(
+                                child: Container(
+                                  height: item.reviewed == 0
+                                      ? 0
+                                      : max(5, 128 * item.reviewed / maxValue),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF16835B),
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(3)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Legend extends StatelessWidget {
+  const _Legend({required this.color, required this.label});
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 5),
+          Text(label, style: Theme.of(context).textTheme.bodySmall),
+        ],
+      );
+}
+
+class _AchievementsSection extends StatelessWidget {
+  const _AchievementsSection({required this.stats});
+
+  final ProfileStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final unlocked = stats.achievements.where((item) => item.unlocked).length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text('Достижения',
+                  style: Theme.of(context).textTheme.titleLarge),
+            ),
+            Text('$unlocked/${stats.achievements.length}',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w700)),
+          ],
+        ),
+        const SizedBox(height: 10),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = constraints.maxWidth >= 680 ? 2 : 1;
+            return GridView.count(
+              crossAxisCount: columns,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: columns == 2 ? 2.7 : 2.55,
+              children: [
+                for (final achievement in stats.achievements)
+                  _AchievementTile(achievement: achievement),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _AchievementTile extends StatelessWidget {
+  const _AchievementTile({required this.achievement});
+
+  final ProfileAchievement achievement;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Opacity(
+      opacity: achievement.unlocked ? 1 : 0.52,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: achievement.unlocked
+                    ? scheme.primary
+                    : scheme.surfaceContainerHighest,
+                foregroundColor:
+                    achievement.unlocked ? scheme.onPrimary : scheme.outline,
+                child: Icon(_achievementIcon(achievement.icon), size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      achievement.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      achievement.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+IconData _achievementIcon(String icon) => switch (icon) {
+      'bookmark' => Icons.bookmark_outline,
+      'library' => Icons.local_library_outlined,
+      'books' || 'book' => Icons.menu_book_outlined,
+      'repeat' => Icons.replay_outlined,
+      'sparkles' => Icons.auto_awesome_outlined,
+      'medal' => Icons.military_tech_outlined,
+      'route' => Icons.route_outlined,
+      'trophy' => Icons.emoji_events_outlined,
+      _ => Icons.lock_outline,
+    };
 
 class _StatusIcon extends StatelessWidget {
   const _StatusIcon({required this.status});

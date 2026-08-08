@@ -1,6 +1,6 @@
-/// Корневая оболочка приложения: четыре основных раздела в нижней навигации.
+/// Корневая оболочка приложения: пять основных разделов в нижней навигации.
 ///
-/// Чтение | Вукоток | Слушание | Курс сербского. Разделы держатся живыми,
+/// Чтение | Вукоток | Карта | Слушание | Курс. Разделы держатся живыми,
 /// поэтому переключение не теряет позицию списка книг, состояние плеера и
 /// загруженный курс.
 ///
@@ -19,12 +19,14 @@ import '../services/auth_service.dart';
 import '../services/level_service.dart';
 import 'level_prompt.dart';
 import 'listening_screen.dart';
+import 'roadmap_screen.dart';
 import 'vukotok_screen.dart';
 
 /// Раздел нижней навигации.
 enum HomeTab {
   reading('Чтение', Icons.menu_book_outlined, Icons.menu_book),
   vukotok('Вукоток', Icons.bolt_outlined, Icons.bolt),
+  roadmap('Карта', Icons.map_outlined, Icons.map),
   listening('Слушание', Icons.headphones_outlined, Icons.headphones),
   course('Курс сербского', Icons.school_outlined, Icons.school);
 
@@ -127,6 +129,7 @@ class _HomeShellState extends State<HomeShell> {
         children: [
           widget.reading,
           const VukotokScreen(),
+          const RoadmapScreen(),
           const ListeningScreen(),
           CoursePathScreen(controller: _course),
         ],

@@ -36,6 +36,13 @@ var requiredTables = []string{
 	"micro_feed_interactions",
 	"micro_feed_reactions",
 	"micro_feed_profiles_embeddings",
+	"roadmap_sections",
+	"roadmap_items",
+	"roadmap_exercise_sets",
+	"roadmap_words",
+	"roadmap_completions",
+	"roadmap_comments",
+	"user_achievements",
 }
 
 func TestEmbeddedMigrationsCreateRequiredTables(t *testing.T) {

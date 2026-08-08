@@ -41,6 +41,8 @@ const exerciseTypes: Array<{ type: ExerciseType; label: string; detail: string; 
   { type: 'form_hunt', label: 'Найти формы', detail: 'Отметить слова в тексте', icon: LuScanText },
   { type: 'explain_word', label: 'Объяснить слово', detail: 'Свободный ответ по-сербски', icon: LuMessageSquareText },
   { type: 'teacher_letter', label: 'Письмо преподавателю', detail: 'Ручная проверка работы', icon: LuMail },
+  { type: 'word_drill', label: 'Прогон слов', detail: 'Перевод — слово по памяти', icon: LuLetterText },
+  { type: 'translator_duel', label: 'Против переводчика', detail: 'Своя версия против машинной', icon: LuGitCompareArrows },
 ];
 
 export function LessonExerciseEditor({ exercises, onChange }: { exercises: LessonExercise[]; onChange: (items: LessonExercise[]) => void }) {
@@ -188,9 +190,9 @@ function ExerciseFields({ exercise, onChange }: { exercise: LessonExercise; onCh
   if (exercise.type === 'letter_unscramble') {
     return <div className="grid gap-4 sm:grid-cols-2"><Labeled label="Контекст"><input className={field} value={exercise.context ?? ''} onChange={(event) => onChange({ ...exercise, context: event.target.value })} placeholder="Дом по-сербски" /></Labeled><Labeled label="Правильное слово"><input className={field} value={exercise.answer ?? ''} onChange={(event) => onChange({ ...exercise, answer: event.target.value, referenceAnswer: event.target.value, tokens: [...event.target.value] })} placeholder="kuća" /></Labeled><Labeled label="Лишние буквы"><input className={field} value={(exercise.distractors ?? []).join('')} onChange={(event) => onChange({ ...exercise, distractors: [...event.target.value] })} /></Labeled></div>;
   }
-  if (exercise.type === 'matching') {
+  if (exercise.type === 'matching' || exercise.type === 'word_drill') {
     const pairs = exercise.pairs ?? [];
-    return <Labeled label="Пары"><div className="space-y-2">{pairs.map((pair, index) => <div key={index} className="grid grid-cols-[1fr_auto_1fr_auto] items-center gap-2"><input aria-label={`Левая часть пары ${index + 1}`} className={field} value={pair.left} onChange={(event) => onChange({ ...exercise, pairs: pairs.map((item, itemIndex) => itemIndex === index ? { ...item, left: event.target.value } : item) })} /><LuGitCompareArrows className="text-[var(--text-muted)]" /><input aria-label={`Правая часть пары ${index + 1}`} className={field} value={pair.right} onChange={(event) => onChange({ ...exercise, pairs: pairs.map((item, itemIndex) => itemIndex === index ? { ...item, right: event.target.value } : item) })} /><RemoveButton onClick={() => onChange({ ...exercise, pairs: pairs.filter((_, itemIndex) => itemIndex !== index) })} /></div>)}<AddRow label="Добавить пару" onClick={() => onChange({ ...exercise, pairs: [...pairs, { left: '', right: '' }] })} /></div></Labeled>;
+    return <Labeled label={exercise.type === 'word_drill' ? 'Пары «перевод — слово»' : 'Пары'}><div className="space-y-2">{pairs.map((pair, index) => <div key={index} className="grid grid-cols-[1fr_auto_1fr_auto] items-center gap-2"><input aria-label={`Левая часть пары ${index + 1}`} className={field} value={pair.left} onChange={(event) => onChange({ ...exercise, pairs: pairs.map((item, itemIndex) => itemIndex === index ? { ...item, left: event.target.value } : item) })} /><LuGitCompareArrows className="text-[var(--text-muted)]" /><input aria-label={`Правая часть пары ${index + 1}`} className={field} value={pair.right} onChange={(event) => onChange({ ...exercise, pairs: pairs.map((item, itemIndex) => itemIndex === index ? { ...item, right: event.target.value } : item) })} /><RemoveButton onClick={() => onChange({ ...exercise, pairs: pairs.filter((_, itemIndex) => itemIndex !== index) })} /></div>)}<AddRow label="Добавить пару" onClick={() => onChange({ ...exercise, pairs: [...pairs, { left: '', right: '' }] })} /></div></Labeled>;
   }
   if (exercise.type === 'fill_blank') {
     return <div className="grid gap-4 sm:grid-cols-[2fr_1fr]"><Labeled label="Предложение с ___ на месте ответа"><input className={field} value={exercise.context ?? ''} onChange={(event) => onChange({ ...exercise, context: event.target.value })} placeholder="Ona ___ srpski svaki dan." /></Labeled><Labeled label="Допустимые ответы"><StringItems items={exercise.acceptedAnswers ?? []} onChange={(acceptedAnswers) => onChange({ ...exercise, acceptedAnswers, answer: acceptedAnswers[0] ?? '', referenceAnswer: acceptedAnswers[0] ?? '' })} addLabel="Ответ" /></Labeled></div>;
@@ -203,6 +205,9 @@ function ExerciseFields({ exercise, onChange }: { exercise: LessonExercise; onCh
   }
   if (exercise.type === 'form_hunt') {
     return <div className="grid gap-4"><Labeled label="Текст для поиска"><textarea rows={5} className={field} value={exercise.context ?? ''} onChange={(event) => onChange({ ...exercise, context: event.target.value })} /></Labeled><Labeled label="Слова, которые нужно найти"><StringItems items={exercise.targetWords ?? []} onChange={(targetWords) => onChange({ ...exercise, targetWords, answer: targetWords.join(', '), referenceAnswer: targetWords.join(', ') })} addLabel="Форма" /></Labeled></div>;
+  }
+  if (exercise.type === 'translator_duel') {
+    return <div className="grid gap-4"><Labeled label="Фраза по-русски"><textarea rows={2} className={field} value={exercise.context ?? ''} onChange={(event) => onChange({ ...exercise, context: event.target.value })} /></Labeled><Labeled label="Как перевёл переводчик"><textarea rows={2} className={field} value={exercise.referenceAnswer ?? ''} onChange={(event) => onChange({ ...exercise, referenceAnswer: event.target.value })} placeholder="Машинный вариант хранится в задании: иначе «вы совпали с переводчиком» меняло бы смысл от выкатки к выкатке" /></Labeled><Labeled label="Принимаемые ответы"><StringItems items={exercise.acceptedAnswers ?? []} onChange={(acceptedAnswers) => onChange({ ...exercise, acceptedAnswers, answer: acceptedAnswers[0] ?? '' })} addLabel="Вариант" /></Labeled></div>;
   }
   if (exercise.type === 'explain_word') {
     return <div className="grid gap-4 sm:grid-cols-2"><Labeled label="Слово"><input className={field} value={exercise.context ?? ''} onChange={(event) => onChange({ ...exercise, context: event.target.value })} /></Labeled><Labeled label="Пример хорошего объяснения"><textarea rows={4} className={field} value={exercise.referenceAnswer ?? ''} onChange={(event) => onChange({ ...exercise, referenceAnswer: event.target.value, answer: event.target.value })} /></Labeled></div>;
@@ -336,6 +341,8 @@ function createExercise(type: ExerciseType, prompt = ''): LessonExercise {
   if (type === 'reading_qa') return { ...base, readingText: '', questions: [{ id: crypto.randomUUID(), prompt: '', options: ['', ''], answer: '' }] };
   if (type === 'form_hunt') return { ...base, context: '', targetWords: [] };
   if (type === 'explain_word') return { ...base, context: '', referenceAnswer: '' };
+  if (type === 'word_drill') return { ...base, pairs: [{ left: '', right: '' }, { left: '', right: '' }] };
+  if (type === 'translator_duel') return { ...base, context: '', referenceAnswer: '', acceptedAnswers: [''] };
   return { ...base, criteria: '' };
 }
 
@@ -344,5 +351,7 @@ function promptPlaceholder(type: ExerciseType): string {
   if (type === 'form_hunt') return 'Найдите в тексте формы локатива';
   if (type === 'reading_qa') return 'Прочитайте текст и ответьте на вопросы';
   if (type === 'matching') return 'Соедините слова с переводами';
+  if (type === 'word_drill') return 'Вспомните слово по переводу';
+  if (type === 'translator_duel') return 'Переведите фразу на сербский';
   return 'Что должен сделать ученик?';
 }

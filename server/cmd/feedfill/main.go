@@ -250,18 +250,7 @@ func fill(
 		if len(imports) == 0 {
 			return errors.New("approved sources did not yield any queued material")
 		}
-		// Source collection is much cheaper than model generation. Keep the next
-		// batch warm in parallel instead of waiting to collect the entire target
-		// before publishing the first new cards.
-		prefill := make(chan error, 1)
-		go func() {
-			prefillTarget := min(needed+max(80, opts.workers*8), 400)
-			prefill <- ensureQueue(ctx, st, fetcher, sources, prefillTarget, opts.fetchLimit)
-		}()
 		result, generationErr := generateBatch(ctx, st, generator, sources, admin, imports, opts)
-		if err := <-prefill; err != nil {
-			return err
-		}
 		slog.Info("batch completed", "published", result.published, "rejected", result.rejected)
 		if generationErr != nil {
 			return generationErr

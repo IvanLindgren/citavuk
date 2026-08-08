@@ -115,6 +115,9 @@ const Teachers = lazy(() =>
 const LessonEditor = lazy(() =>
   import("./pages/LessonEditor").then((m) => ({ default: m.LessonEditor })),
 );
+const Roadmap = lazy(() =>
+  import("./pages/Roadmap").then((m) => ({ default: m.Roadmap })),
+);
 const Lessons = lazy(() =>
   import("./pages/Lessons").then((m) => ({ default: m.Lessons })),
 );
@@ -139,6 +142,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/events", element: <Events /> },
   { pattern: "/events/odyssey", element: <OdysseyGate /> },
   { pattern: "/course", element: <Course /> },
+  { pattern: "/roadmap", element: <Roadmap /> },
   { pattern: "/lessons", element: <Lessons /> },
   { pattern: "/lessons/:slug", element: <LessonView /> },
   { pattern: "/vukotok", element: <MicroFeed /> },
@@ -285,4 +289,3 @@ function NotFound() {
     </main>
   );
 }
-

@@ -13,26 +13,96 @@
 /// первой же правке.
 library;
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/course.dart';
 import '../models/exercise.dart';
+import '../models/trainer_catalog.dart';
+import '../../services/announcements_controller.dart';
+import '../../services/auth_service.dart';
+import '../../services/roadmap_service.dart';
 import 'lesson_screen.dart';
 
 /// Сколько заданий в одном заходе. Больше двенадцати уже утомляет.
 const int _roundSize = 10;
 
-class TrainerScreen extends StatelessWidget {
-  const TrainerScreen({super.key, required this.course});
+class TrainerScreen extends StatefulWidget {
+  const TrainerScreen({
+    super.key,
+    required this.course,
+    this.initialTopicId = '',
+  });
 
   final Course course;
+  final String initialTopicId;
+
+  @override
+  State<TrainerScreen> createState() => _TrainerScreenState();
+}
+
+class _TrainerScreenState extends State<TrainerScreen> {
+  List<TrainerTopic>? _topics;
+  TrainerDomain _domain = TrainerDomain.grammar;
+  String _error = '';
+  bool _openedInitial = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final catalog = await loadTrainerCatalog();
+      if (!mounted) return;
+      final topics = buildTrainerTopics(widget.course, catalog);
+      setState(() {
+        _topics = topics;
+        _error = '';
+      });
+      final initial = widget.initialTopicId;
+      if (initial.isNotEmpty && !_openedInitial) {
+        for (final topic in topics) {
+          if (topic.id != initial) continue;
+          _openedInitial = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) _start(context, topic);
+          });
+          break;
+        }
+      }
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = 'Не удалось загрузить упражнения. $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final topics = _collectTopics(course);
+    final allTopics = _topics;
+    if (_error.isNotEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Тренажёрка')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text(_error, textAlign: TextAlign.center),
+          ),
+        ),
+      );
+    }
+    if (allTopics == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final topics = allTopics.where((topic) => topic.domain == _domain).toList();
     final total = topics.fold<int>(0, (sum, t) => sum + t.exercises.length);
 
     return Scaffold(
@@ -41,9 +111,9 @@ class TrainerScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
           Text(
-            'Выберите тему и решайте задания по ней подряд. Порядок уроков '
-            'здесь не действует: любая тема открыта сразу, даже если до неё в '
-            'курсе вы ещё не дошли. Всего $total упражнений.',
+            'Практика собрана по уровню и навыку. Полностью правильный заход '
+            'по грамматике сразу отмечает тему в дорожной карте. Сейчас '
+            'доступно $total упражнений выбранного раздела.',
             style: TextStyle(
               fontSize: 15,
               height: 1.45,
@@ -51,20 +121,28 @@ class TrainerScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
+          _DomainPicker(
+            selected: _domain,
+            onChanged: (value) => setState(() => _domain = value),
+          ),
+          const SizedBox(height: 18),
           _TopicTile(
             title: 'Всё вперемешку',
             subtitle: 'Задания из всех тем в случайном порядке',
             onTap: () => _start(
               context,
-              _Topic(
-                id: 'all',
+              TrainerTopic(
+                id: 'all-${_domain.name}',
+                domain: _domain,
+                level: '',
                 title: 'Всё вперемешку',
-                unitTitle: '',
+                summary: '',
+                roadmapItemId: '',
                 exercises: topics.expand((t) => t.exercises).toList(),
               ),
             ),
           ),
-          for (final group in _groupByUnit(topics)) ...[
+          for (final group in _groupByLevel(topics)) ...[
             const SizedBox(height: 22),
             Text(
               group.key.toUpperCase(),
@@ -79,7 +157,7 @@ class TrainerScreen extends StatelessWidget {
             for (final topic in group.value)
               _TopicTile(
                 title: topic.title,
-                subtitle: '${topic.exercises.length} '
+                subtitle: '${topic.summary}\n${topic.exercises.length} '
                     '${_plural(topic.exercises.length)}',
                 onTap: () => _start(context, topic),
               ),
@@ -89,7 +167,7 @@ class TrainerScreen extends StatelessWidget {
     );
   }
 
-  void _start(BuildContext context, _Topic topic) {
+  void _start(BuildContext context, TrainerTopic topic) {
     final round = _pickRound(topic.exercises);
     if (round.isEmpty) return;
     Navigator.of(context).push(
@@ -103,52 +181,43 @@ class TrainerScreen extends StatelessWidget {
             title: topic.title,
             exercises: round,
           ),
-          course: course,
+          course: widget.course,
+          onFinished: (summary) {
+            if (summary.score != 1 ||
+                topic.domain != TrainerDomain.grammar ||
+                topic.roadmapItemId.isEmpty ||
+                !context.read<AuthService>().isSignedIn) {
+              return;
+            }
+            unawaited(_recordPerfect(context, topic));
+          },
         ),
       ),
     );
   }
-}
 
-/// Тема — это раздел курса (skill), а не урок: «Винительный падеж» полезнее
-/// как одна тема, чем как три урока о разных сторонах одного правила.
-class _Topic {
-  final String id;
-  final String title;
-  final String unitTitle;
-  final List<Exercise> exercises;
-
-  const _Topic({
-    required this.id,
-    required this.title,
-    required this.unitTitle,
-    required this.exercises,
-  });
-}
-
-List<_Topic> _collectTopics(Course course) {
-  final topics = <_Topic>[];
-  for (final unit in course.units) {
-    for (final skill in unit.skills) {
-      final exercises = [
-        for (final lesson in skill.lessons) ...lesson.exercises,
-      ];
-      if (exercises.isEmpty) continue;
-      topics.add(_Topic(
-        id: skill.id,
-        title: skill.title,
-        unitTitle: unit.title,
-        exercises: exercises,
-      ));
+  Future<void> _recordPerfect(BuildContext context, TrainerTopic topic) async {
+    final roadmap = context.read<RoadmapService>();
+    final announcements = context.read<AnnouncementsController>();
+    try {
+      await roadmap.mark('item', topic.roadmapItemId,
+          done: true, source: 'trainer');
+      await announcements.refresh();
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Тема отмечена в дорожной карте.')),
+      );
+    } catch (_) {
+      // Результат самой тренировки не теряется из-за временной ошибки сети.
     }
   }
-  return topics;
 }
 
-List<MapEntry<String, List<_Topic>>> _groupByUnit(List<_Topic> topics) {
-  final groups = <String, List<_Topic>>{};
+List<MapEntry<String, List<TrainerTopic>>> _groupByLevel(
+    List<TrainerTopic> topics) {
+  final groups = <String, List<TrainerTopic>>{};
   for (final topic in topics) {
-    groups.putIfAbsent(topic.unitTitle, () => []).add(topic);
+    groups.putIfAbsent(topic.level, () => []).add(topic);
   }
   return groups.entries.toList();
 }
@@ -173,6 +242,87 @@ String _plural(int count) {
       return 'упражнения';
     default:
       return 'упражнений';
+  }
+}
+
+class _DomainPicker extends StatelessWidget {
+  const _DomainPicker({required this.selected, required this.onChanged});
+
+  final TrainerDomain selected;
+  final ValueChanged<TrainerDomain> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          for (final domain in TrainerDomain.values)
+            Expanded(
+              child: Tooltip(
+                message: domain.label,
+                child: InkWell(
+                  onTap: () => onChanged(domain),
+                  borderRadius: BorderRadius.circular(9),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    constraints: const BoxConstraints(minHeight: 46),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: selected == domain ? scheme.surface : null,
+                      borderRadius: BorderRadius.circular(9),
+                      boxShadow: selected == domain
+                          ? const [
+                              BoxShadow(
+                                blurRadius: 5,
+                                color: Color(0x16000000),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          switch (domain) {
+                            TrainerDomain.grammar => Icons.translate,
+                            TrainerDomain.reading => Icons.menu_book_outlined,
+                            TrainerDomain.writing => Icons.edit_outlined,
+                          },
+                          size: 18,
+                          color: selected == domain
+                              ? scheme.primary
+                              : scheme.onSurfaceVariant,
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            domain.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: selected == domain
+                                  ? scheme.primary
+                                  : scheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 

@@ -1,0 +1,65 @@
+theme	lemma	translation	pos	note
+Книжная лексика	iščekivanje	ожидание	NOUN	с
+Книжная лексика	zanos	вдохновение, порыв	NOUN	м
+Книжная лексика	čemer	горечь	NOUN	м
+Книжная лексика	strepnja	тревога	NOUN	ж
+Книжная лексика	sete	тоска	NOUN	ж
+Книжная лексика	klonulost	уныние	NOUN	ж
+Книжная лексика	spokoj	покой	NOUN	м
+Книжная лексика	milost	милость	NOUN	ж
+Книжная лексика	pregnuće	усилие, порыв	NOUN	с
+Книжная лексика	usud	рок	NOUN	м
+Книжная лексика	tlapnja	иллюзия	NOUN	ж
+Книжная лексика	obzorje	горизонт	NOUN	с
+Устойчивые обороты	uzgred	между прочим	ADV
+Устойчивые обороты	napose	в особенности	ADV
+Устойчивые обороты	dotle	до тех пор	ADV
+Устойчивые обороты	otuda	отсюда, оттого	ADV
+Устойчивые обороты	stoput	стократно	ADV
+Устойчивые обороты	kadgod	когда-либо	ADV
+Устойчивые обороты	pokatkad	изредка	ADV
+Устойчивые обороты	nipošto	ни в коем случае	ADV
+Устойчивые обороты	ponajmanje	менее всего	ADV
+Устойчивые обороты	umnogome	во многом	ADV
+Стилистика	arhaizam	архаизм	NOUN	м
+Стилистика	dijalekat	диалект	NOUN	м
+Стилистика	žargon	жаргон	NOUN	м
+Стилистика	pozajmljenica	заимствование	NOUN	ж
+Стилистика	kovanica	неологизм	NOUN	ж
+Стилистика	sinonim	синоним	NOUN	м
+Стилистика	antonim	антоним	NOUN	м
+Стилистика	nijansiranje	нюансировка	NOUN	с
+Стилистика	ekspresivan	выразительный	ADJ
+Стилистика	svečan	торжественный	ADJ
+Стилистика	pejorativan	уничижительный	ADJ
+Стилистика	arhaičan	архаичный	ADJ
+Мысль	apstrakcija	абстракция	NOUN	ж
+Мысль	sinteza	синтез	NOUN	ж
+Мысль	antiteza	антитеза	NOUN	ж
+Мысль	paradoks	парадокс	NOUN	м
+Мысль	aksiom	аксиома	NOUN	м
+Мысль	premisa	посылка	NOUN	ж
+Мысль	implikacija	импликация	NOUN	ж
+Мысль	relativizovati	релятивизировать	VERB	несврш.
+Мысль	apstrahovati	абстрагировать	VERB	несврш.
+Мысль	sublimirati	сублимировать	VERB	несврш.
+Глаголы	iznedriti	породить	VERB	сврш.
+Глаголы	ozvaničiti	придать официальный статус	VERB	сврш.
+Глаголы	obznaniti	обнародовать	VERB	сврш.
+Глаголы	posustati	изнемочь	VERB	сврш.
+Глаголы	ustuknuti	отступить	VERB	сврш.
+Глаголы	prionuti	приняться, прильнуть	VERB	сврш.
+Глаголы	utonuti	погрузиться	VERB	сврш.
+Глаголы	rasplinuti	расплыться	VERB	сврш.
+Глаголы	iskristalisati	выкристаллизоваться	VERB	сврш.
+Глаголы	preovladati	возобладать	VERB	сврш.
+Признаки	neizreciv	невыразимый	ADJ
+Признаки	nesaglediv	необозримый	ADJ
+Признаки	dalekosežan	далеко идущий	ADJ
+Признаки	bezuslovan	безусловный	ADJ
+Признаки	nepobitan	неопровержимый	ADJ
+Признаки	prefinjen	утончённый	ADJ
+Признаки	nenametljiv	ненавязчивый	ADJ
+Признаки	svojevrstan	своеобразный	ADJ
+Признаки	nedokučiv	непостижимый	ADJ
+Признаки	beskompromisan	бескомпромиссный	ADJ

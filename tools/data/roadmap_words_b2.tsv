@@ -1,0 +1,157 @@
+theme	lemma	translation	pos	note
+Абстракции	suština	суть	NOUN	ж
+Абстракции	svojstvo	свойство	NOUN	с
+Абстракции	odlika	особенность	NOUN	ж
+Абстракции	okolnost	обстоятельство	NOUN	ж
+Абстракции	uslov	условие	NOUN	м
+Абстракции	mogućnost	возможность	NOUN	ж
+Абстракции	verovatnoća	вероятность	NOUN	ж
+Абстракции	namera	намерение	NOUN	ж
+Абстракции	pristup	подход, доступ	NOUN	м
+Абстракции	srazmera	соотношение	NOUN	ж
+Абстракции	obim	объём	NOUN	м
+Абстракции	odnos	отношение	NOUN	м
+Абстракции	razmera	масштаб	NOUN	ж
+Абстракции	nedostatak	недостаток	NOUN	м
+Абстракции	prednost	преимущество	NOUN	ж
+Абстракции	protivrečnost	противоречие	NOUN	ж
+Мышление	razmišljanje	размышление	NOUN	с
+Мышление	rasuđivanje	суждение	NOUN	с
+Мышление	predrasuda	предрассудок	NOUN	ж
+Мышление	uverenje	убеждение	NOUN	с
+Мышление	stanovište	точка зрения	NOUN	с
+Мышление	tumačenje	толкование	NOUN	с
+Мышление	procena	оценка	NOUN	ж
+Мышление	svrsishodnost	целесообразность	NOUN	ж
+Мышление	obrazloženje	обоснование	NOUN	с
+Мышление	protumačiti	истолковать	VERB	сврш.
+Мышление	proceniti	оценить	VERB	сврш.
+Мышление	obrazložiti	обосновать	VERB	сврш.
+Мышление	preispitati	пересмотреть	VERB	сврш.
+Мышление	uočiti	подметить	VERB	сврш.
+Мышление	sagledati	охватить взглядом, осмыслить	VERB	сврш.
+Речь	izlaganje	изложение	NOUN	с
+Речь	obraćanje	обращение	NOUN	с
+Речь	nagoveštaj	намёк	NOUN	м
+Речь	ironija	ирония	NOUN	ж
+Речь	šala	шутка	NOUN	ж
+Речь	prekor	упрёк	NOUN	м
+Речь	pohvala	похвала	NOUN	ж
+Речь	kritika	критика	NOUN	ж
+Речь	argument	довод	NOUN	м
+Речь	zamerka	претензия	NOUN	ж
+Речь	nagovestiti	намекнуть	VERB	сврш.
+Речь	prekoriti	упрекнуть	VERB	сврш.
+Речь	pohvaliti	похвалить	VERB	сврш.
+Речь	ubediti	убедить	VERB	сврш.
+Речь	razuveriti	разубедить	VERB	сврш.
+Общество	institucija	учреждение	NOUN	ж
+Общество	uprava	управление	NOUN	ж
+Общество	nadležnost	компетенция	NOUN	ж
+Общество	propis	предписание	NOUN	м
+Общество	postupak	процедура	NOUN	м
+Общество	nadzor	надзор	NOUN	м
+Общество	korupcija	коррупция	NOUN	ж
+Общество	nasilje	насилие	NOUN	с
+Общество	bezbednost	безопасность	NOUN	ж
+Общество	solidarnost	солидарность	NOUN	ж
+Общество	dobrovoljan	добровольный	ADJ
+Общество	obavezan	обязательный	ADJ
+Общество	zvaničan	официальный	ADJ
+Общество	nezavisan	независимый	ADJ
+Экономика	konkurencija	конкуренция	NOUN	ж
+Экономика	ponuda	предложение	NOUN	ж
+Экономика	potražnja	спрос	NOUN	ж
+Экономика	investitor	инвестор	NOUN	м
+Экономика	dobavljač	поставщик	NOUN	м
+Экономика	imovina	имущество	NOUN	ж
+Экономика	vlasništvo	собственность	NOUN	с
+Экономика	poslovanje	деятельность фирмы	NOUN	с
+Экономика	tržišni	рыночный	ADJ
+Экономика	isplativ	выгодный	ADJ
+Экономика	skupoća	дороговизна	NOUN	ж
+Экономика	inflacija	инфляция	NOUN	ж
+Наука	hipoteza	гипотеза	NOUN	ж
+Наука	analiza	анализ	NOUN	ж
+Наука	osvrt	обзор, отзыв	NOUN	м
+Наука	uzorak	образец, выборка	NOUN	м
+Наука	pokazatelj	показатель	NOUN	м
+Наука	tumač	толкователь	NOUN	м
+Наука	napredak	прогресс	NOUN	м
+Наука	primena	применение	NOUN	ж
+Наука	tehnologija	технология	NOUN	ж
+Наука	izum	изобретение	NOUN	м
+Наука	primeniti	применить	VERB	сврш.
+Наука	razviti	развить	VERB	сврш.
+Наука	utvrditi	установить	VERB	сврш.
+Наука	obraditi	обработать	VERB	сврш.
+Культура	stvaralaštvo	творчество	NOUN	с
+Культура	delo	произведение	NOUN	с
+Культура	autor	автор	NOUN	м
+Культура	stil	стиль	NOUN	м
+Культура	žanr	жанр	NOUN	м
+Культура	metafora	метафора	NOUN	ж
+Культура	simbol	символ	NOUN	м
+Культура	epoha	эпоха	NOUN	ж
+Культура	uticajan	влиятельный	ADJ
+Культура	savremen	современный	ADJ
+Культура	tradicionalan	традиционный	ADJ
+Культура	prevodilac	переводчик	NOUN	м
+Чувства	uzbuđenje	волнение	NOUN	с
+Чувства	razočaranje	разочарование	NOUN	с
+Чувства	olakšanje	облегчение	NOUN	с
+Чувства	zavist	зависть	NOUN	ж
+Чувства	stid	стыд	NOUN	м
+Чувства	ponos	гордость	NOUN	м
+Чувства	nemir	беспокойство	NOUN	м
+Чувства	sažaljenje	жалость	NOUN	с
+Чувства	oduševljenje	восторг	NOUN	с
+Чувства	ravnodušnost	равнодушие	NOUN	ж
+Чувства	razočarati	разочаровать	VERB	сврш.
+Чувства	oduševiti	привести в восторг	VERB	сврш.
+Чувства	uznemiriti	встревожить	VERB	сврш.
+Глаголы	podrazumevati	подразумевать	VERB	несврш.
+Глаголы	uslovljavati	обусловливать	VERB	несврш.
+Глаголы	proizlaziti	вытекать, следовать	VERB	несврш.
+Глаголы	nadoknaditi	возместить	VERB	сврш.
+Глаголы	prilagoditi	приспособить	VERB	сврш.
+Глаголы	usmeriti	направить	VERB	сврш.
+Глаголы	ograničiti	ограничить	VERB	сврш.
+Глаголы	proširiti	расширить	VERB	сврш.
+Глаголы	nametnuti	навязать	VERB	сврш.
+Глаголы	zanemariti	пренебречь	VERB	сврш.
+Глаголы	istaknuti	выделить	VERB	сврш.
+Глаголы	suočiti	столкнуть лицом к лицу	VERB	сврш.
+Глаголы	suprotstaviti	противопоставить	VERB	сврш.
+Глаголы	oslanjati	опираться	VERB	несврш.
+Глаголы	obuhvatiti	охватить	VERB	сврш.
+Глаголы	preduzeti	предпринять	VERB	сврш.
+Признаки	suštinski	существенный	ADJ
+Признаки	prividan	кажущийся	ADJ
+Признаки	uslovan	условный	ADJ
+Признаки	dosledan	последовательный	ADJ
+Признаки	proizvoljan	произвольный	ADJ
+Признаки	neizbežan	неизбежный	ADJ
+Признаки	sporan	спорный	ADJ
+Признаки	temeljan	основательный	ADJ
+Признаки	površan	поверхностный	ADJ
+Признаки	prikladan	подходящий	ADJ
+Признаки	nedovoljan	недостаточный	ADJ
+Признаки	preteran	чрезмерный	ADJ
+Признаки	umeren	умеренный	ADJ
+Признаки	odlučan	решительный	ADJ
+Признаки	oprezan	осторожный	ADJ
+Наречия	naime	а именно	ADV
+Наречия	uostalom	впрочем	ADV
+Наречия	štaviše	более того	ADV
+Наречия	nasuprot	напротив	ADV
+Наречия	stoga	поэтому	ADV
+Наречия	utoliko	настолько	ADV
+Наречия	svakako	безусловно	ADV
+Наречия	navodno	якобы	ADV
+Наречия	uglavnom	в основном	ADV
+Наречия	delimično	частично	ADV
+Наречия	postepeno	постепенно	ADV
+Наречия	istovremeno	одновременно	ADV
+Наречия	naprotiv	наоборот	ADV
+Наречия	otprilike	приблизительно	ADV

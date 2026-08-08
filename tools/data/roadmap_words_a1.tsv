@@ -1,0 +1,360 @@
+theme	lemma	translation	pos	note
+Семья	porodica	семья	NOUN	ж
+Семья	majka	мать	NOUN	ж
+Семья	otac	отец	NOUN	м
+Семья	sin	сын	NOUN	м
+Семья	ćerka	дочь	NOUN	ж
+Семья	brat	брат	NOUN	м
+Семья	sestra	сестра	NOUN	ж
+Семья	baba	бабушка	NOUN	ж
+Семья	deda	дедушка	NOUN	м
+Семья	dete	ребёнок	NOUN	с
+Семья	roditelj	родитель	NOUN	м
+Семья	muž	муж	NOUN	м
+Семья	supruga	жена, супруга	NOUN	ж
+Семья	stric	дядя (брат отца)	NOUN	м
+Семья	ujak	дядя (брат матери)	NOUN	м
+Семья	tetka	тётя	NOUN	ж
+Семья	unuk	внук	NOUN	м
+Семья	rođak	родственник	NOUN	м
+Семья	komšija	сосед	NOUN	м
+Семья	prijatelj	друг	NOUN	м
+Дом	kuća	дом	NOUN	ж
+Дом	stan	квартира	NOUN	м
+Дом	soba	комната	NOUN	ж
+Дом	kuhinja	кухня	NOUN	ж
+Дом	kupatilo	ванная	NOUN	с
+Дом	vrata	дверь	NOUN	мн.
+Дом	prozor	окно	NOUN	м
+Дом	sto	стол	NOUN	м
+Дом	stolica	стул	NOUN	ж
+Дом	krevet	кровать	NOUN	м
+Дом	orman	шкаф	NOUN	м
+Дом	zid	стена	NOUN	м
+Дом	pod	пол	NOUN	м
+Дом	krov	крыша	NOUN	м
+Дом	sprat	этаж	NOUN	м
+Дом	dvorište	двор	NOUN	с
+Дом	ključ	ключ	NOUN	м
+Дом	ogledalo	зеркало	NOUN	с
+Дом	sijalica	лампочка	NOUN	ж
+Дом	stepenice	лестница	NOUN	мн.
+Еда	hrana	еда	NOUN	ж
+Еда	hleb	хлеб	NOUN	м
+Еда	voda	вода	NOUN	ж
+Еда	mleko	молоко	NOUN	с
+Еда	meso	мясо	NOUN	с
+Еда	sir	сыр	NOUN	м
+Еда	jaje	яйцо	NOUN	с
+Еда	voće	фрукты	NOUN	с
+Еда	povrće	овощи	NOUN	с
+Еда	jabuka	яблоко	NOUN	ж
+Еда	krompir	картофель	NOUN	м
+Еда	paradajz	помидор	NOUN	м
+Еда	so	соль	NOUN	ж
+Еда	šećer	сахар	NOUN	м
+Еда	kafa	кофе	NOUN	ж
+Еда	čaj	чай	NOUN	м
+Еда	sok	сок	NOUN	м
+Еда	vino	вино	NOUN	с
+Еда	pivo	пиво	NOUN	с
+Еда	supa	суп	NOUN	ж
+Еда	doručak	завтрак	NOUN	м
+Еда	ručak	обед	NOUN	м
+Еда	večera	ужин	NOUN	ж
+Еда	kašika	ложка	NOUN	ж
+Еда	viljuška	вилка	NOUN	ж
+Еда	nož	нож	NOUN	м
+Еда	tanjir	тарелка	NOUN	м
+Еда	čaša	стакан	NOUN	ж
+Числа	nula	ноль	NUM
+Числа	jedan	один	NUM
+Числа	dva	два	NUM
+Числа	tri	три	NUM
+Числа	četiri	четыре	NUM
+Числа	pet	пять	NUM
+Числа	šest	шесть	NUM
+Числа	sedam	семь	NUM
+Числа	osam	восемь	NUM
+Числа	devet	девять	NUM
+Числа	deset	десять	NUM
+Числа	jedanaest	одиннадцать	NUM
+Числа	dvadeset	двадцать	NUM
+Числа	trideset	тридцать	NUM
+Числа	stotina	сотня	NUM
+Числа	hiljada	тысяча	NUM
+Числа	prvi	первый	ADJ
+Числа	drugi	второй	ADJ
+Числа	treći	третий	ADJ
+Числа	broj	число, номер	NOUN	м
+Цвета	boja	цвет	NOUN	ж
+Цвета	crven	красный	ADJ
+Цвета	plav	синий	ADJ
+Цвета	zelen	зелёный	ADJ
+Цвета	žut	жёлтый	ADJ
+Цвета	crn	чёрный	ADJ
+Цвета	beo	белый	ADJ
+Цвета	siv	серый	ADJ
+Цвета	smeđ	коричневый	ADJ
+Цвета	narandžast	оранжевый	ADJ
+Цвета	ružičast	розовый	ADJ
+Цвета	svetao	светлый	ADJ
+Цвета	taman	тёмный	ADJ
+Время	vreme	время; погода	NOUN	с
+Время	dan	день	NOUN	м
+Время	nedelja	неделя; воскресенье	NOUN	ж
+Время	mesec	месяц	NOUN	м
+Время	godina	год	NOUN	ж
+Время	sat	час; часы	NOUN	м
+Время	minut	минута	NOUN	м
+Время	jutro	утро	NOUN	с
+Время	podne	полдень	NOUN	с
+Время	veče	вечер	NOUN	с
+Время	noć	ночь	NOUN	ж
+Время	danas	сегодня	ADV
+Время	sutra	завтра	ADV
+Время	juče	вчера	ADV
+Время	sada	сейчас	ADV
+Время	ponedeljak	понедельник	NOUN	м
+Время	utorak	вторник	NOUN	м
+Время	sreda	среда	NOUN	ж
+Время	četvrtak	четверг	NOUN	м
+Время	petak	пятница	NOUN	м
+Время	subota	суббота	NOUN	ж
+Тело	telo	тело	NOUN	с
+Тело	glava	голова	NOUN	ж
+Тело	oko	глаз	NOUN	с
+Тело	uho	ухо	NOUN	с
+Тело	nos	нос	NOUN	м
+Тело	usta	рот	NOUN	мн.
+Тело	zub	зуб	NOUN	м
+Тело	jezik	язык	NOUN	м
+Тело	ruka	рука	NOUN	ж
+Тело	noga	нога	NOUN	ж
+Тело	prst	палец	NOUN	м
+Тело	kosa	волосы	NOUN	ж
+Тело	lice	лицо	NOUN	с
+Тело	srce	сердце	NOUN	с
+Тело	stomak	живот	NOUN	м
+Тело	leđa	спина	NOUN	мн.
+Тело	vrat	шея	NOUN	м
+Тело	koža	кожа	NOUN	ж
+Тело	krv	кровь	NOUN	ж
+Тело	glas	голос	NOUN	м
+Одежда	odeća	одежда	NOUN	ж
+Одежда	majica	футболка	NOUN	ж
+Одежда	košulja	рубашка	NOUN	ж
+Одежда	pantalone	брюки	NOUN	мн.
+Одежда	suknja	юбка	NOUN	ж
+Одежда	haljina	платье	NOUN	ж
+Одежда	jakna	куртка	NOUN	ж
+Одежда	kaput	пальто	NOUN	м
+Одежда	cipela	туфля	NOUN	ж
+Одежда	patika	кроссовка	NOUN	ж
+Одежда	čarapa	носок	NOUN	ж
+Одежда	kapa	шапка	NOUN	ж
+Одежда	šal	шарф	NOUN	м
+Одежда	rukavica	перчатка	NOUN	ж
+Одежда	kaiš	ремень	NOUN	м
+Одежда	torba	сумка	NOUN	ж
+Животные	životinja	животное	NOUN	с
+Животные	pas	собака	NOUN	м
+Животные	mačka	кошка	NOUN	ж
+Животные	konj	лошадь	NOUN	м
+Животные	krava	корова	NOUN	ж
+Животные	svinja	свинья	NOUN	ж
+Животные	ovca	овца	NOUN	ж
+Животные	kokoška	курица	NOUN	ж
+Животные	ptica	птица	NOUN	ж
+Животные	riba	рыба	NOUN	ж
+Животные	miš	мышь	NOUN	м
+Животные	medved	медведь	NOUN	м
+Животные	vuk	волк	NOUN	м
+Животные	lisica	лиса	NOUN	ж
+Животные	zec	заяц	NOUN	м
+Животные	zmija	змея	NOUN	ж
+Животные	pčela	пчела	NOUN	ж
+Животные	muva	муха	NOUN	ж
+Город	grad	город	NOUN	м
+Город	selo	село	NOUN	с
+Город	ulica	улица	NOUN	ж
+Город	trg	площадь	NOUN	м
+Город	park	парк	NOUN	м
+Город	prodavnica	магазин	NOUN	ж
+Город	pijaca	рынок	NOUN	ж
+Город	bolnica	больница	NOUN	ж
+Город	apoteka	аптека	NOUN	ж
+Город	restoran	ресторан	NOUN	м
+Город	kafić	кафе	NOUN	м
+Город	banka	банк	NOUN	ж
+Город	pošta	почта	NOUN	ж
+Город	stanica	станция, остановка	NOUN	ж
+Город	crkva	церковь	NOUN	ж
+Город	muzej	музей	NOUN	м
+Город	biblioteka	библиотека	NOUN	ж
+Город	hotel	гостиница	NOUN	м
+Город	most	мост	NOUN	м
+Город	zgrada	здание	NOUN	ж
+Школа	škola	школа	NOUN	ж
+Школа	učenik	ученик	NOUN	м
+Школа	učitelj	учитель	NOUN	м
+Школа	profesor	преподаватель	NOUN	м
+Школа	razred	класс	NOUN	м
+Школа	čas	урок	NOUN	м
+Школа	knjiga	книга	NOUN	ж
+Школа	sveska	тетрадь	NOUN	ж
+Школа	olovka	карандаш	NOUN	ж
+Школа	tabla	доска	NOUN	ж
+Школа	zadatak	задание	NOUN	м
+Школа	ispit	экзамен	NOUN	м
+Школа	ocena	оценка	NOUN	ж
+Школа	reč	слово	NOUN	ж
+Школа	pitanje	вопрос	NOUN	с
+Школа	odgovor	ответ	NOUN	м
+Школа	učiti	учить, учиться	VERB	несврш.
+Школа	pisati	писать	VERB	несврш.
+Школа	čitati	читать	VERB	несврш.
+Школа	brojati	считать	VERB	несврш.
+Профессии	posao	работа	NOUN	м
+Профессии	lekar	врач	NOUN	м
+Профессии	zubar	зубной врач	NOUN	м
+Профессии	vozač	водитель	NOUN	м
+Профессии	kuvar	повар	NOUN	м
+Профессии	konobar	официант	NOUN	м
+Профессии	prodavac	продавец	NOUN	м
+Профессии	policajac	полицейский	NOUN	м
+Профессии	vatrogasac	пожарный	NOUN	м
+Профессии	inženjer	инженер	NOUN	м
+Профессии	radnik	рабочий	NOUN	м
+Профессии	novinar	журналист	NOUN	м
+Профессии	pekar	пекарь	NOUN	м
+Профессии	frizer	парикмахер	NOUN	м
+Профессии	glumac	актёр	NOUN	м
+Профессии	pevač	певец	NOUN	м
+Природа	sunce	солнце	NOUN	с
+Природа	kiša	дождь	NOUN	ж
+Природа	sneg	снег	NOUN	м
+Природа	vetar	ветер	NOUN	м
+Природа	oblak	облако	NOUN	м
+Природа	nebo	небо	NOUN	с
+Природа	more	море	NOUN	с
+Природа	reka	река	NOUN	ж
+Природа	jezero	озеро	NOUN	с
+Природа	planina	гора	NOUN	ж
+Природа	šuma	лес	NOUN	ж
+Природа	drvo	дерево	NOUN	с
+Природа	cvet	цветок	NOUN	м
+Природа	trava	трава	NOUN	ж
+Природа	kamen	камень	NOUN	м
+Природа	zemlja	земля; страна	NOUN	ж
+Природа	vazduh	воздух	NOUN	м
+Природа	vatra	огонь	NOUN	ж
+Природа	led	лёд	NOUN	м
+Природа	priroda	природа	NOUN	ж
+Транспорт	automobil	автомобиль	NOUN	м
+Транспорт	autobus	автобус	NOUN	м
+Транспорт	voz	поезд	NOUN	м
+Транспорт	avion	самолёт	NOUN	м
+Транспорт	bicikl	велосипед	NOUN	м
+Транспорт	brod	корабль	NOUN	м
+Транспорт	tramvaj	трамвай	NOUN	м
+Транспорт	taksi	такси	NOUN	м
+Транспорт	put	дорога, путь	NOUN	м
+Транспорт	karta	билет	NOUN	ж
+Транспорт	aerodrom	аэропорт	NOUN	м
+Транспорт	saobraćaj	движение, транспорт	NOUN	м
+Движение	ići	идти	VERB	несврш.
+Движение	doći	прийти	VERB	сврш.
+Движение	otići	уйти	VERB	сврш.
+Движение	ući	войти	VERB	сврш.
+Движение	izaći	выйти	VERB	сврш.
+Движение	trčati	бежать	VERB	несврш.
+Движение	hodati	ходить	VERB	несврш.
+Движение	stajati	стоять	VERB	несврш.
+Движение	sedeti	сидеть	VERB	несврш.
+Движение	ustati	встать	VERB	сврш.
+Движение	putovati	путешествовать	VERB	несврш.
+Движение	voziti	вести, ехать	VERB	несврш.
+Движение	leteti	лететь	VERB	несврш.
+Движение	pasti	упасть	VERB	сврш.
+Движение	nositi	нести, носить	VERB	несврш.
+Движение	doneti	принести	VERB	сврш.
+Движение	vratiti	вернуть	VERB	сврш.
+Движение	stići	успеть, прибыть	VERB	сврш.
+Глаголы	biti	быть	AUX	несврш.
+Глаголы	imati	иметь	VERB	несврш.
+Глаголы	raditi	работать, делать	VERB	несврш.
+Глаголы	jesti	есть	VERB	несврш.
+Глаголы	piti	пить	VERB	несврш.
+Глаголы	spavati	спать	VERB	несврш.
+Глаголы	gledati	смотреть	VERB	несврш.
+Глаголы	slušati	слушать	VERB	несврш.
+Глаголы	govoriti	говорить	VERB	несврш.
+Глаголы	reći	сказать	VERB	сврш.
+Глаголы	znati	знать	VERB	несврш.
+Глаголы	misliti	думать	VERB	несврш.
+Глаголы	hteti	хотеть	VERB	несврш.
+Глаголы	moći	мочь	VERB	несврш.
+Глаголы	morati	быть должным	VERB	несврш.
+Глаголы	videti	видеть	VERB	несврш.
+Глаголы	čuti	слышать	VERB	сврш.
+Глаголы	dati	дать	VERB	сврш.
+Глаголы	uzeti	взять	VERB	сврш.
+Глаголы	kupiti	купить	VERB	сврш.
+Глаголы	platiti	заплатить	VERB	сврш.
+Глаголы	otvoriti	открыть	VERB	сврш.
+Глаголы	zatvoriti	закрыть	VERB	сврш.
+Глаголы	početi	начать	VERB	сврш.
+Глаголы	završiti	закончить	VERB	сврш.
+Глаголы	voleti	любить	VERB	несврш.
+Глаголы	živeti	жить	VERB	несврш.
+Глаголы	čekati	ждать	VERB	несврш.
+Глаголы	tražiti	искать	VERB	несврш.
+Глаголы	naći	найти	VERB	сврш.
+Глаголы	pomoći	помочь	VERB	сврш.
+Глаголы	pitati	спрашивать	VERB	несврш.
+Признаки	velik	большой	ADJ
+Признаки	mali	маленький	ADJ
+Признаки	dobar	хороший	ADJ
+Признаки	loš	плохой	ADJ
+Признаки	nov	новый	ADJ
+Признаки	star	старый	ADJ
+Признаки	mlad	молодой	ADJ
+Признаки	lep	красивый	ADJ
+Признаки	ružan	некрасивый	ADJ
+Признаки	dug	длинный	ADJ
+Признаки	kratak	короткий	ADJ
+Признаки	visok	высокий	ADJ
+Признаки	nizak	низкий	ADJ
+Признаки	brz	быстрый	ADJ
+Признаки	spor	медленный	ADJ
+Признаки	topao	тёплый	ADJ
+Признаки	hladan	холодный	ADJ
+Признаки	jak	сильный	ADJ
+Признаки	slab	слабый	ADJ
+Признаки	težak	тяжёлый, трудный	ADJ
+Признаки	lak	лёгкий	ADJ
+Признаки	čist	чистый	ADJ
+Признаки	prljav	грязный	ADJ
+Признаки	pun	полный	ADJ
+Признаки	prazan	пустой	ADJ
+Признаки	skup	дорогой	ADJ
+Признаки	jeftin	дешёвый	ADJ
+Общение	zdravo	привет	INTJ
+Общение	hvala	спасибо	INTJ
+Общение	molim	пожалуйста	INTJ
+Общение	izvinite	извините	INTJ
+Общение	doviđenja	до свидания	INTJ
+Общение	da	да	PART
+Общение	ne	нет, не	PART
+Общение	kako	как	ADV
+Общение	zašto	почему	ADV
+Общение	gde	где	ADV
+Общение	kada	когда	ADV
+Общение	ko	кто	PRON
+Общение	šta	что	PRON
+Общение	ime	имя	NOUN	с
+Общение	prezime	фамилия	NOUN	с
+Общение	gospodin	господин	NOUN	м
+Общение	gospođa	госпожа	NOUN	ж
+Общение	razgovor	разговор	NOUN	м

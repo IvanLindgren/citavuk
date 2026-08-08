@@ -233,7 +233,20 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/profile/level", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSetSerbianLevel)))
 	mux.HandleFunc("GET /v1/profile/level/test", s.rateLimit(s.generalLimit, s.handleLevelTest))
 	mux.HandleFunc("POST /v1/profile/level/test", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleGradeLevelTest)))
+	mux.HandleFunc("GET /v1/profile/stats", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleProfileStats)))
 	mux.HandleFunc("POST /v1/analyze/text-level", s.rateLimit(s.generalLimit, s.handleTextLevel))
+
+	// Дорожная карта. Смотреть можно и не входя: карта отвечает на вопрос «что
+	// учить дальше», который задают до регистрации. Вошедшему добавляются его
+	// отметки, поэтому здесь optionalAuth, а не requireAuth.
+	mux.HandleFunc("GET /v1/roadmap", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleRoadmap)))
+	mux.HandleFunc("GET /v1/roadmap/{level}/{category}", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleRoadmapSection)))
+	mux.HandleFunc("POST /v1/roadmap/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleRoadmapMark)))
+	mux.HandleFunc("GET /v1/roadmap/target", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleRoadmapTarget)))
+	mux.HandleFunc("PUT /v1/roadmap/target", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSetRoadmapTarget)))
+	mux.HandleFunc("GET /v1/roadmap/{level}/comments", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleRoadmapComments)))
+	mux.HandleFunc("POST /v1/roadmap/{level}/comments", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleAddRoadmapComment)))
+	mux.HandleFunc("DELETE /v1/roadmap/comments/{commentId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDeleteRoadmapComment)))
 
 	// Прогресс игрового курса. Документ общий для Flutter и web.
 	mux.HandleFunc("GET /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGetCourseProgress)))
@@ -378,6 +391,18 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/admin/micro-feed/items/{id}/archive", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminArchiveMicroFeedItem)))
 	mux.HandleFunc("DELETE /v1/admin/micro-feed/items/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteMicroFeedItem)))
 	mux.HandleFunc("POST /v1/admin/lesson-reports/{id}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLessonReport)))
+
+	// Наполнение дорожной карты. Автор правит её на сайте, поэтому содержимое и
+	// лежит в базе, а не файлами в репозитории.
+	mux.HandleFunc("GET /v1/admin/roadmap/{level}/{category}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminRoadmapSection)))
+	mux.HandleFunc("PUT /v1/admin/roadmap/{level}/{category}/intro", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSaveRoadmapIntro)))
+	mux.HandleFunc("POST /v1/admin/roadmap/items", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSaveRoadmapItem)))
+	mux.HandleFunc("DELETE /v1/admin/roadmap/items/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteRoadmapItem)))
+	mux.HandleFunc("POST /v1/admin/roadmap/exercises", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSaveRoadmapExercise)))
+	mux.HandleFunc("DELETE /v1/admin/roadmap/exercises/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteRoadmapExercise)))
+	mux.HandleFunc("POST /v1/admin/roadmap/words", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSaveRoadmapWord)))
+	mux.HandleFunc("DELETE /v1/admin/roadmap/words/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteRoadmapWord)))
+	mux.HandleFunc("POST /v1/admin/roadmap/words/{level}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminPublishRoadmapWords)))
 
 	// Перевод. Аккаунт не требуется: перевод нужен и до входа, но гость
 	// ограничен жёстче вошедшего — квота DeepL общая на всех.

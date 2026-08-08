@@ -28,6 +28,10 @@ var (
 		"letter_unscramble": true, "matching": true, "fill_blank": true,
 		"image_description": true, "reading_qa": true, "form_hunt": true,
 		"explain_word": true, "teacher_letter": true,
+		// Добавлены дорожной картой. Формат упражнений у карты и у уроков
+		// общий, поэтому и проверка одна: разойдись они, преподаватель не смог
+		// бы собрать задание, которое карта уже показывает.
+		"word_drill": true, "translator_duel": true,
 	}
 )
 

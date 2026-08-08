@@ -27,11 +27,12 @@ import {
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
 import { AdminAnnouncementsPanel } from '../components/AdminAnnouncementsPanel';
 import { AdminMicroFeedPanel } from '../components/AdminMicroFeedPanel';
+import { AdminRoadmapPanel } from '../components/AdminRoadmapPanel';
 import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 
-type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers' | 'announcements' | 'micro-feed';
+type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers' | 'announcements' | 'micro-feed' | 'roadmap';
 
 const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'overview', label: 'Обзор' },
@@ -41,6 +42,7 @@ const TABS: Array<{ id: AdminTab; label: string }> = [
   { id: 'teachers', label: 'Преподаватели' },
   { id: 'announcements', label: 'Объявления' },
   { id: 'micro-feed', label: 'Вукоток' },
+  { id: 'roadmap', label: 'Дорожная карта' },
 ];
 
 export function Admin() {
@@ -107,6 +109,7 @@ export function Admin() {
         {tab === 'teachers' && <TeacherModerationPanel />}
         {tab === 'announcements' && <AdminAnnouncementsPanel />}
         {tab === 'micro-feed' && <AdminMicroFeedPanel />}
+        {tab === 'roadmap' && <AdminRoadmapPanel />}
       </div>
     </main>
   );

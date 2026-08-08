@@ -60,6 +60,11 @@ func (s *Server) handlePush(w http.ResponseWriter, r *http.Request) {
 			"Не удалось сохранить изменения.")
 		return
 	}
+	// Новые слова и повторения могут открыть достижение. Ошибка этой вторичной
+	// операции не отменяет уже сохранённую синхронизацию.
+	if _, achievementErr := s.store.EvaluateAchievements(r.Context(), user.ID); achievementErr != nil {
+		slog.Warn("проверка достижений после sync", "err", achievementErr, "user", user.ID)
+	}
 	writeJSON(w, http.StatusOK, pushResponse{Rev: rev})
 }
 

@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/community_lesson.dart';
-import '../models/reader_settings.dart';
-import '../models/word_analysis.dart';
-import '../services/analysis_repository.dart';
 import '../services/api_client.dart';
 import '../services/community_lessons_service.dart';
-import '../utils/tokenizer.dart';
-import '../widgets/reader_text.dart';
+import '../widgets/clickable_serbian_text.dart';
+import '../widgets/exercise_player.dart';
 
 enum _LessonStage { theory, practice, dialogue, complete }
 
@@ -25,12 +22,9 @@ class CommunityLessonScreen extends StatefulWidget {
 
 class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
   late Future<CommunityLesson> _lesson;
-  final Map<String, String> _answers = {};
-  final Map<String, String> _feedback = {};
-  final Map<String, List<int>> _tileSelections = {};
-  final Map<String, Map<int, String>> _matchingAnswers = {};
-  final Map<String, Map<String, String>> _readingAnswers = {};
-  final Map<String, Set<int>> _wordSelections = {};
+  /// Ответы живут вне виджета задания: задания показываются по одному, и
+  /// переход к следующему и обратно иначе стирал бы написанное.
+  final ExerciseAnswers _answers = ExerciseAnswers();
   String? _dialogueNode;
   _LessonStage _stage = _LessonStage.theory;
   int _exerciseIndex = 0;
@@ -173,7 +167,15 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
       Expanded(
           child: ListView(
               padding: const EdgeInsets.fromLTRB(18, 4, 18, 20),
-              children: [_exercise(lesson, exercise, _exerciseIndex)])),
+              children: [
+                ExerciseView(
+                  key: ValueKey(exercise['id'] ?? _exerciseIndex),
+                  exercise: exercise,
+                  index: _exerciseIndex,
+                  answers: _answers,
+                  onLetter: (id, answer) => _sendLetter(lesson, id, answer),
+                )
+              ])),
       Padding(
           padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
           child: Row(children: [
@@ -290,7 +292,7 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
                           width: 3,
                           color: Theme.of(context).colorScheme.primary)))
               : null,
-          child: _clickableText(text));
+          child: ClickableSerbianText(text));
     }
     if (type == 'image') {
       return Padding(
@@ -337,7 +339,7 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
                             const Padding(
                                 padding: EdgeInsets.only(top: 5, right: 8),
                                 child: Icon(Icons.circle, size: 6)),
-                            Expanded(child: _clickableText(item))
+                            Expanded(child: ClickableSerbianText(item))
                           ]))
                   .toList()));
     }
@@ -370,568 +372,14 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
     return const SizedBox.shrink();
   }
 
-  Widget _clickableText(String text) {
-    final scheme = Theme.of(context).colorScheme;
-    return ReaderParagraph(
-      text: text,
-      settings: const ReaderSettings(
-          fontSize: 17, lineHeight: 1.55, firstLineIndent: 0, justify: false),
-      textColor: scheme.onSurface,
-      highlightColor: scheme.primaryContainer,
-      highlightTextColor: scheme.onPrimaryContainer,
-      justify: false,
-      firstLineIndent: 0,
-      onTapWord: (_, token, __) => _showAnalysis(text, token),
-    );
-  }
-
-  Future<void> _showAnalysis(String sentence, Token token) async {
-    final future = AnalysisRepository.instance.analyzeToken(
-        sentence: sentence,
-        startOffset: token.start,
-        endOffset: token.end,
-        tokenText: token.text);
-    if (!mounted) return;
-    await showModalBottomSheet(
-        context: context,
-        showDragHandle: true,
-        builder: (context) => Padding(
-            padding: const EdgeInsets.fromLTRB(20, 4, 20, 28),
-            child: FutureBuilder<WordAnalysis>(
-                future: future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const SizedBox(
-                        height: 160,
-                        child: Center(child: CircularProgressIndicator()));
-                  }
-                  if (snapshot.hasError) {
-                    return const SizedBox(
-                        height: 140,
-                        child:
-                            Center(child: Text('Не удалось разобрать слово.')));
-                  }
-                  final word = snapshot.data!;
-                  return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(word.surface,
-                            style: Theme.of(context).textTheme.headlineSmall),
-                        const SizedBox(height: 8),
-                        Text(
-                            word.contextualTranslation?.isNotEmpty == true
-                                ? word.contextualTranslation!
-                                : word.translation,
-                            style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 8),
-                        Text('Начальная форма: ${word.lemma}'),
-                        if (word.upos.isNotEmpty)
-                          Text('Часть речи: ${word.upos}')
-                      ]);
-                })));
-  }
-
-  Widget _exercise(
-      CommunityLesson lesson, Map<String, dynamic> exercise, int index) {
-    final id = exercise['id']?.toString() ?? 'exercise-$index';
-    final type = exercise['type']?.toString() ?? '';
-    final hint = exercise['hint']?.toString() ?? '';
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Задание ${index + 1}',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          Text(exercise['prompt']?.toString() ?? '',
-              style: Theme.of(context).textTheme.titleLarge),
-          if (hint.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Padding(
-                  padding: EdgeInsets.only(top: 2, right: 6),
-                  child: Icon(Icons.lightbulb_outline, size: 18)),
-              Expanded(child: Text(hint))
-            ])
-          ],
-          const SizedBox(height: 18),
-          switch (type) {
-            'multiple_choice' => _choiceExercise(exercise, id),
-            'ending_picker' => _endingExercise(exercise, id),
-            'sentence_builder' => _tileExercise(exercise, id, false),
-            'letter_unscramble' => _tileExercise(exercise, id, true),
-            'matching' => _matchingExercise(exercise, id),
-            'fill_blank' => _fillBlankExercise(exercise, id),
-            'image_description' => _writtenExercise(exercise, id, image: true),
-            'reading_qa' => _readingExercise(exercise, id),
-            'form_hunt' => _formHuntExercise(exercise, id),
-            'teacher_letter' => _teacherLetterExercise(lesson, exercise, id),
-            _ => _writtenExercise(exercise, id),
-          },
-          if ((_feedback[id] ?? '').isNotEmpty)
-            Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(_feedback[id]!,
-                    style: TextStyle(
-                        color: _feedback[id] == 'Верно'
-                            ? Colors.green.shade700
-                            : Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w600)))
-        ]));
-  }
-
-  Widget _choiceExercise(Map<String, dynamic> exercise, String id) {
-    final options = _strings(exercise['options']);
-    final answer = _answers[id] ?? '';
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      ...options.map((option) => Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.all(14)),
-              icon: Icon(answer == option
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_off),
-              label: Text(option),
-              onPressed: () => setState(() {
-                    _answers[id] = option;
-                    _feedback.remove(id);
-                  })))),
-      Align(
-          alignment: Alignment.centerLeft,
-          child: FilledButton.icon(
-              icon: const Icon(Icons.check),
-              label: const Text('Проверить'),
-              onPressed: answer.isEmpty ? null : () => _check(exercise, id)))
-    ]);
-  }
-
-  Widget _endingExercise(Map<String, dynamic> exercise, String id) {
-    final options = _strings(exercise['options']);
-    final selected = _answers[id] ?? '';
-    final stem = exercise['stem']?.toString() ?? '';
-    final contextText = exercise['context']?.toString() ?? '';
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (contextText.isNotEmpty || stem.isNotEmpty)
-        Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(14),
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            child: Text(contextText.isEmpty
-                ? '${stem}___'
-                : contextText.replaceFirst('___', '${stem}___'))),
-      const SizedBox(height: 12),
-      Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: options
-              .map((option) => ChoiceChip(
-                  label: Text(option),
-                  selected: selected == option,
-                  onSelected: (_) => setState(() {
-                        _answers[id] = option;
-                        _feedback.remove(id);
-                      })))
-              .toList()),
-      if (selected.isNotEmpty) ...[
-        const SizedBox(height: 12),
-        Text('Получается: $stem$selected')
-      ],
-      const SizedBox(height: 14),
-      FilledButton.icon(
-          icon: const Icon(Icons.check),
-          label: const Text('Проверить'),
-          onPressed: selected.isEmpty ? null : () => _check(exercise, id))
-    ]);
-  }
-
-  Widget _tileExercise(Map<String, dynamic> exercise, String id, bool letters) {
-    final source = letters
-        ? [
-            ...(exercise['answer']?.toString() ?? '')
-                .runes
-                .map(String.fromCharCode),
-            ..._strings(exercise['distractors'])
-          ]
-        : [
-            ..._strings(exercise['tokens']),
-            ..._strings(exercise['distractors'])
-          ];
-    final tiles = source.reversed.toList();
-    final selected = _tileSelections[id] ?? const <int>[];
-    final value =
-        selected.map((index) => tiles[index]).join(letters ? '' : ' ');
-    _answers[id] = value;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-          constraints: const BoxConstraints(minHeight: 58),
-          width: double.infinity,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerLow,
-              border: Border(
-                  bottom: BorderSide(
-                      width: 2, color: Theme.of(context).dividerColor))),
-          child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: selected
-                  .map((tileIndex) => ActionChip(
-                      label: Text(tiles[tileIndex]),
-                      onPressed: () => setState(() {
-                            _tileSelections[id] = selected
-                                .where((index) => index != tileIndex)
-                                .toList();
-                            _feedback.remove(id);
-                          })))
-                  .toList())),
-      const SizedBox(height: 12),
-      Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: List.generate(tiles.length, (tileIndex) {
-            if (selected.contains(tileIndex)) return const SizedBox.shrink();
-            return ActionChip(
-                label: Text(tiles[tileIndex]),
-                onPressed: () => setState(() {
-                      _tileSelections[id] = [...selected, tileIndex];
-                      _feedback.remove(id);
-                    }));
-          })),
-      const SizedBox(height: 14),
-      Row(children: [
-        FilledButton.icon(
-            icon: const Icon(Icons.check),
-            label: const Text('Проверить'),
-            onPressed: selected.isEmpty ? null : () => _check(exercise, id)),
-        const SizedBox(width: 6),
-        IconButton(
-            tooltip: 'Начать заново',
-            icon: const Icon(Icons.restart_alt),
-            onPressed: selected.isEmpty
-                ? null
-                : () => setState(() {
-                      _tileSelections[id] = [];
-                      _answers[id] = '';
-                      _feedback.remove(id);
-                    }))
-      ])
-    ]);
-  }
-
-  Widget _matchingExercise(Map<String, dynamic> exercise, String id) {
-    final pairs = _maps(exercise['pairs']);
-    final rights = pairs
-        .map((pair) => pair['right']?.toString() ?? '')
-        .where((value) => value.isNotEmpty)
-        .toList()
-        .reversed
-        .toList();
-    final answers = _matchingAnswers[id] ?? <int, String>{};
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      for (var index = 0; index < pairs.length; index++)
-        Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(children: [
-              Expanded(child: Text(pairs[index]['left']?.toString() ?? '')),
-              const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(Icons.arrow_forward, size: 18)),
-              Expanded(
-                  child: DropdownButton<String>(
-                      isExpanded: true,
-                      hint: const Text('Выберите'),
-                      value: answers[index]?.isNotEmpty == true
-                          ? answers[index]
-                          : null,
-                      items: rights
-                          .map((right) => DropdownMenuItem(
-                              value: right, child: Text(right)))
-                          .toList(),
-                      onChanged: (value) => setState(() {
-                            _matchingAnswers[id] = {
-                              ...answers,
-                              index: value ?? ''
-                            };
-                            _feedback.remove(id);
-                          })))
-            ])),
-      Align(
-          alignment: Alignment.centerLeft,
-          child: FilledButton.icon(
-              icon: const Icon(Icons.check),
-              label: const Text('Проверить'),
-              onPressed: pairs.isEmpty || answers.length < pairs.length
-                  ? null
-                  : () => _check(exercise, id)))
-    ]);
-  }
-
-  Widget _fillBlankExercise(Map<String, dynamic> exercise, String id) {
-    final contextText = exercise['context']?.toString() ?? '___';
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          child: Text(contextText)),
-      const SizedBox(height: 12),
-      TextFormField(
-          key: ValueKey('blank-$id'),
-          initialValue: _answers[id],
-          decoration: const InputDecoration(labelText: 'Слово в пропуске'),
-          onChanged: (value) => setState(() {
-                _answers[id] = value;
-                _feedback.remove(id);
-              })),
-      const SizedBox(height: 14),
-      FilledButton.icon(
-          icon: const Icon(Icons.check),
-          label: const Text('Проверить'),
-          onPressed: (_answers[id] ?? '').trim().isEmpty
-              ? null
-              : () => _check(exercise, id))
-    ]);
-  }
-
-  Widget _writtenExercise(Map<String, dynamic> exercise, String id,
-      {bool image = false}) {
-    final imageUrl = exercise['imageUrl']?.toString() ?? '';
-    final contextText = exercise['context']?.toString() ?? '';
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (image && imageUrl.isNotEmpty) ...[
-        ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(imageUrl,
-                width: double.infinity,
-                height: 260,
-                fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => const SizedBox(
-                    height: 120,
-                    child: Center(child: Icon(Icons.broken_image_outlined))))),
-        const SizedBox(height: 14)
-      ],
-      if (contextText.isNotEmpty) ...[
-        Text(contextText, style: Theme.of(context).textTheme.titleMedium),
-        const SizedBox(height: 10)
-      ],
-      TextFormField(
-          key: ValueKey('written-$id'),
-          initialValue: _answers[id],
-          minLines: 3,
-          maxLines: 7,
-          decoration: const InputDecoration(hintText: 'Ваш ответ'),
-          onChanged: (value) => setState(() {
-                _answers[id] = value;
-                _feedback.remove(id);
-              })),
-      const SizedBox(height: 14),
-      FilledButton.icon(
-          icon: const Icon(Icons.check),
-          label: const Text('Проверить'),
-          onPressed: (_answers[id] ?? '').trim().isEmpty
-              ? null
-              : () => _check(exercise, id))
-    ]);
-  }
-
-  Widget _readingExercise(Map<String, dynamic> exercise, String id) {
-    final questions = _maps(exercise['questions']);
-    final answers = _readingAnswers[id] ?? <String, String>{};
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          child: _clickableText(exercise['readingText']?.toString() ?? '')),
-      const SizedBox(height: 18),
-      for (var index = 0; index < questions.length; index++) ...[
-        Text('${index + 1}. ${questions[index]['prompt'] ?? ''}',
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 8),
-        ..._strings(questions[index]['options']).map((option) {
-          final questionId = questions[index]['id']?.toString() ?? '$index';
-          return Padding(
-              padding: const EdgeInsets.only(bottom: 7),
-              child: OutlinedButton.icon(
-                  style:
-                      OutlinedButton.styleFrom(alignment: Alignment.centerLeft),
-                  icon: Icon(answers[questionId] == option
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_off),
-                  label: Text(option),
-                  onPressed: () => setState(() {
-                        _readingAnswers[id] = {...answers, questionId: option};
-                        _feedback.remove(id);
-                      })));
-        }),
-        const SizedBox(height: 10)
-      ],
-      FilledButton.icon(
-          icon: const Icon(Icons.check),
-          label: const Text('Проверить'),
-          onPressed: questions.isEmpty || answers.length < questions.length
-              ? null
-              : () => _check(exercise, id))
-    ]);
-  }
-
-  Widget _formHuntExercise(Map<String, dynamic> exercise, String id) {
-    final words =
-        SerbianTokenizer.tokenize(exercise['context']?.toString() ?? '')
-            .where((token) => token.isWord)
-            .toList();
-    final selected = _wordSelections[id] ?? <int>{};
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          child: Wrap(
-              spacing: 3,
-              runSpacing: 6,
-              children: List.generate(words.length, (index) {
-                final active = selected.contains(index);
-                return InkWell(
-                    borderRadius: BorderRadius.circular(4),
-                    onTap: () => setState(() {
-                          _wordSelections[id] = active
-                              ? ({...selected}..remove(index))
-                              : {...selected, index};
-                          _feedback.remove(id);
-                        }),
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 2),
-                        color: active
-                            ? Theme.of(context).colorScheme.primaryContainer
-                            : null,
-                        child: Text(words[index].text)));
-              }))),
-      const SizedBox(height: 14),
-      FilledButton.icon(
-          icon: const Icon(Icons.check),
-          label: const Text('Проверить'),
-          onPressed: selected.isEmpty ? null : () => _check(exercise, id))
-    ]);
-  }
-
-  Widget _teacherLetterExercise(
-      CommunityLesson lesson, Map<String, dynamic> exercise, String id) {
-    final criteria = exercise['criteria']?.toString() ?? '';
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (criteria.isNotEmpty) ...[
-        Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(14),
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            child: Text('Критерии: $criteria')),
-        const SizedBox(height: 12)
-      ],
-      TextFormField(
-          key: ValueKey('letter-$id'),
-          initialValue: _answers[id],
-          minLines: 6,
-          maxLines: 10,
-          decoration:
-              const InputDecoration(hintText: 'Напишите текст по-сербски'),
-          onChanged: (value) => setState(() {
-                _answers[id] = value;
-                _feedback.remove(id);
-              })),
-      const SizedBox(height: 14),
-      FilledButton.icon(
-          icon: const Icon(Icons.send_outlined),
-          label: const Text('Отправить преподавателю'),
-          onPressed: (_answers[id] ?? '').trim().isEmpty
-              ? null
-              : () => _sendLetter(lesson, id))
-    ]);
-  }
-
-  void _check(Map<String, dynamic> exercise, String id) {
-    final type = exercise['type']?.toString() ?? '';
-    final expected = _normalize(
-        (exercise['referenceAnswer'] ?? exercise['answer'] ?? '').toString());
-    var correct = false;
-    var selfCheck = expected.isEmpty;
-
-    if (type == 'matching') {
-      final pairs = _maps(exercise['pairs']);
-      final answers = _matchingAnswers[id] ?? const <int, String>{};
-      correct = List.generate(pairs.length, (index) => index).every((index) =>
-          _normalize(answers[index] ?? '') ==
-          _normalize(pairs[index]['right']?.toString() ?? ''));
-    } else if (type == 'reading_qa') {
-      final questions = _maps(exercise['questions']);
-      final answers = _readingAnswers[id] ?? const <String, String>{};
-      correct = questions.every((question) {
-        final questionId = question['id']?.toString() ?? '';
-        return _normalize(answers[questionId] ?? '') ==
-            _normalize(question['answer']?.toString() ?? '');
-      });
-    } else if (type == 'form_hunt') {
-      final words =
-          SerbianTokenizer.tokenize(exercise['context']?.toString() ?? '')
-              .where((token) => token.isWord)
-              .toList();
-      final selected = _wordSelections[id] ?? const <int>{};
-      final targets = _strings(exercise['targetWords']).map(_normalize).toSet();
-      correct = List.generate(words.length, (index) => index).every((index) =>
-          selected.contains(index) ==
-          targets.contains(_normalize(words[index].text)));
-    } else if (type == 'fill_blank') {
-      final accepted = _strings(exercise['acceptedAnswers']);
-      final values =
-          (accepted.isEmpty ? [exercise['answer']?.toString() ?? ''] : accepted)
-              .map(_normalize);
-      correct = values.contains(_normalize(_answers[id] ?? ''));
-    } else if (type == 'ending_picker') {
-      final ending = _normalize(_answers[id] ?? '');
-      final whole = _normalize(
-          '${exercise['stem']?.toString() ?? ''}${_answers[id] ?? ''}');
-      correct = ending == _normalize(exercise['answer']?.toString() ?? '') ||
-          whole == _normalize(exercise['referenceAnswer']?.toString() ?? '');
-    } else {
-      correct = _normalize(_answers[id] ?? '') == expected;
-      selfCheck =
-          selfCheck || type == 'explain_word' || type == 'image_description';
-    }
-
-    setState(() {
-      if (selfCheck) {
-        _feedback[id] = expected.isEmpty
-            ? 'Ответ сохранён для самопроверки.'
-            : 'Сравните с примером: ${exercise['referenceAnswer'] ?? exercise['answer']}';
-      } else {
-        _feedback[id] = correct
-            ? 'Верно'
-            : expected.isEmpty
-                ? 'Попробуйте ещё раз.'
-                : 'Эталон: ${exercise['referenceAnswer'] ?? exercise['answer']}';
-      }
-    });
-  }
-
-  Future<void> _sendLetter(CommunityLesson lesson, String id) async {
-    final answer = _answers[id]?.trim() ?? '';
-    if (answer.isEmpty) {
-      setState(() => _feedback[id] = 'Сначала напишите ответ.');
-      return;
-    }
+  /// Отправляет работу преподавателю. Возвращает текст ошибки либо null.
+  Future<String?> _sendLetter(
+      CommunityLesson lesson, String id, String answer) async {
     try {
       await widget.service.submitLetter(lesson, id, answer);
-      if (mounted) {
-        setState(() {
-          _answers[id] = '';
-          _feedback[id] = 'Работа отправлена преподавателю.';
-        });
-      }
+      return null;
     } on ApiException catch (e) {
-      if (mounted) setState(() => _feedback[id] = e.message);
+      return e.message;
     }
   }
 
@@ -959,7 +407,7 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
-                        _clickableText(node?['text']?.toString() ?? '')
+                        ClickableSerbianText(node?['text']?.toString() ?? '')
                       ]))),
           ...choices.map((choice) => Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -977,8 +425,6 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
           .toList();
   static List<String> _strings(dynamic value) =>
       (value as List? ?? const []).map((item) => item.toString()).toList();
-  static String _normalize(String value) =>
-      value.trim().toLowerCase().replaceFirst(RegExp(r'[.!?,;:]+$'), '');
   static String _typeLabel(String value) =>
       const {
         'lexicon': 'Лексика',

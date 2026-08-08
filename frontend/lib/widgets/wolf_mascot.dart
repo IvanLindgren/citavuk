@@ -18,6 +18,8 @@ class Wolf {
       'assets/imgs/citavuk_english.png'; // английское слово (светлый)
   static const zadumch =
       'assets/imgs/citavuk_zadumch.png'; // раздумье: книга не по зубам (светлый)
+  static const roadmap =
+      'assets/imgs/citavuk_roadmap.png'; // дорожная карта языка (светлый)
 
   /// Арты-стикеры, у которых фон вокруг волка тёмный (нарисован в самом PNG).
   /// Их красивее показывать в тёмной «рамке-стикере», светлые — в светлой.

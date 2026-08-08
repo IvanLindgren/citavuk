@@ -1,0 +1,106 @@
+theme	lemma	translation	pos	note
+Мышление	promišljanje	осмысление	NOUN	с
+Мышление	poimanje	постижение	NOUN	с
+Мышление	spoznaja	познание	NOUN	ж
+Мышление	naslućivanje	догадка	NOUN	с
+Мышление	dvosmislenost	двусмысленность	NOUN	ж
+Мышление	nijansa	нюанс	NOUN	ж
+Мышление	suptilnost	тонкость	NOUN	ж
+Мышление	predubeđenje	предубеждение	NOUN	с
+Мышление	zdravorazumski	основанный на здравом смысле	ADJ
+Мышление	proniknuti	проникнуть в суть	VERB	сврш.
+Мышление	poistovetiti	отождествить	VERB	сврш.
+Мышление	razlučiti	различить	VERB	сврш.
+Речь	besednik	оратор	NOUN	м
+Речь	govorništvo	риторика	NOUN	с
+Речь	izraz	выражение	NOUN	м
+Речь	obrt	оборот	NOUN	м
+Речь	poslovica	пословица	NOUN	ж
+Речь	izreka	изречение	NOUN	ж
+Речь	dosetka	острота	NOUN	ж
+Речь	podsmeh	насмешка	NOUN	м
+Речь	uzdržanost	сдержанность	NOUN	ж
+Речь	otvorenost	открытость	NOUN	ж
+Речь	dvoumiti	колебаться	VERB	несврш.
+Речь	nadovezati	продолжить мысль	VERB	сврш.
+Литература	pripovedanje	повествование	NOUN	с
+Литература	pripovedač	рассказчик	NOUN	м
+Литература	zaplet	завязка, интрига	NOUN	м
+Литература	rasplet	развязка	NOUN	м
+Литература	lik	персонаж	NOUN	м
+Литература	motiv	мотив	NOUN	м
+Литература	poređenje	сравнение	NOUN	с
+Литература	stih	стих	NOUN	м
+Литература	strofa	строфа	NOUN	ж
+Литература	rima	рифма	NOUN	ж
+Литература	proza	проза	NOUN	ж
+Литература	esej	эссе	NOUN	м
+Литература	tumačiti	толковать	VERB	несврш.
+Литература	oslikati	обрисовать	VERB	сврш.
+Общество	državnost	государственность	NOUN	ж
+Общество	suverenitet	суверенитет	NOUN	м
+Общество	ustav	конституция	NOUN	м
+Общество	nadležan	уполномоченный	ADJ
+Общество	presedan	прецедент	NOUN	м
+Общество	arbitraža	арбитраж	NOUN	ж
+Общество	posredovanje	посредничество	NOUN	с
+Общество	raslojavanje	расслоение	NOUN	с
+Общество	iseljavanje	эмиграция	NOUN	с
+Общество	integracija	интеграция	NOUN	ж
+Общество	pripadnost	принадлежность	NOUN	ж
+Общество	identitet	идентичность	NOUN	м
+История	razdoblje	период	NOUN	с
+История	vekovni	вековой	ADJ
+История	nasleđivanje	наследование	NOUN	с
+История	svedočanstvo	свидетельство	NOUN	с
+История	letopis	летопись	NOUN	м
+История	predanje	предание	NOUN	с
+История	ustanak	восстание	NOUN	м
+История	osvajanje	завоевание	NOUN	с
+История	propast	гибель, крах	NOUN	ж
+История	preporod	возрождение	NOUN	м
+История	zaostavština	наследие	NOUN	ж
+Наука	metodologija	методология	NOUN	ж
+Наука	empirijski	эмпирический	ADJ
+Наука	teorijski	теоретический	ADJ
+Наука	verodostojan	достоверный	ADJ
+Наука	opovrgnuti	опровергнуть	VERB	сврш.
+Наука	potkrepiti	подкрепить	VERB	сврш.
+Наука	izvesti	вывести	VERB	сврш.
+Наука	sistematizovati	систематизировать	VERB	несврш.
+Наука	uopštiti	обобщить	VERB	сврш.
+Наука	razgraničiti	разграничить	VERB	сврш.
+Глаголы	iziskivati	требовать	VERB	несврш.
+Глаголы	predodrediti	предопределить	VERB	сврш.
+Глаголы	odražavati	отражать	VERB	несврш.
+Глаголы	otelotvoriti	воплотить	VERB	сврш.
+Глаголы	umanjiti	преуменьшить	VERB	сврш.
+Глаголы	preinačiti	переиначить	VERB	сврш.
+Глаголы	obesmisliti	обессмыслить	VERB	сврш.
+Глаголы	iscrpsti	исчерпать	VERB	сврш.
+Глаголы	proisteći	проистечь	VERB	сврш.
+Глаголы	nametati	навязывать	VERB	несврш.
+Глаголы	posvedočiti	засвидетельствовать	VERB	сврш.
+Глаголы	prevazići	превзойти, преодолеть	VERB	сврш.
+Признаки	nedvosmislen	недвусмысленный	ADJ
+Признаки	neosporan	бесспорный	ADJ
+Признаки	posredan	косвенный	ADJ
+Признаки	neposredan	непосредственный	ADJ
+Признаки	svojstven	свойственный	ADJ
+Признаки	dvojak	двоякий	ADJ
+Признаки	prevashodan	преимущественный	ADJ
+Признаки	sveobuhvatan	всеобъемлющий	ADJ
+Признаки	nesumnjiv	несомненный	ADJ
+Признаки	uzajaman	взаимный	ADJ
+Признаки	proizvodan	производный	ADJ
+Признаки	zamršen	запутанный	ADJ
+Наречия	zacelo	наверняка	ADV
+Наречия	naposletku	в конце концов	ADV
+Наречия	usput	попутно	ADV
+Наречия	navlastito	в особенности	ADV
+Наречия	shodno	соответственно	ADV
+Наречия	nadasve	превыше всего	ADV
+Наречия	ponajviše	более всего	ADV
+Наречия	tobože	будто бы	ADV
+Наречия	valjda	вероятно	ADV
+Наречия	jedva	едва	ADV

@@ -58,7 +58,14 @@ function DocumentImport() {
  * ещё один блок ниже, именно поэтому: новость должна попасть на первый экран,
  * не отняв его у главного.
  */
-const HERO_SLIDES = ['reading', 'vukotok'] as const;
+const HERO_SLIDES = ['roadmap', 'reading', 'vukotok'] as const;
+
+/** Как называется слайд для тех, кто листает с клавиатуры или скринридером. */
+const SLIDE_LABELS: Record<(typeof HERO_SLIDES)[number], string> = {
+  roadmap: 'Новость про дорожную карту',
+  reading: 'Читавук',
+  vukotok: 'Новость про Вукоток',
+};
 
 /** Сколько новость держится на экране, прежде чем сменится. */
 const HERO_INTERVAL = 9000;
@@ -122,19 +129,25 @@ function Hero() {
               aria-hidden={!active}
             >
               <motion.div style={reduceMotion ? undefined : { y: textY, opacity: fade }}>
-                {id === 'reading' ? <ReadingSlide /> : <VukotokSlide />}
+                {id === 'roadmap' ? <RoadmapSlide /> : id === 'reading' ? <ReadingSlide /> : <VukotokSlide />}
               </motion.div>
 
               <motion.div
                 style={reduceMotion ? undefined : { y: mascotY }}
                 className="relative mx-auto w-full max-w-sm lg:max-w-md"
               >
-                {id === 'reading' ? (
+                {id === 'roadmap' ? (
+                  <Mascot
+                    pose="citavuk_roadmap"
+                    alt="Волк Читавук с картой сербского языка"
+                    float
+                    priority
+                  />
+                ) : id === 'reading' ? (
                   <Mascot
                     pose="citavuk_zdravo"
                     alt="Волк Читавук приветственно машет лапой"
                     float
-                    priority
                   />
                 ) : (
                   <Mascot
@@ -155,7 +168,7 @@ function Hero() {
             key={id}
             type="button"
             onClick={() => { setSlide(index); setManual(true); }}
-            aria-label={index === 0 ? 'Читавук' : 'Новость про Вукоток'}
+            aria-label={SLIDE_LABELS[id]}
             aria-current={index === slide ? 'true' : undefined}
             className={[
               'h-2 rounded-full transition-all duration-300',
@@ -207,6 +220,43 @@ function ReadingSlide() {
             Посмотреть, как работает
           </Button>
         </a>
+      </div>
+    </>
+  );
+}
+
+function RoadmapSlide() {
+  return (
+    <>
+      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-4 py-1.5 text-sm font-semibold text-[var(--accent)]">
+        <span className="size-2 animate-pulse rounded-full bg-[var(--accent)]" aria-hidden="true" />
+        Новое в Читавуке
+      </p>
+
+      <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+        <span className="text-[var(--accent)]">Дорожная карта</span> сербского
+        языка.
+      </h2>
+
+      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+        Что делать после пары грамматических упражнений и быстрых онлайн-курсов?
+        Слова, темы, тексты и задания разложены по уровням CEFR и по четырём
+        категориям: Reading, Grammar, Vocabulary, Writing.
+      </p>
+
+      <p className="mt-3 text-sm text-[var(--text-muted)]">
+        Прогресс считается сам, а обсудить карту можно прямо на странице.
+      </p>
+
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <Link to="/roadmap">
+          <Button size="lg">Открыть карту</Button>
+        </Link>
+        <Link to="/cards">
+          <Button variant="ghost" size="lg">
+            Мой словарь
+          </Button>
+        </Link>
       </div>
     </>
   );

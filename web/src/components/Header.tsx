@@ -12,6 +12,7 @@ import {
   LuInfo,
   LuLanguages,
   LuLibrary,
+  LuMap,
   LuMenu,
   LuNotebookTabs,
   LuSettings,
@@ -113,6 +114,14 @@ const GROUPS: { title: string; items: Section[] }[] = [
   {
     title: 'Учиться',
     items: [
+      {
+        to: '/roadmap',
+        label: 'Дорожная карта',
+        short: 'Карта',
+        icon: LuMap,
+        place: 'pill',
+        featured: true,
+      },
       { to: '/course', label: 'Курс', icon: LuGraduationCap, place: 'nav' },
       { to: '/trainer', label: 'Тренажёрка', icon: LuDumbbell, place: 'nav' },
       { to: '/cards', label: 'Словарь', icon: LuLanguages, place: 'nav' },

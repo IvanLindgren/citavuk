@@ -1,0 +1,323 @@
+theme	lemma	translation	pos	note
+Покупки	novac	деньги	NOUN	м
+Покупки	cena	цена	NOUN	ж
+Покупки	račun	счёт, чек	NOUN	м
+Покупки	popust	скидка	NOUN	м
+Покупки	kupovina	покупка	NOUN	ж
+Покупки	kasa	касса	NOUN	ж
+Покупки	kusur	сдача	NOUN	м
+Покупки	kese	пакет	NOUN	ж
+Покупки	roba	товар	NOUN	ж
+Покупки	prodaja	продажа	NOUN	ж
+Покупки	poklon	подарок	NOUN	м
+Покупки	besplatan	бесплатный	ADJ
+Покупки	prodati	продать	VERB	сврш.
+Покупки	koštati	стоить	VERB	несврш.
+Покупки	birati	выбирать	VERB	несврш.
+Покупки	probati	пробовать, примерять	VERB	несврш.
+Здоровье	zdravlje	здоровье	NOUN	с
+Здоровье	bolest	болезнь	NOUN	ж
+Здоровье	bol	боль	NOUN	м
+Здоровье	lek	лекарство	NOUN	м
+Здоровье	temperatura	температура	NOUN	ж
+Здоровье	prehlada	простуда	NOUN	ж
+Здоровье	kašalj	кашель	NOUN	м
+Здоровье	povreda	травма	NOUN	ж
+Здоровье	pregled	осмотр	NOUN	м
+Здоровье	recept	рецепт	NOUN	м
+Здоровье	bolestan	больной	ADJ
+Здоровье	zdrav	здоровый	ADJ
+Здоровье	umoran	усталый	ADJ
+Здоровье	boleti	болеть	VERB	несврш.
+Здоровье	odmoriti	отдохнуть	VERB	сврш.
+Здоровье	oporaviti	поправиться	VERB	сврш.
+Работа	zaposlenje	трудоустройство	NOUN	с
+Работа	plata	зарплата	NOUN	ж
+Работа	kancelarija	офис	NOUN	ж
+Работа	kolega	коллега	NOUN	м
+Работа	šef	начальник	NOUN	м
+Работа	sastanak	встреча, совещание	NOUN	м
+Работа	ugovor	договор	NOUN	м
+Работа	iskustvo	опыт	NOUN	с
+Работа	odmor	отпуск, отдых	NOUN	м
+Работа	zarada	заработок	NOUN	ж
+Работа	preduzeće	предприятие	NOUN	с
+Работа	firma	фирма	NOUN	ж
+Работа	zaposliti	нанять, устроить	VERB	сврш.
+Работа	zaraditi	заработать	VERB	сврш.
+Работа	dogovoriti	договориться	VERB	сврш.
+Работа	odlučiti	решить	VERB	сврш.
+Путешествия	putovanje	поездка	NOUN	с
+Путешествия	granica	граница	NOUN	ж
+Путешествия	pasoš	паспорт	NOUN	м
+Путешествия	prtljag	багаж	NOUN	м
+Путешествия	kofer	чемодан	NOUN	м
+Путешествия	rezervacija	бронирование	NOUN	ж
+Путешествия	recepcija	стойка регистрации	NOUN	ж
+Путешествия	mapa	карта	NOUN	ж
+Путешествия	turista	турист	NOUN	м
+Путешествия	plaža	пляж	NOUN	ж
+Путешествия	izlet	экскурсия	NOUN	м
+Путешествия	smeštaj	размещение	NOUN	м
+Путешествия	rezervisati	забронировать	VERB	сврш.
+Путешествия	zakasniti	опоздать	VERB	сврш.
+Путешествия	krenuti	отправиться	VERB	сврш.
+Путешествия	izgubiti	потерять	VERB	сврш.
+Чувства	osećanje	чувство	NOUN	с
+Чувства	ljubav	любовь	NOUN	ж
+Чувства	sreća	счастье, удача	NOUN	ж
+Чувства	strah	страх	NOUN	м
+Чувства	bes	гнев	NOUN	м
+Чувства	tuga	печаль	NOUN	ж
+Чувства	radost	радость	NOUN	ж
+Чувства	nada	надежда	NOUN	ж
+Чувства	srećan	счастливый	ADJ
+Чувства	tužan	грустный	ADJ
+Чувства	ljut	сердитый; острый	ADJ
+Чувства	uplašen	испуганный	ADJ
+Чувства	zadovoljan	довольный	ADJ
+Чувства	iznenađen	удивлённый	ADJ
+Чувства	osećati	чувствовать	VERB	несврш.
+Чувства	plakati	плакать	VERB	несврш.
+Чувства	smejati	смеяться	VERB	несврш.
+Чувства	nadati	надеяться	VERB	несврш.
+Характер	karakter	характер	NOUN	м
+Характер	pametan	умный	ADJ
+Характер	glup	глупый	ADJ
+Характер	ljubazan	любезный	ADJ
+Характер	strog	строгий	ADJ
+Характер	vredan	старательный; ценный	ADJ
+Характер	lenj	ленивый	ADJ
+Характер	hrabar	храбрый	ADJ
+Характер	iskren	искренний	ADJ
+Характер	tih	тихий	ADJ
+Характер	veseo	весёлый	ADJ
+Характер	ozbiljan	серьёзный	ADJ
+Характер	smiren	спокойный	ADJ
+Спорт	sport	спорт	NOUN	м
+Спорт	igra	игра	NOUN	ж
+Спорт	utakmica	матч	NOUN	ж
+Спорт	igrač	игрок	NOUN	м
+Спорт	tim	команда	NOUN	м
+Спорт	lopta	мяч	NOUN	ж
+Спорт	fudbal	футбол	NOUN	м
+Спорт	košarka	баскетбол	NOUN	ж
+Спорт	trening	тренировка	NOUN	м
+Спорт	pobeda	победа	NOUN	ж
+Спорт	poraz	поражение	NOUN	м
+Спорт	takmičenje	соревнование	NOUN	с
+Спорт	plivati	плавать	VERB	несврш.
+Спорт	pobediti	победить	VERB	сврш.
+Спорт	trenirati	тренироваться	VERB	несврш.
+Досуг	slobodan	свободный	ADJ
+Досуг	film	фильм	NOUN	м
+Досуг	pozorište	театр	NOUN	с
+Досуг	muzika	музыка	NOUN	ж
+Досуг	pesma	песня; стихотворение	NOUN	ж
+Досуг	koncert	концерт	NOUN	м
+Досуг	izložba	выставка	NOUN	ж
+Досуг	šetnja	прогулка	NOUN	ж
+Досуг	hobi	хобби	NOUN	м
+Досуг	zabava	развлечение, вечеринка	NOUN	ж
+Досуг	odmarati	отдыхать	VERB	несврш.
+Досуг	šetati	гулять	VERB	несврш.
+Досуг	svirati	играть на инструменте	VERB	несврш.
+Досуг	pevati	петь	VERB	несврш.
+Досуг	crtati	рисовать	VERB	несврш.
+Кухня	kuvati	готовить	VERB	несврш.
+Кухня	pržiti	жарить	VERB	несврш.
+Кухня	seći	резать	VERB	несврш.
+Кухня	mešati	мешать	VERB	несврш.
+Кухня	peći	печь	VERB	несврш.
+Кухня	ulje	масло	NOUN	с
+Кухня	brašno	мука	NOUN	с
+Кухня	pirinač	рис	NOUN	м
+Кухня	testenina	макароны	NOUN	ж
+Кухня	salata	салат	NOUN	ж
+Кухня	kolač	пирог, пирожное	NOUN	м
+Кухня	sladoled	мороженое	NOUN	м
+Кухня	začin	приправа	NOUN	м
+Кухня	ukus	вкус	NOUN	м
+Кухня	sladak	сладкий	ADJ
+Кухня	slan	солёный	ADJ
+Кухня	gorak	горький	ADJ
+Кухня	kiseo	кислый	ADJ
+Погода	oblačno	облачно	ADV
+Погода	sunčano	солнечно	ADV
+Погода	vetrovito	ветрено	ADV
+Погода	magla	туман	NOUN	ж
+Погода	grom	гром	NOUN	м
+Погода	munja	молния	NOUN	ж
+Погода	oluja	буря	NOUN	ж
+Погода	prognoza	прогноз	NOUN	ж
+Погода	proleće	весна	NOUN	с
+Погода	leto	лето	NOUN	с
+Погода	jesen	осень	NOUN	ж
+Погода	zima	зима	NOUN	ж
+Погода	stepen	градус	NOUN	м
+Погода	padati	идти (об осадках)	VERB	несврш.
+Погода	duvati	дуть	VERB	несврш.
+Общество	država	государство	NOUN	ж
+Общество	narod	народ	NOUN	м
+Общество	društvo	общество	NOUN	с
+Общество	zakon	закон	NOUN	м
+Общество	pravo	право	NOUN	с
+Общество	vlada	правительство	NOUN	ж
+Общество	izbor	выбор, выборы	NOUN	м
+Общество	građanin	гражданин	NOUN	м
+Общество	sud	суд	NOUN	м
+Общество	policija	полиция	NOUN	ж
+Общество	porez	налог	NOUN	м
+Общество	dokument	документ	NOUN	м
+Общество	dozvola	разрешение	NOUN	ж
+Общество	prijava	заявление	NOUN	ж
+Общество	opština	община, район	NOUN	ж
+Техника	telefon	телефон	NOUN	м
+Техника	računar	компьютер	NOUN	м
+Техника	ekran	экран	NOUN	м
+Техника	tastatura	клавиатура	NOUN	ж
+Техника	internet	интернет	NOUN	м
+Техника	poruka	сообщение	NOUN	ж
+Техника	sajt	сайт	NOUN	м
+Техника	lozinka	пароль	NOUN	ж
+Техника	fajl	файл	NOUN	м
+Техника	baterija	батарея	NOUN	ж
+Техника	uređaj	устройство	NOUN	м
+Техника	uključiti	включить	VERB	сврш.
+Техника	isključiti	выключить	VERB	сврш.
+Техника	poslati	послать	VERB	сврш.
+Техника	preuzeti	скачать, принять	VERB	сврш.
+Техника	sačuvati	сохранить	VERB	сврш.
+Учёба	fakultet	факультет, вуз	NOUN	м
+Учёба	student	студент	NOUN	м
+Учёба	predavanje	лекция	NOUN	с
+Учёба	vežba	упражнение	NOUN	ж
+Учёба	greška	ошибка	NOUN	ж
+Учёба	pravilo	правило	NOUN	с
+Учёба	primer	пример	NOUN	м
+Учёба	rečnik	словарь	NOUN	м
+Учёба	prevod	перевод	NOUN	м
+Учёба	izgovor	произношение	NOUN	м
+Учёба	slovo	буква	NOUN	с
+Учёба	rečenica	предложение	NOUN	ж
+Учёба	znanje	знание	NOUN	с
+Учёба	naučiti	выучить	VERB	сврш.
+Учёба	ponoviti	повторить	VERB	сврш.
+Учёба	objasniti	объяснить	VERB	сврш.
+Учёба	razumeti	понимать	VERB	несврш.
+Учёба	prevesti	перевести	VERB	сврш.
+Учёба	zapamtiti	запомнить	VERB	сврш.
+Учёба	zaboraviti	забыть	VERB	сврш.
+Дом и быт	nameštaj	мебель	NOUN	м
+Дом и быт	posuđe	посуда	NOUN	с
+Дом и быт	peškir	полотенце	NOUN	м
+Дом и быт	sapun	мыло	NOUN	м
+Дом и быт	četkica	щётка	NOUN	ж
+Дом и быт	frižider	холодильник	NOUN	м
+Дом и быт	šporet	плита	NOUN	м
+Дом и быт	mašina	машина, стиральная машина	NOUN	ж
+Дом и быт	smeće	мусор	NOUN	с
+Дом и быт	red	порядок; очередь	NOUN	м
+Дом и быт	čistiti	чистить, убирать	VERB	несврш.
+Дом и быт	prati	мыть, стирать	VERB	несврш.
+Дом и быт	popraviti	починить	VERB	сврш.
+Дом и быт	pospremiti	прибрать	VERB	сврш.
+Дом и быт	baciti	выбросить	VERB	сврш.
+Глаголы	dolaziti	приходить	VERB	несврш.
+Глаголы	odlaziti	уходить	VERB	несврш.
+Глаголы	pokazati	показать	VERB	сврш.
+Глаголы	poznavati	быть знакомым	VERB	несврш.
+Глаголы	upoznati	познакомиться	VERB	сврш.
+Глаголы	sresti	встретить	VERB	сврш.
+Глаголы	pozvati	позвать, пригласить	VERB	сврш.
+Глаголы	javiti	сообщить	VERB	сврш.
+Глаголы	obećati	обещать	VERB	сврш.
+Глаголы	verovati	верить	VERB	несврш.
+Глаголы	predložiti	предложить	VERB	сврш.
+Глаголы	promeniti	изменить	VERB	сврш.
+Глаголы	nastaviti	продолжить	VERB	сврш.
+Глаголы	prestati	перестать	VERB	сврш.
+Глаголы	pokušati	попытаться	VERB	сврш.
+Глаголы	uspeti	успеть, суметь	VERB	сврш.
+Глаголы	desiti	случиться	VERB	сврш.
+Глаголы	izgledati	выглядеть	VERB	несврш.
+Глаголы	trebati	быть нужным	VERB	несврш.
+Глаголы	dozvoliti	разрешить	VERB	сврш.
+Глаголы	zabraniti	запретить	VERB	сврш.
+Глаголы	brinuti	беспокоиться	VERB	несврш.
+Глаголы	čuvati	хранить, беречь	VERB	несврш.
+Глаголы	deliti	делить, делиться	VERB	несврш.
+Признаки	moguć	возможный	ADJ
+Признаки	nemoguć	невозможный	ADJ
+Признаки	poznat	известный	ADJ
+Признаки	nepoznat	неизвестный	ADJ
+Признаки	važan	важный	ADJ
+Признаки	potreban	нужный	ADJ
+Признаки	spreman	готовый	ADJ
+Признаки	siguran	уверенный, безопасный	ADJ
+Признаки	opasan	опасный	ADJ
+Признаки	tačan	точный, верный	ADJ
+Признаки	pogrešan	ошибочный	ADJ
+Признаки	običan	обычный	ADJ
+Признаки	poseban	особый	ADJ
+Признаки	sličan	похожий	ADJ
+Признаки	različit	разный	ADJ
+Признаки	isti	тот же	ADJ
+Признаки	zauzet	занятый	ADJ
+Признаки	tesan	тесный	ADJ
+Признаки	širok	широкий	ADJ
+Признаки	uzak	узкий	ADJ
+Наречия	uvek	всегда	ADV
+Наречия	nikad	никогда	ADV
+Наречия	ponekad	иногда	ADV
+Наречия	često	часто	ADV
+Наречия	retko	редко	ADV
+Наречия	obično	обычно	ADV
+Наречия	odmah	сразу	ADV
+Наречия	kasnije	позже	ADV
+Наречия	ranije	раньше	ADV
+Наречия	ponovo	снова	ADV
+Наречия	već	уже	ADV
+Наречия	tek	только что, лишь	ADV
+Наречия	skoro	почти	ADV
+Наречия	možda	может быть	ADV
+Наречия	sigurno	наверняка	ADV
+Наречия	zajedno	вместе	ADV
+Наречия	sam	один, сам	ADJ
+Наречия	napolju	снаружи	ADV
+Наречия	unutra	внутри	ADV
+Наречия	blizu	близко	ADV
+Наречия	daleko	далеко	ADV
+Наречия	gore	наверху	ADV
+Наречия	dole	внизу	ADV
+Связки	zato	поэтому	CCONJ
+Связки	jer	потому что	SCONJ
+Связки	iako	хотя	SCONJ
+Связки	ako	если	SCONJ
+Связки	dok	пока	SCONJ
+Связки	pošto	поскольку	SCONJ
+Связки	nego	чем, а	SCONJ
+Связки	ipak	всё же	ADV
+Связки	međutim	однако	CCONJ
+Связки	takođe	также	ADV
+Связки	osim	кроме	ADP
+Связки	umesto	вместо	ADP
+Связки	prema	к, согласно	ADP
+Связки	zbog	из-за	ADP
+Связки	tokom	в течение	ADP
+Связки	protiv	против	ADP
+Связки	između	между	ADP
+Связки	pored	рядом с	ADP
+Праздники	praznik	праздник	NOUN	м
+Праздники	rođendan	день рождения	NOUN	м
+Праздники	slava	слава (семейный праздник)	NOUN	ж
+Праздники	Božić	Рождество	NOUN	м
+Праздники	Uskrs	Пасха	NOUN	м
+Праздники	svadba	свадьба	NOUN	ж
+Праздники	gost	гость	NOUN	м
+Праздники	čestitka	поздравление	NOUN	ж
+Праздники	tradicija	традиция	NOUN	ж
+Праздники	običaj	обычай	NOUN	м
+Праздники	slaviti	праздновать	VERB	несврш.
+Праздники	čestitati	поздравлять	VERB	несврш.
+Праздники	ugostiti	принять гостей	VERB	сврш.
