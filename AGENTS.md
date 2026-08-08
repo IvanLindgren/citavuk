@@ -350,7 +350,7 @@ python main.py                          # uvicorn на 0.0.0.0:8000
 | Слой | Файлы |
 | --- | --- |
 | Каркас | `server/internal/roadmap/roadmap.go` (+ тест) |
-| База | миграции `0025_roadmap.sql`, `0026_roadmap_seed_words.sql`, `0027_roadmap_seed_grammar.sql`, связи с Тренажёркой в `0028_profile_achievements.sql` |
+| База | миграции `0025_roadmap.sql`, `0026_roadmap_seed_words.sql`, `0027_roadmap_seed_grammar.sql`, профиль в `0028_profile_achievements.sql`, связи существующей базы с Тренажёркой в `0029_roadmap_trainer_links.sql` |
 | Запросы | `store/roadmap.go` (чтение, отметки, цель), `store/roadmap_admin.go` (правка, обсуждение) |
 | API | `api/roadmap_handlers.go`, `api/admin_roadmap_handlers.go`, `api/routes_test.go` |
 | Веб | `pages/Roadmap.tsx`, `components/RoadmapPath.tsx`, `RoadmapSectionPanel.tsx`, `RoadmapComments.tsx`, `AdminRoadmapPanel.tsx`, `api/roadmap.ts`, `api/adminRoadmap.ts` |
