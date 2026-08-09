@@ -179,7 +179,11 @@ const MORE_GROUPS = GROUPS.map((group) => ({
   // Карта остаётся заметной кнопкой в широкой шапке и одновременно живёт в
   // ожидаемом месте «Ещё → Учиться». На узких экранах отдельная кнопка может
   // не поместиться, поэтому единственный вход только через pill был бы хрупким.
-  items: group.items.filter((item) => !item.place || item.to === '/roadmap'),
+  items: group.items
+    .filter((item) => !item.place || item.to === '/roadmap')
+    .map((item) =>
+      item.to === '/roadmap' ? { ...item, short: item.label } : item,
+    ),
 })).filter((group) => group.items.length > 0);
 
 export function Header() {
