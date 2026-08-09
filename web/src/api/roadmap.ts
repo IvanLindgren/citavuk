@@ -92,6 +92,7 @@ export interface RoadmapWord {
   translation: string;
   pos?: string;
   note?: string;
+  example?: string;
   rank?: number;
   position: number;
   status: 'draft' | 'published';

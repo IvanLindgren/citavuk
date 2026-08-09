@@ -193,6 +193,7 @@ type adminRoadmapWordRequest struct {
 	Translation string `json:"translation"`
 	POS         string `json:"pos"`
 	Note        string `json:"note"`
+	Example     string `json:"example"`
 	Rank        int    `json:"rank"`
 	Position    int    `json:"position"`
 	Status      string `json:"status"`
@@ -208,7 +209,8 @@ func (s *Server) handleAdminSaveRoadmapWord(w http.ResponseWriter, r *http.Reque
 	word := store.RoadmapWord{
 		Level: request.Level, Theme: request.Theme, Lemma: request.Lemma,
 		Translation: request.Translation, POS: request.POS, Note: request.Note,
-		Rank: request.Rank, Position: request.Position, Status: request.Status,
+		Example: request.Example, Rank: request.Rank, Position: request.Position,
+		Status: request.Status,
 	}
 	if trimmed := strings.TrimSpace(request.ID); trimmed != "" {
 		parsed, err := uuid.Parse(trimmed)

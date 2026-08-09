@@ -622,6 +622,7 @@ function WordsEditor({
   const [lemma, setLemma] = useState('');
   const [translation, setTranslation] = useState('');
   const [note, setNote] = useState('');
+  const [example, setExample] = useState('');
   const [busy, setBusy] = useState(false);
   const [filter, setFilter] = useState('');
 
@@ -699,11 +700,13 @@ function WordsEditor({
                   lemma,
                   translation,
                   note,
+                  example,
                   status: 'published',
                 });
                 setLemma('');
                 setTranslation('');
                 setNote('');
+                setExample('');
                 onChanged();
               } finally {
                 setBusy(false);
@@ -713,6 +716,13 @@ function WordsEditor({
             <LuPlus />
           </Button>
         </div>
+        <textarea
+          className={`${field} sm:col-span-4`}
+          rows={2}
+          placeholder="Пример в контексте (если оставить пустым, сервер составит простой пример)"
+          value={example}
+          onChange={(event) => setExample(event.target.value)}
+        />
       </div>
 
       <input
@@ -733,6 +743,9 @@ function WordsEditor({
               {word.lemma}
             </span>
             <span className="min-w-0 flex-1">{word.translation}</span>
+            <span className="hidden min-w-0 flex-[2] truncate text-[var(--text-muted)] lg:block" lang="sr">
+              {word.example}
+            </span>
             {word.status === 'draft' && (
               <span className="text-xs text-[var(--text-muted)]">черновик</span>
             )}

@@ -7,6 +7,7 @@ import {
   LuGraduationCap,
   LuLink,
   LuNewspaper,
+  LuPlus,
   LuSparkles,
   LuSquareCheckBig,
 } from 'react-icons/lu';
@@ -22,7 +23,9 @@ import {
 } from '../api/roadmap';
 import { importText } from '../lib/books';
 import { loadPublicBook, loadPublicLibrary } from '../lib/publicLibrary';
+import { roadmapWordExample } from '../lib/roadmapWords';
 import { useRouter } from '../lib/router';
+import { saveVocabularyWord } from '../lib/vocabulary';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
 import { Exercise, ExerciseResultContext } from './LessonPlayer';
@@ -567,6 +570,36 @@ function ThemeTile({
 
 function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }) {
   const [busy, setBusy] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const { sync } = useSync();
+  const example = roadmapWordExample(word);
+
+  const save = async () => {
+    if (saved || saving) return;
+    setSaving(true);
+    setSaveError('');
+    try {
+      await saveVocabularyWord({
+        word: word.lemma,
+        lemma: word.lemma,
+        pos: word.pos,
+        translation: word.translation,
+        forms: {
+          контекст: example,
+          источник: `Дорожная карта ${word.level} · ${word.theme}`,
+        },
+      });
+      setSaved(true);
+      void sync();
+    } catch {
+      setSaveError('Не удалось добавить слово.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const toggle = async () => {
     setBusy(true);
     try {
@@ -577,28 +610,9 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
     }
   };
   return (
-    <li>
-      <button
-        type="button"
-        onClick={toggle}
-        disabled={busy}
-        aria-pressed={word.known}
-        className={`flex w-full items-start gap-3 rounded-xl px-3 py-2 text-left transition-colors ${
-          word.known
-            ? 'bg-emerald-700/10'
-            : 'hover:bg-[var(--bg-sunken)]/70'
-        } disabled:opacity-60`}
-      >
-        <span
-          className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border transition-colors ${
-            word.known
-              ? 'border-emerald-700 bg-emerald-700 text-white'
-              : 'border-[var(--line)]'
-          }`}
-        >
-          {word.known && <LuCheck className="size-3.5" />}
-        </span>
-        <span className="min-w-0 flex-1">
+    <li className={`rounded-xl px-3 py-3 transition-colors ${word.known ? 'bg-emerald-700/10' : 'bg-[var(--bg-sunken)]/35'}`}>
+      <div className="flex items-start gap-3">
+        <div className="min-w-0 flex-1">
           <span className="flex flex-wrap items-baseline gap-x-2">
             <span
               className={`font-display text-lg ${word.known ? 'text-[var(--text-muted)] line-through decoration-emerald-700/40' : ''}`}
@@ -613,8 +627,36 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
             )}
           </span>
           <span className="block text-sm text-[var(--text-muted)]">{word.translation}</span>
-        </span>
+          <span className="mt-2 block border-l-2 border-[var(--accent)]/35 pl-2 text-sm leading-5" lang="sr">
+            {example}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={toggle}
+          disabled={busy}
+          aria-pressed={word.known}
+          aria-label={word.known ? `Снять отметку с ${word.lemma}` : `Отметить ${word.lemma} выученным`}
+          title={word.known ? 'Снять отметку' : 'Отметить выученным'}
+          className={`grid size-9 shrink-0 place-items-center rounded-md border transition-colors ${
+            word.known
+              ? 'border-emerald-700 bg-emerald-700 text-white'
+              : 'border-[var(--line)] hover:border-emerald-700 hover:text-emerald-700'
+          } disabled:opacity-60`}
+        >
+          <LuCheck className="size-4" />
+        </button>
+      </div>
+      <button
+        type="button"
+        onClick={() => void save()}
+        disabled={saving || saved}
+        className="mt-3 inline-flex min-h-9 items-center gap-2 rounded-md border border-[var(--line)] px-3 text-sm font-semibold text-[var(--accent)] hover:border-[var(--accent)] disabled:text-[var(--text-muted)] disabled:opacity-80"
+      >
+        {saved ? <LuCheck /> : <LuPlus />}
+        {saving ? 'Добавляем…' : saved ? 'В словаре' : 'Добавить в словарь'}
       </button>
+      {saveError && <p className="mt-2 text-sm text-red-700">{saveError}</p>}
     </li>
   );
 }

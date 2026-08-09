@@ -260,7 +260,14 @@ export function WordReader({
               result
                 ? async (asLemma) => {
                     const surface = activePhrase ?? selected!.token.text;
-                    await saveFromCard(bookId, surface, analysis, result, asLemma);
+                    await saveFromCard(
+                      bookId,
+                      surface,
+                      analysis,
+                      result,
+                      asLemma,
+                      lookup.context,
+                    );
                     void sync();
                   }
                 : undefined
@@ -283,6 +290,7 @@ export function WordReader({
 export function useWordLookup() {
   const [result, setResult] = useState<TranslationResult | null>(null);
   const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
+  const [context, setContext] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -298,6 +306,7 @@ export function useWordLookup() {
     pending.current = controller;
     setResult(null);
     setAnalysis(null);
+    setContext('');
     setError(null);
     setLoading(true);
     return controller;
@@ -308,6 +317,7 @@ export function useWordLookup() {
     pending.current = null;
     setResult(null);
     setAnalysis(null);
+    setContext('');
     setError(null);
     setLoading(false);
   }, []);
@@ -316,6 +326,7 @@ export function useWordLookup() {
     async (text: string, token: Token) => {
       const controller = begin();
       const window = sentenceWindow(text, token.start, token.end);
+      setContext(window.text);
 
       // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
       // словарь знает не каждое слово, а перевод нужен всегда.
@@ -350,6 +361,7 @@ export function useWordLookup() {
   const lookupPhrase = useCallback(
     async (phrase: string) => {
       const controller = begin();
+      setContext(phrase.trim());
       try {
         const translation = await translateText(phrase, controller.signal);
         if (controller.signal.aborted) return;
@@ -366,7 +378,7 @@ export function useWordLookup() {
     [begin],
   );
 
-  return { result, analysis, error, loading, lookupWord, lookupPhrase, reset };
+  return { result, analysis, context, error, loading, lookupWord, lookupPhrase, reset };
 }
 
 /**
@@ -389,7 +401,7 @@ export function WordLookupCard({
   onClose: () => void;
 }) {
   const { sync } = useSync();
-  const { result, analysis, error, loading, lookupWord, reset } = useWordLookup();
+  const { result, analysis, context, error, loading, lookupWord, reset } = useWordLookup();
 
   useEffect(() => {
     void lookupWord(sentence, token);
@@ -406,7 +418,16 @@ export function WordLookupCard({
       error={error}
       loading={loading}
       onClose={onClose}
-      onSave={result ? (asLemma) => saveFromCard(bookId, token.text, analysis, result, asLemma).then(sync) : undefined}
+      onSave={result
+        ? (asLemma) => saveFromCard(
+            bookId,
+            token.text,
+            analysis,
+            result,
+            asLemma,
+            context,
+          ).then(sync)
+        : undefined}
     />
   );
 }
@@ -423,10 +444,13 @@ async function saveFromCard(
   analysis: WordAnalysis | null,
   result: TranslationResult,
   asLemma: boolean,
+  context = '',
 ): Promise<void> {
   const lemma = analysis?.lemma ?? '';
   const label = formLabelOf(analysis);
   const forms: Record<string, unknown> = {};
+  if (context.trim()) forms['контекст'] = context.trim();
+  if (result.sentence?.trim()) forms['перевод контекста'] = result.sentence.trim();
   if (!asLemma && label) {
     forms['форма в тексте'] = label;
     if (lemma) forms['начальная форма'] = lemma;

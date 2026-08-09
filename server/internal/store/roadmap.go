@@ -69,6 +69,7 @@ type RoadmapWord struct {
 	Translation string    `json:"translation"`
 	POS         string    `json:"pos,omitempty"`
 	Note        string    `json:"note,omitempty"`
+	Example     string    `json:"example"`
 	Rank        int       `json:"rank,omitempty"`
 	Position    int       `json:"position"`
 	Status      string    `json:"status"`
@@ -282,7 +283,8 @@ func (s *Store) RoadmapWords(
 ) ([]RoadmapWord, error) {
 	rows, err := s.Pool.Query(ctx, `
 		SELECT w.id, w.level, w.theme, w.lemma, w.translation, w.pos, w.note,
-		       w.rank, w.position, w.status, (c.ref_id IS NOT NULL) AS known
+		       w.example, w.rank, w.position, w.status,
+		       (c.ref_id IS NOT NULL) AS known
 		  FROM roadmap_words w
 		  LEFT JOIN roadmap_completions c
 		         ON c.ref_id = w.id AND c.kind = 'word' AND c.user_id = $2
@@ -299,7 +301,7 @@ func (s *Store) RoadmapWords(
 		var word RoadmapWord
 		if err := rows.Scan(
 			&word.ID, &word.Level, &word.Theme, &word.Lemma, &word.Translation,
-			&word.POS, &word.Note, &word.Rank, &word.Position, &word.Status,
+			&word.POS, &word.Note, &word.Example, &word.Rank, &word.Position, &word.Status,
 			&word.Known,
 		); err != nil {
 			return nil, err

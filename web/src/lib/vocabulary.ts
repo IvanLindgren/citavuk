@@ -33,6 +33,12 @@ export interface Review {
   dirty: 0 | 1;
 }
 
+/** Context saved with a word by the reader, roadmap or another study view. */
+export function vocabularyContext(entry: Pick<VocabEntry, 'forms'>): string {
+  const value = entry.forms['контекст'] ?? entry.forms['пример'];
+  return typeof value === 'string' ? value.trim() : '';
+}
+
 export async function saveVocabularyWord(input: {
   bookId?: string | null;
   word: string;

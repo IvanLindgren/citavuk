@@ -25,6 +25,7 @@ import {
   saveReview,
   type Review,
   type VocabEntry,
+  vocabularyContext,
 } from '../lib/vocabulary';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
@@ -229,6 +230,7 @@ function ReviewSession({
   const reduceMotion = useReducedMotion();
   const [revealed, setRevealed] = useState(false);
   const row = due[0];
+  const context = row ? vocabularyContext(row.entry) : '';
 
   // Новая карточка всегда показывается лицевой стороной.
   useEffect(() => setRevealed(false), [row?.entry.id]);
@@ -289,6 +291,11 @@ function ReviewSession({
               <div className="mt-2 text-sm text-[var(--text-muted)]">
                 {row.entry.pos.toLowerCase()}
               </div>
+            )}
+            {context && (
+              <p className="mx-auto mt-5 max-w-xl border-l-2 border-[var(--accent)]/35 pl-3 text-left leading-6" lang="sr">
+                {context}
+              </p>
             )}
 
             <div className="mt-8 min-h-16">
@@ -431,6 +438,11 @@ function WritingSession({
                 <div className="font-display text-4xl font-bold text-[var(--accent)] sm:text-5xl">
                   {row.entry.word}
                 </div>
+                {vocabularyContext(row.entry) && (
+                  <p className="mx-auto mt-4 max-w-xl text-left text-sm leading-6 text-[var(--text-muted)]" lang="sr">
+                    {vocabularyContext(row.entry)}
+                  </p>
+                )}
                 <p className="mt-2 text-sm text-[var(--text-muted)]">
                   Сравните с написанным выше
                 </p>
@@ -604,6 +616,11 @@ function WordList({
                         ? row.entry.translation || '—'
                         : shorten(row.entry.translation || '—', PREVIEW_WORDS + 2)}
                     </div>
+                    {open && vocabularyContext(row.entry) && (
+                      <p className="mt-2 border-l-2 border-[var(--accent)]/30 pl-2 text-sm leading-5" lang="sr">
+                        {vocabularyContext(row.entry)}
+                      </p>
+                    )}
                     {long && !open && (
                       <span className="mt-0.5 inline-block text-xs text-[var(--accent)]">
                         показать целиком
