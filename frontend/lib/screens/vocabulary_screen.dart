@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../services/card_io.dart';
 import '../services/grammar_engine.dart';
 import '../services/user_db.dart';
-import '../widgets/animated_widgets.dart';
 import 'flashcards_screen.dart';
 
 class VocabularyScreen extends StatefulWidget {
@@ -177,94 +176,90 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                       forms = jsonDecode(item['forms'] as String);
                     } catch (_) {}
 
-                    return FadeSlideIn(
-                      delay: Duration(milliseconds: 24 * (index.clamp(0, 10))),
-                      child: Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(word,
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: scheme.primary)),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete_outline,
-                                        color: scheme.error),
-                                    onPressed: () => _deleteItem(id),
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: scheme.secondary,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(GrammarEngine.posShort(pos),
-                                        style: const TextStyle(
-                                            fontSize: 12, color: Colors.white)),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text('основа: $lemma',
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(word,
                                       style: TextStyle(
-                                          color: scheme.onSurface
-                                              .withValues(alpha: 0.6),
-                                          fontSize: 14)),
-                                ],
-                              ),
-                              Divider(
-                                  height: 24,
-                                  color: scheme.primary.withValues(alpha: 0.2)),
-                              Text(translation,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: scheme.onSurface)),
-                              if (forms.isNotEmpty) ...[
-                                const SizedBox(height: 12),
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 6,
-                                  children: forms.entries
-                                      .map((e) => Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 4),
-                                            decoration: BoxDecoration(
-                                              color: scheme
-                                                  .surfaceContainerHighest,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              border: Border.all(
-                                                  color: scheme.primary
-                                                      .withValues(alpha: 0.3)),
-                                            ),
-                                            child: Text(
-                                                '${GrammarEngine.formKeyRu(e.key)}: ${e.value}',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: scheme.onSurface)),
-                                          ))
-                                      .toList(),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: scheme.primary)),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete_outline,
+                                      color: scheme.error),
+                                  onPressed: () => _deleteItem(id),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
                                 ),
                               ],
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: scheme.secondary,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(GrammarEngine.posShort(pos),
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.white)),
+                                ),
+                                const SizedBox(width: 8),
+                                Text('основа: $lemma',
+                                    style: TextStyle(
+                                        color: scheme.onSurface
+                                            .withValues(alpha: 0.6),
+                                        fontSize: 14)),
+                              ],
+                            ),
+                            Divider(
+                                height: 24,
+                                color: scheme.primary.withValues(alpha: 0.2)),
+                            Text(translation,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: scheme.onSurface)),
+                            if (forms.isNotEmpty) ...[
+                              const SizedBox(height: 12),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 6,
+                                children: forms.entries
+                                    .map((e) => Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                scheme.surfaceContainerHighest,
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            border: Border.all(
+                                                color: scheme.primary
+                                                    .withValues(alpha: 0.3)),
+                                          ),
+                                          child: Text(
+                                              '${GrammarEngine.formKeyRu(e.key)}: ${e.value}',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: scheme.onSurface)),
+                                        ))
+                                    .toList(),
+                              ),
                             ],
-                          ),
+                          ],
                         ),
                       ),
                     );

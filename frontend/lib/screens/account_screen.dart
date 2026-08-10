@@ -290,7 +290,7 @@ class _SignedInViewState extends State<_SignedInView> {
                 controller: confirmField,
                 onChanged: (_) => setLocal(() {}),
                 decoration: const InputDecoration(
-                  labelText: 'Введите УДАЛИТЬ',
+                  labelText: 'Введи УДАЛИТЬ',
                   isDense: true,
                 ),
               ),
@@ -442,7 +442,7 @@ class _GoalProgressCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               goal.target.isEmpty
-                  ? 'Выберите ступень на карте, чтобы видеть общий прогресс.'
+                  ? 'Выбери ступень на карте, чтобы видеть общий прогресс.'
                   : '${goal.done} из ${goal.total} доступных шагов · '
                       '${(ratio * 100).round()}%',
               style: Theme.of(context).textTheme.bodySmall,
@@ -758,7 +758,7 @@ class _AuthFormState extends State<_AuthForm> {
       }
     } catch (_) {
       if (mounted) {
-        setState(() => _error = 'Не удалось войти. Попробуйте позже.');
+        setState(() => _error = 'Не удалось войти. Попробуй позже.');
       }
     }
   }
@@ -777,7 +777,7 @@ class _AuthFormState extends State<_AuthForm> {
       if (mounted) setState(() => _error = e.message);
     } catch (_) {
       if (mounted) {
-        setState(() => _error = 'Не удалось войти. Попробуйте позже.');
+        setState(() => _error = 'Не удалось войти. Попробуй позже.');
       }
     } finally {
       if (mounted) setState(() => _externalBusy = false);
@@ -839,7 +839,7 @@ class _AuthFormState extends State<_AuthForm> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Проверьте почту',
+                  'Проверь почту',
                   style: theme.textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
@@ -929,7 +929,7 @@ class _AuthFormState extends State<_AuthForm> {
                     controller: _name,
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
-                      labelText: 'Как вас зовут',
+                      labelText: 'Как тебя зовут',
                       helperText: 'Необязательно',
                       prefixIcon: Icon(Icons.person_outline),
                     ),
@@ -947,7 +947,7 @@ class _AuthFormState extends State<_AuthForm> {
                   ),
                   validator: (value) {
                     final v = (value ?? '').trim();
-                    if (v.isEmpty) return 'Укажите почту';
+                    if (v.isEmpty) return 'Укажи почту';
                     if (!v.contains('@') || !v.split('@').last.contains('.')) {
                       return 'Похоже на опечатку в адресе';
                     }
@@ -973,7 +973,7 @@ class _AuthFormState extends State<_AuthForm> {
                   ),
                   validator: (value) {
                     final v = value ?? '';
-                    if (v.isEmpty) return 'Введите пароль';
+                    if (v.isEmpty) return 'Введи пароль';
                     // Требование длины действует только при регистрации: у
                     // старого аккаунта пароль может быть любым, и мешать войти
                     // из-за этого нельзя.

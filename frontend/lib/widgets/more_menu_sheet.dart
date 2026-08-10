@@ -120,9 +120,14 @@ class _MoreMenuTile extends StatelessWidget {
     // Две плитки в ряд на телефоне, шире — сколько поместится. Ширина считается
     // от шторки, а не от экрана: на планшете и на десктопе это разные числа.
     final width = (MediaQuery.sizeOf(context).width - 24 - 8) / 2;
+    // Wrap не выравнивает высоту детей в ряду: плитка в две строки или с
+    // подписью торчала бы выше соседней. Высота задаётся здесь и растёт
+    // вместе с системным размером шрифта.
+    final height = MediaQuery.textScalerOf(context).scale(76).clamp(76.0, 132.0);
 
     return SizedBox(
       width: width.clamp(150.0, 240.0),
+      height: height,
       child: Material(
         color: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(14),
@@ -142,6 +147,8 @@ class _MoreMenuTile extends StatelessWidget {
                     children: [
                       Text(
                         item.label,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w600,
@@ -153,6 +160,8 @@ class _MoreMenuTile extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 2),
                           child: Text(
                             item.note!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 11,
                               height: 1.2,

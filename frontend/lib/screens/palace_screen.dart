@@ -140,7 +140,7 @@ class _PalaceScreenState extends State<PalaceScreen> {
             Text(
               'Слова запоминаются местом: на холодильник, на лампу, на стул. '
               'Потом достаточно мысленно пройти по комнате — и они всплывают '
-              'сами, в том порядке, в каком вы их расставили.',
+              'сами, в том порядке, в каком ты их расставил.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -229,7 +229,7 @@ class _ScenePicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
             child: Text(
-              'Выберите комнату',
+              'Выбери комнату',
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -417,7 +417,7 @@ class _PalaceRoomScreenState extends State<PalaceRoomScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   _words.isEmpty
-                      ? 'Слов пока нет. Отмечайте их в читалке — и они появятся здесь.'
+                      ? 'Слов пока нет. Отмечай их в читалке — и они появятся здесь.'
                       : 'Все слова расставлены.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall,
@@ -793,7 +793,7 @@ class _PalaceWalkScreenState extends State<PalaceWalkScreen> {
             const SizedBox(height: 10),
             Text(
               'Пройдите её ещё раз завтра — маршрут тот же, и слова начнут '
-              'всплывать раньше, чем вы дойдёте до места.',
+              'всплывать раньше, чем ты дойдёшь до места.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),

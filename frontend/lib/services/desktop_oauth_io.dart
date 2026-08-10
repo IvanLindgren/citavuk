@@ -90,7 +90,7 @@ abstract final class DesktopOAuth {
     } on SocketException {
       throw ApiException(
         'Не удалось открыть локальный порт для входа. '
-        'Проверьте, не блокирует ли его брандмауэр.',
+        'Проверь, не блокирует ли его брандмауэр.',
       );
     }
 

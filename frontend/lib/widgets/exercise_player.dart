@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../course/services/serbian_text.dart';
 import '../utils/tokenizer.dart';
 import 'clickable_serbian_text.dart';
 
@@ -279,7 +280,7 @@ class _ExerciseViewState extends State<ExerciseView> {
               Expanded(
                   child: DropdownButton<String>(
                       isExpanded: true,
-                      hint: const Text('Выберите'),
+                      hint: const Text('Выбери'),
                       value: answers[index]?.isNotEmpty == true
                           ? answers[index]
                           : null,
@@ -359,7 +360,7 @@ class _ExerciseViewState extends State<ExerciseView> {
           initialValue: widget.answers.text[id],
           minLines: 3,
           maxLines: 7,
-          decoration: const InputDecoration(hintText: 'Ваш ответ'),
+          decoration: const InputDecoration(hintText: 'Твой ответ'),
           onChanged: (value) => setState(() {
                 widget.answers.text[id] = value;
                 widget.answers.feedback.remove(id);
@@ -549,7 +550,7 @@ class _ExerciseViewState extends State<ExerciseView> {
         widget.answers.feedback[id] = correct
             ? 'Верно'
             : expected.isEmpty
-                ? 'Попробуйте ещё раз.'
+                ? 'Попробуй ещё раз.'
                 : 'Эталон: ${exercise['referenceAnswer'] ?? exercise['answer']}';
       }
     });
@@ -632,7 +633,7 @@ class _ExerciseViewState extends State<ExerciseView> {
           minLines: 3,
           maxLines: 6,
           decoration:
-              const InputDecoration(hintText: 'Ваш перевод на сербский'),
+              const InputDecoration(hintText: 'Твой перевод на сербский'),
           onChanged: (value) => widget.answers.text[id] = value),
       const SizedBox(height: 12),
       FilledButton(
@@ -678,6 +679,8 @@ class _ExerciseViewState extends State<ExerciseView> {
   static List<String> _strings(dynamic value) =>
       (value as List? ?? const []).map((item) => item.toString()).toList();
 
+  // Правило пунктуации общее с курсом и с вебом: пропущенная запятая не
+  // отменяет верный ответ (course/services/serbian_text.dart).
   static String _normalize(String value) =>
-      value.trim().toLowerCase().replaceFirst(RegExp(r'[.!?,;:]+$'), '');
+      stripAnswerPunctuation(value).toLowerCase();
 }

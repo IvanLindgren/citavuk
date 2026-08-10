@@ -257,7 +257,7 @@ class _TranslationDuelTile extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w800)),
                     SizedBox(height: 3),
-                    Text('Победите DeepL или Google. Судья — вы или Gemma 4.'),
+                    Text('Победи DeepL или Google. Судья — ты или Gemma 4.'),
                   ],
                 ),
               ),

@@ -103,8 +103,7 @@ class _RoadmapSectionScreenState extends State<RoadmapSectionScreen> {
                           padding: const EdgeInsets.all(14),
                           child: Text(
                             'Пока планируется — упражнения на написание '
-                            'предложений и игра против переводчика. '
-                            'Ускоро ће бити.',
+                            'предложений. Скоро будет.',
                             style: theme.textTheme.bodyMedium,
                           ),
                         ),
@@ -118,7 +117,7 @@ class _RoadmapSectionScreenState extends State<RoadmapSectionScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'Увы, тут пока пусто — но скоро что-то появится.',
+                            'Тут пока пусто — скоро что-то появится.',
                             style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant),
                           ),
@@ -348,6 +347,46 @@ class _ExerciseCardState extends State<_ExerciseCard> {
   }
 }
 
+/// Фраза с подчёркнутым словом.
+///
+/// Подчёркивание, а не просто цвет: фраза и так набрана мелко, и цветом одно
+/// слово среди семи глаз не выхватывает.
+class _ExampleLine extends StatelessWidget {
+  const _ExampleLine({required this.phrase, required this.serbian});
+
+  final String phrase;
+  final bool serbian;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final base = theme.textTheme.bodySmall?.copyWith(
+      color: serbian ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant,
+      height: 1.35,
+    );
+    return Padding(
+      padding: const EdgeInsets.only(top: 2),
+      child: Text.rich(
+        TextSpan(children: [
+          for (final part in splitExample(phrase))
+            TextSpan(
+              text: part.text,
+              style: part.target
+                  ? base?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: theme.colorScheme.primary,
+                      decoration: TextDecoration.underline,
+                      decorationColor: theme.colorScheme.primary,
+                      decorationThickness: 2,
+                    )
+                  : base,
+            ),
+        ]),
+      ),
+    );
+  }
+}
+
 /// Словарь уровня: слова по темам, каждое отмечается выученным.
 class _Words extends StatelessWidget {
   const _Words({required this.words, required this.onToggle});
@@ -400,7 +439,20 @@ class _Words extends StatelessWidget {
                           : '${word.lemma}  ${word.note}',
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    subtitle: Text(word.translation),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(word.translation),
+                        if (word.example.trim().isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          _ExampleLine(phrase: word.example, serbian: true),
+                          if (word.exampleTranslation.trim().isNotEmpty)
+                            _ExampleLine(
+                                phrase: word.exampleTranslation, serbian: false),
+                        ],
+                      ],
+                    ),
+                    isThreeLine: word.example.trim().isNotEmpty,
                     controlAffinity: ListTileControlAffinity.leading,
                     dense: true,
                   ),

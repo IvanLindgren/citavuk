@@ -194,7 +194,7 @@ class RadioControlSheet extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                  'Может быть, с музыкой вам будет легче сосредоточиться? Здесь можно выбрать станцию с lo-fi и эмбиентом и отрегулировать громкость.',
+                  'Может быть, с музыкой тебе будет легче сосредоточиться? Здесь можно выбрать станцию с lo-fi и эмбиентом и отрегулировать громкость.',
                   style: TextStyle(
                       fontSize: 13,
                       color: scheme.onSurface.withValues(alpha: 0.65))),

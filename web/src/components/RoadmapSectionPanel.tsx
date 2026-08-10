@@ -23,7 +23,7 @@ import {
 } from '../api/roadmap';
 import { importText } from '../lib/books';
 import { loadPublicBook, loadPublicLibrary } from '../lib/publicLibrary';
-import { roadmapWordExample } from '../lib/roadmapWords';
+import { plainExample, splitExample } from '../lib/roadmapWords';
 import { useRouter } from '../lib/router';
 import { saveVocabularyWord } from '../lib/vocabulary';
 import { useAuth } from '../state/auth';
@@ -92,8 +92,7 @@ export function RoadmapSectionPanel({
 
       {category.planned && (
         <p className="mt-6 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)]/50 px-4 py-3">
-          Пока планируется — упражнения на написание предложений и игра против
-          переводчика. <span lang="sr">Ускоро ће бити.</span>
+          Пока планируется — упражнения на написание предложений. Скоро будет.
         </p>
       )}
 
@@ -574,7 +573,8 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState('');
   const { sync } = useSync();
-  const example = roadmapWordExample(word);
+  const example = splitExample(word.example ?? '');
+  const exampleTranslation = splitExample(word.exampleTranslation ?? '');
 
   const save = async () => {
     if (saved || saving) return;
@@ -587,7 +587,8 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
         pos: word.pos,
         translation: word.translation,
         forms: {
-          контекст: example,
+          контекст: plainExample(word.example ?? ''),
+          перевод: plainExample(word.exampleTranslation ?? ''),
           источник: `Дорожная карта ${word.level} · ${word.theme}`,
         },
       });
@@ -627,9 +628,40 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
             )}
           </span>
           <span className="block text-sm text-[var(--text-muted)]">{word.translation}</span>
-          <span className="mt-2 block border-l-2 border-[var(--accent)]/35 pl-2 text-sm leading-5" lang="sr">
-            {example}
-          </span>
+          {example.length > 0 && (
+            <span className="mt-2 block border-l-2 border-[var(--accent)]/35 pl-2 text-sm leading-5">
+              <span className="block" lang="sr">
+                {example.map((part, index) =>
+                  part.target ? (
+                    <mark
+                      key={index}
+                      className="bg-transparent font-semibold text-[var(--accent)] underline decoration-[var(--accent)] decoration-2 underline-offset-2"
+                    >
+                      {part.text}
+                    </mark>
+                  ) : (
+                    <span key={index}>{part.text}</span>
+                  ),
+                )}
+              </span>
+              {exampleTranslation.length > 0 && (
+                <span className="mt-0.5 block text-[var(--text-muted)]">
+                  {exampleTranslation.map((part, index) =>
+                    part.target ? (
+                      <mark
+                        key={index}
+                        className="bg-transparent font-semibold text-[var(--text)] underline decoration-[var(--accent)]/60 decoration-2 underline-offset-2"
+                      >
+                        {part.text}
+                      </mark>
+                    ) : (
+                      <span key={index}>{part.text}</span>
+                    ),
+                  )}
+                </span>
+              )}
+            </span>
+          )}
         </div>
         <button
           type="button"

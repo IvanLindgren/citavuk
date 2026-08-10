@@ -104,7 +104,7 @@ class _OdysseyScreenState extends State<OdysseyScreen> {
       builder: (dialogContext) => AlertDialog(
         title: const Text('Спартанские шлемы открыты'),
         content: const Text(
-          'Откройте любую книгу, зайдите в настройки чтения и выберите новый '
+          'Открой любую книгу, зайди в настройки чтения и выбери новый '
           'фон страницы.',
         ),
         actions: [

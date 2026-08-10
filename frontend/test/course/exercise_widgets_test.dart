@@ -215,7 +215,7 @@ void main() {
       await tester
           .pumpWidget(_Harness(exercise: exercise, onAnswer: (a) => last = a));
 
-      expect(find.text('Нажимайте слова ниже, чтобы собрать предложение'),
+      expect(find.text('Нажимай слова ниже, чтобы собрать предложение'),
           findsOneWidget);
 
       await tester.tap(find.text('Profesor').first);
@@ -454,7 +454,7 @@ void main() {
 
       expect(find.text('Верно'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.text('Ваш ответ'), findsNothing);
+      expect(find.text('Твой ответ'), findsNothing);
     });
   });
 }

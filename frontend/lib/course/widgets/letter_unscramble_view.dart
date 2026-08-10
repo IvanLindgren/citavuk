@@ -149,7 +149,7 @@ class _LetterUnscrambleViewState extends State<LetterUnscrambleView> {
           minHeight: 64,
           child: _picked.isEmpty
               ? Text(
-                  'Нажимайте буквы, чтобы собрать слово',
+                  'Нажимай буквы, чтобы собрать слово',
                   style: TextStyle(
                       color: scheme.onSurface.withValues(alpha: 0.55)),
                 )

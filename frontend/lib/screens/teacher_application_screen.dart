@@ -108,7 +108,7 @@ class _TeacherApplicationScreenState extends State<TeacherApplicationScreen> {
           : ListView(
               padding: const EdgeInsets.all(20),
               children: [
-                Text('Создавайте бесплатные уроки',
+                Text('Создавай бесплатные уроки',
                     style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 const Text(
@@ -119,7 +119,7 @@ class _TeacherApplicationScreenState extends State<TeacherApplicationScreen> {
                       'Решение появится здесь и придёт на подтверждённую почту.'),
                 if (status == 'approved')
                   _statusCard('Заявка одобрена',
-                      'Откройте citavuk.ru в браузере, чтобы создавать и публиковать уроки.'),
+                      'Открой citavuk.ru в браузере, чтобы создавать и публиковать уроки.'),
                 if (status != 'pending' && status != 'approved') ...[
                   if (status == 'rejected' || status == 'suspended')
                     _statusCard('Заявку можно отправить повторно',

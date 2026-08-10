@@ -155,7 +155,7 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
                             child: Padding(
                               padding: EdgeInsets.all(28),
                               child: Text(
-                                'Пока никто ничего не написал.\nБудьте первым.',
+                                'Пока никто ничего не написал.\nБудь первым.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: Colors.white54),
                               ),

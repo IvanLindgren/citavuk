@@ -120,14 +120,14 @@ class _RoadmapCommentsScreenState extends State<RoadmapCommentsScreen> {
                             Text(
                               'Любая дорожная карта требует обсуждений и '
                               'дополнений, которые мог не учесть автор. Что '
-                              'добавить в этот уровень, что убрать, где вы '
+                              'добавить в этот уровень, что убрать, где ты '
                               'застряли?',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const SizedBox(height: 14),
                             if (roots.isEmpty)
                               const Text('Пока никто не высказался. '
-                                  'Будьте первым.'),
+                                  'Будь первым.'),
                             for (final root in roots)
                               _Thread(
                                 root: root,
@@ -176,7 +176,7 @@ class _RoadmapCommentsScreenState extends State<RoadmapCommentsScreen> {
                             decoration: InputDecoration(
                               hintText: _replyTo.isEmpty
                                   ? 'Что добавить в этот уровень?'
-                                  : 'Ваш ответ',
+                                  : 'Твой ответ',
                               border: const OutlineInputBorder(),
                             ),
                           ),

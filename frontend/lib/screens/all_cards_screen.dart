@@ -124,7 +124,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
                   size: 56, color: scheme.onSurfaceVariant),
               const SizedBox(height: 16),
               Text(
-                'Здесь появятся слова, которые вы сохраните из книг.',
+                'Здесь появятся слова, которые ты сохранишь из книг.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),

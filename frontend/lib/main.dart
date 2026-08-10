@@ -211,10 +211,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _loadBooks() async {
     setState(() => _isLoading = true);
     final booksList = await UserDb.instance.getBooks();
-    final recent = await UserDb.instance.getRecentWords(4);
+    // Берём с запасом: в словарь попадают и выделенные фразы, а в приветствие
+    // идут только одиночные слова — обрывки «- Molim…» читаются как сбой.
+    final recent = await UserDb.instance.getRecentWords(12);
     setState(() {
       _books = booksList;
-      _recentWords = recent;
+      _recentWords = recent.where(isSingleWord).take(4).toList();
       _isLoading = false;
     });
   }
@@ -547,7 +549,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() => _isLoading = false);
 
     if (!ok) {
-      _snack('Не удалось скачать текст книги. Проверьте интернет '
+      _snack('Не удалось скачать текст книги. Проверь интернет '
           'и синхронизацию.');
       return const [];
     }
@@ -896,16 +898,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       OutlinedButton.icon(
                         icon: const Icon(Icons.text_snippet_outlined),
-                        label: const Text('Тест DOCX'),
+                        label: const Text('Открыть рассказ'),
                         onPressed: () => _loadTestStory(
-                            'assets/test_story.docx',
-                            'Тестовая история (DOCX)'),
+                            'assets/test_story.docx', 'Сербский рассказ'),
                       ),
                       OutlinedButton.icon(
                         icon: const Icon(Icons.picture_as_pdf_outlined),
-                        label: const Text('Тест PDF'),
+                        label: const Text('Тот же рассказ в PDF'),
                         onPressed: () => _loadTestStory(
-                            'assets/test_story.pdf', 'Тестовая история (PDF)'),
+                            'assets/test_story.pdf', 'Сербский рассказ (PDF)'),
                       ),
                     ],
                   ),
@@ -920,57 +921,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  /// Приветствие и публичная библиотека едут вместе со списком, а не висят
+  /// над ним: закреплёнными они забирали верхнюю треть экрана у книг, ради
+  /// которых приложение и открывают.
   Widget _buildList(ColorScheme scheme) {
-    return Column(
-      children: [
-        if (_recentWords.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(AppTheme.radiusCard),
-              onTap: _openAllCards,
-              child: WolfBubble(
-                title: 'Здраво! С возвращением',
-                // В словарь попадают и длинные фразы: показываем начало, а
-                // целиком запись открывается в разделе слов.
-                text: 'Недавно ты добавил: '
-                    '${_recentWords.map((w) => shortPhrase(w)).join(', ')}. '
-                    'Нажми, чтобы открыть все слова.',
-                asset: Wolf.zdravo,
-              ),
+    return _booksList(scheme, header: [
+      if (_recentWords.isNotEmpty)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppTheme.radiusCard),
+            onTap: _openAllCards,
+            child: WolfBubble(
+              title: 'Здраво! С возвращением',
+              text: 'Недавно ты добавил: '
+                  '${_recentWords.map((w) => shortPhrase(w)).join(', ')}. '
+                  'Нажми, чтобы открыть все слова.',
+              asset: Wolf.zdravo,
             ),
           ),
-        _buildFreeLibrary(scheme),
-        Expanded(child: _booksList(scheme)),
-      ],
-    );
+        ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: _freeLibraryCard(scheme),
+      ),
+    ]);
   }
 
-  Widget _buildFreeLibrary(ColorScheme scheme) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Card(
-        child: ListTile(
-          leading: Icon(Icons.local_library_outlined,
-              color: scheme.primary, size: 34),
-          title: const Text(
-            'Публичная библиотека',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: const Text(
-            'Классика и фольклор в общественном достоянии',
-          ),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const PublicLibraryScreen()),
-          ).then((_) => _loadBooks()),
+  Widget _buildFreeLibrary(ColorScheme scheme) => Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+        child: _freeLibraryCard(scheme),
+      );
+
+  Widget _freeLibraryCard(ColorScheme scheme) {
+    return Card(
+      child: ListTile(
+        leading:
+            Icon(Icons.local_library_outlined, color: scheme.primary, size: 34),
+        title: const Text(
+          'Публичная библиотека',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        subtitle: const Text(
+          'Классика и фольклор в общественном достоянии',
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const PublicLibraryScreen()),
+        ).then((_) => _loadBooks()),
       ),
     );
   }
 
-  Widget _booksList(ColorScheme scheme) {
+  Widget _booksList(ColorScheme scheme, {List<Widget> header = const []}) {
     final groups = <String, List<Map<String, dynamic>>>{};
     for (final b in _books) {
       final f = ((b['folder'] as String?) ?? '').trim();
@@ -980,7 +984,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final showHeaders = folders.isNotEmpty;
     final order = [...folders, if (groups.containsKey('')) ''];
 
-    final items = <Widget>[];
+    final items = <Widget>[...header];
     var cardIndex = 0;
     for (final f in order) {
       if (showHeaders) {
@@ -995,7 +999,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         cardIndex++;
       }
     }
-    return ListView(padding: const EdgeInsets.all(16), children: items);
+    // Снизу запас под FAB «Импорт» — иначе он лежит на последней карточке.
+    return ListView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 96), children: items);
   }
 
   Widget _sectionHeader(ColorScheme scheme, String name, int count) => Padding(

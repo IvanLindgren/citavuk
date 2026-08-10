@@ -104,7 +104,7 @@ class FormHuntView extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           selected.isEmpty
-              ? 'Нажимайте на слова, которые подходят.'
+              ? 'Нажимай на слова, которые подходят.'
               : 'Отмечено слов: ${selected.length}',
           style: TextStyle(
             fontSize: 13,

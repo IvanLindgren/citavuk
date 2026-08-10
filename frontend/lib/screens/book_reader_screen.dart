@@ -151,9 +151,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       MaterialBanner(
         leading: const WolfSticker(asset: Wolf.zadumch, size: 44, frame: false),
         content: Text(
-          'Читавук думает, что книга сейчас будет для вас тяжеловата! '
-          'Она рассчитана на уровень: ${level.level}, а ваш уровень: $reader. '
-          'Это просто предупреждение, вы можете читать книгу в любом случае.',
+          'Читавук думает, что книга сейчас будет для тебя тяжеловата! '
+          'Она рассчитана на уровень: ${level.level}, а твой уровень: $reader. '
+          'Это просто предупреждение, читать её можно в любом случае.',
         ),
         actions: [
           TextButton(
@@ -1438,7 +1438,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Вы остановились здесь',
+                  Text('Ты остановился здесь',
                       style: TextStyle(
                           fontStyle: FontStyle.italic,
                           color: scheme.primary,
@@ -1624,7 +1624,7 @@ class _ShareSheetState extends State<_ShareSheet> {
                 style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8),
             Text(
-              'В каталог она не попадает, она будет только у вас и тому кому вы скинете',
+              'В каталог она не попадает — останется только у тебя и у тех, кому ты дашь ссылку',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),

@@ -63,7 +63,7 @@ class FeedbackPanel extends StatelessWidget {
             if (!correct) ...[
               const SizedBox(height: 12),
               _AnswerRow(
-                label: 'Ваш ответ',
+                label: 'Твой ответ',
                 value: result.userDisplay,
                 strikethrough: true,
               ),

@@ -284,7 +284,7 @@ class _AnnouncementDialogState extends State<_AnnouncementDialog> {
                 const SizedBox(height: 8),
                 Text(item.claimed
                     ? 'Фон уже открыт и появился в настройках чтения.'
-                    : 'Поделитесь Читавуком, затем добавьте ссылку на опубликованный пост.'),
+                    : 'Поделись Читавуком, затем добавь ссылку на опубликованный пост.'),
                 if (!item.claimed) ...[
                   const SizedBox(height: 14),
                   Wrap(

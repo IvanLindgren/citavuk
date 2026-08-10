@@ -301,6 +301,18 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
           ],
         ),
         actions: [
+          // Тренажёрка — вход в произвольный момент, а не по порядку курса,
+          // поэтому она в шапке, а не только карточкой в конце карты.
+          if (controller.course != null)
+            IconButton(
+              icon: const Icon(Icons.fitness_center),
+              tooltip: 'Тренажёрка',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => TrainerScreen(course: controller.course!),
+                ),
+              ),
+            ),
           Builder(builder: (context) {
             final settings = context.watch<AppSettings>();
             final on = settings.courseSoundEnabled;
@@ -409,13 +421,6 @@ class _PathBody extends StatelessWidget {
             ),
         (_) => const SizedBox(height: 26),
       ],
-      if (course.finalExam != null && course.finalExam!.isEmpty)
-        (_) => const _ComingSoonCard(
-              icon: Icons.workspace_premium_outlined,
-              title: 'Итоговая контрольная',
-              text: 'Появится, когда будут готовы все разделы курса.',
-            ),
-      (_) => const SizedBox(height: 8),
       (_) => _TrainerCard(course: course),
     ];
 
@@ -864,57 +869,6 @@ class _TrainerCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ComingSoonCard extends StatelessWidget {
-  const _ComingSoonCard({
-    required this.icon,
-    required this.title,
-    required this.text,
-  });
-
-  final IconData icon;
-  final String title;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: scheme.onSurface.withValues(alpha: 0.15),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: scheme.onSurface.withValues(alpha: 0.5)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 2),
-                Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: scheme.onSurface.withValues(alpha: 0.65),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

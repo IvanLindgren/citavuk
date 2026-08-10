@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.15.0+38
+version: 1.16.0+39
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -109,6 +109,9 @@ flutter:
     - assets/course/dialogues/
     - assets/animations/generated/
     - assets/sounds/
+    # Каталоги во Flutter не рекурсивны: без отдельной строки звуки дуэли в
+    # сборку не попадут. Собираются tools/build_duel_sounds.py.
+    - assets/sounds/duel/
     - assets/palace/
     # Каталог материалов для поступления. Собирается общим для сайта и
     # приложения скриптом web/scripts/build-materials.py.
@@ -141,7 +144,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.15.0
+  version: 1.16.0
   publisher: Denis Kornilov
   languages:
     - english

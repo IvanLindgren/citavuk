@@ -17,6 +17,7 @@ import '../course/state/course_controller.dart';
 import '../course/widgets/mascot_view.dart';
 import '../services/auth_service.dart';
 import '../services/level_service.dart';
+import '../theme/app_theme.dart';
 import 'level_prompt.dart';
 import 'listening_screen.dart';
 import 'roadmap_screen.dart';
@@ -28,7 +29,9 @@ enum HomeTab {
   vukotok('Вукоток', Icons.bolt_outlined, Icons.bolt),
   roadmap('Карта', Icons.map_outlined, Icons.map),
   listening('Слушание', Icons.headphones_outlined, Icons.headphones),
-  course('Курс сербского', Icons.school_outlined, Icons.school);
+  // Подпись короткая: «Курс сербского» переносилась на вторую строку, и ряд
+  // подписей переставал совпадать по базовой линии.
+  course('Курс', Icons.school_outlined, Icons.school);
 
   const HomeTab(this.label, this.icon, this.selectedIcon);
 
@@ -117,7 +120,12 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    // Вукоток всегда тёмный, и при светлой теме под ним оставалась светлая
+    // панель — на границе получался шов. Панель уходит в ночную тему вместе
+    // с разделом.
+    final dark = HomeTab.values[_index] == HomeTab.vukotok;
+    final navTheme = dark ? AppTheme.dark() : Theme.of(context);
+    final scheme = navTheme.colorScheme;
 
     return Scaffold(
       body: PageView(
@@ -134,23 +142,29 @@ class _HomeShellState extends State<HomeShell> {
           CoursePathScreen(controller: _course),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: _select,
-        backgroundColor: scheme.surfaceContainerHighest,
-        indicatorColor: scheme.primary.withValues(alpha: 0.18),
-        height: 68,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        destinations: [
-          for (final tab in HomeTab.values)
-            NavigationDestination(
-              icon: Icon(tab.icon),
-              selectedIcon: Icon(tab.selectedIcon, color: scheme.primary),
-              label: tab.label,
-              tooltip:
-                  tab == HomeTab.course ? 'Курс сербского — бета' : tab.label,
-            ),
-        ],
+      // Тема панели меняется плавно: резкая смена на переходе вкладки читалась
+      // бы как вспышка.
+      bottomNavigationBar: AnimatedTheme(
+        data: navTheme,
+        duration: const Duration(milliseconds: 280),
+        child: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: _select,
+          backgroundColor: scheme.surfaceContainerHighest,
+          indicatorColor: scheme.primary.withValues(alpha: 0.18),
+          height: 68,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          destinations: [
+            for (final tab in HomeTab.values)
+              NavigationDestination(
+                icon: Icon(tab.icon),
+                selectedIcon: Icon(tab.selectedIcon, color: scheme.primary),
+                label: tab.label,
+                tooltip:
+                    tab == HomeTab.course ? 'Курс сербского — бета' : tab.label,
+              ),
+          ],
+        ),
       ),
     );
   }

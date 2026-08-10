@@ -9,11 +9,19 @@ import '../services/lexicon_db.dart';
 import '../services/micro_feed_service.dart';
 import '../services/reflexive.dart';
 import '../services/user_db.dart';
+import '../theme/app_theme.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
 import 'vukotok_comments.dart';
+
+/// Раздел всегда тёмный — как кинозал: карточка занимает экран целиком, и
+/// светлый пергамент вокруг неё соперничал бы с картинкой. Но тёмный он теперь
+/// ночной темой приложения, а не собственной палитрой: раньше здесь жили свои
+/// `0xFF100E0C` и `0xFF1C1814`, похожие на ночные цвета, но не равные им.
+Widget vukotokTheme({required Widget child}) =>
+    Theme(data: AppTheme.dark(), child: child);
 
 /// Вукоток — лента коротких сербских текстов, которую листают как тикток.
 ///
@@ -98,10 +106,11 @@ class _VukotokScreenState extends State<VukotokScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => vukotokTheme(child: _body(context));
+
+  Widget _body(BuildContext context) {
     if (_loading) {
       return const Scaffold(
-        backgroundColor: Color(0xFF100E0C),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -121,7 +130,6 @@ class _VukotokScreenState extends State<VukotokScreen> {
 
     if (_items.isEmpty) {
       return Scaffold(
-        backgroundColor: const Color(0xFF100E0C),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(28),
@@ -133,9 +141,7 @@ class _VukotokScreenState extends State<VukotokScreen> {
                 Text(
                   _error.isEmpty ? 'Вукоток пока пуст' : _error,
                   style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 20, fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -152,7 +158,6 @@ class _VukotokScreenState extends State<VukotokScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF100E0C),
       body: Stack(
         children: [
           PageView.builder(
@@ -195,7 +200,7 @@ class _VukotokScreenState extends State<VukotokScreen> {
     if (!mounted) return;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: const Color(0xFF1C1814),
+      backgroundColor: SerbColors.nightSurface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -335,7 +340,7 @@ class _VukotokCardState extends State<_VukotokCard> {
     final added = await showModalBottomSheet<int>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1C1814),
+      backgroundColor: SerbColors.nightSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -349,7 +354,7 @@ class _VukotokCardState extends State<_VukotokCard> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1C1814),
+      backgroundColor: SerbColors.nightSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -362,7 +367,6 @@ class _VukotokCardState extends State<_VukotokCard> {
     final item = widget.item;
     final title = item.title(widget.cyrillic);
     final text = item.text(widget.cyrillic);
-    final hook = hookOf(text);
     final minutes = (text.split(RegExp(r'\s+')).length / 180).ceil().clamp(1, 99);
 
     return Stack(
@@ -412,24 +416,11 @@ class _VukotokCardState extends State<_VukotokCard> {
                       _Tappable(sentence: title, fontSize: 24, bold: true),
                       const SizedBox(height: 10),
                       Flexible(
-                        child: ShaderMask(
-                          shaderCallback: (rect) => const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.white, Colors.white, Colors.transparent],
-                            stops: [0, .78, 1],
-                          ).createShader(rect),
-                          blendMode: BlendMode.dstIn,
-                          child: _Tappable(sentence: hook, fontSize: 16.5),
+                        child: _CardText(
+                          text: text,
+                          onReadMore: _openFull,
                         ),
                       ),
-                      if (hook.length < text.length) ...[
-                        const SizedBox(height: 10),
-                        FilledButton.tonal(
-                          onPressed: _openFull,
-                          child: const Text('Читать дальше'),
-                        ),
-                      ],
                       const SizedBox(height: 10),
                       if (item.attributionText.isNotEmpty)
                         Text(item.attributionText,
@@ -498,24 +489,90 @@ class _VukotokCardState extends State<_VukotokCard> {
   }
 }
 
-/// Крючок: начало текста, помещающееся на экран. Режется по границе
-/// предложения — оборванная на полуслове фраза читается как сбой загрузки.
-String hookOf(String text, {int maxWords = 46}) {
-  final trimmed = text.trim();
-  if (trimmed.split(RegExp(r'\s+')).length <= maxWords) return trimmed;
-  final sentences = RegExp(r'[^.!?…]+[.!?…]*\s*').allMatches(trimmed);
-  var hook = '';
-  for (final match in sentences) {
-    final next = hook + match.group(0)!;
-    if (next.trim().split(RegExp(r'\s+')).length > maxWords) {
-      if (hook.trim().isEmpty) {
-        hook = '${trimmed.split(RegExp(r'\s+')).take(maxWords).join(' ')}…';
-      }
-      break;
-    }
-    hook = next;
+/// Текст карточки: показывается целиком, если помещается.
+///
+/// Раньше он всегда резался `hookOf` на 46 словах, а карточка пишется на
+/// 100–150 — то есть кнопка «Читать дальше» появлялась почти всегда, и текст
+/// на минуту чтения нельзя было дочитать без второго тапа. Теперь помещается
+/// ли он, решает замер: `TextPainter` считает высоту при той же ширине и том
+/// же стиле, что и у настоящего абзаца.
+///
+/// Затемнение внизу и кнопка включаются только когда текст правда не влез, и
+/// кнопка получает собственную высоту — раньше градиент гасил текст ровно там,
+/// где начиналась кнопка, и она читалась как лежащая поверх строк.
+class _CardText extends StatelessWidget {
+  const _CardText({required this.text, required this.onReadMore});
+
+  final String text;
+  final VoidCallback onReadMore;
+
+  static const _fontSize = 16.5;
+  static const _buttonBand = 52.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Замер идёт по тем же настройкам, что и настоящий абзац: разойдись
+        // шрифт или межстрочный интервал — и решение «влезло или нет» стало бы
+        // случайным.
+        final s = cardTextSettings(_fontSize);
+        final painter = TextPainter(
+          text: TextSpan(
+            text: text,
+            style: TextStyle(
+              fontFamily: s.font.family,
+              fontSize: s.fontSize,
+              height: s.lineHeight,
+              letterSpacing: s.letterSpacing,
+            ),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout(maxWidth: constraints.maxWidth);
+
+        if (painter.height <= constraints.maxHeight) {
+          return _Tappable(sentence: text, fontSize: _fontSize);
+        }
+
+        final band = (constraints.maxHeight - _buttonBand).clamp(0.0, 4000.0);
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: band,
+              child: ClipRect(
+                child: ShaderMask(
+                  shaderCallback: (rect) => const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white,
+                      Colors.white,
+                      Colors.transparent
+                    ],
+                    stops: [0, .82, 1],
+                  ).createShader(rect),
+                  blendMode: BlendMode.dstIn,
+                  child: OverflowBox(
+                    alignment: Alignment.topLeft,
+                    minHeight: 0,
+                    maxHeight: double.infinity,
+                    child: _Tappable(sentence: text, fontSize: _fontSize),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            FilledButton.tonal(
+              onPressed: onReadMore,
+              child: const Text('Читать целиком'),
+            ),
+          ],
+        );
+      },
+    );
   }
-  return hook.trim();
 }
 
 class _PlainCover extends StatelessWidget {
@@ -525,26 +582,41 @@ class _PlainCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final letter = title.trim().isEmpty ? 'Ч' : title.trim()[0];
-    return Container(
-      color: const Color(0xFF1A1512),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 90),
-            child: Text(letter,
-                style: TextStyle(
-                    fontSize: 160,
-                    height: 1,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white.withValues(alpha: .07))),
+    // Стикер и буква стоят долями высоты, а не на фиксированных 90 и 120
+    // пикселях: на высоком телефоне между ними и текстом открывалась чёрная
+    // пустота в пол-экрана. Градиент добивает остальное — ровная заливка
+    // читалась как «ничего не загрузилось».
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final sticker = (constraints.maxWidth * .46).clamp(120.0, 210.0);
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [SerbColors.nightSurface2, SerbColors.nightBg],
+            ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 120),
-            child: WolfSticker(asset: Wolf.zdravo, size: 190, frame: false),
+          child: Stack(
+            children: [
+              Align(
+                alignment: const Alignment(0, -.62),
+                child: Text(letter,
+                    style: TextStyle(
+                        fontSize: sticker * 1.1,
+                        height: 1,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white.withValues(alpha: .06))),
+              ),
+              Align(
+                alignment: const Alignment(0, -.46),
+                child: WolfSticker(
+                    asset: Wolf.zdravo, size: sticker, frame: false),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -595,15 +667,26 @@ class _Action extends StatelessWidget {
               icon: Icon(icon,
                   color: active ? const Color(0xFFE86A5B) : Colors.white),
             ),
-            Text('$count',
-                style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700)),
+            // Ноль не показываем: три нуля на каждой карточке выглядят как
+            // мёртвая лента, хотя означают лишь «ещё никто не нажимал».
+            if (count > 0)
+              Text('$count',
+                  style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700)),
           ],
         ),
       );
 }
+
+/// Настройки абзаца карточки. Одни и те же для отрисовки и для замера.
+ReaderSettings cardTextSettings(double fontSize) => ReaderSettings(
+      fontSize: fontSize,
+      lineHeight: 1.4,
+      firstLineIndent: 0,
+      paragraphSpacing: 0,
+    );
 
 /// Текст, в котором можно нажать любое слово.
 class _Tappable extends StatelessWidget {
@@ -621,12 +704,7 @@ class _Tappable extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReaderParagraph(
       text: sentence,
-      settings: ReaderSettings(
-        fontSize: fontSize,
-        lineHeight: 1.4,
-        firstLineIndent: 0,
-        paragraphSpacing: 0,
-      ),
+      settings: cardTextSettings(fontSize),
       textColor: Colors.white,
       highlightColor: const Color(0x66FFD37A),
       highlightTextColor: Colors.white,
@@ -970,7 +1048,7 @@ class _LikedSheet extends StatelessWidget {
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: const Color(0xFF1C1814),
+                backgroundColor: SerbColors.nightSurface,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
@@ -1033,7 +1111,7 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF100E0C),
+      backgroundColor: SerbColors.nightBg,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),

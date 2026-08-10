@@ -287,7 +287,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Неверно'), findsOneWidget);
-    expect(find.text('Ваш ответ'), findsOneWidget);
+    expect(find.text('Твой ответ'), findsOneWidget);
     expect(find.text('Правильно'), findsOneWidget);
   });
 

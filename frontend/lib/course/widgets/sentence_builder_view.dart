@@ -83,7 +83,7 @@ class _SentenceBuilderViewState extends State<SentenceBuilderView> {
         AnswerDropArea(
           child: selected.isEmpty
               ? Text(
-                  'Нажимайте слова ниже, чтобы собрать предложение',
+                  'Нажимай слова ниже, чтобы собрать предложение',
                   style: TextStyle(
                     color: Theme.of(context)
                         .colorScheme

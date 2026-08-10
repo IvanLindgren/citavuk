@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/news.dart';
 import '../services/news_service.dart';
 import '../services/user_db.dart';
-import '../widgets/animated_widgets.dart';
 import '../widgets/wolf_mascot.dart';
 import 'book_reader_screen.dart';
 
@@ -209,10 +208,9 @@ class _NewsScreenState extends State<NewsScreen> with WidgetsBindingObserver {
           child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
             itemCount: _items.length,
-            itemBuilder: (_, i) => FadeSlideIn(
-              delay: Duration(milliseconds: 20 * (i.clamp(0, 10))),
-              child: _newsCard(scheme, _items[i]),
-            ),
+            // Без FadeSlideIn: ListView.builder пересоздаёт ушедшие за экран
+            // элементы, и анимация проигрывалась заново при каждой прокрутке.
+            itemBuilder: (_, i) => _newsCard(scheme, _items[i]),
           ),
         ),
         if (_opening)
