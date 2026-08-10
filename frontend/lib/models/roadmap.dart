@@ -199,6 +199,12 @@ class RoadmapWord {
   final String lemma;
   final String translation;
   final String note;
+
+  /// Фраза с этим словом и её перевод. Слово в обеих помечено звёздочками:
+  /// в сербской фразе оно стоит в падеже, а в русском переводе искать его
+  /// иначе нечем — русской морфологии у нас нет.
+  final String example;
+  final String exampleTranslation;
   final bool known;
 
   const RoadmapWord({
@@ -207,6 +213,8 @@ class RoadmapWord {
     required this.lemma,
     required this.translation,
     required this.note,
+    required this.example,
+    required this.exampleTranslation,
     required this.known,
   });
 
@@ -216,8 +224,40 @@ class RoadmapWord {
         lemma: (j['lemma'] ?? '').toString(),
         translation: (j['translation'] ?? '').toString(),
         note: (j['note'] ?? '').toString(),
+        example: (j['example'] ?? '').toString(),
+        exampleTranslation: (j['exampleTranslation'] ?? '').toString(),
         known: j['known'] == true,
       );
+}
+
+/// Кусок размеченной фразы: обычный текст либо само слово.
+class ExamplePart {
+  final String text;
+  final bool target;
+
+  const ExamplePart(this.text, {required this.target});
+}
+
+final _exampleMark = RegExp(r'\*([^*]+)\*');
+
+/// Разбирает размеченную фразу на части.
+///
+/// Помечено ровно одно место — так пишет сборщик примеров и так проверяет его
+/// валидатор. Без разметки фраза возвращается целиком: примеры, добавленные
+/// автором руками, должны показываться, а не пропадать.
+List<ExamplePart> splitExample(String phrase) {
+  final source = phrase.trim();
+  if (source.isEmpty) return const [];
+  final match = _exampleMark.firstMatch(source);
+  if (match == null) return [ExamplePart(source, target: false)];
+
+  final parts = <ExamplePart>[];
+  final before = source.substring(0, match.start);
+  final after = source.substring(match.end);
+  if (before.isNotEmpty) parts.add(ExamplePart(before, target: false));
+  parts.add(ExamplePart(match.group(1) ?? '', target: true));
+  if (after.isNotEmpty) parts.add(ExamplePart(after, target: false));
+  return parts;
 }
 
 class RoadmapSection {

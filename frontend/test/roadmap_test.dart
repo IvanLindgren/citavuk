@@ -96,4 +96,21 @@ void main() {
     expect(level.progressOf('grammar').total, 0);
     expect(level.progressOf('grammar').passed, isFalse);
   });
+
+  test('пример разбирается по разметке', () {
+    final parts = splitExample('Naša *mačka* spava.');
+    expect(parts.length, 3);
+    expect(parts[1].text, 'mačka');
+    expect(parts[1].target, isTrue);
+    expect(parts[0].target, isFalse);
+  });
+
+  // Примеры, добавленные автором руками, звёздочек могут не иметь — фраза
+  // должна показаться целиком, а не пропасть.
+  test('фраза без разметки отдаётся целиком', () {
+    final parts = splitExample('Bez oznake.');
+    expect(parts.length, 1);
+    expect(parts.single.target, isFalse);
+    expect(splitExample('   '), isEmpty);
+  });
 }

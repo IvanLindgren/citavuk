@@ -49,19 +49,42 @@ String toPrecomposed(String input) {
   return out.toString();
 }
 
-/// Терминальная пунктуация, которую допустимо игнорировать, если урок её
-/// не проверяет.
-final RegExp _terminalPunctuation = RegExp(r'[.!?]+$');
+/// Знаки, которых в сравнении просто нет.
+final RegExp _marks = RegExp(r'[.,!?;:…"«»„“”]+');
+
+/// Тире между словами. Дефис внутри слова не трогается: «из-за» и «изза» —
+/// разные написания, а «то — то» и «то то» отличаются только вкусом.
+final RegExp _dashes = RegExp(r'(^|\s)[-–—]+(?=\s|$)');
 final RegExp _whitespaceRun = RegExp(r'\s+');
+
+/// Снимает пунктуацию, не трогая сами слова.
+///
+/// Проверка раньше срезала только точку в конце, поэтому пропущенная запятая
+/// внутри фразы отменяла верный ответ целиком. Это неправильно: упражнения
+/// Читавука проверяют слова, формы и порядок слов, а расстановка запятых —
+/// отдельное умение, которому здесь никто не учит. Правило то же, что в вебе
+/// (web/src/lib/answerMatch.ts).
+///
+/// Знак заменяется пробелом, а не удаляется: без пробела после запятой
+/// «да,нет» иначе склеилось бы в «данет» и перестало совпадать с «да нет».
+String stripAnswerPunctuation(String value) => value
+    .replaceAll(_marks, ' ')
+    .replaceAllMapped(_dashes, (match) => match.group(1) ?? '')
+    .replaceAll(_whitespaceRun, ' ')
+    .trim();
 
 /// Нормализует ответ пользователя перед сравнением.
 ///
 /// Всегда: предсоставленные диакритики, обрезка краёв, схлопывание пробелов,
 /// унификация кавычек и апострофов.
 ///
+/// Пунктуация снимается вся и везде: пропущенная запятая не должна отменять
+/// верный ответ (см. [stripAnswerPunctuation]).
+///
 /// Опционально:
 /// - [caseSensitive] — если false, регистр игнорируется;
-/// - [keepTerminalPunctuation] — если false, финальные `.`/`!`/`?` отбрасываются.
+/// - [keepTerminalPunctuation] — задел на упражнение, где знаки и проверяются:
+///   с ним пунктуация сохраняется целиком. Сейчас его никто не включает.
 ///
 /// Письменность (латиница/кириллица) здесь **не** конвертируется: это решение
 /// принимает evaluator по конфигурации урока.
@@ -78,10 +101,9 @@ String normalizeAnswer(
       .replaceAll('”', '"')
       .replaceAll('«', '"')
       .replaceAll('»', '"');
-  s = s.replaceAll(_whitespaceRun, ' ').trim();
-  if (!keepTerminalPunctuation) {
-    s = s.replaceFirst(_terminalPunctuation, '').trimRight();
-  }
+  s = keepTerminalPunctuation
+      ? s.replaceAll(_whitespaceRun, ' ').trim()
+      : stripAnswerPunctuation(s);
   if (!caseSensitive) {
     s = s.toLowerCase();
   }

@@ -7,14 +7,20 @@ import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:srbski_read/course/screens/translation_duel_screen.dart';
 import 'package:srbski_read/services/api_client.dart';
+import 'package:srbski_read/services/duel_sounds.dart';
 
 void main() {
-  testWidgets('игра помещается на экран 360dp и открывает раунд',
+  testWidgets('бой помещается на экран 360dp и открывает раунд',
       (tester) async {
     tester.view.physicalSize = const Size(360, 800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
+
+    // В тестах аудиоплагина нет. Звук выключается тем же переключателем, что и
+    // кнопкой на арене, — заодно проверяется, что он вообще выключается.
+    DuelSounds.instance.enabled = false;
+    addTearDown(() => DuelSounds.instance.enabled = true);
 
     final client = MockClient((request) async {
       expect(request.url.path, '/v1/translation-game/round');
@@ -53,11 +59,28 @@ void main() {
     expect(tester.takeException(), isNull);
 
     await tester.tap(find.text('Начать матч'));
-    await tester.pumpAndSettle();
+    // pumpAndSettle здесь не годится: с началом раунда включается счётчик
+    // времени, который перерисовывает экран каждые сто миллисекунд, и ждать
+    // «пока всё успокоится» пришлось бы до конца матча.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('A2 · раунд 1 из 3'), findsOneWidget);
-    expect(find.byType(TextField), findsWidgets);
+    expect(find.text('ПЕРЕВЕДИТЕ НА РУССКИЙ'), findsOneWidget);
+    expect(find.text('Ovo je probna rečenica broj 1.'), findsOneWidget);
+    // Фразы идут по одной, значит поле ровно одно.
+    expect(find.byType(TextField), findsOneWidget);
     expect(tester.takeException(), isNull,
         reason: 'экран матча не должен переполняться на 360dp');
+
+    await tester.enterText(find.byType(TextField), 'Это пробное предложение');
+    await tester.pump();
+    expect(find.textContaining('серия '), findsOneWidget);
+    expect(tester.takeException(), isNull);
+
+    // Экран уходит с таймерами внутри — они обязаны сниматься в dispose,
+    // иначе тест упадёт на «Timer is still pending».
+    await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
+    await tester.pump(const Duration(seconds: 2));
   });
 }
