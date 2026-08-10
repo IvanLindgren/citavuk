@@ -17,7 +17,7 @@ import raw from './catalog.json';
 export type DocumentKind = 'test' | 'key' | 'guide' | 'book';
 
 /** Куда поступают: в гимназию или на факультет. Материалы разные. */
-export type MaterialLevel = 'gimnazija' | 'fakultet';
+export type MaterialLevel = 'gimnazija' | 'fakultet' | 'jezik';
 
 export interface MaterialDocument {
   /** Устойчивый ключ: короткий хеш адреса. Имена файлов у разных вузов совпадают. */

@@ -11,6 +11,7 @@ import {
 } from './data';
 import type {
   CourseBundle,
+  ListeningQaExercise,
   MatchingExercise,
   MultipleChoiceExercise,
   SentenceBuilderExercise,
@@ -22,6 +23,51 @@ describe('course answer rules', () => {
   it('keeps č and ć distinct while normalizing decomposed Serbian letters', () => {
     expect(normalizeAnswer(' C\u030Caj! ')).toBe('čaj');
     expect(normalizeAnswer('čaj')).not.toBe(normalizeAnswer('ćaj'));
+  });
+
+  // Понимание на слух проверяется как чтение — целиком, а не по вопросам:
+  // половина верных ответов о записи это не половина понимания.
+  it('listening_qa is scored as a whole and only when every question is answered', () => {
+    const exercise = {
+      type: 'listening_qa',
+      id: 'l1',
+      unitId: 'u',
+      skillId: 's',
+      lessonId: 'l',
+      learningObjectiveIds: [],
+      difficulty: 1,
+      prompt: 'Послушайте и ответьте',
+      explanation: 'Разбор.',
+      transcript: 'Voz polazi u osam sati.',
+      translation: 'Поезд отходит в восемь.',
+      plays: 2,
+      questions: [
+        {
+          id: 'q1',
+          prompt: 'Когда отходит поезд?',
+          options: [
+            { id: 'a', text: 'В восемь', correct: true },
+            { id: 'b', text: 'В девять', correct: false },
+          ],
+        },
+        {
+          id: 'q2',
+          prompt: 'О чём речь?',
+          options: [
+            { id: 'c', text: 'О поезде', correct: true },
+            { id: 'd', text: 'Об автобусе', correct: false },
+          ],
+        },
+      ],
+    } as ListeningQaExercise;
+
+    expect(canEvaluate(exercise, { kind: 'pairs', values: { q1: 'a' } })).toBe(false);
+    expect(
+      canEvaluate(exercise, { kind: 'pairs', values: { q1: 'a', q2: 'c' } }),
+    ).toBe(true);
+
+    expect(evaluate(exercise, { kind: 'pairs', values: { q1: 'a', q2: 'c' } }).correct).toBe(true);
+    expect(evaluate(exercise, { kind: 'pairs', values: { q1: 'a', q2: 'd' } }).correct).toBe(false);
   });
 
   it('treats lj as one tile only when the exercise asks for it', () => {

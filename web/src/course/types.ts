@@ -169,6 +169,31 @@ export interface FormHuntExercise extends ExerciseBase {
   tokens: Array<{ id: string; text: string; tail: string; correct: boolean }>;
 }
 
+/**
+ * Понимание на слух: запись звучит, текста на экране нет.
+ *
+ * Пока только веб. В `course_bundle.json` этот тип попасть не должен —
+ * валидатор курса его не знает и отвергнет, и это защита, а не недосмотр:
+ * Flutter такого задания не нарисует, а урок, наполовину открывшийся на
+ * телефоне, хуже урока, которого там нет.
+ *
+ * Транскрипт хранится в задании и открывается ПОСЛЕ ответа: иначе это
+ * обычное чтение с озвучкой. Число прослушиваний ограничено, как на экзамене.
+ */
+export interface ListeningQaExercise extends ExerciseBase {
+  type: 'listening_qa';
+  /** Что произносится. На экран попадает только после проверки. */
+  transcript: string;
+  translation: string;
+  /** Сколько раз можно включить запись. 0 — без ограничения. */
+  plays: number;
+  questions: Array<{
+    id: string;
+    prompt: string;
+    options: ChoiceOption[];
+  }>;
+}
+
 export type Exercise =
   | MultipleChoiceExercise
   | EndingPickerExercise
@@ -178,7 +203,8 @@ export type Exercise =
   | FillBlankExercise
   | ImageDescriptionExercise
   | ReadingQaExercise
-  | FormHuntExercise;
+  | FormHuntExercise
+  | ListeningQaExercise;
 
 export interface WordTile {
   id: string;

@@ -19,13 +19,14 @@ import {
  * сломанный фильтр.
  */
 describe('каталог материалов', () => {
-  it('не пуст и содержит оба уровня поступления', () => {
+  it('не пуст и содержит уровни поступления и языка', () => {
     expect(DOCUMENTS.length).toBeGreaterThan(0);
     expect(SUBJECTS.length).toBeGreaterThan(0);
     expect(SOURCES.length).toBeGreaterThan(0);
     expect(LEVELS.map((level) => level.id).sort()).toEqual([
       'fakultet',
       'gimnazija',
+      'jezik',
     ]);
   });
 
@@ -38,8 +39,10 @@ describe('каталог материалов', () => {
     for (const document of DOCUMENTS) {
       expect(document.url, document.title).toMatch(/^https?:\/\//);
       expect(document.publisher, document.url).not.toBe('');
-      expect(['test', 'key', 'guide', 'book']).toContain(document.kindId);
-      expect(['gimnazija', 'fakultet']).toContain(document.level);
+      expect(['test', 'key', 'guide', 'book', 'research']).toContain(document.kindId);
+      // Уровни берутся из самого каталога: добавление уровня не должно требовать
+      // правки теста, а документ с уровнем вне списка — это ошибка сборки.
+      expect(LEVELS.map((level) => level.id)).toContain(document.level);
     }
   });
 
@@ -50,28 +53,24 @@ describe('каталог материалов', () => {
   });
 
   it('фильтр по уровню разбивает каталог без потерь', () => {
-    const school = filterDocuments({
-      level: 'gimnazija',
-      subjectId: null,
-      year: null,
-      kindId: null,
-      query: '',
-    });
-    const faculty = filterDocuments({
-      level: 'fakultet',
-      subjectId: null,
-      year: null,
-      kindId: null,
-      query: '',
-    });
-
-    expect(school.length).toBeGreaterThan(0);
-    expect(faculty.length).toBeGreaterThan(0);
-    expect(school.length + faculty.length).toBe(DOCUMENTS.length);
+    let total = 0;
+    for (const level of LEVELS) {
+      const found = filterDocuments({
+        level: level.id,
+        subjectId: null,
+        year: null,
+        kindId: null,
+        query: '',
+      });
+      expect(found.length, level.title).toBeGreaterThan(0);
+      expect(found.length, level.title).toBe(level.count);
+      total += found.length;
+    }
+    expect(total).toBe(DOCUMENTS.length);
   });
 
   it('счётчики предметов совпадают с тем, что находит фильтр', () => {
-    for (const level of ['gimnazija', 'fakultet'] as const) {
+    for (const { id: level } of LEVELS) {
       for (const subject of subjectsForLevel(level)) {
         const found = filterDocuments({
           level,

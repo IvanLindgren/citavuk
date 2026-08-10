@@ -87,6 +87,7 @@ except ssl.SSLError:  # pragma: no cover — зависит от сборки Op
 LEVELS = {
     "gimnazija": "Гимназия",
     "fakultet": "Университет",
+    "jezik": "Сербский как иностранный",
 }
 
 # --- Источники -------------------------------------------------------------
@@ -103,6 +104,26 @@ LEVELS = {
 # `defaultKind`    — вид документа, когда по имени он не читается.
 
 SOURCES = [
+    {
+        "id": "fil-bg-strani",
+        # Прямые адреса: каталог /files/ отдаёт 403, а на страницах центра эти
+        # тома списком не перечислены. https у хоста с чужим сертификатом
+        # (*.fil.bg.ac.rs не покрывает www.learnserbian.fil.bg.ac.rs), поэтому
+        # адрес намеренно http — иначе проверка ссылок роняет весь источник.
+        "urls": [
+            "http://www.learnserbian.fil.bg.ac.rs/files/Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20I.pdf",
+            "http://www.learnserbian.fil.bg.ac.rs/files/1.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20II.pdf",
+            "http://www.learnserbian.fil.bg.ac.rs/files/2.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20III.pdf",
+            "http://www.learnserbian.fil.bg.ac.rs/files/3.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20IV.pdf",
+            "http://www.learnserbian.fil.bg.ac.rs/files/Srpski%20kao%20strani%20u%20teoriji%20i%20praksi%205%20zbornik.pdf",
+        ],
+        "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+        "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+        "publisherShort": "Филфак, Белград",
+        "level": "jezik",
+        "subject": ("serbian", "Сербский язык"),
+        "defaultKind": ("research", "Методический сборник"),
+    },
     {
         "id": "ceo-prijemni",
         "pages": [
@@ -384,6 +405,7 @@ DOC_KINDS: list[tuple[str, str, str]] = [
     (r"kljuc|klju[cč]", "key", "Ключ с ответами"),
     (r"resenj|re[sš]enj", "key", "Решения"),
     (r"zbirka|pripremn|prirucnik|skripta|primeri[-_ ]?zadataka", "book", "Сборник задач"),
+    (r"teoriji[-_ ]?i[-_ ]?praksi|zbornik", "research", "Методический сборник"),
     (r"test|prijemni|klasifikacioni|zadaci|zadatak", "test", "Тест"),
 ]
 
@@ -520,6 +542,11 @@ def verify(item: dict) -> dict | None:
 
 
 def title_for(item: dict) -> str:
+    # У сборников по сербскому как иностранному предмет у всех один, и по
+    # «Сербский язык · Филфак, Белград» пять томов не различить. Название
+    # берётся из имени файла: оно у них осмысленное.
+    if item["level"] == "jezik":
+        return f'{name_title(item["file"])} · {item["publisherShort"]}'
     parts = [item["subject"]]
     if item["track"]:
         parts.append(item["track"])
@@ -528,6 +555,13 @@ def title_for(item: dict) -> str:
     if item["year"]:
         parts.append(str(item["year"]))
     return " · ".join(parts)
+
+
+def name_title(file_name: str) -> str:
+    """Имя файла как читаемое название: без расширения, номера и мусора."""
+    stem = re.sub(r"\.pdf$", "", file_name, flags=re.IGNORECASE)
+    stem = re.sub(r"^\d+\.\s*", "", stem)
+    return re.sub(r"\s+", " ", stem).strip()
 
 
 def gather(source: dict) -> list[dict]:

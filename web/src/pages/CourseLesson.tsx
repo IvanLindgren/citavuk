@@ -40,6 +40,7 @@ import type {
   FormHuntExercise,
   ImageDescriptionExercise,
   IntroBlock,
+  ListeningQaExercise,
   ReadingQaExercise,
   LetterUnscrambleExercise,
   MatchingExercise,
@@ -48,6 +49,7 @@ import type {
   SentenceBuilderExercise,
   WordTile,
 } from '../course/types';
+import { ttsAudioUrl } from '../api/listening';
 import { Button, Spinner } from '../components/ui';
 import { Link, useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
@@ -608,6 +610,8 @@ export function ExerciseView({
       return <ImageDescription exercise={exercise} draft={draft} disabled={disabled} shuffleSeed={shuffleSeed} onChange={onChange} />;
     case 'reading_qa':
       return <ReadingQa exercise={exercise} draft={draft} disabled={disabled} onChange={onChange} />;
+    case 'listening_qa':
+      return <ListeningQa exercise={exercise} draft={draft} disabled={disabled} onChange={onChange} />;
     case 'form_hunt':
       return <FormHunt exercise={exercise} draft={draft} disabled={disabled} onChange={onChange} />;
   }
@@ -617,6 +621,131 @@ export function ExerciseView({
  * Текст и вопросы к нему. Текст остаётся на экране, пока идут ответы:
  * проверяется понимание прочитанного, а не память о прочитанном.
  */
+/**
+ * Понимание на слух. Текста на экране нет — в этом и задание.
+ *
+ * Число прослушиваний ограничено, как на экзамене: без предела это чтение с
+ * озвучкой, только медленнее. Транскрипт и перевод открываются кнопкой лишь
+ * после того, как ответы заблокированы (`disabled`), иначе задание решается
+ * не слушая.
+ */
+function ListeningQa({
+  exercise,
+  draft,
+  disabled,
+  onChange,
+}: {
+  exercise: ListeningQaExercise;
+  draft: ExerciseDraft;
+  disabled: boolean;
+  onChange: (draft: ExerciseDraft) => void;
+}) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [played, setPlayed] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
+  if (draft.kind !== 'pairs') return null;
+
+  const limit = exercise.plays > 0 ? exercise.plays : Infinity;
+  const left = limit === Infinity ? Infinity : Math.max(0, limit - played);
+  const exhausted = left === 0;
+
+  const play = () => {
+    const audio = audioRef.current;
+    if (!audio || exhausted) return;
+    audio.currentTime = 0;
+    setPlayed((count) => count + 1);
+    setPlaying(true);
+    void audio.play().catch(() => setPlaying(false));
+  };
+
+  return (
+    <div>
+      <div className="mb-6 rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-5">
+        <audio
+          ref={audioRef}
+          src={ttsAudioUrl(exercise.transcript)}
+          preload="none"
+          onEnded={() => setPlaying(false)}
+          onPause={() => setPlaying(false)}
+        />
+        <div className="flex flex-wrap items-center gap-3">
+          <Button size="sm" onClick={play} disabled={exhausted || playing}>
+            {playing ? 'Звучит…' : played === 0 ? 'Прослушать' : 'Ещё раз'}
+          </Button>
+          <span className="text-sm text-[var(--text-muted)]">
+            {limit === Infinity
+              ? 'Прослушиваний без ограничения'
+              : exhausted
+                ? 'Прослушивания закончились'
+                : `Осталось прослушиваний: ${left}`}
+          </span>
+        </div>
+        {disabled && (
+          <div className="mt-4 border-t border-[var(--line)] pt-3">
+            {showTranscript ? (
+              <>
+                <p lang="sr" className="whitespace-pre-line leading-relaxed">
+                  {exercise.transcript}
+                </p>
+                {exercise.translation && (
+                  <p className="mt-2 text-sm italic leading-relaxed text-[var(--text-muted)]">
+                    {exercise.translation}
+                  </p>
+                )}
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowTranscript(true)}
+                className="text-sm font-semibold text-[var(--accent)] hover:underline"
+              >
+                Показать расшифровку
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-6">
+        {exercise.questions.map((question, questionIndex) => (
+          <fieldset key={question.id}>
+            <legend className="mb-2 font-semibold">
+              {questionIndex + 1}. {question.prompt}
+            </legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {question.options.map((option) => {
+                const selected = draft.values[question.id] === option.id;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    disabled={disabled}
+                    aria-pressed={selected}
+                    onClick={() =>
+                      onChange({
+                        kind: 'pairs',
+                        values: { ...draft.values, [question.id]: option.id },
+                      })
+                    }
+                    className={`rounded-xl border px-4 py-2.5 text-left transition-colors ${
+                      selected
+                        ? 'border-[var(--accent)] bg-[var(--accent)]/10 font-semibold'
+                        : 'border-[var(--line)] hover:border-[var(--accent)]'
+                    } disabled:opacity-60`}
+                  >
+                    {option.text}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ReadingQa({
   exercise,
   draft,
@@ -1294,6 +1423,8 @@ export function initialDraft(exercise: Exercise): ExerciseDraft {
         : { kind: 'text', value: '' };
     case 'reading_qa':
       return { kind: 'pairs', values: {} };
+    case 'listening_qa':
+      return { kind: 'pairs', values: {} };
     case 'form_hunt':
       return { kind: 'choice', ids: [] };
   }
@@ -1328,6 +1459,7 @@ export function exerciseTypeLabel(type: Exercise['type']): string {
     matching: 'Найдите пары',
     fill_blank: 'Заполните пропуск',
     image_description: 'Опишите изображение',
+    listening_qa: 'Послушайте и ответьте',
     reading_qa: 'Прочитайте и ответьте',
     form_hunt: 'Найдите формы в тексте',
   }[type];

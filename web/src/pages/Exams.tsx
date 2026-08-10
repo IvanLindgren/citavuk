@@ -112,6 +112,13 @@ export function Exams() {
             — задания по конкретной теме грамматики вне порядка курса.
           </li>
           <li>
+            <Link to="/materials?level=jezik" className="font-semibold text-[var(--accent)]">
+              Сборники центра сербского как иностранного
+            </Link>{' '}
+            — пять томов «Српски као страни језик у теорији и пракси» Филологического
+            факультета в Белграде: методика, описание уровней и разбор типов заданий.
+          </li>
+          <li>
             <Link to="/materials" className="font-semibold text-[var(--accent)]">
               Материалы
             </Link>{' '}

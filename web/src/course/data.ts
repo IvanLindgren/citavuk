@@ -12,6 +12,7 @@ import {
   getPublishedCourse,
   putRemoteCourseProgress,
 } from '../api/course';
+import { stripAnswerPunctuation } from '../lib/answerMatch';
 
 const PROGRESS_KEY = 'citavuk-course-progress-v1';
 const DEFAULT_COURSE_ID = 'sr_grammar_prosvirina';
@@ -401,14 +402,16 @@ export function normalizeAnswer(
   input: string,
   caseSensitive = false,
 ): string {
-  let value = input
-    .normalize('NFC')
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”«»]/g, '"')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/[.!?]+$/u, '')
-    .trimEnd();
+  // Пунктуация снимается вся и везде — правило общее с уроками
+  // (src/lib/answerMatch.ts): пропущенная запятая не должна отменять верный
+  // ответ. Апострофы при этом остаются, поэтому кавычки-ёлочки сводятся к
+  // прямым до того, как знаки уберут.
+  let value = stripAnswerPunctuation(
+    input
+      .normalize('NFC')
+      .replace(/[‘’]/g, "'")
+      .replace(/[“”«»]/g, '"'),
+  );
   if (!caseSensitive) value = value.toLocaleLowerCase('sr');
   return value;
 }
@@ -479,6 +482,12 @@ export function canEvaluate(
         : draft.kind === 'text' && draft.value.trim().length > 0;
     case 'reading_qa':
       // Все вопросы, а не первый: иначе «Проверить» откроется на половине.
+      return (
+        draft.kind === 'pairs' &&
+        exercise.questions.length > 0 &&
+        exercise.questions.every((question) => draft.values[question.id])
+      );
+    case 'listening_qa':
       return (
         draft.kind === 'pairs' &&
         exercise.questions.length > 0 &&
@@ -645,6 +654,9 @@ export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
         explanation,
       };
     }
+    // Проверка у чтения и слушания одна: разница между ними в том, показан ли
+    // текст, а не в том, как считается ответ.
+    case 'listening_qa':
     case 'reading_qa': {
       if (draft.kind !== 'pairs') throw new Error('Неверный тип ответа.');
       // Задание засчитывается целиком: половина верных ответов о тексте это

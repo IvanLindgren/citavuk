@@ -39,9 +39,9 @@
       "year": 2026
     },
     {
-      "bytes": 522861,
+      "bytes": 544555,
       "file": "2026_OS_Dvojezicna_Engleski-A1-1_Test.pdf",
-      "id": "3b2b30715b3e",
+      "id": "05ba36202ab4",
       "kind": "Тест",
       "kindId": "test",
       "level": "gimnazija",
@@ -54,7 +54,26 @@
       "subjectId": "english",
       "title": "Английский язык · Двуязычные отделения · 2026",
       "track": "Двуязычные отделения",
-      "url": "https://ceo.edu.rs/wp-content/uploads/2026/06/2026_OS_Dvojezicna_Engleski-A1-1_Test.pdf",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Engleski-A1-1_Test.pdf",
+      "year": 2026
+    },
+    {
+      "bytes": 742670,
+      "file": "2026_OS_Dvojezicna_Engleski-A1-2_Test.pdf",
+      "id": "ce3bbc28fec5",
+      "kind": "Тест",
+      "kindId": "test",
+      "level": "gimnazija",
+      "levelTitle": "Гимназия",
+      "publisher": "Завод за вредновање квалитета образовања и васпитања",
+      "publisherShort": "ЗВКОВ",
+      "sourceId": "ceo-prijemni",
+      "sourcePage": "https://ceo.edu.rs/%d0%bf%d1%80%d0%b8%d1%98%d0%b5%d0%bc%d0%bd%d0%b8-%d0%b8%d1%81%d0%bf%d0%b8%d1%82%d0%b8/",
+      "subject": "Английский язык",
+      "subjectId": "english",
+      "title": "Английский язык · Двуязычные отделения · 2026",
+      "track": "Двуязычные отделения",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Engleski-A1-2_Test.pdf",
       "year": 2026
     },
     {
@@ -758,6 +777,25 @@
       "title": "Английский язык · Международный бакалавриат (IBO) · 2021",
       "track": "Международный бакалавриат (IBO)",
       "url": "https://ceo.edu.rs/wp-content/uploads/2021/07/2021-Prijemni_Engleski-IBO.pdf",
+      "year": 2021
+    },
+    {
+      "bytes": 553621,
+      "file": "2021_Prijemni_Engleski_Bilingvalna_Test.pdf",
+      "id": "d2a38fb81c55",
+      "kind": "Тест",
+      "kindId": "test",
+      "level": "gimnazija",
+      "levelTitle": "Гимназия",
+      "publisher": "Завод за вредновање квалитета образовања и васпитања",
+      "publisherShort": "ЗВКОВ",
+      "sourceId": "ceo-prijemni",
+      "sourcePage": "https://ceo.edu.rs/%d0%bf%d1%80%d0%b8%d1%98%d0%b5%d0%bc%d0%bd%d0%b8-%d0%b8%d1%81%d0%bf%d0%b8%d1%82%d0%b8/",
+      "subject": "Английский язык",
+      "subjectId": "english",
+      "title": "Английский язык · Двуязычные отделения · 2021",
+      "track": "Двуязычные отделения",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2021/05/2021_Prijemni_Engleski_Bilingvalna_Test.pdf",
       "year": 2021
     },
     {
@@ -1519,6 +1557,25 @@
       "track": "Филологическая гимназия",
       "url": "https://ceo.edu.rs/wp-content/uploads/2021/05/2021-Prijemni_Madjarski-Filoloska_Kljuc.pdf",
       "year": 2021
+    },
+    {
+      "bytes": 5396036,
+      "file": "2020_Prijemni_Madjarski_Filoloska_test-1.pdf",
+      "id": "1b1db9375133",
+      "kind": "Тест",
+      "kindId": "test",
+      "level": "gimnazija",
+      "levelTitle": "Гимназия",
+      "publisher": "Завод за вредновање квалитета образовања и васпитања",
+      "publisherShort": "ЗВКОВ",
+      "sourceId": "ceo-prijemni",
+      "sourcePage": "https://ceo.edu.rs/%d0%bf%d1%80%d0%b8%d1%98%d0%b5%d0%bc%d0%bd%d0%b8-%d0%b8%d1%81%d0%bf%d0%b8%d1%82%d0%b8/",
+      "subject": "Венгерский язык",
+      "subjectId": "hungarian",
+      "title": "Венгерский язык · Филологическая гимназия · 2020",
+      "track": "Филологическая гимназия",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2021/02/2020_Prijemni_Madjarski_Filoloska_test-1.pdf",
+      "year": 2020
     },
     {
       "bytes": 802894,
@@ -3383,9 +3440,9 @@
       "year": 2026
     },
     {
-      "bytes": 396188,
+      "bytes": 441437,
       "file": "2026_OS_Dvojezicna_Nemacki_A-1_Test.pdf",
-      "id": "beacbec4a007",
+      "id": "7003fa4927b8",
       "kind": "Тест",
       "kindId": "test",
       "level": "gimnazija",
@@ -3398,13 +3455,13 @@
       "subjectId": "german",
       "title": "Немецкий язык · Двуязычные отделения · 2026",
       "track": "Двуязычные отделения",
-      "url": "https://ceo.edu.rs/wp-content/uploads/2026/06/2026_OS_Dvojezicna_Nemacki_A-1_Test.pdf",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Nemacki_A-1_Test.pdf",
       "year": 2026
     },
     {
-      "bytes": 395824,
+      "bytes": 441453,
       "file": "2026_OS_Dvojezicna_Nemacki_A-1_Test_Madj.pdf",
-      "id": "ac3782b92f92",
+      "id": "fe7d80f6b27a",
       "kind": "Тест",
       "kindId": "test",
       "level": "gimnazija",
@@ -3417,7 +3474,7 @@
       "subjectId": "german",
       "title": "Немецкий язык · Двуязычные отделения · 2026",
       "track": "Двуязычные отделения",
-      "url": "https://ceo.edu.rs/wp-content/uploads/2026/06/2026_OS_Dvojezicna_Nemacki_A-1_Test_Madj.pdf",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Nemacki_A-1_Test_Madj.pdf",
       "year": 2026
     },
     {
@@ -6214,9 +6271,9 @@
       "year": 2026
     },
     {
-      "bytes": 786889,
+      "bytes": 826427,
       "file": "2026_OS_Dvojezicna_Francuski_A-1-1_Test.pdf",
-      "id": "09c9730834f1",
+      "id": "a9f361d68373",
       "kind": "Тест",
       "kindId": "test",
       "level": "gimnazija",
@@ -6229,13 +6286,13 @@
       "subjectId": "french",
       "title": "Французский язык · Двуязычные отделения · 2026",
       "track": "Двуязычные отделения",
-      "url": "https://ceo.edu.rs/wp-content/uploads/2026/06/2026_OS_Dvojezicna_Francuski_A-1-1_Test.pdf",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Francuski_A-1-1_Test.pdf",
       "year": 2026
     },
     {
-      "bytes": 583853,
+      "bytes": 627170,
       "file": "2026_OS_Dvojezicna_Francuski_A-1-2_Test.pdf",
-      "id": "74caca68d8a5",
+      "id": "68ca913e24cc",
       "kind": "Тест",
       "kindId": "test",
       "level": "gimnazija",
@@ -6248,7 +6305,7 @@
       "subjectId": "french",
       "title": "Французский язык · Двуязычные отделения · 2026",
       "track": "Двуязычные отделения",
-      "url": "https://ceo.edu.rs/wp-content/uploads/2026/06/2026_OS_Dvojezicna_Francuski_A-1-2_Test.pdf",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2026/08/2026_OS_Dvojezicna_Francuski_A-1-2_Test.pdf",
       "year": 2026
     },
     {
@@ -6667,6 +6724,25 @@
       "title": "Французский язык · Двуязычные отделения · 2023",
       "track": "Двуязычные отделения",
       "url": "https://ceo.edu.rs/wp-content/uploads/2023/06/2023-Prijemni_Francuski-Dvojezicne_Kljuc.pdf",
+      "year": 2023
+    },
+    {
+      "bytes": 272518,
+      "file": "2023-Prijemni_Francuski_Filoloska_Kljuc.pdf",
+      "id": "4af35c7c0086",
+      "kind": "Ключ с ответами",
+      "kindId": "key",
+      "level": "gimnazija",
+      "levelTitle": "Гимназия",
+      "publisher": "Завод за вредновање квалитета образовања и васпитања",
+      "publisherShort": "ЗВКОВ",
+      "sourceId": "ceo-prijemni",
+      "sourcePage": "https://ceo.edu.rs/%d0%bf%d1%80%d0%b8%d1%98%d0%b5%d0%bc%d0%bd%d0%b8-%d0%b8%d1%81%d0%bf%d0%b8%d1%82%d0%b8/",
+      "subject": "Французский язык",
+      "subjectId": "french",
+      "title": "Французский язык · Филологическая гимназия · 2023",
+      "track": "Филологическая гимназия",
+      "url": "https://ceo.edu.rs/wp-content/uploads/2023/06/2023-Prijemni_Francuski_Filoloska_Kljuc.pdf",
       "year": 2023
     },
     {
@@ -8551,6 +8627,101 @@
       "year": null
     },
     {
+      "bytes": 3778628,
+      "file": "1. Srpski kao strani jezik u teoriji i praksi II.pdf",
+      "id": "ee34ea7f5892",
+      "kind": "Методический сборник",
+      "kindId": "research",
+      "level": "jezik",
+      "levelTitle": "Сербский как иностранный",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград",
+      "sourceId": "fil-bg-strani",
+      "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+      "subject": "Сербский язык",
+      "subjectId": "serbian",
+      "title": "Srpski kao strani jezik u teoriji i praksi II · Филфак, Белград",
+      "track": null,
+      "url": "http://www.learnserbian.fil.bg.ac.rs/files/1.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20II.pdf",
+      "year": null
+    },
+    {
+      "bytes": 9035840,
+      "file": "2. Srpski kao strani jezik u teoriji i praksi III.pdf",
+      "id": "c825a5c6dea7",
+      "kind": "Методический сборник",
+      "kindId": "research",
+      "level": "jezik",
+      "levelTitle": "Сербский как иностранный",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград",
+      "sourceId": "fil-bg-strani",
+      "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+      "subject": "Сербский язык",
+      "subjectId": "serbian",
+      "title": "Srpski kao strani jezik u teoriji i praksi III · Филфак, Белград",
+      "track": null,
+      "url": "http://www.learnserbian.fil.bg.ac.rs/files/2.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20III.pdf",
+      "year": null
+    },
+    {
+      "bytes": 7349200,
+      "file": "3. Srpski kao strani jezik u teoriji i praksi IV.pdf",
+      "id": "ee179b154df9",
+      "kind": "Методический сборник",
+      "kindId": "research",
+      "level": "jezik",
+      "levelTitle": "Сербский как иностранный",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград",
+      "sourceId": "fil-bg-strani",
+      "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+      "subject": "Сербский язык",
+      "subjectId": "serbian",
+      "title": "Srpski kao strani jezik u teoriji i praksi IV · Филфак, Белград",
+      "track": null,
+      "url": "http://www.learnserbian.fil.bg.ac.rs/files/3.%20Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20IV.pdf",
+      "year": null
+    },
+    {
+      "bytes": 7635617,
+      "file": "Srpski kao strani jezik u teoriji i praksi I.pdf",
+      "id": "7225bf4afa70",
+      "kind": "Методический сборник",
+      "kindId": "research",
+      "level": "jezik",
+      "levelTitle": "Сербский как иностранный",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград",
+      "sourceId": "fil-bg-strani",
+      "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+      "subject": "Сербский язык",
+      "subjectId": "serbian",
+      "title": "Srpski kao strani jezik u teoriji i praksi I · Филфак, Белград",
+      "track": null,
+      "url": "http://www.learnserbian.fil.bg.ac.rs/files/Srpski%20kao%20strani%20jezik%20u%20teoriji%20i%20praksi%20I.pdf",
+      "year": null
+    },
+    {
+      "bytes": 7518564,
+      "file": "Srpski kao strani u teoriji i praksi 5 zbornik.pdf",
+      "id": "4b6718f404c5",
+      "kind": "Методический сборник",
+      "kindId": "research",
+      "level": "jezik",
+      "levelTitle": "Сербский как иностранный",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград",
+      "sourceId": "fil-bg-strani",
+      "sourcePage": "http://www.learnserbian.fil.bg.ac.rs/",
+      "subject": "Сербский язык",
+      "subjectId": "serbian",
+      "title": "Srpski kao strani u teoriji i praksi 5 zbornik · Филфак, Белград",
+      "track": null,
+      "url": "http://www.learnserbian.fil.bg.ac.rs/files/Srpski%20kao%20strani%20u%20teoriji%20i%20praksi%205%20zbornik.pdf",
+      "year": null
+    },
+    {
       "bytes": 425940,
       "file": "Sociologija.pdf",
       "id": "99301ede2e9e",
@@ -8781,7 +8952,7 @@
     {
       "bytes": 480591,
       "file": "Fizika.pdf",
-      "id": "5d7df27e7fec",
+      "id": "08c0006126eb",
       "kind": "Пособие",
       "kindId": "book",
       "level": "fakultet",
@@ -8794,7 +8965,7 @@
       "subjectId": "physics",
       "title": "Физика · Агрофак, Белград",
       "track": null,
-      "url": "https://www.agrif.bg.ac.rs/uploads/files/strane/Fakultet/Studije/Upis/Fizika.pdf",
+      "url": "https://agrif.bg.ac.rs/uploads/files/strane/UPIS/Pripremna_nastava/Fizika.pdf",
       "year": null
     },
     {
@@ -9922,7 +10093,7 @@
   "generatedAt": null,
   "levels": [
     {
-      "count": 383,
+      "count": 387,
       "id": "gimnazija",
       "title": "Гимназия"
     },
@@ -9930,6 +10101,11 @@
       "count": 139,
       "id": "fakultet",
       "title": "Университет"
+    },
+    {
+      "count": 5,
+      "id": "jezik",
+      "title": "Сербский как иностранный"
     }
   ],
   "sources": [
@@ -9941,7 +10117,7 @@
       "publisherShort": "Агрофак, Белград"
     },
     {
-      "count": 383,
+      "count": 387,
       "id": "ceo-prijemni",
       "page": "https://ceo.edu.rs/%d0%bf%d1%80%d0%b8%d1%98%d0%b5%d0%bc%d0%bd%d0%b8-%d0%b8%d1%81%d0%bf%d0%b8%d1%82%d0%b8/",
       "publisher": "Завод за вредновање квалитета образовања и васпитања",
@@ -9967,6 +10143,13 @@
       "page": "https://www.ff.bg.ac.rs/upis/prijemni-ispit",
       "publisher": "Физический факультет Белградского университета",
       "publisherShort": "Физфак, Белград"
+    },
+    {
+      "count": 5,
+      "id": "fil-bg-strani",
+      "page": "http://www.learnserbian.fil.bg.ac.rs/",
+      "publisher": "Центар за српски као страни језик, Филолошки факултет у Београду",
+      "publisherShort": "Филфак, Белград"
     },
     {
       "count": 1,
@@ -10076,14 +10259,14 @@
       "yearTo": 2026
     },
     {
-      "count": 53,
+      "count": 55,
       "id": "english",
       "title": "Английский язык",
       "yearFrom": 2019,
       "yearTo": 2026
     },
     {
-      "count": 41,
+      "count": 42,
       "id": "french",
       "title": "Французский язык",
       "yearFrom": 2019,
@@ -10097,17 +10280,17 @@
       "yearTo": 2026
     },
     {
-      "count": 31,
-      "id": "russian",
-      "title": "Русский язык",
-      "yearFrom": 2018,
+      "count": 36,
+      "id": "serbian",
+      "title": "Сербский язык",
+      "yearFrom": 2019,
       "yearTo": 2026
     },
     {
       "count": 31,
-      "id": "serbian",
-      "title": "Сербский язык",
-      "yearFrom": 2019,
+      "id": "russian",
+      "title": "Русский язык",
+      "yearFrom": 2018,
       "yearTo": 2026
     },
     {
@@ -10140,6 +10323,13 @@
     },
     {
       "count": 15,
+      "id": "hungarian",
+      "title": "Венгерский язык",
+      "yearFrom": 2019,
+      "yearTo": 2026
+    },
+    {
+      "count": 15,
       "id": "informatics",
       "title": "Информатика",
       "yearFrom": 2019,
@@ -10149,13 +10339,6 @@
       "count": 15,
       "id": "music",
       "title": "Теория музыки",
-      "yearFrom": 2019,
-      "yearTo": 2026
-    },
-    {
-      "count": 14,
-      "id": "hungarian",
-      "title": "Венгерский язык",
       "yearFrom": 2019,
       "yearTo": 2026
     },
