@@ -1,164 +1,190 @@
-import { LuCheck, LuCircleAlert, LuExternalLink, LuMinus } from 'react-icons/lu';
+import {
+  LuArrowRight,
+  LuBookOpen,
+  LuCheck,
+  LuExternalLink,
+  LuGraduationCap,
+  LuLandmark,
+  LuPenLine,
+} from 'react-icons/lu';
 
-import { EXAM_CENTERS, EXAM_LEVELS, EXAM_SECTIONS, type ExamSection } from '../exams/catalog';
-import { Link } from '../lib/router';
+import {
+  EXAM_CENTERS,
+  EXAM_SOURCE,
+  OFFICIAL_EXAMS,
+  findOfficialExam,
+} from '../exams/catalog';
+import { Link, useQuery, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 
-/**
- * Раздел в подготовке. Страница честно говорит, чего ещё нет: обещание
- * «скоро будет», не отличимое от готового раздела, обходится дороже пустоты.
- */
 export function Exams() {
+  const query = useQuery();
+  const { navigate } = useRouter();
+  const selected = findOfficialExam(query.level?.toUpperCase());
+
   useSeo({
-    title: 'Экзамены по сербскому языку A1–C2 — Читавук',
+    title: 'Пробные экзамены по сербскому A1–C1 — Читавук',
     description:
-      'Что проверяет официальный экзамен по сербскому как иностранному на каждом уровне A1–C2 и как к нему готовиться в Читавуке.',
+      'Официальные онлайн-тесты по сербскому как иностранному A1, A2, B1, B2 и C1 от Университета Ниша.',
   });
 
   return (
-    <main className="mx-auto w-full max-w-4xl px-5 py-8 sm:py-12">
-      <header>
-        <p className="text-sm font-bold uppercase tracking-wide text-[var(--accent)]">Готовится</p>
-        <h1 className="mt-2 font-display text-3xl sm:text-4xl">Экзамены по сербскому</h1>
-        <p className="mt-4 max-w-2xl leading-7 text-[var(--text-muted)]">
-          Сертификат по сербскому как иностранному выдают университетские центры в Сербии по шкале
-          CEFR — от A1 до C2. Здесь собрано, что проверяет каждая ступень и какие разделы испытания
-          можно готовить в Читавуке. Пробные тесты по уровням появятся на этой странице.
+    <main className="mx-auto w-full max-w-5xl px-5 py-8 sm:py-12">
+      <header className="max-w-3xl">
+        <p className="flex items-center gap-2 text-sm font-bold text-[var(--accent)]">
+          <LuGraduationCap className="size-5" />
+          Тесты сербского как иностранного
+        </p>
+        <h1 className="mt-3 font-display text-3xl sm:text-5xl">Проверьте свой уровень</h1>
+        <p className="mt-4 text-base leading-7 text-[var(--text-muted)] sm:text-lg">
+          Настоящие тесты A1–C1, подготовленные преподавателями Философского факультета
+          Университета Ниша. Выберите уровень и решайте задания на сайте университета.
         </p>
       </header>
 
-      <section className="mt-10">
-        <h2 className="font-display text-2xl">Разделы испытания</h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)]">
-          Состав разделов у центров совпадает, различаются веса и форма заданий. Ниже — чем каждый
-          раздел готовится у нас.
-        </p>
-        <div className="mt-5 space-y-3">
-          {EXAM_SECTIONS.map((section) => (
-            <SectionRow key={section.id} section={section} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-display text-2xl">Уровни</h2>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          {EXAM_LEVELS.map((level) => (
-            <article
-              key={level.level}
-              className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] p-5"
+      <nav aria-label="Уровень экзамена" className="mt-8 flex max-w-xl gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-sunken)] p-1">
+        {OFFICIAL_EXAMS.map((exam) => {
+          const active = selected.level === exam.level;
+          return (
+            <button
+              key={exam.level}
+              type="button"
+              aria-current={active ? 'page' : undefined}
+              onClick={() => navigate(`/exams?level=${exam.level}`, { replace: true })}
+              className={`min-h-11 min-w-0 flex-1 rounded-md px-2 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+                active
+                  ? 'bg-[var(--accent)] text-white shadow-sm'
+                  : 'text-[var(--text-muted)] hover:bg-[var(--bg-raised)] hover:text-[var(--text)]'
+              }`}
             >
-              <div className="flex items-baseline gap-3">
-                <span className="font-display text-2xl text-[var(--accent)]">{level.level}</span>
-                <span className="text-sm font-semibold text-[var(--text-muted)]">{level.name}</span>
-              </div>
-              <p className="mt-3 text-sm leading-6">{level.can}</p>
-              <dl className="mt-4 space-y-2 text-sm">
-                <div>
-                  <dt className="font-semibold">Чтение</dt>
-                  <dd className="text-[var(--text-muted)]">{level.reading}</dd>
-                </div>
-                <div>
-                  <dt className="font-semibold">Письмо</dt>
-                  <dd className="text-[var(--text-muted)]">{level.writing}</dd>
-                </div>
-              </dl>
-            </article>
-          ))}
+              {exam.level}
+            </button>
+          );
+        })}
+      </nav>
+
+      <section className="mt-5 overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--bg-raised)]">
+        <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_18rem]">
+          <div className="p-6 sm:p-8">
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className="font-display text-5xl text-[var(--accent)]">{selected.level}</span>
+              <h2 className="text-lg font-bold">{selected.name}</h2>
+            </div>
+            <p className="mt-4 max-w-2xl text-base leading-7">{selected.can}</p>
+
+            <div className="mt-7 grid gap-5 sm:grid-cols-2">
+              <ExamSkill icon={LuBookOpen} title="Чтение и понимание">
+                {selected.reading}
+              </ExamSkill>
+              <ExamSkill icon={LuPenLine} title="Язык и письмо">
+                {selected.writing}
+              </ExamSkill>
+            </div>
+
+            <a
+              href={selected.testUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
+            >
+              Начать официальный тест {selected.level}
+              <LuExternalLink className="size-4" />
+            </a>
+            <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
+              Тест откроется в новой вкладке на сайте Университета Ниша.
+            </p>
+          </div>
+
+          <aside className="border-t border-[var(--line)] bg-[var(--bg-sunken)] p-6 lg:border-l lg:border-t-0">
+            <LuLandmark className="size-6 text-[var(--accent)]" />
+            <p className="mt-4 text-xs font-bold uppercase text-[var(--text-muted)]">Источник</p>
+            <p className="mt-2 font-semibold" lang="sr">{EXAM_SOURCE.name}</p>
+            <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]" lang="sr">
+              {EXAM_SOURCE.institution}
+            </p>
+            <a
+              href={EXAM_SOURCE.testPage}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--accent)] hover:underline"
+            >
+              Страница теста
+              <LuExternalLink className="size-4" />
+            </a>
+          </aside>
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-display text-2xl">Где сдают</h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)]">
-          Сроки, стоимость и проходной балл меняются каждый набор, поэтому их здесь нет: за ними
-          нужно идти на сайт центра, а не к устаревшему числу на чужой странице.
-        </p>
-        <div className="mt-5 space-y-3">
+      <section className="mt-12 border-t border-[var(--line)] pt-9">
+        <h2 className="font-display text-2xl">Важно перед началом</h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-3">
+          <Note>Проходите без переводчика и словаря, иначе результат не покажет реальный уровень.</Note>
+          <Note>Начните со своего предполагаемого уровня. Если тест слишком лёгкий или сложный, смените вкладку.</Note>
+          <Note>Онлайн-тест помогает оценить знания, но не заменяет экзамен и университетский сертификат.</Note>
+        </div>
+      </section>
+
+      <section className="mt-12 border-t border-[var(--line)] pt-9">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-2xl">Где получить сертификат</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
+              Условия и даты смотрите у самого университета.
+            </p>
+          </div>
+          <Link to="/trainer" className="inline-flex items-center gap-2 text-sm font-bold text-[var(--accent)] hover:underline">
+            Потренировать слабые темы
+            <LuArrowRight className="size-4" />
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
           {EXAM_CENTERS.map((center) => (
             <a
               key={center.id}
               href={center.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="flex items-start gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] p-5 transition-colors hover:border-[var(--accent)]"
+              className="flex min-w-0 items-center gap-3 rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-4 transition-colors hover:border-[var(--accent)]"
             >
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold" lang="sr">
-                  {center.name}
-                </p>
-                <p className="mt-0.5 text-sm text-[var(--text-muted)]">{center.city}</p>
-                <p className="mt-2 text-sm leading-6">{center.note}</p>
-              </div>
-              <LuExternalLink className="mt-1 size-4 shrink-0 text-[var(--text-muted)]" />
+              <LuLandmark className="size-5 shrink-0 text-[var(--accent)]" />
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold leading-5" lang="sr">{center.name}</span>
+                <span className="mt-1 block text-sm text-[var(--text-muted)]">{center.city}</span>
+              </span>
+              <LuExternalLink className="size-4 shrink-0 text-[var(--text-muted)]" />
             </a>
           ))}
         </div>
-      </section>
-
-      <section className="mt-12 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] p-6">
-        <h2 className="font-display text-xl">Пока тестов нет — что делать сейчас</h2>
-        <ul className="mt-4 space-y-2 text-sm leading-6">
-          <li>
-            <Link to="/roadmap" className="font-semibold text-[var(--accent)]">
-              Дорожная карта
-            </Link>{' '}
-            — что учить на вашем уровне по чтению, грамматике, словарю и письму.
-          </li>
-          <li>
-            <Link to="/trainer" className="font-semibold text-[var(--accent)]">
-              Тренажёрка
-            </Link>{' '}
-            — задания по конкретной теме грамматики вне порядка курса.
-          </li>
-          <li>
-            <Link to="/materials?level=jezik" className="font-semibold text-[var(--accent)]">
-              Сборники центра сербского как иностранного
-            </Link>{' '}
-            — пять томов «Српски као страни језик у теорији и пракси» Филологического
-            факультета в Белграде: методика, описание уровней и разбор типов заданий.
-          </li>
-          <li>
-            <Link to="/materials" className="font-semibold text-[var(--accent)]">
-              Материалы
-            </Link>{' '}
-            — сборники и пособия сербских учреждений с тестами по документам.
-          </li>
-        </ul>
       </section>
     </main>
   );
 }
 
-const ENGINE_VIEW: Record<
-  ExamSection['engine'],
-  { icon: typeof LuCheck; label: string; tone: string }
-> = {
-  exercise: { icon: LuCheck, label: 'Движок заданий готов', tone: 'text-[var(--success)]' },
-  quiz: { icon: LuCheck, label: 'Движок тестов готов', tone: 'text-[var(--success)]' },
-  missing: { icon: LuCircleAlert, label: 'Нужен новый тип задания', tone: 'text-[var(--accent)]' },
-  'out-of-scope': { icon: LuMinus, label: 'Не делаем', tone: 'text-[var(--text-muted)]' },
-};
-
-function SectionRow({ section }: { section: ExamSection }) {
-  const view = ENGINE_VIEW[section.engine];
-  const Icon = view.icon;
+function ExamSkill({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: typeof LuBookOpen;
+  title: string;
+  children: string;
+}) {
   return (
-    <article className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] p-5">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="font-semibold">{section.title}</h3>
-        <span className="text-sm text-[var(--text-muted)]" lang="sr">
-          {section.serbian}
-        </span>
+    <div className="flex items-start gap-3">
+      <Icon className="mt-0.5 size-5 shrink-0 text-[var(--accent)]" />
+      <div>
+        <h3 className="font-semibold">{title}</h3>
+        <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]">{children}</p>
       </div>
-      <p className="mt-2 text-sm leading-6">{section.about}</p>
-      <p className={`mt-3 flex items-start gap-2 text-sm ${view.tone}`}>
-        <Icon className="mt-0.5 size-4 shrink-0" />
-        <span>
-          <span className="font-semibold">{view.label}.</span>{' '}
-          <span className="text-[var(--text-muted)]">{section.engineNote}</span>
-        </span>
-      </p>
-    </article>
+    </div>
+  );
+}
+
+function Note({ children }: { children: string }) {
+  return (
+    <p className="flex items-start gap-3 text-sm leading-6">
+      <LuCheck className="mt-0.5 size-5 shrink-0 text-[var(--success)]" />
+      <span>{children}</span>
+    </p>
   );
 }
