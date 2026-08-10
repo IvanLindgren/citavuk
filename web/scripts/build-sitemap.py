@@ -44,6 +44,7 @@ STATIC = [
     ("/course", "0.8", "monthly"),
     ("/trainer", "0.8", "monthly"),
     ("/trainer/translation-duel", "0.8", "monthly"),
+    ("/exams", "0.8", "monthly"),
     ("/lessons", "0.8", "weekly"),
     ("/listening", "0.7", "weekly"),
     ("/events", "0.9", "weekly"),

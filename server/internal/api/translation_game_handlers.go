@@ -14,6 +14,9 @@ type translationGameRoundRequest struct {
 	Level      string `json:"level"`
 	Round      int    `json:"round"`
 	Translator string `json:"translator"`
+	// Пустое поле — сербский→русский: приложение второго направления пока не
+	// знает и ничего не шлёт.
+	Direction string `json:"direction"`
 }
 
 type translationGameSentence struct {
@@ -26,6 +29,7 @@ type translationGameRoundResponse struct {
 	Level        string                    `json:"level"`
 	Round        int                       `json:"round"`
 	Translator   string                    `json:"translator"`
+	Direction    string                    `json:"direction"`
 	Sentences    []translationGameSentence `json:"sentences"`
 	JudgeEnabled bool                      `json:"judgeEnabled"`
 }
@@ -41,7 +45,12 @@ func (s *Server) handleTranslationGameRound(w http.ResponseWriter, r *http.Reque
 		writeError(w, http.StatusBadRequest, "invalid_translator", "Выберите DeepL или Google Translate.")
 		return
 	}
-	items, err := translationgame.Round(level, req.Round)
+	direction, ok := translationgame.NormalizeDirection(req.Direction)
+	if !ok {
+		writeError(w, http.StatusBadRequest, "invalid_direction", "Выберите направление: с сербского или на сербский.")
+		return
+	}
+	items, err := translationgame.Round(level, req.Round, direction)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "invalid_round", "Выберите уровень A1–C2 и раунд от 1 до 3.")
 		return
@@ -50,14 +59,15 @@ func (s *Server) handleTranslationGameRound(w http.ResponseWriter, r *http.Reque
 	for i := range items {
 		sources[i] = items[i].Text
 	}
-	translated, err := s.translator.Paragraphs(r.Context(), sources, "sr", "ru", provider)
+	sourceLang, targetLang := translationgame.Languages(direction)
+	translated, err := s.translator.Paragraphs(r.Context(), sources, sourceLang, targetLang, provider)
 	if err != nil {
 		slog.Warn("translation game provider failed", "provider", provider, "err", err)
 		writeTranslateError(w, err)
 		return
 	}
 	response := translationGameRoundResponse{
-		Level: level, Round: req.Round, Translator: provider,
+		Level: level, Round: req.Round, Translator: provider, Direction: direction,
 		Sentences:    make([]translationGameSentence, len(items)),
 		JudgeEnabled: s.translationGame.Enabled(),
 	}
@@ -71,7 +81,8 @@ func (s *Server) handleTranslationGameRound(w http.ResponseWriter, r *http.Reque
 }
 
 type translationGameJudgeRequest struct {
-	Entries []translationgame.Entry `json:"entries"`
+	Entries   []translationgame.Entry `json:"entries"`
+	Direction string                  `json:"direction"`
 }
 
 func (s *Server) handleTranslationGameJudge(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +94,7 @@ func (s *Server) handleTranslationGameJudge(w http.ResponseWriter, r *http.Reque
 	if err := decodeJSON(w, r, &req, 24<<10); err != nil {
 		return
 	}
-	result, err := s.translationGame.Evaluate(r.Context(), req.Entries)
+	result, err := s.translationGame.Evaluate(r.Context(), req.Entries, req.Direction)
 	if err != nil {
 		slog.Warn("translation game judge failed", "err", err)
 		switch {
