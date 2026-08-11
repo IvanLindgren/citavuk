@@ -235,6 +235,25 @@
     text-wrap: balance;
   }
 
+  /* Читавук с лейкой: лист из восьми кадров, кадр 150×202. */
+  .garden-wolf {
+    width: 150px;
+    height: 202px;
+    background-image: url('/img/garden/citavuk_garden.webp');
+    background-size: 1200px 202px;
+    background-repeat: no-repeat;
+  }
+
+  .garden-wolf--watering {
+    animation: garden-water 1.1s steps(8) infinite;
+  }
+
+  @keyframes garden-water {
+    to {
+      background-position-x: -1200px;
+    }
+  }
+
   /* Тёплая радиальная подсветка за героем. */
   .glow-warm {
     background: radial-gradient(

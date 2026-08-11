@@ -64,3 +64,9 @@ animations/source/
 *.apk
 *.aab
 certificates*.zip
+
+# Исходные наборы для сада. Little Dreamyland запрещает распространение пака как
+# есть, а происхождение FlowerAssets не подтверждено; репозиторий публичный.
+# В сборку идут производные webp из web/public/img/garden, их собирает
+# tools/build_garden_sprites.py.
+tools/assets/garden/

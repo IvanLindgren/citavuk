@@ -107,5 +107,6 @@ func (s *Server) handleTranslationGameJudge(w http.ResponseWriter, r *http.Reque
 		}
 		return
 	}
+	s.recordDuelRound(r, req.Entries, result)
 	writeJSON(w, http.StatusOK, result)
 }

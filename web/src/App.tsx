@@ -133,6 +133,12 @@ const LessonView = lazy(() =>
 const MicroFeed = lazy(() =>
   import("./pages/MicroFeed").then((m) => ({ default: m.MicroFeed })),
 );
+const Garden = lazy(() =>
+  import("./pages/Garden").then((m) => ({ default: m.Garden })),
+);
+const PublicGarden = lazy(() =>
+  import("./pages/PublicGarden").then((m) => ({ default: m.PublicGarden })),
+);
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
@@ -164,6 +170,8 @@ const ROUTES: RouteDefinition[] = [
   // Старые сохранённые ссылки продолжают открываться после переноса раздела.
   { pattern: "/course/dialogue/:id", element: <CourseDialogue /> },
   { pattern: "/trainer", element: <Trainer /> },
+  { pattern: "/basta", element: <Garden /> },
+  { pattern: "/basta/:nickname", element: <PublicGarden /> },
   { pattern: "/exams", element: <Exams /> },
   { pattern: "/trainer/translation-duel", element: <TranslationDuel /> },
   { pattern: "/tests/:id", element: <TestRun /> },

@@ -14,6 +14,10 @@ public/img/*
 !public/img/google-play-badge.png
 # Значок RuStore, если его положить сюда из консоли разработчика.
 !public/img/rustore-badge.svg
+# Спрайты сада собирает tools/build_garden_sprites.py из наборов, которых в
+# репозитории нет и не будет (лицензия). prepare-assets.py их не создаёт,
+# поэтому на чистой сборке они возьмутся только отсюда.
+!public/img/garden/
 # Эти четыре WOFF2 нужны уже чистой CI/deploy-сборке. Они производные от TTF,
 # но без них локальная рабочая папка выглядела исправной, а prod отдавал 404.
 public/fonts/*

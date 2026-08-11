@@ -126,7 +126,9 @@ failed=0
 check_type "/" "text/html" || failed=1
 check_type "/materials" "text/html" || failed=1
 check_type "/trainer/translation-duel" "text/html" || failed=1
+check_type "/basta" "text/html" || failed=1
 check_type "/fonts/Lora-Regular.woff2" "font/woff2" || failed=1
+check_type "/img/garden/citavuk_garden.webp" "image/webp" || failed=1
 if [[ $failed -ne 0 ]]; then
     echo "ТИПЫ ОТДАЮТСЯ НЕВЕРНО — сайт будет скачиваться, а не открываться" >&2
     exit 1

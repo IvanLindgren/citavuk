@@ -23,6 +23,7 @@
 | [language.md](docs/agents/language.md) | морфология, лексикон, грамматический движок, ударение, «se» |
 | [course.md](docs/agents/course.md) | курс, тренажёрка, типы упражнений, дуэль переводов |
 | [roadmap.md](docs/agents/roadmap.md) | дорожная карта, уровень и цель пользователя, прогресс |
+| [garden.md](docs/agents/garden.md) | Башта Читавука: динары, рост, соседи, лидерборд |
 | [vukotok.md](docs/agents/vukotok.md) | лента: карточка, подбор, обсуждение, наполнение |
 | [teacher-lessons.md](docs/agents/teacher-lessons.md) | авторские уроки, редактор теории и заданий, диалоги |
 | [content.md](docs/agents/content.md) | материалы, экзамены, публичная библиотека, объявления, админка |

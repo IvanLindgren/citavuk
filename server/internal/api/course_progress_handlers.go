@@ -76,6 +76,9 @@ func (s *Server) handlePutCourseProgress(w http.ResponseWriter, r *http.Request)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось сохранить прогресс курса.")
 		return
 	}
+	if applied {
+		s.syncGardenCourse(r, user.ID, courseID, input.Payload)
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"applied":   applied,
 		"courseId":  current.CourseID,

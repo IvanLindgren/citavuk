@@ -260,6 +260,16 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/course/progress/{courseId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePutCourseProgress)))
 	mux.HandleFunc("GET /v1/course/bundle/{courseId}", s.rateLimit(s.generalLimit, s.handlePublishedCourse))
 
+	// Башта Читавука. Чужой сад и таблица садоводов открыты гостю, но только
+	// для тех, кто сам включил публичный доступ.
+	mux.HandleFunc("GET /v1/garden", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGarden)))
+	mux.HandleFunc("POST /v1/garden/plant", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenPlant)))
+	mux.HandleFunc("POST /v1/garden/water", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenWater)))
+	mux.HandleFunc("PUT /v1/garden/profile", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenProfile)))
+	mux.HandleFunc("GET /v1/garden/leaderboard", s.rateLimit(s.generalLimit, s.handleGardenLeaderboard))
+	mux.HandleFunc("GET /v1/garden/{nickname}", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handlePublicGarden)))
+	mux.HandleFunc("POST /v1/garden/{nickname}/water", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenHelp)))
+
 	// Авторские уроки. Заявка доступна любому вошедшему пользователю, редактор
 	// только одобренному преподавателю, каталог и unlisted-ссылка открыты гостям.
 	mux.HandleFunc("GET /v1/teachers/application", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleTeacherApplication)))
