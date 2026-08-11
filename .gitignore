@@ -69,3 +69,4 @@ certificates*.zip
 # публичный. Остальные исходники сада (FlowerAssets под CC0 и свой спрайт
 # садовника) лежат рядом и отслеживаются: без них не пересобрать спрайты.
 tools/assets/garden/Little Dreamyland - Free Pack/
+tools/assets/garden-local/

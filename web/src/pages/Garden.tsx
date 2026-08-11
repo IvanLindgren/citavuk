@@ -1,4 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import {
+  LuArrowLeft,
+  LuChartNoAxesColumnIncreasing,
+  LuCoins,
+  LuFlower2,
+  LuLogIn,
+  LuSettings2,
+  LuSprout,
+  LuTrophy,
+  LuUsers,
+  LuX,
+} from 'react-icons/lu';
 
 import {
   loadGarden,
@@ -14,12 +26,14 @@ import {
 } from '../api/garden';
 import { ApiError } from '../api/client';
 import { GardenScene } from '../components/GardenScene';
-import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
+import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isBlooming, projectedGrowth } from '../garden/scene';
 import { GARDEN, coinWord } from '../garden/strings';
 import { Link, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
+
+type Panel = 'seeds' | 'earnings' | 'neighbours' | 'profile';
 
 export function Garden() {
   useSeo({
@@ -37,6 +51,8 @@ export function Garden() {
   const [busy, setBusy] = useState(false);
   const [picking, setPicking] = useState<number | null>(null);
   const [watering, setWatering] = useState<number | null>(null);
+  const [panel, setPanel] = useState<Panel | null>(null);
+  const [selectedSeed, setSelectedSeed] = useState<string | null>(null);
 
   const apply = useCallback((next: GardenState) => {
     setState(next);
@@ -51,8 +67,6 @@ export function Garden() {
         .then((next) => alive && apply(next))
         .catch((cause) => alive && setError(describe(cause)));
     pull();
-    // Клиент досчитывает рост сам, но раз в минуту сверяется с сервером: иначе
-    // разойдутся часы и заработок, начисленный за это время.
     const timer = window.setInterval(pull, 60_000);
     return () => {
       alive = false;
@@ -85,8 +99,6 @@ export function Garden() {
     [apply],
   );
 
-  // Садовник доходит до грядки и поливает; результат приходит раньше, чем
-  // кончается анимация, поэтому она живёт своим таймером.
   const water = useCallback(
     (slot: number) => {
       setWatering(slot);
@@ -100,7 +112,8 @@ export function Garden() {
     (slot: number, plant?: GardenPlant) => {
       if (busy) return;
       if (!plant) {
-        setPicking(slot);
+        if (selectedSeed) void act(() => plantSeed(slot, selectedSeed));
+        else setPicking(slot);
         return;
       }
       const growth = projectedGrowth(plant, Date.now() - fetchedAt);
@@ -111,170 +124,297 @@ export function Garden() {
       }
       void water(slot);
     },
-    [busy, fetchedAt, navigate, state?.catalog, water],
+    [act, busy, fetchedAt, navigate, selectedSeed, state?.catalog, water],
   );
 
   if (loading) {
     return (
-      <main className="flex min-h-[60dvh] items-center justify-center">
+      <main className="garden-game-shell fixed inset-0 z-[60] grid place-items-center">
         <Spinner />
       </main>
     );
   }
 
-  if (!account) return <GardenIntro board={board} />;
+  if (!account) return <GardenDemo board={board} />;
 
   return (
-    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-4 py-10 sm:px-5 sm:py-14">
-      <div className="mx-auto max-w-5xl">
-        <Reveal>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">
-            {GARDEN.coins.ru}
-          </p>
-          <h1 className="mt-2 text-4xl sm:text-5xl">{GARDEN.title.sr}</h1>
-          <p className="mt-2 text-[var(--text-muted)]">{GARDEN.title.ru}</p>
-        </Reveal>
+    <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
+      {state ? (
+        <GardenScene
+          slots={state.slots}
+          plants={state.plants}
+          catalog={state.catalog}
+          fetchedAt={fetchedAt}
+          watering={watering}
+          onBed={onBed}
+        />
+      ) : (
+        <div className="grid size-full place-items-center"><Spinner /></div>
+      )}
 
-        {error && (
-          <div className="mt-6">
-            <ErrorNote>{error}</ErrorNote>
-          </div>
-        )}
+      {state && <GardenHud state={state} busy={busy} onExit={() => navigate('/')} />}
+      {state && (
+        <GardenToolbar
+          selectedSeed={selectedSeed}
+          onOpen={setPanel}
+        />
+      )}
 
-        {!state ? (
-          <div className="mt-10 flex justify-center">
-            <Spinner />
-          </div>
-        ) : (
-          <>
-            <Reveal delay={0.05}>
-              <Wallet state={state} busy={busy} />
-            </Reveal>
+      {error && (
+        <div className="absolute left-1/2 top-20 z-[130] w-[min(92%,42rem)] -translate-x-1/2">
+          <ErrorNote>{error}</ErrorNote>
+        </div>
+      )}
 
-            <Reveal delay={0.1}>
-              <section className="mt-8">
-                <GardenScene
-                  slots={state.slots}
-                  plants={state.plants}
-                  catalog={state.catalog}
-                  fetchedAt={fetchedAt}
-                  watering={watering}
-                  onBed={onBed}
-                />
-                <p className="mt-3 text-sm text-[var(--text-muted)]">
-                  Нажми на пустую лунку, чтобы посадить, на росток — чтобы
-                  полить, на распустившийся цветок — чтобы заняться его темой.
-                </p>
-              </section>
-            </Reveal>
+      {state && picking !== null && (
+        <SeedWindow
+          catalog={state.catalog}
+          coins={state.coins}
+          busy={busy}
+          onClose={() => setPicking(null)}
+          onPick={async (species) => {
+            await act(() => plantSeed(picking, species));
+            setPicking(null);
+          }}
+        />
+      )}
 
-            {picking !== null && (
-              <Shop
-                catalog={state.catalog}
-                coins={state.coins}
+      {state && panel && (
+        <GardenWindow title={panelTitle(panel)} onClose={() => setPanel(null)}>
+          {panel === 'seeds' && (
+            <SeedShelf
+              catalog={state.catalog}
+              coins={state.coins}
+              busy={busy}
+              selected={selectedSeed}
+              onPick={(species) => {
+                setSelectedSeed(species);
+                setPanel(null);
+              }}
+            />
+          )}
+          {panel === 'earnings' && <Earnings state={state} />}
+          {panel === 'profile' && (
+            <>
+              <GardenerProfile
+                state={state}
                 busy={busy}
-                onClose={() => setPicking(null)}
-                onPick={async (species) => {
-                  await act(() => plantSeed(picking, species));
-                  setPicking(null);
-                }}
+                onSave={(nickname, isPublic) => act(() => saveGardenProfile(nickname, isPublic))}
               />
-            )}
-
-            <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <Reveal delay={0.15}>
-                <Earnings state={state} />
-              </Reveal>
-              <Reveal delay={0.2}>
-                <GardenerProfile
-                  state={state}
-                  busy={busy}
-                  onSave={(nickname, isPublic) =>
-                    act(() => saveGardenProfile(nickname, isPublic))
-                  }
-                />
-              </Reveal>
-            </div>
-          </>
-        )}
-
-        <Reveal delay={0.25}>
-          <Gardeners catalog={state?.catalog ?? []} />
-        </Reveal>
-
-        <Reveal delay={0.3}>
-          <Leaderboard board={board} />
-        </Reveal>
-
-        <Credits />
-      </div>
+              <Credits />
+            </>
+          )}
+          {panel === 'neighbours' && (
+            <Neighbours catalog={state.catalog} board={board} />
+          )}
+        </GardenWindow>
+      )}
     </main>
   );
 }
 
-function Wallet({ state, busy }: { state: GardenState; busy: boolean }) {
+function GardenHud({ state, busy, onExit }: { state: GardenState; busy: boolean; onExit: () => void }) {
   return (
-    <Card className="mt-8 flex flex-wrap items-center gap-6 p-5 sm:p-7">
-      <span
-        aria-hidden
-        className={`garden-wolf shrink-0 origin-left scale-75 sm:scale-100 ${
-          busy ? 'garden-wolf--watering' : ''
-        }`}
-      />
-      <div>
-        <p className="font-display text-3xl font-bold">
-          {state.coins} <span className="text-xl">{coinWord(state.coins)}</span>
-        </p>
-        <p className="text-sm text-[var(--text-muted)]">{GARDEN.coins.sr}</p>
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
+      <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:px-3">
+        <button type="button" onClick={onExit} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Выйти из сада" title="Выйти из сада"><LuArrowLeft /></button>
+        <span>
+          <span className="block font-display text-lg font-bold leading-tight sm:text-xl">{GARDEN.title.sr}</span>
+          <span className="block text-[11px] text-[#5e4635]">{GARDEN.title.ru}</span>
+        </span>
       </div>
-      <div className="ml-auto text-right">
-        <p className="font-display text-2xl font-bold">×{state.speed.toFixed(1)}</p>
-        <p className="text-sm text-[var(--text-muted)]">
-          {GARDEN.speed.sr} — {GARDEN.speed.ru}
-        </p>
+      <div className="garden-game-plaque pointer-events-auto flex items-center gap-3 px-3 py-2 sm:gap-5 sm:px-4">
+        <HudValue icon={<LuCoins />} value={state.coins} label={coinWord(state.coins)} busy={busy} />
+        <HudValue icon={<LuFlower2 />} value={state.bloomed} label={GARDEN.bloomed.sr} />
+        <HudValue icon={<LuChartNoAxesColumnIncreasing />} value={`×${state.speed.toFixed(1)}`} label={GARDEN.speed.sr} />
       </div>
-      <div className="text-right">
-        <p className="font-display text-2xl font-bold">{state.bloomed}</p>
-        <p className="text-sm text-[var(--text-muted)]">
-          {GARDEN.bloomed.sr} — {GARDEN.bloomed.ru}
-        </p>
-      </div>
-    </Card>
+    </div>
+  );
+}
+
+function HudValue({
+  icon,
+  value,
+  label,
+  busy = false,
+}: {
+  icon: ReactNode;
+  value: ReactNode;
+  label: string;
+  busy?: boolean;
+}) {
+  return (
+    <span className={`flex items-center gap-1.5 ${busy ? 'animate-pulse' : ''}`} title={label}>
+      <span className="text-[#8a4d27]">{icon}</span>
+      <span className="font-bold tabular-nums">{value}</span>
+      <span className="hidden text-xs text-[#5e4635] lg:inline">{label}</span>
+    </span>
+  );
+}
+
+function GardenToolbar({
+  selectedSeed,
+  onOpen,
+}: {
+  selectedSeed: string | null;
+  onOpen: (panel: Panel) => void;
+}) {
+  return (
+    <div className="garden-toolbelt absolute bottom-3 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-1 p-1.5 sm:bottom-4 sm:gap-2">
+      <ToolButton active={Boolean(selectedSeed)} label="Семена" onClick={() => onOpen('seeds')}>
+        <LuSprout />
+      </ToolButton>
+      <ToolButton label="Заработок" onClick={() => onOpen('earnings')}>
+        <LuChartNoAxesColumnIncreasing />
+      </ToolButton>
+      <ToolButton label="Соседи" onClick={() => onOpen('neighbours')}>
+        <LuUsers />
+      </ToolButton>
+      <ToolButton label="Садовод" onClick={() => onOpen('profile')}>
+        <LuSettings2 />
+      </ToolButton>
+    </div>
+  );
+}
+
+function ToolButton({
+  children,
+  label,
+  active = false,
+  onClick,
+}: {
+  children: ReactNode;
+  label: string;
+  active?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      aria-pressed={active}
+      onClick={onClick}
+      className={`grid size-12 place-items-center border-2 text-xl transition-transform hover:-translate-y-0.5 sm:size-14 ${
+        active
+          ? 'border-[#ffe69a] bg-[#a85032] text-white'
+          : 'border-[#8c5b37] bg-[#f5dfaa] text-[#4b3025] hover:bg-[#ffeabb]'
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function GardenWindow({
+  title,
+  onClose,
+  children,
+}: {
+  title: string;
+  onClose: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <div className="fixed inset-0 z-[200] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-5" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
+      <section className="garden-game-window max-h-[86dvh] w-full max-w-3xl overflow-y-auto p-4 sm:p-6" onClick={(event) => event.stopPropagation()}>
+        <header className="flex items-center gap-3 border-b-2 border-[#b7844e] pb-3">
+          <h2 className="font-display text-xl font-bold sm:text-2xl">{title}</h2>
+          <button type="button" className="ml-auto grid size-10 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" onClick={onClose} aria-label="Закрыть" title="Закрыть">
+            <LuX />
+          </button>
+        </header>
+        <div className="pt-4">{children}</div>
+      </section>
+    </div>
+  );
+}
+
+function SeedWindow({
+  catalog,
+  coins,
+  busy,
+  onPick,
+  onClose,
+}: {
+  catalog: GardenSpecies[];
+  coins: number;
+  busy: boolean;
+  onPick: (species: string) => void;
+  onClose: () => void;
+}) {
+  return (
+    <GardenWindow title={`${GARDEN.shop.sr} — ${GARDEN.shop.ru}`} onClose={onClose}>
+      <SeedShelf catalog={catalog} coins={coins} busy={busy} onPick={onPick} />
+    </GardenWindow>
+  );
+}
+
+function SeedShelf({
+  catalog,
+  coins,
+  busy,
+  selected,
+  onPick,
+}: {
+  catalog: GardenSpecies[];
+  coins: number;
+  busy: boolean;
+  selected?: string | null;
+  onPick: (species: string) => void;
+}) {
+  return (
+    <div>
+      <p className="mb-4 flex items-center gap-2 font-semibold tabular-nums"><LuCoins /> {coins} {coinWord(coins)}</p>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {catalog.map((species, index) => {
+          const affordable = coins >= species.price;
+          return (
+            <li key={species.id}>
+              <button
+                type="button"
+                disabled={busy || !affordable}
+                onClick={() => onPick(species.id)}
+                className={`flex w-full items-center gap-3 border-2 p-3 text-left transition-colors disabled:opacity-45 ${
+                  selected === species.id ? 'border-[#a85032] bg-[#f1c982]' : 'border-[#b7844e] bg-[#fff0c7] hover:bg-[#ffe5a4]'
+                }`}
+              >
+                <span aria-hidden className="block size-12 shrink-0 bg-no-repeat" style={{ backgroundImage: 'url(/img/garden/garden_seeds.webp)', backgroundSize: `${catalog.length * 3}rem 3rem`, backgroundPosition: `-${index * 3}rem 0` }} />
+                <span className="min-w-0">
+                  <span className="block font-display text-lg font-bold">{species.serbian}</span>
+                  <span className="block text-sm text-[#6b4d38]">{species.russian} · {species.theme}</span>
+                </span>
+                <span className="ml-auto shrink-0 font-bold tabular-nums">{species.price}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
 function Earnings({ state }: { state: GardenState }) {
   return (
-    <Card className="h-full p-5 sm:p-7">
-      <h2 className="font-display text-xl font-bold">
-        {GARDEN.earnings.sr}{' '}
-        <span className="text-sm font-normal text-[var(--text-muted)]">
-          — {GARDEN.earnings.ru}
-        </span>
-      </h2>
-      <ul className="mt-4 space-y-3">
+    <div>
+      <div className="mb-5 flex flex-wrap gap-5">
+        <HudValue icon={<LuCoins />} value={state.todayCoins} label="сегодня" />
+        <HudValue icon={<LuCoins />} value={state.earnedTotal} label="за всё время" />
+      </div>
+      <ul className="space-y-4">
         {state.earnings.map((line) => (
           <li key={line.source}>
             <div className="flex items-baseline justify-between gap-3 text-sm">
               <span>{line.title}</span>
-              <span className="tabular-nums text-[var(--text-muted)]">
-                {line.today} / {line.cap}
-              </span>
+              <span className="tabular-nums text-[#6b4d38]">{line.today} / {line.cap}</span>
             </div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
-              <div
-                className="h-full rounded-full bg-[var(--accent)]"
-                style={{ width: `${Math.min(100, (line.today / line.cap) * 100)}%` }}
-              />
+            <div className="mt-1 h-3 overflow-hidden border border-[#8c5b37] bg-[#ead5a6]">
+              <div className="h-full bg-[#65a654]" style={{ width: `${Math.min(100, (line.today / line.cap) * 100)}%` }} />
             </div>
           </li>
         ))}
       </ul>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">
-        Динары начисляет сервер по твоим занятиям. Чем больше заработано за день,
-        тем быстрее растут цветы — до двойной скорости.
-      </p>
-    </Card>
+    </div>
   );
 }
 
@@ -296,144 +436,30 @@ function GardenerProfile({
   }, [state.nickname, state.public]);
 
   return (
-    <Card className="h-full p-5 sm:p-7">
-      <h2 className="font-display text-xl font-bold">
-        {GARDEN.myName.sr}{' '}
-        <span className="text-sm font-normal text-[var(--text-muted)]">
-          — {GARDEN.myName.ru}
-        </span>
-      </h2>
-      <form
-        className="mt-4 space-y-4"
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSave(nickname.trim(), isPublic);
-        }}
-      >
-        <input
-          value={nickname}
-          onChange={(event) => setNickname(event.target.value)}
-          maxLength={24}
-          placeholder="Читавук"
-          aria-label={GARDEN.myName.ru}
-          className="w-full rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5"
-        />
-        <label className="flex items-start gap-3 text-sm">
-          <input
-            type="checkbox"
-            checked={isPublic}
-            onChange={(event) => setPublic(event.target.checked)}
-            className="mt-1"
-          />
-          <span>
-            {GARDEN.openGarden.sr}
-            <span className="block text-[var(--text-muted)]">
-              Сад появится в таблице садоводов и откроется по ссылке
-              citavuk.ru/basta/{nickname.trim() || '…'}. Пока галочка снята, сад
-              видишь только ты.
-            </span>
-          </span>
-        </label>
-        <Button type="submit" disabled={busy}>
-          {GARDEN.save.sr} — {GARDEN.save.ru}
-        </Button>
-      </form>
-      {state.public && state.nickname && (
-        <p className="mt-4 text-sm text-[var(--text-muted)]">
-          Помог соседям сегодня: {state.helpedToday} из {state.helpLimit}.
-        </p>
-      )}
-    </Card>
+    <form className="space-y-4" onSubmit={(event) => { event.preventDefault(); onSave(nickname.trim(), isPublic); }}>
+      <label className="block text-sm font-semibold">
+        {GARDEN.myName.sr} — {GARDEN.myName.ru}
+        <input value={nickname} onChange={(event) => setNickname(event.target.value)} maxLength={24} placeholder="Читавук" className="mt-2 w-full border-2 border-[#b7844e] bg-[#fff5d9] px-4 py-2.5" />
+      </label>
+      <label className="flex items-start gap-3 text-sm">
+        <input type="checkbox" checked={isPublic} onChange={(event) => setPublic(event.target.checked)} className="mt-1" />
+        <span>{GARDEN.openGarden.sr}<span className="block text-[#6b4d38]">Сад появится у соседей под выбранным именем.</span></span>
+      </label>
+      <Button type="submit" disabled={busy}>{GARDEN.save.sr} — {GARDEN.save.ru}</Button>
+      {state.public && state.nickname && <p className="text-sm text-[#6b4d38]">Помог соседям сегодня: {state.helpedToday} из {state.helpLimit}.</p>}
+    </form>
   );
 }
 
-function Shop({
-  catalog,
-  coins,
-  busy,
-  onPick,
-  onClose,
-}: {
-  catalog: GardenSpecies[];
-  coins: number;
-  busy: boolean;
-  onPick: (species: string) => void;
-  onClose: () => void;
-}) {
+function Neighbours({ catalog, board }: { catalog: GardenSpecies[]; board: GardenBoardRow[] }) {
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={GARDEN.shop.ru}
-      onClick={onClose}
-    >
-      <div
-        className="max-h-[85dvh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-[var(--bg-raised)] p-5 sm:rounded-3xl sm:p-7"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="font-display text-2xl font-bold">
-            {GARDEN.shop.sr}{' '}
-            <span className="text-sm font-normal text-[var(--text-muted)]">
-              — {GARDEN.shop.ru}
-            </span>
-          </h2>
-          <span className="tabular-nums text-[var(--text-muted)]">
-            {coins} {coinWord(coins)}
-          </span>
-        </div>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-          {catalog.map((species, index) => {
-            const affordable = coins >= species.price;
-            return (
-              <li key={species.id}>
-                <button
-                  type="button"
-                  disabled={busy || !affordable}
-                  onClick={() => onPick(species.id)}
-                  className="flex w-full items-center gap-4 rounded-2xl border border-[var(--line)] p-4 text-left transition-colors hover:border-[var(--accent)] disabled:opacity-45"
-                >
-                  <span
-                    aria-hidden
-                    className="block h-12 w-12 shrink-0 bg-no-repeat"
-                    style={{
-                      backgroundImage: 'url(/img/garden/garden_seeds.webp)',
-                      backgroundSize: `${catalog.length * 3}rem 3rem`,
-                      backgroundPosition: `-${index * 3}rem 0`,
-                    }}
-                  />
-                  <span className="min-w-0">
-                    <span className="block font-display text-lg font-bold">
-                      {species.serbian}
-                    </span>
-                    <span className="block text-sm text-[var(--text-muted)]">
-                      {species.russian} · {species.theme}
-                    </span>
-                  </span>
-                  <span className="ml-auto shrink-0 tabular-nums font-bold">
-                    {species.price}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <Button className="mt-5" variant="ghost" onClick={onClose}>
-          Закрыть
-        </Button>
-      </div>
+    <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <Gardeners catalog={catalog} />
+      <Leaderboard board={board} />
     </div>
   );
 }
 
-/**
- * Поиск садоводов.
- *
- * Ищет по части имени садовода и по тому, что растёт в саду. Имя аккаунта не
- * ищется намеренно: человек соглашался показать сад под выбранным именем, а не
- * связать его со своим настоящим.
- */
 function Gardeners({ catalog }: { catalog: GardenSpecies[] }) {
   const [query, setQuery] = useState('');
   const [species, setSpecies] = useState('');
@@ -443,152 +469,118 @@ function Gardeners({ catalog }: { catalog: GardenSpecies[] }) {
   useEffect(() => {
     let alive = true;
     setSearching(true);
-    // Запрос на каждую букву не нужен: пауза в треть секунды снимает почти все
-    // промежуточные обращения.
     const timer = window.setTimeout(() => {
       searchGardeners(query.trim(), species)
         .then((result) => alive && setFound(result.gardeners))
         .catch(() => alive && setFound([]))
         .finally(() => alive && setSearching(false));
     }, 320);
-    return () => {
-      alive = false;
-      window.clearTimeout(timer);
-    };
+    return () => { alive = false; window.clearTimeout(timer); };
   }, [query, species]);
 
   return (
-    <Card className="mt-10 p-5 sm:p-7">
-      <h2 className="font-display text-xl font-bold">
-        {GARDEN.find.sr}{' '}
-        <span className="text-sm font-normal text-[var(--text-muted)]">
-          — {GARDEN.find.ru}
-        </span>
-      </h2>
-
-      <div className="mt-4 flex flex-wrap gap-3">
-        <input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          maxLength={24}
-          type="search"
-          placeholder="имя садовода"
-          aria-label={GARDEN.find.ru}
-          className="min-w-0 flex-1 rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5"
-        />
-        <select
-          value={species}
-          onChange={(event) => setSpecies(event.target.value)}
-          aria-label="что растёт в саду"
-          className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5"
-        >
+    <section>
+      <h3 className="font-display text-lg font-bold">{GARDEN.find.sr} — {GARDEN.find.ru}</h3>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} maxLength={24} type="search" placeholder="имя садовода" aria-label={GARDEN.find.ru} className="min-w-0 border-2 border-[#b7844e] bg-[#fff5d9] px-3 py-2" />
+        <select value={species} onChange={(event) => setSpecies(event.target.value)} aria-label="что растёт в саду" className="border-2 border-[#b7844e] bg-[#fff5d9] px-3 py-2">
           <option value="">что угодно</option>
-          {catalog.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.serbian} — {item.russian}
-            </option>
-          ))}
+          {catalog.map((item) => <option key={item.id} value={item.id}>{item.serbian} — {item.russian}</option>)}
         </select>
       </div>
-
-      {found && found.length === 0 && !searching && (
-        <p className="mt-4 text-sm text-[var(--text-muted)]">
-          {GARDEN.nobody.sr} — {GARDEN.nobody.ru}.
-        </p>
-      )}
-
-      <ul className="mt-4 space-y-2">
+      {found && found.length === 0 && !searching && <p className="mt-4 text-sm text-[#6b4d38]">{GARDEN.nobody.sr} — {GARDEN.nobody.ru}.</p>}
+      <ul className="mt-4 divide-y divide-[#c99b61]">
         {(found ?? []).map((row) => (
           <li key={row.nickname}>
-            <Link
-              to={`/basta/${encodeURIComponent(row.nickname)}`}
-              className="flex items-baseline gap-3 rounded-xl px-2 py-1.5 text-sm hover:bg-[var(--bg-sunken)]"
-            >
+            <Link to={`/basta/${encodeURIComponent(row.nickname)}`} className="flex items-baseline gap-3 px-1 py-2 text-sm hover:bg-[#f3dca8]">
               <span className="font-semibold">{row.nickname}</span>
-              <span className="truncate text-[var(--text-muted)]">
-                {(row.growing ?? [])
-                  .map((id) => catalog.find((item) => item.id === id)?.serbian ?? id)
-                  .join(', ')}
-              </span>
-              <span className="ml-auto shrink-0 tabular-nums text-[var(--text-muted)]">
-                {row.bloomed} / {row.plants}
-              </span>
+              <span className="truncate text-[#6b4d38]">{(row.growing ?? []).map((id) => catalog.find((item) => item.id === id)?.serbian ?? id).join(', ')}</span>
+              <span className="ml-auto shrink-0 tabular-nums">{row.bloomed} / {row.plants}</span>
             </Link>
           </li>
         ))}
       </ul>
-    </Card>
+    </section>
   );
 }
 
 function Leaderboard({ board }: { board: GardenBoardRow[] }) {
-  if (board.length === 0) return null;
   return (
-    <Card className="mt-10 p-5 sm:p-7">
-      <h2 className="font-display text-xl font-bold">
-        {GARDEN.board.sr}{' '}
-        <span className="text-sm font-normal text-[var(--text-muted)]">
-          — {GARDEN.board.ru}
-        </span>
-      </h2>
-      <ol className="mt-4 space-y-2">
-        {board.map((row, index) => (
-          <li key={row.nickname} className="flex items-baseline gap-3 text-sm">
-            <span className="w-6 shrink-0 tabular-nums text-[var(--text-muted)]">
-              {index + 1}
-            </span>
-            <Link to={`/basta/${encodeURIComponent(row.nickname)}`} className="truncate">
-              {row.nickname}
-            </Link>
-            <span className="ml-auto shrink-0 tabular-nums text-[var(--text-muted)]">
-              {row.bloomed} · {row.plants}
-            </span>
-          </li>
-        ))}
-      </ol>
-    </Card>
+    <section>
+      <h3 className="flex items-center gap-2 font-display text-lg font-bold"><LuTrophy /> {GARDEN.board.sr}</h3>
+      {board.length === 0 ? <p className="mt-3 text-sm text-[#6b4d38]">Пока никто не открыл сад соседям.</p> : (
+        <ol className="mt-3 divide-y divide-[#c99b61]">
+          {board.map((row, index) => (
+            <li key={row.nickname} className="flex items-baseline gap-3 py-2 text-sm">
+              <span className="w-6 tabular-nums text-[#6b4d38]">{index + 1}</span>
+              <Link to={`/basta/${encodeURIComponent(row.nickname)}`} className="truncate font-semibold">{row.nickname}</Link>
+              <span className="ml-auto tabular-nums">{row.bloomed} · {row.plants}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
   );
 }
 
-function GardenIntro({ board }: { board: GardenBoardRow[] }) {
+function GardenDemo({ board }: { board: GardenBoardRow[] }) {
   const { navigate } = useRouter();
+  const [prompt, setPrompt] = useState(false);
   return (
-    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] px-4 py-10 sm:px-5 sm:py-16">
-      <div className="mx-auto max-w-3xl">
-        <Reveal>
-          <h1 className="text-4xl sm:text-5xl">{GARDEN.title.sr}</h1>
-          <p className="mt-2 text-[var(--text-muted)]">{GARDEN.title.ru}</p>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <Card className="mt-8 p-6 sm:p-9">
-            <p className="leading-relaxed">
-              Сад растёт от занятий. Чтение книг, повторение слов, дуэль с
-              переводчиком, тренажёрка и уроки курса приносят цветочные динары, а
-              за них покупаются семена. Чем больше занимаешься за день, тем
-              быстрее поднимаются цветы. Распустившийся цветок говорит по-сербски
-              и зовёт заняться своей темой.
-            </p>
-            <p className="mt-4 leading-relaxed">
-              Динары считает сервер по твоим занятиям, поэтому сад привязан к
-              аккаунту.
-            </p>
-            <Button className="mt-6" onClick={() => navigate('/login')}>
-              Войти и открыть сад
-            </Button>
-          </Card>
-        </Reveal>
-        <Leaderboard board={board} />
-        <Credits />
+    <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
+      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} onBed={() => setPrompt(true)} />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
+        <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:px-3">
+          <button type="button" onClick={() => navigate('/')} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Выйти из сада" title="Выйти из сада"><LuArrowLeft /></button>
+          <span><span className="block font-display text-lg font-bold">{GARDEN.title.sr}</span><span className="block text-[11px] text-[#5e4635]">{GARDEN.title.ru}</span></span>
+        </div>
+        <button type="button" onClick={() => navigate('/login')} className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-4 py-3 font-bold"><LuLogIn /> Войти</button>
       </div>
+      <div className="garden-toolbelt absolute bottom-3 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-1 p-1.5 sm:bottom-4 sm:gap-2">
+        <ToolButton label="Семена" onClick={() => setPrompt(true)}><LuSprout /></ToolButton>
+        <ToolButton label="Соседи" onClick={() => setPrompt(true)}><LuUsers /></ToolButton>
+        <ToolButton label="Таблица садоводов" onClick={() => setPrompt(true)}><LuTrophy /></ToolButton>
+      </div>
+      {prompt && (
+        <GardenWindow title="Твоя башта ждёт" onClose={() => setPrompt(false)}>
+          <p className="leading-7">Сад и цветочные динары привязаны к занятиям, поэтому для посадки и полива нужен аккаунт.</p>
+          {board.length > 0 && <p className="mt-3 text-sm text-[#6b4d38]">Открытых садов сегодня: {board.length}.</p>}
+          <Button className="mt-5" onClick={() => navigate('/login')}>Войти и играть</Button>
+        </GardenWindow>
+      )}
     </main>
   );
 }
 
+const DEMO_CATALOG: GardenSpecies[] = [
+  { id: 'suncokret', serbian: 'сунцокрет', russian: 'подсолнух', price: 20, topic: 'grammar-a1-08', theme: 'винительный падеж', phrase: 'Волим сунцокрет.' },
+  { id: 'krasuljak', serbian: 'красуљак', russian: 'ромашка', price: 30, topic: 'grammar-a1-04', theme: 'настоящее время', phrase: 'Ја растем.' },
+  { id: 'koleus', serbian: 'колеус', russian: 'колеус', price: 45, topic: 'grammar-a1-10', theme: 'родительный падеж', phrase: 'Лист колеуса.' },
+  { id: 'cuvarkuca', serbian: 'чуваркућа', russian: 'молодило', price: 60, topic: 'grammar-a1-15', theme: 'числительные', phrase: 'Један лист.' },
+];
+
+const DEMO_PLANTS: GardenPlant[] = [
+  demoPlant(0, 'suncokret', 5), demoPlant(2, 'krasuljak', 3.5), demoPlant(5, 'koleus', 2.4),
+  demoPlant(7, 'cuvarkuca', 1.3), demoPlant(9, 'krasuljak', 5), demoPlant(10, 'suncokret', 4.2),
+];
+
+function demoPlant(slot: number, species: string, growth: number): GardenPlant {
+  return { slot, species, stage: Math.min(4, Math.floor(growth)), growth, blooming: growth >= 5, speed: 1, plantedAt: '2026-01-01T00:00:00Z' };
+}
+
+function panelTitle(panel: Panel): string {
+  switch (panel) {
+    case 'seeds': return `${GARDEN.shop.sr} — ${GARDEN.shop.ru}`;
+    case 'earnings': return `${GARDEN.earnings.sr} — ${GARDEN.earnings.ru}`;
+    case 'neighbours': return `${GARDEN.neighbours.sr} — ${GARDEN.neighbours.ru}`;
+    case 'profile': return `${GARDEN.myName.sr} — ${GARDEN.myName.ru}`;
+  }
+}
+
 function Credits() {
   return (
-    <p className="mt-10 text-xs text-[var(--text-muted)]">
-      Цветы — из набора FlowerAssets под лицензией CC0; Читавука-садовника
-      нарисовал автор проекта.
+    <p className="mt-8 border-t border-[#c99b61] pt-4 text-xs text-[#6b4d38]">
+      Цветы — FlowerAssets (CC0). Мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника нарисовал автор проекта.
     </p>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { LuArrowLeft, LuDroplets, LuFlower2 } from 'react-icons/lu';
 
 import { ApiError } from '../api/client';
 import {
@@ -8,14 +9,15 @@ import {
   type PublicGarden as PublicGardenData,
 } from '../api/garden';
 import { GardenScene } from '../components/GardenScene';
-import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
+import { Button, ErrorNote, Spinner } from '../components/ui';
 import { GARDEN, coinWord } from '../garden/strings';
-import { Link, useParams } from '../lib/router';
+import { useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
 
 export function PublicGarden() {
   const { nickname = '' } = useParams();
+  const { navigate } = useRouter();
   const { account } = useAuth();
   const [garden, setGarden] = useState<PublicGardenData | null>(null);
   const [catalog, setCatalog] = useState<GardenSpecies[]>([]);
@@ -68,71 +70,29 @@ export function PublicGarden() {
   }
 
   return (
-    <main className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-4 py-10 sm:px-5 sm:py-14">
-      <div className="mx-auto max-w-5xl">
-        <Reveal>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">
-            {GARDEN.neighbours.sr} — {GARDEN.neighbours.ru}
-          </p>
-          <h1 className="mt-2 text-4xl sm:text-5xl">Башта: {nickname}</h1>
-        </Reveal>
+    <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
+      {garden ? (
+        <GardenScene slots={garden.slots} plants={garden.plants} catalog={catalog} fetchedAt={fetchedAt} watering={watering} />
+      ) : (
+        <div className="grid size-full place-items-center"><Spinner /></div>
+      )}
 
-        {error && (
-          <div className="mt-6">
-            <ErrorNote>{error}</ErrorNote>
-          </div>
-        )}
-
-        {!garden && !error && (
-          <div className="mt-10 flex justify-center">
-            <Spinner />
-          </div>
-        )}
-
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
+        <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:px-3">
+          <button type="button" onClick={() => navigate('/basta')} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Вернуться в свой сад" title="Вернуться в свой сад"><LuArrowLeft /></button>
+          <span><span className="block font-display text-lg font-bold">Башта: {nickname}</span><span className="block text-[11px] text-[#5e4635]">{GARDEN.neighbours.sr} — {GARDEN.neighbours.ru}</span></span>
+        </div>
         {garden && (
-          <>
-            <Card className="mt-8 flex flex-wrap items-center gap-5 p-5 sm:p-7">
-              <div>
-                <p className="font-display text-2xl font-bold">{garden.bloomed}</p>
-                <p className="text-sm text-[var(--text-muted)]">
-                  {GARDEN.bloomed.sr} — {GARDEN.bloomed.ru}
-                </p>
-              </div>
-              <div className="ml-auto">
-                {account && garden.canWater && (
-                  <Button onClick={water} disabled={busy}>
-                    {GARDEN.helpNeighbour.sr} — {GARDEN.helpNeighbour.ru}
-                  </Button>
-                )}
-                {thanks && (
-                  <p className="text-sm font-semibold text-[var(--success)]">{thanks}</p>
-                )}
-                {!account && (
-                  <p className="text-sm text-[var(--text-muted)]">
-                    Полить чужой сад может вошедший садовод.
-                  </p>
-                )}
-              </div>
-            </Card>
-
-            <section className="mt-8">
-              <GardenScene
-                slots={garden.slots}
-                plants={garden.plants}
-                catalog={catalog}
-                fetchedAt={fetchedAt}
-                watering={watering}
-              />
-            </section>
-          </>
+          <div className="garden-game-plaque pointer-events-auto flex items-center gap-3 px-3 py-2">
+            <span className="flex items-center gap-1.5 font-bold"><LuFlower2 className="text-[#8a4d27]" /> {garden.bloomed}</span>
+            {account && garden.canWater && <Button onClick={water} disabled={busy}><LuDroplets /> {GARDEN.helpNeighbour.sr}</Button>}
+            {!account && <span className="text-xs text-[#5e4635]">Войди, чтобы полить</span>}
+            {thanks && <span className="text-sm font-semibold text-[#317240]">{thanks}</span>}
+          </div>
         )}
-
-        <p className="mt-8">
-          <Link to="/basta" className="font-semibold text-[var(--accent)]">
-            ← Моя башта
-          </Link>
-        </p>
       </div>
+
+      {error && <div className="absolute left-1/2 top-24 z-[130] w-[min(92%,42rem)] -translate-x-1/2"><ErrorNote>{error}</ErrorNote></div>}
     </main>
   );
 }

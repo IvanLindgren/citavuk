@@ -210,20 +210,25 @@ export function App() {
 function AppFrame() {
   const { path } = useRouter();
   const vukotok = isVukotok(path);
+  const pathname = path.split('?')[0] ?? path;
+  const garden = pathname === '/basta' || pathname.startsWith('/basta/');
+  const immersive = vukotok || garden;
 
   return (
     <div className="flex min-h-dvh flex-col">
-      {!vukotok && <EventBanner />}
+      {!immersive && <EventBanner />}
       {/*
         На телефоне Вукоток занимает экран целиком: полоса навигации над лентой
         оставляла её «страницей сайта с видео», а не тем, чем раздел является.
         Уйти из ленты можно значком волка в её собственной шапке.
       */}
-      <div className={vukotok ? 'hidden lg:block' : undefined}>
-        <Header />
-      </div>
-      {!vukotok && <ServerAnnouncements />}
-      {!vukotok && <CommunityAnnouncement />}
+      {!garden && (
+        <div className={vukotok ? 'hidden lg:block' : undefined}>
+          <Header />
+        </div>
+      )}
+      {!immersive && <ServerAnnouncements />}
+      {!immersive && <CommunityAnnouncement />}
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>
@@ -233,14 +238,14 @@ function AppFrame() {
           </PageTransition>
         </PageErrorBoundary>
       </div>
-      {!vukotok && <Footer />}
-      {!vukotok && <AppPrompt />}
+      {!immersive && <Footer />}
+      {!immersive && <AppPrompt />}
       {/*
         Вопрос об уровне встаёт поверх любой страницы и ровно один раз за
         аккаунт. Не в Вукотоке и не в настройках, потому что уровень нужен всем
         разделам сразу: и подбору ленты, и предупреждению о тяжёлой книге.
       */}
-      <LevelPrompt />
+      {!garden && <LevelPrompt />}
     </div>
   );
 }

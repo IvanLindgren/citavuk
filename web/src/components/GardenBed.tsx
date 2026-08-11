@@ -107,6 +107,7 @@ function Plant({
           '--sway-duration': `${sway.duration}s`,
           '--sway-delay': `${sway.delay}s`,
           '--sway-tilt': sway.tilt,
+          '--garden-growth-height': `${growthHeight(growth)}%`,
         } as React.CSSProperties
       }
     >
