@@ -21,6 +21,13 @@ export interface GardenPlant {
   wateredAt?: string;
 }
 
+export interface GardenDecoration {
+  id: string;
+  serbian: string;
+  russian: string;
+  price: number;
+}
+
 export interface GardenEarning {
   source: string;
   title: string;
@@ -35,6 +42,7 @@ export interface GardenState {
   earnedTotal: number;
   slots: number;
   plants: GardenPlant[];
+  decorations: string[];
   bloomed: number;
   earnings: GardenEarning[];
   todayCoins: number;
@@ -42,6 +50,7 @@ export interface GardenState {
   helpedToday: number;
   helpLimit: number;
   catalog: GardenSpecies[];
+  decorationCatalog: GardenDecoration[];
   stages: number;
 }
 
@@ -57,6 +66,7 @@ export interface PublicGarden {
   nickname: string;
   slots: number;
   plants: GardenPlant[];
+  decorations: string[];
   bloomed: number;
   canWater: boolean;
 }
@@ -76,6 +86,13 @@ export function waterPlant(slot: number): Promise<GardenState> {
   return request<GardenState>('/v1/garden/water', {
     method: 'POST',
     body: { slot },
+  });
+}
+
+export function buyGardenDecoration(decoration: string): Promise<GardenState> {
+  return request<GardenState>('/v1/garden/decorations/buy', {
+    method: 'POST',
+    body: { decoration },
   });
 }
 
@@ -107,6 +124,7 @@ export function searchGardeners(
 export function loadPublicGarden(nickname: string): Promise<{
   garden: PublicGarden;
   catalog: GardenSpecies[];
+  decorationCatalog: GardenDecoration[];
   stages: number;
 }> {
   return request(`/v1/garden/${encodeURIComponent(nickname)}`);

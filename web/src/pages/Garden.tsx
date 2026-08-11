@@ -9,10 +9,13 @@ import {
   LuSprout,
   LuTrophy,
   LuUsers,
+  LuVolume2,
+  LuVolumeX,
   LuX,
 } from 'react-icons/lu';
 
 import {
+  buyGardenDecoration,
   loadGarden,
   loadLeaderboard,
   plantSeed,
@@ -20,6 +23,7 @@ import {
   searchGardeners,
   waterPlant,
   type GardenBoardRow,
+  type GardenDecoration,
   type GardenPlant,
   type GardenSpecies,
   type GardenState,
@@ -28,6 +32,12 @@ import { ApiError } from '../api/client';
 import { GardenScene } from '../components/GardenScene';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isBlooming, projectedGrowth } from '../garden/scene';
+import {
+  playGardenSound,
+  readGardenSoundSetting,
+  saveGardenSoundSetting,
+  unlockGardenAudio,
+} from '../garden/audio';
 import { GARDEN, coinWord } from '../garden/strings';
 import { Link, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
@@ -53,6 +63,17 @@ export function Garden() {
   const [watering, setWatering] = useState<number | null>(null);
   const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedSeed, setSelectedSeed] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState(readGardenSoundSetting);
+
+  const toggleSound = useCallback(() => {
+    const next = !soundEnabled;
+    setSoundEnabled(next);
+    saveGardenSoundSetting(next);
+    if (next) {
+      unlockGardenAudio();
+      playGardenSound('ui');
+    }
+  }, [soundEnabled]);
 
   const apply = useCallback((next: GardenState) => {
     setState(next);
@@ -112,7 +133,11 @@ export function Garden() {
     (slot: number, plant?: GardenPlant) => {
       if (busy) return;
       if (!plant) {
-        if (selectedSeed) void act(() => plantSeed(slot, selectedSeed));
+        if (selectedSeed) void act(async () => {
+          const next = await plantSeed(slot, selectedSeed);
+          playGardenSound('plant', soundEnabled);
+          return next;
+        });
         else setPicking(slot);
         return;
       }
@@ -124,7 +149,7 @@ export function Garden() {
       }
       void water(slot);
     },
-    [act, busy, fetchedAt, navigate, selectedSeed, state?.catalog, water],
+    [act, busy, fetchedAt, navigate, selectedSeed, soundEnabled, state?.catalog, water],
   );
 
   if (loading) {
@@ -146,13 +171,15 @@ export function Garden() {
           catalog={state.catalog}
           fetchedAt={fetchedAt}
           watering={watering}
+          decorations={state.decorations}
+          soundEnabled={soundEnabled}
           onBed={onBed}
         />
       ) : (
         <div className="grid size-full place-items-center"><Spinner /></div>
       )}
 
-      {state && <GardenHud state={state} busy={busy} onExit={() => navigate('/')} />}
+      {state && <GardenHud state={state} busy={busy} soundEnabled={soundEnabled} onToggleSound={toggleSound} onExit={() => navigate('/')} />}
       {state && (
         <GardenToolbar
           selectedSeed={selectedSeed}
@@ -173,7 +200,11 @@ export function Garden() {
           busy={busy}
           onClose={() => setPicking(null)}
           onPick={async (species) => {
-            await act(() => plantSeed(picking, species));
+            await act(async () => {
+              const next = await plantSeed(picking, species);
+              playGardenSound('plant', soundEnabled);
+              return next;
+            });
             setPicking(null);
           }}
         />
@@ -182,15 +213,19 @@ export function Garden() {
       {state && panel && (
         <GardenWindow title={panelTitle(panel)} onClose={() => setPanel(null)}>
           {panel === 'seeds' && (
-            <SeedShelf
-              catalog={state.catalog}
-              coins={state.coins}
+            <GardenShop
+              state={state}
               busy={busy}
-              selected={selectedSeed}
-              onPick={(species) => {
+              selectedSeed={selectedSeed}
+              onSeed={(species) => {
                 setSelectedSeed(species);
                 setPanel(null);
               }}
+              onDecoration={(decoration) => act(async () => {
+                const next = await buyGardenDecoration(decoration);
+                playGardenSound('bloom', soundEnabled);
+                return next;
+              })}
             />
           )}
           {panel === 'earnings' && <Earnings state={state} />}
@@ -213,20 +248,37 @@ export function Garden() {
   );
 }
 
-function GardenHud({ state, busy, onExit }: { state: GardenState; busy: boolean; onExit: () => void }) {
+function GardenHud({
+  state,
+  busy,
+  soundEnabled,
+  onToggleSound,
+  onExit,
+}: {
+  state: GardenState;
+  busy: boolean;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
+  onExit: () => void;
+}) {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
-      <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:px-3">
+      <div className="garden-game-plaque pointer-events-auto flex min-w-0 max-w-[56vw] items-center gap-2 px-2 py-2 sm:px-3">
         <button type="button" onClick={onExit} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Выйти из сада" title="Выйти из сада"><LuArrowLeft /></button>
-        <span>
-          <span className="block font-display text-lg font-bold leading-tight sm:text-xl">{GARDEN.title.sr}</span>
-          <span className="block text-[11px] text-[#5e4635]">{GARDEN.title.ru}</span>
+        <span className="min-w-0">
+          <span className="block whitespace-nowrap font-display text-base font-bold leading-tight sm:text-xl">{GARDEN.title.sr}</span>
+          <span className="hidden text-[11px] text-[#5e4635] sm:block">{GARDEN.title.ru}</span>
         </span>
       </div>
-      <div className="garden-game-plaque pointer-events-auto flex items-center gap-3 px-3 py-2 sm:gap-5 sm:px-4">
+      <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:gap-5 sm:px-4">
         <HudValue icon={<LuCoins />} value={state.coins} label={coinWord(state.coins)} busy={busy} />
         <HudValue icon={<LuFlower2 />} value={state.bloomed} label={GARDEN.bloomed.sr} />
-        <HudValue icon={<LuChartNoAxesColumnIncreasing />} value={`×${state.speed.toFixed(1)}`} label={GARDEN.speed.sr} />
+        <span className="hidden sm:contents">
+          <HudValue icon={<LuChartNoAxesColumnIncreasing />} value={`×${state.speed.toFixed(1)}`} label={GARDEN.speed.sr} />
+        </span>
+        <button type="button" onClick={onToggleSound} className="grid size-8 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'} title={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'}>
+          {soundEnabled ? <LuVolume2 /> : <LuVolumeX />}
+        </button>
       </div>
     </div>
   );
@@ -294,7 +346,10 @@ function ToolButton({
       title={label}
       aria-label={label}
       aria-pressed={active}
-      onClick={onClick}
+      onClick={() => {
+        unlockGardenAudio();
+        onClick();
+      }}
       className={`grid size-12 place-items-center border-2 text-xl transition-transform hover:-translate-y-0.5 sm:size-14 ${
         active
           ? 'border-[#ffe69a] bg-[#a85032] text-white'
@@ -350,6 +405,87 @@ function SeedWindow({
   );
 }
 
+function GardenShop({
+  state,
+  busy,
+  selectedSeed,
+  onSeed,
+  onDecoration,
+}: {
+  state: GardenState;
+  busy: boolean;
+  selectedSeed: string | null;
+  onSeed: (species: string) => void;
+  onDecoration: (decoration: string) => Promise<void>;
+}) {
+  return (
+    <div className="space-y-7">
+      <SeedShelf
+        catalog={state.catalog}
+        coins={state.coins}
+        busy={busy}
+        selected={selectedSeed}
+        onPick={onSeed}
+      />
+      <DecorationShelf
+        catalog={state.decorationCatalog ?? []}
+        owned={state.decorations ?? []}
+        coins={state.coins}
+        busy={busy}
+        onBuy={onDecoration}
+      />
+    </div>
+  );
+}
+
+function DecorationShelf({
+  catalog,
+  owned,
+  coins,
+  busy,
+  onBuy,
+}: {
+  catalog: GardenDecoration[];
+  owned: string[];
+  coins: number;
+  busy: boolean;
+  onBuy: (decoration: string) => Promise<void>;
+}) {
+  if (catalog.length === 0) return null;
+  return (
+    <section className="border-t-2 border-[#b7844e] pt-5">
+      <h3 className="font-display text-lg font-bold">Украшения сада</h3>
+      <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+        {catalog.map((decoration) => {
+          const purchased = owned.includes(decoration.id);
+          return (
+            <li key={decoration.id}>
+              <button
+                type="button"
+                disabled={busy || purchased || coins < decoration.price}
+                onClick={() => {
+                  unlockGardenAudio();
+                  void onBuy(decoration.id);
+                }}
+                className="flex w-full items-center gap-3 border-2 border-[#b7844e] bg-[#fff0c7] p-3 text-left hover:bg-[#ffe5a4] disabled:opacity-55"
+              >
+                <img src="/img/garden/world/bushes.webp" alt="" className="garden-pixel-art h-12 w-24 object-contain" />
+                <span className="min-w-0">
+                  <span className="block font-display text-lg font-bold">{decoration.serbian}</span>
+                  <span className="block text-sm text-[#6b4d38]">{decoration.russian}</span>
+                </span>
+                <span className="ml-auto shrink-0 font-bold tabular-nums">
+                  {purchased ? 'Куплено' : decoration.price}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
 function SeedShelf({
   catalog,
   coins,
@@ -374,7 +510,10 @@ function SeedShelf({
               <button
                 type="button"
                 disabled={busy || !affordable}
-                onClick={() => onPick(species.id)}
+                onClick={() => {
+                  unlockGardenAudio();
+                  onPick(species.id);
+                }}
                 className={`flex w-full items-center gap-3 border-2 p-3 text-left transition-colors disabled:opacity-45 ${
                   selected === species.id ? 'border-[#a85032] bg-[#f1c982]' : 'border-[#b7844e] bg-[#fff0c7] hover:bg-[#ffe5a4]'
                 }`}
@@ -526,15 +665,25 @@ function Leaderboard({ board }: { board: GardenBoardRow[] }) {
 function GardenDemo({ board }: { board: GardenBoardRow[] }) {
   const { navigate } = useRouter();
   const [prompt, setPrompt] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(readGardenSoundSetting);
+  const toggleSound = () => {
+    const next = !soundEnabled;
+    setSoundEnabled(next);
+    saveGardenSoundSetting(next);
+    if (next) unlockGardenAudio();
+  };
   return (
     <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
-      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} onBed={() => setPrompt(true)} />
+      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} decorations={['berry-bushes']} soundEnabled={soundEnabled} onBed={() => setPrompt(true)} />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
-        <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:px-3">
+        <div className="garden-game-plaque pointer-events-auto flex min-w-0 max-w-[56vw] items-center gap-2 px-2 py-2 sm:px-3">
           <button type="button" onClick={() => navigate('/')} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Выйти из сада" title="Выйти из сада"><LuArrowLeft /></button>
-          <span><span className="block font-display text-lg font-bold">{GARDEN.title.sr}</span><span className="block text-[11px] text-[#5e4635]">{GARDEN.title.ru}</span></span>
+          <span className="min-w-0"><span className="block whitespace-nowrap font-display text-base font-bold sm:text-lg">{GARDEN.title.sr}</span><span className="hidden text-[11px] text-[#5e4635] sm:block">{GARDEN.title.ru}</span></span>
         </div>
-        <button type="button" onClick={() => navigate('/login')} className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-4 py-3 font-bold"><LuLogIn /> Войти</button>
+        <div className="pointer-events-auto flex items-center gap-2">
+          <button type="button" onClick={toggleSound} className="garden-game-plaque grid size-11 place-items-center" aria-label={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'} title={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'}>{soundEnabled ? <LuVolume2 /> : <LuVolumeX />}</button>
+          <button type="button" onClick={() => navigate('/login')} className="garden-game-plaque flex items-center gap-2 px-4 py-3 font-bold"><LuLogIn /> Войти</button>
+        </div>
       </div>
       <div className="garden-toolbelt absolute bottom-3 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-1 p-1.5 sm:bottom-4 sm:gap-2">
         <ToolButton label="Семена" onClick={() => setPrompt(true)}><LuSprout /></ToolButton>
@@ -580,7 +729,7 @@ function panelTitle(panel: Panel): string {
 function Credits() {
   return (
     <p className="mt-8 border-t border-[#c99b61] pt-4 text-xs text-[#6b4d38]">
-      Цветы — FlowerAssets (CC0). Мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника нарисовал автор проекта.
+      Растения и мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника нарисовал автор проекта. Звуки сада синтезируются в браузере.
     </p>
   );
 }

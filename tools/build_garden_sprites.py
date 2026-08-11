@@ -22,6 +22,7 @@ DESTINATIONS = (
 
 WOLF_FRAMES = 8
 WOLF_CELL_WIDTH = 150
+WOLF_CELL_HEIGHT = 202
 
 # Цветок показывается в грядке высотой около 190 CSS-пикселей. Двойная
 # плотность — предел разумного: исходники и так рисованные, дальше растёт только
@@ -61,30 +62,32 @@ def build_wolf() -> None:
     with Image.open(SRC / "citavuk_plants.png") as sheet:
         sheet = sheet.convert("RGBA")
         cell = sheet.width / WOLF_FRAMES
-        left, top = sheet.width, sheet.height
-        right = bottom = 0
+        frames: list[Image.Image] = []
         for index in range(WOLF_FRAMES):
             box = (round(index * cell), 0, round((index + 1) * cell), sheet.height)
-            frame_box = sheet.crop(box).getbbox()
-            if frame_box is None:
-                continue
-            left = min(left, box[0] + frame_box[0])
-            top = min(top, frame_box[1])
-            right = max(right, box[0] + frame_box[2])
-            bottom = max(bottom, frame_box[3])
+            frame = sheet.crop(box)
+            frame_box = frame.getbbox()
+            frames.append(frame.crop(frame_box) if frame_box else frame)
 
-        crop_w = (right - left) / WOLF_FRAMES
-        crop_h = bottom - top
-        scale = WOLF_CELL_WIDTH / crop_w
-        cell_h = round(crop_h * scale)
-
-        atlas = Image.new("RGBA", (WOLF_CELL_WIDTH * WOLF_FRAMES, cell_h), (0, 0, 0, 0))
-        for index in range(WOLF_FRAMES):
-            box = (round(index * cell), top, round((index + 1) * cell), bottom)
-            frame = sheet.crop(box).resize((WOLF_CELL_WIDTH, cell_h), Image.LANCZOS)
-            atlas.paste(frame, (index * WOLF_CELL_WIDTH, 0), frame)
+        max_width = max(frame.width for frame in frames)
+        max_height = max(frame.height for frame in frames)
+        scale = min(WOLF_CELL_WIDTH / max_width, WOLF_CELL_HEIGHT / max_height)
+        atlas = Image.new(
+            "RGBA",
+            (WOLF_CELL_WIDTH * WOLF_FRAMES, WOLF_CELL_HEIGHT),
+            (0, 0, 0, 0),
+        )
+        for index, frame in enumerate(frames):
+            size = (max(1, round(frame.width * scale)), max(1, round(frame.height * scale)))
+            frame = frame.resize(size, Image.LANCZOS)
+            x = index * WOLF_CELL_WIDTH + (WOLF_CELL_WIDTH - frame.width) // 2
+            y = WOLF_CELL_HEIGHT - frame.height
+            atlas.paste(frame, (x, y), frame)
         save(atlas, "citavuk_garden.webp")
-        print(f"citavuk_garden.webp {atlas.width}x{atlas.height}, кадр {WOLF_CELL_WIDTH}")
+        print(
+            f"citavuk_garden.webp {atlas.width}x{atlas.height}, "
+            f"кадр {WOLF_CELL_WIDTH}x{WOLF_CELL_HEIGHT}"
+        )
 
 
 def build_plants() -> None:

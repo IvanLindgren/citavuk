@@ -56,7 +56,10 @@ export function stageHeight(stage: number, stages: number): number {
   return steps[index] ?? 100;
 }
 
-export function plantImage(species: string): string {
+export function plantImage(species: string, stage?: number): string {
+  if (stage !== undefined) {
+    return `/img/garden/world/plant_${species}_${Math.min(4, Math.max(0, stage))}.webp`;
+  }
   return `/img/garden/plant_${species}.webp`;
 }
 

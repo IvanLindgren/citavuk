@@ -387,9 +387,9 @@
   }
 
   .garden-world__bed .garden-sway img {
-    width: auto;
-    max-width: min(72%, 58px);
-    max-height: var(--garden-growth-height);
+    width: min(80%, 42px);
+    height: auto;
+    image-rendering: pixelated;
   }
 
   .garden-world__bed > button:hover::after,
@@ -407,20 +407,20 @@
   }
 
   .garden-game-player {
-    width: 75px;
-    height: 101px;
-    transform: translate(-50%, -92%);
-    filter: drop-shadow(0 7px 1px rgb(27 54 31 / 0.28));
+    width: 56px;
+    height: 75px;
+    transform: translate(-50%, -90%);
+    filter: drop-shadow(0 5px 1px rgb(27 54 31 / 0.25));
   }
 
   .garden-game-player__sprite {
     display: block;
-    width: 75px;
-    height: 101px;
+    width: 56px;
+    height: 75px;
     transform: scaleX(var(--garden-facing, 1));
     background-image: url('/img/garden/citavuk_garden.webp');
     background-repeat: no-repeat;
-    background-size: 600px 101px;
+    background-size: 448px 75px;
     transform-origin: center bottom;
   }
 
@@ -428,6 +428,11 @@
     animation: garden-walk 280ms steps(2) infinite;
   }
 
+  /*
+    В листе восемь кадров, поэтому и шагов восемь, а сдвиг равен всей ширине
+    листа. steps(7) с семью восьмыми ширины показывал бы только кадры 0–6:
+    последний кадр не появлялся бы вовсе, и цикл дёргался бы на возврате.
+  */
   .garden-game-player__sprite--watering {
     animation: garden-game-water 1.1s steps(8) infinite;
   }
@@ -440,7 +445,7 @@
 
   @keyframes garden-game-water {
     to {
-      background-position-x: -600px;
+      background-position-x: -448px;
     }
   }
 

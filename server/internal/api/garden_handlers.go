@@ -18,8 +18,9 @@ import (
 
 type gardenStateResponse struct {
 	store.GardenState
-	Catalog []store.GardenSpecies `json:"catalog"`
-	Stages  int                   `json:"stages"`
+	Catalog           []store.GardenSpecies    `json:"catalog"`
+	DecorationCatalog []store.GardenDecoration `json:"decorationCatalog"`
+	Stages            int                      `json:"stages"`
 }
 
 func (s *Server) handleGarden(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +32,27 @@ func (s *Server) handleGarden(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, gardenStateResponse{
-		GardenState: state, Catalog: store.GardenCatalog, Stages: store.GardenStages,
+		GardenState: state, Catalog: store.GardenCatalog,
+		DecorationCatalog: store.GardenDecorationCatalog, Stages: store.GardenStages,
 	})
+}
+
+type gardenDecorationRequest struct {
+	Decoration string `json:"decoration"`
+}
+
+func (s *Server) handleGardenDecorationBuy(w http.ResponseWriter, r *http.Request) {
+	var req gardenDecorationRequest
+	if err := decodeJSON(w, r, &req, 1<<10); err != nil {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать запрос.")
+		return
+	}
+	user := userFrom(r.Context())
+	if err := s.store.BuyGardenDecoration(r.Context(), user.ID, req.Decoration); err != nil {
+		writeGardenError(w, err, "Не удалось купить украшение.")
+		return
+	}
+	s.writeGarden(w, r, user.ID)
 }
 
 type gardenPlantRequest struct {
@@ -136,9 +156,10 @@ func (s *Server) handlePublicGarden(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"garden":  garden,
-		"catalog": store.GardenCatalog,
-		"stages":  store.GardenStages,
+		"garden":            garden,
+		"catalog":           store.GardenCatalog,
+		"decorationCatalog": store.GardenDecorationCatalog,
+		"stages":            store.GardenStages,
 	})
 }
 
@@ -161,7 +182,8 @@ func (s *Server) writeGarden(w http.ResponseWriter, r *http.Request, userID uuid
 		return
 	}
 	writeJSON(w, http.StatusOK, gardenStateResponse{
-		GardenState: state, Catalog: store.GardenCatalog, Stages: store.GardenStages,
+		GardenState: state, Catalog: store.GardenCatalog,
+		DecorationCatalog: store.GardenDecorationCatalog, Stages: store.GardenStages,
 	})
 }
 
@@ -175,6 +197,8 @@ func writeGardenError(w http.ResponseWriter, err error, fallback string) {
 		writeError(w, http.StatusNotFound, codeNotFound, "Грядка пуста.")
 	case errors.Is(err, store.ErrGardenBadSpecies):
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Такого семени нет в магазине.")
+	case errors.Is(err, store.ErrGardenBadDecor):
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Такого украшения нет в магазине.")
 	case errors.Is(err, store.ErrGardenBadSlot):
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Такой грядки нет.")
 	case errors.Is(err, store.ErrGardenNickTaken):

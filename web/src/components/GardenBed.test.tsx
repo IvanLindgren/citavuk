@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { GardenBed } from './GardenBed';
-import { growthHeight } from '../garden/scene';
 
 const SUNCOKRET = {
   id: 'suncokret',
@@ -48,19 +47,17 @@ describe('грядка', () => {
     expect(host.querySelector('button')?.disabled).toBe(true);
   });
 
-  it('только что посаженное показано семенем, а не цветком', () => {
+  it('только что посаженное показано пиксельным семенем, а не взрослым цветком', () => {
     render(<GardenBed slot={0} growth={0.2} species={SUNCOKRET} seedIndex={1} />);
-    expect(host.querySelector('img')).toBeNull();
+    expect(host.querySelector('img')?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_0.webp');
     expect(host.querySelector('button')?.getAttribute('aria-label')).toContain('семе');
   });
 
-  it('растущий цветок занимает высоту по своему росту', () => {
+  it('растущий цветок переключает пиксельную стадию', () => {
     render(<GardenBed slot={0} growth={2.5} species={SUNCOKRET} />);
     const image = host.querySelector('img');
-    expect(image?.getAttribute('src')).toBe('/img/garden/plant_suncokret.webp');
-    expect(image?.style.height).toBe(`${growthHeight(2.5)}%`);
-    // Между стадиями высота дробная — цветок растёт непрерывно.
-    expect(image?.style.height).not.toBe(`${growthHeight(2)}%`);
+    expect(image?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_2.webp');
+    expect(image?.classList.contains('garden-pixel-plant')).toBe(true);
   });
 
   it('качается вокруг основания стебля и стабильно для своей грядки', () => {
@@ -77,7 +74,7 @@ describe('грядка', () => {
 
   it('распустившийся цветок вырастает во всю грядку', () => {
     render(<GardenBed slot={0} growth={5} species={SUNCOKRET} />);
-    expect(host.querySelector('img')?.style.height).toBe('100%');
+    expect(host.querySelector('img')?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_4.webp');
     expect(host.querySelector('.garden-sparkle')).not.toBeNull();
   });
 

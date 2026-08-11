@@ -3,9 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { GardenSpecies } from '../api/garden';
 import { STAGES, plantImage } from '../garden/strings';
 import {
-  growthHeight,
   isBlooming,
-  showsSeed,
   stageOf,
   swayFor,
   type Sway,
@@ -26,7 +24,6 @@ export function GardenBed({
   slot,
   growth,
   species,
-  seedIndex = 0,
   watering = false,
   onAct,
   actionLabel,
@@ -53,7 +50,6 @@ export function GardenBed({
         <Plant
           growth={growth}
           species={species}
-          seedIndex={seedIndex}
           sway={sway}
           pop={justBloomed}
         />
@@ -74,30 +70,15 @@ export function GardenBed({
 function Plant({
   growth,
   species,
-  seedIndex,
   sway,
   pop,
 }: {
   growth: number;
   species: GardenSpecies;
-  seedIndex: number;
   sway: Sway;
   pop: boolean;
 }) {
-  if (showsSeed(growth)) {
-    return (
-      <span
-        aria-hidden
-        className="block h-6 w-6"
-        style={{
-          backgroundImage: 'url(/img/garden/garden_seeds.webp)',
-          backgroundSize: '6rem 1.5rem',
-          backgroundPosition: `-${seedIndex * 1.5}rem 0`,
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
-    );
-  }
+  const stage = stageOf(growth);
 
   return (
     <span
@@ -107,20 +88,13 @@ function Plant({
           '--sway-duration': `${sway.duration}s`,
           '--sway-delay': `${sway.delay}s`,
           '--sway-tilt': sway.tilt,
-          '--garden-growth-height': `${growthHeight(growth)}%`,
         } as React.CSSProperties
       }
     >
       <img
-        src={plantImage(species.id)}
+        src={plantImage(species.id, stage)}
         alt=""
-        className="mx-auto block w-auto max-w-full object-contain object-bottom"
-        style={{
-          // Высота едет плавно: сервер отдаёт рост раз в минуту, а расти
-          // цветок должен на глазах.
-          height: `${growthHeight(growth)}%`,
-          transition: 'height 1s linear',
-        }}
+        className="garden-pixel-plant mx-auto block object-contain object-bottom"
       />
     </span>
   );

@@ -265,6 +265,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/garden", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGarden)))
 	mux.HandleFunc("POST /v1/garden/plant", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenPlant)))
 	mux.HandleFunc("POST /v1/garden/water", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenWater)))
+	mux.HandleFunc("POST /v1/garden/decorations/buy", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenDecorationBuy)))
 	mux.HandleFunc("PUT /v1/garden/profile", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenProfile)))
 	mux.HandleFunc("GET /v1/garden/leaderboard", s.rateLimit(s.generalLimit, s.handleGardenLeaderboard))
 	mux.HandleFunc("GET /v1/garden/search", s.rateLimit(s.generalLimit, s.handleGardenSearch))

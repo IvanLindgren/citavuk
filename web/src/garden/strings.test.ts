@@ -42,6 +42,7 @@ describe('сад: строки и стадии', () => {
 
   it('картинка цветка берётся по виду', () => {
     expect(plantImage('suncokret')).toBe('/img/garden/plant_suncokret.webp');
+    expect(plantImage('suncokret', 3)).toBe('/img/garden/world/plant_suncokret_3.webp');
   });
 
   it('семя ищется в атласе по порядку каталога', () => {

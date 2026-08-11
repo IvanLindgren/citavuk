@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  LuChevronDown,
-  LuChevronLeft,
-  LuChevronRight,
-  LuChevronUp,
-} from 'react-icons/lu';
 
 import type { GardenPlant, GardenSpecies } from '../api/garden';
+import { playGardenSound, unlockGardenAudio } from '../garden/audio';
 import { GARDEN } from '../garden/strings';
 import { isBlooming, projectedGrowth } from '../garden/scene';
 import { GardenBed } from './GardenBed';
@@ -19,6 +14,8 @@ interface Props {
   fetchedAt: number;
   /** Грядка, которую сейчас поливают: к ней идёт садовник. */
   watering?: number | null;
+  decorations?: string[];
+  soundEnabled?: boolean;
   onBed?: (slot: number, plant?: GardenPlant) => void;
 }
 
@@ -43,12 +40,25 @@ export function GardenScene({
   catalog,
   fetchedAt,
   watering = null,
+  decorations = [],
+  soundEnabled = true,
   onBed,
 }: Props) {
   const now = useNow(1000);
   const gust = useGust();
   const sceneRef = useRef<HTMLDivElement>(null);
-  const { player, moving, facing, moveTo, nudge } = useGardenMovement(sceneRef);
+  const { player, moving, facing, moveTo } = useGardenMovement(sceneRef);
+
+  useEffect(() => {
+    if (!moving || !soundEnabled) return;
+    playGardenSound('step');
+    const timer = window.setInterval(() => playGardenSound('step'), 310);
+    return () => window.clearInterval(timer);
+  }, [moving, soundEnabled]);
+
+  useEffect(() => {
+    if (watering !== null) playGardenSound('water', soundEnabled);
+  }, [soundEnabled, watering]);
 
   const bySlot = useMemo(() => {
     const map = new Map<number, GardenPlant>();
@@ -59,6 +69,7 @@ export function GardenScene({
   const goToBed = useCallback(
     (slot: number, plant: GardenPlant | undefined) => {
       if (!onBed) return;
+      unlockGardenAudio();
       const point = bedPoint(slot, slots);
       moveTo({ x: point.x, y: Math.min(90, point.y + 9), action: () => onBed(slot, plant) });
     },
@@ -70,11 +81,12 @@ export function GardenScene({
       ref={sceneRef}
       tabIndex={0}
       role="application"
-      aria-label="Башта Читавука. Управление стрелками или WASD."
+      aria-label="Башта Читавука. Нажмите на место, куда должен подойти Читавук. На компьютере также работают стрелки и WASD."
       className={`garden-world relative size-full min-h-[520px] overflow-hidden focus:outline-none ${
         gust ? 'garden-gust' : ''
       }`}
       onPointerDown={(event) => {
+        unlockGardenAudio();
         if ((event.target as HTMLElement).closest('button')) return;
         const bounds = event.currentTarget.getBoundingClientRect();
         moveTo({
@@ -91,7 +103,9 @@ export function GardenScene({
       <WorldSprite name="fountain" className="right-[8%] top-[22%] w-[9%] max-w-24" />
       <WorldSprite name="bench" className="left-[18%] top-[42%] w-[8%] max-w-20" />
       <WorldSprite name="campfire" className="bottom-[8%] right-[6%] w-[7%] max-w-16" />
-      <WorldSprite name="bushes" className="right-[1%] top-[52%] w-[18%] max-w-44" />
+      {decorations.includes('berry-bushes') && (
+        <WorldSprite name="bushes" className="right-[1%] top-[52%] w-[24%] max-w-60" />
+      )}
       <WorldSprite name="fence" className="left-[26%] top-[23%] w-[10%] max-w-24" />
       <WorldSprite name="signs" className="bottom-[1%] right-[18%] w-[13%] max-w-32" />
 
@@ -145,8 +159,6 @@ export function GardenScene({
           style={{ '--garden-facing': facing } as React.CSSProperties}
         />
       </span>
-
-      <DPad onMove={nudge} />
     </div>
   );
 }
@@ -159,29 +171,6 @@ function WorldSprite({ name, className }: { name: string; className: string }) {
       draggable={false}
       className={`garden-pixel-art pointer-events-none absolute z-10 h-auto select-none ${className}`}
     />
-  );
-}
-
-function DPad({ onMove }: { onMove: (dx: number, dy: number) => void }) {
-  const button =
-    'grid size-10 place-items-center border border-white/30 bg-black/35 text-white shadow-sm backdrop-blur-sm active:bg-black/55';
-  return (
-    <div className="absolute bottom-24 left-3 z-[110] grid grid-cols-3 md:hidden" aria-label="Движение">
-      <span />
-      <button type="button" className={button} aria-label="Вверх" onClick={() => onMove(0, -7)}>
-        <LuChevronUp />
-      </button>
-      <span />
-      <button type="button" className={button} aria-label="Влево" onClick={() => onMove(-7, 0)}>
-        <LuChevronLeft />
-      </button>
-      <button type="button" className={button} aria-label="Вниз" onClick={() => onMove(0, 7)}>
-        <LuChevronDown />
-      </button>
-      <button type="button" className={button} aria-label="Вправо" onClick={() => onMove(7, 0)}>
-        <LuChevronRight />
-      </button>
-    </div>
   );
 }
 
@@ -201,17 +190,13 @@ function useGardenMovement(sceneRef: React.RefObject<HTMLDivElement | null>) {
     [sceneRef],
   );
 
-  const nudge = useCallback((dx: number, dy: number) => {
-    const current = playerRef.current;
-    moveTo({ x: current.x + dx, y: current.y + dy });
-  }, [moveTo]);
-
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
       if (isTyping(event.target)) return;
       const key = movementKey(event.key);
       if (!key) return;
       event.preventDefault();
+      unlockGardenAudio();
       destination.current = null;
       pressed.current.add(key);
     };
@@ -281,7 +266,7 @@ function useGardenMovement(sceneRef: React.RefObject<HTMLDivElement | null>) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  return { player, moving, facing, moveTo, nudge };
+  return { player, moving, facing, moveTo };
 }
 
 function bedPoint(slot: number, slots: number): Point {

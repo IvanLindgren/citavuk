@@ -30,6 +30,7 @@ var (
 	ErrGardenSlotEmpty   = errors.New("грядка пуста")
 	ErrGardenNoCoins     = errors.New("не хватает динаров")
 	ErrGardenBadSpecies  = errors.New("такого семени нет")
+	ErrGardenBadDecor    = errors.New("такого украшения нет")
 	ErrGardenBadSlot     = errors.New("такой грядки нет")
 	ErrGardenNickTaken   = errors.New("никнейм занят")
 	ErrGardenNickBad     = errors.New("никнейм не подходит")
@@ -38,6 +39,26 @@ var (
 	ErrGardenVisitLimit  = errors.New("на сегодня помощь соседям закончилась")
 	ErrGardenSelfVisit   = errors.New("свой сад поливают со своей страницы")
 )
+
+type GardenDecoration struct {
+	ID      string `json:"id"`
+	Serbian string `json:"serbian"`
+	Russian string `json:"russian"`
+	Price   int64  `json:"price"`
+}
+
+var GardenDecorationCatalog = []GardenDecoration{
+	{ID: "berry-bushes", Serbian: "жбуње са бобицама", Russian: "ягодные кусты", Price: 35},
+}
+
+func GardenDecorationByID(id string) (GardenDecoration, bool) {
+	for _, decoration := range GardenDecorationCatalog {
+		if decoration.ID == id {
+			return decoration, true
+		}
+	}
+	return GardenDecoration{}, false
+}
 
 // GardenSpecies — вид цветка. Тема связывает цветок с Тренажёркой: распустился
 // — предлагает заняться своей темой.
@@ -125,6 +146,7 @@ type GardenState struct {
 	EarnedTotal int64            `json:"earnedTotal"`
 	Slots       int              `json:"slots"`
 	Plants      []GardenPlanting `json:"plants"`
+	Decorations []string         `json:"decorations"`
 	Bloomed     int              `json:"bloomed"`
 	Earnings    []GardenEarning  `json:"earnings"`
 	TodayCoins  int64            `json:"todayCoins"`
@@ -142,12 +164,13 @@ type GardenBoardRow struct {
 }
 
 type PublicGarden struct {
-	Nickname  string           `json:"nickname"`
-	Slots     int              `json:"slots"`
-	Plants    []GardenPlanting `json:"plants"`
-	Bloomed   int              `json:"bloomed"`
-	CanWater  bool             `json:"canWater"`
-	WateredAt *time.Time       `json:"wateredAt,omitempty"`
+	Nickname    string           `json:"nickname"`
+	Slots       int              `json:"slots"`
+	Plants      []GardenPlanting `json:"plants"`
+	Decorations []string         `json:"decorations"`
+	Bloomed     int              `json:"bloomed"`
+	CanWater    bool             `json:"canWater"`
+	WateredAt   *time.Time       `json:"wateredAt,omitempty"`
 }
 
 // Garden возвращает сад, предварительно начислив заработанное и дорастив цветы.
@@ -188,6 +211,10 @@ func (s *Store) Garden(ctx context.Context, userID uuid.UUID) (GardenState, erro
 		return GardenState{}, err
 	}
 	state.Plants = plants
+	state.Decorations, err = s.gardenDecorations(ctx, userID)
+	if err != nil {
+		return GardenState{}, err
+	}
 	for _, plant := range plants {
 		if plant.Blooming {
 			state.Bloomed++
@@ -200,6 +227,25 @@ func (s *Store) Garden(ctx context.Context, userID uuid.UUID) (GardenState, erro
 		return GardenState{}, err
 	}
 	return state, nil
+}
+
+func (s *Store) gardenDecorations(ctx context.Context, userID uuid.UUID) ([]string, error) {
+	rows, err := s.Pool.Query(ctx, `
+		SELECT decoration FROM garden_decorations
+		 WHERE user_id=$1 ORDER BY purchased_at, decoration`, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	decorations := make([]string, 0, len(GardenDecorationCatalog))
+	for rows.Next() {
+		var decoration string
+		if err := rows.Scan(&decoration); err != nil {
+			return nil, err
+		}
+		decorations = append(decorations, decoration)
+	}
+	return decorations, rows.Err()
 }
 
 // ensureGarden заводит сад при первом заходе. Счётчики сразу ставятся на
@@ -494,6 +540,51 @@ func (s *Store) PlantGarden(ctx context.Context, userID uuid.UUID, slot int, spe
 	return tx.Commit(ctx)
 }
 
+func (s *Store) BuyGardenDecoration(ctx context.Context, userID uuid.UUID, decorationID string) error {
+	decoration, ok := GardenDecorationByID(decorationID)
+	if !ok {
+		return ErrGardenBadDecor
+	}
+	if err := s.ensureGarden(ctx, userID, time.Now().UTC()); err != nil {
+		return err
+	}
+	tx, err := s.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	var coins int64
+	var owned bool
+	if err := tx.QueryRow(ctx, `
+		SELECT p.coins, EXISTS(SELECT 1 FROM garden_decorations d
+		 WHERE d.user_id=p.user_id AND d.decoration=$2)
+		 FROM garden_profiles p WHERE p.user_id=$1 FOR UPDATE`,
+		userID, decoration.ID).Scan(&coins, &owned); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return ErrGardenNotFound
+		}
+		return err
+	}
+	if owned {
+		return tx.Commit(ctx)
+	}
+	if coins < decoration.Price {
+		return ErrGardenNoCoins
+	}
+	if _, err := tx.Exec(ctx, `
+		INSERT INTO garden_decorations (user_id, decoration) VALUES ($1,$2)`,
+		userID, decoration.ID); err != nil {
+		return err
+	}
+	if _, err := tx.Exec(ctx, `
+		UPDATE garden_profiles SET coins=coins-$2, updated_at=now() WHERE user_id=$1`,
+		userID, decoration.Price); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}
+
 func (s *Store) WaterGarden(ctx context.Context, userID uuid.UUID, slot int) error {
 	tag, err := s.Pool.Exec(ctx, `
 		UPDATE garden_plantings SET watered_at=now() WHERE user_id=$1 AND slot=$2`,
@@ -666,6 +757,10 @@ func (s *Store) PublicGardenByNickname(
 		garden.Plants = append(garden.Plants, plant)
 	}
 	if err := rows.Err(); err != nil {
+		return PublicGarden{}, err
+	}
+	garden.Decorations, err = s.gardenDecorations(ctx, hostID)
+	if err != nil {
 		return PublicGarden{}, err
 	}
 

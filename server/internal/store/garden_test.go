@@ -113,6 +113,49 @@ func TestGardenCatalogIsConsistent(t *testing.T) {
 	if _, ok := GardenSpeciesByID("нет-такого"); ok {
 		t.Fatal("несуществующий вид найден")
 	}
+	for _, decoration := range GardenDecorationCatalog {
+		if decoration.ID == "" || decoration.Serbian == "" || decoration.Price <= 0 {
+			t.Fatalf("неполное украшение: %+v", decoration)
+		}
+	}
+	if _, ok := GardenDecorationByID("нет-такого"); ok {
+		t.Fatal("несуществующее украшение найдено")
+	}
+}
+
+func TestGardenDecorationPurchaseIsPersistentAndIdempotent(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	user, err := s.CreateUser(ctx, "garden-decor-"+uuid.NewString()+"@example.test", "", "Садовод", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(), `DELETE FROM users WHERE id=$1`, user.ID)
+	})
+	if _, err := s.Garden(ctx, user.ID); err != nil {
+		t.Fatal(err)
+	}
+	decoration := GardenDecorationCatalog[0]
+	if err := s.BuyGardenDecoration(ctx, user.ID, decoration.ID); err != nil {
+		t.Fatalf("BuyGardenDecoration: %v", err)
+	}
+	if err := s.BuyGardenDecoration(ctx, user.ID, decoration.ID); err != nil {
+		t.Fatalf("повторная покупка: %v", err)
+	}
+	state, err := s.Garden(ctx, user.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state.Coins != gardenStartCoins-decoration.Price {
+		t.Fatalf("после покупки: %d динаров", state.Coins)
+	}
+	if len(state.Decorations) != 1 || state.Decorations[0] != decoration.ID {
+		t.Fatalf("украшения: %+v", state.Decorations)
+	}
 }
 
 func TestGardenFlowOnMigratedDatabase(t *testing.T) {
