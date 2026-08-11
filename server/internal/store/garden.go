@@ -134,10 +134,11 @@ type GardenState struct {
 }
 
 type GardenBoardRow struct {
-	Nickname string `json:"nickname"`
-	Bloomed  int    `json:"bloomed"`
-	Plants   int    `json:"plants"`
-	Species  int    `json:"species"`
+	Nickname string   `json:"nickname"`
+	Bloomed  int      `json:"bloomed"`
+	Plants   int      `json:"plants"`
+	Species  int      `json:"species"`
+	Growing  []string `json:"growing,omitempty"`
 }
 
 type PublicGarden struct {
@@ -570,6 +571,59 @@ func (s *Store) GardenLeaderboard(ctx context.Context, limit int) ([]GardenBoard
 		board = append(board, row)
 	}
 	return board, rows.Err()
+}
+
+// SearchGardeners ищет садоводов по имени и по тому, что у них растёт.
+//
+// Имя аккаунта в поиск не попадает: человек соглашался показать сад под
+// выбранным именем садовода, а не связать его со своим настоящим.
+func (s *Store) SearchGardeners(
+	ctx context.Context, query, species string, limit int,
+) ([]GardenBoardRow, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 30
+	}
+	query = strings.TrimSpace(query)
+	if len([]rune(query)) > 24 {
+		return nil, ErrGardenNickBad
+	}
+	if species != "" {
+		if _, ok := GardenSpeciesByID(species); !ok {
+			return nil, ErrGardenBadSpecies
+		}
+	}
+
+	rows, err := s.Pool.Query(ctx, `
+		SELECT p.nickname,
+		       count(*) FILTER (WHERE g.growth >= $1),
+		       count(g.slot),
+		       count(DISTINCT g.species),
+		       coalesce(array_agg(DISTINCT g.species)
+		                FILTER (WHERE g.species IS NOT NULL), '{}')
+		  FROM garden_profiles p
+		  LEFT JOIN garden_plantings g ON g.user_id = p.user_id
+		 WHERE p.public AND p.nickname <> ''
+		   AND ($2 = '' OR p.nickname ILIKE '%' || $2 || '%')
+		   AND ($3 = '' OR EXISTS (SELECT 1 FROM garden_plantings f
+		        WHERE f.user_id = p.user_id AND f.species = $3))
+		 GROUP BY p.user_id, p.nickname
+		 ORDER BY 2 DESC, 3 DESC, p.nickname
+		 LIMIT $4`, GardenStages, query, species, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	found := make([]GardenBoardRow, 0, limit)
+	for rows.Next() {
+		var row GardenBoardRow
+		if err := rows.Scan(&row.Nickname, &row.Bloomed, &row.Plants,
+			&row.Species, &row.Growing); err != nil {
+			return nil, err
+		}
+		found = append(found, row)
+	}
+	return found, rows.Err()
 }
 
 // PublicGardenByNickname отдаёт чужой сад. Рост здесь не пересчитывается:

@@ -5,14 +5,17 @@ import {
   loadLeaderboard,
   plantSeed,
   saveGardenProfile,
+  searchGardeners,
   waterPlant,
   type GardenBoardRow,
+  type GardenPlant,
   type GardenSpecies,
   type GardenState,
 } from '../api/garden';
 import { ApiError } from '../api/client';
-import { GardenBed } from '../components/GardenBed';
+import { GardenScene } from '../components/GardenScene';
 import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
+import { isBlooming, projectedGrowth } from '../garden/scene';
 import { GARDEN, coinWord } from '../garden/strings';
 import { Link, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
@@ -25,23 +28,37 @@ export function Garden() {
       'Сажай цветы за цветочные динары: их дают чтение, повторение слов, дуэль переводов, тренажёрка и уроки курса. Сад говорит по-сербски.',
   });
 
+  const { navigate } = useRouter();
   const { account, loading } = useAuth();
   const [state, setState] = useState<GardenState | null>(null);
+  const [fetchedAt, setFetchedAt] = useState(() => Date.now());
   const [board, setBoard] = useState<GardenBoardRow[]>([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [picking, setPicking] = useState<number | null>(null);
+  const [watering, setWatering] = useState<number | null>(null);
+
+  const apply = useCallback((next: GardenState) => {
+    setState(next);
+    setFetchedAt(Date.now());
+  }, []);
 
   useEffect(() => {
     if (!account) return;
     let alive = true;
-    loadGarden()
-      .then((next) => alive && setState(next))
-      .catch((cause) => alive && setError(describe(cause)));
+    const pull = () =>
+      loadGarden()
+        .then((next) => alive && apply(next))
+        .catch((cause) => alive && setError(describe(cause)));
+    pull();
+    // Клиент досчитывает рост сам, но раз в минуту сверяется с сервером: иначе
+    // разойдутся часы и заработок, начисленный за это время.
+    const timer = window.setInterval(pull, 60_000);
     return () => {
       alive = false;
+      window.clearInterval(timer);
     };
-  }, [account]);
+  }, [account, apply]);
 
   useEffect(() => {
     let alive = true;
@@ -53,17 +70,49 @@ export function Garden() {
     };
   }, [state?.bloomed]);
 
-  const act = useCallback(async (action: () => Promise<GardenState>) => {
-    setBusy(true);
-    setError('');
-    try {
-      setState(await action());
-    } catch (cause) {
-      setError(describe(cause));
-    } finally {
-      setBusy(false);
-    }
-  }, []);
+  const act = useCallback(
+    async (action: () => Promise<GardenState>) => {
+      setBusy(true);
+      setError('');
+      try {
+        apply(await action());
+      } catch (cause) {
+        setError(describe(cause));
+      } finally {
+        setBusy(false);
+      }
+    },
+    [apply],
+  );
+
+  // Садовник доходит до грядки и поливает; результат приходит раньше, чем
+  // кончается анимация, поэтому она живёт своим таймером.
+  const water = useCallback(
+    (slot: number) => {
+      setWatering(slot);
+      window.setTimeout(() => setWatering(null), 2400);
+      return act(() => waterPlant(slot));
+    },
+    [act],
+  );
+
+  const onBed = useCallback(
+    (slot: number, plant?: GardenPlant) => {
+      if (busy) return;
+      if (!plant) {
+        setPicking(slot);
+        return;
+      }
+      const growth = projectedGrowth(plant, Date.now() - fetchedAt);
+      const species = state?.catalog.find((item) => item.id === plant.species);
+      if (isBlooming(growth) && species) {
+        navigate(`/trainer?topic=${encodeURIComponent(species.topic)}`);
+        return;
+      }
+      void water(slot);
+    },
+    [busy, fetchedAt, navigate, state?.catalog, water],
+  );
 
   if (loading) {
     return (
@@ -104,27 +153,18 @@ export function Garden() {
 
             <Reveal delay={0.1}>
               <section className="mt-8">
-                <div
-                  className="grid gap-3 rounded-3xl border border-[var(--line)] p-3 sm:gap-4 sm:p-5"
-                  style={{
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(9rem, 1fr))',
-                    background:
-                      'linear-gradient(180deg, color-mix(in srgb, var(--success) 12%, transparent), transparent 60%), var(--bg-sunken)',
-                  }}
-                >
-                  {Array.from({ length: state.slots }, (_, slot) => (
-                    <GardenBed
-                      key={slot}
-                      slot={slot}
-                      plant={state.plants.find((item) => item.slot === slot)}
-                      catalog={state.catalog}
-                      stages={state.stages}
-                      busy={busy}
-                      onPlant={() => setPicking(slot)}
-                      onWater={() => act(() => waterPlant(slot))}
-                    />
-                  ))}
-                </div>
+                <GardenScene
+                  slots={state.slots}
+                  plants={state.plants}
+                  catalog={state.catalog}
+                  fetchedAt={fetchedAt}
+                  watering={watering}
+                  onBed={onBed}
+                />
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  Нажми на пустую лунку, чтобы посадить, на росток — чтобы
+                  полить, на распустившийся цветок — чтобы заняться его темой.
+                </p>
               </section>
             </Reveal>
 
@@ -159,6 +199,10 @@ export function Garden() {
         )}
 
         <Reveal delay={0.25}>
+          <Gardeners catalog={state?.catalog ?? []} />
+        </Reveal>
+
+        <Reveal delay={0.3}>
           <Leaderboard board={board} />
         </Reveal>
 
@@ -380,6 +424,100 @@ function Shop({
         </Button>
       </div>
     </div>
+  );
+}
+
+/**
+ * Поиск садоводов.
+ *
+ * Ищет по части имени садовода и по тому, что растёт в саду. Имя аккаунта не
+ * ищется намеренно: человек соглашался показать сад под выбранным именем, а не
+ * связать его со своим настоящим.
+ */
+function Gardeners({ catalog }: { catalog: GardenSpecies[] }) {
+  const [query, setQuery] = useState('');
+  const [species, setSpecies] = useState('');
+  const [found, setFound] = useState<GardenBoardRow[] | null>(null);
+  const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    setSearching(true);
+    // Запрос на каждую букву не нужен: пауза в треть секунды снимает почти все
+    // промежуточные обращения.
+    const timer = window.setTimeout(() => {
+      searchGardeners(query.trim(), species)
+        .then((result) => alive && setFound(result.gardeners))
+        .catch(() => alive && setFound([]))
+        .finally(() => alive && setSearching(false));
+    }, 320);
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
+  }, [query, species]);
+
+  return (
+    <Card className="mt-10 p-5 sm:p-7">
+      <h2 className="font-display text-xl font-bold">
+        {GARDEN.find.sr}{' '}
+        <span className="text-sm font-normal text-[var(--text-muted)]">
+          — {GARDEN.find.ru}
+        </span>
+      </h2>
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          maxLength={24}
+          type="search"
+          placeholder="имя садовода"
+          aria-label={GARDEN.find.ru}
+          className="min-w-0 flex-1 rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5"
+        />
+        <select
+          value={species}
+          onChange={(event) => setSpecies(event.target.value)}
+          aria-label="что растёт в саду"
+          className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-2.5"
+        >
+          <option value="">что угодно</option>
+          {catalog.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.serbian} — {item.russian}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {found && found.length === 0 && !searching && (
+        <p className="mt-4 text-sm text-[var(--text-muted)]">
+          {GARDEN.nobody.sr} — {GARDEN.nobody.ru}.
+        </p>
+      )}
+
+      <ul className="mt-4 space-y-2">
+        {(found ?? []).map((row) => (
+          <li key={row.nickname}>
+            <Link
+              to={`/basta/${encodeURIComponent(row.nickname)}`}
+              className="flex items-baseline gap-3 rounded-xl px-2 py-1.5 text-sm hover:bg-[var(--bg-sunken)]"
+            >
+              <span className="font-semibold">{row.nickname}</span>
+              <span className="truncate text-[var(--text-muted)]">
+                {(row.growing ?? [])
+                  .map((id) => catalog.find((item) => item.id === id)?.serbian ?? id)
+                  .join(', ')}
+              </span>
+              <span className="ml-auto shrink-0 tabular-nums text-[var(--text-muted)]">
+                {row.bloomed} / {row.plants}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Card>
   );
 }
 

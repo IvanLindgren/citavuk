@@ -50,6 +50,7 @@ export interface GardenBoardRow {
   bloomed: number;
   plants: number;
   species: number;
+  growing?: string[];
 }
 
 export interface PublicGarden {
@@ -90,6 +91,17 @@ export function saveGardenProfile(
 
 export function loadLeaderboard(): Promise<{ board: GardenBoardRow[] }> {
   return request<{ board: GardenBoardRow[] }>('/v1/garden/leaderboard');
+}
+
+export function searchGardeners(
+  query: string,
+  species = '',
+): Promise<{ gardeners: GardenBoardRow[]; catalog: GardenSpecies[] }> {
+  const params = new URLSearchParams();
+  if (query) params.set('q', query);
+  if (species) params.set('species', species);
+  const tail = params.toString();
+  return request(`/v1/garden/search${tail ? `?${tail}` : ''}`);
 }
 
 export function loadPublicGarden(nickname: string): Promise<{

@@ -14,7 +14,11 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "tools" / "assets" / "garden"
-DST = ROOT / "web" / "public" / "img" / "garden"
+# Сад есть и на сайте, и в приложении, спрайты у них одни и те же.
+DESTINATIONS = (
+    ROOT / "web" / "public" / "img" / "garden",
+    ROOT / "frontend" / "assets" / "imgs" / "garden",
+)
 
 WOLF_FRAMES = 8
 WOLF_CELL_WIDTH = 150
@@ -79,7 +83,7 @@ def build_wolf() -> None:
             box = (round(index * cell), top, round((index + 1) * cell), bottom)
             frame = sheet.crop(box).resize((WOLF_CELL_WIDTH, cell_h), Image.LANCZOS)
             atlas.paste(frame, (index * WOLF_CELL_WIDTH, 0), frame)
-        save(atlas, DST / "citavuk_garden.webp")
+        save(atlas, "citavuk_garden.webp")
         print(f"citavuk_garden.webp {atlas.width}x{atlas.height}, кадр {WOLF_CELL_WIDTH}")
 
 
@@ -88,7 +92,7 @@ def build_plants() -> None:
         image = trimmed(SRC / "FlowerAssets" / "FlowerAssets" / name)
         scale = PLANT_HEIGHT / image.height
         image = image.resize((max(1, round(image.width * scale)), PLANT_HEIGHT), Image.LANCZOS)
-        save(image, DST / f"plant_{species}.webp")
+        save(image, f"plant_{species}.webp")
         print(f"plant_{species}.webp {image.width}x{image.height}")
 
 
@@ -105,13 +109,14 @@ def build_seeds() -> None:
             (index * SEED_SIZE + (SEED_SIZE - size[0]) // 2, (SEED_SIZE - size[1]) // 2),
             image,
         )
-    save(atlas, DST / "garden_seeds.webp")
+    save(atlas, "garden_seeds.webp")
     print(f"garden_seeds.webp {atlas.width}x{atlas.height}, ячейка {SEED_SIZE}")
 
 
-def save(image: Image.Image, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    image.save(path, "WEBP", quality=88, method=6)
+def save(image: Image.Image, name: str) -> None:
+    for folder in DESTINATIONS:
+        folder.mkdir(parents=True, exist_ok=True)
+        image.save(folder / name, "WEBP", quality=88, method=6)
 
 
 def main() -> int:

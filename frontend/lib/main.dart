@@ -49,6 +49,7 @@ import 'widgets/animated_widgets.dart';
 import 'widgets/server_announcements.dart';
 import 'widgets/import_language_dialog.dart';
 import 'screens/palace_screen.dart';
+import 'screens/garden_screen.dart';
 import 'widgets/more_menu_sheet.dart';
 import 'widgets/radio_sheet.dart';
 import 'widgets/serbian_ornament.dart';
@@ -1266,6 +1267,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: Icons.castle_outlined,
           onTap: () => open(const PalaceScreen()),
         ),
+        // Динары считает сервер по занятиям, поэтому сад есть только у
+        // вошедшего: гостю показывать нечего.
+        if (signedIn)
+          MoreMenuItem(
+            label: 'Сад Читавука',
+            note: 'Цветы за занятия',
+            icon: Icons.local_florist_outlined,
+            onTap: () => open(const GardenScreen()),
+          ),
         MoreMenuItem(
           label: 'Все слова и карточки',
           icon: Icons.style_outlined,

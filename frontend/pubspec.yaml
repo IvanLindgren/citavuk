@@ -105,6 +105,9 @@ flutter:
     # авторским правом. Раздел «Бесплатная библиотека» сам скрывается, когда
     # ассетов нет.
     - assets/imgs/
+    # Каталоги не рекурсивны: спрайты сада собираются
+    # tools/build_garden_sprites.py сразу для сайта и приложения.
+    - assets/imgs/garden/
     - assets/course/
     - assets/course/dialogues/
     - assets/animations/generated/

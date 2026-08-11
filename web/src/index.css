@@ -254,6 +254,83 @@
     }
   }
 
+  /*
+    Сцена сада. Растение качается вокруг основания стебля: вращать вокруг
+    центра значит оторвать цветок от земли и возить его туда-сюда по грядке.
+  */
+  .garden-sway {
+    transform-origin: bottom center;
+    animation: garden-sway var(--sway-duration, 4s) ease-in-out var(--sway-delay, 0s)
+      infinite;
+  }
+
+  @keyframes garden-sway {
+    0%,
+    100% {
+      transform: rotate(calc(var(--sway-tilt, 1.4) * -1deg));
+    }
+    50% {
+      transform: rotate(calc(var(--sway-tilt, 1.4) * 1deg));
+    }
+  }
+
+  /* Порыв ветра проходит по всему полю разом. */
+  .garden-gust .garden-sway {
+    animation-duration: calc(var(--sway-duration, 4s) / 2.6);
+  }
+
+  .garden-bloom {
+    animation: garden-bloom 900ms cubic-bezier(0.2, 1.4, 0.4, 1);
+  }
+
+  @keyframes garden-bloom {
+    0% {
+      transform: scale(0.82);
+    }
+    60% {
+      transform: scale(1.08);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .garden-drop {
+    animation: garden-drop 900ms ease-in infinite;
+  }
+
+  @keyframes garden-drop {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.6);
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(46px) scale(1);
+    }
+  }
+
+  .garden-sparkle {
+    animation: garden-sparkle 1.8s ease-out infinite;
+  }
+
+  @keyframes garden-sparkle {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-26px) scale(1);
+    }
+  }
+
   /* Тёплая радиальная подсветка за героем. */
   .glow-warm {
     background: radial-gradient(

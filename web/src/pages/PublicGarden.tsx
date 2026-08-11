@@ -7,7 +7,7 @@ import {
   type GardenSpecies,
   type PublicGarden as PublicGardenData,
 } from '../api/garden';
-import { GardenBed } from '../components/GardenBed';
+import { GardenScene } from '../components/GardenScene';
 import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
 import { GARDEN, coinWord } from '../garden/strings';
 import { Link, useParams } from '../lib/router';
@@ -19,10 +19,11 @@ export function PublicGarden() {
   const { account } = useAuth();
   const [garden, setGarden] = useState<PublicGardenData | null>(null);
   const [catalog, setCatalog] = useState<GardenSpecies[]>([]);
-  const [stages, setStages] = useState(5);
+  const [fetchedAt, setFetchedAt] = useState(() => Date.now());
   const [error, setError] = useState('');
   const [thanks, setThanks] = useState('');
   const [busy, setBusy] = useState(false);
+  const [watering, setWatering] = useState<number | null>(null);
 
   useSeo({
     title: `Башта: ${nickname}`,
@@ -38,7 +39,7 @@ export function PublicGarden() {
         if (!alive) return;
         setGarden(result.garden);
         setCatalog(result.catalog);
-        setStages(result.stages);
+        setFetchedAt(Date.now());
       })
       .catch((cause) => {
         if (alive) setError(describe(cause));
@@ -52,6 +53,10 @@ export function PublicGarden() {
     setBusy(true);
     setError('');
     try {
+      // Садовник проходит по всем грядкам соседа: полив общий на весь сад.
+      const first = garden?.plants[0]?.slot ?? 0;
+      setWatering(first);
+      window.setTimeout(() => setWatering(null), 2400);
       const result = await helpGarden(nickname);
       setThanks(`Хвала! +${result.reward} ${coinWord(result.reward)}`);
       setGarden((current) => (current ? { ...current, canWater: false } : current));
@@ -111,25 +116,13 @@ export function PublicGarden() {
             </Card>
 
             <section className="mt-8">
-              <div
-                className="grid gap-3 rounded-3xl border border-[var(--line)] p-3 sm:gap-4 sm:p-5"
-                style={{
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(9rem, 1fr))',
-                  background:
-                    'linear-gradient(180deg, color-mix(in srgb, var(--success) 12%, transparent), transparent 60%), var(--bg-sunken)',
-                }}
-              >
-                {Array.from({ length: garden.slots }, (_, slot) => (
-                  <GardenBed
-                    key={slot}
-                    slot={slot}
-                    plant={garden.plants.find((item) => item.slot === slot)}
-                    catalog={catalog}
-                    stages={stages}
-                    busy
-                  />
-                ))}
-              </div>
+              <GardenScene
+                slots={garden.slots}
+                plants={garden.plants}
+                catalog={catalog}
+                fetchedAt={fetchedAt}
+                watering={watering}
+              />
             </section>
           </>
         )}

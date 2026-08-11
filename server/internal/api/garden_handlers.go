@@ -106,6 +106,20 @@ func (s *Server) handleGardenLeaderboard(w http.ResponseWriter, r *http.Request)
 	writeJSON(w, http.StatusOK, map[string]any{"board": board})
 }
 
+func (s *Server) handleGardenSearch(w http.ResponseWriter, r *http.Request) {
+	query := strings.TrimSpace(r.URL.Query().Get("q"))
+	species := strings.TrimSpace(r.URL.Query().Get("species"))
+	found, err := s.store.SearchGardeners(r.Context(), query, species, 30)
+	if err != nil {
+		writeGardenError(w, err, "Не удалось найти садоводов.")
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{
+		"gardeners": found,
+		"catalog":   store.GardenCatalog,
+	})
+}
+
 func (s *Server) handlePublicGarden(w http.ResponseWriter, r *http.Request) {
 	nickname := strings.TrimSpace(r.PathValue("nickname"))
 	if nickname == "" {

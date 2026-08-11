@@ -219,3 +219,84 @@ func TestGardenPublicOnlyByConsent(t *testing.T) {
 		t.Fatal("гостю без входа предложен полив")
 	}
 }
+
+func TestSearchGardenersFindsByNameAndCrop(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	user, err := s.CreateUser(ctx, "garden-find-"+uuid.NewString()+"@example.test", "", "Садовод", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(context.Background(), `DELETE FROM users WHERE id=$1`, user.ID)
+	})
+	if _, err := s.Garden(ctx, user.ID); err != nil {
+		t.Fatal(err)
+	}
+	nickname := "Cvetko" + uuid.NewString()[:6]
+	if err := s.SetGardenProfile(ctx, user.ID, nickname, true); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.PlantGarden(ctx, user.ID, 0, "suncokret"); err != nil {
+		t.Fatal(err)
+	}
+
+	has := func(rows []GardenBoardRow) bool {
+		for _, row := range rows {
+			if row.Nickname == nickname {
+				return true
+			}
+		}
+		return false
+	}
+
+	// Кусок имени, а не точное совпадение: адрес сада знать необязательно.
+	found, err := s.SearchGardeners(ctx, nickname[2:8], "", 30)
+	if err != nil {
+		t.Fatalf("SearchGardeners: %v", err)
+	}
+	if !has(found) {
+		t.Fatal("садовод не найден по части имени")
+	}
+
+	// Поиск по тому, что растёт.
+	found, err = s.SearchGardeners(ctx, "", "suncokret", 30)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !has(found) {
+		t.Fatal("садовод не найден по посаженному виду")
+	}
+	for _, row := range found {
+		if row.Nickname == nickname && len(row.Growing) == 0 {
+			t.Fatal("не сказано, что растёт в найденном саду")
+		}
+	}
+
+	found, err = s.SearchGardeners(ctx, "", "krasuljak", 30)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if has(found) {
+		t.Fatal("садовод найден по виду, которого у него нет")
+	}
+
+	// Закрытый сад из поиска пропадает.
+	if err := s.SetGardenProfile(ctx, user.ID, nickname, false); err != nil {
+		t.Fatal(err)
+	}
+	found, err = s.SearchGardeners(ctx, nickname, "", 30)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if has(found) {
+		t.Fatal("закрытый сад отдан поиском")
+	}
+
+	if _, err := s.SearchGardeners(ctx, "", "нет-такого-вида", 30); err != ErrGardenBadSpecies {
+		t.Fatalf("несуществующий вид: %v", err)
+	}
+}
