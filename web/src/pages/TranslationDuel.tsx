@@ -42,6 +42,7 @@ import {
   type TranslationGameDirection,
 } from '../api/translationGame';
 import { Fighter, ScoreBar, type Pose } from '../components/DuelArena';
+import { Ornament } from '../components/Ornament';
 import { Button, Card, Spinner } from '../components/ui';
 import {
   blowFor,
@@ -437,10 +438,17 @@ export function TranslationDuel() {
 
       <Card className="paper-grain mt-5 px-5 py-6 sm:px-8 sm:py-8">
         <div className="relative flex items-start justify-between gap-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
-            {level} · раунд {roundNumber} из {TOTAL_ROUNDS}
-            {phase === 'translate' ? ` · фраза ${index + 1} из ${sentences.length}` : ''}
-          </p>
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+            <span>{level}</span>
+            <MatchMetaOrnament />
+            <span>Раунд {roundNumber} из {TOTAL_ROUNDS}</span>
+            {phase === 'translate' && (
+              <>
+                <MatchMetaOrnament />
+                <span>Фраза {index + 1} из {sentences.length}</span>
+              </>
+            )}
+          </div>
           <button
             type="button"
             onClick={toggleSound}
@@ -629,6 +637,17 @@ export function TranslationDuel() {
         )}
       </Card>
     </main>
+  );
+}
+
+/** Компактный разделитель счётчика: тот же мотив вышивки, что на сайте. */
+function MatchMetaOrnament() {
+  return (
+    <Ornament
+      count={1}
+      animated={false}
+      className="h-4 w-5 shrink-0 text-[var(--accent)]/70"
+    />
   );
 }
 

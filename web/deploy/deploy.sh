@@ -18,19 +18,29 @@ KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-кл�
 # ищет ключ в каталоге с именем «~».
 KEY="${KEY/#\~/$HOME}"
 REMOTE_DIR=/var/www/citavuk
+DEPLOY_ID="$(git rev-parse --short HEAD 2>/dev/null || echo dev)-$$"
+ARCHIVE="/tmp/citavuk-web-${DEPLOY_ID}.tar.gz"
+REMOTE_ARCHIVE="/tmp/citavuk-web-${DEPLOY_ID}.tar.gz"
+
+trap 'rm -f "$ARCHIVE"' EXIT
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
 echo "==> Проверки перед выкаткой"
+checks_started=$SECONDS
 node scripts/prepare-course-assets.mjs
-npx tsc -b --noEmit
+# TypeScript проверяет `npm run build` ниже. Второй одинаковый tsc здесь раньше
+# добавлял время, но не добавлял проверки.
 npx vitest run
+echo "  проверки: $((SECONDS - checks_started)) с"
 
 echo "==> Сборка"
+build_started=$SECONDS
 # Именно npm run build, а не vite напрямую: в сценарий сборки входит копирование
 # worker'а PDF.js в public/. Собранный без него сайт молча теряет импорт PDF —
 # ошибка вылезает только при попытке открыть документ.
 npm run build
+echo "  сборка: $((SECONDS - build_started)) с"
 
 if [[ ! -f dist/index.html ]]; then
     echo "сборка не создала dist/index.html" >&2
@@ -42,15 +52,21 @@ if [[ ! -f dist/pdf.worker.js ]]; then
 fi
 
 echo "==> Загрузка"
+upload_started=$SECONDS
 # Файлы кладутся во временный каталог и переставляются одним движением: при
 # копировании поверх работающего сайта посетитель успел бы получить старый
 # index.html вместе с уже удалёнными бандлами и увидел бы пустую страницу.
 ssh_run "rm -rf ${REMOTE_DIR}.new && mkdir -p ${REMOTE_DIR}.new"
 
-# scp -r копирует содержимое каталога, а не сам каталог, если указать точку.
-scp -i "$KEY" -o BatchMode=yes -r dist/. "$HOST:${REMOTE_DIR}.new/"
+# Один архив вместо `scp -r`: рекурсивный scp согласовывал на сервере сотни
+# файлов по отдельности и на медленном соединении занимал минуты даже для 23 МБ.
+# Архив сохраняет атомарную выкладку и заодно сжимает HTML, JSON и тексты.
+tar -C dist -czf "$ARCHIVE" .
+scp -i "$KEY" -o BatchMode=yes "$ARCHIVE" "$HOST:$REMOTE_ARCHIVE"
 
 ssh_run "set -e
+    tar -xzf $REMOTE_ARCHIVE -C ${REMOTE_DIR}.new
+    rm -f $REMOTE_ARCHIVE
     # Уже открытая вкладка может запросить lazy chunk предыдущей сборки только
     # после клика по разделу. Сохраняем хешированные assets на 14 дней, чтобы
     # выкладка не превращала такой переход в пустой экран.
@@ -66,6 +82,7 @@ ssh_run "set -e
     if [ -d ${REMOTE_DIR} ]; then mv ${REMOTE_DIR} ${REMOTE_DIR}.old; fi
     mv ${REMOTE_DIR}.new ${REMOTE_DIR}
     rm -rf ${REMOTE_DIR}.old"
+echo "  упаковка и загрузка: $((SECONDS - upload_started)) с"
 
 if [[ "${1:-}" == "--nginx" ]]; then
     echo "==> Конфигурация nginx"
@@ -126,4 +143,4 @@ ssh_run "curl -sf -m 10 -H 'Host: citavuk.ru' http://127.0.0.1/ -o /dev/null" \
 echo "==> Оповещение поисковиков (IndexNow)"
 node scripts/indexnow.mjs || echo "  оповещение не прошло; выкатка в порядке, роботы придут сами"
 
-echo "Готово."
+echo "Готово за ${SECONDS} с."

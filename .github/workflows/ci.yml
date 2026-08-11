@@ -1,0 +1,77 @@
+name: Web and server CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'server/**'
+      - 'tools/**'
+      - 'frontend/assets/**'
+      - 'frontend/pubspec.yaml'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'server/**'
+      - 'tools/**'
+      - 'frontend/assets/**'
+      - 'frontend/pubspec.yaml'
+      - '.github/workflows/ci.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: citavuk-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Test
+        run: npm test -- --run
+
+      - name: Production build
+        run: npm run build
+
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
