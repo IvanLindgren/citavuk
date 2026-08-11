@@ -14,7 +14,13 @@ public/img/*
 !public/img/google-play-badge.png
 # Значок RuStore, если его положить сюда из консоли разработчика.
 !public/img/rustore-badge.svg
-public/fonts/
+# Эти четыре WOFF2 нужны уже чистой CI/deploy-сборке. Они производные от TTF,
+# но без них локальная рабочая папка выглядела исправной, а prod отдавал 404.
+public/fonts/*
+!public/fonts/Lora-Regular.woff2
+!public/fonts/Lora-Bold.woff2
+!public/fonts/NotoSans-Regular.woff2
+!public/fonts/NotoSans-Bold.woff2
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
 public/course/
