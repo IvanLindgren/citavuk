@@ -35,6 +35,26 @@ export interface GardenEarning {
   cap: number;
 }
 
+export interface GardenHerbariumItem {
+  species: string;
+  count: number;
+  firstAt: string;
+}
+
+export interface GardenTask {
+  kind: string;
+  target: number;
+  progress: number;
+  reward: number;
+  done: boolean;
+}
+
+export interface GardenCut {
+  species: string;
+  coins: number;
+  first: boolean;
+}
+
 export interface GardenState {
   nickname: string;
   public: boolean;
@@ -52,6 +72,19 @@ export interface GardenState {
   catalog: GardenSpecies[];
   decorationCatalog: GardenDecoration[];
   stages: number;
+
+  /** Поливов в лейке и сколько раз сегодня уже набирали из реки. */
+  water: number;
+  waterCap: number;
+  filledToday: number;
+  fillLimit: number;
+  /** Река течёт в тот день, когда были занятия. */
+  river: boolean;
+  weather: 'clear' | 'rain';
+  herbarium: GardenHerbariumItem[];
+  task?: GardenTask;
+  /** Приходит только в ответе на срез: за что заплатили и первый ли это цветок. */
+  cut?: GardenCut;
 }
 
 export interface GardenBoardRow {
@@ -84,6 +117,17 @@ export function plantSeed(slot: number, species: string): Promise<GardenState> {
 
 export function waterPlant(slot: number): Promise<GardenState> {
   return request<GardenState>('/v1/garden/water', {
+    method: 'POST',
+    body: { slot },
+  });
+}
+
+export function fillGardenCan(): Promise<GardenState> {
+  return request<GardenState>('/v1/garden/fill', { method: 'POST' });
+}
+
+export function cutGardenFlower(slot: number): Promise<GardenState> {
+  return request<GardenState>('/v1/garden/cut', {
     method: 'POST',
     body: { slot },
   });

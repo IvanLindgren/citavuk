@@ -31,7 +31,56 @@ export const GARDEN = {
   find: { sr: 'Нађи баштована', ru: 'найти садовода' },
   growing: { sr: 'Гаји', ru: 'выращивает' },
   nobody: { sr: 'Нема никога', ru: 'никого не нашлось' },
+
+  can: { sr: 'Канта за воду', ru: 'лейка' },
+  fill: { sr: 'Захвати воду', ru: 'набрать воды' },
+  riverAwake: { sr: 'Река тече', ru: 'река проснулась' },
+  riverDry: { sr: 'Река спава', ru: 'река спит' },
+  cut: { sr: 'Убери цвет', ru: 'срезать цветок' },
+  herbarium: { sr: 'Хербаријум', ru: 'гербарий' },
+  task: { sr: 'Задатак дана', ru: 'задание дня' },
+  done: { sr: 'Урађено', ru: 'сделано' },
+  rain: { sr: 'Киша', ru: 'дождь' },
+  clear: { sr: 'Сунчано', ru: 'ясно' },
+  night: { sr: 'Ноћ', ru: 'ночь' },
 } as const;
+
+/**
+ * Подписи предметов мира. Ради них сад и затевался: сербское слово должно
+ * попадаться там, где человек и так смотрит, а не в списке слов.
+ */
+export const WORLD: Record<string, Phrase> = {
+  house: { sr: 'кућа', ru: 'дом' },
+  tree: { sr: 'дрво', ru: 'дерево' },
+  fir: { sr: 'јела', ru: 'ель' },
+  fountain: { sr: 'фонтана', ru: 'фонтан' },
+  campfire: { sr: 'ватра', ru: 'костёр' },
+  river: { sr: 'река', ru: 'река' },
+  bed: { sr: 'леја', ru: 'грядка' },
+  fence: { sr: 'ограда', ru: 'забор' },
+  stall: { sr: 'продавница', ru: 'магазин' },
+  duck: { sr: 'патка', ru: 'утка' },
+  flowers: { sr: 'цвеће', ru: 'цветы' },
+  bushes: { sr: 'жбуње', ru: 'кусты' },
+  pots: { sr: 'саксије', ru: 'горшки' },
+  sign: { sr: 'путоказ', ru: 'указатель' },
+};
+
+/** Задание дня по-сербски. Цель подставляется числом. */
+export function taskPhrase(kind: string, target: number): Phrase {
+  switch (kind) {
+    case 'water':
+      return { sr: `Залиј леје: ${target}`, ru: `полей грядки: ${target}` };
+    case 'plant':
+      return { sr: `Посади цвет: ${target}`, ru: `посади цветок: ${target}` };
+    case 'cut':
+      return { sr: `Убери цвет: ${target}`, ru: `срежь цветок: ${target}` };
+    case 'help':
+      return { sr: `Залиј комшији: ${target}`, ru: `полей соседу: ${target}` };
+    default:
+      return { sr: 'Задатак дана', ru: 'задание дня' };
+  }
+}
 
 /** Стадии роста. Последняя — распустившийся цветок. */
 export const STAGES: Phrase[] = [

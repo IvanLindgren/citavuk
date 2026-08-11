@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { GARDEN, STAGES, coinWord, plantImage, seedOffset, stageHeight } from './strings';
+import { GARDEN, WORLD, taskPhrase, STAGES, coinWord, plantImage, seedOffset, stageHeight } from './strings';
 
 describe('сад: строки и стадии', () => {
   it('каждая сербская надпись несёт русское пояснение', () => {
@@ -59,5 +59,22 @@ describe('сад: строки и стадии', () => {
     expect(coinWord(11)).toBe('динаров');
     expect(coinWord(112)).toBe('динаров');
     expect(coinWord(0)).toBe('динаров');
+  });
+  it('у предмета мира есть сербское имя и русское пояснение', () => {
+    // Подписи ради них сад и затевался: без русского пояснения новичок A1
+    // заперт, без сербского — предмет ничему не учит.
+    // Совпадение слов допустимо и даже полезно: «река» и по-сербски «река».
+    for (const [name, phrase] of Object.entries(WORLD)) {
+      expect(phrase.sr, name).not.toBe('');
+      expect(phrase.ru, name).not.toBe('');
+    }
+  });
+
+  it('задание дня называется по-сербски и подставляет цель', () => {
+    expect(taskPhrase('water', 2).sr).toContain('2');
+    expect(taskPhrase('water', 2).ru).toContain('грядки');
+    expect(taskPhrase('cut', 1).sr).toContain('цвет');
+    // Незнакомый вид задания не должен ронять карту пустой строкой.
+    expect(taskPhrase('нет-такого', 1).sr).not.toBe('');
   });
 });

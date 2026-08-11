@@ -1,156 +1,175 @@
-"""Build the small Cozyland subset used by the web garden.
+"""Сборка мира Башты из Cozyland Exterior Tilesets.
 
-The Cozyland license allows using and editing the pack in a game, but forbids
-redistributing the source pack. Keep the downloaded archive and source sheets
-local; only the tightly cropped in-game sprites produced here belong in
-``web/public/img/garden/world``.
+Лицензия пака разрешает использовать и править его в игре, но запрещает
+раздавать сам пак. Поэтому архив и полные листы остаются локально, а в
+``web/public/img/garden/world`` попадают только тесно обрезанные фрагменты.
+
+    python tools/build_cozy_garden_assets.py <папка с PNG листами>
+
+Кропы раньше брались по сетке на глаз: «табличка» оказалась блоком из девяти
+табличек, «забор» — куском забора вместе с соседними тайлами, а «лавка» —
+двумя досками от вывески. Здесь у каждого фрагмента подписано, что именно в нём
+лежит, а сборка кончается контактным листом — глянуть, что получилось.
+
+Растения собирает отдельный ``build_garden_plants.py``: они рисуются из
+CC0-набора FlowerAssets и от этого пака не зависят.
 """
 
 from __future__ import annotations
 
 import argparse
-import colorsys
 from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+TILE = 16
 
+# Объекты мира: имя → лист и прямоугольник. Прямоугольники выверены по
+# контактному листу, а не по сетке: у пака нет единого шага, и соседний тайл
+# запросто оказывается куском другого предмета.
 CROPS = {
     "house": ("House.png", (0, 0, 152, 160)),
-    "grove": ("Trees.png", (0, 0, 144, 128)),
-    "bench": ("Outdoor Stuff Tiles.png", (0, 0, 48, 32)),
-    "fence": ("Outdoor Stuff Tiles.png", (112, 120, 192, 208)),
-    "signs": ("Outdoor Stuff Tiles.png", (280, 288, 400, 384)),
+    # Деревья стоят на листе вплотную: кроп по сетке прихватывал крону соседа.
+    "tree": ("Trees.png", (80, 16, 144, 112)),
+    "tree_small": ("Trees.png", (32, 32, 80, 100)),
+    "fir": ("Trees.png", (352, 176, 400, 272)),
     "fountain": ("Fountain_Sheet.png", (0, 0, 80, 96)),
     "campfire": ("Campfire_Sheet.png", (0, 0, 64, 64)),
+    # Секция забора: две стойки и перекладины между ними.
+    "fence": ("Outdoor Stuff Tiles.png", (128, 120, 160, 152)),
+    # Одна табличка на столбе. Раньше сюда попадал весь блок табличек разом.
+    "sign": ("Outdoor Stuff Tiles.png", (336, 320, 352, 352)),
+    # Прилавок с товаром — им отмечен магазин семян. Нижний в паке засыпан
+    # снегом, поэтому берётся только верхний.
+    "stall": ("Outdoor Stuff Tiles.png", (320, 352, 368, 368)),
+    # Горшки с цветами вместо лавки: лавки в паке нет, а то, что стояло на её
+    # месте, было парой досок от вывески.
+    "pots": ("Outdoor Stuff Tiles.png", (64, 128, 112, 144)),
+    # Утка, плывущая по воде: у неё под низом уже нарисована рябь.
+    "duck": ("Outdoor Stuff Tiles.png", (590, 30, 610, 48)),
 }
 
-PLANT_FLOWERS = {
-    "suncokret": ((48, 48, 64, 80), -0.23, 1.1, 1.18),
-    "krasuljak": ((32, 48, 48, 80), 0.0, 0.12, 1.35),
-    "koleus": ((16, 48, 32, 80), 0.0, 1.05, 1.05),
+# Бесшовные тайлы: ими мостится земля. Каждый обязан повторяться без шва,
+# поэтому берутся заведомо однородные клетки автотайла, а не куски перехода.
+TILES = {
+    "tile_grass": ("Grass Tiles.png", (64, 32, 80, 48)),
+    "tile_soil": ("Grass Tiles.png", (64, 112, 80, 128)),
+    "tile_sand": ("Grass Tiles.png", (176, 32, 192, 48)),
 }
+
+# Река собирается лентой сверху вниз и повторяется по горизонтали: вода, вода,
+# песчаная кромка, берег. Верхнего берега в ленте нет намеренно — река уходит
+# за край карты, а не лежит в ней озером.
+#
+# Кромка берётся от прямой стороны острова, а не от ромба-озера: у ромба все
+# края диагональные, и повторение по горизонтали давало ряд одинаковых зубцов —
+# берег выглядел пилой.
+RIVER_ROWS = [
+    ("Water.png", (48, 48, 64, 64)),
+    ("Water.png", (48, 48, 64, 64)),
+    ("Water.png", (32, 16, 48, 32)),
+    ("Water.png", (32, 32, 48, 48)),
+]
+
+# Цветочки в траве: три клетки автотайла, каждая со своим цветом.
+FLOWERS = [
+    ("Outdoor Stuff Tiles.png", (16, 48, 32, 64)),
+    ("Outdoor Stuff Tiles.png", (32, 48, 48, 64)),
+    ("Outdoor Stuff Tiles.png", (48, 48, 64, 64)),
+]
+
+# Ягодные кусты — покупное украшение. Собираются из трёх кустов в один
+# кластер: одиночный куст на карте теряется.
+BUSHES = [
+    ((33, 226, 63, 254), (0, 5)),
+    ((81, 226, 111, 254), (27, 1)),
+    ((33, 258, 63, 286), (56, 5)),
+]
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("source", type=Path, help="directory with Cozyland PNG sheets")
+    parser.add_argument("source", type=Path, help="папка с PNG листами Cozyland")
     parser.add_argument(
         "--output",
         type=Path,
         default=Path(__file__).parents[1] / "web/public/img/garden/world",
     )
+    parser.add_argument("--sheet", type=Path, help="куда положить контактный лист")
     args = parser.parse_args()
-
     args.output.mkdir(parents=True, exist_ok=True)
-    for name, (filename, box) in CROPS.items():
-        source = args.source / filename
-        if not source.is_file():
-            raise SystemExit(f"missing source sheet: {source}")
-        with Image.open(source) as image:
-            sprite = image.convert("RGBA").crop(box)
-            sprite.save(args.output / f"{name}.webp", "WEBP", lossless=True, method=6)
-            print(f"{name}.webp: {sprite.width}x{sprite.height}")
 
-    outdoor = args.source / "Outdoor Stuff Tiles.png"
-    with Image.open(outdoor) as image:
-        sheet = image.convert("RGBA")
-        build_bushes(sheet, args.output)
-        build_plants(sheet, args.output)
+    built: dict[str, Image.Image] = {}
+    for name, (filename, box) in {**CROPS, **TILES}.items():
+        sprite = sheet(args.source, filename).crop(box)
+        if name in CROPS:
+            sprite = trim(sprite)
+        built[name] = save(args.output, name, sprite)
+
+    built["river"] = save(args.output, "river", build_river(args.source))
+    built["flowers"] = save(args.output, "flowers", build_flowers(args.source))
+    built["bushes"] = save(args.output, "bushes", build_bushes(args.source))
+
+    if args.sheet:
+        contact(built).save(args.sheet)
+        print(f"контактный лист: {args.sheet}")
 
 
-def build_bushes(sheet: Image.Image, output: Path) -> None:
+def sheet(source: Path, filename: str) -> Image.Image:
+    path = source / filename
+    if not path.is_file():
+        raise SystemExit(f"нет листа: {path}")
+    with Image.open(path) as image:
+        return image.convert("RGBA")
+
+
+def save(output: Path, name: str, sprite: Image.Image) -> Image.Image:
+    sprite.save(output / f"{name}.webp", "WEBP", lossless=True, method=6)
+    print(f"{name}.webp: {sprite.width}x{sprite.height}")
+    return sprite
+
+
+def build_river(source: Path) -> Image.Image:
+    canvas = Image.new("RGBA", (TILE, TILE * len(RIVER_ROWS)), (0, 0, 0, 0))
+    for index, (filename, box) in enumerate(RIVER_ROWS):
+        canvas.alpha_composite(sheet(source, filename).crop(box), (0, index * TILE))
+    return canvas
+
+
+def build_flowers(source: Path) -> Image.Image:
+    canvas = Image.new("RGBA", (TILE * len(FLOWERS), TILE), (0, 0, 0, 0))
+    for index, (filename, box) in enumerate(FLOWERS):
+        canvas.alpha_composite(sheet(source, filename).crop(box), (index * TILE, 0))
+    return canvas
+
+
+def build_bushes(source: Path) -> Image.Image:
+    outdoor = sheet(source, "Outdoor Stuff Tiles.png")
     canvas = Image.new("RGBA", (88, 34), (0, 0, 0, 0))
-    for box, point in (
-        ((33, 226, 63, 254), (0, 5)),
-        ((81, 226, 111, 254), (27, 1)),
-        ((33, 258, 63, 286), (56, 5)),
-    ):
-        canvas.alpha_composite(trim(sheet.crop(box)), point)
-    canvas = trim(canvas)
-    canvas.save(output / "bushes.webp", "WEBP", lossless=True, method=6)
-    print(f"bushes.webp: {canvas.width}x{canvas.height}")
-
-
-def build_plants(sheet: Image.Image, output: Path) -> None:
-    small_sprout = trim(sheet.crop((16, 80, 24, 88)))
-    large_sprout = trim(sheet.crop((32, 80, 48, 88)))
-
-    for species in ("suncokret", "krasuljak", "koleus", "cuvarkuca"):
-        stages = [
-            seed_sprite(species),
-            plant_canvas(small_sprout, 1.4),
-            plant_canvas(large_sprout, 1.35),
-        ]
-        if species == "cuvarkuca":
-            stages.extend((succulent_sprite(large_sprout, 2), succulent_sprite(large_sprout, 3)))
-        else:
-            box, hue, saturation, value = PLANT_FLOWERS[species]
-            flower = recolor(trim(sheet.crop(box)), hue, saturation, value)
-            bud = trim(flower.crop((0, max(0, flower.height - 19), flower.width, flower.height)))
-            stages.extend((plant_canvas(bud, 1.0), plant_canvas(flower, 1.0)))
-
-        for stage, sprite in enumerate(stages):
-            name = f"plant_{species}_{stage}.webp"
-            sprite.save(output / name, "WEBP", lossless=True, method=6)
-            print(f"{name}: {sprite.width}x{sprite.height}")
-
-
-def seed_sprite(species: str) -> Image.Image:
-    colors = {
-        "suncokret": "#d6a82e",
-        "krasuljak": "#ddd8c8",
-        "koleus": "#8e5f93",
-        "cuvarkuca": "#567963",
-    }
-    canvas = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(canvas)
-    draw.rectangle((14, 25, 17, 28), fill=colors[species])
-    draw.point((13, 26), fill="#4f3b2d")
-    return canvas
-
-
-def succulent_sprite(source: Image.Image, count: int) -> Image.Image:
-    canvas = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-    sprite = source.resize(
-        (max(1, source.width * 2), max(1, source.height * 2)),
-        Image.Resampling.NEAREST,
-    )
-    points = ((7, 17), (13, 13), (18, 18))
-    for point in points[:count]:
-        canvas.alpha_composite(sprite, point)
-    return canvas
-
-
-def plant_canvas(source: Image.Image, scale: float) -> Image.Image:
-    canvas = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-    size = (max(1, round(source.width * scale)), max(1, round(source.height * scale)))
-    sprite = source.resize(size, Image.Resampling.NEAREST)
-    canvas.alpha_composite(sprite, ((32 - sprite.width) // 2, 31 - sprite.height))
-    return canvas
-
-
-def recolor(image: Image.Image, hue_shift: float, saturation: float, value: float) -> Image.Image:
-    result = image.copy()
-    pixels = []
-    for red, green, blue, alpha in result.getdata():
-        if alpha == 0:
-            pixels.append((red, green, blue, alpha))
-            continue
-        hue, sat, val = colorsys.rgb_to_hsv(red / 255, green / 255, blue / 255)
-        red, green, blue = colorsys.hsv_to_rgb(
-            (hue + hue_shift) % 1,
-            min(1, sat * saturation),
-            min(1, val * value),
-        )
-        pixels.append((round(red * 255), round(green * 255), round(blue * 255), alpha))
-    result.putdata(pixels)
-    return result
+    for box, point in BUSHES:
+        canvas.alpha_composite(trim(outdoor.crop(box)), point)
+    return trim(canvas)
 
 
 def trim(image: Image.Image) -> Image.Image:
     box = image.getbbox()
     return image.crop(box) if box else image
+
+
+def contact(built: dict[str, Image.Image], scale: int = 3) -> Image.Image:
+    """Контактный лист: единственный способ заметить кривой кроп до выкатки."""
+    columns = 5
+    cell = max(max(item.width, item.height) for item in built.values()) * scale + 24
+    rows = (len(built) + columns - 1) // columns
+    canvas = Image.new("RGB", (columns * cell, rows * cell), (46, 46, 58))
+    draw = ImageDraw.Draw(canvas)
+    for index, (name, sprite) in enumerate(sorted(built.items())):
+        big = sprite.resize((sprite.width * scale, sprite.height * scale), Image.Resampling.NEAREST)
+        left = (index % columns) * cell
+        top = (index // columns) * cell
+        canvas.paste(big, (left + 8, top + 20), big)
+        draw.text((left + 6, top + 5), name, fill=(255, 220, 140))
+    return canvas
 
 
 if __name__ == "__main__":

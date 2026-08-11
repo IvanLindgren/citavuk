@@ -21,6 +21,9 @@ type gardenStateResponse struct {
 	Catalog           []store.GardenSpecies    `json:"catalog"`
 	DecorationCatalog []store.GardenDecoration `json:"decorationCatalog"`
 	Stages            int                      `json:"stages"`
+	// Заполняется только ответом на срез: клиенту нужно показать, за что
+	// заплатили и попал ли цветок в гербарий впервые.
+	Cut *store.GardenCut `json:"cut,omitempty"`
 }
 
 func (s *Server) handleGarden(w http.ResponseWriter, r *http.Request) {
@@ -85,11 +88,49 @@ func (s *Server) handleGardenWater(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user := userFrom(r.Context())
-	if err := s.store.WaterGarden(r.Context(), user.ID, req.Slot); err != nil {
+	if err := s.store.WaterGarden(r.Context(), user.ID, req.Slot, time.Now().UTC()); err != nil {
 		writeGardenError(w, err, "Не удалось полить грядку.")
 		return
 	}
 	s.writeGarden(w, r, user.ID)
+}
+
+func (s *Server) handleGardenFill(w http.ResponseWriter, r *http.Request) {
+	user := userFrom(r.Context())
+	if _, err := s.store.FillGardenCan(r.Context(), user.ID, time.Now().UTC()); err != nil {
+		writeGardenError(w, err, "Не удалось набрать воду.")
+		return
+	}
+	s.writeGarden(w, r, user.ID)
+}
+
+type gardenCutRequest struct {
+	Slot int `json:"slot"`
+}
+
+func (s *Server) handleGardenCut(w http.ResponseWriter, r *http.Request) {
+	var req gardenCutRequest
+	if err := decodeJSON(w, r, &req, 1<<10); err != nil {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать запрос.")
+		return
+	}
+	user := userFrom(r.Context())
+	cut, err := s.store.CutGardenFlower(r.Context(), user.ID, req.Slot, time.Now().UTC())
+	if err != nil {
+		writeGardenError(w, err, "Не удалось срезать цветок.")
+		return
+	}
+	state, err := s.store.Garden(r.Context(), user.ID)
+	if err != nil {
+		slog.Error("чтение сада", "err", err)
+		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось открыть сад.")
+		return
+	}
+	writeJSON(w, http.StatusOK, gardenStateResponse{
+		GardenState: state, Catalog: store.GardenCatalog,
+		DecorationCatalog: store.GardenDecorationCatalog, Stages: store.GardenStages,
+		Cut: &cut,
+	})
 }
 
 type gardenProfileRequest struct {
@@ -212,6 +253,17 @@ func writeGardenError(w http.ResponseWriter, err error, fallback string) {
 		writeError(w, http.StatusConflict, codeConflict, "Этот сад сегодня уже полит.")
 	case errors.Is(err, store.ErrGardenVisitLimit):
 		writeError(w, http.StatusConflict, codeConflict, "На сегодня помощь соседям закончилась.")
+	case errors.Is(err, store.ErrGardenNoWater):
+		writeError(w, http.StatusConflict, codeConflict, "Лейка пуста — набери воды из реки.")
+	case errors.Is(err, store.ErrGardenRiverDry):
+		writeError(w, http.StatusConflict, codeConflict,
+			"Река проснётся, когда ты сегодня позанимаешься.")
+	case errors.Is(err, store.ErrGardenCanFull):
+		writeError(w, http.StatusConflict, codeConflict, "Лейка и так полная.")
+	case errors.Is(err, store.ErrGardenFillLimit):
+		writeError(w, http.StatusConflict, codeConflict, "На сегодня воды в реке больше нет.")
+	case errors.Is(err, store.ErrGardenNotBlooming):
+		writeError(w, http.StatusConflict, codeConflict, "Срезают только распустившийся цветок.")
 	case errors.Is(err, store.ErrGardenSelfVisit):
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Свой сад поливают на своей странице.")
 	default:

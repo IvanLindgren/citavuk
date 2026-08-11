@@ -235,34 +235,259 @@
     text-wrap: balance;
   }
 
-  /* Читавук с лейкой: лист из восьми кадров, кадр 150×202. */
-  .garden-wolf {
-    width: 150px;
-    height: 202px;
-    background-image: url('/img/garden/citavuk_garden.webp');
-    background-size: 1200px 202px;
-    background-repeat: no-repeat;
+  /*
+    Игровая карта Башты.
+
+    Мир пиксельный, поэтому у него есть единственный множитель --gs, и он
+    целый: спрайты, растянутые долями ширины экрана, дают один и тот же пиксель
+    то в два экранных, то в три, и картинка рябит. Множитель считает сцена по
+    своей ширине, а всё остальное умножает на него.
+  */
+  .garden-world {
+    --tile: calc(16px * var(--gs, 3));
+    isolation: isolate;
+    cursor: crosshair;
+    background-color: #4f9c46;
+    image-rendering: pixelated;
   }
 
-  .garden-wolf--watering {
-    animation: garden-water 1.1s steps(8) infinite;
+  /* Земля вымощена тайлом травы, а не нарисована градиентной сеткой. */
+  .garden-world__grass {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/img/garden/world/tile_grass.webp');
+    background-size: var(--tile) var(--tile);
+    image-rendering: pixelated;
   }
 
   /*
-    Игровая карта Башты. Все размеры задаются долями сцены: поле остаётся тем
-    же миром на широком экране и на телефоне, а не перестраивается в список.
+    Река. Ленты хватает на воду, песчаную кромку и берег; выше кромки вода
+    уходит за край карты — так река и выглядит рекой, а не прямоугольным
+    прудом посреди поля.
   */
-  .garden-world {
-    isolation: isolate;
-    cursor: crosshair;
-    background-color: #79b95d;
-    background-image:
-      linear-gradient(90deg, rgb(50 105 53 / 0.08) 1px, transparent 1px),
-      linear-gradient(rgb(50 105 53 / 0.08) 1px, transparent 1px),
-      repeating-linear-gradient(135deg, transparent 0 14px, rgb(255 255 255 / 0.035) 14px 16px);
-    background-size: 16px 16px, 16px 16px, 32px 32px;
-    box-shadow: inset 0 0 0 4px rgb(36 76 38 / 0.24);
+  .garden-world__river {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: calc(64px * var(--gs, 3));
+    padding: 0;
+    border: 0;
+    background-image: url('/img/garden/world/river.webp');
+    background-position: bottom left;
+    background-repeat: repeat-x;
+    background-size: var(--tile) calc(64px * var(--gs, 3));
     image-rendering: pixelated;
+    filter: saturate(0.55) brightness(0.85);
+    transition: filter 400ms ease;
+  }
+
+  /* Пока сегодня не было занятий, река спит: цвет глухой и утки нет. */
+  .garden-world__river--flowing {
+    filter: none;
+  }
+
+  /*
+    Рябь. Тайл воды в паке залит одним цветом, и без ряби верх карты читается
+    как небо, а не как река.
+  */
+  .garden-world__river::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 calc(32px * var(--gs, 3)) 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.16) 0 calc(6px * var(--gs, 3)),
+      transparent calc(6px * var(--gs, 3)) calc(14px * var(--gs, 3))
+    );
+    mask-image: repeating-linear-gradient(
+      transparent 0 calc(5px * var(--gs, 3)),
+      #000 calc(5px * var(--gs, 3)) calc(6px * var(--gs, 3))
+    );
+    animation: garden-ripple 7s linear infinite;
+  }
+
+  @keyframes garden-ripple {
+    to {
+      background-position-x: calc(14px * var(--gs, 3));
+    }
+  }
+
+  .garden-world__duck {
+    position: absolute;
+    left: 58%;
+    bottom: calc(26px * var(--gs, 3));
+    display: none;
+    transform: scale(var(--gs, 3));
+    transform-origin: bottom center;
+  }
+
+  .garden-world__river--flowing .garden-world__duck {
+    display: block;
+    animation: garden-duck 26s linear infinite;
+  }
+
+  @keyframes garden-duck {
+    from {
+      left: -6%;
+    }
+    to {
+      left: 104%;
+    }
+  }
+
+  /*
+    Предмет мира стоит основанием в своей точке: у обёртки нижняя граница
+    совпадает с землёй, а сам рисунок растёт вверх от неё.
+  */
+  .garden-world__item {
+    transform: translate(-50%, -100%);
+  }
+
+  .garden-world__item img,
+  .garden-bed__plant img {
+    transform: scale(var(--gs, 3));
+    transform-origin: bottom center;
+  }
+
+  .garden-pixel-art {
+    image-rendering: pixelated;
+  }
+
+  /* Подпись предмета: сербское слово крупно, русское пояснение мелко. */
+  .garden-world__label {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px 8px 3px;
+    border: 2px solid #70452f;
+    background: #f8e7ba;
+    box-shadow: 0 3px 0 #4d3227;
+    transform: translate(-50%, -100%);
+    margin-top: calc(-14px * var(--gs, 3));
+    pointer-events: none;
+    white-space: nowrap;
+    animation: garden-label 180ms ease-out;
+  }
+
+  .garden-world__label b {
+    font-weight: 700;
+    line-height: 1.1;
+    color: #3f2a1d;
+  }
+
+  .garden-world__label i {
+    font-size: 11px;
+    font-style: normal;
+    color: #7a5b43;
+  }
+
+  @keyframes garden-label {
+    from {
+      opacity: 0;
+      transform: translate(-50%, calc(-100% + 6px));
+    }
+  }
+
+  /* Грядка: два тайла земли, растение стоит на них. */
+  .garden-bed {
+    position: relative;
+    display: block;
+    width: calc(32px * var(--gs, 3));
+    height: calc(16px * var(--gs, 3));
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .garden-bed__soil {
+    position: absolute;
+    inset: 0;
+    background-image: url('/img/garden/world/tile_soil.webp');
+    background-size: var(--tile) var(--tile);
+    image-rendering: pixelated;
+    box-shadow: inset 0 0 0 2px rgb(76 42 30 / 0.55);
+  }
+
+  .garden-bed:enabled:hover .garden-bed__soil,
+  .garden-bed:focus-visible .garden-bed__soil {
+    box-shadow:
+      inset 0 0 0 2px rgb(255 243 166 / 0.9),
+      0 0 0 2px rgb(61 93 45 / 0.5);
+  }
+
+  .garden-bed__plant {
+    position: absolute;
+    bottom: calc(6px * var(--gs, 3));
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .garden-bed__hint {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    translate: -50% 0;
+    padding: 1px 6px;
+    border: 2px solid #70452f;
+    background: #f8e7ba;
+    color: #3f2a1d;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 140ms;
+    pointer-events: none;
+  }
+
+  .garden-bed:enabled:hover .garden-bed__hint,
+  .garden-bed:focus-visible .garden-bed__hint {
+    opacity: 1;
+  }
+
+  .garden-bed__drops {
+    position: absolute;
+    bottom: calc(14px * var(--gs, 3));
+    left: 50%;
+    display: flex;
+    gap: 8px;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+
+  /* Пчела кружит над распустившимся цветком. */
+  .garden-bee {
+    position: absolute;
+    bottom: calc(26px * var(--gs, 3));
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    background: #ffd93b;
+    box-shadow: 0 0 0 1px #3e3546;
+    animation: garden-bee 5.5s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes garden-bee {
+    0% {
+      transform: translate(-14px, 0);
+    }
+    25% {
+      transform: translate(0, -9px);
+    }
+    50% {
+      transform: translate(14px, 0);
+    }
+    75% {
+      transform: translate(0, 7px);
+    }
+    100% {
+      transform: translate(-14px, 0);
+    }
   }
 
   .garden-game-shell {
@@ -305,123 +530,52 @@
     inset: 0;
     z-index: 105;
     pointer-events: none;
-    box-shadow:
-      inset 0 0 70px rgb(21 55 29 / 0.16),
-      inset 0 -24px 0 rgb(48 99 48 / 0.13);
+    box-shadow: inset 0 0 70px rgb(21 55 29 / 0.16);
   }
 
-  .garden-world__path {
-    position: absolute;
-    z-index: 1;
-    left: 14%;
-    top: 24%;
-    width: 22%;
-    height: 88%;
-    transform: rotate(-4deg);
-    background-color: #d59b5e;
-    background-image:
-      linear-gradient(90deg, rgb(112 66 41 / 0.12) 2px, transparent 2px),
-      linear-gradient(rgb(112 66 41 / 0.1) 2px, transparent 2px);
-    background-size: 16px 16px;
-    clip-path: polygon(25% 0, 77% 0, 100% 100%, 0 100%);
-    border-inline: 4px solid rgb(106 69 43 / 0.22);
+  /*
+    Ночь и дождь. Ночь берётся по часам самого человека: сад темнеет тогда же,
+    когда темнеет за окном.
+  */
+  .garden-world--night::after {
+    background: linear-gradient(rgb(24 34 74 / 0.42), rgb(18 26 60 / 0.5));
   }
 
-  .garden-world__pond {
+  .garden-world__rain {
     position: absolute;
-    z-index: 2;
-    right: 3%;
-    top: 13%;
-    width: 20%;
-    aspect-ratio: 1.6;
-    background-color: #58ced1;
+    inset: -20% 0 0;
+    z-index: 106;
+    pointer-events: none;
     background-image: repeating-linear-gradient(
-      0deg,
-      transparent 0 11px,
-      rgb(223 255 237 / 0.26) 11px 13px
+      104deg,
+      rgb(206 236 255 / 0.35) 0 1px,
+      transparent 1px 9px
     );
-    border: 8px solid #e5bd6d;
-    clip-path: polygon(12% 0, 88% 0, 100% 22%, 100% 78%, 87% 100%, 12% 100%, 0 78%, 0 22%);
-    box-shadow: 0 6px 0 rgb(55 104 66 / 0.24);
+    background-size: 100% 40px;
+    animation: garden-rain 620ms linear infinite;
   }
 
-  .garden-world__field {
-    position: absolute;
-    z-index: 3;
-    left: 32%;
-    top: 29%;
-    width: 49%;
-    height: 61%;
-    border: 4px solid rgb(64 98 44 / 0.25);
-    background: rgb(154 194 83 / 0.22);
-    box-shadow: inset 0 0 0 4px rgb(220 231 126 / 0.12);
+  @keyframes garden-rain {
+    to {
+      transform: translateY(40px);
+    }
   }
 
-  .garden-world__bed::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    left: 5%;
-    right: 5%;
-    bottom: 3%;
-    height: 42%;
-    background-color: #9b593d;
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent 0 7px,
-      rgb(62 37 29 / 0.22) 7px 9px
-    );
-    border: 3px solid #6f3d30;
-    box-shadow: 0 4px 0 rgb(54 71 36 / 0.18);
-  }
-
-  .garden-world__bed > button {
-    z-index: 1;
-  }
-
-  .garden-world__bed .garden-sway {
-    display: flex;
-    height: 86%;
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  .garden-world__bed .garden-sway img {
-    width: min(80%, 42px);
-    height: auto;
-    image-rendering: pixelated;
-  }
-
-  .garden-world__bed > button:hover::after,
-  .garden-world__bed > button:focus-visible::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 3px solid rgb(255 243 166 / 0.86);
-    box-shadow: 0 0 0 2px rgb(61 93 45 / 0.55);
-  }
-
-  .garden-pixel-art {
-    image-rendering: pixelated;
-    filter: drop-shadow(0 5px 0 rgb(42 73 45 / 0.18));
-  }
-
+  /* Читавук-садовник: восемь кадров 30×40 в одном листе. */
   .garden-game-player {
-    width: 56px;
-    height: 75px;
-    transform: translate(-50%, -90%);
-    filter: drop-shadow(0 5px 1px rgb(27 54 31 / 0.25));
+    transform: translate(-50%, -100%);
   }
 
   .garden-game-player__sprite {
     display: block;
-    width: 56px;
-    height: 75px;
-    transform: scaleX(var(--garden-facing, 1));
-    background-image: url('/img/garden/citavuk_garden.webp');
+    width: 30px;
+    height: 40px;
+    background-image: url('/img/garden/world/gardener.webp');
     background-repeat: no-repeat;
-    background-size: 448px 75px;
-    transform-origin: center bottom;
+    background-size: 240px 40px;
+    transform: scaleX(var(--garden-facing, 1)) scale(var(--gs, 3));
+    transform-origin: bottom center;
+    image-rendering: pixelated;
   }
 
   .garden-game-player__sprite--walking {
@@ -439,14 +593,27 @@
 
   @keyframes garden-walk {
     50% {
-      translate: 0 -3px;
+      translate: 0 -2px;
     }
   }
 
   @keyframes garden-game-water {
     to {
-      background-position-x: -448px;
+      background-position-x: -240px;
     }
+  }
+
+  /* Читавук с лейкой в приложении: лист из восьми кадров 150×202. */
+  .garden-wolf {
+    width: 150px;
+    height: 202px;
+    background-image: url('/img/garden/citavuk_garden.webp');
+    background-size: 1200px 202px;
+    background-repeat: no-repeat;
+  }
+
+  .garden-wolf--watering {
+    animation: garden-water 1.1s steps(8) infinite;
   }
 
   @keyframes garden-water {
@@ -456,8 +623,8 @@
   }
 
   /*
-    Сцена сада. Растение качается вокруг основания стебля: вращать вокруг
-    центра значит оторвать цветок от земли и возить его туда-сюда по грядке.
+    Растение качается вокруг основания стебля: вращать вокруг центра значит
+    оторвать цветок от земли и возить его туда-сюда по грядке.
   */
   .garden-sway {
     transform-origin: bottom center;
@@ -510,25 +677,7 @@
     }
     100% {
       opacity: 0;
-      transform: translateY(46px) scale(1);
-    }
-  }
-
-  .garden-sparkle {
-    animation: garden-sparkle 1.8s ease-out infinite;
-  }
-
-  @keyframes garden-sparkle {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0.5);
-    }
-    35% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-26px) scale(1);
+      transform: translateY(38px) scale(1);
     }
   }
 

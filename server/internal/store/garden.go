@@ -18,7 +18,7 @@ const (
 	gardenStageHours = 4.0
 	gardenStartCoins = 50
 
-	gardenWaterWindow  = 6 * time.Hour
+	gardenWaterWindow  = 8 * time.Hour
 	gardenDroughtAfter = 24 * time.Hour
 	gardenActivityFull = 60.0
 	gardenVisitsPerDay = 5
@@ -153,6 +153,15 @@ type GardenState struct {
 	Speed       float64          `json:"speed"`
 	HelpedToday int              `json:"helpedToday"`
 	HelpLimit   int              `json:"helpLimit"`
+
+	Water       int               `json:"water"`
+	WaterCap    int               `json:"waterCap"`
+	FilledToday int               `json:"filledToday"`
+	FillLimit   int               `json:"fillLimit"`
+	River       bool              `json:"river"`
+	Weather     string            `json:"weather"`
+	Herbarium   []GardenHerbarium `json:"herbarium"`
+	Task        *GardenTask       `json:"task,omitempty"`
 }
 
 type GardenBoardRow struct {
@@ -182,15 +191,27 @@ func (s *Store) Garden(ctx context.Context, userID uuid.UUID) (GardenState, erro
 	if err := s.accrueGarden(ctx, userID, now); err != nil {
 		return GardenState{}, err
 	}
+	if err := s.rainGarden(ctx, userID, now); err != nil {
+		return GardenState{}, err
+	}
 
 	var state GardenState
 	state.Slots = GardenSlots
 	state.HelpLimit = gardenVisitsPerDay
+	state.WaterCap = gardenCanCapacity
+	state.FillLimit = gardenFillsPerDay
+	state.Weather = gardenWeather(now)
+	var waterDay *string
 	if err := s.Pool.QueryRow(ctx, `
-		SELECT nickname, public, coins, earned_total
+		SELECT nickname, public, coins, earned_total, water, water_taken,
+		       to_char(water_day, 'YYYY-MM-DD')
 		  FROM garden_profiles WHERE user_id=$1`, userID).Scan(
-		&state.Nickname, &state.Public, &state.Coins, &state.EarnedTotal); err != nil {
+		&state.Nickname, &state.Public, &state.Coins, &state.EarnedTotal,
+		&state.Water, &state.FilledToday, &waterDay); err != nil {
 		return GardenState{}, err
+	}
+	if waterDay == nil || *waterDay != now.Format("2006-01-02") {
+		state.FilledToday = 0
 	}
 
 	today, err := s.gardenToday(ctx, userID, now)
@@ -203,6 +224,13 @@ func (s *Store) Garden(ctx context.Context, userID uuid.UUID) (GardenState, erro
 			Today: today[source.ID], Cap: source.DailyCap,
 		})
 		state.TodayCoins += today[source.ID]
+	}
+	state.River = gardenStudiedToday(today) > 0
+	if coins := today["task"]; coins > 0 {
+		state.Earnings = append(state.Earnings, GardenEarning{
+			Source: "task", Title: "Задание дня", Today: coins, Cap: gardenTaskReward,
+		})
+		state.TodayCoins += coins
 	}
 	state.Speed = 1 + gardenActivityBonus(state.TodayCoins)
 
@@ -224,6 +252,18 @@ func (s *Store) Garden(ctx context.Context, userID uuid.UUID) (GardenState, erro
 	if err := s.Pool.QueryRow(ctx, `
 		SELECT count(*) FROM garden_visits WHERE user_id=$1 AND day=$2`,
 		userID, now.Format("2006-01-02")).Scan(&state.HelpedToday); err != nil {
+		return GardenState{}, err
+	}
+
+	state.Herbarium, err = s.gardenHerbarium(ctx, userID)
+	if err != nil {
+		return GardenState{}, err
+	}
+	for _, item := range state.Herbarium {
+		state.Bloomed += item.Count
+	}
+	state.Task, err = s.gardenTask(ctx, userID, now, plants)
+	if err != nil {
 		return GardenState{}, err
 	}
 	return state, nil
@@ -433,7 +473,7 @@ func gardenSpeed(activity float64, planted time.Time, watered *time.Time, now ti
 	since := now.Sub(last)
 	switch {
 	case watered != nil && since <= gardenWaterWindow:
-		speed += 0.5
+		speed += gardenWaterBonus
 	case since > gardenDroughtAfter:
 		speed *= 0.5
 	}
@@ -537,6 +577,9 @@ func (s *Store) PlantGarden(ctx context.Context, userID uuid.UUID, slot int, spe
 		userID, species.Price); err != nil {
 		return err
 	}
+	if err := advanceGardenTask(ctx, tx, userID, time.Now().UTC(), gardenTaskPlant); err != nil {
+		return err
+	}
 	return tx.Commit(ctx)
 }
 
@@ -585,17 +628,48 @@ func (s *Store) BuyGardenDecoration(ctx context.Context, userID uuid.UUID, decor
 	return tx.Commit(ctx)
 }
 
-func (s *Store) WaterGarden(ctx context.Context, userID uuid.UUID, slot int) error {
-	tag, err := s.Pool.Exec(ctx, `
-		UPDATE garden_plantings SET watered_at=now() WHERE user_id=$1 AND slot=$2`,
-		userID, slot)
+// WaterGarden поливает грядку из лейки. Вода списывается и грядка помечается
+// одной транзакцией: иначе при отказе на полпути человек остался бы без воды и
+// без полива.
+func (s *Store) WaterGarden(
+	ctx context.Context, userID uuid.UUID, slot int, now time.Time,
+) error {
+	tx, err := s.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	var water int
+	if err := tx.QueryRow(ctx, `
+		SELECT water FROM garden_profiles WHERE user_id=$1 FOR UPDATE`,
+		userID).Scan(&water); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return ErrGardenNotFound
+		}
+		return err
+	}
+	if water <= 0 {
+		return ErrGardenNoWater
+	}
+	tag, err := tx.Exec(ctx, `
+		UPDATE garden_plantings SET watered_at=$3 WHERE user_id=$1 AND slot=$2`,
+		userID, slot, now)
 	if err != nil {
 		return err
 	}
 	if tag.RowsAffected() == 0 {
 		return ErrGardenSlotEmpty
 	}
-	return nil
+	if _, err := tx.Exec(ctx, `
+		UPDATE garden_profiles SET water=water-1, updated_at=now() WHERE user_id=$1`,
+		userID); err != nil {
+		return err
+	}
+	if err := advanceGardenTask(ctx, tx, userID, now, gardenTaskWater); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
 }
 
 func (s *Store) SetGardenProfile(
@@ -638,15 +712,19 @@ func (s *Store) GardenLeaderboard(ctx context.Context, limit int) ([]GardenBoard
 	if limit <= 0 || limit > 100 {
 		limit = 50
 	}
+	// Срезанные цветы считаются наравне с растущими: иначе таблица упирается в
+	// число грядок и через неделю у всех активных садоводов одно и то же число.
 	rows, err := s.Pool.Query(ctx, `
 		SELECT p.nickname,
-		       count(*) FILTER (WHERE g.growth >= $1),
+		       count(*) FILTER (WHERE g.growth >= $1) + coalesce(h.cut, 0)::int,
 		       count(g.slot),
 		       count(DISTINCT g.species)
 		  FROM garden_profiles p
 		  LEFT JOIN garden_plantings g ON g.user_id = p.user_id
+		  LEFT JOIN (SELECT user_id, sum(count) AS cut FROM garden_herbarium
+		              GROUP BY user_id) h ON h.user_id = p.user_id
 		 WHERE p.public AND p.nickname <> ''
-		 GROUP BY p.user_id, p.nickname
+		 GROUP BY p.user_id, p.nickname, h.cut
 		 ORDER BY 2 DESC, 4 DESC, 3 DESC, p.nickname
 		 LIMIT $2`, GardenStages, limit)
 	if err != nil {
@@ -686,18 +764,20 @@ func (s *Store) SearchGardeners(
 
 	rows, err := s.Pool.Query(ctx, `
 		SELECT p.nickname,
-		       count(*) FILTER (WHERE g.growth >= $1),
+		       count(*) FILTER (WHERE g.growth >= $1) + coalesce(h.cut, 0)::int,
 		       count(g.slot),
 		       count(DISTINCT g.species),
 		       coalesce(array_agg(DISTINCT g.species)
 		                FILTER (WHERE g.species IS NOT NULL), '{}')
 		  FROM garden_profiles p
 		  LEFT JOIN garden_plantings g ON g.user_id = p.user_id
+		  LEFT JOIN (SELECT user_id, sum(count) AS cut FROM garden_herbarium
+		              GROUP BY user_id) h ON h.user_id = p.user_id
 		 WHERE p.public AND p.nickname <> ''
 		   AND ($2 = '' OR p.nickname ILIKE '%' || $2 || '%')
 		   AND ($3 = '' OR EXISTS (SELECT 1 FROM garden_plantings f
 		        WHERE f.user_id = p.user_id AND f.species = $3))
-		 GROUP BY p.user_id, p.nickname
+		 GROUP BY p.user_id, p.nickname, h.cut
 		 ORDER BY 2 DESC, 3 DESC, p.nickname
 		 LIMIT $4`, GardenStages, query, species, limit)
 	if err != nil {
@@ -829,6 +909,9 @@ func (s *Store) HelpGarden(
 		UPDATE garden_profiles
 		   SET coins=coins+$2, earned_total=earned_total+$2, updated_at=now()
 		 WHERE user_id=$1`, userID, gardenVisitReward); err != nil {
+		return 0, err
+	}
+	if err := advanceGardenTask(ctx, tx, userID, now, gardenTaskHelp); err != nil {
 		return 0, err
 	}
 	if err := tx.Commit(ctx); err != nil {
