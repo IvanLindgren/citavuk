@@ -93,6 +93,8 @@ export interface RoadmapWord {
   pos?: string;
   note?: string;
   example?: string;
+  /** Перевод фразы. Слово в обеих помечено звёздочками. */
+  exampleTranslation?: string;
   rank?: number;
   position: number;
   status: 'draft' | 'published';

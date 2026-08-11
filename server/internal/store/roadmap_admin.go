@@ -209,42 +209,49 @@ func (s *Store) SaveRoadmapWord(ctx context.Context, word RoadmapWord) (*Roadmap
 		return nil, ErrRoadmapTitleEmpty
 	}
 	status := normalizeRoadmapStatus(word.Status)
+	// Пустой пример остаётся пустым. Раньше здесь подставлялся шаблон
+	// («Ovo je kuća.»), чтобы слово не выглядело голым, но в списке из трёхсот
+	// слов подряд шли триста одинаковых конструкций: читатель видел не
+	// употребление слова, а форму самой заглушки. Лучше не показывать ничего.
 	example := strings.TrimSpace(word.Example)
-	if example == "" {
-		example = defaultRoadmapWordExample(word)
-	}
+	exampleTranslation := strings.TrimSpace(word.ExampleTranslation)
 
 	var saved RoadmapWord
 	var err error
 	if word.ID == uuid.Nil {
 		err = s.Pool.QueryRow(ctx, `
 			INSERT INTO roadmap_words
-			    (level, theme, lemma, translation, pos, note, example, rank, position, status)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+			    (level, theme, lemma, translation, pos, note, example,
+			     example_translation, rank, position, status)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
 			ON CONFLICT (level, lemma) DO UPDATE
 			   SET theme=EXCLUDED.theme, translation=EXCLUDED.translation,
 			       pos=EXCLUDED.pos, note=EXCLUDED.note, example=EXCLUDED.example,
+			       example_translation=EXCLUDED.example_translation,
 			       rank=EXCLUDED.rank,
 			       position=EXCLUDED.position, status=EXCLUDED.status,
 			       updated_at=now()
-			RETURNING id, level, theme, lemma, translation, pos, note, example, rank,
-			          position, status`,
+			RETURNING id, level, theme, lemma, translation, pos, note, example,
+			          example_translation, rank, position, status`,
 			level, theme, lemma, word.Translation, word.POS, word.Note, example,
-			word.Rank, word.Position, status,
+			exampleTranslation, word.Rank, word.Position, status,
 		).Scan(&saved.ID, &saved.Level, &saved.Theme, &saved.Lemma, &saved.Translation,
-			&saved.POS, &saved.Note, &saved.Example, &saved.Rank, &saved.Position, &saved.Status)
+			&saved.POS, &saved.Note, &saved.Example, &saved.ExampleTranslation,
+			&saved.Rank, &saved.Position, &saved.Status)
 	} else {
 		err = s.Pool.QueryRow(ctx, `
 			UPDATE roadmap_words
 			   SET level=$2, theme=$3, lemma=$4, translation=$5, pos=$6, note=$7,
-			       example=$8, rank=$9, position=$10, status=$11, updated_at=now()
+			       example=$8, example_translation=$9, rank=$10, position=$11,
+			       status=$12, updated_at=now()
 			 WHERE id=$1
-			RETURNING id, level, theme, lemma, translation, pos, note, example, rank,
-			          position, status`,
+			RETURNING id, level, theme, lemma, translation, pos, note, example,
+			          example_translation, rank, position, status`,
 			word.ID, level, theme, lemma, word.Translation, word.POS, word.Note, example,
-			word.Rank, word.Position, status,
+			exampleTranslation, word.Rank, word.Position, status,
 		).Scan(&saved.ID, &saved.Level, &saved.Theme, &saved.Lemma, &saved.Translation,
-			&saved.POS, &saved.Note, &saved.Example, &saved.Rank, &saved.Position, &saved.Status)
+			&saved.POS, &saved.Note, &saved.Example, &saved.ExampleTranslation,
+			&saved.Rank, &saved.Position, &saved.Status)
 	}
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, ErrRoadmapNotFound
@@ -253,35 +260,6 @@ func (s *Store) SaveRoadmapWord(ctx context.Context, word RoadmapWord) (*Roadmap
 		return nil, err
 	}
 	return &saved, nil
-}
-
-// defaultRoadmapWordExample guarantees that even a quickly added admin word
-// reaches the learner in a sentence. Editors can replace it with a more
-// specific example at any time.
-func defaultRoadmapWordExample(word RoadmapWord) string {
-	lemma := strings.TrimSpace(word.Lemma)
-	switch strings.ToUpper(strings.TrimSpace(word.POS)) {
-	case "NOUN":
-		if strings.EqualFold(strings.TrimSpace(word.Note), "мн.") {
-			return "Ovo su " + lemma + "."
-		}
-		return "Ovo je " + lemma + "."
-	case "VERB":
-		if stem, ok := strings.CutSuffix(lemma, " se"); ok {
-			return "Sutra ću se " + stem + "."
-		}
-		return "Sutra ću " + lemma + "."
-	case "ADJ":
-		return "Ovo je " + lemma + " primer."
-	case "ADV":
-		return "U ovoj rečenici koristim prilog „" + lemma + "“."
-	case "NUM":
-		return "Na kartici piše broj " + lemma + "."
-	case "INTJ":
-		return "Kažem „" + lemma + "“ u razgovoru."
-	default:
-		return "U ovoj rečenici koristim reč „" + lemma + "“."
-	}
 }
 
 // DeleteRoadmapWord убирает слово.

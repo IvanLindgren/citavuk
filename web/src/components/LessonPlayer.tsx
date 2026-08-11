@@ -20,6 +20,7 @@ import {
   type LessonExercise,
 } from '../api/lessons';
 import { ApiError } from '../api/client';
+import { normalizeAnswer as normalize } from '../lib/answerMatch';
 import { tokenize } from '../lib/tokenize';
 import { MarkdownLesson } from './MarkdownLesson';
 import { WordReader } from './WordReader';
@@ -118,7 +119,7 @@ function ExerciseBody({ exercise, lesson, preview }: { exercise: LessonExercise;
   if (exercise.type === 'form_hunt' && exercise.context && exercise.targetWords?.length) return <FormHuntExercise exercise={exercise} />;
   if (exercise.type === 'teacher_letter' && lesson) return <TeacherLetter exercise={exercise} lesson={lesson} preview={preview} />;
   if (exercise.type === 'word_drill' && exercise.pairs?.length) return <WordDrill exercise={exercise} />;
-  if (exercise.type === 'translator_duel' && exercise.context) return <TranslatorDuel exercise={exercise} />;
+  if (exercise.type === 'translator_duel' && exercise.context) return <TranslatorDuelExercise exercise={exercise} />;
   return <WrittenExercise exercise={exercise} />;
 }
 
@@ -152,14 +153,19 @@ function WordDrill({ exercise }: { exercise: LessonExercise }) {
 }
 
 /**
- * Игра против переводчика: своя версия фразы против машинной.
+ * Против переводчика внутри урока: своя версия фразы против машинной.
  *
  * Машинный перевод хранится в самом задании, а не запрашивается на лету. Так
  * упражнение работает без сети и, что важнее, не меняется под ногами: сегодня
  * переводчик выдал одно, завтра другое, и «вы совпали с переводчиком» перестало
  * бы что-либо значить.
+ *
+ * Это не та игра, что живёт на /trainer/translation-duel: там матч из трёх
+ * раундов против DeepL, здесь одна фраза внутри урока. Спокойный вид — намеренно:
+ * в уроке идут подряд десяток заданий, и таймер с тряской на одном из них сбивал
+ * бы с чтения.
  */
-function TranslatorDuel({ exercise }: { exercise: LessonExercise }) {
+function TranslatorDuelExercise({ exercise }: { exercise: LessonExercise }) {
   const [value, setValue] = useState('');
   const [checked, setChecked] = useState(false);
   const machine = exercise.referenceAnswer ?? '';
@@ -288,6 +294,5 @@ function ReportForm({ lessonId, onDone }: { lessonId: string; onDone: () => void
   return <div className="mt-4 max-w-xl rounded-md border border-[var(--line)] p-4"><label className="grid gap-2 text-sm font-semibold">Причина<select value={reason} onChange={(event) => setReason(event.target.value)} className="rounded-md border border-[var(--line)] bg-[var(--bg-raised)] p-2.5"><option>Ошибка в материале</option><option>Нарушение авторских прав</option><option>Неподходящее содержание</option><option>Другое</option></select></label><textarea rows={3} value={details} onChange={(event) => setDetails(event.target.value)} placeholder="Подробности" className="mt-3 w-full rounded-md border border-[var(--line)] bg-[var(--bg-raised)] p-3" />{error && <p className="mt-2 text-sm text-red-600">{error}</p>}<div className="mt-3"><Button size="sm" onClick={() => void send()} disabled={busy}>Отправить</Button></div></div>;
 }
 
-function normalize(value: string) { return value.trim().toLocaleLowerCase('sr').replace(/[.!?,;:]+$/, ''); }
 function typeLabel(type: Lesson['lessonType']) { return ({ lexicon: 'Лексика', grammar: 'Грамматика', speaking: 'Говорение', writing: 'Письмо' } as const)[type]; }
 function messageOf(error: unknown) { return error instanceof ApiError || error instanceof Error ? error.message : 'Неизвестная ошибка.'; }

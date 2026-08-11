@@ -82,6 +82,10 @@
     --success-soft: rgb(47 116 69 / 0.12);
     --error: var(--color-serb-red);
     --error-soft: rgb(158 43 37 / 0.12);
+    /* Сторона машины в дуэли. Индиго палитры: холоднее акцента, но той же
+       семьи — на пергаменте это читается как «другая сторона», а не как
+       чужеродная подсветка. */
+    --machine: var(--color-indigo-deep);
     --line: rgb(43 33 24 / 0.12);
     --scrollbar-thumb: rgb(43 33 24 / 0.28);
     --scrollbar-thumb-hover: rgb(43 33 24 / 0.45);
@@ -101,6 +105,7 @@
     --success-soft: rgb(120 189 139 / 0.14);
     --error: #ef7b73;
     --error-soft: rgb(239 123 115 / 0.14);
+    --machine: var(--color-indigo-soft);
     --line: rgb(237 226 204 / 0.14);
     --scrollbar-thumb: rgb(237 226 204 / 0.24);
     --scrollbar-thumb-hover: rgb(237 226 204 / 0.42);

@@ -623,6 +623,7 @@ function WordsEditor({
   const [translation, setTranslation] = useState('');
   const [note, setNote] = useState('');
   const [example, setExample] = useState('');
+  const [exampleTranslation, setExampleTranslation] = useState('');
   const [busy, setBusy] = useState(false);
   const [filter, setFilter] = useState('');
 
@@ -701,12 +702,14 @@ function WordsEditor({
                   translation,
                   note,
                   example,
+                  exampleTranslation,
                   status: 'published',
                 });
                 setLemma('');
                 setTranslation('');
-                setNote('');
                 setExample('');
+                setExampleTranslation('');
+                setNote('');
                 onChanged();
               } finally {
                 setBusy(false);
@@ -716,12 +719,22 @@ function WordsEditor({
             <LuPlus />
           </Button>
         </div>
+        {/* Слово в обеих фразах помечается звёздочками: *mačka*. По этой
+            пометке оно подчёркивается и в сербской фразе, и в переводе —
+            в переводе иначе его не найти, русской морфологии у нас нет. */}
         <textarea
-          className={`${field} sm:col-span-4`}
+          className={`${field} sm:col-span-2`}
           rows={2}
-          placeholder="Пример в контексте (если оставить пустым, сервер составит простой пример)"
+          placeholder="Фраза по-сербски: Naša *mačka* spava."
           value={example}
           onChange={(event) => setExample(event.target.value)}
+        />
+        <textarea
+          className={`${field} sm:col-span-2`}
+          rows={2}
+          placeholder="Перевод: Наша *кошка* спит."
+          value={exampleTranslation}
+          onChange={(event) => setExampleTranslation(event.target.value)}
         />
       </div>
 

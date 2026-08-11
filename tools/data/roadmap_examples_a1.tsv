@@ -1,0 +1,360 @@
+lemma	example	translation
+porodica	Naša *porodica* živi u Beogradu.	Наша *семья* живёт в Белграде.
+majka	*Majka* mi svaki dan kuva ručak.	*Мать* каждый день готовит мне обед.
+otac	Moj *otac* radi u fabrici.	Мой *отец* работает на заводе.
+sin	Njihov *sin* ide u školu.	Их *сын* ходит в школу.
+ćerka	Naša *ćerka* ima pet godina.	Нашей *дочери* пять лет.
+brat	Moj *brat* studira u Novom Sadu.	Мой *брат* учится в Нови-Саде.
+sestra	*Sestra* je dve godine starija od mene.	*Сестра* на два года старше меня.
+baba	*Baba* nedeljom peče kolače.	*Бабушка* по воскресеньям печёт пироги.
+deda	*Deda* svako jutro čita novine.	*Дедушка* каждое утро читает газету.
+dete	*Dete* spava u susednoj sobi.	*Ребёнок* спит в соседней комнате.
+roditelj	Svaki *roditelj* brine za svoje dete.	Каждый *родитель* беспокоится о своём ребёнке.
+muž	Njen *muž* je lekar.	Её *муж* — врач.
+supruga	Moja *supruga* voli da putuje.	Моя *жена* любит путешествовать.
+stric	*Stric* nam sutra dolazi u goste.	*Дядя* завтра приезжает к нам в гости.
+ujak	*Ujak* živi u Nišu već deset godina.	*Дядя* живёт в Нише уже десять лет.
+tetka	*Tetka* radi u bolnici.	*Тётя* работает в больнице.
+unuk	Baba čuva *unuka* svakog vikenda.	Бабушка сидит с *внуком* каждые выходные.
+rođak	Na svadbi je bio svaki *rođak*.	На свадьбе был каждый *родственник*.
+komšija	Naš *komšija* ima velikog psa.	У нашего *соседа* большая собака.
+prijatelj	Čekam *prijatelja* ispred bioskopa.	Жду *друга* перед кинотеатром.
+kuća	Njihova *kuća* ima veliko dvorište.	У их *дома* большой двор.
+stan	Iznajmili smo *stan* blizu centra.	Мы сняли *квартиру* рядом с центром.
+soba	Moja *soba* gleda na park.	Моя *комната* выходит на парк.
+kuhinja	U *kuhinji* uvek nešto lepo miriše.	На *кухне* всегда чем-то вкусно пахнет.
+kupatilo	*Kupatilo* je odmah pored spavaće sobe.	*Ванная* сразу рядом со спальней.
+vrata	Zatvori *vrata*, molim te.	Закрой *дверь*, пожалуйста.
+prozor	Otvori *prozor*, vruće je.	Открой *окно*, жарко.
+sto	Knjige su na *stolu*.	Книги на *столе*.
+stolica	Sedi na tu *stolicu*.	Садись на этот *стул*.
+krevet	Dete je već u *krevetu*.	Ребёнок уже в *кровати*.
+orman	Košulje su u *ormanu*.	Рубашки в *шкафу*.
+zid	Na *zidu* visi stara slika.	На *стене* висит старая картина.
+pod	*Pod* je hladan, obuj papuče.	*Пол* холодный, надень тапочки.
+krov	Kiša pada na *krov*.	Дождь стучит по *крыше*.
+sprat	Stanujemo na trećem *spratu*.	Мы живём на третьем *этаже*.
+dvorište	Deca se igraju u *dvorištu*.	Дети играют во *дворе*.
+ključ	Zaboravio sam *ključ* kod kuće.	Я забыл *ключ* дома.
+ogledalo	Pogledaj se u *ogledalo*.	Посмотри на себя в *зеркало*.
+sijalica	Pregorela je *sijalica* u hodniku.	В коридоре перегорела *лампочка*.
+stepenice	Popeli smo se uz *stepenice*.	Мы поднялись по *лестнице*.
+hrana	*Hrana* u ovom restoranu je odlična.	*Еда* в этом ресторане отличная.
+hleb	Kupi *hleb* na putu kući.	Купи *хлеб* по дороге домой.
+voda	Popij malo *vode*.	Выпей немного *воды*.
+mleko	Deca svako jutro piju *mleko*.	Дети каждое утро пьют *молоко*.
+meso	Ne jedem *meso* već tri godine.	Я не ем *мясо* уже три года.
+sir	Na stolu je hleb i *sir*.	На столе хлеб и *сыр*.
+jaje	Za doručak sam pojeo *jaje*.	На завтрак я съел *яйцо*.
+voće	Kupujem *voće* na pijaci.	Я покупаю *фрукты* на рынке.
+povrće	Supa je puna svežeg *povrća*.	Суп полон свежих *овощей*.
+jabuka	Ova *jabuka* je vrlo slatka.	Это *яблоко* очень сладкое.
+krompir	*Krompir* se kuva dvadeset minuta.	*Картофель* варится двадцать минут.
+paradajz	U salati je samo *paradajz*.	В салате только *помидор*.
+so	Dodaj još malo *soli*.	Добавь ещё немного *соли*.
+šećer	Pijem kafu bez *šećera*.	Я пью кофе без *сахара*.
+kafa	Ujutru uvek pijem *kafu*.	Утром я всегда пью *кофе*.
+čaj	Skuvala je *čaj* od nane.	Она заварила *чай* с мятой.
+sok	Deca vole *sok* od jabuke.	Дети любят яблочный *сок*.
+vino	Uz večeru smo pili crno *vino*.	К ужину мы пили красное *вино*.
+pivo	Poručio je hladno *pivo*.	Он заказал холодное *пиво*.
+supa	*Supa* je još vruća.	*Суп* ещё горячий.
+doručak	*Doručak* je najvažniji obrok.	*Завтрак* — самый важный приём пищи.
+ručak	*Ručak* je u dva sata.	*Обед* в два часа.
+večera	Za *večeru* imamo ribu.	На *ужин* у нас рыба.
+kašika	Daj mi *kašiku* za supu.	Дай мне *ложку* для супа.
+viljuška	*Viljuška* je pala na pod.	*Вилка* упала на пол.
+nož	Ovaj *nož* nije oštar.	Этот *нож* не острый.
+tanjir	Stavi *tanjir* na sto.	Поставь *тарелку* на стол.
+čaša	Nalij vodu u *čašu*.	Налей воду в *стакан*.
+nula	Temperatura je pala na *nulu*.	Температура упала до *нуля*.
+jedan	Ostao mi je samo *jedan* dinar.	У меня остался только *один* динар.
+dva	Imam *dva* brata.	У меня *два* брата.
+tri	Čekam te već *tri* sata.	Я жду тебя уже *три* часа.
+četiri	Sto ima *četiri* noge.	У стола *четыре* ножки.
+pet	Autobus dolazi za *pet* minuta.	Автобус придёт через *пять* минут.
+šest	Ustajem u *šest* ujutru.	Я встаю в *шесть* утра.
+sedam	U nedelji ima *sedam* dana.	В неделе *семь* дней.
+osam	Radim *osam* sati dnevno.	Я работаю *восемь* часов в день.
+devet	Prodavnica se zatvara u *devet*.	Магазин закрывается в *девять*.
+deset	Do centra ima *deset* minuta hoda.	До центра *десять* минут пешком.
+jedanaest	Voz polazi u *jedanaest*.	Поезд отправляется в *одиннадцать*.
+dvadeset	Karta košta *dvadeset* dinara.	Билет стоит *двадцать* динаров.
+trideset	U razredu ima *trideset* učenika.	В классе *тридцать* учеников.
+stotina	Na trgu je bilo *stotinu* ljudi.	На площади была *сотня* людей.
+hiljada	Knjiga košta *hiljadu* dinara.	Книга стоит *тысячу* динаров.
+prvi	Ovo je moj *prvi* dan na poslu.	Это мой *первый* день на работе.
+drugi	Sedimo u *drugom* redu.	Мы сидим во *втором* ряду.
+treći	Stan je na *trećem* spratu.	Квартира на *третьем* этаже.
+broj	Zapiši moj *broj* telefona.	Запиши мой *номер* телефона.
+boja	Koja ti je omiljena *boja*?	Какой твой любимый *цвет*?
+crven	Kupila je *crvenu* haljinu.	Она купила *красное* платье.
+plav	Nebo je danas potpuno *plavo*.	Небо сегодня совершенно *синее*.
+zelen	Trava je posle kiše *zelena*.	Трава после дождя *зелёная*.
+žut	Na stolu stoji *žut* cvet.	На столе стоит *жёлтый* цветок.
+crn	Nosi *crn* kaput.	Он носит *чёрное* пальто.
+beo	Sneg je *beo* i čist.	Снег *белый* и чистый.
+siv	Nebo je *sivo* od jutros.	Небо *серое* с самого утра.
+smeđ	Ima *smeđe* oči.	У неё *карие* глаза.
+narandžast	Kupio sam *narandžastu* majicu.	Я купил *оранжевую* футболку.
+ružičast	Devojčica nosi *ružičastu* kapu.	Девочка носит *розовую* шапку.
+svetao	Soba je velika i *svetla*.	Комната большая и *светлая*.
+taman	Hodnik je *taman* i uzak.	Коридор *тёмный* и узкий.
+vreme	Nemam *vremena* za odmor.	У меня нет *времени* на отдых.
+dan	Svaki *dan* idem peške.	Каждый *день* я хожу пешком.
+nedelja	Vidimo se sledeće *nedelje*.	Увидимся на следующей *неделе*.
+mesec	Ovaj *mesec* je bio težak.	Этот *месяц* был тяжёлым.
+godina	Prošla *godina* je brzo protekla.	Прошлый *год* пролетел быстро.
+sat	Sastanak traje jedan *sat*.	Встреча длится один *час*.
+minut	Sačekaj me još jedan *minut*.	Подожди меня ещё одну *минуту*.
+jutro	Svako *jutro* pijem kafu.	Каждое *утро* я пью кофе.
+podne	Nalazimo se u *podne*.	Встречаемся в *полдень*.
+veče	*Veče* provodim kod kuće.	*Вечер* я провожу дома.
+noć	Cele *noći* je padala kiša.	Всю *ночь* шёл дождь.
+danas	*Danas* nemam nijedan čas.	*Сегодня* у меня нет ни одного урока.
+sutra	*Sutra* putujemo na more.	*Завтра* мы едем на море.
+juče	*Juče* sam završio posao.	*Вчера* я закончил работу.
+sada	*Sada* nemam vremena.	*Сейчас* у меня нет времени.
+ponedeljak	U *ponedeljak* počinje škola.	В *понедельник* начинается школа.
+utorak	Sastanak je pomeren za *utorak*.	Встреча перенесена на *вторник*.
+sreda	Svake *srede* idem na trening.	Каждую *среду* я хожу на тренировку.
+četvrtak	U *četvrtak* imam ispit.	В *четверг* у меня экзамен.
+petak	*Petak* je najlepši dan u nedelji.	*Пятница* — лучший день недели.
+subota	U *subotu* spavam duže.	В *субботу* я сплю дольше.
+telo	Sport je dobar za *telo*.	Спорт полезен для *тела*.
+glava	Boli me *glava* od jutros.	У меня с утра болит *голова*.
+oko	Nešto mi je upalo u *oko*.	Мне что-то попало в *глаз*.
+uho	Muzika mi para *uho*.	Музыка режет мне *ухо*.
+nos	Napolju mi se smrzao *nos*.	На улице у меня замёрз *нос*.
+usta	Otvori *usta*, rekao je zubar.	Открой *рот*, сказал зубной врач.
+zub	Boli me *zub* već tri dana.	*Зуб* болит у меня уже три дня.
+jezik	Sada učim srpski *jezik*.	Сейчас я учу сербский *язык*.
+ruka	Slomio je *ruku* na skijanju.	Он сломал *руку* на лыжах.
+noga	Posle šetnje me bole *noge*.	После прогулки у меня болят *ноги*.
+prst	Posekao sam *prst* nožem.	Я порезал *палец* ножом.
+kosa	Ošišala je *kosu* juče.	Она подстригла *волосы* вчера.
+lice	Njeno *lice* mi je poznato.	Её *лицо* мне знакомо.
+srce	*Srce* mi je brzo kucalo.	*Сердце* у меня билось быстро.
+stomak	Boli me *stomak* posle ručka.	У меня болит *живот* после обеда.
+leđa	Bole me *leđa* od sedenja.	У меня болит *спина* от сидения.
+vrat	Ukočio mi se *vrat*.	У меня затекла *шея*.
+koža	Zimi mi je *koža* suva.	Зимой у меня сухая *кожа*.
+krv	Dao je *krv* u bolnici.	Он сдал *кровь* в больнице.
+glas	Njen *glas* se čuo iz kuhinje.	Её *голос* доносился из кухни.
+odeća	*Odeća* mi je još mokra.	*Одежда* у меня ещё мокрая.
+majica	Nosi belu *majicu*.	Он носит белую *футболку*.
+košulja	*Košulja* mora da se ispegla.	*Рубашку* надо погладить.
+pantalone	Ove *pantalone* su mi kratke.	Эти *брюки* мне коротки.
+suknja	Obukla je dugu *suknju*.	Она надела длинную *юбку*.
+haljina	*Haljina* joj odlično stoji.	*Платье* ей отлично идёт.
+jakna	Uzmi *jaknu*, napolju je hladno.	Возьми *куртку*, на улице холодно.
+kaput	Okačio je *kaput* u hodniku.	Он повесил *пальто* в коридоре.
+cipela	Leva *cipela* me žulja.	Левая *туфля* мне жмёт.
+patika	Kupio je nove *patike* za trčanje.	Он купил новые *кроссовки* для бега.
+čarapa	Izgubila mi se jedna *čarapa*.	У меня потерялся один *носок*.
+kapa	Zimi uvek nosim *kapu*.	Зимой я всегда ношу *шапку*.
+šal	Zaboravio sam *šal* u autobusu.	Я забыл *шарф* в автобусе.
+rukavica	Jedna *rukavica* mi je ostala u džepu.	Одна *перчатка* осталась у меня в кармане.
+kaiš	Ovaj *kaiš* mi je preširok.	Этот *ремень* мне широк.
+torba	Ključevi su u *torbi*.	Ключи в *сумке*.
+životinja	U zoološkom vrtu ima mnogo *životinja*.	В зоопарке много *животных*.
+pas	Naš *pas* laje na svakog gosta.	Наша *собака* лает на каждого гостя.
+mačka	*Mačka* spava na fotelji.	*Кошка* спит в кресле.
+konj	*Konj* pase na livadi.	*Лошадь* пасётся на лугу.
+krava	*Krava* daje mleko svako jutro.	*Корова* даёт молоко каждое утро.
+svinja	*Svinja* se valja u blatu.	*Свинья* валяется в грязи.
+ovca	Na brdu pase stotinu *ovaca*.	На холме пасётся сотня *овец*.
+kokoška	*Kokoška* je snela jaje.	*Курица* снесла яйцо.
+ptica	*Ptica* peva ispred prozora.	*Птица* поёт за окном.
+riba	*Riba* pliva u jezeru.	*Рыба* плавает в озере.
+miš	*Miš* se sakrio iza ormana.	*Мышь* спряталась за шкафом.
+medved	*Medved* zimi spava.	*Медведь* зимой спит.
+vuk	*Vuk* živi u šumi.	*Волк* живёт в лесу.
+lisica	*Lisica* je lukava životinja.	*Лиса* — хитрое животное.
+zec	*Zec* je pobegao u šumu.	*Заяц* убежал в лес.
+zmija	Na putu smo videli *zmiju*.	На дороге мы увидели *змею*.
+pčela	*Pčela* skuplja med.	*Пчела* собирает мёд.
+muva	*Muva* mi smeta dok radim.	*Муха* мешает мне работать.
+grad	Beograd je veliki *grad*.	Белград — большой *город*.
+selo	Baba živi u malom *selu*.	Бабушка живёт в маленьком *селе*.
+ulica	Naša *ulica* je vrlo tiha.	Наша *улица* очень тихая.
+trg	Nalazimo se na glavnom *trgu*.	Встречаемся на главной *площади*.
+park	Deca se igraju u *parku*.	Дети играют в *парке*.
+prodavnica	*Prodavnica* radi do devet.	*Магазин* работает до девяти.
+pijaca	Subotom idem na *pijacu*.	По субботам я хожу на *рынок*.
+bolnica	Radi u *bolnici* kao lekar.	Он работает в *больнице* врачом.
+apoteka	*Apoteka* je odmah iza ugla.	*Аптека* сразу за углом.
+restoran	Rezervisali smo sto u *restoranu*.	Мы забронировали столик в *ресторане*.
+kafić	Sedimo u *kafiću* na uglu.	Мы сидим в *кафе* на углу.
+banka	*Banka* se zatvara u pet.	*Банк* закрывается в пять.
+pošta	Poslao je pismo sa *pošte*.	Он отправил письмо с *почты*.
+stanica	Autobuska *stanica* je blizu.	Автобусная *остановка* рядом.
+crkva	Stara *crkva* stoji na brdu.	Старая *церковь* стоит на холме.
+muzej	*Muzej* je ponedeljkom zatvoren.	*Музей* по понедельникам закрыт.
+biblioteka	Knjigu sam uzeo iz *biblioteke*.	Я взял книгу в *библиотеке*.
+hotel	Odseli smo u malom *hotelu*.	Мы остановились в маленькой *гостинице*.
+most	Prešli smo preko *mosta*.	Мы перешли через *мост*.
+zgrada	Naša *zgrada* ima šest spratova.	В нашем *здании* шесть этажей.
+škola	*Škola* počinje u osam.	*Школа* начинается в восемь.
+učenik	Svaki *učenik* ima svesku.	У каждого *ученика* есть тетрадь.
+učitelj	*Učitelj* je objasnio zadatak.	*Учитель* объяснил задание.
+profesor	*Profesor* predaje istoriju.	*Преподаватель* ведёт историю.
+razred	U našem *razredu* ima dvadeset đaka.	В нашем *классе* двадцать учеников.
+čas	*Čas* traje četrdeset pet minuta.	*Урок* длится сорок пять минут.
+knjiga	Ova *knjiga* mi se mnogo dopada.	Эта *книга* мне очень нравится.
+sveska	Zapiši to u *svesku*.	Запиши это в *тетрадь*.
+olovka	Pozajmi mi *olovku*.	Одолжи мне *карандаш*.
+tabla	Učitelj piše na *tabli*.	Учитель пишет на *доске*.
+zadatak	Ovaj *zadatak* je previše težak.	Это *задание* слишком трудное.
+ispit	Sutra imam *ispit* iz matematike.	Завтра у меня *экзамен* по математике.
+ocena	Dobio je najbolju *ocenu*.	Он получил лучшую *оценку*.
+reč	Ne razumem ovu *reč*.	Я не понимаю это *слово*.
+pitanje	Imam jedno kratko *pitanje*.	У меня один короткий *вопрос*.
+odgovor	Njegov *odgovor* je bio tačan.	Его *ответ* был верным.
+učiti	Svako veče *učim* srpski.	Каждый вечер я *учу* сербский.
+pisati	*Pišem* pismo prijatelju.	Я *пишу* письмо другу.
+čitati	*Čitam* knjigu pred spavanje.	Я *читаю* книгу перед сном.
+brojati	Dete *broji* do deset.	Ребёнок *считает* до десяти.
+posao	Danas imam mnogo *posla*.	Сегодня у меня много *работы*.
+lekar	*Lekar* me je pregledao.	*Врач* меня осмотрел.
+zubar	Idem kod *zubara* u utorak.	Я иду к *зубному врачу* во вторник.
+vozač	*Vozač* je stao na stanici.	*Водитель* остановился на остановке.
+kuvar	*Kuvar* sprema ručak.	*Повар* готовит обед.
+konobar	*Konobar* je doneo račun.	*Официант* принёс счёт.
+prodavac	*Prodavac* mi je pomogao.	*Продавец* мне помог.
+policajac	*Policajac* je zaustavio auto.	*Полицейский* остановил машину.
+vatrogasac	*Vatrogasac* je ugasio vatru.	*Пожарный* потушил огонь.
+inženjer	Moj otac je *inženjer*.	Мой отец — *инженер*.
+radnik	Svaki *radnik* ima pauzu u podne.	У каждого *рабочего* перерыв в полдень.
+novinar	*Novinar* je postavio pitanje.	*Журналист* задал вопрос.
+pekar	*Pekar* ustaje u četiri ujutru.	*Пекарь* встаёт в четыре утра.
+frizer	Naručila se kod *frizera*.	Она записалась к *парикмахеру*.
+glumac	Taj *glumac* mi je poznat.	Этот *актёр* мне знаком.
+pevač	*Pevač* je izašao na binu.	*Певец* вышел на сцену.
+sunce	*Sunce* izlazi u šest.	*Солнце* восходит в шесть.
+kiša	Ceo dan pada *kiša*.	Весь день идёт *дождь*.
+sneg	Sinoć je pao prvi *sneg*.	Вчера вечером выпал первый *снег*.
+vetar	Duva jak *vetar* sa severa.	Дует сильный *ветер* с севера.
+oblak	Nebo je puno *oblaka*.	Небо полно *облаков*.
+nebo	*Nebo* je večeras vedro.	*Небо* сегодня вечером ясное.
+more	Leti idemo na *more*.	Летом мы едем на *море*.
+reka	*Reka* teče kroz grad.	*Река* течёт через город.
+jezero	Kupali smo se u *jezeru*.	Мы купались в *озере*.
+planina	Zimi idemo na *planinu*.	Зимой мы едем в *горы*.
+šuma	Prošetali smo kroz *šumu*.	Мы прогулялись по *лесу*.
+drvo	Pred kućom raste veliko *drvo*.	Перед домом растёт большое *дерево*.
+cvet	Kupio joj je jedan *cvet*.	Он купил ей один *цветок*.
+trava	*Trava* je posle kiše mokra.	*Трава* после дождя мокрая.
+kamen	Dete je bacilo *kamen* u vodu.	Ребёнок бросил *камень* в воду.
+zemlja	*Zemlja* je posle kiše meka.	*Земля* после дождя мягкая.
+vazduh	Na planini je *vazduh* čist.	В горах *воздух* чистый.
+vatra	*Vatra* gori u kaminu.	*Огонь* горит в камине.
+led	Na putu je tanak *led*.	На дороге тонкий *лёд*.
+priroda	Volim da provodim vreme u *prirodi*.	Я люблю проводить время на *природе*.
+automobil	Njegov *automobil* je star deset godina.	Его *автомобилю* десять лет.
+autobus	*Autobus* kasni dvadeset minuta.	*Автобус* опаздывает на двадцать минут.
+voz	*Voz* za Novi Sad polazi u tri.	*Поезд* на Нови-Сад отправляется в три.
+avion	*Avion* sleće za pola sata.	*Самолёт* садится через полчаса.
+bicikl	Do posla idem *biciklom*.	На работу я езжу на *велосипеде*.
+brod	*Brod* je isplovio ujutru.	*Корабль* вышел в море утром.
+tramvaj	*Tramvaj* broj dva ide do centra.	*Трамвай* номер два идёт до центра.
+taksi	Pozvali smo *taksi* do aerodroma.	Мы вызвали *такси* до аэропорта.
+put	*Put* do sela je uzak.	*Дорога* до села узкая.
+karta	Kupio sam *kartu* za voz.	Я купил *билет* на поезд.
+aerodrom	Stigli smo na *aerodrom* na vreme.	Мы приехали в *аэропорт* вовремя.
+saobraćaj	Ujutru je *saobraćaj* najgušći.	Утром *движение* самое плотное.
+ići	Svako jutro *idem* peške na posao.	Каждое утро я *хожу* на работу пешком.
+doći	*Došli* smo malo ranije.	Мы *пришли* немного раньше.
+otići	*Otišao* je bez pozdrava.	Он *ушёл*, не попрощавшись.
+ući	*Uđi*, vrata su otvorena.	*Заходи*, дверь открыта.
+izaći	*Izašli* smo iz zgrade u podne.	Мы *вышли* из здания в полдень.
+trčati	*Trčim* svako jutro u parku.	Я *бегаю* каждое утро в парке.
+hodati	Volim da *hodam* pored reke.	Я люблю *ходить* вдоль реки.
+stajati	Autobus *staje* na svakoj stanici.	Автобус *останавливается* на каждой остановке.
+sedeti	*Sedimo* u kafiću već sat vremena.	Мы *сидим* в кафе уже час.
+ustati	*Ustao* sam u šest ujutru.	Я *встал* в шесть утра.
+putovati	Volim da *putujem* vozom.	Я люблю *путешествовать* поездом.
+voziti	Brat me *vozi* do posla.	Брат *везёт* меня на работу.
+leteti	Ptice *lete* na jug.	Птицы *летят* на юг.
+pasti	Čaša je *pala* sa stola.	Стакан *упал* со стола.
+nositi	*Nosim* torbu u levoj ruci.	Я *несу* сумку в левой руке.
+doneti	*Doneo* je poklon za dete.	Он *принёс* подарок ребёнку.
+vratiti	*Vratio* sam knjigu u biblioteku.	Я *вернул* книгу в библиотеку.
+stići	*Stigli* smo tačno na vreme.	Мы *успели* точно вовремя.
+biti	Moj brat *je* lekar.	Мой брат *есть* врач.
+imati	*Imam* dva sata slobodnog vremena.	У меня *есть* два свободных часа.
+raditi	*Radim* u školi već pet godina.	Я *работаю* в школе уже пять лет.
+jesti	Deca *jedu* voće posle ručka.	Дети *едят* фрукты после обеда.
+piti	*Pijem* vodu bez leda.	Я *пью* воду безо льда.
+spavati	Vikendom *spavam* do deset.	По выходным я *сплю* до десяти.
+gledati	Uveče *gledamo* film.	Вечером мы *смотрим* фильм.
+slušati	*Slušam* muziku dok radim.	Я *слушаю* музыку во время работы.
+govoriti	Ona *govori* tri jezika.	Она *говорит* на трёх языках.
+reći	*Reci* mi šta se dogodilo.	*Скажи* мне, что случилось.
+znati	*Znam* gde je ta ulica.	Я *знаю*, где эта улица.
+misliti	*Mislim* da je tako bolje.	Я *думаю*, что так лучше.
+hteti	*Hoću* da naučim srpski.	Я *хочу* выучить сербский.
+moći	Ne *mogu* da dođem sutra.	Я не *могу* прийти завтра.
+morati	*Moram* da idem kući.	Я *должен* идти домой.
+videti	*Video* sam ga na trgu.	Я *видел* его на площади.
+čuti	Nisam te dobro *čuo*.	Я тебя плохо *расслышал*.
+dati	*Daj* mi malo vremena.	*Дай* мне немного времени.
+uzeti	*Uzeo* je ključeve sa stola.	Он *взял* ключи со стола.
+kupiti	*Kupili* smo hleb i mleko.	Мы *купили* хлеб и молоко.
+platiti	*Platio* sam karticom.	Я *заплатил* картой.
+otvoriti	*Otvori* prozor, molim te.	*Открой* окно, пожалуйста.
+zatvoriti	*Zatvorili* su prodavnicu u devet.	Магазин *закрыли* в девять.
+početi	Film je *počeo* u osam.	Фильм *начался* в восемь.
+završiti	*Završio* sam posao ranije.	Я *закончил* работу раньше.
+voleti	*Volim* da čitam uveče.	Я *люблю* читать по вечерам.
+živeti	*Živim* u Beogradu tri godine.	Я *живу* в Белграде три года.
+čekati	*Čekam* te ispred škole.	Я *жду* тебя перед школой.
+tražiti	*Tražim* ključeve po celoj kući.	Я *ищу* ключи по всему дому.
+naći	Nisam *našao* svoj telefon.	Я не *нашёл* свой телефон.
+pomoći	Možeš li mi *pomoći*?	Можешь мне *помочь*?
+pitati	*Pitao* sam ga za adresu.	Я *спросил* у него адрес.
+velik	Njihova kuća je vrlo *velika*.	Их дом очень *большой*.
+mali	Živimo u *malom* stanu.	Мы живём в *маленькой* квартире.
+dobar	Ovo je *dobra* knjiga.	Это *хорошая* книга.
+loš	Vreme je danas *loše*.	Погода сегодня *плохая*.
+nov	Kupio je *nov* telefon.	Он купил *новый* телефон.
+star	Ova zgrada je vrlo *stara*.	Это здание очень *старое*.
+mlad	On je još *mlad* čovek.	Он ещё *молодой* человек.
+lep	Danas je *lep* dan.	Сегодня *хороший* день.
+ružan	Napolju je *ružno* vreme.	На улице *скверная* погода.
+dug	Put do sela je *dug*.	Дорога до села *длинная*.
+kratak	Odmor je bio *kratak*.	Отпуск был *коротким*.
+visok	Ovo je *visoka* zgrada.	Это *высокое* здание.
+nizak	Sto je previše *nizak*.	Стол слишком *низкий*.
+brz	Ovo je *brz* voz do Niša.	Это *быстрый* поезд до Ниша.
+spor	Internet je danas *spor*.	Интернет сегодня *медленный*.
+topao	Supa je još *topla*.	Суп ещё *тёплый*.
+hladan	Voda je previše *hladna*.	Вода слишком *холодная*.
+jak	Duva *jak* vetar.	Дует *сильный* ветер.
+slab	Signal je ovde *slab*.	Сигнал здесь *слабый*.
+težak	Kofer mi je previše *težak*.	Чемодан у меня слишком *тяжёлый*.
+lak	Ovaj zadatak je *lak*.	Это задание *лёгкое*.
+čist	Soba je sada *čista*.	Комната теперь *чистая*.
+prljav	Cipele su ti *prljave*.	Туфли у тебя *грязные*.
+pun	Autobus je bio *pun*.	Автобус был *полный*.
+prazan	Čaša je već *prazna*.	Стакан уже *пустой*.
+skup	Ovaj restoran je *skup*.	Этот ресторан *дорогой*.
+jeftin	Karte su bile *jeftine*.	Билеты были *дешёвые*.
+zdravo	*Zdravo*, kako si?	*Привет*, как дела?
+hvala	*Hvala* na pomoći.	*Спасибо* за помощь.
+molim	*Molim* te, sačekaj malo.	*Пожалуйста*, подожди немного.
+izvinite	*Izvinite*, gde je stanica?	*Извините*, где остановка?
+doviđenja	*Doviđenja*, vidimo se sutra.	*До свидания*, увидимся завтра.
+da	*Da*, slažem se s tobom.	*Да*, я с тобой согласен.
+ne	*Ne*, danas ne mogu.	*Нет*, сегодня я не могу.
+kako	*Kako* se zoveš?	*Как* тебя зовут?
+zašto	*Zašto* nisi došao?	*Почему* ты не пришёл?
+gde	*Gde* si ostavio ključeve?	*Где* ты оставил ключи?
+kada	*Kada* počinje film?	*Когда* начинается фильм?
+ko	*Ko* je zvao jutros?	*Кто* звонил утром?
+šta	*Šta* radiš večeras?	*Что* ты делаешь сегодня вечером?
+ime	Kako se piše tvoje *ime*?	Как пишется твоё *имя*?
+prezime	Napišite *prezime* velikim slovima.	Напишите *фамилию* заглавными буквами.
+gospodin	*Gospodin* Petrović vas čeka.	*Господин* Петрович вас ждёт.
+gospođa	*Gospođa* je ostavila poruku.	*Госпожа* оставила сообщение.
+razgovor	*Razgovor* je trajao pola sata.	*Разговор* длился полчаса.

@@ -186,17 +186,18 @@ func (s *Server) handleAdminDeleteRoadmapExercise(w http.ResponseWriter, r *http
 }
 
 type adminRoadmapWordRequest struct {
-	ID          string `json:"id"`
-	Level       string `json:"level"`
-	Theme       string `json:"theme"`
-	Lemma       string `json:"lemma"`
-	Translation string `json:"translation"`
-	POS         string `json:"pos"`
-	Note        string `json:"note"`
-	Example     string `json:"example"`
-	Rank        int    `json:"rank"`
-	Position    int    `json:"position"`
-	Status      string `json:"status"`
+	ID                 string `json:"id"`
+	Level              string `json:"level"`
+	Theme              string `json:"theme"`
+	Lemma              string `json:"lemma"`
+	Translation        string `json:"translation"`
+	POS                string `json:"pos"`
+	Note               string `json:"note"`
+	Example            string `json:"example"`
+	ExampleTranslation string `json:"exampleTranslation"`
+	Rank               int    `json:"rank"`
+	Position           int    `json:"position"`
+	Status             string `json:"status"`
 }
 
 func (s *Server) handleAdminSaveRoadmapWord(w http.ResponseWriter, r *http.Request) {

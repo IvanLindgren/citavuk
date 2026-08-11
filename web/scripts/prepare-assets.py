@@ -20,6 +20,7 @@
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -117,6 +118,20 @@ def convert_images() -> int:
     return saved
 
 
+def build_duel_atlas() -> None:
+    """Атлас спрайтов дуэли — тоже производный файл в public/img.
+
+    Собирается отдельным скриптом (там не изменение размера, а нарезка листа по
+    сетке), но вызывается отсюда: иначе после «пересобрал ассеты» на бою
+    пропадал бы Читавук, и заметить это можно было бы только на живом сайте.
+    """
+    tool = os.path.join(REPO, "tools", "build_duel_sprites.py")
+    if not os.path.exists(tool):
+        print("  пропуск: нет tools/build_duel_sprites.py", file=sys.stderr)
+        return
+    subprocess.run([sys.executable, tool], check=True)
+
+
 def main() -> int:
     if not os.path.isdir(SRC_IMGS):
         print(f"не найден каталог ассетов: {SRC_IMGS}", file=sys.stderr)
@@ -126,6 +141,10 @@ def main() -> int:
     saved_fonts = convert_fonts()
     print("\nКартинки:")
     saved_images = convert_images()
+    # flush: дальше пишет дочерний процесс со своим буфером, и без сброса
+    # заголовок оказывался в выводе позже собственных строк скрипта.
+    print("\nСпрайты дуэли:", flush=True)
+    build_duel_atlas()
 
     print(f"\nИтого сэкономлено: {human(saved_fonts + saved_images)}")
     return 0
