@@ -82,6 +82,8 @@ export function TestRun() {
   const total = quiz.questions.length;
   const question = quiz.questions[index];
   const answered = chosen !== null;
+  const isExam = quiz.subject.startsWith('Экзамен ');
+  const backPath = isExam ? '/exams' : '/materials';
 
   const answer = (option: number) => {
     if (answered) return;
@@ -112,15 +114,16 @@ export function TestRun() {
       (sum, item, position) => sum + (answers[position] === item.answer ? 1 : 0),
       0,
     );
-    return <Result quiz={quiz} correct={correct} answers={answers} />;
+    return <Result quiz={quiz} correct={correct} answers={answers} isExam={isExam} />;
   }
 
   if (!question) return null;
+  const optionIndexes = rotatedOptionIndexes(question.options.length, index + 1);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <Link to="/materials" className="text-sm text-[var(--text-muted)] hover:text-[var(--accent)]">
+        <Link to={backPath} className="text-sm text-[var(--text-muted)] hover:text-[var(--accent)]">
           ← {quiz.title}
         </Link>
         <span className="shrink-0 text-sm text-[var(--text-muted)]">
@@ -148,8 +151,8 @@ export function TestRun() {
             <h1 className="font-display text-lg font-bold sm:text-xl">{question.question}</h1>
 
             <ul className="mt-4 space-y-2">
-              {question.options.map((option, position) => (
-                <li key={option}>
+              {optionIndexes.map((position) => (
+                <li key={position}>
                   <button
                     onClick={() => answer(position)}
                     disabled={answered}
@@ -159,7 +162,7 @@ export function TestRun() {
                       optionStyle(answered, position, chosen, question.answer),
                     ].join(' ')}
                   >
-                    {option}
+                    {question.options[position]}
                   </button>
                 </li>
               ))}
@@ -198,6 +201,16 @@ export function TestRun() {
   );
 }
 
+/**
+ * В базе варианты хранятся в авторском порядке, а на экране циклически
+ * сдвигаются. Сервер всё равно получает исходный индекс, поэтому проверка
+ * остаётся серверной, но правильный вариант не застывает на одной позиции.
+ */
+export function rotatedOptionIndexes(count: number, offset: number): number[] {
+  if (count <= 0) return [];
+  return Array.from({ length: count }, (_, index) => (index + offset) % count);
+}
+
 function optionStyle(
   answered: boolean,
   position: number,
@@ -220,10 +233,12 @@ function Result({
   quiz,
   correct,
   answers,
+  isExam,
 }: {
   quiz: Quiz;
   correct: number;
   answers: number[];
+  isExam: boolean;
 }) {
   const total = quiz.questions.length;
   const score = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -241,18 +256,22 @@ function Result({
           {correct} из {total} {plural(total, 'вопроса', 'вопросов', 'вопросов')} верно
         </p>
         <p className="mt-3 text-sm text-[var(--text-muted)]">
-          {score === 100
-            ? 'Материал закрыт — тест вернётся через три недели.'
-            : score >= 80
-              ? 'Почти всё. Тест вернётся через неделю.'
-              : score >= 60
-                ? 'Есть провалы. Тест вернётся через три дня.'
-                : 'Материал стоит перечитать — тест вернётся завтра.'}
+          {isExam
+            ? score >= 60
+              ? 'Уровень пройден. Лучший результат сохранён в профиле.'
+              : 'До зачёта не хватило баллов. Разберите ошибки и попробуйте ещё раз.'
+            : score === 100
+              ? 'Материал закрыт — тест вернётся через три недели.'
+              : score >= 80
+                ? 'Почти всё. Тест вернётся через неделю.'
+                : score >= 60
+                  ? 'Есть провалы. Тест вернётся через три дня.'
+                  : 'Материал стоит перечитать — тест вернётся завтра.'}
         </p>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-          <Link to="/materials">
+          <Link to={isExam ? '/exams' : '/materials'}>
             <Button variant="secondary" className="w-full sm:w-auto">
-              К материалам
+              {isExam ? 'К экзаменам' : 'К материалам'}
             </Button>
           </Link>
           <Button className="w-full sm:w-auto" onClick={() => window.location.reload()}>

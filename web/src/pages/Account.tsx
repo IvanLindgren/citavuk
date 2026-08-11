@@ -3,6 +3,7 @@ import {
   LuBookOpen,
   LuBookmark,
   LuChartNoAxesColumnIncreasing,
+  LuClipboardCheck,
   LuFlame,
   LuLibrary,
   LuMedal,
@@ -13,6 +14,7 @@ import {
 } from 'react-icons/lu';
 
 import { getProfileStats, type ProfileStats } from '../api/profile';
+import { listMaterialQuizzes, type MaterialQuiz } from '../api/quizzes';
 import { Mascot } from "../components/Mascot";
 import { Button, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
 import { plural } from "../lib/books";
@@ -32,6 +34,7 @@ export function Account() {
   const { refresh: refreshNotifications } = useAnnouncements();
   const { navigate } = useRouter();
   const [stats, setStats] = useState<ProfileStats | null>(null);
+  const [examQuizzes, setExamQuizzes] = useState<MaterialQuiz[]>([]);
   const [statsError, setStatsError] = useState('');
 
   useEffect(() => {
@@ -53,6 +56,16 @@ export function Account() {
       .catch((error: unknown) => {
         if (active) setStatsError(error instanceof Error ? error.message : 'Статистика не загрузилась.');
       });
+    void listMaterialQuizzes()
+      .then((items) => {
+        if (!active) return;
+        setExamQuizzes(
+          [...items.values()]
+            .filter((item) => item.materialKey.startsWith('exam:serbian:'))
+            .sort((left, right) => left.materialKey.localeCompare(right.materialKey)),
+        );
+      })
+      .catch(() => undefined);
     return () => { active = false; };
   }, [account, refreshNotifications]);
 
@@ -103,6 +116,12 @@ export function Account() {
             <Reveal delay={0.1} className="mt-5">
               <ActivityChart stats={stats} />
             </Reveal>
+
+            {examQuizzes.length > 0 && (
+              <Reveal delay={0.12} className="mt-5">
+                <ExamProgress quizzes={examQuizzes} onOpen={() => navigate('/exams')} />
+              </Reveal>
+            )}
 
             <Reveal delay={0.13} className="mt-5">
               <section>
@@ -171,6 +190,50 @@ export function Account() {
         </Reveal>
       </div>
     </main>
+  );
+}
+
+function ExamProgress({ quizzes, onOpen }: { quizzes: MaterialQuiz[]; onOpen: () => void }) {
+  const attempts = quizzes.reduce((sum, quiz) => sum + quiz.attempts, 0);
+  const completed = quizzes.filter((quiz) => quiz.bestScore >= 60).length;
+  const best = Math.max(0, ...quizzes.map((quiz) => quiz.bestScore));
+
+  return (
+    <Card className="p-6 sm:p-7">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="flex items-center gap-2 text-sm font-bold text-[var(--accent)]">
+            <LuClipboardCheck className="size-4" /> Экзаменационные тесты
+          </p>
+          <h2 className="mt-2 text-2xl">{completed} из {quizzes.length} уровней пройдено</h2>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
+            {attempts > 0
+              ? `${attempts} попыток · лучший результат ${best}%`
+              : 'Результаты появятся после первого теста.'}
+          </p>
+        </div>
+        <Button variant="secondary" size="sm" onClick={onOpen}>К тестам</Button>
+      </div>
+      <div className="mt-5 grid grid-cols-5 gap-2">
+        {quizzes.map((quiz) => {
+          const level = quiz.materialKey.split(':')[2]?.toUpperCase() ?? '?';
+          const passed = quiz.bestScore >= 60;
+          return (
+            <div
+              key={quiz.quizId}
+              className={`min-w-0 rounded-lg border px-2 py-3 text-center ${passed ? 'border-emerald-500 bg-emerald-500/10' : 'border-[var(--line)] bg-[var(--bg-sunken)]'}`}
+              title={`${quiz.title}: ${quiz.bestScore}%`}
+            >
+              <strong className="block text-sm sm:text-base">{level}</strong>
+              <span className="mt-1 block truncate text-xs text-[var(--text-muted)]">
+                {quiz.attempts > 0 ? `${quiz.bestScore}%` : '—'}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">Уровень засчитывается при результате от 60%.</p>
+    </Card>
   );
 }
 

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   LuArrowRight,
   LuBookOpen,
@@ -8,6 +9,7 @@ import {
   LuPenLine,
 } from 'react-icons/lu';
 
+import { listMaterialQuizzes, type MaterialQuiz } from '../api/quizzes';
 import {
   EXAM_CENTERS,
   EXAM_SOURCE,
@@ -21,6 +23,17 @@ export function Exams() {
   const query = useQuery();
   const { navigate } = useRouter();
   const selected = findOfficialExam(query.level?.toUpperCase());
+  const [nativeQuizzes, setNativeQuizzes] = useState<Map<string, MaterialQuiz>>(new Map());
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void listMaterialQuizzes(controller.signal)
+      .then(setNativeQuizzes)
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+
+  const nativeQuiz = nativeQuizzes.get(selected.nativeQuizKey);
 
   useSeo({
     title: 'Пробные экзамены по сербскому A1–C1 — Читавук',
@@ -81,17 +94,28 @@ export function Exams() {
               </ExamSkill>
             </div>
 
-            <a
-              href={selected.testUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
-            >
-              Начать официальный тест {selected.level}
-              <LuExternalLink className="size-4" />
-            </a>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to={`/tests/${nativeQuiz?.quizId ?? selected.nativeQuizId}`}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
+              >
+                Пройти в Читавуке
+                <LuArrowRight className="size-4" />
+              </Link>
+              <a
+                href={selected.testUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md border border-[var(--line)] bg-[var(--bg-raised)] px-5 py-3 font-bold transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
+              >
+                Оригинал университета
+                <LuExternalLink className="size-4" />
+              </a>
+            </div>
             <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
-              Тест откроется в новой вкладке на сайте Университета Ниша.
+              {nativeQuiz && nativeQuiz.attempts > 0
+                ? `Попыток: ${nativeQuiz.attempts} · лучший результат: ${nativeQuiz.bestScore}%`
+                : 'Внутренний тест сохраняет результат и разбор ошибок в вашем профиле.'}
             </p>
           </div>
 
@@ -111,6 +135,15 @@ export function Exams() {
               Страница теста
               <LuExternalLink className="size-4" />
             </a>
+            <a
+              href={EXAM_SOURCE.methodologyPage}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[var(--accent)] hover:underline"
+            >
+              Разбор тестов A1–A2 (PDF)
+              <LuExternalLink className="size-4" />
+            </a>
           </aside>
         </div>
       </section>
@@ -120,7 +153,7 @@ export function Exams() {
         <div className="mt-5 grid gap-4 sm:grid-cols-3">
           <Note>Проходите без переводчика и словаря, иначе результат не покажет реальный уровень.</Note>
           <Note>Начните со своего предполагаемого уровня. Если тест слишком лёгкий или сложный, смените вкладку.</Note>
-          <Note>Онлайн-тест помогает оценить знания, но не заменяет экзамен и университетский сертификат.</Note>
+          <Note>Версия Читавука повторяет структуру открытых образцов, но не выдаётся за экзаменационный билет.</Note>
         </div>
       </section>
 
