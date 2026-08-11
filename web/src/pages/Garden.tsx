@@ -449,8 +449,8 @@ function GardenIntro({ board }: { board: GardenBoardRow[] }) {
 function Credits() {
   return (
     <p className="mt-10 text-xs text-[var(--text-muted)]">
-      Цветы и грядки нарисованы для Читавука на основе свободных наборов;
-      Читавука-садовника нарисовал автор проекта.
+      Цветы — из набора FlowerAssets под лицензией CC0; Читавука-садовника
+      нарисовал автор проекта.
     </p>
   );
 }

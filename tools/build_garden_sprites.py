@@ -1,8 +1,7 @@
 """Собирает спрайты Башты Читавука.
 
-Исходники лежат в tools/assets/garden и в репозиторий не входят: пак Little
-Dreamyland запрещает распространение как есть, а происхождение FlowerAssets не
-подтверждено. В web/public/img/garden попадают только производные файлы.
+Исходники лежат в tools/assets/garden. Пак Little Dreamyland в репозиторий не
+входит — он запрещает распространение как есть, — но сейчас и не используется.
 
     python tools/build_garden_sprites.py
 """
