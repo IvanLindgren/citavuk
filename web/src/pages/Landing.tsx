@@ -187,13 +187,28 @@ function Hero() {
   );
 }
 
+function HeroEyebrow({ label }: { label: string }) {
+  return (
+    <p className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-1.5 text-sm font-medium text-[var(--text)] shadow-sm">
+      <Ornament
+        count={2}
+        animated={false}
+        className="h-3 w-8 shrink-0 text-[var(--text-muted)]"
+      />
+      <span>{label}</span>
+      <Ornament
+        count={2}
+        animated={false}
+        className="h-3 w-8 shrink-0 text-[var(--text-muted)]"
+      />
+    </p>
+  );
+}
+
 function ReadingSlide() {
   return (
     <>
-      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-1.5 text-sm text-[var(--text-muted)]">
-        <span className="size-2 rounded-full bg-serb-red" aria-hidden="true" />
-        Сербский через чтение
-      </p>
+      <HeroEyebrow label="Сербский через чтение" />
 
       <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
         Читайте по-сербски.{' '}
@@ -228,10 +243,7 @@ function ReadingSlide() {
 function RoadmapSlide() {
   return (
     <>
-      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-4 py-1.5 text-sm font-semibold text-[var(--accent)]">
-        <span className="size-2 animate-pulse rounded-full bg-[var(--accent)]" aria-hidden="true" />
-        Новое в Читавуке
-      </p>
+      <HeroEyebrow label="Новое в Читавуке" />
 
       <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
         <span className="text-[var(--accent)]">Дорожная карта</span> сербского
@@ -265,10 +277,7 @@ function RoadmapSlide() {
 function VukotokSlide() {
   return (
     <>
-      <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-4 py-1.5 text-sm font-semibold text-[var(--accent)]">
-        <span className="size-2 animate-pulse rounded-full bg-[var(--accent)]" aria-hidden="true" />
-        Новое в Читавуке
-      </p>
+      <HeroEyebrow label="Новое в Читавуке" />
 
       <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
         <span className="text-[var(--accent)]">Вукоток</span> — лента,
