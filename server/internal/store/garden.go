@@ -40,15 +40,31 @@ var (
 	ErrGardenSelfVisit   = errors.New("свой сад поливают со своей страницы")
 )
 
+// GardenDecoration — покупка за динары. Place говорит, где предмет появится:
+// во дворе или в комнате.
 type GardenDecoration struct {
 	ID      string `json:"id"`
 	Serbian string `json:"serbian"`
 	Russian string `json:"russian"`
 	Price   int64  `json:"price"`
+	Place   string `json:"place"`
 }
 
+const (
+	GardenPlaceYard  = "garden"
+	GardenPlaceHouse = "house"
+)
+
+// Обстановка комнаты стоит дороже дворовой: двор виден соседям, а комната —
+// только хозяину, и копить на неё имеет смысл лишь ради самой комнаты.
 var GardenDecorationCatalog = []GardenDecoration{
-	{ID: "berry-bushes", Serbian: "жбуње са бобицама", Russian: "ягодные кусты", Price: 35},
+	{ID: "berry-bushes", Serbian: "жбуње са бобицама", Russian: "ягодные кусты", Price: 35, Place: GardenPlaceYard},
+	{ID: "pot", Serbian: "саксија", Russian: "цветок в горшке", Price: 30, Place: GardenPlaceHouse},
+	{ID: "rug", Serbian: "тепих", Russian: "ковёр", Price: 45, Place: GardenPlaceHouse},
+	{ID: "picture", Serbian: "слика", Russian: "картина", Price: 60, Place: GardenPlaceHouse},
+	{ID: "lamp", Serbian: "лампа", Russian: "лампа", Price: 75, Place: GardenPlaceHouse},
+	{ID: "shelf", Serbian: "полица за књиге", Russian: "книжная полка", Price: 95, Place: GardenPlaceHouse},
+	{ID: "cat", Serbian: "мачка", Russian: "кошка", Price: 150, Place: GardenPlaceHouse},
 }
 
 func GardenDecorationByID(id string) (GardenDecoration, bool) {

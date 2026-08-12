@@ -26,6 +26,8 @@ export interface GardenDecoration {
   serbian: string;
   russian: string;
   price: number;
+  /** Где предмет появится: во дворе или в комнате. */
+  place: 'garden' | 'house';
 }
 
 export interface GardenEarning {

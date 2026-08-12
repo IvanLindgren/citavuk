@@ -245,10 +245,22 @@
   */
   .garden-world {
     --tile: calc(16px * var(--gs, 3));
+    /* Место под пояс с инструментами: мир не должен уходить под кнопки. */
+    padding-bottom: 84px;
     isolation: isolate;
     cursor: crosshair;
     background-color: #4f9c46;
     image-rendering: pixelated;
+  }
+
+  /*
+    Доска мира. Мир — сетка мировых пикселей, а не проценты экрана: только так
+    забор перестаёт налезать на дом на узком экране. Доска стоит по центру
+    сцены, а трава и река продолжаются за её краями.
+  */
+  .garden-world__stage {
+    position: relative;
+    z-index: 1;
   }
 
   /* Земля вымощена тайлом травы, а не нарисована градиентной сеткой. */
@@ -268,18 +280,16 @@
   */
   .garden-world__river {
     position: absolute;
-    inset-inline: 0;
+    inset-inline: -50vw;
     top: 0;
     z-index: 1;
     display: block;
-    width: 100%;
-    height: calc(64px * var(--gs, 3));
     padding: 0;
     border: 0;
     background-image: url('/img/garden/world/river.webp');
     background-position: bottom left;
     background-repeat: repeat-x;
-    background-size: var(--tile) calc(64px * var(--gs, 3));
+    background-size: var(--tile) 100%;
     image-rendering: pixelated;
     filter: saturate(0.55) brightness(0.85);
     transition: filter 400ms ease;
@@ -357,6 +367,25 @@
     image-rendering: pixelated;
   }
 
+  /*
+    Дверь. Она прозрачная: дом уже нарисован, подсвечивается только сам проём,
+    чтобы было видно, что внутрь можно войти.
+  */
+  .garden-world__door {
+    position: absolute;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .garden-world__door:hover,
+  .garden-world__door:focus-visible {
+    background: rgb(255 236 160 / 0.28);
+    box-shadow: inset 0 0 0 2px rgb(255 236 160 / 0.75);
+    outline: none;
+  }
+
   /* Подпись предмета: сербское слово крупно, русское пояснение мелко. */
   .garden-world__label {
     position: absolute;
@@ -368,7 +397,7 @@
     background: #f8e7ba;
     box-shadow: 0 3px 0 #4d3227;
     transform: translate(-50%, -100%);
-    margin-top: calc(-14px * var(--gs, 3));
+    margin-top: -6px;
     pointer-events: none;
     white-space: nowrap;
     animation: garden-label 180ms ease-out;
@@ -495,6 +524,104 @@
     color: #302219;
   }
 
+  /*
+    Комната. Снаружи дом был коробкой, мимо которой ходят; внутри у него есть
+    приёмник с сербским эфиром и вещи, ради которых копят динары.
+  */
+  .garden-house {
+    background: #2b4434;
+    color: #302219;
+  }
+
+  .garden-house__scene {
+    background:
+      radial-gradient(circle at 50% 38%, rgb(255 233 176 / 0.16), transparent 62%),
+      #22362a;
+  }
+
+  .garden-house__room {
+    position: relative;
+    image-rendering: pixelated;
+    box-shadow: 0 12px 0 rgb(18 30 22 / 0.35);
+  }
+
+  .garden-house__room > img {
+    image-rendering: pixelated;
+  }
+
+  .garden-house__scene {
+    cursor: crosshair;
+  }
+
+  .garden-house__thing,
+  .garden-house__pick {
+    position: absolute;
+    transform: translate(-50%, -100%);
+  }
+
+  /* Предмет, к которому подходят: приёмник и тетрадь. */
+  .garden-house__pick {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+    transition: filter 140ms;
+  }
+
+  .garden-house__pick:hover,
+  .garden-house__pick:focus-visible {
+    filter: drop-shadow(0 0 0 #fff2ca) drop-shadow(0 0 5px rgb(255 236 160 / 0.9));
+    outline: none;
+  }
+
+  .garden-house__belt {
+    border-top: 3px solid #70452f;
+    background: #22362a;
+  }
+
+  /* Слова в тетради написаны так же, как в книгах: одним столбиком. */
+  .garden-notebook {
+    max-height: 46dvh;
+    overflow-y: auto;
+  }
+
+  /* Работающий приёмник светится шкалой — видно из другого угла комнаты. */
+  .garden-house__pick--on {
+    filter: drop-shadow(0 0 6px rgb(143 248 226 / 0.85));
+    animation: garden-radio 2.4s ease-in-out infinite;
+  }
+
+  @keyframes garden-radio {
+    50% {
+      filter: drop-shadow(0 0 11px rgb(251 185 84 / 0.9));
+    }
+  }
+
+  .garden-house__door {
+    position: absolute;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .garden-house__door:hover,
+  .garden-house__door:focus-visible {
+    background: rgb(255 236 160 / 0.25);
+    box-shadow: inset 0 0 0 2px rgb(255 236 160 / 0.7);
+    outline: none;
+  }
+
+  .garden-house__panel {
+    border-top: 3px solid #70452f;
+    background-color: #fae9bb;
+    background-image:
+      linear-gradient(rgb(111 69 47 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(111 69 47 / 0.045) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
   .garden-game-plaque,
   .garden-toolbelt,
   .garden-game-window {
@@ -541,24 +668,105 @@
     background: linear-gradient(rgb(24 34 74 / 0.42), rgb(18 26 60 / 0.5));
   }
 
+  /*
+    Дождь.
+    Раньше это была одна сплошная диагональная штриховка во всю высоту: линии
+    не кончались, шли с одной скоростью и читались как рябь на стекле. Капля
+    короткая, поэтому линии разорваны маской, а слоёв три — дальний, ближний и
+    всплески по земле, — и у каждого своя скорость.
+  */
   .garden-world__rain {
     position: absolute;
-    inset: -20% 0 0;
+    inset: 0;
     z-index: 106;
+    overflow: hidden;
     pointer-events: none;
-    background-image: repeating-linear-gradient(
-      104deg,
-      rgb(206 236 255 / 0.35) 0 1px,
-      transparent 1px 9px
-    );
-    background-size: 100% 40px;
-    animation: garden-rain 620ms linear infinite;
   }
 
-  @keyframes garden-rain {
+  .garden-world__rain::before,
+  .garden-world__rain-near {
+    content: '';
+    position: absolute;
+    inset: -30% -10% 0;
+    background-repeat: repeat;
+  }
+
+  /* Дальняя стена дождя: тонкая, бледная, почти отвесная. */
+  .garden-world__rain::before {
+    background-image: repeating-linear-gradient(
+      98deg,
+      rgb(214 240 255 / 0.3) 0 1px,
+      transparent 1px 11px
+    );
+    mask-image: repeating-linear-gradient(
+      180deg,
+      #000 0 10px,
+      transparent 10px 30px
+    );
+    animation: garden-rain-far 900ms linear infinite;
+  }
+
+  /* Ближние капли: длиннее, ярче и заметно быстрее — отсюда глубина. */
+  .garden-world__rain-near {
+    background-image: repeating-linear-gradient(
+      104deg,
+      rgb(236 250 255 / 0.5) 0 2px,
+      transparent 2px 26px
+    );
+    mask-image: repeating-linear-gradient(
+      180deg,
+      #000 0 22px,
+      transparent 22px 74px
+    );
+    animation: garden-rain-near 520ms linear infinite;
+  }
+
+  /* Капля разбивается о землю: без этого дождь висит в воздухе. */
+  .garden-world__rain-splash {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at center,
+      rgb(255 255 255 / 0.5) 0 1px,
+      transparent 1.6px
+    );
+    background-size: 37px 23px;
+    animation: garden-splash 780ms steps(3) infinite;
+  }
+
+  @keyframes garden-rain-far {
     to {
-      transform: translateY(40px);
+      transform: translate3d(-14px, 96px, 0);
     }
+  }
+
+  @keyframes garden-rain-near {
+    to {
+      transform: translate3d(-26px, 148px, 0);
+    }
+  }
+
+  @keyframes garden-splash {
+    0% {
+      opacity: 0.55;
+      background-position: 0 0;
+    }
+    50% {
+      opacity: 0.15;
+    }
+    100% {
+      opacity: 0.55;
+      background-position: 11px 13px;
+    }
+  }
+
+  /* В дождь свет холоднее: сад темнеет вместе с небом. */
+  .garden-world--rain::after {
+    background: linear-gradient(rgb(58 84 120 / 0.26), rgb(48 74 108 / 0.18));
+  }
+
+  .garden-world--night.garden-world--rain::after {
+    background: linear-gradient(rgb(20 30 66 / 0.5), rgb(16 24 56 / 0.55));
   }
 
   /* Читавук-садовник: восемь кадров 30×40 в одном листе. */

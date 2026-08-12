@@ -57,19 +57,10 @@ TILES = {
     "tile_sand": ("Grass Tiles.png", (176, 32, 192, 48)),
 }
 
-# Река собирается лентой сверху вниз и повторяется по горизонтали: вода, вода,
-# песчаная кромка, берег. Верхнего берега в ленте нет намеренно — река уходит
-# за край карты, а не лежит в ней озером.
-#
-# Кромка берётся от прямой стороны острова, а не от ромба-озера: у ромба все
-# края диагональные, и повторение по горизонтали давало ряд одинаковых зубцов —
-# берег выглядел пилой.
-RIVER_ROWS = [
-    ("Water.png", (48, 48, 64, 64)),
-    ("Water.png", (48, 48, 64, 64)),
-    ("Water.png", (32, 16, 48, 32)),
-    ("Water.png", (32, 32, 48, 48)),
-]
+# Реки здесь больше нет: у пака все водные кромки диагональные, и лента из них
+# при повторении по горизонтали давала ряд одинаковых зубцов — берег выглядел
+# гребёнкой. Река рисуется в ``build_drawn_assets.py`` с кромкой по синусу с
+# периодом в целую ленту, поэтому шов не виден.
 
 # Цветочки в траве: три клетки автотайла, каждая со своим цветом.
 FLOWERS = [
@@ -106,7 +97,6 @@ def main() -> None:
             sprite = trim(sprite)
         built[name] = save(args.output, name, sprite)
 
-    built["river"] = save(args.output, "river", build_river(args.source))
     built["flowers"] = save(args.output, "flowers", build_flowers(args.source))
     built["bushes"] = save(args.output, "bushes", build_bushes(args.source))
 
@@ -127,13 +117,6 @@ def save(output: Path, name: str, sprite: Image.Image) -> Image.Image:
     sprite.save(output / f"{name}.webp", "WEBP", lossless=True, method=6)
     print(f"{name}.webp: {sprite.width}x{sprite.height}")
     return sprite
-
-
-def build_river(source: Path) -> Image.Image:
-    canvas = Image.new("RGBA", (TILE, TILE * len(RIVER_ROWS)), (0, 0, 0, 0))
-    for index, (filename, box) in enumerate(RIVER_ROWS):
-        canvas.alpha_composite(sheet(source, filename).crop(box), (0, index * TILE))
-    return canvas
 
 
 def build_flowers(source: Path) -> Image.Image:

@@ -15,7 +15,6 @@ import {
   LuUsers,
   LuVolume2,
   LuVolumeX,
-  LuX,
 } from 'react-icons/lu';
 
 import {
@@ -38,12 +37,16 @@ import {
 } from '../api/garden';
 import { ApiError } from '../api/client';
 import { GardenScene } from '../components/GardenScene';
+import { GardenWindow } from '../components/GardenWindow';
+import { HouseRoom } from '../components/HouseRoom';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isBlooming, projectedGrowth } from '../garden/scene';
 import {
   playGardenSound,
   readGardenSoundSetting,
   saveGardenSoundSetting,
+  startGardenMusic,
+  stopGardenMusic,
   unlockGardenAudio,
 } from '../garden/audio';
 import { GARDEN, coinWord, plantImage, taskPhrase } from '../garden/strings';
@@ -74,6 +77,7 @@ export function Garden() {
   const [soundEnabled, setSoundEnabled] = useState(readGardenSoundSetting);
   /** Что срезали последним: показывается вместе с фразой цветка. */
   const [harvest, setHarvest] = useState<GardenCut | null>(null);
+  const [inHouse, setInHouse] = useState(false);
 
   const toggleSound = useCallback(() => {
     const next = !soundEnabled;
@@ -83,6 +87,12 @@ export function Garden() {
       unlockGardenAudio();
       playGardenSound('ui');
     }
+  }, [soundEnabled]);
+
+  // Музыка ждёт первого касания страницы: до него браузер звук не пустит.
+  useEffect(() => {
+    startGardenMusic(soundEnabled);
+    return () => stopGardenMusic();
   }, [soundEnabled]);
 
   const apply = useCallback((next: GardenState) => {
@@ -208,6 +218,7 @@ export function Garden() {
           river={state.river}
           onBed={onBed}
           onRiver={() => void fill()}
+          onHouse={() => setInHouse(true)}
         />
       ) : (
         <div className="grid size-full place-items-center"><Spinner /></div>
@@ -242,6 +253,24 @@ export function Garden() {
             });
             setPicking(null);
           }}
+        />
+      )}
+
+      {state && inHouse && (
+        <HouseRoom
+          decorations={state.decorations ?? []}
+          catalog={state.decorationCatalog ?? []}
+          coins={state.coins}
+          busy={busy}
+          soundEnabled={soundEnabled}
+          onBuy={(decoration) =>
+            void act(async () => {
+              const next = await buyGardenDecoration(decoration);
+              playGardenSound('bloom', soundEnabled);
+              return next;
+            })
+          }
+          onClose={() => setInHouse(false)}
         />
       )}
 
@@ -523,30 +552,6 @@ function ToolButton({
   );
 }
 
-function GardenWindow({
-  title,
-  onClose,
-  children,
-}: {
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <div className="fixed inset-0 z-[200] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-5" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
-      <section className="garden-game-window max-h-[86dvh] w-full max-w-3xl overflow-y-auto p-4 sm:p-6" onClick={(event) => event.stopPropagation()}>
-        <header className="flex items-center gap-3 border-b-2 border-[#b7844e] pb-3">
-          <h2 className="font-display text-xl font-bold sm:text-2xl">{title}</h2>
-          <button type="button" className="ml-auto grid size-10 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" onClick={onClose} aria-label="Закрыть" title="Закрыть">
-            <LuX />
-          </button>
-        </header>
-        <div className="pt-4">{children}</div>
-      </section>
-    </div>
-  );
-}
-
 function SeedWindow({
   catalog,
   coins,
@@ -589,8 +594,9 @@ function GardenShop({
         selected={selectedSeed}
         onPick={onSeed}
       />
+      {/* В магазине — только двор: обстановку комнаты покупают в самой комнате. */}
       <DecorationShelf
-        catalog={state.decorationCatalog ?? []}
+        catalog={(state.decorationCatalog ?? []).filter((item) => item.place !== 'house')}
         owned={state.decorations ?? []}
         coins={state.coins}
         busy={busy}
@@ -827,6 +833,7 @@ function Leaderboard({ board }: { board: GardenBoardRow[] }) {
 function GardenDemo({ board }: { board: GardenBoardRow[] }) {
   const { navigate } = useRouter();
   const [prompt, setPrompt] = useState(false);
+  const [inHouse, setInHouse] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(readGardenSoundSetting);
   const toggleSound = () => {
     const next = !soundEnabled;
@@ -836,7 +843,17 @@ function GardenDemo({ board }: { board: GardenBoardRow[] }) {
   };
   return (
     <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
-      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} decorations={['berry-bushes']} soundEnabled={soundEnabled} river onBed={() => setPrompt(true)} onRiver={() => setPrompt(true)} />
+      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} decorations={['berry-bushes']} soundEnabled={soundEnabled} river onBed={() => setPrompt(true)} onRiver={() => setPrompt(true)} onHouse={() => setInHouse(true)} />
+      {/* В дом гостя пускают: радио слушают без аккаунта, покупки — нет. */}
+      {inHouse && (
+        <HouseRoom
+          decorations={['rug', 'lamp', 'picture', 'cat']}
+          catalog={[]}
+          coins={0}
+          soundEnabled={soundEnabled}
+          onClose={() => setInHouse(false)}
+        />
+      )}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[120] flex items-start justify-between gap-3 p-3 sm:p-4">
         <div className="garden-game-plaque pointer-events-auto flex min-w-0 max-w-[56vw] items-center gap-2 px-2 py-2 sm:px-3">
           <button type="button" onClick={() => navigate('/')} className="grid size-9 shrink-0 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label="Выйти из сада" title="Выйти из сада"><LuArrowLeft /></button>
@@ -892,7 +909,7 @@ function panelTitle(panel: Panel): string {
 function Credits() {
   return (
     <p className="mt-8 border-t border-[#c99b61] pt-4 text-xs text-[#6b4d38]">
-      Растения и мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника нарисовал автор проекта. Звуки сада синтезируются в браузере.
+      Растения и мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника, комнату и мебель нарисовал автор проекта. Звуки сада синтезируются в браузере, фоновая музыка — «Heavenly Loop» isaiah658 (CC0). Радио в доме — прямые эфиры сербских станций, они вещают сами по себе.
     </p>
   );
 }

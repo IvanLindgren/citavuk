@@ -17,6 +17,35 @@ export function saveGardenSoundSetting(enabled: boolean): void {
 export function unlockGardenAudio(): void {
   const audio = getContext();
   if (audio?.state === 'suspended') void audio.resume();
+  if (music && music.paused) void music.play().catch(() => undefined);
+}
+
+/**
+ * Фоновая музыка сада.
+ *
+ * Браузер не даст зазвучать до первого касания страницы, поэтому трек заводится
+ * заранее и по-настоящему стартует в unlockGardenAudio — там же, где
+ * просыпаются остальные звуки. Громкость намеренно низкая: это фон, под который
+ * занимаются, а не саундтрек.
+ */
+const MUSIC = '/sounds/garden/ambient.mp3';
+let music: HTMLAudioElement | null = null;
+
+export function startGardenMusic(enabled: boolean): void {
+  if (typeof window === 'undefined' || !enabled) return;
+  if (!music) {
+    music = new Audio(MUSIC);
+    music.loop = true;
+    music.preload = 'auto';
+    music.volume = 0.22;
+  }
+  void music.play().catch(() => undefined);
+}
+
+export function stopGardenMusic(): void {
+  music?.pause();
+  if (music) music.currentTime = 0;
+  music = null;
 }
 
 export function playGardenSound(sound: GardenSound, enabled = true): void {

@@ -4,6 +4,16 @@ import type { GardenPlant, GardenSpecies } from '../api/garden';
 import { playGardenSound, unlockGardenAudio } from '../garden/audio';
 import { GARDEN, WORLD } from '../garden/strings';
 import { isBlooming, projectedGrowth } from '../garden/scene';
+import {
+  BUSH_SPOT,
+  SPRITES,
+  pickLayout,
+  worldScale,
+  type Layout,
+  type Point,
+  type WorldItem,
+} from '../garden/world';
+import { useWalker } from '../garden/walk';
 import { GardenBed } from './GardenBed';
 
 interface Props {
@@ -21,57 +31,11 @@ interface Props {
   river?: boolean;
   onBed?: (slot: number, plant?: GardenPlant) => void;
   onRiver?: () => void;
+  onHouse?: () => void;
 }
 
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface Destination extends Point {
-  action?: () => void;
-}
-
-interface WorldItem {
-  name: keyof typeof WORLD | string;
-  sprite: string;
-  x: number;
-  y: number;
-  /** Предмет без подписи: забор и цветочки в траве — фон, а не слово. */
-  quiet?: boolean;
-}
-
-/**
- * Мир расставлен вручную. Раньше дом, роща и фонтан жались к четырём углам, а
- * между ними лежало пустое поле — отсюда и ощущение безжизненности. Теперь у
- * карты есть берег наверху, двор с домом и магазином слева и роща по краям.
- */
-const WORLD_ITEMS: WorldItem[] = [
-  { name: 'house', sprite: 'house', x: 12, y: 56 },
-  { name: 'fence', sprite: 'fence', x: 24, y: 60, quiet: true },
-  { name: 'pots', sprite: 'pots', x: 8, y: 62, quiet: true },
-  { name: 'stall', sprite: 'stall', x: 27, y: 72 },
-  { name: 'sign', sprite: 'sign', x: 34, y: 52 },
-  { name: 'fountain', sprite: 'fountain', x: 60, y: 42 },
-  { name: 'fir', sprite: 'fir', x: 88, y: 44 },
-  { name: 'tree', sprite: 'tree', x: 96, y: 60 },
-  { name: 'tree', sprite: 'tree_small', x: 4, y: 82 },
-  { name: 'tree', sprite: 'tree', x: 94, y: 92 },
-  { name: 'campfire', sprite: 'campfire', x: 22, y: 92 },
-  { name: 'flowers', sprite: 'flowers', x: 66, y: 96, quiet: true },
-  { name: 'flowers', sprite: 'flowers', x: 14, y: 70, quiet: true },
-  { name: 'flowers', sprite: 'flowers', x: 36, y: 94, quiet: true },
-];
-
-const BED_POINTS: Point[] = [
-  { x: 44, y: 56 }, { x: 57, y: 56 }, { x: 70, y: 56 }, { x: 83, y: 56 },
-  { x: 44, y: 71 }, { x: 57, y: 71 }, { x: 70, y: 71 }, { x: 83, y: 71 },
-  { x: 44, y: 86 }, { x: 57, y: 86 }, { x: 70, y: 86 }, { x: 83, y: 86 },
-];
-
-/** Берег реки: ниже него начинается ходячая часть карты. */
-const SHORE = 32;
-const RIVER_LABEL: Point = { x: 58, y: 26 };
+/** Дверь: столько мировых пикселей занимает вход в середине нижнего края дома. */
+const DOOR: { w: number; h: number } = { w: 28, h: 38 };
 
 export function GardenScene({
   slots,
@@ -85,13 +49,26 @@ export function GardenScene({
   river = false,
   onBed,
   onRiver,
+  onHouse,
 }: Props) {
   const now = useNow(1000);
   const gust = useGust();
   const sceneRef = useRef<HTMLDivElement>(null);
-  const scale = useSceneScale(sceneRef);
+  const { layout, scale } = useWorldFit(sceneRef);
   const night = useNight();
-  const { player, moving, facing, moveTo } = useGardenMovement(sceneRef);
+  const area = useMemo(
+    () => ({
+      minX: 14,
+      maxX: layout.w - 14,
+      minY: layout.river + 4,
+      maxY: layout.h - 6,
+      // Шаг в мировых пикселях: карту любого размера Читавук проходит примерно
+      // за одно и то же время.
+      speed: layout.w / 6,
+    }),
+    [layout],
+  );
+  const { point: player, moving, facing, moveTo } = useWalker(area, layout.spawn);
 
   useEffect(() => {
     if (!moving || !soundEnabled) return;
@@ -110,26 +87,39 @@ export function GardenScene({
     return map;
   }, [plants]);
 
+  const items = useMemo(() => {
+    const list = [...layout.items];
+    if (decorations.includes('berry-bushes')) list.push(BUSH_SPOT[layout.id]);
+    return list;
+  }, [decorations, layout]);
+
   const goToBed = useCallback(
     (slot: number, plant: GardenPlant | undefined) => {
       if (!onBed) return;
       unlockGardenAudio();
-      const point = bedPoint(slot, slots);
-      moveTo({ x: point.x, y: Math.min(92, point.y + 7), action: () => onBed(slot, plant) });
+      const point = bedPoint(layout, slot);
+      moveTo({ x: point.x, y: point.y + 10, action: () => onBed(slot, plant) });
     },
-    [moveTo, onBed, slots],
+    [layout, moveTo, onBed],
   );
 
   const goToRiver = useCallback(() => {
     if (!onRiver) return;
     unlockGardenAudio();
-    moveTo({ x: player.x, y: SHORE + 2, action: onRiver });
-  }, [moveTo, onRiver, player.x]);
+    moveTo({ x: player.x, y: layout.river + 4, action: onRiver });
+  }, [layout.river, moveTo, onRiver, player.x]);
+
+  const goToDoor = useCallback(() => {
+    if (!onHouse) return;
+    unlockGardenAudio();
+    moveTo({ ...layout.door, action: onHouse });
+  }, [layout.door, moveTo, onHouse]);
 
   // Подпись показывается у того предмета, к которому подошёл Читавук. Держать
   // подписи включёнными у всех сразу нельзя: карта превращается в список слов.
-  const nearby = useMemo(() => nearestItem(player), [player]);
-  const nearRiver = player.y <= SHORE + 6;
+  const nearby = useMemo(() => nearestItem(items, player), [items, player]);
+  const nearRiver = player.y <= layout.river + 12;
+  const house = useMemo(() => items.find((item) => item.sprite === 'house'), [items]);
 
   return (
     <div
@@ -137,117 +127,151 @@ export function GardenScene({
       tabIndex={0}
       role="application"
       aria-label="Башта Читавука. Нажмите на место, куда должен подойти Читавук. На компьютере также работают стрелки и WASD."
-      className={`garden-world relative size-full min-h-[520px] overflow-hidden focus:outline-none ${
+      className={`garden-world relative grid size-full min-h-[420px] place-items-center overflow-hidden focus:outline-none ${
         gust ? 'garden-gust' : ''
       } ${night ? 'garden-world--night' : ''} ${weather === 'rain' ? 'garden-world--rain' : ''}`}
       style={{ '--gs': scale } as React.CSSProperties}
-      onPointerDown={(event) => {
-        unlockGardenAudio();
-        if ((event.target as HTMLElement).closest('button')) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        moveTo({
-          x: ((event.clientX - bounds.left) / bounds.width) * 100,
-          y: ((event.clientY - bounds.top) / bounds.height) * 100,
-        });
-      }}
     >
       <div className="garden-world__grass" aria-hidden />
-      <button
-        type="button"
-        className={`garden-world__river ${river ? 'garden-world__river--flowing' : ''}`}
-        onClick={goToRiver}
-        disabled={!onRiver}
-        aria-label={`${GARDEN.fill.sr} — ${GARDEN.fill.ru}`}
-      >
-        <img
-          src="/img/garden/world/duck.webp"
-          alt=""
-          draggable={false}
-          className="garden-world__duck garden-pixel-art"
-        />
-      </button>
 
-      {WORLD_ITEMS.map((item, index) => (
-        <WorldSprite key={`${item.sprite}-${index}`} item={item} />
-      ))}
-      {decorations.includes('berry-bushes') && (
-        <WorldSprite item={{ name: 'bushes', sprite: 'bushes', x: 88, y: 68 }} />
-      )}
-
-      {Array.from({ length: slots }, (_, slot) => {
-        const point = bedPoint(slot, slots);
-        const plant = bySlot.get(slot);
-        const species = plant
-          ? catalog.find((item) => item.id === plant.species)
-          : undefined;
-        const growth = plant ? projectedGrowth(plant, now - fetchedAt) : undefined;
-        const blooming = growth !== undefined && isBlooming(growth);
-
-        return (
-          <div
-            key={slot}
-            className="garden-world__bed absolute -translate-x-1/2 -translate-y-full"
-            style={{ left: `${point.x}%`, top: `${point.y}%`, zIndex: Math.round(point.y) }}
-          >
-            <GardenBed
-              slot={slot}
-              growth={species ? growth : undefined}
-              species={species}
-              watering={watering === slot}
-              onAct={onBed ? () => goToBed(slot, plant) : undefined}
-              actionLabel={
-                !plant ? GARDEN.plant.sr : blooming ? GARDEN.cut.sr : GARDEN.water.sr
-              }
-            />
-            {blooming && <Bee />}
-          </div>
-        );
-      })}
-
-      {nearby && <WorldLabel item={nearby} />}
-      {nearRiver && (
-        <span
-          className="garden-world__label"
-          style={{ left: `${RIVER_LABEL.x}%`, top: `${RIVER_LABEL.y}%`, zIndex: 118 }}
-        >
-          <b>{WORLD.river?.sr}</b>
-          <i>{WORLD.river?.ru}</i>
-        </span>
-      )}
-
-      <span
-        aria-hidden
-        className="garden-game-player pointer-events-none absolute"
-        style={{
-          left: `${player.x}%`,
-          top: `${player.y}%`,
-          zIndex: Math.round(player.y) + 2,
+      <div
+        className="garden-world__stage"
+        style={{ width: layout.w * scale, height: layout.h * scale }}
+        onPointerDown={(event) => {
+          unlockGardenAudio();
+          if ((event.target as HTMLElement).closest('button')) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          moveTo({
+            x: (event.clientX - bounds.left) / scale,
+            y: (event.clientY - bounds.top) / scale,
+          });
         }}
       >
-        <span
-          className={`garden-game-player__sprite ${moving ? 'garden-game-player__sprite--walking' : ''} ${
-            watering !== null ? 'garden-game-player__sprite--watering' : ''
-          }`}
-          style={{ '--garden-facing': facing } as React.CSSProperties}
-        />
-      </span>
+        <button
+          type="button"
+          className={`garden-world__river ${river ? 'garden-world__river--flowing' : ''}`}
+          style={{ height: layout.river * scale }}
+          onClick={goToRiver}
+          disabled={!onRiver}
+          aria-label={`${GARDEN.fill.sr} — ${GARDEN.fill.ru}`}
+        >
+          <img
+            src="/img/garden/world/duck.webp"
+            alt=""
+            draggable={false}
+            className="garden-world__duck garden-pixel-art"
+          />
+        </button>
 
-      {weather === 'rain' && <span aria-hidden className="garden-world__rain" />}
+        {items.map((item, index) => (
+          <WorldSprite key={`${item.sprite}-${index}`} item={item} scale={scale} />
+        ))}
+
+        {/* Дверь: вход в дом, а не украшение — поэтому у неё своя кнопка. */}
+        {house && onHouse && (
+          <button
+            type="button"
+            className="garden-world__door"
+            style={{
+              left: (house.x - DOOR.w / 2) * scale,
+              top: (house.y - DOOR.h) * scale,
+              width: DOOR.w * scale,
+              height: DOOR.h * scale,
+              zIndex: Math.round(house.y) + 1,
+            }}
+            onClick={goToDoor}
+            aria-label={`${GARDEN.enter.sr} — ${GARDEN.enter.ru}`}
+            title={`${GARDEN.enter.sr} — ${GARDEN.enter.ru}`}
+          />
+        )}
+
+        {Array.from({ length: slots }, (_, slot) => {
+          const point = bedPoint(layout, slot);
+          const plant = bySlot.get(slot);
+          const species = plant
+            ? catalog.find((item) => item.id === plant.species)
+            : undefined;
+          const growth = plant ? projectedGrowth(plant, now - fetchedAt) : undefined;
+          const blooming = growth !== undefined && isBlooming(growth);
+
+          return (
+            <div
+              key={slot}
+              className="garden-world__bed absolute -translate-x-1/2 -translate-y-full"
+              style={{ left: point.x * scale, top: point.y * scale, zIndex: Math.round(point.y) }}
+            >
+              <GardenBed
+                slot={slot}
+                growth={species ? growth : undefined}
+                species={species}
+                watering={watering === slot}
+                onAct={onBed ? () => goToBed(slot, plant) : undefined}
+                actionLabel={
+                  !plant ? GARDEN.plant.sr : blooming ? GARDEN.cut.sr : GARDEN.water.sr
+                }
+              />
+              {blooming && <Bee />}
+            </div>
+          );
+        })}
+
+        {nearby && <WorldLabel item={nearby} scale={scale} />}
+        {nearRiver && (
+          <span
+            className="garden-world__label"
+            style={{
+              left: layout.w * scale * 0.5,
+              top: layout.river * scale,
+              zIndex: 118,
+            }}
+          >
+            <b>{WORLD.river?.sr}</b>
+            <i>{WORLD.river?.ru}</i>
+          </span>
+        )}
+
+        <span
+          aria-hidden
+          className="garden-game-player pointer-events-none absolute"
+          style={{
+            left: player.x * scale,
+            top: player.y * scale,
+            zIndex: Math.round(player.y) + 2,
+          }}
+        >
+          <span
+            className={`garden-game-player__sprite ${moving ? 'garden-game-player__sprite--walking' : ''} ${
+              watering !== null ? 'garden-game-player__sprite--watering' : ''
+            }`}
+            style={{ '--garden-facing': facing } as React.CSSProperties}
+          />
+        </span>
+      </div>
+
+      {weather === 'rain' && (
+        <span aria-hidden className="garden-world__rain">
+          <span className="garden-world__rain-near" />
+          <span className="garden-world__rain-splash" />
+        </span>
+      )}
     </div>
   );
 }
 
-function WorldSprite({ item }: { item: WorldItem }) {
+function WorldSprite({ item, scale }: { item: WorldItem; scale: number }) {
+  const sprite = SPRITES[item.sprite];
   return (
     <span
       aria-hidden
       className="garden-world__item pointer-events-none absolute"
-      style={{ left: `${item.x}%`, top: `${item.y}%`, zIndex: Math.round(item.y) }}
+      style={{ left: item.x * scale, top: item.y * scale, zIndex: Math.round(item.y) }}
     >
       <img
         src={`/img/garden/world/${item.sprite}.webp`}
         alt=""
         draggable={false}
+        width={sprite?.w}
+        height={sprite?.h}
         className="garden-pixel-art block select-none"
       />
     </span>
@@ -255,13 +279,18 @@ function WorldSprite({ item }: { item: WorldItem }) {
 }
 
 /** Сербское название предмета с русским пояснением: без него A1 заперт. */
-function WorldLabel({ item }: { item: WorldItem }) {
+function WorldLabel({ item, scale }: { item: WorldItem; scale: number }) {
   const phrase = WORLD[item.name];
   if (!phrase) return null;
+  const sprite = SPRITES[item.sprite] ?? { w: 16, h: 16 };
   return (
     <span
       className="garden-world__label"
-      style={{ left: `${item.x}%`, top: `${item.y}%`, zIndex: Math.round(item.y) + 3 }}
+      style={{
+        left: item.x * scale,
+        top: (item.y - Math.min(sprite.h, 72)) * scale,
+        zIndex: Math.round(item.y) + 3,
+      }}
     >
       <b>{phrase.sr}</b>
       <i>{phrase.ru}</i>
@@ -274,10 +303,10 @@ function Bee() {
   return <span aria-hidden className="garden-bee" />;
 }
 
-function nearestItem(player: Point): WorldItem | null {
+function nearestItem(items: WorldItem[], player: Point): WorldItem | null {
   let best: WorldItem | null = null;
-  let bestDistance = 11;
-  for (const item of WORLD_ITEMS) {
+  let bestDistance = 46;
+  for (const item of items) {
     if (item.quiet) continue;
     const distance = Math.hypot(item.x - player.x, item.y - player.y);
     if (distance < bestDistance) {
@@ -288,165 +317,55 @@ function nearestItem(player: Point): WorldItem | null {
   return best;
 }
 
-function useGardenMovement(sceneRef: React.RefObject<HTMLDivElement | null>) {
-  const [player, setPlayer] = useState<Point>({ x: 30, y: 74 });
-  const playerRef = useRef(player);
-  const destination = useRef<Destination | null>(null);
-  const pressed = useRef(new Set<string>());
-  const [moving, setMoving] = useState(false);
-  const [facing, setFacing] = useState(1);
-
-  const moveTo = useCallback(
-    (point: Destination) => {
-      destination.current = {
-        x: clamp(point.x, 4, 96),
-        y: clamp(point.y, SHORE + 2, 92),
-        action: point.action,
-      };
-      sceneRef.current?.focus({ preventScroll: true });
-    },
-    [sceneRef],
-  );
-
-  useEffect(() => {
-    const down = (event: KeyboardEvent) => {
-      if (isTyping(event.target)) return;
-      const key = movementKey(event.key);
-      if (!key) return;
-      event.preventDefault();
-      unlockGardenAudio();
-      destination.current = null;
-      pressed.current.add(key);
-    };
-    const up = (event: KeyboardEvent) => {
-      const key = movementKey(event.key);
-      if (key) pressed.current.delete(key);
-    };
-    window.addEventListener('keydown', down);
-    window.addEventListener('keyup', up);
-    return () => {
-      window.removeEventListener('keydown', down);
-      window.removeEventListener('keyup', up);
-    };
-  }, []);
-
-  useEffect(() => {
-    let frame = 0;
-    let previous = performance.now();
-    let wasMoving = false;
-    const tick = (time: number) => {
-      const elapsed = Math.min(40, time - previous) / 1000;
-      previous = time;
-      const keys = pressed.current;
-      let dx = Number(keys.has('right')) - Number(keys.has('left'));
-      let dy = Number(keys.has('down')) - Number(keys.has('up'));
-      let next = playerRef.current;
-      let active = dx !== 0 || dy !== 0;
-
-      if (active) {
-        const length = Math.hypot(dx, dy) || 1;
-        dx /= length;
-        dy /= length;
-        next = {
-          x: clamp(next.x + dx * 25 * elapsed, 4, 96),
-          y: clamp(next.y + dy * 25 * elapsed, SHORE + 2, 92),
-        };
-      } else if (destination.current) {
-        const target = destination.current;
-        const gapX = target.x - next.x;
-        const gapY = target.y - next.y;
-        const distance = Math.hypot(gapX, gapY);
-        if (distance < 0.8) {
-          next = { x: target.x, y: target.y };
-          destination.current = null;
-          target.action?.();
-        } else {
-          active = true;
-          const step = Math.min(distance, 28 * elapsed);
-          dx = gapX / distance;
-          dy = gapY / distance;
-          next = { x: next.x + dx * step, y: next.y + dy * step };
-        }
-      }
-
-      if (next !== playerRef.current) {
-        playerRef.current = next;
-        setPlayer(next);
-      }
-      if (dx !== 0) setFacing(dx < 0 ? -1 : 1);
-      if (active !== wasMoving) {
-        wasMoving = active;
-        setMoving(active);
-      }
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  return { player, moving, facing, moveTo };
-}
-
 /**
- * Целый множитель мира.
+ * Мир целиком помещается в сцену.
  *
- * Пиксельные спрайты растягивались долями ширины экрана: один и тот же пиксель
- * выходил то в два, то в три экранных, и картинка рябила. Множитель обязан быть
- * целым, поэтому он считается от ширины сцены и меняется ступенями.
+ * Раскладка выбирается по форме экрана, а масштаб — по тому, сколько раз мир в
+ * него влезает. Дробный масштаб мылит пиксели, поэтому он остаётся только там,
+ * где целого не хватает: на маленьком телефоне.
  */
-function useSceneScale(sceneRef: React.RefObject<HTMLDivElement | null>): number {
-  const [scale, setScale] = useState(3);
+function useWorldFit(sceneRef: React.RefObject<HTMLDivElement | null>) {
+  const [size, setSize] = useState({ width: 960, height: 600 });
 
   useEffect(() => {
     const node = sceneRef.current;
     if (!node || typeof ResizeObserver === 'undefined') return;
-    const measure = () => {
-      const width = node.clientWidth || 960;
-      setScale(Math.max(2, Math.min(5, Math.round(width / 420))));
-    };
+    // Пояс с инструментами и табличка сверху висят поверх сцены, поэтому мир
+    // считает своей только ту высоту, которую они не закрывают: иначе нижний
+    // ряд грядок оказывается под кнопками.
+    const measure = () =>
+      setSize({
+        width: node.clientWidth || 960,
+        height: Math.max(240, (node.clientHeight || 600) - 84),
+      });
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(node);
     return () => observer.disconnect();
   }, [sceneRef]);
 
-  return scale;
+  const layout = useMemo(() => pickLayout(size.width, size.height), [size]);
+  const scale = useMemo(
+    () => worldScale(layout, size.width, size.height),
+    [layout, size],
+  );
+
+  return { layout, scale };
 }
 
-function bedPoint(slot: number, slots: number): Point {
-  if (BED_POINTS[slot]) return BED_POINTS[slot];
-  const columns = Math.min(6, Math.max(1, Math.ceil(Math.sqrt(slots))));
+function bedPoint(layout: Layout, slot: number): Point {
+  const point = layout.beds[slot];
+  if (point) return point;
+  const columns = Math.max(1, Math.floor((layout.w - 32) / 44));
   const row = Math.floor(slot / columns);
   const column = slot % columns;
-  return { x: 41 + column * 13, y: 52 + row * 16 };
+  return {
+    x: 24 + column * 44,
+    y: Math.min(layout.h - 8, layout.river + 60 + row * 34),
+  };
 }
 
-function movementKey(key: string): 'left' | 'right' | 'up' | 'down' | null {
-  switch (key.toLowerCase()) {
-    case 'a':
-    case 'arrowleft':
-      return 'left';
-    case 'd':
-    case 'arrowright':
-      return 'right';
-    case 'w':
-    case 'arrowup':
-      return 'up';
-    case 's':
-    case 'arrowdown':
-      return 'down';
-    default:
-      return null;
-  }
-}
 
-function isTyping(target: EventTarget | null): boolean {
-  return target instanceof HTMLElement && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
-}
-
-function clamp(value: number, minimum: number, maximum: number): number {
-  return Math.min(maximum, Math.max(minimum, value));
-}
 
 /** Тик раз в секунду. Скрытая вкладка не считается: сад никто не смотрит. */
 function useNow(intervalMs: number): number {
