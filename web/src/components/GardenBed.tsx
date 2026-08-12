@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { GardenSpecies } from '../api/garden';
+import { gardenArt } from '../garden/art';
 import { STAGES, plantImage } from '../garden/strings';
 import { isBlooming, stageOf, swayFor, type Sway } from '../garden/scene';
 
@@ -53,7 +54,7 @@ export function GardenBed({
           }
         >
           <img
-            src={plantImage(species.id, stageOf(growth))}
+            src={gardenArt(plantImage(species.id, stageOf(growth)))}
             alt=""
             draggable={false}
             className="garden-pixel-art block"

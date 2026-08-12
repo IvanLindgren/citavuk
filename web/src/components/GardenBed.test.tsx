@@ -49,14 +49,17 @@ describe('грядка', () => {
 
   it('только что посаженное показано пиксельным семенем, а не взрослым цветком', () => {
     render(<GardenBed slot={0} growth={0.2} species={SUNCOKRET} />);
-    expect(host.querySelector('img')?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_0.webp');
+    // К адресу приклеен отпечаток картинок сада, поэтому сверяем начало.
+    expect(host.querySelector('img')?.getAttribute('src')).toMatch(
+      /^\/img\/garden\/world\/plant_suncokret_0\.webp\?v=/,
+    );
     expect(host.querySelector('button')?.getAttribute('aria-label')).toContain('семе');
   });
 
   it('растущий цветок переключает пиксельную стадию', () => {
     render(<GardenBed slot={0} growth={2.5} species={SUNCOKRET} />);
     const image = host.querySelector('img');
-    expect(image?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_2.webp');
+    expect(image?.getAttribute('src')).toMatch(/^\/img\/garden\/world\/plant_suncokret_2\.webp\?v=/);
     expect(image?.classList.contains('garden-pixel-art')).toBe(true);
   });
 
@@ -74,7 +77,9 @@ describe('грядка', () => {
 
   it('распустившийся цветок показан последней стадией и зовёт срезать', () => {
     render(<GardenBed slot={0} growth={5} species={SUNCOKRET} actionLabel="Убери цвет" />);
-    expect(host.querySelector('img')?.getAttribute('src')).toBe('/img/garden/world/plant_suncokret_4.webp');
+    expect(host.querySelector('img')?.getAttribute('src')).toMatch(
+      /^\/img\/garden\/world\/plant_suncokret_4\.webp\?v=/,
+    );
     expect(host.querySelector('button')?.getAttribute('aria-label')).toContain('Убери цвет');
   });
 

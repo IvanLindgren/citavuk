@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { GardenPlant, GardenSpecies } from '../api/garden';
+import { gardenArt } from '../garden/art';
 import { playGardenSound, unlockGardenAudio } from '../garden/audio';
 import { GARDEN, WORLD } from '../garden/strings';
 import { isBlooming, projectedGrowth } from '../garden/scene';
@@ -156,7 +157,7 @@ export function GardenScene({
           aria-label={`${GARDEN.fill.sr} — ${GARDEN.fill.ru}`}
         >
           <img
-            src="/img/garden/world/duck.webp"
+            src={gardenArt('/img/garden/world/duck.webp')}
             alt=""
             draggable={false}
             className="garden-world__duck garden-pixel-art"
@@ -267,7 +268,7 @@ function WorldSprite({ item, scale }: { item: WorldItem; scale: number }) {
       style={{ left: item.x * scale, top: item.y * scale, zIndex: Math.round(item.y) }}
     >
       <img
-        src={`/img/garden/world/${item.sprite}.webp`}
+        src={gardenArt(`/img/garden/world/${item.sprite}.webp`)}
         alt=""
         draggable={false}
         width={sprite?.w}

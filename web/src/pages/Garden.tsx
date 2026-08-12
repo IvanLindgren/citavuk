@@ -40,6 +40,7 @@ import { GardenScene } from '../components/GardenScene';
 import { GardenWindow } from '../components/GardenWindow';
 import { HouseRoom } from '../components/HouseRoom';
 import { Button, ErrorNote, Spinner } from '../components/ui';
+import { gardenArt } from '../garden/art';
 import { isBlooming, projectedGrowth } from '../garden/scene';
 import {
   playGardenSound,
@@ -637,7 +638,7 @@ function DecorationShelf({
                 }}
                 className="flex w-full items-center gap-3 border-2 border-[#b7844e] bg-[#fff0c7] p-3 text-left hover:bg-[#ffe5a4] disabled:opacity-55"
               >
-                <img src="/img/garden/world/bushes.webp" alt="" className="garden-pixel-art h-12 w-24 object-contain" />
+                <img src={gardenArt('/img/garden/world/bushes.webp')} alt="" className="garden-pixel-art h-12 w-24 object-contain" />
                 <span className="min-w-0">
                   <span className="block font-display text-lg font-bold">{decoration.serbian}</span>
                   <span className="block text-sm text-[#6b4d38]">{decoration.russian}</span>
@@ -686,7 +687,7 @@ function SeedShelf({
                   selected === species.id ? 'border-[#a85032] bg-[#f1c982]' : 'border-[#b7844e] bg-[#fff0c7] hover:bg-[#ffe5a4]'
                 }`}
               >
-                <span aria-hidden className="block size-12 shrink-0 bg-no-repeat" style={{ backgroundImage: 'url(/img/garden/garden_seeds.webp)', backgroundSize: `${catalog.length * 3}rem 3rem`, backgroundPosition: `-${index * 3}rem 0` }} />
+                <span aria-hidden className="block size-12 shrink-0 bg-no-repeat" style={{ backgroundImage: `url(${gardenArt('/img/garden/garden_seeds.webp')})`, backgroundSize: `${catalog.length * 3}rem 3rem`, backgroundPosition: `-${index * 3}rem 0` }} />
                 <span className="min-w-0">
                   <span className="block font-display text-lg font-bold">{species.serbian}</span>
                   <span className="block text-sm text-[#6b4d38]">{species.russian} · {species.theme}</span>
@@ -909,7 +910,7 @@ function panelTitle(panel: Panel): string {
 function Credits() {
   return (
     <p className="mt-8 border-t border-[#c99b61] pt-4 text-xs text-[#6b4d38]">
-      Растения и мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Читавука-садовника, комнату и мебель нарисовал автор проекта. Звуки сада синтезируются в браузере, фоновая музыка — «Heavenly Loop» isaiah658 (CC0). Радио в доме — прямые эфиры сербских станций, они вещают сами по себе.
+      Растения и мир — Cozyland Exterior Tilesets, RoleyMoth; используется по лицензии автора. Комната и мебель — Pixel Art Furniture Pack, sierrassets; тоже по лицензии автора. Читавука-садовника, реку, утку и прилавок нарисовал автор проекта. Звуки сада синтезируются в браузере, фоновая музыка — «Heavenly Loop» isaiah658 (CC0). Радио в доме — прямые эфиры сербских станций, они вещают сами по себе.
     </p>
   );
 }

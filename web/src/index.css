@@ -525,12 +525,19 @@
   }
 
   /*
-    Комната. Снаружи дом был коробкой, мимо которой ходят; внутри у него есть
-    приёмник с сербским эфиром и вещи, ради которых копят динары.
+    Квартира. Снаружи дом был коробкой, мимо которой ходят; внутри — две
+    комнаты, сербский эфир и вещи, ради которых копят динары.
   */
   .garden-house {
     background: #2b4434;
     color: #302219;
+  }
+
+  /* Зажжённый камин греет всю комнату, а не только свой угол. */
+  .garden-house--fire .garden-house__room {
+    box-shadow:
+      0 12px 0 rgb(18 30 22 / 0.35),
+      inset 0 0 calc(30px * var(--gs, 3)) rgb(255 168 74 / 0.16);
   }
 
   .garden-house__scene {
@@ -553,14 +560,10 @@
     cursor: crosshair;
   }
 
-  .garden-house__thing,
+  /* Вещь стоит основанием в своей точке — как предметы во дворе. */
   .garden-house__pick {
     position: absolute;
     transform: translate(-50%, -100%);
-  }
-
-  /* Предмет, к которому подходят: приёмник и тетрадь. */
-  .garden-house__pick {
     padding: 0;
     border: 0;
     background: none;
@@ -598,19 +601,44 @@
     }
   }
 
-  .garden-house__door {
+  /*
+    Слово вещи. Всплывает над ней, когда Читавук дошёл: сербское название
+    появляется там, куда человек и так смотрит.
+  */
+  .garden-house__word {
     position: absolute;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
+    transform: translate(-50%, -100%);
+    margin-top: -4px;
+    padding: 2px 7px;
+    border: 2px solid #70452f;
+    background: #f8e7ba;
+    box-shadow: 0 3px 0 #4d3227;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: garden-word 160ms ease-out;
   }
 
-  .garden-house__door:hover,
-  .garden-house__door:focus-visible {
-    background: rgb(255 236 160 / 0.25);
-    box-shadow: inset 0 0 0 2px rgb(255 236 160 / 0.7);
-    outline: none;
+  .garden-house__word b {
+    display: block;
+    font-family: var(--font-display, inherit);
+    font-size: 0.9rem;
+    line-height: 1.15;
+  }
+
+  .garden-house__word i {
+    display: block;
+    color: #6b4d38;
+    font-size: 0.68rem;
+    font-style: normal;
+    line-height: 1.15;
+  }
+
+  @keyframes garden-word {
+    from {
+      opacity: 0;
+      transform: translate(-50%, calc(-100% + 4px));
+    }
   }
 
   .garden-house__panel {

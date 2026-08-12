@@ -90,6 +90,35 @@ describe('ходьба Читавука', () => {
     expect(api!.moving).toBe(false);
   });
 
+  /*
+    В комнате между Читавуком и целью стоит мебель. Полноценного поиска пути
+    нет: он скользит вдоль препятствия, и этого хватает, потому что проходы
+    широкие. Проверяем оба исхода — обошёл и упёрся.
+  */
+  it('мебель обходит, а не проходит насквозь', () => {
+    const blocked = [{ x0: 60, y0: 20, x1: 80, y1: 70 }];
+    act(() => root.render(<Walker area={{ ...AREA, blocked }} />));
+
+    act(() => api!.moveTo({ x: 150, y: 90 }));
+    runFrames(200);
+
+    expect(api!.point.x).toBeCloseTo(150, 0);
+    expect(api!.point.y).toBeCloseTo(90, 0);
+  });
+
+  it('перед глухой стеной останавливается, а не бьётся в неё', () => {
+    const arrived = vi.fn();
+    const blocked = [{ x0: 60, y0: 0, x1: 80, y1: 200 }];
+    act(() => root.render(<Walker area={{ ...AREA, blocked }} />));
+
+    act(() => api!.moveTo({ x: 150, y: 50, action: arrived }));
+    runFrames(200);
+
+    expect(api!.point.x).toBeLessThanOrEqual(60);
+    expect(api!.moving).toBe(false);
+    expect(arrived).not.toHaveBeenCalled();
+  });
+
   it('цель отменяется шагом с клавиатуры: человек передумал', () => {
     const arrived = vi.fn();
     act(() => root.render(<Walker />));

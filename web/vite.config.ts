@@ -1,6 +1,38 @@
+import { createHash } from 'node:crypto';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+
+/**
+ * Отпечаток картинок сада.
+ *
+ * Всё в public/ отдаётся под собственным именем, а nginx ставит на /img месяц
+ * кеша. Перерисованный спрайт из-за этого до месяца не доезжал до тех, кто уже
+ * заходил в сад. Хеш содержимого попадает в адреса как ?v= и меняется ровно
+ * тогда, когда меняется рисунок.
+ */
+function gardenArtHash(): string {
+  const root = join(__dirname, 'public', 'img', 'garden');
+  const hash = createHash('md5');
+  const walk = (directory: string) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    )) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) walk(path);
+      else if (entry.name.endsWith('.webp')) hash.update(entry.name).update(readFileSync(path));
+    }
+  };
+  try {
+    walk(root);
+  } catch {
+    return 'dev';
+  }
+  return hash.digest('hex').slice(0, 8);
+}
 
 export default defineConfig(({ mode }) => {
   // Корневой .env общий для Go, Flutter и React. В web-bundle попадает только
@@ -17,6 +49,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       'import.meta.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify(googleClientId),
+      __GARDEN_ART__: JSON.stringify(gardenArtHash()),
     },
     plugins: [react(), tailwindcss()],
   build: {

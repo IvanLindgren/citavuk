@@ -70,3 +70,8 @@ certificates*.zip
 # садовника) лежат рядом и отслеживаются: без них не пересобрать спрайты.
 tools/assets/garden/Little Dreamyland - Free Pack/
 tools/assets/garden-local/
+
+# Паки, из которых нарезаны спрайты комнаты и героев. Их лицензии тоже
+# запрещают раздачу пака как есть, а картинки в web/public/img/garden уже
+# собраны и лежат в репозитории.
+tools/assets/packs/

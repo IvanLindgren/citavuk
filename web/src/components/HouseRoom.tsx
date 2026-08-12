@@ -2,11 +2,21 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LuCoins, LuDoorOpen, LuPower, LuSofa, LuX } from 'react-icons/lu';
 
 import type { GardenDecoration } from '../api/garden';
+import { useRouter } from '../lib/router';
+import { gardenArt } from '../garden/art';
 import { playGardenSound, unlockGardenAudio } from '../garden/audio';
 import { STATIONS, readRadioSetting, saveRadioSetting, stationById } from '../garden/radio';
-import { GARDEN, coinWord } from '../garden/strings';
+import {
+  FLOOR,
+  ROOM,
+  SPAWN,
+  blockedRects,
+  spriteOf,
+  visibleThings,
+  type RoomThing,
+} from '../garden/room';
+import { ALPHABET, FRIDGE, GARDEN, HOUSE, coinWord } from '../garden/strings';
 import { useWalker } from '../garden/walk';
-import type { Point } from '../garden/world';
 import { GardenWindow } from './GardenWindow';
 import { Notebook } from './Notebook';
 
@@ -20,53 +30,15 @@ interface Props {
   onClose: () => void;
 }
 
-const ROOM = { w: 208, h: 144 };
-
-/** Пол: выше него стена, ниже — порог комнаты. */
-const FLOOR = { top: 82, bottom: 140, left: 14, right: 194 };
-
-interface Thing {
-  id: string;
-  /** Середина по горизонтали и пол под предметом. */
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  /** Куда встаёт Читавук, чтобы дотянуться. */
-  stand?: Point;
-}
-
-/** Обстановка, которая есть всегда: без неё комната — пустая коробка. */
-const FIXED: Thing[] = [
-  { id: 'nightstand', x: 52, y: 118, w: 30, h: 24 },
-  { id: 'desk', x: 158, y: 120, w: 46, h: 28 },
-  { id: 'stool', x: 122, y: 128, w: 16, h: 18 },
-];
-
-/** Покупное: появляется, когда куплено. */
-const BOUGHT: Record<string, Thing> = {
-  rug: { id: 'rug', x: 104, y: 138, w: 72, h: 20 },
-  cat: { id: 'cat', x: 132, y: 137, w: 18, h: 11 },
-  lamp: { id: 'lamp', x: 190, y: 132, w: 14, h: 30 },
-  pot: { id: 'pot', x: 16, y: 128, w: 14, h: 20 },
-  shelf: { id: 'shelf', x: 64, y: 54, w: 34, h: 14 },
-  picture: { id: 'picture', x: 150, y: 50, w: 26, h: 16 },
-};
-
-/** Приёмник стоит на тумбе, тетрадь лежит на столе. */
-const RADIO: Thing = { id: 'radio', x: 52, y: 96, w: 28, h: 20, stand: { x: 52, y: 126 } };
-const NOTEBOOK: Thing = { id: 'notebook', x: 158, y: 102, w: 18, h: 11, stand: { x: 158, y: 130 } };
-const DOOR = { x: 17, y: 32, w: 30, h: 44 };
-
-type Panel = 'radio' | 'notebook' | 'shop' | null;
+type Panel = 'radio' | 'notebook' | 'fridge' | 'letters' | 'shop' | null;
 
 /**
- * Комната Читавука.
+ * Квартира Читавука.
  *
  * Дом на карте был нарисованной коробкой: мимо него ходили, а внутрь не
- * заходили. Теперь внутрь заходят и по комнате ходят так же, как по двору: к
- * приёмнику подходят, чтобы включить радио, к столу — чтобы открыть тетрадь со
- * словами.
+ * заходили. Теперь внутри две комнаты и мебель, мимо которой ходят, а не
+ * сквозь неё. Каждая вещь называет себя по-сербски, когда Читавук до неё
+ * дошёл, — ради этого дом и открывали.
  */
 export function HouseRoom({
   decorations,
@@ -77,11 +49,16 @@ export function HouseRoom({
   onBuy,
   onClose,
 }: Props) {
+  const { navigate } = useRouter();
   const sceneRef = useRef<HTMLDivElement>(null);
   const scale = useRoomScale(sceneRef);
   const radio = useRadio(soundEnabled);
   const [panel, setPanel] = useState<Panel>(null);
+  const [fire, setFire] = useState(false);
+  /** Слово вещи, до которой дошли: висит, пока не пошли к следующей. */
+  const [word, setWord] = useState<RoomThing | null>(null);
 
+  const things = useMemo(() => visibleThings(decorations), [decorations]);
   const area = useMemo(
     () => ({
       minX: FLOOR.left,
@@ -89,10 +66,11 @@ export function HouseRoom({
       minY: FLOOR.top,
       maxY: FLOOR.bottom,
       speed: 66,
+      blocked: blockedRects(decorations),
     }),
-    [],
+    [decorations],
   );
-  const { point, moving, facing, moveTo } = useWalker(area, { x: 104, y: 126 });
+  const { point, moving, facing, moveTo } = useWalker(area, SPAWN);
 
   useEffect(() => {
     if (!moving || !soundEnabled) return;
@@ -111,31 +89,52 @@ export function HouseRoom({
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose, panel]);
 
-  const walkTo = useCallback(
-    (thing: Thing, action: () => void) => {
+  const touch = useCallback(
+    (thing: RoomThing) => {
       unlockGardenAudio();
-      const stand = thing.stand ?? { x: thing.x, y: Math.min(FLOOR.bottom, thing.y + 12) };
-      moveTo({ ...stand, action });
+      setWord(null);
+      moveTo({
+        ...thing.stand,
+        action: () => {
+          setWord(thing);
+          playGardenSound('ui', soundEnabled);
+          switch (thing.action) {
+            case 'radio':
+              setPanel('radio');
+              break;
+            case 'notebook':
+              setPanel('notebook');
+              break;
+            case 'fridge':
+              setPanel('fridge');
+              break;
+            case 'letters':
+              setPanel('letters');
+              break;
+            case 'fire':
+              setFire((on) => !on);
+              playGardenSound('plant', soundEnabled);
+              break;
+            case 'books':
+              navigate('/books');
+              break;
+            case 'leave':
+              onClose();
+              break;
+          }
+        },
+      });
     },
-    [moveTo],
+    [moveTo, navigate, onClose, soundEnabled],
   );
 
-  const forSale = useMemo(
-    () => catalog.filter((item) => item.place === 'house'),
-    [catalog],
-  );
-
-  const owned = useMemo(
-    () => Object.values(BOUGHT).filter((thing) => decorations.includes(thing.id)),
-    [decorations],
-  );
-
+  const forSale = useMemo(() => catalog.filter((item) => item.place === 'house'), [catalog]);
   const playing = radio.status === 'playing' || radio.status === 'loading';
   const station = stationById(radio.station);
 
   return (
     <div
-      className="garden-house fixed inset-0 z-[210] flex flex-col"
+      className={`garden-house fixed inset-0 z-[210] flex flex-col ${fire ? 'garden-house--fire' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={`${GARDEN.home.sr} — ${GARDEN.home.ru}`}
@@ -174,7 +173,7 @@ export function HouseRoom({
         ref={sceneRef}
         tabIndex={0}
         role="application"
-        aria-label="Комната Читавука. Нажмите на место, куда он должен подойти; работают стрелки и WASD."
+        aria-label="Квартира Читавука. Нажмите на вещь или на пол, куда он должен подойти; работают стрелки и WASD."
         className="garden-house__scene grid flex-1 place-items-center overflow-hidden focus:outline-none"
       >
         <div
@@ -184,6 +183,7 @@ export function HouseRoom({
             unlockGardenAudio();
             if ((event.target as HTMLElement).closest('button')) return;
             const bounds = event.currentTarget.getBoundingClientRect();
+            setWord(null);
             moveTo({
               x: (event.clientX - bounds.left) / scale,
               y: (event.clientY - bounds.top) / scale,
@@ -191,43 +191,21 @@ export function HouseRoom({
           }}
         >
           <img
-            src="/img/garden/house/room.webp"
+            src={gardenArt('/img/garden/house/room.webp')}
             alt=""
             draggable={false}
             className="garden-pixel-art absolute inset-0 size-full"
           />
 
-          <button
-            type="button"
-            className="garden-house__door"
-            style={{
-              left: DOOR.x * scale,
-              top: DOOR.y * scale,
-              width: DOOR.w * scale,
-              height: DOOR.h * scale,
-            }}
-            onClick={() => walkTo({ id: 'door', x: 32, y: 76, w: DOOR.w, h: DOOR.h, stand: { x: 32, y: 88 } }, onClose)}
-            aria-label={`${GARDEN.leave.sr} — ${GARDEN.leave.ru}`}
-            title={`${GARDEN.leave.sr} — ${GARDEN.leave.ru}`}
-          />
-
-          {[...FIXED, ...owned].map((thing) => (
-            <RoomSprite key={thing.id} thing={thing} scale={scale} />
+          {things.map((thing) => (
+            <RoomButton
+              key={thing.id}
+              thing={thing}
+              scale={scale}
+              lit={(thing.id === 'radio' && playing) || (thing.id === 'fireplace' && fire)}
+              onClick={() => touch(thing)}
+            />
           ))}
-
-          <RoomButton
-            thing={RADIO}
-            scale={scale}
-            className={playing ? 'garden-house__pick--on' : ''}
-            label={`${playing ? GARDEN.radioOff.sr : GARDEN.radioOn.sr} — ${GARDEN.radio.ru}`}
-            onClick={() => walkTo(RADIO, () => setPanel('radio'))}
-          />
-          <RoomButton
-            thing={NOTEBOOK}
-            scale={scale}
-            label={`${GARDEN.notebook.sr} — ${GARDEN.notebook.ru}`}
-            onClick={() => walkTo(NOTEBOOK, () => setPanel('notebook'))}
-          />
 
           <span
             aria-hidden
@@ -239,6 +217,20 @@ export function HouseRoom({
               style={{ '--garden-facing': facing } as React.CSSProperties}
             />
           </span>
+
+          {word && !moving && (
+            <span
+              className="garden-house__word"
+              style={{
+                left: word.x * scale,
+                top: (word.y - word.h) * scale,
+                zIndex: Math.round(word.y) + 3,
+              }}
+            >
+              <b>{HOUSE[word.id]?.sr}</b>
+              <i>{HOUSE[word.id]?.ru}</i>
+            </span>
+          )}
         </div>
       </div>
 
@@ -265,10 +257,7 @@ export function HouseRoom({
       </div>
 
       {panel === 'radio' && (
-        <GardenWindow
-          title={`${GARDEN.radio.sr} — ${GARDEN.radio.ru}`}
-          onClose={() => setPanel(null)}
-        >
+        <GardenWindow title={`${GARDEN.radio.sr} — ${GARDEN.radio.ru}`} onClose={() => setPanel(null)}>
           <RadioPanel radio={radio} />
         </GardenWindow>
       )}
@@ -279,6 +268,45 @@ export function HouseRoom({
           onClose={() => setPanel(null)}
         >
           <Notebook />
+        </GardenWindow>
+      )}
+
+      {panel === 'fridge' && (
+        <GardenWindow
+          title={`${GARDEN.fridgeOpen.sr} — ${GARDEN.fridgeOpen.ru}`}
+          onClose={() => setPanel(null)}
+        >
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {FRIDGE.map((item) => (
+              <li key={item.sr} className="border-2 border-[#b7844e] bg-[#fff0c7] p-2.5">
+                <span className="block font-display font-bold">{item.sr}</span>
+                <span className="block text-xs text-[#6b4d38]">{item.ru}</span>
+              </li>
+            ))}
+          </ul>
+        </GardenWindow>
+      )}
+
+      {panel === 'letters' && (
+        <GardenWindow
+          title={`${GARDEN.letters.sr} — ${GARDEN.letters.ru}`}
+          onClose={() => setPanel(null)}
+        >
+          <p className="text-sm text-[#6b4d38]">
+            В Сербии пишут двумя азбуками сразу: вывеска, книга и чек могут быть
+            любой. Буквы совпадают одна в одну.
+          </p>
+          <ul className="mt-4 grid grid-cols-3 gap-1.5 sm:grid-cols-5">
+            {ALPHABET.map(([cyrillic, latin]) => (
+              <li
+                key={cyrillic}
+                className="border-2 border-[#b7844e] bg-[#fff0c7] px-2 py-1.5 text-center"
+              >
+                <span className="block font-display font-bold">{cyrillic}</span>
+                <span className="block text-xs text-[#6b4d38]">{latin}</span>
+              </li>
+            ))}
+          </ul>
         </GardenWindow>
       )}
 
@@ -303,7 +331,7 @@ export function HouseRoom({
                     className="flex w-full items-center gap-3 border-2 border-[#b7844e] bg-[#fff0c7] p-2.5 text-left hover:bg-[#ffe5a4] disabled:opacity-55"
                   >
                     <img
-                      src={`/img/garden/house/${item.id}.webp`}
+                      src={gardenArt(`/img/garden/house/${item.id}.webp`)}
                       alt=""
                       className="garden-pixel-art h-10 w-12 object-contain object-bottom"
                     />
@@ -325,49 +353,31 @@ export function HouseRoom({
   );
 }
 
-function RoomSprite({ thing, scale }: { thing: Thing; scale: number }) {
-  return (
-    <span
-      aria-hidden
-      className="garden-house__thing"
-      style={{ left: thing.x * scale, top: thing.y * scale, zIndex: Math.round(thing.y) }}
-    >
-      <img
-        src={`/img/garden/house/${thing.id}.webp`}
-        alt=""
-        draggable={false}
-        className="garden-pixel-art block"
-        style={{ transform: `scale(${scale})`, transformOrigin: 'bottom center' }}
-      />
-    </span>
-  );
-}
-
-/** Предмет, к которому подходят: приёмник и тетрадь. */
+/** Вещь в комнате: на неё нажимают, к ней подходят, она называет себя. */
 function RoomButton({
   thing,
   scale,
-  label,
-  className = '',
+  lit,
   onClick,
 }: {
-  thing: Thing;
+  thing: RoomThing;
   scale: number;
-  label: string;
-  className?: string;
+  lit: boolean;
   onClick: () => void;
 }) {
+  const phrase = HOUSE[thing.id];
+  const label = phrase ? `${phrase.sr} — ${phrase.ru}` : thing.id;
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`garden-house__pick ${className}`}
-      style={{ left: thing.x * scale, top: thing.y * scale, zIndex: Math.round(thing.y) + 1 }}
+      className={`garden-house__pick ${lit ? 'garden-house__pick--on' : ''}`}
+      style={{ left: thing.x * scale, top: thing.y * scale, zIndex: Math.round(thing.y) }}
       aria-label={label}
       title={label}
     >
       <img
-        src={`/img/garden/house/${thing.id}.webp`}
+        src={gardenArt(`/img/garden/house/${spriteOf(thing)}.webp`)}
         alt=""
         draggable={false}
         className="garden-pixel-art block"
@@ -491,7 +501,7 @@ function useRadio(soundEnabled: boolean) {
   return { station, status, tune, stop };
 }
 
-/** Комната вписывается в экран так же, как мир: половинками масштаба. */
+/** Квартира вписывается в экран так же, как мир: половинками масштаба. */
 function useRoomScale(ref: React.RefObject<HTMLDivElement | null>): number {
   const [scale, setScale] = useState(3);
 
@@ -499,10 +509,7 @@ function useRoomScale(ref: React.RefObject<HTMLDivElement | null>): number {
     const node = ref.current;
     if (!node || typeof ResizeObserver === 'undefined') return;
     const measure = () => {
-      const fit = Math.min(
-        (node.clientWidth || 640) / ROOM.w,
-        (node.clientHeight || 400) / ROOM.h,
-      );
+      const fit = Math.min((node.clientWidth || 640) / ROOM.w, (node.clientHeight || 400) / ROOM.h);
       setScale(fit >= 2 ? Math.min(7, Math.floor(fit * 2) / 2) : Math.max(1, Math.floor(fit * 100) / 100));
     };
     measure();

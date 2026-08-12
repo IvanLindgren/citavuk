@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { unlockGardenAudio } from './audio';
-import type { Point } from './world';
+import type { Point, Rect } from './world';
 
 /**
  * Ходьба Читавука.
@@ -17,6 +17,8 @@ export interface WalkArea {
   maxY: number;
   /** Пикселей мира в секунду. */
   speed: number;
+  /** Мебель и стены: сквозь них не ходят. Во дворе пусто. */
+  blocked?: Rect[];
 }
 
 export interface Destination extends Point {
@@ -85,10 +87,7 @@ export function useWalker(area: WalkArea, spawn: Point) {
         const length = Math.hypot(dx, dy) || 1;
         dx /= length;
         dy /= length;
-        next = clampTo(bounds, {
-          x: next.x + dx * bounds.speed * elapsed,
-          y: next.y + dy * bounds.speed * elapsed,
-        });
+        next = step(bounds, next, dx * bounds.speed * elapsed, dy * bounds.speed * elapsed);
       } else if (destination.current) {
         const target = destination.current;
         const gapX = target.x - next.x;
@@ -100,10 +99,13 @@ export function useWalker(area: WalkArea, spawn: Point) {
           target.action?.();
         } else {
           active = true;
-          const step = Math.min(distance, bounds.speed * 1.15 * elapsed);
+          const length = Math.min(distance, bounds.speed * 1.15 * elapsed);
           dx = gapX / distance;
           dy = gapY / distance;
-          next = { x: next.x + dx * step, y: next.y + dy * step };
+          const moved = step(bounds, next, dx * length, dy * length, { x: gapX, y: gapY });
+          // Упёрся в мебель и не сдвинулся — значит, дошёл как мог.
+          if (moved === next) destination.current = null;
+          next = moved;
         }
       }
 
@@ -123,6 +125,44 @@ export function useWalker(area: WalkArea, spawn: Point) {
   }, []);
 
   return { point, moving, facing, moveTo };
+}
+
+/**
+ * Шаг с обходом мебели.
+ *
+ * Если прямой путь занят, пробуем те же движения по одной оси: так Читавук
+ * скользит вдоль дивана, а не встаёт перед ним намертво. Полноценного поиска
+ * пути тут нет и не нужно — проход в перегородке один и он широкий.
+ */
+function step(
+  area: WalkArea,
+  from: Point,
+  dx: number,
+  dy: number,
+  gap: Point = { x: Infinity, y: Infinity },
+): Point {
+  // Вдоль препятствия он идёт с той же скоростью, что и напрямик: иначе, идя к
+  // холодильнику наискосок, Читавук сползает вдоль кровати черепахой. Дальше
+  // цели по своей оси при этом не уходит, иначе начинает топтаться.
+  const length = Math.hypot(dx, dy);
+  const tries: Point[] = [
+    { x: from.x + dx, y: from.y + dy },
+    { x: from.x + Math.sign(dx) * Math.min(length, Math.abs(gap.x)), y: from.y },
+    { x: from.x, y: from.y + Math.sign(dy) * Math.min(length, Math.abs(gap.y)) },
+  ];
+  for (const candidate of tries) {
+    const point = clampTo(area, candidate);
+    // Шаг в ноль — не шаг: иначе идущий в стену дёргается на месте вечно.
+    if (point.x === from.x && point.y === from.y) continue;
+    if (!occupied(area, point)) return point;
+  }
+  return from;
+}
+
+function occupied(area: WalkArea, point: Point): boolean {
+  return (area.blocked ?? []).some(
+    (rect) => point.x > rect.x0 && point.x < rect.x1 && point.y > rect.y0 && point.y < rect.y1,
+  );
 }
 
 function clampTo(area: WalkArea, point: Point): Point {
