@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { LuArrowLeft, LuList, LuMapPin } from 'react-icons/lu';
+import { LuArrowLeft, LuBox, LuList, LuMap, LuMapPin } from 'react-icons/lu';
 
 import { PlaceSheet } from '../components/PlaceSheet';
+import { StreetObjectSheet } from '../components/StreetObjectSheet';
 import { ErrorNote, Spinner } from '../components/ui';
 import { Link } from '../lib/router';
 import { useSeo } from '../lib/seo';
@@ -16,6 +17,7 @@ import {
 } from '../travel/content';
 import { iconBody, PlaceIcon } from '../travel/icons';
 import { lookupPlace } from '../travel/overpass';
+import { supportsTravel3D, type StreetObject } from '../travel/scene3d';
 import type { City, CityPin, Point, TravelBundle } from '../travel/types';
 
 /**
@@ -43,6 +45,29 @@ const AUTOMATED = typeof navigator !== 'undefined' && navigator.webdriver;
 const TravelMap = lazy(() =>
   import('../components/TravelMap').then((m) => ({ default: m.TravelMap })),
 );
+
+const TravelScene3D = lazy(() =>
+  import('../components/TravelScene3D').then((m) => ({ default: m.TravelScene3D })),
+);
+
+type ViewMode = '2d' | '3d';
+const VIEW_KEY = 'citavuk-travel-view';
+
+function readView(): ViewMode {
+  try {
+    return localStorage.getItem(VIEW_KEY) === '2d' ? '2d' : '3d';
+  } catch {
+    return '3d';
+  }
+}
+
+function saveView(view: ViewMode) {
+  try {
+    localStorage.setItem(VIEW_KEY, view);
+  } catch {
+    // Режим останется выбранным до закрытия вкладки.
+  }
+}
 
 interface Selection {
   title: string;
@@ -73,6 +98,10 @@ export function Travel() {
   const [catalogue, setCatalogue] = useState(false);
   const [mapBroken, setMapBroken] = useState(false);
   const [mapReady, setMapReady] = useState(false);
+  const [view, setView] = useState<ViewMode>(readView);
+  const [sceneReady, setSceneReady] = useState(false);
+  const [sceneBroken, setSceneBroken] = useState(false);
+  const [streetObject, setStreetObject] = useState<StreetObject | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -101,6 +130,7 @@ export function Travel() {
   };
 
   const pickPin = useCallback((pin: CityPin) => {
+    setStreetObject(null);
     setMarked(pin.at);
     setSelection({ title: pin.sr, serbian: true, kind: pin.kind });
     setNote('');
@@ -142,9 +172,27 @@ export function Travel() {
   const closeSheet = useCallback(() => {
     setSelection(null);
     setMarked(null);
+    setStreetObject(null);
   }, []);
 
-  const withMap = Boolean(TILE_URL) && !mapBroken && !AUTOMATED;
+  const canShow3D = supportsTravel3D(city?.id ?? '');
+  const with3D = view === '3d' && canShow3D && !sceneBroken && !AUTOMATED;
+  const withMap = !with3D && Boolean(TILE_URL) && !mapBroken && !AUTOMATED;
+
+  const chooseView = (next: ViewMode) => {
+    if (next === '3d' && !canShow3D) return;
+    setView(next);
+    saveView(next);
+    setMapReady(false);
+    setSceneReady(false);
+    closeSheet();
+  };
+
+  useEffect(() => {
+    setMapReady(false);
+    setSceneReady(false);
+    setSceneBroken(false);
+  }, [city?.id]);
 
   useEffect(() => {
     if (!withMap || mapReady) return;
@@ -173,7 +221,26 @@ export function Travel() {
 
   return (
     <main className="relative isolate h-[100dvh] w-full overflow-hidden bg-[var(--bg)]">
-      {withMap ? (
+      {with3D ? (
+        <Suspense fallback={<div className="absolute inset-0 bg-[#dce2cf]" />}>
+          <TravelScene3D
+            cityId={city.id}
+            script={script}
+            onPick={(object) => {
+              setStreetObject(object);
+              setSelection(null);
+              setMarked(null);
+              setCatalogue(false);
+            }}
+            onReady={() => setSceneReady(true)}
+            onError={() => {
+              setSceneBroken(true);
+              setView('2d');
+              setMapReady(false);
+            }}
+          />
+        </Suspense>
+      ) : withMap ? (
         <Suspense fallback={<div className="absolute inset-0 bg-[var(--bg-sunken)]" />}>
           <TravelMap
             tileUrl={TILE_URL}
@@ -194,11 +261,11 @@ export function Travel() {
         />
       )}
 
-      {withMap && !mapReady && (
+      {((withMap && !mapReady) || (with3D && !sceneReady)) && (
         <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center bg-[var(--bg)]/75">
           <div className="flex items-center gap-3 rounded-2xl bg-[var(--bg-raised)] px-4 py-3 text-sm font-semibold shadow-lg">
             <Spinner className="size-5" />
-            Загружаем карту…
+            {with3D ? 'Строим город…' : 'Загружаем карту…'}
           </div>
         </div>
       )}
@@ -232,8 +299,30 @@ export function Travel() {
           </button>
         </div>
 
-        <div className="pointer-events-auto flex gap-2 overflow-x-auto pb-1">
-          {bundle.cities.map((item) => (
+        <div className="pointer-events-auto flex min-w-0 gap-2 pb-1">
+          <div className="flex shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 shadow-lg" role="group" aria-label="Вид карты">
+            <button
+              type="button"
+              onClick={() => chooseView('2d')}
+              aria-pressed={!with3D}
+              title="Обычная карта"
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${!with3D ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
+            >
+              <LuMap className="size-4" />2D
+            </button>
+            <button
+              type="button"
+              onClick={() => chooseView('3d')}
+              disabled={!canShow3D}
+              aria-pressed={with3D}
+              title={canShow3D ? 'Объёмный город' : 'Объёмный город доступен для Белграда и Нови-Сада'}
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${with3D ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'} disabled:opacity-35`}
+            >
+              <LuBox className="size-4" />3D
+            </button>
+          </div>
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto">
+            {bundle.cities.map((item) => (
             <button
               key={item.id}
               type="button"
@@ -250,7 +339,8 @@ export function Travel() {
             >
               {inScript(item.sr, script)}
             </button>
-          ))}
+            ))}
+          </div>
         </div>
       </header>
 
@@ -268,6 +358,7 @@ export function Travel() {
           script={script}
           onPick={(id) => {
             const picked = kindById(bundle, id);
+            setStreetObject(null);
             setSelection({ title: capitalize(picked?.ru ?? ''), serbian: false, kind: id });
             setMarked(null);
             setCatalogue(false);
@@ -287,6 +378,10 @@ export function Travel() {
           script={script}
           onClose={closeSheet}
         />
+      )}
+
+      {streetObject && (
+        <StreetObjectSheet object={streetObject} script={script} onClose={closeSheet} />
       )}
     </main>
   );
