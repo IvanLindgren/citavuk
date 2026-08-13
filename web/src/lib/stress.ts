@@ -16,18 +16,13 @@ import { toLatin } from './tokenize';
 
 const URL = '/reader/stress.txt';
 
-/** Обычный знак ударения, который ставится после ударной буквы. */
+/** Комбинируемый знак, который удаляем из выделения старой разметки. */
 export const STRESS_MARK = '\u0301';
 
 export type StressTable = Map<string, number>;
 
 const VOWELS = 'aeiouаеиоу';
 const RHOTIC = 'rр';
-
-/** Добавляет над буквой обычный акут, не меняя саму букву. */
-export function withStressMark(letter: string): string {
-  return `${letter}${STRESS_MARK}`;
-}
 
 /**
  * Индексы слоговых вершин слова.

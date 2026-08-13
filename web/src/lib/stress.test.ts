@@ -4,15 +4,7 @@ import {
   parseStressTable,
   stressIndex,
   syllableNuclei,
-  withStressMark,
 } from './stress';
-
-describe('знак ударения', () => {
-  it('ставит акут над буквой', () => {
-    expect(withStressMark('u')).toBe('u\u0301');
-    expect(withStressMark('р')).toBe('р\u0301');
-  });
-});
 
 describe('слоги', () => {
   it('вершина слога — гласная', () => {

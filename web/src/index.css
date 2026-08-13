@@ -217,6 +217,28 @@
     cursor: text;
   }
 
+  /*
+    Акут не является отдельным текстовым символом: иначе при выключке по
+    ширине браузер растягивает границу вокруг combining mark и разрывает слово.
+    Псевдоэлемент лежит над буквой, не занимает места и не попадает в выделение.
+  */
+  .reader-stress {
+    position: relative;
+  }
+
+  .reader-stress::after {
+    content: '\00b4';
+    position: absolute;
+    left: 54%;
+    top: -0.12em;
+    font-family: var(--font-display);
+    font-size: 0.58em;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+    transform: translateX(-30%);
+  }
+
   /* Пергаментная фактура: едва заметный шум, чтобы фон не выглядел
      стерильной заливкой. Рисуется фильтром SVG — без картинки и без запроса. */
   .paper-grain::before {

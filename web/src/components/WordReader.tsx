@@ -35,7 +35,6 @@ import {
   STRESS_MARK,
   stressIndex,
   useStressTable,
-  withStressMark,
   type StressTable,
 } from '../lib/stress';
 
@@ -816,7 +815,13 @@ function ReadableWord({
   return (
     <>
       {wordPieces(text, headLength, at).map((piece, index) => {
-        const content = piece.stress ? withStressMark(piece.text) : piece.text;
+        // Акут рисуется псевдоэлементом: отдельный комбинируемый символ внутри
+        // текста браузер растягивал при выключке по ширине, разрывая слово.
+        const content = piece.stress ? (
+          <span className="reader-stress" aria-label={piece.text}>
+            {piece.text}
+          </span>
+        ) : piece.text;
         return piece.bold ? (
           <b key={index} className="font-bold">
             {content}

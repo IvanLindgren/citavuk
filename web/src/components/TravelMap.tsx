@@ -136,5 +136,13 @@ export function TravelMap({
     found.current = new Marker({ element }).setLngLat(marked).addTo(instance);
   }, [marked]);
 
-  return <div ref={holder} className="absolute inset-0" />;
+  // MapLibre сам добавляет контейнеру `position: relative`. Если абсолютное
+  // позиционирование висит на том же узле, его CSS перебивает Tailwind и
+  // высота схлопывается до нуля (canvas остаётся служебных 300 px). Внешний
+  // слой держит геометрию экрана, внутренний MapLibre может менять свободно.
+  return (
+    <div className="absolute inset-0">
+      <div ref={holder} className="h-full w-full" />
+    </div>
+  );
 }
