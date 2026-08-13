@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LuVolume2, LuX } from 'react-icons/lu';
+import { LuCheck, LuPlus, LuVolume2, LuX } from 'react-icons/lu';
 
 import { ttsAudioUrl } from '../api/listening';
+import { saveVocabularyWord } from '../lib/vocabulary';
+import { useSync } from '../state/sync';
 import { inScript, type Script } from '../travel/content';
 import { PlaceIcon } from '../travel/icons';
-import type { PlaceContent, PlaceDialogue, PlaceKind } from '../travel/types';
+import type { PlaceContent, PlaceDialogue, PlaceKind, Phrase } from '../travel/types';
 
 /**
  * Что говорят в выбранном месте: слова, фразы и разговор целиком.
@@ -115,28 +117,95 @@ export function PlaceSheet({
         ) : (
           <ul className="flex flex-col gap-2">
             {(tab === 'words' ? content.words : content.phrases).map((item) => (
-              <li
+              <Row
                 key={item.sr}
-                className="flex items-start gap-3 rounded-2xl bg-[var(--bg-sunken)] px-4 py-3"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold">{inScript(item.sr, script)}</p>
-                  <p className="text-sm text-[var(--text-muted)]">{item.ru}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => speak(item.sr)}
-                  aria-label={`Произнести: ${item.sr}`}
-                  className="rounded-full p-2 text-[var(--accent)] hover:bg-[var(--bg-raised)]"
-                >
-                  <LuVolume2 className="size-5" />
-                </button>
-              </li>
+                item={item}
+                place={kind.sr}
+                script={script}
+                collectable={tab === 'words'}
+                onSpeak={speak}
+              />
             ))}
           </ul>
         )}
       </div>
     </aside>
+  );
+}
+
+/**
+ * Строка списка: слово или фраза.
+ *
+ * У слова есть ещё и «плюс» — оно уходит в личный словарь вместе с местом, в
+ * котором встретилось: «џезва» без пометки «сувенирница» через неделю уже ни о
+ * чём не говорит.
+ */
+function Row({
+  item,
+  place,
+  script,
+  collectable,
+  onSpeak,
+}: {
+  item: Phrase;
+  place: string;
+  script: Script;
+  collectable: boolean;
+  onSpeak: (text: string) => void;
+}) {
+  const { sync } = useSync();
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setSaved(false);
+  }, [item.sr]);
+
+  const save = async () => {
+    if (saving || saved) return;
+    setSaving(true);
+    try {
+      await saveVocabularyWord({
+        word: item.sr,
+        lemma: item.sr,
+        translation: item.ru,
+        forms: { где: place, источник: 'Путешествие по Сербии' },
+      });
+      setSaved(true);
+      void sync();
+    } catch {
+      // Слово можно добавить ещё раз: кнопка остаётся живой.
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <li className="flex items-start gap-1 rounded-2xl bg-[var(--bg-sunken)] px-4 py-3">
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold">{inScript(item.sr, script)}</p>
+        <p className="text-sm text-[var(--text-muted)]">{item.ru}</p>
+      </div>
+      <button
+        type="button"
+        onClick={() => onSpeak(item.sr)}
+        aria-label={`Произнести: ${item.sr}`}
+        className="rounded-full p-2 text-[var(--accent)] hover:bg-[var(--bg-raised)]"
+      >
+        <LuVolume2 className="size-5" />
+      </button>
+      {collectable && (
+        <button
+          type="button"
+          onClick={() => void save()}
+          disabled={saving || saved}
+          aria-label={saved ? `${item.sr} уже в словаре` : `Добавить в словарь: ${item.sr}`}
+          className="rounded-full p-2 text-[var(--accent)] hover:bg-[var(--bg-raised)] disabled:text-[var(--text-muted)]"
+        >
+          {saved ? <LuCheck className="size-5" /> : <LuPlus className="size-5" />}
+        </button>
+      )}
+    </li>
   );
 }
 

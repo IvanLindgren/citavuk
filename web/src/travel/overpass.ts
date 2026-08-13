@@ -58,6 +58,13 @@ function distance(from: Point, to: Point): number {
   return Math.hypot(dx, dy);
 }
 
+/**
+ * Лучшее место среди найденного.
+ *
+ * Знакомый тип важнее всего, но названное заведение неизвестного типа тоже
+ * годится: молчание в ответ на нажатие выглядит как поломка, а слова, нужные в
+ * любом месте, пригодятся и в адвокатской конторе.
+ */
 export function pickPlace(
   elements: OverpassElement[],
   clicked: Point,
@@ -70,13 +77,13 @@ export function pickPlace(
     const tags = element.tags;
     if (!tags) continue;
     const kind = matchKind(tags, kinds);
-    if (!kind) continue;
+    const name = placeName(tags);
+    // Безымянный контур без знакомого типа — это просто здание или участок
+    // земли, и сказать о нём нечего.
+    if (!kind && !name) continue;
 
     const at = positionOf(element) ?? clicked;
-    const name = placeName(tags);
-    // Названное заведение важнее безымянного контура: в одной точке лежат и
-    // пекарня, и здание, в котором она сидит.
-    const score = (name ? 50 : 0) - distance(clicked, at);
+    const score = (kind ? 200 : 0) + (name ? 50 : 0) - distance(clicked, at);
     if (score > bestScore) {
       bestScore = score;
       best = { kind, name, at, tags };

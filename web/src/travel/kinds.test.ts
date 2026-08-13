@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { matchKind, placeName } from './kinds';
+import { matchKind, matchOmt, placeName } from './kinds';
 import { pickPlace } from './overpass';
 import type { KindIndex, Point } from './types';
 
@@ -48,6 +48,43 @@ describe('опознание места по тегам OSM', () => {
   });
 });
 
+describe('опознание места по подклассу векторного тайла', () => {
+  it('узнаёт место по подклассу', () => {
+    expect(matchOmt('bakery', 'bakery', kinds)).toBe('bakery');
+    expect(matchOmt('pharmacy', 'pharmacy', kinds)).toBe('pharmacy');
+    expect(matchOmt('lodging', 'hostel', kinds)).toBe('hotel');
+  });
+
+  it('подкласс сильнее класса: книжный — не библиотека', () => {
+    expect(matchOmt('library', 'books', kinds)).toBe('bookstore');
+    expect(matchOmt('library', 'library', kinds)).toBe('library');
+    expect(matchOmt('art_gallery', 'artwork', kinds)).toBe('artwork');
+    expect(matchOmt('art_gallery', 'gallery', kinds)).toBe('museum');
+  });
+
+  it('правило «класс целиком» ловит то, у чего подкласс свой у каждого', () => {
+    // Баскетбольная, теннисная и футбольная площадки — всё это один тип.
+    expect(matchOmt('pitch', 'basketball', kinds)).toBe('sport_field');
+    expect(matchOmt('pitch', 'tennis', kinds)).toBe('sport_field');
+    expect(matchOmt('attraction', 'theme_park', kinds)).toBe('landmark');
+  });
+
+  it('незнакомое место остаётся незнакомым', () => {
+    expect(matchOmt('office', 'lawyer', kinds)).toBeNull();
+    expect(matchOmt('', '', kinds)).toBeNull();
+  });
+
+  it('каждое правило принадлежит одному типу', () => {
+    const seen = new Map<string, string>();
+    for (const kind of kinds) {
+      for (const rule of kind.omt) {
+        expect(seen.get(rule), `${rule}: ${seen.get(rule)} и ${kind.id}`).toBeUndefined();
+        seen.set(rule, kind.id);
+      }
+    }
+  });
+});
+
 describe('выбор объекта под нажатием', () => {
   const clicked: Point = [20.4569, 44.8176];
 
@@ -81,8 +118,47 @@ describe('выбор объекта под нажатием', () => {
     expect(found?.at[0]).toBeCloseTo(20.457, 4);
   });
 
-  it('пустой ответ — это не ошибка, а «здесь ничего знакомого»', () => {
+  it('названное место незнакомого типа тоже годится', () => {
+    // Адвокатской конторы в справочнике нет, но слова, нужные везде, там
+    // пригодятся — и это лучше, чем молчание в ответ на нажатие.
+    const found = pickPlace(
+      [
+        {
+          type: 'node',
+          lon: 20.4569,
+          lat: 44.8176,
+          tags: { office: 'lawyer', name: 'Адвокатска канцеларија' },
+        },
+      ],
+      clicked,
+      kinds,
+    );
+    expect(found?.kind).toBeNull();
+    expect(found?.name).toBe('Адвокатска канцеларија');
+  });
+
+  it('знакомый тип важнее чужого названия рядом', () => {
+    const found = pickPlace(
+      [
+        { type: 'node', lon: 20.4569, lat: 44.8176, tags: { office: 'lawyer', name: 'Контора' } },
+        { type: 'node', lon: 20.4572, lat: 44.8178, tags: { amenity: 'pharmacy' } },
+      ],
+      clicked,
+      kinds,
+    );
+    expect(found?.kind).toBe('pharmacy');
+  });
+
+  it('пустой ответ — это не ошибка, а «здесь ничего нет»', () => {
     expect(pickPlace([], clicked, kinds)).toBeNull();
     expect(pickPlace([{ type: 'node', lon: 20.4569, lat: 44.8176 }], clicked, kinds)).toBeNull();
+    // Безымянный контур здания — не место, а просто геометрия.
+    expect(
+      pickPlace(
+        [{ type: 'way', center: { lon: 20.4569, lat: 44.8176 }, tags: { building: 'yes' } }],
+        clicked,
+        kinds,
+      ),
+    ).toBeNull();
   });
 });

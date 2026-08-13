@@ -55,6 +55,35 @@ export function matchKind(tags: Tags, kinds: PlaceKind[]): string | null {
   return best;
 }
 
+/**
+ * Тип места по подклассу векторного тайла.
+ *
+ * В тайлах OpenMapTiles у каждого места есть `class` (кучное «кафе», «магазин»)
+ * и `subclass` — почти всегда сам тег OSM: `bakery`, `pharmacy`, `bus_stop`.
+ * Точное совпадение по `subclass` сильнее правила `class/*`: класс `pitch`
+ * целиком — спортивная площадка, но `library/books` — книжный, а не
+ * библиотека.
+ */
+export function matchOmt(
+  cls: string,
+  subclass: string,
+  kinds: PlaceKind[],
+): string | null {
+  let byClass: string | null = null;
+
+  for (const kind of kinds) {
+    for (const rule of kind.omt) {
+      if (rule.endsWith('/*')) {
+        if (cls && rule.slice(0, -2) === cls) byClass ??= kind.id;
+        continue;
+      }
+      if (subclass && rule === subclass) return kind.id;
+    }
+  }
+
+  return byClass;
+}
+
 /** Название объекта: сербское, если оно есть, иначе любое. */
 export function placeName(tags: Tags): string {
   return (

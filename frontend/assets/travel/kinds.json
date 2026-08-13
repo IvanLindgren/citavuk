@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "kinds": [
     {
       "id": "bakery",
@@ -7,7 +7,9 @@
       "sr": "пекара",
       "ru": "пекарня",
       "icon": "bread",
-      "osm": ["shop=bakery", "amenity=bakery", "shop=pastry;cuisine=bakery"]
+      "rank": 1,
+      "osm": ["shop=bakery", "amenity=bakery", "shop=pastry;cuisine=bakery"],
+      "omt": ["bakery"]
     },
     {
       "id": "cafe",
@@ -15,7 +17,9 @@
       "sr": "кафић",
       "ru": "кафе",
       "icon": "coffee",
-      "osm": ["amenity=cafe", "amenity=bar;cuisine=coffee_shop", "shop=coffee"]
+      "rank": 1,
+      "osm": ["amenity=cafe", "amenity=bar;cuisine=coffee_shop", "shop=coffee"],
+      "omt": ["cafe", "coffee", "coffee_shop", "internet_cafe"]
     },
     {
       "id": "restaurant",
@@ -23,7 +27,9 @@
       "sr": "ресторан",
       "ru": "ресторан",
       "icon": "fork",
-      "osm": ["amenity=restaurant", "amenity=fast_food", "amenity=pub"]
+      "rank": 1,
+      "osm": ["amenity=restaurant", "amenity=fast_food"],
+      "omt": ["restaurant", "fast_food", "food_court", "pizza", "burger", "kebab", "barbecue", "seafood", "noodle"]
     },
     {
       "id": "pastry",
@@ -31,7 +37,9 @@
       "sr": "посластичарница",
       "ru": "кондитерская",
       "icon": "cake",
-      "osm": ["shop=pastry", "shop=confectionery", "amenity=ice_cream"]
+      "rank": 1,
+      "osm": ["shop=pastry", "shop=confectionery", "amenity=ice_cream"],
+      "omt": ["pastry", "confectionery", "ice_cream", "chocolate", "candy", "sweets", "cake"]
     },
     {
       "id": "grocery",
@@ -39,7 +47,9 @@
       "sr": "продавница",
       "ru": "продуктовый магазин",
       "icon": "basket",
-      "osm": ["shop=supermarket", "shop=convenience", "shop=greengrocer"]
+      "rank": 1,
+      "osm": ["shop=supermarket", "shop=convenience", "shop=greengrocer"],
+      "omt": ["supermarket", "convenience", "grocery", "greengrocer", "deli", "dairy", "frozen_food"]
     },
     {
       "id": "market",
@@ -47,7 +57,9 @@
       "sr": "пијаца",
       "ru": "рынок",
       "icon": "market",
-      "osm": ["amenity=marketplace", "shop=farm"]
+      "rank": 1,
+      "osm": ["amenity=marketplace", "shop=farm"],
+      "omt": ["marketplace", "farm"]
     },
     {
       "id": "butcher",
@@ -55,7 +67,9 @@
       "sr": "месара",
       "ru": "мясная лавка",
       "icon": "meat",
-      "osm": ["shop=butcher"]
+      "rank": 2,
+      "osm": ["shop=butcher"],
+      "omt": ["butcher", "fishmonger"]
     },
     {
       "id": "pharmacy",
@@ -63,7 +77,9 @@
       "sr": "апотека",
       "ru": "аптека",
       "icon": "pill",
-      "osm": ["amenity=pharmacy", "healthcare=pharmacy"]
+      "rank": 1,
+      "osm": ["amenity=pharmacy", "healthcare=pharmacy"],
+      "omt": ["pharmacy"]
     },
     {
       "id": "clinic",
@@ -71,7 +87,9 @@
       "sr": "дом здравља",
       "ru": "поликлиника",
       "icon": "cross",
-      "osm": ["amenity=clinic", "amenity=doctors", "amenity=hospital", "healthcare=centre"]
+      "rank": 1,
+      "osm": ["amenity=clinic", "amenity=doctors", "amenity=hospital", "healthcare=centre"],
+      "omt": ["clinic", "hospital", "doctors", "physiotherapist", "medical_supply"]
     },
     {
       "id": "exchange",
@@ -79,7 +97,9 @@
       "sr": "мењачница",
       "ru": "обменник",
       "icon": "money",
-      "osm": ["amenity=bureau_de_change", "amenity=bank", "amenity=atm"]
+      "rank": 1,
+      "osm": ["amenity=bureau_de_change", "amenity=bank", "amenity=atm"],
+      "omt": ["bank", "atm", "bureau_de_change", "money_transfer"]
     },
     {
       "id": "post",
@@ -87,7 +107,9 @@
       "sr": "пошта",
       "ru": "почта",
       "icon": "envelope",
-      "osm": ["amenity=post_office", "amenity=post_depot"]
+      "rank": 2,
+      "osm": ["amenity=post_office", "amenity=post_depot"],
+      "omt": ["post_office", "post_box", "parcel_locker", "parcel_pickup"]
     },
     {
       "id": "kiosk",
@@ -95,7 +117,9 @@
       "sr": "трафика",
       "ru": "киоск",
       "icon": "kiosk",
-      "osm": ["shop=kiosk", "shop=newsagent", "shop=tobacco"]
+      "rank": 2,
+      "osm": ["shop=kiosk", "shop=newsagent", "shop=tobacco"],
+      "omt": ["kiosk", "newsagent", "tobacco", "lottery"]
     },
     {
       "id": "bookstore",
@@ -103,7 +127,9 @@
       "sr": "књижара",
       "ru": "книжный магазин",
       "icon": "book",
-      "osm": ["shop=books", "shop=stationery"]
+      "rank": 2,
+      "osm": ["shop=books", "shop=stationery"],
+      "omt": ["books", "stationery", "copyshop", "newspaper"]
     },
     {
       "id": "clothing",
@@ -111,7 +137,9 @@
       "sr": "продавница одеће",
       "ru": "магазин одежды",
       "icon": "shirt",
-      "osm": ["shop=clothes", "shop=shoes", "shop=boutique"]
+      "rank": 2,
+      "osm": ["shop=clothes", "shop=shoes", "shop=boutique"],
+      "omt": ["clothes", "shoes", "boutique", "fashion", "bag", "tailor", "fabric", "second_hand"]
     },
     {
       "id": "hairdresser",
@@ -119,7 +147,9 @@
       "sr": "фризерски салон",
       "ru": "парикмахерская",
       "icon": "scissors",
-      "osm": ["shop=hairdresser", "shop=beauty"]
+      "rank": 2,
+      "osm": ["shop=hairdresser", "shop=beauty"],
+      "omt": ["hairdresser", "barber", "beauty", "nail_salon", "massage", "tattoo"]
     },
     {
       "id": "hotel",
@@ -127,7 +157,9 @@
       "sr": "хотел",
       "ru": "гостиница",
       "icon": "bed",
-      "osm": ["tourism=hotel", "tourism=hostel", "tourism=guest_house", "tourism=apartment"]
+      "rank": 1,
+      "osm": ["tourism=hotel", "tourism=hostel", "tourism=guest_house", "tourism=apartment"],
+      "omt": ["hotel", "hostel", "guest_house", "motel", "apartment", "bed_and_breakfast"]
     },
     {
       "id": "museum",
@@ -135,7 +167,9 @@
       "sr": "музеј",
       "ru": "музей",
       "icon": "museum",
-      "osm": ["tourism=museum", "tourism=gallery", "historic=castle"]
+      "rank": 1,
+      "osm": ["tourism=museum", "tourism=gallery", "historic=castle"],
+      "omt": ["museum", "gallery", "arts_centre"]
     },
     {
       "id": "cinema",
@@ -143,7 +177,9 @@
       "sr": "биоскоп",
       "ru": "кинотеатр",
       "icon": "film",
-      "osm": ["amenity=cinema"]
+      "rank": 2,
+      "osm": ["amenity=cinema"],
+      "omt": ["cinema"]
     },
     {
       "id": "theatre",
@@ -151,7 +187,9 @@
       "sr": "позориште",
       "ru": "театр",
       "icon": "masks",
-      "osm": ["amenity=theatre", "theatre:genre=*"]
+      "rank": 2,
+      "osm": ["amenity=theatre", "theatre:genre=*"],
+      "omt": ["theatre", "opera", "concert_hall", "music_venue"]
     },
     {
       "id": "gas_station",
@@ -159,7 +197,9 @@
       "sr": "бензинска пумпа",
       "ru": "заправка",
       "icon": "fuel",
-      "osm": ["amenity=fuel", "amenity=charging_station"]
+      "rank": 2,
+      "osm": ["amenity=fuel", "amenity=charging_station"],
+      "omt": ["fuel", "charging_station", "car_wash"]
     },
     {
       "id": "bus_station",
@@ -167,7 +207,9 @@
       "sr": "аутобуска станица",
       "ru": "автовокзал",
       "icon": "bus",
-      "osm": ["amenity=bus_station"]
+      "rank": 1,
+      "osm": ["amenity=bus_station"],
+      "omt": ["bus_station", "coach_station"]
     },
     {
       "id": "train_station",
@@ -175,7 +217,9 @@
       "sr": "железничка станица",
       "ru": "железнодорожный вокзал",
       "icon": "train",
-      "osm": ["railway=station", "railway=halt", "building=train_station"]
+      "rank": 1,
+      "osm": ["railway=station", "railway=halt", "building=train_station"],
+      "omt": ["station", "subway", "subway_entrance", "halt"]
     },
     {
       "id": "airport",
@@ -183,7 +227,9 @@
       "sr": "аеродром",
       "ru": "аэропорт",
       "icon": "plane",
-      "osm": ["aeroway=aerodrome", "aeroway=terminal"]
+      "rank": 1,
+      "osm": ["aeroway=aerodrome", "aeroway=terminal"],
+      "omt": ["aerodrome", "airport", "terminal", "helipad"]
     },
     {
       "id": "bridge",
@@ -191,7 +237,9 @@
       "sr": "мост",
       "ru": "мост",
       "icon": "bridge",
-      "osm": ["man_made=bridge", "bridge=yes"]
+      "rank": 2,
+      "osm": ["man_made=bridge", "bridge=yes"],
+      "omt": []
     },
     {
       "id": "street",
@@ -199,7 +247,9 @@
       "sr": "улица",
       "ru": "улица",
       "icon": "street",
-      "osm": ["highway=residential", "highway=pedestrian", "highway=living_street", "highway=primary"]
+      "rank": 3,
+      "osm": ["highway=residential", "highway=pedestrian", "highway=living_street", "highway=primary"],
+      "omt": []
     },
     {
       "id": "square",
@@ -207,7 +257,9 @@
       "sr": "трг",
       "ru": "площадь",
       "icon": "square",
-      "osm": ["place=square", "highway=pedestrian;area=yes"]
+      "rank": 2,
+      "osm": ["place=square", "highway=pedestrian;area=yes"],
+      "omt": []
     },
     {
       "id": "park",
@@ -215,7 +267,9 @@
       "sr": "парк",
       "ru": "парк",
       "icon": "tree",
-      "osm": ["leisure=park", "leisure=garden", "landuse=forest"]
+      "rank": 1,
+      "osm": ["leisure=park", "leisure=garden", "landuse=forest"],
+      "omt": ["park", "garden", "dog_park", "nature_reserve", "picnic_site"]
     },
     {
       "id": "bus_stop",
@@ -223,7 +277,9 @@
       "sr": "аутобуско стајалиште",
       "ru": "автобусная остановка",
       "icon": "stop",
-      "osm": ["highway=bus_stop", "public_transport=platform", "railway=tram_stop"]
+      "rank": 3,
+      "osm": ["highway=bus_stop", "public_transport=platform", "railway=tram_stop"],
+      "omt": ["bus_stop", "tram_stop", "platform"]
     },
     {
       "id": "crossing",
@@ -231,7 +287,9 @@
       "sr": "пешачки прелаз",
       "ru": "пешеходный переход",
       "icon": "crossing",
-      "osm": ["highway=crossing", "crossing=marked", "highway=traffic_signals"]
+      "rank": 3,
+      "osm": ["highway=crossing", "crossing=marked", "highway=traffic_signals"],
+      "omt": []
     },
     {
       "id": "taxi_stand",
@@ -239,7 +297,9 @@
       "sr": "такси стајалиште",
       "ru": "стоянка такси",
       "icon": "taxi",
-      "osm": ["amenity=taxi"]
+      "rank": 3,
+      "osm": ["amenity=taxi"],
+      "omt": ["taxi"]
     },
     {
       "id": "parking",
@@ -247,7 +307,9 @@
       "sr": "паркинг",
       "ru": "парковка",
       "icon": "parking",
-      "osm": ["amenity=parking", "amenity=parking_entrance"]
+      "rank": 3,
+      "osm": ["amenity=parking", "amenity=parking_entrance"],
+      "omt": ["parking", "parking_entrance", "bicycle_parking", "motorcycle_parking"]
     },
     {
       "id": "quay",
@@ -255,7 +317,9 @@
       "sr": "кеј",
       "ru": "набережная",
       "icon": "water",
-      "osm": ["man_made=quay", "natural=water;name=*", "waterway=riverbank"]
+      "rank": 2,
+      "osm": ["man_made=quay", "natural=water;name=*", "waterway=riverbank"],
+      "omt": ["marina", "harbor", "pier", "ferry_terminal"]
     },
     {
       "id": "underpass",
@@ -263,7 +327,319 @@
       "sr": "подземни пролаз",
       "ru": "подземный переход",
       "icon": "tunnel",
-      "osm": ["tunnel=yes;highway=footway", "highway=footway;layer=-1"]
+      "rank": 3,
+      "osm": ["tunnel=yes;highway=footway", "highway=footway;layer=-1"],
+      "omt": []
+    },
+    {
+      "id": "bar",
+      "group": "place",
+      "sr": "бар",
+      "ru": "бар",
+      "icon": "glass",
+      "rank": 1,
+      "osm": ["amenity=bar", "amenity=pub", "amenity=nightclub"],
+      "omt": ["bar", "pub", "nightclub", "biergarten", "beer"]
+    },
+    {
+      "id": "church",
+      "group": "road",
+      "sr": "црква",
+      "ru": "церковь",
+      "icon": "church",
+      "rank": 1,
+      "osm": ["amenity=place_of_worship", "building=church"],
+      "omt": ["christian", "muslim", "jewish", "place_of_worship", "chapel", "cathedral", "mosque", "synagogue"]
+    },
+    {
+      "id": "school",
+      "group": "place",
+      "sr": "школа",
+      "ru": "школа",
+      "icon": "school",
+      "rank": 2,
+      "osm": ["amenity=school"],
+      "omt": ["school"]
+    },
+    {
+      "id": "kindergarten",
+      "group": "place",
+      "sr": "вртић",
+      "ru": "детский сад",
+      "icon": "child",
+      "rank": 2,
+      "osm": ["amenity=kindergarten"],
+      "omt": ["kindergarten", "childcare"]
+    },
+    {
+      "id": "university",
+      "group": "place",
+      "sr": "факултет",
+      "ru": "университет",
+      "icon": "graduation",
+      "rank": 2,
+      "osm": ["amenity=university", "amenity=college"],
+      "omt": ["university", "college"]
+    },
+    {
+      "id": "library",
+      "group": "place",
+      "sr": "библиотека",
+      "ru": "библиотека",
+      "icon": "library",
+      "rank": 2,
+      "osm": ["amenity=library"],
+      "omt": ["library"]
+    },
+    {
+      "id": "dentist",
+      "group": "place",
+      "sr": "зубар",
+      "ru": "стоматология",
+      "icon": "tooth",
+      "rank": 2,
+      "osm": ["amenity=dentist", "healthcare=dentist"],
+      "omt": ["dentist"]
+    },
+    {
+      "id": "optician",
+      "group": "place",
+      "sr": "оптичар",
+      "ru": "оптика",
+      "icon": "glasses",
+      "rank": 2,
+      "osm": ["shop=optician"],
+      "omt": ["optician"]
+    },
+    {
+      "id": "jewelry",
+      "group": "place",
+      "sr": "златара",
+      "ru": "ювелирный",
+      "icon": "ring",
+      "rank": 2,
+      "osm": ["shop=jewelry", "shop=watches"],
+      "omt": ["jewelry", "watches"]
+    },
+    {
+      "id": "chemist",
+      "group": "place",
+      "sr": "дрогерија",
+      "ru": "бытовая химия и косметика",
+      "icon": "soap",
+      "rank": 2,
+      "osm": ["shop=chemist", "shop=cosmetics", "shop=perfumery"],
+      "omt": ["chemist", "cosmetics", "perfumery", "drugstore"]
+    },
+    {
+      "id": "florist",
+      "group": "place",
+      "sr": "цвећара",
+      "ru": "цветочный",
+      "icon": "flower",
+      "rank": 2,
+      "osm": ["shop=florist", "shop=garden_centre"],
+      "omt": ["florist", "garden_centre"]
+    },
+    {
+      "id": "electronics",
+      "group": "place",
+      "sr": "продавница технике",
+      "ru": "техника",
+      "icon": "plug",
+      "rank": 2,
+      "osm": ["shop=electronics", "shop=computer", "shop=mobile_phone"],
+      "omt": ["electronics", "computer", "mobile_phone", "hifi", "video_games", "photo"]
+    },
+    {
+      "id": "travel_agency",
+      "group": "place",
+      "sr": "туристичка агенција",
+      "ru": "турагентство",
+      "icon": "suitcase",
+      "rank": 2,
+      "osm": ["shop=travel_agency"],
+      "omt": ["travel_agency"]
+    },
+    {
+      "id": "car_repair",
+      "group": "place",
+      "sr": "ауто-сервис",
+      "ru": "автосервис",
+      "icon": "wrench",
+      "rank": 2,
+      "osm": ["shop=car_repair", "shop=car_parts", "shop=tyres"],
+      "omt": ["car_repair", "car_parts", "tyres", "car", "motorcycle_repair"]
+    },
+    {
+      "id": "car_rental",
+      "group": "place",
+      "sr": "рент-а-кар",
+      "ru": "прокат машин",
+      "icon": "car",
+      "rank": 2,
+      "osm": ["amenity=car_rental", "amenity=car_sharing"],
+      "omt": ["car_rental", "car_sharing"]
+    },
+    {
+      "id": "pet",
+      "group": "place",
+      "sr": "продавница за кућне љубимце",
+      "ru": "зоомагазин",
+      "icon": "paw",
+      "rank": 2,
+      "osm": ["shop=pet", "amenity=veterinary"],
+      "omt": ["pet", "pet_grooming", "veterinary"]
+    },
+    {
+      "id": "gym",
+      "group": "place",
+      "sr": "теретана",
+      "ru": "спортзал",
+      "icon": "dumbbell",
+      "rank": 2,
+      "osm": ["leisure=fitness_centre", "leisure=sports_centre"],
+      "omt": ["fitness_centre", "gym", "fitness", "sports_centre"]
+    },
+    {
+      "id": "pool",
+      "group": "place",
+      "sr": "базен",
+      "ru": "бассейн",
+      "icon": "waves",
+      "rank": 2,
+      "osm": ["leisure=swimming_pool", "leisure=water_park"],
+      "omt": ["swimming_pool", "swimming_area", "water_park", "swimming"]
+    },
+    {
+      "id": "information",
+      "group": "place",
+      "sr": "туристичке информације",
+      "ru": "туринформация",
+      "icon": "info",
+      "rank": 3,
+      "osm": ["tourism=information"],
+      "omt": ["information", "board", "map", "guidepost", "visitor_centre"]
+    },
+    {
+      "id": "souvenir",
+      "group": "place",
+      "sr": "сувенирница",
+      "ru": "сувениры",
+      "icon": "gift",
+      "rank": 2,
+      "osm": ["shop=gift", "shop=souvenir", "shop=antiques"],
+      "omt": ["gift", "souvenir", "art", "antiques", "craft"]
+    },
+    {
+      "id": "wine",
+      "group": "place",
+      "sr": "винотека",
+      "ru": "винный магазин",
+      "icon": "wine",
+      "rank": 2,
+      "osm": ["shop=wine", "shop=alcohol", "shop=beverages"],
+      "omt": ["wine", "alcohol", "beverages", "brewery"]
+    },
+    {
+      "id": "police",
+      "group": "place",
+      "sr": "полицијска станица",
+      "ru": "полиция",
+      "icon": "shield",
+      "rank": 1,
+      "osm": ["amenity=police"],
+      "omt": ["police"]
+    },
+    {
+      "id": "embassy",
+      "group": "place",
+      "sr": "амбасада",
+      "ru": "посольство",
+      "icon": "flag",
+      "rank": 2,
+      "osm": ["amenity=embassy", "office=diplomatic"],
+      "omt": ["diplomatic", "embassy", "consulate"]
+    },
+    {
+      "id": "laundry",
+      "group": "place",
+      "sr": "перионица",
+      "ru": "прачечная",
+      "icon": "washer",
+      "rank": 2,
+      "osm": ["shop=laundry", "shop=dry_cleaning"],
+      "omt": ["laundry", "dry_cleaning"]
+    },
+    {
+      "id": "fountain",
+      "group": "road",
+      "sr": "фонтана",
+      "ru": "фонтан",
+      "icon": "fountain",
+      "rank": 3,
+      "osm": ["amenity=fountain", "amenity=drinking_water"],
+      "omt": ["fountain", "drinking_water"]
+    },
+    {
+      "id": "artwork",
+      "group": "road",
+      "sr": "скулптура",
+      "ru": "скульптура",
+      "icon": "statue",
+      "rank": 3,
+      "osm": ["tourism=artwork", "historic=monument"],
+      "omt": ["artwork", "statue", "sculpture"]
+    },
+    {
+      "id": "playground",
+      "group": "road",
+      "sr": "игралиште",
+      "ru": "детская площадка",
+      "icon": "swing",
+      "rank": 3,
+      "osm": ["leisure=playground"],
+      "omt": ["playground"]
+    },
+    {
+      "id": "sport_field",
+      "group": "road",
+      "sr": "спортски терен",
+      "ru": "спортплощадка",
+      "icon": "ball",
+      "rank": 3,
+      "osm": ["leisure=pitch", "leisure=stadium", "leisure=sports_hall"],
+      "omt": ["pitch/*", "stadium", "sports_hall", "golf"]
+    },
+    {
+      "id": "landmark",
+      "group": "road",
+      "sr": "знаменитост",
+      "ru": "достопримечательность",
+      "icon": "landmark",
+      "rank": 1,
+      "osm": ["tourism=attraction", "historic=memorial", "tourism=viewpoint", "historic=ruins"],
+      "omt": ["attraction/*", "monument", "memorial", "viewpoint", "castle", "ruins", "archaeological_site"]
+    },
+    {
+      "id": "toilets",
+      "group": "road",
+      "sr": "јавни тоалет",
+      "ru": "туалет",
+      "icon": "toilet",
+      "rank": 3,
+      "osm": ["amenity=toilets"],
+      "omt": ["toilets"]
+    },
+    {
+      "id": "anywhere",
+      "group": "basic",
+      "sr": "свуда",
+      "ru": "в любом месте",
+      "icon": "pin",
+      "rank": 9,
+      "osm": [],
+      "omt": []
     }
   ]
 }

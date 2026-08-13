@@ -929,8 +929,9 @@
   }
 
   /*
-    Метки на карте Путешествия. Их создаёт Leaflet обычным DOM, минуя React,
-    поэтому классы описаны здесь, а не выданы утилитами в разметке.
+    Метки на карте Путешествия. Их создаёт MapLibre обычным DOM, минуя React,
+    поэтому классы описаны здесь, а не выданы утилитами в разметке. Сдвиг метки
+    к точке карта задаёт сама, поэтому своего transform тут нет.
   */
   .travel-pin {
     display: flex;
@@ -948,12 +949,6 @@
     white-space: nowrap;
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
     cursor: pointer;
-    transform: translate(-50%, -100%);
-  }
-
-  .travel-marker {
-    border: 0;
-    background: transparent;
   }
 
   .travel-pin:hover {
@@ -972,14 +967,6 @@
     height: 100%;
   }
 
-  .travel-map--compact .travel-pin {
-    padding: 0.25rem 0.35rem;
-  }
-
-  .travel-map--compact .travel-pin-label {
-    display: none;
-  }
-
   /* Кружок на месте, которое только что нашлось по нажатию на карту. */
   .travel-found {
     width: 18px;
@@ -990,54 +977,9 @@
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
   }
 
-  .travel-3d-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-    touch-action: none;
-    cursor: grab;
-  }
-
-  .travel-3d-canvas:active {
-    cursor: grabbing;
-  }
-
-  .travel-3d-label {
-    position: absolute;
-    left: 0;
-    top: 0;
-    max-width: 9.5rem;
-    overflow: hidden;
-    padding: 0.28rem 0.48rem;
-    border: 1px solid rgb(72 76 57 / 0.24);
-    border-radius: 6px;
-    background: rgb(251 246 234 / 0.94);
-    box-shadow: 0 2px 7px rgb(31 34 27 / 0.2);
-    color: #2b3429;
-    font-family: 'Noto Sans', system-ui, sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    line-height: 1.05;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    pointer-events: auto;
-    will-change: transform;
-  }
-
-  .travel-3d-label:hover,
-  .travel-3d-label:focus-visible {
-    border-color: var(--accent);
-    color: var(--accent);
-    outline: none;
-  }
-
-  .travel-3d-label--tree {
-    border-color: rgb(47 111 70 / 0.42);
-  }
-
-  .travel-3d-label--bench,
-  .travel-3d-label--artwork {
-    border-color: rgb(158 43 37 / 0.38);
+  /* Кнопки карты стоят в правом нижнем углу, где им не мешает карточка места. */
+  .maplibregl-ctrl-bottom-right .maplibregl-ctrl {
+    margin: 0 0.6rem 0.6rem 0;
   }
 }
 

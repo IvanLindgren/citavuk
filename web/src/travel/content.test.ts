@@ -23,11 +23,35 @@ function content(kind: string): PlaceContent {
 const LATIN = /[a-zA-Z]/;
 
 describe('места Путешествия', () => {
-  it('типов хватает на город: 15 заведений и дорожные объекты', () => {
+  it('типов хватает на настоящий город, а не на восемь меток', () => {
     const places = index.kinds.filter((kind) => kind.group === 'place');
     const roads = index.kinds.filter((kind) => kind.group === 'road');
-    expect(places.length).toBeGreaterThanOrEqual(15);
-    expect(roads.length).toBeGreaterThanOrEqual(5);
+    expect(places.length).toBeGreaterThanOrEqual(40);
+    expect(roads.length).toBeGreaterThanOrEqual(15);
+    // Слова, нужные в любом заведении: с ними незнакомое место — тоже место.
+    expect(index.kinds.some((kind) => kind.id === 'anywhere')).toBe(true);
+  });
+
+  it('самые частые места сербского города узнаются по тайлу', () => {
+    // Список взят из настоящих тайлов пяти городов: без этих подклассов на
+    // карте останутся безымянные точки там, где стоят кафе и аптеки.
+    const common = [
+      'cafe', 'restaurant', 'fast_food', 'bakery', 'pharmacy', 'supermarket',
+      'convenience', 'clothes', 'hairdresser', 'bank', 'atm', 'kiosk', 'bar',
+      'park', 'parking', 'bus_stop', 'hotel', 'school', 'library', 'dentist',
+      'butcher', 'florist', 'optician', 'post_office', 'fuel', 'museum',
+    ];
+    const known = new Set(index.kinds.flatMap((kind) => kind.omt));
+    for (const subclass of common) {
+      expect(known.has(subclass), subclass).toBe(true);
+    }
+  });
+
+  it('у каждого типа есть важность подписи', () => {
+    for (const kind of index.kinds) {
+      expect(Number.isInteger(kind.rank), kind.id).toBe(true);
+      expect(kind.rank, kind.id).toBeGreaterThan(0);
+    }
   });
 
   it('идентификаторы уникальны, а теги OSM не растащены по двум типам', () => {
@@ -113,9 +137,15 @@ describe('города Путешествия', () => {
     const ids = cities.cities.map((city) => city.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const city of cities.cities) {
-      expect(city.pins.length, city.id).toBeGreaterThanOrEqual(5);
+      expect(city.pins.length, city.id).toBeGreaterThanOrEqual(12);
       const pins = city.pins.map((pin) => pin.id);
       expect(new Set(pins).size, city.id).toBe(pins.length);
+    }
+    // Белград и Нови-Сад — самые большие: в них и смотреть есть что.
+    const big = ['beograd', 'novi-sad'];
+    for (const id of big) {
+      const city = cities.cities.find((item) => item.id === id);
+      expect(city?.pins.length, id).toBeGreaterThanOrEqual(20);
     }
   });
 

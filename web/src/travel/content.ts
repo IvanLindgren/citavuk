@@ -28,6 +28,12 @@ export function loadTravel(): Promise<TravelBundle> {
   return pending;
 }
 
+/**
+ * Тип для места, которого Читавук не знает: слова и фразы, нужные в любом
+ * заведении. Лучше, чем «не разглядел» в ответ на нажатие.
+ */
+export const ANYWHERE = 'anywhere';
+
 export function kindById(bundle: TravelBundle, id: string): PlaceKind | null {
   return bundle.kinds.find((kind) => kind.id === id) ?? null;
 }

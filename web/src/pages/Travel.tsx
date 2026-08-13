@@ -2,11 +2,11 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react
 import { LuArrowLeft, LuBox, LuList, LuMap, LuMapPin } from 'react-icons/lu';
 
 import { PlaceSheet } from '../components/PlaceSheet';
-import { StreetObjectSheet } from '../components/StreetObjectSheet';
 import { ErrorNote, Spinner } from '../components/ui';
 import { Link } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import {
+  ANYWHERE,
   contentOf,
   inScript,
   kindById,
@@ -17,7 +17,6 @@ import {
 } from '../travel/content';
 import { iconBody, PlaceIcon } from '../travel/icons';
 import { lookupPlace } from '../travel/overpass';
-import { supportsTravel3D, type StreetObject } from '../travel/scene3d';
 import type { City, CityPin, Point, TravelBundle } from '../travel/types';
 
 /**
@@ -31,8 +30,8 @@ import type { City, CityPin, Point, TravelBundle } from '../travel/types';
 
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY?.trim() ?? '';
 
-const TILE_URL = MAPTILER_KEY
-  ? `https://api.maptiler.com/maps/streets-v4/256/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`
+const STYLE_URL = MAPTILER_KEY
+  ? `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`
   : '';
 
 /*
@@ -46,26 +45,21 @@ const TravelMap = lazy(() =>
   import('../components/TravelMap').then((m) => ({ default: m.TravelMap })),
 );
 
-const TravelScene3D = lazy(() =>
-  import('../components/TravelScene3D').then((m) => ({ default: m.TravelScene3D })),
-);
-
-type ViewMode = '2d' | '3d';
 const VIEW_KEY = 'citavuk-travel-view';
 
-function readView(): ViewMode {
+function readTilted(): boolean {
   try {
-    return localStorage.getItem(VIEW_KEY) === '2d' ? '2d' : '3d';
+    return localStorage.getItem(VIEW_KEY) !== '2d';
   } catch {
-    return '3d';
+    return true;
   }
 }
 
-function saveView(view: ViewMode) {
+function saveTilted(tilted: boolean) {
   try {
-    localStorage.setItem(VIEW_KEY, view);
+    localStorage.setItem(VIEW_KEY, tilted ? '3d' : '2d');
   } catch {
-    // Режим останется выбранным до закрытия вкладки.
+    // Вид останется выбранным до закрытия вкладки.
   }
 }
 
@@ -75,7 +69,7 @@ interface Selection {
   kind: string;
 }
 
-/** Тип места в справочнике записан строчной буквы: в заголовке нужна прописная. */
+/** Тип места в справочнике записан со строчной буквы: в заголовке нужна прописная. */
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
@@ -98,10 +92,7 @@ export function Travel() {
   const [catalogue, setCatalogue] = useState(false);
   const [mapBroken, setMapBroken] = useState(false);
   const [mapReady, setMapReady] = useState(false);
-  const [view, setView] = useState<ViewMode>(readView);
-  const [sceneReady, setSceneReady] = useState(false);
-  const [sceneBroken, setSceneBroken] = useState(false);
-  const [streetObject, setStreetObject] = useState<StreetObject | null>(null);
+  const [tilted, setTilted] = useState(readTilted);
 
   useEffect(() => {
     let alive = true;
@@ -129,13 +120,34 @@ export function Travel() {
     saveScript(next);
   };
 
-  const pickPin = useCallback((pin: CityPin) => {
-    setStreetObject(null);
-    setMarked(pin.at);
-    setSelection({ title: pin.sr, serbian: true, kind: pin.kind });
-    setNote('');
+  const show = useCallback((selected: Selection, at: Point | null) => {
+    setSelection(selected);
+    setMarked(at);
     setCatalogue(false);
+    setNote('');
   }, []);
+
+  const pickPin = useCallback(
+    (pin: CityPin) => show({ title: pin.sr, serbian: true, kind: pin.kind }, pin.at),
+    [show],
+  );
+
+  /** Место узнано прямо в тайле: ни одного запроса и никакого ожидания. */
+  const pickPlace = useCallback(
+    (found: { kind: string; name: string; at: Point }) => {
+      if (!bundle) return;
+      const kind = kindById(bundle, found.kind);
+      show(
+        {
+          title: found.name || capitalize(kind?.ru ?? ''),
+          serbian: Boolean(found.name),
+          kind: found.kind,
+        },
+        found.at,
+      );
+    },
+    [bundle, show],
+  );
 
   const pickPoint = useCallback(
     (at: Point) => {
@@ -148,17 +160,21 @@ export function Travel() {
           if (!found) {
             setSelection(null);
             setMarked(null);
-            setNote('Читавук не разглядел тут знакомого места. Попробуй ткнуть точнее.');
+            setNote('Тут ничего не нашлось. Попробуй ткнуть в здание или вывеску.');
             return;
           }
-          setMarked(found.at);
-          setCatalogue(false);
-          const kind = kindById(bundle, found.kind ?? '');
-          setSelection({
-            title: found.name || capitalize(kind?.ru ?? ''),
-            serbian: Boolean(found.name),
-            kind: found.kind ?? '',
-          });
+          // Незнакомый тип — тоже место: слова, которые нужны везде, там
+          // пригодятся не меньше.
+          const id = found.kind ?? ANYWHERE;
+          const kind = kindById(bundle, id);
+          show(
+            {
+              title: found.name || capitalize(kind?.ru ?? ''),
+              serbian: Boolean(found.name),
+              kind: id,
+            },
+            found.at,
+          );
         },
         () => {
           setLooking(false);
@@ -166,33 +182,20 @@ export function Travel() {
         },
       );
     },
-    [bundle],
+    [bundle, show],
   );
 
   const closeSheet = useCallback(() => {
     setSelection(null);
     setMarked(null);
-    setStreetObject(null);
   }, []);
 
-  const canShow3D = supportsTravel3D(city?.id ?? '');
-  const with3D = view === '3d' && canShow3D && !sceneBroken && !AUTOMATED;
-  const withMap = !with3D && Boolean(TILE_URL) && !mapBroken && !AUTOMATED;
+  const withMap = Boolean(STYLE_URL) && !mapBroken && !AUTOMATED;
 
-  const chooseView = (next: ViewMode) => {
-    if (next === '3d' && !canShow3D) return;
-    setView(next);
-    saveView(next);
-    setMapReady(false);
-    setSceneReady(false);
-    closeSheet();
+  const chooseView = (next: boolean) => {
+    setTilted(next);
+    saveTilted(next);
   };
-
-  useEffect(() => {
-    setMapReady(false);
-    setSceneReady(false);
-    setSceneBroken(false);
-  }, [city?.id]);
 
   useEffect(() => {
     if (!withMap || mapReady) return;
@@ -221,51 +224,31 @@ export function Travel() {
 
   return (
     <main className="relative isolate h-[100dvh] w-full overflow-hidden bg-[var(--bg)]">
-      {with3D ? (
-        <Suspense fallback={<div className="absolute inset-0 bg-[#dce2cf]" />}>
-          <TravelScene3D
-            cityId={city.id}
-            script={script}
-            onPick={(object) => {
-              setStreetObject(object);
-              setSelection(null);
-              setMarked(null);
-              setCatalogue(false);
-            }}
-            onReady={() => setSceneReady(true)}
-            onError={() => {
-              setSceneBroken(true);
-              setView('2d');
-              setMapReady(false);
-            }}
-          />
-        </Suspense>
-      ) : withMap ? (
+      {withMap ? (
         <Suspense fallback={<div className="absolute inset-0 bg-[var(--bg-sunken)]" />}>
           <TravelMap
-            tileUrl={TILE_URL}
+            styleUrl={STYLE_URL}
             city={city}
             bundle={bundle}
+            script={script}
+            tilted={tilted}
             marked={marked}
             onPickPin={pickPin}
+            onPickPlace={pickPlace}
             onPickPoint={pickPoint}
             onReady={() => setMapReady(true)}
+            onError={() => setMapBroken(true)}
           />
         </Suspense>
       ) : (
-        <CityList
-          city={city}
-          bundle={bundle}
-          script={script}
-          onPick={(pin) => pickPin(pin)}
-        />
+        <CityList city={city} bundle={bundle} script={script} onPick={pickPin} />
       )}
 
-      {((withMap && !mapReady) || (with3D && !sceneReady)) && (
+      {withMap && !mapReady && (
         <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center bg-[var(--bg)]/75">
           <div className="flex items-center gap-3 rounded-2xl bg-[var(--bg-raised)] px-4 py-3 text-sm font-semibold shadow-lg">
             <Spinner className="size-5" />
-            {with3D ? 'Строим город…' : 'Загружаем карту…'}
+            Строим город…
           </div>
         </div>
       )}
@@ -300,45 +283,48 @@ export function Travel() {
         </div>
 
         <div className="pointer-events-auto flex min-w-0 gap-2 pb-1">
-          <div className="flex shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 shadow-lg" role="group" aria-label="Вид карты">
+          <div
+            className="flex shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-1 shadow-lg"
+            role="group"
+            aria-label="Вид карты"
+          >
             <button
               type="button"
-              onClick={() => chooseView('2d')}
-              aria-pressed={!with3D}
-              title="Обычная карта"
-              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${!with3D ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
+              onClick={() => chooseView(false)}
+              aria-pressed={!tilted}
+              title="Карта сверху"
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${!tilted ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
             >
               <LuMap className="size-4" />2D
             </button>
             <button
               type="button"
-              onClick={() => chooseView('3d')}
-              disabled={!canShow3D}
-              aria-pressed={with3D}
-              title={canShow3D ? 'Объёмный город' : 'Объёмный город доступен для Белграда и Нови-Сада'}
-              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${with3D ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'} disabled:opacity-35`}
+              onClick={() => chooseView(true)}
+              aria-pressed={tilted}
+              title="Наклонить камеру и поднять дома"
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${tilted ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
             >
               <LuBox className="size-4" />3D
             </button>
           </div>
           <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto">
             {bundle.cities.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => {
-                setCityId(item.id);
-                closeSheet();
-              }}
-              className={[
-                'shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold shadow-lg transition-colors',
-                item.id === city.id
-                  ? 'bg-[var(--accent)] text-parchment'
-                  : 'border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--text)]',
-              ].join(' ')}
-            >
-              {inScript(item.sr, script)}
-            </button>
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => {
+                  setCityId(item.id);
+                  closeSheet();
+                }}
+                className={[
+                  'shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold shadow-lg transition-colors',
+                  item.id === city.id
+                    ? 'bg-[var(--accent)] text-parchment'
+                    : 'border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--text)]',
+                ].join(' ')}
+              >
+                {inScript(item.sr, script)}
+              </button>
             ))}
           </div>
         </div>
@@ -358,11 +344,7 @@ export function Travel() {
           script={script}
           onPick={(id) => {
             const picked = kindById(bundle, id);
-            setStreetObject(null);
-            setSelection({ title: capitalize(picked?.ru ?? ''), serbian: false, kind: id });
-            setMarked(null);
-            setCatalogue(false);
-            setNote('');
+            show({ title: capitalize(picked?.ru ?? ''), serbian: false, kind: id }, null);
           }}
           onClose={() => setCatalogue(false)}
         />
@@ -378,10 +360,6 @@ export function Travel() {
           script={script}
           onClose={closeSheet}
         />
-      )}
-
-      {streetObject && (
-        <StreetObjectSheet object={streetObject} script={script} onClose={closeSheet} />
       )}
     </main>
   );
@@ -444,9 +422,10 @@ function Catalogue({
   onPick: (kind: string) => void;
   onClose: () => void;
 }) {
-  const groups: Array<['place' | 'road', string]> = [
+  const groups: Array<[string, string]> = [
     ['place', 'Заведения'],
     ['road', 'На улице'],
+    ['basic', 'Пригодится везде'],
   ];
 
   return (
