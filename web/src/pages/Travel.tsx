@@ -172,7 +172,7 @@ export function Travel() {
   const content = selection ? contentOf(bundle, selection.kind) : null;
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[var(--bg)]">
+    <main className="relative isolate h-[100dvh] w-full overflow-hidden bg-[var(--bg)]">
       {withMap ? (
         <Suspense fallback={<div className="absolute inset-0 bg-[var(--bg-sunken)]" />}>
           <TravelMap
