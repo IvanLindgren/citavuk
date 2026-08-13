@@ -33,6 +33,7 @@ import { fetchDefinition, type Definition } from '../api/definition';
 import { serbianIpa, serbianIpaParts, splitAccented } from '../lib/serbianPronunciation';
 import {
   STRESS_MARK,
+  accentWord,
   stressIndex,
   useStressTable,
   type StressTable,
@@ -811,17 +812,14 @@ function ReadableWord({
   const [head] = bionicSplit(text, bionic);
   const headLength = bionic > 0 ? [...head].length : 0;
   if (headLength === 0 && at === null) return <>{text}</>;
+  // Без выделения основы это один текстовый узел. Так акут прикрепляется к
+  // букве шрифтом, а justify не получает внутренних границ для растяжения.
+  if (headLength === 0 && at !== null) return <>{accentWord(text, at)}</>;
 
   return (
     <>
       {wordPieces(text, headLength, at).map((piece, index) => {
-        // Акут рисуется псевдоэлементом: отдельный комбинируемый символ внутри
-        // текста браузер растягивал при выключке по ширине, разрывая слово.
-        const content = piece.stress ? (
-          <span className="reader-stress" aria-label={piece.text}>
-            {piece.text}
-          </span>
-        ) : piece.text;
+        const content = piece.stress ? accentWord(piece.text, 0) : piece.text;
         return piece.bold ? (
           <b key={index} className="font-bold">
             {content}

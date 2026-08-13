@@ -29,8 +29,8 @@ import type { City, CityPin, Point, TravelBundle } from '../travel/types';
 
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY?.trim() ?? '';
 
-const STYLE_URL = MAPTILER_KEY
-  ? `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`
+const TILE_URL = MAPTILER_KEY
+  ? `https://api.maptiler.com/maps/streets-v4/256/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`
   : '';
 
 /*
@@ -72,6 +72,7 @@ export function Travel() {
   const [note, setNote] = useState('');
   const [catalogue, setCatalogue] = useState(false);
   const [mapBroken, setMapBroken] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -143,6 +144,14 @@ export function Travel() {
     setMarked(null);
   }, []);
 
+  const withMap = Boolean(TILE_URL) && !mapBroken && !AUTOMATED;
+
+  useEffect(() => {
+    if (!withMap || mapReady) return;
+    const timeout = window.setTimeout(() => setMapBroken(true), 12_000);
+    return () => window.clearTimeout(timeout);
+  }, [mapReady, withMap]);
+
   if (failed) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center px-5">
@@ -159,7 +168,6 @@ export function Travel() {
     );
   }
 
-  const withMap = Boolean(STYLE_URL) && !mapBroken && !AUTOMATED;
   const kind = selection ? kindById(bundle, selection.kind) : null;
   const content = selection ? contentOf(bundle, selection.kind) : null;
 
@@ -168,13 +176,13 @@ export function Travel() {
       {withMap ? (
         <Suspense fallback={<div className="absolute inset-0 bg-[var(--bg-sunken)]" />}>
           <TravelMap
-            styleUrl={STYLE_URL}
+            tileUrl={TILE_URL}
             city={city}
             bundle={bundle}
             marked={marked}
             onPickPin={pickPin}
             onPickPoint={pickPoint}
-            onError={() => setMapBroken(true)}
+            onReady={() => setMapReady(true)}
           />
         </Suspense>
       ) : (
@@ -184,6 +192,15 @@ export function Travel() {
           script={script}
           onPick={(pin) => pickPin(pin)}
         />
+      )}
+
+      {withMap && !mapReady && (
+        <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center bg-[var(--bg)]/75">
+          <div className="flex items-center gap-3 rounded-2xl bg-[var(--bg-raised)] px-4 py-3 text-sm font-semibold shadow-lg">
+            <Spinner className="size-5" />
+            Загружаем карту…
+          </div>
+        </div>
       )}
 
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-3">

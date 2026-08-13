@@ -24,6 +24,14 @@ export type StressTable = Map<string, number>;
 const VOWELS = 'aeiouаеиоу';
 const RHOTIC = 'rр';
 
+/** Ставит акут внутрь единой строки слова, не создавая inline-границ. */
+export function accentWord(word: string, at: number): string {
+  const letters = [...word];
+  if (at < 0 || at >= letters.length) return word;
+  letters[at] = `${letters[at]}${STRESS_MARK}`;
+  return letters.join('');
+}
+
 /**
  * Индексы слоговых вершин слова.
  *

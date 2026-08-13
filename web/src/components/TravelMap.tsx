@@ -1,6 +1,13 @@
-import { Map as MapLibreMap, Marker } from 'maplibre-gl';
+import {
+  divIcon,
+  map as createMap,
+  marker,
+  tileLayer,
+  type Map as LeafletMap,
+  type Marker,
+} from 'leaflet';
 import { useEffect, useRef } from 'react';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import 'leaflet/dist/leaflet.css';
 
 import { iconBody, iconMarkup } from '../travel/icons';
 import type { City, CityPin, Point, TravelBundle } from '../travel/types';
@@ -8,29 +15,26 @@ import type { City, CityPin, Point, TravelBundle } from '../travel/types';
 /**
  * Карта Путешествия.
  *
- * MapLibre живёт вне React: он сам держит канву, метки и жесты. Поэтому здесь
- * только один пустой div и эффекты, которые доносят до карты изменения снаружи.
- * Перерисовывать карту на каждый рендер нельзя — это секунда чёрного экрана и
- * заново скачанные тайлы.
+ * Leaflet рисует MapTiler как обычные PNG-тайлы. Здесь это надёжнее WebGL:
+ * MapLibre успевал поставить DOM-метки, но в части браузеров оставлял canvas
+ * прозрачным даже после события `idle`.
  */
 
 interface Props {
-  styleUrl: string;
+  tileUrl: string;
   city: City;
   bundle: TravelBundle;
   /** Куда поставить метку найденного места. */
   marked: Point | null;
   onPickPin: (pin: CityPin) => void;
   onPickPoint: (at: Point) => void;
-  onError: () => void;
+  onReady: () => void;
 }
 
-/**
- * Ниже этого приближения подписи меток налезают друг на друга: в центре
- * Белграда между музеем и площадью полсотни метров, а у подписи ширина в сотню
- * пикселей. Остаётся один значок — он всё ещё виден и всё ещё нажимается.
- */
 const LABELS_FROM = 15;
+const ATTRIBUTION =
+  '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> ' +
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
 
 function pinElement(label: string, icon: string): HTMLButtonElement {
   const button = document.createElement('button');
@@ -44,83 +48,93 @@ function pinElement(label: string, icon: string): HTMLButtonElement {
   return button;
 }
 
+function at(point: Point): [number, number] {
+  return [point[1], point[0]];
+}
+
 export function TravelMap({
-  styleUrl,
+  tileUrl,
   city,
   bundle,
   marked,
   onPickPin,
   onPickPoint,
-  onError,
+  onReady,
 }: Props) {
   const holder = useRef<HTMLDivElement | null>(null);
-  const map = useRef<MapLibreMap | null>(null);
+  const map = useRef<LeafletMap | null>(null);
   const pins = useRef<Marker[]>([]);
   const found = useRef<Marker | null>(null);
-  /*
-   * Нажатие по метке доходит и до карты: метки лежат в том же контейнере, что
-   * и канва. Без этой отсечки выбор пина сразу же перекрывался бы запросом
-   * «что находится в этой точке».
-   */
-  const pinnedAt = useRef(0);
-
-  // Обработчики нужны свежие, но пересоздавать из-за них карту нельзя.
-  const handlers = useRef({ onPickPoint, onError });
-  handlers.current = { onPickPoint, onError };
+  const handlers = useRef({ onPickPoint, onReady });
+  handlers.current = { onPickPoint, onReady };
 
   useEffect(() => {
     if (!holder.current) return;
-    const instance = new MapLibreMap({
-      container: holder.current,
-      style: styleUrl,
-      center: city.center,
+
+    const instance = createMap(holder.current, {
+      center: at(city.center),
       zoom: city.zoom,
-      // Города Сербии умещаются без наклона, а наклон ломает попадание по меткам.
-      pitchWithRotate: false,
-      dragRotate: false,
+      zoomControl: false,
+      attributionControl: true,
     });
     map.current = instance;
 
-    instance.on('click', (event) => {
-      if (Date.now() - pinnedAt.current < 400) return;
-      handlers.current.onPickPoint([event.lngLat.lng, event.lngLat.lat]);
+    const tiles = tileLayer(tileUrl, {
+      attribution: ATTRIBUTION,
+      maxZoom: 22,
+      tileSize: 256,
     });
-    instance.on('error', () => handlers.current.onError());
+    tiles.once('load', () => handlers.current.onReady());
+    tiles.addTo(instance);
+
+    instance.on('click', (event) => {
+      handlers.current.onPickPoint([event.latlng.lng, event.latlng.lat]);
+    });
 
     const labels = () => {
-      holder.current?.classList.toggle('travel-map--compact', instance.getZoom() < LABELS_FROM);
+      holder.current?.classList.toggle(
+        'travel-map--compact',
+        instance.getZoom() < LABELS_FROM,
+      );
     };
     labels();
-    instance.on('zoom', labels);
+    instance.on('zoomend', labels);
 
     return () => {
       instance.remove();
       map.current = null;
     };
-    // Карта создаётся один раз: смена города — это перелёт, а не новая карта.
+    // Смена города — перелёт существующей карты, а не новый набор тайлов.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [styleUrl]);
+  }, [tileUrl]);
 
   useEffect(() => {
     const instance = map.current;
     if (!instance) return;
 
-    for (const marker of pins.current) marker.remove();
+    for (const pin of pins.current) pin.remove();
     pins.current = city.pins.map((pin) => {
       const kind = bundle.kinds.find((item) => item.id === pin.kind);
       const element = pinElement(pin.sr, iconBody(bundle, kind?.icon ?? ''));
       element.addEventListener('click', (event) => {
         event.stopPropagation();
-        pinnedAt.current = Date.now();
         onPickPin(pin);
       });
-      return new Marker({ element, anchor: 'bottom' }).setLngLat(pin.at).addTo(instance);
+      return marker(at(pin.at), {
+        bubblingMouseEvents: false,
+        icon: divIcon({
+          html: element,
+          className: 'travel-marker',
+          iconSize: [1, 1],
+          iconAnchor: [0, 0],
+        }),
+      }).addTo(instance);
     });
 
-    instance.flyTo({ center: city.center, zoom: city.zoom, duration: 900 });
+    instance.flyTo(at(city.center), city.zoom, { duration: 0.9 });
 
     return () => {
-      for (const marker of pins.current) marker.remove();
+      for (const pin of pins.current) pin.remove();
       pins.current = [];
     };
   }, [city, bundle, onPickPin]);
@@ -133,13 +147,17 @@ export function TravelMap({
     if (!marked) return;
     const element = document.createElement('div');
     element.className = 'travel-found';
-    found.current = new Marker({ element }).setLngLat(marked).addTo(instance);
+    found.current = marker(at(marked), {
+      interactive: false,
+      icon: divIcon({
+        html: element,
+        className: 'travel-marker',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      }),
+    }).addTo(instance);
   }, [marked]);
 
-  // MapLibre сам добавляет контейнеру `position: relative`. Если абсолютное
-  // позиционирование висит на том же узле, его CSS перебивает Tailwind и
-  // высота схлопывается до нуля (canvas остаётся служебных 300 px). Внешний
-  // слой держит геометрию экрана, внутренний MapLibre может менять свободно.
   return (
     <div className="absolute inset-0">
       <div ref={holder} className="h-full w-full" />

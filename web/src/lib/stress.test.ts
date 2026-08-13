@@ -1,10 +1,23 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  accentWord,
   parseStressTable,
   stressIndex,
   syllableNuclei,
 } from './stress';
+
+describe('знак ударения', () => {
+  it('остаётся внутри единой строки слова', () => {
+    expect(accentWord('knjiga', 3)).toBe('knji\u0301ga');
+    expect(accentWord('књига', 2)).toBe('књи́га');
+  });
+
+  it('не меняет слово при неверном индексе', () => {
+    expect(accentWord('knjiga', -1)).toBe('knjiga');
+    expect(accentWord('knjiga', 99)).toBe('knjiga');
+  });
+});
 
 describe('слоги', () => {
   it('вершина слога — гласная', () => {
