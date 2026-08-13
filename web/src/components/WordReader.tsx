@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import {
@@ -31,6 +31,13 @@ import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 import { ttsAudioUrl } from '../api/listening';
 import { fetchDefinition, type Definition } from '../api/definition';
 import { serbianIpa, serbianIpaParts, splitAccented } from '../lib/serbianPronunciation';
+import {
+  STRESS_MARK,
+  stressIndex,
+  useStressTable,
+  withStressMark,
+  type StressTable,
+} from '../lib/stress';
 
 export interface ReaderMark {
   start: number;
@@ -53,6 +60,7 @@ export function WordReader({
   bookId = null,
   className = '',
   bionic = 0,
+  stress = false,
   paragraphClassName = '',
   paragraphStyle,
   paragraphMarks,
@@ -62,6 +70,8 @@ export function WordReader({
   className?: string;
   /** Выделение основы слова жирным — то же, что в приложении. */
   bionic?: BionicLevel;
+  /** Ставить знак над ударной буквой: словарь грузится при первом включении. */
+  stress?: boolean;
   /** Оформление абзаца задаёт читалка: кегль, интерлиньяж, отступы. */
   paragraphClassName?: string;
   paragraphStyle?: CSSProperties;
@@ -87,6 +97,7 @@ export function WordReader({
 
   const lookup = useWordLookup();
   const { result, analysis, error, loading } = lookup;
+  const stressTable = useStressTable(stress);
 
   useEffect(() => {
     let frame = 0;
@@ -193,6 +204,7 @@ export function WordReader({
                 key={paragraphIndex}
                 rows={block.rows}
                 bionic={bionic}
+                stress={stressTable}
                 style={paragraphStyle}
                 selectedCell={
                   selected?.paragraph === paragraphIndex ? selected.cell ?? null : null
@@ -216,6 +228,7 @@ export function WordReader({
               key={paragraphIndex}
               text={block.text}
               bionic={bionic}
+              stress={stressTable}
               className={paragraphClassName}
               style={paragraphStyle}
               marks={paragraphMarks?.[paragraphIndex] ?? []}
@@ -525,6 +538,7 @@ function BookImage({ url, alt }: { url: string; alt: string }) {
 function BookTable({
   rows,
   bionic,
+  stress,
   style,
   selectedCell,
   selectedStart,
@@ -533,6 +547,7 @@ function BookTable({
 }: {
   rows: string[][];
   bionic: BionicLevel;
+  stress: StressTable | null;
   style?: CSSProperties;
   selectedCell: number | null;
   selectedStart: number | null;
@@ -551,6 +566,7 @@ function BookTable({
     <Paragraph
       text={text}
       bionic={bionic}
+      stress={stress}
       className=""
       marks={[]}
       selectedStart={selectedCell === index ? selectedStart : null}
@@ -616,6 +632,7 @@ function Paragraph({
   cliticStart,
   onSelect,
   bionic,
+  stress,
   className,
   style,
   marks,
@@ -626,6 +643,8 @@ function Paragraph({
   cliticStart: number | null;
   onSelect: (token: Token, anchor: DOMRect) => void;
   bionic: BionicLevel;
+  /** Словарь ударений или `null`, если помета выключена. */
+  stress: StressTable | null;
   className: string;
   style?: CSSProperties;
   marks: ReaderMark[];
@@ -668,9 +687,7 @@ function Paragraph({
           >
             {marks.length > 0
               ? <MarkedToken text={text} token={token} marks={marks} />
-              : bionic > 0
-                ? <BionicWord text={token.text} level={bionic} />
-                : token.text}
+              : <ReadableWord text={token.text} bionic={bionic} stress={stress} />}
           </span>
         ) : (
           <span key={index}>
@@ -743,12 +760,71 @@ export function bionicSplit(text: string, level: BionicLevel): [string, string] 
   return [letters.slice(0, head).join(''), letters.slice(head).join('')];
 }
 
-function BionicWord({ text, level }: { text: string; level: BionicLevel }) {
-  const [head, tail] = bionicSplit(text, level);
+/**
+ * Кусок слова с признаками оформления.
+ *
+ * Выделение основы и помета ударения делят одно и то же слово, и порядок
+ * «сначала одно, потом другое» здесь не работает: ударная буква может попасть
+ * в жирное начало. Поэтому слово режется по всем границам сразу.
+ */
+export interface WordPiece {
+  text: string;
+  /** Начало слова, набираемое жирным. */
+  bold: boolean;
+  /** Ударная буква. */
+  stress: boolean;
+}
+
+export function wordPieces(text: string, head: number, at: number | null): WordPiece[] {
+  const letters = [...text];
+  const points = new Set([0, letters.length]);
+  if (head > 0 && head < letters.length) points.add(head);
+  if (at !== null && at >= 0 && at < letters.length) {
+    points.add(at);
+    points.add(at + 1);
+  }
+
+  const bounds = [...points].sort((a, b) => a - b);
+  const pieces: WordPiece[] = [];
+  for (let index = 0; index < bounds.length - 1; index += 1) {
+    const start = bounds[index]!;
+    const end = bounds[index + 1]!;
+    pieces.push({
+      text: letters.slice(start, end).join(''),
+      bold: start < head,
+      stress: at !== null && start === at,
+    });
+  }
+  return pieces;
+}
+
+/** Слово так, как его показывает читалка: с основой, ударением или без всего. */
+function ReadableWord({
+  text,
+  bionic,
+  stress,
+}: {
+  text: string;
+  bionic: BionicLevel;
+  stress: StressTable | null;
+}) {
+  const at = stress ? stressIndex(text, stress) : null;
+  const [head] = bionicSplit(text, bionic);
+  const headLength = bionic > 0 ? [...head].length : 0;
+  if (headLength === 0 && at === null) return <>{text}</>;
+
   return (
     <>
-      <b className="font-bold">{head}</b>
-      {tail}
+      {wordPieces(text, headLength, at).map((piece, index) => {
+        const content = piece.stress ? withStressMark(piece.text) : piece.text;
+        return piece.bold ? (
+          <b key={index} className="font-bold">
+            {content}
+          </b>
+        ) : (
+          <Fragment key={index}>{content}</Fragment>
+        );
+      })}
     </>
   );
 }
@@ -830,7 +906,13 @@ export function readerSelectionText(
     return null;
   }
 
-  const text = selection.toString().replace(/\s+/gu, ' ').trim();
+  // Знак ударения добавлен только визуально читалкой. Переводчик и
+  // грамматический анализ должны получить исходное написание фразы.
+  const text = selection
+    .toString()
+    .replaceAll(STRESS_MARK, '')
+    .replace(/\s+/gu, ' ')
+    .trim();
   return text || null;
 }
 

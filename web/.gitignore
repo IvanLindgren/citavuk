@@ -28,3 +28,7 @@ public/fonts/*
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
 public/course/
+public/travel/
+# Таблица ударений: собирается scripts/build-stress-marks.py из лексикона
+# сервера, полмегабайта производных данных в репозитории не нужны.
+public/reader/

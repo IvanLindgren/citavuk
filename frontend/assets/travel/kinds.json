@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "kinds": [
+    {
+      "id": "bakery",
+      "group": "place",
+      "sr": "пекара",
+      "ru": "пекарня",
+      "icon": "bread",
+      "osm": ["shop=bakery", "amenity=bakery", "shop=pastry;cuisine=bakery"]
+    },
+    {
+      "id": "cafe",
+      "group": "place",
+      "sr": "кафић",
+      "ru": "кафе",
+      "icon": "coffee",
+      "osm": ["amenity=cafe", "amenity=bar;cuisine=coffee_shop", "shop=coffee"]
+    },
+    {
+      "id": "restaurant",
+      "group": "place",
+      "sr": "ресторан",
+      "ru": "ресторан",
+      "icon": "fork",
+      "osm": ["amenity=restaurant", "amenity=fast_food", "amenity=pub"]
+    },
+    {
+      "id": "pastry",
+      "group": "place",
+      "sr": "посластичарница",
+      "ru": "кондитерская",
+      "icon": "cake",
+      "osm": ["shop=pastry", "shop=confectionery", "amenity=ice_cream"]
+    },
+    {
+      "id": "grocery",
+      "group": "place",
+      "sr": "продавница",
+      "ru": "продуктовый магазин",
+      "icon": "basket",
+      "osm": ["shop=supermarket", "shop=convenience", "shop=greengrocer"]
+    },
+    {
+      "id": "market",
+      "group": "place",
+      "sr": "пијаца",
+      "ru": "рынок",
+      "icon": "market",
+      "osm": ["amenity=marketplace", "shop=farm"]
+    },
+    {
+      "id": "butcher",
+      "group": "place",
+      "sr": "месара",
+      "ru": "мясная лавка",
+      "icon": "meat",
+      "osm": ["shop=butcher"]
+    },
+    {
+      "id": "pharmacy",
+      "group": "place",
+      "sr": "апотека",
+      "ru": "аптека",
+      "icon": "pill",
+      "osm": ["amenity=pharmacy", "healthcare=pharmacy"]
+    },
+    {
+      "id": "clinic",
+      "group": "place",
+      "sr": "дом здравља",
+      "ru": "поликлиника",
+      "icon": "cross",
+      "osm": ["amenity=clinic", "amenity=doctors", "amenity=hospital", "healthcare=centre"]
+    },
+    {
+      "id": "exchange",
+      "group": "place",
+      "sr": "мењачница",
+      "ru": "обменник",
+      "icon": "money",
+      "osm": ["amenity=bureau_de_change", "amenity=bank", "amenity=atm"]
+    },
+    {
+      "id": "post",
+      "group": "place",
+      "sr": "пошта",
+      "ru": "почта",
+      "icon": "envelope",
+      "osm": ["amenity=post_office", "amenity=post_depot"]
+    },
+    {
+      "id": "kiosk",
+      "group": "place",
+      "sr": "трафика",
+      "ru": "киоск",
+      "icon": "kiosk",
+      "osm": ["shop=kiosk", "shop=newsagent", "shop=tobacco"]
+    },
+    {
+      "id": "bookstore",
+      "group": "place",
+      "sr": "књижара",
+      "ru": "книжный магазин",
+      "icon": "book",
+      "osm": ["shop=books", "shop=stationery"]
+    },
+    {
+      "id": "clothing",
+      "group": "place",
+      "sr": "продавница одеће",
+      "ru": "магазин одежды",
+      "icon": "shirt",
+      "osm": ["shop=clothes", "shop=shoes", "shop=boutique"]
+    },
+    {
+      "id": "hairdresser",
+      "group": "place",
+      "sr": "фризерски салон",
+      "ru": "парикмахерская",
+      "icon": "scissors",
+      "osm": ["shop=hairdresser", "shop=beauty"]
+    },
+    {
+      "id": "hotel",
+      "group": "place",
+      "sr": "хотел",
+      "ru": "гостиница",
+      "icon": "bed",
+      "osm": ["tourism=hotel", "tourism=hostel", "tourism=guest_house", "tourism=apartment"]
+    },
+    {
+      "id": "museum",
+      "group": "place",
+      "sr": "музеј",
+      "ru": "музей",
+      "icon": "museum",
+      "osm": ["tourism=museum", "tourism=gallery", "historic=castle"]
+    },
+    {
+      "id": "cinema",
+      "group": "place",
+      "sr": "биоскоп",
+      "ru": "кинотеатр",
+      "icon": "film",
+      "osm": ["amenity=cinema"]
+    },
+    {
+      "id": "theatre",
+      "group": "place",
+      "sr": "позориште",
+      "ru": "театр",
+      "icon": "masks",
+      "osm": ["amenity=theatre", "theatre:genre=*"]
+    },
+    {
+      "id": "gas_station",
+      "group": "place",
+      "sr": "бензинска пумпа",
+      "ru": "заправка",
+      "icon": "fuel",
+      "osm": ["amenity=fuel", "amenity=charging_station"]
+    },
+    {
+      "id": "bus_station",
+      "group": "place",
+      "sr": "аутобуска станица",
+      "ru": "автовокзал",
+      "icon": "bus",
+      "osm": ["amenity=bus_station"]
+    },
+    {
+      "id": "train_station",
+      "group": "place",
+      "sr": "железничка станица",
+      "ru": "железнодорожный вокзал",
+      "icon": "train",
+      "osm": ["railway=station", "railway=halt", "building=train_station"]
+    },
+    {
+      "id": "airport",
+      "group": "place",
+      "sr": "аеродром",
+      "ru": "аэропорт",
+      "icon": "plane",
+      "osm": ["aeroway=aerodrome", "aeroway=terminal"]
+    },
+    {
+      "id": "bridge",
+      "group": "road",
+      "sr": "мост",
+      "ru": "мост",
+      "icon": "bridge",
+      "osm": ["man_made=bridge", "bridge=yes"]
+    },
+    {
+      "id": "street",
+      "group": "road",
+      "sr": "улица",
+      "ru": "улица",
+      "icon": "street",
+      "osm": ["highway=residential", "highway=pedestrian", "highway=living_street", "highway=primary"]
+    },
+    {
+      "id": "square",
+      "group": "road",
+      "sr": "трг",
+      "ru": "площадь",
+      "icon": "square",
+      "osm": ["place=square", "highway=pedestrian;area=yes"]
+    },
+    {
+      "id": "park",
+      "group": "road",
+      "sr": "парк",
+      "ru": "парк",
+      "icon": "tree",
+      "osm": ["leisure=park", "leisure=garden", "landuse=forest"]
+    },
+    {
+      "id": "bus_stop",
+      "group": "road",
+      "sr": "аутобуско стајалиште",
+      "ru": "автобусная остановка",
+      "icon": "stop",
+      "osm": ["highway=bus_stop", "public_transport=platform", "railway=tram_stop"]
+    },
+    {
+      "id": "crossing",
+      "group": "road",
+      "sr": "пешачки прелаз",
+      "ru": "пешеходный переход",
+      "icon": "crossing",
+      "osm": ["highway=crossing", "crossing=marked", "highway=traffic_signals"]
+    },
+    {
+      "id": "taxi_stand",
+      "group": "road",
+      "sr": "такси стајалиште",
+      "ru": "стоянка такси",
+      "icon": "taxi",
+      "osm": ["amenity=taxi"]
+    },
+    {
+      "id": "parking",
+      "group": "road",
+      "sr": "паркинг",
+      "ru": "парковка",
+      "icon": "parking",
+      "osm": ["amenity=parking", "amenity=parking_entrance"]
+    },
+    {
+      "id": "quay",
+      "group": "road",
+      "sr": "кеј",
+      "ru": "набережная",
+      "icon": "water",
+      "osm": ["man_made=quay", "natural=water;name=*", "waterway=riverbank"]
+    },
+    {
+      "id": "underpass",
+      "group": "road",
+      "sr": "подземни пролаз",
+      "ru": "подземный переход",
+      "icon": "tunnel",
+      "osm": ["tunnel=yes;highway=footway", "highway=footway;layer=-1"]
+    }
+  ]
+}

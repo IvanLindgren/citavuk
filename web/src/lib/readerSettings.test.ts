@@ -12,6 +12,7 @@ describe('разбор сохранённых настроек', () => {
     expect(sanitize(null)).toEqual(DEFAULT_SETTINGS);
     expect(sanitize('строка вместо объекта')).toEqual(DEFAULT_SETTINGS);
     expect(sanitize(42)).toEqual(DEFAULT_SETTINGS);
+    expect(DEFAULT_SETTINGS.stress).toBe(false);
   });
 
   it('оставляет допустимые значения как есть', () => {
@@ -59,6 +60,8 @@ describe('разбор сохранённых настроек', () => {
   it('переключатели принимают только логическое значение', () => {
     expect(sanitize({ sound: 'да' }).sound).toBe(DEFAULT_SETTINGS.sound);
     expect(sanitize({ sound: false }).sound).toBe(false);
+    expect(sanitize({ stress: 'да' }).stress).toBe(false);
+    expect(sanitize({ stress: true }).stress).toBe(true);
   });
 });
 

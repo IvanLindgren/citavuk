@@ -212,6 +212,18 @@ export function ReaderSettingsPanel({
                 </p>
               </Group>
 
+              <Group title="Ударения">
+                <Toggle
+                  label="Ставить знаки ударения"
+                  checked={settings.stress}
+                  onChange={(value) => onChange('stress', value)}
+                />
+                <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)]">
+                  Над ударной буквой появляется знак прямо в тексте. Там, где
+                  ударение неизвестно, читалка ничего не добавляет.
+                </p>
+              </Group>
+
               <Toggle
                 label="Выключка по ширине"
                 checked={settings.justify}

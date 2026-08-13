@@ -40,6 +40,8 @@ export interface ReaderSettings {
   maxWidth: number;
   theme: ReaderTheme;
   bionic: BionicLevel;
+  /** Ставить знак ударения над ударной буквой сербских слов. */
+  stress: boolean;
   /** Звук перелистывания. */
   sound: boolean;
   /** Анимация перелистывания. */
@@ -60,6 +62,7 @@ export const DEFAULT_SETTINGS: ReaderSettings = {
   maxWidth: 700,
   theme: 'auto',
   bionic: 0,
+  stress: false,
   sound: true,
   animate: true,
 };
@@ -206,6 +209,7 @@ export function sanitize(raw: unknown): ReaderSettings {
     maxWidth: num('maxWidth', 480, FULL_WIDTH),
     theme: pick('theme', ['auto', 'paper', 'sepia', 'gray', 'night', 'odyssey', 'campaign100'] as const),
     bionic: (bionic === 1 || bionic === 2 || bionic === 3 ? bionic : 0) as BionicLevel,
+    stress: flag('stress'),
     sound: flag('sound'),
     animate: flag('animate'),
   };

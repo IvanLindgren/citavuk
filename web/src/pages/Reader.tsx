@@ -479,6 +479,7 @@ export function Reader() {
           paragraphs={entry?.texts ?? []}
           bookId={state.book.id}
           bionic={settings.bionic}
+          stress={settings.stress}
           paragraphClassName="reader-selectable"
           paragraphStyle={paragraphStyle}
           paragraphMarks={marks}
@@ -674,6 +675,7 @@ export function Reader() {
                     paragraphs={current}
                     bookId={state.book.id}
                     bionic={settings.bionic}
+                    stress={settings.stress}
                     paragraphClassName="reader-selectable"
                     paragraphStyle={paragraphStyle}
                     paragraphMarks={audioMarks}

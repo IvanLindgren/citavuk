@@ -8,6 +8,7 @@ import {
   companionStart,
   readerSelectionText,
   shouldOpenWord,
+  wordPieces,
 } from './WordReader';
 
 function selection(text: string, collapsed: boolean): Selection {
@@ -16,6 +17,44 @@ function selection(text: string, collapsed: boolean): Selection {
     toString: () => text,
   } as Selection;
 }
+
+describe('wordPieces', () => {
+  it('без выделений слово остаётся одним куском', () => {
+    expect(wordPieces('knjiga', 0, null)).toEqual([
+      { text: 'knjiga', bold: false, stress: false },
+    ]);
+  });
+
+  it('режет слово на ударной букве', () => {
+    expect(wordPieces('kuća', 0, 1)).toEqual([
+      { text: 'k', bold: false, stress: false },
+      { text: 'u', bold: false, stress: true },
+      { text: 'ća', bold: false, stress: false },
+    ]);
+  });
+
+  it('ударная буква внутри жирного начала остаётся ударной', () => {
+    expect(wordPieces('knjiga', 3, 3)).toEqual([
+      { text: 'knj', bold: true, stress: false },
+      { text: 'i', bold: false, stress: true },
+      { text: 'ga', bold: false, stress: false },
+    ]);
+    // Начало длиннее ударной буквы: жирное продолжается после неё.
+    expect(wordPieces('knjiga', 5, 3)).toEqual([
+      { text: 'knj', bold: true, stress: false },
+      { text: 'i', bold: true, stress: true },
+      { text: 'g', bold: true, stress: false },
+      { text: 'a', bold: false, stress: false },
+    ]);
+  });
+
+  it('ударение на последней букве не создаёт пустых кусков', () => {
+    expect(wordPieces('sto', 0, 2)).toEqual([
+      { text: 'st', bold: false, stress: false },
+      { text: 'o', bold: false, stress: true },
+    ]);
+  });
+});
 
 describe('shouldOpenWord', () => {
   it('opens a word after an ordinary click', () => {
@@ -45,6 +84,23 @@ describe('readerSelectionText', () => {
     current.addRange(range);
 
     expect(readerSelectionText(current, root)).toBe('Сваког јутра он');
+
+    current.removeAllRanges();
+    root.remove();
+  });
+
+  it('не отправляет визуальные знаки ударения в переводчик', () => {
+    const root = document.createElement('div');
+    root.textContent = 'Сва́ког ју́тра';
+    document.body.append(root);
+
+    const range = document.createRange();
+    range.selectNodeContents(root);
+    const current = window.getSelection()!;
+    current.removeAllRanges();
+    current.addRange(range);
+
+    expect(readerSelectionText(current, root)).toBe('Сваког јутра');
 
     current.removeAllRanges();
     root.remove();

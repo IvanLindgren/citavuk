@@ -139,6 +139,9 @@ const Garden = lazy(() =>
 const PublicGarden = lazy(() =>
   import("./pages/PublicGarden").then((m) => ({ default: m.PublicGarden })),
 );
+const Travel = lazy(() =>
+  import("./pages/Travel").then((m) => ({ default: m.Travel })),
+);
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/", element: <Landing /> },
@@ -172,6 +175,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/trainer", element: <Trainer /> },
   { pattern: "/basta", element: <Garden /> },
   { pattern: "/basta/:nickname", element: <PublicGarden /> },
+  { pattern: "/putovanje", element: <Travel /> },
   { pattern: "/exams", element: <Exams /> },
   { pattern: "/trainer/translation-duel", element: <TranslationDuel /> },
   { pattern: "/tests/:id", element: <TestRun /> },
@@ -212,7 +216,11 @@ function AppFrame() {
   const vukotok = isVukotok(path);
   const pathname = path.split('?')[0] ?? path;
   const garden = pathname === '/basta' || pathname.startsWith('/basta/');
-  const immersive = vukotok || garden;
+  // Карта Путешествия занимает экран целиком: шапка и подвал отъедали бы у неё
+  // высоту, а под картой всё равно нет ничего, к чему стоило бы прокручивать.
+  const travel = pathname === '/putovanje';
+  const fullscreen = garden || travel;
+  const immersive = vukotok || fullscreen;
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -222,7 +230,7 @@ function AppFrame() {
         оставляла её «страницей сайта с видео», а не тем, чем раздел является.
         Уйти из ленты можно значком волка в её собственной шапке.
       */}
-      {!garden && (
+      {!fullscreen && (
         <div className={vukotok ? 'hidden lg:block' : undefined}>
           <Header />
         </div>
@@ -245,7 +253,7 @@ function AppFrame() {
         аккаунт. Не в Вукотоке и не в настройках, потому что уровень нужен всем
         разделам сразу: и подбору ленты, и предупреждению о тяжёлой книге.
       */}
-      {!garden && <LevelPrompt />}
+      {!fullscreen && <LevelPrompt />}
     </div>
   );
 }

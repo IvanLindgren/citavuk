@@ -925,6 +925,62 @@
       transparent 70%
     );
   }
+
+  /*
+    Метки на карте Путешествия. Их создаёт MapLibre обычным DOM, минуя React,
+    поэтому классы описаны здесь, а не выданы утилитами в разметке.
+  */
+  .travel-pin {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem 0.25rem 0.35rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-raised);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
+    cursor: pointer;
+  }
+
+  .travel-pin:hover {
+    border-color: var(--accent);
+  }
+
+  .travel-pin-icon {
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--accent);
+  }
+
+  .travel-pin-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .travel-map--compact .travel-pin {
+    padding: 0.25rem 0.35rem;
+  }
+
+  .travel-map--compact .travel-pin-label {
+    display: none;
+  }
+
+  /* Кружок на месте, которое только что нашлось по нажатию на карту. */
+  .travel-found {
+    width: 18px;
+    height: 18px;
+    border: 3px solid var(--bg-raised);
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+  }
 }
 
 /*

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "npm run prepare:worker && vite",
     "prepare:course": "node scripts/prepare-course-assets.mjs",
-    "build": "python scripts/build-sitemap.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build && npm run prerender",
+    "build": "python scripts/build-sitemap.py && python scripts/build-stress-marks.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build && npm run prerender",
     "preview": "vite preview",
     "lint": "tsc -b --noEmit",
     "test": "vitest run",
@@ -19,6 +19,7 @@
     "fflate": "^0.8.3",
     "framer-motion": "^12.23.12",
     "mammoth": "^1.12.0",
+    "maplibre-gl": "^6.3.0",
     "marked": "^16.4.2",
     "pdfjs-dist": "^6.2.108",
     "react": "^19.1.1",

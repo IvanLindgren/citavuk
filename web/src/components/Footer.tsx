@@ -42,6 +42,7 @@ const COLUMNS = [
       { to: '/course', label: 'Курс грамматики' },
       { to: '/trainer', label: 'Тренажёрка' },
       { to: '/basta', label: 'Сад Читавука' },
+      { to: '/putovanje', label: 'Путешествие по Сербии' },
       { to: '/exams', label: 'Экзамены' },
       { to: '/cards', label: 'Карточки' },
       { to: '/palace', label: 'Дворец памяти' },

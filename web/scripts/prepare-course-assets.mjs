@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,6 +27,41 @@ await Promise.all(
   }),
 );
 
+// Путешествие собирается в один файл. Flutter читает те же исходники по
+// отдельности, вебу тридцать три запроса на открытие карты ни к чему.
+const travel = join(frontend, 'travel');
+const kinds = JSON.parse(await readFile(join(travel, 'kinds.json'), 'utf8'));
+const cities = JSON.parse(await readFile(join(travel, 'cities.json'), 'utf8'));
+const places = {};
+for (const kind of kinds.kinds) {
+  places[kind.id] = JSON.parse(
+    await readFile(join(travel, 'places', `${kind.id}.json`), 'utf8'),
+  );
+}
+// Значки едут в том же файле: это десяток строк разметки на каждый, а
+// отдельными картинками они превратились бы в тридцать три запроса и в мигание
+// пустых меток на карте.
+const icons = {};
+for (const name of await readdir(join(travel, 'icons'))) {
+  if (!name.endsWith('.svg')) continue;
+  const svg = await readFile(join(travel, 'icons', name), 'utf8');
+  const body = svg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+  icons[name.replace(/\.svg$/, '')] = body.trim();
+}
+
+const bundlePath = join(root, 'public', 'travel', 'bundle.json');
+await mkdir(dirname(bundlePath), { recursive: true });
+await writeFile(
+  bundlePath,
+  `${JSON.stringify({
+    version: kinds.version,
+    kinds: kinds.kinds,
+    cities: cities.cities,
+    places,
+    icons,
+  })}\n`,
+);
+
 // Пути Flutter в manifest начинаются с assets/. Вебу нужен URL внутри public.
 const manifestPath = join(output, 'animations', 'manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
@@ -36,4 +71,4 @@ for (const animation of manifest.animations ?? []) {
 }
 await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
-console.log('Course bundle, sprites and sounds prepared.');
+console.log('Course bundle, travel bundle, sprites and sounds prepared.');

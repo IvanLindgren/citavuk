@@ -208,6 +208,7 @@ export function OdysseyReader({ accountId }: { accountId: string }) {
               paragraphs={chapter.paragraphs}
               bookId={`event:${ODYSSEY_EVENT_ID}`}
               bionic={settings.bionic}
+              stress={settings.stress}
               paragraphClassName="event-verse reader-selectable whitespace-pre-line"
               paragraphStyle={paragraphStyle}
             />
