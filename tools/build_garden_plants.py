@@ -316,6 +316,85 @@ def build_gardener(source: Path, output: Path) -> None:
         canvas.alpha_composite(despeckle(frame), (index * width, 0))
     canvas.save(output / "gardener.webp", "WEBP", lossless=True, method=6)
     print(f"gardener.webp: {canvas.width}x{canvas.height}")
+    build_walk(canvas.crop((0, 0, width, height)), output)
+
+
+# Ходьба: четыре кадра из одной позы. Рисованного цикла шага у Читавука нет, а
+# заводить второго волка ради него нельзя — на экране это был бы уже не он.
+WALK_FRAMES = 4
+
+
+def build_walk(stand: Image.Image, output: Path) -> None:
+    """Цикл шага: тело подпрыгивает, ноги идут по очереди.
+
+    Кадры считаются из позы стоя. Ноги ищутся по просвету между ними: у волка
+    их видно последние несколько рядов, и просвет — единственное, что их
+    разделяет. Кадры 0 и 2 — та же поза стоя, поэтому остановка посреди шага
+    не дёргает картинку.
+    """
+    top, split = legs_of(stand)
+    canvas = Image.new("RGBA", (stand.width * WALK_FRAMES, stand.height), (0, 0, 0, 0))
+    canvas.alpha_composite(stand, (0, 0))
+    canvas.alpha_composite(stand, (stand.width * 2, 0))
+    canvas.alpha_composite(step(stand, top, split, lift="right"), (stand.width, 0))
+    canvas.alpha_composite(step(stand, top, split, lift="left"), (stand.width * 3, 0))
+    canvas.save(output / "gardener_walk.webp", "WEBP", lossless=True, method=6)
+    print(f"gardener_walk.webp: {canvas.width}x{canvas.height}, ноги с {top}, просвет {split}")
+
+
+# Сколько нижних рядов считать ногами. Волк ростом в сорок пикселей, ног у него
+# видно четыре ряда — искать просвет выше бессмысленно: там хвост и руки, и
+# дырок в силуэте хватает.
+LEG_BAND = 5
+
+
+def legs_of(frame: Image.Image) -> tuple[int, int]:
+    """Верхний ряд ног и колонка между ними."""
+    alpha = frame.getchannel("A")
+    band = range(frame.height - LEG_BAND, frame.height)
+    filled = {
+        (x, y): alpha.getpixel((x, y)) > 0
+        for y in band
+        for x in range(frame.width)
+    }
+    columns = [x for x in range(frame.width) if filled[(x, frame.height - 1)]]
+    if not columns:
+        return frame.height - LEG_BAND, frame.width // 2
+    # Просвет ищется в середине следа: по краям стоят сами ступни.
+    left = columns[0] + (columns[-1] - columns[0]) // 4
+    right = columns[-1] - (columns[-1] - columns[0]) // 4
+    middle = range(left, right + 1) or range(columns[0], columns[-1] + 1)
+    split = min(middle, key=lambda x: sum(filled[(x, y)] for y in band))
+    rows = [y for y in band if not filled[(split, y)]]
+    return (rows[0] if rows else frame.height - LEG_BAND) - 1, split
+
+
+def step(frame: Image.Image, top: int, split: int, lift: str) -> Image.Image:
+    """Одна нога на земле, вторая поднята; тело переносится на опорную.
+
+    На такой мелочи ноги — четыре ряда пикселей, и одного их сдвига не видно.
+    Читается перенос веса: волк на шаге наклоняется в сторону той ноги, что
+    стоит, и подпрыгивает на пиксель.
+    """
+    out = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+    swing = 1 if lift == "right" else -1
+    body = frame.crop((0, 0, frame.width, top + 1))
+    # paste, а не alpha_composite: кадр съезжает вверх и вбок, а composite
+    # отрицательных координат не берёт.
+    out.paste(body, (-swing, -1), body)
+
+    legs = frame.crop((0, top, frame.width, frame.height))
+    grounded = legs.copy()
+    lifted = legs.copy()
+    if lift == "right":
+        grounded.paste((0, 0, 0, 0), (split, 0, legs.width, legs.height))
+        lifted.paste((0, 0, 0, 0), (0, 0, split, legs.height))
+    else:
+        grounded.paste((0, 0, 0, 0), (0, 0, split, legs.height))
+        lifted.paste((0, 0, 0, 0), (split, 0, legs.width, legs.height))
+    out.paste(grounded, (0, top), grounded)
+    out.paste(lifted, (swing, top - 1), lifted)
+    return out
 
 
 def main() -> None:

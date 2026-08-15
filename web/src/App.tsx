@@ -22,6 +22,8 @@ import { AuthProvider } from "./state/auth";
 import { AnnouncementProvider } from "./state/announcements";
 import { SyncProvider } from "./state/sync";
 import { ThemeProvider } from "./state/theme";
+import { DuelSearchProvider } from "./state/duelSearch";
+import { DuelSearchNotice } from "./components/DuelSearchNotice";
 
 // Разделы, до которых пользователь доходит не всегда, грузятся отдельно:
 // главная страница не должна тащить с собой код читалки и курса.
@@ -178,6 +180,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/putovanje", element: <Travel /> },
   { pattern: "/exams", element: <Exams /> },
   { pattern: "/trainer/translation-duel", element: <TranslationDuel /> },
+  { pattern: "/trainer/translation-duel/:code", element: <TranslationDuel /> },
   { pattern: "/tests/:id", element: <TestRun /> },
   { pattern: "/shared/:token", element: <SharedBook /> },
   { pattern: "/books", element: <Books /> },
@@ -201,9 +204,11 @@ export function App() {
       <AuthProvider>
         <AnnouncementProvider>
           <SyncProvider>
-            <RouterProvider>
-              <AppFrame />
-            </RouterProvider>
+            <DuelSearchProvider>
+              <RouterProvider>
+                <AppFrame />
+              </RouterProvider>
+            </DuelSearchProvider>
           </SyncProvider>
         </AnnouncementProvider>
       </AuthProvider>
@@ -224,6 +229,7 @@ function AppFrame() {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <DuelSearchNotice />
       {!immersive && <EventBanner />}
       {/*
         На телефоне Вукоток занимает экран целиком: полоса навигации над лентой

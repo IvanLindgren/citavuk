@@ -118,7 +118,10 @@ function loadImage(url: string): Promise<HTMLImageElement> {
   });
 }
 
-function pinElement(label: string, icon: string): HTMLButtonElement {
+function pinElement(label: string, icon: string, isStreet: boolean): HTMLDivElement {
+  const marker = document.createElement('div');
+  marker.className = 'travel-pin-marker';
+
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'travel-pin';
@@ -127,7 +130,19 @@ function pinElement(label: string, icon: string): HTMLButtonElement {
     `<span class="travel-pin-icon">${iconMarkup(icon)}</span>` +
     `<span class="travel-pin-label"></span>`;
   button.querySelector('.travel-pin-label')!.textContent = label;
-  return button;
+  marker.append(button);
+
+  // Улица — линейный объект. Поднимаем подпись над картой и оставляем
+  // отдельный хвостик до точной координаты, чтобы она не выглядела как
+  // название здания рядом.
+  if (isStreet) {
+    const stem = document.createElement('span');
+    stem.className = 'travel-pin-stem';
+    stem.setAttribute('aria-hidden', 'true');
+    marker.append(stem);
+  }
+
+  return marker;
 }
 
 export function TravelMap({
@@ -212,7 +227,11 @@ export function TravelMap({
     for (const pin of pins.current) pin.remove();
     pins.current = city.pins.map((pin) => {
       const kind = bundle.kinds.find((item) => item.id === pin.kind);
-      const element = pinElement(inScript(pin.sr, script), bundle.icons[kind?.icon ?? ''] ?? '');
+      const element = pinElement(
+        inScript(pin.sr, script),
+        bundle.icons[kind?.icon ?? ''] ?? '',
+        kind?.id === 'street',
+      );
       element.addEventListener('click', (event) => {
         event.stopPropagation();
         onPickPin(pin);

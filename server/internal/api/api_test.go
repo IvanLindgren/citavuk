@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -711,6 +712,25 @@ func TestCORSAllowsOnlyKnownOrigins(t *testing.T) {
 	resp.Body.Close()
 	if got := resp.Header.Get("Access-Control-Allow-Origin"); got != "" {
 		t.Errorf("чужой origin разрешён: %q", got)
+	}
+}
+
+func TestCORSAllowsGuestDuelToken(t *testing.T) {
+	ts, _ := testServer(t)
+	req, _ := http.NewRequest(http.MethodOptions, ts.URL+"/v1/duel/rooms/ABC123", nil)
+	req.Header.Set("Origin", "https://citavuk.ru")
+	req.Header.Set("Access-Control-Request-Method", http.MethodGet)
+	req.Header.Set("Access-Control-Request-Headers", "x-duel-player")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("preflight вернул %d", resp.StatusCode)
+	}
+	if got := resp.Header.Get("Access-Control-Allow-Headers"); !strings.Contains(strings.ToLower(got), "x-duel-player") {
+		t.Fatalf("гостевая подпись матча не разрешена CORS: %q", got)
 	}
 }
 

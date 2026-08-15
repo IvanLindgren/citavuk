@@ -36,11 +36,13 @@ import {
   type GardenState,
 } from '../api/garden';
 import { ApiError } from '../api/client';
+import { CoinNotes, useCoinNotes } from '../components/CoinNotes';
 import { GardenScene } from '../components/GardenScene';
 import { GardenWindow } from '../components/GardenWindow';
 import { HouseRoom } from '../components/HouseRoom';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { gardenArt } from '../garden/art';
+import { coinsArrived } from '../garden/earnings';
 import { isBlooming, projectedGrowth } from '../garden/scene';
 import {
   playGardenSound,
@@ -96,10 +98,16 @@ export function Garden() {
     return () => stopGardenMusic();
   }, [soundEnabled]);
 
-  const apply = useCallback((next: GardenState) => {
-    setState(next);
-    setFetchedAt(Date.now());
-  }, []);
+  const { notes, add: note } = useCoinNotes();
+
+  const apply = useCallback(
+    (next: GardenState) => {
+      setState(next);
+      setFetchedAt(Date.now());
+      note(coinsArrived(next));
+    },
+    [note],
+  );
 
   useEffect(() => {
     if (!account) return;
@@ -226,6 +234,9 @@ export function Garden() {
       )}
 
       {state && <GardenHud state={state} busy={busy} soundEnabled={soundEnabled} onToggleSound={toggleSound} onExit={() => navigate('/')} />}
+      {/* Записки поверх дома: динары капают и когда человек сидит в квартире. */}
+      <CoinNotes notes={notes} />
+
       {state?.task && <TaskBadge task={state.task} />}
       {state && (
         <GardenToolbar
@@ -844,12 +855,12 @@ function GardenDemo({ board }: { board: GardenBoardRow[] }) {
   };
   return (
     <main className="garden-game-shell fixed inset-0 z-[60] overflow-hidden">
-      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} decorations={['berry-bushes']} soundEnabled={soundEnabled} river onBed={() => setPrompt(true)} onRiver={() => setPrompt(true)} onHouse={() => setInHouse(true)} />
+      <GardenScene slots={12} plants={DEMO_PLANTS} catalog={DEMO_CATALOG} fetchedAt={Date.now()} decorations={DEMO_YARD} soundEnabled={soundEnabled} river onBed={() => setPrompt(true)} onRiver={() => setPrompt(true)} onHouse={() => setInHouse(true)} />
       {/* В дом гостя пускают: радио слушают без аккаунта, покупки — нет. */}
       {inHouse && (
         <HouseRoom
-          decorations={['rug', 'lamp', 'picture', 'cat']}
-          catalog={[]}
+          decorations={DEMO_HOUSE}
+          catalog={NOTHING_FOR_SALE}
           coins={0}
           soundEnabled={soundEnabled}
           onClose={() => setInHouse(false)}
@@ -892,6 +903,17 @@ const DEMO_PLANTS: GardenPlant[] = [
   demoPlant(0, 'suncokret', 5), demoPlant(2, 'krasuljak', 3.5), demoPlant(5, 'koleus', 2.4),
   demoPlant(7, 'cuvarkuca', 1.3), demoPlant(9, 'krasuljak', 5), demoPlant(10, 'suncokret', 4.2),
 ];
+
+/*
+  Обстановка гостевого двора и квартиры лежит здесь, а не в разметке. Список,
+  собранный прямо в JSX, — новый массив на каждую перерисовку страницы, а
+  комната считает по нему границы и мебель: сменился список — значит, другое
+  место, и Читавук возвращается на порог. Достаточно нажать кнопку звука, пока
+  он идёт к холодильнику.
+*/
+const DEMO_HOUSE = ['rug', 'lamp', 'picture', 'cat'];
+const DEMO_YARD = ['berry-bushes'];
+const NOTHING_FOR_SALE: GardenDecoration[] = [];
 
 function demoPlant(slot: number, species: string, growth: number): GardenPlant {
   return { slot, species, stage: Math.min(4, Math.floor(growth)), growth, blooming: growth >= 5, speed: 1, plantedAt: '2026-01-01T00:00:00Z' };

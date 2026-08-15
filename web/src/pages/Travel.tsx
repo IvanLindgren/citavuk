@@ -328,10 +328,13 @@ export function Travel() {
             ))}
           </div>
         </div>
+        <p className="max-w-3xl text-xs text-[var(--text-muted)]">
+          Справочник сверён {formatReviewDate(bundle.contentReviewedAt)}. Условия, цены и расписания могут меняться, поэтому перед поездкой проверяй официальный источник.
+        </p>
       </header>
 
       {(looking || note) && (
-        <div className="pointer-events-none absolute inset-x-0 top-28 z-10 flex justify-center px-4">
+        <div className="pointer-events-none absolute inset-x-0 top-40 z-10 flex justify-center px-4">
           <p className="max-w-md rounded-2xl bg-[var(--bg-raised)] px-4 py-2 text-center text-sm shadow-lg">
             {looking ? 'Читавук смотрит, что это за место…' : note}
           </p>
@@ -363,6 +366,18 @@ export function Travel() {
       )}
     </main>
   );
+}
+
+function formatReviewDate(value?: string): string {
+  if (!value) return 'недавно';
+  const parsed = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(parsed);
 }
 
 /** Города и их места списком: то же, что на карте, но без карты. */

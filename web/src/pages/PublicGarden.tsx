@@ -8,9 +8,10 @@ import {
   type GardenSpecies,
   type PublicGarden as PublicGardenData,
 } from '../api/garden';
+import { CoinNotes, useCoinNotes } from '../components/CoinNotes';
 import { GardenScene } from '../components/GardenScene';
 import { Button, ErrorNote, Spinner } from '../components/ui';
-import { GARDEN, coinWord } from '../garden/strings';
+import { GARDEN } from '../garden/strings';
 import { readGardenSoundSetting, saveGardenSoundSetting, unlockGardenAudio } from '../garden/audio';
 import { useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
@@ -24,8 +25,8 @@ export function PublicGarden() {
   const [catalog, setCatalog] = useState<GardenSpecies[]>([]);
   const [fetchedAt, setFetchedAt] = useState(() => Date.now());
   const [error, setError] = useState('');
-  const [thanks, setThanks] = useState('');
   const [busy, setBusy] = useState(false);
+  const { notes, add: note } = useCoinNotes();
   const [watering, setWatering] = useState<number | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(readGardenSoundSetting);
 
@@ -63,7 +64,7 @@ export function PublicGarden() {
       setWatering(first);
       window.setTimeout(() => setWatering(null), 2400);
       const result = await helpGarden(nickname);
-      setThanks(`Хвала! +${result.reward} ${coinWord(result.reward)}`);
+      note([{ title: 'Полил сад соседа', coins: result.reward }]);
       setGarden((current) => (current ? { ...current, canWater: false } : current));
     } catch (cause) {
       setError(describe(cause));
@@ -96,11 +97,11 @@ export function PublicGarden() {
             }} className="grid size-8 place-items-center border-2 border-[#8c5b37] bg-[#f5dfaa]" aria-label={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'} title={soundEnabled ? 'Выключить звуки сада' : 'Включить звуки сада'}>{soundEnabled ? <LuVolume2 /> : <LuVolumeX />}</button>
             {account && garden.canWater && <Button onClick={water} disabled={busy} aria-label={GARDEN.helpNeighbour.sr}><LuDroplets /><span className="hidden sm:inline">{GARDEN.helpNeighbour.sr}</span></Button>}
             {!account && <span className="text-xs text-[#5e4635]">Войди, чтобы полить</span>}
-            {thanks && <span className="text-sm font-semibold text-[#317240]">{thanks}</span>}
           </div>
         )}
       </div>
 
+      <CoinNotes notes={notes} />
       {error && <div className="absolute left-1/2 top-24 z-[130] w-[min(92%,42rem)] -translate-x-1/2"><ErrorNote>{error}</ErrorNote></div>}
     </main>
   );

@@ -61,6 +61,8 @@ interface RequestOptions {
   body?: unknown;
   /** Не подставлять заголовок Authorization. */
   anonymous?: boolean;
+  /** Свои заголовки: например, подпись участника матча у гостя. */
+  headers?: Record<string, string>;
   timeoutMs?: number;
   signal?: AbortSignal;
 }
@@ -81,7 +83,7 @@ export async function request<T>(
     options.signal.addEventListener('abort', () => controller.abort(), { once: true });
   }
 
-  const headers: Record<string, string> = { Accept: 'application/json' };
+  const headers: Record<string, string> = { Accept: 'application/json', ...options.headers };
   if (body !== undefined) headers['Content-Type'] = 'application/json; charset=utf-8';
   if (!anonymous) {
     const token = getToken();

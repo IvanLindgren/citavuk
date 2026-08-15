@@ -126,6 +126,9 @@ failed=0
 check_type "/" "text/html" || failed=1
 check_type "/materials" "text/html" || failed=1
 check_type "/trainer/translation-duel" "text/html" || failed=1
+# Комната матча: ссылку-приглашение открывают прямо этим адресом, и без
+# SPA-фолбэка друг получил бы 404 вместо стола.
+check_type "/trainer/translation-duel/ABCDEF" "text/html" || failed=1
 check_type "/basta" "text/html" || failed=1
 check_type "/putovanje" "text/html" || failed=1
 check_type "/travel/bundle.json" "application/json" || failed=1

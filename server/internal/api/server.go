@@ -162,6 +162,7 @@ func New(
 	go s.quizLimit.runCleanup(s.stop)
 	go s.documentFetchLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
+	go s.sweepDuelPeriodically()
 
 	return s, nil
 }
@@ -191,6 +192,25 @@ func (s *Server) purgeSessionsPeriodically() {
 				slog.Warn("очистка неподтверждённых аккаунтов не удалась", "err", err)
 			} else if n > 0 {
 				slog.Info("удалены неподтверждённые аккаунты", "count", n)
+			}
+			cancel()
+		case <-s.stop:
+			return
+		}
+	}
+}
+
+// sweepDuelPeriodically убирает доигранные комнаты и брошенные места в очереди.
+// Комната живёт минуты, и без уборки база копила бы по записи на каждый матч.
+func (s *Server) sweepDuelPeriodically() {
+	t := time.NewTicker(10 * time.Minute)
+	defer t.Stop()
+	for {
+		select {
+		case <-t.C:
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			if err := s.store.SweepDuel(ctx, time.Now().UTC()); err != nil {
+				slog.Warn("уборка комнат матча не удалась", "err", err)
 			}
 			cancel()
 		case <-s.stop:
@@ -432,6 +452,24 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/translation-game/round", s.optionalAuth(s.rateLimitTranslate(s.handleTranslationGameRound)))
 	mux.HandleFunc("POST /v1/translation-game/judge", s.optionalAuth(s.rateLimitIdentity(s.quizLimit, s.handleTranslationGameJudge)))
 	mux.HandleFunc("GET /v1/translate/usage", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUsage)))
+
+	// Матч «Ты против переводчика» на несколько человек. Аккаунт не требуется:
+	// друг, пришедший по ссылке, играет гостем под своей подписью. Уведомление
+	// о найденных соперниках достаётся только вошедшему — гостю его положить
+	// некуда, и об этом честно сказано на экране ожидания.
+	mux.HandleFunc("POST /v1/duel/rooms", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelCreate)))
+	mux.HandleFunc("GET /v1/duel/queue", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelQueue)))
+	mux.HandleFunc("POST /v1/duel/queue", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelEnqueue)))
+	mux.HandleFunc("DELETE /v1/duel/queue", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelDequeue)))
+	mux.HandleFunc("GET /v1/duel/rooms/{code}", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelRoom)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/join", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelJoin)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/machine", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelMachine)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/start", s.optionalAuth(s.rateLimitTranslate(s.handleDuelStart)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/answer", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelAnswer)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/answers", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelAnswers)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/ready", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelReady)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/vote", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelVote)))
+	mux.HandleFunc("POST /v1/duel/rooms/{code}/leave", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleDuelLeave)))
 
 	// Грамматический разбор по встроенному лексикону. Ни сети, ни аккаунта не
 	// требует: приложение делает то же офлайн, сайту нужен сервер.

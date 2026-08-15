@@ -55,6 +55,7 @@ await writeFile(
   bundlePath,
   `${JSON.stringify({
     version: kinds.version,
+    contentReviewedAt: kinds.contentReviewedAt,
     kinds: kinds.kinds,
     cities: cities.cities,
     places,

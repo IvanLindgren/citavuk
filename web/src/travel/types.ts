@@ -78,6 +78,7 @@ export interface PlaceContent {
 
 export interface KindIndex {
   version: number;
+  contentReviewedAt?: string;
   kinds: PlaceKind[];
 }
 
@@ -109,6 +110,7 @@ export interface CityIndex {
 /** Всё Путешествие одним файлом: карта делает один запрос, а не тридцать три. */
 export interface TravelBundle {
   version: number;
+  contentReviewedAt?: string;
   kinds: PlaceKind[];
   cities: City[];
   places: Record<string, PlaceContent>;

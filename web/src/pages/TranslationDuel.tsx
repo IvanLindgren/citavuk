@@ -55,8 +55,9 @@ import {
   SENTENCE_SECONDS,
 } from '../lib/duelScore';
 import { duelMuted, playDuel, playDuelKey, preloadDuelSounds, setDuelMuted } from '../lib/duelSounds';
-import { Link } from '../lib/router';
+import { Link, useParams } from '../lib/router';
 import { useSeo } from '../lib/seo';
+import { MultiplayerDuel } from '../components/MultiplayerDuel';
 
 const LEVELS: TranslationGameLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const TOTAL_ROUNDS = 3;
@@ -91,6 +92,14 @@ interface MatchScore {
 }
 
 export function TranslationDuel() {
+  const { code = '' } = useParams();
+  const [solo, setSolo] = useState(false);
+  if (code) return <MultiplayerDuel code={code} />;
+  if (!solo) return <MultiplayerDuel onSolo={() => setSolo(true)} />;
+  return <SoloTranslationDuel />;
+}
+
+function SoloTranslationDuel() {
   useSeo({
     title: 'Ты против переводчика — игра с DeepL и Google Translate',
     description: 'Переведите сербские фразы лучше DeepL или Google Translate и попросите Gemma 4 рассудить спор.',

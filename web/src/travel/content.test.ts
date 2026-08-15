@@ -131,7 +131,28 @@ describe('места Путешествия', () => {
   );
 });
 
+describe('актуальность справочника Путешествия', () => {
+  it('помечен датой последней полной сверки', () => {
+    expect(index.contentReviewedAt).toBe('2026-08-14');
+  });
+
+  it('не содержит известных устаревших правил оплаты', () => {
+    const files = index.kinds.map((kind) =>
+      readFileSync(`${ASSETS}/places/${kind.id}.json`, 'utf8'),
+    );
+    const text = files.join('\n').toLowerCase();
+    expect(text).not.toContain('busplus');
+    expect(text).not.toContain('bus plus');
+    expect(text).not.toContain('виньеткой');
+    expect(text).not.toContain('красная зона');
+    expect(text).not.toContain('30–50 динаров');
+  });
+});
+
 describe('города Путешествия', () => {
+  const pin = (cityId: string, pinId: string) =>
+    cities.cities.find((city) => city.id === cityId)?.pins.find((item) => item.id === pinId);
+
   it('пять крупных городов, у каждого есть куда ткнуть', () => {
     expect(cities.cities.length).toBeGreaterThanOrEqual(5);
     const ids = cities.cities.map((city) => city.id);
@@ -166,5 +187,53 @@ describe('города Путешествия', () => {
       expect(inSerbia(pin.at), `${id}/${pin.id}`).toBe(true);
       expect(LATIN.test(pin.sr), `${id}/${pin.id}: ${pin.sr}`).toBe(false);
     }
+  });
+
+  it('уличные метки стоят на геометрии улицы, а не на старой точке здания', () => {
+    // Координаты сверены с геометрией pedestrian/highway в OpenStreetMap:
+    // прежняя точка Кнез Михаиловой попадала в здание на Обилићевом венцу.
+    expect(pin('beograd', 'knez-mihailova')?.at).toEqual([20.4583, 44.81664]);
+    expect(pin('nis', 'obrenoviceva')?.at).toEqual([21.89512, 43.31952]);
+  });
+
+  /*
+    Метки, которые стояли не на своём месте: рынок Зелени венац был на две
+    сотни метров в стороне, вокзал Суботицы — в полукилометре, а Палићко језеро
+    вообще на берегу вместо озера. Всё сверено с объектами OpenStreetMap, и
+    здесь закреплено, чтобы правка не уехала обратно.
+  */
+  it('сверенные с OSM метки стоят на своих объектах', () => {
+    const checked: Record<string, [number, number]> = {
+      'beograd/zeleni-venac': [20.45745, 44.81336],
+      'beograd/pijaca-kalenic': [20.47541, 44.80014],
+      'beograd/brankov-most': [20.44714, 44.81481],
+      'beograd/slavija': [20.46605, 44.80268],
+      'beograd/aerodrom': [20.29128, 44.82026],
+      'novi-sad/riblja-pijaca': [19.85108, 45.25746],
+      'novi-sad/strand': [19.84654, 45.23631],
+      'novi-sad/zeleznicka': [19.82912, 45.26584],
+      'nis/muzej': [21.89342, 43.31835],
+      'nis/zeleznicka': [21.87734, 43.31611],
+      'subotica/zeleznicka': [19.67081, 46.10292],
+      'subotica/palic': [19.75752, 46.08111],
+      'kragujevac/pijaca': [20.91282, 44.00983],
+      'kragujevac/zeleznicka': [20.92843, 44.01013],
+    };
+    for (const [key, at] of Object.entries(checked)) {
+      const [cityId = '', pinId = ''] = key.split('/');
+      expect(pin(cityId, pinId)?.at, key).toEqual(at);
+    }
+  });
+
+  /*
+    Придуманных названий на карте быть не должно: «Нишка пијаца» и «Мост на
+    Лепеници» звучали правдоподобно, но таких объектов в городе нет, и человек
+    не найдёт их ни на вывеске, ни в поиске.
+  */
+  it('названия совпадают с настоящими объектами', () => {
+    expect(pin('nis', 'pijaca')?.sr).toBe('Главна пијаца');
+    expect(pin('nis', 'most')?.sr).toBe('Тврђавски мост');
+    expect(pin('kragujevac', 'most')?.sr).toBe('Лучни мост');
+    expect(pin('subotica', 'mlecna-pijaca')?.sr).toBe('Млечна пијаца');
   });
 });

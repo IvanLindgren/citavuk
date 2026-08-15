@@ -35,6 +35,20 @@ func Languages(direction string) (source, target string) {
 	return "sr", "ru"
 }
 
+// Levels — уровни, на которых в игре есть фразы.
+var Levels = []string{"A1", "A2", "B1", "B2", "C1", "C2"}
+
+// KnownLevel проверяет уровень до похода за фразами.
+func KnownLevel(level string) bool {
+	level = strings.ToUpper(strings.TrimSpace(level))
+	for _, known := range Levels {
+		if known == level {
+			return true
+		}
+	}
+	return false
+}
+
 // Sentence — одна фраза раунда. Перевод намеренно отсутствует: его каждый раз
 // делает выбранный пользователем сервис, иначе это была бы игра против ключа
 // в JSON, а не против DeepL или Google.

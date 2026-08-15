@@ -1,5 +1,54 @@
 @import 'tailwindcss';
 
+@layer components {
+  .duel-input {
+    @apply w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 py-3 outline-none transition-colors focus:border-[var(--accent)];
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  textarea.duel-input {
+    white-space: pre-wrap;
+  }
+
+  .duel-select {
+    @apply mt-2 h-12 w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 text-base font-normal outline-none focus:border-[var(--accent)];
+  }
+
+  /*
+    Конфетти на итоге матча. Не блёстки и не неон: обрезки бумаги цветов
+    сайта. Куски летят сверху и крутятся, поэтому анимация одна, а разброс по
+    времени и месту задаёт разметка.
+  */
+  .duel-confetti {
+    position: absolute;
+    top: -12%;
+    width: 7px;
+    height: 12px;
+    border-radius: 1px;
+    opacity: 0;
+    animation-name: duel-confetti;
+    animation-timing-function: cubic-bezier(0.3, 0.1, 0.5, 1);
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes duel-confetti {
+    0% {
+      opacity: 0;
+      transform: translateY(0) rotate(0deg);
+    }
+
+    12% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(340px) rotate(520deg);
+    }
+  }
+}
+
 /*
   Тёмная тема переключается классом на <html>, а не только медиазапросом:
   пользователь должен иметь возможность выбрать её вручную, независимо от
@@ -681,6 +730,56 @@
     background-size: 16px 16px;
   }
 
+  /*
+    Записки о начислениях. Висят под счётчиком динаров, откуда бы динары ни
+    пришли, и поверх квартиры: она открывается на весь экран, а начисление
+    может прилететь и оттуда.
+  */
+  .garden-coin-notes {
+    position: fixed;
+    top: 5.25rem;
+    right: 0.75rem;
+    z-index: 220;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    pointer-events: none;
+  }
+
+  .garden-coin-note {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    border: 3px solid #70452f;
+    background-color: #f8e7ba;
+    box-shadow:
+      0 4px 0 #4d3227,
+      inset 0 0 0 2px #fff2ca;
+    color: #302219;
+    animation: garden-coin-note 220ms ease-out;
+  }
+
+  .garden-coin-note b {
+    font-family: var(--font-display, inherit);
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .garden-coin-note i {
+    color: #6b4d38;
+    font-size: 0.72rem;
+    font-style: normal;
+  }
+
+  @keyframes garden-coin-note {
+    from {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+  }
+
   .garden-world::after {
     content: '';
     position: absolute;
@@ -816,8 +915,16 @@
     image-rendering: pixelated;
   }
 
+  /*
+    Шаг лежит отдельным листом из четырёх кадров: в основном восемь кадров
+    полива, и дописывать ходьбу в него значило бы пересчитывать обе анимации
+    разом. Кадры 0 и 2 — та же поза стоя, поэтому остановка посреди шага не
+    дёргает картинку.
+  */
   .garden-game-player__sprite--walking {
-    animation: garden-walk 280ms steps(2) infinite;
+    background-image: url('/img/garden/world/gardener_walk.webp');
+    background-size: 120px 40px;
+    animation: garden-walk 440ms steps(4) infinite;
   }
 
   /*
@@ -826,12 +933,15 @@
     последний кадр не появлялся бы вовсе, и цикл дёргался бы на возврате.
   */
   .garden-game-player__sprite--watering {
+    /* Полив и шаг могут совпасть: лейка главнее, поэтому лист возвращается. */
+    background-image: url('/img/garden/world/gardener.webp');
+    background-size: 240px 40px;
     animation: garden-game-water 1.1s steps(8) infinite;
   }
 
   @keyframes garden-walk {
-    50% {
-      translate: 0 -2px;
+    to {
+      background-position-x: -120px;
     }
   }
 
@@ -928,11 +1038,14 @@
     );
   }
 
-  /*
-    Метки на карте Путешествия. Их создаёт MapLibre обычным DOM, минуя React,
-    поэтому классы описаны здесь, а не выданы утилитами в разметке. Сдвиг метки
-    к точке карта задаёт сама, поэтому своего transform тут нет.
-  */
+  /* Метки на карте Путешествия создаёт MapLibre обычным DOM, минуя React. */
+  .travel-pin-marker {
+    display: flex;
+    width: max-content;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .travel-pin {
     display: flex;
     align-items: center;
@@ -949,6 +1062,12 @@
     white-space: nowrap;
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
     cursor: pointer;
+  }
+
+  .travel-pin-stem {
+    width: 2px;
+    height: 0.55rem;
+    background: var(--accent);
   }
 
   .travel-pin:hover {

@@ -39,13 +39,32 @@ PARTITION_X = 144
 PARTITION_BOTTOM = 120
 
 # Тайл в атласе: колонка, ряд. Шаг 9 пикселей, первый ряд смещён на 1.
-FLOOR_WOOD = (3, 1)
+FLOOR_WOOD = (3, 0)
 FLOOR_TILED = (3, 4)
-WALL_TOP = (5, 11)
-WALL_BODY = (5, 13)
-WALL_LEFT = (3, 13)
-WALL_RIGHT = (7, 13)
 SKIRTING = (9, 12)
+
+# Стены в пакете бывают трёх цветов — зелёные, розовые и белые, — и все
+# полосатые: у каждого тайла тёмная кромка, от которой на стене остаётся сетка.
+# В сербской квартире стены просто выкрашены, поэтому они здесь заливаются
+# краской, а из пакета берётся только белый плинтус.
+WALL_PAINT = (0xE6, 0xE8, 0xE4, 0xFF)
+WALL_CORNICE = (0xF4, 0xF6, 0xF2, 0xFF)
+# Боковые стены и торец перегородки видно вскользь: они темнее лицевой.
+WALL_SIDE = (0xCF, 0xD3, 0xCD, 0xFF)
+
+# Дерево в пакете болотно-жёлтое, плитка — больничного голубого. Рисунок
+# остаётся тот же, меняется только тон: светлый дуб на полу и тёплая плитка на
+# кухне — то, что лежит в обычной белградской квартире.
+OAK = {
+    (0x8F, 0x65, 0x2B): (0xB5, 0x8B, 0x5B),
+    (0xA8, 0x88, 0x38): (0xCD, 0xA6, 0x74),
+    (0xD0, 0xC0, 0x88): (0xE7, 0xD3, 0xB0),
+}
+CERAMIC = {
+    (0xDE, 0xE5, 0xE5): (0xE4, 0xE0, 0xD8),
+    (0xBF, 0xCA, 0xCE): (0xD2, 0xCD, 0xC3),
+    (0xAA, 0xBA, 0xBF): (0xC3, 0xBD, 0xB2),
+}
 
 # Мебель: имя файла -> номер слайса в паке.
 THINGS = {
@@ -59,7 +78,8 @@ THINGS = {
     'tv': 143,
     'fireplace': 270,
     'kitchen': 489,
-    'fridge': 194,
+    # Красный холодильник рядом с красным диваном — уже не акцент, а рябь.
+    'fridge': 188,
     'sofa': 265,
     'table': 16,
     'chair': 443,
@@ -90,30 +110,42 @@ def build_room(pack: zipfile.ZipFile) -> Image.Image:
     sheet = load(pack, TILES)
     room = Image.new('RGBA', (ROOM_W, ROOM_H), (0, 0, 0, 0))
 
-    # Пол: жилая часть в доску, кухня в плитку.
-    fill(room, tile(sheet, *FLOOR_WOOD), (0, WALL_H, PARTITION_X, ROOM_H))
-    fill(room, tile(sheet, *FLOOR_TILED), (PARTITION_X, WALL_H, ROOM_W, ROOM_H))
+    # Пол: жилая часть в паркет, кухня в плитку.
+    fill(room, recolour(tile(sheet, *FLOOR_WOOD), OAK), (0, WALL_H, PARTITION_X, ROOM_H))
+    fill(room, recolour(tile(sheet, *FLOOR_TILED), CERAMIC), (PARTITION_X, WALL_H, ROOM_W, ROOM_H))
 
-    # Стена: светлая кромка сверху, обои, белый плинтус у пола.
-    fill(room, tile(sheet, *WALL_TOP), (0, 0, ROOM_W, TILE))
-    fill(room, tile(sheet, *WALL_BODY), (0, TILE, ROOM_W, WALL_H - TILE))
+    # Стена: краска, светлая кромка под потолком, белый плинтус у пола.
+    paint(room, (0, 0, ROOM_W, WALL_H), WALL_PAINT)
+    paint(room, (0, 0, ROOM_W, 2), WALL_CORNICE)
     fill(room, tile(sheet, *SKIRTING), (0, WALL_H - TILE, ROOM_W, WALL_H))
 
     # Боковые стены: без них пол утекает за край и комната перестаёт быть комнатой.
-    body = tile(sheet, *WALL_BODY)
-    fill(room, tile(sheet, *WALL_LEFT), (0, WALL_H, TILE, ROOM_H))
-    fill(room, tile(sheet, *WALL_RIGHT), (ROOM_W - TILE, WALL_H, ROOM_W, ROOM_H))
+    paint(room, (0, WALL_H, TILE, ROOM_H), WALL_SIDE)
+    paint(room, (ROOM_W - TILE, WALL_H, ROOM_W, ROOM_H), WALL_SIDE)
 
-    # Перегородка: кухня — отдельная комната, а не угол общей. Торец закрыт
-    # той же кромкой, что и верх стены, иначе обои обрываются срезом.
-    fill(room, body, (PARTITION_X, WALL_H, PARTITION_X + TILE, PARTITION_BOTTOM))
-    room.alpha_composite(
-        tile(sheet, *WALL_TOP).transpose(Image.FLIP_TOP_BOTTOM),
-        (PARTITION_X, PARTITION_BOTTOM - TILE),
-    )
+    # Перегородка: кухня — отдельная комната, а не угол общей. Торец светлее
+    # боковин — на него падает свет из комнаты.
+    paint(room, (PARTITION_X, WALL_H, PARTITION_X + TILE, PARTITION_BOTTOM), WALL_SIDE)
+    paint(room, (PARTITION_X, PARTITION_BOTTOM - 2, PARTITION_X + TILE, PARTITION_BOTTOM), WALL_CORNICE)
 
     shade(room)
     return room
+
+
+def paint(canvas: Image.Image, box: tuple[int, int, int, int], colour: tuple[int, int, int, int]) -> None:
+    canvas.paste(colour, box)
+
+
+def recolour(piece: Image.Image, palette: dict) -> Image.Image:
+    out = piece.copy()
+    pixels = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = pixels[x, y]
+            swap = palette.get((r, g, b))
+            if swap:
+                pixels[x, y] = (*swap, a)
+    return out
 
 
 def shade(room: Image.Image) -> None:

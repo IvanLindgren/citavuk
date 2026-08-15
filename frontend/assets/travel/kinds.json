@@ -1,5 +1,6 @@
 {
-  "version": 2,
+  "version": 3,
+  "contentReviewedAt": "2026-08-14",
   "kinds": [
     {
       "id": "bakery",
@@ -322,6 +323,16 @@
       "omt": ["marina", "harbor", "pier", "ferry_terminal"]
     },
     {
+      "id": "lake",
+      "group": "road",
+      "sr": "језеро",
+      "ru": "озеро",
+      "icon": "water",
+      "rank": 1,
+      "osm": ["natural=water;water=lake"],
+      "omt": []
+    },
+    {
       "id": "underpass",
       "group": "road",
       "sr": "подземни пролаз",
@@ -342,6 +353,16 @@
       "omt": ["bar", "pub", "nightclub", "biergarten", "beer"]
     },
     {
+      "id": "synagogue",
+      "group": "road",
+      "sr": "синагога",
+      "ru": "синагога",
+      "icon": "synagogue",
+      "rank": 1,
+      "osm": ["amenity=place_of_worship;religion=jewish"],
+      "omt": ["synagogue"]
+    },
+    {
       "id": "church",
       "group": "road",
       "sr": "црква",
@@ -349,7 +370,7 @@
       "icon": "church",
       "rank": 1,
       "osm": ["amenity=place_of_worship", "building=church"],
-      "omt": ["christian", "muslim", "jewish", "place_of_worship", "chapel", "cathedral", "mosque", "synagogue"]
+        "omt": ["christian", "muslim", "jewish", "place_of_worship", "chapel", "cathedral", "mosque"]
     },
     {
       "id": "school",

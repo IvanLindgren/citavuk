@@ -124,47 +124,58 @@ func (j *Judge) Evaluate(ctx context.Context, entries []Entry, direction string)
 	if err != nil {
 		return nil, err
 	}
+	content, err := j.ask(ctx, judgeSystemPrompt(direction),
+		"Оцени пять пар переводов:\n"+string(payload), 1800)
+	if err != nil {
+		return nil, err
+	}
+	return parseResult(content, len(entries))
+}
+
+// ask — один поход к нейросети. Вынесено из Evaluate, потому что судей стало
+// два: пара «человек против машины» и матч на несколько переводов.
+func (j *Judge) ask(ctx context.Context, system, user string, maxTokens int) (string, error) {
 	request := chatRequest{
 		Model: j.model,
 		Messages: []chatMessage{
-			{Role: "system", Content: judgeSystemPrompt(direction)},
-			{Role: "user", Content: "Оцени пять пар переводов:\n" + string(payload)},
+			{Role: "system", Content: system},
+			{Role: "user", Content: user},
 		},
 		Temperature: 0.1,
-		MaxTokens:   1800,
+		MaxTokens:   maxTokens,
 	}
 	request.ResponseFormat.Type = "json_object"
 	body, err := json.Marshal(request)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, j.url, bytes.NewReader(body))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	req.Header.Set("Authorization", "Bearer "+j.apiKey)
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := j.client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("нейросеть недоступна: %w", err)
+		return "", fmt.Errorf("нейросеть недоступна: %w", err)
 	}
 	defer resp.Body.Close()
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		var parsed chatResponse
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
-			return nil, fmt.Errorf("нейросеть отказала: %s", parsed.Error.Message)
+			return "", fmt.Errorf("нейросеть отказала: %s", parsed.Error.Message)
 		}
-		return nil, fmt.Errorf("нейросеть ответила кодом %d", resp.StatusCode)
+		return "", fmt.Errorf("нейросеть ответила кодом %d", resp.StatusCode)
 	}
 	var parsed chatResponse
 	if json.Unmarshal(raw, &parsed) != nil || len(parsed.Choices) == 0 {
-		return nil, ErrBadAnswer
+		return "", ErrBadAnswer
 	}
-	return parseResult(parsed.Choices[0].Message.Content, len(entries))
+	return parsed.Choices[0].Message.Content, nil
 }
 
 func validateEntries(entries []Entry) error {
