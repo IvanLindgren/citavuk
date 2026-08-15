@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
 
 /** Базовые элементы интерфейса, общие для всех страниц. */
 
@@ -55,9 +55,11 @@ export function Button({
 /** Карточка на «приподнятом» фоне с мягкой тенью. */
 export function Card({
   className = '',
+  style,
   children,
 }: {
   className?: string;
+  style?: CSSProperties;
   children: ReactNode;
 }) {
   return (
@@ -67,6 +69,7 @@ export function Card({
         'bg-[var(--bg-raised)] shadow-[var(--shadow-soft)]',
         className,
       ].join(' ')}
+      style={style}
     >
       {children}
     </div>

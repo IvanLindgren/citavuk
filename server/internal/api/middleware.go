@@ -205,6 +205,9 @@ type statusRecorder struct {
 	http.ResponseWriter
 	status int
 	bytes  int
+	// Начало тела ошибочного ответа: по нему в админке видно, что именно
+	// человек получил на экран, а не только код.
+	body []byte
 }
 
 func (s *statusRecorder) WriteHeader(code int) {
@@ -218,6 +221,9 @@ func (s *statusRecorder) WriteHeader(code int) {
 func (s *statusRecorder) Write(b []byte) (int, error) {
 	if s.status == 0 {
 		s.status = http.StatusOK
+	}
+	if s.status >= http.StatusBadRequest && len(s.body) < 512 {
+		s.body = append(s.body, b[:min(len(b), 512-len(s.body))]...)
 	}
 	n, err := s.ResponseWriter.Write(b)
 	s.bytes += n
@@ -254,6 +260,19 @@ func (s *Server) withLogging(next http.Handler) http.Handler {
 			if rec.status >= http.StatusInternalServerError && r.Context().Err() == nil {
 				s.recordHTTPIncident(r, rec.status)
 			}
+			// А в живой список попадают и отказы клиенту: пачка 401 или 429
+			// значит, что у людей что-то не работает, хотя сервер здоров.
+			if rec.status >= http.StatusBadRequest {
+				s.errors.add(ErrorEvent{
+					At:      start.UTC(),
+					Method:  r.Method,
+					Path:    r.URL.Path,
+					Status:  rec.status,
+					Ms:      time.Since(start).Milliseconds(),
+					User:    actorName(r),
+					Message: errorText(rec.body),
+				})
+			}
 			slog.Info("запрос",
 				"method", r.Method,
 				"path", r.URL.Path,
@@ -264,6 +283,16 @@ func (s *Server) withLogging(next http.Handler) http.Handler {
 
 		next.ServeHTTP(rec, r)
 	})
+}
+
+// actorName называет того, кто получил ошибку. Почта нужна ровно затем, чтобы
+// понять, у одного человека сломалось или у всех; за пределы админки она не
+// уходит.
+func actorName(r *http.Request) string {
+	if user := userFrom(r.Context()); user != nil {
+		return user.Email
+	}
+	return ""
 }
 
 func (s *Server) recordHTTPIncident(r *http.Request, status int) {

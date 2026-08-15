@@ -62,19 +62,6 @@ func (s *Server) handleAdminUsers(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{"items": users})
 }
 
-func (s *Server) handleAdminIncidents(w http.ResponseWriter, r *http.Request) {
-	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-	openOnly := r.URL.Query().Get("status") != "all"
-	incidents, err := s.store.ListIncidents(r.Context(), openOnly, limit)
-	if err != nil {
-		slog.Error("список инцидентов", "err", err)
-		writeError(w, http.StatusInternalServerError, codeInternal,
-			"Не удалось загрузить инциденты.")
-		return
-	}
-	writeJSON(w, http.StatusOK, map[string]any{"items": incidents})
-}
-
 func (s *Server) handleResolveIncident(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.PathValue("id"))
 	if err != nil {

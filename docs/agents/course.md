@@ -274,6 +274,7 @@ cd frontend && flutter test                          # 162 теста
 | Ход матча | `web/src/pages/TranslationDuel.tsx`, `frontend/lib/course/screens/translation_duel_screen.dart` |
 | Комната на несколько человек | `web/src/components/MultiplayerDuel.tsx` |
 | Часы, стол, занавес, пьедестал | `web/src/components/DuelStage.tsx` |
+| Кто сейчас играет (админка) | `web/src/components/AdminOpsPanels.tsx`, `server/internal/store/admin_live.go` |
 | Звук | `web/src/lib/duelSounds.ts`, `frontend/lib/services/duel_sounds.dart` |
 | Сборка звука | `tools/build_duel_sounds.py` → `web/public/sounds/duel/`, `frontend/assets/sounds/duel/` |
 | Сборка спрайтов | `tools/build_duel_sprites.py` → `web/public/img/citavuk_duel_sprites.webp` |
@@ -285,6 +286,14 @@ cd frontend && flutter test                          # 162 теста
 выглядела как чужая игра, вставленная в Читавук, и была выброшена целиком.
 Азарт держат темп, часы и звук, а не подсветка. Если снова захочется «сделать
 поживее» — добавлять надо в темп и звук, а не цвета.
+
+**Обстановка у обоих режимов общая.** Часы-кольцо, занавес фазы, тасуемая
+колода судьи и пьедестал с конфетти лежат в `DuelStage.tsx` и берутся как игрой
+с DeepL (`pages/TranslationDuel.tsx`), так и столом на несколько человек. Первый
+заход сделал всё это только за столом — и человек, зашедший играть с машиной,
+изменений не увидел вовсе: он до стола просто не доходил. Поэтому компоненты
+принимают простые числа (`DuelClock` — `seconds` и `total`, `Podium` — список
+мест), а не комнату целиком.
 
 **Полосы — это счёт, и ничего кроме.** Выигранная фраза снимает с соперника
 фиксированные двадцать, проигранная столько же с вас, ничья задевает обоих

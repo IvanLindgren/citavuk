@@ -1,21 +1,30 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { IconType } from 'react-icons';
+import {
+  LuBookOpen, LuChartNoAxesColumn, LuCircleAlert, LuGauge, LuGraduationCap,
+  LuKeyRound, LuMap, LuMegaphone, LuNewspaper, LuSwords, LuUsers,
+} from 'react-icons/lu';
 
 import {
   createCourseRelease,
+  getAdminHealth,
   getAdminOverview,
   getAdminUsers,
   getCourseRelease,
   getCourseReleases,
   getIncidents,
+  getLiveDuel,
   publishCourseRelease,
-  resolveIncident,
   updateCourseRelease,
+  type AdminHealth,
   type AdminOverview,
   type AdminUser,
   type CourseRelease,
-  type Incident,
 } from '../api/admin';
 import { ApiError } from '../api/client';
+import {
+  AdminErrorsPanel, AdminKeysPanel, AdminLivePanel, AdminStatsPanel,
+} from '../components/AdminOpsPanels';
 import {
   getAdminLessonReports,
   getAdminTeacherApplications,
@@ -32,18 +41,51 @@ import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 
-type AdminTab = 'overview' | 'users' | 'incidents' | 'courses' | 'teachers' | 'announcements' | 'micro-feed' | 'roadmap';
+type AdminTab =
+  | 'overview' | 'keys' | 'live' | 'errors' | 'stats'
+  | 'users' | 'teachers'
+  | 'courses' | 'announcements' | 'micro-feed' | 'roadmap';
 
-const TABS: Array<{ id: AdminTab; label: string }> = [
-  { id: 'overview', label: 'Обзор' },
-  { id: 'users', label: 'Пользователи' },
-  { id: 'incidents', label: 'Инциденты' },
-  { id: 'courses', label: 'Курсы' },
-  { id: 'teachers', label: 'Преподаватели' },
-  { id: 'announcements', label: 'Объявления' },
-  { id: 'micro-feed', label: 'Вукоток' },
-  { id: 'roadmap', label: 'Дорожная карта' },
+/**
+ * Разделы собраны в три группы: «Что происходит», «Люди» и «Содержимое».
+ *
+ * Раньше это была одна полоса из восьми одинаковых кнопок, и найти в ней
+ * нужную можно было только перечитывая все восемь. Сгруппированный список
+ * читается по заголовкам, а на широком экране ещё и стоит на месте, пока
+ * прокручивается содержимое.
+ */
+const GROUPS: Array<{ title: string; tabs: Array<{ id: AdminTab; label: string; icon: IconType }> }> = [
+  {
+    title: 'Что происходит',
+    tabs: [
+      { id: 'overview', label: 'Обзор', icon: LuGauge },
+      { id: 'keys', label: 'Ключи и лимиты', icon: LuKeyRound },
+      { id: 'live', label: 'Кто играет', icon: LuSwords },
+      { id: 'errors', label: 'Ошибки', icon: LuCircleAlert },
+      { id: 'stats', label: 'Статистика', icon: LuChartNoAxesColumn },
+    ],
+  },
+  {
+    title: 'Люди',
+    tabs: [
+      { id: 'users', label: 'Пользователи', icon: LuUsers },
+      { id: 'teachers', label: 'Преподаватели', icon: LuGraduationCap },
+    ],
+  },
+  {
+    title: 'Содержимое',
+    tabs: [
+      { id: 'courses', label: 'Курсы', icon: LuBookOpen },
+      { id: 'announcements', label: 'Объявления', icon: LuMegaphone },
+      { id: 'micro-feed', label: 'Вукоток', icon: LuNewspaper },
+      { id: 'roadmap', label: 'Дорожная карта', icon: LuMap },
+    ],
+  },
 ];
+
+const TITLES: Record<AdminTab, string> = Object.fromEntries(
+  GROUPS.flatMap((group) => group.tabs.map((tab) => [tab.id, tab.label])),
+) as Record<AdminTab, string>;
 
 export function Admin() {
   const { account, loading: authLoading } = useAuth();
@@ -67,51 +109,142 @@ export function Admin() {
   }
 
   return (
-    <main className="px-5 py-8 sm:py-12">
+    <main className="px-4 py-6 sm:px-5 sm:py-10">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-sm font-bold uppercase text-[var(--accent)]">
-              Управление Citavuk
+            <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+              Управление Читавуком
             </p>
-            <h1 className="mt-1 text-3xl sm:text-4xl">Админ-панель</h1>
+            <h1 className="mt-1 font-display text-3xl sm:text-4xl">{TITLES[tab]}</h1>
           </div>
           <p className="text-sm text-[var(--text-muted)]">{account.email}</p>
         </div>
 
-        <div
-          className="mb-7 grid grid-cols-2 gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-1 sm:grid-cols-4 lg:grid-cols-7"
-          role="tablist"
-        >
-          {TABS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={tab === item.id}
-              onClick={() => setTab(item.id)}
-              className={[
-                'rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors',
-                tab === item.id
-                  ? 'bg-[var(--accent)] text-parchment'
-                  : 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]',
-              ].join(' ')}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        <StatusStrip onOpen={setTab} />
 
-        {tab === 'overview' && <OverviewPanel />}
-        {tab === 'users' && <UsersPanel />}
-        {tab === 'incidents' && <IncidentsPanel />}
-        {tab === 'courses' && <CoursesPanel />}
-        {tab === 'teachers' && <TeacherModerationPanel />}
-        {tab === 'announcements' && <AdminAnnouncementsPanel />}
-        {tab === 'micro-feed' && <AdminMicroFeedPanel />}
-        {tab === 'roadmap' && <AdminRoadmapPanel />}
+        <div className="mt-6 gap-6 lg:flex lg:items-start">
+          <nav className="lg:sticky lg:top-20 lg:w-56 lg:shrink-0" aria-label="Разделы админки">
+            {/* На узком экране это одна прокручиваемая полоса кнопок, на
+                широком — колонка с заголовками групп. */}
+            <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-2 lg:mx-0 lg:block lg:space-y-5 lg:overflow-visible lg:px-0 lg:pb-0">
+              {GROUPS.map((group) => (
+                <div key={group.title} className="flex gap-1.5 lg:block">
+                  <p className="hidden text-xs font-bold uppercase tracking-wide text-[var(--text-muted)] lg:block">
+                    {group.title}
+                  </p>
+                  <div className="flex gap-1.5 lg:mt-2 lg:block lg:space-y-0.5">
+                    {group.tabs.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        aria-current={tab === item.id ? 'page' : undefined}
+                        onClick={() => setTab(item.id)}
+                        className={[
+                          'flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors lg:w-full',
+                          tab === item.id
+                            ? 'bg-[var(--accent)] text-parchment'
+                            : 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]',
+                        ].join(' ')}
+                      >
+                        <item.icon className="size-4 shrink-0" />
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </nav>
+
+          <div className="mt-4 min-w-0 flex-1 lg:mt-0">
+            {tab === 'overview' && <OverviewPanel onOpen={setTab} />}
+            {tab === 'keys' && <AdminKeysPanel />}
+            {tab === 'live' && <AdminLivePanel />}
+            {tab === 'errors' && <AdminErrorsPanel />}
+            {tab === 'stats' && <AdminStatsPanel />}
+            {tab === 'users' && <UsersPanel />}
+            {tab === 'courses' && <CoursesPanel />}
+            {tab === 'teachers' && <TeacherModerationPanel />}
+            {tab === 'announcements' && <AdminAnnouncementsPanel />}
+            {tab === 'micro-feed' && <AdminMicroFeedPanel />}
+            {tab === 'roadmap' && <AdminRoadmapPanel />}
+          </div>
+        </div>
       </div>
     </main>
+  );
+}
+
+/**
+ * Строка состояния под заголовком: жива ли база, сколько осталось квоты и есть
+ * ли открытые аварии.
+ *
+ * Это единственное, что нужно видеть, не открывая ничего: если тут всё тихо,
+ * можно спокойно заниматься содержимым.
+ */
+function StatusStrip({ onOpen }: { onOpen: (tab: AdminTab) => void }) {
+  const [health, setHealth] = useState<AdminHealth | null>(null);
+  const [live, setLive] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
+
+  useEffect(() => {
+    getAdminHealth().then(setHealth).catch(() => undefined);
+    getLiveDuel().then((state) => setLive(state.people)).catch(() => undefined);
+    getIncidents().then((answer) => setOpen(answer.items.length)).catch(() => undefined);
+  }, []);
+
+  const quota = health?.quota;
+  const left = quota && quota.limit > 0 ? 1 - quota.used / quota.limit : null;
+
+  return (
+    <div className="mt-4 flex flex-wrap gap-2">
+      <StatusPill
+        ok={health ? health.database : undefined}
+        label={health ? (health.database ? 'База отвечает' : 'База недоступна') : 'База…'}
+      />
+      <button type="button" onClick={() => onOpen('keys')}>
+        <StatusPill
+          ok={left === null ? undefined : left > 0.1}
+          label={
+            quota?.error
+              ? 'DeepL: нет ответа'
+              : left === null
+                ? 'Квота DeepL…'
+                : `Квота DeepL: ${Math.round(left * 100)}%`
+          }
+        />
+      </button>
+      <button type="button" onClick={() => onOpen('errors')}>
+        <StatusPill
+          ok={open === null ? undefined : open === 0}
+          label={open === null ? 'Аварии…' : open === 0 ? 'Аварий нет' : `Открытых аварий: ${open}`}
+        />
+      </button>
+      <button type="button" onClick={() => onOpen('live')}>
+        <StatusPill ok label={live === null ? 'Игра…' : live === 0 ? 'Никто не играет' : `За столами: ${live}`} />
+      </button>
+      {health && (
+        <span className="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-[var(--text-muted)]">
+          {health.version}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function StatusPill({ ok, label }: { ok?: boolean; label: string }) {
+  const tone =
+    ok === undefined
+      ? 'border-[var(--line)] text-[var(--text-muted)]'
+      : ok
+        ? 'border-[var(--success)]/40 text-[var(--success)]'
+        : 'border-[var(--accent)]/50 text-[var(--accent)]';
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}>
+      <span className="size-1.5 rounded-full bg-current" />
+      {label}
+    </span>
   );
 }
 
@@ -145,7 +278,7 @@ function TeacherModerationPanel() {
   </div>;
 }
 
-function OverviewPanel() {
+function OverviewPanel({ onOpen }: { onOpen: (tab: AdminTab) => void }) {
   const [overview, setOverview] = useState<AdminOverview | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -165,25 +298,36 @@ function OverviewPanel() {
   if (error) return <ErrorNote>{error}</ErrorNote>;
   if (!overview) return <PanelLoader />;
 
-  const cards = [
-    ['Сейчас онлайн', overview.onlineNow],
-    ['Активны за сутки', overview.active24Hours],
-    ['Пользователи', overview.users],
-    ['Книги', overview.books],
-    ['Слова в словарях', overview.vocabulary],
-    ['Учатся на курсах', overview.courseLearners],
-    ['Опубликовано курсов', overview.publishedCourses],
-    ['Открытые инциденты', overview.openIncidents],
-  ] as const;
+  // Показатель ведёт в раздел, где он раскрыт подробнее: обзор отвечает
+  // «сколько», а «почему столько» — уже другой экран.
+  const cards: Array<[string, number, AdminTab | null]> = [
+    ['Сейчас онлайн', overview.onlineNow, null],
+    ['Активны за сутки', overview.active24Hours, 'stats'],
+    ['Пользователи', overview.users, 'users'],
+    ['Книги', overview.books, null],
+    ['Слова в словарях', overview.vocabulary, null],
+    ['Учатся на курсах', overview.courseLearners, 'courses'],
+    ['Опубликовано курсов', overview.publishedCourses, 'courses'],
+    ['Открытые аварии', overview.openIncidents, 'errors'],
+  ];
   const maxDaily = Math.max(1, ...overview.newUsers.map((point) => point.count));
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {cards.map(([label, value]) => (
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {cards.map(([label, value, tab]) => (
           <Card key={label} className="p-5">
-            <p className="text-sm text-[var(--text-muted)]">{label}</p>
-            <p className="mt-2 font-display text-3xl font-bold">{value}</p>
+            {tab ? (
+              <button type="button" onClick={() => onOpen(tab)} className="block w-full text-left">
+                <p className="text-sm text-[var(--text-muted)]">{label}</p>
+                <p className="mt-2 font-display text-3xl font-bold tabular-nums">{value}</p>
+              </button>
+            ) : (
+              <>
+                <p className="text-sm text-[var(--text-muted)]">{label}</p>
+                <p className="mt-2 font-display text-3xl font-bold tabular-nums">{value}</p>
+              </>
+            )}
           </Card>
         ))}
       </div>
@@ -310,94 +454,6 @@ function UsersPanel() {
             </tbody>
           </table>
         </Card>
-      )}
-    </div>
-  );
-}
-
-function IncidentsPanel() {
-  const [incidents, setIncidents] = useState<Incident[] | null>(null);
-  const [showAll, setShowAll] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    setError(null);
-    try {
-      setIncidents((await getIncidents(showAll)).items ?? []);
-    } catch (caught) {
-      setError(messageOf(caught));
-    }
-  }, [showAll]);
-
-  useEffect(() => {
-    void load();
-  }, [load]);
-
-  return (
-    <div className="space-y-5">
-      <label className="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold">
-        <input
-          type="checkbox"
-          checked={showAll}
-          onChange={(event) => setShowAll(event.target.checked)}
-          className="size-4 accent-[var(--accent)]"
-        />
-        Показать закрытые
-      </label>
-      {error && <ErrorNote>{error}</ErrorNote>}
-      {!incidents ? (
-        <PanelLoader />
-      ) : incidents.length === 0 ? (
-        <Card className="p-10 text-center text-[var(--text-muted)]">
-          Открытых инцидентов нет.
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          {incidents.map((incident) => (
-            <Card key={incident.id} className="p-5">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Severity value={incident.severity} />
-                    <span className="text-xs text-[var(--text-muted)]">
-                      {incident.source} · {incident.occurrences} раз
-                    </span>
-                  </div>
-                  <h3 className="mt-2 break-words text-lg">{incident.message}</h3>
-                  <p className="mt-1 text-xs text-[var(--text-muted)]">
-                    Последний: {formatDateTime(incident.lastSeen)}
-                  </p>
-                  {Object.keys(incident.details ?? {}).length > 0 && (
-                    <pre className="mt-3 max-h-40 overflow-auto rounded-xl bg-[var(--bg-sunken)] p-3 text-xs">
-                      {JSON.stringify(incident.details, null, 2)}
-                    </pre>
-                  )}
-                </div>
-                {!incident.resolvedAt && (
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    disabled={busy === incident.id}
-                    onClick={async () => {
-                      setBusy(incident.id);
-                      try {
-                        await resolveIncident(incident.id);
-                        await load();
-                      } catch (caught) {
-                        setError(messageOf(caught));
-                      } finally {
-                        setBusy(null);
-                      }
-                    }}
-                  >
-                    {busy === incident.id ? <Spinner /> : 'Закрыть'}
-                  </Button>
-                )}
-              </div>
-            </Card>
-          ))}
-        </div>
       )}
     </div>
   );
@@ -715,20 +771,6 @@ function nextDraftVersion(version: string): string {
   const match = version.match(/^(\d+)\.(\d+)\.(\d+)/);
   if (!match) return `${version}-draft-${Date.now()}`;
   return `${match[1]}.${match[2]}.${Number(match[3]) + 1}`;
-}
-
-function Severity({ value }: { value: Incident['severity'] }) {
-  const classes = {
-    info: 'bg-blue-600/10 text-blue-700',
-    warning: 'bg-amber-600/12 text-amber-700',
-    error: 'bg-serb-red/12 text-serb-red',
-    critical: 'bg-serb-red text-white',
-  };
-  return (
-    <span className={`rounded-full px-2.5 py-1 text-xs font-bold uppercase ${classes[value]}`}>
-      {value}
-    </span>
-  );
 }
 
 function ReleaseStatus({ value }: { value: CourseRelease['status'] }) {

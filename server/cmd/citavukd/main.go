@@ -94,6 +94,11 @@ func run(envPath string, migrateOnly bool) error {
 		"всего", len(store.KnownMigrations()),
 		"применено", len(applied),
 		"имена", applied)
+	// С этого момента каждая запись журнала уровня error заводит инцидент в
+	// админке. Раньше туда попадал только код ответа («вернул 500»), а
+	// причина оставалась в текстовом логе на сервере — то есть за ssh.
+	slog.SetDefault(slog.New(api.NewIncidentLogger(slog.Default().Handler(), st)))
+
 	adminCtx, cancelAdmins := context.WithTimeout(context.Background(), 10*time.Second)
 	promoted, err := st.ConfigureAdmins(adminCtx, cfg.AdminEmails)
 	cancelAdmins()

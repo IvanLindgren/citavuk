@@ -52,7 +52,11 @@ type Server struct {
 	generalLimit         *limiter
 	quizLimit            *limiter
 	documentFetchLimit   *limiter
-	stop                 chan struct{}
+	// Последние ответы с ошибкой: живой журнал админки. В базе лежат только
+	// аварии, а разобраться в жалобе «у меня не работает» помогают как раз
+	// отказы клиенту.
+	errors *recentErrors
+	stop   chan struct{}
 }
 
 // New собирает сервер.
@@ -143,6 +147,7 @@ func New(
 		// в минуту ручка превращается в средство качать чужие файлы через наш
 		// канал, а машина на VPS общая с почтой и чужими сайтами.
 		documentFetchLimit: newLimiter("document_fetch", 20, 5, redisClient),
+		errors:             newRecentErrors(400),
 		stop:               make(chan struct{}),
 	}
 
@@ -192,6 +197,14 @@ func (s *Server) purgeSessionsPeriodically() {
 				slog.Warn("очистка неподтверждённых аккаунтов не удалась", "err", err)
 			} else if n > 0 {
 				slog.Info("удалены неподтверждённые аккаунты", "count", n)
+			}
+			// Журнал ошибок теперь пополняется каждой записью уровня error, а
+			// не только аварией ручки. Без уборки закрытых записей он рос бы
+			// без предела.
+			if n, err := s.store.PurgeResolvedIncidents(ctx, 30*24*time.Hour); err != nil {
+				slog.Warn("очистка журнала ошибок не удалась", "err", err)
+			} else if n > 0 {
+				slog.Info("удалены закрытые записи журнала", "count", n)
 			}
 			cancel()
 		case <-s.stop:
@@ -403,7 +416,13 @@ func (s *Server) Handler() http.Handler {
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
 	mux.HandleFunc("GET /v1/admin/overview", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminOverview)))
 	mux.HandleFunc("GET /v1/admin/users", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminUsers)))
-	mux.HandleFunc("GET /v1/admin/incidents", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminIncidents)))
+	mux.HandleFunc("GET /v1/admin/incidents", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminIncidentsFiltered)))
+	mux.HandleFunc("POST /v1/admin/incidents/resolve-source", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminResolveSource)))
+	// Состояние сервиса: ключи и квоты, живая игра, свежие ошибки, статистика.
+	mux.HandleFunc("GET /v1/admin/health", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminHealth)))
+	mux.HandleFunc("GET /v1/admin/duel/live", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLiveDuel)))
+	mux.HandleFunc("GET /v1/admin/errors", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminRecentErrors)))
+	mux.HandleFunc("GET /v1/admin/stats", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminStats)))
 	mux.HandleFunc("POST /v1/admin/incidents/{id}/resolve", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleResolveIncident)))
 	mux.HandleFunc("GET /v1/admin/courses", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCourses)))
 	mux.HandleFunc("GET /v1/admin/courses/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCourse)))

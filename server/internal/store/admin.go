@@ -220,51 +220,6 @@ func (s *Store) RecordIncident(
 	return err
 }
 
-func (s *Store) ListIncidents(
-	ctx context.Context,
-	openOnly bool,
-	limit int,
-) ([]Incident, error) {
-	if limit < 1 || limit > 200 {
-		limit = 100
-	}
-	rows, err := s.Pool.Query(ctx, `
-        SELECT id, fingerprint, severity, source, message, details,
-               occurrences, first_seen, last_seen, resolved_at
-          FROM incidents
-         WHERE NOT $1 OR resolved_at IS NULL
-         ORDER BY resolved_at NULLS FIRST, last_seen DESC
-         LIMIT $2`,
-		openOnly, limit,
-	)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	incidents := make([]Incident, 0)
-	for rows.Next() {
-		var incident Incident
-		var details []byte
-		if err := rows.Scan(
-			&incident.ID,
-			&incident.Fingerprint,
-			&incident.Severity,
-			&incident.Source,
-			&incident.Message,
-			&details,
-			&incident.Occurrences,
-			&incident.FirstSeen,
-			&incident.LastSeen,
-			&incident.ResolvedAt,
-		); err != nil {
-			return nil, err
-		}
-		incident.Details = json.RawMessage(details)
-		incidents = append(incidents, incident)
-	}
-	return incidents, rows.Err()
-}
-
 func (s *Store) ResolveIncident(
 	ctx context.Context,
 	id uuid.UUID,

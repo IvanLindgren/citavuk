@@ -7,6 +7,7 @@
  * выглядела как чужая игра, вставленная в Читавук.
  */
 
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /*
@@ -91,15 +92,26 @@ export function ScoreBar({
   wonFoe: number;
   foeName: string;
 }) {
+  // Счёт в разборе меняется по одному предложению, и без толчка это движение
+  // теряется среди пяти открывающихся сравнений.
+  const scored = useJust(wonHero + wonFoe);
+
   return (
     <div>
       <div className="flex items-baseline justify-between gap-3 text-xs font-bold uppercase tracking-wide">
         <span className="text-[var(--accent)]">Вы</span>
         {/* Цифрами — выигранные предложения, а не внутренние очки полос:
             «72 : 32» человеку ничего не говорит, «3 : 1» говорит всё. */}
-        <span className="font-sans text-sm tabular-nums text-[var(--text-muted)]">
+        <motion.span
+          className="font-sans text-sm tabular-nums"
+          animate={{
+            scale: scored ? 1.25 : 1,
+            color: scored ? 'var(--color-gold)' : 'var(--text-muted)',
+          }}
+          transition={{ type: 'spring', stiffness: 420, damping: 16 }}
+        >
           {wonHero} : {wonFoe}
-        </span>
+        </motion.span>
         <span className="truncate text-[var(--machine)]">{foeName}</span>
       </div>
       <div className="mt-1.5 flex items-center gap-1.5">
@@ -108,6 +120,22 @@ export function ScoreBar({
       </div>
     </div>
   );
+}
+
+/** Полсекунды «только что выросло» — на этом держится подскок счёта. */
+function useJust(value: number): boolean {
+  const previous = useRef(value);
+  const [just, setJust] = useState(false);
+  useEffect(() => {
+    if (value > previous.current) {
+      setJust(true);
+      const timer = window.setTimeout(() => setJust(false), 500);
+      previous.current = value;
+      return () => window.clearTimeout(timer);
+    }
+    previous.current = value;
+  }, [value]);
+  return just;
 }
 
 function Half({ value, max, color, flip = false }: { value: number; max: number; color: string; flip?: boolean }) {

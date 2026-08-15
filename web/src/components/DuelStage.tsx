@@ -19,7 +19,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { LuBot, LuCheck, LuCrown, LuDoorOpen, LuPencil } from 'react-icons/lu';
 
 import type { DuelPlayer, DuelRoom, DuelStanding } from '../api/duel';
-import { initial, pending, phaseSeconds, podium, seated, urgency } from '../duel/room';
+import { initial, pending, seated, urgency } from '../duel/room';
 import { Ornament } from './Ornament';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -31,10 +31,9 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * бьётся. Цифры человек не читает, пока пишет; цвет и пульс он видит боковым
  * зрением.
  */
-export function DuelClock({ seconds, phase }: { seconds: number; phase: DuelRoom['phase'] }) {
+export function DuelClock({ seconds, total }: { seconds: number; total: number }) {
   const reduced = useReducedMotion() ?? false;
-  const total = phaseSeconds(phase);
-  const heat = urgency(seconds);
+  const heat = urgency(seconds, total);
   const part = Math.max(0, Math.min(1, seconds / total));
   const color =
     heat === 'hot' ? 'var(--accent)' : heat === 'warm' ? 'var(--color-gold)' : 'var(--text-muted)';
@@ -296,15 +295,14 @@ function useGrown(score: number): boolean {
  * Столбики растут снизу, поэтому итог читается за один взгляд — раньше, чем
  * человек успеет разобрать цифры.
  */
-export function Podium({ room }: { room: DuelRoom }) {
+export function Podium({ rows, you }: { rows: DuelStanding[]; you?: string }) {
   const reduced = useReducedMotion() ?? false;
-  const rows = podium(room);
   const best = Math.max(1, ...rows.map((row) => row.score));
 
   return (
     <div className="mx-auto flex max-w-md items-end justify-center gap-2">
       {rows.map((row) => (
-        <Step key={row.id} row={row} best={best} you={row.id === room.you} reduced={reduced} />
+        <Step key={row.id} row={row} best={best} you={row.id === you} reduced={reduced} />
       ))}
     </div>
   );

@@ -5,6 +5,11 @@
  * а разбор пяти переводов открывается по одному, с паузой — пять сравнений,
  * показанных разом, читатель не читает, он их пролистывает.
  *
+ * Обстановка общая с матчем на несколько человек: те же часы-кольцо, занавес
+ * раунда, тасуемая колода судьи и пьедестал в конце (components/DuelStage.tsx).
+ * Сначала это было сделано только за столом, и человек, зашедший играть с
+ * DeepL, изменений не видел вовсе — он до стола просто не доходил.
+ *
  * Оформление — обычные панели Читавука: пергамент, Lora, акцент сайта на
  * стороне человека и индиго палитры на стороне машины. Была попытка сделать
  * из этого тёмную арену с неоном и искрами; выглядело как чужая игра,
@@ -22,10 +27,12 @@ import {
   LuBot,
   LuChevronLeft,
   LuChevronRight,
+  LuCrown,
   LuLanguages,
   LuRotateCcw,
   LuSwords,
   LuUser,
+  LuUsers,
   LuVolume2,
   LuVolumeX,
 } from 'react-icons/lu';
@@ -41,7 +48,11 @@ import {
   type TranslationGameWinner,
   type TranslationGameDirection,
 } from '../api/translationGame';
+import type { DuelStanding } from '../api/duel';
 import { Fighter, ScoreBar, type Pose } from '../components/DuelArena';
+import {
+  Confetti, CURTAIN_MS, DuelClock, DuelWaiting, PhaseCurtain, Podium, ShuffleDeck,
+} from '../components/DuelStage';
 import { Ornament } from '../components/Ornament';
 import { Button, Card, Spinner } from '../components/ui';
 import {
@@ -55,7 +66,7 @@ import {
   SENTENCE_SECONDS,
 } from '../lib/duelScore';
 import { duelMuted, playDuel, playDuelKey, preloadDuelSounds, setDuelMuted } from '../lib/duelSounds';
-import { Link, useParams } from '../lib/router';
+import { useParams } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { MultiplayerDuel } from '../components/MultiplayerDuel';
 
@@ -91,15 +102,20 @@ interface MatchScore {
   ties: number;
 }
 
-export function TranslationDuel() {
-  const { code = '' } = useParams();
-  const [solo, setSolo] = useState(false);
-  if (code) return <MultiplayerDuel code={code} />;
-  if (!solo) return <MultiplayerDuel onSolo={() => setSolo(true)} />;
-  return <SoloTranslationDuel />;
+interface SoloStart {
+  level: TranslationGameLevel;
+  direction: TranslationGameDirection;
 }
 
-function SoloTranslationDuel() {
+export function TranslationDuel() {
+  const { code = '' } = useParams();
+  const [solo, setSolo] = useState<SoloStart | null>(null);
+  if (code) return <MultiplayerDuel code={code} />;
+  if (!solo) return <MultiplayerDuel onSolo={(level, direction) => setSolo({ level, direction })} />;
+  return <SoloTranslationDuel start={solo} onLeave={() => setSolo(null)} />;
+}
+
+function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: () => void }) {
   useSeo({
     title: 'Ты против переводчика — игра с DeepL и Google Translate',
     description: 'Переведите сербские фразы лучше DeepL или Google Translate и попросите Gemma 4 рассудить спор.',
@@ -107,9 +123,9 @@ function SoloTranslationDuel() {
 
   const reduced = useReducedMotion() ?? false;
 
-  const [level, setLevel] = useState<TranslationGameLevel>('A2');
+  const [level, setLevel] = useState<TranslationGameLevel>(start.level);
   const [provider, setProvider] = useState<TranslationGameProvider>('deepl');
-  const [direction, setDirection] = useState<TranslationGameDirection>('sr-ru');
+  const [direction, setDirection] = useState<TranslationGameDirection>(start.direction);
   const [roundNumber, setRoundNumber] = useState(1);
   const [round, setRound] = useState<Awaited<ReturnType<typeof loadTranslationGameRound>> | null>(null);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -132,6 +148,8 @@ function SoloTranslationDuel() {
   /** Очки стиля за раунд: темп уходит сюда, а не в счёт. */
   const [style, setStyle] = useState(0);
   const [muted, setMuted] = useState(() => duelMuted());
+  /** Занавес фазы: держится CURTAIN_MS и уходит сам. */
+  const [curtain, setCurtain] = useState<{ label: string; title: string } | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const lastKeyRef = useRef(0);
@@ -148,6 +166,11 @@ function SoloTranslationDuel() {
     timers.current = [];
   };
   useEffect(() => clearTimers, []);
+
+  const announce = (label: string, title: string) => {
+    setCurtain({ label, title });
+    later(CURTAIN_MS, () => setCurtain(null));
+  };
 
   const translatorName = provider === 'deepl' ? 'DeepL' : 'Google Translate';
   // Направление матча берётся из ответа сервера, а не из состояния формы:
@@ -251,6 +274,8 @@ function SoloTranslationDuel() {
     }
     lockedTempoRef.current = tempo;
     setPhase('choose');
+    playDuel('start');
+    announce('Переводы готовы', 'Чей лучше');
   };
 
   /**
@@ -324,6 +349,7 @@ function SoloTranslationDuel() {
       setPose('taunt');
       setPhase('translate');
       playDuel('start');
+      announce('Поехали', `Раунд ${number} из ${TOTAL_ROUNDS}`);
       later(120, () => inputRef.current?.focus());
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Не удалось начать раунд.');
@@ -421,12 +447,21 @@ function SoloTranslationDuel() {
         onProvider={setProvider}
         onDirection={setDirection}
         onStart={() => void startRound(1)}
+        onLeave={onLeave}
       />
     );
   }
 
   if (phase === 'finished') {
-    return <Finished score={addScore(score, roundScore)} translatorName={translatorName} onRestart={restart} />;
+    return (
+      <Finished
+        score={addScore(score, roundScore)}
+        translatorName={translatorName}
+        provider={provider}
+        onRestart={restart}
+        onLeave={onLeave}
+      />
+    );
   }
 
   if (!round) return null;
@@ -440,12 +475,19 @@ function SoloTranslationDuel() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-8 sm:py-12">
+      {curtain && <PhaseCurtain key={curtain.title} label={curtain.label} title={curtain.title} />}
+
       <button type="button" onClick={restart} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]">
         <LuChevronLeft className="size-4" />
         Выйти из матча
       </button>
 
-      <Card className="paper-grain mt-5 px-5 py-6 sm:px-8 sm:py-8">
+      {/* Рамка карточки краснеет на последних секундах: человек смотрит в поле
+          ввода, и часы он замечает только боковым зрением. */}
+      <Card
+        className="paper-grain mt-5 px-5 py-6 transition-colors sm:px-8 sm:py-8"
+        style={burning ? { borderColor: 'var(--accent)' } : undefined}
+      >
         <div className="relative flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
             <span>{level}</span>
@@ -466,6 +508,9 @@ function SoloTranslationDuel() {
           >
             {muted ? <LuVolumeX className="size-4" /> : <LuVolume2 className="size-4" />}
           </button>
+          {phase === 'translate' && (
+            <DuelClock seconds={Math.ceil(timeLeft)} total={SENTENCE_SECONDS} />
+          )}
         </div>
 
         <div className="relative mt-4">
@@ -503,21 +548,16 @@ function SoloTranslationDuel() {
 
         {phase === 'translate' && (
           <div className="relative mt-6">
-            {/* Часы фразы. Тонкая линия, а не циферблат: время должно быть
-                видно краем глаза, а не тянуть взгляд с текста. */}
-            <div className="flex items-center gap-3">
-              <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
-                <div
-                  className="h-full rounded-full transition-[width] duration-100 ease-linear"
-                  style={{
-                    width: `${running * 100}%`,
-                    background: burning ? 'var(--accent)' : 'var(--line)',
-                  }}
-                />
-              </div>
-              <span className={`w-8 text-right text-xs tabular-nums ${burning ? 'font-bold text-[var(--accent)]' : 'text-[var(--text-muted)]'}`}>
-                {Math.ceil(timeLeft)}
-              </span>
+            {/* Полоса времени во всю ширину — та же, что за столом матча.
+                Цифры отсчёта висят на кольце в шапке. */}
+            <div className="h-1 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
+              <div
+                className="h-full rounded-full transition-[width] duration-100 ease-linear"
+                style={{
+                  width: `${running * 100}%`,
+                  background: burning ? 'var(--accent)' : 'var(--line)',
+                }}
+              />
             </div>
 
             <div className="mt-4 flex items-center gap-2">
@@ -583,7 +623,26 @@ function SoloTranslationDuel() {
           </div>
         )}
 
-        {phase !== 'translate' && (
+        {/* Пока Gemma читает, панель сравнений уходит: пустая страница с
+            крутящимся кружком в кнопке читается как зависший сайт. */}
+        {phase === 'choose' && loading && (
+          <div className="relative mt-4">
+            <DuelWaiting
+              title="Gemma сравнивает переводы"
+              text="Судья не знает, где чей перевод: он видит только два текста под метками."
+            >
+              <motion.div
+                animate={reduced ? undefined : { y: [0, -7, 0], rotate: [-1.5, 1.5, -1.5] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Fighter pose="study" className="mx-auto w-20" />
+              </motion.div>
+              <ShuffleDeck count={sentences.length} />
+            </DuelWaiting>
+          </div>
+        )}
+
+        {phase !== 'translate' && !(phase === 'choose' && loading) && (
           <div className="relative mt-6 space-y-3">
             {sentences.map((item, at) => {
               const verdict = verdicts.find((entry) => entry.index === at);
@@ -684,11 +743,19 @@ function Pair({
   onChoose?: (winner: TranslationGameWinner) => void;
   showFeedback: boolean;
 }) {
+  // Закрытая пара не просто бледная: она ещё и лежит чуть ниже и мельче, а в
+  // момент открытия подскакивает. Одной прозрачности глаз не ловит, и разбор
+  // читался как список, который просто посветлел.
   return (
     <motion.div
-      animate={{ opacity: open ? 1 : 0.35 }}
-      transition={{ duration: reduced ? 0 : 0.3 }}
-      className="rounded-md border border-[var(--line)] p-4"
+      animate={{
+        opacity: open ? 1 : 0.3,
+        y: open ? 0 : 8,
+        scale: open ? 1 : 0.985,
+      }}
+      transition={{ duration: reduced ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-md border p-4 transition-colors"
+      style={{ borderColor: open && verdict ? 'var(--color-gold)' : 'var(--line)' }}
     >
       <p className="font-display leading-7">
         <span className="mr-2 text-sm text-[var(--text-muted)]">{order + 1}</span>
@@ -734,8 +801,14 @@ function SideBox({
   color: string;
   won: boolean;
 }) {
+  const reduced = useReducedMotion() ?? false;
   return (
-    <div
+    <motion.div
+      // Победившая сторона коротко подскакивает: в разборе пары открываются
+      // одна за другой, и без толчка непонятно, какая из них только что взяла
+      // очко.
+      animate={won && !reduced ? { scale: [1, 1.03, 1] } : undefined}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
       className="rounded-md border p-3 transition-colors"
       style={{
         borderColor: won ? color : 'var(--line)',
@@ -745,9 +818,10 @@ function SideBox({
       <p className="flex items-center gap-1.5 text-xs font-bold uppercase" style={{ color: won ? color : 'var(--text-muted)' }}>
         <Icon className="size-3.5" />
         {label}
+        {won && <LuCrown className="size-3.5" />}
       </p>
       <p className="mt-1.5 leading-6">{text}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -775,6 +849,7 @@ function Setup({
   onProvider,
   onDirection,
   onStart,
+  onLeave,
 }: {
   level: TranslationGameLevel;
   provider: TranslationGameProvider;
@@ -785,17 +860,24 @@ function Setup({
   onProvider: (value: TranslationGameProvider) => void;
   onDirection: (value: TranslationGameDirection) => void;
   onStart: () => void;
+  onLeave: () => void;
 }) {
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-8 sm:py-12">
-      <Link to="/trainer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]">
-        <LuChevronLeft className="size-4" /> Тренажёрка
-      </Link>
+      {/* Назад — в меню игры, а не в тренажёрку: уровень и направление сюда
+          пришли оттуда, и менять их удобнее там же. */}
+      <button
+        type="button"
+        onClick={onLeave}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]"
+      >
+        <LuChevronLeft className="size-4" /> К выбору игры
+      </button>
 
       <header className="mt-6 flex items-start gap-5">
         <Fighter pose="taunt" className="hidden w-24 shrink-0 sm:block" />
         <div>
-          <h1 className="text-3xl sm:text-4xl">Ты против переводчика</h1>
+          <h1 className="text-3xl sm:text-4xl">Матч с машиной</h1>
           <p className="mt-4 max-w-xl text-lg leading-8 text-[var(--text-muted)]">
             Три раунда по пять фраз. Сначала переводите вы под часы, затем открывается ответ машины.
             Победителя выбираете сами или Gemma 4.
@@ -890,25 +972,58 @@ function Setup({
   );
 }
 
-function Finished({ score, translatorName, onRestart }: { score: MatchScore; translatorName: string; onRestart: () => void }) {
+/**
+ * Итог матча: тот же пьедестал, что в матче на несколько человек.
+ *
+ * Столбики растут снизу, и кто выиграл, видно раньше, чем человек разберёт
+ * цифры. Конфетти сыплется только победителю: проигравшему праздник в лицо —
+ * это издёвка, а не утешение.
+ */
+function Finished({
+  score,
+  translatorName,
+  provider,
+  onRestart,
+  onLeave,
+}: {
+  score: MatchScore;
+  translatorName: string;
+  provider: TranslationGameProvider;
+  onRestart: () => void;
+  onLeave: () => void;
+}) {
   const won = score.user > score.translator;
   const drawn = score.user === score.translator;
+  const rows: DuelStanding[] = [
+    { id: 'me', name: 'Ты', score: score.user, place: won || drawn ? 1 : 2 },
+    { id: 'foe', name: translatorName, score: score.translator, place: won ? 2 : 1, machine: provider },
+  ];
+
   return (
-    <main className="mx-auto w-full max-w-2xl px-5 py-14 text-center sm:py-20">
-      <Fighter pose={won ? 'trophy' : drawn ? 'compare' : 'think'} className="mx-auto w-32" />
-      <p className="mt-6 text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">Матч завершён</p>
-      <h1 className="mt-2 text-3xl sm:text-4xl">
-        {won ? 'Вы победили' : drawn ? 'Ничья' : `${translatorName} победил`}
-      </h1>
-      <p className="mt-6 text-2xl font-bold tabular-nums">
-        <span className="text-[var(--accent)]">{score.user}</span>
-        <span className="mx-3 text-[var(--text-muted)]">:</span>
-        <span className="text-[var(--machine)]">{score.translator}</span>
-      </p>
-      <p className="mt-2 text-[var(--text-muted)]">Ничьих: {score.ties} · всего 15 предложений</p>
-      <Button className="mt-8" size="lg" onClick={onRestart}>
-        <LuRotateCcw className="size-5" /> Сыграть ещё
-      </Button>
+    <main className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <Card className="relative overflow-hidden px-5 py-10 text-center sm:px-8">
+        {won && <Confetti />}
+        <div className="relative">
+          <Fighter pose={won ? 'trophy' : drawn ? 'compare' : 'think'} className="mx-auto w-28" />
+          <p className="mt-4 text-xs font-bold uppercase tracking-wide text-[var(--accent)]">Матч завершён</p>
+          <h1 className="mt-1 font-display text-3xl sm:text-4xl">
+            {won ? 'Ты победил' : drawn ? 'Ничья' : 'В следующий раз получится'}
+          </h1>
+          <Ornament className="mx-auto my-6 w-48" count={7} />
+          <Podium rows={rows} you="me" />
+          <p className="mt-6 text-[var(--text-muted)]">
+            Ничьих: {score.ties} · всего {TOTAL_ROUNDS * 5} предложений
+          </p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Button size="lg" onClick={onRestart}>
+              <LuRotateCcw className="size-5" /> Сыграть ещё
+            </Button>
+            <Button size="lg" variant="secondary" onClick={onLeave}>
+              <LuUsers className="size-5" /> Позвать людей
+            </Button>
+          </div>
+        </div>
+      </Card>
     </main>
   );
 }

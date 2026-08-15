@@ -28,7 +28,7 @@ import {
 import type { TranslationGameDirection, TranslationGameLevel } from '../api/translationGame';
 import {
   answered, canStart, everythingAnswered, gatherOver, inviteLink, outcome, pending,
-  pollEvery, searchHint, secondsLeft, seated, unvoted, urgency,
+  phaseSeconds, podium, pollEvery, searchHint, secondsLeft, seated, unvoted, urgency,
 } from '../duel/room';
 import { duelMuted, playDuel, playDuelKey, preloadDuelSounds, setDuelMuted } from '../lib/duelSounds';
 import { useRouter } from '../lib/router';
@@ -53,7 +53,12 @@ const DRAFT_MS = 2500;
 /** Пауза между открытиями переводов в разборе. Меньше — сливается в список. */
 const REVEAL_MS = 900;
 
-interface Props { code?: string; onSolo?: () => void }
+/** Игра с DeepL получает уровень и направление из этого же меню: спрашивать их
+ *  второй раз на своём экране незачем. */
+interface Props {
+  code?: string;
+  onSolo?: (level: TranslationGameLevel, direction: TranslationGameDirection) => void;
+}
 
 export function MultiplayerDuel({ code, onSolo }: Props) {
   return code ? <Room code={code.toUpperCase()} /> : <DuelMenu onSolo={onSolo} />;
@@ -164,7 +169,9 @@ function DuelMenu({ onSolo }: Pick<Props, 'onSolo'>) {
                     </Button>
                   )}
                   {search.state.ripe && (
-                    <Button size="sm" variant="secondary" onClick={onSolo}><LuBot /> Пока сыграть с DeepL</Button>
+                    <Button size="sm" variant="secondary" onClick={() => onSolo?.(level, direction)}>
+                      <LuBot /> Пока сыграть с DeepL
+                    </Button>
                   )}
                   <Button size="sm" variant="ghost" onClick={() => void search.stop()}>Остановить поиск</Button>
                 </div>
@@ -180,7 +187,7 @@ function DuelMenu({ onSolo }: Pick<Props, 'onSolo'>) {
           <Button size="lg" variant="secondary" onClick={() => void act('search')} disabled={Boolean(busy) || search.searching}>
             {busy === 'search' ? <Spinner /> : <LuSearch />} Найти соперников
           </Button>
-          <Button size="lg" variant="secondary" onClick={onSolo} disabled={Boolean(busy)}>
+          <Button size="lg" variant="secondary" onClick={() => onSolo?.(level, direction)} disabled={Boolean(busy)}>
             <LuBot /> Играть с DeepL
           </Button>
         </div>
@@ -334,7 +341,7 @@ function Room({ code }: { code: string }) {
         >
           {muted ? <LuVolumeX /> : <LuVolume2 />}
         </button>
-        {room.deadline && <DuelClock seconds={left} phase={room.phase} />}
+        {room.deadline && <DuelClock seconds={left} total={phaseSeconds(room.phase)} />}
       </header>
 
       {/* Полоса времени во всю ширину: её видно, даже когда глаза в поле ввода. */}
@@ -388,8 +395,8 @@ function Room({ code }: { code: string }) {
 
 /** Тонкая полоса времени под шапкой. */
 function TimeRail({ seconds, phase }: { seconds: number; phase: DuelRoom['phase'] }) {
-  const heat = urgency(seconds);
-  const total = phase === 'translate' ? 200 : phase === 'vote' ? 90 : 45;
+  const total = phaseSeconds(phase);
+  const heat = urgency(seconds, total);
   return (
     <div className="mt-4 h-1 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
       <div
@@ -855,7 +862,7 @@ function FinishedRoom({ room, onBack }: { room: DuelRoom; onBack: () => void }) 
           {result === 'won' ? 'Ты победил' : result === 'tie' ? 'Ничья' : 'В следующий раз получится'}
         </h2>
         <Ornament className="mx-auto my-5 w-48" count={7} />
-        <Podium room={room} />
+        <Podium rows={podium(room)} you={room.you} />
         {rows.length > 3 && (
           <div className="mx-auto mt-6 max-w-md space-y-2">
             {rows.slice(3).map((row) => (

@@ -146,9 +146,15 @@ export function unconfirmed(room: DuelRoom): number {
  */
 export type Urgency = 'calm' | 'warm' | 'hot';
 
-export function urgency(seconds: number): Urgency {
-  if (seconds > 30) return 'calm';
-  if (seconds > 10) return 'warm';
+/**
+ * Пороги считаются и от длины фазы: в игре с DeepL на фразу даётся 25 секунд, и
+ * жёсткие «30 и 10» держали бы такие часы красными почти всё время.
+ */
+export function urgency(seconds: number, total = 200): Urgency {
+  const hot = Math.min(10, total * 0.25);
+  const warm = Math.min(30, total * 0.5);
+  if (seconds > warm) return 'calm';
+  if (seconds > hot) return 'warm';
   return 'hot';
 }
 

@@ -209,6 +209,14 @@ describe('накал матча', () => {
     expect(urgency(0)).toBe('hot');
   });
 
+  it('короткие часы игры с DeepL греются не сразу', () => {
+    // 25 секунд на фразу: с прежними порогами такие часы были бы красными почти
+    // всё время, и предупреждать им было бы уже нечем.
+    expect(urgency(20, 25)).toBe('calm');
+    expect(urgency(10, 25)).toBe('warm');
+    expect(urgency(4, 25)).toBe('hot');
+  });
+
   it('комната из подбора начинает сама, пока идёт сбор', () => {
     const matched = room({ matched: true, deadline: '2026-08-15T12:01:00Z' });
     expect(canStart(matched, 40)).toBe(false);
