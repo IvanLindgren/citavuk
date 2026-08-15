@@ -79,6 +79,8 @@ export interface AdminHealth {
   database: boolean;
   quota: AdminQuota;
   keys: AdminKey[];
+  /** Открытых аварий; -1 означает «не удалось посчитать». */
+  incidents: number;
   now: string;
 }
 

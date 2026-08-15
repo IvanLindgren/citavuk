@@ -74,13 +74,22 @@ func (s *Server) handleAdminHealth(w http.ResponseWriter, r *http.Request) {
 		{"upstream", "Старый Python-бэкенд", s.proxy != nil, s.cfg.UpstreamURL},
 	}
 
+	// Число открытых аварий идёт здесь же: строке состояния в шапке админки
+	// хватает одного запроса вместо трёх.
+	var incidents int64
+	if err := s.store.Pool.QueryRow(ctx,
+		`SELECT count(*) FROM incidents WHERE resolved_at IS NULL`).Scan(&incidents); err != nil {
+		incidents = -1
+	}
+
 	writeJSON(w, http.StatusOK, map[string]any{
-		"version":  Version,
-		"uptime":   int64(time.Since(startedAt).Seconds()),
-		"database": s.store.Pool.Ping(ctx) == nil,
-		"quota":    quota,
-		"keys":     keys,
-		"now":      time.Now().UTC(),
+		"version":   Version,
+		"uptime":    int64(time.Since(startedAt).Seconds()),
+		"database":  s.store.Pool.Ping(ctx) == nil,
+		"quota":     quota,
+		"keys":      keys,
+		"incidents": incidents,
+		"now":       time.Now().UTC(),
 	})
 }
 

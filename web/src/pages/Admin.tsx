@@ -12,7 +12,6 @@ import {
   getAdminUsers,
   getCourseRelease,
   getCourseReleases,
-  getIncidents,
   getLiveDuel,
   publishCourseRelease,
   updateCourseRelease,
@@ -186,15 +185,14 @@ export function Admin() {
 function StatusStrip({ onOpen }: { onOpen: (tab: AdminTab) => void }) {
   const [health, setHealth] = useState<AdminHealth | null>(null);
   const [live, setLive] = useState<number | null>(null);
-  const [open, setOpen] = useState<number | null>(null);
 
   useEffect(() => {
     getAdminHealth().then(setHealth).catch(() => undefined);
     getLiveDuel().then((state) => setLive(state.people)).catch(() => undefined);
-    getIncidents().then((answer) => setOpen(answer.items.length)).catch(() => undefined);
   }, []);
 
   const quota = health?.quota;
+  const open = health ? health.incidents : null;
   const left = quota && quota.limit > 0 ? 1 - quota.used / quota.limit : null;
 
   return (
