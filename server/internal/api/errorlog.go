@@ -32,16 +32,25 @@ type IncidentLogger struct {
 	store *store.Store
 	attrs []slog.Attr
 	group string
+	// Глушитель общий на все производные обработчики: slog.With порождает
+	// копию на каждый вызов, и своя карта у каждой копии не глушила бы ничего.
+	// Он же владеет замком — общая карта с разными замками была бы гонкой.
+	quiet *quietMap
+}
 
-	// Защита от лавины: одна и та же ошибка в цикле не должна писать в базу
-	// тысячу раз в секунду.
+// quietMap помнит, когда отпечаток последний раз доходил до базы.
+type quietMap struct {
 	mu   sync.Mutex
 	last map[string]time.Time
 }
 
 // NewIncidentLogger оборачивает обработчик журнала записью инцидентов.
 func NewIncidentLogger(inner slog.Handler, st *store.Store) *IncidentLogger {
-	return &IncidentLogger{inner: inner, store: st, last: map[string]time.Time{}}
+	return &IncidentLogger{
+		inner: inner,
+		store: st,
+		quiet: &quietMap{last: map[string]time.Time{}},
+	}
 }
 
 // SameSpanQuiet — как часто одна и та же ошибка доходит до базы.
@@ -66,7 +75,9 @@ func (h *IncidentLogger) WithGroup(name string) slog.Handler {
 }
 
 func (h *IncidentLogger) clone() *IncidentLogger {
-	return &IncidentLogger{inner: h.inner, store: h.store, attrs: h.attrs, group: h.group, last: h.last, mu: sync.Mutex{}}
+	return &IncidentLogger{
+		inner: h.inner, store: h.store, attrs: h.attrs, group: h.group, quiet: h.quiet,
+	}
 }
 
 func (h *IncidentLogger) Handle(ctx context.Context, record slog.Record) error {
@@ -117,18 +128,18 @@ func (h *IncidentLogger) record(record slog.Record) {
 
 func (h *IncidentLogger) allow(fingerprint string) bool {
 	now := time.Now()
-	h.mu.Lock()
-	defer h.mu.Unlock()
-	if seen, ok := h.last[fingerprint]; ok && now.Sub(seen) < SameSpanQuiet {
+	h.quiet.mu.Lock()
+	defer h.quiet.mu.Unlock()
+	if seen, ok := h.quiet.last[fingerprint]; ok && now.Sub(seen) < SameSpanQuiet {
 		return false
 	}
 	// Карта не растёт бесконечно: раз в тысячу отпечатков она чистится
 	// целиком. Потерять отметку не страшно — худшее следствие в том, что одна
 	// ошибка запишется в базу лишний раз.
-	if len(h.last) > 1000 {
-		h.last = map[string]time.Time{}
+	if len(h.quiet.last) > 1000 {
+		h.quiet.last = map[string]time.Time{}
 	}
-	h.last[fingerprint] = now
+	h.quiet.last[fingerprint] = now
 	return true
 }
 

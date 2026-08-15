@@ -67,9 +67,26 @@ func TestIncidentLoggerHushesRepeats(t *testing.T) {
 	}
 	// Через паузу та же ошибка снова попадает в журнал: иначе после починки
 	// не видно, что она вернулась.
-	logger.last["log:одно и то же"] = time.Now().Add(-2 * SameSpanQuiet)
+	logger.quiet.last["log:одно и то же"] = time.Now().Add(-2 * SameSpanQuiet)
 	if !logger.allow("log:одно и то же") {
 		t.Fatal("после паузы ошибка должна записаться заново")
+	}
+}
+
+func TestIncidentLoggerSharesQuietWithChildren(t *testing.T) {
+	// slog.With порождает копию обработчика. Со своим глушителем у каждой
+	// копии повторы не глушились бы вовсе, а общая карта с разными замками
+	// была бы гонкой.
+	logger := NewIncidentLogger(slog.NewTextHandler(discard{}, nil), nil)
+	child, ok := logger.WithAttrs([]slog.Attr{slog.String("часть", "матч")}).(*IncidentLogger)
+	if !ok {
+		t.Fatal("производный обработчик потерял тип")
+	}
+	if !logger.allow("log:общая") {
+		t.Fatal("первая запись обязана пройти")
+	}
+	if child.allow("log:общая") {
+		t.Fatal("копия обработчика должна помнить ту же ошибку")
 	}
 }
 
