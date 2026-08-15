@@ -106,8 +106,14 @@ func (s *Server) handleAdminLiveDuel(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleAdminStats отдаёт подробную статистику.
+//
+// Считается это десятком count(*) по большим таблицам, поэтому запрос ограничен
+// по времени: панель, которую открывают раз в день, не должна держать
+// соединение базы, пока её ждут остальные.
 func (s *Server) handleAdminStats(w http.ResponseWriter, r *http.Request) {
-	stats, err := s.store.AdminDetailedStats(r.Context())
+	ctx, cancel := context.WithTimeout(r.Context(), 20*time.Second)
+	defer cancel()
+	stats, err := s.store.AdminDetailedStats(ctx)
 	if err != nil {
 		slog.Error("подробная статистика", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal,
