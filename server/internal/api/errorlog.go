@@ -186,7 +186,12 @@ func newRecentErrors(size int) *recentErrors {
 	return &recentErrors{items: make([]ErrorEvent, size)}
 }
 
+// Пустое кольцо молча принимает записи: в тестах сервер собирают частично, и
+// падать из-за журнала ошибок было бы издевательством.
 func (r *recentErrors) add(event ErrorEvent) {
+	if r == nil {
+		return
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.items[r.next] = event
@@ -198,6 +203,9 @@ func (r *recentErrors) add(event ErrorEvent) {
 
 // list отдаёт события от свежих к старым.
 func (r *recentErrors) list(limit int) []ErrorEvent {
+	if r == nil {
+		return []ErrorEvent{}
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	total := r.next
