@@ -53,12 +53,12 @@ const PLATFORMS: Platform[] = [
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '43 МБ',
+    size: '41 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '48 МБ',
+      size: '46 МБ',
     },
   },
   {
@@ -78,7 +78,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Beta-версия читалки для Mac с синхронизацией, курсом, диалогами и аудированием.',
     href: '/files/citavuk-macos.zip',
-    size: '58 МБ',
+    size: '56 МБ',
     note: 'Beta пока не подписана Apple Developer ID. При первом запуске нажмите приложение правой кнопкой, выберите «Открыть» и подтвердите запуск.',
   },
   {

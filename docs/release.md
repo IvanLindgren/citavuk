@@ -115,6 +115,15 @@ flutter analyze lib/
 выпускных сборках он обязателен. Ключ лежит там же, где остальные доступы, —
 в разделе «Что нужно один раз».
 
+Смена `--dart-define` не считается изменением исходников: Flutter берёт готовое
+ядро из кеша, и ключ в сборку не попадает. Если прошлая сборка была без ключа —
+`rm -rf .dart_tool/flutter_build` перед командой.
+
+Проверить готовый файл можно поиском ключа внутри снапшота — он лежит там
+отдельной строкой: `data/app.so` у Windows, `libapp.so` внутри APK и
+`citavuk-linux-x64.tar.gz`. Нашлась только строка `api.maptiler...?key=` без
+ключа за ней — значит define потерялся.
+
 **Android — бандл для Play Console:**
 
 ```bash
@@ -133,9 +142,13 @@ flutter build apk --release --dart-define=MAPTILER_KEY=<ключ>
 
 ```bash
 flutter build windows --release --dart-define=MAPTILER_KEY=<ключ>
-dart run inno_bundle:build --release
+dart run inno_bundle:build --release --no-app
 # → build/windows/x64/installer/Release/Citavuk-x86_64-<версия>-Installer.exe
 ```
+
+`--no-app` обязателен. Без него `inno_bundle` пересобирает программу сам —
+своей командой, без `--dart-define`, — и молча затирает сборку с ключом: карта
+в установщике пропадает, хотя `flutter build` строкой выше отработал с ключом.
 
 **Windows — портативный архив.** Отдельного скрипта нет, пакуется вручную из
 свежесобранного каталога. В PowerShell:
@@ -258,7 +271,7 @@ export MAP=--dart-define=MAPTILER_KEY=<ключ>
 flutter build appbundle --release $MAP
 flutter build apk --release $MAP
 flutter build windows --release $MAP
-dart run inno_bundle:build --release
+dart run inno_bundle:build --release --no-app
 # упаковать build/windows/x64/runner/Release в build/citavuk-windows.zip
 ./deploy/linux/build.sh
 
