@@ -138,11 +138,15 @@ describe('окно «На каждый день»', () => {
     });
 
     expect(saveVocabularyWord).toHaveBeenCalledTimes(1);
-    expect(saveVocabularyWord.mock.calls[0][0]).toMatchObject({
-      lemma: 'бурек',
-      translation: 'бурек',
-      forms: { контекст: 'Купујем бурек сваког јутра.' },
-    });
+    expect(saveVocabularyWord).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lemma: 'бурек',
+        translation: 'бурек',
+        forms: expect.objectContaining({
+          контекст: 'Купујем бурек сваког јутра.',
+        }),
+      }),
+    );
     expect(markDailyLearned).toHaveBeenCalledWith('бурек');
     // Повторное нажатие невозможно: кнопка стала отметкой «уже в карточках».
     expect(
