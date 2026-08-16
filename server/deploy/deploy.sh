@@ -22,7 +22,10 @@ VERSION="${CITAVUK_VERSION:-$(git rev-parse --short HEAD 2>/dev/null || echo dev
 REMOTE_DIR=/opt/citavuk
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
-scp_put() { scp -i "$KEY" -o BatchMode=yes "$1" "$HOST:$2"; }
+# -C обязателен: без сжатия заливка обрывалась на 20 МБ — «Connection reset by
+# peer» ровно на одном и том же байте, сколько раз ни повторяй. Сжатый бинарник
+# вдвое меньше и доходит целиком.
+scp_put() { scp -C -i "$KEY" -o BatchMode=yes -o ServerAliveInterval=15 "$1" "$HOST:$2"; }
 
 echo "==> Проверки перед выкаткой"
 go vet ./...

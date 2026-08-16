@@ -25,6 +25,26 @@ FRONTEND="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../frontend" && pwd)"
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
+# Заливка с докачкой. Простой scp на этих файлах рвётся посередине:
+# «message authentication code incorrect» — канал бьёт пакеты, и ssh закрывает
+# сессию. scp после обрыва начинает с нуля и упирается в то же место, а sftp
+# умеет reput — продолжает с последнего долетевшего байта.
+put_file() {
+    local src="$1" dst="$2" size got try cmd
+    size=$(stat -c%s "$src")
+    for try in $(seq 1 12); do
+        got=$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")
+        [[ "$got" == "$size" ]] && return 0
+        # Пустого файла reput не понимает, начатый — продолжает с места обрыва.
+        if [[ "$got" == 0 ]]; then cmd=put; else cmd=reput; fi
+        [[ $try -gt 1 ]] && echo "    попытка $try: долито $got из $size"
+        sftp -i "$KEY" -o BatchMode=yes "$HOST" >/dev/null <<<"$cmd \"$src\" \"$dst\"" || true
+    done
+    [[ "$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")" == "$size" ]] && return 0
+    echo "  не удалось долить $dst за 12 попыток" >&2
+    return 1
+}
+
 # Локальный путь -> имя на сайте. Имена постоянные: ссылки со страницы
 # «Скачать» не должны меняться при каждом выпуске.
 VERSION=$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' "$FRONTEND/pubspec.yaml")
@@ -53,7 +73,7 @@ echo "==> Загрузка (версия $VERSION)"
 for entry in "${FILES[@]}"; do
     IFS='|' read -r path name _ <<<"$entry"
     echo "  $name"
-    scp -i "$KEY" -o BatchMode=yes "$path" "$HOST:$REMOTE_DIR/$name.new"
+    put_file "$path" "$REMOTE_DIR/$name.new"
 done
 
 # Переименование поверх — единственный способ не отдать посетителю файл,
