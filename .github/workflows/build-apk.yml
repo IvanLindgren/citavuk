@@ -83,8 +83,11 @@ jobs:
           KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
-          flutter build apk --release
-          flutter build appbundle --release
+          # Ключ карты Путешествия — секрет репозитория. Без него сборка
+          # проходит, только карта заменяется списком мест.
+          MAP="--dart-define=MAPTILER_KEY=${{ secrets.MAPTILER_KEY }}"
+          flutter build apk --release "$MAP"
+          flutter build appbundle --release "$MAP"
 
       - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
