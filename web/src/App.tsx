@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
+import { DailyWindow } from "./components/DailyWindow";
 import { LevelPrompt } from "./components/LevelPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
 import { ServerAnnouncements } from "./components/ServerAnnouncements";
@@ -260,6 +261,11 @@ function AppFrame() {
         разделам сразу: и подбору ленты, и предупреждению о тяжёлой книге.
       */}
       {!fullscreen && <LevelPrompt />}
+      {/*
+        Слова дня приходят раз в сутки и только к тому, у кого уровень уже
+        назван: пока его нет, поверх страницы стоит вопрос об уровне.
+      */}
+      {!fullscreen && <DailyWindow />}
     </div>
   );
 }
