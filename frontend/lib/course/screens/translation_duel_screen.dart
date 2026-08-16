@@ -23,6 +23,7 @@ import '../../services/duel_sounds.dart';
 import '../../services/translation_game_service.dart';
 import '../duel_score.dart';
 import '../widgets/duel_arena.dart';
+import '../widgets/duel_stage.dart';
 
 enum _Phase { setup, translate, choose, resolve, result, finished }
 
@@ -80,8 +81,18 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
   int _lastLength = 0;
   final _inputFocus = FocusNode();
 
+  /// Занавес фазы: висит полторы секунды и уходит сам.
+  ({String label, String title})? _curtain;
+
   String get _translatorName =>
       _provider == 'deepl' ? 'DeepL' : 'Google Translate';
+
+  /// Объявить смену фазы. Без занавеса раунд сменяется просто другим текстом
+  /// на том же месте, и человек этого не замечает.
+  void _announce(String label, String title) {
+    setState(() => _curtain = (label: label, title: title));
+    _later(curtainSpan, () => setState(() => _curtain = null));
+  }
 
   List<TranslationGameSentence> get _sentences => _round?.sentences ?? const [];
 
@@ -231,9 +242,10 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
     _lockedTempo = _tempo;
     _tick?.cancel();
     setState(() => _phase = _Phase.choose);
+    _announce('Переводы готовы', 'Чей лучше');
   }
 
-  /// Разбор: пары открываются по одной. Так видно, где вы взяли своё и где
+  /// Разбор: пары открываются по одной. Так видно, где ты взял своё и где
   /// отдали; все пять разом — стена текста, которую пролистывают.
   void _runReveal(List<TranslationGameVerdict> list) {
     setState(() {
@@ -332,6 +344,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
       _alarmed = false;
       _lastKey = DateTime.now();
       DuelSounds.instance.play(DuelSound.start);
+      _announce('Поехали', 'Раунд $number из $_rounds');
       _startTick();
       _inputFocus.requestFocus();
     } on ApiException catch (error) {
@@ -397,7 +410,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
             : winner == TranslationGameWinner.tie
                 ? 8
                 : 6,
-        feedback: 'Оценено вами.',
+        feedback: 'Ты оценил сам.',
       );
     });
   }
@@ -464,11 +477,23 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
   // ------------------------------------------------------------------ показ
 
   @override
-  Widget build(BuildContext context) => switch (_phase) {
-        _Phase.setup => _buildSetup(),
-        _Phase.finished => _buildFinished(),
-        _ => _buildRound(),
-      };
+  Widget build(BuildContext context) {
+    final screen = switch (_phase) {
+      _Phase.setup => _buildSetup(),
+      _Phase.finished => _buildFinished(),
+      _ => _buildRound(),
+    };
+    final curtain = _curtain;
+    if (curtain == null) return screen;
+    return Stack(
+      children: [
+        screen,
+        Positioned.fill(
+          child: PhaseCurtain(label: curtain.label, title: curtain.title),
+        ),
+      ],
+    );
+  }
 
   AppBar _bar({String? title, VoidCallback? onClose}) => AppBar(
         title: Text(title ?? 'Ты против переводчика'),
@@ -597,6 +622,13 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
             children: [
               DuelFighter(pose: _pose, width: 64),
               const SizedBox(width: 14),
+              if (_phase == _Phase.translate) ...[
+                DuelClock(
+                  seconds: _timeLeft.ceil(),
+                  total: sentenceSeconds,
+                ),
+                const SizedBox(width: 12),
+              ],
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -638,32 +670,18 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
           ),
           if (_phase == _Phase.translate) ...[
             const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(999),
-                    child: LinearProgressIndicator(
-                      value: _timeLeft / sentenceSeconds,
-                      minHeight: 4,
-                      backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                      valueColor: AlwaysStoppedAnimation(
-                        burning ? theme.colorScheme.primary : theme.dividerColor,
-                      ),
-                    ),
-                  ),
+            // Цифры остались в часах-кольце, а полоса идёт во всю ширину:
+            // время видно боковым зрением, не отрываясь от набора.
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: LinearProgressIndicator(
+                value: _timeLeft / sentenceSeconds,
+                minHeight: 5,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                valueColor: AlwaysStoppedAnimation(
+                  burning ? theme.colorScheme.primary : theme.dividerColor,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  '${_timeLeft.ceil()}',
-                  style: TextStyle(
-                    fontWeight: burning ? FontWeight.w800 : FontWeight.w400,
-                    color: burning
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
+              ),
             ),
             const SizedBox(height: 14),
             Row(
@@ -739,7 +757,16 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
               ],
             ),
           ],
-          if (_phase != _Phase.translate) ...[
+          // Пока судья читает, на экране должно что-то происходить: пустая
+          // панель с кружком в кнопке читается как зависшее приложение.
+          if (_phase == _Phase.choose && _loading) ...[
+            const SizedBox(height: 12),
+            ShuffleDeck(count: _sentences.length),
+            const DuelWaiting(
+              title: 'Судья читает',
+              text: 'Gemma 4 сравнивает переводы по точности и живости.',
+            ),
+          ] else if (_phase != _Phase.translate) ...[
             const SizedBox(height: 18),
             for (var at = 0; at < _sentences.length; at++)
               _pair(at, _phase != _Phase.resolve || at < _shown),
@@ -775,7 +802,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
   }
 
   String _stageLabel() => switch (_phase) {
-        _Phase.translate => 'ПЕРЕВЕДИТЕ НА РУССКИЙ',
+        _Phase.translate => 'ПЕРЕВЕДИ НА РУССКИЙ',
         _Phase.choose => 'ЧЕЙ ПЕРЕВОД ЛУЧШЕ',
         _Phase.resolve => 'РАЗБОР РАУНДА',
         _Phase.result => 'РАУНД ОКОНЧЕН',
@@ -928,68 +955,77 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
     final theme = Theme.of(context);
     final won = _userTotal > _translatorTotal;
     final drawn = _userTotal == _translatorTotal;
+    // Итог читается за один взгляд по столбикам, раньше, чем человек разберёт
+    // цифры. Конфетти — только победителю: иначе это не награда, а фон.
+    final rows = [
+      DuelStanding(
+        id: 'me',
+        name: 'Ты',
+        score: _userTotal,
+        place: won ? 1 : (drawn ? 1 : 2),
+      ),
+      DuelStanding(
+        id: 'machine',
+        name: _translatorName,
+        score: _translatorTotal,
+        place: won ? 2 : (drawn ? 1 : 1),
+        machine: true,
+      ),
+    ];
+
     return Scaffold(
       appBar: _bar(),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+      body: Stack(
         children: [
-          Center(
-            child: DuelFighter(
-              pose: won
-                  ? DuelPose.trophy
-                  : drawn
-                      ? DuelPose.compare
-                      : DuelPose.think,
-              width: 120,
-            ),
-          ),
-          const SizedBox(height: 18),
-          Center(
-            child: Text('Матч завершён',
-                style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
-          ),
-          const SizedBox(height: 6),
-          Center(
-            child: Text(
-              won
-                  ? 'Победа за тобой'
-                  : drawn
-                      ? 'Ничья'
-                      : '$_translatorName победил',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.headlineMedium
-                  ?.copyWith(fontWeight: FontWeight.w800),
-            ),
-          ),
-          const SizedBox(height: 18),
-          Center(
-            child: Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: '$_userTotal',
-                    style: TextStyle(color: theme.colorScheme.primary)),
-                TextSpan(
-                    text: '  :  ',
+          ListView(
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+            children: [
+              Center(
+                child: DuelFighter(
+                  pose: won
+                      ? DuelPose.trophy
+                      : drawn
+                          ? DuelPose.compare
+                          : DuelPose.think,
+                  width: 120,
+                ),
+              ),
+              const SizedBox(height: 18),
+              Center(
+                child: Text('Матч завершён',
                     style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
-                TextSpan(
-                    text: '$_translatorTotal',
-                    style: TextStyle(color: duelMachineOf(context))),
-              ]),
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
-            ),
+              ),
+              const SizedBox(height: 6),
+              Center(
+                child: Text(
+                  won
+                      ? 'Победа за тобой'
+                      : drawn
+                          ? 'Ничья'
+                          : '$_translatorName победил',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineMedium
+                      ?.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Podium(rows: rows, you: 'me'),
+              const SizedBox(height: 16),
+              Center(
+                child: Text('Ничьих: $_tiesTotal · всего 15 предложений',
+                    style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
+              ),
+              const SizedBox(height: 28),
+              FilledButton.icon(
+                style:
+                    FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+                onPressed: _restart,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Сыграть ещё'),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text('Ничьих: $_tiesTotal · всего 15 предложений',
-                style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
-          ),
-          const SizedBox(height: 28),
-          FilledButton.icon(
-            style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-            onPressed: _restart,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Сыграть ещё'),
-          ),
+          if (won) const Positioned.fill(child: Confetti()),
         ],
       ),
     );

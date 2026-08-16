@@ -58,23 +58,32 @@ class ApiClient {
     return Uri.parse('$base$path').replace(queryParameters: query);
   }
 
-  Map<String, String> _headers({bool json = true}) => {
+  /// [extra] — заголовки поверх обычных. Нужны там, где сервер узнаёт не
+  /// аккаунт, а участника: подпись гостя в комнате матча.
+  Map<String, String> _headers({bool json = true, Map<String, String>? extra}) => {
         if (json) 'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
         if (token != null && token!.isNotEmpty)
           'Authorization': 'Bearer $token',
+        ...?extra,
       };
 
   Future<dynamic> get(String path,
-          {Map<String, String>? query, Duration? timeout}) =>
+          {Map<String, String>? query,
+          Duration? timeout,
+          Map<String, String>? extra}) =>
       _send(
-        () => _client.get(_uri(path, query), headers: _headers(json: false)),
+        () => _client.get(_uri(path, query),
+            headers: _headers(json: false, extra: extra)),
         timeout: timeout,
       );
 
-  Future<dynamic> post(String path, Object? body, {Duration? timeout}) => _send(
+  Future<dynamic> post(String path, Object? body,
+          {Duration? timeout, Map<String, String>? extra}) =>
+      _send(
         () => _client.post(_uri(path),
-            headers: _headers(), body: body == null ? null : jsonEncode(body)),
+            headers: _headers(extra: extra),
+            body: body == null ? null : jsonEncode(body)),
         timeout: timeout,
       );
 
@@ -84,8 +93,11 @@ class ApiClient {
         timeout: timeout,
       );
 
-  Future<dynamic> delete(String path, {Duration? timeout}) => _send(
-        () => _client.delete(_uri(path), headers: _headers(json: false)),
+  Future<dynamic> delete(String path,
+          {Duration? timeout, Map<String, String>? extra}) =>
+      _send(
+        () => _client.delete(_uri(path),
+            headers: _headers(json: false, extra: extra)),
         timeout: timeout,
       );
 

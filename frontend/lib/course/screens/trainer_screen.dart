@@ -26,7 +26,7 @@ import '../../services/announcements_controller.dart';
 import '../../services/auth_service.dart';
 import '../../services/roadmap_service.dart';
 import 'lesson_screen.dart';
-import 'translation_duel_screen.dart';
+import 'duel_menu_screen.dart';
 
 /// Сколько заданий в одном заходе. Больше двенадцати уже утомляет.
 const int _roundSize = 10;
@@ -130,7 +130,7 @@ class _TrainerScreenState extends State<TrainerScreen> {
           _TranslationDuelTile(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => const TranslationDuelScreen(),
+                builder: (_) => const DuelMenuScreen(),
               ),
             ),
           ),
