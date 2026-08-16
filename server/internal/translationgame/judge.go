@@ -17,6 +17,22 @@ var (
 	ErrNotConfigured  = errors.New("оценка нейросетью не настроена")
 	ErrInvalidEntries = errors.New("некорректный набор переводов")
 	ErrBadAnswer      = errors.New("нейросеть вернула неразборчивую оценку")
+	ErrUnavailable    = errors.New("нейросеть недоступна")
+)
+
+const (
+	// judgeAttempts — сколько раз просим оценку, прежде чем сдаться. Модель
+	// изредка отдаёт вместо JSON пояснение или обрывает ответ на середине, и
+	// раньше такой единичный промах рвал игрокам матч ошибкой 502.
+	judgeAttempts = 3
+
+	// judgePause — пауза между попытками. Судья и так думает секунды, так что
+	// заметить её нельзя, а перегружать чужой сервис очередью незачем.
+	judgePause = 400 * time.Millisecond
+
+	// judgeReserve — ниже этого остатка времени вторую попытку не начинаем:
+	// лучше честная ошибка, чем оборванный на полуслове ответ.
+	judgeReserve = 10 * time.Second
 )
 
 type Entry struct {
@@ -124,12 +140,62 @@ func (j *Judge) Evaluate(ctx context.Context, entries []Entry, direction string)
 	if err != nil {
 		return nil, err
 	}
-	content, err := j.ask(ctx, judgeSystemPrompt(direction),
-		"Оцени пять пар переводов:\n"+string(payload), 1800)
-	if err != nil {
-		return nil, err
+	return askParsed(ctx, j, judgeSystemPrompt(direction),
+		"Оцени пять пар переводов:\n"+string(payload), 1800,
+		func(content string) (*Result, error) {
+			return parseResult(content, len(entries))
+		})
+}
+
+// askParsed повторяет поход к нейросети, пока ответ не разберётся. Повторяем
+// только то, что проходит со второй попытки: мусор вместо JSON и обрыв связи.
+// Отказ по ключу или по лимиту повторять бессмысленно — он повторится тоже.
+func askParsed[T any](
+	ctx context.Context,
+	j *Judge,
+	system, user string,
+	maxTokens int,
+	parse func(string) (T, error),
+) (T, error) {
+	var zero T
+	var last error
+	for attempt := 1; attempt <= judgeAttempts; attempt++ {
+		if attempt > 1 {
+			if !waitBeforeRetry(ctx) {
+				return zero, last
+			}
+		}
+		content, err := j.ask(ctx, system, user, maxTokens)
+		if err == nil {
+			result, perr := parse(content)
+			if perr == nil {
+				return result, nil
+			}
+			err = perr
+		}
+		if !errors.Is(err, ErrBadAnswer) && !errors.Is(err, ErrUnavailable) {
+			return zero, err
+		}
+		last = err
 	}
-	return parseResult(content, len(entries))
+	return zero, last
+}
+
+// waitBeforeRetry держит паузу и говорит, стоит ли вообще пробовать снова:
+// человек мог закрыть вкладку, а до конца отведённого времени может не
+// остаться места на второй такой же разговор с моделью.
+func waitBeforeRetry(ctx context.Context) bool {
+	if deadline, ok := ctx.Deadline(); ok && time.Until(deadline) < judgeReserve {
+		return false
+	}
+	timer := time.NewTimer(judgePause)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return false
+	case <-timer.C:
+		return true
+	}
 }
 
 // ask — один поход к нейросети. Вынесено из Evaluate, потому что судей стало
@@ -157,7 +223,7 @@ func (j *Judge) ask(ctx context.Context, system, user string, maxTokens int) (st
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := j.client.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("нейросеть недоступна: %w", err)
+		return "", fmt.Errorf("%w: %w", ErrUnavailable, err)
 	}
 	defer resp.Body.Close()
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
@@ -165,11 +231,17 @@ func (j *Judge) ask(ctx context.Context, system, user string, maxTokens int) (st
 		return "", err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		reason := fmt.Sprintf("код %d", resp.StatusCode)
 		var parsed chatResponse
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
-			return "", fmt.Errorf("нейросеть отказала: %s", parsed.Error.Message)
+			reason = parsed.Error.Message
 		}
-		return "", fmt.Errorf("нейросеть ответила кодом %d", resp.StatusCode)
+		// Перегрузка и поломка на той стороне проходят сами, а вот отвергнутый
+		// ключ или слишком длинный запрос повторять незачем.
+		if resp.StatusCode == http.StatusTooManyRequests || resp.StatusCode >= 500 {
+			return "", fmt.Errorf("%w: %s", ErrUnavailable, reason)
+		}
+		return "", fmt.Errorf("нейросеть отказала: %s", reason)
 	}
 	var parsed chatResponse
 	if json.Unmarshal(raw, &parsed) != nil || len(parsed.Choices) == 0 {

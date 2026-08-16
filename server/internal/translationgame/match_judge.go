@@ -85,12 +85,11 @@ func (j *Judge) EvaluateMatch(ctx context.Context, entries []MatchEntry, directi
 	if err != nil {
 		return nil, err
 	}
-	content, err := j.ask(ctx, matchSystemPrompt(direction),
-		fmt.Sprintf("Оцени переводы %d фраз:\n%s", len(entries), payload), 2400)
-	if err != nil {
-		return nil, err
-	}
-	return parseMatchResult(content, entries)
+	return askParsed(ctx, j, matchSystemPrompt(direction),
+		fmt.Sprintf("Оцени переводы %d фраз:\n%s", len(entries), payload), 2400,
+		func(content string) (*MatchResult, error) {
+			return parseMatchResult(content, entries)
+		})
 }
 
 func validateMatchEntries(entries []MatchEntry) error {
