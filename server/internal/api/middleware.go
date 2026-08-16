@@ -241,7 +241,11 @@ func (s *Server) withLogging(next http.Handler) http.Handler {
 		rec := &statusRecorder{ResponseWriter: w}
 
 		defer func() {
-			if v := recover(); v != nil {
+			// ErrAbortHandler — не авария, а условленный способ прервать ответ:
+			// им ReverseProxy сообщает, что слушатель оборвал загрузку аудио.
+			// Стандартный net/http такую панику глушит молча, и нам тоже незачем
+			// заводить из-за закрытой вкладки инцидент со стеком.
+			if v := recover(); v != nil && v != http.ErrAbortHandler {
 				// Паника в одном обработчике не должна ронять весь сервер и уж
 				// точно не должна показывать пользователю стек.
 				slog.Error("паника в обработчике",
