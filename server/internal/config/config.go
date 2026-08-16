@@ -139,6 +139,16 @@ type Config struct {
 	DefinitionAIURL       string
 	DefinitionAIReasoning string
 
+	// FormHintAI* — начальная форма для словоформы, которой нет в лексиконе.
+	// Модель отвечает только на вопрос «какая тут лемма и часть речи»; падеж,
+	// число и таблицы считает грамматический движок, и подсказка принимается
+	// лишь когда парадигма от неё даёт разбираемую форму. Требования к модели
+	// те же, что у толкований: она не должна выдумывать несуществующие слова.
+	FormHintAIKey       string
+	FormHintAIModel     string
+	FormHintAIURL       string
+	FormHintAIReasoning string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -231,6 +241,17 @@ func Load(envPath string) (*Config, error) {
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		DefinitionAIReasoning: envOr("CITAVUK_DEFINITION_AI_REASONING", "low"),
+		FormHintAIKey: firstEnv(
+			"CITAVUK_FORM_HINT_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		FormHintAIModel: envOr(
+			"CITAVUK_FORM_HINT_AI_MODEL", "google/gemini-3.7-flash",
+		),
+		FormHintAIURL: envOr(
+			"CITAVUK_FORM_HINT_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		FormHintAIReasoning: envOr("CITAVUK_FORM_HINT_AI_REASONING", "low"),
 		FeedAIKey:             firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
 		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-26b-a4b-it"),
 		FeedAIURL: envOr(

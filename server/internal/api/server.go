@@ -13,6 +13,7 @@ import (
 	"github.com/citavuk/server/internal/daily"
 	"github.com/citavuk/server/internal/dictionary"
 	"github.com/citavuk/server/internal/feed"
+	"github.com/citavuk/server/internal/formhint"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
 	"github.com/citavuk/server/internal/podcast"
@@ -48,12 +49,15 @@ type Server struct {
 	dictionary      definitionLookup
 	explainer       wordExplainer
 	definitions     definitionCache
+	formHint        formHinter
+	formHints       formHintCache
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
 	userTranslateLimit   *limiter
 	translateGlobalLimit *limiter
 	generalLimit         *limiter
+	hintLimit            *limiter
 	quizLimit            *limiter
 	documentFetchLimit   *limiter
 	// Последние ответы с ошибкой: живой журнал админки. В базе лежат только
@@ -147,6 +151,15 @@ func New(
 			cfg.DefinitionAIReasoning,
 		),
 		definitions: st,
+		// Начальная форма для слов вне лексикона. Гипотезу даёт модель,
+		// проверяет её грамматический движок — см. form_hint.go.
+		formHint: formhint.New(
+			cfg.FormHintAIKey,
+			cfg.FormHintAIModel,
+			cfg.FormHintAIURL,
+			cfg.FormHintAIReasoning,
+		),
+		formHints: st,
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),
@@ -156,6 +169,11 @@ func New(
 		userTranslateLimit:   newLimiter("user_translate", 30, 8, redisClient),
 		translateGlobalLimit: newLimiter("translate_global", 60, 15, redisClient),
 		generalLimit:         newLimiter("general", 180, 40, redisClient),
+		// Отдельный предел на походы к модели за начальной формой. Сам разбор
+		// ограничен общим лимитом и почти всегда бесплатен, а вот незнакомые
+		// формы стоят денег: на страницу книги их приходится несколько, но
+		// сотня подряд — это уже перебор словаря, а не чтение.
+		hintLimit: newLimiter("form_hint", 30, 10, redisClient),
 		// Каждый вызов модели стоит денег и занимает минуту, поэтому предел
 		// куда ниже общего: десяток новых тестов в час — это уже много.
 		quizLimit: newLimiter("quiz", 10, 3, redisClient),
@@ -181,6 +199,7 @@ func New(
 	go s.userTranslateLimit.runCleanup(s.stop)
 	go s.translateGlobalLimit.runCleanup(s.stop)
 	go s.generalLimit.runCleanup(s.stop)
+	go s.hintLimit.runCleanup(s.stop)
 	go s.quizLimit.runCleanup(s.stop)
 	go s.documentFetchLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()

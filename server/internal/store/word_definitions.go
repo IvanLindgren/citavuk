@@ -47,3 +47,33 @@ func (s *Store) SaveDefinition(ctx context.Context, word string, entry []byte, m
 func normalizeWord(word string) string {
 	return strings.ToLower(strings.TrimSpace(word))
 }
+
+// CachedFormHint возвращает сохранённый разбор словоформы. Второе значение —
+// спрашивали ли про эту форму вообще: nil при known == true означает, что
+// разобрать её не вышло, и второй раз тратиться на это незачем.
+func (s *Store) CachedFormHint(ctx context.Context, form string) ([]byte, bool, error) {
+	var reading []byte
+	err := s.Pool.QueryRow(ctx,
+		`SELECT reading FROM word_form_hints WHERE form = $1`,
+		normalizeWord(form),
+	).Scan(&reading)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, false, nil
+	}
+	if err != nil {
+		return nil, false, err
+	}
+	return reading, true, nil
+}
+
+// SaveFormHint запоминает проверенный разбор. reading == nil — разбора нет.
+func (s *Store) SaveFormHint(ctx context.Context, form string, reading []byte, model string) error {
+	_, err := s.Pool.Exec(ctx,
+		`INSERT INTO word_form_hints (form, reading, model)
+		 VALUES ($1, $2, $3)
+		 ON CONFLICT (form) DO UPDATE SET reading = EXCLUDED.reading,
+		                                  model = EXCLUDED.model,
+		                                  created_at = now()`,
+		normalizeWord(form), reading, model)
+	return err
+}

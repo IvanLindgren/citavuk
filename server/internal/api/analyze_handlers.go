@@ -47,6 +47,10 @@ type analyzeResponse struct {
 	// English заполнен, если слово опознано английским. Тогда сербские поля
 	// разбора пустые, а карточка на клиенте показывает английскую ветку.
 	English *english.Analysis `json:"english,omitempty"`
+	// Generated — начальную форму подсказала нейросеть, а не словарь. Падежи,
+	// числа и таблицы всё равно посчитал грамматический движок, но сказать об
+	// этом читателю надо: словарной статьи за таким разбором не стоит.
+	Generated bool `json:"generated,omitempty"`
 }
 
 // accentInfo — ударение словоформы и, если её самой в словаре нет, ударение
@@ -154,6 +158,13 @@ func (s *Server) handleAnalyze(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res := analyze(lex, word)
+	// Лексикон разрежен, и «kućicama» в нём нет вовсе. Раньше карточка честно
+	// говорила, что разбора не будет; теперь начальную форму подсказывает
+	// нейросеть, а падеж и число по-прежнему считает движок — и только если
+	// парадигма от подсказки даёт ровно эту форму.
+	if !res.Known && res.English == nil {
+		s.applyFormHint(r, lex, &res, word)
+	}
 	res.Reflexive = reflexiveOf(lex, &res, word, req.Sentence, req.Start, req.End)
 	// Ударение подбирается ПОСЛЕ разбора: тот мог уточнить начальную форму по
 	// списку глагольных форм, и без неё запасной вариант не нашёлся бы.
@@ -297,6 +308,15 @@ func analyze(lex *lexicon.Lexicon, word string) analyzeResponse {
 		}
 	}
 
+	describeReading(lex, &res, normalized)
+	return res
+}
+
+// describeReading достраивает разбор от начальной формы и признаков: название
+// части речи, объяснение, таблицы, перевод. Вынесено из analyze, потому что
+// тем же путём идёт разбор по подсказке нейросети — иначе такая карточка
+// собиралась бы вторым, отдельно живущим способом.
+func describeReading(lex *lexicon.Lexicon, res *analyzeResponse, normalized string) {
 	info := grammar.Describe(res.UPOS, res.Feats)
 	res.PosFull = info.PosLabel
 	res.PosShort = grammar.PosShort(res.UPOS)
@@ -315,8 +335,6 @@ func analyze(lex *lexicon.Lexicon, word string) analyzeResponse {
 		res.Translation = lex.Translate(normalized)
 	}
 	res.Prepositions = grammar.PrepositionGovernment(normalized)
-
-	return res
 }
 
 // resolveByRule опознаёт форму, которой нет в словаре, достраивая парадигмы
