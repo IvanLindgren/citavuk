@@ -22,6 +22,7 @@ import 'screens/account_screen.dart';
 import 'services/card_io.dart';
 import 'services/analysis_repository.dart';
 import 'services/announcements_controller.dart';
+import 'services/daily_service.dart';
 import 'services/document_parser.dart';
 import 'services/document_translation_service.dart';
 import 'services/local_file.dart';
@@ -49,6 +50,8 @@ import 'widgets/animated_widgets.dart';
 import 'widgets/server_announcements.dart';
 import 'widgets/import_language_dialog.dart';
 import 'screens/palace_screen.dart';
+import 'travel/travel_screen.dart';
+import 'screens/daily_window.dart';
 import 'screens/garden_screen.dart';
 import 'widgets/more_menu_sheet.dart';
 import 'widgets/radio_sheet.dart';
@@ -122,6 +125,9 @@ Future<void> main() async {
         // продвинулся. Карта открыта и гостю — вход нужен только для отметок.
         Provider<RoadmapService>.value(value: RoadmapService(api: api)),
         Provider<ProfileService>.value(value: ProfileService(api: api)),
+        // Слова дня: набор собирает сервер и хранит сутки, поэтому окно,
+        // сайт и виджет на рабочем столе показывают одно и то же.
+        Provider<DailyService>.value(value: DailyService(api: api)),
       ],
       child: const ChitavukApp(),
     ),
@@ -1251,6 +1257,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ]),
       MoreMenuSection('УЧИТЬСЯ', [
+        // Окно приходит само раз в день, но вернуться к сегодняшним словам
+        // человек может в любой момент — доучить или перечитать текст.
+        if (signedIn)
+          MoreMenuItem(
+            label: 'Слова дня',
+            note: 'Десять слов и текст с ними',
+            icon: Icons.auto_awesome_outlined,
+            onTap: () => showDailyWindow(
+              context,
+              context.read<DailyService>(),
+              sync: context.read<SyncService>(),
+            ),
+          ),
         if (compactAppBar)
           MoreMenuItem(
             label: 'Справочник правил',
@@ -1266,6 +1285,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           label: 'Дворец памяти',
           icon: Icons.castle_outlined,
           onTap: () => open(const PalaceScreen()),
+        ),
+        MoreMenuItem(
+          label: 'Путешествие',
+          note: 'Слова по местам города',
+          icon: Icons.map_outlined,
+          onTap: () => open(const TravelScreen()),
         ),
         // Динары считает сервер по занятиям, поэтому сад есть только у
         // вошедшего: гостю показывать нечего.

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_daily_title">На каждый день</string>
+    <string name="widget_daily_description">Слова дня, что повторено сегодня и что пора вспомнить</string>
+</resources>

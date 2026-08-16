@@ -9,6 +9,8 @@
 /// значит показывать его тем, кто и так уже занимается.
 library;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +18,11 @@ import '../course/screens/course_path_screen.dart';
 import '../course/state/course_controller.dart';
 import '../course/widgets/mascot_view.dart';
 import '../services/auth_service.dart';
+import '../services/daily_service.dart';
 import '../services/level_service.dart';
+import '../services/sync_service.dart';
 import '../theme/app_theme.dart';
+import 'daily_window.dart';
 import 'level_prompt.dart';
 import 'listening_screen.dart';
 import 'roadmap_screen.dart';
@@ -59,6 +64,10 @@ class _HomeShellState extends State<HomeShell> {
   /// открывающееся дважды, — это два окна друг на друге.
   bool _levelAsked = false;
 
+  /// Слова дня показываются раз в сутки; флаг бережёт от второго окна за
+  /// один запуск, а сам день помнит DailyService.
+  bool _dailyShown = false;
+
   /// Курс живёт столько же, сколько оболочка: контент и прогресс читаются
   /// один раз, а не при каждом переключении вкладки.
   final CourseController _course = CourseController();
@@ -70,7 +79,15 @@ class _HomeShellState extends State<HomeShell> {
     super.initState();
     // После первого кадра: до него нет ни Navigator, ни размеров экрана, а
     // окно уровня — обычная нижняя шторка и требует и того и другого.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _askLevel());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _greet());
+  }
+
+  /// Вопрос об уровне, а следом — слова дня. Именно в таком порядке и по
+  /// очереди: два окна друг на друге — это два вопроса разом и ни одного
+  /// понятного.
+  Future<void> _greet() async {
+    await _askLevel();
+    await _showDaily();
   }
 
   @override
@@ -94,6 +111,29 @@ class _HomeShellState extends State<HomeShell> {
     _levelAsked = true;
     final chosen = await showLevelPrompt(context, context.read<LevelService>());
     if (chosen != null && chosen.isNotEmpty) auth.rememberLevel(chosen);
+  }
+
+  /// Показывает слова дня — один раз в сутки.
+  ///
+  /// Пока уровень не назван, окно не приходит: набор собирается ровно по нему,
+  /// и предлагать слова наугад незачем.
+  Future<void> _showDaily() async {
+    if (_dailyShown || !mounted) return;
+    final auth = context.read<AuthService>();
+    if (!auth.isSignedIn || (auth.account?.serbianLevel ?? '').isEmpty) return;
+
+    final daily = context.read<DailyService>();
+    if (await daily.shownToday()) {
+      // Окно сегодня уже было, но виджет на рабочем столе живёт слепком: без
+      // тихого обновления он до завтра показывал бы вчерашнюю сводку.
+      unawaited(daily.load().then((_) {}, onError: (_) {}));
+      return;
+    }
+    if (!mounted) return;
+    _dailyShown = true;
+    await daily.rememberShown();
+    if (!mounted) return;
+    await showDailyWindow(context, daily, sync: context.read<SyncService>());
   }
 
   void _select(int next) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Точка перед словом: ряд из десяти строк без неё читается как сплошной
+     текст. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/widget_gold" />
+    <size android:width="6dp" android:height="6dp" />
+</shape>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Плашка серии и подсказок: золотая, но приглушённая — она подпись, а не
+     заголовок. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/widget_chip" />
+    <corners android:radius="999dp" />
+</shape>

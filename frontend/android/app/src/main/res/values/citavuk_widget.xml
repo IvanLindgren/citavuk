@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Палитра виджета «На каждый день». Повторяет цвета приложения
+     (lib/theme/app_theme.dart): виджет стоит на том же экране, что и значок
+     приложения, и выпадать из его вида не должен. -->
+<resources>
+    <color name="widget_bg_top">#FFF7EFDC</color>
+    <color name="widget_bg_bottom">#FFEADFC2</color>
+    <color name="widget_ink">#FF2B2118</color>
+    <color name="widget_ink_soft">#FF6B5B49</color>
+    <color name="widget_accent">#FF9E2B25</color>
+    <color name="widget_gold">#FFC9A24B</color>
+    <color name="widget_line">#332B2118</color>
+    <color name="widget_chip">#22C9A24B</color>
+</resources>
