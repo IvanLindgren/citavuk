@@ -95,6 +95,18 @@ books` — книжный, а не библиотека. `osm` — правил�
 | `web/src/pages/Travel.tsx` | сам раздел |
 | `web/src/travel/content.test.ts` | проверка наполнения и связности диалогов |
 | `web/src/travel/kinds.test.ts` | проверка опознания места обоими способами |
+| `frontend/lib/travel/content.dart` | те же форматы во Flutter: типы, города, письмо |
+| `frontend/lib/travel/overpass.dart` | опознание места в приложении |
+| `frontend/lib/travel/{travel_screen,place_sheet}.dart` | карта и карточка места |
+
+Данные у сайта и приложения **одни и те же файлы** (`frontend/assets/travel/`):
+сайт собирает из них один `bundle.json`, приложение читает по файлу. Правишь
+типы или разговоры — они меняются сразу везде.
+
+Карта в приложении — `flutter_map` с растровыми тайлами MapTiler (ключ через
+`--dart-define=MAPTILER_KEY`), и тип места там опознаётся только через Overpass:
+слоя POI в растровых тайлах нет, подклассов тайла — тоже. Почему не `maplibre_gl`
+— см. [flutter.md](flutter.md).
 
 ## Грабли
 

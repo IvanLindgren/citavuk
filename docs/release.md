@@ -103,24 +103,36 @@ flutter test                       # 236 тестов, перед сборкой
 flutter analyze lib/
 ```
 
+**Ключ карты.** Путешествие рисует тайлы MapTiler, а ключ в репозиторий не
+входит — он передаётся сборке:
+
+```bash
+--dart-define=MAPTILER_KEY=<ключ>
+```
+
+Флаг добавляется к каждой команде сборки ниже. Без него приложение собирается и
+работает, но Путешествие показывает список мест вместо карты, поэтому в
+выпускных сборках он обязателен. Ключ лежит там же, где остальные доступы, —
+в разделе «Что нужно один раз».
+
 **Android — бандл для Play Console:**
 
 ```bash
-flutter build appbundle --release
+flutter build appbundle --release --dart-define=MAPTILER_KEY=<ключ>
 # → build/app/outputs/bundle/release/app-release.aab
 ```
 
 **Android — APK для сайта** (в Play Console не нужен, нужен для прямой загрузки):
 
 ```bash
-flutter build apk --release
+flutter build apk --release --dart-define=MAPTILER_KEY=<ключ>
 # → build/app/outputs/flutter-apk/app-release.apk
 ```
 
 **Windows — программа, затем установщик:**
 
 ```bash
-flutter build windows --release
+flutter build windows --release --dart-define=MAPTILER_KEY=<ключ>
 dart run inno_bundle:build --release
 # → build/windows/x64/installer/Release/Citavuk-x86_64-<версия>-Installer.exe
 ```
@@ -239,9 +251,10 @@ linux/amd64, кладёт его рядом и переименовывает п
 
 cd frontend
 flutter test
-flutter build appbundle --release
-flutter build apk --release
-flutter build windows --release
+export MAP=--dart-define=MAPTILER_KEY=<ключ>
+flutter build appbundle --release $MAP
+flutter build apk --release $MAP
+flutter build windows --release $MAP
 dart run inno_bundle:build --release
 # упаковать build/windows/x64/runner/Release в build/citavuk-windows.zip
 ./deploy/linux/build.sh

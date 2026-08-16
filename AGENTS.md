@@ -23,6 +23,7 @@
 | [language.md](docs/agents/language.md) | морфология, лексикон, грамматический движок, ударение, «se» |
 | [course.md](docs/agents/course.md) | курс, тренажёрка, типы упражнений, дуэль переводов |
 | [roadmap.md](docs/agents/roadmap.md) | дорожная карта, уровень и цель пользователя, прогресс |
+| [daily.md](docs/agents/daily.md) | «На каждый день»: слова дня, текст от Gemma, виджет Андроида |
 | [garden.md](docs/agents/garden.md) | Башта Читавука: динары, рост, соседи, лидерборд |
 | [travel.md](docs/agents/travel.md) | Путешествие: карта городов, типы мест, слова и разговоры |
 | [vukotok.md](docs/agents/vukotok.md) | лента: карточка, подбор, обсуждение, наполнение |

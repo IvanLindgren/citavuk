@@ -220,7 +220,7 @@ cd frontend && flutter test                          # 162 теста
   `google/gemma-4-31b-it` через Polza AI; env начинаются с
   `CITAVUK_TRANSLATION_GAME_AI_`, AI-ручка защищена quiz limiter.
 
-### Комнаты и подбор соперников (web)
+### Комнаты и подбор соперников
 
 - `/trainer/translation-duel/:code` — комната на 2–6 мест. В неё входят по
   ссылке без аккаунта: гостю сервер выдаёт подписанный `X-Duel-Player`, браузер
@@ -272,8 +272,10 @@ cd frontend && flutter test                          # 162 теста
 | Правила счёта | `web/src/lib/duelScore.ts`, `frontend/lib/course/duel_score.dart` |
 | Спрайт и счётная полоса | `web/src/components/DuelArena.tsx`, `frontend/lib/course/widgets/duel_arena.dart` |
 | Ход матча | `web/src/pages/TranslationDuel.tsx`, `frontend/lib/course/screens/translation_duel_screen.dart` |
-| Комната на несколько человек | `web/src/components/MultiplayerDuel.tsx` |
-| Часы, стол, занавес, пьедестал | `web/src/components/DuelStage.tsx` |
+| Комната на несколько человек | `web/src/components/MultiplayerDuel.tsx`, `frontend/lib/course/screens/duel_room_screen.dart` |
+| С кем играть: подбор, код, машина | `frontend/lib/course/screens/duel_menu_screen.dart` |
+| Часы, стол, занавес, пьедестал | `web/src/components/DuelStage.tsx`, `frontend/lib/course/widgets/{duel_stage,duel_table}.dart` |
+| Клиент комнаты | `web/src/api/duel.ts`, `frontend/lib/course/services/duel_room_service.dart` |
 | Кто сейчас играет (админка) | `web/src/components/AdminOpsPanels.tsx`, `server/internal/store/admin_live.go` |
 | Звук | `web/src/lib/duelSounds.ts`, `frontend/lib/services/duel_sounds.dart` |
 | Сборка звука | `tools/build_duel_sounds.py` → `web/public/sounds/duel/`, `frontend/assets/sounds/duel/` |
