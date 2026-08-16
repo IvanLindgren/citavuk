@@ -120,6 +120,14 @@ type Config struct {
 	TranslationGameAIModel string
 	TranslationGameAIURL   string
 
+	// DailyAI* — текст «На каждый день»: короткий рассказ с десятью словами
+	// набора и упражнениями к нему. Ключ по умолчанию тот же, что у остальных
+	// разделов; пустой просто оставляет окно без текста — слова в нём есть и
+	// без модели.
+	DailyAIKey   string
+	DailyAIModel string
+	DailyAIURL   string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -191,6 +199,14 @@ func Load(envPath string) (*Config, error) {
 		),
 		TranslationGameAIURL: envOr(
 			"CITAVUK_TRANSLATION_GAME_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		DailyAIKey: firstEnv(
+			"CITAVUK_DAILY_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "google/gemma-4-31b-it"),
+		DailyAIURL: envOr(
+			"CITAVUK_DAILY_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),

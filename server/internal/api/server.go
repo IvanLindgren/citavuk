@@ -10,6 +10,7 @@ import (
 	"github.com/citavuk/server/internal/auth"
 	rediscache "github.com/citavuk/server/internal/cache"
 	"github.com/citavuk/server/internal/config"
+	"github.com/citavuk/server/internal/daily"
 	"github.com/citavuk/server/internal/dictionary"
 	"github.com/citavuk/server/internal/feed"
 	"github.com/citavuk/server/internal/mailer"
@@ -38,6 +39,7 @@ type Server struct {
 	redis           *rediscache.Redis
 	documentHTTP    *http.Client
 	quiz            *quiz.Generator
+	daily           *daily.Generator
 	podcasts        *podcast.Service
 	media           *media.Service
 	microFeed       *feed.Generator
@@ -114,6 +116,9 @@ func New(
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
+		daily: daily.NewGenerator(
+			cfg.DailyAIKey, cfg.DailyAIModel, cfg.DailyAIURL,
+		),
 		translationGame: translationgame.NewJudge(
 			cfg.TranslationGameAIKey,
 			cfg.TranslationGameAIModel,
@@ -295,6 +300,15 @@ func (s *Server) Handler() http.Handler {
 
 	// Башта Читавука. Чужой сад и таблица садоводов открыты гостю, но только
 	// для тех, кто сам включил публичный доступ.
+	// «На каждый день»: десять слов, текст с ними и упражнения.
+	mux.HandleFunc("GET /v1/daily", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailySet)))
+	mux.HandleFunc("GET /v1/daily/settings", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailySettings)))
+	mux.HandleFunc("PUT /v1/daily/settings", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSaveDailySettings)))
+	// Текст пишет модель, поэтому запрос идёт по той же квоте, что тесты.
+	mux.HandleFunc("POST /v1/daily/lesson", s.requireAuth(s.rateLimitIdentity(s.quizLimit, s.handleDailyLesson)))
+	mux.HandleFunc("POST /v1/daily/learn", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyLearn)))
+	mux.HandleFunc("GET /v1/daily/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyProgress)))
+
 	mux.HandleFunc("GET /v1/garden", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGarden)))
 	mux.HandleFunc("POST /v1/garden/plant", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenPlant)))
 	mux.HandleFunc("POST /v1/garden/water", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenWater)))
