@@ -22,10 +22,27 @@ VERSION="${CITAVUK_VERSION:-$(git rev-parse --short HEAD 2>/dev/null || echo dev
 REMOTE_DIR=/opt/citavuk
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
-# -C обязателен: без сжатия заливка обрывалась на 20 МБ — «Connection reset by
-# peer» ровно на одном и том же байте, сколько раз ни повторяй. Сжатый бинарник
-# вдвое меньше и доходит целиком.
-scp_put() { scp -C -i "$KEY" -o BatchMode=yes -o ServerAliveInterval=15 "$1" "$HOST:$2"; }
+
+# Заливка с докачкой — тот же приём, что в web/deploy/publish-apps.sh. Канал до
+# сервера бьёт пакеты, ssh закрывает сессию на «message authentication code
+# incorrect» (видно в auth.log, в выводе scp — только «lost connection»), и scp
+# после обрыва начинает файл заново. Сжатие уменьшает шанс, но не убирает его,
+# поэтому продолжаем с последнего долетевшего байта.
+scp_put() {
+    local src="$1" dst="$2" size got try cmd
+    size=$(stat -c%s "$src")
+    for try in $(seq 1 12); do
+        got=$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")
+        [[ "$got" == "$size" ]] && return 0
+        # Пустого файла reput не понимает, начатый — продолжает с места обрыва.
+        if [[ "$got" == 0 ]]; then cmd=put; else cmd=reput; fi
+        [[ $try -gt 1 ]] && echo "    попытка $try: долито $got из $size"
+        sftp -C -i "$KEY" -o BatchMode=yes "$HOST" >/dev/null <<<"$cmd \"$src\" \"$dst\"" || true
+    done
+    [[ "$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")" == "$size" ]] && return 0
+    echo "  не удалось долить $dst за 12 попыток" >&2
+    return 1
+}
 
 echo "==> Проверки перед выкаткой"
 go vet ./...
