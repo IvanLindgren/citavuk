@@ -128,6 +128,17 @@ type Config struct {
 	DailyAIModel string
 	DailyAIURL   string
 
+	// DefinitionAI* — запасное толкование слова, когда его нет в словаре
+	// Матицы српске или тот не отвечает. Модель тут выбрана не по цене:
+	// слабые сочиняют значения несуществующих слов, а читателю такое
+	// объяснение неотличимо от настоящего. DefinitionAIReasoning ограничивает
+	// размышления вслух — без него ответ втрое дороже и вдвое медленнее.
+	// Пустой ключ просто выключает запасной вариант.
+	DefinitionAIKey       string
+	DefinitionAIModel     string
+	DefinitionAIURL       string
+	DefinitionAIReasoning string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -209,7 +220,18 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_DAILY_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
-		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
+		DefinitionAIKey: firstEnv(
+			"CITAVUK_DEFINITION_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		DefinitionAIModel: envOr(
+			"CITAVUK_DEFINITION_AI_MODEL", "google/gemini-3.7-flash",
+		),
+		DefinitionAIURL: envOr(
+			"CITAVUK_DEFINITION_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		DefinitionAIReasoning: envOr("CITAVUK_DEFINITION_AI_REASONING", "low"),
+		FeedAIKey:             firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
 		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-26b-a4b-it"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",

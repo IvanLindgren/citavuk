@@ -18,6 +18,10 @@ export interface DefinitionSense {
  *
  * Статья показывается как цитата, поэтому `sourceTitle` и `url` обязательны к
  * показу: без них выходит, что словарь наш.
+ *
+ * Словарь вышел в прошлом веке и не знает ни заимствований, ни разговорной
+ * речи. Такие слова объясняет нейросеть, и тогда приходит `generated`: ссылки
+ * на статью у сочинённого толкования нет, а подписать его словарём нельзя.
  */
 export interface Definition {
   headword: string;
@@ -28,6 +32,7 @@ export interface Definition {
   volume?: number;
   page?: number;
   url: string;
+  generated?: boolean;
 }
 
 /**

@@ -2,9 +2,12 @@ package api
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/citavuk/server/internal/dictionary"
 )
@@ -13,6 +16,18 @@ import (
 // *dictionary.Client, чтобы обработчик проверялся без похода в чужую сеть.
 type definitionLookup interface {
 	Lookup(ctx context.Context, word string) (*dictionary.Entry, error)
+}
+
+// wordExplainer — запасное толкование от нейросети.
+type wordExplainer interface {
+	Enabled() bool
+	Explain(ctx context.Context, word string) (*dictionary.Entry, error)
+}
+
+// definitionCache — сочинённые толкования, сохранённые в базе.
+type definitionCache interface {
+	CachedDefinition(ctx context.Context, word string) ([]byte, bool, error)
+	SaveDefinition(ctx context.Context, word string, entry []byte, model string) error
 }
 
 // handleDefinition отдаёт толкование слова на сербском.
@@ -36,16 +51,101 @@ func (s *Server) handleDefinition(w http.ResponseWriter, r *http.Request) {
 	}
 
 	entry, err := s.dictionary.Lookup(r.Context(), word)
-	if errors.Is(err, dictionary.ErrNotFound) {
-		// 404 — обычный ответ: толковый словарь знает далеко не каждое слово,
-		// и для клиента это «карточку не показываем», а не сбой.
+	if err == nil {
+		writeJSON(w, http.StatusOK, entry)
+		return
+	}
+	missing := errors.Is(err, dictionary.ErrNotFound)
+	if !missing {
+		// Причину сбоя видно только здесь: наружу уходит голый 502, и без
+		// записи в журнале не отличить таймаут чужого сайта от его поломки.
+		slog.Warn("словарь не ответил", "слово", word, "err", err)
+	}
+
+	// Словарь вышел в прошлом веке и не знает ни заимствований, ни разговорной
+	// речи, а лежащий словарь не знает вообще ничего. В обоих случаях слово
+	// объясняет нейросеть — с честной подписью в карточке.
+	generated, genErr := s.explainWord(r.Context(), word)
+	if genErr == nil {
+		writeJSON(w, http.StatusOK, generated)
+		return
+	}
+	if missing || errors.Is(genErr, dictionary.ErrNotFound) {
+		// Слова не знает никто — это обычный ответ, а не сбой: клиент по нему
+		// просто не показывает карточку.
 		writeError(w, http.StatusNotFound, "not_found", "слова нет в словаре")
 		return
 	}
-	if err != nil {
-		writeError(w, http.StatusBadGateway, "upstream_error", "словарь недоступен")
-		return
+	writeError(w, http.StatusBadGateway, "upstream_error", "словарь недоступен")
+}
+
+// explainWord берёт толкование у нейросети, заглядывая сначала в базу.
+func (s *Server) explainWord(ctx context.Context, word string) (*dictionary.Entry, error) {
+	if s.explainer == nil || !s.explainer.Enabled() {
+		return nil, dictionary.ErrNotFound
+	}
+	if entry, known := s.cachedDefinition(ctx, word); known {
+		if entry == nil {
+			return nil, dictionary.ErrNotFound
+		}
+		return entry, nil
 	}
 
-	writeJSON(w, http.StatusOK, entry)
+	entry, err := s.explainer.Explain(ctx, word)
+	if err != nil && !errors.Is(err, dictionary.ErrNotFound) {
+		slog.Warn("нейросеть не объяснила слово", "слово", word, "err", err)
+		return nil, err
+	}
+	s.saveDefinition(ctx, word, entry)
+	if err != nil {
+		return nil, err
+	}
+	return entry, nil
+}
+
+func (s *Server) cachedDefinition(ctx context.Context, word string) (*dictionary.Entry, bool) {
+	if s.definitions == nil {
+		return nil, false
+	}
+	raw, known, err := s.definitions.CachedDefinition(ctx, word)
+	if err != nil {
+		slog.Warn("чтение кеша толкований", "слово", word, "err", err)
+		return nil, false
+	}
+	if !known {
+		return nil, false
+	}
+	// Пустая запись — модель уже сказала, что такого слова нет.
+	if len(raw) == 0 {
+		return nil, true
+	}
+	var entry dictionary.Entry
+	if err := json.Unmarshal(raw, &entry); err != nil {
+		slog.Warn("разбор кеша толкований", "слово", word, "err", err)
+		return nil, false
+	}
+	return &entry, true
+}
+
+// saveDefinition запоминает ответ модели, в том числе отказ: за каждое слово
+// провайдеру платится один раз.
+func (s *Server) saveDefinition(ctx context.Context, word string, entry *dictionary.Entry) {
+	if s.definitions == nil {
+		return
+	}
+	var raw []byte
+	if entry != nil {
+		encoded, err := json.Marshal(entry)
+		if err != nil {
+			return
+		}
+		raw = encoded
+	}
+	// Ответ уже оплачен, и терять его из-за закрытой вкладки обидно, поэтому
+	// запись переживает отмену запроса.
+	saveCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
+	defer cancel()
+	if err := s.definitions.SaveDefinition(saveCtx, word, raw, s.cfg.DefinitionAIModel); err != nil {
+		slog.Warn("запись кеша толкований", "слово", word, "err", err)
+	}
 }

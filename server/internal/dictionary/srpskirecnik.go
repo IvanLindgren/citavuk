@@ -61,6 +61,9 @@ type Entry struct {
 	Volume      int    `json:"volume,omitempty"`
 	Page        int    `json:"page,omitempty"`
 	URL         string `json:"url"`
+	// Generated — толкование сочинила нейросеть, а не словарь. Ссылки и
+	// страницы у такого объяснения нет, и подписывать его надо иначе.
+	Generated bool `json:"generated,omitempty"`
 }
 
 // Client ходит в srpskirecnik.com и помнит ответы.

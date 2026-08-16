@@ -1594,18 +1594,26 @@ function DefinitionCard({
         </ol>
 
         {/* Словарь чужой, и назвать его обязательно: статья показана как
-            цитата со ссылкой на источник, а не как наш собственный текст. */}
+            цитата со ссылкой на источник, а не как наш собственный текст.
+            Сочинённое нейросетью толкование подписывается иначе — выдать его
+            за статью Матице српске нельзя, и ссылаться там не на что. */}
         <p className="mt-3 border-t border-[var(--line)] pt-2 text-xs leading-relaxed text-[var(--text-muted)]">
-          <a
-            href={definition.url}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="font-semibold underline-offset-2 hover:underline"
-          >
-            {definition.sourceTitle}
-          </a>
-          {definition.volume ? `, том ${definition.volume}` : ''}
-          {definition.page ? `, с. ${definition.page}` : ''}
+          {definition.generated ? (
+            <span className="italic">{definition.sourceTitle}</span>
+          ) : (
+            <>
+              <a
+                href={definition.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-semibold underline-offset-2 hover:underline"
+              >
+                {definition.sourceTitle}
+              </a>
+              {definition.volume ? `, том ${definition.volume}` : ''}
+              {definition.page ? `, с. ${definition.page}` : ''}
+            </>
+          )}
         </p>
       </div>
     </div>

@@ -46,6 +46,8 @@ type Server struct {
 	translationGame *translationgame.Judge
 	feedSources     *feed.SourceFetcher
 	dictionary      definitionLookup
+	explainer       wordExplainer
+	definitions     definitionCache
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -135,6 +137,16 @@ func New(
 		// Кеш на сутки: словарные статьи не меняются, а лишний поход к соседу
 		// на каждое повторное слово — просто невежливость.
 		dictionary: dictionary.New(24 * time.Hour),
+		// Запасное толкование для слов, которых в словаре нет: заимствования,
+		// разговорная речь, новые глаголы. Ответы копятся в базе — за слово
+		// провайдеру платится один раз.
+		explainer: dictionary.NewExplainer(
+			cfg.DefinitionAIKey,
+			cfg.DefinitionAIModel,
+			cfg.DefinitionAIURL,
+			cfg.DefinitionAIReasoning,
+		),
+		definitions: st,
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),

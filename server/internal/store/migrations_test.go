@@ -43,6 +43,7 @@ var requiredTables = []string{
 	"roadmap_completions",
 	"roadmap_comments",
 	"user_achievements",
+	"word_definitions",
 }
 
 func TestEmbeddedMigrationsCreateRequiredTables(t *testing.T) {
