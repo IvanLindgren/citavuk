@@ -47,6 +47,7 @@ class GardenPlant {
     required this.species,
     required this.growth,
     required this.speed,
+    this.wateredAt,
   });
 
   final int slot;
@@ -54,11 +55,112 @@ class GardenPlant {
   final double growth;
   final double speed;
 
+  /// Когда цветок полили в последний раз. Пусто — не поливали ни разу.
+  final DateTime? wateredAt;
+
   factory GardenPlant.fromJson(Map<String, dynamic> json) => GardenPlant(
         slot: (json['slot'] as num?)?.toInt() ?? 0,
         species: json['species'] as String? ?? '',
         growth: (json['growth'] as num?)?.toDouble() ?? 0,
         speed: (json['speed'] as num?)?.toDouble() ?? 1,
+        wateredAt: DateTime.tryParse(json['wateredAt'] as String? ?? '')
+            ?.toLocal(),
+      );
+}
+
+/// Украшение двора или комнаты.
+class GardenDecoration {
+  const GardenDecoration({
+    required this.id,
+    required this.serbian,
+    required this.russian,
+    required this.price,
+    required this.place,
+  });
+
+  final String id;
+  final String serbian;
+  final String russian;
+  final int price;
+
+  /// `garden` — во дворе, `house` — в комнате.
+  final String place;
+
+  bool get inHouse => place == 'house';
+
+  factory GardenDecoration.fromJson(Map<String, dynamic> json) =>
+      GardenDecoration(
+        id: json['id'] as String? ?? '',
+        serbian: json['serbian'] as String? ?? '',
+        russian: json['russian'] as String? ?? '',
+        price: (json['price'] as num?)?.toInt() ?? 0,
+        place: json['place'] as String? ?? 'garden',
+      );
+}
+
+/// Строка гербария: срезанный вид и сколько раз он попадался.
+class GardenHerbariumItem {
+  const GardenHerbariumItem({
+    required this.species,
+    required this.count,
+    required this.firstAt,
+  });
+
+  final String species;
+  final int count;
+  final DateTime? firstAt;
+
+  factory GardenHerbariumItem.fromJson(Map<String, dynamic> json) =>
+      GardenHerbariumItem(
+        species: json['species'] as String? ?? '',
+        count: (json['count'] as num?)?.toInt() ?? 0,
+        firstAt: DateTime.tryParse(json['firstAt'] as String? ?? '')?.toLocal(),
+      );
+}
+
+/// Задание дня.
+class GardenTask {
+  const GardenTask({
+    required this.kind,
+    required this.target,
+    required this.progress,
+    required this.reward,
+    required this.done,
+  });
+
+  final String kind;
+  final int target;
+  final int progress;
+  final int reward;
+  final bool done;
+
+  factory GardenTask.fromJson(Map<String, dynamic> json) => GardenTask(
+        kind: json['kind'] as String? ?? '',
+        target: (json['target'] as num?)?.toInt() ?? 0,
+        progress: (json['progress'] as num?)?.toInt() ?? 0,
+        reward: (json['reward'] as num?)?.toInt() ?? 0,
+        done: json['done'] as bool? ?? false,
+      );
+}
+
+/// Что дал срез цветка. Приходит только в ответе на `/v1/garden/cut`.
+class GardenCut {
+  const GardenCut({
+    required this.species,
+    required this.coins,
+    required this.first,
+  });
+
+  final String species;
+  final int coins;
+
+  /// Этот вид попал в гербарий впервые.
+  final bool first;
+
+  factory GardenCut.fromJson(Map<String, dynamic> json) => GardenCut(
+        species: json['species'] as String? ?? '',
+        coins: (json['coins'] as num?)?.toInt() ?? 0,
+        first: json['first'] as bool? ?? false,
       );
 }
 
@@ -88,48 +190,121 @@ class GardenState {
     required this.nickname,
     required this.isPublic,
     required this.coins,
+    required this.earnedTotal,
     required this.slots,
     required this.plants,
+    required this.decorations,
     required this.bloomed,
     required this.earnings,
+    required this.todayCoins,
     required this.speed,
+    required this.helpedToday,
+    required this.helpLimit,
     required this.catalog,
+    required this.decorationCatalog,
+    required this.water,
+    required this.waterCap,
+    required this.filledToday,
+    required this.fillLimit,
+    required this.river,
+    required this.weather,
+    required this.herbarium,
+    required this.task,
+    required this.cut,
     required this.fetchedAt,
   });
 
   final String nickname;
   final bool isPublic;
   final int coins;
+  final int earnedTotal;
   final int slots;
   final List<GardenPlant> plants;
+
+  /// Купленные украшения: идентификаторы из `decorationCatalog`.
+  final List<String> decorations;
   final int bloomed;
   final List<GardenEarning> earnings;
+  final int todayCoins;
   final double speed;
+  final int helpedToday;
+  final int helpLimit;
   final List<GardenSpecies> catalog;
+  final List<GardenDecoration> decorationCatalog;
+
+  /// Поливов в лейке и сколько раз сегодня уже набирали из реки.
+  final int water;
+  final int waterCap;
+  final int filledToday;
+  final int fillLimit;
+
+  /// Река течёт в тот день, когда были занятия.
+  final bool river;
+
+  /// `clear` или `rain`. В дождь поливать не нужно.
+  final String weather;
+  final List<GardenHerbariumItem> herbarium;
+  final GardenTask? task;
+
+  /// Итог последнего среза: приходит только с `/v1/garden/cut`.
+  final GardenCut? cut;
 
   /// Когда пришёл ответ: от него отсчитывается живой рост.
   final DateTime fetchedAt;
+
+  bool get raining => weather == 'rain';
+
+  /// Набрать воду можно, пока река течёт, лейка неполна и заходов хватает.
+  bool get canFill => river && water < waterCap && filledToday < fillLimit;
 
   factory GardenState.fromJson(Map<String, dynamic> json) => GardenState(
         nickname: json['nickname'] as String? ?? '',
         isPublic: json['public'] as bool? ?? false,
         coins: (json['coins'] as num?)?.toInt() ?? 0,
+        earnedTotal: (json['earnedTotal'] as num?)?.toInt() ?? 0,
         slots: (json['slots'] as num?)?.toInt() ?? 12,
         plants: ((json['plants'] as List?) ?? const [])
             .whereType<Map>()
             .map((item) => GardenPlant.fromJson(Map<String, dynamic>.from(item)))
             .toList(),
+        decorations:
+            ((json['decorations'] as List?) ?? const []).whereType<String>().toList(),
         bloomed: (json['bloomed'] as num?)?.toInt() ?? 0,
         earnings: ((json['earnings'] as List?) ?? const [])
             .whereType<Map>()
             .map(
                 (item) => GardenEarning.fromJson(Map<String, dynamic>.from(item)))
             .toList(),
+        todayCoins: (json['todayCoins'] as num?)?.toInt() ?? 0,
         speed: (json['speed'] as num?)?.toDouble() ?? 1,
+        helpedToday: (json['helpedToday'] as num?)?.toInt() ?? 0,
+        helpLimit: (json['helpLimit'] as num?)?.toInt() ?? 0,
         catalog: ((json['catalog'] as List?) ?? const [])
             .whereType<Map>()
             .map((item) => GardenSpecies.fromJson(Map<String, dynamic>.from(item)))
             .toList(),
+        decorationCatalog: ((json['decorationCatalog'] as List?) ?? const [])
+            .whereType<Map>()
+            .map((item) =>
+                GardenDecoration.fromJson(Map<String, dynamic>.from(item)))
+            .toList(),
+        water: (json['water'] as num?)?.toInt() ?? 0,
+        waterCap: (json['waterCap'] as num?)?.toInt() ?? 3,
+        filledToday: (json['filledToday'] as num?)?.toInt() ?? 0,
+        fillLimit: (json['fillLimit'] as num?)?.toInt() ?? 0,
+        river: json['river'] as bool? ?? false,
+        weather: json['weather'] as String? ?? 'clear',
+        herbarium: ((json['herbarium'] as List?) ?? const [])
+            .whereType<Map>()
+            .map((item) =>
+                GardenHerbariumItem.fromJson(Map<String, dynamic>.from(item)))
+            .toList(),
+        task: json['task'] is Map
+            ? GardenTask.fromJson(Map<String, dynamic>.from(json['task'] as Map))
+            : null,
+        cut: json['cut'] is Map
+            ? GardenCut.fromJson(Map<String, dynamic>.from(json['cut'] as Map))
+            : null,
         fetchedAt: DateTime.now(),
       );
 
@@ -139,29 +314,102 @@ class GardenState {
     }
     return null;
   }
+
+  GardenPlant? plantAt(int slot) {
+    for (final plant in plants) {
+      if (plant.slot == slot) return plant;
+    }
+    return null;
+  }
+
+  bool owns(String decoration) => decorations.contains(decoration);
 }
 
+/// Строка таблицы садоводов и карточка соседа — это одно и то же.
 class GardenerCard {
   const GardenerCard({
     required this.nickname,
     required this.bloomed,
     required this.plants,
+    required this.species,
     required this.growing,
   });
 
   final String nickname;
   final int bloomed;
   final int plants;
+
+  /// Сколько разных видов вырастил.
+  final int species;
   final List<String> growing;
 
   factory GardenerCard.fromJson(Map<String, dynamic> json) => GardenerCard(
         nickname: json['nickname'] as String? ?? '',
         bloomed: (json['bloomed'] as num?)?.toInt() ?? 0,
         plants: (json['plants'] as num?)?.toInt() ?? 0,
+        species: (json['species'] as num?)?.toInt() ?? 0,
         growing: ((json['growing'] as List?) ?? const [])
             .whereType<String>()
             .toList(),
       );
+}
+
+/// Чужой сад: видно то же поле, но действие одно — полить.
+class PublicGarden {
+  const PublicGarden({
+    required this.nickname,
+    required this.slots,
+    required this.plants,
+    required this.decorations,
+    required this.bloomed,
+    required this.canWater,
+    required this.catalog,
+    required this.fetchedAt,
+  });
+
+  final String nickname;
+  final int slots;
+  final List<GardenPlant> plants;
+  final List<String> decorations;
+  final int bloomed;
+  final bool canWater;
+  final List<GardenSpecies> catalog;
+  final DateTime fetchedAt;
+
+  factory PublicGarden.fromJson(Map<String, dynamic> json) {
+    final garden = Map<String, dynamic>.from(json['garden'] as Map? ?? {});
+    return PublicGarden(
+      nickname: garden['nickname'] as String? ?? '',
+      slots: (garden['slots'] as num?)?.toInt() ?? 12,
+      plants: ((garden['plants'] as List?) ?? const [])
+          .whereType<Map>()
+          .map((item) => GardenPlant.fromJson(Map<String, dynamic>.from(item)))
+          .toList(),
+      decorations:
+          ((garden['decorations'] as List?) ?? const []).whereType<String>().toList(),
+      bloomed: (garden['bloomed'] as num?)?.toInt() ?? 0,
+      canWater: garden['canWater'] as bool? ?? false,
+      catalog: ((json['catalog'] as List?) ?? const [])
+          .whereType<Map>()
+          .map((item) => GardenSpecies.fromJson(Map<String, dynamic>.from(item)))
+          .toList(),
+      fetchedAt: DateTime.now(),
+    );
+  }
+
+  GardenSpecies? speciesOf(String id) {
+    for (final species in catalog) {
+      if (species.id == id) return species;
+    }
+    return null;
+  }
+
+  GardenPlant? plantAt(int slot) {
+    for (final plant in plants) {
+      if (plant.slot == slot) return plant;
+    }
+    return null;
+  }
 }
 
 /// Рост цветка через [elapsed] после ответа сервера.

@@ -62,6 +62,11 @@ dependencies:
   # Брендовые значки соцсетей в окне «Поделиться». Material Icons не содержит
   # Telegram/VK/Viber/Threads, а текстовые кнопки плохо сканировались.
   font_awesome_flutter: ^11.0.0
+  # Карта Путешествия. Пакет на чистом Dart: нативной части у него нет, и
+  # сборку под Windows он не трогает — в отличие от maplibre, у которого
+  # десктопа нет вовсе.
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
 
 # path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
 # под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
@@ -105,9 +110,12 @@ flutter:
     # авторским правом. Раздел «Бесплатная библиотека» сам скрывается, когда
     # ассетов нет.
     - assets/imgs/
-    # Каталоги не рекурсивны: спрайты сада собираются
-    # tools/build_garden_sprites.py сразу для сайта и приложения.
+    # Каталоги не рекурсивны: спрайты сада собираются для сайта, а в приложение
+    # переносятся tools/sync_garden_assets.py — мир и комната отдельными
+    # строками, иначе в сборку они не попадут.
     - assets/imgs/garden/
+    - assets/imgs/garden/world/
+    - assets/imgs/garden/house/
     - assets/course/
     - assets/course/dialogues/
     - assets/animations/generated/
@@ -123,6 +131,11 @@ flutter:
     # скриптом, что и для сайта (web/scripts/prepare-odyssey-event.py).
     - assets/events/odyssey/
     - assets/english/
+    # Путешествие: справочник типов мест, города и значки. Данные общие с
+    # сайтом — там они собираются в один bundle.json, здесь читаются файлами.
+    - assets/travel/
+    - assets/travel/places/
+    - assets/travel/icons/
 
   fonts:
     - family: NotoSerif
