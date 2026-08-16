@@ -156,6 +156,9 @@ Compress-Archive -Path build\windows\x64\runner\Release\* `
 # → build/citavuk-linux-x64.tar.gz
 ```
 
+Ключ карты скрипт берёт сам: из `MAPTILER_KEY` в окружении или из корневого
+`.env`. Без него сборка проходит и предупреждает об этом строкой в выводе.
+
 **macOS — через GitHub Actions:**
 
 Локально на Windows или в Linux-контейнере macOS собрать нельзя: сборке нужны

@@ -39,7 +39,13 @@ COPY --chown=builder:builder third_party/ third_party/
 RUN flutter pub get
 
 COPY --chown=builder:builder . .
-RUN flutter pub get && flutter build linux --release
+
+# Ключ карты Путешествия. Он клиентский и всё равно уезжает в сборку, но в
+# репозиторий не входит: без него приложение собирается и работает, только
+# вместо карты показывает список мест.
+ARG MAPTILER_KEY=""
+RUN flutter pub get \
+    && flutter build linux --release --dart-define=MAPTILER_KEY="$MAPTILER_KEY"
 
 RUN set -eu; \
     version="$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' pubspec.yaml)"; \

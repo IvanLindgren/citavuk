@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.16.0';
+const VERSION = '1.17.0';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
@@ -78,7 +78,7 @@ const PLATFORMS: Platform[] = [
     description:
       'Beta-версия читалки для Mac с синхронизацией, курсом, диалогами и аудированием.',
     href: '/files/citavuk-macos.zip',
-    size: '55 МБ',
+    size: '58 МБ',
     note: 'Beta пока не подписана Apple Developer ID. При первом запуске нажмите приложение правой кнопкой, выберите «Открыть» и подтвердите запуск.',
   },
   {

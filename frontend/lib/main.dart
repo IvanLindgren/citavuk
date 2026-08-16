@@ -167,6 +167,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   /// Над окном держат файл — показываем, куда его можно бросить.
   bool _dragging = false;
 
+  /// Идёт обновление: синхронизация плюс перечитывание списка книг.
+  bool _syncing = false;
+
   @override
   void initState() {
     super.initState();
@@ -215,17 +218,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (mounted) setState(() => _loadProgress = p);
   }
 
-  Future<void> _loadBooks() async {
-    setState(() => _isLoading = true);
+  /// Перечитывает список книг.
+  ///
+  /// [quiet] — не подменять список спиннером. Нужно при обновлении
+  /// потягиванием: там уже крутится своя стрелка, и второй индикатор посреди
+  /// экрана выглядит так, будто библиотека пропала.
+  Future<void> _loadBooks({bool quiet = false}) async {
+    if (!quiet) setState(() => _isLoading = true);
     final booksList = await UserDb.instance.getBooks();
     // Берём с запасом: в словарь попадают и выделенные фразы, а в приветствие
     // идут только одиночные слова — обрывки «- Molim…» читаются как сбой.
     final recent = await UserDb.instance.getRecentWords(12);
+    if (!mounted) return;
     setState(() {
       _books = booksList;
       _recentWords = recent.where(isSingleWord).take(4).toList();
       _isLoading = false;
     });
+  }
+
+  /// Обновление главного экрана: синхронизация с сервером и свежий список книг.
+  ///
+  /// Потянуть список сверху — привычный жест, и до сих пор он ничего не делал:
+  /// книга, добавленная в браузере, появлялась на телефоне только после
+  /// перезапуска приложения. Гостю синхронизировать нечего — ему обновляется
+  /// только список.
+  Future<void> _refreshAll() async {
+    if (_syncing) return;
+    setState(() => _syncing = true);
+    try {
+      final auth = context.read<AuthService>();
+      if (auth.isSignedIn) {
+        final ok = await context.read<SyncService>().sync();
+        if (!ok && mounted) {
+          final message = context.read<SyncService>().message;
+          _toast(message.isEmpty ? 'Синхронизация не удалась' : message);
+        }
+      }
+      await _loadBooks(quiet: true);
+    } finally {
+      if (mounted) setState(() => _syncing = false);
+    }
+  }
+
+  void _toast(String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
   }
 
   Future<void> _importFile() async {
@@ -772,6 +811,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
               onPressed: _toggleTheme,
             ),
           ],
+          // Обновление есть и жестом, и кнопкой: на планшете с мышью тянуть
+          // список неудобно, а на телефоне жест находят не все.
+          IconButton(
+            tooltip: context.watch<AuthService>().isSignedIn
+                ? 'Обновить и синхронизировать'
+                : 'Обновить список книг',
+            onPressed: _syncing ? null : _refreshAll,
+            icon: _syncing
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.refresh),
+          ),
           const ServerNotificationButton(),
           IconButton(
             tooltip: 'Ещё',
@@ -808,9 +862,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ],
                     ),
                   )
-                : _books.isEmpty
-                    ? _buildEmpty(scheme)
-                    : _buildList(scheme),
+                : RefreshIndicator(
+                    // Потянуть сверху — самый привычный способ сказать
+                    // «проверь, нет ли нового». Работает и на пустой
+                    // библиотеке: книги могли появиться на другом устройстве.
+                    onRefresh: _refreshAll,
+                    child: _books.isEmpty
+                        ? _buildEmpty(scheme)
+                        : _buildList(scheme),
+                  ),
           ),
         ],
       ),
@@ -877,6 +937,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (context, constraints) {
         final minHeight = constraints.maxHeight - 48;
         return SingleChildScrollView(
+          // Тянуть можно и здесь: содержимое короче экрана, и без этой физики
+          // жест «обновить» на пустой библиотеке не срабатывает вовсе.
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
           child: ConstrainedBox(
             constraints:
@@ -1349,8 +1412,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         MoreMenuItem(
           label: 'Обновить',
+          note: signedIn ? 'и синхронизировать' : null,
           icon: Icons.refresh,
-          onTap: _loadBooks,
+          onTap: _refreshAll,
         ),
         MoreMenuItem(
           label: 'О приложении',

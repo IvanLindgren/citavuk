@@ -31,10 +31,20 @@ VERSION="$(flutter --version 2>/dev/null | sed -n 's/^Flutter \([0-9.]*\).*/\1/p
 VERSION="${VERSION:-3.44.0}"
 echo "==> Flutter $VERSION"
 
+# Ключ карты берётся из окружения или из корневого .env — в репозитории его нет.
+# Без ключа сборка проходит, но Путешествие показывает список мест вместо карты.
+if [[ -z "${MAPTILER_KEY:-}" && -f "$FRONTEND/../.env" ]]; then
+    MAPTILER_KEY="$(sed -n 's/^MAPTILER_KEY=//p' "$FRONTEND/../.env" | tr -d '"'"'"' \r')"
+fi
+if [[ -z "${MAPTILER_KEY:-}" ]]; then
+    echo "==> без MAPTILER_KEY: карта Путешествия будет списком мест" >&2
+fi
+
 mkdir -p "$OUT"
 DOCKER_BUILDKIT=1 docker build \
     --file "$HERE/Dockerfile" \
     --build-arg "FLUTTER_VERSION=$VERSION" \
+    --build-arg "MAPTILER_KEY=${MAPTILER_KEY:-}" \
     --target artifact \
     --output "type=local,dest=$OUT" \
     "$FRONTEND"
