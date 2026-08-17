@@ -59,11 +59,24 @@ class ListeningService {
     if (resp.statusCode != 200) {
       throw Exception('Сервер вернул ${resp.statusCode}');
     }
-    final data =
-        jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+    return parseLessons(utf8.decode(resp.bodyBytes));
+  }
+
+  /// Разбор ответа `/audio/lessons`.
+  ///
+  /// Список эпизодов приходит без реплик: расшифровка забирается отдельно по
+  /// transcript_url, когда эпизод открывают. Прежний отбор по непустым cues
+  /// отбрасывал поэтому все эпизоды до единого, и раздел выглядел так, будто
+  /// подкастов нет вовсе.
+  static List<AudioLesson> parseLessons(String body) {
+    final data = jsonDecode(body) as Map<String, dynamic>;
     return ((data['items'] as List?) ?? const [])
-        .map((e) => AudioLesson.fromJson(e as Map<String, dynamic>))
-        .where((l) => l.cues.isNotEmpty)
+        .whereType<Map<String, dynamic>>()
+        .map(AudioLesson.fromJson)
+        .where((l) =>
+            l.id.isNotEmpty &&
+            l.title.isNotEmpty &&
+            (l.audioUrl != null || l.cues.isNotEmpty))
         .toList();
   }
 

@@ -132,9 +132,7 @@ class _ListeningScreenState extends State<ListeningScreen> {
                             scheme,
                             icon: Icons.graphic_eq,
                             title: l.title,
-                            subtitle: l.subtitle.isEmpty
-                                ? '${l.cues.length} фраз'
-                                : l.subtitle,
+                            subtitle: _lessonSubtitle(l),
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -184,6 +182,15 @@ class _ListeningScreenState extends State<ListeningScreen> {
         ],
       ),
     );
+  }
+
+  /// Подпись эпизода. Число реплик тут не годится: в списке они всегда пусты,
+  /// и подпись читалась бы как «0 фраз».
+  String _lessonSubtitle(AudioLesson lesson) {
+    final state = lesson.transcriptUrl != null
+        ? 'с расшифровкой'
+        : 'расшифровка готовится';
+    return lesson.subtitle.isEmpty ? state : '${lesson.subtitle} · $state';
   }
 
   Widget _sectionHeader(ColorScheme scheme, IconData icon, String text) =>
