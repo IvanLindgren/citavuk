@@ -14,8 +14,69 @@ on:
           - windows
           - linux
 
+# Версия Flutter должна совпадать с локальной (см. AGENTS.md): проект использует
+# API Flutter 3.27+ (Color.withValues / Color.toARGB32 / CardThemeData), которых
+# нет в 3.24.x — на них и падала сборка.
+env:
+  FLUTTER_VERSION: '3.44.x'
+
 jobs:
+  # Проверки идут один раз на все платформы, а не по разу в каждой сборке.
+  # Раньше их тут не было вовсе: облачная сборка выпускала непроверенное, тогда
+  # как локальная по release.md начинается с flutter test.
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      # Номер версии в pubspec лежит в двух местах: inno_bundle своё поле из
+      # верхнего не читает. Забыть второе — обычное дело, и тогда установщик
+      # уезжает со старым номером в имени файла и в «Установке и удалении
+      # программ», а publish-apps.sh не находит файл и останавливается.
+      - name: Номера версий в pubspec совпадают
+        working-directory: frontend
+        run: |
+          app=$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' pubspec.yaml)
+          inno=$(sed -n '/^inno_bundle:/,$p' pubspec.yaml \
+                 | sed -n 's/^ *version: *\([0-9.]*\).*/\1/p' | head -n 1)
+          echo "version: $app, inno_bundle.version: $inno"
+          if [ -z "$app" ] || [ "$app" != "$inno" ]; then
+            echo "::error::Версии в pubspec.yaml разошлись: $app и $inno."
+            exit 1
+          fi
+
+      - name: Ключ карты задан
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          if [ -z "$MAPTILER_KEY" ]; then
+            echo "::error::Нет секрета MAPTILER_KEY — Путешествие соберётся" \
+                 "списком мест вместо карты. Задайте секрет репозитория."
+            exit 1
+          fi
+
+      - name: Analyze
+        working-directory: frontend
+        run: flutter analyze lib
+
+      - name: Test
+        working-directory: frontend
+        run: flutter test
+
   android:
+    needs: checks
     if: inputs.target == 'all' || inputs.target == 'android'
     runs-on: ubuntu-latest
 
@@ -30,12 +91,9 @@ jobs:
           java-version: '17'
 
       - name: Setup Flutter
-        # Версия должна совпадать с локальной (см. AGENTS.md): проект использует
-        # API Flutter 3.27+ (Color.withValues / Color.toARGB32 / CardThemeData),
-        # которых нет в 3.24.x — на них и падала сборка.
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.44.x'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
 
       - name: Install dependencies
@@ -82,12 +140,26 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
-          # Ключ карты Путешествия — секрет репозитория. Без него сборка
-          # проходит, только карта заменяется списком мест.
-          MAP="--dart-define=MAPTILER_KEY=${{ secrets.MAPTILER_KEY }}"
-          flutter build apk --release "$MAP"
-          flutter build appbundle --release "$MAP"
+          flutter build apk --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+          flutter build appbundle --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+
+      - name: Ключ карты попал в сборку
+        working-directory: ./frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          # grep -c, а не -q: с -q он закрывает трубу на первом совпадении,
+          # unzip падает по SIGPIPE, а bash в Actions работает с pipefail —
+          # и удачная проверка выглядела бы провалом.
+          if unzip -p build/app/outputs/flutter-apk/app-release.apk 'lib/*/libapp.so' \
+             | grep -acF -e "$MAPTILER_KEY" >/dev/null; then
+            echo "ключ на месте"
+          else
+            echo "::error::В снапшоте APK нет ключа карты — define потерялся."
+            exit 1
+          fi
 
       - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
@@ -98,6 +170,7 @@ jobs:
             frontend/build/app/outputs/bundle/release/app-release.aab
 
   windows:
+    needs: checks
     if: inputs.target == 'all' || inputs.target == 'windows'
     runs-on: windows-2022
     steps:
@@ -107,23 +180,46 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.44.x'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
-      - name: Install dependencies and analyze
+      - name: Install dependencies
         working-directory: frontend
-        run: |
-          flutter pub get
-          flutter analyze lib
+        run: flutter pub get
 
+      # --no-app обязателен: без него inno_bundle пересобирает программу сам,
+      # своей командой и без --dart-define, и молча затирает сборку с ключом.
       - name: Build Windows release and installer
         working-directory: frontend
         shell: pwsh
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
-          flutter build windows --release
-          dart run inno_bundle:build --release
-          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath build/citavuk-windows.zip -Force
+          flutter build windows --release "--dart-define=MAPTILER_KEY=$env:MAPTILER_KEY"
+          dart run inno_bundle:build --release --no-app
+
+      # Проверяется ПОСЛЕ установщика: именно inno_bundle способен перезаписать
+      # снапшот своей сборкой без ключа, и ловить это надо здесь.
+      - name: Ключ карты пережил сборку установщика
+        working-directory: frontend
+        shell: bash
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          if grep -aqF -e "$MAPTILER_KEY" build/windows/x64/runner/Release/data/app.so; then
+            echo "ключ на месте"
+          else
+            echo "::error::В снапшоте Windows нет ключа карты — сборку затёрли."
+            exit 1
+          fi
+
+      - name: Package portable archive
+        working-directory: frontend
+        shell: pwsh
+        run: |
+          Compress-Archive -Path build/windows/x64/runner/Release/* `
+                           -DestinationPath build/citavuk-windows.zip -Force
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
@@ -134,6 +230,7 @@ jobs:
             frontend/build/citavuk-windows.zip
 
   linux:
+    needs: checks
     if: inputs.target == 'all' || inputs.target == 'linux'
     runs-on: ubuntu-22.04
     steps:
@@ -142,13 +239,31 @@ jobs:
 
       - name: Build and package in clean Ubuntu container
         working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
           docker build \
             --file deploy/linux/Dockerfile \
             --build-arg FLUTTER_VERSION=3.44.0 \
+            --build-arg "MAPTILER_KEY=$MAPTILER_KEY" \
             --target artifact \
             --output type=local,dest=build \
             .
+
+      - name: Ключ карты попал в сборку
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          # grep -c по той же причине, что и у Android: -q рвёт трубу и tar
+          # уходит по SIGPIPE, а pipefail считает это провалом проверки.
+          if tar -xzOf build/citavuk-linux-x64.tar.gz \
+             | grep -acF -e "$MAPTILER_KEY" >/dev/null; then
+            echo "ключ на месте"
+          else
+            echo "::error::В сборке Linux нет ключа карты — build-arg не дошёл."
+            exit 1
+          fi
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
