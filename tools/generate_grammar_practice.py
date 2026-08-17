@@ -1,0 +1,1318 @@
+"""Скрипт генерации упражнений для грамматических тем тренажёрки."""
+
+import json
+from pathlib import Path
+
+# 24 грамматические темы со скриншотов
+# Каждая тема содержит 5 практических упражнений
+# Строго соблюдаем правила: естественный стиль, без сложных терминов, без двоеточий и без тире.
+
+PRACTICE_DATA = {
+    "version": 1,
+    "topics": {
+        "grammar-a2-07": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите правильную форму для фразы «Пет ___» от слова grad",
+                "explanation": "Существительные мужского рода с односложной основой во множественном числе генитива получают окончание ова или ева",
+                "options": [
+                    {"text": "gradova", "correct": True},
+                    {"text": "grada"},
+                    {"text": "gradom"},
+                    {"text": "gradovi"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как звучит форма генитива множественного числа для слова kuća",
+                "explanation": "Существительные женского рода на а получают долгое окончание а",
+                "options": [
+                    {"text": "kuća", "correct": True},
+                    {"text": "kuće"},
+                    {"text": "kućama"},
+                    {"text": "kuću"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму слова devojka во множественном числе после числительного",
+                "explanation": "При выпадении беглого звука а в основе появляется гласный а",
+                "context": "Tamo je bilo mnogo ___.",
+                "answer": "devojaka",
+                "acceptedAnswers": ["devojaka"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма верна в предложении «Čekam te tri ___»",
+                "explanation": "Слово sat во множественном числе после числительных два три четыре имеет форму sata а после пяти sati",
+                "options": [
+                    {"text": "sata", "correct": True},
+                    {"text": "sati"},
+                    {"text": "satova"},
+                    {"text": "satu"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите верное окончание для фразы «Ima deset ___» от слова student",
+                "explanation": "После числительного десять используется генитив множественного числа с окончанием а",
+                "options": [
+                    {"text": "studenata", "correct": True},
+                    {"text": "studenti"},
+                    {"text": "studenta"},
+                    {"text": "studentima"}
+                ]
+            }
+        ],
+        "grammar-a2-10": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как сказать «Я могу прийти завтра»",
+                "explanation": "Модальный глагол moći согласуется с лицом и соединяется через союз da с настоящим временем",
+                "options": [
+                    {"text": "Mogu da dođem sutra", "correct": True},
+                    {"text": "Može da dođem sutra"},
+                    {"text": "Mogu doći sutra"},
+                    {"text": "Mora da dođem sutra"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите перевод для фразы «Мы должны учиться»",
+                "explanation": "Глагол morati в форме первого лица множественного числа будет moramo",
+                "options": [
+                    {"text": "Moramo da učimo", "correct": True},
+                    {"text": "Moraju da uče"},
+                    {"text": "Mora da učimo"},
+                    {"text": "Možemo da učimo"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму глагола smeti для местоимения ti",
+                "explanation": "Форма второго лица единственного числа для глагола smeti звучит smeš",
+                "context": "Ne ___ da piješ hladnu vodu.",
+                "answer": "smeš",
+                "acceptedAnswers": ["smeš", "smes"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая фраза означает «Ты хочешь кофе»",
+                "explanation": "Глагол hteti во втором лице имеет форму hoćeš",
+                "options": [
+                    {"text": "Hoćeš li kafu", "correct": True},
+                    {"text": "Hoće kafu"},
+                    {"text": "Hoćemo kafu"},
+                    {"text": "Moraš kafu"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как сказать «Они не смеют входить»",
+                "explanation": "Форма третьего лица множественного числа от smeti это ne smeju",
+                "options": [
+                    {"text": "Ne smeju da uđu", "correct": True},
+                    {"text": "Ne sme da uđu"},
+                    {"text": "Ne smemo da uđu"},
+                    {"text": "Ne mogu da uđu"}
+                ]
+            }
+        ],
+        "grammar-a2-15": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма безличного глагола treba верна в настоящем времени",
+                "explanation": "В сербском литературном языке глагол treba в конструкции с da чаще всего используется в безличной форме treba",
+                "options": [
+                    {"text": "Treba da idemo", "correct": True},
+                    {"text": "Trebamo da idemo"},
+                    {"text": "Trebam da idem"},
+                    {"text": "Trebate da idete"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как выразить вежливый совет «Тебе следовало бы отдохнуть»",
+                "explanation": "Форма сослагательного наклонения trebalo bi передает мягкий совет или желательность",
+                "options": [
+                    {"text": "Trebalo bi da se odmoriš", "correct": True},
+                    {"text": "Treba da se odmoriš"},
+                    {"text": "Trebao bi da se odmoriš"},
+                    {"text": "Trebaće da se odmoriš"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте пропущенное слово в устойчивую конструкцию",
+                "explanation": "Конструкция с глаголом treba требует союза da и формы настоящего времени",
+                "context": "Treba ___ pročitam ovu knjigu.",
+                "answer": "da",
+                "acceptedAnswers": ["da"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что означает фраза «Trebalo bi da požurimo»",
+                "explanation": "Конструкция выражает рекомендацию поспешить",
+                "options": [
+                    {"text": "Нам следовало бы поторопиться", "correct": True},
+                    {"text": "Мы обязаны были бежать"},
+                    {"text": "Мы точно успеем"},
+                    {"text": "Нам нельзя спешить"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как правильно сказать «Вам нужно купить билеты»",
+                "explanation": "Безличная форма treba остается неизменной перед da kupite",
+                "options": [
+                    {"text": "Treba da kupite karte", "correct": True},
+                    {"text": "Trebate kupiti karte"},
+                    {"text": "Trebali da kupite karte"},
+                    {"text": "Trebaće kupiti karte"}
+                ]
+            }
+        ],
+        "grammar-b1-03": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите реальное условие первого типа",
+                "explanation": "Первый тип условия выражает реальное действие с союзом ako",
+                "options": [
+                    {"text": "Ako bude lepo vreme, ići ćemo u šetnju", "correct": True},
+                    {"text": "Kad bih imao vremena, došao bih"},
+                    {"text": "Da sam znao, javio bih se"},
+                    {"text": "Iako pada kiša, idem napolje"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая фраза представляет потенциальное условие второго типа",
+                "explanation": "Второй тип условия строится с союзом kad bi и формой сослагательного наклонения",
+                "options": [
+                    {"text": "Kad bih imao novca, kupio bih stan", "correct": True},
+                    {"text": "Ako imam novca, kupiću stan"},
+                    {"text": "Da imam stan, prodao bih ga"},
+                    {"text": "Pošto imam stan, živim tamo"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте союз для реального условия в будущем",
+                "explanation": "Союз ako используется в реальных условных предложениях",
+                "context": "___ sutra bude sunčano, idemo na reku.",
+                "answer": "Ako",
+                "acceptedAnswers": ["Ako", "ako"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как переводится «Kad bi me pitao, rekao bih ti»",
+                "explanation": "Предложение выражает возможное условие в настоящем или будущем времени",
+                "options": [
+                    {"text": "Если бы ты меня спросил, я бы тебе сказал", "correct": True},
+                    {"text": "Когда ты спросишь, я отвечу"},
+                    {"text": "Если ты спросишь, я скажу"},
+                    {"text": "Так как ты спросил, я говорю"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая глагольная форма нужна во фразе «Ako ___ vreme, pozovi me»",
+                "explanation": "В придаточном реального условия с ако употребляется настоящее время",
+                "options": [
+                    {"text": "imaš", "correct": True},
+                    {"text": "bi imao"},
+                    {"text": "imao si"},
+                    {"text": "imaćeš"}
+                ]
+            }
+        ],
+        "grammar-b1-04": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как образуется футур второй в сербском языке",
+                "explanation": "Футур второй строится из вспомогательного глагола biti в настоящем времени и формы л-причастия",
+                "options": [
+                    {"text": "budem radio", "correct": True},
+                    {"text": "ću raditi"},
+                    {"text": "sam radio"},
+                    {"text": "bih radio"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Где обязательно употребляется футур второй",
+                "explanation": "Футур второй используется в придаточных предложениях времени и условия перед другим будущим действием",
+                "options": [
+                    {"text": "В придаточных предложениях условия и времени", "correct": True},
+                    {"text": "В простых утвердительных предложениях"},
+                    {"text": "В прямых вопросах о прошлом"},
+                    {"text": "Вместо повелительного наклонения"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму футура второго от глагола stići для местоимения mi",
+                "explanation": "Для местоимения mi форма глагола biti будет budemo",
+                "context": "Čim ___ u Beograd, javićemo se.",
+                "answer": "budemo stigli",
+                "acceptedAnswers": ["budemo stigli", "budemo stigle"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите правильный вариант «Dok ti ___ ručak, ja ću postaviti sto»",
+                "explanation": "Действие в придаточном времени с dok требует футура второго",
+                "options": [
+                    {"text": "budeš kuvao", "correct": True},
+                    {"text": "kuvaćeš"},
+                    {"text": "si kuvao"},
+                    {"text": "kuvaš"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что выражает фраза «Ako bude padala kiša, ostaćemo kod kuće»",
+                "explanation": "Фраза выражает предшествующее условие в будущем",
+                "options": [
+                    {"text": "Предшествующее условие в будущем времени", "correct": True},
+                    {"text": "Сожаление о прошедшем событии"},
+                    {"text": "Постоянное регулярное действие"},
+                    {"text": "Категорический приказ"}
+                ]
+            }
+        ],
+        "grammar-b1-09": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая приставка образует отрицательные местоимения",
+                "explanation": "Приставка ни образует слова niko, ništa, nikakav",
+                "options": [
+                    {"text": "ni", "correct": True},
+                    {"text": "ne"},
+                    {"text": "i"},
+                    {"text": "sve"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как сказать «Кто-нибудь звонил» при нейтральном вопросе",
+                "explanation": "Местоимение iko используется в вопросах и сомнениях в значении кто-либо вообще",
+                "options": [
+                    {"text": "Da li je iko zvao", "correct": True},
+                    {"text": "Da li je niko zvao"},
+                    {"text": "Neko je zvao"},
+                    {"text": "Ko god je zvao"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте отрицательное местоимение «Ничего не знаю»",
+                "explanation": "Слово ništa означает ничего в предложении с отрицанием",
+                "context": "Ne znam ___ o tome.",
+                "answer": "ništa",
+                "acceptedAnswers": ["ništa", "nista"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "В чем разница между neko и iko",
+                "explanation": "Слово neko означает кто-то конкретный или определенный а iko кто-либо вообще в вопросе",
+                "options": [
+                    {"text": "Neko означает кто-то а iko кто-либо вообще", "correct": True},
+                    {"text": "Между ними нет никакой разницы"},
+                    {"text": "Neko используется только в отрицании"},
+                    {"text": "Iko используется только в прошедшем времени"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите правильный перевод «Никто меня не слышит»",
+                "explanation": "Отрицательное местоимение niko согласуется с отрицательным глаголом",
+                "options": [
+                    {"text": "Niko me ne čuje", "correct": True},
+                    {"text": "Neko me ne čuje"},
+                    {"text": "Iko me čuje"},
+                    {"text": "Niko me čuje"}
+                ]
+            }
+        ],
+        "grammar-b1-10": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как в сербском языке предлог сочетается с отрицательным местоимением",
+                "explanation": "Предлог ставится между приставкой ни и местоименной основой",
+                "options": [
+                    {"text": "Предлог вставляется внутрь местоимения", "correct": True},
+                    {"text": "Предлог ставится строго перед местоимением"},
+                    {"text": "Предлог ставится в самый конец фразы"},
+                    {"text": "Местоимение и предлог пишутся слитно в одно слово"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как сказать «Ни с кем не разговариваю»",
+                "explanation": "Предлог sa встает внутрь между ni и kim",
+                "options": [
+                    {"text": "Ni sa kim ne razgovaram", "correct": True},
+                    {"text": "Sa nikim ne razgovaram"},
+                    {"text": "Nikim sa ne razgovaram"},
+                    {"text": "Ne razgovaram sa nikim"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму «Ни о чем» в предложение",
+                "explanation": "Предлог o встает между ni и čemu",
+                "context": "Ne brini, ne pričamo ___.",
+                "answer": "ni o čemu",
+                "acceptedAnswers": ["ni o čemu", "ni o cemu"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите верный вариант для фразы «Ни за что на свете»",
+                "explanation": "Конструкция разделяется предлогом za получая ni za šta",
+                "options": [
+                    {"text": "Ni za šta na svetu", "correct": True},
+                    {"text": "Za ništa na svetu"},
+                    {"text": "Ništa za na svetu"},
+                    {"text": "Za nikoga na svetu"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма верна в предложении «Не сомневаюсь ни в чем»",
+                "explanation": "Предлог u встает между ni и чем давая ni u šta или ni u čemu",
+                "options": [
+                    {"text": "Ne sumnjam ni u šta", "correct": True},
+                    {"text": "Ne sumnjam u ništa"},
+                    {"text": "Ne sumnjam ništa u"},
+                    {"text": "Ne sumnjam sa ničim"}
+                ]
+            }
+        ],
+        "grammar-b1-11": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое слово является собирательным существительным",
+                "explanation": "Слово deca грамматически собирательное существительное женского рода единственного числа",
+                "options": [
+                    {"text": "deca", "correct": True},
+                    {"text": "dečaci"},
+                    {"text": "stolovi"},
+                    {"text": "knjige"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как согласуется глагол со словом braća",
+                "explanation": "Слово braća согласуется с глаголом в женском роде единственного числа или во множественном числе по смыслу",
+                "options": [
+                    {"text": "Braća su došla", "correct": True},
+                    {"text": "Braća su došli"},
+                    {"text": "Braća je došao"},
+                    {"text": "Braća su došle"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте числительное для двух лиц мужского пола",
+                "explanation": "Для мужчин используется форма dvojica",
+                "context": "Došla su ___ radnika.",
+                "answer": "dvojica",
+                "acceptedAnswers": ["dvojica"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое числительное обозначает группу разного пола из трех человек",
+                "explanation": "Собирательное числительное troje обозначает смешанную группу",
+                "options": [
+                    {"text": "troje", "correct": True},
+                    {"text": "trojica"},
+                    {"text": "tri"},
+                    {"text": "treći"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Выберите собирательное существительное для обозначения господ",
+                "explanation": "Форма gospoda собирательное существительное",
+                "options": [
+                    {"text": "gospoda", "correct": True},
+                    {"text": "gospodini"},
+                    {"text": "gospodari"},
+                    {"text": "gospođe"}
+                ]
+            }
+        ],
+        "grammar-b1-12": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое чередование звуков происходит в слове čovek во множественном числе ljudi",
+                "explanation": "Супплетивизм корней передает множественное число слова čovek через ljudi",
+                "options": [
+                    {"text": "Супплетивизм основ", "correct": True},
+                    {"text": "Сибиляризация"},
+                    {"text": "Палатализация"},
+                    {"text": "Беглое а"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что происходит со звуком к перед и в форме датива слова ruka",
+                "explanation": "Звук к переходит в ц перед гласным и по закону сибиляризации",
+                "options": [
+                    {"text": "k переходит в c давая ruci", "correct": True},
+                    {"text": "k переходит в č давая ruči"},
+                    {"text": "k выпадает"},
+                    {"text": "k остается без изменений"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Напишите форму вокатива для имени junak",
+                "explanation": "Звук к переходит в ч перед е по палатализации",
+                "context": "Hej, dragi ___!",
+                "answer": "junače",
+                "acceptedAnswers": ["junače", "junace"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое чередование видно в паре posao и posla",
+                "explanation": "Здесь действует закон перехода л в о на конце слога и беглое а",
+                "options": [
+                    {"text": "Переход l в o и беглое a", "correct": True},
+                    {"text": "Йотирование"},
+                    {"text": "Диссимиляция"},
+                    {"text": "Оглушение согласных"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "В каком слове есть беглое а",
+                "explanation": "В слове pas при склонении появляется форма psa где гласный а выпадает",
+                "options": [
+                    {"text": "pas и psa", "correct": True},
+                    {"text": "grad и grada"},
+                    {"text": "sto и stola"},
+                    {"text": "zid и zida"}
+                ]
+            }
+        ],
+        "grammar-b1-13": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какого падежа требует предлог osim",
+                "explanation": "Предлог osim в значении кроме требует формы генитива",
+                "options": [
+                    {"text": "Генитив", "correct": True},
+                    {"text": "Датив"},
+                    {"text": "Аккузатив"},
+                    {"text": "Инструментал"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "С каким падежом употребляется предлог uprkos",
+                "explanation": "Предлог uprkos в значении вопреки требует датива",
+                "options": [
+                    {"text": "Датив", "correct": True},
+                    {"text": "Генитив"},
+                    {"text": "Локатив"},
+                    {"text": "Инструментал"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте предлог со значением причины в предложение",
+                "explanation": "Предлог zbog обозначает причину события и управляет генитивом",
+                "context": "Kasnimo ___ gužve u saobraćaju.",
+                "answer": "zbog",
+                "acceptedAnswers": ["zbog"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "В чем разница между предлогами radi и zbog",
+                "explanation": "Предлог radi указывает на цель а предлог zbog указывает на причину",
+                "options": [
+                    {"text": "Radi выражает цель а zbog причину", "correct": True},
+                    {"text": "Zbog выражает цель а radi причину"},
+                    {"text": "Они полностью взаимозаменяемы"},
+                    {"text": "Radi употребляется только с дативом"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма верна после предлога putem",
+                "explanation": "Предлог putem управляет генитивом",
+                "options": [
+                    {"text": "putem interneta", "correct": True},
+                    {"text": "putem internetom"},
+                    {"text": "putem internetu"},
+                    {"text": "putem internet"}
+                ]
+            }
+        ],
+        "grammar-b1-14": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как перевести в косвенную речь фразу «Marko kaže: Dolazim sutra»",
+                "explanation": "Прямая речь переходит в придаточное с союзом da с сохранением времени высказывания",
+                "options": [
+                    {"text": "Marko kaže da dolazi sutra", "correct": True},
+                    {"text": "Marko kaže da je došao sutra"},
+                    {"text": "Marko kaže hoće doći sutra"},
+                    {"text": "Marko kaže ako dolazi sutra"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как передать общий вопрос «Da li si umoran» в косвенной речи",
+                "explanation": "Общий вопрос вводится союзом da li",
+                "options": [
+                    {"text": "Pitao me je da li sam umoran", "correct": True},
+                    {"text": "Pitao me je šta sam umoran"},
+                    {"text": "Pitao me je gde sam umoran"},
+                    {"text": "Pitao me je zašto sam umoran"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте союз для косвенной речи в предложение",
+                "explanation": "Союз da связывает главное и придаточное предложение косвенной речи",
+                "context": "Rekla je ___ će stići na vreme.",
+                "answer": "da",
+                "acceptedAnswers": ["da"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как меняются времена в косвенной речи в сербском языке",
+                "explanation": "В сербском языке нет правила механического сдвига времен как в западноевропейских языках",
+                "options": [
+                    {"text": "Время сохраняет исходный план говорящего без сдвига", "correct": True},
+                    {"text": "Настоящее время обязательно переходит в прошедшее"},
+                    {"text": "Все глаголы ставятся исключительно в аорист"},
+                    {"text": "Глаголы переводятся только в инфинитив"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как перевести «Ana pita: Gde stanujete»",
+                "explanation": "Вопросительное слово gde сохраняется в косвенном вопросе",
+                "options": [
+                    {"text": "Ana pita gde stanujemo", "correct": True},
+                    {"text": "Ana pita da stanujemo"},
+                    {"text": "Ana pita jesu li stanujemo"},
+                    {"text": "Ana pita odakle stanujemo"}
+                ]
+            }
+        ],
+        "grammar-b2-01": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Что обозначает аорист в сербском языке",
+                "explanation": "Аорист обозначает быстрое мгновенное завершенное действие в прошлом",
+                "options": [
+                    {"text": "Мгновенное завершенное действие в прошлом", "correct": True},
+                    {"text": "Длительное незавершенное действие"},
+                    {"text": "Действие которое повторится в будущем"},
+                    {"text": "Регулярное фоновое состояние"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма глагола reći стоит в аористе для первого лица",
+                "explanation": "Форма первого лица единственного числа от глагола reći будет rekoh",
+                "options": [
+                    {"text": "rekoh", "correct": True},
+                    {"text": "rekao sam"},
+                    {"text": "rečem"},
+                    {"text": "reknem"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Напишите форму аориста от глагола uraditi для третьего лица",
+                "explanation": "Форма третьего лица единственного числа для глагола на и оканчивается на гласный основы",
+                "context": "On ustade i brzo ___ zadatak.",
+                "answer": "uradi",
+                "acceptedAnswers": ["uradi"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "От каких глаголов образуется аорист",
+                "explanation": "Аорист образуется почти исключительно от глаголов совершенного вида",
+                "options": [
+                    {"text": "От глаголов совершенного вида", "correct": True},
+                    {"text": "От глаголов несовершенного вида"},
+                    {"text": "Только от возвратных глаголов"},
+                    {"text": "Только от безличных глаголов"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "В каком стиле речи чаще всего встречается аорист",
+                "explanation": "Аорист характерен для художественной литературы и выразительной живой речи",
+                "options": [
+                    {"text": "В художественной литературе и эмоциональной речи", "correct": True},
+                    {"text": "В строго научных формулах"},
+                    {"text": "В дорожных указателях"},
+                    {"text": "В объявлениях транспорта"}
+                ]
+            }
+        ],
+        "grammar-b2-02": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Что обозначает время имперфект",
+                "explanation": "Имперфект выражает длительное или повторяющееся действие в прошлом",
+                "options": [
+                    {"text": "Длительное действие в прошлом", "correct": True},
+                    {"text": "Мгновенный результат"},
+                    {"text": "Будущее намерение"},
+                    {"text": "Приказ к действию"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "От какого вида глаголов образуется имперфект",
+                "explanation": "Имперфект образуется от глаголов несовершенного вида",
+                "options": [
+                    {"text": "От глаголов несовершенного вида", "correct": True},
+                    {"text": "От глаголов совершенного вида"},
+                    {"text": "От приставочных глаголов"},
+                    {"text": "Только от модальных глаголов"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте архаичную форму имперфекта от biti для первого лица",
+                "explanation": "Форма первого лица единственного числа имперфекта от biti звучит bejah или beh",
+                "context": "Nekada ___ mlad i snažan.",
+                "answer": "bejah",
+                "acceptedAnswers": ["bejah", "beh"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая форма является имперфектом слова nositi",
+                "explanation": "Форма третьего лица множественного числа nošahu",
+                "options": [
+                    {"text": "nošahu", "correct": True},
+                    {"text": "nosiše"},
+                    {"text": "su nosili"},
+                    {"text": "nosiće"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Каков статус имперфекта в современном сербском языке",
+                "explanation": "Имперфект принадлежит литературному и фольклорному стилю и редко звучит в бытовой речи",
+                "options": [
+                    {"text": "Архаичный литературный пласт", "correct": True},
+                    {"text": "Основное время повседневного общения"},
+                    {"text": "Единственная форма прошедшего времени"},
+                    {"text": "Запрещенная устаревшая форма"}
+                ]
+            }
+        ],
+        "grammar-b2-03": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как образуется плюсквамперфект в сербском языке",
+                "explanation": "Давнопрошедшее время строится из перфекта или имперфекта глагола biti и л-причастия",
+                "options": [
+                    {"text": "bio sam uradio", "correct": True},
+                    {"text": "sam uradio"},
+                    {"text": "uradio bih"},
+                    {"text": "budem uradio"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какую функцию выполняет плюсквамперфект в тексте",
+                "explanation": "Плюсквамперфект обозначает действие совершенное раньше другого действия в прошлом",
+                "options": [
+                    {"text": "Действие предшествующее другому прошедшему событию", "correct": True},
+                    {"text": "Действие происходящее прямо сейчас"},
+                    {"text": "Предположение о будущем"},
+                    {"text": "Вежливое обращение к собеседнику"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму плюсквамперфекта от pročitati для третьего лица",
+                "explanation": "Форма мужского рода bio je pročitao",
+                "context": "On ___ knjigu pre nego što je film počeo.",
+                "answer": "bio je pročitao",
+                "acceptedAnswers": ["bio je pročitao", "bio je procitao", "beše pročitao"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое предложение содержит форму давнопрошедшего времени",
+                "explanation": "Конструкция бејахмо видели или били смо видели выражает плюсквамперфект",
+                "options": [
+                    {"text": "Bili smo se već dogovorili kada je on ušao", "correct": True},
+                    {"text": "Dogovorili smo se pre sat vremena"},
+                    {"text": "Dogovorićemo se sutra ujutru"},
+                    {"text": "Dogovaramo se svaki dan"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Чем можно стилистически заменить плюсквамперфект в нейтральной речи",
+                "explanation": "В нейтральной современной речи плюсквамперфект часто заменяется перфектом с обстоятельством времени",
+                "options": [
+                    {"text": "Перфектом с указанием времени или союзом pre nego što", "correct": True},
+                    {"text": "Только настоящим временем"},
+                    {"text": "Только футуром вторым"},
+                    {"text": "Повелительным наклонением"}
+                ]
+            }
+        ],
+        "grammar-b2-04": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Что выражает условное предложение третьего типа",
+                "explanation": "Третий тип выражает нереальное условие в прошлом которое уже не может исполниться",
+                "options": [
+                    {"text": "Нереальное условие в прошлом", "correct": True},
+                    {"text": "Реальный план на завтра"},
+                    {"text": "Возможное действие в настоящем"},
+                    {"text": "Закон природы"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как строится нереальное условие в прошлом",
+                "explanation": "Условие строится через да сам знао в первой части и дошао бих во второй",
+                "options": [
+                    {"text": "Da sam znao, došao bih", "correct": True},
+                    {"text": "Ako znam, doći ću"},
+                    {"text": "Kad bih znao, došao bih"},
+                    {"text": "Dok znam, dolazim"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму сослагательного наклонения от pomoći для первого лица",
+                "explanation": "Для первого лица единственного числа частица бих сочетается с причастием",
+                "context": "Da si me pitao, ja ___ ti.",
+                "answer": "pomogao bih",
+                "acceptedAnswers": ["pomogao bih", "pomogla bih", "bih pomogao", "bih pomogla"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая фраза выражает сожаление об упущенной возможности в прошлом",
+                "explanation": "Конструкция с да сам položio выражает нереализованное прошлое событие",
+                "options": [
+                    {"text": "Da sam položio ispit, već bih diplomirao", "correct": True},
+                    {"text": "Ako položim ispit, diplomiraću"},
+                    {"text": "Kad položim ispit, slaviću"},
+                    {"text": "Iako sam položio ispit, učim dalje"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "В чем отличие второго типа условий от третьего",
+                "explanation": "Второй тип относится к настоящему или будущему а третий к невозвратному прошлому",
+                "options": [
+                    {"text": "Второй тип относится к настоящему а третий к прошлому", "correct": True},
+                    {"text": "Второй тип всегда реален а третий нет"},
+                    {"text": "Третий тип используется только в вопросах"},
+                    {"text": "Между ними нет грамматических отличий"}
+                ]
+            }
+        ],
+        "grammar-b2-05": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой сложный союз выражает причину действия",
+                "explanation": "Союз budući da выражает причину и переводится как будучи тем что или так как",
+                "options": [
+                    {"text": "budući da", "correct": True},
+                    {"text": "pre nego što"},
+                    {"text": "nakon što"},
+                    {"text": "tako da"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое значение имеет союз pre nego što",
+                "explanation": "Союз pre nego što выражает временное предшествование и переводится как прежде чем",
+                "options": [
+                    {"text": "Временное предшествование прежде чем", "correct": True},
+                    {"text": "Следствие поэтому"},
+                    {"text": "Уступку несмотря на"},
+                    {"text": "Сравнение подобно тому как"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте устойчивый книжный союз со значением с учетом того что",
+                "explanation": "Конструкция s obzirom na to da используется в официальном и деловом стиле",
+                "context": "___ kasnimo, moramo uzeti taksi.",
+                "answer": "S obzirom na to da",
+                "acceptedAnswers": ["S obzirom na to da", "s obzirom na to da"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как переводится союз nakon što",
+                "explanation": "Союз nakon što выражает временное следование после того как",
+                "options": [
+                    {"text": "После того как", "correct": True},
+                    {"text": "Прежде чем"},
+                    {"text": "В то время как"},
+                    {"text": "Пока не"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз выражает уступку в книжном стиле",
+                "explanation": "Союзы premda и mada выражают уступку хотя или несмотря на то что",
+                "options": [
+                    {"text": "premda", "correct": True},
+                    {"text": "zato što"},
+                    {"text": "pošto"},
+                    {"text": "kako bi"}
+                ]
+            }
+        ],
+        "grammar-b2-07": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой суффикс часто образует существительные женского рода по профессии",
+                "explanation": "Суффикс ица образует названия профессий женского рода вроде profesorka или radnica",
+                "options": [
+                    {"text": "-ica", "correct": True},
+                    {"text": "-ost"},
+                    {"text": "-ac"},
+                    {"text": "-telj"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "С помощью какого суффикса образуются абстрактные понятия от прилагательных",
+                "explanation": "Суффикс ост образует существительные вроде hrabrost, mladost, brzina",
+                "options": [
+                    {"text": "-ost", "correct": True},
+                    {"text": "-ar"},
+                    {"text": "-ak"},
+                    {"text": "-iđ"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Образуйте название жителя города Beograd",
+                "explanation": "Житель Белграда называется Beograđanin",
+                "context": "On je rođeni ___.",
+                "answer": "Beograđanin",
+                "acceptedAnswers": ["Beograđanin", "Beogradjanin"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое слово имеет уменьшительно ласкательное значение",
+                "explanation": "Слово knjižica образовано с уменьшительным суффиксом ица",
+                "options": [
+                    {"text": "knjižica", "correct": True},
+                    {"text": "knjižurina"},
+                    {"text": "knjižara"},
+                    {"text": "književnik"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой суффикс образует названия деятеля мужского рода",
+                "explanation": "Суффикс ач образует существительные мужского рода вроде pevač, vozač, plivač",
+                "options": [
+                    {"text": "-ač", "correct": True},
+                    {"text": "-ost"},
+                    {"text": "-ina"},
+                    {"text": "-ota"}
+                ]
+            }
+        ],
+        "grammar-b2-08": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как приставка пре меняет значение глагола pisati",
+                "explanation": "Приставка пре в слове prepisati означает переписать заново или скопировать",
+                "options": [
+                    {"text": "Переписать заново или скопировать", "correct": True},
+                    {"text": "Прекратить писать навсегда"},
+                    {"text": "Начать писать медленно"},
+                    {"text": "Писать очень мелко"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая приставка придает глаголу значение завершения до конца",
+                "explanation": "Приставка до в слове doraditi означает довести работу до завершения",
+                "options": [
+                    {"text": "do-", "correct": True},
+                    {"text": "raz-"},
+                    {"text": "pod-"},
+                    {"text": "su-"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Образуйте совершенный вид от глагола gledati с помощью приставки",
+                "explanation": "Приставка по образует совершенный вид pogledati",
+                "context": "Molim te, ___ ovaj dokument.",
+                "answer": "pogledaj",
+                "acceptedAnswers": ["pogledaj"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что происходит с видом глагола при добавлении приставки",
+                "explanation": "Бесприставочный несовершенный глагол при добавлении приставки обычно становится совершенным",
+                "options": [
+                    {"text": "Глагол обычно переходит в совершенный вид", "correct": True},
+                    {"text": "Глагол всегда остается несовершенным"},
+                    {"text": "Глагол превращается в существительное"},
+                    {"text": "Вид глагола никогда не меняется"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое значение имеет приставка из в слове izmisliti",
+                "explanation": "Приставка из обозначает извлечение создание или выдумывание чего-то нового",
+                "options": [
+                    {"text": "Создание или выдумывание чего-то нового", "correct": True},
+                    {"text": "Движение вниз под предмет"},
+                    {"text": "Повторение одного и того же действия"},
+                    {"text": "Отказ от мыслительной деятельности"}
+                ]
+            }
+        ],
+        "grammar-b2-09": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой оттенок придает разговорная частица bre",
+                "explanation": "Частица бре выражает эмоциональное обращение экспрессию удивление или нажим",
+                "options": [
+                    {"text": "Эмоциональное усиление и экспрессию", "correct": True},
+                    {"text": "Вежливое академическое сомнение"},
+                    {"text": "Официальное обращение к незнакомцу"},
+                    {"text": "Отрицание действия"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что означает модальная частица valjda",
+                "explanation": "Частица valjda выражает вероятностное предположение наверное или должно быть",
+                "options": [
+                    {"text": "Наверное должно быть", "correct": True},
+                    {"text": "Категорически никогда"},
+                    {"text": "Именно так и никак иначе"},
+                    {"text": "Слишком поздно"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте усилительную частицу čak в предложение",
+                "explanation": "Частица čak подчеркивает неожиданность или крайнюю степень даже",
+                "context": "Došao je ___ pre dogovorenog vremena.",
+                "answer": "čak",
+                "acceptedAnswers": ["čak", "cak"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое значение имеет частица bar",
+                "explanation": "Частица bar выражает минимальное пожелание или ограничение хотя бы",
+                "options": [
+                    {"text": "Хотя бы по крайней мере", "correct": True},
+                    {"text": "Ни в коем случае"},
+                    {"text": "Слишком много"},
+                    {"text": "Точно вчера"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Для чего служит частица dakle в начале фразы",
+                "explanation": "Частица dakle подводит итог и переводится как следовательно или итак",
+                "options": [
+                    {"text": "Подведение итога следовательно итак", "correct": True},
+                    {"text": "Резкое несогласие с собеседником"},
+                    {"text": "Указание на физическое местоположение"},
+                    {"text": "Отказ от продолжения разговора"}
+                ]
+            }
+        ],
+        "grammar-b2-10": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз соединяет части противоположного предложения",
+                "explanation": "Союзы ali, a, no, nego, već выражают противопоставление",
+                "options": [
+                    {"text": "ali", "correct": True},
+                    {"text": "i"},
+                    {"text": "ili"},
+                    {"text": "pa"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз используется в градационной конструкции «не только но и»",
+                "explanation": "Конструкция ne samo... već i связывает части предложения с усилением",
+                "options": [
+                    {"text": "ne samo... već i", "correct": True},
+                    {"text": "ili... ili"},
+                    {"text": "ni... ni"},
+                    {"text": "bilo... bilo"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте противительный союз для противопоставления в предложение",
+                "explanation": "Союз a выражает сопоставление или мягкое противопоставление",
+                "context": "Ja učim, ___ on sluša muziku.",
+                "answer": "a",
+                "acceptedAnswers": ["a"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз образует разделительное сложносочиненное предложение",
+                "explanation": "Союз ili выражает выбор или взаимоисключение",
+                "options": [
+                    {"text": "ili", "correct": True},
+                    {"text": "i"},
+                    {"text": "te"},
+                    {"text": "nego"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какая пунктуация принята перед союзами a и ali в сербском языке",
+                "explanation": "Перед противительными союзами а и али в сербском языке ставится запятая",
+                "options": [
+                    {"text": "Обязательно ставится запятая", "correct": True},
+                    {"text": "Запятая никогда не ставится"},
+                    {"text": "Ставится точка с запятой в каждом случае"},
+                    {"text": "Знаки препинания запрещены"}
+                ]
+            }
+        ],
+        "grammar-b2-11": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз вводит придаточное предложение цели",
+                "explanation": "Союз kako bi или da вводит целевое придаточное со значением чтобы",
+                "options": [
+                    {"text": "kako bi", "correct": True},
+                    {"text": "jer"},
+                    {"text": "iako"},
+                    {"text": "dok"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз вводит придаточное предложение причины",
+                "explanation": "Союз jer вводит прямое обоснование причины почему",
+                "options": [
+                    {"text": "jer", "correct": True},
+                    {"text": "mada"},
+                    {"text": "čim"},
+                    {"text": "kao da"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте уступительный союз хотя в предложение",
+                "explanation": "Союз iako обозначает уступку вопреки факту",
+                "context": "Izašli smo u šetnju ___ je padala kiša.",
+                "answer": "iako",
+                "acceptedAnswers": ["iako", "mada"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое значение имеет придаточное с союзом čim",
+                "explanation": "Союз čim выражает немедленное временное действие как только",
+                "options": [
+                    {"text": "Временное значение как только", "correct": True},
+                    {"text": "Причинное значение потому что"},
+                    {"text": "Целевое значение чтобы"},
+                    {"text": "Сравнительное значение будто"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой союз выражает следствие в предложении",
+                "explanation": "Союз tako da выражает результат или следствие предыдущего действия",
+                "options": [
+                    {"text": "tako da", "correct": True},
+                    {"text": "dokle god"},
+                    {"text": "pre nego"},
+                    {"text": "kao što"}
+                ]
+            }
+        ],
+        "grammar-b2-12": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Что такое эллипсис в сербском синтаксисе",
+                "explanation": "Эллипсис это намеренный пропуск понятного из контекста элемента предложения",
+                "options": [
+                    {"text": "Пропуск понятного из контекста слова", "correct": True},
+                    {"text": "Повторение одного и того же корня"},
+                    {"text": "Ошибочное окончание падежа"},
+                    {"text": "Перенос ударения на предлог"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой элемент чаще всего опускается эллиптически в живой сербской речи",
+                "explanation": "Личные местоимения в роли подлежащего регулярно опускаются так как лицо ясно из окончания глагола",
+                "options": [
+                    {"text": "Личные местоимения подлежащие", "correct": True},
+                    {"text": "Все предлоги"},
+                    {"text": "Корни глаголов"},
+                    {"text": "Артикли которых нет"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Восстановите краткую эллиптическую реплику согласия",
+                "explanation": "Фраза Naravno часто используется как самостоятельный эллиптический ответ",
+                "context": "Dolaziš li sutra? ___!",
+                "answer": "Naravno",
+                "acceptedAnswers": ["Naravno", "naravno"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что такое плеоназм в стилистике речи",
+                "explanation": "Плеоназм это избыточное употребление слов дублирующих один и тот же смысл",
+                "options": [
+                    {"text": "Смысловая избыточность и дублирование", "correct": True},
+                    {"text": "Полный пропуск глагола"},
+                    {"text": "Использование редких архаизмов"},
+                    {"text": "Неправильный порядок слов"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой пример иллюстрирует плеонастическое выражение",
+                "explanation": "Выражение mala kućica содержит смысловой повтор так как суффикс уже обозначает маленький размер",
+                "options": [
+                    {"text": "mala kućica", "correct": True},
+                    {"text": "veliki grad"},
+                    {"text": "dobar prijatelj"},
+                    {"text": "nova knjiga"}
+                ]
+            }
+        ],
+        "grammar-b2-13": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое значение имеет приставка у в глаголе ući",
+                "explanation": "Приставка u обозначает движение внутрь пространства",
+                "options": [
+                    {"text": "Движение внутрь", "correct": True},
+                    {"text": "Движение наружу"},
+                    {"text": "Движение мимо"},
+                    {"text": "Движение вокруг"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какой глагол означает «выйти из помещения»",
+                "explanation": "Глагол izaći с приставкой iz означает движение наружу",
+                "options": [
+                    {"text": "izaći", "correct": True},
+                    {"text": "ući"},
+                    {"text": "prići"},
+                    {"text": "proći"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте глагол со значением приблизиться к кому-то",
+                "explanation": "Глагол prići с приставкой pri означает подойти вплотную",
+                "context": "On je polako ___ stolu.",
+                "answer": "prišao",
+                "acceptedAnswers": ["prišao", "prisao"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Что означает глагол preći",
+                "explanation": "Глагол preći с приставкой pre означает пересечь пространство или перейти через улицу",
+                "options": [
+                    {"text": "Перейти через препятствие или улицу", "correct": True},
+                    {"text": "Остановиться перед домом"},
+                    {"text": "Войти в закрытую дверь"},
+                    {"text": "Уйти в неизвестном направлении"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое направление выражает приставка от в глаголе otići",
+                "explanation": "Приставка od обозначает удаление от исходной точки",
+                "options": [
+                    {"text": "Удаление от исходного места", "correct": True},
+                    {"text": "Приближение к цели"},
+                    {"text": "Движение сквозь предмет"},
+                    {"text": "Возвращение назад"}
+                ]
+            }
+        ],
+        "grammar-b2-14": [
+            {
+                "type": "multiple_choice",
+                "prompt": "Как согласуется сказуемое если подлежащее выражено собирательным словом deca",
+                "explanation": "Слово deca грамматически согласуется с формой среднего рода множественного числа su se igrala или женского рода единственного числа",
+                "options": [
+                    {"text": "Deca su se igrala", "correct": True},
+                    {"text": "Deca su se igrali"},
+                    {"text": "Deca se igrao"},
+                    {"text": "Deca je se igrali"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое согласование выбирается если в подлежащем соединены существительные мужского и женского рода",
+                "explanation": "При смешанном составе рода сказуемое ставится в форму мужского рода множественного числа",
+                "options": [
+                    {"text": "Мужской род множественного числа", "correct": True},
+                    {"text": "Женский род множественного числа"},
+                    {"text": "Средний род единственного числа"},
+                    {"text": "Род последнего слова в списке"}
+                ]
+            },
+            {
+                "type": "fill_blank",
+                "prompt": "Вставьте форму связки для согласования со смешанным подлежащим",
+                "explanation": "Существительные мужского и женского рода требуют мужского рода множественного числа bili",
+                "context": "Marko i Ana su ___ na koncertu.",
+                "answer": "bili",
+                "acceptedAnswers": ["bili"]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Как согласуется сказуемое с числительным pet и существительным в генитиве",
+                "explanation": "Конструкции с пять и выше требуют среднего рода единственного числа je došlo",
+                "options": [
+                    {"text": "Došlo je pet studenata", "correct": True},
+                    {"text": "Došli su pet studenata"},
+                    {"text": "Došla je pet studenata"},
+                    {"text": "Došao je pet studenata"}
+                ]
+            },
+            {
+                "type": "multiple_choice",
+                "prompt": "Какое правило действует для числительных два три четыре",
+                "explanation": "Для числительных dva, tri, četiri мужского рода сказуемое принимает форму su došla или su došli по паукальному согласованию",
+                "options": [
+                    {"text": "Используется паукальная форма согласия", "correct": True},
+                    {"text": "Используется строго единственное число женского рода"},
+                    {"text": "Сказуемое не согласуется вообще"},
+                    {"text": "Глагол всегда ставится в инфинитив"}
+                ]
+            }
+        ]
+    }
+}
+
+def main():
+    target = Path("tools/data/trainer_grammar_practice.json")
+    target.write_text(json.dumps(PRACTICE_DATA, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Записано {len(PRACTICE_DATA['topics'])} тем в {target}")
+
+if __name__ == "__main__":
+    main()

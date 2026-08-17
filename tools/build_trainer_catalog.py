@@ -18,7 +18,9 @@ import uuid
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "tools" / "data" / "roadmap_grammar.tsv"
 PRACTICE_SOURCE = ROOT / "tools" / "data" / "trainer_practice.json"
+GRAMMAR_PRACTICE_SOURCE = ROOT / "tools" / "data" / "trainer_grammar_practice.json"
 ROADMAP_OUTPUT = (
+
     ROOT / "server" / "internal" / "store" / "migrations"
     / "0032_roadmap_seed_practice.sql"
 )
@@ -200,7 +202,65 @@ def practice_exercise(
     return base
 
 
+def grammar_practice_exercise(
+    topic: dict[str, object], raw: dict[str, object], index: int
+) -> dict[str, object]:
+    exercise_id = f"trainer-{topic['id']}-pr{index:02d}"
+    level = str(topic["level"])
+    difficulty = {"A1": 1, "A2": 2, "B1": 3, "B2": 4}.get(level, 2)
+    base: dict[str, object] = {
+        "id": exercise_id,
+        "unitId": f"trainer_grammar_{level.lower()}",
+        "skillId": str(topic["id"]),
+        "lessonId": f"{topic['id']}-lesson",
+        "learningObjectiveIds": [f"{topic['id']}-objective"],
+        "difficulty": difficulty,
+        "prompt": raw.get("prompt", ""),
+        "explanation": raw.get("explanation", ""),
+        "hint": None,
+        "instructionLanguage": "ru",
+        "serbianScript": "latin",
+        "contentReviewStatus": "machine_checked",
+        "sourceRef": practice_source(topic, index),
+    }
+
+    if raw["type"] == "multiple_choice":
+        options = [
+            {"id": f"o{o_idx}", "text": opt["text"], "correct": bool(opt.get("correct"))}
+            for o_idx, opt in enumerate(raw["options"], start=1)
+        ]
+        base.update({
+            "type": "multiple_choice",
+            "multi": False,
+            "options": options,
+        })
+        return base
+
+    if raw["type"] == "fill_blank":
+        context = raw.get("context", "")
+        before, _, after = context.partition("___")
+        segments: list[dict[str, str]] = []
+        if before:
+            segments.append({"kind": "text", "text": before})
+        segments.append({"kind": "blank", "id": "b1"})
+        if after:
+            segments.append({"kind": "text", "text": after})
+        base.update({
+            "type": "fill_blank",
+            "segments": segments,
+            "blanks": [{
+                "id": "b1",
+                "acceptedAnswers": raw.get("acceptedAnswers") or [raw.get("answer", "")],
+                "caseSensitive": False,
+            }],
+        })
+        return base
+
+    return base
+
+
 def write_practice_roadmap(topics: list[dict[str, object]]) -> None:
+
     positions: dict[tuple[str, str], int] = {}
     values: list[str] = []
     for topic in topics:
@@ -265,6 +325,15 @@ def main() -> int:
     for row in rows:
         summaries_by_level.setdefault(row["level"], []).append(row["summary"])
 
+    grammar_practice = {}
+    if GRAMMAR_PRACTICE_SOURCE.exists():
+        try:
+            grammar_practice = json.loads(
+                GRAMMAR_PRACTICE_SOURCE.read_text(encoding="utf-8")
+            ).get("topics", {})
+        except Exception:
+            grammar_practice = {}
+
     positions: dict[str, int] = {}
     topics: list[dict[str, object]] = []
     for row in rows:
@@ -272,8 +341,9 @@ def main() -> int:
         positions[level] = positions.get(level, 0) + 1
         position = positions[level]
         other = [text for text in summaries_by_level[level] if text != summary]
+        topic_id = f"grammar-{level.lower()}-{position:02d}"
         topic: dict[str, object] = {
-            "id": f"grammar-{level.lower()}-{position:02d}",
+            "id": topic_id,
             "domain": "grammar",
             "level": level,
             "title": title,
@@ -286,11 +356,16 @@ def main() -> int:
             "supplementalExercises": [],
         }
         if level in {"A1", "A2", "B1", "B2"}:
-            topic["supplementalExercises"] = [
+            exercises = [
                 concept_exercise(level, position, title, summary,
                                  other[position:] + other[:position])
             ]
+            if topic_id in grammar_practice:
+                for pr_idx, pr_raw in enumerate(grammar_practice[topic_id], start=1):
+                    exercises.append(grammar_practice_exercise(topic, pr_raw, pr_idx))
+            topic["supplementalExercises"] = exercises
         topics.append(topic)
+
 
     practice = json.loads(PRACTICE_SOURCE.read_text(encoding="utf-8"))
     practice_topics = practice.get("topics", [])
