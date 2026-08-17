@@ -62,10 +62,21 @@ jobs:
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
-          if grep -aqrF -e "$MAPTILER_KEY" build/macos/Build/Products/Release/Citavuk.app; then
-            echo "ключ на месте"
+          # -R, а не -r: код Dart лежит в App.framework, а тот собран из
+          # симлинков, внутрь которых -r не заходит.
+          #
+          # Результат в переменную, а не через -q: под `set -e` неудачный grep
+          # оборвал бы шаг молча, и вместо объяснения мы получили бы голый
+          # ненулевой код возврата.
+          found=$(grep -aRlF -e "$MAPTILER_KEY" \
+            build/macos/Build/Products/Release/ 2>/dev/null | head -n 3 || true)
+          if [ -n "$found" ]; then
+            echo "ключ на месте:"
+            echo "$found"
           else
             echo "::error::В снапшоте macOS нет ключа карты — define потерялся."
+            echo "искали здесь:"
+            find build/macos/Build/Products/Release -maxdepth 5 | head -n 40
             exit 1
           fi
 
