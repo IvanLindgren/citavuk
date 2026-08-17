@@ -7,6 +7,7 @@ import {
   CARD_COLUMNS,
   CARD_ROWS,
   cardPages,
+  printableRows,
   type ExportRow,
 } from '../lib/vocabExport';
 
@@ -29,7 +30,11 @@ export function VocabPrintSheet({
   title: string;
   onClose: () => void;
 }) {
-  const pages = cardPages(rows);
+  // Фразы отбираются здесь, а не у вызывающего: «что печатаем» — свойство
+  // бумаги, а не того экрана, с которого печать позвали.
+  const cards = printableRows(rows);
+  const skipped = rows.length - cards.length;
+  const pages = cardPages(cards);
 
   // Escape закрывает: слой во весь экран без выхода по клавиатуре — ловушка.
   useEffect(() => {
@@ -52,7 +57,7 @@ export function VocabPrintSheet({
           <div>
             <h2 className="text-2xl">Карточки на печать</h2>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              {rows.length} шт. · {pages.length}{' '}
+              {cards.length} шт. · {pages.length}{' '}
               {pages.length === 1 ? 'лист' : 'листа'} · {CARDS_PER_PAGE} на лист
             </p>
           </div>
@@ -69,6 +74,14 @@ export function VocabPrintSheet({
           разложены зеркально, и перевод встанет на своё слово. Односторонняя
           печать тоже годится: тогда листы с переводами идут отдельно. Чтобы
           получить PDF, в диалоге печати выберите «Сохранить как PDF».
+          {skipped > 0 && (
+            <>
+              {' '}
+              Фраз в этой выборке {skipped} — на карточки они не пошли: лицевая
+              сторона выдала бы ответ раньше, чем её перевернут. Фразы
+              собираются из слов в повторении и целиком уходят в таблицу.
+            </>
+          )}
         </div>
       </div>
 
@@ -112,30 +125,57 @@ function Sheet({
           <div key={index} className="vocab-card">
             {card && side === 'front' && (
               <>
-                <div className="vocab-card-word" lang="sr">
+                <div
+                  className={`vocab-card-word${card.word.length > 14 ? ' is-long' : ''}`}
+                  lang="sr"
+                >
                   {card.word}
                 </div>
+                <Ornament />
                 {card.tags.length > 0 && (
                   <div className="vocab-card-tags">
-                    {card.tags.map((tag) => `#${tag}`).join(' ')}
+                    {/* Меток на карточке не больше двух: третья строка
+                        подписей отъедает место у самого слова. */}
+                    {card.tags.slice(0, 2).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
                   </div>
                 )}
               </>
             )}
             {card && side === 'back' && (
               <>
-                <div className="vocab-card-translation">{card.translation}</div>
+                <div
+                  className={`vocab-card-translation${
+                    card.translation.length > 26 ? ' is-long' : ''
+                  }`}
+                >
+                  {card.translation}
+                </div>
                 {card.context && (
-                  <div className="vocab-card-context" lang="sr">
-                    {card.context}
-                  </div>
+                  <>
+                    <Ornament />
+                    <div className="vocab-card-context" lang="sr">
+                      {card.context}
+                    </div>
+                  </>
                 )}
+                <div className="vocab-card-mark">читавук</div>
               </>
             )}
           </div>
         ))}
       </div>
     </>
+  );
+}
+
+/** Черта с ромбом посередине — та же, что делит разделы на сайте. */
+function Ornament() {
+  return (
+    <div className="vocab-card-rule" aria-hidden="true">
+      <span />
+    </div>
   );
 }
 
@@ -159,23 +199,103 @@ const PRINT_CSS = `
   color: #2b2118;
 }
 .vocab-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2mm;
-  padding: 4mm;
+  padding: 5mm 4mm 6mm;
   text-align: center;
   overflow: hidden;
   /* Пунктир по всем сторонам: соседние карточки делят одну линию реза, и
      сплошная рамка удвоила бы её толщину на каждом стыке. */
-  border: 0.2mm dashed #b9ae99;
+  border: 0.2mm dashed #cdc2ab;
   margin: -0.1mm;
 }
-.vocab-card-word { font-size: 13pt; font-weight: 700; line-height: 1.25; }
-.vocab-card-translation { font-size: 12pt; line-height: 1.3; }
-.vocab-card-tags { font-size: 7pt; color: #8a7f6c; }
-.vocab-card-context { font-size: 7.5pt; color: #6b6152; line-height: 1.3; }
+
+/* Заливки в печати по умолчанию не выводятся — «фоновая графика» в диалоге
+   выключена, и полагаться на неё нельзя. Поэтому всё, что рисует линии и
+   ромб, сделано рамками: рамки печатаются всегда. */
+.vocab-card-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4mm;
+  width: 58%;
+  margin: 2.4mm 0;
+}
+.vocab-card-rule::before,
+.vocab-card-rule::after {
+  content: '';
+  flex: 1;
+  border-top: 0.15mm solid #d3c9b4;
+}
+.vocab-card-rule span {
+  width: 1.1mm;
+  height: 1.1mm;
+  border: 0.32mm solid #bfb298;
+  transform: rotate(45deg);
+}
+
+.vocab-card-word {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 15pt;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+/* Длинное слово тем же кеглем разъезжается на четыре строки и вылезает за
+   линию реза. Ступенька одна: подбирать размер точнее нечем — ширину буквы в
+   миллиметрах CSS не знает. */
+.vocab-card-word.is-long { font-size: 11.5pt; }
+
+/* Метки идут сразу под чертой, а не прижаты к низу: слово, черта и подпись
+   читаются одним столбиком, а прижатая к краю подпись оставляла бы посреди
+   карточки пустое поле в треть высоты. */
+.vocab-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2mm;
+}
+.vocab-card-tags span {
+  padding: 0.5mm 1.6mm;
+  border: 0.15mm solid #ded5c3;
+  border-radius: 1.2mm;
+  font-size: 6pt;
+  line-height: 1.5;
+  color: #8a7f6c;
+}
+
+.vocab-card-translation {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 12.5pt;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.vocab-card-translation.is-long { font-size: 9.5pt; }
+
+.vocab-card-context {
+  max-height: 14mm;
+  overflow: hidden;
+  font-size: 7pt;
+  font-style: italic;
+  line-height: 1.35;
+  color: #6b6152;
+}
+/* Сербские кавычки: пример — сербская фраза, и русские «ёлочки» на ней
+   смотрелись бы чужой пунктуацией. */
+.vocab-card-context::before { content: '„'; }
+.vocab-card-context::after { content: '“'; }
+
+.vocab-card-mark {
+  position: absolute;
+  bottom: 2.5mm;
+  font-size: 5pt;
+  letter-spacing: 0.6mm;
+  text-transform: uppercase;
+  color: #d8cfbd;
+}
 
 @media screen {
   .vocab-sheet {
