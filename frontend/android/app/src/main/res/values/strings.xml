@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="widget_daily_title">На каждый день</string>
+    <!-- Надпись в самом виджете. Короче названия в списке виджетов: рядом с ней
+         стоит плашка серии, и полное название пришлось бы обрезать. -->
+    <string name="widget_daily_header">Слова дня</string>
     <string name="widget_daily_description">Слова дня, что повторено сегодня и что пора вспомнить</string>
+    <string name="widget_compact_title">Читавук: серия</string>
+    <string name="widget_compact_description">Читавук, серия дней и слово дня — на две клетки</string>
 </resources>

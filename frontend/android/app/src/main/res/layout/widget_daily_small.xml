@@ -13,63 +13,99 @@
     android:padding="12dp"
     android:id="@+id/widget_root">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@drawable/widget_garland_tile"
+        android:contentDescription="@null" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/citavuk_widget"
             android:contentDescription="@string/widget_daily_title" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:text="@string/widget_daily_title"
-            android:textAllCaps="true"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.06"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/widget_accent" />
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/widget_streak"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/widget_chip"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:textColor="@color/widget_ink" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/widget_daily_header"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/widget_accent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/widget_chip"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/widget_stove"
+                        android:contentDescription="@null" />
+                    <TextView
+                        android:id="@+id/widget_streak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:maxLines="1"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/widget_ink" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/widget_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="1dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/widget_ink" />
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/widget_headline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:textColor="@color/widget_ink" />
 
     <ProgressBar
         android:id="@+id/widget_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="9dp"
         android:max="100"
         android:progressDrawable="@drawable/widget_progress" />
 
@@ -77,7 +113,7 @@
         android:id="@+id/widget_stats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="6dp"
         android:maxLines="1"
         android:ellipsize="end"
         android:textSize="11sp"
@@ -97,23 +133,35 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp">
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
             <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_0"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
                 android:layout_marginStart="6dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="12sp"
-                android:textColor="@color/widget_ink" />
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,23 +170,35 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp">
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
             <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_1"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
                 android:layout_marginStart="6dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="12sp"
-                android:textColor="@color/widget_ink" />
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,23 +207,35 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp">
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
             <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_2"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
                 android:layout_marginStart="6dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="12sp"
-                android:textColor="@color/widget_ink" />
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Виджет «На каждый день»: слова дня, что повторено и что пора вспомнить.
+<!-- Виджет «На каждый день»: Читавук, гирлянда, слова дня и что пора
+     вспомнить.
 
      Разметка статичная: RemoteViews не умеет создавать строки на ходу, поэтому
-     шесть строк слов описаны явно, а лишние провайдер прячет. -->
+     шесть строк слов описаны явно, а лишние провайдер прячет.
+
+     Ни одна подпись не может налезть на соседнюю: в каждой строке ровно один
+     тянущийся элемент (layout_weight), остальные меряются по содержимому, а
+     длинный текст обрезается многоточием. Слово и перевод — разные TextView:
+     сербское слово должно читаться первым, а не теряться в сплошной строке.
+
+     Огонёк серии и звёздочки — нарисованные картинки, а не символы шрифта:
+     emoji на разных прошивках выглядят по-разному, а часть и вовсе рисуется
+     пустым квадратом. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,59 +21,99 @@
     android:padding="14dp"
     android:id="@+id/widget_root">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:background="@drawable/widget_garland_tile"
+        android:contentDescription="@null" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:src="@drawable/citavuk_widget"
             android:contentDescription="@string/widget_daily_title" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="@string/widget_daily_title"
-            android:textAllCaps="true"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.08"
-            android:textColor="@color/widget_accent" />
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/widget_streak"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/widget_chip"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:textColor="@color/widget_ink" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/widget_daily_header"
+                    android:textAllCaps="true"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/widget_accent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/widget_chip"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/widget_stove"
+                        android:contentDescription="@null" />
+                    <TextView
+                        android:id="@+id/widget_streak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:maxLines="1"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/widget_ink" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/widget_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="1dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/widget_ink" />
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/widget_headline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="@color/widget_ink" />
 
     <ProgressBar
         android:id="@+id/widget_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginTop="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="9dp"
         android:max="100"
         android:progressDrawable="@drawable/widget_progress" />
 
@@ -72,6 +122,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="12sp"
         android:textColor="@color/widget_ink_soft" />
 
@@ -80,7 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -89,13 +141,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
                 android:id="@+id/widget_word_dot_0"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_0"
@@ -105,8 +157,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,12 +178,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_1"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_1"
@@ -130,8 +194,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -140,12 +215,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_2"
@@ -155,8 +231,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -165,12 +252,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_3"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_3"
@@ -180,8 +268,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,12 +289,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_4"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_4"
@@ -205,8 +305,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
 
         <LinearLayout
@@ -215,12 +326,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
             <ImageView
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@drawable/widget_word_dot"
+                android:id="@+id/widget_word_dot_5"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/widget_dot"
                 android:contentDescription="@null" />
             <TextView
                 android:id="@+id/widget_word_5"
@@ -230,8 +342,19 @@
                 android:layout_marginStart="8dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/widget_ink" />
+            <TextView
+                android:id="@+id/widget_word_tr_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13.5sp"
+                android:textColor="@color/widget_ink_soft" />
         </LinearLayout>
     </LinearLayout>
 
@@ -239,7 +362,7 @@
         android:id="@+id/widget_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:background="@color/widget_line" />
 
     <TextView

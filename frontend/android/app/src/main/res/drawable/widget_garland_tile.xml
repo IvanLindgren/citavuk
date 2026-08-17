@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Гирлянда со звёздами, повторяющаяся по горизонтали.
+
+     Плитка нарисована так, что нить на левом и правом краю на одной высоте
+     (tools/widget_assets.py), поэтому шва на стыке не видно, а виджет любой
+     ширины выглядит одинаково. -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/widget_garland"
+    android:tileMode="repeat"
+    android:gravity="top|left" />
