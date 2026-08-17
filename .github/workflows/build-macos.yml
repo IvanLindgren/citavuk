@@ -1,12 +1,11 @@
 name: Build macOS
 
+# Только по кнопке. Сборка идёт на платном macos-раннере и красит main в
+# красный из-за проверки ключа, которая на этой платформе пока не разобрана
+# (см. задачу про пересборку macOS). Держать её на каждом пуше во frontend
+# значит платить за минуты и терять сигнал: красный main перестают читать.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/build-macos.yml'
 
 permissions:
   contents: write
