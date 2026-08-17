@@ -149,6 +149,16 @@ type Config struct {
 	FormHintAIURL       string
 	FormHintAIReasoning string
 
+	// PhotoScan* — распознавание сербского текста со снимка: объявление,
+	// вывеска, слова, выписанные в тетрадь. Модель обязана быть
+	// мультимодальной: выделенной OCR-модели у Polza AI нет, а классические
+	// распознаватели путают ć, č, đ, š, ž и не берут рукописное. Провайдера
+	// можно сменить тремя переменными, если протокол OpenAI-совместимый.
+	// Пустой ключ просто прячет съёмку в приложении.
+	PhotoScanKey   string
+	PhotoScanModel string
+	PhotoScanURL   string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -252,7 +262,17 @@ func Load(envPath string) (*Config, error) {
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FormHintAIReasoning: envOr("CITAVUK_FORM_HINT_AI_REASONING", "low"),
-		FeedAIKey:             firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
+		PhotoScanKey: firstEnv(
+			"CITAVUK_PHOTO_SCAN_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		PhotoScanModel: envOr(
+			"CITAVUK_PHOTO_SCAN_MODEL", "google/gemini-3.7-flash",
+		),
+		PhotoScanURL: envOr(
+			"CITAVUK_PHOTO_SCAN_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
 		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-26b-a4b-it"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",

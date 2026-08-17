@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart' show MediaType;
 
 /// Ошибка обращения к серверу Citavuk.
 ///
@@ -60,7 +61,9 @@ class ApiClient {
 
   /// [extra] — заголовки поверх обычных. Нужны там, где сервер узнаёт не
   /// аккаунт, а участника: подпись гостя в комнате матча.
-  Map<String, String> _headers({bool json = true, Map<String, String>? extra}) => {
+  Map<String, String> _headers(
+          {bool json = true, Map<String, String>? extra}) =>
+      {
         if (json) 'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
         if (token != null && token!.isNotEmpty)
@@ -186,6 +189,34 @@ class ApiClient {
       debugPrint('API ${response.statusCode} $code: $message');
     }
     return ApiException(message, status: response.statusCode, code: code);
+  }
+
+  /// Отправляет файл полем формы.
+  ///
+  /// Отдельно от [post], потому что тот кодирует тело в JSON: гнать мегабайты
+  /// снимка через base64 значит раздуть их на треть и заставить сервер
+  /// раскодировать всю картинку в память ради того же самого.
+  Future<dynamic> postFile(
+    String path, {
+    required String field,
+    required Uint8List bytes,
+    required String filename,
+    required String mime,
+    Duration? timeout,
+  }) async {
+    final request = http.MultipartRequest('POST', _uri(path))
+      ..headers.addAll(_headers(json: false))
+      ..files.add(http.MultipartFile.fromBytes(
+        field,
+        bytes,
+        filename: filename,
+        contentType: MediaType.parse(mime),
+      ));
+
+    return _send(
+      () async => http.Response.fromStream(await request.send()),
+      timeout: timeout ?? _uploadTimeout,
+    );
   }
 
   /// Загружает текст книги. Отдельный метод из-за увеличенного таймаута.

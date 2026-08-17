@@ -16,6 +16,12 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>srbski_read</string>
+	<!-- Съёмка текста: объявление, вывеска, тетрадь. Без этих строк iOS
+	     закрывает приложение при первом же обращении к камере. -->
+	<key>NSCameraUsageDescription</key>
+	<string>Камера нужна, чтобы снять сербский текст — объявление, вывеску или страницу тетради — и завести из него книгу.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Доступ к фотографиям нужен, чтобы взять уже сделанный снимок сербского текста и завести из него книгу.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
