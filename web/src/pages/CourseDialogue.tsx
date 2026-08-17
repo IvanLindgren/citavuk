@@ -1,9 +1,14 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 
-import { ttsAudioUrl } from '../api/listening';
-import { WordReader } from '../components/WordReader';
+import {
+  CHOICE_BAR_SPACE,
+  DialogueBubble,
+  DialogueChoiceBar,
+  useDialogueSpeech,
+  type DialogueFace,
+  type DialogueLine,
+} from '../components/DialogueStage';
 import { Button, Spinner } from '../components/ui';
 import {
   loadCourse,
@@ -40,12 +45,7 @@ interface Dialogue {
   nodes: DialogueNode[];
 }
 
-interface DialogueMessage {
-  key: string;
-  speaker: string;
-  text: string;
-  nodeId?: string;
-}
+
 
 export function CourseDialogue() {
   const { id = 'drinkit' } = useParams();
@@ -55,8 +55,7 @@ export function CourseDialogue() {
   const [dialogue, setDialogue] = useState<Dialogue | null>(null);
   const [progress, setProgress] = useState<DialogueProgress | null>(null);
   const [error, setError] = useState('');
-  const [speakingKey, setSpeakingKey] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { speakingKey, speak, stop, toggle } = useDialogueSpeech();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useSeo({
@@ -100,9 +99,9 @@ export function CourseDialogue() {
       });
     return () => {
       active = false;
-      stopAudio();
+      stop();
     };
-  }, [account, id]);
+  }, [account, id, stop]);
 
   const history = useMemo(
     () => buildHistory(dialogue, progress?.choices ?? []),
@@ -126,32 +125,6 @@ export function CourseDialogue() {
     return () => window.clearTimeout(timer);
   }, [history.length, reduceMotion]);
 
-  function stopAudio() {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.src = '';
-    }
-    audioRef.current = null;
-    setSpeakingKey(null);
-  }
-
-  async function speak(text: string, key: string): Promise<void> {
-    stopAudio();
-    const audio = new Audio(ttsAudioUrl(text));
-    audioRef.current = audio;
-    setSpeakingKey(key);
-    await new Promise<void>((resolve) => {
-      audio.onended = () => resolve();
-      audio.onerror = () => resolve();
-      void audio.play().catch(() => resolve());
-    });
-    if (audioRef.current === audio) {
-      audioRef.current = null;
-      setSpeakingKey(null);
-    }
-  }
-
   async function choose(choice: DialogueChoice) {
     if (!bundle || !dialogue) return;
     const nextNode = dialogue.nodes.find((item) => item.id === choice.next);
@@ -173,13 +146,15 @@ export function CourseDialogue() {
 
     // Нажатие пользователя даёт браузеру право запустить звук. Сначала слышна
     // выбранная реплика Читавука, затем ответ собеседницы или рассказчика.
-    await speak(choice.label, `choice-${choice.id}`);
-    await speak(nextNode.text, `node-${nextNode.id}`);
+    await speak([
+      { key: `choice-${choice.id}`, text: choice.label },
+      { key: `node-${nextNode.id}`, text: nextNode.text },
+    ]);
   }
 
   function restart() {
     if (!bundle || !dialogue) return;
-    stopAudio();
+    stop();
     const record: DialogueProgress = {
       dialogueId: dialogue.id,
       status: 'inProgress',
@@ -217,7 +192,7 @@ export function CourseDialogue() {
   return (
     <main
       className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-3 py-5 sm:px-5 sm:py-8"
-      style={{ paddingBottom: hasChoices ? 'min(46dvh, 22rem)' : undefined }}
+      style={{ paddingBottom: hasChoices ? CHOICE_BAR_SPACE : undefined }}
     >
       <div className="mx-auto max-w-3xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -261,15 +236,11 @@ export function CourseDialogue() {
           {history.map((message, index) => (
             <DialogueBubble
               key={message.key}
-              message={message}
+              line={message}
               index={index}
               reducedMotion={Boolean(reduceMotion)}
               speaking={speakingKey === message.key}
-              onSpeak={() =>
-                speakingKey === message.key
-                  ? stopAudio()
-                  : void speak(message.text, message.key)
-              }
+              onSpeak={() => toggle(message)}
             />
           ))}
           <div ref={bottomRef} />
@@ -296,147 +267,49 @@ export function CourseDialogue() {
       </div>
 
       {hasChoices && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--line)] bg-[var(--bg)]/95 px-3 pt-3 shadow-[0_-8px_30px_rgba(35,24,13,0.12)] backdrop-blur-md sm:px-5 sm:pt-4">
-          <div
-            className="mx-auto max-h-[42dvh] max-w-3xl overflow-y-auto"
-            style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
-          >
-            <p className="mb-2 text-center text-xs font-bold uppercase text-[var(--text-muted)]">
-              Выберите ответ Читавука
-            </p>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {(node.choices ?? []).map((choice, index) => (
-                <motion.button
-                  key={choice.id}
-                  type="button"
-                  onClick={() => void choose(choice)}
-                  whileTap={{ y: 2 }}
-                  className="flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-3 text-left font-semibold shadow-[0_3px_0_0_var(--line)] transition-colors hover:border-[var(--accent)]"
-                >
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-bold text-white">
-                    {index + 1}
-                  </span>
-                  <span>{choice.label}</span>
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <DialogueChoiceBar
+          title="Выберите ответ Читавука"
+          choices={(node.choices ?? []).map((choice) => ({
+            key: choice.id,
+            label: choice.label,
+          }))}
+          onChoose={(index) => {
+            const choice = (node.choices ?? [])[index];
+            if (choice) void choose(choice);
+          }}
+        />
       )}
     </main>
   );
 }
 
-function DialogueBubble({
-  message,
-  index,
-  reducedMotion,
-  speaking,
-  onSpeak,
-}: {
-  message: DialogueMessage;
-  index: number;
-  reducedMotion: boolean;
-  speaking: boolean;
-  onSpeak: () => void;
-}) {
-  const isNarrator = message.speaker === 'Narator';
-  const isCitavuk = message.speaker === 'Čitavuk';
-
-  if (isNarrator) {
-    return (
-      <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mx-auto max-w-xl rounded-2xl border border-dashed border-[var(--line)] bg-[var(--bg-sunken)] px-5 py-4 text-center"
-      >
-        <div className="mb-2 flex items-center justify-center gap-2 text-xs font-bold uppercase text-[var(--text-muted)]">
-          Рассказчик
-          <SpeakButton speaking={speaking} onClick={onSpeak} />
-        </div>
-        <WordReader
-          paragraphs={[message.text]}
-          paragraphClassName="reader-selectable font-display text-base leading-relaxed sm:text-lg"
-        />
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.article
-      initial={reducedMotion ? false : { opacity: 0, x: isCitavuk ? 18 : -18 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: Math.min(index * 0.025, 0.18) }}
-      className={[
-        'flex items-end gap-2.5 sm:gap-3',
-        isCitavuk ? 'flex-row-reverse' : '',
-      ].join(' ')}
-    >
-      <SpeakerAvatar speaker={message.speaker} />
-      <div
-        className={[
-          'relative max-w-[calc(100%-4.25rem)] rounded-2xl border px-4 py-3 shadow-[var(--shadow-soft)] sm:max-w-[82%] sm:px-5 sm:py-4',
-          isCitavuk
-            ? 'rounded-br-md border-[var(--accent)]/30 bg-[var(--accent)]/9'
-            : 'rounded-bl-md border-[var(--line)] bg-[var(--bg-raised)]',
-        ].join(' ')}
-      >
-        <div className="mb-1.5 flex items-center gap-2">
-          <span className="text-xs font-bold uppercase text-[var(--accent)]">
-            {message.speaker}
-          </span>
-          <SpeakButton speaking={speaking} onClick={onSpeak} />
-        </div>
-        <WordReader
-          paragraphs={[message.text]}
-          paragraphClassName="reader-selectable font-display text-lg leading-relaxed sm:text-xl"
-        />
-      </div>
-    </motion.article>
-  );
-}
-
-function SpeakButton({ speaking, onClick }: { speaking: boolean; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex size-8 items-center justify-center rounded-full text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/12"
-      aria-label={speaking ? 'Остановить озвучку' : 'Озвучить реплику'}
-      title={speaking ? 'Остановить' : 'Прослушать'}
-    >
-      {speaking ? <HiStop aria-hidden="true" /> : <HiSpeakerWave aria-hidden="true" />}
-    </button>
-  );
-}
-
-function SpeakerAvatar({ speaker }: { speaker: string }) {
-  const isCitavuk = speaker === 'Čitavuk';
-  return (
-    <img
-      src={isCitavuk ? '/img/citavuk_icon.webp' : '/img/marja-spilberic.png'}
-      alt={isCitavuk ? 'Читавук' : 'Марья Спилберич'}
-      width={64}
-      height={64}
-      className="size-12 shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] object-cover sm:size-16"
-    />
-  );
+/**
+ * Лицо говорящего.
+ *
+ * Во встроенном диалоге состав участников известен заранее: Читавук, Марья и
+ * рассказчик. Поля `avatar`, как в уроках преподавателей, тут нет — сценарий
+ * лежит в репозитории и меняется вместе с кодом.
+ */
+function faceOf(speaker: string): DialogueFace {
+  if (speaker === 'Čitavuk') return 'citavuk';
+  if (speaker === 'Narator') return 'narrator';
+  return 'marja';
 }
 
 function buildHistory(
   dialogue: Dialogue | null,
   choiceIds: string[],
-): DialogueMessage[] {
+): DialogueLine[] {
   if (!dialogue) return [];
   const start = dialogue.nodes.find((item) => item.id === dialogue.startNodeId);
   if (!start) return [];
   let current: DialogueNode = start;
-  const messages: DialogueMessage[] = [
+  const messages: DialogueLine[] = [
     {
       key: `node-${current.id}`,
       speaker: current.speaker,
       text: current.text,
-      nodeId: current.id,
+      face: faceOf(current.speaker),
     },
   ];
 
@@ -449,6 +322,8 @@ function buildHistory(
       key: `choice-${choice.id}`,
       speaker: 'Čitavuk',
       text: choice.label,
+      face: 'citavuk',
+      own: true,
     });
     const next: DialogueNode | undefined = dialogue.nodes.find(
       (item) => item.id === choice.next,
@@ -459,7 +334,7 @@ function buildHistory(
       key: `node-${current.id}`,
       speaker: current.speaker,
       text: current.text,
-      nodeId: current.id,
+      face: faceOf(current.speaker),
     });
   }
   return messages;

@@ -1,10 +1,13 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/community_lesson.dart';
 import '../services/api_client.dart';
 import '../services/community_lessons_service.dart';
+import '../utils/tokenizer.dart';
 import '../widgets/clickable_serbian_text.dart';
+import '../widgets/dialogue_stage.dart';
 import '../widgets/exercise_player.dart';
 
 enum _LessonStage { theory, practice, dialogue, complete }
@@ -29,12 +32,31 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
   _LessonStage _stage = _LessonStage.theory;
   int _exerciseIndex = 0;
 
+  /// Сказанное в диалоге остаётся на экране: разговор, который нельзя
+  /// перечитать, ничему не учит. Раньше реплика подменялась следующей.
+  final List<DialogueLine> _lines = [];
+  final AudioPlayer _player = AudioPlayer();
+  late final DialogueSpeech _speech = DialogueSpeech(_player);
+  final ScrollController _dialogueScroll = ScrollController();
+
   @override
   void initState() {
     super.initState();
     _lesson = widget.token != null
         ? widget.service.getUnlisted(widget.token!)
         : widget.service.getPublic(widget.slug ?? '');
+  }
+
+  @override
+  void dispose() {
+    _speech.dispose();
+    _player.dispose();
+    _dialogueScroll.dispose();
+    super.dispose();
+  }
+
+  void _redraw() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -79,9 +101,16 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
                   _theoryStage(lesson, theory, exercises, dialogue),
                 _LessonStage.practice =>
                   _practiceStage(lesson, exercises, dialogue),
-                _LessonStage.dialogue => _dialogueStage(dialogue, exercises),
+                _LessonStage.dialogue => _dialogueStage(lesson, dialogue),
                 _LessonStage.complete => _completeStage(exercises),
-              }));
+              }),
+              // Ответы под рукой, а не в конце страницы: разговор из десяти
+              // реплик длиннее экрана, и доскролливать до кнопок каждый раз
+              // незачем.
+              bottomNavigationBar:
+                  _stage == _LessonStage.dialogue && dialogue != null
+                      ? _dialogueBar(dialogue)
+                      : null);
         },
       );
 
@@ -207,38 +236,148 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
   }
 
   Widget _dialogueStage(
-      Map<String, dynamic>? dialogue, List<Map<String, dynamic>> exercises) {
+      CommunityLesson lesson, Map<String, dynamic>? dialogue) {
+    if (dialogue == null) {
+      return const Center(
+          child: Padding(
+              padding: EdgeInsets.all(24), child: Text('Диалог пока пуст.')));
+    }
+    // Первая реплика подставляется при входе в диалог: состояние выводится из
+    // сценария, отдельного шага для этого не нужно.
+    if (_lines.isEmpty) _seedDialogue(dialogue);
+    final over = _dialogueChoices(dialogue).isEmpty;
+
     return ListView(
-        padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
+        controller: _dialogueScroll,
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 20),
         children: [
-          Row(children: [
-            Text('Диалог', style: Theme.of(context).textTheme.headlineSmall),
-            const Spacer(),
-            TextButton(
-                onPressed: () => setState(() {
-                      _stage = exercises.isEmpty
-                          ? _LessonStage.theory
-                          : _LessonStage.practice;
-                      if (exercises.isNotEmpty) {
-                        _exerciseIndex = exercises.length - 1;
-                      }
-                    }),
-                child: const Text('Назад'))
-          ]),
-          const SizedBox(height: 8),
-          if (dialogue == null)
-            const Text('Диалог пока пуст.')
-          else
-            _dialogue(dialogue),
-          const SizedBox(height: 24),
-          Align(
-              alignment: Alignment.centerRight,
-              child: FilledButton.icon(
-                  icon: const Icon(Icons.check),
-                  label: const Text('Завершить урок'),
-                  onPressed: () =>
-                      setState(() => _stage = _LessonStage.complete)))
+          DialogueScene(
+              coverUrl: lesson.coverUrl.isEmpty ? null : lesson.coverUrl,
+              participants: _participants(dialogue)),
+          const SizedBox(height: 16),
+          for (final line in _lines)
+            Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: DialogueBubble(
+                    line: line,
+                    speaking: _speech.speakingKey == line.key,
+                    onSpeak: () => _speech.toggle(line, _redraw),
+                    onWordTap: (token) => _openWord(line.text, token))),
+          if (over) ...[
+            const Divider(height: 26),
+            Row(children: [
+              const Expanded(child: Text('Разговор окончен.')),
+              TextButton.icon(
+                  onPressed: () => setState(() => _seedDialogue(dialogue)),
+                  icon: const Icon(Icons.replay),
+                  label: const Text('Пройти заново'))
+            ])
+          ]
         ]);
+  }
+
+  /// Полоса ответов, а когда разговор окончен — выход из него.
+  Widget _dialogueBar(Map<String, dynamic> dialogue) {
+    final choices = _dialogueChoices(dialogue);
+    if (choices.isEmpty) {
+      return DialogueChoiceBar(
+          labels: const [],
+          onChoose: (_) {},
+          footer: FilledButton.icon(
+              icon: const Icon(Icons.check),
+              label: const Text('Завершить урок'),
+              onPressed: () =>
+                  setState(() => _stage = _LessonStage.complete)));
+    }
+    return DialogueChoiceBar(
+        labels: [for (final choice in choices) '${choice['label']}'],
+        onChoose: (index) => _chooseReply(dialogue, choices[index]));
+  }
+
+  List<Map<String, dynamic>> _dialogueChoices(Map<String, dynamic> dialogue) =>
+      _maps(_dialogueNodeById(dialogue, _dialogueNode)?['choices'])
+          .where((choice) => '${choice['label'] ?? ''}'.isNotEmpty)
+          .toList();
+
+  Map<String, dynamic>? _dialogueNodeById(
+      Map<String, dynamic> dialogue, String? id) {
+    for (final node in _maps(dialogue['nodes'])) {
+      if ('${node['id']}' == id) return node;
+    }
+    return null;
+  }
+
+  void _seedDialogue(Map<String, dynamic> dialogue) {
+    final nodes = _maps(dialogue['nodes']);
+    if (nodes.isEmpty) return;
+    final start = _dialogueNodeById(dialogue, '${dialogue['startId']}') ??
+        nodes.first;
+    _dialogueNode = '${start['id']}';
+    _lines
+      ..clear()
+      ..add(_dialogueLine(start, 0));
+  }
+
+  DialogueLine _dialogueLine(Map<String, dynamic> node, int position) {
+    final speaker = '${node['speaker'] ?? 'Собеседник'}';
+    return DialogueLine(
+        key: 'node-$position-${node['id']}',
+        speaker: speaker,
+        text: '${node['text'] ?? ''}',
+        face: DialogueFace.fromAvatar(
+            node['avatar']?.toString(), speaker));
+  }
+
+  Future<void> _chooseReply(
+      Map<String, dynamic> dialogue, Map<String, dynamic> choice) async {
+    final next = _dialogueNodeById(dialogue, '${choice['nextId']}');
+    // Ответ читателя и ответ на него — одной добавкой: иначе между ними
+    // проскакивает кадр, в котором собеседник ещё молчит.
+    final added = <DialogueLine>[
+      DialogueLine(
+          key: 'own-${_lines.length}',
+          speaker: 'Вы',
+          text: '${choice['label']}',
+          face: DialogueFace.citavuk,
+          own: true),
+      if (next != null) _dialogueLine(next, _lines.length + 1)
+    ];
+    setState(() {
+      _lines.addAll(added);
+      if (next != null) _dialogueNode = '${next['id']}';
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_dialogueScroll.hasClients) return;
+      _dialogueScroll.animateTo(_dialogueScroll.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 320),
+          curve: Curves.easeOutCubic);
+    });
+    await _speech.speak(added, _redraw);
+  }
+
+  /// Кто участвует в разговоре — для сцены над историей.
+  List<({DialogueFace face, String name})> _participants(
+      Map<String, dynamic> dialogue) {
+    final seen = <String, ({DialogueFace face, String name})>{};
+    for (final node in _maps(dialogue['nodes'])) {
+      final name = '${node['speaker'] ?? 'Собеседник'}';
+      seen.putIfAbsent(
+          name,
+          () => (
+                face: DialogueFace.fromAvatar(
+                    node['avatar']?.toString(), name),
+                name: name
+              ));
+    }
+    return seen.values.take(4).toList();
+  }
+
+  void _openWord(String sentence, Token token) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => DialogueWordSheet(sentence: sentence, token: token));
   }
 
   Widget _completeStage(List<Map<String, dynamic>> exercises) {
@@ -381,41 +520,6 @@ class _CommunityLessonScreenState extends State<CommunityLessonScreen> {
     } on ApiException catch (e) {
       return e.message;
     }
-  }
-
-  Widget _dialogue(Map<String, dynamic> dialogue) {
-    final nodes = _maps(dialogue['nodes']);
-    if (nodes.isEmpty) return const Text('Диалог пока пуст.');
-    _dialogueNode ??=
-        dialogue['startId']?.toString() ?? nodes.first['id']?.toString();
-    final node = nodes.cast<Map<String, dynamic>?>().firstWhere(
-        (item) => item?['id']?.toString() == _dialogueNode,
-        orElse: () => nodes.first);
-    final choices = _maps(node?['choices']);
-    return Padding(
-        padding: const EdgeInsets.only(top: 14),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Card(
-              child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(node?['speaker']?.toString() ?? '',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        ClickableSerbianText(node?['text']?.toString() ?? '')
-                      ]))),
-          ...choices.map((choice) => Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: OutlinedButton(
-                  onPressed: () => setState(
-                      () => _dialogueNode = choice['nextId']?.toString()),
-                  child: Text(choice['label']?.toString() ?? 'Продолжить'))))
-        ]));
   }
 
   static List<Map<String, dynamic>> _maps(dynamic value) =>

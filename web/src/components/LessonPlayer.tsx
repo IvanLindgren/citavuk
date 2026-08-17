@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LuArrowLeft,
   LuArrowRight,
@@ -22,6 +23,15 @@ import {
 import { ApiError } from '../api/client';
 import { normalizeAnswer as normalize } from '../lib/answerMatch';
 import { tokenize } from '../lib/tokenize';
+import {
+  CHOICE_BAR_SPACE,
+  DialogueBubble,
+  DialogueChoiceBar,
+  DialogueScene,
+  useDialogueSpeech,
+  type DialogueFace,
+  type DialogueLine,
+} from './DialogueStage';
 import { MarkdownLesson } from './MarkdownLesson';
 import { WordReader } from './WordReader';
 import { Button } from './ui';
@@ -82,7 +92,9 @@ export function LessonPlayer({ lesson, preview = false, previewMode, initialStag
         <div className="flex flex-wrap gap-2 text-xs font-bold uppercase text-[var(--accent)]"><span>{lesson.level}</span><span>·</span><span>{typeLabel(lesson.lessonType)}</span>{lesson.topic && <><span>·</span><span>{lesson.topic}</span></>}</div>
         <h1 className={`mt-3 text-3xl ${stage === 'theory' ? 'sm:text-5xl' : 'sm:text-4xl'}`}>{lesson.title || 'Урок без названия'}</h1>
         {stage === 'theory' && lesson.summary && <p className="mt-4 text-lg leading-8 text-[var(--text-muted)]">{lesson.summary}</p>}
-        <div className="mt-5 flex flex-wrap gap-5 text-sm text-[var(--text-muted)]"><span className="inline-flex items-center gap-1.5"><LuGraduationCap />{lesson.authorName}</span><span className="inline-flex items-center gap-1.5"><LuClock3 />{lesson.estimatedMinutes} минут</span></div>
+        {/* Автор и время — сведения об уроке. Пришедшему за разговором они
+            места не стоят: с ними первая реплика уходила под полосу ответов. */}
+        {!(cameForDialogue && stage === 'dialogue') && <div className="mt-5 flex flex-wrap gap-5 text-sm text-[var(--text-muted)]"><span className="inline-flex items-center gap-1.5"><LuGraduationCap />{lesson.authorName}</span><span className="inline-flex items-center gap-1.5"><LuClock3 />{lesson.estimatedMinutes} минут</span></div>}
       </header>
       {/*
         Теория лежит на том же «листе», что и книга в читалке.
@@ -109,7 +121,7 @@ export function LessonPlayer({ lesson, preview = false, previewMode, initialStag
       </section>}
       {/* Пришедший за диалогом урока не открывал: кнопка «назад» ведёт его в
           начало урока, а не на последнее задание, которого он не видел. */}
-      {content?.dialogue && stage === 'dialogue' && <section className="mt-10 border-t border-[var(--line)] pt-8"><div className="flex items-center justify-between gap-4"><h2 className="text-2xl">Диалог</h2><button type="button" onClick={() => cameForDialogue ? openStage('theory', 0) : openStage(exercises.length > 0 ? 'practice' : 'theory', Math.max(0, exercises.length - 1))} className="text-sm font-semibold text-[var(--accent)]">{cameForDialogue ? 'Открыть урок целиком' : 'Назад'}</button></div><Dialogue nodes={content.dialogue.nodes} startId={content.dialogue.startId} /><div className="mt-8 flex justify-end"><Button onClick={() => openStage('complete')}>{cameForDialogue ? 'Диалог пройден' : 'Завершить урок'}<LuArrowRight /></Button></div></section>}
+      {content?.dialogue && stage === 'dialogue' && <section className={cameForDialogue ? 'mt-6' : 'mt-10 border-t border-[var(--line)] pt-8'}><div className="flex items-center justify-between gap-4"><h2 className="text-2xl">Диалог</h2><button type="button" onClick={() => cameForDialogue ? openStage('theory', 0) : openStage(exercises.length > 0 ? 'practice' : 'theory', Math.max(0, exercises.length - 1))} className="text-sm font-semibold text-[var(--accent)]">{cameForDialogue ? 'Открыть урок целиком' : 'Назад'}</button></div><Dialogue nodes={content.dialogue.nodes} startId={content.dialogue.startId} coverUrl={lesson.coverUrl} /><div className="mt-8 flex justify-end"><Button onClick={() => openStage('complete')}>{cameForDialogue ? 'Диалог пройден' : 'Завершить урок'}<LuArrowRight /></Button></div></section>}
       {stage === 'complete' && <section className="mt-10 border-y border-[var(--line)] py-14 text-center"><LuCheck className="mx-auto size-12 text-emerald-700" /><h2 className="mt-4 text-3xl">{cameForDialogue ? 'Диалог пройден' : 'Урок пройден'}</h2><p className="mt-2 text-[var(--text-muted)]">{cameForDialogue ? 'За диалогом стоит целый урок — теория и задания на ту же тему.' : 'Теория прочитана, практика завершена.'}</p><div className="mt-6 flex flex-wrap justify-center gap-3"><Button variant="secondary" onClick={() => openStage('theory')}>{cameForDialogue ? 'Открыть урок' : 'Повторить теорию'}</Button>{exercises.length > 0 && <Button onClick={() => openStage('practice', 0)}>Пройти практику ещё раз</Button>}</div></section>}
       {!isPreview && <><button type="button" onClick={() => setReportOpen((value) => !value)} className="mt-16 inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--accent)]"><LuFlag />Пожаловаться на урок</button>{reportOpen && <ReportForm lessonId={lesson.id} onDone={() => setReportOpen(false)} />}</>}
     </main>
@@ -294,11 +306,120 @@ function CheckRow({ disabled, checked, correct, compare = false, onCheck, onRese
 
 function ReferenceAnswer({ value }: { value: string }) { return <div className="mt-3 rounded-md bg-[var(--bg-sunken)] p-4"><p className="text-sm font-semibold"><LuLightbulb className="mr-1 inline" />Пример ответа</p><p className="mt-2 whitespace-pre-line">{value}</p></div>; }
 
-export function Dialogue({ nodes, startId }: { nodes: DialogueNode[]; startId: string }) {
+/**
+ * Диалог урока — разговор, а не карточка с текущей репликой.
+ *
+ * Раньше здесь была одна серая рамка: реплика собеседника, под ней кнопки
+ * ответов, и всё это без лиц, голоса и без того, что уже сказано. Разговор,
+ * который нельзя перечитать и в котором не на кого смотреть, проходить незачем.
+ *
+ * Теперь то же, что во встроенном диалоге: портреты, облачка по сторонам,
+ * озвучка каждой реплики и накопленная история. Персонажа берёт поле `avatar` —
+ * оно лежало в данных с самого начала.
+ *
+ * `inline` разводит два места показа. У ученика полоса ответов приклеена к низу
+ * экрана: разговор длиннее экрана, и доскролливать до кнопок каждый раз незачем.
+ * В предпросмотре редактора она встаёт в поток — приклеенная к окну, она
+ * закрывала бы преподавателю сам редактор.
+ */
+export function Dialogue({ nodes, startId, coverUrl, inline = false }: { nodes: DialogueNode[]; startId: string; coverUrl?: string; inline?: boolean }) {
+  const reduceMotion = useReducedMotion();
+  const { speakingKey, speak, toggle, stop } = useDialogueSpeech();
   const byId = useMemo(() => new Map(nodes.map((node) => [node.id, node])), [nodes]);
-  const [current, setCurrent] = useState(startId); const [history, setHistory] = useState<string[]>([]);
-  const node = byId.get(current); if (!node) return <p>Сценарий диалога повреждён.</p>;
-  return <div className="mt-6 max-w-2xl"><div className="rounded-md border border-[var(--line)] bg-[var(--bg-raised)] p-5"><p className="text-sm font-bold text-[var(--accent)]">{node.speaker}</p><div className="mt-3"><WordReader paragraphs={[node.text]} /></div></div><div className="mt-3 grid gap-2">{node.choices?.map((choice) => <button key={`${node.id}-${choice.nextId}`} type="button" onClick={() => { setHistory([...history, current]); setCurrent(choice.nextId); }} className="rounded-md border border-[var(--line)] px-4 py-3 text-left hover:border-[var(--accent)]">{choice.label}</button>)}</div>{history.length > 0 && <button type="button" onClick={() => { setCurrent(startId); setHistory([]); }} className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--text-muted)]"><LuRotateCcw />Начать сначала</button>}</div>;
+  const start = byId.get(startId) ?? nodes[0];
+  const lineOf = (node: DialogueNode, position: number): DialogueLine => ({
+    key: `node-${position}-${node.id}`,
+    speaker: node.speaker || 'Собеседник',
+    text: node.text,
+    face: faceOf(node),
+  });
+
+  const [currentId, setCurrentId] = useState(start?.id ?? '');
+  const [lines, setLines] = useState<DialogueLine[]>(() => (start ? [lineOf(start, 0)] : []));
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (lines.length <= 1) return;
+    bottomRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+  }, [lines.length, reduceMotion]);
+
+  if (!start) return <p>Сценарий диалога повреждён.</p>;
+  const node = byId.get(currentId);
+  const choices = (node?.choices ?? []).filter((choice) => choice.label);
+
+  const choose = (index: number) => {
+    const choice = choices[index];
+    if (!choice) return;
+    const next = byId.get(choice.nextId);
+    const own: DialogueLine = { key: `own-${lines.length}-${choice.nextId}`, speaker: 'Вы', text: choice.label, face: 'citavuk', own: true };
+    // Ответ читателя и ответ на него — одной добавкой: иначе между ними
+    // проскакивает кадр, в котором собеседник ещё молчит.
+    const added = next ? [own, lineOf(next, lines.length + 1)] : [own];
+    setLines([...lines, ...added]);
+    if (next) setCurrentId(next.id);
+    void speak(added.map((line) => ({ key: line.key, text: line.text })));
+  };
+
+  const restart = () => { stop(); setLines([lineOf(start, 0)]); setCurrentId(start.id); };
+  const over = choices.length === 0;
+
+  return (
+    <div className="mt-6" style={inline || over ? undefined : { paddingBottom: CHOICE_BAR_SPACE }}>
+      <DialogueScene coverUrl={coverUrl} participants={participantsOf(nodes)} />
+      <div className="mt-6 space-y-5" aria-label="История диалога">
+        {lines.map((line, index) => (
+          <DialogueBubble
+            key={line.key}
+            line={line}
+            index={index}
+            reducedMotion={Boolean(reduceMotion)}
+            speaking={speakingKey === line.key}
+            onSpeak={() => toggle(line)}
+          />
+        ))}
+        <div ref={bottomRef} />
+      </div>
+      {over ? (
+        <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[var(--line)] pt-5">
+          <p className="text-sm font-semibold text-[var(--text-muted)]">Разговор окончен.</p>
+          <button type="button" onClick={restart} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]"><LuRotateCcw />Пройти заново</button>
+        </div>
+      ) : (
+        <DialogueChoiceBar
+          inline={inline}
+          choices={choices.map((choice, index) => ({ key: `${currentId}-${index}-${choice.nextId}`, label: choice.label }))}
+          onChoose={choose}
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * Персонаж реплики.
+ *
+ * У уроков, написанных до появления выбора персонажа, поля может не быть. Лицо
+ * тогда берётся по имени говорящего — не «какое-нибудь», а устойчиво одно и то
+ * же: два собеседника в таком диалоге получат разные лица и не станут на вид
+ * одним человеком.
+ */
+function faceOf(node: DialogueNode): DialogueFace {
+  const known: DialogueFace[] = ['teacher', 'student', 'woman', 'man'];
+  if (known.includes(node.avatar as DialogueFace)) return node.avatar as DialogueFace;
+  const name = node.speaker ?? '';
+  let sum = 0;
+  for (let index = 0; index < name.length; index += 1) sum += name.charCodeAt(index);
+  return known[sum % known.length] ?? 'man';
+}
+
+/** Кто участвует в разговоре — для сцены над историей. */
+function participantsOf(nodes: DialogueNode[]): Array<{ face: DialogueFace; name: string }> {
+  const seen = new Map<string, { face: DialogueFace; name: string }>();
+  for (const node of nodes) {
+    const name = node.speaker || 'Собеседник';
+    if (!seen.has(name)) seen.set(name, { face: faceOf(node), name });
+  }
+  return [...seen.values()].slice(0, 4);
 }
 
 function ReportForm({ lessonId, onDone }: { lessonId: string; onDone: () => void }) {

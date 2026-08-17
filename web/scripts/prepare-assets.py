@@ -54,6 +54,12 @@ IMAGES = {
     "sluhao_zdravo.png": 420,
     "sluhao_slusa.png": 420,
     "sluhao_savet.png": 420,
+    # Собеседники диалогов. Показываются размером 48–64 CSS-пикселя, поэтому
+    # 128 хватает с запасом, а @2x закрывает плотные экраны.
+    "face_teacher.png": 128,
+    "face_student.png": 128,
+    "face_woman.png": 128,
+    "face_man.png": 128,
 }
 
 

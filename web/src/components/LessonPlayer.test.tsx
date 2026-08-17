@@ -53,6 +53,9 @@ let root: Root;
 beforeEach(() => {
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   vi.stubGlobal('scrollTo', vi.fn());
+  // jsdom не умеет scrollIntoView, браузеры умеют все. Диалог доводит историю
+  // до последней реплики именно им.
+  Element.prototype.scrollIntoView = vi.fn();
   host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
@@ -107,6 +110,103 @@ describe('урок преподавателя', () => {
   it('без диалога начинает с теории, даже если просили диалог', () => {
     act(() => root.render(<LessonPlayer lesson={lesson} initialStage="dialogue" />));
     expect(host.textContent).toContain('Материал урока');
+  });
+});
+
+describe('диалог урока', () => {
+  const talk: Lesson = {
+    ...lesson,
+    coverUrl: 'https://example.com/kafana.jpg',
+    content: {
+      ...lesson.content!,
+      dialogue: {
+        startId: 'd1',
+        nodes: [
+          {
+            id: 'd1',
+            speaker: 'Konobar',
+            avatar: 'man',
+            text: 'Dobro veče!',
+            choices: [
+              { label: 'Dobro veče, molim vas jelovnik.', nextId: 'd2' },
+              { label: 'Zdravo!', nextId: 'd2' },
+            ],
+          },
+          { id: 'd2', speaker: 'Konobar', avatar: 'man', text: 'Odmah stiže.', choices: [] },
+        ],
+      },
+    },
+  };
+
+  const open = (which: Lesson = talk) =>
+    act(() => root.render(<LessonPlayer lesson={which} initialStage="dialogue" />));
+
+  // Сказанное должно оставаться на экране: разговор, который нельзя перечитать,
+  // ничему не учит. Раньше реплика подменялась следующей.
+  it('накапливает разговор, а не подменяет реплику', () => {
+    open();
+    expect(host.textContent).toContain('Dobro veče!');
+
+    click('1Dobro veče, molim vas jelovnik.');
+
+    expect(host.textContent).toContain('Dobro veče!');
+    expect(host.textContent).toContain('Dobro veče, molim vas jelovnik.');
+    expect(host.textContent).toContain('Odmah stiže.');
+    expect(host.textContent).toContain('Разговор окончен');
+  });
+
+  // Поле avatar лежало в данных с самого начала и не показывалось никак.
+  it('показывает лицо собеседника по полю avatar', () => {
+    open();
+    const faces = [...host.querySelectorAll('img')].map((image) => image.getAttribute('src'));
+    expect(faces).toContain('/img/face_man.webp');
+  });
+
+  // Ответ читателя встаёт справе и со своим лицом: иначе не видно, где чья
+  // реплика.
+  it('ответ читателя отмечен отдельным лицом', () => {
+    open();
+    click('1Dobro veče, molim vas jelovnik.');
+    const faces = [...host.querySelectorAll('img')].map((image) => image.getAttribute('src'));
+    expect(faces).toContain('/img/citavuk_icon.webp');
+  });
+
+  it('обложка урока становится сценой разговора', () => {
+    open();
+    const scene = [...host.querySelectorAll('img')].map((image) => image.getAttribute('src'));
+    expect(scene).toContain('https://example.com/kafana.jpg');
+  });
+
+  // У уроков, написанных до появления выбора персонажа, поля avatar нет. Лицо
+  // тогда берётся по имени — устойчиво, чтобы два собеседника не оказались на
+  // вид одним человеком.
+  it('без avatar даёт разным говорящим разные лица', () => {
+    const old = {
+      ...talk,
+      content: {
+        ...talk.content!,
+        dialogue: {
+          startId: 'd1',
+          nodes: [
+            {
+              id: 'd1',
+              speaker: 'Ana',
+              text: 'Zdravo!',
+              choices: [{ label: 'Zdravo.', nextId: 'd2' }],
+            },
+            { id: 'd2', speaker: 'Marko', text: 'Ćao.', choices: [] },
+          ] as never,
+        },
+      },
+    } as Lesson;
+    open(old);
+    click('1Zdravo.');
+    const faces = new Set(
+      [...host.querySelectorAll('img')]
+        .map((image) => image.getAttribute('src') ?? '')
+        .filter((source) => source.startsWith('/img/face_')),
+    );
+    expect(faces.size).toBe(2);
   });
 });
 
