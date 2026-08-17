@@ -37,9 +37,37 @@ jobs:
         working-directory: frontend
         run: flutter analyze lib
 
+      - name: Test
+        working-directory: frontend
+        run: flutter test
+
+      - name: Ключ карты задан
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          if [ -z "$MAPTILER_KEY" ]; then
+            echo "::error::Нет секрета MAPTILER_KEY — Путешествие соберётся" \
+                 "списком мест вместо карты. Задайте секрет репозитория."
+            exit 1
+          fi
+
       - name: Build macOS release
         working-directory: frontend
-        run: flutter build macos --release
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: flutter build macos --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+
+      - name: Ключ карты попал в сборку
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          if grep -aqrF -e "$MAPTILER_KEY" build/macos/Build/Products/Release/Citavuk.app; then
+            echo "ключ на месте"
+          else
+            echo "::error::В снапшоте macOS нет ключа карты — define потерялся."
+            exit 1
+          fi
 
       - name: Package application
         working-directory: frontend
