@@ -61,11 +61,12 @@ class MaterialDocument {
   /// У пособий без привязки к конкретному экзамену года нет.
   final int? year;
 
-  /// test | key | guide | book
+  /// Вид документа: test, key, guide, book, research. Список открытый —
+  /// сборщик каталога добавляет новые, приложение показывает подпись `kind`.
   final String kindId;
   final String kind;
 
-  /// gimnazija | fakultet
+  /// Уровень из `levels` каталога: gimnazija, fakultet, jezik.
   final String level;
   final String levelTitle;
 
