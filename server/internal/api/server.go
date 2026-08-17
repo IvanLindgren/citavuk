@@ -16,6 +16,7 @@ import (
 	"github.com/citavuk/server/internal/formhint"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
+	"github.com/citavuk/server/internal/photoscan"
 	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
 	"github.com/citavuk/server/internal/store"
@@ -51,6 +52,7 @@ type Server struct {
 	definitions     definitionCache
 	formHint        formHinter
 	formHints       formHintCache
+	photoScan       photoScanner
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -60,6 +62,7 @@ type Server struct {
 	hintLimit            *limiter
 	quizLimit            *limiter
 	documentFetchLimit   *limiter
+	photoScanLimit       *limiter
 	// Последние ответы с ошибкой: живой журнал админки. В базе лежат только
 	// аварии, а разобраться в жалобе «у меня не работает» помогают как раз
 	// отказы клиенту.
@@ -160,6 +163,12 @@ func New(
 			cfg.FormHintAIReasoning,
 		),
 		formHints: st,
+		// Текст со снимка: объявление, вывеска, тетрадь — см. photo_handlers.go.
+		photoScan: photoscan.New(
+			cfg.PhotoScanKey,
+			cfg.PhotoScanModel,
+			cfg.PhotoScanURL,
+		),
 
 		// Вход ограничивается жёстче остального: это защита от подбора пароля.
 		authLimit: newLimiter("auth", 10, 5, redisClient),
@@ -182,8 +191,13 @@ func New(
 		// в минуту ручка превращается в средство качать чужие файлы через наш
 		// канал, а машина на VPS общая с почтой и чужими сайтами.
 		documentFetchLimit: newLimiter("document_fetch", 20, 5, redisClient),
-		errors:             newRecentErrors(400),
-		stop:               make(chan struct{}),
+		// Снимок — это мегабайты трафика и поход к платной модели. Тетрадь
+		// снимают страницами подряд, поэтому предел не совсем скупой, но и не
+		// общий: десяток кадров в минуту — это уже быстрее, чем человек
+		// успевает навести телефон.
+		photoScanLimit: newLimiter("photo_scan", 12, 4, redisClient),
+		errors:         newRecentErrors(400),
+		stop:           make(chan struct{}),
 	}
 
 	if cfg.UpstreamURL != "" {
@@ -202,6 +216,7 @@ func New(
 	go s.hintLimit.runCleanup(s.stop)
 	go s.quizLimit.runCleanup(s.stop)
 	go s.documentFetchLimit.runCleanup(s.stop)
+	go s.photoScanLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
 	go s.sweepDuelPeriodically()
 
@@ -337,6 +352,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/daily/settings", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSaveDailySettings)))
 	// Текст пишет модель, поэтому запрос идёт по той же квоте, что тесты.
 	mux.HandleFunc("POST /v1/daily/lesson", s.requireAuth(s.rateLimitIdentity(s.quizLimit, s.handleDailyLesson)))
+
+	// Текст со снимка. Только для вошедших: кадр стоит денег у провайдера, и
+	// анонимная ручка тут — это чужой счёт за чужой OCR.
+	mux.HandleFunc("GET /v1/photo/scan", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePhotoScanAvailable)))
+	mux.HandleFunc("POST /v1/photo/scan", s.requireAuth(s.rateLimitIdentity(s.photoScanLimit, s.handlePhotoScan)))
 	mux.HandleFunc("POST /v1/daily/learn", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyLearn)))
 	mux.HandleFunc("GET /v1/daily/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyProgress)))
 
