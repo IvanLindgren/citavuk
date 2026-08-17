@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/grammar_engine.dart';
+import '../services/phrase_builder.dart';
 import '../services/user_db.dart';
+import '../services/vocab_tags.dart';
 import '../widgets/animated_widgets.dart';
 import '../widgets/shortcuts_sheet.dart';
 import '../widgets/wolf_mascot.dart';
@@ -12,10 +14,23 @@ class FlashcardsScreen extends StatefulWidget {
   final int bookId;
   final String bookTitle;
 
+  /// Готовая очередь вместо «что подошло по сроку в этой книге».
+  ///
+  /// Ею открывается заход по метке из словаря: попросив повторить «#трудное»,
+  /// человек хочет пройти именно эти слова, а не те из них, у которых сегодня
+  /// подошла очередь, — иначе кнопка чаще выдавала бы пустой экран, чем
+  /// работала.
+  final List<Map<String, dynamic>>? cards;
+
+  /// Чем сужен словарь. Показывается в шапке, чтобы заход не выглядел обычным.
+  final String? focusLabel;
+
   const FlashcardsScreen({
     super.key,
     required this.bookId,
     required this.bookTitle,
+    this.cards,
+    this.focusLabel,
   });
 
   @override
@@ -28,6 +43,23 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   bool _revealed = false;
   int _reviewed = 0;
   final _keyboard = FocusNode();
+
+  /// Перемешанные слова фразы и то, что человек уже выложил.
+  List<Tile> _tiles = const [];
+  List<Tile> _picked = const [];
+
+  /// Фраза ли наверху очереди: у неё упражнение своё — собрать из слов, а не
+  /// открыть перевод кнопкой.
+  bool get _building =>
+      _queue.isNotEmpty && isPhrase(_queue.first['word'] as String? ?? '');
+
+  /// Готовит верх очереди к показу. Вызывается внутри setState.
+  void _startCard() {
+    _revealed = false;
+    _picked = const [];
+    final word = _queue.isEmpty ? '' : _queue.first['word'] as String? ?? '';
+    _tiles = isPhrase(word) ? shuffleTiles(word) : const [];
+  }
 
   @override
   void dispose() {
@@ -50,9 +82,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       return KeyEventResult.handled;
     }
     if (!_revealed) {
-      if (key == LogicalKeyboardKey.space ||
-          key == LogicalKeyboardKey.enter ||
-          key == LogicalKeyboardKey.numpadEnter) {
+      // У фразы пробел молчит: случайное нажатие сорвало бы сборку, которую
+      // человек ещё не закончил.
+      if (!_building &&
+          (key == LogicalKeyboardKey.space ||
+              key == LogicalKeyboardKey.enter ||
+              key == LogicalKeyboardKey.numpadEnter)) {
         setState(() => _revealed = true);
         return KeyEventResult.handled;
       }
@@ -75,7 +110,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   /// Свайпы: влево — «снова», вправо — «хорошо», вверх — «легко».
   void _onSwipe(DragEndDetails details, {required bool horizontal}) {
     if (!_revealed) {
-      setState(() => _revealed = true);
+      if (!_building) setState(() => _revealed = true);
       return;
     }
     final velocity = horizontal
@@ -96,10 +131,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   Future<void> _load() async {
-    final cards = await UserDb.instance.getDueCards(widget.bookId);
+    final cards =
+        widget.cards ?? await UserDb.instance.getDueCards(widget.bookId);
     setState(() {
       _queue = List<Map<String, dynamic>>.from(cards);
       _loading = false;
+      _startCard();
     });
   }
 
@@ -110,7 +147,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     setState(() {
       if (grade <= 0) _queue.add(card); // «Снова» — вернуть в конец
       _reviewed++;
-      _revealed = false;
+      _startCard();
     });
   }
 
@@ -119,7 +156,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Карточки'),
+        title: Text(widget.focusLabel == null
+            ? 'Карточки'
+            : 'Карточки · ${widget.focusLabel}'),
         actions: [
           if (!_loading && _queue.isNotEmpty)
             Center(
@@ -129,24 +168,27 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     style: const TextStyle(fontSize: 14)),
               ),
             ),
-          IconButton(
-            tooltip: 'Повторять письмом',
-            icon: const Icon(Icons.draw_outlined),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => WritingReviewScreen(
-                    bookId: widget.bookId,
-                    bookTitle: widget.bookTitle,
+          // В заходе по метке письма нет: WritingReviewScreen берёт слова по
+          // книге, и кнопка увела бы из отобранного во всю книгу целиком.
+          if (widget.cards == null)
+            IconButton(
+              tooltip: 'Повторять письмом',
+              icon: const Icon(Icons.draw_outlined),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WritingReviewScreen(
+                      bookId: widget.bookId,
+                      bookTitle: widget.bookTitle,
+                    ),
                   ),
-                ),
-              );
-              // Срок карточки мог измениться в том режиме: очередь здесь
-              // обязана это увидеть, иначе слово покажется второй раз подряд.
-              if (mounted) await _load();
-            },
-          ),
+                );
+                // Срок карточки мог измениться в том режиме: очередь здесь
+                // обязана это увидеть, иначе слово покажется второй раз подряд.
+                if (mounted) await _load();
+              },
+            ),
           IconButton(
             tooltip: 'Клавиши и жесты',
             icon: const Icon(Icons.keyboard_outlined),
@@ -214,6 +256,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final reps = (card['reps'] as int?) ?? 0;
     final diff = _difficulty(ease, reps, scheme);
     final tip = _memoryTips[word.hashCode.abs() % _memoryTips.length];
+    final building = isPhrase(word);
 
     return SafeArea(
       child: Padding(
@@ -222,7 +265,9 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           children: [
             Expanded(
               child: PressableScale(
-                onTap: () => setState(() => _revealed = true),
+                onTap: () {
+                  if (!building) setState(() => _revealed = true);
+                },
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -254,58 +299,63 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Text(word,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'NotoSerif',
-                                  color: scheme.primary)),
-                          if (!_revealed) ...[
-                            const SizedBox(height: 16),
-                            Text('нажми, чтобы увидеть перевод',
-                                style: TextStyle(
-                                    color: scheme.onSurface
-                                        .withValues(alpha: 0.5))),
-                          ] else ...[
-                            const SizedBox(height: 16),
-                            Divider(
-                                color: scheme.primary.withValues(alpha: 0.3)),
-                            const SizedBox(height: 12),
-                            Text(translation,
+                          if (building)
+                            ..._phraseBody(scheme, word, translation)
+                          else ...[
+                            Text(word,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    color: scheme.onSurface)),
-                            const SizedBox(height: 10),
-                            Text(
-                              [
-                                if (pos.isNotEmpty) GrammarEngine.posShort(pos),
-                                if (lemma.isNotEmpty) 'нач. форма: $lemma',
-                              ].join('  ·  '),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color:
-                                      scheme.onSurface.withValues(alpha: 0.6)),
-                            ),
-                            if (forms.isNotEmpty) ...[
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'NotoSerif',
+                                    color: scheme.primary)),
+                            if (!_revealed) ...[
+                              const SizedBox(height: 16),
+                              Text('нажми, чтобы увидеть перевод',
+                                  style: TextStyle(
+                                      color: scheme.onSurface
+                                          .withValues(alpha: 0.5))),
+                            ] else ...[
+                              const SizedBox(height: 16),
+                              Divider(
+                                  color: scheme.primary.withValues(alpha: 0.3)),
                               const SizedBox(height: 12),
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                spacing: 8,
-                                runSpacing: 6,
-                                children: forms.entries
-                                    .map((e) => Chip(
-                                          label: Text(
-                                              '${GrammarEngine.formKeyRu(e.key)}: ${e.value}',
-                                              style: const TextStyle(
-                                                  fontSize: 12)),
-                                          backgroundColor:
-                                              scheme.surfaceContainerHighest,
-                                        ))
-                                    .toList(),
+                              Text(translation,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: scheme.onSurface)),
+                              const SizedBox(height: 10),
+                              Text(
+                                [
+                                  if (pos.isNotEmpty)
+                                    GrammarEngine.posShort(pos),
+                                  if (lemma.isNotEmpty) 'нач. форма: $lemma',
+                                ].join('  ·  '),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: scheme.onSurface
+                                        .withValues(alpha: 0.6)),
                               ),
+                              if (forms.isNotEmpty) ...[
+                                const SizedBox(height: 12),
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  spacing: 8,
+                                  runSpacing: 6,
+                                  children: forms.entries
+                                      .map((e) => Chip(
+                                            label: Text(
+                                                '${GrammarEngine.formKeyRu(e.key)}: ${e.value}',
+                                                style: const TextStyle(
+                                                    fontSize: 12)),
+                                            backgroundColor:
+                                                scheme.surfaceContainerHighest,
+                                          ))
+                                      .toList(),
+                                ),
+                              ],
                             ],
                           ],
                         ],
@@ -320,10 +370,17 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
             if (!_revealed)
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => setState(() => _revealed = true),
-                  child: const Text('Показать перевод'),
-                ),
+                // У фразы главное действие — выкладывать слова, поэтому «сдаюсь»
+                // здесь кнопка потише.
+                child: building
+                    ? OutlinedButton(
+                        onPressed: () => setState(() => _revealed = true),
+                        child: const Text('Показать ответ'),
+                      )
+                    : ElevatedButton(
+                        onPressed: () => setState(() => _revealed = true),
+                        child: const Text('Показать перевод'),
+                      ),
               )
             else
               Row(
@@ -345,6 +402,125 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// Лицо карточки-фразы: перевод сверху, ниже — выложенное и оставшиеся слова.
+  ///
+  /// Спрашивать у фразы перевод — упражнение совсем другого веса: это «переведи
+  /// предложение», а не «вспомни слово». Письмом фразы не повторяются намеренно.
+  /// Поэтому здесь наоборот: показан перевод, а сербскую фразу надо выложить по
+  /// порядку — он в ней и есть трудное место.
+  List<Widget> _phraseBody(
+      ColorScheme scheme, String phrase, String translation) {
+    final correct = _revealed && isAssembled(_picked, phrase);
+    final pool =
+        _tiles.where((tile) => !_picked.any((p) => p.id == tile.id)).toList();
+    final frame = !_revealed
+        ? scheme.outlineVariant
+        : correct
+            ? Colors.green
+            : Colors.redAccent;
+
+    return [
+      Text('Соберите фразу по-сербски',
+          style: TextStyle(
+              fontSize: 13, color: scheme.onSurface.withValues(alpha: 0.6))),
+      const SizedBox(height: 8),
+      Text(translation.isEmpty ? '—' : translation,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: scheme.onSurface)),
+      const SizedBox(height: 20),
+      Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 64),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: frame, width: 1.5),
+        ),
+        child: _picked.isEmpty
+            ? Center(
+                child: Text('нажимайте слова по порядку',
+                    style: TextStyle(
+                        color: scheme.onSurface.withValues(alpha: 0.5))),
+              )
+            : Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final tile in _picked)
+                    _wordTile(scheme, tile.text,
+                        onTap: _revealed
+                            ? null
+                            : () => setState(() => _picked = [
+                                  for (final p in _picked)
+                                    if (p.id != tile.id) p
+                                ])),
+                ],
+              ),
+      ),
+      if (!_revealed && pool.isNotEmpty) ...[
+        const SizedBox(height: 14),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final tile in pool)
+              _wordTile(scheme, tile.text, onTap: () {
+                setState(() {
+                  _picked = [..._picked, tile];
+                  // Выложил последнее слово — ответ уже дан, спрашивать
+                  // «проверить?» незачем.
+                  if (_picked.length == _tiles.length) _revealed = true;
+                });
+              }),
+          ],
+        ),
+      ],
+      if (_revealed) ...[
+        const SizedBox(height: 16),
+        if (correct)
+          const Text('Верно',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.green))
+        else ...[
+          Text('А было так',
+              style: TextStyle(
+                  fontSize: 13,
+                  color: scheme.onSurface.withValues(alpha: 0.6))),
+          const SizedBox(height: 6),
+          Text(phrase,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'NotoSerif',
+                  fontWeight: FontWeight.bold,
+                  color: scheme.primary)),
+        ],
+      ],
+    ];
+  }
+
+  Widget _wordTile(ColorScheme scheme, String text, {VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: scheme.outlineVariant),
+        ),
+        child: Text(text,
+            style: const TextStyle(fontSize: 17, fontFamily: 'NotoSerif')),
       ),
     );
   }

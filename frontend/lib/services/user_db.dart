@@ -440,10 +440,18 @@ class UserDb {
   /// Все слова вместе с названием книги, из которой они взяты.
   Future<List<Map<String, dynamic>>> getVocabularyWithBooks() async {
     final db = await database;
+    // Состояние повторения берётся вместе со словом: по нему в словаре
+    // считается метка «новое / учу / трудное / выучено». LEFT JOIN обязателен —
+    // слово могло прийти с другого устройства раньше своей карточки, и INNER
+    // потерял бы его из словаря совсем.
     return db.rawQuery('''
-      SELECT v.*, b.title AS book_title
+      SELECT v.*, b.title AS book_title,
+             COALESCE(r.ease, 2.5) AS ease,
+             COALESCE(r.interval, 0) AS interval_days,
+             COALESCE(r.reps, 0) AS reps
       FROM vocabulary v
       LEFT JOIN books b ON b.id = v.book_id
+      LEFT JOIN reviews r ON r.vocab_id = v.id
       WHERE v.deleted = 0
       ORDER BY v.added_at DESC
     ''');

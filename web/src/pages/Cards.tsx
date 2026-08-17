@@ -10,7 +10,13 @@ import { writable } from '../lib/writing';
 import { SyncBadge } from '../components/SyncBadge';
 import { Button, Card, Reveal, Spinner } from '../components/ui';
 import { playCourseSound } from '../course/sounds';
-import { allBooks, plural, type BookMeta } from '../lib/books';
+import { allBooks, getParagraphs, plural, type BookMeta } from '../lib/books';
+import { findSentence } from '../lib/vocabContext';
+import {
+  isAssembled,
+  shuffleTiles,
+  type Tile,
+} from '../lib/phraseBuilder';
 import {
   dueLabel,
   dueReviews,
@@ -27,6 +33,18 @@ import {
   type VocabEntry,
   vocabularyContext,
 } from '../lib/vocabulary';
+import {
+  isPhrase,
+  matchesQuery,
+  placeOf,
+  posTag,
+  tagCounts,
+  tagsFor,
+  type Tag,
+  type TagKind,
+} from '../lib/vocabTags';
+import { download, exportFileName, toCsv } from '../lib/vocabExport';
+import { VocabPrintSheet } from '../components/VocabPrintSheet';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
@@ -99,8 +117,25 @@ export function Cards() {
     void reload();
   }, [reload, revision]);
 
+  /**
+   * Отобранный из словаря срез, который человек попросил повторить.
+   *
+   * Срок в таком заходе не спрашивается: попросив «повторить #трудное», человек
+   * хочет пройти именно эти слова, а не те из них, у которых сегодня подошла
+   * очередь, — иначе кнопка выдавала бы пустой экран чаще, чем работала. Порядок
+   * всё равно по сроку: просроченное важнее.
+   */
+  const [focus, setFocus] = useState<{ ids: Set<string>; label: string } | null>(
+    null,
+  );
+
   const due = useMemo(() => {
     if (!rows) return [];
+    if (focus) {
+      return rows
+        .filter((row) => focus.ids.has(row.entry.id))
+        .sort((a, b) => a.review.dueAt - b.review.dueAt);
+    }
     const ready = new Set(
       dueReviews(
         rows.map((row) => row.review),
@@ -108,7 +143,14 @@ export function Cards() {
       ).map((review) => review.vocabId),
     );
     return rows.filter((row) => ready.has(row.entry.id));
-  }, [rows, now]);
+  }, [rows, now, focus]);
+
+  // Отобранное слово можно и удалить прямо из списка: очередь должна о нём
+  // забыть, а не спотыкаться о запись, которой больше нет.
+  useEffect(() => {
+    if (!focus || !rows) return;
+    if (!rows.some((row) => focus.ids.has(row.entry.id))) setFocus(null);
+  }, [focus, rows]);
 
   // Письмом повторяются только слова: писать рукой фразу долго, и вспоминается
   // она не так, как слово.
@@ -163,8 +205,10 @@ export function Cards() {
           <div>
             <h1 className="text-3xl sm:text-4xl">Словарь</h1>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--text-muted)]">
+              {/* «Записей», а не «слов»: половина словаря — выделенные фразы, и
+                  называть их словами значит начать врать прямо в заголовке. */}
               <span>
-                {rows.length} {plural(rows.length, 'слово', 'слова', 'слов')}
+                {rows.length} {plural(rows.length, 'запись', 'записи', 'записей')}
                 {due.length > 0 && ` · ${due.length} к повторению`}
               </span>
               <SyncBadge />
@@ -192,14 +236,22 @@ export function Cards() {
                   <span className="ml-1.5 opacity-70">{dueWriting.length}</span>
                 )}
               </TabChip>
+              {/* Не «все слова»: в списке лежат и фразы, и делить их — как раз
+                  задача этой вкладки. */}
               <TabChip active={tab === 'all'} onClick={() => setTab('all')}>
-                Все слова
+                Список
                 <span className="ml-1.5 opacity-70">{rows.length}</span>
               </TabChip>
             </div>
 
             {tab === 'review' && (
-              <ReviewSession due={due} total={rows.length} onGrade={grade} />
+              <ReviewSession
+                due={due}
+                total={rows.length}
+                onGrade={grade}
+                focusLabel={focus?.label ?? null}
+                onClearFocus={() => setFocus(null)}
+              />
             )}
             {tab === 'writing' && (
               <WritingSession
@@ -209,7 +261,16 @@ export function Cards() {
               />
             )}
             {tab === 'all' && (
-              <WordList rows={rows} books={books} now={now} onDelete={remove} />
+              <Dictionary
+                rows={rows}
+                books={books}
+                now={now}
+                onDelete={remove}
+                onReview={(ids, label) => {
+                  setFocus({ ids, label });
+                  setTab('review');
+                }}
+              />
             )}
           </>
         )}
@@ -222,26 +283,33 @@ function ReviewSession({
   due,
   total,
   onGrade,
+  focusLabel,
+  onClearFocus,
 }: {
   due: Row[];
   total: number;
   onGrade: (row: Row, grade: Grade) => Promise<void>;
+  focusLabel: string | null;
+  onClearFocus: () => void;
 }) {
   const reduceMotion = useReducedMotion();
   const [revealed, setRevealed] = useState(false);
   const row = due[0];
   const context = row ? vocabularyContext(row.entry) : '';
+  // У фразы упражнение своё: она собирается из слов, а не открывается кнопкой.
+  const building = row ? isPhrase(row.entry.word) : false;
 
   // Новая карточка всегда показывается лицевой стороной.
   useEffect(() => setRevealed(false), [row?.entry.id]);
 
   // Пробел открывает ответ, цифры оценивают — так повторение идёт с клавиатуры
-  // и не требует целиться мышью в три кнопки подряд.
+  // и не требует целиться мышью в три кнопки подряд. У фразы пробел молчит:
+  // случайное нажатие сорвало бы сборку, которую человек ещё не закончил.
   useEffect(() => {
     if (!row) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.target instanceof HTMLInputElement) return;
-      if (!revealed && (event.key === ' ' || event.key === 'Enter')) {
+      if (!revealed && !building && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
         setRevealed(true);
         return;
@@ -252,7 +320,7 @@ function ReviewSession({
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [row, revealed, onGrade]);
+  }, [row, revealed, building, onGrade]);
 
   if (!row) {
     return (
@@ -260,21 +328,45 @@ function ReviewSession({
         <div className="mx-auto mb-6 w-36">
           <Mascot pose="citavuk_povtor" alt="" width={288} float />
         </div>
-        <h2 className="text-2xl">На сегодня всё</h2>
+        <h2 className="text-2xl">
+          {focusLabel ? 'Отобранное пройдено' : 'На сегодня всё'}
+        </h2>
         <p className="mx-auto mt-3 max-w-md leading-relaxed text-[var(--text-muted)]">
-          {total > 0
-            ? 'Все карточки повторены. Новые появятся, как только подойдёт срок — заходите завтра.'
-            : 'Сохраняйте слова в читалке, и они появятся здесь.'}
+          {focusLabel
+            ? `Слова по метке «${focusLabel}» закончились.`
+            : total > 0
+              ? 'Все карточки повторены. Новые появятся, как только подойдёт срок — заходите завтра.'
+              : 'Сохраняйте слова в читалке, и они появятся здесь.'}
         </p>
-        <Link to="/library">
-          <Button className="mt-7">К чтению</Button>
-        </Link>
+        {focusLabel ? (
+          <Button className="mt-7" variant="secondary" onClick={onClearFocus}>
+            Вернуться к обычному повторению
+          </Button>
+        ) : (
+          <Link to="/library">
+            <Button className="mt-7">К чтению</Button>
+          </Link>
+        )}
       </Card>
     );
   }
 
   return (
     <div>
+      {focusLabel && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--accent)]/35 bg-[var(--bg-raised)] px-4 py-3">
+          <span className="text-sm">
+            Повторяем отобранное: <b>{focusLabel}</b>
+          </span>
+          <button
+            type="button"
+            onClick={onClearFocus}
+            className="text-sm font-semibold text-[var(--accent)] underline-offset-2 hover:underline"
+          >
+            снять отбор
+          </button>
+        </div>
+      )}
       <AnimatePresence mode="wait">
         <motion.div
           key={row.entry.id}
@@ -284,35 +376,53 @@ function ReviewSession({
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
           <Card className="paper-grain px-6 py-12 text-center sm:px-10">
-            <div className="font-display text-4xl font-bold text-[var(--accent)] sm:text-5xl">
-              {row.entry.word}
-            </div>
-            {row.entry.pos !== 'UNKNOWN' && (
-              <div className="mt-2 text-sm text-[var(--text-muted)]">
-                {row.entry.pos.toLowerCase()}
-              </div>
-            )}
-            {context && (
-              <p className="mx-auto mt-5 max-w-xl border-l-2 border-[var(--accent)]/35 pl-3 text-left leading-6" lang="sr">
-                {context}
-              </p>
-            )}
+            {building ? (
+              <PhraseBuild
+                phrase={row.entry.word}
+                translation={row.entry.translation}
+                revealed={revealed}
+                onReveal={() => setRevealed(true)}
+              />
+            ) : (
+              <>
+                <div className="font-display text-4xl font-bold text-[var(--accent)] sm:text-5xl">
+                  {row.entry.word}
+                </div>
+                {/* Человеческое название, а не UD-тег: «noun» на карточке — это
+                    внутренняя кухня, показанная читателю. */}
+                {posTag(row.entry.pos) && (
+                  <div className="mt-2 text-sm text-[var(--text-muted)]">
+                    {posTag(row.entry.pos)}
+                  </div>
+                )}
+                {context ? (
+                  <p className="mx-auto mt-5 max-w-xl border-l-2 border-[var(--accent)]/35 pl-3 text-left leading-6" lang="sr">
+                    {context}
+                  </p>
+                ) : (
+                  <BookExample
+                    entry={row.entry}
+                    className="mx-auto mt-5 max-w-xl border-l-2 border-[var(--accent)]/35 pl-3 text-left leading-6"
+                  />
+                )}
 
-            <div className="mt-8 min-h-16">
-              {revealed ? (
-                <motion.div
-                  initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="font-display text-2xl"
-                >
-                  {row.entry.translation || '—'}
-                </motion.div>
-              ) : (
-                <Button variant="secondary" onClick={() => setRevealed(true)}>
-                  Показать перевод
-                </Button>
-              )}
-            </div>
+                <div className="mt-8 min-h-16">
+                  {revealed ? (
+                    <motion.div
+                      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="font-display text-2xl"
+                    >
+                      {row.entry.translation || '—'}
+                    </motion.div>
+                  ) : (
+                    <Button variant="secondary" onClick={() => setRevealed(true)}>
+                      Показать перевод
+                    </Button>
+                  )}
+                </div>
+              </>
+            )}
           </Card>
         </motion.div>
       </AnimatePresence>
@@ -334,9 +444,188 @@ function ReviewSession({
       <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
         Осталось {due.length} {plural(due.length, 'карточка', 'карточки', 'карточек')}
         {' · '}
-        пробел показывает перевод, цифры 1–3 оценивают
+        {building
+          ? 'цифры 1–3 оценивают'
+          : 'пробел показывает перевод, цифры 1–3 оценивают'}
       </p>
     </div>
+  );
+}
+
+/**
+ * Фраза собирается из перемешанных слов.
+ *
+ * Спрашивать у фразы перевод — упражнение совсем другого веса: это «переведи
+ * предложение», а не «вспомни слово». Письмом фразы не повторяются намеренно
+ * (см. lib/writing.ts): писать рукой предложение долго. Поэтому здесь наоборот
+ * — показывается перевод, а сербскую фразу надо выложить по порядку. Порядок
+ * слов в ней и есть трудное место, а узнавание среди готовых кусков даётся
+ * легче письма и работает на телефоне.
+ */
+function PhraseBuild({
+  phrase,
+  translation,
+  revealed,
+  onReveal,
+}: {
+  phrase: string;
+  translation: string;
+  revealed: boolean;
+  onReveal: () => void;
+}) {
+  const tiles = useMemo(() => shuffleTiles(phrase), [phrase]);
+  const [picked, setPicked] = useState<Tile[]>([]);
+  const pool = tiles.filter((tile) => !picked.some((item) => item.id === tile.id));
+  const done = picked.length === tiles.length;
+  const correct = done && isAssembled(picked, phrase);
+
+  // Выложил последнее слово — ответ уже дан, спрашивать «проверить?» незачем.
+  useEffect(() => {
+    if (done && !revealed) onReveal();
+  }, [done, revealed, onReveal]);
+
+  const border = !revealed
+    ? 'border-[var(--line)]'
+    : correct
+      ? 'border-emerald-600/50'
+      : 'border-serb-red/50';
+
+  return (
+    <>
+      <p className="text-sm text-[var(--text-muted)]">Соберите фразу по-сербски</p>
+      <div className="mt-2 font-display text-2xl font-bold sm:text-3xl">
+        {translation || '—'}
+      </div>
+
+      <div
+        className={`mx-auto mt-7 flex min-h-16 max-w-xl flex-wrap items-center justify-center gap-2 rounded-2xl border border-dashed p-2.5 ${border}`}
+      >
+        {picked.length === 0 ? (
+          <span className="text-sm text-[var(--text-muted)]">
+            Нажимайте слова по порядку
+          </span>
+        ) : (
+          picked.map((tile) => (
+            <PhraseTile
+              key={tile.id}
+              disabled={revealed}
+              onClick={() =>
+                setPicked((current) =>
+                  current.filter((item) => item.id !== tile.id),
+                )
+              }
+            >
+              {tile.text}
+            </PhraseTile>
+          ))
+        )}
+      </div>
+
+      {!revealed && (
+        <div className="mx-auto mt-4 flex max-w-xl flex-wrap items-center justify-center gap-2">
+          {pool.map((tile) => (
+            <PhraseTile
+              key={tile.id}
+              onClick={() => setPicked((current) => [...current, tile])}
+            >
+              {tile.text}
+            </PhraseTile>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-6 min-h-10">
+        {revealed ? (
+          correct ? (
+            <p className="font-semibold text-emerald-700 dark:text-emerald-400">
+              Верно
+            </p>
+          ) : (
+            <>
+              <p className="text-sm text-[var(--text-muted)]">А было так</p>
+              <div className="mt-1 font-display text-xl text-[var(--accent)]" lang="sr">
+                {phrase}
+              </div>
+            </>
+          )
+        ) : (
+          <SmallButton onClick={onReveal}>Показать ответ</SmallButton>
+        )}
+      </div>
+    </>
+  );
+}
+
+function PhraseTile({
+  onClick,
+  disabled,
+  children,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      lang="sr"
+      onClick={onClick}
+      disabled={disabled}
+      className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 font-display text-lg transition-colors hover:border-[var(--accent)] disabled:hover:border-[var(--line)]"
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Абзацы книги: соседние слова одной книги раскрывают подряд, читать её файл
+ *  каждый раз заново незачем. */
+const paragraphCache = new Map<string, Promise<string[]>>();
+
+function bookParagraphs(id: string): Promise<string[]> {
+  let pending = paragraphCache.get(id);
+  if (!pending) {
+    pending = getParagraphs(id).catch(() => []);
+    paragraphCache.set(id, pending);
+  }
+  return pending;
+}
+
+/**
+ * Пример из книги для записи, сохранённой без него.
+ *
+ * Читалка кладёт в карточку предложение, из которого слово взято, но так было
+ * не всегда, и у записей постарше поле пустое. Слово с одним переводом через
+ * месяц не значит уже ничего: «kraj» — и «конец», и «край». Книга при этом
+ * лежит рядом, и найти предложение заново дешевле, чем хранить его копию
+ * (см. lib/vocabContext.ts).
+ */
+function BookExample({
+  entry,
+  className,
+}: {
+  entry: VocabEntry;
+  className?: string;
+}) {
+  const [sentence, setSentence] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSentence(null);
+    if (!entry.bookId) return;
+    let alive = true;
+    void bookParagraphs(entry.bookId).then((paragraphs) => {
+      if (alive) setSentence(findSentence(paragraphs, entry.word));
+    });
+    return () => {
+      alive = false;
+    };
+  }, [entry.bookId, entry.word]);
+
+  if (!sentence) return null;
+  return (
+    <p className={className} lang="sr">
+      {sentence}
+    </p>
   );
 }
 
@@ -538,42 +827,399 @@ function shorten(text: string, words = PREVIEW_WORDS): string {
   return `${parts.slice(0, words).join(' ')}…`;
 }
 
+type Shape = 'all' | 'слово' | 'фраза';
+
+/** Запись вместе с посчитанными метками и полями, по которым идёт поиск. */
+interface Listed {
+  row: Row;
+  tags: Tag[];
+  fields: string[];
+}
+
 /**
- * Список слов, разложенный по книгам.
+ * Словарь: поиск, метки и список.
+ *
+ * К сотне записей список по книгам перестаёт быть словарём. Из книги сюда
+ * уходит и выделенная фраза целиком, поэтому первым делом запись делится на
+ * слово и фразу — вперемешку они мешают и читать, и повторять. Дальше метки:
+ * часть речи, тема, ход запоминания. Считаются они сами (см. lib/vocabTags.ts)
+ * и показываются только те, что в словаре действительно встретились: пустая
+ * метка обещает раздел, которого нет.
+ */
+function Dictionary({
+  rows,
+  books,
+  now,
+  onDelete,
+  onReview,
+}: {
+  rows: Row[];
+  books: BookMeta[];
+  now: number;
+  onDelete: (row: Row) => Promise<void>;
+  onReview: (ids: Set<string>, label: string) => void;
+}) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const [shape, setShape] = useState<Shape>('all');
+  const [picked, setPicked] = useState<Set<string>>(() => new Set());
+
+  // Метки считаются один раз на запись, а не при каждом наборе буквы: в словаре
+  // их бывают сотни, а поиск идёт по каждому нажатию клавиши.
+  const tagged = useMemo(
+    () =>
+      rows.map((row) => ({
+        row,
+        tags: tagsFor(row.entry, row.review),
+        fields: [
+          row.entry.word,
+          row.entry.translation,
+          vocabularyContext(row.entry),
+        ],
+      })),
+    [rows],
+  );
+
+  const byShape = useMemo(
+    () =>
+      shape === 'all'
+        ? tagged
+        : tagged.filter((item) => item.tags[0]?.id === shape),
+    [tagged, shape],
+  );
+
+  // Счётчики считаются по тому, что осталось после поиска и вида, а не по всему
+  // словарю: метка с числом, не совпадающим с длиной списка после нажатия, —
+  // обман.
+  const searched = useMemo(
+    () => byShape.filter((item) => matchesQuery(item.fields, query)),
+    [byShape, query],
+  );
+
+  const chips = useMemo(
+    () => tagCounts(searched.map((item) => item.tags)),
+    [searched],
+  );
+
+  // Метки складываются, а не пересекаются: «глагол» и «еда» вместе означают
+  // «покажи и то, и другое». Пересечение на разных разрядах почти всегда пусто,
+  // и человек решил бы, что фильтр сломан.
+  const visible = useMemo(
+    () =>
+      picked.size === 0
+        ? searched
+        : searched.filter((item) => item.tags.some((tag) => picked.has(tag.id))),
+    [searched, picked],
+  );
+
+  const toggle = (id: string) =>
+    setPicked((current) => {
+      const next = new Set(current);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
+
+  const groups = useMemo(() => {
+    const titles = new Map(books.map((book) => [book.id, book.title]));
+    // Ключ — название, а не bookId. Книгу можно удалить, а её слова остаются, и
+    // при группировке по id каждая исчезнувшая книга давала отдельный раздел
+    // «Без книги»: их набиралось столько же, сколько удалённых книг.
+    const byTitle = new Map<string, Listed[]>();
+
+    for (const item of visible) {
+      const title = titles.get(item.row.entry.bookId ?? '') ?? 'Без книги';
+      const group = byTitle.get(title);
+      if (group) group.push(item);
+      else byTitle.set(title, [item]);
+    }
+
+    return [...byTitle.entries()]
+      .map(([title, items]) => ({ id: title, title, items }))
+      .sort((a, b) => b.items.length - a.items.length);
+  }, [visible, books]);
+
+  const words = useMemo(
+    () => tagged.filter((item) => item.tags[0]?.id === 'слово').length,
+    [tagged],
+  );
+
+  const narrowed = picked.size > 0 || shape !== 'all' || query.trim() !== '';
+
+  const [printing, setPrinting] = useState(false);
+
+  // Выгружается ровно то, что человек видит: отфильтровав словарь до «#еда» и
+  // нажав «на печать», он ждёт карточки по еде, а не весь словарь.
+  const exportRows = useMemo(
+    () =>
+      visible.map((item) => ({
+        word: item.row.entry.word,
+        translation: item.row.entry.translation,
+        context: vocabularyContext(item.row.entry),
+        tags: item.tags
+          .filter((tag) => tag.kind === 'topic' || tag.kind === 'pos')
+          .map((tag) => tag.id),
+      })),
+    [visible],
+  );
+
+  /** Чем сужен словарь — этой же строкой подписан заход повторения. */
+  const selectionLabel = useMemo(() => {
+    const parts: string[] = [];
+    if (shape !== 'all') parts.push(shape === 'слово' ? 'слова' : 'фразы');
+    for (const id of picked) parts.push(`#${id}`);
+    if (query.trim()) parts.push(`«${query.trim()}»`);
+    return parts.join(' · ') || 'весь словарь';
+  }, [shape, picked, query]);
+
+  return (
+    <div>
+      <div className="mb-4">
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Поиск по слову, переводу и примеру"
+          aria-label="Поиск по словарю"
+          className="w-full rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-3 outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
+        />
+      </div>
+
+      <div className="mb-3 flex flex-wrap gap-1.5">
+        <ShapeChip active={shape === 'all'} onClick={() => setShape('all')}>
+          Всё <Count>{tagged.length}</Count>
+        </ShapeChip>
+        <ShapeChip active={shape === 'слово'} onClick={() => setShape('слово')}>
+          Слова <Count>{words}</Count>
+        </ShapeChip>
+        <ShapeChip active={shape === 'фраза'} onClick={() => setShape('фраза')}>
+          Фразы <Count>{tagged.length - words}</Count>
+        </ShapeChip>
+      </div>
+
+      {chips.length > 0 && (
+        <div className="mb-6 flex flex-wrap gap-1.5">
+          {chips.map(({ tag, count }) => (
+            <TagChipButton
+              key={tag.id}
+              kind={tag.kind}
+              active={picked.has(tag.id)}
+              onClick={() => toggle(tag.id)}
+            >
+              {tag.id} <Count>{count}</Count>
+            </TagChipButton>
+          ))}
+          {picked.size > 0 && (
+            <button
+              type="button"
+              onClick={() => setPicked(new Set())}
+              className="rounded-full px-3 py-1.5 text-xs font-semibold text-[var(--accent)] underline-offset-2 hover:underline"
+            >
+              снять метки
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="mb-5 flex flex-wrap gap-2">
+        {/* Повторение отобранного появляется, только когда словарь чем-то
+            сужен: на всём словаре это то же самое, что уже делает вкладка
+            повторения. Выгрузка нужна всегда — выгружается видимое. */}
+        {narrowed && visible.length > 0 && (
+          <Button
+            onClick={() =>
+              onReview(
+                new Set(visible.map((item) => item.row.entry.id)),
+                selectionLabel,
+              )
+            }
+          >
+            Повторить отобранное · {visible.length}
+          </Button>
+        )}
+        {visible.length > 0 && (
+          <>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                download(
+                  exportFileName('csv'),
+                  toCsv(exportRows),
+                  'text/csv;charset=utf-8',
+                )
+              }
+            >
+              Таблицей (CSV)
+            </Button>
+            <Button variant="secondary" onClick={() => setPrinting(true)}>
+              На печать
+            </Button>
+          </>
+        )}
+      </div>
+
+      {printing && (
+        <VocabPrintSheet
+          rows={exportRows}
+          title={narrowed ? selectionLabel : 'Словарь'}
+          onClose={() => setPrinting(false)}
+        />
+      )}
+
+      {visible.length === 0 ? (
+        <Card className="px-6 py-12 text-center text-[var(--text-muted)]">
+          Ничего не нашлось. Попробуйте другое слово или снимите метки.
+        </Card>
+      ) : (
+        <WordList
+          groups={groups}
+          now={now}
+          openId={openId}
+          onToggle={setOpenId}
+          onDelete={onDelete}
+        />
+      )}
+    </div>
+  );
+}
+
+function Count({ children }: { children: React.ReactNode }) {
+  return <span className="ml-1 opacity-60">{children}</span>;
+}
+
+function ShapeChip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={[
+        'rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors',
+        active
+          ? 'bg-[var(--accent)] text-parchment'
+          : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
+      ].join(' ')}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Цвет метки по разряду: тема, часть речи и ход запоминания различимы сразу. */
+const TAG_TONE: Record<TagKind, string> = {
+  kind: 'border-[var(--line)]',
+  topic: 'border-[var(--accent)]/45 text-[var(--accent)]',
+  freq: 'border-amber-600/45 text-amber-700 dark:text-amber-400',
+  pos: 'border-[var(--line)] text-[var(--text-muted)]',
+  progress: 'border-emerald-600/40 text-emerald-700 dark:text-emerald-400',
+  script: 'border-[var(--line)] text-[var(--text-muted)]',
+};
+
+function TagChipButton({
+  kind,
+  active,
+  onClick,
+  children,
+}: {
+  kind: TagKind;
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={[
+        'rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors',
+        active
+          ? 'border-transparent bg-[var(--accent)] text-parchment'
+          : `bg-[var(--bg-raised)] hover:bg-[var(--bg-sunken)] ${TAG_TONE[kind]}`,
+      ].join(' ')}
+    >
+      {children}
+    </button>
+  );
+}
+
+/**
+ * Где это слово пригодится.
+ *
+ * Сохранённое слово перестаёт быть строкой в списке: у него есть место, где им
+ * пользуются, и туда можно пойти. Ссылка ведёт на Путешествие целиком — своего
+ * адреса у места там нет, а придумывать его ради подсказки означало бы менять
+ * карту. Место названо по-сербски: его и придётся прочитать на вывеске.
+ */
+function PlaceHint({ word }: { word: string }) {
+  const place = placeOf(word);
+  if (!place) return null;
+  return (
+    <div className="mt-2 text-sm text-[var(--text-muted)]">
+      Пригодится здесь:{' '}
+      <Link to="/putovanje" className="text-[var(--accent)] hover:underline">
+        <span lang="sr">{place.sr}</span> — {place.ru}
+      </Link>
+    </div>
+  );
+}
+
+/**
+ * Метки самой записи.
+ *
+ * Показываются только тема и часть речи: вид записи виден по ней самой, а ход
+ * запоминания уже нарисован полоской освоенности справа. Ряд из пяти меток под
+ * каждым словом превратил бы список обратно в кучу, из которой его и вынимали.
+ */
+function EntryTags({ tags }: { tags: Tag[] }) {
+  const shown = tags.filter((tag) => tag.kind === 'topic' || tag.kind === 'pos');
+  if (shown.length === 0) return null;
+  return (
+    <div className="mt-1.5 flex flex-wrap gap-2">
+      {shown.map((tag) => (
+        <span
+          key={tag.id}
+          className={
+            tag.kind === 'topic'
+              ? 'text-xs text-[var(--accent)]'
+              : 'text-xs text-[var(--text-muted)]'
+          }
+        >
+          #{tag.id}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Список записей, разложенный по книгам.
  *
  * Сплошной список не отвечал на вопрос «откуда это слово», а из книги в словарь
  * попадают и целые фразы: в одну строку они не помещаются, поэтому показывается
  * начало, а по нажатию запись раскрывается целиком.
  */
 function WordList({
-  rows,
-  books,
+  groups,
   now,
+  openId,
+  onToggle,
   onDelete,
 }: {
-  rows: Row[];
-  books: BookMeta[];
+  groups: { id: string; title: string; items: Listed[] }[];
   now: number;
+  openId: string | null;
+  onToggle: (id: string | null) => void;
   onDelete: (row: Row) => Promise<void>;
 }) {
-  const [openId, setOpenId] = useState<string | null>(null);
-
-  const groups = useMemo(() => {
-    const titles = new Map(books.map((book) => [book.id, book.title]));
-    const byBook = new Map<string, { title: string; rows: Row[] }>();
-
-    for (const row of rows) {
-      const id = row.entry.bookId ?? '';
-      const title = titles.get(id) ?? 'Без книги';
-      const group = byBook.get(id);
-      if (group) group.rows.push(row);
-      else byBook.set(id, { title, rows: [row] });
-    }
-
-    return [...byBook.entries()]
-      .map(([id, group]) => ({ id, ...group }))
-      .sort((a, b) => b.rows.length - a.rows.length);
-  }, [rows, books]);
+  const setOpenId = onToggle;
 
   return (
     <div className="space-y-8">
@@ -582,13 +1228,13 @@ function WordList({
           <div className="mb-2 flex items-baseline justify-between gap-3 border-b border-[var(--line)] pb-2">
             <h2 className="truncate text-lg">{group.title}</h2>
             <span className="shrink-0 text-sm text-[var(--text-muted)]">
-              {group.rows.length}{' '}
-              {plural(group.rows.length, 'слово', 'слова', 'слов')}
+              {group.items.length}{' '}
+              {plural(group.items.length, 'запись', 'записи', 'записей')}
             </span>
           </div>
 
           <div className="space-y-2">
-            {group.rows.map((row) => {
+            {group.items.map(({ row, tags }) => {
               const open = openId === row.entry.id;
               const long =
                 row.entry.word.split(/\s+/).length > PREVIEW_WORDS ||
@@ -616,16 +1262,24 @@ function WordList({
                         ? row.entry.translation || '—'
                         : shorten(row.entry.translation || '—', PREVIEW_WORDS + 2)}
                     </div>
-                    {open && vocabularyContext(row.entry) && (
-                      <p className="mt-2 border-l-2 border-[var(--accent)]/30 pl-2 text-sm leading-5" lang="sr">
-                        {vocabularyContext(row.entry)}
-                      </p>
-                    )}
+                    {open &&
+                      (vocabularyContext(row.entry) ? (
+                        <p className="mt-2 border-l-2 border-[var(--accent)]/30 pl-2 text-sm leading-5" lang="sr">
+                          {vocabularyContext(row.entry)}
+                        </p>
+                      ) : (
+                        <BookExample
+                          entry={row.entry}
+                          className="mt-2 border-l-2 border-[var(--accent)]/30 pl-2 text-sm leading-5"
+                        />
+                      ))}
+                    {open && <PlaceHint word={row.entry.word} />}
                     {long && !open && (
                       <span className="mt-0.5 inline-block text-xs text-[var(--accent)]">
                         показать целиком
                       </span>
                     )}
+                    <EntryTags tags={tags} />
                   </button>
 
                   <div className="hidden w-28 shrink-0 sm:block">
