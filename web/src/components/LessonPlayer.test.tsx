@@ -89,7 +89,9 @@ describe('урок преподавателя', () => {
         ...lesson.content!,
         dialogue: {
           startId: 'd1',
-          nodes: [{ id: 'd1', speaker: 'Ana', text: 'Dobar dan!', choices: [] }],
+          nodes: [
+            { id: 'd1', speaker: 'Ana', avatar: 'woman', text: 'Dobar dan!', choices: [] },
+          ],
         },
       },
     };
