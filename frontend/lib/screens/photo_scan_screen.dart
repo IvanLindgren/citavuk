@@ -12,12 +12,24 @@
 /// и в словарь, откуда её уже не выковырять.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../services/api_client.dart';
 import '../services/photo_scan_service.dart';
 import '../services/user_db.dart';
+
+/// Есть ли у этой системы камера, которую откроет image_picker.
+///
+/// На Windows и Linux съёмки у пакета нет вовсе — только выбор файла. Кнопка
+/// «Снять» там падала бы в ошибку чтения снимка, а человек решил бы, что
+/// сломалось распознавание.
+bool get _hasCamera {
+  if (kIsWeb) return false;
+  return defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS;
+}
 
 class PhotoScanScreen extends StatefulWidget {
   const PhotoScanScreen({super.key, required this.service});
@@ -129,8 +141,11 @@ class _PhotoScanScreenState extends State<PhotoScanScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
           children: [
             Text(
-              'Наведите камеру на объявление, вывеску или тетрадь. '
-              'Снимков можно сделать несколько — все они попадут в одну книгу.',
+              _hasCamera
+                  ? 'Наведите камеру на объявление, вывеску или тетрадь. '
+                      'Снимков можно сделать несколько — все они попадут в одну книгу.'
+                  : 'Выберите снимок объявления, вывески или тетради. '
+                      'Их можно взять несколько — все попадут в одну книгу.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
@@ -138,20 +153,31 @@ class _PhotoScanScreenState extends State<PhotoScanScreen> {
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: _busy ? null : () => _shoot(ImageSource.camera),
-                    icon: const Icon(Icons.photo_camera_outlined),
-                    label: const Text('Снять'),
+                if (_hasCamera) ...[
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed:
+                          _busy ? null : () => _shoot(ImageSource.camera),
+                      icon: const Icon(Icons.photo_camera_outlined),
+                      label: const Text('Снять'),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
+                  const SizedBox(width: 10),
+                ],
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: _busy ? null : () => _shoot(ImageSource.gallery),
-                    icon: const Icon(Icons.photo_library_outlined),
-                    label: const Text('Из галереи'),
-                  ),
+                  child: _hasCamera
+                      ? OutlinedButton.icon(
+                          onPressed:
+                              _busy ? null : () => _shoot(ImageSource.gallery),
+                          icon: const Icon(Icons.photo_library_outlined),
+                          label: const Text('Из галереи'),
+                        )
+                      : FilledButton.icon(
+                          onPressed:
+                              _busy ? null : () => _shoot(ImageSource.gallery),
+                          icon: const Icon(Icons.photo_library_outlined),
+                          label: const Text('Выбрать снимок'),
+                        ),
                 ),
               ],
             ),
