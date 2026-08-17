@@ -1,0 +1,206 @@
+{
+  "slug": "perfekat-proslo-vreme",
+  "title": "Прошедшее время перфект в живой речи",
+  "summary": "Учимся рассказывать о прошедших событиях с помощью перфекта и глагольного L-причастия.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Перфект",
+  "tags": [
+    "глаголы",
+    "прошедшее время",
+    "перфект"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как строится прошедшее время перфект"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Перфект это основное прошедшее время в сербском языке. Он состоит из двух частей, краткой формы глагола biti в настоящем времени (sam, si, je, smo, ste, su) и причастия на l, которое согласуется в роде и числе с говорящим или объектом."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Лицо",
+            "Мужской род",
+            "Женский род",
+            "Средний род / Множественное число"
+          ],
+          [
+            "ja",
+            "ja sam radio",
+            "ja sam radila",
+            "-"
+          ],
+          [
+            "ti",
+            "ti si radio",
+            "ti si radila",
+            "-"
+          ],
+          [
+            "on, ona, ono",
+            "on je radio",
+            "ona je radila",
+            "ono je radilo"
+          ],
+          [
+            "mi",
+            "mi smo radili",
+            "mi smo radile",
+            "mi smo radila"
+          ],
+          [
+            "vi",
+            "vi ste radili",
+            "vi ste radile",
+            "vi ste radila"
+          ],
+          [
+            "oni, one, ona",
+            "oni su radili",
+            "one su radile",
+            "ona su radila"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Особое правило для возвратных глаголов"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "В третьем лице единственного числа с частицей se вспомогательный глагол je обычно опускается, он se probudio вместо on se je probudio."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "В живой речи порядок слов часто начинается с причастия, если местоимение опущено, Radio sam ceo dan."
+      }
+    ],
+    "markdown": "## Как строится прошедшее время перфект\n\nПерфект это основное прошедшее время в сербском языке. Он состоит из двух частей, краткой формы глагола biti в настоящем времени (sam, si, je, smo, ste, su) и причастия на l, которое согласуется в роде и числе с говорящим или объектом.\n\n| Лицо | Мужской род | Женский род | Средний род / Множественное число |\n| --- | --- | --- | --- |\n| ja | ja sam radio | ja sam radila |, |\n| ti | ti si radio | ti si radila |, |\n| on, ona, ono | on je radio | ona je radila | ono je radilo |\n| mi | mi smo radili | mi smo radile | mi smo radila |\n| vi | vi ste radili | vi ste radile | vi ste radila |\n| oni, one, ona | oni su radili | one su radile | ona su radila |\n\n## Особое правило для возвратных глаголов\n\nВ третьем лице единственного числа с частицей se вспомогательный глагол je обычно опускается, он se probudio вместо on se je probudio.\n\n> В живой речи порядок слов часто начинается с причастия, если местоимение опущено, Radio sam ceo dan.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как скажет о себе девушка «Я прочитала книгу»",
+        "options": [
+          "Pročitala sam knjigu",
+          "Pročitao sam knjigu",
+          "Pročitalo sam knjigu",
+          "Pročitale smo knjigu"
+        ],
+        "answer": "Pročitala sam knjigu",
+        "explanation": "Женский род единственного числа принимает форму причастия на -la"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму связки biti для местоимения mi в прошедшем времени",
+        "context": "Juče ___ bili u pozorištu.",
+        "answer": "smo",
+        "acceptedAnswers": [
+          "smo"
+        ],
+        "explanation": "Для местоимения mi форма связки звучит smo"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Вчера мы весь день гуляли по городу»",
+        "tokens": [
+          "Juče",
+          "smo",
+          "šetali",
+          "po",
+          "gradu"
+        ],
+        "answer": "Juče smo šetali po gradu",
+        "explanation": "Связка smo стоит на втором месте сразу после первого слова juče"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините инфинитив с формой мужского рода причастия",
+        "pairs": [
+          {
+            "left": "kupiti",
+            "right": "kupio"
+          },
+          {
+            "left": "videti",
+            "right": "video"
+          },
+          {
+            "left": "reći",
+            "right": "rekao"
+          },
+          {
+            "left": "doći",
+            "right": "došao"
+          }
+        ],
+        "explanation": "Мужской род причастия оканчивается на -o"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Они приехали вовремя»",
+        "context": "Они приехали вовремя.",
+        "answer": "Oni su stigli na vreme.",
+        "referenceAnswer": "Oni su stigli na vreme.",
+        "acceptedAnswers": [
+          "Oni su stigli na vreme.",
+          "Stigli su na vreme."
+        ],
+        "explanation": "Множественное число мужского рода образует форму stigli su"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Petar",
+          "avatar": "man",
+          "text": "Gde si bio juče popodne?",
+          "choices": [
+            {
+              "label": "Bio sam kod kuće i gledao sam film.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Išao sam u kupovinu sa drugom.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Petar",
+          "avatar": "man",
+          "text": "Lepo, i ja sam se odmarao juče.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Petar",
+          "avatar": "man",
+          "text": "Da li si kupio sve što ti treba?",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

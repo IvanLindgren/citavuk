@@ -1,0 +1,214 @@
+{
+  "slug": "detektivska-istraga-u-beogradu",
+  "title": "Расследование загадочного преступления",
+  "summary": "Детективный диалог, опрос свидетелей, проверка алиби и поиск улик на месте происшествия.",
+  "level": "B1",
+  "lessonType": "speaking",
+  "topic": "Детектив и расследование",
+  "tags": [
+    "детектив",
+    "расследование",
+    "диалог",
+    "криминалистика"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1453873531674-215110116643?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Криминальная и детективная лексика"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "В детективных историях инспектор полиции (policijski inspektor) проводит расследование (istraga), опрашивает свидетелей (svedoci) и проверяет алиби (alibi)."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Сербский термин",
+            "Русский перевод",
+            "Пример в контексте"
+          ],
+          [
+            "mesto zločina",
+            "место преступления",
+            "Obezbediti mesto zločina"
+          ],
+          [
+            "dokaz / trag",
+            "улика, доказательство, след",
+            "Pronašli smo važne tragove"
+          ],
+          [
+            "osumnjičeni",
+            "подозреваемый",
+            "Saslušati osumnjičenog"
+          ],
+          [
+            "izjava svedoka",
+            "показания свидетеля",
+            "Zapisati izjavu svedoka"
+          ],
+          [
+            "rešiti slučaj",
+            "раскрыть дело",
+            "Inspektor će uskoro rešiti slučaj"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Вопросы во время допроса"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Следователь задает вопросы о времени и местонахождении, Gde ste bili u trenutku ubistva? (Где вы были в момент убийства?), Da li ste videli nekoga sumnjivog? (Видели ли вы кого-то подозрительного?)."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Слово svedok означает свидетель, а očevidac это свидетель очевидец."
+      }
+    ],
+    "markdown": "## Криминальная и детективная лексика\n\nВ детективных историях инспектор полиции (policijski inspektor) проводит расследование (istraga), опрашивает свидетелей (svedoci) и проверяет алиби (alibi).\n\n| Сербский термин | Русский перевод | Пример в контексте |\n| --- | --- | --- |\n| mesto zločina | место преступления | Obezbediti mesto zločina |\n| dokaz / trag | улика, доказательство, след | Pronašli smo važne tragove |\n| osumnjičeni | подозреваемый | Saslušati osumnjičenog |\n| izjava svedoka | показания свидетеля | Zapisati izjavu svedoka |\n| rešiti slučaj | раскрыть дело | Inspektor će uskoro rešiti slučaj |\n\n## Вопросы во время допроса\n\nСледователь задает вопросы о времени и местонахождении, Gde ste bili u trenutku ubistva? (Где вы были в момент убийства?), Da li ste videli nekoga sumnjivog? (Видели ли вы кого-то подозрительного?).\n\n> Слово svedok означает свидетель, а očevidac это свидетель очевидец.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как по-сербски называется улика или след на месте преступления",
+        "options": [
+          "trag",
+          "put",
+          "korak",
+          "znak"
+        ],
+        "answer": "trag",
+        "explanation": "Слово trag означает след или вещественное доказательство"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте слово во фразу инспектора «Gde je vaše ___ za sinoć»",
+        "context": "Imate li čvrsto ___ za vreme ubistva?",
+        "answer": "alibi",
+        "acceptedAnswers": [
+          "alibi"
+        ],
+        "explanation": "Слово alibi означает доказательство непричастности к преступлению"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Полиция нашла отпечатки пальцев на двери»",
+        "tokens": [
+          "Policija",
+          "je",
+          "pronašla",
+          "otiske",
+          "prstiju",
+          "na",
+          "vratima"
+        ],
+        "answer": "Policija je pronašla otiske prstiju na vratima",
+        "explanation": "Термин otisci prstiju означает отпечатки пальцев"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините детективные понятия с русским переводом",
+        "pairs": [
+          {
+            "left": "ubistvo",
+            "right": "убийство"
+          },
+          {
+            "left": "istraga",
+            "right": "расследование"
+          },
+          {
+            "left": "oružje",
+            "right": "оружие"
+          },
+          {
+            "left": "optužnica",
+            "right": "обвинительное заключение"
+          }
+        ],
+        "explanation": "Специальная лексика криминального расследования"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Свидетель утверждает что слышал выстрел»",
+        "context": "Свидетель утверждает что слышал выстрел.",
+        "answer": "Svedok tvrdi da je čuo pucanj.",
+        "referenceAnswer": "Svedok tvrdi da je čuo pucanj.",
+        "acceptedAnswers": [
+          "Svedok tvrdi da je čuo pucanj.",
+          "Svedok tvrdi da je cuo pucanj."
+        ],
+        "explanation": "Слово pucanj означает выстрел"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Inspektor Pavlović",
+          "avatar": "man",
+          "text": "Dobar dan, inspektor Pavlović. Vodim zvaničnu istragu o sinoćnjem ubistvu u vili.",
+          "choices": [
+            {
+              "label": "Dobar dan inspektore, ja sam komšija, video sam sumnjiv automobil.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Bio sam u svojoj kući preko puta, ali nisam čuo nikakve pucnje.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Inspektor Pavlović",
+          "avatar": "man",
+          "text": "To je vrlo važan podatak. Možete li opisati model i tačno vreme kada je auto prošao?",
+          "choices": [
+            {
+              "label": "Bio je to crni sedan bez upaljenih svetala, tačno oko ponoći.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Inspektor Pavlović",
+          "avatar": "man",
+          "text": "Da li možete potvrditi svoje alibi u periodu između jedanaest i jedan sat?",
+          "choices": [
+            {
+              "label": "Naravno, bio sam sa celom porodicom i gledali smo film.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Inspektor Pavlović",
+          "avatar": "man",
+          "text": "Hvala vam na saradnji sa policijom, ove informacije su ključne za zatvaranje slučaja.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

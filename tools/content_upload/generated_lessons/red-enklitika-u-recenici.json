@@ -1,0 +1,202 @@
+{
+  "slug": "red-enklitika-u-recenici",
+  "title": "Порядок энклитик в сербском предложении",
+  "summary": "Разбираем строгое правило второго места и цепочку следования кратких форм местоимений и глаголов.",
+  "level": "B1",
+  "lessonType": "grammar",
+  "topic": "Порядок слов",
+  "tags": [
+    "энклитики",
+    "порядок слов",
+    "синтаксис"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Железное правило второго места"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Энклитики это безударные слова, которые не могут начинать предложение и всегда примыкают ко первому ударному слову. Если в предложении собирается несколько энклитик сразу, они выстраиваются в строгом, неизменном порядке."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Позиция в цепочке",
+            "Что сюда входит",
+            "Примеры слов"
+          ],
+          [
+            "1. Вопросительная частица",
+            "частица li",
+            "li"
+          ],
+          [
+            "2. Глагол biti кроме je",
+            "формы sam, si, smo, ste, su",
+            "sam, si, smo, ste, su"
+          ],
+          [
+            "3. Местоимение в дативе",
+            "кому (mi, ti, mu, joj, nam, vam, im)",
+            "mu, ti, joj, nam"
+          ],
+          [
+            "4. Местоимение в аккузативе / генитиве",
+            "кого / чего (me, te, ga, je, nas, vas, ih)",
+            "ga, je, ih"
+          ],
+          [
+            "5. Возвратная частица",
+            "частица se",
+            "se"
+          ],
+          [
+            "6. Глагол связка je",
+            "форма третьего лица je (всегда в конце)",
+            "je"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Пример сложной цепочки"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Посмотри, как выстраивается предложение «Он мне её дал», On mi ju je dao. Сначала идет датив mi, затем аккузатив ju, затем связка je. Если сказать On je mi dao, это будет грубой ошибкой порядка слов."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Форма связки je всегда замыкает цепочку энклитик, в отличие от всех остальных форм глагола biti, которые стоят в самом начале."
+      }
+    ],
+    "markdown": "## Железное правило второго места\n\nЭнклитики это безударные слова, которые не могут начинать предложение и всегда примыкают ко первому ударному слову. Если в предложении собирается несколько энклитик сразу, они выстраиваются в строгом, неизменном порядке.\n\n| Позиция в цепочке | Что сюда входит | Примеры слов |\n| --- | --- | --- |\n| 1. Вопросительная частица | частица li | li |\n| 2. Глагол biti кроме je | формы sam, si, smo, ste, su | sam, si, smo, ste, su |\n| 3. Местоимение в дативе | кому (mi, ti, mu, joj, nam, vam, im) | mu, ti, joj, nam |\n| 4. Местоимение в аккузативе / генитиве | кого / чего (me, te, ga, je, nas, vas, ih) | ga, je, ih |\n| 5. Возвратная частица | частица se | se |\n| 6. Глагол связка je | форма третьего лица je (всегда в конце) | je |\n\n## Пример сложной цепочки\n\nПосмотри, как выстраивается предложение «Он мне её дал», On mi ju je dao. Сначала идет датив mi, затем аккузатив ju, затем связка je. Если сказать On je mi dao, это будет грубой ошибкой порядка слов.\n\n> Форма связки je всегда замыкает цепочку энклитик, в отличие от всех остальных форм глагола biti, которые стоят в самом начале.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая цепочка энклитик построена абсолютно правильно",
+        "options": [
+          "Dao sam mu ga juče",
+          "Dao mu sam ga juče",
+          "Dao ga sam mu juče",
+          "Dao sam ga mu juče"
+        ],
+        "answer": "Dao sam mu ga juče",
+        "explanation": "Сначала идет связка sam, затем датив mu, затем аккузатив ga"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте местоимение датива на правильное место во фразу «On ___ je rekao istinu»",
+        "context": "On ___ je rekao celu priču.",
+        "answer": "mi",
+        "acceptedAnswers": [
+          "mi",
+          "ti",
+          "mu",
+          "nam"
+        ],
+        "explanation": "Краткое местоимение датива встает перед связкой je"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Я ему это уже обещал»",
+        "tokens": [
+          "Obećao",
+          "sam",
+          "mu",
+          "to",
+          "već"
+        ],
+        "answer": "Obećao sam mu to već",
+        "explanation": "Связка sam идет перед кратким местоимением mu"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините категорию с её местом в цепочке энклитик",
+        "pairs": [
+          {
+            "left": "глагол sam / si / smo",
+            "right": "первая позиция после частицы li"
+          },
+          {
+            "left": "датив (mu, ti, mi)",
+            "right": "перед аккузативом"
+          },
+          {
+            "left": "аккузатив (ga, ih)",
+            "right": "после датива"
+          },
+          {
+            "left": "связка je",
+            "right": "в самом конце цепочки"
+          }
+        ],
+        "explanation": "Иерархия энклитик строго фиксирована"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Она мне это показала»",
+        "context": "Она мне это показала.",
+        "answer": "Ona mi je to pokazala.",
+        "referenceAnswer": "Ona mi je to pokazala.",
+        "acceptedAnswers": [
+          "Ona mi je to pokazala.",
+          "Pokazala mi je to."
+        ],
+        "explanation": "Датив mi идет перед глагольной связкой je"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Milan",
+          "avatar": "man",
+          "text": "Da li si poslao Marku onu poruku?",
+          "choices": [
+            {
+              "label": "Jesam, poslao sam mu je jutros.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Nisam još, poslaću mu je kasnije.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Milan",
+          "avatar": "man",
+          "text": "Super, onda sigurno već zna za sastanak.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Milan",
+          "avatar": "man",
+          "text": "Važi, samo nemoj da zaboraviš.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

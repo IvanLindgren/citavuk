@@ -1,0 +1,216 @@
+{
+  "slug": "prezent-glagola-biti",
+  "title": "Глагол biti в настоящем времени",
+  "summary": "Учимся говорить о себе, профессии и местоположении с помощью главного сербского глагола biti.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Глагол biti",
+  "tags": [
+    "глаголы",
+    "настоящее время",
+    "базовые фразы"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Самый главный глагол в сербском языке"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Глагол biti переводится как быть или являться. В русском языке мы обычно опускаем его в настоящем времени и говорим «я студент», но в сербском глагол связка обязателен всегда. Без него предложение останется незаконченным."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Местоимение",
+            "Краткая форма",
+            "Отрицательная форма",
+            "Пример"
+          ],
+          [
+            "ja",
+            "sam",
+            "nisam",
+            "Ja sam student"
+          ],
+          [
+            "ti",
+            "si",
+            "nisi",
+            "Ti si ovde"
+          ],
+          [
+            "on, ona, ono",
+            "je",
+            "nije",
+            "Ona je lekar"
+          ],
+          [
+            "mi",
+            "smo",
+            "nismo",
+            "Mi smo prijatelji"
+          ],
+          [
+            "vi",
+            "ste",
+            "niste",
+            "Vi ste ljubazni"
+          ],
+          [
+            "oni, one, ona",
+            "su",
+            "nisu",
+            "Oni su kod kuće"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Краткие формы и правило второго места"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Краткие формы сам, си, је не имеют собственного ударения и обычно занимают вторую смысловую позицию в предложении. Если опустить местоимение, на первое место встает другое важное слово."
+      },
+      {
+        "id": "t6",
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "Ja sam u Beogradu или просто U Beogradu sam",
+          "On je kod kuće или просто Kod kuće je",
+          "Mi smo spremni или просто Spremni smo"
+        ]
+      },
+      {
+        "id": "t7",
+        "type": "quote",
+        "text": "Отрицание пишется слитно в одно слово, например nisam, nisi, nije, nismo, niste, nisu."
+      }
+    ],
+    "markdown": "## Самый главный глагол в сербском языке\n\nГлагол biti переводится как быть или являться. В русском языке мы обычно опускаем его в настоящем времени и говорим «я студент», но в сербском глагол связка обязателен всегда. Без него предложение останется незаконченным.\n\n| Местоимение | Краткая форма | Отрицательная форма | Пример |\n| --- | --- | --- | --- |\n| ja | sam | nisam | Ja sam student |\n| ti | si | nisi | Ti si ovde |\n| on, ona, ono | je | nije | Ona je lekar |\n| mi | smo | nismo | Mi smo prijatelji |\n| vi | ste | niste | Vi ste ljubazni |\n| oni, one, ona | su | nisu | Oni su kod kuće |\n\n## Краткие формы и правило второго места\n\nКраткие формы сам, си, је не имеют собственного ударения и обычно занимают вторую смысловую позицию в предложении. Если опустить местоимение, на первое место встает другое важное слово., Ja sam u Beogradu или просто U Beogradu sam, On je kod kuće или просто Kod kuće je, Mi smo spremni или просто Spremni smo\n\n> Отрицание пишется слитно в одно слово, например nisam, nisi, nije, nismo, niste, nisu.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Выберите правильную форму глагола biti для фразы «Ja ___ student»",
+        "options": [
+          "sam",
+          "si",
+          "je",
+          "smo"
+        ],
+        "answer": "sam",
+        "explanation": "Для местоимения первого лица ja используется краткая форма sam"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте отрицательную форму глагола biti в предложение",
+        "context": "Ana ___ kod kuće sada.",
+        "answer": "nije",
+        "acceptedAnswers": [
+          "nije"
+        ],
+        "explanation": "Для третьего лица единственного числа отрицание звучит nije"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы сейчас в Белграде»",
+        "tokens": [
+          "Mi",
+          "smo",
+          "sada",
+          "u",
+          "Beogradu"
+        ],
+        "answer": "Mi smo sada u Beogradu",
+        "explanation": "Краткая форма связки smo стоит на второй смысловой позиции"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините местоимения с их формами глагола biti",
+        "pairs": [
+          {
+            "left": "ja",
+            "right": "sam"
+          },
+          {
+            "left": "ti",
+            "right": "si"
+          },
+          {
+            "left": "mi",
+            "right": "smo"
+          },
+          {
+            "left": "oni",
+            "right": "su"
+          }
+        ],
+        "explanation": "Каждому лицу соответствует своя форма глагола связки"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский язык фразу «Они наши друзья»",
+        "context": "Они наши друзья.",
+        "answer": "Oni su naši prijatelji.",
+        "referenceAnswer": "Oni su naši prijatelji.",
+        "acceptedAnswers": [
+          "Oni su naši prijatelji.",
+          "Oni su nasi prijatelji."
+        ],
+        "explanation": "Во множественном числе третьего лица используется форма su"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Marko",
+          "avatar": "man",
+          "text": "Zdravo! Da li si ti novi student ovde?",
+          "choices": [
+            {
+              "label": "Da, ja sam novi student.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Ne, nisam student, ja sam profesor.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Marko",
+          "avatar": "man",
+          "text": "Drago mi je! Ja sam Marko, živim u Beogradu.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Marko",
+          "avatar": "man",
+          "text": "Oprostite profesore, drago mi je što smo se upoznali.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

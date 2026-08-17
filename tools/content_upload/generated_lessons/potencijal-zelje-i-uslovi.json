@@ -1,0 +1,208 @@
+{
+  "slug": "potencijal-zelje-i-uslovi",
+  "title": "Сослагательное наклонение с частицей bi",
+  "summary": "Учимся выражать вежливые просьбы, желания и гипотетические условия с помощью потенциала.",
+  "level": "B1",
+  "lessonType": "grammar",
+  "topic": "Потенциал",
+  "tags": [
+    "глаголы",
+    "наклонение",
+    "потенциал",
+    "условия"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Что такое потенциал и как он устроен"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Потенциал (сослагательное или условное наклонение) выражает возможное действие, вежливую просьбу или заветное желание. Он строится из формы аориста глагола biti (bih, bi, bi, bismo, biste, bi) и L-причастия смыслового глагола."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Лицо",
+            "Форма частицы bi",
+            "Пример",
+            "Русский перевод"
+          ],
+          [
+            "ja",
+            "bih",
+            "ja bih radio",
+            "я бы работал"
+          ],
+          [
+            "ti",
+            "bi",
+            "ti bi radio",
+            "ты бы работал"
+          ],
+          [
+            "on, ona, ono",
+            "bi",
+            "on bi radio",
+            "он бы работал"
+          ],
+          [
+            "mi",
+            "bismo",
+            "mi bismo radili",
+            "мы бы работали"
+          ],
+          [
+            "vi",
+            "biste",
+            "vi biste radili",
+            "вы бы работали"
+          ],
+          [
+            "oni, one, ona",
+            "bi",
+            "oni bi radili",
+            "они бы работали"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Вежливые фразы в кафе и магазине"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Вместо прямого «хочу» сербы очень любят использовать мягкий потенциал ja bih, Ja bih želeo kafu (Я бы хотел кофе), Voleo bih da vidim jelovnik (Я бы с удовольствием посмотрел меню)."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Частица bih используется только с я, а форма bismo только с мы. В третьем лице множественного числа используется bi, а не бише."
+      }
+    ],
+    "markdown": "## Что такое потенциал и как он устроен\n\nПотенциал (сослагательное или условное наклонение) выражает возможное действие, вежливую просьбу или заветное желание. Он строится из формы аориста глагола biti (bih, bi, bi, bismo, biste, bi) и L-причастия смыслового глагола.\n\n| Лицо | Форма частицы bi | Пример | Русский перевод |\n| --- | --- | --- | --- |\n| ja | bih | ja bih radio | я бы работал |\n| ti | bi | ti bi radio | ты бы работал |\n| on, ona, ono | bi | on bi radio | он бы работал |\n| mi | bismo | mi bismo radili | мы бы работали |\n| vi | biste | vi biste radili | вы бы работали |\n| oni, one, ona | bi | oni bi radili | они бы работали |\n\n## Вежливые фразы в кафе и магазине\n\nВместо прямого «хочу» сербы очень любят использовать мягкий потенциал ja bih, Ja bih želeo kafu (Я бы хотел кофе), Voleo bih da vidim jelovnik (Я бы с удовольствием посмотрел меню).\n\n> Частица bih используется только с я, а форма bismo только с мы. В третьем лице множественного числа используется bi, а не бише.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма частицы bi подходит для местоимения mi",
+        "options": [
+          "bismo",
+          "bih",
+          "biste",
+          "bi"
+        ],
+        "answer": "bismo",
+        "explanation": "Для первого лица множественного числа используется форма bismo"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму частицы bi для местоимения ja в вежливую просьбу",
+        "context": "Ja ___ želeo jednu kafu sa mlekom.",
+        "answer": "bih",
+        "acceptedAnswers": [
+          "bih"
+        ],
+        "explanation": "Для первого лица единственного числа ja частица звучит bih"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы бы с удовольствием пришли к вам в гости»",
+        "tokens": [
+          "Rado",
+          "bismo",
+          "došli",
+          "kod",
+          "vas"
+        ],
+        "answer": "Rado bismo došli kod vas",
+        "explanation": "Форма bismo došli согласуется с местоимением mi"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините местоимение с правильной формой частицы потенциала",
+        "pairs": [
+          {
+            "left": "ja",
+            "right": "bih"
+          },
+          {
+            "left": "ti",
+            "right": "bi"
+          },
+          {
+            "left": "mi",
+            "right": "bismo"
+          },
+          {
+            "left": "vi",
+            "right": "biste"
+          }
+        ],
+        "explanation": "Каждому лицу соответствует своя форма сослагательной частицы"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Что бы вы сделали на моем месте»",
+        "context": "Что бы вы сделали на моем месте?",
+        "answer": "Šta biste vi uradili na mom mestu?",
+        "referenceAnswer": "Šta biste vi uradili na mom mestu?",
+        "acceptedAnswers": [
+          "Šta biste vi uradili na mom mestu?",
+          "Šta biste uradili na mom mestu?",
+          "Sta biste uradili na mom mestu?"
+        ],
+        "explanation": "Для вежливого обращения на вы используется форма biste uradili"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Konobarica",
+          "avatar": "woman",
+          "text": "Izvolite, šta biste želeli da poručite?",
+          "choices": [
+            {
+              "label": "Ja bih popio čaj od nane.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Mi bismo uzeli domaći kolač i dve kafe.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Konobarica",
+          "avatar": "woman",
+          "text": "Odlično, čaj stiže sa medom i limunom.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Konobarica",
+          "avatar": "woman",
+          "text": "Hvala na porudžbini, donosim za par minuta!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

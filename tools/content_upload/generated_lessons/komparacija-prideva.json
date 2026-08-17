@@ -1,0 +1,207 @@
+{
+  "slug": "komparacija-prideva",
+  "title": "Степени сравнения прилагательных",
+  "summary": "Учимся образовывать сравнительную и превосходную степени прилагательных, а также сравнивать предметы.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Степени сравнения",
+  "tags": [
+    "прилагательные",
+    "степени сравнения",
+    "компаратив"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как образуется сравнительная степень"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Сравнительная степень (компаратив) образуется с помощью суффиксов -iji, -ji или -ši. Самый продуктивный суффикс это -iji, nov дает noviji, star дает stariji, pametan дает pametniji."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Положительная степень",
+            "Сравнительная степень",
+            "Превосходная степень",
+            "Русский перевод"
+          ],
+          [
+            "nov",
+            "noviji",
+            "najnoviji",
+            "новый, новее, самый новый"
+          ],
+          [
+            "lep",
+            "lepši",
+            "najlepši",
+            "красивый, красивее, самый красивый"
+          ],
+          [
+            "mlad",
+            "mlađi",
+            "najmlađi",
+            "молодой, моложе, самый молодой"
+          ],
+          [
+            "dobar",
+            "bolji",
+            "najbolji",
+            "хороший, лучше, самый лучший"
+          ],
+          [
+            "veliki",
+            "veći",
+            "najveći",
+            "большой, больше, самый большой"
+          ],
+          [
+            "mali",
+            "manji",
+            "najmanji",
+            "маленький, меньше, самый маленький"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Превосходная степень с приставкой naj-"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Превосходная степень (суперлатив) образуется предельно просто, к форме сравнительной степени добавляется приставка naj-. Она всегда пишется слитно в одно слово, najbolji, najveći, najlepši."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Для сравнения двух предметов используется союз od или nego, Beograd je veći od Novog Sada или Beograd je veći nego Novi Sad."
+      }
+    ],
+    "markdown": "## Как образуется сравнительная степень\n\nСравнительная степень (компаратив) образуется с помощью суффиксов -iji, -ji или -ši. Самый продуктивный суффикс это -iji, nov дает noviji, star дает stariji, pametan дает pametniji.\n\n| Положительная степень | Сравнительная степень | Превосходная степень | Русский перевод |\n| --- | --- | --- | --- |\n| nov | noviji | najnoviji | новый, новее, самый новый |\n| lep | lepši | najlepši | красивый, красивее, самый красивый |\n| mlad | mlađi | najmlađi | молодой, моложе, самый молодой |\n| dobar | bolji | najbolji | хороший, лучше, самый лучший |\n| veliki | veći | najveći | большой, больше, самый большой |\n| mali | manji | najmanji | маленький, меньше, самый маленький |\n\n## Превосходная степень с приставкой naj-\n\nПревосходная степень (суперлатив) образуется предельно просто, к форме сравнительной степени добавляется приставка naj-. Она всегда пишется слитно в одно слово, najbolji, najveći, najlepši.\n\n> Для сравнения двух предметов используется союз od или nego, Beograd je veći od Novog Sada или Beograd je veći nego Novi Sad.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма сравнительной степени у слова star",
+        "options": [
+          "stariji",
+          "starši",
+          "starji",
+          "stari"
+        ],
+        "answer": "stariji",
+        "explanation": "Прилагательное star образует компаратив с суффиксом -iji"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму превосходной степени от слова dobar",
+        "context": "On je ___ student u celoj grupi.",
+        "answer": "najbolji",
+        "acceptedAnswers": [
+          "najbolji"
+        ],
+        "explanation": "Превосходная степень от dobar образуется как najbolji"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Этот дом больше чем наш»",
+        "tokens": [
+          "Ova",
+          "kuća",
+          "je",
+          "veća",
+          "od",
+          "naše"
+        ],
+        "answer": "Ova kuća je veća od naše",
+        "explanation": "Сравнение с предлогом od требует генитива od naše"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините начальную форму с неправильной сравнительной степенью",
+        "pairs": [
+          {
+            "left": "dobar",
+            "right": "bolji"
+          },
+          {
+            "left": "zao",
+            "right": "gori"
+          },
+          {
+            "left": "veliki",
+            "right": "veći"
+          },
+          {
+            "left": "mali",
+            "right": "manji"
+          }
+        ],
+        "explanation": "Эти четыре прилагательных образуют компаратив от другой основы"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Это самый красивый город»",
+        "context": "Это самый красивый город.",
+        "answer": "Ovo je najlepši grad.",
+        "referenceAnswer": "Ovo je najlepši grad.",
+        "acceptedAnswers": [
+          "Ovo je najlepši grad.",
+          "Ovo je najlepsi grad."
+        ],
+        "explanation": "Превосходная степень слова lep звучит najlepši"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Tanja",
+          "avatar": "woman",
+          "text": "Koji ti se grad više sviđa, Niš ili Novi Sad?",
+          "choices": [
+            {
+              "label": "Novi Sad mi je mirniji i lepši.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Niš ima bolju hranu i stariju tvrđavu.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Tanja",
+          "avatar": "woman",
+          "text": "Jeste, Dunav i Petrovaradin daju poseban šarm.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Tanja",
+          "avatar": "woman",
+          "text": "Apsolutno, južnjačka kuhinja je neprevaziđena!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

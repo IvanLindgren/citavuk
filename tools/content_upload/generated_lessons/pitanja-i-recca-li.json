@@ -1,0 +1,198 @@
+{
+  "slug": "pitanja-i-recca-li",
+  "title": "Вопросы в сербском языке и частица li",
+  "summary": "Учимся правильно задавать вопросы в сербском языке с помощью конструкций Da li и частицы li.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Вопросительные предложения",
+  "tags": [
+    "вопросы",
+    "частица ли",
+    "синтаксис"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Два способа задать общий вопрос"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Общий вопрос, на который можно ответить да или нет, строится двумя путями. Первый и самый популярный путь в разговорной речи это конструкция Da li в начале предложения. Второй путь это постановка глагола на первое место с частицей li следом."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Способ",
+            "Схема построения",
+            "Пример",
+            "Перевод"
+          ],
+          [
+            "Конструкция Da li",
+            "Da li + глагол + остальное",
+            "Da li govoriš srpski?",
+            "Ты говоришь по-сербски?"
+          ],
+          [
+            "Частица li",
+            "Глагол + li + остальное",
+            "Govoriš li srpski?",
+            "Говоришь ли по-сербски?"
+          ],
+          [
+            "Вопрос с глаголом biti",
+            "Da li si / Jesi li",
+            "Jesi li spreman?",
+            "Ты готов?"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Особый вопрос с вопросительными словами"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Если вопрос содержит вопросительное слово, частицы da и li не требуются. Вопросительное слово просто встает в самое начало предложения."
+      },
+      {
+        "id": "t6",
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "Ko je to? (Кто это?)",
+          "Šta radiš? (Что ты делаешь?)",
+          "Gde živiš? (Где ты живешь?)",
+          "Kada polazi voz? (Когда отправляется поезд?)"
+        ]
+      },
+      {
+        "id": "t7",
+        "type": "quote",
+        "text": "В вопросах с частицей li глагол biti всегда ставится в полную ударную форму, например jesi li, jeste li, jesmo li."
+      }
+    ],
+    "markdown": "## Два способа задать общий вопрос\n\nОбщий вопрос, на который можно ответить да или нет, строится двумя путями. Первый и самый популярный путь в разговорной речи это конструкция Da li в начале предложения. Второй путь это постановка глагола на первое место с частицей li следом.\n\n| Способ | Схема построения | Пример | Перевод |\n| --- | --- | --- | --- |\n| Конструкция Da li | Da li + глагол + остальное | Da li govoriš srpski? | Ты говоришь по-сербски? |\n| Частица li | Глагол + li + остальное | Govoriš li srpski? | Говоришь ли по-сербски? |\n| Вопрос с глаголом biti | Da li si / Jesi li | Jesi li spreman? | Ты готов? |\n\n## Особый вопрос с вопросительными словами\n\nЕсли вопрос содержит вопросительное слово, частицы da и li не требуются. Вопросительное слово просто встает в самое начало предложения., Ko je to? (Кто это?), Šta radiš? (Что ты делаешь?), Gde živiš? (Где ты живешь?), Kada polazi voz? (Когда отправляется поезд?)\n\n> В вопросах с частицей li глагол biti всегда ставится в полную ударную форму, например jesi li, jeste li, jesmo li.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как правильно спросить «Ты пьешь кофе» через конструкцию Da li",
+        "options": [
+          "Da li piješ kafu?",
+          "Da li pije kafu?",
+          "Da li si pio kafu?",
+          "Da li piti kafu?"
+        ],
+        "answer": "Da li piješ kafu?",
+        "explanation": "После Da li идет личная форма настоящего времени для второго лица piješ"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте вопросительную частицу во фразу",
+        "context": "Znaš ___ gde je stanica?",
+        "answer": "li",
+        "acceptedAnswers": [
+          "li"
+        ],
+        "explanation": "Частица li ставится сразу после личного глагола znaš"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите вопрос «Где ты сейчас живешь»",
+        "tokens": [
+          "Gde",
+          "ti",
+          "sada",
+          "živiš"
+        ],
+        "answer": "Gde ti sada živiš",
+        "explanation": "Вопросительное слово gde занимает первую позицию"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините вопросительное слово с его значением",
+        "pairs": [
+          {
+            "left": "gde",
+            "right": "где"
+          },
+          {
+            "left": "kada",
+            "right": "когда"
+          },
+          {
+            "left": "zašto",
+            "right": "почему"
+          },
+          {
+            "left": "kako",
+            "right": "как"
+          }
+        ],
+        "explanation": "Каждое вопросительное слово отвечает за свой тип информации"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Ты готов» через частицу li",
+        "context": "Ты готов?",
+        "answer": "Jesi li spreman?",
+        "referenceAnswer": "Jesi li spreman?",
+        "acceptedAnswers": [
+          "Jesi li spreman?",
+          "Da li si spreman?"
+        ],
+        "explanation": "С частицей li используется полная форма глагола biti в виде Jesi li"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Stefan",
+          "avatar": "man",
+          "text": "Da li razumeš šta piše na tabli?",
+          "choices": [
+            {
+              "label": "Da, razumem skoro sve.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Ne, ne razumem ovu reč.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Stefan",
+          "avatar": "man",
+          "text": "Odlično ti ide srpski!",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Stefan",
+          "avatar": "man",
+          "text": "Nema problema, objasniću ti odmah.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "slug": "konstrukcija-da-prezent",
+  "title": "Конструкция da с настоящим временем",
+  "summary": "Разбираем главную особенность сербского синтаксиса, замену инфинитива личной формой глагола после союза da.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Конструкция da + Present",
+  "tags": [
+    "глаголы",
+    "синтаксис",
+    "модальность"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Почему в сербском избегают инфинитив"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "В русском языке после глаголов хочу, могу, люблю мы ставим инфинитив «хочу читать», «могу помочь». В сербском языке вместо инфинитива используется союз da вместе с личной формой глагола в настоящем времени."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Русская фраза",
+            "Сербский вариант с da + Present",
+            "Дословный смысл"
+          ],
+          [
+            "Я хочу читать",
+            "Želim da čitam",
+            "Хочу чтобы читаю"
+          ],
+          [
+            "Ты можешь помочь",
+            "Možeš da pomogneš",
+            "Можешь чтобы поможешь"
+          ],
+          [
+            "Мы любим путешествовать",
+            "Volimo da putujemo",
+            "Любим чтобы путешествуем"
+          ],
+          [
+            "Они должны учиться",
+            "Moraju da uče",
+            "Должны чтобы учатся"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Оба глагола согласуются с одним лицом"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Важное правило, оба глагола в предложении меняют окончание в зависимости от того, кто действует. Если говоришь о себе, оба глагола стоят в форме я, želim da radim. Если о друге, želi da radi."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Инфинитив после модальных глаголов понятен сербам, но в живой речи Сербии практически всегда звучит конструкция da с настоящим временем."
+      }
+    ],
+    "markdown": "## Почему в сербском избегают инфинитив\n\nВ русском языке после глаголов хочу, могу, люблю мы ставим инфинитив «хочу читать», «могу помочь». В сербском языке вместо инфинитива используется союз da вместе с личной формой глагола в настоящем времени.\n\n| Русская фраза | Сербский вариант с da + Present | Дословный смысл |\n| --- | --- | --- |\n| Я хочу читать | Želim da čitam | Хочу чтобы читаю |\n| Ты можешь помочь | Možeš da pomogneš | Можешь чтобы поможешь |\n| Мы любим путешествовать | Volimo da putujemo | Любим чтобы путешествуем |\n| Они должны учиться | Moraju da uče | Должны чтобы учатся |\n\n## Оба глагола согласуются с одним лицом\n\nВажное правило, оба глагола в предложении меняют окончание в зависимости от того, кто действует. Если говоришь о себе, оба глагола стоят в форме я, želim da radim. Если о друге, želi da radi.\n\n> Инфинитив после модальных глаголов понятен сербам, но в живой речи Сербии практически всегда звучит конструкция da с настоящим временем.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как сказать по-сербски «Я хочу спать»",
+        "options": [
+          "Želim da spavam",
+          "Želim spavati",
+          "Želi da spava",
+          "Želimo da spavamo"
+        ],
+        "answer": "Želim da spavam",
+        "explanation": "Оба глагола стоят в форме первого лица единственного числа"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте правильную форму второго глагола для местоимения mi",
+        "context": "Možemo ___ dođemo sutra.",
+        "answer": "da",
+        "acceptedAnswers": [
+          "da"
+        ],
+        "explanation": "Конструкция соединяется союзом da"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Они любят пить кофе»",
+        "tokens": [
+          "Oni",
+          "vole",
+          "da",
+          "piju",
+          "kafu"
+        ],
+        "answer": "Oni vole da piju kafu",
+        "explanation": "Оба глагола vole и piju стоят в третьем лице множественного числа"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините первую часть фразы с подходящим продолжением",
+        "pairs": [
+          {
+            "left": "Ja želim",
+            "right": "da učim"
+          },
+          {
+            "left": "Ti moraš",
+            "right": "da radiš"
+          },
+          {
+            "left": "Mi volimo",
+            "right": "da šetamo"
+          },
+          {
+            "left": "Oni mogu",
+            "right": "da pomognu"
+          }
+        ],
+        "explanation": "Лицо первого глагола совпадает с лицом второго глагола"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Ты должен знать это»",
+        "context": "Ты должен знать это.",
+        "answer": "Moraš da znaš to.",
+        "referenceAnswer": "Moraš da znaš to.",
+        "acceptedAnswers": [
+          "Moraš da znaš to.",
+          "Moras da znas to."
+        ],
+        "explanation": "Глагол morati и глагол znati согласуются во втором лице"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Ivana",
+          "avatar": "woman",
+          "text": "Da li želiš da popijemo kafu u centru?",
+          "choices": [
+            {
+              "label": "Rado, mogu da krenem odmah.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Nažalost moram da radim danas.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Ivana",
+          "avatar": "woman",
+          "text": "Super, nalazimo se ispred pozorišta.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Ivana",
+          "avatar": "woman",
+          "text": "Šteta, čujemo se onda za vikend.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

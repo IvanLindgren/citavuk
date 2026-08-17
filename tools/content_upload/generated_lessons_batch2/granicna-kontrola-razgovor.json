@@ -1,0 +1,223 @@
+{
+  "slug": "granicna-kontrola-razgovor",
+  "title": "Разговор на границе с пограничником",
+  "summary": "Учимся общаться на паспортном контроле и таможне при въезде в Сербию на автомобиле или автобусе.",
+  "level": "A2",
+  "lessonType": "speaking",
+  "topic": "На границе",
+  "tags": [
+    "диалог",
+    "граница",
+    "путешествия",
+    "разговорник"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как проходит пограничный контроль"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "При пересечении границы пограничный полицейский (granični policajac) проверяет паспорт (pasoš), регистрацию автомобиля (saobraćajna dozvola) и цель визита (cilj posete). Ответы должны быть четкими и вежливыми."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Сербская фраза",
+            "Русский перевод",
+            "Когда используется"
+          ],
+          [
+            "Vaša dokumenta molim",
+            "Ваши документы пожалуйста",
+            "Просьба офицера предъявить паспорт"
+          ],
+          [
+            "Putujem turistički",
+            "Еду как турист",
+            "Указание цели поездки"
+          ],
+          [
+            "Idem u posetu prijateljima",
+            "Еду в гости к друзьям",
+            "Частный визит к знакомым"
+          ],
+          [
+            "Nemam ništa za carinjenje",
+            "Мне нечего декларировать",
+            "Отсутствие товаров под пошлину"
+          ],
+          [
+            "Srećan put",
+            "Счастливого пути",
+            "Пожелание приятной дороги"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Полезные слова на таможне"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Слово prtljag означает багаж, roba означает товары или груз, а boravak означает пребывание в стране."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "При въезде на машине всегда держите наготове зеленое страховое свидетельство и права."
+      }
+    ],
+    "markdown": "## Как проходит пограничный контроль\n\nПри пересечении границы пограничный полицейский (granični policajac) проверяет паспорт (pasoš), регистрацию автомобиля (saobraćajna dozvola) и цель визита (cilj posete). Ответы должны быть четкими и вежливыми.\n\n| Сербская фраза | Русский перевод | Когда используется |\n| --- | --- | --- |\n| Vaša dokumenta molim | Ваши документы пожалуйста | Просьба офицера предъявить паспорт |\n| Putujem turistički | Еду как турист | Указание цели поездки |\n| Idem u posetu prijateljima | Еду в гости к друзьям | Частный визит к знакомым |\n| Nemam ništa za carinjenje | Мне нечего декларировать | Отсутствие товаров под пошлину |\n| Srećan put | Счастливого пути | Пожелание приятной дороги |\n\n## Полезные слова на таможне\n\nСлово prtljag означает багаж, roba означает товары или груз, а boravak означает пребывание в стране.\n\n> При въезде на машине всегда держите наготове зеленое страховое свидетельство и права.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как по-сербски называется заграничный паспорт",
+        "options": [
+          "pasoš",
+          "dozvola",
+          "karta",
+          "knjižica"
+        ],
+        "answer": "pasoš",
+        "explanation": "Слово pasoš означает паспорт"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте пропущенное слово во фразу пограничника «Vaša ___ molim»",
+        "context": "Vaša ___ molim vas.",
+        "answer": "dokumenta",
+        "acceptedAnswers": [
+          "dokumenta",
+          "pasose",
+          "pasoše"
+        ],
+        "explanation": "Документы во множественном числе среднего рода звучат dokumenta"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы едем в гости к друзьям в Белград»",
+        "tokens": [
+          "Idemo",
+          "u",
+          "posetu",
+          "prijateljima",
+          "u",
+          "Beograd"
+        ],
+        "answer": "Idemo u posetu prijateljima u Beograd",
+        "explanation": "Слово prijateljima стоит в форме датива адресата"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините сербское дорожное понятие с русским переводом",
+        "pairs": [
+          {
+            "left": "granični prelaz",
+            "right": "пограничный переход"
+          },
+          {
+            "left": "lični prtljag",
+            "right": "личный багаж"
+          },
+          {
+            "left": "saobraćajna dozvola",
+            "right": "документы на автомобиль"
+          },
+          {
+            "left": "cilj posete",
+            "right": "цель визита"
+          }
+        ],
+        "explanation": "Эти термины необходимы при прохождении контроля"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «У меня нет ничего для декларации»",
+        "context": "У меня нет ничего для декларации.",
+        "answer": "Nemam ništa za carinjenje.",
+        "referenceAnswer": "Nemam ništa za carinjenje.",
+        "acceptedAnswers": [
+          "Nemam ništa za carinjenje.",
+          "Nemam nista za prijavu."
+        ],
+        "explanation": "Фраза выражает отсутствие товаров подлежащих пошлине"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Granični policajac",
+          "avatar": "man",
+          "text": "Dobar dan, molim vas vaše pasoše i saobraćajnu dozvolu.",
+          "choices": [
+            {
+              "label": "Dobar dan, izvolite naša dokumenta.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Izvolite, putujemo kolima za Beograd.",
+              "nextId": "d2"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Granični policajac",
+          "avatar": "man",
+          "text": "Hvala. Koji je cilj vaše posete Srbiji i koliko ostajete?",
+          "choices": [
+            {
+              "label": "Putujemo turistički, ostajemo deset dana.",
+              "nextId": "d3"
+            },
+            {
+              "label": "Idemo u posetu rodbini za praznike.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Granični policajac",
+          "avatar": "man",
+          "text": "Imate li nešto od robe da prijavite carini?",
+          "choices": [
+            {
+              "label": "Ne, imamo samo lični prtljag i garderobu.",
+              "nextId": "d4"
+            },
+            {
+              "label": "Nemamo ništa, samo par sitnih poklona.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Granični policajac",
+          "avatar": "man",
+          "text": "Sve je u najboljem redu. Srećan put i prijatan boravak u Srbiji!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

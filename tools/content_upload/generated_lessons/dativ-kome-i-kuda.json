@@ -1,0 +1,188 @@
+{
+  "slug": "dativ-kome-i-kuda",
+  "title": "Дательный падеж направления и адресата",
+  "summary": "Учимся использовать датив для обозначения адресата действия и направления движения к человеку или объекту.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Датив",
+  "tags": [
+    "падежи",
+    "датив",
+    "адресат"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Кому и к чему направлено действие"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Датив отвечает на вопросы kome (кому) и čemu (чему). Он используется без предлога для обозначения адресата подарка, письма или сообщения, dajem knjigu drugu, pišem pismo majci."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Род существительного",
+            "Окончание датива",
+            "Пример",
+            "Перевод"
+          ],
+          [
+            "Мужской род",
+            "-u",
+            "bratu, prijatelju",
+            "брату, другу"
+          ],
+          [
+            "Женский род (-a)",
+            "-i",
+            "sestri, mami",
+            "сестре, маме"
+          ],
+          [
+            "Средний род",
+            "-u",
+            "detetu, selu",
+            "ребенку, деревне"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Предлоги направления с дативом"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "С дативом используются предлоги ka и k (по направлению к), а также prema (по отношению к или навстречу), idem ka školi, koračam prema izlazu."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Окончания датива в сербском языке полностью совпадают с окончаниями локатива, разница лишь в значении и предлогах."
+      }
+    ],
+    "markdown": "## Кому и к чему направлено действие\n\nДатив отвечает на вопросы kome (кому) и čemu (чему). Он используется без предлога для обозначения адресата подарка, письма или сообщения, dajem knjigu drugu, pišem pismo majci.\n\n| Род существительного | Окончание датива | Пример | Перевод |\n| --- | --- | --- | --- |\n| Мужской род | -u | bratu, prijatelju | брату, другу |\n| Женский род (-a) | -i | sestri, mami | сестре, маме |\n| Средний род | -u | detetu, selu | ребенку, деревне |\n\n## Предлоги направления с дативом\n\nС дативом используются предлоги ka и k (по направлению к), а также prema (по отношению к или навстречу), idem ka školi, koračam prema izlazu.\n\n> Окончания датива в сербском языке полностью совпадают с окончаниями локатива, разница лишь в значении и предлогах.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма слова drug нужна во фразе «Dajem knjigu ___»",
+        "options": [
+          "drugu",
+          "druga",
+          "drugom",
+          "drugi"
+        ],
+        "answer": "drugu",
+        "explanation": "Мужской род в дативе единственного числа оканчивается на -u"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте слово mama в форму датива",
+        "context": "Pišem pismo svojoj ___.",
+        "answer": "mami",
+        "acceptedAnswers": [
+          "mami"
+        ],
+        "explanation": "Женский род на -a в дативе получает окончание -i"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы идем по направлению к центру города»",
+        "tokens": [
+          "Idemo",
+          "polako",
+          "ka",
+          "centru",
+          "grada"
+        ],
+        "answer": "Idemo polako ka centru grada",
+        "explanation": "Предлог ka управляет формой датива centru"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините существительное с формой датива адресата",
+        "pairs": [
+          {
+            "left": "brat",
+            "right": "bratu"
+          },
+          {
+            "left": "sestra",
+            "right": "sestri"
+          },
+          {
+            "left": "lekar",
+            "right": "lekaru"
+          },
+          {
+            "left": "profesorka",
+            "right": "profesorki"
+          }
+        ],
+        "explanation": "Мужской род получает -u, женский -i"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Я звоню своему другу»",
+        "context": "Я звоню своему другу.",
+        "answer": "Zovem svog druga.",
+        "referenceAnswer": "Zovem svog druga.",
+        "acceptedAnswers": [
+          "Zovem svog druga.",
+          "Javljam se svom drugu."
+        ],
+        "explanation": "Глагол javiti se требует датива svom drugu, а zvati аккузатива svog druga"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Maja",
+          "avatar": "woman",
+          "text": "Kome nosiš ove lepe cvetove?",
+          "choices": [
+            {
+              "label": "Nosim cveće svojoj mami za rođendan.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Kupio sam cveće drugarici.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Maja",
+          "avatar": "woman",
+          "text": "Divan gest, sigurno će se obradovati!",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Maja",
+          "avatar": "woman",
+          "text": "Lepo od tebe, cveće je prelepo.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

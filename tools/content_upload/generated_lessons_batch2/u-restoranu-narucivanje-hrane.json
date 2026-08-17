@@ -1,0 +1,213 @@
+{
+  "slug": "u-restoranu-narucivanje-hrane",
+  "title": "Официант и заказ в сербской кафане",
+  "summary": "Учимся заказывать традиционные сербские блюда, общаться с официантом и просить счет.",
+  "level": "A2",
+  "lessonType": "speaking",
+  "topic": "В ресторане",
+  "tags": [
+    "кафе",
+    "еда",
+    "диалог",
+    "кафана"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Традиции сербского застолья"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Сербская кафана это не просто ресторан, а центр дружеского общения. Официант (konobar) всегда подскажет свежие блюда с гриля (roštilj) и домашние салаты."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Сербское блюдо или напиток",
+            "Описание",
+            "Как заказать"
+          ],
+          [
+            "ćevapi",
+            "жареные мясные колбаски",
+            "Deset ćevapa u somunu molim"
+          ],
+          [
+            "šopska salata",
+            "салат с огурцами, томатами и сыром",
+            "Jednu šopsku salatu"
+          ],
+          [
+            "kajmak",
+            "традиционные домашние сливки",
+            "Dodajte i malo kajmaka"
+          ],
+          [
+            "domaća kafa",
+            "сваренный по-восточному кофе",
+            "Dve domaće kafe sa šećerom"
+          ],
+          [
+            "račun",
+            "счет за ужин",
+            "Može li račun molim vas"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Вежливые формулы заказа"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Вместо прямого «хочу» принято говорить Ja bih želeo (Я бы хотел) или Donesite nam molim vas (Принесите нам пожалуйста)."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Чтобы попросить счет, достаточно сказать Može li račun или Račun molim vas."
+      }
+    ],
+    "markdown": "## Традиции сербского застолья\n\nСербская кафана это не просто ресторан, а центр дружеского общения. Официант (konobar) всегда подскажет свежие блюда с гриля (roštilj) и домашние салаты.\n\n| Сербское блюдо или напиток | Описание | Как заказать |\n| --- | --- | --- |\n| ćevapi | жареные мясные колбаски | Deset ćevapa u somunu molim |\n| šopska salata | салат с огурцами, томатами и сыром | Jednu šopsku salatu |\n| kajmak | традиционные домашние сливки | Dodajte i malo kajmaka |\n| domaća kafa | сваренный по-восточному кофе | Dve domaće kafe sa šećerom |\n| račun | счет за ужин | Može li račun molim vas |\n\n## Вежливые формулы заказа\n\nВместо прямого «хочу» принято говорить Ja bih želeo (Я бы хотел) или Donesite nam molim vas (Принесите нам пожалуйста).\n\n> Чтобы попросить счет, достаточно сказать Može li račun или Račun molim vas.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как вежливо попросить счет в кафе",
+        "options": [
+          "Može li račun molim vas",
+          "Daj mi pare",
+          "Gde je novac",
+          "Koliko ja koštam"
+        ],
+        "answer": "Može li račun molim vas",
+        "explanation": "Формула Može li račun общепринята во всех заведениях"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму вежливого заказа «Ja ___ želeo pljeskavicu»",
+        "context": "Ja ___ želeo jednu pljeskavicu sa lukom.",
+        "answer": "bih",
+        "acceptedAnswers": [
+          "bih"
+        ],
+        "explanation": "Для местоимения первого лица ja частица звучит bih"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Принесите нам две минеральные воды пожалуйста»",
+        "tokens": [
+          "Donesite",
+          "nam",
+          "dve",
+          "kisele",
+          "vode",
+          "molim"
+        ],
+        "answer": "Donesite nam dve kisele vode molim",
+        "explanation": "Сербское kisela voda означает газированную минеральную воду"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините сербские кулинарные слова с переводом",
+        "pairs": [
+          {
+            "left": "roštilj",
+            "right": "мясо на гриле"
+          },
+          {
+            "left": "somun",
+            "right": "традиционная лепешка"
+          },
+          {
+            "left": "kisela voda",
+            "right": "минеральная газированная вода"
+          },
+          {
+            "left": "napojnica",
+            "right": "чаевые официанту"
+          }
+        ],
+        "explanation": "Эти слова постоянно встречаются в меню ресторанов"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Что вы можете нам порекомендовать»",
+        "context": "Что вы можете нам порекомендовать?",
+        "answer": "Šta možete da nam preporučite?",
+        "referenceAnswer": "Šta možete da nam preporučite?",
+        "acceptedAnswers": [
+          "Šta možete da nam preporučite?",
+          "Sta mozete da nam preporucite?"
+        ],
+        "explanation": "Конструкция с da + Present естественна при заказе"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Dobro veče i dobrodošli! Jeste li spremni da poručite?",
+          "choices": [
+            {
+              "label": "Jesmo, šta nam preporučujete od roštilja?",
+              "nextId": "d2"
+            },
+            {
+              "label": "Donesite nam za početak šopsku salatu i rakiju.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Domaća pljeskavica na kajmaku i ćevapi su nam danas odlični.",
+          "choices": [
+            {
+              "label": "Uzećemo jednu porciju ćevapa u toplom somunu.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Stiže hladna dunjevača i sveža salata sa domaćim sirom.",
+          "choices": [
+            {
+              "label": "Odlično, a posle toga ćemo poručiti i glavno jelo.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Sve stiže za desetak minuta, uživajte u prijatnoj večeri!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

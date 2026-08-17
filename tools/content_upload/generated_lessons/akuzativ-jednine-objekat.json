@@ -1,0 +1,194 @@
+{
+  "slug": "akuzativ-jednine-objekat",
+  "title": "Аккузатив единственного числа и прямой объект",
+  "summary": "Учимся называть прямое дополнение в винительном падеже при покупках, заказе еды и описании действий.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Аккузатив",
+  "tags": [
+    "падежи",
+    "аккузатив",
+    "объект"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Что такое аккузатив и когда он нужен"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Аккузатив отвечает на вопросы koga (кого) и šta (что). Это падеж прямого объекта, на который направлено действие глагола, vidim druga, pijem kafu, čitam pismo."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Род существительного",
+            "Начальная форма",
+            "Форма аккузатива",
+            "Пример"
+          ],
+          [
+            "Женский род (-a)",
+            "kafa, knjiga",
+            "kafu, knjigu (-u)",
+            "Pijem kafu"
+          ],
+          [
+            "Мужской неодушевленный",
+            "grad, hleb",
+            "grad, hleb (без изменений)",
+            "Kupujem hleb"
+          ],
+          [
+            "Мужской одушевленный",
+            "brat, student",
+            "brata, studenta (-a)",
+            "Vidim brata"
+          ],
+          [
+            "Средний род",
+            "more, pismo",
+            "more, pismo (без изменений)",
+            "Čitam pismo"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Главное отличие мужского рода"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Неодушевленные предметы мужского рода в аккузативе остаются такими же, как в именительном падеже, gledam film, kupujem sto. Но одушевленные существительные получают окончание а, poznajem Marka, čekam lekara."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Женский род на а в аккузативе всегда меняет окончание на у, например kafa дает kafu, voda дает vodu, soba дает sobu."
+      }
+    ],
+    "markdown": "## Что такое аккузатив и когда он нужен\n\nАккузатив отвечает на вопросы koga (кого) и šta (что). Это падеж прямого объекта, на который направлено действие глагола, vidim druga, pijem kafu, čitam pismo.\n\n| Род существительного | Начальная форма | Форма аккузатива | Пример |\n| --- | --- | --- | --- |\n| Женский род (-a) | kafa, knjiga | kafu, knjigu (-u) | Pijem kafu |\n| Мужской неодушевленный | grad, hleb | grad, hleb (без изменений) | Kupujem hleb |\n| Мужской одушевленный | brat, student | brata, studenta (-a) | Vidim brata |\n| Средний род | more, pismo | more, pismo (без изменений) | Čitam pismo |\n\n## Главное отличие мужского рода\n\nНеодушевленные предметы мужского рода в аккузативе остаются такими же, как в именительном падеже, gledam film, kupujem sto. Но одушевленные существительные получают окончание а, poznajem Marka, čekam lekara.\n\n> Женский род на а в аккузативе всегда меняет окончание на у, например kafa дает kafu, voda дает vodu, soba дает sobu.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма слова kafa нужна во фразе «Molim vas jednu ___»",
+        "options": [
+          "kafu",
+          "kafa",
+          "kafe",
+          "kafi"
+        ],
+        "answer": "kafu",
+        "explanation": "Женский род в аккузативе единственного числа оканчивается на -u"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте одушевленное существительное drug в аккузатив",
+        "context": "Čekam svog ___ ispred škole.",
+        "answer": "druga",
+        "acceptedAnswers": [
+          "druga"
+        ],
+        "explanation": "Одушевленный мужской род в аккузативе получает окончание -a"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Я покупаю свежий хлеб в пекарне»",
+        "tokens": [
+          "Kupujem",
+          "svež",
+          "hleb",
+          "u",
+          "pekari"
+        ],
+        "answer": "Kupujem svež hleb u pekari",
+        "explanation": "Неодушевленный предмет hleb сохраняет начальную форму"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините начальную форму слова с его аккузативом",
+        "pairs": [
+          {
+            "left": "knjiga",
+            "right": "knjigu"
+          },
+          {
+            "left": "lekar",
+            "right": "lekara"
+          },
+          {
+            "left": "sok",
+            "right": "sok"
+          },
+          {
+            "left": "pismo",
+            "right": "pismo"
+          }
+        ],
+        "explanation": "Женский род дает -u, одушевленный мужской -a, средний и неодушевленный мужской не меняются"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Я вижу твоего брата»",
+        "context": "Я вижу твоего брата.",
+        "answer": "Vidim tvog brata.",
+        "referenceAnswer": "Vidim tvog brata.",
+        "acceptedAnswers": [
+          "Vidim tvog brata.",
+          "Vidim tvoga brata."
+        ],
+        "explanation": "И местоимение tvog и существительное brata стоят в аккузативе"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Dobar dan! Šta želite da popijete?",
+          "choices": [
+            {
+              "label": "Molim vas jednu kiselu vodu i kafu.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Želim hladan sok od jabuke.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Stiže odmah, izvolite sesti ovde.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Konobar",
+          "avatar": "man",
+          "text": "Odličan izbor, donosim za minut.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

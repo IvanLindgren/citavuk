@@ -1,0 +1,208 @@
+{
+  "slug": "stokavsko-narecje-i-standardni-srpski",
+  "title": "Štokavsko narečje i osnova standardnog jezika",
+  "summary": "Razmatramo dijalekatsku podelu srpskog jezika, razliku između ekavice i ijekavice i normu standardnog govora.",
+  "level": "B2",
+  "lessonType": "grammar",
+  "topic": "Dijalektologija",
+  "tags": [
+    "dijalekti",
+    "štokavski",
+    "ekavica",
+    "ijekavica"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Štokavsko narečje kao temelj standarda"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Južnoslovenski govori se prema upitnoj zamenici šta ili što dele na štokavsko, čakavsko i kajkavsko narečje. Standardni srpski jezik zasniva se na novoštokavskim govorima, pre svega na istočnohercegovačkom i šumadijsko-vojvođanskom dijalektu."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Izgovor starog glasa jat",
+            "Ekavski izgovor",
+            "Ijekavski izgovor",
+            "Primer reči"
+          ],
+          [
+            "Kratak slog",
+            "mleko, pesma",
+            "mlijeko, pjesma",
+            "dete / dijete, deca / djeca"
+          ],
+          [
+            "Dug slog",
+            "reka, vreme",
+            "rijeka, vrijeme",
+            "vreme / vrijeme"
+          ],
+          [
+            "Ispred glasa o",
+            "video, voleo",
+            "vidio, volio",
+            "hteo / htio"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Ravnopravnost ekavice i ijekavice"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "U srpskom književnom standardu i ekavski i ijekavski izgovor su potpuno ravnopravni. Ekavica preovladava u Srbiji, dok je ijekavica uobičajena u Republici Srpskoj i Crnoj Gori."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Važno pravilo u tekstu je doslednost, ne treba mešati ekavske i ijekavske oblike unutar istog teksta."
+      }
+    ],
+    "markdown": "## Štokavsko narečje kao temelj standarda\n\nJužnoslovenski govori se prema upitnoj zamenici šta ili što dele na štokavsko, čakavsko i kajkavsko narečje. Standardni srpski jezik zasniva se na novoštokavskim govorima, pre svega na istočnohercegovačkom i šumadijsko-vojvođanskom dijalektu.\n\n| Izgovor starog glasa jat | Ekavski izgovor | Ijekavski izgovor | Primer reči |\n| --- | --- | --- | --- |\n| Kratak slog | mleko, pesma | mlijeko, pjesma | dete / dijete, deca / djeca |\n| Dug slog | reka, vreme | rijeka, vrijeme | vreme / vrijeme |\n| Ispred glasa o | video, voleo | vidio, volio | hteo / htio |\n\n## Ravnopravnost ekavice i ijekavice\n\nU srpskom književnom standardu i ekavski i ijekavski izgovor su potpuno ravnopravni. Ekavica preovladava u Srbiji, dok je ijekavica uobičajena u Republici Srpskoj i Crnoj Gori.\n\n> Važno pravilo u tekstu je doslednost, ne treba mešati ekavske i ijekavske oblike unutar istog teksta.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Koje narečje je uzeto za osnovu savremenog srpskog književnog jezika",
+        "options": [
+          "Štokavsko narečje",
+          "Kajkavsko narečje",
+          "Čakavsko narečje",
+          "Torlačko narečje"
+        ],
+        "answer": "Štokavsko narečje",
+        "explanation": "Novoštokavski dijalekti čine temelj standardnog jezika"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Prebacite reč mleko u ijekavski izgovor",
+        "context": "Kupio sam sveže ___ u prodavnici.",
+        "answer": "mlijeko",
+        "acceptedAnswers": [
+          "mlijeko"
+        ],
+        "explanation": "Dugi glas jat u ijekavici daje -ije- pa reč glasi mlijeko"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Složite rečenicu o ravnopravnosti izgovora",
+        "tokens": [
+          "Ekavica",
+          "i",
+          "ijekavica",
+          "su",
+          "ravnopravne",
+          "u",
+          "standardu"
+        ],
+        "answer": "Ekavica i ijekavica su ravnopravne u standardu",
+        "explanation": "Oba izgovora su potpuno priznata u srpskoj normi"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Povežite ekavske oblike sa njihovim ijekavskim parnjacima",
+        "pairs": [
+          {
+            "left": "lepo",
+            "right": "lijepo"
+          },
+          {
+            "left": "vetar",
+            "right": "vjetar"
+          },
+          {
+            "left": "zvezda",
+            "right": "zvijezda"
+          },
+          {
+            "left": "čovek",
+            "right": "čovjek"
+          }
+        ],
+        "explanation": "U zavisnosti od dužine sloga javlja se je ili ije"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Prevedite na ruski rečenicu «Doslednost u izgovoru je osnovna norma standardnog jezika»",
+        "context": "Doslednost u izgovoru je osnovna norma standardnog jezika.",
+        "answer": "Последовательность в произношении является базовой нормой литературного языка.",
+        "referenceAnswer": "Последовательность в произношении является базовой нормой литературного языка.",
+        "acceptedAnswers": [
+          "Последовательность в произношении является базовой нормой литературного языка.",
+          "Последовательность в произношении это основная норма литературного языка."
+        ],
+        "explanation": "Reč doslednost znači posledovatelnost"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Primetila sam da u Banjaluci govore mlijeko a u Beogradu mleko.",
+          "choices": [
+            {
+              "label": "Da, to je razlika između ijekavice i ekavice.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Da li su oba oblika gramatički pravilna?",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Fascinantno je kako se govornici savršeno razumeju bez ikakvih prepreka.",
+          "choices": [
+            {
+              "label": "Razlike su samo u zameni starog glasa jat.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Potpuno su ravnopravni u srpskom književnom jeziku i medijima.",
+          "choices": [
+            {
+              "label": "To obogaćuje naš jezik i književnost.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Bogatstvo dijalekata i izgovora svedoči o dugoj i živoj istoriji jezika.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

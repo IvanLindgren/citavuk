@@ -1,0 +1,189 @@
+{
+  "slug": "lokativ-mesto-i-predlozi",
+  "title": "Локатив с предлогами u и na",
+  "summary": "Учимся отвечать на вопрос где и правильно использовать падеж места с предлогами u, na, o.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Локатив",
+  "tags": [
+    "падежи",
+    "локатив",
+    "место"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Падеж места и его предлоги"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Локатив отвечает на вопрос gde (где) и используется исключительно с предлогами. Основные предлоги места это u (внутри пространства) и na (на поверхности или на открытом мероприятии)."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Род существительного",
+            "Окончание локатива",
+            "Пример",
+            "Перевод"
+          ],
+          [
+            "Мужской род",
+            "-u",
+            "u gradu, na stolu",
+            "в городе, на столе"
+          ],
+          [
+            "Женский род (-a)",
+            "-i",
+            "u kući, u školi",
+            "в доме, в школе"
+          ],
+          [
+            "Средний род",
+            "-u",
+            "u selu, na moru",
+            "в деревне, на море"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Чередование согласных перед -i"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "В существительных женского рода согласные к, г, х перед окончанием и переходят в ц, з, с, ruka дает ruci, knjiga дает knjizi, svrha дает svrsi."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Простой ориентир, если вопрос «где», нужен локатив (u sobi), если вопрос «куда», нужен аккузатив движения (u sobu)."
+      }
+    ],
+    "markdown": "## Падеж места и его предлоги\n\nЛокатив отвечает на вопрос gde (где) и используется исключительно с предлогами. Основные предлоги места это u (внутри пространства) и na (на поверхности или на открытом мероприятии).\n\n| Род существительного | Окончание локатива | Пример | Перевод |\n| --- | --- | --- | --- |\n| Мужской род | -u | u gradu, na stolu | в городе, на столе |\n| Женский род (-a) | -i | u kući, u školi | в доме, в школе |\n| Средний род | -u | u selu, na moru | в деревне, на море |\n\n## Чередование согласных перед -i\n\nВ существительных женского рода согласные к, г, х перед окончанием и переходят в ц, з, с, ruka дает ruci, knjiga дает knjizi, svrha дает svrsi.\n\n> Простой ориентир, если вопрос «где», нужен локатив (u sobi), если вопрос «куда», нужен аккузатив движения (u sobu).",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма слова kuća нужна во фразе «Ja sam u ___»",
+        "options": [
+          "kući",
+          "kuću",
+          "kuće",
+          "kuća"
+        ],
+        "answer": "kući",
+        "explanation": "Женский род в локативе принимает окончание -i"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте слово Beograd в форму локатива",
+        "context": "Marko živi u ___ već pet godina.",
+        "answer": "Beogradu",
+        "acceptedAnswers": [
+          "Beogradu"
+        ],
+        "explanation": "Мужской род в локативе оканчивается на -u"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Книга лежит на столе»",
+        "tokens": [
+          "Knjiga",
+          "leži",
+          "na",
+          "stolu",
+          "u",
+          "sobi"
+        ],
+        "answer": "Knjiga leži na stolu u sobi",
+        "explanation": "Слова stolu и sobi стоят в форме локатива"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините существительное с его формой в локативе",
+        "pairs": [
+          {
+            "left": "škola",
+            "right": "u školi"
+          },
+          {
+            "left": "posao",
+            "right": "na poslu"
+          },
+          {
+            "left": "selo",
+            "right": "u selu"
+          },
+          {
+            "left": "stan",
+            "right": "u stanu"
+          }
+        ],
+        "explanation": "Мужской и средний род получают -u, женский -i"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Мы сейчас на работе»",
+        "context": "Мы сейчас на работе.",
+        "answer": "Mi smo sada na poslu.",
+        "referenceAnswer": "Mi smo sada na poslu.",
+        "acceptedAnswers": [
+          "Mi smo sada na poslu.",
+          "Sada smo na poslu."
+        ],
+        "explanation": "Устойчивое сочетание со словом posao требует предлога na и формы poslu"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "Gde se nalaziš sada, jesi li u centru?",
+          "choices": [
+            {
+              "label": "Nisam, još uvek sam u kancelariji na poslu.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Jesam, sedim u kafiću na trgu.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "U redu, javi se kada završiš sa poslom.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "Odlično, stižem za pet minuta!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

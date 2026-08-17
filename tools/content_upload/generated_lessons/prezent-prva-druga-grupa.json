@@ -1,0 +1,207 @@
+{
+  "slug": "prezent-prva-druga-grupa",
+  "title": "Настоящее время глаголов на -am и -im",
+  "summary": "Разбираем две самые популярные группы сербских глаголов настоящего времени и учимся спрягать их без ошибок.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Спряжение глаголов",
+  "tags": [
+    "глаголы",
+    "спряжение",
+    "настоящее время"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как устроено настоящее время в сербском языке"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Сербские глаголы в настоящем времени делятся на три основные группы по гласному в окончаниях. Две самые распространенные группы это глаголы на а и глаголы на и. Запомнить их очень просто по форме первого лица я."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Лицо",
+            "Группа -am (gledati)",
+            "Группа -im (raditi)",
+            "Окончание"
+          ],
+          [
+            "ja",
+            "gledam",
+            "radim",
+            "-m"
+          ],
+          [
+            "ti",
+            "gledaš",
+            "radiš",
+            "-š"
+          ],
+          [
+            "on, ona, ono",
+            "gleda",
+            "radi",
+            "гласный основы"
+          ],
+          [
+            "mi",
+            "gledamo",
+            "radimo",
+            "-mo"
+          ],
+          [
+            "vi",
+            "gledate",
+            "radite",
+            "-te"
+          ],
+          [
+            "oni, one, ona",
+            "gledaju",
+            "rade",
+            "-ju / -e"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Обрати внимание на третье лицо множественного числа"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "В форме они глаголы на ам получают окончание ају, например gledaju, slušaju, čitaju. А глаголы на им получают окончание е, например rade, govore, uče."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Местоимение ja или ti можно свободно опускать, потому что окончание глагола четко показывает, кто выполняет действие."
+      }
+    ],
+    "markdown": "## Как устроено настоящее время в сербском языке\n\nСербские глаголы в настоящем времени делятся на три основные группы по гласному в окончаниях. Две самые распространенные группы это глаголы на а и глаголы на и. Запомнить их очень просто по форме первого лица я.\n\n| Лицо | Группа -am (gledati) | Группа -im (raditi) | Окончание |\n| --- | --- | --- | --- |\n| ja | gledam | radim | -m |\n| ti | gledaš | radiš | -š |\n| on, ona, ono | gleda | radi | гласный основы |\n| mi | gledamo | radimo | -mo |\n| vi | gledate | radite | -te |\n| oni, one, ona | gledaju | rade | -ju / -e |\n\n## Обрати внимание на третье лицо множественного числа\n\nВ форме они глаголы на ам получают окончание ају, например gledaju, slušaju, čitaju. А глаголы на им получают окончание е, например rade, govore, uče.\n\n> Местоимение ja или ti можно свободно опускать, потому что окончание глагола четко показывает, кто выполняет действие.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как звучит форма глагола raditi для местоимения mi",
+        "options": [
+          "radimo",
+          "radim",
+          "radite",
+          "rade"
+        ],
+        "answer": "radimo",
+        "explanation": "Окончание первого лица множественного числа всегда содержит -mo"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте глагол čitati в форму для местоимения oni",
+        "context": "Oni svaki dan ___ novine.",
+        "answer": "čitaju",
+        "acceptedAnswers": [
+          "čitaju",
+          "citaju"
+        ],
+        "explanation": "Глаголы группы на ам во множественном числе третьего лица оканчиваются на ају"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы учим сербский язык»",
+        "tokens": [
+          "Učimo",
+          "srpski",
+          "jezik",
+          "svaki",
+          "dan"
+        ],
+        "answer": "Učimo srpski jezik svaki dan",
+        "explanation": "Глагол učimo стоит в форме первого лица множественного числа"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините инфинитив с формой первого лица ja",
+        "pairs": [
+          {
+            "left": "slušati",
+            "right": "slušam"
+          },
+          {
+            "left": "govoriti",
+            "right": "govorim"
+          },
+          {
+            "left": "misliti",
+            "right": "mislim"
+          },
+          {
+            "left": "pitati",
+            "right": "pitam"
+          }
+        ],
+        "explanation": "Форма первого лица оканчивается на -am или -im"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский фразу «Где вы работаете»",
+        "context": "Где вы работаете?",
+        "answer": "Gde radite?",
+        "referenceAnswer": "Gde radite?",
+        "acceptedAnswers": [
+          "Gde radite?",
+          "Gde vi radite?"
+        ],
+        "explanation": "Форма второго лица множественного числа для raditi это radite"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Jelena",
+          "avatar": "woman",
+          "text": "Šta radiš večeras?",
+          "choices": [
+            {
+              "label": "Čitam novu knjigu kod kuće.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Gledam zanimljiv film u bioskopu.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Jelena",
+          "avatar": "woman",
+          "text": "Lepo, i ja volim mirno veče uz knjigu.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Jelena",
+          "avatar": "woman",
+          "text": "Super! Koji film gledaš?",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

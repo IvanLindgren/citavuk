@@ -1,0 +1,214 @@
+{
+  "slug": "protesti-na-ulicama-beograda",
+  "title": "Протесты на улицах Белграда и гражданская позиция",
+  "summary": "Разбираем лексику гражданского активизма, митингов и обсуждения общественно-политических событий в Сербии.",
+  "level": "B1",
+  "lessonType": "speaking",
+  "topic": "Гражданское общество",
+  "tags": [
+    "политика",
+    "общество",
+    "диалог",
+    "белград"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1569098644584-210bcd375b59?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Лексика протестов и митингов в Сербии"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Уличные митинги и студенческие шествия важная часть общественной жизни Белграда. Люди выходят на улицы чтобы выразить несогласие с произволом властей, защитить свободные медиа и требовать справедливых выборов."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Сербское слово",
+            "Русский перевод",
+            "Контекст употребления"
+          ],
+          [
+            "protest / demonstracije",
+            "протест, демонстрация",
+            "Ulični protest u centru"
+          ],
+          [
+            "transparent",
+            "плакат, баннер",
+            "Nositi transparente sa porukama"
+          ],
+          [
+            "pištaljka",
+            "свисток",
+            "Simbol građanskog otpora"
+          ],
+          [
+            "sloboda medija",
+            "свобода средств информации",
+            "Ključni zahtev građana"
+          ],
+          [
+            "pravo na izbor",
+            "право выбора",
+            "Demokratsko pravo svakog građanina"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Как обсуждать общественные события"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Для выражения мнения используются обороты Smatram da (Считаю что), Ne slažem se sa (Не согласен с), Važno je da (Важно чтобы)."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Слово građanin означает гражданин, а građansko društvo переводится как гражданское общество."
+      }
+    ],
+    "markdown": "## Лексика протестов и митингов в Сербии\n\nУличные митинги и студенческие шествия важная часть общественной жизни Белграда. Люди выходят на улицы чтобы выразить несогласие с произволом властей, защитить свободные медиа и требовать справедливых выборов.\n\n| Сербское слово | Русский перевод | Контекст употребления |\n| --- | --- | --- |\n| protest / demonstracije | протест, демонстрация | Ulični protest u centru |\n| transparent | плакат, баннер | Nositi transparente sa porukama |\n| pištaljka | свисток | Simbol građanskog otpora |\n| sloboda medija | свобода средств информации | Ključni zahtev građana |\n| pravo na izbor | право выбора | Demokratsko pravo svakog građanina |\n\n## Как обсуждать общественные события\n\nДля выражения мнения используются обороты Smatram da (Считаю что), Ne slažem se sa (Не согласен с), Važno je da (Важно чтобы).\n\n> Слово građanin означает гражданин, а građansko društvo переводится как гражданское общество.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Что означает сербское слово transparent",
+        "options": [
+          "плакат или баннер",
+          "прозрачное стекло",
+          "городской транспорт",
+          "билет на поезд"
+        ],
+        "answer": "плакат или баннер",
+        "explanation": "Transparent на митинге это плакат с лозунгом"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте слово в лозунг «Tražimo slobodu ___»",
+        "context": "Građani zahtevaju slobodu ___ i govora.",
+        "answer": "medija",
+        "acceptedAnswers": [
+          "medija",
+          "štampe"
+        ],
+        "explanation": "Слово medija означает средства массовой информации"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Тысячи людей вышли сегодня на улицы»",
+        "tokens": [
+          "Hiljade",
+          "ljudi",
+          "je",
+          "izašlo",
+          "na",
+          "ulice"
+        ],
+        "answer": "Hiljade ljudi je izašlo na ulice",
+        "explanation": "Фраза выражает массовое участие в демонстрации"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините сербские выражения гражданской тематики с переводом",
+        "pairs": [
+          {
+            "left": "građanska prava",
+            "right": "гражданские права"
+          },
+          {
+            "left": "mirni protest",
+            "right": "мирный протест"
+          },
+          {
+            "left": "zahtevi naroda",
+            "right": "требования народа"
+          },
+          {
+            "left": "borba protiv korupcije",
+            "right": "борьба против коррупции"
+          }
+        ],
+        "explanation": "Эти термины часто звучат в независимых новостях"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Люди требуют справедливости и честных законов»",
+        "context": "Люди требуют справедливости и честных законов.",
+        "answer": "Ljudi traže pravdu i poštene zakone.",
+        "referenceAnswer": "Ljudi traže pravdu i poštene zakone.",
+        "acceptedAnswers": [
+          "Ljudi traže pravdu i poštene zakone.",
+          "Ljudi zahtevaju pravdu i poštene zakone."
+        ],
+        "explanation": "Глагол tražiti или zahtevati управляет аккузативом"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Nina",
+          "avatar": "woman",
+          "text": "Pogledaj koliko je naroda izašlo večeras ispred Narodne skupštine!",
+          "choices": [
+            {
+              "label": "Neverovatna energija, ljudi mirno traže slobodu i pravdu.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Građani žele da se zaustavi samovlašće i bezakonje.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Nina",
+          "avatar": "woman",
+          "text": "Svi nose pištaljke i transparente, atmosfera je puna nade i solidarnosti.",
+          "choices": [
+            {
+              "label": "Važno je da se glas naroda čuje glasno i dostojanstveno.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Nina",
+          "avatar": "woman",
+          "text": "Studenti i profesori stoje u prvim redovima za budućnost zemlje.",
+          "choices": [
+            {
+              "label": "Podrška mladima je najvažnija za stvarne promene.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Nina",
+          "avatar": "woman",
+          "text": "Ovo je zaista istorijski trenutak buđenja građanskog društva u Srbiji.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

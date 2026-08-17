@@ -1,0 +1,187 @@
+{
+  "slug": "rod-i-mnozina-imenica",
+  "title": "Род существительных и множественное число",
+  "summary": "Определяем мужской, женский и средний род существительных и учимся правильно образовывать множественное число.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Существительные",
+  "tags": [
+    "существительные",
+    "род",
+    "множественное число"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Три рода в сербском языке"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "В сербском языке род существительного легко определить по последней букве начальной формы. Мужской род чаще всего оканчивается на согласный, женский род на букву а, а средний род на буквы о или е."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Род",
+            "Окончание единственного числа",
+            "Окончание множественного числа",
+            "Пример"
+          ],
+          [
+            "Мужской",
+            "согласный (grad, prozor)",
+            "-i или -ovi/-evi (gradovi, prozori)",
+            "grad дает gradovi"
+          ],
+          [
+            "Женский",
+            "-a (kuća, knjiga)",
+            "-e (kuće, knjige)",
+            "kuća дает kuće"
+          ],
+          [
+            "Средний",
+            "-o / -e (selo, more)",
+            "-a (sela, mora)",
+            "selo дает sela"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Длинное множественное число мужского рода"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Односложные слова мужского рода во множественном числе обычно наращивают суффикс ови или еви. Например grad дает gradovi, sto дает stolovi, drug дает drugovi. После мягких согласных добавляется еви, например muž дает muževi."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Многосложные слова мужского рода суффикс не наращивают, они просто добавляют букву и, например prozor дает prozori, student дает studenti."
+      }
+    ],
+    "markdown": "## Три рода в сербском языке\n\nВ сербском языке род существительного легко определить по последней букве начальной формы. Мужской род чаще всего оканчивается на согласный, женский род на букву а, а средний род на буквы о или е.\n\n| Род | Окончание единственного числа | Окончание множественного числа | Пример |\n| --- | --- | --- | --- |\n| Мужской | согласный (grad, prozor) | -i или -ovi/-evi (gradovi, prozori) | grad дает gradovi |\n| Женский | -a (kuća, knjiga) | -e (kuće, knjige) | kuća дает kuće |\n| Средний | -o / -e (selo, more) | -a (sela, mora) | selo дает sela |\n\n## Длинное множественное число мужского рода\n\nОдносложные слова мужского рода во множественном числе обычно наращивают суффикс ови или еви. Например grad дает gradovi, sto дает stolovi, drug дает drugovi. После мягких согласных добавляется еви, например muž дает muževi.\n\n> Многосложные слова мужского рода суффикс не наращивают, они просто добавляют букву и, например prozor дает prozori, student дает studenti.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как звучит множественное число для слова grad",
+        "options": [
+          "gradovi",
+          "gradi",
+          "grade",
+          "grada"
+        ],
+        "answer": "gradovi",
+        "explanation": "Односложное слово мужского рода получает суффикс ови"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте слово knjiga во множественное число",
+        "context": "Na polici stoje nove ___.",
+        "answer": "knjige",
+        "acceptedAnswers": [
+          "knjige"
+        ],
+        "explanation": "Существительные женского рода на а во множественном числе получают окончание е"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Это красивые сербские города»",
+        "tokens": [
+          "To",
+          "su",
+          "lepi",
+          "srpski",
+          "gradovi"
+        ],
+        "answer": "To su lepi srpski gradovi",
+        "explanation": "Прилагательные согласуются с существительным gradovi во множественном числе"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините слово в единственном числе с формой множественного числа",
+        "pairs": [
+          {
+            "left": "selo",
+            "right": "sela"
+          },
+          {
+            "left": "more",
+            "right": "mora"
+          },
+          {
+            "left": "pismo",
+            "right": "pisma"
+          },
+          {
+            "left": "polje",
+            "right": "polja"
+          }
+        ],
+        "explanation": "Средний род во множественном числе оканчивается на а"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский язык фразу «Окна открыты»",
+        "context": "Окна открыты.",
+        "answer": "Prozori su otvoreni.",
+        "referenceAnswer": "Prozori su otvoreni.",
+        "acceptedAnswers": [
+          "Prozori su otvoreni."
+        ],
+        "explanation": "Слово prozor многосложное, поэтому во множественном числе будет prozori"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Nikola",
+          "avatar": "man",
+          "text": "Da li su ovi gradovi lepi za život?",
+          "choices": [
+            {
+              "label": "Jesu, to su divni gradovi.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Meni se više sviđaju mala sela.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Nikola",
+          "avatar": "man",
+          "text": "Slažem se, posebno Beograd i Novi Sad.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Nikola",
+          "avatar": "man",
+          "text": "I sela u Srbiji imaju poseban mir i lepotu.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

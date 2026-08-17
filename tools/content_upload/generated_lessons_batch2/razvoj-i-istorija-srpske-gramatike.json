@@ -1,0 +1,209 @@
+{
+  "slug": "razvoj-i-istorija-srpske-gramatike",
+  "title": "Razvoj i istorija srpske gramatike",
+  "summary": "Analiziramo kako su se kroz vekove menjali padeži, glagolski oblici i kako je nestao dual u srpskom jeziku.",
+  "level": "B2",
+  "lessonType": "grammar",
+  "topic": "Istorijska gramatika",
+  "tags": [
+    "gramatika",
+    "istorija",
+    "padezi",
+    "glagoli"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Kako se menjala gramatička struktura"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Srpski jezik je zadržao bogat sistem od sedam padeža, ali je tokom vekova pojednostavio neke arhaične kategorije. Tako je nestao dual (dvojina), a ostaci dvojine vide se i danas iza brojeva dva, tri i četiri."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Pojava",
+            "Arhaično stanje",
+            "Savremeno stanje",
+            "Primer"
+          ],
+          [
+            "Dvojina (dual)",
+            "Posebni oblici za dva predmeta",
+            "Paukalni oblici iza 2, 3, 4",
+            "dva grada, tri žene"
+          ],
+          [
+            "Glagolska vremena",
+            "Česta upotreba aorista i imperfekta",
+            "Dominacija perfekta",
+            "uradio sam umesto uradih"
+          ],
+          [
+            "Infinitiv",
+            "Široka upotreba infinitiva",
+            "Konstrukcija da + prezent",
+            "hoću da radim umesto hoću raditi"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Spajanje oblika dativa i lokativa"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "U savremenom srpskom jeziku oblici dativa i lokativa su se u potpunosti izjednačili i u jednini i u množini. Razlika među njima ostala je samo u predloškom upravljanju i značenju."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Nestanak posebnih nastavaka za lokativ pojednostavio je učenje padeža bez gubitka preciznosti u govoru."
+      }
+    ],
+    "markdown": "## Kako se menjala gramatička struktura\n\nSrpski jezik je zadržao bogat sistem od sedam padeža, ali je tokom vekova pojednostavio neke arhaične kategorije. Tako je nestao dual (dvojina), a ostaci dvojine vide se i danas iza brojeva dva, tri i četiri.\n\n| Pojava | Arhaično stanje | Savremeno stanje | Primer |\n| --- | --- | --- | --- |\n| Dvojina (dual) | Posebni oblici za dva predmeta | Paukalni oblici iza 2, 3, 4 | dva grada, tri žene |\n| Glagolska vremena | Česta upotreba aorista i imperfekta | Dominacija perfekta | uradio sam umesto uradih |\n| Infinitiv | Široka upotreba infinitiva | Konstrukcija da + prezent | hoću da radim umesto hoću raditi |\n\n## Spajanje oblika dativa i lokativa\n\nU savremenom srpskom jeziku oblici dativa i lokativa su se u potpunosti izjednačili i u jednini i u množini. Razlika među njima ostala je samo u predloškom upravljanju i značenju.\n\n> Nestanak posebnih nastavaka za lokativ pojednostavio je učenje padeža bez gubitka preciznosti u govoru.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Gde se u savremenom jeziku vide ostaci starog duala (dvojine)",
+        "options": [
+          "U oblicima iza brojeva dva, tri i četiri",
+          "U oblicima za množinu preko pet",
+          "U imperfektu i aoristu",
+          "U vokativu jednine"
+        ],
+        "answer": "U oblicima iza brojeva dva, tri i četiri",
+        "explanation": "Oblici dva grada ili tri sela predstavljaju nekadašnju dvojinu"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Koji padež se po nastavcima potpuno izjednačio sa dativom",
+        "context": "U savremenom jeziku dativ ima iste nastavke kao i ___.",
+        "answer": "lokativ",
+        "acceptedAnswers": [
+          "lokativ"
+        ],
+        "explanation": "Dativ i lokativ imaju identične završetke u svim rodovima"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Složite rečenicu o razvoju glagolskog sistema",
+        "tokens": [
+          "Perfekat",
+          "je",
+          "postao",
+          "glavno",
+          "prošlo",
+          "vreme",
+          "u",
+          "govoru"
+        ],
+        "answer": "Perfekat je postao glavno prošlo vreme u govoru",
+        "explanation": "Perfekat je potisnuo aorist i imperfekat u svakodnevnom govoru"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Povežite istorijske gramatičke pojave sa objašnjenjem",
+        "pairs": [
+          {
+            "left": "paukal",
+            "right": "oblik za malu količinu iza 2, 3, 4"
+          },
+          {
+            "left": "aorist",
+            "right": "momenatno svršeno prošlo vreme"
+          },
+          {
+            "left": "imperfekat",
+            "right": "nekadašnje nesvršeno prošlo vreme"
+          },
+          {
+            "left": "sinteza dativa i lokativa",
+            "right": "spajanje nastavaka dva padeža"
+          }
+        ],
+        "explanation": "Ovi procesi su oblikovali moderni srpski jezik"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Prevedite na ruski «Srpski jezik je sačuvao sedam padeža uz jasnu sintaksu»",
+        "context": "Srpski jezik je sačuvao sedam padeža uz jasnu sintaksu.",
+        "answer": "Сербский язык сохранил семь падежей с ясным синтаксисом.",
+        "referenceAnswer": "Сербский язык сохранил семь падежей с ясным синтаксисом.",
+        "acceptedAnswers": [
+          "Сербский язык сохранил семь падежей с ясным синтаксисом.",
+          "Сербский язык сохранил семь падежей вместе с ясным синтаксисом."
+        ],
+        "explanation": "Reč sačuvao znači sohranil"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Profesor Lingvistike",
+          "avatar": "teacher",
+          "text": "Dobar dan kolege, danas govorimo o tome kako se menjao srpski padežni sistem.",
+          "choices": [
+            {
+              "label": "Fascinantno je kako je jezik sačuvao svih sedam padeža.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Zašto su se dativ i lokativ morfološki izjednačili?",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Profesor Lingvistike",
+          "avatar": "teacher",
+          "text": "Da, za razliku od bugarskog ili makedonskog, srpski je očuvao punu deklinaciju.",
+          "choices": [
+            {
+              "label": "To daje izuzetnu preciznost u izražavanju misli.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Profesor Lingvistike",
+          "avatar": "teacher",
+          "text": "To je prirodan proces jezičke ekonomije gde predlozi jasno nose razliku u značenju.",
+          "choices": [
+            {
+              "label": "Ipak je funkcija ostala potpuno jasna i razgraničena.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Profesor Lingvistike",
+          "avatar": "teacher",
+          "text": "Upravo tako, istorijska gramatika nam otkriva logiku i lepotu savremenog jezika.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

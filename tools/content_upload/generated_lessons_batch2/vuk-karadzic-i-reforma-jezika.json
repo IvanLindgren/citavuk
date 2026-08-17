@@ -1,0 +1,209 @@
+{
+  "slug": "vuk-karadzic-i-reforma-jezika",
+  "title": "Vuk Karadžić i reforma srpskog jezika",
+  "summary": "Učimo o istorijskoj reformi srpskog književnog jezika, uvođenju fonetskog pravopisa i Vukovoj azbuci.",
+  "level": "B1",
+  "lessonType": "grammar",
+  "topic": "Istorija jezika",
+  "tags": [
+    "istorija",
+    "vuk karadzic",
+    "azbuka",
+    "gramatika"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Vuk Stefanović Karadžić i narodni jezik"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Početkom devetnaestog veka srpski pisci su koristili slavenosrpski jezik, koji je bio mešavina ruskoslovenskog, crkvenoslovenskog i narodnog govora. Vuk Karadžić je doneo revolucionarnu odluku da osnov književnog jezika mora biti živi narodni govor."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Godina",
+            "Delo Vuka Karadžića",
+            "Značaj za kulturu"
+          ],
+          [
+            "1814",
+            "Pismenica serbskoga jezika",
+            "Prva gramatika srpskog narodnog jezika"
+          ],
+          [
+            "1818",
+            "Srpski rječnik",
+            "Prvi rečnik narodnog jezika sa gramatičkim opisom"
+          ],
+          [
+            "1847",
+            "Godina pobede Vukove reforme",
+            "Štampani Gorski vijenac i Pesme Branka Radičevića"
+          ],
+          [
+            "1868",
+            "Zvanično priznanje",
+            "Srpska država zvanično usvaja Vukov pravopis"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Glavno načelo fonetskog pravopisa"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Vuk je uveo čuveno pravilo Piši kao što govoriš, a čitaj kao što je napisano. Izbacio je nepotrebna stara slova i stvorio savršenu azbuku u kojoj svakom glasu odgovara tačno jedno slovo."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Vuk je dodao nova slova j, lj, nj, ć, đ i dž, čime je stvorena jedna od najsavršenijih fonetskih azbuka na svetu."
+      }
+    ],
+    "markdown": "## Vuk Stefanović Karadžić i narodni jezik\n\nPočetkom devetnaestog veka srpski pisci su koristili slavenosrpski jezik, koji je bio mešavina ruskoslovenskog, crkvenoslovenskog i narodnog govora. Vuk Karadžić je doneo revolucionarnu odluku da osnov književnog jezika mora biti živi narodni govor.\n\n| Godina | Delo Vuka Karadžića | Značaj za kulturu |\n| --- | --- | --- |\n| 1814 | Pismenica serbskoga jezika | Prva gramatika srpskog narodnog jezika |\n| 1818 | Srpski rječnik | Prvi rečnik narodnog jezika sa gramatičkim opisom |\n| 1847 | Godina pobede Vukove reforme | Štampani Gorski vijenac i Pesme Branka Radičevića |\n| 1868 | Zvanično priznanje | Srpska država zvanično usvaja Vukov pravopis |\n\n## Glavno načelo fonetskog pravopisa\n\nVuk je uveo čuveno pravilo Piši kao što govoriš, a čitaj kao što je napisano. Izbacio je nepotrebna stara slova i stvorio savršenu azbuku u kojoj svakom glasu odgovara tačno jedno slovo.\n\n> Vuk je dodao nova slova j, lj, nj, ć, đ i dž, čime je stvorena jedna od najsavršenijih fonetskih azbuka na svetu.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Koje je glavno načelo Vukove pravopisne reforme",
+        "options": [
+          "Piši kao što govoriš, a čitaj kao što je napisano",
+          "Piši prema etimologiji starih reči",
+          "Koristi samo crkvenoslovenska slova",
+          "Preuzimaj pravila iz latinskog jezika"
+        ],
+        "answer": "Piši kao što govoriš, a čitaj kao što je napisano",
+        "explanation": "Vukovo načelo nalaže da svakom glasu odgovara jedno slovo"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Upišite godinu izlaska prvog Srpskog rječnika Vuka Karadžića",
+        "context": "Prvi Srpski rječnik objavljen je u Beču ___ godine.",
+        "answer": "1818",
+        "acceptedAnswers": [
+          "1818"
+        ],
+        "explanation": "Vukov rečnik je objavljen 1818 godine sa prevodom na nemački i latinski"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Složite rečenicu o značaju narodnog jezika",
+        "tokens": [
+          "Vuk",
+          "je",
+          "uveo",
+          "narodni",
+          "jezik",
+          "u",
+          "književnost"
+        ],
+        "answer": "Vuk je uveo narodni jezik u književnost",
+        "explanation": "Reforma je uzdigla narodni govor na nivo književnog jezika"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Povežite slova koja je Vuk uveo ili preuredio u azbuci",
+        "pairs": [
+          {
+            "left": "slovo j",
+            "right": "preuzeto iz latinice"
+          },
+          {
+            "left": "slova lj i nj",
+            "right": "spajanje l i n sa mekim znakom"
+          },
+          {
+            "left": "slovo dž",
+            "right": "preuzeto iz starih rukopisa za glas dž"
+          },
+          {
+            "left": "slovo đ",
+            "right": "oblikovao Lukijan Mušicki za Vuka"
+          }
+        ],
+        "explanation": "Ova slova čine temelj savremene srpske azbuke"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Prevedite na ruski rečenicu «Vukova reforma je temelj savremene srpske kulture»",
+        "context": "Vukova reforma je temelj savremene srpske kulture.",
+        "answer": "Реформа Вука является фундаментом современной сербской культуры.",
+        "referenceAnswer": "Реформа Вука является фундаментом современной сербской культуры.",
+        "acceptedAnswers": [
+          "Реформа Вука является фундаментом современной сербской культуры.",
+          "Реформа Вука это основа современной сербской культуры."
+        ],
+        "explanation": "Reč temelj znači temelj, osnova"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Profesor Jovanović",
+          "avatar": "teacher",
+          "text": "Dobar dan studentkinjo, da li znate zašto je 1847. godina presudna za srpski jezik?",
+          "choices": [
+            {
+              "label": "Tada su izašla velika dela na narodnom jeziku.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Tada je Vuk izdao svoju prvu gramatiku.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Profesor Jovanović",
+          "avatar": "teacher",
+          "text": "Tako je, te godine su objavljeni Gorski vijenac, Vukov prevod Novog zavjeta i pesme Branka Radičevića.",
+          "choices": [
+            {
+              "label": "To je bio konačni dokaz snage narodnog jezika u poeziji.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Profesor Jovanović",
+          "avatar": "teacher",
+          "text": "Prva gramatika je izašla ranije, 1814. godine, a 1847. je donela trijumf u književnoj praksi.",
+          "choices": [
+            {
+              "label": "Razumem, pesnici su pokazali lepotu narodnog jezika.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Profesor Jovanović",
+          "avatar": "teacher",
+          "text": "Upravo tako, jezik je postao pristupačan celom narodu i stvorena je moderna kultura.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

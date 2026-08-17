@@ -1,0 +1,200 @@
+{
+  "slug": "prisvojne-zamenice-osnove",
+  "title": "Притяжательные местоимения moj, tvoj, naš",
+  "summary": "Учимся обозначать принадлежность предметов и людей с помощью сербских притяжательных местоимений.",
+  "level": "A1",
+  "lessonType": "grammar",
+  "topic": "Местоимения",
+  "tags": [
+    "местоимения",
+    "принадлежность",
+    "базовые фразы"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как сказать мой, твой и наш по-сербски"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Притяжательные местоимения согласуются в роде и числе с тем предметом, которому принадлежат. Если предмет мужского рода, используется moj, если женского moja, если среднего moje."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Владелец",
+            "Мужской род",
+            "Женский род",
+            "Средний род",
+            "Множественное число (м / ж / ср)"
+          ],
+          [
+            "я (moj)",
+            "moj grad",
+            "moja kuća",
+            "moje selo",
+            "moji / moje / moja"
+          ],
+          [
+            "ты (tvoj)",
+            "tvoj sto",
+            "tvoja soba",
+            "tvoje pismo",
+            "tvoji / tvoje / tvoja"
+          ],
+          [
+            "мы (naš)",
+            "naš stan",
+            "naša škola",
+            "naše dete",
+            "naši / naše / naša"
+          ],
+          [
+            "вы (vaš)",
+            "vaš posao",
+            "vaša porodica",
+            "vaše mesto",
+            "vaši / vaše / vaša"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Его, её и их в сербском языке"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Для третьего лица используются местоимения njegov (его), njen (её) и njihov (их). Они тоже изменяются по родам и числам в зависимости от предмета владения, например njegov brat, njegova sestra, njegovo selo."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Притяжательное местоимение ставится перед существительным, например ovo je moj stan, a to je tvoja soba."
+      }
+    ],
+    "markdown": "## Как сказать мой, твой и наш по-сербски\n\nПритяжательные местоимения согласуются в роде и числе с тем предметом, которому принадлежат. Если предмет мужского рода, используется moj, если женского moja, если среднего moje.\n\n| Владелец | Мужской род | Женский род | Средний род | Множественное число (м / ж / ср) |\n| --- | --- | --- | --- | --- |\n| я (moj) | moj grad | moja kuća | moje selo | moji / moje / moja |\n| ты (tvoj) | tvoj sto | tvoja soba | tvoje pismo | tvoji / tvoje / tvoja |\n| мы (naš) | naš stan | naša škola | naše dete | naši / naše / naša |\n| вы (vaš) | vaš posao | vaša porodica | vaše mesto | vaši / vaše / vaša |\n\n## Его, её и их в сербском языке\n\nДля третьего лица используются местоимения njegov (его), njen (её) и njihov (их). Они тоже изменяются по родам и числам в зависимости от предмета владения, например njegov brat, njegova sestra, njegovo selo.\n\n> Притяжательное местоимение ставится перед существительным, например ovo je moj stan, a to je tvoja soba.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма местоимения подходит для фразы «Ovo je ___ kuća»",
+        "options": [
+          "moja",
+          "moj",
+          "moje",
+          "moji"
+        ],
+        "answer": "moja",
+        "explanation": "Слово kuća женского рода, поэтому требуется форма moja"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму местоимения naš для среднего рода",
+        "context": "Ovo je ___ novo selo.",
+        "answer": "naše",
+        "acceptedAnswers": [
+          "naše",
+          "nase"
+        ],
+        "explanation": "Средний род единственного числа принимает форму naše"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Это наши хорошие друзья»",
+        "tokens": [
+          "To",
+          "su",
+          "naši",
+          "dobri",
+          "prijatelji"
+        ],
+        "answer": "To su naši dobri prijatelji",
+        "explanation": "Местоимение naši согласуется с существительным prijatelji"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините местоимение с подходящим существительным",
+        "pairs": [
+          {
+            "left": "moj",
+            "right": "brat"
+          },
+          {
+            "left": "moja",
+            "right": "sestra"
+          },
+          {
+            "left": "moje",
+            "right": "dete"
+          },
+          {
+            "left": "moji",
+            "right": "roditelji"
+          }
+        ],
+        "explanation": "Форма местоимения полностью определяется родом и числом существительного"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский язык «Где твой паспорт»",
+        "context": "Где твой паспорт?",
+        "answer": "Gde je tvoj pasoš?",
+        "referenceAnswer": "Gde je tvoj pasoš?",
+        "acceptedAnswers": [
+          "Gde je tvoj pasoš?",
+          "Gde je tvoj pasos?"
+        ],
+        "explanation": "Слово pasoš мужского рода, поэтому выбираем форму tvoj"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Da li je ovo tvoja knjiga?",
+          "choices": [
+            {
+              "label": "Da, to je moja knjiga, hvala!",
+              "nextId": "d2"
+            },
+            {
+              "label": "Ne, to nije moja, to je njegova knjiga.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Nema na čemu, bila je na stolu.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Milica",
+          "avatar": "woman",
+          "text": "Važi, onda ću pitati njega.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

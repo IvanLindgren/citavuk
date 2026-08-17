@@ -1,0 +1,215 @@
+{
+  "slug": "sastanak-u-botanickoj-basti",
+  "title": "Свидание в ботаническом саду",
+  "summary": "Разбираем романтическую лексику, комплименты и прогулку по ботаническому саду Jevremovac.",
+  "level": "A2",
+  "lessonType": "speaking",
+  "topic": "Свидание",
+  "tags": [
+    "диалог",
+    "свидание",
+    "природа",
+    "эмоции"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Романтическая прогулка по саду"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Ботанический сад Jevremovac в центре Белграда любимое место для свиданий (sastanak). Здесь приятно не спеша гулять по аллеям, пить кофе и говорить о жизни."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Сербская фраза",
+            "Русский перевод",
+            "Когда сказать"
+          ],
+          [
+            "Izgledaš prelepo",
+            "Ты выглядишь прекрасно",
+            "Искренний комплимент при встрече"
+          ],
+          [
+            "Drago mi je što smo se videli",
+            "Рад что мы увиделись",
+            "Теплые слова во время прогулки"
+          ],
+          [
+            "Da li ti prija ova šetnja",
+            "Нравится ли тебе эта прогулка",
+            "Вопрос о самочувствии спутника"
+          ],
+          [
+            "Možemo da sednemo na klupu",
+            "Мы можем присесть на скамейку",
+            "Предложение отдохнуть в тени"
+          ],
+          [
+            "Hvala na divnom danu",
+            "Спасибо за чудесный день",
+            "Благодарность в конце встречи"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Выражение симпатии и эмоций"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Фраза Sviđaš mi se означает «ты мне нравишься», а Uživala sam / Uživao sam переводится как «я получил огромное удовольствие»."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Слово sastanak означает как деловую встречу, так и романтическое свидание."
+      }
+    ],
+    "markdown": "## Романтическая прогулка по саду\n\nБотанический сад Jevremovac в центре Белграда любимое место для свиданий (sastanak). Здесь приятно не спеша гулять по аллеям, пить кофе и говорить о жизни.\n\n| Сербская фраза | Русский перевод | Когда сказать |\n| --- | --- | --- |\n| Izgledaš prelepo | Ты выглядишь прекрасно | Искренний комплимент при встрече |\n| Drago mi je što smo se videli | Рад что мы увиделись | Теплые слова во время прогулки |\n| Da li ti prija ova šetnja | Нравится ли тебе эта прогулка | Вопрос о самочувствии спутника |\n| Možemo da sednemo na klupu | Мы можем присесть на скамейку | Предложение отдохнуть в тени |\n| Hvala na divnom danu | Спасибо за чудесный день | Благодарность в конце встречи |\n\n## Выражение симпатии и эмоций\n\nФраза Sviđaš mi se означает «ты мне нравишься», а Uživala sam / Uživao sam переводится как «я получил огромное удовольствие».\n\n> Слово sastanak означает как деловую встречу, так и романтическое свидание.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как сказать «Ты мне очень нравишься»",
+        "options": [
+          "Mnogo mi se sviđaš",
+          "Mnogo mi se radiš",
+          "Mnogo mi se gledaš",
+          "Mnogo mi se ideš"
+        ],
+        "answer": "Mnogo mi se sviđaš",
+        "explanation": "Возвратный глагол sviđati se выражает симпатию"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте слово в комплимент «Izgledaš ___ danas»",
+        "context": "Izgledaš ___ u toj zelenoj haljini.",
+        "answer": "prelepo",
+        "acceptedAnswers": [
+          "prelepo",
+          "divno",
+          "lepo"
+        ],
+        "explanation": "Слово prelepo выражает высшую степень красоты"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Давай посидим немного на этой удобной скамейке»",
+        "tokens": [
+          "Hajde",
+          "da",
+          "sednemo",
+          "na",
+          "ovu",
+          "klupu"
+        ],
+        "answer": "Hajde da sednemo na ovu klupu",
+        "explanation": "Конструкция hajde da выражает мягкое совместное предложение"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините фразы свидания с их значением",
+        "pairs": [
+          {
+            "left": "divna šetnja",
+            "right": "чудесная прогулка"
+          },
+          {
+            "left": "japanski vrt",
+            "right": "японский сад"
+          },
+          {
+            "left": "topla kafa",
+            "right": "теплый кофе"
+          },
+          {
+            "left": "lep razgovor",
+            "right": "приятная беседа"
+          }
+        ],
+        "explanation": "Эти словосочетания помогают описать приятное времяпрепровождение"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Спасибо тебе за незабываемый вечер»",
+        "context": "Спасибо тебе за незабываемый вечер.",
+        "answer": "Hvala ti na nezaboravnoj večeri.",
+        "referenceAnswer": "Hvala ti na nezaboravnoj večeri.",
+        "acceptedAnswers": [
+          "Hvala ti na nezaboravnoj večeri.",
+          "Hvala ti za nezaboravno vece."
+        ],
+        "explanation": "Слово veče в локативе после na принимает форму večeri"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Elena",
+          "avatar": "woman",
+          "text": "Kako je divno i mirno ovde u botaničkoj bašti Jevremovac.",
+          "choices": [
+            {
+              "label": "Drago mi je što ti se sviđa, ovo je moj omiljeni kutak u gradu.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Uzeo sam dve tople kafe da šetamo polako stazama.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Elena",
+          "avatar": "woman",
+          "text": "Pogledaj onaj staklenik sa tropskim biljkama, izgleda potpuno magično.",
+          "choices": [
+            {
+              "label": "Hajde da uđemo unutra i napravimo nekoliko lepih slika.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Elena",
+          "avatar": "woman",
+          "text": "Baš ti hvala na pažnji, kafa miriše predivno na ovom svežem vazduhu.",
+          "choices": [
+            {
+              "label": "Možemo sesti na onu drvenu klupu pored japanskog vrta.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Elena",
+          "avatar": "woman",
+          "text": "Ovo je zaista prelep sastanak, hvala ti na divnom i opuštenom popodnevu.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

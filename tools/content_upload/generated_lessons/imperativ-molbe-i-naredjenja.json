@@ -1,0 +1,190 @@
+{
+  "slug": "imperativ-molbe-i-naredjenja",
+  "title": "Повелительное наклонение и вежливые просьбы",
+  "summary": "Учимся формулировать просьбы, советы и приказы, а также строить мягкий запрет с конструкцией nemoj da.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Императив",
+  "tags": [
+    "глаголы",
+    "императив",
+    "просьбы"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Формы повелительного наклонения"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Повелительное наклонение выражает просьбу, совет или приказ. Оно имеет формы для второго лица единственного числа (ti), первого лица множественного числа (mi) и второго лица множественного числа (vi)."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Тип глагола",
+            "Форма ti",
+            "Форма mi (давай...)",
+            "Форма vi (вежливая)"
+          ],
+          [
+            "Глаголы на -am (čitati)",
+            "čitaj",
+            "čitajmo",
+            "čitajte"
+          ],
+          [
+            "Глаголы на -im (raditi)",
+            "radi",
+            "radimo",
+            "radite"
+          ],
+          [
+            "Глаголы на -em (pisati)",
+            "piši",
+            "pišimo",
+            "pišite"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Как выразить запрет и вежливую просьбу не делать"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Для запрета в сербском языке есть специальный глагол nemoj. Самая популярная и естественная разговорная конструкция это nemoj da с настоящим временем, Nemoj da brineš (Не переживай), Nemojte da kasnite (Не опаздывайте)."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Запрет в сербском языке требует несовершенного вида глагола, например Ne otvaraj prozor."
+      }
+    ],
+    "markdown": "## Формы повелительного наклонения\n\nПовелительное наклонение выражает просьбу, совет или приказ. Оно имеет формы для второго лица единственного числа (ti), первого лица множественного числа (mi) и второго лица множественного числа (vi).\n\n| Тип глагола | Форма ti | Форма mi (давай...) | Форма vi (вежливая) |\n| --- | --- | --- | --- |\n| Глаголы на -am (čitati) | čitaj | čitajmo | čitajte |\n| Глаголы на -im (raditi) | radi | radimo | radite |\n| Глаголы на -em (pisati) | piši | pišimo | pišite |\n\n## Как выразить запрет и вежливую просьбу не делать\n\nДля запрета в сербском языке есть специальный глагол nemoj. Самая популярная и естественная разговорная конструкция это nemoj da с настоящим временем, Nemoj da brineš (Не переживай), Nemojte da kasnite (Не опаздывайте).\n\n> Запрет в сербском языке требует несовершенного вида глагола, например Ne otvaraj prozor.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как вежливо сказать собеседнику на «вы» «Слушайте внимательно»",
+        "options": [
+          "Slušajte pažljivo",
+          "Slušaj pažljivo",
+          "Slušajmo pažljivo",
+          "Slušati pažljivo"
+        ],
+        "answer": "Slušajte pažljivo",
+        "explanation": "Для вежливого обращения на вы используется окончание -te"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте отрицательный глагол запрета для местоимения ti",
+        "context": "___ da zaboraviš ključeve!",
+        "answer": "Nemoj",
+        "acceptedAnswers": [
+          "Nemoj",
+          "nemoj"
+        ],
+        "explanation": "Форма второго лица единственного числа звучит nemoj"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите призыв «Давайте пойдем вместе в кино»",
+        "tokens": [
+          "Hajde",
+          "da",
+          "idemo",
+          "zajedno",
+          "u",
+          "bioskop"
+        ],
+        "answer": "Hajde da idemo zajedno u bioskop",
+        "explanation": "Конструкция hajde da выражает совместный призыв к действию"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините инфинитив с формой повеления для ti",
+        "pairs": [
+          {
+            "left": "doći",
+            "right": "dođi"
+          },
+          {
+            "left": "reći",
+            "right": "reci"
+          },
+          {
+            "left": "uzeti",
+            "right": "uzmi"
+          },
+          {
+            "left": "videti",
+            "right": "vidi"
+          }
+        ],
+        "explanation": "Формы повелительного наклонения образуются от глагольной основы"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Не беспокойся, все хорошо»",
+        "context": "Не беспокойся, все хорошо.",
+        "answer": "Nemoj da brineš, sve je u redu.",
+        "referenceAnswer": "Nemoj da brineš, sve je u redu.",
+        "acceptedAnswers": [
+          "Nemoj da brineš, sve je u redu.",
+          "Nemoj brinuti, sve je u redu."
+        ],
+        "explanation": "Конструкция nemoj da brineš передает мягкий дружеский совет"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Doktor",
+          "avatar": "teacher",
+          "text": "Otvorite usta i recite dugo a.",
+          "choices": [
+            {
+              "label": "Aaaa, dobro doktore.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Malo me boli grlo kada gutam.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Doktor",
+          "avatar": "teacher",
+          "text": "U redu, pijte topao čaj i odmarajte se.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Doktor",
+          "avatar": "teacher",
+          "text": "Razumem, prepisaću vam lekove protiv upale.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

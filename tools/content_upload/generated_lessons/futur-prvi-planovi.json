@@ -1,0 +1,208 @@
+{
+  "slug": "futur-prvi-planovi",
+  "title": "Будущее время футур I и планы",
+  "summary": "Учимся строить будущее время с помощью кратких форм глагола hteti и рассказывать о своих намерениях.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Футур I",
+  "tags": [
+    "глаголы",
+    "будущее время",
+    "футур"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Как строится будущее время футур I"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Футур I выражает действие в будущем. Он строится с помощью кратких безударных форм глагола hteti (ću, ćeš, će, ćemo, ćete, će) и инфинитива смыслового глагола или конструкции da с настоящим временем."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Лицо",
+            "Краткая форма",
+            "Слитное написание с инфинитивом на -ti",
+            "Конструкция с da"
+          ],
+          [
+            "ja",
+            "ću",
+            "radiću",
+            "ja ću da radim"
+          ],
+          [
+            "ti",
+            "ćeš",
+            "radićeš",
+            "ti ćeš da radiš"
+          ],
+          [
+            "on, ona, ono",
+            "će",
+            "radiće",
+            "on će da radi"
+          ],
+          [
+            "mi",
+            "ćemo",
+            "radićemo",
+            "mi ćemo da radimo"
+          ],
+          [
+            "vi",
+            "ćete",
+            "radićete",
+            "vi ćete da radite"
+          ],
+          [
+            "oni, one, ona",
+            "će",
+            "radiće",
+            "oni će da rade"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Глаголы на -ći пишутся раздельно"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Если инфинитив оканчивается на ћи, форма будущего времени всегда пишется раздельно, doći ću, stići ćemo, reći ćete."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Если перед глаголом стоит местоимение или другое слово, краткая форма встает перед инфинитивом, Ja ću raditi или Ja ću da radim."
+      }
+    ],
+    "markdown": "## Как строится будущее время футур I\n\nФутур I выражает действие в будущем. Он строится с помощью кратких безударных форм глагола hteti (ću, ćeš, će, ćemo, ćete, će) и инфинитива смыслового глагола или конструкции da с настоящим временем.\n\n| Лицо | Краткая форма | Слитное написание с инфинитивом на -ti | Конструкция с da |\n| --- | --- | --- | --- |\n| ja | ću | radiću | ja ću da radim |\n| ti | ćeš | radićeš | ti ćeš da radiš |\n| on, ona, ono | će | radiće | on će da radi |\n| mi | ćemo | radićemo | mi ćemo da radimo |\n| vi | ćete | radićete | vi ćete da radite |\n| oni, one, ona | će | radiće | oni će da rade |\n\n## Глаголы на -ći пишутся раздельно\n\nЕсли инфинитив оканчивается на ћи, форма будущего времени всегда пишется раздельно, doći ću, stići ćemo, reći ćete.\n\n> Если перед глаголом стоит местоимение или другое слово, краткая форма встает перед инфинитивом, Ja ću raditi или Ja ću da radim.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как слитно пишется будущее время от глагола raditi для лица ja",
+        "options": [
+          "radiću",
+          "radit ću",
+          "raditi ću",
+          "radi ću"
+        ],
+        "answer": "radiću",
+        "explanation": "Глаголы на -ti при слитном написании отбрасывают -ti и добавляют -ću"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Вставьте форму вспомогательного глагола для местоимения mi",
+        "context": "Sutra ___ putovati u Novi Sad.",
+        "answer": "ćemo",
+        "acceptedAnswers": [
+          "ćemo",
+          "cemo"
+        ],
+        "explanation": "Для местоимения mi краткая форма глагола hteti звучит ćemo"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Я приду завтра в пять часов»",
+        "tokens": [
+          "Doći",
+          "ću",
+          "sutra",
+          "u",
+          "pet",
+          "sati"
+        ],
+        "answer": "Doći ću sutra u pet sati",
+        "explanation": "Глагол на -ći пишется раздельно с частицей ću"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините местоимение с формой вспомогательного глагола hteti",
+        "pairs": [
+          {
+            "left": "ja",
+            "right": "ću"
+          },
+          {
+            "left": "ti",
+            "right": "ćeš"
+          },
+          {
+            "left": "mi",
+            "right": "ćemo"
+          },
+          {
+            "left": "vi",
+            "right": "ćete"
+          }
+        ],
+        "explanation": "Каждому лицу соответствует своя краткая форма hteti"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Мы скоро позвоним тебе»",
+        "context": "Мы скоро позвоним тебе.",
+        "answer": "Uskoro ćemo te pozvati.",
+        "referenceAnswer": "Uskoro ćemo te pozvati.",
+        "acceptedAnswers": [
+          "Uskoro ćemo te pozvati.",
+          "Pozvaćemo te uskoro."
+        ],
+        "explanation": "Форма первого лица множественного числа ćemo ставится на вторую смысловую позицию"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Luka",
+          "avatar": "man",
+          "text": "Šta ćeš raditi za vikend?",
+          "choices": [
+            {
+              "label": "Putovaću na planinu sa porodicom.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Ostaću u gradu i učiću za ispit.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Luka",
+          "avatar": "man",
+          "text": "Divan plan, želim vam lep provod!",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Luka",
+          "avatar": "man",
+          "text": "Srećno sa učenjem, položićeš sigurno!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

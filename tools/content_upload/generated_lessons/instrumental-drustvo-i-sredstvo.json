@@ -1,0 +1,188 @@
+{
+  "slug": "instrumental-drustvo-i-sredstvo",
+  "title": "Творительный падеж с предлогом sa и без него",
+  "summary": "Разбираем главную разницу инструментала, когда предлог sa обязателен, а когда категорически запрещен.",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Инструментал",
+  "tags": [
+    "падежи",
+    "инструментал",
+    "предлоги"
+  ],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Совместность против орудия действия"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Инструментал отвечает на вопросы s kim (с кем) и čime (чем). Главное правило инструментала, совместность требует предлога sa (sa prijateljem, sa sestrom), а средство передвижения или орудие действия употребляется строго без предлога (putujem autobusom, pišem olovkom)."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Значение",
+            "Предлог",
+            "Пример",
+            "Русский перевод"
+          ],
+          [
+            "Компания и совместность",
+            "sa / s",
+            "Šetam sa bratom",
+            "Гуляю с братом"
+          ],
+          [
+            "Транспорт и средство",
+            "без предлога",
+            "Putujem vozom",
+            "Еду на поезде"
+          ],
+          [
+            "Орудие действия",
+            "без предлога",
+            "Pišem olovkom",
+            "Пишу карандашом"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Окончания инструментала в единственном числе"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Мужской и средний род получают окончание ом (после твердых согласных) или ем (после мягких č, ć, dž, đ, ž, š, j, lj, nj), gradom, drugom, prijateljem, nožem. Женский род на а получает окончание ом, kafom, kućom, sestrom."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Никогда не говори putujem sa autobusom, это звучит так, будто автобус идет рядом с тобой за руку."
+      }
+    ],
+    "markdown": "## Совместность против орудия действия\n\nИнструментал отвечает на вопросы s kim (с кем) и čime (чем). Главное правило инструментала, совместность требует предлога sa (sa prijateljem, sa sestrom), а средство передвижения или орудие действия употребляется строго без предлога (putujem autobusom, pišem olovkom).\n\n| Значение | Предлог | Пример | Русский перевод |\n| --- | --- | --- | --- |\n| Компания и совместность | sa / s | Šetam sa bratom | Гуляю с братом |\n| Транспорт и средство | без предлога | Putujem vozom | Еду на поезде |\n| Орудие действия | без предлога | Pišem olovkom | Пишу карандашом |\n\n## Окончания инструментала в единственном числе\n\nМужской и средний род получают окончание ом (после твердых согласных) или ем (после мягких č, ć, dž, đ, ž, š, j, lj, nj), gradom, drugom, prijateljem, nožem. Женский род на а получает окончание ом, kafom, kućom, sestrom.\n\n> Никогда не говори putujem sa autobusom, это звучит так, будто автобус идет рядом с тобой за руку.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Как правильно сказать «Я еду на автобусе»",
+        "options": [
+          "Putujem autobusom",
+          "Putujem sa autobusom",
+          "Putujem u autobusu",
+          "Putujem na autobusu"
+        ],
+        "answer": "Putujem autobusom",
+        "explanation": "Транспорт как средство передвижения требует формы инструментала без предлога"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте слово drug в форму инструментала с предлогом",
+        "context": "Idem u bioskop ___.",
+        "answer": "sa drugom",
+        "acceptedAnswers": [
+          "sa drugom",
+          "s drugom"
+        ],
+        "explanation": "Совместность требует предлога sa и окончания -om"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите фразу «Мы гуляем по парку с собакой»",
+        "tokens": [
+          "Šetamo",
+          "parkom",
+          "sa",
+          "psom"
+        ],
+        "answer": "Šetamo parkom sa psom",
+        "explanation": "Собака как спутник требует предлога sa psom, а parkom обозначает место"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините существительное с его окончанием инструментала",
+        "pairs": [
+          {
+            "left": "prijatelj",
+            "right": "prijateljem"
+          },
+          {
+            "left": "brat",
+            "right": "bratom"
+          },
+          {
+            "left": "sestra",
+            "right": "sestrom"
+          },
+          {
+            "left": "nož",
+            "right": "nožem"
+          }
+        ],
+        "explanation": "После мягких согласных идет -em, после твердых и в женском роде -om"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский «Я пишу синей ручкой»",
+        "context": "Я пишу синей ручкой.",
+        "answer": "Pišem plavom olovkom.",
+        "referenceAnswer": "Pišem plavom olovkom.",
+        "acceptedAnswers": [
+          "Pišem plavom olovkom.",
+          "Pišem plavom hemijskom."
+        ],
+        "explanation": "Орудие действия используется без предлога в форме plavom olovkom"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Đorđe",
+          "avatar": "man",
+          "text": "Kako putuješ sutra na posao?",
+          "choices": [
+            {
+              "label": "Idem vozom, brže je nego autom.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Idem peške sa prijateljem iz zgrade.",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Đorđe",
+          "avatar": "man",
+          "text": "Voz je odličan izbor da se izbegne gužva.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Đorđe",
+          "avatar": "man",
+          "text": "Šetnja u društvu je uvek prijatna.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

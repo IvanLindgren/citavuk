@@ -1,0 +1,209 @@
+{
+  "slug": "miroslavljevo-jevandjelje-i-stara-pismenost",
+  "title": "Miroslavljevo jevanđelje i stara srpska pismenost",
+  "summary": "Istražujemo najstariji sačuvani ćirilički spomenik srpske pismenosti iz dvanaestog veka i prelaz sa glagoljice na ćirilicu.",
+  "level": "B2",
+  "lessonType": "grammar",
+  "topic": "Srednjovekovna pismenost",
+  "tags": [
+    "istorija",
+    "spomenici",
+    "jevanđelje",
+    "ćirilica"
+  ],
+  "estimatedMinutes": 20,
+  "script": "latin",
+  "coverUrl": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=800&q=80",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Najstariji srpski ćirilički spomenik"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Miroslavljevo jevanđelje je nastalo oko 1185. godine po narudžbini humskog kneza Miroslava, brata Stefana Nemanje. Pisano je na pergamentu na srpskoslovenskom jeziku, gde se u staroslovensku osnovu već unose osobine narodnog govora."
+      },
+      {
+        "id": "t3",
+        "type": "table",
+        "rows": [
+          [
+            "Karakteristika",
+            "Opis",
+            "Značaj"
+          ],
+          [
+            "Pismo",
+            "Ustavna ćirilica",
+            "Rukopis izuzetne kaligrafske lepote"
+          ],
+          [
+            "Ukras",
+            "296 minijatura i inicijala",
+            "Vrhunac srednjovekovne iluminacije"
+          ],
+          [
+            "Pisari",
+            "Dijak Gligorije i još jedan pisar",
+            "Prikaz visoke pismenosti doba Nemanjića"
+          ],
+          [
+            "UNESCO baština",
+            "Upisano u registar Pamćenje sveta",
+            "Spomenik od svetskog kulturnog značaja"
+          ]
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "heading",
+        "text": "Od glagoljice ka ćirilici"
+      },
+      {
+        "id": "t5",
+        "type": "paragraph",
+        "text": "Slovenska pismenost je počela misijom Ćirila i Metodija u devetom veku. Prvo pismo bila je glagoljica, ali se krajem devetog i tokom desetog veka na južnoslovenskom prostoru razvila ćirilica, koja je bila jednostavnija za pisanje i bliska grčkom pismu."
+      },
+      {
+        "id": "t6",
+        "type": "quote",
+        "text": "Miroslavljevo jevanđelje se danas čuva u Narodnom muzeju u Beogradu kao najveća nacionalna relikvija."
+      }
+    ],
+    "markdown": "## Najstariji srpski ćirilički spomenik\n\nMiroslavljevo jevanđelje je nastalo oko 1185. godine po narudžbini humskog kneza Miroslava, brata Stefana Nemanje. Pisano je na pergamentu na srpskoslovenskom jeziku, gde se u staroslovensku osnovu već unose osobine narodnog govora.\n\n| Karakteristika | Opis | Značaj |\n| --- | --- | --- |\n| Pismo | Ustavna ćirilica | Rukopis izuzetne kaligrafske lepote |\n| Ukras | 296 minijatura i inicijala | Vrhunac srednjovekovne iluminacije |\n| Pisari | Dijak Gligorije i još jedan pisar | Prikaz visoke pismenosti doba Nemanjića |\n| UNESCO baština | Upisano u registar Pamćenje sveta | Spomenik od svetskog kulturnog značaja |\n\n## Od glagoljice ka ćirilici\n\nSlovenska pismenost je počela misijom Ćirila i Metodija u devetom veku. Prvo pismo bila je glagoljica, ali se krajem devetog i tokom desetog veka na južnoslovenskom prostoru razvila ćirilica, koja je bila jednostavnija za pisanje i bliska grčkom pismu.\n\n> Miroslavljevo jevanđelje se danas čuva u Narodnom muzeju u Beogradu kao najveća nacionalna relikvija.",
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "U kom veku je nastalo Miroslavljevo jevanđelje",
+        "options": [
+          "U dvanaestom veku",
+          "U devetom veku",
+          "U šesnaestom veku",
+          "U dvadesetom veku"
+        ],
+        "answer": "U dvanaestom veku",
+        "explanation": "Rukopis potiče iz druge polovine dvanaestog veka oko 1185 godine"
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Upišite ime pisara koji se potpisao na kraju rukopisa",
+        "context": "Na kraju jevanđelja ostavio je svoj zapis dijak ___.",
+        "answer": "Gligorije",
+        "acceptedAnswers": [
+          "Gligorije"
+        ],
+        "explanation": "Dijak Gligorije je jedan od pisara koji je iluminirao rukopis"
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Složite rečenicu o međunarodnom priznanju ovog spomenika",
+        "tokens": [
+          "Rukopis",
+          "je",
+          "upisan",
+          "u",
+          "registar",
+          "svetske",
+          "baštine"
+        ],
+        "answer": "Rukopis je upisan u registar svetske baštine",
+        "explanation": "UNESCO je uvrstio Miroslavljevo jevanđelje u Pamćenje sveta"
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Povežite termine stare pismenosti sa opisom",
+        "pairs": [
+          {
+            "left": "pergament",
+            "right": "posebno obrađena životinjska koža"
+          },
+          {
+            "left": "inicijal",
+            "right": "raskošno ukrašeno početno slovo"
+          },
+          {
+            "left": "srpskoslovenski jezik",
+            "right": "srpska redakcija staroslovenskog jezika"
+          },
+          {
+            "left": "glagoljica",
+            "right": "prvo slovensko pismo solunske braće"
+          }
+        ],
+        "explanation": "Ovi pojmovi su temelj razumevanja srednjovekovnih rukopisa"
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Prevedite na ruski rečenicu «Rukopis sadrži izuzetne minijature i zlatne ukrase»",
+        "context": "Rukopis sadrži izuzetne minijature i zlatne ukrase.",
+        "answer": "Рукопись содержит исключительные миниатюры и золотые украшения.",
+        "referenceAnswer": "Рукопись содержит исключительные миниатюры и золотые украшения.",
+        "acceptedAnswers": [
+          "Рукопись содержит исключительные миниатюры и золотые украшения.",
+          "Рукопись содержит великолепные миниатюры и золотые украшения."
+        ],
+        "explanation": "Reč sadrži znači sadrži, obuhvata"
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Kustos Muzeja",
+          "avatar": "teacher",
+          "text": "Dobrodošli u odeljenje srednjovekovne kulture. Pred vama su stranice najstarijeg rukopisa.",
+          "choices": [
+            {
+              "label": "Neverovatno je kako su boje i zlato sačuvani posle osam vekova.",
+              "nextId": "d2"
+            },
+            {
+              "label": "Kojim tačno jezikom je pisan ovaj spomenik?",
+              "nextId": "d3"
+            }
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Kustos Muzeja",
+          "avatar": "teacher",
+          "text": "Pergament i prirodni pigmenti na bazi minerala i zlata omogućili su ovakvu trajnost.",
+          "choices": [
+            {
+              "label": "To svedoči o vrhunskoj umetnosti naših prepisivača.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d3",
+          "speaker": "Kustos Muzeja",
+          "avatar": "teacher",
+          "text": "Pisan je srpskoslovenskim jezikom, to je staroslovenski sa elementima srpske fonetike.",
+          "choices": [
+            {
+              "label": "Tu se već vide začeci narodnog govora u pismu.",
+              "nextId": "d4"
+            }
+          ]
+        },
+        {
+          "id": "d4",
+          "speaker": "Kustos Muzeja",
+          "avatar": "teacher",
+          "text": "Tako je, to je neprocenjivo svedočanstvo našeg kulturnog identiteta i pismenosti.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}
