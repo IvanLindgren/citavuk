@@ -24,6 +24,13 @@ class WordAnalysis {
   /// карточка показывает английскую ветку вместо сербской.
   final EnglishAnalysis? english;
 
+  /// Начальную форму подсказала нейросеть: в словаре форм этого слова нет.
+  ///
+  /// Падеж, число и формы всё равно посчитал грамматический движок — и только
+  /// после того, как парадигма от подсказки дала ровно эту форму. Но сказать
+  /// об этом читателю надо: словарной статьи за таким разбором не стоит.
+  final bool generated;
+
   const WordAnalysis({
     required this.surface,
     required this.lemma,
@@ -37,6 +44,7 @@ class WordAnalysis {
     this.phraseInsight,
     this.sentenceAnalysis,
     this.english,
+    this.generated = false,
   });
 
   bool get isEnglish => english != null;
@@ -52,6 +60,7 @@ class WordAnalysis {
     PhraseInsight? phraseInsight,
     SentenceAnalysis? sentenceAnalysis,
     EnglishAnalysis? english,
+    bool? generated,
   }) =>
       WordAnalysis(
         surface: surface,
@@ -67,6 +76,7 @@ class WordAnalysis {
         phraseInsight: phraseInsight ?? this.phraseInsight,
         sentenceAnalysis: sentenceAnalysis ?? this.sentenceAnalysis,
         english: english ?? this.english,
+        generated: generated ?? this.generated,
       );
 
   /// Разбирает строку признаков UD ("Case=Nom|Gender=Masc|Number=Sing").
@@ -108,6 +118,9 @@ class WordAnalysis {
         'feats': feats,
         'forms': forms,
         'translation': translation,
+        // Пометка живёт вместе с разбором: подсказанная нейросетью начальная
+        // форма не становится словарной оттого, что её достали из кэша.
+        if (generated) 'generated': true,
       };
 
   factory WordAnalysis.fromCacheJson(Map<String, dynamic> j, String surface) {
@@ -122,6 +135,7 @@ class WordAnalysis {
       forms: strMap(j['forms']),
       translation: (j['translation'] ?? '').toString(),
       isOffline: true, // уточняется после попытки контекстного перевода
+      generated: j['generated'] == true,
     );
   }
 }

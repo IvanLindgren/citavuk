@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/definition.dart';
 import '../models/micro_feed.dart';
 import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
+import '../services/definition_service.dart';
 import '../services/grammar_engine.dart';
 import '../services/lexicon_db.dart';
 import '../services/micro_feed_service.dart';
@@ -12,6 +14,7 @@ import '../services/user_db.dart';
 import '../theme/app_theme.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
+import '../widgets/definition_card.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
 import 'vukotok_comments.dart';
@@ -737,6 +740,10 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
   late final Future<WordAnalysis> _analysis;
   Reflexive? _reflexive;
   Map<String, String>? _accent;
+
+  /// Толкование начальной формы. Спрашивается после разбора: словарь ведётся
+  /// по заглавным словам, и начальная форма известна только из него.
+  Future<Definition?>? _definition;
   bool _saved = false;
 
   @override
@@ -748,6 +755,12 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
       endOffset: widget.token.end,
       tokenText: widget.token.text,
     );
+    _analysis.then((data) {
+      if (!mounted || data.isEnglish || data.isPhrase) return;
+      final lemma = data.lemma.trim();
+      if (lemma.isEmpty) return;
+      setState(() => _definition = DefinitionService.instance.lookup(lemma));
+    });
     _loadExtras();
   }
 
@@ -866,9 +879,36 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                   const SizedBox(height: 4),
                   Text(general),
                 ],
+                if (_definition != null)
+                  FutureBuilder<Definition?>(
+                    future: _definition,
+                    builder: (context, snap) {
+                      final entry = snap.data;
+                      if (entry == null) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: DefinitionCard(entry),
+                      );
+                    },
+                  ),
                 if (reflexive != null) ...[
                   const SizedBox(height: 14),
                   _ReflexiveCard(reflexive: reflexive),
+                ],
+                // Начальную форму подсказала нейросеть: слова нет в словаре
+                // форм. Падеж и склонение всё равно посчитаны по правилам.
+                if (data.generated) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    'Этого слова нет в словаре Читавука: начальную форму '
+                    'подсказала нейросеть, а падеж и склонение построены по '
+                    'правилам языка.',
+                    style: TextStyle(
+                        fontSize: 12.5,
+                        height: 1.4,
+                        fontStyle: FontStyle.italic,
+                        color: scheme.onSurfaceVariant),
+                  ),
                 ],
                 // Разбора не будет — говорим об этом словом, а не пустотой на
                 // месте, где обычно стоит грамматика.

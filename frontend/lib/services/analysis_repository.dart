@@ -245,12 +245,20 @@ class AnalysisRepository {
     final lat = SerbianTransliteration.toLatin(tokenText).toLowerCase();
     // Единая точка офлайн-морфологии (та же, что дополняет серверный ответ).
     final morph = await _lexiconMorphology(tokenText);
-    final lemma = morph?.lemma ?? lat;
-    final upos = morph?.upos ?? 'UNKNOWN';
-    final feats = morph?.feats ?? <String, String>{};
+    // Слова нет ни в лексиконе, ни в правилах — спрашиваем сервер. Это
+    // единственный способ разобрать «prehlađenih»: своей копии словаря для
+    // него не хватает, а без разбора карточка теряет половину смысла.
+    final remote = morph == null
+        ? await _serverMorphology(tokenText, sentence: sentence ?? '')
+        : null;
+
+    final lemma = morph?.lemma ?? remote?.lemma ?? lat;
+    final upos = morph?.upos ?? remote?.upos ?? 'UNKNOWN';
+    final feats = morph?.feats ?? remote?.feats ?? <String, String>{};
 
     final lemmaRows = await LexiconDb.instance.getLexiconRowsForLemma(lemma);
-    final forms = _baseForms(upos, lemmaRows);
+    var forms = _baseForms(upos, lemmaRows);
+    if (forms.isEmpty && remote != null) forms = remote.forms;
 
     // Перевод: «общий» (слово отдельно: словарь → кэш → сеть) и «в этом тексте»
     // (контекстный, по предложению). Оба сетевых запроса пускаем ПАРАЛЛЕЛЬНО,
@@ -302,6 +310,7 @@ class AnalysisRepository {
       translation: generalFinal ?? '[Перевод недоступен — нет интернета]',
       contextualTranslation: contextual,
       isOffline: !online,
+      generated: remote?.generated ?? false,
     );
   }
 
@@ -652,6 +661,95 @@ class AnalysisRepository {
     return _resolveByRule(lat);
   }
 
+  /// Разбор словоформы на сервере Читавука — последняя надежда.
+  ///
+  /// Лексикон разрежен: на лемму приходится пара форм, и «šljakerima»,
+  /// «prehlađenih», «podvaljivali» в нём нет ни одной. Правило достраивает
+  /// парадигмы известных лемм, но если самой леммы в словаре тоже нет,
+  /// достраивать не от чего — и читатель получал перевод без разбора вовсе.
+  ///
+  /// Сервер в этом случае спрашивает начальную форму у нейросети и принимает
+  /// ответ, только если парадигма от него даёт ровно эту форму. Поэтому падеж
+  /// и число приходят посчитанные движком, а не названные моделью, — но
+  /// словарной статьи за таким разбором не стоит, и он помечается generated.
+  Future<
+      ({
+        String lemma,
+        String upos,
+        Map<String, String> feats,
+        Map<String, String> forms,
+        bool generated
+      })?> _serverMorphology(String surface, {String sentence = ''}) async {
+    try {
+      final base = translationUrl.endsWith('/')
+          ? translationUrl.substring(0, translationUrl.length - 1)
+          : translationUrl;
+      // Границы слова не передаём: серверу они нужны только чтобы найти при
+      // глаголе частицу «se», а считаются там в байтах — у Dart смещения в
+      // кодовых единицах, и на «š» они разъедутся.
+      final resp = await http
+          .post(
+            Uri.parse('$base/v1/analyze'),
+            headers: {'Content-Type': 'application/json; charset=utf-8'},
+            body: jsonEncode({'word': surface, 'sentence': sentence}),
+          )
+          .timeout(const Duration(seconds: 8));
+      if (resp.statusCode != 200) return null;
+      final data =
+          jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+      if (data['known'] != true) return null;
+
+      final lemma = (data['lemma'] ?? '').toString();
+      final upos = (data['upos'] ?? '').toString();
+      if (lemma.isEmpty || upos.isEmpty || upos == 'UNKNOWN') return null;
+
+      Map<String, String> strMap(dynamic value) => (value is Map)
+          ? value.map((k, v) => MapEntry(k.toString(), v.toString()))
+          : <String, String>{};
+
+      return (
+        lemma: lemma,
+        upos: upos,
+        feats: strMap(data['feats']),
+        forms: _formsFromParadigms(data['paradigms'], upos),
+        generated: data['generated'] == true,
+      );
+    } catch (_) {
+      // Сервера нет — работаем как раньше, без разбора. Читалка обязана
+      // открываться в самолёте.
+      return null;
+    }
+  }
+
+  /// Основные формы из серверных таблиц склонения.
+  ///
+  /// Свой лексикон такого слова не знает вовсе, и взять «им. ед.» с «им. мн.»
+  /// больше неоткуда: иначе карточка показала бы падеж, но пустой раздел форм.
+  /// Число различается по заголовку таблицы — отдельного поля в ней нет.
+  Map<String, String> _formsFromParadigms(dynamic paradigms, String upos) {
+    if (paradigms is! List) return const {};
+    if (upos != 'NOUN' && upos != 'PROPN' && upos != 'ADJ') return const {};
+
+    final forms = <String, String>{};
+    for (final table in paradigms.whereType<Map>()) {
+      final title = (table['title'] ?? '').toString();
+      final key = title.contains('множественное')
+          ? 'им. мн.'
+          : title.contains('единственное')
+              ? 'им. ед.'
+              : '';
+      if (key.isEmpty || forms.containsKey(key)) continue;
+      for (final row in (table['rows'] as List?) ?? const []) {
+        if (row is! Map) continue;
+        if ((row['caseKey'] ?? '').toString() != 'Nom') continue;
+        final form = (row['form'] ?? '').toString().trim();
+        if (form.isNotEmpty) forms[key] = form;
+        break;
+      }
+    }
+    return forms;
+  }
+
   /// Достройка начальной формы для слова, которого нет в лексиконе.
   ///
   /// Лексикон хранит в среднем две формы на лемму, поэтому «kućom» в нём нет.
@@ -717,6 +815,8 @@ class AnalysisRepository {
     var lemma = a.lemma;
     var upos = a.upos;
     var feats = a.feats;
+    var generated = a.generated;
+    Map<String, String> remoteForms = const {};
 
     if (posUnknown) {
       final morph = await _lexiconMorphology(a.surface);
@@ -724,6 +824,17 @@ class AnalysisRepository {
         lemma = morph.lemma;
         upos = morph.upos;
         if (feats.isEmpty) feats = morph.feats;
+      } else {
+        // Ни CLASSLA, ни лексикон, ни правило: остаётся сервер Читавука с его
+        // подсказкой начальной формы.
+        final remote = await _serverMorphology(a.surface);
+        if (remote != null) {
+          lemma = remote.lemma;
+          upos = remote.upos;
+          if (feats.isEmpty) feats = remote.feats;
+          remoteForms = remote.forms;
+          generated = remote.generated;
+        }
       }
     } else if (feats.isEmpty) {
       // Сервер знает часть речи, но признаков нет: берём строку лексикона,
@@ -747,14 +858,21 @@ class AnalysisRepository {
       forms = _baseForms(
           upos, await LexiconDb.instance.getLexiconRowsForLemma(lemma));
     }
+    if (forms.isEmpty) forms = remoteForms;
 
     if (upos == a.upos &&
         lemma == a.lemma &&
+        generated == a.generated &&
         identical(feats, a.feats) &&
         identical(forms, a.forms)) {
       return a; // дополнить нечем
     }
-    return a.copyWith(lemma: lemma, upos: upos, feats: feats, forms: forms);
+    return a.copyWith(
+        lemma: lemma,
+        upos: upos,
+        feats: feats,
+        forms: forms,
+        generated: generated);
   }
 
   /// Выбираем наиболее вероятную интерпретацию.

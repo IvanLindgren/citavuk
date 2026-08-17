@@ -14,6 +14,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../events/events_controller.dart';
 import '../events/reader_rewards.dart';
 import '../models/book_block.dart';
+import '../models/definition.dart';
 import '../models/english_analysis.dart';
 import '../models/grammar.dart';
 import '../models/reader_settings.dart';
@@ -21,6 +22,7 @@ import '../models/sentence_analysis.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
 import '../services/announcements_controller.dart';
+import '../services/definition_service.dart';
 import '../services/grammar_engine.dart';
 import '../services/listening_service.dart';
 import '../services/page_turn_sound.dart';
@@ -39,6 +41,7 @@ import '../widgets/keep_awake.dart';
 import '../utils/tokenizer.dart';
 import '../widgets/animated_widgets.dart';
 import '../widgets/book_block_view.dart';
+import '../widgets/definition_card.dart';
 import '../widgets/grammar_widgets.dart';
 import '../widgets/radio_sheet.dart';
 import '../widgets/reader_text.dart';
@@ -2255,6 +2258,10 @@ class WordAnalysisSheet extends StatefulWidget {
 
 class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
   late Future<WordAnalysis> _future;
+
+  /// Толкование начальной формы. null — ещё не спрашивали (слово английское,
+  /// фраза или разбор не дошёл); ответ null внутри — слова в словаре нет.
+  Future<Definition?>? _definition;
   final AudioPlayer _ttsPlayer = AudioPlayer();
   bool _isSaved = false;
   bool _speaking = false;
@@ -2277,7 +2284,24 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
     _ttsPlayer.onPlayerStateChanged.listen((state) {
       if (mounted) setState(() => _speaking = state == PlayerState.playing);
     });
-    _future.then((data) => _playPronunciation(data.isEnglish ? 'en' : 'sr'));
+    _future.then((data) {
+      _playPronunciation(data.isEnglish ? 'en' : 'sr');
+      _lookUpDefinition(data);
+    });
+  }
+
+  /// Толкование запрашивается после разбора: спрашивать надо начальную форму,
+  /// а она известна только из него.
+  ///
+  /// Английские слова и фразы пропускаются: сербский толковый словарь про них
+  /// ничего не знает, и ходить за пустым ответом незачем.
+  void _lookUpDefinition(WordAnalysis data) {
+    if (data.isEnglish || data.isPhrase) return;
+    final lemma = data.lemma.trim();
+    if (lemma.isEmpty) return;
+    final request = DefinitionService.instance.lookup(lemma);
+    if (!mounted) return;
+    setState(() => _definition = request);
   }
 
   Future<void> _playPronunciation([String lang = 'sr']) async {
@@ -2582,6 +2606,22 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                           const SizedBox(height: 10),
                           _generalTranslationCard(scheme, gen),
                         ],
+                        // Толкование по-сербски: перевод отвечает «что это
+                        // по-русски», толкование — «что это значит». Пока идёт
+                        // запрос и когда слова в словаре нет, места оно не
+                        // занимает: пустая рамка хуже, чем ничего.
+                        if (_definition != null)
+                          FutureBuilder<Definition?>(
+                            future: _definition,
+                            builder: (context, snap) {
+                              final entry = snap.data;
+                              if (entry == null) return const SizedBox.shrink();
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: FadeSlideIn(child: DefinitionCard(entry)),
+                              );
+                            },
+                          ),
                         if (isPhrase && data.sentenceAnalysis != null) ...[
                           const SizedBox(height: 14),
                           _sentenceAnalysisCard(scheme, data.sentenceAnalysis!),
@@ -2643,6 +2683,24 @@ class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
                             scheme,
                             scheme.secondary,
                           ),
+                          // Слова нет в словаре форм, и начальную форму
+                          // подсказала нейросеть. Падеж и таблицы посчитаны по
+                          // правилам, но читатель должен знать, что словарной
+                          // статьи за этим разбором не стоит.
+                          if (data.generated) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              'Этого слова нет в словаре Читавука: начальную '
+                              'форму подсказала нейросеть, а падеж и склонение '
+                              'построены по правилам языка.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  height: 1.4,
+                                  fontStyle: FontStyle.italic,
+                                  color: scheme.onSurface
+                                      .withValues(alpha: 0.65)),
+                            ),
+                          ],
                         ],
                         if (hasFormChoice(data)) ...[
                           const SizedBox(height: 18),
