@@ -117,8 +117,8 @@ export function Dialogues() {
           <section className="mt-14">
             <h2 className="text-2xl sm:text-3xl">Диалоги преподавателей</h2>
             <p className="mt-2 max-w-3xl text-[var(--text-muted)]">
-              Сценарии из уроков, которые ведут преподаватели Читавука. Диалог
-              открывается вместе со своим уроком.
+              Сценарии из уроков, которые ведут преподаватели Читавука.
+              Открывается сразу разговор, а из него — весь урок на эту тему.
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {lessons.map((dialogue) => (
@@ -134,8 +134,10 @@ export function Dialogues() {
 
 function LessonDialogueCard({ dialogue }: { dialogue: PublicDialogue }) {
   return (
+    // Диалог, а не урок: нажавшему на карточку разговора теория и десяток
+    // заданий перед ним — не то, на что он нажимал.
     <Link
-      to={`/lessons/${dialogue.slug}`}
+      to={`/lessons/${dialogue.slug}?stage=dialogue`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] transition-transform hover:-translate-y-1"
     >
       {dialogue.coverUrl && (

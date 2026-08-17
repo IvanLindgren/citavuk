@@ -26,23 +26,34 @@ import { MarkdownLesson } from './MarkdownLesson';
 import { WordReader } from './WordReader';
 import { Button } from './ui';
 
-type LessonStage = 'theory' | 'practice' | 'dialogue' | 'complete';
+export type LessonStage = 'theory' | 'practice' | 'dialogue' | 'complete';
 
 interface LessonPlayerProps {
   lesson: Lesson;
   preview?: boolean;
   previewMode?: 'teacher' | 'moderator';
+  /**
+   * С какой части урока начать.
+   *
+   * Со страницы диалогов приходят за диалогом, а не за уроком: открывать там
+   * теорию и десяток заданий значит не дать нажавшему то, на что он нажал.
+   * Урок при этом никуда не девается — «Назад» из диалога ведёт в него.
+   */
+  initialStage?: LessonStage;
   onExit?: () => void;
 }
 
-export function LessonPlayer({ lesson, preview = false, previewMode, onExit }: LessonPlayerProps) {
+export function LessonPlayer({ lesson, preview = false, previewMode, initialStage, onExit }: LessonPlayerProps) {
   const isPreview = preview || previewMode === 'teacher' || previewMode === 'moderator';
   const isModeration = previewMode === 'moderator';
   const [reportOpen, setReportOpen] = useState(false);
-  const [stage, setStage] = useState<LessonStage>('theory');
-  const [exerciseIndex, setExerciseIndex] = useState(0);
   const content = lesson.content;
   const exercises = content?.exercises ?? [];
+  // Диалога в уроке может не быть — тогда просьба открыть его игнорируется, и
+  // урок начинается с теории, как обычно.
+  const cameForDialogue = initialStage === 'dialogue' && Boolean(content?.dialogue);
+  const [stage, setStage] = useState<LessonStage>(cameForDialogue ? 'dialogue' : 'theory');
+  const [exerciseIndex, setExerciseIndex] = useState(0);
 
   const openStage = (next: LessonStage, nextExercise = exerciseIndex) => {
     setExerciseIndex(nextExercise);
@@ -64,7 +75,7 @@ export function LessonPlayer({ lesson, preview = false, previewMode, onExit }: L
 
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-8 sm:py-12">
-      <button type="button" onClick={onExit} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]"><LuArrowLeft />{isModeration ? 'Вернуться в очередь' : isPreview ? 'Вернуться в редактор' : 'Каталог уроков'}</button>
+      <button type="button" onClick={onExit} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]"><LuArrowLeft />{isModeration ? 'Вернуться в очередь' : isPreview ? 'Вернуться в редактор' : cameForDialogue ? 'Все диалоги' : 'Каталог уроков'}</button>
       {isPreview && <div className="mt-5 rounded-md border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-4 py-3 text-sm"><strong>{isModeration ? 'Предпросмотр модератора.' : 'Предпросмотр преподавателя.'}</strong> Урок работает как у ученика, но ответы и письма никуда не отправляются.</div>}
       {stage === 'theory' && lesson.coverUrl && <div className="mt-7 aspect-[16/7] w-full overflow-hidden rounded-md bg-[var(--bg-sunken)]"><img src={lesson.coverUrl} alt="" className="size-full object-cover" /></div>}
       <header className="mt-7 max-w-3xl">
@@ -96,8 +107,10 @@ export function LessonPlayer({ lesson, preview = false, previewMode, onExit }: L
         <div className="mt-5 border-y border-[var(--line)]">{exercises.map((exercise, index) => <div key={exercise.id} hidden={index !== exerciseIndex}><Exercise exercise={exercise} index={index} lesson={lesson} preview={isPreview} /></div>)}</div>
         <div className="mt-6 flex items-center justify-between gap-3"><Button variant="secondary" disabled={exerciseIndex === 0} onClick={() => openStage('practice', exerciseIndex - 1)}><LuArrowLeft />Предыдущее</Button><Button onClick={afterExercise}>{exerciseIndex < exercises.length - 1 ? 'Следующее' : content.dialogue ? 'К диалогу' : 'Завершить'}<LuArrowRight /></Button></div>
       </section>}
-      {content?.dialogue && stage === 'dialogue' && <section className="mt-10 border-t border-[var(--line)] pt-8"><div className="flex items-center justify-between gap-4"><h2 className="text-2xl">Диалог</h2><button type="button" onClick={() => openStage(exercises.length > 0 ? 'practice' : 'theory', Math.max(0, exercises.length - 1))} className="text-sm font-semibold text-[var(--accent)]">Назад</button></div><Dialogue nodes={content.dialogue.nodes} startId={content.dialogue.startId} /><div className="mt-8 flex justify-end"><Button onClick={() => openStage('complete')}>Завершить урок<LuArrowRight /></Button></div></section>}
-      {stage === 'complete' && <section className="mt-10 border-y border-[var(--line)] py-14 text-center"><LuCheck className="mx-auto size-12 text-emerald-700" /><h2 className="mt-4 text-3xl">Урок пройден</h2><p className="mt-2 text-[var(--text-muted)]">Теория прочитана, практика завершена.</p><div className="mt-6 flex flex-wrap justify-center gap-3"><Button variant="secondary" onClick={() => openStage('theory')}>Повторить теорию</Button>{exercises.length > 0 && <Button onClick={() => openStage('practice', 0)}>Пройти практику ещё раз</Button>}</div></section>}
+      {/* Пришедший за диалогом урока не открывал: кнопка «назад» ведёт его в
+          начало урока, а не на последнее задание, которого он не видел. */}
+      {content?.dialogue && stage === 'dialogue' && <section className="mt-10 border-t border-[var(--line)] pt-8"><div className="flex items-center justify-between gap-4"><h2 className="text-2xl">Диалог</h2><button type="button" onClick={() => cameForDialogue ? openStage('theory', 0) : openStage(exercises.length > 0 ? 'practice' : 'theory', Math.max(0, exercises.length - 1))} className="text-sm font-semibold text-[var(--accent)]">{cameForDialogue ? 'Открыть урок целиком' : 'Назад'}</button></div><Dialogue nodes={content.dialogue.nodes} startId={content.dialogue.startId} /><div className="mt-8 flex justify-end"><Button onClick={() => openStage('complete')}>{cameForDialogue ? 'Диалог пройден' : 'Завершить урок'}<LuArrowRight /></Button></div></section>}
+      {stage === 'complete' && <section className="mt-10 border-y border-[var(--line)] py-14 text-center"><LuCheck className="mx-auto size-12 text-emerald-700" /><h2 className="mt-4 text-3xl">{cameForDialogue ? 'Диалог пройден' : 'Урок пройден'}</h2><p className="mt-2 text-[var(--text-muted)]">{cameForDialogue ? 'За диалогом стоит целый урок — теория и задания на ту же тему.' : 'Теория прочитана, практика завершена.'}</p><div className="mt-6 flex flex-wrap justify-center gap-3"><Button variant="secondary" onClick={() => openStage('theory')}>{cameForDialogue ? 'Открыть урок' : 'Повторить теорию'}</Button>{exercises.length > 0 && <Button onClick={() => openStage('practice', 0)}>Пройти практику ещё раз</Button>}</div></section>}
       {!isPreview && <><button type="button" onClick={() => setReportOpen((value) => !value)} className="mt-16 inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--accent)]"><LuFlag />Пожаловаться на урок</button>{reportOpen && <ReportForm lessonId={lesson.id} onDone={() => setReportOpen(false)} />}</>}
     </main>
   );

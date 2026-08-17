@@ -79,6 +79,33 @@ describe('урок преподавателя', () => {
     expect(heading('Первое задание').closest('[hidden]')).not.toBeNull();
     expect(heading('Второе задание').closest('[hidden]')).toBeNull();
   });
+
+  // Со страницы диалогов приходят за разговором. Открывать там теорию и два
+  // задания перед ним значит не дать нажавшему то, на что он нажал.
+  it('по просьбе открывается сразу диалогом', () => {
+    const withDialogue: Lesson = {
+      ...lesson,
+      content: {
+        ...lesson.content!,
+        dialogue: {
+          startId: 'd1',
+          nodes: [{ id: 'd1', speaker: 'Ana', text: 'Dobar dan!', choices: [] }],
+        },
+      },
+    };
+    act(() => root.render(<LessonPlayer lesson={withDialogue} initialStage="dialogue" />));
+
+    expect(host.textContent).toContain('Dobar dan!');
+    expect(host.textContent).not.toContain('Материал урока');
+    expect(host.textContent).not.toContain('Первое задание');
+  });
+
+  // Диалога в уроке может не быть: просьба тогда молча игнорируется, а не
+  // оставляет читателя на пустом экране.
+  it('без диалога начинает с теории, даже если просили диалог', () => {
+    act(() => root.render(<LessonPlayer lesson={lesson} initialStage="dialogue" />));
+    expect(host.textContent).toContain('Материал урока');
+  });
 });
 
 function click(label: string) {
