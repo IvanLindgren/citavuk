@@ -21,6 +21,7 @@ import '../widgets/course_button.dart';
 import '../widgets/intro_blocks_view.dart';
 import '../widgets/mascot_view.dart';
 import '../widgets/path_node.dart';
+import '../../widgets/stove_icon.dart';
 import 'lesson_screen.dart';
 import 'trainer_screen.dart';
 
@@ -683,12 +684,12 @@ class _HeaderCard extends StatelessWidget {
             runSpacing: 8,
             children: [
               _StatChip(
-                icon: Icons.local_fire_department,
+                icon: const StoveIcon(size: 18),
                 label: 'Серия',
                 value: '${progress.streak.currentDays} дн.',
               ),
               _StatChip(
-                icon: Icons.star_outline,
+                icon: const Icon(Icons.star_outline),
                 label: 'Опыт',
                 value: '${progress.xp}',
               ),
@@ -704,7 +705,9 @@ class _StatChip extends StatelessWidget {
   const _StatChip(
       {required this.icon, required this.label, required this.value});
 
-  final IconData icon;
+  /// Знак приходит виджетом: у серии дней это картинка печи, а не значок
+  /// шрифта. Обычные значки размер и цвет берут из [IconTheme] ниже.
+  final Widget icon;
   final String label;
   final String value;
 
@@ -723,7 +726,10 @@ class _StatChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 18, color: scheme.tertiary),
+            IconTheme(
+              data: IconThemeData(size: 18, color: scheme.tertiary),
+              child: icon,
+            ),
             const SizedBox(width: 8),
             Text('$label: ', style: const TextStyle(fontSize: 13)),
             Text(

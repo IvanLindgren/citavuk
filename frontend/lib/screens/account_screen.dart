@@ -14,6 +14,7 @@ import 'privacy_screen.dart';
 import '../services/desktop_oauth.dart';
 import '../services/sync_service.dart';
 import '../widgets/google_logo.dart';
+import '../widgets/stove_icon.dart';
 import 'roadmap_screen.dart';
 
 /// Экран аккаунта: вход, регистрация и состояние синхронизации.
@@ -346,11 +347,13 @@ class _ProfileCounters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      (Icons.bookmark_added_outlined, stats.words.added, 'слов добавлено'),
-      (Icons.auto_awesome_outlined, stats.words.learned, 'слов выучено'),
-      (Icons.replay_outlined, stats.words.due, 'ждут повторения'),
-      (Icons.local_fire_department_outlined, stats.streakDays, 'дней в серии'),
+    final items = <(Widget, int, String)>[
+      (const Icon(Icons.bookmark_added_outlined), stats.words.added,
+          'слов добавлено'),
+      (const Icon(Icons.auto_awesome_outlined), stats.words.learned,
+          'слов выучено'),
+      (const Icon(Icons.replay_outlined), stats.words.due, 'ждут повторения'),
+      (const StoveIcon(size: 24), stats.streakDays, 'дней в серии'),
     ];
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -371,9 +374,14 @@ class _ProfileCounters extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(item.$1,
-                          size: 22,
-                          color: Theme.of(context).colorScheme.primary),
+                      // Печь в серии дней — картинка, а не значок шрифта, и
+                      // размер со цветом она берёт отсюда сама.
+                      IconTheme(
+                        data: IconThemeData(
+                            size: 22,
+                            color: Theme.of(context).colorScheme.primary),
+                        child: item.$1,
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         '${item.$2}',

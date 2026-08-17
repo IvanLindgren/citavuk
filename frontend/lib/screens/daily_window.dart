@@ -5,6 +5,7 @@ import '../models/level.dart';
 import '../services/daily_service.dart';
 import '../services/sync_service.dart';
 import '../services/user_db.dart';
+import '../widgets/stove_icon.dart';
 import '../widgets/wolf_mascot.dart';
 
 /// Окно «На каждый день»: десять слов, текст с ними и упражнения.
@@ -548,14 +549,14 @@ class _Progress extends StatelessWidget {
               children: [
                 _stat(
                   context,
-                  Icons.local_fire_department,
+                  const StoveIcon(size: 18),
                   progress.streak > 0
                       ? '${progress.streak} дн. подряд'
                       : 'Начнём сегодня',
                 ),
-                _stat(context, Icons.check_circle_outline,
+                _stat(context, const Icon(Icons.check_circle_outline),
                     'Повторено сегодня: ${progress.reviewedToday}'),
-                _stat(context, Icons.schedule,
+                _stat(context, const Icon(Icons.schedule),
                     'Ждёт повторения: ${progress.dueNow}'),
               ],
             ),
@@ -588,10 +589,17 @@ class _Progress extends StatelessWidget {
 
   /// Строка сводки. Текст обязан быть гибким: `Wrap` даёт ребёнку всю ширину
   /// полосы, и «Повторено сегодня: 128» при крупном шрифте вылезает за неё.
-  Widget _stat(BuildContext context, IconData icon, String label) => Row(
+  ///
+  /// Знак приходит виджетом, а не [IconData]: у серии дней это картинка печи,
+  /// а не значок шрифта. Размер и цвет обычные значки берут отсюда сами.
+  Widget _stat(BuildContext context, Widget icon, String label) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: Theme.of(context).colorScheme.primary),
+          IconTheme(
+            data: IconThemeData(
+                size: 16, color: Theme.of(context).colorScheme.primary),
+            child: icon,
+          ),
           const SizedBox(width: 4),
           Flexible(
             child: Text(label, style: Theme.of(context).textTheme.bodySmall),
