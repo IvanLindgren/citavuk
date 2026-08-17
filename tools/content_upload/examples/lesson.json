@@ -1,0 +1,127 @@
+{
+  "slug": "primer-uroka-lokativ",
+  "title": "Локатив: где я нахожусь",
+  "summary": "Разбираем предлоги u и na с локативом и учимся отвечать на вопрос «где».",
+  "level": "A2",
+  "lessonType": "grammar",
+  "topic": "Локатив",
+  "tags": ["падежи", "локатив", "предлоги"],
+  "estimatedMinutes": 15,
+  "script": "latin",
+  "content": {
+    "theory": [
+      {
+        "id": "t1",
+        "type": "heading",
+        "text": "Зачем нужен локатив"
+      },
+      {
+        "id": "t2",
+        "type": "paragraph",
+        "text": "Локатив отвечает на вопрос «где». Сам по себе он не используется — только с предлогом. Чаще всего это u (в) и na (на): u kući, na stolu. Ошибиться легко: в русском «в доме» и «на столе» тоже требуют предлога, но падежи разные, и по привычке хочется поставить не тот."
+      },
+      {
+        "id": "t3",
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "u + локатив — внутри: u sobi, u gradu, u školi",
+          "na + локатив — на поверхности или на мероприятии: na stolu, na poslu, na času",
+          "Движение «куда» — это уже аккузатив: idem u sobu, а не u sobi"
+        ]
+      },
+      {
+        "id": "t4",
+        "type": "table",
+        "rows": [
+          ["Начальная форма", "Локатив", "Пример"],
+          ["kuća", "kući", "Ja sam u kući."],
+          ["sto", "stolu", "Knjiga je na stolu."],
+          ["grad", "gradu", "Živim u gradu."]
+        ]
+      },
+      {
+        "id": "t5",
+        "type": "quote",
+        "text": "Проверка на слух: если можно спросить «где?» — локатив; если «куда?» — аккузатив."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "e1",
+        "type": "multiple_choice",
+        "prompt": "Какая форма верна: «Knjiga je na ___»?",
+        "options": ["sto", "stolu", "stola", "stolom"],
+        "answer": "stolu",
+        "explanation": "Предлог na с вопросом «где» требует локатива: na stolu."
+      },
+      {
+        "id": "e2",
+        "type": "fill_blank",
+        "prompt": "Поставьте слово в нужную форму",
+        "context": "Marko radi u ___ (kancelarija).",
+        "answer": "kancelariji",
+        "acceptedAnswers": ["kancelariji"],
+        "explanation": "Женский род на -a в локативе меняет окончание на -i: kancelarija → kancelariji."
+      },
+      {
+        "id": "e3",
+        "type": "sentence_builder",
+        "prompt": "Соберите предложение «Я живу в большом городе»",
+        "tokens": ["Živim", "u", "velikom", "gradu"],
+        "answer": "Živim u velikom gradu",
+        "explanation": "И прилагательное, и существительное стоят в локативе: u velikom gradu."
+      },
+      {
+        "id": "e4",
+        "type": "matching",
+        "prompt": "Соедините начальную форму с локативом",
+        "pairs": [
+          {"left": "škola", "right": "školi"},
+          {"left": "posao", "right": "poslu"},
+          {"left": "selo", "right": "selu"}
+        ],
+        "explanation": "Средний род и мужской род дают -u, женский на -a даёт -i."
+      },
+      {
+        "id": "e5",
+        "type": "translator_duel",
+        "prompt": "Переведите на сербский",
+        "context": "Вечером мы сидим в кафе рядом с домом.",
+        "answer": "Uveče sedimo u kafiću pored kuće.",
+        "referenceAnswer": "Uveče sedimo u kafiću blizu kuće.",
+        "acceptedAnswers": ["Uveče sedimo u kafiću blizu kuće."],
+        "explanation": "Оба варианта верны: pored и blizu одинаково передают «рядом»."
+      }
+    ],
+    "dialogue": {
+      "startId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "Gde si sada?",
+          "choices": [
+            {"label": "U kući sam.", "nextId": "d2"},
+            {"label": "Na poslu sam.", "nextId": "d3"}
+          ]
+        },
+        {
+          "id": "d2",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "Odlično, onda možemo da se čujemo.",
+          "choices": []
+        },
+        {
+          "id": "d3",
+          "speaker": "Ana",
+          "avatar": "woman",
+          "text": "Onda zovem kasnije. Prijatno!",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

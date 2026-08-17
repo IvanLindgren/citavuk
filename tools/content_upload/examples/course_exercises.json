@@ -1,0 +1,16 @@
+[
+  {
+    "unitId": "u_glagoli",
+    "skillId": "sk_prezent",
+    "lessonId": "l_06",
+    "type": "multiple_choice",
+    "prompt": "Какая форма подходит: «Ja ___ u kancelariji» (raditi)?",
+    "options": [
+      {"id": "a", "text": "radim", "correct": true},
+      {"id": "b", "text": "radiš"},
+      {"id": "c", "text": "radi"},
+      {"id": "d", "text": "rade"}
+    ],
+    "explanation": "Первое лицо единственного числа: radim."
+  }
+]
