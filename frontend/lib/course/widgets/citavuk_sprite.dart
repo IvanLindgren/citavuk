@@ -76,11 +76,19 @@ class CitavukSprite extends StatefulWidget {
     this.semanticLabel,
     this.fallback,
     this.onCompleted,
+    this.still = false,
   });
 
   final SpriteAnimationSpec spec;
   final double height;
   final String? semanticLabel;
+
+  /// Показать только первый кадр и не заводить тикер.
+  ///
+  /// Нужно там, где Читавук — часть оформления, а не реакция на действие: на
+  /// карте курса он крутился в шапке и рядом с тропой, перерисовывая себя
+  /// восемь раз в секунду поверх и без того тяжёлого списка.
+  final bool still;
 
   /// Что показать, если atlas недоступен.
   final Widget? fallback;
@@ -111,6 +119,7 @@ class _CitavukSpriteState extends State<CitavukSprite>
   @override
   void didUpdateWidget(CitavukSprite old) {
     super.didUpdateWidget(old);
+    if (old.still != widget.still) _syncTicker();
     if (old.spec.id != widget.spec.id) {
       _frame = 0;
       _elapsed = Duration.zero;
@@ -148,6 +157,7 @@ class _CitavukSpriteState extends State<CitavukSprite>
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final shouldRun = _atlas != null &&
         !reduceMotion &&
+        !widget.still &&
         widget.spec.frames > 1 &&
         !(_completed && !widget.spec.loop);
 

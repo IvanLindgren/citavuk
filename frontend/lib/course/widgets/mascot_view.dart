@@ -41,11 +41,16 @@ class MascotView extends StatelessWidget {
     required this.state,
     this.size = 72,
     this.onAnimationCompleted,
+    this.still = false,
   });
 
   final MascotState state;
   final double size;
   final VoidCallback? onAnimationCompleted;
+
+  /// Один кадр вместо анимации: Читавук как часть оформления экрана, а не
+  /// ответ на действие человека.
+  final bool still;
 
   /// Статичный арт под состояние — он же fallback для sprite-пути.
   String get _asset => switch (state) {
@@ -83,6 +88,7 @@ class MascotView extends StatelessWidget {
             semanticLabel: _semanticLabel,
             fallback: fallback,
             onCompleted: onAnimationCompleted,
+            still: still,
           );
         },
       ),
