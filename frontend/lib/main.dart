@@ -11,9 +11,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'events/events_controller.dart';
 import 'events/odyssey.dart';
 import 'events/odyssey_content.dart';
+import 'screens/photo_scan_screen.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/db_init.dart';
+import 'services/photo_scan_service.dart';
 import 'services/sync_service.dart';
 import 'course/services/course_progress_store.dart';
 import 'course/services/course_content_loader.dart';
@@ -170,6 +172,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   /// Идёт обновление: синхронизация плюс перечитывание списка книг.
   bool _syncing = false;
 
+  /// Умеет ли сервер разбирать снимки. Кнопка, которая всегда отвечает
+  /// отказом, хуже отсутствующей, поэтому съёмка показывается только когда
+  /// раздел действительно настроен и человек вошёл.
+  bool _photoScan = false;
+
   @override
   void initState() {
     super.initState();
@@ -185,7 +192,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (context.read<AppSettings>().autoUpdateCheck) {
         checkForUpdates(context);
       }
+      _checkPhotoScan();
     });
+  }
+
+  /// Спрашивает сервер, включено ли распознавание снимков.
+  Future<void> _checkPhotoScan() async {
+    final auth = context.read<AuthService>();
+    if (!auth.isSignedIn) return;
+    final available = await PhotoScanService(api: auth.api).available();
+    if (mounted && available != _photoScan) {
+      setState(() => _photoScan = available);
+    }
+  }
+
+  /// Снимок объявления, вывески или тетради — новой книгой.
+  Future<void> _scanPhoto() async {
+    final auth = context.read<AuthService>();
+    final added = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            PhotoScanScreen(service: PhotoScanService(api: auth.api)),
+      ),
+    );
+    if (added == true && mounted) await _loadBooks();
   }
 
   /// Первый запуск: показываем знакомство и, если человек выбрал аккаунт,
@@ -741,6 +772,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         actions: [
           RadioAppBarButton(showLabel: showActionLabels),
+          if (_photoScan)
+            _DashboardAction(
+              showLabel: showActionLabels,
+              label: 'Снять текст',
+              tooltip: 'Снять объявление или тетрадь и завести книгу',
+              icon: Icons.photo_camera_outlined,
+              onPressed: _scanPhoto,
+            ),
           if (!compactAppBar)
             _DashboardAction(
               showLabel: showActionLabels,
@@ -1546,21 +1585,24 @@ class _DashboardAction extends StatelessWidget {
       );
     }
 
+    // Без плашки и рамки. Шесть красных пилюль подряд спорили и с гербовым
+    // цветом шапки, и с обычными значками справа от них: половина панели
+    // кричала, половина молчала. Переход в раздел — не то действие, которое
+    // надо подсвечивать, поэтому цвет остаётся спокойным, а нажимаемость видна
+    // по подсветке под курсором.
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: TextButton.icon(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          foregroundColor: scheme.primary,
-          backgroundColor: scheme.primary.withValues(alpha: 0.08),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          foregroundColor: scheme.onSurfaceVariant,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: scheme.primary.withValues(alpha: 0.25)),
           ),
           textStyle: const TextStyle(
             fontSize: 13,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             letterSpacing: 0,
           ),
         ),
