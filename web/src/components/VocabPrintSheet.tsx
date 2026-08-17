@@ -57,8 +57,8 @@ export function VocabPrintSheet({
           <div>
             <h2 className="text-2xl">Карточки на печать</h2>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              {cards.length} шт. · {pages.length}{' '}
-              {pages.length === 1 ? 'лист' : 'листа'} · {CARDS_PER_PAGE} на лист
+              {cards.length} шт. · {pages.length} {sheetWord(pages.length)} ·{' '}
+              {CARDS_PER_PAGE} на лист
             </p>
           </div>
           <div className="flex gap-2">
@@ -168,6 +168,16 @@ function Sheet({
       </div>
     </>
   );
+}
+
+/** «1 лист», «2 листа», «5 листов» — на пятом листе «листа» режет глаз. */
+function sheetWord(count: number): string {
+  const tens = count % 100;
+  if (tens >= 11 && tens <= 14) return 'листов';
+  const ones = count % 10;
+  if (ones === 1) return 'лист';
+  if (ones >= 2 && ones <= 4) return 'листа';
+  return 'листов';
 }
 
 /** Черта с ромбом посередине — та же, что делит разделы на сайте. */
