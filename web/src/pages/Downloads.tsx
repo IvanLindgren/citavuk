@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.17.0';
+const VERSION = '1.18.0';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
