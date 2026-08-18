@@ -113,20 +113,37 @@ WIN_SIZE=$(stat -c%s "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_
 LINUX_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-linux-x64.tar.gz")
 MACOS_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-macos.zip")
 
+# Версия каждой сборки берётся у неё самой, а не у pubspec. Собираются они
+# вразнобой: Windows — здесь, Linux — в контейнере, macOS — на серверах GitHub
+# по кнопке. Общий номер обещал бы обновление тем, чей архив не пересобирали:
+# оно скачалось бы, установилось, версию не изменило — и предложилось снова.
+LINUX_VERSION=$(tar -xzOf "$FRONTEND/build/citavuk-linux-x64.tar.gz" \
+    --wildcards '*/data/flutter_assets/version.json' 2>/dev/null |
+    sed -n 's/.*"version":"\([^"]*\)".*/\1/p' | head -1)
+MACOS_VERSION=$(unzip -p "$FRONTEND/build/citavuk-macos.zip" \
+    'Citavuk.app/Contents/Info.plist' 2>/dev/null |
+    sed -n '/CFBundleShortVersionString/{n;s/.*<string>\(.*\)<\/string>.*/\1/p;}' | head -1)
+: "${LINUX_VERSION:?не удалось прочитать версию из citavuk-linux-x64.tar.gz}"
+: "${MACOS_VERSION:?не удалось прочитать версию из citavuk-macos.zip}"
+echo "==> Версии сборок: windows $VERSION, linux $LINUX_VERSION, macos $MACOS_VERSION"
+
 echo "==> Манифест обновлений latest.json"
 cat >/tmp/citavuk-latest.json <<JSON
 {
   "version": "$VERSION",
   "notes": "$NOTES",
   "windows": {
+    "version": "$VERSION",
     "url": "https://citavuk.ru/files/citavuk-setup.exe",
     "size": $WIN_SIZE
   },
   "linux": {
+    "version": "$LINUX_VERSION",
     "url": "https://citavuk.ru/files/citavuk-linux-x64.tar.gz",
     "size": $LINUX_SIZE
   },
   "macos": {
+    "version": "$MACOS_VERSION",
     "url": "https://citavuk.ru/files/citavuk-macos.zip",
     "size": $MACOS_SIZE
   }

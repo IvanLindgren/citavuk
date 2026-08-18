@@ -223,11 +223,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   /// сразу открываем вход — иначе про синхронизацию он узнаёт случайно.
   Future<void> _runFirstLaunch() async {
     final choice = await showOnboarding(context);
-    if (!mounted || choice != OnboardingChoice.account) return;
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const AccountScreen()),
-    );
+    if (mounted && choice == OnboardingChoice.account) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const AccountScreen()),
+      );
+    }
+    // Съёмка есть только у вошедшего, а вход бывает и здесь, и позже — из
+    // «Обновить». Без этой проверки кнопка появлялась лишь при следующем
+    // запуске.
+    if (mounted) await _checkPhotoScan();
   }
 
   Future<void> _initAndLoad() async {
@@ -287,6 +292,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       }
       await _loadBooks(quiet: true);
+      await _checkPhotoScan();
     } finally {
       if (mounted) setState(() => _syncing = false);
     }
@@ -772,14 +778,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         actions: [
           RadioAppBarButton(showLabel: showActionLabels),
-          if (_photoScan)
-            _DashboardAction(
-              showLabel: showActionLabels,
-              label: 'Снять текст',
-              tooltip: 'Снять объявление или тетрадь и завести книгу',
-              icon: Icons.photo_camera_outlined,
-              onPressed: _scanPhoto,
-            ),
           if (!compactAppBar)
             _DashboardAction(
               showLabel: showActionLabels,
@@ -913,13 +911,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      floatingActionButton: _books.isNotEmpty
-          ? FloatingActionButton.extended(
-              icon: const Icon(Icons.add),
-              label: const Text('Импорт'),
-              onPressed: _importFile,
-            )
-          : null,
+      floatingActionButton: _books.isEmpty ? null : _addButtons(scheme),
     );
 
     // Перетаскивание работает на десктопе; на мобильных и в вебе DropTarget
@@ -936,6 +928,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  /// Кнопки «завести книгу»: файл и снимок стоят рядом.
+  ///
+  /// Съёмка раньше была значком в шапке, между обновлением и «ещё», и там её
+  /// не находили. Книгу заводят из этого угла — снимок такой же способ её
+  /// завести, как и файл.
+  Widget _addButtons(ColorScheme scheme) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (_photoScan) ...[
+            FloatingActionButton.extended(
+              // Кнопок две, и каждой нужна своя метка перелёта: с общей
+              // Flutter роняет экран при открытии съёмки.
+              heroTag: 'scan',
+              backgroundColor: scheme.secondaryContainer,
+              foregroundColor: scheme.onSecondaryContainer,
+              icon: const Icon(Icons.photo_camera_outlined),
+              label: Text(photoScanAction),
+              onPressed: _scanPhoto,
+            ),
+            const SizedBox(height: 12),
+          ],
+          FloatingActionButton.extended(
+            heroTag: 'import',
+            icon: const Icon(Icons.add),
+            label: const Text('Импорт'),
+            onPressed: _importFile,
+          ),
+        ],
+      );
 
   Widget _dropOverlay(ColorScheme scheme) => Positioned.fill(
         child: IgnorePointer(
@@ -1005,6 +1028,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         label: const Text('Импорт PDF/DOCX'),
                         onPressed: _importFile,
                       ),
+                      if (_photoScan)
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.photo_camera_outlined),
+                          label: Text(photoScanAction),
+                          onPressed: _scanPhoto,
+                        ),
                       OutlinedButton.icon(
                         icon: const Icon(Icons.text_snippet_outlined),
                         label: const Text('Открыть рассказ'),

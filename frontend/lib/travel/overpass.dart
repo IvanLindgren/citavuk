@@ -1,10 +1,15 @@
-/// Что находится в точке, куда ткнули на карте.
+/// Что находится в точке, куда ткнули на карте, и что вокруг.
 ///
 /// Спрашивается Overpass — поисковый API поверх данных OpenStreetMap. Своего
 /// прокси с кешем пока нет, и до него это единственный способ узнать про место.
 ///
 /// Зеркал два: overpass-api.de регулярно отвечает 429 в часы пик, и молчание
 /// карты в ответ на нажатие выглядит как поломка приложения.
+///
+/// На сайте знакомые места узнаются прямо в векторном тайле и подписываются
+/// без единого запроса. Во Flutter карта растровая — в картинке тегов нет, —
+/// поэтому подписи собираются здесь: тем же справочником и теми же правилами,
+/// чтобы аптека называлась «апотека» одинаково в браузере и в приложении.
 library;
 
 import 'dart:convert';
@@ -23,6 +28,10 @@ const List<String> _mirrors = [
 const int _radiusM = 40;
 
 const Duration _timeout = Duration(seconds: 12);
+
+/// Сколько мест берётся из ответа. Больше — и карта превращается в стену
+/// подписей, на которой не разобрать ничего.
+const int maxPlaces = 90;
 
 class FoundPlace {
   const FoundPlace({
@@ -150,4 +159,122 @@ class TravelUnavailable implements Exception {
 
   @override
   String toString() => 'Overpass недоступен';
+}
+
+/// Ключи OSM, с которых начинаются правила знакомых заведений.
+///
+/// Спрашивать в границах экрана всё подряд нельзя: в центре Белграда это
+/// тысячи объектов, из которых знакомых — сотня. Ключи собираются из самого
+/// справочника, поэтому новый тип места ищется без правки этого файла.
+///
+/// `building` выброшен намеренно: под него попадает каждый дом квартала, а
+/// нужен он ровно одному правилу — `building=train_station`. Станцию всё равно
+/// найдут `railway=station` и `railway=halt`.
+List<String> placeKeys(List<PlaceKind> kinds) {
+  final keys = <String>{};
+  for (final kind in kinds) {
+    if (kind.group != 'place') continue;
+    for (final rule in kind.osm) {
+      final key = rule.split(';').first.split('=').first.trim();
+      if (key.isEmpty || key == 'building') continue;
+      keys.add(key);
+    }
+  }
+  return keys.toList()..sort();
+}
+
+/// Знакомые места из ответа: по одному на точку, важные — первыми.
+///
+/// Одно и то же заведение приезжает и точкой, и контуром здания, а у большого
+/// магазина ещё и вторым входом. Совпадающие по типу в пределах десятка метров
+/// считаются одним: две подписи «пекара» друг на друге читаются как ошибка.
+List<FoundPlace> pickPlaces(List<dynamic> elements, List<PlaceKind> kinds) {
+  final ranks = {for (final kind in kinds) kind.id: kind.rank};
+  final seen = <String>{};
+  final found = <FoundPlace>[];
+
+  for (final raw in elements) {
+    if (raw is! Map) continue;
+    final element = Map<String, dynamic>.from(raw);
+    final tagsRaw = element['tags'];
+    if (tagsRaw is! Map) continue;
+    final tags = {
+      for (final entry in tagsRaw.entries) '${entry.key}': '${entry.value}',
+    };
+
+    double? lat;
+    double? lon;
+    if (element['lat'] is num && element['lon'] is num) {
+      lat = (element['lat'] as num).toDouble();
+      lon = (element['lon'] as num).toDouble();
+    } else if (element['center'] is Map) {
+      final centre = Map<String, dynamic>.from(element['center'] as Map);
+      lat = (centre['lat'] as num?)?.toDouble();
+      lon = (centre['lon'] as num?)?.toDouble();
+    }
+    if (lat == null || lon == null) continue;
+
+    // Незнакомый тип на карте подписать нечем: у него нет сербского слова.
+    // По нажатию он по-прежнему откроется — это делает askOverpass.
+    final kind = matchKind(tags, kinds);
+    if (kind == null || kind.isEmpty) continue;
+
+    final key = '$kind|${lat.toStringAsFixed(4)}|${lon.toStringAsFixed(4)}';
+    if (!seen.add(key)) continue;
+
+    found.add(FoundPlace(
+      kind: kind,
+      name: placeName(tags),
+      lat: lat,
+      lon: lon,
+      tags: tags,
+    ));
+  }
+
+  found.sort((a, b) => (ranks[a.kind] ?? 3).compareTo(ranks[b.kind] ?? 3));
+  return found.length > maxPlaces ? found.sublist(0, maxPlaces) : found;
+}
+
+/// Знакомые места в показанном куске города.
+///
+/// Пустой список — законный ответ: в спальном квартале заведений и правда нет.
+Future<List<FoundPlace>> findPlaces(
+  double south,
+  double west,
+  double north,
+  double east,
+  List<PlaceKind> kinds, {
+  http.Client? client,
+}) async {
+  final keys = placeKeys(kinds);
+  if (keys.isEmpty) return const [];
+
+  final own = client == null;
+  final http.Client web = client ?? http.Client();
+  final box = '${south.toStringAsFixed(5)},${west.toStringAsFixed(5)},'
+      '${north.toStringAsFixed(5)},${east.toStringAsFixed(5)}';
+  // `out ... 400` — предохранитель на стороне сервера: в центре города ответ
+  // без него уходит в мегабайты, а на телефоне это заметная пауза.
+  final query = '[out:json][timeout:20];('
+      '${keys.map((key) => 'nwr["$key"]($box);').join()}'
+      ');out tags center 400;';
+
+  try {
+    for (final mirror in _mirrors) {
+      try {
+        final response = await web
+            .post(Uri.parse(mirror), body: {'data': query}).timeout(_timeout);
+        if (response.statusCode != 200) continue;
+        final parsed = jsonDecode(response.body);
+        if (parsed is! Map) continue;
+        final elements = (parsed['elements'] as List?) ?? const [];
+        return pickPlaces(elements, kinds);
+      } catch (_) {
+        // Зеркало молчит — пробуем следующее.
+      }
+    }
+    throw const TravelUnavailable();
+  } finally {
+    if (own) web.close();
+  }
 }
