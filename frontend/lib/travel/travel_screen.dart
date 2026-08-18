@@ -69,8 +69,7 @@ class _TravelScreenState extends State<TravelScreen> {
   LatLngBounds? _covered;
   Timer? _settle;
 
-  /// Приближение хранится двумя признаками, а не числом: иначе перерисовка шла
-  /// бы на каждом кадре прокрутки ради подписи, которая не изменилась.
+  /// Насколько близко карта: см. `_syncZoom`.
   bool _close = false;
   bool _detailed = false;
 
@@ -99,16 +98,22 @@ class _TravelScreenState extends State<TravelScreen> {
 
   /// Карту подвинули: ждём, пока она остановится, и спрашиваем, что вокруг.
   void _onCamera(MapCamera camera) {
-    final close = camera.zoom >= _placesZoom;
-    final detailed = camera.zoom >= _detailZoom;
-    if (close != _close || detailed != _detailed) {
-      setState(() {
-        _close = close;
-        _detailed = detailed;
-      });
-    }
+    _syncZoom(camera);
     _settle?.cancel();
     _settle = Timer(_settleDelay, _lookAround);
+  }
+
+  /// Насколько мы близко. Отдельными признаками, а не числом: перерисовка на
+  /// каждом кадре прокрутки не нужна, меняется только подпись внизу и набор
+  /// мелких типов.
+  void _syncZoom(MapCamera camera) {
+    final close = camera.zoom >= _placesZoom;
+    final detailed = camera.zoom >= _detailZoom;
+    if (close == _close && detailed == _detailed) return;
+    setState(() {
+      _close = close;
+      _detailed = detailed;
+    });
   }
 
   /// Знакомые заведения в границах экрана.
@@ -118,7 +123,11 @@ class _TravelScreenState extends State<TravelScreen> {
   Future<void> _lookAround() async {
     final bundle = _bundle;
     if (!mounted || bundle == null || _listing || _scanning) return;
+    // Карта могла открыться сразу вблизи: onMapReady приходит раньше первого
+    // onPositionChanged, и без этого подпись внизу звала бы приблизить уже
+    // приближённую карту.
     final camera = _map.camera;
+    _syncZoom(camera);
     if (camera.zoom < _placesZoom) {
       _covered = null;
       if (_found.isNotEmpty) setState(() => _found = const []);
