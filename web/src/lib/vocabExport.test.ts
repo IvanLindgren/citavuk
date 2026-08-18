@@ -5,6 +5,7 @@ import {
   CARD_COLUMNS,
   cardPages,
   exportFileName,
+  printableRows,
   toCsv,
   type ExportRow,
 } from './vocabExport';
@@ -90,6 +91,34 @@ describe('печатные карточки', () => {
 
   it('пустой словарь листов не даёт', () => {
     expect(cardPages([])).toEqual([]);
+  });
+});
+
+describe('что идёт на бумагу', () => {
+  it('фразы на карточки не попадают', () => {
+    const rows = [row('kuća'), row('Kako ste danas?'), row('hleb')];
+    expect(printableRows(rows).map((r) => r.word)).toEqual(['kuća', 'hleb']);
+  });
+
+  // Из книги в словарь уходит выделенный кусок целиком, и такой записью может
+  // оказаться абзац на десять строк — на карточке ему места нет тем более.
+  it('выделенный из книги абзац тоже отсеивается', () => {
+    expect(printableRows([row('Ovo je prvi pasus. Kuća je bila velika.')])).toEqual([]);
+  });
+
+  it('словарь из одних фраз печатать нечего', () => {
+    expect(printableRows([row('dobar dan'), row('laku noć')])).toEqual([]);
+  });
+
+  it('порядок оставшихся не меняется', () => {
+    const rows = [row('b'), row('a'), row('c')];
+    expect(printableRows(rows).map((r) => r.word)).toEqual(['b', 'a', 'c']);
+  });
+
+  // В таблицу фразы уходят как были: там их видно целиком, и учить их в Anki
+  // никто не мешает.
+  it('в таблице фразы остаются', () => {
+    expect(toCsv([row('dobar dan')])).toContain('dobar dan');
   });
 });
 

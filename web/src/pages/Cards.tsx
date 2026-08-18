@@ -43,7 +43,12 @@ import {
   type Tag,
   type TagKind,
 } from '../lib/vocabTags';
-import { download, exportFileName, toCsv } from '../lib/vocabExport';
+import {
+  download,
+  exportFileName,
+  printableRows,
+  toCsv,
+} from '../lib/vocabExport';
 import { VocabPrintSheet } from '../components/VocabPrintSheet';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
@@ -962,6 +967,12 @@ function Dictionary({
     [visible],
   );
 
+  /** Сколько записей дойдёт до бумаги: фразы на карточки не идут. */
+  const printableCount = useMemo(
+    () => printableRows(exportRows).length,
+    [exportRows],
+  );
+
   /** Чем сужен словарь — этой же строкой подписан заход повторения. */
   const selectionLabel = useMemo(() => {
     const parts: string[] = [];
@@ -1050,9 +1061,13 @@ function Dictionary({
             >
               Таблицей (CSV)
             </Button>
-            <Button variant="secondary" onClick={() => setPrinting(true)}>
-              На печать
-            </Button>
+            {/* На одних фразах печатать нечего, и кнопка, открывающая пустой
+                лист, обманывает: её просто нет. */}
+            {printableCount > 0 && (
+              <Button variant="secondary" onClick={() => setPrinting(true)}>
+                На печать · {printableCount}
+              </Button>
+            )}
           </>
         )}
       </div>
