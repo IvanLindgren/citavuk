@@ -25,11 +25,15 @@ import '../services/user_db.dart';
 /// На Windows и Linux съёмки у пакета нет вовсе — только выбор файла. Кнопка
 /// «Снять» там падала бы в ошибку чтения снимка, а человек решил бы, что
 /// сломалось распознавание.
-bool get _hasCamera {
+bool get hasCamera {
   if (kIsWeb) return false;
   return defaultTargetPlatform == TargetPlatform.android ||
       defaultTargetPlatform == TargetPlatform.iOS;
 }
+
+/// Как назвать вход в раздел на главной. На телефоне текст снимают, а на
+/// десктопе снимок только выбирают — обещать там съёмку нечестно.
+String get photoScanAction => hasCamera ? 'Снять текст' : 'Текст со снимка';
 
 class PhotoScanScreen extends StatefulWidget {
   const PhotoScanScreen({super.key, required this.service});
@@ -135,13 +139,13 @@ class _PhotoScanScreenState extends State<PhotoScanScreen> {
     final ready = _paragraphs.isNotEmpty;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Снять текст')),
+      appBar: AppBar(title: Text(photoScanAction)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
           children: [
             Text(
-              _hasCamera
+              hasCamera
                   ? 'Наведите камеру на объявление, вывеску или тетрадь. '
                       'Снимков можно сделать несколько — все они попадут в одну книгу.'
                   : 'Выберите снимок объявления, вывески или тетради. '
@@ -153,7 +157,7 @@ class _PhotoScanScreenState extends State<PhotoScanScreen> {
             const SizedBox(height: 16),
             Row(
               children: [
-                if (_hasCamera) ...[
+                if (hasCamera) ...[
                   Expanded(
                     child: FilledButton.icon(
                       onPressed:
@@ -165,7 +169,7 @@ class _PhotoScanScreenState extends State<PhotoScanScreen> {
                   const SizedBox(width: 10),
                 ],
                 Expanded(
-                  child: _hasCamera
+                  child: hasCamera
                       ? OutlinedButton.icon(
                           onPressed:
                               _busy ? null : () => _shoot(ImageSource.gallery),
