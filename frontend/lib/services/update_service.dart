@@ -52,17 +52,33 @@ class UpdateService {
     }
     final manifest =
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-    final platform = manifest[_platformKey] as Map<String, dynamic>?;
-    if (platform == null) return null;
+    return offerFor(manifest, _platformKey, await currentVersion());
+  }
 
-    final latest = (manifest['version'] ?? '') as String;
-    if (!isNewer(latest, await currentVersion())) return null;
+  /// Что манифест предлагает этой системе. Пусто — обновлять нечего.
+  ///
+  /// Версия берётся у самой платформы, а общая — только запасная. Сборки
+  /// выходят вразнобой: Windows пересобирается на машине разработчика, а
+  /// macOS — на серверах GitHub и по кнопке. Общий номер обещал бы Linux
+  /// обновление, которого в его архиве нет: оно скачалось бы, установилось,
+  /// не изменило версию — и предложилось снова, и так без конца.
+  @visibleForTesting
+  static UpdateInfo? offerFor(
+    Map<String, dynamic> manifest,
+    String platformKey,
+    String current,
+  ) {
+    final platform = manifest[platformKey];
+    if (platform is! Map) return null;
+
+    final latest = (platform['version'] ?? manifest['version'] ?? '') as String;
+    if (latest.isEmpty || !isNewer(latest, current)) return null;
 
     return UpdateInfo(
       version: latest,
       url: (platform['url'] ?? '') as String,
       notes: (manifest['notes'] ?? '') as String,
-      size: (platform['size'] ?? 0) as int,
+      size: (platform['size'] as num?)?.toInt() ?? 0,
     );
   }
 

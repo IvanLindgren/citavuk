@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.18.1';
+const VERSION = '1.19.0';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
@@ -68,6 +68,9 @@ const PLATFORMS: Platform[] = [
     description:
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
+    // Сборка под Linux идёт в контейнере, а Docker в день выпуска 1.19.0 не
+    // работал. Номер здесь свой — тот, что лежит в архиве на самом деле.
+    version: '1.18.1',
     size: '45 МБ',
     note: 'Распакуйте архив и запустите ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1 — на обычном рабочем столе они уже стоят.',
   },
