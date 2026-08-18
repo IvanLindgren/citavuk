@@ -215,27 +215,30 @@ func (s *Store) PickDailyWords(
 		themes = []string{}
 	}
 
-	pick := func(skipSeen bool) ([]DailyWord, error) {
-		query := `
+	// Условие «не показывать виденное» включается параметром, а не склейкой
+	// строк. Дописанное строкой, на втором круге оно из запроса выпадало — и
+	// уносило с собой единственное упоминание $1. Сам параметр при этом
+	// продолжал уходить в базу, а Postgres не мог вывести тип того, чего в
+	// тексте запроса нет (42P18): окно дня отвечало 500 ровно тем, у кого
+	// слова уровня кончились или выбрана узкая тема.
+	//
+	// Случайный порядок нужен, чтобы слова темы не шли по алфавиту: иначе
+	// первые дни человек учил бы только «а».
+	const query = `
         SELECT w.lemma, w.translation, w.pos, w.note, w.theme,
                w.example, w.example_translation
           FROM roadmap_words w
          WHERE w.status = 'published'
            AND ($2 = '' OR w.level = $2)
-           AND (cardinality($3::text[]) = 0 OR w.theme = ANY($3))`
-		if skipSeen {
-			query += `
-           AND NOT EXISTS (
+           AND (cardinality($3::text[]) = 0 OR w.theme = ANY($3))
+           AND (NOT $5::boolean OR NOT EXISTS (
                  SELECT 1 FROM daily_seen s
-                  WHERE s.user_id = $1 AND s.lemma = w.lemma)`
-		}
-		// Случайный порядок: слова темы иначе шли бы по алфавиту, и первые дни
-		// человек учил бы только «а».
-		query += `
+                  WHERE s.user_id = $1 AND s.lemma = w.lemma))
       ORDER BY random()
          LIMIT $4`
 
-		rows, err := s.Pool.Query(ctx, query, user, level, themes, limit)
+	pick := func(skipSeen bool) ([]DailyWord, error) {
+		rows, err := s.Pool.Query(ctx, query, user, level, themes, limit, skipSeen)
 		if err != nil {
 			return nil, fmt.Errorf("подбор слов дня: %w", err)
 		}
