@@ -6,7 +6,15 @@
 /// Карта — не обязательная часть раздела. Тайлы берутся у MapTiler по ключу из
 /// `--dart-define=MAPTILER_KEY=...`; ключа нет — раздел показывает те же места
 /// списком. Слова к аптеке нужны и тому, у кого карта не открылась.
+///
+/// Подписаны не только достопримечательности. Рукописные метки города — это
+/// два десятка мест на весь Белград, а нужны те самые пекара, апотека и
+/// мењачница, мимо которых ходишь каждый день. Их приносит Overpass по
+/// показанному куску карты: в растровом тайле тегов нет, а на сайте ту же
+/// работу делает векторный тайл.
 library;
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -20,6 +28,22 @@ import 'place_sheet.dart';
 
 /// Ключ тайлов. Пусто — карта не показывается, остаётся список мест.
 const String mapKey = String.fromEnvironment('MAPTILER_KEY');
+
+/// С какого приближения Читавук подписывает заведения. Дальше это уже не
+/// город, а его силуэт: подписи слипаются, а ответ Overpass растёт до
+/// мегабайтов на пустом месте.
+const double _placesZoom = 15;
+
+/// Второстепенные типы появляются ещё ближе — тем же порядком, что и на сайте:
+/// сначала пекарня и аптека, лавка ключника — когда до неё дошли.
+const double _detailZoom = 16.5;
+
+/// Место рядом с рукописной меткой города второй раз не подписывается.
+const double _pinNearM = 45;
+
+/// Карта постояла — можно спрашивать. Overpass общий, и запрос на каждом кадре
+/// прокрутки он встречает отказом.
+const Duration _settleDelay = Duration(milliseconds: 700);
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
@@ -37,6 +61,19 @@ class _TravelScreenState extends State<TravelScreen> {
   TravelScript _script = TravelScript.cyrillic;
   bool _asking = false;
 
+  /// Заведения в показанном куске города.
+  List<FoundPlace> _found = const [];
+  bool _scanning = false;
+
+  /// Кусок, про который уже спросили: сдвиг внутри него нового не покажет.
+  LatLngBounds? _covered;
+  Timer? _settle;
+
+  /// Приближение хранится двумя признаками, а не числом: иначе перерисовка шла
+  /// бы на каждом кадре прокрутки ради подписи, которая не изменилась.
+  bool _close = false;
+  bool _detailed = false;
+
   /// Список всех мест вместо карты: и когда карты нет, и по кнопке.
   bool _listing = mapKey.isEmpty;
 
@@ -51,6 +88,78 @@ class _TravelScreenState extends State<TravelScreen> {
       });
     }).catchError((Object error) {
       if (mounted) setState(() => _error = 'Не удалось открыть справочник мест.');
+    });
+  }
+
+  @override
+  void dispose() {
+    _settle?.cancel();
+    super.dispose();
+  }
+
+  /// Карту подвинули: ждём, пока она остановится, и спрашиваем, что вокруг.
+  void _onCamera(MapCamera camera) {
+    final close = camera.zoom >= _placesZoom;
+    final detailed = camera.zoom >= _detailZoom;
+    if (close != _close || detailed != _detailed) {
+      setState(() {
+        _close = close;
+        _detailed = detailed;
+      });
+    }
+    _settle?.cancel();
+    _settle = Timer(_settleDelay, _lookAround);
+  }
+
+  /// Знакомые заведения в границах экрана.
+  ///
+  /// Молчание при неудаче намеренно: карта уже показана, подписи — добавка к
+  /// ней, и ругаться в ответ на обычную прокрутку не за что.
+  Future<void> _lookAround() async {
+    final bundle = _bundle;
+    if (!mounted || bundle == null || _listing || _scanning) return;
+    final camera = _map.camera;
+    if (camera.zoom < _placesZoom) {
+      _covered = null;
+      if (_found.isNotEmpty) setState(() => _found = const []);
+      return;
+    }
+
+    final bounds = camera.visibleBounds;
+    if (_covered?.containsBounds(bounds) ?? false) return;
+
+    setState(() => _scanning = true);
+    try {
+      final places = await findPlaces(
+        bounds.south,
+        bounds.west,
+        bounds.north,
+        bounds.east,
+        bundle.kinds,
+      );
+      if (!mounted) return;
+      _covered = bounds;
+      setState(() => _found = places);
+    } on TravelUnavailable {
+      // Оба зеркала молчат. Метки города остаются, нажатие тоже работает.
+    } finally {
+      if (mounted) setState(() => _scanning = false);
+    }
+  }
+
+  /// Что рисовать метками: мелкие типы — только вблизи, и ничего поверх
+  /// рукописных меток города.
+  Iterable<FoundPlace> _nearby(TravelBundle bundle, City city) {
+    const metres = Distance();
+    return _found.where((place) {
+      final rank = bundle.kindById(place.kind)?.rank ?? 3;
+      if (rank >= 3 && !_detailed) return false;
+      for (final pin in city.pins) {
+        final away = metres.as(LengthUnit.Meter, LatLng(place.lat, place.lon),
+            LatLng(pin.lat, pin.lon));
+        if (away < _pinNearM) return false;
+      }
+      return true;
     });
   }
 
@@ -128,7 +237,10 @@ class _TravelScreenState extends State<TravelScreen> {
           if (mapKey.isNotEmpty)
             IconButton(
               tooltip: _listing ? 'Показать карту' : 'Все места списком',
-              onPressed: () => setState(() => _listing = !_listing),
+              onPressed: () {
+                setState(() => _listing = !_listing);
+                if (!_listing) _lookAround();
+              },
               icon: Icon(_listing ? Icons.map_outlined : Icons.list),
             ),
         ],
@@ -199,6 +311,8 @@ class _TravelScreenState extends State<TravelScreen> {
             minZoom: 11,
             maxZoom: 18,
             onTap: (_, point) => _tap(point),
+            onMapReady: _lookAround,
+            onPositionChanged: (camera, _) => _onCamera(camera),
           ),
           children: [
             TileLayer(
@@ -206,6 +320,27 @@ class _TravelScreenState extends State<TravelScreen> {
                   'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=$mapKey',
               userAgentPackageName: 'ru.citavuk.app',
               retinaMode: RetinaMode.isHighDensity(context),
+            ),
+            // Найденные места лежат ниже рукописных: у метки города есть своё
+            // имя, и закрывать её словом «музеј» незачем.
+            MarkerLayer(
+              markers: [
+                for (final place in _nearby(bundle, city))
+                  Marker(
+                    point: LatLng(place.lat, place.lon),
+                    width: 122,
+                    height: 46,
+                    alignment: Alignment.topCenter,
+                    child: _Pin(
+                      label: inScript(
+                          bundle.kindById(place.kind)?.sr ?? '', _script),
+                      icon: bundle.kindById(place.kind)?.icon ?? '',
+                      accent: SerbColors.indigo,
+                      compact: true,
+                      onTap: () => _openPlace(place.kind, place.name),
+                    ),
+                  ),
+              ],
             ),
             MarkerLayer(
               markers: [
@@ -216,9 +351,9 @@ class _TravelScreenState extends State<TravelScreen> {
                     height: 54,
                     alignment: Alignment.topCenter,
                     child: _Pin(
-                      pin: pin,
-                      script: _script,
+                      label: inScript(pin.sr, _script),
                       icon: bundle.kindById(pin.kind)?.icon ?? '',
+                      accent: SerbColors.serbRed,
                       onTap: () => _openPlace(pin.kind, inScript(pin.sr, _script)),
                     ),
                   ),
@@ -232,19 +367,27 @@ class _TravelScreenState extends State<TravelScreen> {
             ),
           ],
         ),
-        if (_asking)
-          const Positioned(
+        if (_asking || _scanning)
+          Positioned(
             top: 12,
             left: 0,
             right: 0,
-            child: Center(child: _Looking()),
+            child: Center(
+              child: _Looking(
+                text: _asking
+                    ? 'Смотрим, что это за место'
+                    : 'Смотрим, что тут вокруг',
+              ),
+            ),
           ),
         Positioned(
           left: 12,
           right: 12,
           bottom: 12,
           child: Text(
-            'Нажми на любое здание — Читавук скажет, что там понадобится.',
+            _close
+                ? 'Нажми на любое здание — Читавук скажет, что там понадобится.'
+                : 'Приблизь карту — Читавук подпишет пекарни, аптеки и кафе.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,
@@ -300,19 +443,27 @@ class _TravelScreenState extends State<TravelScreen> {
   }
 }
 
-/// Метка города: значок и сербское название над ним.
+/// Метка на карте: значок и сербское слово над точкой.
+///
+/// Одна и та же и для рукописных мест города, и для найденных заведений —
+/// разными их делают цвет и размер. Красным подписано имя («Калемегдан»),
+/// синим — тип («пекара»), и по цвету видно, что именно написано.
 class _Pin extends StatelessWidget {
   const _Pin({
-    required this.pin,
-    required this.script,
+    required this.label,
     required this.icon,
+    required this.accent,
     required this.onTap,
+    this.compact = false,
   });
 
-  final CityPin pin;
-  final TravelScript script;
+  final String label;
   final String icon;
+  final Color accent;
   final VoidCallback onTap;
+
+  /// Найденных мест на экране бывает под сотню — им подпись помельче.
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -322,24 +473,25 @@ class _Pin extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: EdgeInsets.symmetric(
+                horizontal: compact ? 6 : 8, vertical: compact ? 3 : 4),
             decoration: BoxDecoration(
               color: const Color(0xF2FFFFFF),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: SerbColors.serbRed, width: 1.5),
+              border: Border.all(color: accent, width: compact ? 1 : 1.5),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _Icon(name: icon, size: 14),
-                const SizedBox(width: 5),
+                _Icon(name: icon, size: compact ? 12 : 14),
+                SizedBox(width: compact ? 4 : 5),
                 Flexible(
                   child: Text(
-                    inScript(pin.sr, script),
+                    label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12,
+                    style: TextStyle(
+                      fontSize: compact ? 11 : 12,
                       fontWeight: FontWeight.bold,
                       color: SerbColors.ink,
                     ),
@@ -348,7 +500,7 @@ class _Pin extends StatelessWidget {
               ],
             ),
           ),
-          Container(width: 2, height: 8, color: SerbColors.serbRed),
+          Container(width: 2, height: compact ? 6 : 8, color: accent),
         ],
       ),
     );
@@ -382,7 +534,9 @@ class _Icon extends StatelessWidget {
 }
 
 class _Looking extends StatelessWidget {
-  const _Looking();
+  const _Looking({required this.text});
+
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -395,16 +549,16 @@ class _Looking extends StatelessWidget {
           BoxShadow(color: Color(0x33000000), blurRadius: 8),
         ],
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
+          const SizedBox(
             width: 14,
             height: 14,
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
-          SizedBox(width: 10),
-          Text('Смотрим, что это за место'),
+          const SizedBox(width: 10),
+          Text(text),
         ],
       ),
     );
