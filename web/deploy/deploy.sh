@@ -26,6 +26,25 @@ trap 'rm -f "$ARCHIVE"' EXIT
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
+# Ключ карты — тоже из окружения, но в обычной работе он лежит в web/.env.local,
+# который в репозиторий не входит. В чистом клоне этого файла нет, Vite молча
+# подставляет пустую строку, и Путешествие на боевом сайте сваливается в список
+# мест: раздел работает, карты нет, а выкатка при этом зелёная. Ровно так карта
+# и пропала 18 августа. Поэтому — не предупреждение, а отказ собирать.
+if [[ -z "${VITE_MAPTILER_KEY:-}" ]]; then
+    for candidate in .env.local ../.env; do
+        [[ -f "$candidate" ]] || continue
+        VITE_MAPTILER_KEY=$(sed -n \
+            's/^\(VITE_MAPTILER_KEY\|MAPTILER_KEY\)=//p' "$candidate" \
+            | tr -d '"'"'"' \r' | head -1)
+        # Не `&& break`: под set -e пустой ключ во втором файле уронил бы
+        # выкатку молча, без объяснения.
+        if [[ -n "$VITE_MAPTILER_KEY" ]]; then break; fi
+    done
+fi
+: "${VITE_MAPTILER_KEY:?нет ключа карты: задайте VITE_MAPTILER_KEY или положите его в web/.env.local — без него Путешествие выкатится без карты}"
+export VITE_MAPTILER_KEY
+
 echo "==> Проверки перед выкаткой"
 checks_started=$SECONDS
 node scripts/prepare-course-assets.mjs
@@ -48,6 +67,13 @@ if [[ ! -f dist/index.html ]]; then
 fi
 if [[ ! -f dist/pdf.worker.js ]]; then
     echo "в сборке нет pdf.worker.js — импорт PDF работать не будет" >&2
+    exit 1
+fi
+# Ключ мог быть в окружении и всё равно не доехать до бандла: Vite забирает
+# только переменные с префиксом VITE_ и только те, что видны на момент сборки.
+# Проверяем не переменную, а результат.
+if ! grep -rqs "api.maptiler.com" dist/assets; then
+    echo "в сборке нет обращений к MapTiler — Путешествие останется без карты" >&2
     exit 1
 fi
 
@@ -114,7 +140,8 @@ echo "==> Проверка"
 # так уже ломался сайт после правки MIME для .mjs, и по кодам ответа это было
 # незаметно.
 check_type() {
-    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1"         | tr -d '' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
+    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1"         | tr -d '
+' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
     if [[ "$actual" != "$2" ]]; then
         echo "  $1 отдаётся как '$actual', ожидалось '$2'" >&2
         return 1
