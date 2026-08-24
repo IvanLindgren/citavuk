@@ -16,9 +16,9 @@ import (
 type yandexStartRequest struct {
 	ReturnTarget string `json:"returnTarget"`
 
-	// ReturnURL нужен только настольным приложениям: у них нет ни deep link,
-	// как у Android, ни постоянной страницы, как у сайта. Они поднимают сервер
-	// на 127.0.0.1 со случайным портом и присылают его адрес сюда.
+	// Desktop передаёт loopback; доверенное соседнее web-приложение — HTTPS
+	// /auth/return на origin из CITAVUK_ALLOWED_ORIGINS. Оба адреса проверяются
+	// до сохранения OAuth state.
 	ReturnURL string     `json:"returnUrl"`
 	Device    deviceInfo `json:"device"`
 }
@@ -47,16 +47,23 @@ func (s *Server) handleYandexStart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Адрес возврата настольного приложения проверяется здесь, до сохранения:
-	// после callback провайдера он используется как цель перенаправления вместе
-	// с одноразовым кодом входа, и непроверенное значение сделало бы из сервера
-	// открытый редиректор.
+	// Адрес проверяется до сохранения: после callback он получит одноразовый
+	// completion code, поэтому непроверенное значение стало бы открытым редиректом.
 	var returnURL string
-	if req.ReturnTarget == "desktop" {
+	switch {
+	case req.ReturnTarget == "desktop":
 		parsed, err := parseLoopbackURL(req.ReturnURL)
 		if err != nil {
 			writeError(w, http.StatusBadRequest, codeBadRequest,
 				"Адрес возврата должен вести на 127.0.0.1.")
+			return
+		}
+		returnURL = parsed
+	case req.ReturnTarget == "web" && strings.TrimSpace(req.ReturnURL) != "":
+		parsed, err := parseTrustedWebReturn(req.ReturnURL, s.cfg.AllowedOrigins)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, codeBadRequest,
+				"Адрес возврата не принадлежит доверенному сайту.")
 			return
 		}
 		returnURL = parsed
@@ -176,23 +183,30 @@ func (s *Server) redirectOAuthResult(
 	switch {
 	case state.ReturnTarget == "mobile":
 		destination = "citavuk://auth/yandex"
+	case state.ReturnTarget == "web" && state.ReturnURL != "":
+		// HTTPS origin и точный путь проверены в handleYandexStart.
+		destination = state.ReturnURL
 	case state.ReturnTarget == "desktop" && state.ReturnURL != "":
 		// Адрес уже проверен при начале входа, см. handleYandexStart.
 		destination = state.ReturnURL
 	default:
 		destination = strings.TrimRight(s.cfg.WebURL, "/") + "/auth/yandex"
 	}
-	values := url.Values{}
+	target, err := url.Parse(destination)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, codeBadRequest,
+			"Не удалось подготовить возврат после входа.")
+		return
+	}
+	values := target.Query()
 	if code != "" {
 		values.Set("code", code)
 	}
 	if message != "" {
 		values.Set("error", message)
 	}
-	if encoded := values.Encode(); encoded != "" {
-		destination += "?" + encoded
-	}
-	http.Redirect(w, r, destination, http.StatusSeeOther)
+	target.RawQuery = values.Encode()
+	http.Redirect(w, r, target.String(), http.StatusSeeOther)
 }
 
 func (s *Server) handleYandexComplete(w http.ResponseWriter, r *http.Request) {
