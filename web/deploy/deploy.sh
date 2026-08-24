@@ -26,24 +26,31 @@ trap 'rm -f "$ARCHIVE"' EXIT
 
 ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
-# Ключ карты — тоже из окружения, но в обычной работе он лежит в web/.env.local,
-# который в репозиторий не входит. В чистом клоне этого файла нет, Vite молча
-# подставляет пустую строку, и Путешествие на боевом сайте сваливается в список
-# мест: раздел работает, карты нет, а выкатка при этом зелёная. Ровно так карта
-# и пропала 18 августа. Поэтому — не предупреждение, а отказ собирать.
-if [[ -z "${VITE_MAPTILER_KEY:-}" ]]; then
-    for candidate in .env.local ../.env; do
-        [[ -f "$candidate" ]] || continue
-        VITE_MAPTILER_KEY=$(sed -n \
-            's/^\(VITE_MAPTILER_KEY\|MAPTILER_KEY\)=//p' "$candidate" \
-            | tr -d '"'"'"' \r' | head -1)
-        # Не `&& break`: под set -e пустой ключ во втором файле уронил бы
-        # выкатку молча, без объяснения.
-        if [[ -n "$VITE_MAPTILER_KEY" ]]; then break; fi
+# Публичные настройки, которые Vite вшивает в бандл на сборке: ключ карты и
+# client_id Google. В обычной работе они лежат в web/.env.local и в корневом
+# .env, а в репозиторий эти файлы не входят. Выкатка идёт из чистого клона, там
+# их нет, Vite молча подставляет пустую строку — и сайт выкатывается зелёным, но
+# калекой: Путешествие сваливается в список мест, а кнопка «Войти через Google»
+# исчезает совсем. Так уже пропали карта 18 августа и вход через Google 24-го.
+# Поэтому — не предупреждение, а отказ собирать.
+public_setting() {
+    local file name value
+    for file in .env.local ../.env; do
+        [[ -f "$file" ]] || continue
+        for name in "$@"; do
+            value=$(sed -n "s/^${name}=//p" "$file" | tr -d '"'"'"' \r' | head -1)
+            if [[ -n "$value" ]]; then printf '%s' "$value"; return; fi
+        done
     done
-fi
+}
+
+: "${VITE_MAPTILER_KEY:=$(public_setting VITE_MAPTILER_KEY MAPTILER_KEY)}"
 : "${VITE_MAPTILER_KEY:?нет ключа карты: задайте VITE_MAPTILER_KEY или положите его в web/.env.local — без него Путешествие выкатится без карты}"
 export VITE_MAPTILER_KEY
+
+: "${VITE_GOOGLE_CLIENT_ID:=$(public_setting VITE_GOOGLE_CLIENT_ID GOOGLE_CLIENT_ID_WEB)}"
+: "${VITE_GOOGLE_CLIENT_ID:?нет client_id Google: задайте VITE_GOOGLE_CLIENT_ID или GOOGLE_CLIENT_ID_WEB в корневом .env — без него вход через Google с сайта пропадёт}"
+export VITE_GOOGLE_CLIENT_ID
 
 echo "==> Проверки перед выкаткой"
 checks_started=$SECONDS
@@ -69,11 +76,15 @@ if [[ ! -f dist/pdf.worker.js ]]; then
     echo "в сборке нет pdf.worker.js — импорт PDF работать не будет" >&2
     exit 1
 fi
-# Ключ мог быть в окружении и всё равно не доехать до бандла: Vite забирает
-# только переменные с префиксом VITE_ и только те, что видны на момент сборки.
-# Проверяем не переменную, а результат.
+# Настройка могла быть в окружении и всё равно не доехать до бандла: Vite
+# забирает только то, что видит на момент сборки. Проверяем не переменные, а
+# результат.
 if ! grep -rqs "api.maptiler.com" dist/assets; then
     echo "в сборке нет обращений к MapTiler — Путешествие останется без карты" >&2
+    exit 1
+fi
+if ! grep -rqs "apps.googleusercontent.com" dist/assets; then
+    echo "в сборке нет client_id Google — кнопка «Войти через Google» исчезнет" >&2
     exit 1
 fi
 
@@ -139,9 +150,13 @@ echo "==> Проверка"
 # nginx отдаёт 200 на всё, а браузер при этом скачивает страницу вместо показа —
 # так уже ломался сайт после правки MIME для .mjs, и по кодам ответа это было
 # незаметно.
+#
+# CR убирается через $'\r', а не самим символом: литеральный CR при правке файла
+# превратился в перевод строки, заголовки склеились в одну строку, и проверка
+# стала видеть пустой тип у всех страниц сразу.
 check_type() {
-    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1"         | tr -d '
-' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
+    actual=$(ssh_run "curl -sI -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1" \
+        | tr -d $'\r' | sed -n 's/^[Cc]ontent-[Tt]ype: //p' | cut -d';' -f1)
     if [[ "$actual" != "$2" ]]; then
         echo "  $1 отдаётся как '$actual', ожидалось '$2'" >&2
         return 1
