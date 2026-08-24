@@ -63,6 +63,31 @@ func TestParseLoopbackURLRejects(t *testing.T) {
 	}
 }
 
+func TestParseTrustedWebReturn(t *testing.T) {
+	allowed := []string{"https://citavuk.ru", "https://wolfy.citavuk.ru"}
+	got, err := parseTrustedWebReturn(
+		"https://wolfy.citavuk.ru/auth/return?provider=yandex&next=%2Faccount&code=fake",
+		allowed,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "https://wolfy.citavuk.ru/auth/return?next=%2Faccount&provider=yandex" {
+		t.Fatalf("параметры возврата разобраны неверно: %q", got)
+	}
+
+	for _, raw := range []string{
+		"https://evil.example/auth/return",
+		"https://wolfy.citavuk.ru/auth/return-evil",
+		"https://wolfy.citavuk.ru/auth/return#fragment",
+		"http://wolfy.citavuk.ru/auth/return",
+	} {
+		if value, err := parseTrustedWebReturn(raw, allowed); err == nil {
+			t.Errorf("небезопасный адрес %q принят как %q", raw, value)
+		}
+	}
+}
+
 // TestRedirectOAuthResultTargets проверяет, что результат входа уходит именно
 // тому приложению, которое его начинало.
 func TestRedirectOAuthResultTargets(t *testing.T) {
@@ -90,6 +115,14 @@ func TestRedirectOAuthResultTargets(t *testing.T) {
 			name:  "сайт получает свою страницу",
 			state: store.OAuthState{ReturnTarget: "web"},
 			want:  "https://citavuk.ru/auth/yandex?code=abc",
+		},
+		{
+			name: "доверенное web-приложение получает свой callback",
+			state: store.OAuthState{
+				ReturnTarget: "web",
+				ReturnURL:    "https://wolfy.citavuk.ru/auth/return?provider=yandex&next=%2Faccount",
+			},
+			want: "https://wolfy.citavuk.ru/auth/return?code=abc&next=%2Faccount&provider=yandex",
 		},
 		{
 			// Если адрес почему-то не сохранился, вход обязан завершиться на

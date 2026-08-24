@@ -10,6 +10,9 @@ import (
 // errNotLoopback — адрес возврата не ведёт на локальный сокет.
 var errNotLoopback = errors.New("адрес возврата должен вести на 127.0.0.1")
 
+// errNotTrustedWebReturn — HTTPS-адрес не входит в CORS allowlist сервера.
+var errNotTrustedWebReturn = errors.New("адрес возврата не принадлежит доверенному сайту")
+
 // loopbackHosts — единственные допустимые имена в адресе возврата.
 //
 // «localhost» разрешён, потому что его требует часть OAuth-провайдеров, но
@@ -75,4 +78,40 @@ func parseLoopbackURL(raw string) (string, error) {
 
 	clean := url.URL{Scheme: "http", Host: parsed.Host, Path: parsed.Path}
 	return clean.String(), nil
+}
+
+// parseTrustedWebReturn разрешает completion code только origin из уже
+// существующего CORS allowlist. Путь фиксирован: иначе OAuth start снова стал
+// бы открытым редиректором внутри доверенного сайта.
+func parseTrustedWebReturn(raw string, allowedOrigins []string) (string, error) {
+	parsed, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil || parsed.Scheme != "https" || parsed.Host == "" ||
+		parsed.User != nil || parsed.Fragment != "" || parsed.Path != "/auth/return" {
+		return "", errNotTrustedWebReturn
+	}
+
+	origin := (&url.URL{Scheme: parsed.Scheme, Host: parsed.Host}).String()
+	trusted := false
+	for _, allowed := range allowedOrigins {
+		candidate, parseErr := url.Parse(strings.TrimRight(strings.TrimSpace(allowed), "/"))
+		if parseErr != nil || candidate.User != nil {
+			continue
+		}
+		candidateOrigin := (&url.URL{Scheme: candidate.Scheme, Host: candidate.Host}).String()
+		if candidateOrigin == origin && candidate.Path == "" {
+			trusted = true
+			break
+		}
+	}
+	if !trusted {
+		return "", errNotTrustedWebReturn
+	}
+
+	// code/error принадлежат callback сервера. Остальные параметры (provider,
+	// next) нужны приложению и сохраняются.
+	query := parsed.Query()
+	query.Del("code")
+	query.Del("error")
+	parsed.RawQuery = query.Encode()
+	return parsed.String(), nil
 }
