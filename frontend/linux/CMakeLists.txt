@@ -74,6 +74,15 @@ set_target_properties(${BINARY_NAME}
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# Старый Clang в Ubuntu 22.04 не знает новый флаг, добавленный upstream-плеером.
+# Сохраняем Werror для кода; только неизвестный warning option стороннего
+# плагина не должен ломать сборку на поддерживаемой glibc 2.35.
+if(TARGET flutter_inappwebview_linux_plugin AND CMAKE_CXX_COMPILER_ID MATCHES "Clang"
+   AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "18")
+  target_compile_options(flutter_inappwebview_linux_plugin PRIVATE
+    -Wno-error=unknown-warning-option)
+endif()
+
 
 # === Installation ===
 # By default, "installing" just makes a relocatable bundle in the build
