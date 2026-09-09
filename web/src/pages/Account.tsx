@@ -216,7 +216,7 @@ function ExamProgress({ quizzes, onOpen }: { quizzes: MaterialQuiz[]; onOpen: ()
           <h2 className="mt-2 text-2xl">{completed} из {quizzes.length} уровней пройдено</h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             {attempts > 0
-              ? `${attempts} попыток · лучший результат ${best}%`
+              ? `${attempts} попыток, лучший результат ${best}%`
               : 'Результаты появятся после первого теста.'}
           </p>
         </div>

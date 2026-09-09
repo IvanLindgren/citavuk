@@ -440,7 +440,7 @@ class AppTheme {
         fontFamily: uiFont,
         fontSize: 26,
         height: 1.2,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w600,
         letterSpacing: -0.3,
         color: ink,
       ),
@@ -448,26 +448,26 @@ class AppTheme {
         fontFamily: uiFont,
         fontSize: 22,
         height: 1.25,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w600,
         letterSpacing: -0.2,
         color: ink,
       ),
       titleLarge: TextStyle(
         fontFamily: uiFont,
         fontSize: 19,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: ink,
       ),
       titleMedium: TextStyle(
         fontFamily: uiFont,
         fontSize: 16,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: ink,
       ),
       titleSmall: TextStyle(
         fontFamily: uiFont,
         fontSize: 14,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: ink,
       ),
       bodyLarge: TextStyle(
@@ -491,7 +491,7 @@ class AppTheme {
       labelLarge: TextStyle(
         fontFamily: uiFont,
         fontSize: 14,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: ink,
       ),
       labelMedium: TextStyle(

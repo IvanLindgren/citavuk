@@ -4,6 +4,7 @@ import '../services/study_service.dart';
 import '../course/widgets/bone_mascot.dart';
 import 'wolf_mascot.dart';
 import 'stove_icon.dart';
+import 'study_calendar_panel.dart';
 
 class StudyOverlay extends StatefulWidget {
   const StudyOverlay({super.key, required this.child});
@@ -12,7 +13,8 @@ class StudyOverlay extends StatefulWidget {
   State<StudyOverlay> createState() => _StudyOverlayState();
 }
 
-class _StudyOverlayState extends State<StudyOverlay> with WidgetsBindingObserver {
+class _StudyOverlayState extends State<StudyOverlay>
+    with WidgetsBindingObserver {
   late int _seen;
   bool _show = false;
   Timer? _timer;
@@ -42,7 +44,9 @@ class _StudyOverlayState extends State<StudyOverlay> with WidgetsBindingObserver
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) unawaited(StudyService.instance.refresh());
+    if (state == AppLifecycleState.resumed) {
+      unawaited(StudyService.instance.refresh());
+    }
   }
 
   @override
@@ -174,50 +178,5 @@ class StudyStatsPanel extends StatelessWidget {
   const StudyStatsPanel({super.key, this.data});
   final Map<String, dynamic>? data;
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-      listenable: StudyService.instance,
-      builder: (context, _) {
-        final s = StudyService.instance.snapshot ?? data;
-        if (s == null) return const SizedBox.shrink();
-        final days = (s['days'] as List? ?? []).whereType<Map>().toList();
-        final recent = days.length > 60 ? days.sublist(days.length - 60) : days;
-        return Card(
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Твоя серия',
-                          style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 12),
-                      Wrap(spacing: 18, runSpacing: 10, children: [
-                        Text('Сейчас: ${s['current']} дн.'),
-                        Text('Рекорд: ${s['longest']} дн.'),
-                        Text('Занятий по дням: ${s['activeDays']}'),
-                        Text('Заморозки: ${s['freezes']} из 2')
-                      ]),
-                      const SizedBox(height: 12),
-                      Text(
-                          'Часовой пояс: ${s['timezone']}. Заморозка сохраняет серию, но не добавляет день занятий.'),
-                      const SizedBox(height: 12),
-                      Wrap(
-                          spacing: 5,
-                          runSpacing: 5,
-                          children: recent
-                              .map((d) => Tooltip(
-                                  message:
-                                      '${d['date']}: ${d['kind'] == 'frozen' ? 'заморозка' : 'занятие'}',
-                                  child: Icon(
-                                      d['kind'] == 'frozen'
-                                          ? Icons.ac_unit
-                                          : Icons.local_fire_department,
-                                      size: 20,
-                                      color: d['kind'] == 'frozen'
-                                          ? Colors.lightBlue
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .primary)))
-                              .toList()),
-                    ])));
-      });
+  Widget build(BuildContext context) => StudyCalendarPanel(data: data);
 }

@@ -523,7 +523,7 @@ class _VukotokCardState extends State<_VukotokCard>
                           _Chip(
                               text: microFeedCategories[item.category] ??
                                   item.category),
-                          Text('${item.cefr} · $minutes мин',
+                          Text('${item.cefr}, $minutes мин',
                               style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 12,
@@ -950,13 +950,13 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
           final primary = hasContext
               ? contextual
               : (general.isNotEmpty ? general : contextual);
-          // Движок мог не узнать форму: тогда вместо «слово · » с висящей
+          // Движок мог не узнать форму: тогда вместо «слово, » с висящей
           // точкой не показываем ничего.
           final subtitle = reflexive != null
-              ? 'возвратный глагол${reflexive.lemma.isEmpty ? '' : ' · ${reflexive.lemma}'}'
+              ? 'возвратный глагол${reflexive.lemma.isEmpty ? '' : ', ${reflexive.lemma}'}'
               : data.lemma.trim().isEmpty
                   ? ''
-                  : '${GrammarEngine.posShort(data.upos)} · ${data.lemma}';
+                  : '${GrammarEngine.posShort(data.upos)}, ${data.lemma}';
           return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -1201,7 +1201,7 @@ class _LikedSheet extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.w700)),
             subtitle: Text(
-                '${microFeedCategories[item.category] ?? item.category} · ${item.cefr}',
+                '${microFeedCategories[item.category] ?? item.category}, ${item.cefr}',
                 style: const TextStyle(color: Colors.white54)),
             trailing: const Icon(Icons.menu_book, color: Colors.white38),
             onTap: () {
@@ -1346,7 +1346,7 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
                   for (final entry in microFeedLevels.entries)
                     ChoiceChip(
                       selected: _level == entry.key,
-                      label: Text('${entry.key} · ${entry.value}'),
+                      label: Text('${entry.key}, ${entry.value}'),
                       onSelected: (_) => setState(() => _level = entry.key),
                     ),
                 ],

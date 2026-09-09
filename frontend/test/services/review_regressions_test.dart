@@ -95,6 +95,22 @@ void main() {
     await expectLater(MicroFeedService(api: api).comments('one'),
         throwsA(isA<ApiException>().having((e) => e.status, 'status', 401)));
   });
+  test('сохранённые видео не смешиваются с текстовыми карточками', () async {
+    SharedPreferences.setMockInitialValues({});
+    final modes = <String?>[];
+    final api = ApiClient(
+        baseUrl: 'https://example.invalid',
+        token: 'test-session',
+        client: MockClient((r) async {
+          modes.add(r.url.queryParameters['mode']);
+          return http.Response('{"items":[]}', 200);
+        }));
+    addTearDown(api.close);
+    final service = MicroFeedService(api: api);
+    await service.liked(video: true);
+    await service.liked();
+    expect(modes, ['video', 'text']);
+  });
 
   test('ключ морфологии различает контекст, позицию и сервер', () {
     String key(String sentence, int start, {String backend = 'a'}) =>

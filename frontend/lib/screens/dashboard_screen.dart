@@ -942,7 +942,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 leading: const Icon(Icons.upload_file_outlined),
                 title: const Text('Импорт файла'),
                 subtitle: Text(DocumentParser.supportedExtensions
-                    .join(' · ')
+                    .join(', ')
                     .toUpperCase()),
                 onTap: () {
                   Navigator.pop(sheetContext);
@@ -985,7 +985,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text('Отпустите файл — откроем книгу',
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 6),
-                  Text(DocumentParser.supportedExtensions.join(' · '),
+                  Text(DocumentParser.supportedExtensions.join(', '),
                       style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
@@ -1304,7 +1304,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           return translation.isEmpty
                               ? word
                               : '$word — $translation';
-                        }).join('  ·  '),
+                        }).join(', '),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -1344,7 +1344,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final subtitle = searching
         ? '$resultCount ${_bookCountWord(resultCount)}'
         : _selectedFolder == null
-            ? '${groups.length} коллекций · ${_books.length} книг'
+            ? '${groups.length} коллекций, ${_books.length} книг'
             : '$count ${_bookCountWord(count)}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1599,7 +1599,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Text(
                         paraCount <= 0
                             ? 'Текст ещё загружается'
-                            : '${(progress * 100).round()}% · стр. ${lastPara + 1} из $paraCount',
+                            : '${(progress * 100).round()}%, стр. ${lastPara + 1} из $paraCount',
                         style: TextStyle(
                             fontSize: 12, color: scheme.onSurfaceVariant),
                       ),
@@ -1796,7 +1796,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 overflow: TextOverflow.ellipsis,
                 style: text.titleMedium),
             const SizedBox(height: 4),
-            Text('Прочитано $progress% · стр. ${lastPara + 1} из $paraCount',
+            Text('Прочитано $progress%, стр. ${lastPara + 1} из $paraCount',
                 style: text.bodySmall),
             const SizedBox(height: 8),
             ClipRRect(
@@ -2243,7 +2243,7 @@ class _EventBanner extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'СОБЫТИЕ · ДО 1 СЕНТЯБРЯ',
+                            'СОБЫТИЕ, ДО 1 СЕНТЯБРЯ',
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w800,
@@ -2267,7 +2267,7 @@ class _EventBanner extends StatelessWidget {
                                 : progress.rewardUnlocked
                                     ? 'Награда получена — можно перечитать'
                                     : percent > 0
-                                        ? 'Пройдено $percent% · 24 песни'
+                                        ? 'Пройдено $percent%, 24 песни'
                                         : '24 песни на сербской кириллице',
                             style: const TextStyle(
                                 fontSize: 12.5, color: Color(0xFFE7DDCB)),

@@ -101,7 +101,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
     <div className="feed-video-controls" data-no-swipe>
       <button type="button" aria-label={state === 1 ? 'Пауза' : 'Воспроизвести'} onClick={() => send(state === 1 ? 'pause' : 'play')} disabled={paused}>{state === 1 ? <LuPause /> : <LuPlay />}</button>
       <button type="button" aria-label={muted ? 'Включить звук' : 'Выключить звук'} aria-pressed={!muted} onClick={() => onMuted(!muted)}>{muted ? <LuVolumeX /> : <LuVolume2 />}</button>
-      <span>{playbackError ? 'YouTube не воспроизводит ролик' : state === -1 ? 'Загружаем видео…' : state === 5 ? 'Нажми воспроизвести' : `Сербская речь · ${Math.floor((item.videoDuration ?? 0) / 60)}:${String((item.videoDuration ?? 0) % 60).padStart(2, '0')}`}</span>
+      <span>{playbackError ? 'YouTube не воспроизводит ролик' : state === -1 ? 'Загружаем видео…' : state === 5 ? 'Нажми воспроизвести' : `Сербская речь, ${Math.floor((item.videoDuration ?? 0) / 60)}:${String((item.videoDuration ?? 0) % 60).padStart(2, '0')}`}</span>
       <button type="button" aria-label="Управление YouTube" title="Все кнопки YouTube, без перехвата жестов" aria-pressed={nativeControls} onClick={() => setNativeControls(!nativeControls)}><LuSettings2 /></button>
     </div>
     <div className="feed-video-caption">

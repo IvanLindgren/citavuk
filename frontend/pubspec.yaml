@@ -130,6 +130,7 @@ flutter:
     - assets/imgs/
     - assets/fonts/Prata-OFL.txt
     - assets/fonts/Prata-FONTLOG.txt
+    - assets/fonts/NotoSans-OFL.txt
     # Каталоги не рекурсивны: спрайты сада собираются для сайта, а в приложение
     # переносятся tools/sync_garden_assets.py — мир и комната отдельными
     # строками, иначе в сборку они не попадут.
@@ -169,6 +170,8 @@ flutter:
     - family: NotoSans
       fonts:
         - asset: assets/fonts/NotoSans-Regular.ttf
+        - asset: assets/fonts/NotoSans-SemiBold.ttf
+          weight: 600
         - asset: assets/fonts/NotoSans-Bold.ttf
           weight: 700
     - family: Lora

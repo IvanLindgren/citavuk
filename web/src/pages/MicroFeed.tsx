@@ -1021,7 +1021,7 @@ function LikedSheet({
                       {script === 'cyrillic' ? item.titleCyrillic : item.titleLatin}
                     </span>
                     <span className="mt-0.5 block text-xs text-white/55">
-                      {categoryLabel(item.category)} · {item.cefr}
+                      {categoryLabel(item.category)}, {item.cefr}
                     </span>
                   </span>
                   <LuBookOpen className="size-5 shrink-0 text-white/45" />
@@ -1151,7 +1151,7 @@ function SourceLine({ item }: { item: MicroFeedItem }) {
   return (
     <a href={item.sourceUrl} target="_blank" rel="noreferrer noopener" className="min-w-0 text-white/60 underline decoration-white/25 underline-offset-4 hover:text-white">
       Источник: {item.attributionText || item.sourceTitle}
-      {item.licenseCode ? ` · ${item.licenseCode}` : ''}
+      {item.licenseCode ? `, ${item.licenseCode}` : ''}
     </a>
   );
 }

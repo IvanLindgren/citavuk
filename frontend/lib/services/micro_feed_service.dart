@@ -54,10 +54,11 @@ class MicroFeedService {
 
   /// Порция ленты. [exclude] — уже показанные карточки: без них сервер выдал бы
   /// те же самые.
-  Future<MicroFeedPage> load({List<String> exclude = const [],bool video=false}) async {
+  Future<MicroFeedPage> load(
+      {List<String> exclude = const [], bool video = false}) async {
     final token = await _visitorToken();
     final query = <String, String>{'limit': '8'};
-    query['mode']=video?'video':'text';
+    query['mode'] = video ? 'video' : 'text';
     if (token.isNotEmpty) query['visitorToken'] = token;
     if (exclude.isNotEmpty) {
       query['exclude'] = exclude.length > 80
@@ -72,10 +73,11 @@ class MicroFeedService {
   }
 
   /// Карточки, отмеченные лайком: лайк работает ещё и закладкой.
-  Future<List<MicroFeedItem>> liked() async {
+  Future<List<MicroFeedItem>> liked({bool video = false}) async {
     final token = await _visitorToken();
     if (token.isEmpty && !await signedIn()) return const [];
     final data = await _api.get('/v1/micro-feed/liked', query: {
+      'mode': video ? 'video' : 'text',
       if (token.isNotEmpty) 'visitorToken': token,
     }) as Map<String, dynamic>;
     return [

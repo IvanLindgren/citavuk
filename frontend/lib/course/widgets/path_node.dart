@@ -91,20 +91,16 @@ class PathNode extends StatelessWidget {
                     ? scheme.onSecondary
                     : scheme.onPrimary);
 
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-
     final node = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (bubbleText != null) ...[
-          reduceMotion
-              ? _StartBubble(text: bubbleText!)
-              : FloatingBob(
-                  amplitude: 4,
-                  child: _StartBubble(text: bubbleText!),
-                ),
-          const SizedBox(height: 6),
-        ],
+        SizedBox(
+            height: 38,
+            child: bubbleText == null
+                ? null
+                : FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: _StartBubble(text: bubbleText!))),
         SizedBox(
           width: _size + 16,
           height: _size + _depth + 8,
@@ -207,12 +203,12 @@ class PathNode extends StatelessWidget {
           child: Text(
             caption,
             textAlign: TextAlign.center,
-            maxLines: 2,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 13.5,
               height: 1.25,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               color: locked ? scheme.onSurfaceVariant : scheme.onSurface,
             ),
           ),
@@ -262,7 +258,7 @@ class _StartBubble extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w800,
-              letterSpacing: 1.0,
+              letterSpacing: 0.2,
               color: scheme.primary,
             ),
           ),

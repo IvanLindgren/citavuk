@@ -243,11 +243,11 @@ export function Header() {
     >
       <div
         className={[
-          'mx-auto flex max-w-6xl items-center gap-3 px-5 transition-[height] duration-300',
+          'mx-auto flex max-w-6xl items-center gap-3 px-5 max-[380px]:gap-1 max-[380px]:px-2 transition-[height] duration-300',
           scrolled ? 'h-14' : 'h-16',
         ].join(' ')}
       >
-        <Link to="/" className="group flex shrink-0 items-center gap-2.5 font-display text-xl font-bold">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5 font-display text-xl max-[380px]:text-lg font-bold">
           <img
             src="/img/citavuk_icon.webp"
             srcSet="/img/citavuk_icon.webp 1x, /img/citavuk_icon@2x.webp 2x"

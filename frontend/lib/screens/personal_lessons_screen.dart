@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import '../widgets/personal_playing_card.dart';
+import '../widgets/personal_lesson_design.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:provider/provider.dart';
 
@@ -135,12 +136,7 @@ class _PersonalLessonsScreenState extends State<PersonalLessonsScreen>
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            Text('Колода сербского. Ого!',
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge),
-                            const SizedBox(height: 12),
-                            const Text(
-                                'Волк Читавук разрисовал игральные карты, и теперь с помощью колоды вы можете самостоятельно создать себе уроки... На каждый день!'),
+                            const PersonalDeckIntro(),
                             if (_error != null)
                               Padding(
                                   padding:

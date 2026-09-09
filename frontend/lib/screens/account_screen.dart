@@ -453,7 +453,7 @@ class _GoalProgressCard extends StatelessWidget {
             Text(
               goal.target.isEmpty
                   ? 'Выбери ступень на карте, чтобы видеть общий прогресс.'
-                  : '${goal.done} из ${goal.total} доступных шагов · '
+                  : '${goal.done} из ${goal.total} доступных шагов, '
                       '${(ratio * 100).round()}%',
               style: Theme.of(context).textTheme.bodySmall,
             ),

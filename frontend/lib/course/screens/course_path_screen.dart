@@ -9,6 +9,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../state/app_settings.dart';
 import '../../theme/app_theme.dart';
@@ -21,6 +22,7 @@ import '../state/lesson_controller.dart';
 import '../widgets/course_button.dart';
 import '../widgets/intro_blocks_view.dart';
 import '../widgets/path_node.dart';
+import '../widgets/course_art.dart';
 import '../../widgets/stove_icon.dart';
 import 'lesson_screen.dart';
 import 'trainer_screen.dart';
@@ -337,9 +339,11 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
           Builder(builder: (context) {
             final settings = context.watch<AppSettings>();
             final on = settings.courseSoundEnabled;
-            return IconButton(
-              icon: Icon(on ? Icons.volume_up : Icons.volume_off),
-              tooltip: on ? 'Выключить звук' : 'Включить звук',
+            return TextButton.icon(
+              icon: Icon(
+                  on ? Icons.volume_up_outlined : Icons.volume_off_outlined,
+                  size: 20),
+              label: Text(on ? 'Звук' : 'Без звука'),
               onPressed: () => settings.setCourseSoundEnabled(!on),
             );
           }),
@@ -400,58 +404,130 @@ class _StatusLine extends StatelessWidget {
       label,
       if (bestScore > 0) 'лучший результат ${(bestScore * 100).round()}%',
     ];
-    return Text(
-      parts.join(' · '),
-      style: TextStyle(
-        fontSize: 14,
-        color: scheme.onSurface.withValues(alpha: 0.7),
-      ),
-    );
+    return Wrap(spacing: 10, runSpacing: 8, children: [
+      for (final part in parts)
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+                color: scheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(9)),
+            child: Text(part,
+                style:
+                    TextStyle(fontSize: 13, color: scheme.onSurfaceVariant))),
+    ]);
   }
 }
 
-class _PathBody extends StatelessWidget {
+class _PathBody extends StatefulWidget {
   const _PathBody({required this.controller, required this.onOpenNode});
-
   final CourseController controller;
   final ValueChanged<Lesson> onOpenNode;
+  @override
+  State<_PathBody> createState() => _PathBodyState();
+}
 
+class _PathBodyState extends State<_PathBody> {
+  final _scroll = ItemScrollController();
+  CourseController get controller => widget.controller;
   @override
   Widget build(BuildContext context) {
     final course = controller.course!;
-
-    // Строки списка собираются замыканиями, а сам список — ListView.builder.
-    //
-    // Раньше здесь был ListView со списком children, то есть вся карта курса
-    // строилась сразу: десять разделов, в каждом тропа из узлов с градиентами,
-    // тенями и спрайтами. На телефоне это не влезало в бюджет кадра, список
-    // дёргался и вверх прокручивался рывками — часть событий прокрутки просто
-    // терялась. Замыкания дают ленивую отрисовку: строится только видимое.
+    final scheme = Theme.of(context).colorScheme;
     final rows = <WidgetBuilder>[
-      (_) => _HeaderCard(controller: controller),
+      (_) => _HeaderCard(
+          controller: controller,
+          onContinue: () {
+            final lesson = controller.nextLesson;
+            if (lesson != null) widget.onOpenNode(lesson);
+          }),
       (_) => const SizedBox(height: 24),
       for (var u = 0; u < course.units.length; u++) ...[
         (_) => _UnitSection(
-              unit: course.units[u],
-              index: u,
-              controller: controller,
-              onOpenNode: onOpenNode,
-            ),
+            unit: course.units[u],
+            index: u,
+            controller: controller,
+            onOpenNode: widget.onOpenNode),
         (_) => const SizedBox(height: 30),
       ],
       (_) => _TrainerCard(course: course),
     ];
-
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1260),
-        child: ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          itemCount: rows.length,
-          itemBuilder: (context, index) => rows[index](context),
-        ),
-      ),
+    final list = ScrollablePositionedList.builder(
+      itemScrollController: _scroll,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      itemCount: rows.length,
+      itemBuilder: (context, index) => rows[index](context),
     );
+    return LayoutBuilder(builder: (context, limits) {
+      if (limits.maxWidth < 1050) return list;
+      return Center(
+          child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1320),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
+                    width: 240,
+                    child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(20, 30, 14, 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Твоя программа',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600)),
+                              const SizedBox(height: 20),
+                              LinearProgressIndicator(
+                                  value: controller.completionRatio,
+                                  minHeight: 6,
+                                  borderRadius: BorderRadius.circular(8)),
+                              const SizedBox(height: 18),
+                              for (var i = 0; i < course.units.length; i++)
+                                TextButton(
+                                    onPressed: () {
+                                      if (!_scroll.isAttached) return;
+                                      if (MediaQuery.disableAnimationsOf(
+                                          context)) {
+                                        _scroll.jumpTo(index: 2 + i * 2);
+                                      } else {
+                                        _scroll.scrollTo(
+                                            index: 2 + i * 2,
+                                            duration: const Duration(
+                                                milliseconds: 280),
+                                            curve: Curves.easeOutCubic);
+                                      }
+                                    },
+                                    style: TextButton.styleFrom(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 8)),
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${i + 1}'.padLeft(2, '0'),
+                                              style: TextStyle(
+                                                  color: scheme.primary,
+                                                  fontSize: 12)),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                              child: Text(course.units[i].title,
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      height: 1.5,
+                                                      color: scheme
+                                                          .onSurfaceVariant))),
+                                        ])),
+                              const SizedBox(height: 22),
+                              Text(
+                                  'Знакомые темы можно пропустить. Нажми на урок с замком и подтверди, что знаешь предыдущее.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      height: 1.7,
+                                      color: scheme.onSurfaceVariant)),
+                            ]))),
+                Expanded(child: list),
+              ])));
+    });
   }
 }
 
@@ -476,10 +552,25 @@ class _UnitSection extends StatelessWidget {
           final banner = _UnitBanner(unit: unit, index: index);
           final path = _LessonPath(
             unit: unit,
+            unitIndex: index,
             controller: controller,
             onOpenNode: onOpenNode,
           );
-          return Column(children: [banner, const SizedBox(height: 24), path]);
+          return Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.outlineVariant)),
+              child: Column(children: [
+                banner,
+                const SizedBox(height: 18),
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 720),
+                        child: path))
+              ]));
         },
       );
 }
@@ -493,34 +584,36 @@ class _UnitBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    const colors = [Color(0xFF94332D), Color(0xFF846035), Color(0xFF4E6B50)];
+    final color = colors[index % colors.length];
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: scheme.primary.withValues(alpha: .5)),
+        color: color,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(23)),
+        border: const Border(
+            bottom: BorderSide(color: Color(0xFFD3B280), width: 3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'РАЗДЕЛ ${index + 1}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
-              color: scheme.primary,
+              color: Color(0xFFF4DDC3),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             unit.title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 21,
-              fontWeight: FontWeight.w800,
-              color: scheme.onSurface,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
               height: 1.2,
             ),
           ),
@@ -528,10 +621,10 @@ class _UnitBanner extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               unit.description,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13.5,
                 height: 1.4,
-                color: scheme.onSurfaceVariant,
+                color: Color(0xFFF4E6D8),
               ),
             ),
           ],
@@ -546,109 +639,73 @@ class _UnitBanner extends StatelessWidget {
 /// Узлы смещаются влево-вправо по синусоидальному паттерну; на широких
 /// экранах рядом с тропой парит Читавук.
 class _LessonPath extends StatelessWidget {
-  const _LessonPath({
-    required this.unit,
-    required this.controller,
-    required this.onOpenNode,
-  });
-
+  const _LessonPath(
+      {required this.unit,
+      required this.unitIndex,
+      required this.controller,
+      required this.onOpenNode});
   final CourseUnit unit;
+  final int unitIndex;
   final CourseController controller;
   final ValueChanged<Lesson> onOpenNode;
-
-  /// Горизонтальные смещения узлов, повторяются циклически.
-  static const List<double> _wave = [0, -58, -92, -58, 0, 58, 92, 58];
-  // Текущий узел выше остальных из-за пузыря «Начать». При меньшем шаге
-  // прозрачная область следующего PressableScale перекрывала его подпись и
-  // перехватывала нажатие.
-  static const double _step = 214;
+  static const _wave = [.27, .27, .47, .67, .67, .47];
 
   @override
   Widget build(BuildContext context) {
     final lessons = unit.lessons.toList();
     final next = controller.nextLesson;
-
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= 880) {
-        final columns = lessons.length <= 4 ? 2 : 3;
-        final cellWidth = constraints.maxWidth / columns;
-        final points = <Offset>[
-          for (var i = 0; i < lessons.length; i++)
-            Offset(
-                ((i ~/ columns).isEven
-                            ? i % columns
-                            : columns - 1 - i % columns) *
-                        cellWidth +
-                    cellWidth / 2,
-                (i ~/ columns) * _step + 110),
-        ];
-        return SizedBox(
-            height: (lessons.length / columns).ceil() * _step,
-            child: Stack(clipBehavior: Clip.none, children: [
-              Positioned.fill(
-                  child: CustomPaint(
-                      painter: _CourseTrailPainter(
-                          points: points,
-                          statuses: [
-                            for (final lesson in lessons)
-                              controller.statusOf(lesson)
-                          ],
-                          line: Theme.of(context).colorScheme.outlineVariant,
-                          done: Theme.of(context).colorScheme.success))),
-              for (var i = 0; i < lessons.length; i++)
-                Positioned(
-                    top: (i ~/ columns) * _step +
-                        (next?.id == lessons[i].id ? 0 : 60),
-                    left: points[i].dx - 74,
-                    width: 148,
-                    child: _buildNode(lessons[i], next)),
-            ]));
-      }
-      // На узких экранах уменьшаем амплитуду волны, чтобы узел с подписью
-      // не выходил за края.
-      final scale = (constraints.maxWidth - 180) / 168 < 1 ? 0.6 : 1.0;
-      // Маскот показывается только когда точно не наедет на крайний узел:
-      // половина ширины должна вместить смещение волны (84), подпись (74)
-      // и саму фигуру с отступом (116).
-
-      final center = constraints.maxWidth / 2;
-      final points = <Offset>[
+    final textScale =
+        (MediaQuery.textScalerOf(context).scale(14) / 14).clamp(1.0, 2.5);
+    final step = 214 * textScale;
+    final done = lessons.isNotEmpty &&
+        lessons.every((l) => [
+              LessonStatus.completed,
+              LessonStatus.mastered,
+              LessonStatus.needsReview
+            ].contains(controller.statusOf(l)));
+    return LayoutBuilder(builder: (context, limits) {
+      final points = [
         for (var i = 0; i < lessons.length; i++)
-          Offset(
-            center + _wave[i % _wave.length] * scale,
-            i * _step + (next?.id == lessons[i].id ? 110 : 50),
-          ),
+          Offset(limits.maxWidth * _wave[i % _wave.length], i * step + 82)
       ];
-      final path = SizedBox(
-        width: double.infinity,
-        height: lessons.length * _step,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
+      final artSize = limits.maxWidth < 390
+          ? 136.0
+          : limits.maxWidth < 520
+              ? 172.0
+              : 225.0;
+      return SizedBox(
+          height: lessons.length * step + 24,
+          width: double.infinity,
+          child: Stack(clipBehavior: Clip.hardEdge, children: [
             Positioned.fill(
-              child: CustomPaint(
-                painter: _CourseTrailPainter(
-                  points: points,
-                  statuses: [
-                    for (final lesson in lessons) controller.statusOf(lesson),
-                  ],
-                  line: Theme.of(context).colorScheme.outlineVariant,
-                  done: Theme.of(context).colorScheme.success,
-                ),
-              ),
-            ),
+                child: RepaintBoundary(
+                    child: CustomPaint(
+                        painter: _CourseTrailPainter(
+                            points: points,
+                            statuses: [
+                              for (final lesson in lessons)
+                                controller.statusOf(lesson)
+                            ],
+                            line: Theme.of(context).colorScheme.outlineVariant,
+                            done: Theme.of(context).colorScheme.success)))),
+            if (lessons.isNotEmpty)
+              Positioned(
+                  top: 58,
+                  left: limits.maxWidth * .74 - artSize / 2,
+                  child: CourseArt(
+                      pose: done
+                          ? 'celebrate'
+                          : unitIndex.isEven
+                              ? 'guide'
+                              : 'reading',
+                      size: artSize)),
             for (var i = 0; i < lessons.length; i++)
               Positioned(
-                top: i * _step,
-                left: points[i].dx - 74,
-                width: 148,
-                child: _buildNode(lessons[i], next),
-              ),
-          ],
-        ),
-      );
-
-      return path;
+                  top: i * step,
+                  left: points[i].dx - 70,
+                  width: 140,
+                  child: _buildNode(lessons[i], next)),
+          ]));
     });
   }
 
@@ -771,78 +828,77 @@ class _CourseTrailPainter extends CustomPainter {
 
 /// Шапка: маскот, общий прогресс, серия и опыт.
 class _HeaderCard extends StatelessWidget {
-  const _HeaderCard({required this.controller});
-
+  const _HeaderCard({required this.controller, required this.onContinue});
   final CourseController controller;
-
+  final VoidCallback onContinue;
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final progress = controller.progress!;
-    final percent = (controller.completionRatio * 100).round();
-
+    final next = controller.nextLesson;
+    final completed = controller.course!.allLessons
+        .where((l) => [
+              LessonStatus.completed,
+              LessonStatus.mastered,
+              LessonStatus.needsReview
+            ].contains(controller.statusOf(l)))
+        .length;
     return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: scheme.primary.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              // Один кадр: в шапке Читавук ничего не показывает и ничему не
-              // радуется, а тикер спрайта перерисовывал его поверх всего
-              // списка карты курса — прокрутка от этого дёргалась.
-              Icon(Icons.school_outlined, size: 36, color: scheme.primary),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      controller.course!.title,
-                      style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w700,
-                          height: 1.25),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Пройдено $percent%',
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+            color: scheme.surfaceContainerLow,
+            border: Border.all(color: scheme.outlineVariant),
+            borderRadius: BorderRadius.circular(26)),
+        child: LayoutBuilder(builder: (context, limits) {
+          final compact = limits.maxWidth < 600;
+          final heading =
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('ТВОЙ МАРШРУТ',
+                style: TextStyle(
+                    color: scheme.primary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.2)),
+            const SizedBox(height: 12),
+            Text(controller.course!.title,
+                style: TextStyle(
+                    fontFamily: 'NotoSans',
+                    fontSize: compact ? 28 : 36,
+                    fontWeight: FontWeight.w600,
+                    height: 1.15,
+                    color: scheme.onSurface)),
+          ]);
+          final details =
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 16),
+            Text(
+                'От азбуки до причастий. Разбирайся в правилах и сразу пробуй их в деле.',
+                style: TextStyle(
+                    fontSize: 15, height: 1.7, color: scheme.onSurfaceVariant)),
+            const SizedBox(height: 20),
+            if (next != null)
+              FilledButton.icon(
+                  onPressed: onContinue,
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('Продолжить занятия'),
+                  style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 16))),
+            if (next != null)
+              Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text('Следующий урок: ${next.title}',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: scheme.onSurface.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: controller.completionRatio),
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, _) => LinearProgressIndicator(
-                value: value,
-                minHeight: 8,
-                backgroundColor: scheme.primary.withValues(alpha: 0.15),
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          // Wrap, а не Row: на узком экране и при увеличенном системном шрифте
-          // плашки переносятся на вторую строку вместо overflow.
-          Wrap(
-            spacing: 10,
-            runSpacing: 8,
-            children: [
+                          fontSize: 12,
+                          height: 1.5,
+                          color: scheme.onSurfaceVariant))),
+            const SizedBox(height: 20),
+            LinearProgressIndicator(
+                value: controller.completionRatio,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8)),
+            const SizedBox(height: 18),
+            Wrap(spacing: 10, runSpacing: 8, children: [
               ListenableBuilder(
                   listenable: StudyService.instance,
                   builder: (context, _) => _StatChip(
@@ -851,15 +907,37 @@ class _HeaderCard extends StatelessWidget {
                       value:
                           '${StudyService.instance.snapshot?['current'] ?? progress.streak.currentDays} дн.')),
               _StatChip(
-                icon: const Icon(Icons.star_outline),
-                label: 'Опыт',
-                value: '${progress.xp}',
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                  icon: const Icon(Icons.star_outline),
+                  label: 'Опыт',
+                  value: '${progress.xp}'),
+              _StatChip(
+                  icon: const Icon(Icons.check_rounded),
+                  label: 'Уроки',
+                  value:
+                      '$completed / ${controller.course!.allLessons.length}'),
+            ]),
+          ]);
+          if (compact) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                    Expanded(child: heading),
+                    const SizedBox(width: 8),
+                    const CourseArt(size: 145)
+                  ]),
+                  details,
+                ]);
+          }
+          return Row(children: [
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [heading, details])),
+            const SizedBox(width: 20),
+            const CourseArt(size: 245)
+          ]);
+        }));
   }
 }
 
@@ -893,11 +971,15 @@ class _StatChip extends StatelessWidget {
               child: icon,
             ),
             const SizedBox(width: 8),
-            Text('$label: ', style: const TextStyle(fontSize: 13)),
-            Text(
-              value,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-            ),
+            Flexible(
+                child: Text.rich(
+                    TextSpan(children: [
+                      TextSpan(text: '$label: '),
+                      TextSpan(
+                          text: value,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ]),
+                    style: const TextStyle(fontSize: 13, height: 1.5))),
           ],
         ),
       ),
