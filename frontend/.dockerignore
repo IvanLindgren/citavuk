@@ -1,0 +1,17 @@
+# Linux-сборка: ключи Android и локальные кеши не попадают даже в build context.
+**
+!pubspec.yaml
+!pubspec.lock
+!lib/
+!lib/**
+!assets/
+!assets/**
+assets/library/
+!linux/
+!linux/**
+linux/flutter/ephemeral/
+!third_party/
+!third_party/**
+!deploy/
+!deploy/linux/
+!deploy/linux/**

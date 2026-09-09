@@ -58,6 +58,7 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   final PageController _pages = PageController();
+  final GlobalKey _pageKey = GlobalKey();
 
   /// Вопрос об уровне задаётся один раз за запуск и только вошедшему без
   /// уровня. Флаг нужен потому, что build вызывается многократно, а окно,
@@ -105,12 +106,19 @@ class _HomeShellState extends State<HomeShell> {
     if (_levelAsked || !mounted) return;
     final auth = context.read<AuthService>();
     final account = auth.account;
-    if (!auth.isSignedIn || account == null || account.serbianLevel.isNotEmpty) {
+    if (!auth.isSignedIn ||
+        account == null ||
+        account.serbianLevel.isNotEmpty) {
       return;
     }
     _levelAsked = true;
     final chosen = await showLevelPrompt(context, context.read<LevelService>());
-    if (chosen != null && chosen.isNotEmpty) auth.rememberLevel(chosen);
+    if (mounted &&
+        auth.account?.id == account.id &&
+        chosen != null &&
+        chosen.isNotEmpty) {
+      auth.rememberLevel(chosen);
+    }
   }
 
   /// Показывает слова дня — один раз в сутки.
@@ -143,19 +151,12 @@ class _HomeShellState extends State<HomeShell> {
     // Прогреваем спрайты Читавука при первом заходе в курс, чтобы первый
     // кадр не мигал.
     if (HomeTab.values[next] == HomeTab.course) {
-      MascotSprites.precache();
+      unawaited(MascotSprites.precache());
     }
 
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    if (reduceMotion) {
-      _pages.jumpToPage(next);
-      return;
-    }
-    _pages.animateToPage(
-      next,
-      duration: const Duration(milliseconds: 280),
-      curve: Curves.easeOutCubic,
-    );
+    // Переход через промежуточные страницы строил карту и ленту даже при
+    // выборе курса, запускал их загрузку и задерживал открытие вкладки.
+    _pages.jumpToPage(next);
   }
 
   @override
@@ -166,27 +167,82 @@ class _HomeShellState extends State<HomeShell> {
     final dark = HomeTab.values[_index] == HomeTab.vukotok;
     final navTheme = dark ? AppTheme.dark() : Theme.of(context);
     final scheme = navTheme.colorScheme;
+    // На широком экране — постоянная боковая навигация, на узком — нижняя.
+    // Конфигурация разделов одна (HomeTab), различается только оболочка.
+    final wide = MediaQuery.sizeOf(context).width >= 900;
+
+    final pages = PageView(
+      key: _pageKey,
+      controller: _pages,
+      // Свайп между разделами отключён: в читалке и плеере есть свои
+      // горизонтальные жесты, они бы конфликтовали.
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (i) => setState(() => _index = i),
+      // Невидимые разделы не тикают: бесконечные анимации (парение маскота,
+      // дыхание дуэли) в фоне зря будят GPU. Аудио и таймеры это не трогает —
+      // гаснут только тикеры.
+      children: [
+        _RetainedTab(
+            child: TickerMode(enabled: _index == 0, child: widget.reading)),
+        _RetainedTab(
+            child: TickerMode(
+                enabled: _index == 1,
+                child: VukotokScreen(active: _index == 1))),
+        _RetainedTab(
+            child:
+                TickerMode(enabled: _index == 2, child: const RoadmapScreen())),
+        _RetainedTab(
+            child: TickerMode(
+                enabled: _index == 3, child: const ListeningScreen())),
+        _RetainedTab(
+          child: TickerMode(
+              enabled: _index == 4,
+              child: CoursePathScreen(controller: _course)),
+        ),
+      ],
+    );
+
+    // Цвета меняются атомарно, без перестроения тяжёлых страниц каждый кадр.
+    if (wide) {
+      return Scaffold(
+        // Явный фон под вкладкой Вукотока: любая щель между колонками
+        // (перестроение, округление) показывает его, а не белый холст окна.
+        backgroundColor: dark ? SerbColors.nightBg : null,
+        body: Row(
+          // Растягиваем во всю высоту: центрирование по умолчанию оставляло
+          // бы сверху и снизу полосы фона при колонках собственной высоты.
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Theme(
+              data: navTheme,
+              child: NavigationRail(
+                selectedIndex: _index,
+                onDestinationSelected: _select,
+                backgroundColor: scheme.surfaceContainerHighest,
+                indicatorColor: scheme.primary.withValues(alpha: 0.18),
+                labelType: NavigationRailLabelType.all,
+                destinations: [
+                  for (final tab in HomeTab.values)
+                    NavigationRailDestination(
+                      icon: Icon(tab.icon),
+                      selectedIcon:
+                          Icon(tab.selectedIcon, color: scheme.primary),
+                      label: Text(tab.label),
+                    ),
+                ],
+              ),
+            ),
+            const VerticalDivider(width: 1, thickness: 1),
+            Expanded(child: pages),
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
-      body: PageView(
-        controller: _pages,
-        // Свайп между разделами отключён: в читалке и плеере есть свои
-        // горизонтальные жесты, они бы конфликтовали.
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (i) => setState(() => _index = i),
-        children: [
-          widget.reading,
-          const VukotokScreen(),
-          const RoadmapScreen(),
-          const ListeningScreen(),
-          CoursePathScreen(controller: _course),
-        ],
-      ),
-      // Тема панели меняется плавно: резкая смена на переходе вкладки читалась
-      // бы как вспышка.
-      bottomNavigationBar: AnimatedTheme(
+      body: pages,
+      bottomNavigationBar: Theme(
         data: navTheme,
-        duration: const Duration(milliseconds: 280),
         child: NavigationBar(
           selectedIndex: _index,
           onDestinationSelected: _select,
@@ -200,8 +256,7 @@ class _HomeShellState extends State<HomeShell> {
                 icon: Icon(tab.icon),
                 selectedIcon: Icon(tab.selectedIcon, color: scheme.primary),
                 label: tab.label,
-                tooltip:
-                    tab == HomeTab.course ? 'Курс сербского — бета' : tab.label,
+                tooltip: tab.label,
               ),
           ],
         ),
@@ -210,29 +265,22 @@ class _HomeShellState extends State<HomeShell> {
   }
 }
 
-/// Метка «Бета» рядом с заголовком раздела.
-class BetaBadge extends StatelessWidget {
-  const BetaBadge({super.key});
+/// Создаётся лениво PageView, но после первого визита сохраняет состояние.
+/// Вся оболочка пересоздаётся при смене аккаунта.
+class _RetainedTab extends StatefulWidget {
+  const _RetainedTab({required this.child});
+  final Widget child;
+  @override
+  State<_RetainedTab> createState() => _RetainedTabState();
+}
 
+class _RetainedTabState extends State<_RetainedTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: scheme.primary.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: scheme.primary.withValues(alpha: 0.40)),
-      ),
-      child: Text(
-        'БЕТА',
-        style: TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 0.8,
-          color: scheme.primary,
-        ),
-      ),
-    );
+    super.build(context);
+    return widget.child;
   }
 }

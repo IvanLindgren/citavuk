@@ -243,19 +243,6 @@ func (s *Store) UserByID(ctx context.Context, id uuid.UUID) (*User, error) {
 		`SELECT `+userColumns+` FROM users WHERE id = $1`, id))
 }
 
-// SetPasswordHash задаёт или меняет пароль.
-func (s *Store) SetPasswordHash(ctx context.Context, id uuid.UUID, hash string) error {
-	tag, err := s.Pool.Exec(ctx,
-		`UPDATE users SET password_hash = $2, updated_at = now() WHERE id = $1`, id, hash)
-	if err != nil {
-		return err
-	}
-	if tag.RowsAffected() == 0 {
-		return ErrUserNotFound
-	}
-	return nil
-}
-
 // SetDisplayName меняет отображаемое имя.
 func (s *Store) SetDisplayName(ctx context.Context, id uuid.UUID, name string) error {
 	tag, err := s.Pool.Exec(ctx,
@@ -344,15 +331,18 @@ func (s *Store) SessionUser(ctx context.Context, tokenHash []byte, ttlDays int) 
         WITH touched AS (
             UPDATE sessions
                SET last_seen_at = now(),
-                   expires_at   = CASE WHEN last_seen_at < now() - interval '1 hour'
-                                       THEN now() + make_interval(days => $2)
-                                       ELSE expires_at END
+                   expires_at = now() + make_interval(days => $2)
              WHERE token_hash = $1 AND expires_at > now()
+               AND last_seen_at < now() - interval '1 hour'
             RETURNING user_id
         )
         SELECT `+userColumns+`
           FROM users
-          JOIN touched ON touched.user_id = users.id`,
+           WHERE users.id IN (
+             SELECT user_id FROM touched
+             UNION
+             SELECT user_id FROM sessions WHERE token_hash = $1 AND expires_at > now()
+           )`,
 		tokenHash, ttlDays))
 }
 
@@ -367,6 +357,23 @@ func (s *Store) DeleteSession(ctx context.Context, tokenHash []byte) error {
 func (s *Store) DeleteUserSessions(ctx context.Context, userID uuid.UUID) error {
 	_, err := s.Pool.Exec(ctx, `DELETE FROM sessions WHERE user_id = $1`, userID)
 	return err
+}
+
+// Пароль и отзыв старых сессий фиксируются вместе.
+func (s *Store) ChangePasswordAndRevoke(ctx context.Context, userID uuid.UUID, hash string) error {
+	return s.InTx(ctx, func(tx pgx.Tx) error {
+		if _, err := tx.Exec(ctx, `UPDATE users SET password_hash=$2, updated_at=now() WHERE id=$1`, userID, hash); err != nil {
+			return err
+		}
+		_, err := tx.Exec(ctx, `DELETE FROM sessions WHERE user_id=$1`, userID)
+		return err
+	})
+}
+
+func (s *Store) SessionIsRecent(ctx context.Context, userID uuid.UUID, hash []byte) (bool, error) {
+	var recent bool
+	err := s.Pool.QueryRow(ctx, `SELECT EXISTS (SELECT 1 FROM sessions WHERE user_id=$1 AND token_hash=$2 AND created_at > now()-interval '5 minutes' AND expires_at > now())`, userID, hash).Scan(&recent)
+	return recent, err
 }
 
 // PurgeExpiredSessions удаляет протухшие сессии.

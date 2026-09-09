@@ -9,6 +9,7 @@ import "strings"
 // frontend/lib/services/grammar_engine.dart.
 
 var irregularPresent = map[string][]string{
+	"izabrati":  {"izaberem", "izabereš", "izabere", "izaberemo", "izaberete", "izaberu"},
 	"biti":      {"sam", "si", "je", "smo", "ste", "su"},
 	"hteti":     {"hoću", "hoćeš", "hoće", "hoćemo", "hoćete", "hoće"},
 	"moći":      {"mogu", "možeš", "može", "možemo", "možete", "mogu"},
@@ -245,10 +246,22 @@ func trimRunes(s string, n int) string {
 
 // presentForms строит презент по инфинитиву. Пустая строка — там, где правила
 // нет: očekivati → očekujem, но plivati → plivam, и угадывать нельзя.
+// Только подтверждённые классы: окончание инфинитива не определяет презент.
+var regularPresent = map[string]bool{
+	"raditi": true, "govoriti": true, "nositi": true, "voziti": true, "moliti": true, "učiti": true, "misliti": true,
+	"živeti": true, "želeti": true, "sedeti": true, "videti": true, "leteti": true, "kupovati": true, "putovati": true,
+	"verovati": true, "razgovarati": true, "gledati": true, "znati": true, "igrati": true, "imati": true, "čitati": true,
+	"slušati": true, "pevati": true, "čekati": true, "pričati": true, "kuvati": true, "šetati": true, "sanjati": true,
+	"padati": true, "pitati": true, "pogledati": true, "otvoriti": true, "zatvoriti": true, "krenuti": true,
+}
+
 func presentForms(inf string) []string {
 	inf = strings.ToLower(inf)
 	if forms, ok := irregularPresent[inf]; ok {
 		return forms
+	}
+	if !regularPresent[inf] && !iConjugationAti[inf] {
+		return nil
 	}
 	var stem string
 	var endings []string

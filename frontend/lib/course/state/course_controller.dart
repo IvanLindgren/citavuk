@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
+import '../../services/study_service.dart';
 
 import '../models/course.dart';
 import '../models/progress.dart';
@@ -34,6 +35,18 @@ class CourseController extends ChangeNotifier {
   Course? _course;
   CourseProgress? _progress;
   Object? _error;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) super.notifyListeners();
+  }
 
   CourseLoadState get state => _state;
   Course? get course => _course;
@@ -47,7 +60,9 @@ class CourseController extends ChangeNotifier {
     notifyListeners();
     try {
       final course = await _loader.load();
+      if (_disposed) return;
       final stored = await _store.load(course.courseId);
+      if (_disposed) return;
       _course = course;
       _progress = _reconcile(stored, course);
       _state = CourseLoadState.ready;
@@ -102,6 +117,9 @@ class CourseController extends ChangeNotifier {
     if (record != null && record.isDone) {
       return _refineDoneStatus(lesson, record);
     }
+    if (record?.skipped == true || record?.placementAt != null) {
+      return LessonStatus.available;
+    }
     if (progress.activeLesson?['lessonId'] == lesson.id) {
       return LessonStatus.inProgress;
     }
@@ -138,8 +156,8 @@ class CourseController extends ChangeNotifier {
     return lesson.prerequisites.every((id) {
       final record = progress.lessons[id];
       return record != null &&
-          record.isDone &&
-          record.bestScore >= kUnlockThreshold;
+          (record.skipped ||
+              (record.isDone && record.bestScore >= kUnlockThreshold));
     });
   }
 
@@ -151,14 +169,42 @@ class CourseController extends ChangeNotifier {
     final course = _course;
     if (course == null) return null;
     for (final lesson in course.allLessons) {
+      if (_progress?.lessons[lesson.id]?.skipped == true) continue;
       final status = statusOf(lesson);
       if (status == LessonStatus.inProgress ||
-          status == LessonStatus.available ||
-          status == LessonStatus.needsReview) {
+          status == LessonStatus.available) {
         return lesson;
       }
     }
+    for (final lesson in course.allLessons) {
+      if (statusOf(lesson) == LessonStatus.needsReview) return lesson;
+    }
     return null;
+  }
+
+  int get skippedCount =>
+      _progress?.lessons.values.where((l) => l.skipped && !l.isDone).length ??
+      0;
+
+  /// Выбор точки входа не подделывает результаты, mastery, XP и серию.
+  Future<void> startFrom(String lessonId) async {
+    final course = _course, progress = _progress;
+    if (course == null || progress == null) return;
+    final all = course.allLessons;
+    final index = all.indexWhere((l) => l.id == lessonId);
+    if (index < 0) throw ArgumentError.value(lessonId, 'lessonId');
+    final lessons = Map<String, LessonProgress>.of(progress.lessons);
+    final at = now();
+    for (var i = 0; i <= index; i++) {
+      final id = all[i].id;
+      final record = lessons[id] ?? LessonProgress(lessonId: id);
+      if (record.isDone && record.bestScore >= kUnlockThreshold) continue;
+      lessons[id] = record.copyWith(
+          status: LessonStatus.available, skipped: i < index, placementAt: at);
+    }
+    _progress = progress.copyWith(lessons: lessons, clearActiveLesson: true);
+    await _store.save(_progress!);
+    notifyListeners();
   }
 
   /// Доля пройденных уроков курса.
@@ -214,10 +260,13 @@ class CourseController extends ChangeNotifier {
     final lessons = Map<String, LessonProgress>.of(progress.lessons);
     lessons[summary.lessonId] = LessonProgress(
       lessonId: summary.lessonId,
-      status: LessonStatus.completed,
+      status: bestScore >= kUnlockThreshold
+          ? LessonStatus.completed
+          : LessonStatus.available,
       bestScore: bestScore,
       attemptsCount: (previous?.attemptsCount ?? 0) + 1,
       completedAt: current,
+      placementAt: previous?.placementAt,
     );
 
     // XP начисляется за верные ответы; повторное прохождение уже пройденного
@@ -235,6 +284,8 @@ class CourseController extends ChangeNotifier {
       clearActiveLesson: true,
     );
     await _store.save(_progress!);
+    await StudyService.instance
+        .record('course', summary.lessonId, answered: summary.total);
     notifyListeners();
   }
 

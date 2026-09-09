@@ -195,7 +195,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Курс сербского'), findsOneWidget);
-    expect(find.text('БЕТА'), findsOneWidget);
     expect(find.text('Сербская грамматика'), findsOneWidget);
     await _scrollToLesson(tester, 'Падежи');
     expect(find.text('Падежи'), findsOneWidget);
@@ -225,9 +224,25 @@ void main() {
     await tester.tap(find.text('Вокатив'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Уровень пока закрыт'), findsOneWidget);
+    expect(find.textContaining('Этот урок идёт после'), findsOneWidget);
+    expect(find.text('Уже знаю, открыть урок'), findsOneWidget);
     // Урок при этом не открылся.
     expect(find.text('Что такое вокатив?'), findsNothing);
+  });
+
+  testWidgets('можно начать с закрытого урока после подтверждения',
+      (tester) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+    await _scrollToLesson(tester, 'Вокатив');
+    await tester.tap(find.text('Вокатив'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Пропущенные темы не дают'), findsOneWidget);
+    await tester.tap(find.text('Уже знаю, открыть урок'));
+    await tester.pumpAndSettle();
+    expect(find.text('Уже знаю, открыть урок'), findsNothing);
+    expect(find.text('Что такое вокатив?'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('открывается урок и показывает первое задание', (tester) async {
@@ -316,9 +331,9 @@ void main() {
             reason: 'узел #$i вылез за правый край при ${size.width}dp');
       }
 
-      // Тропа держится вокруг центра, а не липнет к краю.
-      final first = tester.getRect(nodes.first);
-      expect(first.center.dx, closeTo(size.width / 2, size.width * 0.12));
+      // На десктопе путь намеренно занимает правую часть сцены рядом с
+      // описанием главы; центрирование относительно всего окна больше не
+      // является контрактом. Все узлы при этом обязаны оставаться видимыми.
     });
   }
 

@@ -214,10 +214,10 @@ func upsertBook(ctx context.Context, tx pgx.Tx, userID uuid.UUID, b *Book, rev i
 	if b.ID == uuid.Nil {
 		return errors.New("пустой идентификатор")
 	}
-	if b.UpdatedAt.IsZero() {
+	if b.UpdatedAt.IsZero() || b.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
 		b.UpdatedAt = time.Now().UTC()
 	}
-	_, err := tx.Exec(ctx, `
+	tag, err := tx.Exec(ctx, `
         INSERT INTO books (id, user_id, title, folder, source_key, para_count, last_para,
                            content_sha, lead_image, deleted, updated_at, rev)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
@@ -234,9 +234,12 @@ func upsertBook(ctx context.Context, tx pgx.Tx, userID uuid.UUID, b *Book, rev i
             updated_at  = EXCLUDED.updated_at,
             rev         = EXCLUDED.rev
         WHERE books.user_id = EXCLUDED.user_id
-          AND books.updated_at <= EXCLUDED.updated_at`,
+          AND (books.updated_at <= EXCLUDED.updated_at OR books.updated_at > now() + interval '5 minutes')`,
 		b.ID, userID, b.Title, b.Folder, b.SourceKey, b.ParaCount, b.LastPara,
 		b.ContentSHA, b.LeadImage, b.Deleted, b.UpdatedAt, rev)
+	if err == nil && tag.RowsAffected() == 0 {
+		_, err = tx.Exec(ctx, `UPDATE books SET rev=$3 WHERE id=$1 AND user_id=$2`, b.ID, userID, rev)
+	}
 	return err
 }
 
@@ -244,14 +247,14 @@ func upsertVocab(ctx context.Context, tx pgx.Tx, userID uuid.UUID, v *VocabEntry
 	if v.ID == uuid.Nil {
 		return errors.New("пустой идентификатор")
 	}
-	if v.UpdatedAt.IsZero() {
+	if v.UpdatedAt.IsZero() || v.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
 		v.UpdatedAt = time.Now().UTC()
 	}
 	forms, err := json.Marshal(v.Forms)
 	if err != nil || v.Forms == nil {
 		forms = []byte(`{}`)
 	}
-	_, err = tx.Exec(ctx, `
+	tag, err := tx.Exec(ctx, `
         INSERT INTO vocabulary (id, user_id, book_id, word, lemma, pos, translation,
                                 forms, deleted, updated_at, rev)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
@@ -266,9 +269,12 @@ func upsertVocab(ctx context.Context, tx pgx.Tx, userID uuid.UUID, v *VocabEntry
             updated_at  = EXCLUDED.updated_at,
             rev         = EXCLUDED.rev
         WHERE vocabulary.user_id = EXCLUDED.user_id
-          AND vocabulary.updated_at <= EXCLUDED.updated_at`,
+          AND (vocabulary.updated_at <= EXCLUDED.updated_at OR vocabulary.updated_at > now() + interval '5 minutes')`,
 		v.ID, userID, v.BookID, v.Word, v.Lemma, v.POS, v.Translation,
 		forms, v.Deleted, v.UpdatedAt, rev)
+	if err == nil && tag.RowsAffected() == 0 {
+		_, err = tx.Exec(ctx, `UPDATE vocabulary SET rev=$3 WHERE id=$1 AND user_id=$2`, v.ID, userID, rev)
+	}
 	return err
 }
 
@@ -281,10 +287,10 @@ func upsertReview(ctx context.Context, tx pgx.Tx, userID uuid.UUID, r *Review, r
 	if r.VocabID == uuid.Nil {
 		return errors.New("пустой идентификатор")
 	}
-	if r.UpdatedAt.IsZero() {
+	if r.UpdatedAt.IsZero() || r.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
 		r.UpdatedAt = time.Now().UTC()
 	}
-	_, err := tx.Exec(ctx, `
+	tag, err := tx.Exec(ctx, `
         INSERT INTO reviews (vocab_id, user_id, ease, interval_days, reps, due_at,
                              last_reviewed, deleted, updated_at, rev)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -298,9 +304,19 @@ func upsertReview(ctx context.Context, tx pgx.Tx, userID uuid.UUID, r *Review, r
             updated_at    = EXCLUDED.updated_at,
             rev           = EXCLUDED.rev
         WHERE reviews.user_id = EXCLUDED.user_id
-          AND reviews.updated_at <= EXCLUDED.updated_at`,
+          AND (reviews.updated_at <= EXCLUDED.updated_at OR reviews.updated_at > now() + interval '5 minutes')`,
 		r.VocabID, userID, r.Ease, r.IntervalDays, r.Reps, r.DueAt,
 		r.LastReviewed, r.Deleted, r.UpdatedAt, rev)
+	if err == nil && tag.RowsAffected() > 0 && !r.Deleted && r.LastReviewed != nil {
+		at := time.UnixMilli(*r.LastReviewed)
+		now := time.Now()
+		if !at.Before(now.Add(-48*time.Hour)) && !at.After(now.Add(5*time.Minute)) {
+			_, err = studyInTx(ctx, tx, userID, "", fmt.Sprintf("review:%s:%d", r.VocabID, *r.LastReviewed), now)
+		}
+	}
+	if err == nil && tag.RowsAffected() == 0 {
+		_, err = tx.Exec(ctx, `UPDATE reviews SET rev=$3 WHERE vocab_id=$1 AND user_id=$2`, r.VocabID, userID, rev)
+	}
 	return err
 }
 
@@ -346,7 +362,7 @@ func upsertPalace(ctx context.Context, tx pgx.Tx, userID uuid.UUID, p *Palace, r
 	if p.ID == uuid.Nil {
 		return errors.New("пустой идентификатор")
 	}
-	if p.UpdatedAt.IsZero() {
+	if p.UpdatedAt.IsZero() || p.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
 		p.UpdatedAt = time.Now().UTC()
 	}
 
@@ -365,6 +381,7 @@ func upsertPalace(ctx context.Context, tx pgx.Tx, userID uuid.UUID, p *Palace, r
 			Word:        clip(pin.Word, maxPinWord),
 			Translation: clip(pin.Translation, maxPinTranslate),
 			VocabID:     clip(pin.VocabID, 36),
+			At:          pin.At,
 		}
 	}
 	encoded, err := json.Marshal(pins)
@@ -372,7 +389,7 @@ func upsertPalace(ctx context.Context, tx pgx.Tx, userID uuid.UUID, p *Palace, r
 		return err
 	}
 
-	_, err = tx.Exec(ctx, `
+	tag, err := tx.Exec(ctx, `
         INSERT INTO palaces (id, user_id, name, scene_id, pins, deleted, updated_at, rev)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT (id) DO UPDATE SET
@@ -383,9 +400,12 @@ func upsertPalace(ctx context.Context, tx pgx.Tx, userID uuid.UUID, p *Palace, r
             updated_at = EXCLUDED.updated_at,
             rev        = EXCLUDED.rev
         WHERE palaces.user_id = EXCLUDED.user_id
-          AND palaces.updated_at <= EXCLUDED.updated_at`,
+          AND (palaces.updated_at <= EXCLUDED.updated_at OR palaces.updated_at > now() + interval '5 minutes')`,
 		p.ID, userID, clip(p.Name, maxPalaceName), clip(p.SceneID, maxPalaceSceneID),
 		encoded, p.Deleted, p.UpdatedAt, rev)
+	if err == nil && tag.RowsAffected() == 0 {
+		_, err = tx.Exec(ctx, `UPDATE palaces SET rev=$3 WHERE id=$1 AND user_id=$2`, p.ID, userID, rev)
+	}
 	return err
 }
 

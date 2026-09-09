@@ -61,8 +61,7 @@ Future<void> _pump(WidgetTester tester) async {
     MultiProvider(
       providers: [
         Provider<RoadmapService>.value(value: RoadmapService(api: api)),
-        ChangeNotifierProvider<AuthService>.value(
-            value: AuthService(api: api)),
+        ChangeNotifierProvider<AuthService>.value(value: AuthService(api: api)),
       ],
       child: const MaterialApp(home: RoadmapScreen()),
     ),
@@ -103,10 +102,10 @@ void main() {
 
     await _pump(tester);
 
-    expect(find.text('Reading'), findsOneWidget);
+    expect(find.text('Чтение'), findsOneWidget);
     expect(find.text(_about), findsNothing);
 
-    await tester.tap(find.text('Reading'));
+    await tester.tap(find.text('Чтение'));
     await _tick(tester);
 
     expect(find.text(_about), findsOneWidget);

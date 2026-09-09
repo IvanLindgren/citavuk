@@ -212,7 +212,7 @@ export function LessonEditor() {
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
       <div className="sticky top-16 z-30 -mx-4 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] bg-[var(--bg)]/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
-        <div className="min-w-0"><Link to="/teachers" className="text-sm font-semibold text-[var(--accent)]">← Мои уроки</Link><p className="mt-0.5 truncate text-xs text-[var(--text-muted)]">{lesson ? 'Черновик урока' : 'Новый урок'}</p></div>
+        <div className="min-w-0"><Link to="/teachers" className="text-sm font-semibold text-[var(--accent)]">Мои уроки</Link><p className="mt-0.5 truncate text-xs text-[var(--text-muted)]">{lesson ? 'Черновик урока' : 'Новый урок'}</p></div>
         <div className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-end">
           <ActionButton title="Пройти урок" onClick={() => setPreview(true)}><LuEye /><span className="hidden sm:inline">Пройти урок</span></ActionButton>
           <ActionButton title="Сохранить" onClick={() => void save()} disabled={busy}><LuSave /><span className="hidden sm:inline">Сохранить</span></ActionButton>

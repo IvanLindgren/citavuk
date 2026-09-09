@@ -204,7 +204,7 @@ export function AdminLivePanel() {
               <div key={`${item.name}-${item.since}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 text-sm">
                 <b>{item.name}</b>
                 <span className="text-[var(--text-muted)]">
-                  {item.level} · {item.direction === 'ru-sr' ? 'ру→ср' : 'ср→ру'} · мест {item.seats}
+                  {item.level} · {item.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'} · мест {item.seats}
                 </span>
                 <span className="ml-auto text-[var(--text-muted)]">
                   ждёт {duration((Date.now() - new Date(item.since).getTime()) / 1000)}
@@ -237,7 +237,7 @@ function RoomCard({ room }: { room: LiveRoom }) {
           {PHASES[room.phase] ?? room.phase}
         </span>
         <span className="text-sm text-[var(--text-muted)]">
-          {room.level} · {room.direction === 'ru-sr' ? 'ру→ср' : 'ср→ру'} · раунд {room.round || 0} из 3
+          {room.level} · {room.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'} · раунд {room.round || 0} из 3
           {' · '}{room.people} чел.{room.machines > 0 ? ` + ${room.machines} маш.` : ''} из {room.seats}
         </span>
         <span className="ml-auto text-xs text-[var(--text-muted)]">

@@ -90,6 +90,10 @@ class ReaderSettings {
   final String bgTexture;
   final bool pageTurnSound; // шелест страницы при перелистывании
 
+  /// Спокойный режим: без парения маскота, лишних подсказок и декоративных
+  /// движений. Текст, переводы и разборы работают как обычно.
+  final bool calm;
+
   const ReaderSettings({
     this.flow = ReaderFlow.pages,
     this.fontSize = 19,
@@ -105,6 +109,7 @@ class ReaderSettings {
     this.bgColor = 0,
     this.bgTexture = '',
     this.pageTurnSound = true,
+    this.calm = false,
   });
 
   /// true, если ширина колонки не ограничена.
@@ -125,6 +130,7 @@ class ReaderSettings {
     int? bgColor,
     String? bgTexture,
     bool? pageTurnSound,
+    bool? calm,
   }) =>
       ReaderSettings(
         flow: flow ?? this.flow,
@@ -141,6 +147,7 @@ class ReaderSettings {
         bgColor: bgColor ?? this.bgColor,
         bgTexture: bgTexture ?? this.bgTexture,
         pageTurnSound: pageTurnSound ?? this.pageTurnSound,
+        calm: calm ?? this.calm,
       );
 
   Map<String, dynamic> toMap() => {
@@ -158,6 +165,7 @@ class ReaderSettings {
         'bgColor': bgColor,
         'bgTexture': bgTexture,
         'pageTurnSound': pageTurnSound,
+        'calm': calm,
       };
 
   factory ReaderSettings.fromMap(Map<String, dynamic> m) {
@@ -181,6 +189,7 @@ class ReaderSettings {
       bgColor: (m['bgColor'] as num?)?.toInt() ?? 0,
       bgTexture: m['bgTexture'] as String? ?? '',
       pageTurnSound: m['pageTurnSound'] as bool? ?? true,
+      calm: m['calm'] as bool? ?? false,
     );
   }
 }

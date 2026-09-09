@@ -11,6 +11,10 @@ export type MascotPose =
   | 'citavuk_english'
   | 'citavuk_vukotok'
   | 'citavuk_roadmap'
+  | 'citavuk_utesi'
+  | 'citavuk_slavlje'
+  | 'citavuk_cita'
+  | 'citavuk_zbunjen'
   | 'sluhao_zdravo'
   | 'sluhao_slusa'
   | 'sluhao_savet';

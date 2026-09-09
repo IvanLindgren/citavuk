@@ -5,11 +5,13 @@ class ProfileStats {
     required this.streakDays,
     required this.goal,
     required this.achievements,
+    this.study,
   });
 
   final ProfileWordStats words;
   final List<ProfileActivity> activity;
   final int streakDays;
+  final Map<String, dynamic>? study;
   final ProfileGoalProgress goal;
   final List<ProfileAchievement> achievements;
 
@@ -22,6 +24,7 @@ class ProfileStats {
                 ProfileActivity.fromJson(item.cast<String, dynamic>()))
             .toList(),
         streakDays: (json['streakDays'] as num?)?.toInt() ?? 0,
+        study: (json['study'] as Map?)?.cast<String, dynamic>(),
         goal: ProfileGoalProgress.fromJson(
             (json['goal'] as Map? ?? const {}).cast<String, dynamic>()),
         achievements: (json['achievements'] as List? ?? const [])

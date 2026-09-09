@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import '../services/study_service.dart';
 
 import '../models/daily.dart';
 import '../models/level.dart';
@@ -6,7 +8,6 @@ import '../services/daily_service.dart';
 import '../services/sync_service.dart';
 import '../services/user_db.dart';
 import '../widgets/stove_icon.dart';
-import '../widgets/wolf_mascot.dart';
 
 /// Окно «На каждый день»: десять слов, текст с ними и упражнения.
 ///
@@ -24,7 +25,10 @@ Future<void> showDailyWindow(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (_) => _DailySheet(daily: daily, sync: sync),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      child: _DailySheet(daily: daily, sync: sync),
+    ),
   );
 }
 
@@ -89,40 +93,39 @@ class _DailySheetState extends State<_DailySheet> {
                 children: [...previous, if (current != null) current],
               ),
               child: ListView(
-              key: ValueKey(
-                  '${state == null}-$_tuning-${_error.isNotEmpty}'),
-              controller: controller,
-              padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
-              children: [
-                if (_error.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(_error,
-                        style: const TextStyle(color: Color(0xFFB3261E))),
-                  ),
-                if (state == null && _error.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 60),
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                if (state != null && _tuning)
-                  _Tuning(
-                    daily: widget.daily,
-                    level: state.level,
-                    chosen: state.themes,
-                    onDone: () {
-                      setState(() => _tuning = false);
-                      _load();
-                    },
-                  ),
-                if (state != null && !_tuning)
-                  _SetView(
-                    daily: widget.daily,
-                    sync: widget.sync,
-                    state: state,
-                    onChange: (next) => setState(() => _state = next),
-                  ),
-              ],
+                key: ValueKey('${state == null}-$_tuning-${_error.isNotEmpty}'),
+                controller: controller,
+                padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
+                children: [
+                  if (_error.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(_error,
+                          style: const TextStyle(color: Color(0xFFB3261E))),
+                    ),
+                  if (state == null && _error.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 60),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  if (state != null && _tuning)
+                    _Tuning(
+                      daily: widget.daily,
+                      level: state.level,
+                      chosen: state.themes,
+                      onDone: () {
+                        setState(() => _tuning = false);
+                        _load();
+                      },
+                    ),
+                  if (state != null && !_tuning)
+                    _SetView(
+                      daily: widget.daily,
+                      sync: widget.sync,
+                      state: state,
+                      onChange: (next) => setState(() => _state = next),
+                    ),
+                ],
               ),
             ),
           ),
@@ -133,12 +136,14 @@ class _DailySheetState extends State<_DailySheet> {
 
   Widget _header(BuildContext context) {
     final theme = Theme.of(context);
+    // Без волка: шапка — навигация раздела, а не разговор. Волк молчал бы.
+    final iconColor = theme.colorScheme.primary;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 16, 12, 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const WolfSticker(asset: Wolf.zdravo, size: 64, frame: false),
+          Icon(Icons.calendar_month_outlined, size: 40, color: iconColor),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -363,7 +368,8 @@ class _SetViewState extends State<_SetView>
       if (!mounted) return;
       final set = widget.state.set;
       if (set != null) {
-        widget.onChange(widget.state.copyWith(set: set.copyWith(lesson: lesson)));
+        widget
+            .onChange(widget.state.copyWith(set: set.copyWith(lesson: lesson)));
       }
       setState(() => _composing = false);
     } catch (_) {
@@ -395,7 +401,8 @@ class _SetViewState extends State<_SetView>
     if (!mounted) return;
     final set = widget.state.set;
     if (set != null) {
-      widget.onChange(widget.state.copyWith(set: set.copyWith(learned: learned)));
+      widget
+          .onChange(widget.state.copyWith(set: set.copyWith(learned: learned)));
     }
   }
 
@@ -800,6 +807,10 @@ class _ExerciseViewState extends State<_ExerciseView> {
                       : () => setState(() {
                             _answer = option;
                             _checked = true;
+                            unawaited(StudyService.instance.record(
+                                'daily',
+                                exercise.question.substring(0,
+                                    exercise.question.length.clamp(0, 180))));
                           }),
                   style: OutlinedButton.styleFrom(
                     alignment: Alignment.centerLeft,
@@ -816,25 +827,31 @@ class _ExerciseViewState extends State<_ExerciseView> {
             TextField(
               controller: _typed,
               enabled: !_checked,
+              minLines: 2,
+              maxLines: 5,
+              autocorrect: false,
+              enableSuggestions: false,
+              textInputAction: TextInputAction.newline,
+              scrollPadding: const EdgeInsets.all(80),
+              onChanged: (_) => setState(() {}),
               decoration: const InputDecoration(
-                hintText: 'Твой ответ',
-                isDense: true,
-                border: OutlineInputBorder(),
+                labelText: 'Твой ответ',
+                alignLabelWithHint: true,
               ),
-              onSubmitted: (value) => setState(() {
-                _answer = value;
-                _checked = true;
-              }),
             ),
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerRight,
               child: FilledButton(
-                onPressed: _checked
+                onPressed: _checked || _typed.text.trim().isEmpty
                     ? null
                     : () => setState(() {
                           _answer = _typed.text;
                           _checked = true;
+                          unawaited(StudyService.instance.record(
+                              'daily',
+                              exercise.question.substring(
+                                  0, exercise.question.length.clamp(0, 180))));
                         }),
                 child: const Text('Проверить'),
               ),
@@ -865,8 +882,7 @@ class _ExerciseViewState extends State<_ExerciseView> {
                           ),
                         ),
                         if (exercise.hint.isNotEmpty)
-                          Text(exercise.hint,
-                              style: theme.textTheme.bodySmall),
+                          Text(exercise.hint, style: theme.textTheme.bodySmall),
                       ],
                     ),
                   ),

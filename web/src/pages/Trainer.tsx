@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import {recordStudy} from '../lib/study';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LuBookOpen, LuLanguages, LuPencilLine, LuSwords } from 'react-icons/lu';
 
@@ -335,6 +336,7 @@ function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
     const result = evaluate(exercise, draft);
     if (result.correct) setCorrectCount((value) => value + 1);
     setEvaluation(result);
+    if(result.correct)recordStudy('exercise',exercise.id);
     playCourseSound(result.correct ? 'correct' : 'incorrect');
   };
 

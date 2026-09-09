@@ -1,0 +1,7 @@
+.feed-mode-nav{display:flex;flex-shrink:0;gap:4px;padding:4px;border:1px solid #ffffff24;border-radius:16px;background:#ffffff08;color:#fff}
+.feed-mode-nav a{display:flex;align-items:center;gap:7px;min-height:36px;padding:6px 13px;border-radius:11px;font-size:14px;font-weight:700;color:#ffffffb8;text-decoration:none;white-space:nowrap}
+.feed-mode-nav a[aria-current=page]{background:#a52d28;color:#fff;box-shadow:0 2px 8px #0002}
+.feed-mode-nav a:hover{color:#fff;background:#ffffff18}
+.feed-mode-nav a[aria-current=page]:hover{background:#b73630}
+.feed-mode-nav a:focus-visible{outline:2px solid #edc08e;outline-offset:2px}
+@media(max-width:420px){.feed-mode-nav a{padding:6px 9px;font-size:13px}}

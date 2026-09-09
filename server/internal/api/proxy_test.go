@@ -15,7 +15,7 @@ func TestUpstreamProxyDoesNotDuplicateCORSHeaders(t *testing.T) {
 	}))
 	defer upstream.Close()
 
-	proxy, err := newUpstreamProxy(upstream.URL)
+	proxy, err := newUpstreamProxy(upstream.URL, "", false)
 	if err != nil {
 		t.Fatal(err)
 	}

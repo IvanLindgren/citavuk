@@ -69,7 +69,10 @@ internal data class DailyWidgetData(
                 .getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
                 .getString(CACHE_KEY, null) ?: return empty
             return try {
-                parse(JSONObject(raw))
+                val prefs = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
+                val account = JSONObject(prefs.getString("flutter.citavuk_account", "{}") ?: "{}")
+                val parsed = JSONObject(raw)
+                if (account.optString("id").isEmpty() || parsed.optString("ownerID") != account.optString("id")) empty else parse(parsed)
             } catch (_: Exception) {
                 // Слепок испорчен или от старой версии: виджет покажет
                 // приглашение открыть приложение, а не пустоту.
@@ -78,7 +81,7 @@ internal data class DailyWidgetData(
         }
 
         fun parse(parsed: JSONObject): DailyWidgetData {
-            val set = parsed.optJSONObject("set") ?: return empty
+            val set = parsed.optJSONObject("set") ?: JSONObject()
             val progress = parsed.optJSONObject("progress") ?: JSONObject()
             return DailyWidgetData(
                 words = words(set.optJSONArray("words")),

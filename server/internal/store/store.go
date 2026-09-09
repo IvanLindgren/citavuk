@@ -4,6 +4,7 @@ package store
 
 import (
 	"context"
+	"crypto/sha256"
 	"embed"
 	"fmt"
 	"io/fs"
@@ -96,7 +97,23 @@ func migrationNames() ([]string, error) {
 // Каждая миграция выполняется в своей транзакции вместе с записью в
 // schema_migrations: применение и отметка о применении не могут разъехаться.
 func (s *Store) Migrate(ctx context.Context) ([]string, error) {
-	_, err := s.Pool.Exec(ctx, `
+	// Один выделенный connection держит session-lock между транзакциями.
+	conn, err := s.Pool.Acquire(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Release()
+	if _, err = conn.Exec(ctx, `SELECT pg_advisory_lock(709413562)`); err != nil {
+		return nil, err
+	}
+	defer func() {
+		cleanup, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if _, unlockErr := conn.Exec(cleanup, `SELECT pg_advisory_unlock(709413562)`); unlockErr != nil {
+			_ = conn.Conn().Close(cleanup)
+		}
+	}()
+	_, err = conn.Exec(ctx, `
         CREATE TABLE IF NOT EXISTS schema_migrations (
             name       text PRIMARY KEY,
             applied_at timestamptz NOT NULL DEFAULT now()
@@ -104,19 +121,22 @@ func (s *Store) Migrate(ctx context.Context) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("создание schema_migrations: %w", err)
 	}
+	if _, err = conn.Exec(ctx, `ALTER TABLE schema_migrations ADD COLUMN IF NOT EXISTS checksum text`); err != nil {
+		return nil, err
+	}
 
-	applied := map[string]bool{}
-	rows, err := s.Pool.Query(ctx, `SELECT name FROM schema_migrations`)
+	applied := map[string]string{}
+	rows, err := conn.Query(ctx, `SELECT name, COALESCE(checksum, '') FROM schema_migrations`)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		var name string
-		if err := rows.Scan(&name); err != nil {
+		var name, checksum string
+		if err := rows.Scan(&name, &checksum); err != nil {
 			rows.Close()
 			return nil, err
 		}
-		applied[name] = true
+		applied[name] = checksum
 	}
 	rows.Close()
 	if err := rows.Err(); err != nil {
@@ -130,18 +150,27 @@ func (s *Store) Migrate(ctx context.Context) ([]string, error) {
 
 	var ran []string
 	for _, name := range names {
-		if applied[name] {
-			continue
-		}
 		body, err := migrationsFS.ReadFile("migrations/" + name)
 		if err != nil {
 			return ran, err
 		}
-		err = s.InTx(ctx, func(tx pgx.Tx) error {
+		checksum := fmt.Sprintf("%x", sha256.Sum256([]byte(strings.ReplaceAll(string(body), "\r\n", "\n"))))
+		if old, exists := applied[name]; exists {
+			if old != "" && old != checksum {
+				return ran, fmt.Errorf("изменена применённая миграция %s", name)
+			}
+			if old == "" {
+				if _, err := conn.Exec(ctx, `UPDATE schema_migrations SET checksum=$2 WHERE name=$1`, name, checksum); err != nil {
+					return ran, err
+				}
+			}
+			continue
+		}
+		err = pgx.BeginFunc(ctx, conn, func(tx pgx.Tx) error {
 			if _, err := tx.Exec(ctx, string(body)); err != nil {
 				return err
 			}
-			_, err := tx.Exec(ctx, `INSERT INTO schema_migrations (name) VALUES ($1)`, name)
+			_, err := tx.Exec(ctx, `INSERT INTO schema_migrations (name, checksum) VALUES ($1,$2)`, name, checksum)
 			return err
 		})
 		if err != nil {

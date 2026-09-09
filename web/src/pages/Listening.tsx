@@ -55,9 +55,6 @@ export function Listening() {
         <div className="mx-auto grid max-w-5xl items-center gap-6 sm:grid-cols-[1fr_220px]">
           <div>
             <div className="mb-3 flex items-center gap-3">
-              <span className="rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold text-white">
-                БЕТА
-              </span>
               <span className="text-sm font-semibold text-[var(--text-muted)]">
                 Аудирование со Слухао
               </span>
@@ -151,7 +148,7 @@ function LessonPreview({
               <span>
                 {lesson.transcript_url
                   ? 'Транскрипт по аудио'
-                  : 'Транскрипт готовится'}
+                  : 'Аудио без транскрипта'}
               </span>
             </div>
           </div>

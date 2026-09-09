@@ -61,7 +61,6 @@ export function Dialogues() {
     <main className="paper-grain relative min-h-[calc(100dvh-4rem)] px-4 py-10 sm:px-5 sm:py-14">
       <div className="mx-auto max-w-5xl">
         <header className="max-w-3xl">
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Бета</p>
           <h1 className="mt-2 text-4xl sm:text-5xl">Игровые диалоги</h1>
           <p className="mt-4 text-lg leading-relaxed text-[var(--text-muted)]">
             Слушайте живую сербскую речь, выбирайте ответ Читавука и нажимайте
@@ -101,7 +100,7 @@ export function Dialogues() {
                 Помогите Марье найти кофейню, которой в Сербии не существует.
                 У каждого решения есть последствия.
               </p>
-              <span className="mt-6 font-bold text-[var(--accent)]">{action} →</span>
+              <span className="mt-6 font-bold text-[var(--accent)]">{action}</span>
             </div>
           </Link>
         </motion.div>

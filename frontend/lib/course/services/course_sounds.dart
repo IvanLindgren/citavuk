@@ -11,9 +11,9 @@ import 'package:flutter/foundation.dart';
 
 /// Какой сигнал проиграть.
 enum CourseSound {
-  correct('sounds/correct.wav'),
-  incorrect('sounds/incorrect.wav'),
-  lessonComplete('sounds/lesson_complete.wav');
+  correct('sounds/ui_confirm.ogg'),
+  incorrect('sounds/ui_error.ogg'),
+  lessonComplete('sounds/ui_complete.ogg');
 
   const CourseSound(this.asset);
 

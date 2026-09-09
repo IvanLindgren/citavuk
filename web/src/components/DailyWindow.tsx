@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import {recordStudy} from '../lib/study';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   LuBookOpen,
@@ -26,6 +27,7 @@ import { plainExample } from '../lib/roadmapWords';
 import { saveVocabularyWord } from '../lib/vocabulary';
 import { useFocusTrap, useScrollLock } from '../lib/overlay';
 import { useAuth } from '../state/auth';
+import { usePromotionSlot } from '../lib/promotion';
 import { useSync } from '../state/sync';
 import { Mascot } from './Mascot';
 import { Button, Card, ErrorNote, Spinner } from './ui';
@@ -67,6 +69,7 @@ function today(): string {
 export function DailyWindow() {
   const { account } = useAuth();
   const [open, setOpen] = useState(false);
+  const allowed = usePromotionSlot(open && Boolean(account?.serbianLevel));
 
   useEffect(() => {
     // Пока уровень не назван, поверх страницы стоит окно уровня (LevelPrompt).
@@ -78,7 +81,7 @@ export function DailyWindow() {
     return () => window.clearTimeout(timer);
   }, [account]);
 
-  if (!open) return null;
+  if (!allowed) return null;
   return (
     <DailyPanel
       onClose={() => {
@@ -549,6 +552,7 @@ function Exercise({ exercise }: { exercise: DailyExercise }) {
   const reduced = useReducedMotion() ?? false;
   const [answer, setAnswer] = useState('');
   const [checked, setChecked] = useState(false);
+  function check(){if(checked)return;setChecked(true);recordStudy('daily',exercise.question);}
   const right =
     answer.trim().toLocaleLowerCase('sr') ===
     exercise.answer.trim().toLocaleLowerCase('sr');
@@ -564,7 +568,7 @@ function Exercise({ exercise }: { exercise: DailyExercise }) {
               type="button"
               onClick={() => {
                 setAnswer(option);
-                setChecked(true);
+                check();
               }}
               disabled={checked}
               className={`rounded-lg border p-3 text-left transition-colors ${
@@ -580,18 +584,26 @@ function Exercise({ exercise }: { exercise: DailyExercise }) {
           ))}
         </div>
       ) : (
-        <div className="mt-3 flex gap-2">
-          <input
+        <div className="mt-3 grid gap-3">
+          <textarea
+            rows={2}
+            aria-label="Твой ответ"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
             value={answer}
             onChange={(event) => setAnswer(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') setChecked(true);
+              if (event.key === 'Enter' && (event.ctrlKey || event.metaKey) && !event.nativeEvent.isComposing && answer.trim()) {
+                event.preventDefault();
+                check();
+              }
             }}
             disabled={checked}
-            className="min-w-0 flex-1 rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2"
+            className="answer-input"
             placeholder="Твой ответ"
           />
-          <Button size="sm" onClick={() => setChecked(true)} disabled={checked || !answer.trim()}>
+          <Button className="justify-self-end" onClick={check} disabled={checked || !answer.trim()}>
             Проверить
           </Button>
         </div>

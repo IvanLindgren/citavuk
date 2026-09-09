@@ -1,5 +1,5 @@
 # Используем легковесный образ Python
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 # Настройки окружения (отключаем буферизацию вывода и кэширование pip)
 ENV PYTHONUNBUFFERED=1 \
@@ -20,6 +20,9 @@ COPY --chown=user backend/requirements.txt ./backend/requirements.txt
 # Устанавливаем зависимости
 RUN pip install --user --upgrade pip && \
     pip install --user -r backend/requirements.txt
+
+# Модель входит в образ: запуск не зависит от доступности сервера CLASSLA.
+RUN python -c "import classla; classla.download('sr')"
 
 # Копируем бэкенд и словарь (он нужен для работы базы)
 COPY --chown=user backend/ ./backend/

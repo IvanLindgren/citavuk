@@ -33,6 +33,7 @@ OUT_FONTS = os.path.join(ROOT, "public", "fonts")
 # Только те начертания, что реально используются. Лишние гарнитуры — это
 # мегабайты, которые браузер скачает и не покажет.
 FONTS = [
+    "Prata-Regular.ttf",
     "Lora-Regular.ttf",
     "Lora-Bold.ttf",
     "NotoSans-Regular.ttf",
@@ -41,19 +42,25 @@ FONTS = [
 
 # Ширина в CSS-пикселях. Второй файл (@2x) нужен для экранов с высокой
 # плотностью: на них картинка в один размер выглядит мыльной.
+# Маскот и орёл лежат в WebP (q90): PNG весили в 7–8 раз больше при
+# неотличимой на глаз картинке. Pillow читает WebP как обычно.
 IMAGES = {
-    "citavuk_zdravo.png": 520,
-    "citavuk_gram.png": 420,
-    "citavuk_rule.png": 420,
-    "citavuk_povtor.png": 420,
-    "citavuk_ukaz.png": 360,
-    "citavuk_english.png": 360,
-    "citavuk_vukotok.png": 420,
-    "citavuk_roadmap.png": 420,
+    "citavuk_zdravo.webp": 520,
+    "citavuk_gram.webp": 420,
+    "citavuk_rule.webp": 420,
+    "citavuk_povtor.webp": 420,
+    "citavuk_ukaz.webp": 360,
+    "citavuk_english.webp": 360,
+    "citavuk_utesi.webp": 420,
+    "citavuk_slavlje.webp": 520,
+    "citavuk_cita.webp": 420,
+    "citavuk_zbunjen.webp": 420,
+    "citavuk_vukotok.webp": 420,
+    "citavuk_roadmap.webp": 420,
     "citavuk_icon.png": 256,
-    "sluhao_zdravo.png": 420,
-    "sluhao_slusa.png": 420,
-    "sluhao_savet.png": 420,
+    "sluhao_zdravo.webp": 420,
+    "sluhao_slusa.webp": 420,
+    "sluhao_savet.webp": 420,
     # Собеседники диалогов. Показываются размером 48–64 CSS-пикселя, поэтому
     # 128 хватает с запасом, а @2x закрывает плотные экраны.
     "face_teacher.png": 128,
@@ -138,7 +145,30 @@ def build_duel_atlas() -> None:
     subprocess.run([sys.executable, tool], check=True)
 
 
+def convert_personal_months() -> int:
+    """Только размер и формат: исходные иллюстрации не перерисовываются."""
+    from PIL import Image
+    folder = os.path.join(ROOT, "public", "personal", "months")
+    saved = 0
+    for month in range(1, 13):
+        source = os.path.join(folder, f"{month:02}.png")
+        if not os.path.isfile(source):
+            continue
+        target = os.path.join(folder, f"{month:02}.webp")
+        with Image.open(source) as image:
+            image.thumbnail((768, 1152), Image.Resampling.LANCZOS)
+            image.save(target, "WEBP", quality=84, method=6)
+        saved += os.path.getsize(source) - os.path.getsize(target)
+    return saved
+
+
 def main() -> int:
+    if "--fonts-only" in sys.argv:
+        convert_fonts()
+        return 0
+    if "--personal-only" in sys.argv:
+        print(f"Фоны колоды: сэкономлено {human(convert_personal_months())}")
+        return 0
     if not os.path.isdir(SRC_IMGS):
         print(f"не найден каталог ассетов: {SRC_IMGS}", file=sys.stderr)
         return 1
@@ -146,7 +176,7 @@ def main() -> int:
     print("Шрифты:")
     saved_fonts = convert_fonts()
     print("\nКартинки:")
-    saved_images = convert_images()
+    saved_images = convert_images() + convert_personal_months()
     # flush: дальше пишет дочерний процесс со своим буфером, и без сброса
     # заголовок оказывался в выводе позже собственных строк скрипта.
     print("\nСпрайты дуэли:", flush=True)

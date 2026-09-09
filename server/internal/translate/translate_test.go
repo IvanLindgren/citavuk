@@ -9,6 +9,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 )
 
 func TestMarkWord(t *testing.T) {
@@ -539,5 +540,146 @@ func TestWordCacheServesFallbackAfterDeepLFails(t *testing.T) {
 	}
 	if len(words.calls) != 0 {
 		t.Errorf("запасной провайдер вызван зря: %v", words.calls)
+	}
+}
+
+// Кулдаун проверяется до списания: знаки во время паузы не тратятся,
+// DeepL не дёргается, перевод идёт запасным путём.
+func TestInContextCooldownSkipsBudgetSpend(t *testing.T) {
+	clock := time.Unix(1_700_000_000, 0)
+	budget := newTestBudget(1000, &clock)
+	deepl, deeplCalls := stubDeepL(t, func([]string) []string { return []string{"не должен вызываться"} })
+	words := &fakeWords{out: "дом"}
+	svc := NewService(deepl, words, &fakeCache{}).WithBudget(budget)
+	svc.setCooldown("deepl")
+
+	before := budget.Available()
+	start, end := wordAt(t, testSentence, "kuća")
+	res, err := svc.InContext(context.Background(), testSentence, start, end, "sr", "ru")
+	if err != nil {
+		t.Fatalf("InContext: %v", err)
+	}
+	if res.Provider != "fake" {
+		t.Errorf("провайдер = %q, ожидался запасной", res.Provider)
+	}
+	if *deeplCalls != 0 {
+		t.Errorf("DeepL в кулдауне дёрнули %d раз", *deeplCalls)
+	}
+	if budget.Available() != before {
+		t.Errorf("бюджет изменился во время кулдауна: было %v, стало %v", before, budget.Available())
+	}
+}
+
+// Google отвечает 429 — это ограничение, а не поломка: вызывающий код обязан
+// получить ErrRateLimited и ответить понятным «подождите», а не 502.
+func TestGoogle429BecomesRateLimited(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusTooManyRequests)
+	}))
+	t.Cleanup(server.Close)
+
+	g := NewGoogle()
+	g.base = server.URL
+	if _, err := g.TranslateWord(context.Background(), "kuća", "sr", "ru"); !errors.Is(err, ErrRateLimited) {
+		t.Fatalf("ошибка = %v, ожидался ErrRateLimited", err)
+	}
+}
+
+// Прочие коды остаются обычной ошибкой провайдера.
+func TestGoogle500StaysGenericError(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadGateway)
+	}))
+	t.Cleanup(server.Close)
+
+	g := NewGoogle()
+	g.base = server.URL
+	_, err := g.TranslateWord(context.Background(), "kuća", "sr", "ru")
+	if err == nil || errors.Is(err, ErrRateLimited) {
+		t.Fatalf("ошибка = %v, ожидалась обычная ошибка провайдера", err)
+	}
+}
+
+// Получив 429, сервис минуту не дёргает ограничившего: повторные нажатия
+// получают ErrRateLimited сразу, без сети.
+func TestWordsCooldownStopsHammering(t *testing.T) {
+	words := &fakeWords{err: ErrRateLimited}
+	svc := NewService(nil, words, &fakeCache{})
+
+	for i := 0; i < 2; i++ {
+		_, err := svc.Text(context.Background(), "kuća", "sr", "ru")
+		if !errors.Is(err, ErrRateLimited) {
+			t.Fatalf("попытка %d: ошибка = %v, ожидался ErrRateLimited", i+1, err)
+		}
+	}
+	if len(words.calls) != 1 {
+		t.Errorf("провайдер дёрнули %d раз вместо одного: %v", len(words.calls), words.calls)
+	}
+}
+
+// Запасной провайдер отказал — повтор через DeepL спасает перевод. Повтор не
+// кэшируется: словарь общий, и неточный перевод из режима выживания не должен
+// отравлять его после восстановления запасного пути.
+func TestWordsFailureRetriesDeepLWithoutCaching(t *testing.T) {
+	words := &fakeWords{err: errors.New("google лёг")}
+	deepl, deeplCalls := stubDeepL(t, func([]string) []string { return []string{"дом"} })
+	cache := &fakeCache{}
+	svc := NewService(deepl, words, cache)
+
+	res, err := svc.Text(context.Background(), "kuća", "sr", "ru")
+	if err != nil {
+		t.Fatalf("Text: %v", err)
+	}
+	if res.Text != "дом" || res.Provider != "deepl" {
+		t.Errorf("ответ = %+v, ожидался перевод DeepL", res)
+	}
+	if res.Aligned {
+		t.Error("повтор DeepL выдан за выровненный перевод")
+	}
+	if *deeplCalls != 1 {
+		t.Errorf("DeepL дёрнули %d раз вместо одного", *deeplCalls)
+	}
+	if cache.puts != 0 {
+		t.Error("повтор DeepL попал в общий кеш")
+	}
+	if _, ok := cache.data["kuća"]; ok {
+		t.Error("перевод из режима выживания осел в словаре")
+	}
+}
+
+// DeepL уже упёрся в квоту — повторять через него незачем, возвращается
+// исходная ошибка запасного пути, а лишний запрос не делается.
+func TestNoDeepLRetryAfterQuota(t *testing.T) {
+	words := &fakeWords{err: errors.New("google лёг")}
+	deepl, deeplCalls := stubDeepL(t, func([]string) []string { return []string{"дом"} })
+	svc := NewService(deepl, words, &fakeCache{})
+
+	_, err := svc.word(context.Background(), "kuća", "sr", "ru",
+		wordFallback{err: ErrQuota, contextHint: testSentence})
+	if err == nil || err.Error() != "google лёг" {
+		t.Fatalf("ошибка = %v, ожидалась ошибка запасного пути", err)
+	}
+	if *deeplCalls != 0 {
+		t.Errorf("DeepL дёрнули %d раз при исчерпанной квоте", *deeplCalls)
+	}
+}
+
+// DeepL в кулдауне после своего 429: тексты идут запасным путём сразу,
+// без бесполезной попытки.
+func TestDeepLCooldownSkipsDeepL(t *testing.T) {
+	words := &fakeWords{out: "перевод"}
+	deepl, deeplCalls := stubDeepL(t, func([]string) []string { return []string{"не должен вызываться"} })
+	svc := NewService(deepl, words, &fakeCache{})
+	svc.setCooldown("deepl")
+
+	res, err := svc.Text(context.Background(), "Ovo je test.", "sr", "ru")
+	if err != nil {
+		t.Fatalf("Text: %v", err)
+	}
+	if res.Provider != "fake" {
+		t.Errorf("провайдер = %q, ожидался запасной", res.Provider)
+	}
+	if *deeplCalls != 0 {
+		t.Errorf("DeepL в кулдауне дёрнули %d раз", *deeplCalls)
 	}
 }

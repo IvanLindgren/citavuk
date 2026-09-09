@@ -7,23 +7,26 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../state/app_settings.dart';
+import '../../theme/app_theme.dart';
 import '../../screens/grammar_cards_screen.dart';
-import '../../screens/home_shell.dart' show BetaBadge;
-import '../../widgets/animated_widgets.dart';
 import '../models/course.dart';
+import '../models/exercise.dart';
 import '../models/progress.dart';
 import '../state/course_controller.dart';
 import '../state/lesson_controller.dart';
 import '../widgets/course_button.dart';
 import '../widgets/intro_blocks_view.dart';
-import '../widgets/mascot_view.dart';
 import '../widgets/path_node.dart';
+import '../widgets/course_art.dart';
 import '../../widgets/stove_icon.dart';
 import 'lesson_screen.dart';
 import 'trainer_screen.dart';
+import '../../services/study_service.dart';
 
 class CoursePathScreen extends StatefulWidget {
   const CoursePathScreen({super.key, required this.controller});
@@ -35,6 +38,7 @@ class CoursePathScreen extends StatefulWidget {
 }
 
 class _CoursePathScreenState extends State<CoursePathScreen> {
+  bool _openingLocked = false;
   @override
   void initState() {
     super.initState();
@@ -63,7 +67,21 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
 
     final status = controller.statusOf(lesson);
     if (status == LessonStatus.locked) {
-      await _showLockedSheet(lesson);
+      if (_openingLocked) return;
+      _openingLocked = true;
+      try {
+        final start = await _showLockedSheet(lesson);
+        if (!mounted || start != true) return;
+        await controller.startFrom(lesson.id);
+        if (mounted) await _startLesson(lesson);
+      } catch (_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Не удалось открыть урок. Попробуй ещё раз.')));
+        }
+      } finally {
+        _openingLocked = false;
+      }
       return;
     }
 
@@ -201,7 +219,7 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
                     children: [
                       Row(
                         children: [
-                          const MascotView(state: MascotState.idle, size: 52),
+                          const Icon(Icons.menu_book_outlined, size: 32),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
@@ -233,12 +251,13 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
     );
   }
 
-  Future<void> _showLockedSheet(Lesson lesson) {
-    return showModalBottomSheet<void>(
+  Future<bool?> _showLockedSheet(Lesson lesson) {
+    return showModalBottomSheet<bool>(
       context: context,
       showDragHandle: true,
+      isScrollControlled: true,
       builder: (context) => SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -265,13 +284,19 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Уровень пока закрыт. Пройдите предыдущие уроки на тропе, '
-                'чтобы открыть его.',
+                'Этот урок идёт после предыдущих тем. Если ты уже знаком с ними, можно начать отсюда.',
                 style: TextStyle(fontSize: 15, height: 1.45),
               ),
               const SizedBox(height: 18),
+              const Text(
+                  'Пройденные уроки сохранятся. Пропущенные темы не дают опыт и серию. Незавершённая попытка будет сброшена.'),
+              const SizedBox(height: 18),
               CourseButton(
-                label: 'Понятно',
+                  label: 'Уже знаю, открыть урок',
+                  onPressed: () => Navigator.of(context).pop(true)),
+              const SizedBox(height: 12),
+              CourseButton(
+                label: 'Отмена',
                 tone: CourseButtonTone.neutral,
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -296,8 +321,6 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
             Flexible(
               child: Text('Курс сербского', overflow: TextOverflow.ellipsis),
             ),
-            SizedBox(width: 10),
-            BetaBadge(),
           ],
         ),
         actions: [
@@ -316,9 +339,11 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
           Builder(builder: (context) {
             final settings = context.watch<AppSettings>();
             final on = settings.courseSoundEnabled;
-            return IconButton(
-              icon: Icon(on ? Icons.volume_up : Icons.volume_off),
-              tooltip: on ? 'Выключить звук' : 'Включить звук',
+            return TextButton.icon(
+              icon: Icon(
+                  on ? Icons.volume_up_outlined : Icons.volume_off_outlined,
+                  size: 20),
+              label: Text(on ? 'Звук' : 'Без звука'),
               onPressed: () => settings.setCourseSoundEnabled(!on),
             );
           }),
@@ -379,60 +404,175 @@ class _StatusLine extends StatelessWidget {
       label,
       if (bestScore > 0) 'лучший результат ${(bestScore * 100).round()}%',
     ];
-    return Text(
-      parts.join(' · '),
-      style: TextStyle(
-        fontSize: 14,
-        color: scheme.onSurface.withValues(alpha: 0.7),
-      ),
-    );
+    return Wrap(spacing: 10, runSpacing: 8, children: [
+      for (final part in parts)
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+                color: scheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(9)),
+            child: Text(part,
+                style:
+                    TextStyle(fontSize: 13, color: scheme.onSurfaceVariant))),
+    ]);
   }
 }
 
-class _PathBody extends StatelessWidget {
+class _PathBody extends StatefulWidget {
   const _PathBody({required this.controller, required this.onOpenNode});
+  final CourseController controller;
+  final ValueChanged<Lesson> onOpenNode;
+  @override
+  State<_PathBody> createState() => _PathBodyState();
+}
 
+class _PathBodyState extends State<_PathBody> {
+  final _scroll = ItemScrollController();
+  CourseController get controller => widget.controller;
+  @override
+  Widget build(BuildContext context) {
+    final course = controller.course!;
+    final scheme = Theme.of(context).colorScheme;
+    final rows = <WidgetBuilder>[
+      (_) => _HeaderCard(
+          controller: controller,
+          onContinue: () {
+            final lesson = controller.nextLesson;
+            if (lesson != null) widget.onOpenNode(lesson);
+          }),
+      (_) => const SizedBox(height: 24),
+      for (var u = 0; u < course.units.length; u++) ...[
+        (_) => _UnitSection(
+            unit: course.units[u],
+            index: u,
+            controller: controller,
+            onOpenNode: widget.onOpenNode),
+        (_) => const SizedBox(height: 30),
+      ],
+      (_) => _TrainerCard(course: course),
+    ];
+    final list = ScrollablePositionedList.builder(
+      itemScrollController: _scroll,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      itemCount: rows.length,
+      itemBuilder: (context, index) => rows[index](context),
+    );
+    return LayoutBuilder(builder: (context, limits) {
+      if (limits.maxWidth < 1050) return list;
+      return Center(
+          child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1320),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
+                    width: 240,
+                    child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(20, 30, 14, 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Твоя программа',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600)),
+                              const SizedBox(height: 20),
+                              LinearProgressIndicator(
+                                  value: controller.completionRatio,
+                                  minHeight: 6,
+                                  borderRadius: BorderRadius.circular(8)),
+                              const SizedBox(height: 18),
+                              for (var i = 0; i < course.units.length; i++)
+                                TextButton(
+                                    onPressed: () {
+                                      if (!_scroll.isAttached) return;
+                                      if (MediaQuery.disableAnimationsOf(
+                                          context)) {
+                                        _scroll.jumpTo(index: 2 + i * 2);
+                                      } else {
+                                        _scroll.scrollTo(
+                                            index: 2 + i * 2,
+                                            duration: const Duration(
+                                                milliseconds: 280),
+                                            curve: Curves.easeOutCubic);
+                                      }
+                                    },
+                                    style: TextButton.styleFrom(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 8)),
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${i + 1}'.padLeft(2, '0'),
+                                              style: TextStyle(
+                                                  color: scheme.primary,
+                                                  fontSize: 12)),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                              child: Text(course.units[i].title,
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      height: 1.5,
+                                                      color: scheme
+                                                          .onSurfaceVariant))),
+                                        ])),
+                              const SizedBox(height: 22),
+                              Text(
+                                  'Знакомые темы можно пропустить. Нажми на урок с замком и подтверди, что знаешь предыдущее.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      height: 1.7,
+                                      color: scheme.onSurfaceVariant)),
+                            ]))),
+                Expanded(child: list),
+              ])));
+    });
+  }
+}
+
+/// На десктопе глава и её путь образуют одну сцену: описание занимает левую
+/// колонку, уроки — правую. На телефоне блоки естественно складываются вниз.
+class _UnitSection extends StatelessWidget {
+  const _UnitSection({
+    required this.unit,
+    required this.index,
+    required this.controller,
+    required this.onOpenNode,
+  });
+
+  final CourseUnit unit;
+  final int index;
   final CourseController controller;
   final ValueChanged<Lesson> onOpenNode;
 
   @override
-  Widget build(BuildContext context) {
-    final course = controller.course!;
-
-    // Строки списка собираются замыканиями, а сам список — ListView.builder.
-    //
-    // Раньше здесь был ListView со списком children, то есть вся карта курса
-    // строилась сразу: десять разделов, в каждом тропа из узлов с градиентами,
-    // тенями и спрайтами. На телефоне это не влезало в бюджет кадра, список
-    // дёргался и вверх прокручивался рывками — часть событий прокрутки просто
-    // терялась. Замыкания дают ленивую отрисовку: строится только видимое.
-    final rows = <WidgetBuilder>[
-      (_) => _HeaderCard(controller: controller),
-      (_) => const SizedBox(height: 24),
-      for (var u = 0; u < course.units.length; u++) ...[
-        (_) => _UnitBanner(unit: course.units[u], index: u),
-        (_) => const SizedBox(height: 26),
-        (_) => _LessonPath(
-              unit: course.units[u],
-              controller: controller,
-              onOpenNode: onOpenNode,
-            ),
-        (_) => const SizedBox(height: 26),
-      ],
-      (_) => _TrainerCard(course: course),
-    ];
-
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 720),
-        child: ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          itemCount: rows.length,
-          itemBuilder: (context, index) => rows[index](context),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final banner = _UnitBanner(unit: unit, index: index);
+          final path = _LessonPath(
+            unit: unit,
+            unitIndex: index,
+            controller: controller,
+            onOpenNode: onOpenNode,
+          );
+          return Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.outlineVariant)),
+              child: Column(children: [
+                banner,
+                const SizedBox(height: 18),
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 720),
+                        child: path))
+              ]));
+        },
+      );
 }
 
 /// Баннер раздела: номер, название и описание на плашке основного цвета.
@@ -444,31 +584,27 @@ class _UnitBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    const colors = [Color(0xFF94332D), Color(0xFF846035), Color(0xFF4E6B50)];
+    final color = colors[index % colors.length];
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
       decoration: BoxDecoration(
-        color: scheme.primary,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: scheme.primary.withValues(alpha: 0.35),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: color,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(23)),
+        border: const Border(
+            bottom: BorderSide(color: Color(0xFFD3B280), width: 3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'РАЗДЕЛ ${index + 1}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
-              color: Colors.white.withValues(alpha: 0.75),
+              color: Color(0xFFF4DDC3),
             ),
           ),
           const SizedBox(height: 4),
@@ -476,7 +612,7 @@ class _UnitBanner extends StatelessWidget {
             unit.title,
             style: const TextStyle(
               fontSize: 21,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
               color: Colors.white,
               height: 1.2,
             ),
@@ -485,10 +621,10 @@ class _UnitBanner extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               unit.description,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13.5,
                 height: 1.4,
-                color: Colors.white.withValues(alpha: 0.85),
+                color: Color(0xFFF4E6D8),
               ),
             ),
           ],
@@ -503,75 +639,73 @@ class _UnitBanner extends StatelessWidget {
 /// Узлы смещаются влево-вправо по синусоидальному паттерну; на широких
 /// экранах рядом с тропой парит Читавук.
 class _LessonPath extends StatelessWidget {
-  const _LessonPath({
-    required this.unit,
-    required this.controller,
-    required this.onOpenNode,
-  });
-
+  const _LessonPath(
+      {required this.unit,
+      required this.unitIndex,
+      required this.controller,
+      required this.onOpenNode});
   final CourseUnit unit;
+  final int unitIndex;
   final CourseController controller;
   final ValueChanged<Lesson> onOpenNode;
-
-  /// Горизонтальные смещения узлов, повторяются циклически.
-  static const List<double> _wave = [0, -52, -84, -52, 0, 52, 84, 52];
+  static const _wave = [.27, .27, .47, .67, .67, .47];
 
   @override
   Widget build(BuildContext context) {
     final lessons = unit.lessons.toList();
     final next = controller.nextLesson;
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-
-    return LayoutBuilder(builder: (context, constraints) {
-      // На узких экранах уменьшаем амплитуду волны, чтобы узел с подписью
-      // не выходил за края.
-      final scale = (constraints.maxWidth - 180) / 168 < 1 ? 0.6 : 1.0;
-      // Маскот показывается только когда точно не наедет на крайний узел:
-      // половина ширины должна вместить смещение волны (84), подпись (74)
-      // и саму фигуру с отступом (116).
-      final wide = constraints.maxWidth > 640;
-
-      // width: infinity обязательно. Внутри Stack ниже дочерний элемент
-      // получает свободные ограничения и иначе сжимается по содержимому,
-      // прижимаясь к левому краю, — тогда отрицательные смещения волны
-      // уносят узлы за границу экрана и обрезают подписи.
-      final path = SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
+    final textScale =
+        (MediaQuery.textScalerOf(context).scale(14) / 14).clamp(1.0, 2.5);
+    final step = 214 * textScale;
+    final done = lessons.isNotEmpty &&
+        lessons.every((l) => [
+              LessonStatus.completed,
+              LessonStatus.mastered,
+              LessonStatus.needsReview
+            ].contains(controller.statusOf(l)));
+    return LayoutBuilder(builder: (context, limits) {
+      final points = [
+        for (var i = 0; i < lessons.length; i++)
+          Offset(limits.maxWidth * _wave[i % _wave.length], i * step + 82)
+      ];
+      final artSize = limits.maxWidth < 390
+          ? 136.0
+          : limits.maxWidth < 520
+              ? 172.0
+              : 225.0;
+      return SizedBox(
+          height: lessons.length * step + 24,
+          width: double.infinity,
+          child: Stack(clipBehavior: Clip.hardEdge, children: [
+            Positioned.fill(
+                child: RepaintBoundary(
+                    child: CustomPaint(
+                        painter: _CourseTrailPainter(
+                            points: points,
+                            statuses: [
+                              for (final lesson in lessons)
+                                controller.statusOf(lesson)
+                            ],
+                            line: Theme.of(context).colorScheme.outlineVariant,
+                            done: Theme.of(context).colorScheme.success)))),
+            if (lessons.isNotEmpty)
+              Positioned(
+                  top: 58,
+                  left: limits.maxWidth * .74 - artSize / 2,
+                  child: CourseArt(
+                      pose: done
+                          ? 'celebrate'
+                          : unitIndex.isEven
+                              ? 'guide'
+                              : 'reading',
+                      size: artSize)),
             for (var i = 0; i < lessons.length; i++)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18),
-                child: Transform.translate(
-                  offset: Offset(_wave[i % _wave.length] * scale, 0),
-                  child: _buildNode(lessons[i], next),
-                ),
-              ),
-          ],
-        ),
-      );
-
-      if (!wide) return path;
-
-      // Читавук рядом с тропой — как первый визуальный сигнал курса (§9.3).
-      return Stack(
-        children: [
-          path,
-          Positioned(
-            right: 12,
-            top: 120,
-            child: reduceMotion
-                ? const MascotView(
-                    state: MascotState.idle, size: 120, still: true)
-                : const FloatingBob(
-                    amplitude: 8,
-                    period: Duration(milliseconds: 3200),
-                    child: MascotView(
-                        state: MascotState.idle, size: 120, still: true),
-                  ),
-          ),
-        ],
-      );
+              Positioned(
+                  top: i * step,
+                  left: points[i].dx - 70,
+                  width: 140,
+                  child: _buildNode(lessons[i], next)),
+          ]));
     });
   }
 
@@ -599,105 +733,211 @@ class _LessonPath extends StatelessWidget {
 
     return PathNode(
       status: status,
-      caption: lesson.title,
+      caption:
+          record?.skipped == true ? '${lesson.title}\nПропущено' : lesson.title,
       isCheckpoint: lesson.isCheckpoint,
       bestScore: record?.bestScore ?? 0,
       bubbleText: bubble,
+      lessonIcon: _lessonIcon(lesson),
       semanticLabel: '${lesson.title}. $statusLabel',
       onTap: () => onOpenNode(lesson),
     );
   }
+
+  IconData _lessonIcon(Lesson lesson) {
+    if (lesson.isCheckpoint) return Icons.emoji_events_rounded;
+    if (lesson.optional) return Icons.explore_outlined;
+    final exercises = lesson.exercises;
+    if (exercises.any((exercise) => exercise is ReadingQaExercise)) {
+      return Icons.auto_stories_rounded;
+    }
+    if (exercises.any((exercise) => exercise is FormHuntExercise)) {
+      return Icons.search_rounded;
+    }
+    if (exercises.any((exercise) => exercise is MatchingExercise)) {
+      return Icons.style_rounded;
+    }
+    if (exercises.any((exercise) =>
+        exercise is SentenceBuilderExercise || exercise is FillBlankExercise)) {
+      return Icons.account_tree_rounded;
+    }
+    if (exercises.any((exercise) =>
+        exercise is LetterUnscrambleExercise ||
+        exercise is EndingPickerExercise)) {
+      return Icons.spellcheck_rounded;
+    }
+    return lesson.intro != null
+        ? Icons.menu_book_rounded
+        : Icons.play_arrow_rounded;
+  }
+}
+
+class _CourseTrailPainter extends CustomPainter {
+  const _CourseTrailPainter({
+    required this.points,
+    required this.statuses,
+    required this.line,
+    required this.done,
+  });
+
+  final List<Offset> points;
+  final List<LessonStatus> statuses;
+  final Color line;
+  final Color done;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (points.length < 2) return;
+    for (var i = 0; i < points.length - 1; i++) {
+      final from = points[i];
+      final to = points[i + 1];
+      final completed = statuses[i] == LessonStatus.completed ||
+          statuses[i] == LessonStatus.mastered;
+      final paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = completed ? 6 : 4
+        ..strokeCap = StrokeCap.round
+        ..color = completed ? done : line;
+      final bend = (to.dy - from.dy) * .46;
+      final route = Path()..moveTo(from.dx, from.dy);
+      if ((to.dx - from.dx).abs() < 1 && to.dy > from.dy) {
+        final side = from.dx > size.width / 2 ? 100.0 : -100.0;
+        route.cubicTo(
+            from.dx + side, from.dy, to.dx + side, to.dy, to.dx, to.dy);
+      } else {
+        route.cubicTo(
+          from.dx,
+          from.dy + bend,
+          to.dx,
+          to.dy - bend,
+          to.dx,
+          to.dy,
+        );
+      }
+      canvas.drawPath(route, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_CourseTrailPainter old) =>
+      !listEquals(old.points, points) ||
+      !listEquals(old.statuses, statuses) ||
+      old.line != line ||
+      old.done != done;
 }
 
 /// Шапка: маскот, общий прогресс, серия и опыт.
 class _HeaderCard extends StatelessWidget {
-  const _HeaderCard({required this.controller});
-
+  const _HeaderCard({required this.controller, required this.onContinue});
   final CourseController controller;
-
+  final VoidCallback onContinue;
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final progress = controller.progress!;
-    final percent = (controller.completionRatio * 100).round();
-
+    final next = controller.nextLesson;
+    final completed = controller.course!.allLessons
+        .where((l) => [
+              LessonStatus.completed,
+              LessonStatus.mastered,
+              LessonStatus.needsReview
+            ].contains(controller.statusOf(l)))
+        .length;
     return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: scheme.primary.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              // Один кадр: в шапке Читавук ничего не показывает и ничему не
-              // радуется, а тикер спрайта перерисовывал его поверх всего
-              // списка карты курса — прокрутка от этого дёргалась.
-              const MascotView(state: MascotState.idle, size: 92, still: true),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      controller.course!.title,
-                      style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w700,
-                          height: 1.25),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Пройдено $percent%',
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+            color: scheme.surfaceContainerLow,
+            border: Border.all(color: scheme.outlineVariant),
+            borderRadius: BorderRadius.circular(26)),
+        child: LayoutBuilder(builder: (context, limits) {
+          final compact = limits.maxWidth < 600;
+          final heading =
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('ТВОЙ МАРШРУТ',
+                style: TextStyle(
+                    color: scheme.primary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.2)),
+            const SizedBox(height: 12),
+            Text(controller.course!.title,
+                style: TextStyle(
+                    fontFamily: 'NotoSans',
+                    fontSize: compact ? 28 : 36,
+                    fontWeight: FontWeight.w600,
+                    height: 1.15,
+                    color: scheme.onSurface)),
+          ]);
+          final details =
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 16),
+            Text(
+                'От азбуки до причастий. Разбирайся в правилах и сразу пробуй их в деле.',
+                style: TextStyle(
+                    fontSize: 15, height: 1.7, color: scheme.onSurfaceVariant)),
+            const SizedBox(height: 20),
+            if (next != null)
+              FilledButton.icon(
+                  onPressed: onContinue,
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('Продолжить занятия'),
+                  style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 16))),
+            if (next != null)
+              Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text('Следующий урок: ${next.title}',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: scheme.onSurface.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: controller.completionRatio),
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, _) => LinearProgressIndicator(
-                value: value,
-                minHeight: 8,
-                backgroundColor: scheme.primary.withValues(alpha: 0.15),
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          // Wrap, а не Row: на узком экране и при увеличенном системном шрифте
-          // плашки переносятся на вторую строку вместо overflow.
-          Wrap(
-            spacing: 10,
-            runSpacing: 8,
-            children: [
+                          fontSize: 12,
+                          height: 1.5,
+                          color: scheme.onSurfaceVariant))),
+            const SizedBox(height: 20),
+            LinearProgressIndicator(
+                value: controller.completionRatio,
+                minHeight: 6,
+                borderRadius: BorderRadius.circular(8)),
+            const SizedBox(height: 18),
+            Wrap(spacing: 10, runSpacing: 8, children: [
+              ListenableBuilder(
+                  listenable: StudyService.instance,
+                  builder: (context, _) => _StatChip(
+                      icon: const StoveIcon(size: 18),
+                      label: 'Серия',
+                      value:
+                          '${StudyService.instance.snapshot?['current'] ?? progress.streak.currentDays} дн.')),
               _StatChip(
-                icon: const StoveIcon(size: 18),
-                label: 'Серия',
-                value: '${progress.streak.currentDays} дн.',
-              ),
+                  icon: const Icon(Icons.star_outline),
+                  label: 'Опыт',
+                  value: '${progress.xp}'),
               _StatChip(
-                icon: const Icon(Icons.star_outline),
-                label: 'Опыт',
-                value: '${progress.xp}',
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                  icon: const Icon(Icons.check_rounded),
+                  label: 'Уроки',
+                  value:
+                      '$completed / ${controller.course!.allLessons.length}'),
+            ]),
+          ]);
+          if (compact) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                    Expanded(child: heading),
+                    const SizedBox(width: 8),
+                    const CourseArt(size: 145)
+                  ]),
+                  details,
+                ]);
+          }
+          return Row(children: [
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [heading, details])),
+            const SizedBox(width: 20),
+            const CourseArt(size: 245)
+          ]);
+        }));
   }
 }
 
@@ -731,11 +971,15 @@ class _StatChip extends StatelessWidget {
               child: icon,
             ),
             const SizedBox(width: 8),
-            Text('$label: ', style: const TextStyle(fontSize: 13)),
-            Text(
-              value,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-            ),
+            Flexible(
+                child: Text.rich(
+                    TextSpan(children: [
+                      TextSpan(text: '$label: '),
+                      TextSpan(
+                          text: value,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ]),
+                    style: const TextStyle(fontSize: 13, height: 1.5))),
           ],
         ),
       ),
@@ -776,8 +1020,8 @@ class _TrainerCard extends StatelessWidget {
                   children: [
                     const Text(
                       'Тренажёрка',
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(

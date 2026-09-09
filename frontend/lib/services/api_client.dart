@@ -47,6 +47,10 @@ class ApiClient {
   /// Токен сессии. Пустая строка — запросы уходят без авторизации.
   String? token;
 
+  /// Снимок авторизации для одной операции; транспорт остаётся общим.
+  ApiClient withSessionToken(String sessionToken) =>
+      ApiClient(baseUrl: baseUrl, client: _client, token: sessionToken);
+
   static const _timeout = Duration(seconds: 30);
 
   /// Выгрузка книги может быть долгой на медленной сети.

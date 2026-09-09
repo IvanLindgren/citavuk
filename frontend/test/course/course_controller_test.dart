@@ -191,6 +191,34 @@ void main() {
   });
 
   group('unlock logic', () {
+    test('старт с третьего урока открывает его без опыта и серии', () async {
+      final c = await ready();
+      await c.startFrom('l3');
+      expect(c.canOpen(c.course!.allLessons[2]), isTrue);
+      expect(c.progress!.lessons['l1']!.skipped, isTrue);
+      expect(c.progress!.lessons['l2']!.skipped, isTrue);
+      expect(c.progress!.lessons['l1']!.isDone, isFalse);
+      expect(c.progress!.lessons['l1']!.completedAt, isNull);
+      expect(c.progress!.xp, 0);
+      expect(c.progress!.streak.currentDays, 0);
+      expect(c.progress!.mastery, isEmpty);
+      expect(c.nextLesson!.id, 'l3');
+      final restored = await ready();
+      expect(restored.nextLesson!.id, 'l3');
+    });
+    test('выбор старта сохраняет честный результат и позволяет вернуться',
+        () async {
+      final c = await ready();
+      await c.completeLesson(_summary('l1', score: 1));
+      final xp = c.progress!.xp;
+      await c.startFrom('l3');
+      expect(c.progress!.lessons['l1']!.skipped, isFalse);
+      expect(c.progress!.lessons['l1']!.bestScore, 1);
+      expect(c.progress!.xp, xp);
+      await c.startFrom('l2');
+      expect(c.progress!.lessons['l2']!.skipped, isFalse);
+      expect(c.nextLesson!.id, 'l2');
+    });
     test('первый урок доступен, остальные закрыты', () async {
       final c = await ready();
       final lessons = c.course!.allLessons;

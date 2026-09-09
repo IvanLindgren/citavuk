@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { LuCheck } from 'react-icons/lu';
+import { LuCheck, LuX } from 'react-icons/lu';
 
 import {
   MICRO_FEED_LEVELS,
@@ -51,11 +51,13 @@ const LEVELS: Record<Level, string> = {
 export function MicroFeedOnboarding({
   preferences,
   onDone,
+  onClose,
 }: {
   preferences: MicroFeedPreferences;
   onDone: (preferences: MicroFeedPreferences) => void;
+  onClose?: () => void;
 }) {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(preferences.categories);
   // Уровень с аккаунта — готовый ответ, а не подсказка: он задан один раз для
   // всего приложения, и здесь остаётся только не спрашивать заново.
   const [level, setLevel] = useState<Level>(preferences.cefr);
@@ -91,6 +93,7 @@ export function MicroFeedOnboarding({
       aria-label="Настройка ленты"
     >
       <div ref={panelRef} className="w-full max-w-2xl">
+        {onClose && <button type="button" onClick={onClose} aria-label="Закрыть настройки" className="ml-auto mb-3 grid size-11 place-items-center rounded-full bg-white/10"><LuX /></button>}
         <div className="flex items-center gap-4">
           <Mascot pose="citavuk_vukotok" alt="" className="w-24 shrink-0 sm:w-28" />
           <div>
@@ -103,7 +106,7 @@ export function MicroFeedOnboarding({
 
         <fieldset className="mt-7">
           <legend className="text-xs font-bold uppercase tracking-wide text-white/60">
-            Темы — выберите сколько хотите
+            Темы: выбери сколько хочешь
           </legend>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {CATEGORIES.map((category) => {

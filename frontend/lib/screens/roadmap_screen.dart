@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../models/roadmap.dart';
 import '../services/auth_service.dart';
 import '../services/roadmap_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/animated_widgets.dart';
-import '../widgets/wolf_mascot.dart';
 import 'roadmap_section_screen.dart';
 import 'roadmap_comments.dart';
 
@@ -90,69 +90,92 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           ? _ErrorView(message: _error, onRetry: _load)
           : overview == null
               ? const Center(child: CircularProgressIndicator())
-              : RefreshIndicator(
-                  onRefresh: _load,
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-                    children: [
-                      const FadeSlideIn(child: _Intro()),
-                      const SizedBox(height: 20),
-                      FadeSlideIn(
-                        delay: const Duration(milliseconds: 60),
-                        child: _HowItWorks(passingScore: overview.passingScore),
-                      ),
-                      const SizedBox(height: 20),
-                      FadeSlideIn(
-                        delay: const Duration(milliseconds: 120),
-                        child: _CategoryCards(categories: overview.categories),
-                      ),
-                      const SizedBox(height: 24),
-                      Text('Уровни',
-                          style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 12),
-                      RoadmapTrail(
-                        levels: overview.levels,
-                        categories: overview.categories,
-                        selected: _selected,
-                        target: overview.target,
-                        current: overview.current,
-                        onSelect: (level) => setState(() => _selected = level),
-                      ),
-                      const SizedBox(height: 24),
-                      _LevelPanel(
-                        overview: overview,
-                        level: _selected,
-                        onSetTarget: _setTarget,
-                        onSelect: (level) => setState(() => _selected = level),
-                        onChanged: _load,
-                      ),
-                      const SizedBox(height: 32),
-                      Text(
-                        'Любая дорожная карта требует обсуждений и дополнений, '
-                        'которые мог не учесть автор.',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(
-                              height: 1.45,
+              : LayoutBuilder(
+                  builder: (context, constraints) {
+                    final wide = constraints.maxWidth >= 980;
+                    final horizontal = constraints.maxWidth >= 1440
+                        ? (constraints.maxWidth - 1340) / 2
+                        : 16.0;
+                    final how = FadeSlideIn(
+                      delay: const Duration(milliseconds: 60),
+                      child: _HowItWorks(passingScore: overview.passingScore),
+                    );
+                    final categories = FadeSlideIn(
+                      delay: const Duration(milliseconds: 120),
+                      child: _CategoryCards(categories: overview.categories),
+                    );
+                    return RefreshIndicator(
+                      onRefresh: _load,
+                      child: ListView(
+                        padding:
+                            EdgeInsets.fromLTRB(horizontal, 12, horizontal, 36),
+                        children: [
+                          const FadeSlideIn(child: _Intro()),
+                          const SizedBox(height: 20),
+                          if (wide)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(child: how),
+                                const SizedBox(width: 18),
+                                Expanded(child: categories),
+                              ],
+                            )
+                          else ...[
+                            how,
+                            const SizedBox(height: 18),
+                            categories,
+                          ],
+                          const SizedBox(height: 28),
+                          Text('Маршрут A1–C2',
+                              style: Theme.of(context).textTheme.titleLarge),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Выбери стоянку — справа или ниже появятся темы '
+                            'и следующий шаг.',
+                            style: TextStyle(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurfaceVariant,
                             ),
-                      ),
-                      const SizedBox(height: 10),
-                      FilledButton.tonalIcon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) =>
-                                RoadmapCommentsScreen(level: _selected),
                           ),
-                        ),
-                        icon: const Icon(Icons.forum_outlined),
-                        label: Text('Обсуждение уровня $_selected'),
+                          const SizedBox(height: 14),
+                          RoadmapTrail(
+                            levels: overview.levels,
+                            categories: overview.categories,
+                            selected: _selected,
+                            target: overview.target,
+                            current: overview.current,
+                            onSelect: (level) =>
+                                setState(() => _selected = level),
+                          ),
+                          const SizedBox(height: 26),
+                          _LevelPanel(
+                            overview: overview,
+                            level: _selected,
+                            onSetTarget: _setTarget,
+                            onSelect: (level) =>
+                                setState(() => _selected = level),
+                            onChanged: _load,
+                          ),
+                          const SizedBox(height: 30),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: FilledButton.tonalIcon(
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) =>
+                                      RoadmapCommentsScreen(level: _selected),
+                                ),
+                              ),
+                              icon: const Icon(Icons.forum_outlined),
+                              label: Text('Обсудить уровень $_selected'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
     );
   }
@@ -203,14 +226,14 @@ class _IntroState extends State<_Intro> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const WolfSticker(asset: Wolf.roadmap, size: 96),
+            Icon(Icons.explore_outlined,
+                size: 36, color: theme.colorScheme.secondary),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Дорожная карта',
-                      style: theme.textTheme.headlineSmall),
+                  Text('Дорожная карта', style: theme.textTheme.headlineSmall),
                   const SizedBox(height: 6),
                   Text(
                     'Что учить дальше, когда быстрые курсы кончились: слова, '
@@ -398,6 +421,14 @@ class _CategoryCards extends StatelessWidget {
     'writing': Icons.edit_outlined,
   };
 
+  static String nameOf(String key) => switch (key) {
+        'reading' => 'Чтение',
+        'grammar' => 'Грамматика',
+        'vocabulary' => 'Словарный запас',
+        'writing' => 'Письмо',
+        _ => key,
+      };
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -413,7 +444,7 @@ class _CategoryCards extends StatelessWidget {
               ?.copyWith(color: scheme.onSurfaceVariant),
         ),
         const SizedBox(height: 10),
-        for (final category in categories)
+        for (final category in categories.where((item) => !item.planned))
           Card(
             margin: const EdgeInsets.only(bottom: 8),
             clipBehavior: Clip.antiAlias,
@@ -436,12 +467,10 @@ class _CategoryCards extends StatelessWidget {
                   child: Icon(_icons[category.key] ?? Icons.circle_outlined,
                       size: 20, color: scheme.primary),
                 ),
-                title: Text(category.title,
+                title: Text(nameOf(category.key),
                     style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text(
-                  category.planned
-                      ? '${category.local} · скоро'
-                      : category.local,
+                  '${category.local} · ${category.title}',
                   style: TextStyle(color: scheme.onSurfaceVariant),
                 ),
                 children: [
@@ -470,11 +499,8 @@ class _CategoryCards extends StatelessWidget {
   }
 }
 
-/// Тропа со стоянками.
-///
-/// Кривая рисуется CustomPainter'ом на фоне, а стоянки — обычные кнопки поверх.
-/// Так же, как на сайте: текст внутри рисованной фигуры не читается голосовым
-/// сопровождением и не переносится.
+/// Прямой маршрут CEFR. На широком экране читается слева направо, на телефоне
+/// сверху вниз; линия действительно соединяет стоянки, а не петляет в пустоте.
 class RoadmapTrail extends StatelessWidget {
   const RoadmapTrail({
     super.key,
@@ -496,100 +522,59 @@ class RoadmapTrail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    var passed = 0;
-    for (final level in levels) {
-      if (!roadmapLevelPassed(level, categories)) break;
-      passed += 1;
-    }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        Widget station(RoadmapLevelView level) => _Station(
+              level: level,
+              categories: categories,
+              selected: selected == level.level,
+              isTarget: target == level.level,
+              isCurrent: current == level.level,
+              onTap: () => onSelect(level.level),
+            );
 
-    return CustomPaint(
-      painter: _TrailPainter(
-        stations: levels.length,
-        passed: passed,
-        line: scheme.outlineVariant,
-        done: scheme.primary,
-      ),
-      child: Column(
-        children: [
-          for (var index = 0; index < levels.length; index += 1)
-            Align(
-              alignment:
-                  index.isEven ? Alignment.centerLeft : Alignment.centerRight,
-              child: _Station(
-                level: levels[index],
-                categories: categories,
-                selected: selected == levels[index].level,
-                isTarget: target == levels[index].level,
-                isCurrent: current == levels[index].level,
-                onTap: () => onSelect(levels[index].level),
+        if (constraints.maxWidth >= 860) {
+          return Stack(
+            children: [
+              Positioned(
+                left: 48,
+                right: 48,
+                top: 38,
+                child: Container(height: 3, color: scheme.outlineVariant),
               ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final level in levels)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: station(level),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          );
+        }
+
+        return Stack(
+          children: [
+            Positioned(
+              left: 27,
+              top: 32,
+              bottom: 32,
+              child: Container(width: 3, color: scheme.outlineVariant),
             ),
-        ],
-      ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [for (final level in levels) station(level)],
+            ),
+          ],
+        );
+      },
     );
   }
-}
-
-/// Насколько стоянка отклоняется от середины, в долях ширины.
-const _swing = 0.24;
-
-class _TrailPainter extends CustomPainter {
-  _TrailPainter({
-    required this.stations,
-    required this.passed,
-    required this.line,
-    required this.done,
-  });
-
-  final int stations;
-  final int passed;
-  final Color line;
-  final Color done;
-
-  Offset _point(int index, Size size) => Offset(
-        (0.5 + (index.isEven ? -_swing : _swing)) * size.width,
-        (index + 0.5) / stations * size.height,
-      );
-
-  Path _path(Size size, int upTo) {
-    final path = Path();
-    if (stations == 0) return path;
-    final first = _point(0, size);
-    path.moveTo(first.dx, first.dy);
-    for (var index = 1; index < upTo; index += 1) {
-      final from = _point(index - 1, size);
-      final to = _point(index, size);
-      // Управляющие точки строго по вертикали от концов: тогда линия входит в
-      // стоянку сверху и не даёт петель на узких экранах.
-      final bend = (to.dy - from.dy) / 2;
-      path.cubicTo(from.dx, from.dy + bend, to.dx, to.dy - bend, to.dx, to.dy);
-    }
-    return path;
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final base = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round
-      ..color = line;
-    canvas.drawPath(_path(size, stations), base);
-
-    if (passed > 0) {
-      canvas.drawPath(
-        _path(size, passed.clamp(1, stations)),
-        base..color = done,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(_TrailPainter old) =>
-      old.stations != stations ||
-      old.passed != passed ||
-      old.line != line ||
-      old.done != done;
 }
 
 class _Station extends StatelessWidget {
@@ -761,13 +746,32 @@ class _LevelPanel extends StatelessWidget {
           ),
         ],
         const SizedBox(height: 12),
-        for (final category in overview.categories)
-          _CategoryTile(
-            level: current.level,
-            category: category,
-            progress: current.progressOf(category.key),
-            onChanged: onChanged,
-          ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final categories =
+                overview.categories.where((item) => !item.planned).toList();
+            final columns = constraints.maxWidth >= 760 ? 2 : 1;
+            final width = columns == 2
+                ? (constraints.maxWidth - 12) / 2
+                : constraints.maxWidth;
+            return Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                for (final category in categories)
+                  SizedBox(
+                    width: width,
+                    child: _CategoryTile(
+                      level: current.level,
+                      category: category,
+                      progress: current.progressOf(category.key),
+                      onChanged: onChanged,
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ],
     );
   }
@@ -789,25 +793,45 @@ class _CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final accent = switch (category.key) {
+      'reading' => scheme.secondary,
+      'grammar' => scheme.primary,
+      'vocabulary' => scheme.tertiary,
+      'writing' => scheme.success,
+      _ => scheme.primary,
+    };
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.zero,
+      color: accent.withValues(alpha: .07),
       child: ListTile(
-        title: Text('${category.title} · ${category.local}'),
-        subtitle: category.planned
-            ? const Text('Скоро будет')
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${progress.done} из ${progress.total} · '
-                      '${(progress.ratio * 100).round()}%'),
-                  const SizedBox(height: 6),
-                  LinearProgressIndicator(
-                    value: progress.ratio,
-                    minHeight: 5,
-                    backgroundColor: scheme.surfaceContainerHighest,
-                  ),
-                ],
-              ),
+        contentPadding: const EdgeInsets.fromLTRB(14, 10, 12, 10),
+        leading: Container(
+          width: 42,
+          height: 42,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: accent.withValues(alpha: .14),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Icon(_CategoryCards._icons[category.key] ?? Icons.school,
+              color: accent, size: 22),
+        ),
+        title: Text(_CategoryCards.nameOf(category.key),
+            style: const TextStyle(fontWeight: FontWeight.w800)),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${category.local} · ${progress.done} из ${progress.total} · '
+                '${(progress.ratio * 100).round()}%'),
+            const SizedBox(height: 6),
+            LinearProgressIndicator(
+              value: progress.ratio,
+              minHeight: 5,
+              backgroundColor: scheme.surfaceContainerHighest,
+              color: accent,
+            ),
+          ],
+        ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () async {
           await Navigator.of(context).push(

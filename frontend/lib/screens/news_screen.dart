@@ -226,13 +226,12 @@ class _NewsScreenState extends State<NewsScreen> with WidgetsBindingObserver {
     return ListView(
       children: [
         const SizedBox(height: 60),
-        const Center(child: WolfSticker(asset: Wolf.rule, size: 130)),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Text(text,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: scheme.onSurface.withValues(alpha: 0.7))),
+        // Ошибка загрузки — растерянность, а не лупа: правило тут ни при чём.
+        // Волк извиняется сам — и рядом кнопка повтора.
+        WolfBubble(
+          title: 'Не загрузилось',
+          text: text,
+          asset: Wolf.zbunjen,
         ),
         const SizedBox(height: 16),
         Center(

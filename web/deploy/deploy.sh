@@ -38,7 +38,14 @@ public_setting() {
     for file in .env.local ../.env; do
         [[ -f "$file" ]] || continue
         for name in "$@"; do
-            value=$(sed -n "s/^${name}=//p" "$file" | tr -d '"'"'"' \r' | head -1)
+            value=$(sed -n "s/^${name}=//p" "$file" | tr -d '\r' | head -1)
+            # Корневой .env допускает кавычки. При export они, в отличие от
+            # dotenv-парсера Vite, сами не снимаются и попадают прямо в
+            # client_id (`%22...%22`), после чего Google отвечает invalid_client.
+            value="${value#\"}"
+            value="${value%\"}"
+            value="${value#\'}"
+            value="${value%\'}"
             if [[ -n "$value" ]]; then printf '%s' "$value"; return; fi
         done
     done
@@ -99,7 +106,9 @@ ssh_run "rm -rf ${REMOTE_DIR}.new && mkdir -p ${REMOTE_DIR}.new"
 # файлов по отдельности и на медленном соединении занимал минуты даже для 23 МБ.
 # Архив сохраняет атомарную выкладку и заодно сжимает HTML, JSON и тексты.
 tar -C dist -czf "$ARCHIVE" .
-scp -i "$KEY" -o BatchMode=yes "$ARCHIVE" "$HOST:$REMOTE_ARCHIVE"
+# Сжатие существенно уменьшает архив из HTML/JSON и снижает вероятность
+# обрыва SSH на общей машине; сервер распаковывает тот же tar.gz.
+scp -C -i "$KEY" -o BatchMode=yes "$ARCHIVE" "$HOST:$REMOTE_ARCHIVE"
 
 ssh_run "set -e
     tar -xzf $REMOTE_ARCHIVE -C ${REMOTE_DIR}.new

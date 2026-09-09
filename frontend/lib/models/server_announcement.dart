@@ -102,9 +102,30 @@ class ServerAnnouncement {
       };
 }
 
+/// Выбор баннеров к показу: критическое сервисное (`maintenance`) отдельно
+/// плюс максимум одно обычное (кампания важнее новости). Критическое нельзя
+/// потерять из-за лимита обычных; остальные ждут в центре уведомлений.
+/// Чистая функция — покрыта тестом, контроллер лишь делегирует ей.
+List<ServerAnnouncement> pickBanners(List<ServerAnnouncement> items) {
+  int priority(ServerAnnouncement item) => switch (item.kind) {
+        'campaign' => 1,
+        _ => 2,
+      };
+  ServerAnnouncement? critical;
+  ServerAnnouncement? ordinary;
+  for (final item in items) {
+    if (!item.bannerEnabled || item.dismissed) continue;
+    if (item.kind == 'maintenance') {
+      critical ??= item;
+    } else if (ordinary == null || priority(item) < priority(ordinary)) {
+      ordinary = item;
+    }
+  }
+  return [if (critical != null) critical, if (ordinary != null) ordinary];
+}
+
 @immutable
-class ServerNotification {
-  const ServerNotification({
+class ServerNotification {  const ServerNotification({
     required this.id,
     required this.kind,
     required this.title,

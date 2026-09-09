@@ -36,6 +36,8 @@ public/fonts/*
 !public/fonts/Lora-Bold.woff2
 !public/fonts/NotoSans-Regular.woff2
 !public/fonts/NotoSans-Bold.woff2
+!public/fonts/NotoSans-SemiBold.woff2
+!public/fonts/NotoSans-OFL.txt
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
 public/course/

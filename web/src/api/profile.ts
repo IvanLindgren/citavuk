@@ -1,6 +1,8 @@
 import { request } from './client';
+import type {Study} from './personal';
 
 export interface ProfileStats {
+  study?:Study;
   words: { added: number; learned: number; due: number };
   activity: Array<{ day: string; added: number; reviewed: number }>;
   streakDays: number;

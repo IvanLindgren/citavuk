@@ -11,7 +11,10 @@
  * должен открываться, не вытаскивая в память сами книги.
  */
 
-const DB_NAME = 'citavuk';
+const DB_PREFIX = 'citavuk';
+// Прежняя общая БД остаётся гостевой: старые книги видны после выхода, но
+// больше никогда не отправляются в учётную запись автоматически.
+const GUEST_DB_NAME = DB_PREFIX;
 const DB_VERSION = 4;
 
 export const STORE_BOOKS = 'books';
@@ -22,30 +25,21 @@ export const STORE_REVIEWS = 'reviews';
 export const STORE_PALACES = 'palaces';
 
 let connection: Promise<IDBDatabase> | null = null;
+let activeName = GUEST_DB_NAME;
 
-function open(): Promise<IDBDatabase> {
-  if (connection) return connection;
-
-  connection = new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+function openNamed(name: string): Promise<IDBDatabase> {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open(name, DB_VERSION);
 
     request.onupgradeneeded = () => {
       const db = request.result;
-      // Транзакция смены версии — единственное место, где можно завести индекс
-      // на уже существующем хранилище.
       const upgrade = request.transaction;
       if (!db.objectStoreNames.contains(STORE_BOOKS)) {
         const books = db.createObjectStore(STORE_BOOKS, { keyPath: 'id' });
-        // Синхронизация запрашивает изменённые записи — без индекса пришлось бы
-        // перебирать всю библиотеку на каждой отправке.
         books.createIndex('dirty', 'dirty');
       }
-      if (!db.objectStoreNames.contains(STORE_CONTENT)) {
-        db.createObjectStore(STORE_CONTENT, { keyPath: 'id' });
-      }
-      if (!db.objectStoreNames.contains(STORE_META)) {
-        db.createObjectStore(STORE_META, { keyPath: 'key' });
-      }
+      if (!db.objectStoreNames.contains(STORE_CONTENT)) db.createObjectStore(STORE_CONTENT, { keyPath: 'id' });
+      if (!db.objectStoreNames.contains(STORE_META)) db.createObjectStore(STORE_META, { keyPath: 'key' });
       if (!db.objectStoreNames.contains(STORE_VOCABULARY)) {
         const vocabulary = db.createObjectStore(STORE_VOCABULARY, { keyPath: 'id' });
         vocabulary.createIndex('dirty', 'dirty');
@@ -62,10 +56,6 @@ function open(): Promise<IDBDatabase> {
         const palaces = upgrade.objectStore(STORE_PALACES);
         if (!palaces.indexNames.contains('dirty')) {
           palaces.createIndex('dirty', 'dirty');
-          // Дворцы, построенные до появления синхронизации, полей `dirty` и
-          // `deleted` не имеют, а запись без ключа индекса в индекс не
-          // попадает — такой дворец никогда бы не уехал на сервер. Помечаем их
-          // к отправке прямо здесь, в той же транзакции смены версии.
           const cursorRequest = palaces.openCursor();
           cursorRequest.onsuccess = () => {
             const cursor = cursorRequest.result;
@@ -77,13 +67,23 @@ function open(): Promise<IDBDatabase> {
         }
       }
     };
-
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () =>
-      reject(request.error ?? new Error('Не удалось открыть хранилище браузера.'));
-    request.onblocked = () =>
-      reject(new Error('Хранилище занято другой вкладкой Читавука.'));
+    request.onsuccess = () => {
+      const db = request.result;
+      db.onversionchange = () => {
+        db.close();
+        if (activeName === name) connection = null;
+      };
+      db.onclose = () => { if (activeName === name) connection = null; };
+      resolve(db);
+    };
+    request.onerror = () => reject(request.error ?? new Error('Не удалось открыть хранилище браузера.'));
+    request.onblocked = () => reject(new Error('Хранилище занято другой вкладкой Читавука.'));
   });
+}
+
+function open(): Promise<IDBDatabase> {
+  if (connection) return connection;
+  connection = openNamed(activeName);
 
   // Неудачную попытку не кешируем: следующий вызов должен попробовать снова.
   connection.catch(() => {
@@ -91,6 +91,35 @@ function open(): Promise<IDBDatabase> {
   });
 
   return connection;
+}
+
+/** Переключает все локальные данные на отдельное хранилище аккаунта. */
+export async function activateAccountStorage(userId: string): Promise<void> {
+  const next = `${DB_PREFIX}-user-${encodeURIComponent(userId)}`;
+  if (next === activeName) return;
+  const current = connection;
+  connection = null;
+  if (current) (await current).close();
+  activeName = next;
+  await open();
+}
+
+/** Гостевая библиотека никогда не смешивается с библиотекой аккаунта. */
+/** Имя активного хранилища (гостевое или `citavuk-user-<id>`).
+ *
+ * Отложенные операции фиксируют его при вызове и сверяются перед записью:
+ * смена аккаунта посреди ожидания не должна писать чужому пользователю. */
+export function activeStorageName(): string {
+  return activeName;
+}
+
+export async function activateGuestStorage(): Promise<void> {
+  if (activeName === GUEST_DB_NAME) return;
+  const current = connection;
+  connection = null;
+  if (current) (await current).close();
+  activeName = GUEST_DB_NAME;
+  await open();
 }
 
 /** Оборачивает запрос IndexedDB в промис. */

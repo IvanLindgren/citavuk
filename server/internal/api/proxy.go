@@ -31,7 +31,7 @@ func isClientGone(r *http.Request, err error) bool {
 // сразу и надолго оставить приложение без этих разделов, неизвестные Go пути
 // уходят наверх. Так переход выполняется по частям, а клиент всё время видит
 // один адрес сервера.
-func newUpstreamProxy(rawURL string) (*httputil.ReverseProxy, error) {
+func newUpstreamProxy(rawURL, secret string, trustProxy bool) (*httputil.ReverseProxy, error) {
 	target, err := url.Parse(rawURL)
 	if err != nil {
 		return nil, err
@@ -40,6 +40,11 @@ func newUpstreamProxy(rawURL string) (*httputil.ReverseProxy, error) {
 	proxy := &httputil.ReverseProxy{
 		Rewrite: func(pr *httputil.ProxyRequest) {
 			pr.SetURL(target)
+			pr.SetXForwarded()
+			if secret != "" {
+				pr.Out.Header.Set("X-Citavuk-Proxy-Secret", secret)
+				pr.Out.Header.Set("X-Citavuk-Client-IP", clientIP(pr.In, trustProxy))
+			}
 			// Host должен соответствовать целевому сервису: Hugging Face
 			// маршрутизирует Space именно по нему.
 			pr.Out.Host = target.Host

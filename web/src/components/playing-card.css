@@ -1,0 +1,82 @@
+@font-face { font-family:Prata; src:url('/fonts/Prata-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+.personal-deck {
+ display:grid; grid-template-columns:repeat(auto-fill,minmax(235px,1fr)); gap:28px;
+ margin:32px 0; padding:8px 3px 16px; perspective:1100px;
+}
+.personal-card {
+ position:relative; isolation:isolate; min-width:0; min-height:410px;
+ padding:0; border:1px solid #e1bf76; border-radius:22px; text-align:left;
+ background:linear-gradient(135deg,#aa4547 0%,#732530 40%,#3c182b 100%);
+ color:#fff1d5; box-shadow:0 3px 0 #825d36,0 6px 0 #2f2331,0 15px 24px #1d182b29;
+ /* Блик ограничен поверхностью, внешний ореол — нет. */
+ overflow:hidden; touch-action:pan-y; cursor:default;
+}
+.personal-card.is-open { cursor:pointer; background:#15243c; }
+.personal-card.is-today {
+ box-shadow:0 0 0 1px #ffe9a9,0 0 0 5px #cca55828,0 0 26px #eab85966,0 8px 0 #52374a,0 20px 32px #23172638;
+}
+.playing-surface { position:absolute; inset:10px; border-radius:14px; overflow:hidden; }
+.playing-art { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 48%; }
+.playing-depth { position:absolute; inset:0; background:linear-gradient(180deg,#101e35b8,transparent 29%,transparent 49%,#101c31dd 76%,#101c31 94%); }
+.is-closed .playing-depth { background:radial-gradient(ellipse at 50% 36%,#cc78551f,transparent 65%),linear-gradient(180deg,#12233b44,transparent 35%,#12233b88); }
+.playing-card-frame { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.playing-medallion { position:absolute; top:27%; left:21%; width:58%; height:37%; object-fit:contain; pointer-events:none; filter:drop-shadow(0 3px 2px #30132d); }
+.playing-index { position:absolute; left:24px; top:29px; display:flex; flex-direction:column;
+ align-items:center; font-family:Prata,serif; font-weight:400; font-size:25px; line-height:1.05;
+ color:#f8dfa5; text-shadow:0 1px 1px #201526; }
+.playing-index>span { margin-top:4px; font-size:22px; }
+.playing-index.is-reversed { top:auto; left:auto; right:24px; bottom:29px; transform:rotate(180deg); }
+.playing-kind { position:absolute; top:39px; left:66px; right:37px; text-align:center;
+ color:#fff0d1; font-size:11px; font-weight:700; line-height:1.3; letter-spacing:.045em; text-transform:uppercase; }
+.playing-seal { position:absolute; top:46.66%; left:50%; transform:translate(-50%,-50%);
+ color:#fae5b0; font-size:40px; text-shadow:0 2px 0 #4a1723; }
+.playing-caption { position:absolute; bottom:34px; left:30px; right:58px; display:flex; flex-direction:column; gap:9px; }
+.playing-label { color:#eed393; font-size:9px; line-height:1.3; text-transform:uppercase; letter-spacing:.09em; font-weight:700; }
+.personal-card-title { font-family:Prata,serif; font-size:20px; line-height:1.3; font-weight:400;
+ margin:0; color:#fff5de; overflow-wrap:anywhere; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
+.personal-card-bottom { display:flex; align-items:center; gap:7px; color:#f4d696; font-size:12px; font-weight:600; margin:0; }
+.is-closed .playing-caption { text-shadow:0 1px 3px #211124; }
+.is-closed .playing-label { color:#dfc9ab; }
+.is-closed .personal-card-title { color:#f4e4ce; font-size:19px; }
+.playing-lacquer,.playing-sheen { position:absolute; pointer-events:none; inset:0; border-radius:inherit; }
+.playing-lacquer {
+ background-image:linear-gradient(128deg,transparent 24%,#fff6df24 35%,#ffffff04 43%,transparent 49%,#94ccff0d 76%,transparent 90%);
+ background-size:180% 180%; background-position:50% 50%;
+ box-shadow:inset 1px 1px 0 #fff6d17a,inset -1px -2px 0 #201024b0,inset 0 0 17px #e7b55f18;
+}
+.playing-sheen {
+ background:linear-gradient(112deg,transparent 29%,#bcd9fb0a 37%,#fff4c252 44%,#ffffff94 46%,#e4f1ff2e 49%,transparent 58%);
+ transform:translateX(-130%); opacity:0;
+}
+.is-revealed.is-today .playing-sheen { animation:card-lacquer-pass 1.6s .15s ease-out; }
+@media(hover:hover){
+ .personal-card.is-open:hover .playing-sheen { animation:card-lacquer-hover 1.15s ease-out; }
+}
+.personal-card:focus-visible { outline:3px solid #ffe2a0; outline-offset:5px; }
+.personal-card:focus-visible .playing-sheen { animation:card-lacquer-hover 1.15s ease-out; }
+.personal-card:active .playing-lacquer { background-position:80% 20%; }
+.playing-edge-star { position:absolute; top:-7px; right:2px; width:66px; height:66px; pointer-events:none; }
+.playing-glow { position:absolute; top:-50px; right:-50px; width:190px; height:190px; opacity:.2; pointer-events:none; mix-blend-mode:screen; }
+.is-revealed .playing-edge-star { animation:card-edge-flash 1.6s .25s ease-out; }
+@keyframes card-lacquer-pass { 0%{transform:translateX(-130%);opacity:0} 18%{opacity:.9} 80%{opacity:.7} 100%{transform:translateX(130%);opacity:0} }
+@keyframes card-lacquer-hover { 0%{transform:translateX(-130%);opacity:0} 20%{opacity:1} 100%{transform:translateX(130%);opacity:0} }
+@keyframes card-edge-flash { 0%,100%{opacity:.65;transform:scale(.85)} 45%{opacity:1;transform:scale(1.3)} }
+@media(max-width:540px){
+ .personal-deck { grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px; }
+ .personal-card { min-height:345px;border-radius:19px; }
+ .playing-surface { inset:8px; }
+ .playing-index { left:18px;top:25px;font-size:21px; }
+ .playing-index.is-reversed { right:18px;bottom:25px; }
+ .playing-kind { left:49px;right:22px;top:36px;font-size:9px;letter-spacing:.01em; }
+ .playing-caption { left:22px;right:38px;bottom:33px;gap:7px; }
+ .personal-card-title,.is-closed .personal-card-title { font-size:16px; }
+ .playing-label { font-size:8px;letter-spacing:.025em; }
+ .personal-card-bottom { font-size:10px; }
+ .playing-seal { font-size:28px; }
+ .playing-edge-star { right:-2px;top:-6px;width:60px;height:60px; }
+}
+@media(prefers-reduced-motion:reduce){
+ .personal-card .playing-sheen { display:none;animation:none; }
+ .personal-card .playing-edge-star { animation:none; }
+ .personal-card:active .playing-lacquer { background-position:50% 50%; }
+}

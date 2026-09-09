@@ -5,6 +5,9 @@
 /// (master-prompt §24).
 library;
 
+import 'dart:async';
+import '../../services/study_service.dart';
+
 import 'package:flutter/foundation.dart';
 
 import '../models/answer.dart';
@@ -263,6 +266,9 @@ class LessonController extends ChangeNotifier {
     ));
 
     _result = result;
+    if (result.correct) {
+      unawaited(StudyService.instance.record('exercise', exercise.id));
+    }
     _phase = LessonPhase.checked;
     notifyListeners();
   }

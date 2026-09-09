@@ -134,7 +134,7 @@ export async function clearPalaceDirty(sent: Palace[]): Promise<void> {
 export async function applyRemotePalace(palace: Palace): Promise<boolean> {
   return tx(STORE_PALACES, 'readwrite', async (transaction) => {
     const current = await get<Palace>(transaction, STORE_PALACES, palace.id);
-    if (current && current.updatedAt > palace.updatedAt) return false;
+    if (current?.dirty && current.updatedAt > palace.updatedAt) return false;
     // Удалённого дворца, которого у нас и не было, заводить незачем.
     if (!current && palace.deleted) return false;
     await put(transaction, STORE_PALACES, {

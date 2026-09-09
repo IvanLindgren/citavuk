@@ -1,0 +1,15 @@
+name: flutter_inappwebview_linux
+description: Platform selection adapter; Citavuk uses desktop_webview_window on Linux.
+version: 0.1.0-beta.1
+publish_to: none
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  plugin:
+    implements: flutter_inappwebview
+    platforms:
+      linux:
+        dartPluginClass: CitavukLinuxPlayerSelection

@@ -348,7 +348,7 @@ Future<void> showMusicPrompt(BuildContext context) async {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const WolfSticker(asset: Wolf.gram, size: 120),
+            const WolfSticker(asset: Wolf.gram, size: 140),
             const SizedBox(height: 14),
             Text('Читаем с музыкой?',
                 style: TextStyle(

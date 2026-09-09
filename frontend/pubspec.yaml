@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.19.0+43
+version: 1.21.0+49
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -37,6 +37,8 @@ dependencies:
   provider: ^6.1.2
   scrollable_positioned_list: ^0.3.8
   shared_preferences: ^2.2.3
+  flutter_secure_storage: ^9.2.4
+  cryptography: ^2.7.0
   # Windows/Android. После добавления: flutter clean + flutter pub get.
   audioplayers: ^6.1.0
   url_launcher: ^6.3.0
@@ -46,6 +48,8 @@ dependencies:
   # На Windows пакет непригоден — он закрывает локальный сервер по событию
   # жизненного цикла, см. services/desktop_oauth_io.dart.
   flutter_web_auth_2: ^5.0.3
+  # Встроенный YouTube-плеер: общая реализация Android/Windows/Linux.
+  flutter_inappwebview: 6.2.0-beta.3
   # Возврат окна на передний план после входа в браузере. Приходил транзитивно
   # с flutter_web_auth_2; объявлен явно, потому что используется напрямую.
   window_to_front: ^0.0.4
@@ -57,6 +61,7 @@ dependencies:
   # web/scripts/export-palace.tsx, поэтому картинка и координаты предметов
   # получены из одного источника и не могут разойтись.
   flutter_svg: ^2.0.10
+  desktop_webview_window: 0.3.0
   desktop_drop: ^0.7.1
   # Чтение файла по пути одинаково на всех платформах, включая веб, где dart:io
   # нет. Приходил транзитивно с desktop_drop; объявлен явно, потому что
@@ -77,6 +82,13 @@ dependencies:
 # path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
 # под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
 dependency_overrides:
+  flutter_inappwebview_linux:
+    path: third_party/flutter_inappwebview_linux
+  # Официальный Windows-плагин требует ATL (atlstr.h), которого нет в
+  # установленной Visual Studio. Локальная копия сохраняет BCrypt-шифрование,
+  # но использует Win32 UTF-8 conversion без ATL.
+  flutter_secure_storage_windows:
+    path: third_party/flutter_secure_storage_windows
   path_provider_android: '>=2.2.0 <2.3.0'
   # Windows-часть уведомлений собирается через ATL, которого нет в
   # установленной Visual Studio, и роняла сборку десктопа целиком. Локальная
@@ -116,6 +128,9 @@ flutter:
     # авторским правом. Раздел «Бесплатная библиотека» сам скрывается, когда
     # ассетов нет.
     - assets/imgs/
+    - assets/fonts/Prata-OFL.txt
+    - assets/fonts/Prata-FONTLOG.txt
+    - assets/fonts/NotoSans-OFL.txt
     # Каталоги не рекурсивны: спрайты сада собираются для сайта, а в приложение
     # переносятся tools/sync_garden_assets.py — мир и комната отдельными
     # строками, иначе в сборку они не попадут.
@@ -144,6 +159,9 @@ flutter:
     - assets/travel/icons/
 
   fonts:
+    - family: Prata
+      fonts:
+        - asset: assets/fonts/Prata-Regular.ttf
     - family: NotoSerif
       fonts:
         - asset: assets/fonts/NotoSerif-Regular.ttf
@@ -152,6 +170,8 @@ flutter:
     - family: NotoSans
       fonts:
         - asset: assets/fonts/NotoSans-Regular.ttf
+        - asset: assets/fonts/NotoSans-SemiBold.ttf
+          weight: 600
         - asset: assets/fonts/NotoSans-Bold.ttf
           weight: 700
     - family: Lora
@@ -166,7 +186,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.19.0
+  version: 1.21.0
   publisher: Denis Kornilov
   languages:
     - english

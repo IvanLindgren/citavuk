@@ -4,7 +4,6 @@ import {
   LuBookmark,
   LuChartNoAxesColumnIncreasing,
   LuClipboardCheck,
-  LuFlame,
   LuLibrary,
   LuMedal,
   LuRefreshCw,
@@ -23,8 +22,15 @@ import { useAuth } from "../state/auth";
 import { useAnnouncements } from '../state/announcements';
 import { useSync } from "../state/sync";
 import { useSeo } from '../lib/seo';
+import {StudyStats} from '../components/StudyStats';
+import './account.css';
 
 export function Account() {
+  const { account } = useAuth();
+  return <AccountSession key={account?.id ?? 'guest'} />;
+}
+
+function AccountSession() {
   useSeo({
     title: 'Аккаунт — Читавук',
     noindex: true,
@@ -72,12 +78,13 @@ export function Account() {
   if (!account) return <div className="min-h-[60vh]" />;
 
   return (
-    <main className="px-5 py-10 sm:py-14">
+    <main className="account-page px-5 py-10 sm:py-14">
       <div className="mx-auto max-w-5xl">
         <Reveal>
-          <Card className="p-7 sm:p-9">
+          <Card className="account-passport p-7 sm:p-9">
+            <p className="account-eyebrow">Твоя история с Читавуком</p>
             <div className="flex items-center gap-4">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)]/12 font-display text-2xl font-bold text-[var(--accent)]">
+              <div className="account-monogram">
                 {(account.displayName || account.email)
                   .slice(0, 1)
                   .toUpperCase()}
@@ -91,6 +98,7 @@ export function Account() {
                 </p>
               </div>
             </div>
+            <div className="account-passport-bottom"><span>Каждое занятие становится частью твоего пути.</span>{account.serbianLevel && <span className="account-level">Сербский <b>{account.serbianLevel}</b></span>}</div>
           </Card>
         </Reveal>
 
@@ -101,14 +109,14 @@ export function Account() {
         {stats && (
           <>
             <Reveal delay={0.04} className="mt-5">
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div className="account-word-stats">
                 <StatTile icon={LuBookmark} value={stats.words.added} label="слов добавлено" />
                 <StatTile icon={LuSparkles} value={stats.words.learned} label="слов выучено" />
                 <StatTile icon={LuRefreshCw} value={stats.words.due} label="ждут повторения" />
-                <StatTile icon={LuFlame} value={stats.streakDays} label="дней в серии" />
               </div>
             </Reveal>
 
+            <StudyStats initial={stats.study}/>
             <Reveal delay={0.07} className="mt-5">
               <GoalPanel stats={stats} onOpen={() => navigate('/roadmap')} />
             </Reveal>
@@ -208,7 +216,7 @@ function ExamProgress({ quizzes, onOpen }: { quizzes: MaterialQuiz[]; onOpen: ()
           <h2 className="mt-2 text-2xl">{completed} из {quizzes.length} уровней пройдено</h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             {attempts > 0
-              ? `${attempts} попыток · лучший результат ${best}%`
+              ? `${attempts} попыток, лучший результат ${best}%`
               : 'Результаты появятся после первого теста.'}
           </p>
         </div>
@@ -243,7 +251,7 @@ function StatTile({ icon: Icon, value, label }: {
   label: string;
 }) {
   return (
-    <Card className="min-w-0 p-4 sm:p-5">
+    <Card className="account-stat-tile min-w-0 p-4 sm:p-5">
       <Icon className="size-5 text-[var(--accent)]" />
       <strong className="mt-3 block text-2xl tabular-nums sm:text-3xl">{value}</strong>
       <span className="mt-1 block text-xs leading-5 text-[var(--text-muted)] sm:text-sm">{label}</span>
@@ -267,7 +275,7 @@ function GoalPanel({ stats, onOpen }: { stats: ProfileStats; onOpen: () => void 
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             {goal.target && goal.total > 0
               ? `${goal.done} из ${goal.total} доступных шагов`
-              : 'Выберите ступень на дорожной карте, чтобы видеть общий прогресс.'}
+              : 'Выбери ступень на дорожной карте, чтобы видеть общий прогресс.'}
           </p>
         </div>
         <Button variant="secondary" size="sm" onClick={onOpen}>
@@ -331,15 +339,15 @@ function AchievementTile({ achievement }: { achievement: ProfileStats['achieveme
   const Icon = achievementIcons[achievement.icon as keyof typeof achievementIcons] ?? LuTrophy;
   const unlocked = Boolean(achievement.unlockedAt);
   return (
-    <Card className={`flex min-h-32 items-start gap-4 p-5 ${unlocked ? '' : 'opacity-55 grayscale'}`}>
-      <div className={`grid size-11 shrink-0 place-items-center rounded-lg ${unlocked ? 'bg-[var(--accent)] text-white' : 'bg-[var(--bg-sunken)] text-[var(--text-muted)]'}`}>
+    <Card className={`account-achievement flex min-h-32 items-start gap-4 p-5 ${unlocked ? 'is-unlocked' : ''}`}>
+      <div className={`account-achievement-medal ${unlocked ? 'is-unlocked' : ''}`}>
         <Icon className="size-5" />
       </div>
       <div className="min-w-0">
         <h3 className="text-base">{achievement.title}</h3>
         <p className="mt-1 text-sm leading-5 text-[var(--text-muted)]">{achievement.description}</p>
         {achievement.unlockedAt && (
-          <time className="mt-2 block text-xs font-semibold text-emerald-700">
+          <time className="mt-2 block text-xs font-semibold text-[var(--text-muted)]">
             Получено {new Date(achievement.unlockedAt).toLocaleDateString('ru-RU')}
           </time>
         )}

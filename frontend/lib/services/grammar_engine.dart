@@ -1393,6 +1393,10 @@ class GrammarEngine {
     String? Function(bool Function(Map<String, String>)) fromLexicon,
     String surface,
   ) {
+    // UD может хранить инфинитив как лемму страдательного причастия.
+    // Пока отдельная основа не установлена, показываем только словарные формы.
+    final allowGeneration =
+        feats['VerbForm'] != 'Part' || feats['Voice'] != 'Pass';
     ParadigmCell cell(String label, String g, String number) {
       final form = fromLexicon((f) =>
           f['Gender'] == g && f['Number'] == number && f['Case'] == 'Nom');
@@ -1410,13 +1414,13 @@ class GrammarEngine {
         f['Gender'] == 'Masc' &&
         f['Number'] == 'Sing' &&
         f['Case'] == 'Nom');
-    final cmp = lexCmp ?? _comparative(lemma);
+    final cmp = lexCmp ?? (allowGeneration ? _comparative(lemma) : null);
     final lexSup = fromLexicon((f) =>
         f['Degree'] == 'Sup' &&
         f['Gender'] == 'Masc' &&
         f['Number'] == 'Sing' &&
         f['Case'] == 'Nom');
-    final sup = lexSup ?? (cmp == null ? null : 'naj$cmp');
+    final sup = lexSup ?? (!allowGeneration || cmp == null ? null : 'naj$cmp');
 
     // Склонение показывается для того рода и числа, в которых стоит
     // разобранное слово: полная сетка «три рода × два числа × семь падежей» —
@@ -1435,19 +1439,25 @@ class GrammarEngine {
           f['Number'] == number &&
           f['Case'] == c &&
           f['Definite'] == 'Def');
-      final indefinite =
-          lexIndef ?? adjectiveForm(lemma, gender, number, c, false);
-      final definite = lexDef ?? adjectiveForm(lemma, gender, number, c, true);
+      final indefinite = lexIndef ??
+          (allowGeneration
+              ? adjectiveForm(lemma, gender, number, c, false)
+              : null);
+      final definite = lexDef ??
+          (allowGeneration
+              ? adjectiveForm(lemma, gender, number, c, true)
+              : null);
       if (indefinite == null && definite == null) continue;
       // Совпали — показываем одну форму. Это не экономия места, а факт языка:
       // в женском роде и во множественном числе вид не различается вовсе.
-      final form = (definite != null && definite != indefinite)
-          ? '$indefinite / $definite'
-          : (indefinite ?? definite)!;
+      final form =
+          (indefinite != null && definite != null && definite != indefinite)
+              ? '$indefinite / $definite'
+              : (indefinite ?? definite)!;
       declensionRows.add(ParadigmCell(
         label: _caseRu[c] ?? c,
         form: form,
-        generated: lexIndef == null || lexDef == null,
+        generated: allowGeneration && (lexIndef == null || lexDef == null),
         current: indefinite == surface || definite == surface,
       ));
     }
@@ -1571,39 +1581,43 @@ class GrammarEngine {
 
     final perfRows = <ParadigmCell>[];
     ParadigmCell buildPerfCell(String label, String aux, String? part1,
-        [String? part2]) {
+        {String? part2, bool generated1 = false, bool generated2 = false}) {
       final form = part1 == null
           ? '—'
           : (part2 == null ? '$aux $part1' : '$aux $part1 / $part2');
-      final isGen = part1 != null &&
-          rulePart != null &&
-          (part1 == rulePart[0] ||
-              part1 == rulePart[1] ||
-              part1 == rulePart[2] ||
-              part1 == rulePart[3] ||
-              part1 == rulePart[4] ||
-              part1 == rulePart[5]);
       return ParadigmCell(
         label: label,
         form: form,
-        generated: isGen,
+        generated: generated1 || generated2,
       );
     }
 
-    perfRows
-        .add(buildPerfCell('ja (м./ж.)', _perfAux[0], partMascSg, partFemSg));
-    perfRows
-        .add(buildPerfCell('ti (м./ж.)', _perfAux[1], partMascSg, partFemSg));
-    perfRows.add(buildPerfCell('on', _perfAux[2], partMascSg));
-    perfRows.add(buildPerfCell('ona', _perfAux[2], partFemSg));
-    perfRows.add(buildPerfCell('ono', _perfAux[2], partNeutSg));
-    perfRows
-        .add(buildPerfCell('mi (м./ж.)', _perfAux[3], partMascPl, partFemPl));
-    perfRows
-        .add(buildPerfCell('vi (м./ж.)', _perfAux[4], partMascPl, partFemPl));
-    perfRows.add(buildPerfCell('oni', _perfAux[5], partMascPl));
-    perfRows.add(buildPerfCell('one', _perfAux[5], partFemPl));
-    perfRows.add(buildPerfCell('ona', _perfAux[5], partNeutPl));
+    final genMascSg = lexPartMascSg == null && partMascSg != null;
+    final genFemSg = lexPartFemSg == null && partFemSg != null;
+    final genNeutSg = lexPartNeutSg == null && partNeutSg != null;
+    final genMascPl = lexPartMascPl == null && partMascPl != null;
+    final genFemPl = lexPartFemPl == null && partFemPl != null;
+    final genNeutPl = lexPartNeutPl == null && partNeutPl != null;
+    perfRows.add(buildPerfCell('ja (м./ж.)', _perfAux[0], partMascSg,
+        part2: partFemSg, generated1: genMascSg, generated2: genFemSg));
+    perfRows.add(buildPerfCell('ti (м./ж.)', _perfAux[1], partMascSg,
+        part2: partFemSg, generated1: genMascSg, generated2: genFemSg));
+    perfRows.add(
+        buildPerfCell('on', _perfAux[2], partMascSg, generated1: genMascSg));
+    perfRows.add(
+        buildPerfCell('ona', _perfAux[2], partFemSg, generated1: genFemSg));
+    perfRows.add(
+        buildPerfCell('ono', _perfAux[2], partNeutSg, generated1: genNeutSg));
+    perfRows.add(buildPerfCell('mi (м./ж.)', _perfAux[3], partMascPl,
+        part2: partFemPl, generated1: genMascPl, generated2: genFemPl));
+    perfRows.add(buildPerfCell('vi (м./ж.)', _perfAux[4], partMascPl,
+        part2: partFemPl, generated1: genMascPl, generated2: genFemPl));
+    perfRows.add(
+        buildPerfCell('oni', _perfAux[5], partMascPl, generated1: genMascPl));
+    perfRows.add(
+        buildPerfCell('one', _perfAux[5], partFemPl, generated1: genFemPl));
+    perfRows.add(
+        buildPerfCell('ona', _perfAux[5], partNeutPl, generated1: genNeutPl));
 
     // Футур I = клитика hteti + инфинитив
     final futRows = List.generate(
@@ -1694,6 +1708,14 @@ class GrammarEngine {
   /// Частотные нерегулярные глаголы: точный презент там, где правило по
   /// инфинитиву даёт неверные формы (pisati → «pisam» вместо pišem и т.п.).
   static const Map<String, List<String>> _irregularPresent = {
+    'izabrati': [
+      'izaberem',
+      'izabereš',
+      'izabere',
+      'izaberemo',
+      'izaberete',
+      'izaberu'
+    ],
     'biti': ['sam', 'si', 'je', 'smo', 'ste', 'su'],
     'hteti': ['hoću', 'hoćeš', 'hoće', 'hoćemo', 'hoćete', 'hoće'],
     'moći': ['mogu', 'možeš', 'može', 'možemo', 'možete', 'mogu'],
@@ -1881,10 +1903,51 @@ class GrammarEngine {
     'šuštati',
   };
 
+  // Класс спряжения не определяется одним окончанием инфинитива.
+  static const _regularPresent = <String>{
+    'raditi',
+    'govoriti',
+    'nositi',
+    'voziti',
+    'moliti',
+    'učiti',
+    'misliti',
+    'živeti',
+    'želeti',
+    'sedeti',
+    'videti',
+    'leteti',
+    'kupovati',
+    'putovati',
+    'verovati',
+    'razgovarati',
+    'gledati',
+    'znati',
+    'igrati',
+    'imati',
+    'čitati',
+    'slušati',
+    'pevati',
+    'čekati',
+    'pričati',
+    'kuvati',
+    'šetati',
+    'sanjati',
+    'padati',
+    'pitati',
+    'pogledati',
+    'otvoriti',
+    'zatvoriti',
+    'krenuti',
+  };
+
   static List<String?> _presentForms(String inf) {
     inf = inf.toLowerCase();
     final irr = _irregularPresent[inf];
     if (irr != null) return irr;
+    if (!_regularPresent.contains(inf) && !_iConjugationAti.contains(inf)) {
+      return List.filled(6, null);
+    }
     String stem;
     List<String> end;
     if (inf.endsWith('ovati')) {
@@ -1962,6 +2025,42 @@ class GrammarEngine {
   /// Супплетивное/нерегулярное множественное число частотных существительных
   /// (правилом не выводится: čovek → ljudi, dete → deca, brat → braća).
   static const Map<String, Map<String, String>> _irregularPlural = {
+    'tele': {
+      'Nom': 'telad',
+      'Gen': 'teladi',
+      'Dat': 'teladi',
+      'Acc': 'telad',
+      'Voc': 'telad',
+      'Ins': 'teladi',
+      'Loc': 'teladi'
+    },
+    'jagnje': {
+      'Nom': 'jagnjad',
+      'Gen': 'jagnjadi',
+      'Dat': 'jagnjadi',
+      'Acc': 'jagnjad',
+      'Voc': 'jagnjad',
+      'Ins': 'jagnjadi',
+      'Loc': 'jagnjadi'
+    },
+    'pile': {
+      'Nom': 'pilad',
+      'Gen': 'piladi',
+      'Dat': 'piladi',
+      'Acc': 'pilad',
+      'Voc': 'pilad',
+      'Ins': 'piladi',
+      'Loc': 'piladi'
+    },
+    'dugme': {
+      'Nom': 'dugmad',
+      'Gen': 'dugmadi',
+      'Dat': 'dugmadi',
+      'Acc': 'dugmad',
+      'Voc': 'dugmad',
+      'Ins': 'dugmadi',
+      'Loc': 'dugmadi'
+    },
     'čovek': {
       'Nom': 'ljudi',
       'Gen': 'ljudi',

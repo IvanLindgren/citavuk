@@ -38,6 +38,13 @@
 | Flutter | `screens/roadmap_screen.dart`, `roadmap_section_screen.dart`, `roadmap_comments.dart`, `models/roadmap.dart`, `services/roadmap_service.dart` |
 | Наполнение | `tools/build_roadmap_words.py`, `tools/build_roadmap_examples.py`, `tools/build_roadmap_grammar.py`, `tools/build_trainer_catalog.py`, `tools/data/roadmap_*.tsv`, `tools/data/trainer_practice.json` |
 
+Во Flutter уровни A1–C2 образуют прямой адаптивный маршрут: горизонтальный на
+широком окне и вертикальный на телефоне. Линия проходит через стоянки; прежняя
+декоративная спираль удалена. Выбор уровня, текущий уровень и цель остаются
+разными состояниями и не меняют правила подсчёта прогресса. Вводные блоки на
+десктопе стоят в двух колонках, а четыре направления выбранного уровня — в
+адаптивной сетке с русскими названиями, отдельными иконками и цветовыми ролями.
+
 ### Каркас в коде, наполнение в базе
 
 Шесть уровней и четыре раздела не меняются от правки к правке, поэтому лежат в

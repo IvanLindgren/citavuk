@@ -56,42 +56,46 @@ type DifficultWord struct {
 }
 
 type MicroFeedItem struct {
-	ID                uuid.UUID       `json:"id"`
-	Status            string          `json:"status"`
-	Kind              string          `json:"kind"`
-	Category          string          `json:"category"`
-	TitleCyrillic     string          `json:"titleCyrillic"`
-	TitleLatin        string          `json:"titleLatin"`
-	TextCyrillic      string          `json:"textCyrillic"`
-	TextLatin         string          `json:"textLatin"`
-	OriginalLanguage  string          `json:"originalLanguage"`
-	OriginalScript    string          `json:"originalScript"`
-	CEFR              string          `json:"cefr"`
-	Tags              []string        `json:"tags"`
-	DifficultWords    []DifficultWord `json:"difficultWords"`
-	ImageURL          string          `json:"imageUrl"`
-	AudioURL          string          `json:"audioUrl"`
-	SourceSlug        string          `json:"sourceSlug"`
-	SourceTitle       string          `json:"sourceTitle"`
-	SourceURL         string          `json:"sourceUrl"`
-	SourcePublishedAt *time.Time      `json:"sourcePublishedAt"`
-	LicenseCode       string          `json:"licenseCode"`
-	AttributionText   string          `json:"attributionText"`
-	SourceBookID      string          `json:"bookId"`
-	ChapterID         string          `json:"chapterId"`
-	StartPositionChar int             `json:"startPositionChar"`
-	BookTargetURL     string          `json:"bookTargetUrl"`
-	ViewsCount        int64           `json:"viewsCount"`
-	LikesCount        int64           `json:"likesCount"`
-	DislikesCount     int64           `json:"dislikesCount"`
-	ReadMoreCount     int64           `json:"readMoreCount"`
-	CommentsCount     int64           `json:"commentsCount"`
-	Reaction          int             `json:"reaction"`
-	HasEmbedding      bool            `json:"hasEmbedding"`
-	PublishedAt       *time.Time      `json:"publishedAt"`
-	CreatedAt         time.Time       `json:"createdAt"`
-	UpdatedAt         time.Time       `json:"updatedAt"`
-	SourceImportID    *uuid.UUID      `json:"sourceImportId,omitempty"`
+	VideoID                string          `json:"videoId,omitempty"`
+	VideoDuration          int             `json:"videoDuration,omitempty"`
+	VideoLanguageConfirmed bool            `json:"videoLanguageConfirmed,omitempty"`
+	VideoCheckedAt         *time.Time      `json:"videoCheckedAt,omitempty"`
+	ID                     uuid.UUID       `json:"id"`
+	Status                 string          `json:"status"`
+	Kind                   string          `json:"kind"`
+	Category               string          `json:"category"`
+	TitleCyrillic          string          `json:"titleCyrillic"`
+	TitleLatin             string          `json:"titleLatin"`
+	TextCyrillic           string          `json:"textCyrillic"`
+	TextLatin              string          `json:"textLatin"`
+	OriginalLanguage       string          `json:"originalLanguage"`
+	OriginalScript         string          `json:"originalScript"`
+	CEFR                   string          `json:"cefr"`
+	Tags                   []string        `json:"tags"`
+	DifficultWords         []DifficultWord `json:"difficultWords"`
+	ImageURL               string          `json:"imageUrl"`
+	AudioURL               string          `json:"audioUrl"`
+	SourceSlug             string          `json:"sourceSlug"`
+	SourceTitle            string          `json:"sourceTitle"`
+	SourceURL              string          `json:"sourceUrl"`
+	SourcePublishedAt      *time.Time      `json:"sourcePublishedAt"`
+	LicenseCode            string          `json:"licenseCode"`
+	AttributionText        string          `json:"attributionText"`
+	SourceBookID           string          `json:"bookId"`
+	ChapterID              string          `json:"chapterId"`
+	StartPositionChar      int             `json:"startPositionChar"`
+	BookTargetURL          string          `json:"bookTargetUrl"`
+	ViewsCount             int64           `json:"viewsCount"`
+	LikesCount             int64           `json:"likesCount"`
+	DislikesCount          int64           `json:"dislikesCount"`
+	ReadMoreCount          int64           `json:"readMoreCount"`
+	CommentsCount          int64           `json:"commentsCount"`
+	Reaction               int             `json:"reaction"`
+	HasEmbedding           bool            `json:"hasEmbedding"`
+	PublishedAt            *time.Time      `json:"publishedAt"`
+	CreatedAt              time.Time       `json:"createdAt"`
+	UpdatedAt              time.Time       `json:"updatedAt"`
+	SourceImportID         *uuid.UUID      `json:"sourceImportId,omitempty"`
 }
 
 func (s *Store) ListMicroFeedSources(ctx context.Context) ([]MicroFeedSource, error) {
@@ -406,7 +410,8 @@ const microFeedItemColumns = `
 	i.chapter_id, i.start_position_char, i.book_target_url, i.views_count,
 	i.likes_count, i.dislikes_count, i.read_more_count, i.comments_count,
 	COALESCE(r.reaction,0),
-	(i.embedding IS NOT NULL), i.published_at, i.created_at, i.updated_at`
+	(i.embedding IS NOT NULL), i.published_at, i.created_at, i.updated_at,
+ i.video_id,i.video_duration,i.video_language_confirmed,i.video_checked_at`
 
 func (s *Store) GetMicroFeedItem(ctx context.Context, id uuid.UUID, actorKey string) (*MicroFeedItem, error) {
 	item, err := scanMicroFeedItem(s.Pool.QueryRow(ctx, `
@@ -428,7 +433,7 @@ func (s *Store) ListAdminMicroFeedItems(ctx context.Context, status string, limi
 		SELECT `+microFeedItemColumns+`
 		FROM micro_feed_content_items i
 		LEFT JOIN micro_feed_reactions r ON false
-		WHERE ($1='' OR i.status=$1)
+		WHERE i.kind <> 'video' AND ($1='' OR i.status=$1)
 		ORDER BY i.created_at DESC LIMIT $2`, status, limit)
 	if err != nil {
 		return nil, err
@@ -452,6 +457,7 @@ func scanMicroFeedItem(row microRow) (*MicroFeedItem, error) {
 		&item.LikesCount, &item.DislikesCount, &item.ReadMoreCount,
 		&item.CommentsCount, &item.Reaction, &item.HasEmbedding, &item.PublishedAt,
 		&item.CreatedAt, &item.UpdatedAt,
+		&item.VideoID, &item.VideoDuration, &item.VideoLanguageConfirmed, &item.VideoCheckedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -698,6 +704,7 @@ func (s *Store) ListLikedMicroFeed(
 	ctx context.Context,
 	actorKey string,
 	limit int,
+	media ...string,
 ) ([]MicroFeedItem, error) {
 	if limit <= 0 || limit > 100 {
 		limit = 50
@@ -706,9 +713,9 @@ func (s *Store) ListLikedMicroFeed(
 		SELECT `+microFeedItemColumns+`
 		FROM micro_feed_reactions r
 		JOIN micro_feed_content_items i ON i.id=r.item_id
-		WHERE r.actor_key=$1 AND r.reaction=1 AND i.status='published'
+		WHERE r.actor_key=$1 AND r.reaction=1 AND i.status='published' AND (i.kind='video')=$3
 		ORDER BY r.updated_at DESC
-		LIMIT $2`, actorKey, limit)
+		LIMIT $2`, actorKey, limit, len(media) > 0 && media[0] == "video")
 	if err != nil {
 		return nil, err
 	}
@@ -717,6 +724,7 @@ func (s *Store) ListLikedMicroFeed(
 }
 
 type microProfile struct {
+	Video     bool
 	Embedding string
 	Tags      []string
 	// Avoided — темы, которые читатель раз за разом пролистывает не читая.
@@ -776,6 +784,7 @@ func (s *Store) ListMicroFeed(
 	actorKey string,
 	exclude []uuid.UUID,
 	limit int,
+	media ...string,
 ) ([]MicroFeedItem, string, error) {
 	if limit <= 0 || limit > 20 {
 		limit = 8
@@ -786,6 +795,10 @@ func (s *Store) ListMicroFeed(
 		exclude = []uuid.UUID{}
 	}
 	profile := s.microFeedProfile(ctx, actorKey)
+	profile.Video = len(media) > 0 && media[0] == "video"
+	if profile.Video {
+		return s.listRecommendedVideos(ctx, actorKey, exclude, limit, profile)
+	}
 	seen := make(map[uuid.UUID]bool, len(exclude)+limit)
 	for _, id := range exclude {
 		seen[id] = true
@@ -822,7 +835,13 @@ func (s *Store) ListMicroFeed(
 	if profile.Warm {
 		strategy = "personalized"
 		semanticWant := int(math.Ceil(float64(limit) * .7))
-		if profile.Embedding != "" {
+		if profile.Video {
+			items, err := s.microFeedCandidates(ctx, actorKey, exclude, "tags", profile, semanticWant*3)
+			if err != nil {
+				return nil, strategy, err
+			}
+			add(items, semanticWant)
+		} else if profile.Embedding != "" {
 			items, err := s.microFeedCandidates(ctx, actorKey, exclude, "semantic", profile, semanticWant*3)
 			if err != nil {
 				return nil, strategy, err
@@ -952,6 +971,11 @@ func (s *Store) microFeedCandidates(
 	// Ограничение применяется ко ВСЕМ стратегиям: популярность, сходство
 	// векторов и исследование новой темы не делают B2 понятным читателю A2.
 	extra := " AND " + levelPosition + " <= " + maxLevel
+	if profile.Video {
+		extra += " AND i.kind='video' AND i.video_language_confirmed AND COALESCE(r.reaction,0)<>-1"
+	} else {
+		extra += " AND i.kind<>'video'"
+	}
 	// Ровно свой уровень идёт первым, затем более лёгкий и лишь после него —
 	// одна разрешённая ступень выше. Поэтому имеющиеся A2 не тонут в тысяче B1.
 	levelOrder := "CASE WHEN " + levelPosition + " = " + readerLevel +
@@ -1013,7 +1037,7 @@ func (s *Store) microFeedCandidates(
 			SELECT 1 FROM micro_feed_interactions recent
 			WHERE recent.actor_key=$1 AND recent.item_id=i.id
 			  AND recent.created_at > now()-interval '14 days'
-			  AND recent.event IN ('view','quick_skip')
+			  AND recent.event IN ('view','quick_skip','complete')
 		  )` + extra + `
 		ORDER BY ` + order + ` LIMIT $3`
 	rows, err := s.Pool.Query(ctx, query, args...)
@@ -1040,7 +1064,7 @@ func (s *Store) RecordMicroFeedInteraction(
 		var exists bool
 		if err := tx.QueryRow(ctx, `
 			SELECT true FROM micro_feed_content_items
-			WHERE id=$1 AND status='published'`, itemID).Scan(&exists); err != nil {
+			WHERE id=$1 AND status='published' FOR UPDATE`, itemID).Scan(&exists); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return ErrMicroFeedNotFound
 			}

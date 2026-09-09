@@ -1,7 +1,7 @@
 /// Звук дуэли с переводчиком.
 ///
-/// Файлы синтезированы (tools/build_duel_sounds.py) и лежат в
-/// assets/sounds/duel. Отличие от звуков курса (course/services/course_sounds)
+/// Файлы взяты из CC0-наборов Kenney и лежат в assets/sounds/duel. Отличие
+/// от звуков курса (course/services/course_sounds)
 /// — пул проигрывателей: клик клавиши срабатывает по нескольку раз в секунду, и
 /// одиночный player обрывал бы сам себя, а удар попадал бы в тишину.
 library;
@@ -11,15 +11,15 @@ import 'package:flutter/foundation.dart';
 
 /// Звуки боя. Значение — путь относительно `assets/`, как его ждёт AssetSource.
 enum DuelSound {
-  hit('sounds/duel/hit.wav', 0.8),
-  crit('sounds/duel/crit.wav', 0.9),
-  guard('sounds/duel/guard.wav', 0.6),
-  charge('sounds/duel/charge.wav', 0.45),
-  alarm('sounds/duel/alarm.wav', 0.5),
-  start('sounds/duel/start.wav', 0.75),
-  combo('sounds/duel/combo.wav', 0.5),
-  victory('sounds/duel/victory.wav', 0.7),
-  defeat('sounds/duel/defeat.wav', 0.6);
+  hit('sounds/duel/hit.ogg', 0.55),
+  crit('sounds/duel/crit.ogg', 0.65),
+  guard('sounds/duel/guard.ogg', 0.45),
+  charge('sounds/duel/charge.ogg', 0.35),
+  alarm('sounds/duel/alarm.ogg', 0.4),
+  start('sounds/duel/start.ogg', 0.5),
+  combo('sounds/duel/combo.ogg', 0.45),
+  victory('sounds/duel/victory.ogg', 0.6),
+  defeat('sounds/duel/defeat.ogg', 0.45);
 
   const DuelSound(this.asset, this.volume);
 
@@ -85,7 +85,7 @@ class DuelSounds {
   /// Клик клавиши. [step] — ступень серии, 0..7.
   Future<void> playKey(int step) {
     final index = step.clamp(0, duelKeySteps - 1);
-    return _play('sounds/duel/key_$index.wav', 0.5);
+    return _play('sounds/duel/key_$index.ogg', 0.32);
   }
 
   Future<void> dispose() async {

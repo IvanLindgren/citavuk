@@ -24,6 +24,8 @@ class AnnouncementsController extends ChangeNotifier {
   List<ServerNotification> _notifications = const [];
 
   bool get busy => _busy;
+  String? _error;
+  String? get lastError => _error;
   List<ServerAnnouncement> get announcements => _announcements;
   List<ServerNotification> get notifications => _notifications;
   int get unreadCount => _notifications.where((item) => !item.read).length;
@@ -37,17 +39,17 @@ class AnnouncementsController extends ChangeNotifier {
             item.rewardKey: item.rewardAssetUrl,
       };
 
-  ServerAnnouncement? get banner {
-    for (final item in _announcements) {
-      if (item.bannerEnabled && !item.dismissed) return item;
-    }
-    return null;
-  }
+  /// Баннеры к показу (см. [pickBanners]): критическое сервисное отдельно
+  /// плюс максимум одно обычное.
+  List<ServerAnnouncement> get banners => pickBanners(_announcements);
+
+  ServerAnnouncement? get banner => banners.firstOrNull;
 
   Future<void> refresh() async {
     await _loadCache();
     if (_busy) return;
     _busy = true;
+    _error = null;
     notifyListeners();
     try {
       final response = await api.get('/v1/announcements');
@@ -67,7 +69,11 @@ class AnnouncementsController extends ChangeNotifier {
       await _saveCache();
       notifyListeners();
     } on ApiException catch (error) {
-      if (!error.isOffline) rethrow;
+      // Офлайн — молча живём на кеше; остальные ошибки показываем экраном
+      // уведомлений, а не роняем приложение.
+      if (!error.isOffline) _error = error.message;
+    } catch (_) {
+      _error = 'Не удалось загрузить уведомления.';
     } finally {
       _busy = false;
       notifyListeners();

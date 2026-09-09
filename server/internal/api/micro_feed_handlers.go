@@ -44,7 +44,7 @@ func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-	items, strategy, err := s.store.ListMicroFeed(r.Context(), actorKey, exclude, limit)
+	items, strategy, err := s.store.ListMicroFeed(r.Context(), actorKey, exclude, limit,r.URL.Query().Get("mode"))
 	if err != nil {
 		slog.Error("handleMicroFeed", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось собрать микро-ленту.")
@@ -112,7 +112,7 @@ func (s *Server) handleMicroFeedLiked(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-	items, err := s.store.ListLikedMicroFeed(r.Context(), actorKey, limit)
+	items, err := s.store.ListLikedMicroFeed(r.Context(), actorKey, limit,r.URL.Query().Get("mode"))
 	if err != nil {
 		slog.Error("handleMicroFeedLiked", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось загрузить сохранённое.")

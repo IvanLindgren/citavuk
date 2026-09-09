@@ -1,4 +1,4 @@
-import { request } from './client';
+import { getToken, request } from './client';
 
 export type MicroFeedStatus = 'draft' | 'published' | 'archived';
 export type MicroFeedScript = 'cyrillic' | 'latin';
@@ -12,9 +12,12 @@ export interface DifficultWord {
 }
 
 export interface MicroFeedItem {
+  videoId?:string;
+  videoDuration?:number;
+  videoLanguageConfirmed?:boolean;
   id: string;
   status: MicroFeedStatus;
-  kind: 'news' | 'fact' | 'culture' | 'science' | 'fiction' | 'society' | 'book_excerpt';
+  kind: 'news' | 'fact' | 'culture' | 'science' | 'fiction' | 'society' | 'book_excerpt' | 'video';
   category:
     | 'history' | 'culture' | 'science' | 'fiction' | 'society' | 'news'
     | 'travel' | 'food' | 'sport' | 'music' | 'language';
@@ -109,8 +112,9 @@ function rememberVisitorToken(token: string | undefined) {
   if (token) localStorage.setItem(VISITOR_TOKEN_KEY, token);
 }
 
-export async function getMicroFeed(exclude: string[], signal?: AbortSignal) {
+export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode='text') {
   const query = new URLSearchParams({ limit: '8' });
+  query.set('mode',mode);
   // Первый заход идёт без токена — сервер заведёт его и вернёт вместе с лентой.
   const token = microFeedVisitorToken();
   if (token) query.set('visitorToken', token);
@@ -155,8 +159,8 @@ export function saveMicroFeedPreferences(
 }
 
 /** Карточки, отмеченные лайком: лайк работает ещё и закладкой. */
-export async function getLikedMicroFeed(signal?: AbortSignal) {
-  const query = new URLSearchParams({ visitorToken: microFeedVisitorToken() });
+export async function getLikedMicroFeed(signal?: AbortSignal, mode = 'text') {
+  const query = new URLSearchParams({ visitorToken: microFeedVisitorToken(), mode });
   const response = await request<{ items: MicroFeedItem[] }>(
     `/v1/micro-feed/liked?${query}`,
     { signal },
@@ -187,7 +191,9 @@ export function recordMicroFeedInteraction(
   // есть к первому действию уже есть; отсутствие означает, что лента вообще не
   // загрузилась, и слать действие незачем.
   const token = microFeedVisitorToken();
-  if (!token) return Promise.resolve();
+  // Cookie-сессии сервер узнаёт без гостевого токена. Его отсутствие у
+  // вошедшего раньше превращало все реакции и досмотры в молчаливый no-op.
+  if (!token && !getToken()) return Promise.resolve();
   return request<void>(`/v1/micro-feed/${encodeURIComponent(itemId)}/interactions`, {
     method: 'POST',
     body: { visitorToken: token, event, dwellMs: Math.max(0, Math.round(dwellMs)) },

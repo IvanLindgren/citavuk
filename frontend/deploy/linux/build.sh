@@ -34,7 +34,14 @@ echo "==> Flutter $VERSION"
 # Ключ карты берётся из окружения или из корневого .env — в репозитории его нет.
 # Без ключа сборка проходит, но Путешествие показывает список мест вместо карты.
 if [[ -z "${MAPTILER_KEY:-}" && -f "$FRONTEND/../.env" ]]; then
-    MAPTILER_KEY="$(sed -n 's/^MAPTILER_KEY=//p' "$FRONTEND/../.env" | tr -d '"'"'"' \r')"
+    MAPTILER_KEY="$(sed -n 's/^MAPTILER_KEY=//p' "$FRONTEND/../.env" | tr -d '\r')"
+fi
+if [[ -z "${CITAVUK_UPDATE_PUBLIC_KEY:-}" && -f "$FRONTEND/../.env" ]]; then
+    CITAVUK_UPDATE_PUBLIC_KEY="$(sed -n 's/^CITAVUK_UPDATE_PUBLIC_KEY=//p' "$FRONTEND/../.env" | tr -d '\r')"
+fi
+if [[ -z "${CITAVUK_UPDATE_PUBLIC_KEY:-}" ]]; then
+    echo "нужен CITAVUK_UPDATE_PUBLIC_KEY для безопасного desktop-обновления" >&2
+    exit 1
 fi
 if [[ -z "${MAPTILER_KEY:-}" ]]; then
     echo "==> без MAPTILER_KEY: карта Путешествия будет списком мест" >&2
@@ -45,6 +52,7 @@ DOCKER_BUILDKIT=1 docker build \
     --file "$HERE/Dockerfile" \
     --build-arg "FLUTTER_VERSION=$VERSION" \
     --build-arg "MAPTILER_KEY=${MAPTILER_KEY:-}" \
+    --build-arg "CITAVUK_UPDATE_PUBLIC_KEY=$CITAVUK_UPDATE_PUBLIC_KEY" \
     --target artifact \
     --output "type=local,dest=$OUT" \
     "$FRONTEND"

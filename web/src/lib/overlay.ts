@@ -67,10 +67,15 @@ export function focusableInside(container: HTMLElement): HTMLElement[] {
  * Без этого Tab уводил из открытой шторки в ссылки ПОД ней: с клавиатуры
  * человек оказывался в контенте, которого не видит, а скринридер не знал, что
  * поверх страницы вообще что-то открыто.
+ *
+ * `autoFocus: false` — не дёргать фокус при открытии мышью: прыжок невидим,
+ * а возврат при смене содержимого мешал бы читать. С клавиатуры (фокус уже на
+ * слове) автофокус нужен, иначе первый Tab уйдёт из слоя наружу.
  */
 export function useFocusTrap(
   active: boolean,
   containerRef: RefObject<HTMLElement | null>,
+  options?: { autoFocus?: boolean },
 ) {
   const returnToRef = useRef<HTMLElement | null>(null);
 
@@ -85,7 +90,9 @@ export function useFocusTrap(
     returnToRef.current = document.activeElement as HTMLElement | null;
 
     const items = focusableInside(container);
-    (items[0] ?? container).focus();
+    if (options?.autoFocus !== false) {
+      (items[0] ?? container).focus();
+    }
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Tab') return;

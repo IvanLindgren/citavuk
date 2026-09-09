@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.19.0';
+const VERSION = '1.21.0';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
@@ -39,7 +39,8 @@ const PLATFORMS: Platform[] = [
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
-    size: '107 МБ',
+    version: VERSION,
+    size: '144 МБ',
     note:
       'Установка из файла: разрешите её для браузера в настройках Android. ' +
       'Если у вас стояла старая версия приложения, и Android не даёт её ' +
@@ -53,12 +54,12 @@ const PLATFORMS: Platform[] = [
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '43 МБ',
+    size: '77 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '48 МБ',
+      size: '83 МБ',
     },
   },
   {
@@ -68,25 +69,17 @@ const PLATFORMS: Platform[] = [
     description:
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
-    // Сборка под Linux идёт в контейнере, а Docker в день выпуска 1.19.0 не
-    // работал. Номер здесь свой — тот, что лежит в архиве на самом деле.
-    version: '1.18.1',
-    size: '45 МБ',
-    note: 'Распакуйте архив и запустите ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1 — на обычном рабочем столе они уже стоят.',
+    version: VERSION,
+    note: 'Распакуй архив и запусти ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1; команды установки библиотек есть в README внутри архива. Видео открывается в отдельном окне приложения.',
   },
   {
     id: 'macos',
     title: 'macOS',
     subtitle: 'macOS 11 и новее · Apple Silicon и Intel',
     description:
-      'Beta-версия читалки для Mac с синхронизацией, курсом, диалогами и аудированием.',
-    href: '/files/citavuk-macos.zip',
-    // Сборка для Mac идёт только на серверах GitHub, и в день выпуска 1.18.1
-    // они лежали. Номер здесь свой, чтобы страница не обещала того, чего в
-    // файле нет.
-    version: '1.18.0',
-    size: '57 МБ',
-    note: 'Beta пока не подписана Apple Developer ID. При первом запуске нажмите приложение правой кнопкой, выберите «Открыть» и подтвердите запуск.',
+      'Читалка для Mac с синхронизацией, курсом, диалогами и аудированием.',
+    // macOS-релиз временно не публикуется: сборка требует macOS runner.
+    note: 'Сборка не подписана Apple Developer ID. При первом запуске нажмите приложение правой кнопкой, выберите «Открыть» и подтвердите запуск.',
   },
   {
     id: 'ios',
@@ -140,7 +133,7 @@ export function Downloads() {
         <StoresSection />
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          {PLATFORMS.map((platform, index) => (
+          {PLATFORMS.filter((platform) => platform.href).map((platform, index) => (
             <Reveal key={platform.id} delay={index * 0.08}>
               <PlatformCard platform={platform} />
             </Reveal>

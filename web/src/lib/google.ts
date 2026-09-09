@@ -12,8 +12,21 @@
  */
 
 /** client_id веб-приложения из Google Cloud Console. */
-export const GOOGLE_CLIENT_ID =
-  import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() ?? '';
+export const GOOGLE_CLIENT_ID = cleanClientId(
+  import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() ?? '',
+);
+
+/** Не даёт кавычкам из shell/.env превратить client_id в `%22...%22`. */
+function cleanClientId(value: string): string {
+  if (value.length >= 2) {
+    const first = value[0];
+    const last = value[value.length - 1];
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      return value.slice(1, -1).trim();
+    }
+  }
+  return value;
+}
 
 const SCRIPT_URL = 'https://accounts.google.com/gsi/client';
 

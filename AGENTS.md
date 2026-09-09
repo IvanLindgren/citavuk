@@ -49,7 +49,7 @@
 - **Платформа разработки сейчас — Windows.** Android-тулчейн установлен:
   `flutter build apk --release` собирается локально и подписывается ключом из
   `frontend/android/key.properties` (в репозиторий не входит).
-- **Flutter SDK:** `C:\flutter_windows_3.44.0-stable\flutter` (stable 3.44.x).
+- **Flutter SDK:** `C:\flutter_windows_3.44.0-stable\flutter` (обновлён до stable 3.47.2 / Dart 3.13.2; имя каталога прежнее).
   Если нет в PATH — вызывай по полному пути:
   `C:\flutter_windows_3.44.0-stable\flutter\bin\flutter.bat`,
   `C:\flutter_windows_3.44.0-stable\flutter\bin\dart.bat`.
@@ -122,9 +122,8 @@ C:\Citavuk\
 
 ## Что ещё не сделано
 
-- Реальные уведомления интервального повторения на Android: плагин выключен
-  из-за конфликта с Windows-сборкой (см. [flutter.md](docs/agents/flutter.md)),
-  UI с колокольчиком и временем готов.
+- Уведомления интервального повторения работают на Android; Windows-часть
+  пакета заменена локальным адаптером (см. [flutter.md](docs/agents/flutter.md)).
 - Грамматика-карточки не подключены к SRS — сейчас это колода без расписания.
 - Итоговая контрольная курса: `blueprint` пуст, карточки на карте нет.
 - `image_description`: режимы `choose` и `free` работают, `build`/`fill` требуют

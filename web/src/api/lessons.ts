@@ -152,9 +152,11 @@ export async function uploadLessonImage(file: File): Promise<string> {
     const token = internal ? getToken() : null;
     const response = await fetch(internal ? API_BASE + policy.url : policy.url, {
       method: 'PUT',
+      credentials: token === 'cookie' ? 'include' : 'omit',
       headers: {
         ...policy.headers,
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(internal ? { 'X-Citavuk-Client': 'web' } : {}),
+        ...(token && token !== 'cookie' ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: file,
     });

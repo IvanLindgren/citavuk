@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtk-3-dev liblzma-dev libstdc++-11-dev \
         libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
         libwebkit2gtk-4.1-dev libsoup-3.0-dev libsecret-1-dev \
+        libwpewebkit-1.0-dev libwpebackend-fdo-1.0-dev libwpe-1.0-dev libepoxy-dev libwayland-dev \
+        gstreamer1.0-libav gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
     && rm -rf /var/lib/apt/lists/*
 
 # Flutter отказывается работать от root.
@@ -44,8 +46,10 @@ COPY --chown=builder:builder . .
 # репозиторий не входит: без него приложение собирается и работает, только
 # вместо карты показывает список мест.
 ARG MAPTILER_KEY=""
+ARG CITAVUK_UPDATE_PUBLIC_KEY=""
 RUN flutter pub get \
-    && flutter build linux --release --dart-define=MAPTILER_KEY="$MAPTILER_KEY"
+    && flutter build linux --release --dart-define=MAPTILER_KEY="$MAPTILER_KEY" \
+       --dart-define=CITAVUK_UPDATE_PUBLIC_KEY="$CITAVUK_UPDATE_PUBLIC_KEY"
 
 RUN set -eu; \
     version="$(sed -n 's/^version: *\([0-9.]*\).*/\1/p' pubspec.yaml)"; \

@@ -342,7 +342,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: scheme.tertiary.withValues(alpha: 0.5)),
         ),
-        child: Text('БЕТА',
+        child: Text('АУДИО',
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,

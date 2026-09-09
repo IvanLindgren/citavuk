@@ -20,6 +20,40 @@ KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-кл�
 # Тильду в значении переменной оболочка не раскрывает — иначе ssh молча
 # ищет ключ в каталоге с именем «~».
 KEY="${KEY/#\~/$HOME}"
+SIGNING_KEY="${CITAVUK_UPDATE_SIGNING_KEY:?укажите CITAVUK_UPDATE_SIGNING_KEY — Ed25519 private key обновлений}"
+SIGNING_KEY="${SIGNING_KEY/#\~/$HOME}"
+public_key() {
+    if command -v openssl >/dev/null 2>&1; then
+        openssl pkey -in "$SIGNING_KEY" -pubout -outform DER | tail -c 32 | base64 -w0
+    elif command -v node >/dev/null 2>&1; then
+        node - "$SIGNING_KEY" <<'NODE'
+const fs = require('fs'), crypto = require('crypto');
+const key = crypto.createPrivateKey(fs.readFileSync(process.argv[2]));
+const der = crypto.createPublicKey(key).export({ format: 'der', type: 'spki' });
+console.log(der.subarray(der.length - 32).toString('base64'));
+NODE
+    else
+        echo 'нужен openssl или node для подписи обновления' >&2
+        exit 1
+    fi
+}
+sign_manifest() {
+    if command -v openssl >/dev/null 2>&1; then
+        openssl pkeyutl -sign -rawin -inkey "$SIGNING_KEY" -in "$1" -out "$2"
+    else
+        node - "$SIGNING_KEY" "$1" "$2" <<'NODE'
+const fs = require('fs'), crypto = require('crypto');
+const key = crypto.createPrivateKey(fs.readFileSync(process.argv[2]));
+fs.writeFileSync(process.argv[4], crypto.sign(null, fs.readFileSync(process.argv[3]), key));
+NODE
+    fi
+}
+PUBLIC_KEY=$(public_key)
+: "${CITAVUK_UPDATE_PUBLIC_KEY:?укажите public key, с которым собирали desktop-приложение}"
+if [[ "$CITAVUK_UPDATE_PUBLIC_KEY" != "$PUBLIC_KEY" ]]; then
+    echo "CITAVUK_UPDATE_PUBLIC_KEY не соответствует private key обновлений" >&2
+    exit 1
+fi
 REMOTE_DIR=/var/www/citavuk-files
 FRONTEND="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../frontend" && pwd)"
 
@@ -35,6 +69,12 @@ put_file() {
     for try in $(seq 1 12); do
         got=$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")
         [[ "$got" == "$size" ]] && return 0
+        # Старый .new мог быть больше текущего артефакта после прерванной
+        # публикации; reput его не усечёт, поэтому сбрасываем такой файл.
+        if (( got > size )); then
+            ssh_run "rm -f \"$dst\""
+            got=0
+        fi
         # Пустого файла reput не понимает, начатый — продолжает с места обрыва.
         if [[ "$got" == 0 ]]; then cmd=put; else cmd=reput; fi
         [[ $try -gt 1 ]] && echo "    попытка $try: долито $got из $size"
@@ -54,8 +94,13 @@ FILES=(
     "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe|citavuk-setup.exe|dart run inno_bundle:build --release"
     "$FRONTEND/build/citavuk-windows.zip|citavuk-windows.zip|упакуй build/windows/x64/runner/Release в zip"
     "$FRONTEND/build/citavuk-linux-x64.tar.gz|citavuk-linux-x64.tar.gz|./deploy/linux/build.sh"
-    "$FRONTEND/build/citavuk-macos.zip|citavuk-macos.zip|скачай asset из GitHub prerelease macos-latest"
 )
+MACOS_PATH="$FRONTEND/build/citavuk-macos.zip"
+if [[ -f "$MACOS_PATH" ]]; then
+    FILES+=("$MACOS_PATH|citavuk-macos.zip|скачай asset из GitHub prerelease macos-latest")
+else
+    echo "macOS zip не найден — публикую частичный релиз без macOS"
+fi
 
 for entry in "${FILES[@]}"; do
     IFS='|' read -r path _ hint <<<"$entry"
@@ -111,7 +156,8 @@ if [[ -f "$NOTES_FILE" ]]; then
 fi
 WIN_SIZE=$(stat -c%s "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe")
 LINUX_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-linux-x64.tar.gz")
-MACOS_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-macos.zip")
+WIN_SHA=$(sha256sum "$FRONTEND/build/windows/x64/installer/Release/Citavuk-x86_64-$VERSION-Installer.exe" | awk '{print $1}')
+LINUX_SHA=$(sha256sum "$FRONTEND/build/citavuk-linux-x64.tar.gz" | awk '{print $1}')
 
 # Версия каждой сборки берётся у неё самой, а не у pubspec. Собираются они
 # вразнобой: Windows — здесь, Linux — в контейнере, macOS — на серверах GitHub
@@ -120,12 +166,28 @@ MACOS_SIZE=$(stat -c%s "$FRONTEND/build/citavuk-macos.zip")
 LINUX_VERSION=$(tar -xzOf "$FRONTEND/build/citavuk-linux-x64.tar.gz" \
     --wildcards '*/data/flutter_assets/version.json' 2>/dev/null |
     sed -n 's/.*"version":"\([^"]*\)".*/\1/p' | head -1)
-MACOS_VERSION=$(unzip -p "$FRONTEND/build/citavuk-macos.zip" \
-    'Citavuk.app/Contents/Info.plist' 2>/dev/null |
-    sed -n '/CFBundleShortVersionString/{n;s/.*<string>\(.*\)<\/string>.*/\1/p;}' | head -1)
 : "${LINUX_VERSION:?не удалось прочитать версию из citavuk-linux-x64.tar.gz}"
-: "${MACOS_VERSION:?не удалось прочитать версию из citavuk-macos.zip}"
-echo "==> Версии сборок: windows $VERSION, linux $LINUX_VERSION, macos $MACOS_VERSION"
+MACOS_BLOCK=""
+if [[ -f "$MACOS_PATH" ]]; then
+    MACOS_SIZE=$(stat -c%s "$MACOS_PATH")
+    MACOS_SHA=$(sha256sum "$MACOS_PATH" | awk '{print $1}')
+    MACOS_VERSION=$(unzip -p "$MACOS_PATH" \
+        'Citavuk.app/Contents/Info.plist' 2>/dev/null |
+        sed -n '/CFBundleShortVersionString/{n;s/.*<string>\(.*\)<\/string>.*/\1/p;}' | head -1)
+    : "${MACOS_VERSION:?не удалось прочитать версию из citavuk-macos.zip}"
+    MACOS_BLOCK=$(cat <<JSON
+  ,"macos": {
+    "version": "$MACOS_VERSION",
+    "url": "https://citavuk.ru/files/citavuk-macos.zip",
+    "size": $MACOS_SIZE,
+    "sha256": "$MACOS_SHA"
+  }
+JSON
+)
+    echo "==> Версии сборок: windows $VERSION, linux $LINUX_VERSION, macos $MACOS_VERSION"
+else
+    echo "==> Версии сборок: windows $VERSION, linux $LINUX_VERSION"
+fi
 
 echo "==> Манифест обновлений latest.json"
 cat >/tmp/citavuk-latest.json <<JSON
@@ -135,22 +197,26 @@ cat >/tmp/citavuk-latest.json <<JSON
   "windows": {
     "version": "$VERSION",
     "url": "https://citavuk.ru/files/citavuk-setup.exe",
-    "size": $WIN_SIZE
+    "size": $WIN_SIZE,
+    "sha256": "$WIN_SHA"
   },
   "linux": {
     "version": "$LINUX_VERSION",
     "url": "https://citavuk.ru/files/citavuk-linux-x64.tar.gz",
-    "size": $LINUX_SIZE
-  },
-  "macos": {
-    "version": "$MACOS_VERSION",
-    "url": "https://citavuk.ru/files/citavuk-macos.zip",
-    "size": $MACOS_SIZE
-  }
+    "size": $LINUX_SIZE,
+    "sha256": "$LINUX_SHA"
+  }${MACOS_BLOCK}
 }
 JSON
-scp -i "$KEY" -o BatchMode=yes /tmp/citavuk-latest.json "$HOST:$REMOTE_DIR/latest.json"
-ssh_run "chown www-data:www-data $REMOTE_DIR/latest.json && chmod 644 $REMOTE_DIR/latest.json"
+sign_manifest /tmp/citavuk-latest.json /tmp/citavuk-latest.json.sig
+put_file /tmp/citavuk-latest.json "$REMOTE_DIR/latest.json.new"
+put_file /tmp/citavuk-latest.json.sig "$REMOTE_DIR/latest.json.sig.new"
+ssh_run "set -e
+    cd $REMOTE_DIR
+    mv latest.json.sig.new latest.json.sig
+    mv latest.json.new latest.json
+    chown www-data:www-data latest.json latest.json.sig
+    chmod 644 latest.json latest.json.sig"
 
 echo
 echo "Размеры и хеши (для страницы «Скачать»):"

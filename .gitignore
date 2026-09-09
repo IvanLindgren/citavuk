@@ -75,3 +75,6 @@ tools/assets/garden-local/
 # запрещают раздачу пака как есть, а картинки в web/public/img/garden уже
 # собраны и лежат в репозитории.
 tools/assets/packs/
+# Ключ подписи desktop-обновлений всегда хранится вне репозитория.
+update-signing-*.pem
+.local-secrets/

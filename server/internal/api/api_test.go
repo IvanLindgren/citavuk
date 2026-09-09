@@ -44,11 +44,9 @@ func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 
 	url := os.Getenv("CITAVUK_TEST_DATABASE_URL")
 	if url == "" {
-		if cfg, err := config.Load("../../../.env"); err == nil {
-			url = cfg.DatabaseURL
+		if os.Getenv("CI") != "" {
+			t.Fatal("CI требует CITAVUK_TEST_DATABASE_URL")
 		}
-	}
-	if url == "" {
 		t.Skip("нет строки подключения к PostgreSQL — тест пропущен")
 	}
 
@@ -56,7 +54,7 @@ func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 	defer cancel()
 	st, err := store.Open(ctx, url)
 	if err != nil {
-		t.Skipf("PostgreSQL недоступен: %v", err)
+		t.Fatalf("Тестовый PostgreSQL недоступен: %v", err)
 	}
 	if _, err := st.Migrate(ctx); err != nil {
 		t.Fatal(err)

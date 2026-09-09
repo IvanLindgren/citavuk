@@ -1,8 +1,8 @@
 /// Локальное хранение прогресса курса.
 ///
-/// Пока это единственное хранилище; при появлении серверного прогресса
-/// (master-prompt §13) станет офлайн-кешем — формат уже совпадает с
-/// серверными сущностями.
+/// Отдельный офлайн-кэш для каждого владельца и курса, с синхронизацией.
+/// Старый общий ключ не имеет владельца: сохраняется как резервная копия,
+/// но автоматически не читается и не отправляется на сервер.
 library;
 
 import 'dart:async';
@@ -16,8 +16,20 @@ import '../../services/auth_service.dart';
 import '../models/progress.dart';
 
 class CourseProgressStore {
-  static const String _key = 'course_progress_v1';
-  static const String _updatedKey = 'course_progress_updated_at_v1';
+  CourseProgressStore()
+      : _scope =
+            _auth?.isSignedIn == true ? 'user:${_auth!.account!.id}' : 'guest',
+        _session = _auth?.isSignedIn == true
+            ? _api?.withSessionToken(_api!.token!)
+            : null;
+
+  // Владелец фиксируется до первого await. Старый контроллер не сможет
+  // записать завершившийся запрос в аккаунт, на который переключились позже.
+  final String _scope;
+  final ApiClient? _session;
+  String get _prefix => 'course_progress_v2:${Uri.encodeComponent(_scope)}:';
+  String _key(String courseId) => '$_prefix${Uri.encodeComponent(courseId)}';
+  String _updatedKey(String courseId) => '${_key(courseId)}:updated';
   static ApiClient? _api;
   static AuthService? _auth;
 
@@ -35,9 +47,8 @@ class CourseProgressStore {
   /// Читает прогресс. Возвращает null, если его ещё нет или он повреждён.
   Future<CourseProgress?> load(String courseId) async {
     final local = await _loadLocal(courseId);
-    final api = _api;
-    final auth = _auth;
-    if (api == null || auth?.isSignedIn != true) return local;
+    final api = _session;
+    if (api == null) return local;
 
     try {
       final response = await api
@@ -74,7 +85,7 @@ class CourseProgressStore {
   Future<void> save(CourseProgress progress) async {
     final updatedAt = DateTime.now().millisecondsSinceEpoch;
     await _saveLocal(progress, updatedAt);
-    if (_auth?.isSignedIn == true && _api != null) {
+    if (_session != null) {
       unawaited(_upload(progress, updatedAt: updatedAt));
     }
   }
@@ -82,7 +93,7 @@ class CourseProgressStore {
   Future<CourseProgress?> _loadLocal(String courseId) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final raw = prefs.getString(_key);
+      final raw = prefs.getString(_key(courseId));
       if (raw == null || raw.isEmpty) return null;
       final decoded = jsonDecode(raw);
       if (decoded is! Map) return null;
@@ -97,20 +108,21 @@ class CourseProgressStore {
   Future<void> _saveLocal(CourseProgress progress, int updatedAt) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_key, jsonEncode(progress.toJson()));
-      await prefs.setInt(_updatedKey, updatedAt);
+      await prefs.setString(
+          _key(progress.courseId), jsonEncode(progress.toJson()));
+      await prefs.setInt(_updatedKey(progress.courseId), updatedAt);
     } catch (e) {
       debugPrint('course progress: не удалось сохранить ($e)');
     }
   }
 
   Future<void> _upload(CourseProgress progress, {int? updatedAt}) async {
-    final api = _api;
-    if (api == null || _auth?.isSignedIn != true) return;
+    final api = _session;
+    if (api == null) return;
     try {
       final prefs = await SharedPreferences.getInstance();
       final timestamp = updatedAt ??
-          prefs.getInt(_updatedKey) ??
+          prefs.getInt(_updatedKey(progress.courseId)) ??
           DateTime.now().millisecondsSinceEpoch;
       await api.put(
         '/v1/course/progress/${progress.courseId}',
@@ -138,7 +150,19 @@ class CourseProgressStore {
       final localAt = entry.value.completedAt?.millisecondsSinceEpoch ?? 0;
       final remoteAt = current.completedAt?.millisecondsSinceEpoch ?? 0;
       final newest = localAt >= remoteAt ? entry.value : current;
-      lessons[entry.key] = newest.copyWith(
+      final placement =
+          (entry.value.placementAt?.millisecondsSinceEpoch ?? 0) >=
+                  (current.placementAt?.millisecondsSinceEpoch ?? 0)
+              ? entry.value
+              : current;
+      final earned = entry.value.isDone && entry.value.bestScore >= 0.6
+          ? entry.value
+          : current.isDone && current.bestScore >= 0.6
+              ? current
+              : null;
+      lessons[entry.key] = (earned ?? newest).copyWith(
+        skipped: earned == null && placement.skipped,
+        placementAt: placement.placementAt,
         bestScore: entry.value.bestScore > current.bestScore
             ? entry.value.bestScore
             : current.bestScore,
@@ -190,7 +214,8 @@ class CourseProgressStore {
 
   Future<void> clear() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_key);
-    await prefs.remove(_updatedKey);
+    for (final key in prefs.getKeys().where((key) => key.startsWith(_prefix))) {
+      await prefs.remove(key);
+    }
   }
 }

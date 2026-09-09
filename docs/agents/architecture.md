@@ -27,8 +27,8 @@ Citavuk — монорепозиторий, но не монолит. В product
 
 | Контур | Код | Состояние | Ответственность |
 |---|---|---|---|
-| Flutter | `frontend/` | SQLite `user.db`, SharedPreferences, bundled assets | Android, Windows, Linux и macOS: библиотека, читалка, курс, офлайн-режим |
-| React | `web/` | IndexedDB, localStorage, static assets | Сайт `citavuk.ru`: браузерная читалка, курс, события, импорт и публичные разделы |
+| Flutter | `frontend/` | SQLite `user.db`, secure storage, SharedPreferences, bundled assets | Android, Windows, Linux и macOS: библиотека, читалка, курс, офлайн-режим |
+| React | `web/` | IndexedDB, HttpOnly session cookie, localStorage, static assets | Сайт `citavuk.ru`: браузерная читалка, курс, события, импорт и публичные разделы |
 | Go API | `server/` | PostgreSQL, необязательный Redis/Valkey | Аккаунты, сессии, синхронизация, перевод, прогресс, общий rate limit и reverse proxy |
 | Python NLP | `backend/` | CLASSLA, SQLite/Redis-кеши | Морфология, новости, извлечение документов, TTS и оставшиеся тяжёлые ручки |
 
@@ -43,6 +43,10 @@ Citavuk — монорепозиторий, но не монолит. В product
 - PostgreSQL — источник истины для аккаунтов и синхронизации. Redis ускоряет
   rate limit и кеши, но не должен быть точкой отказа. Локальные базы клиентов
   обязательны: чтение, курс и уже загруженные данные должны открываться офлайн.
+  Локальное хранилище жёстко разделено по account id: при входе клиент открывает
+  отдельную SQLite/IndexedDB-базу, а прежняя гостевая база не переносится в
+  аккаунт автоматически. Это не даёт данным одного пользователя попасть в sync
+  другого на общем устройстве.
 
 ### Основные потоки данных
 
@@ -53,7 +57,7 @@ Flutter AuthService / React AuthProvider
   -> Go /v1/auth/*
   -> PostgreSQL (users, sessions, одноразовые hashed-токены)
   -> Resend или OAuth-провайдер при необходимости
-  -> bearer token в локальном хранилище клиента
+  -> HttpOnly cookie в web / bearer token в secure storage приложения
 ```
 
 Клиент восстанавливает локальную сессию без сетевого запроса. `401` при первом
@@ -69,6 +73,9 @@ SQLite user.db / IndexedDB
   -> локальное слияние по updated_at
   -> загрузка текста выбранной книги по contentSha
 ```
+
+Имя клиентской базы является частью границы аккаунта, а не удобной оптимизацией:
+нельзя возвращать одну общую БД или помечать гостевые записи `dirty` после входа.
 
 Текст не входит в общий список изменений. Его sha256 одинаково считают Go,
 Dart и TypeScript по длине UTF-8 каждого абзаца и самим байтам. Любое изменение

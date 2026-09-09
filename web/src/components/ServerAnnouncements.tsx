@@ -6,14 +6,37 @@ import {
   LuCopy,
   LuExternalLink,
   LuGift,
+  LuMegaphone,
+  LuWrench,
   LuShare2,
   LuX,
 } from 'react-icons/lu';
 
-import type { Announcement } from '../api/announcements';
+import type { Announcement, AnnouncementKind } from '../api/announcements';
 import { useAuth } from '../state/auth';
 import { useAnnouncements } from '../state/announcements';
 import { Button, ErrorNote } from './ui';
+
+const KIND_META: Record<AnnouncementKind, { label: string; icon: typeof LuBell }> = {
+  maintenance: { label: 'Сервис', icon: LuWrench },
+  campaign: { label: 'Акция', icon: LuGift },
+  news: { label: 'Новость', icon: LuMegaphone },
+};
+
+function KindChip({ kind, critical }: { kind: AnnouncementKind; critical?: boolean }) {
+  const meta = KIND_META[kind] ?? KIND_META.news;
+  const Icon = meta.icon;
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-0.5 text-xs font-semibold ${
+        critical ? 'border-[var(--error)]/50 text-[var(--error)]' : 'border-[var(--line)] text-[var(--text-muted)]'
+      }`}
+    >
+      <Icon className="size-3.5" aria-hidden="true" />
+      {meta.label}
+    </span>
+  );
+}
 
 export function NotificationBell() {
   const { account } = useAuth();
@@ -37,40 +60,108 @@ export function NotificationBell() {
   );
 }
 
-export function ServerAnnouncements() {
-  const { activeBanner, selected, centerOpen } = useAnnouncements();
+export function ServerAnnouncements({quiet=false}:{quiet?:boolean}) {
+  const { activeBanners, selected, centerOpen } = useAnnouncements();
   return (
     <>
-      {activeBanner && <AnnouncementBanner announcement={activeBanner} />}
+      <AnnouncementBanners announcements={quiet?activeBanners.filter(a=>a.kind==='maintenance'):activeBanners} />
       <AnnouncementModal announcement={selected} />
       <NotificationCenter open={centerOpen} />
     </>
   );
 }
 
-function AnnouncementBanner({ announcement }: { announcement: Announcement }) {
-  const { select, dismiss } = useAnnouncements();
+/**
+ * Баннеры над контентом: критический сервисный отдельно + максимум один
+ * обычный. Карточка: категория, заголовок, краткое описание, одно основное
+ * действие, закрытие. Текст не режется молча: краткое описание пишет
+ * администратор (bannerText), иначе виден обрыв с «Подробнее».
+ */
+function AnnouncementBanners({ announcements }: { announcements: Announcement[] }) {
+  const reduceMotion = useReducedMotion();
   return (
-    <aside className="relative z-30 border-y border-[var(--accent)]/25 bg-[var(--bg-raised)] shadow-[var(--shadow-soft)]">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-5">
-        {announcement.imageUrl && (
-          <img src={announcement.imageUrl} alt="" className="size-12 shrink-0 object-contain sm:size-14" />
-        )}
-        <button type="button" onClick={() => select(announcement)} className="min-w-0 flex-1 text-left">
-          <strong className="block text-base sm:text-lg">{announcement.title}</strong>
-          <span className="mt-0.5 block text-sm text-[var(--text-muted)]">{announcement.bannerText}</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => void dismiss(announcement)}
-          className="grid size-10 shrink-0 place-items-center rounded-xl text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]"
-          aria-label="Закрыть объявление"
-          title="Закрыть"
-        >
-          <LuX className="size-5" aria-hidden="true" />
-        </button>
+    <motion.div layout={reduceMotion ? false : 'position'} className="relative z-30">
+      <AnimatePresence initial={false}>
+        {announcements.map((announcement) => (
+          <AnnouncementBanner key={announcement.id} announcement={announcement} />
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+function AnnouncementBanner({ announcement }: { announcement: Announcement }) {
+  const reduceMotion = useReducedMotion();
+  const { select, dismiss } = useAnnouncements();
+  const critical = announcement.kind === 'maintenance';
+  const short = announcement.bannerText ||
+    (announcement.body.length > 140
+      ? `${announcement.body.slice(0, 140).trimEnd()}…`
+      : announcement.body);
+  return (
+    <motion.aside
+      layout={reduceMotion ? false : 'position'}
+      initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      aria-label={announcement.title}
+      className={`border-b bg-[var(--bg-raised)] ${critical ? 'border-[var(--error)]/50' : 'border-[var(--line)]'}`}
+    >
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:px-5 md:flex-row md:items-center">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          {announcement.imageUrl && (
+            <img src={announcement.imageUrl} alt="" className="hidden size-12 shrink-0 object-contain sm:block" />
+          )}
+          <div className="min-w-0 flex-1">
+            <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <KindChip kind={announcement.kind} critical={critical} />
+              <strong className="text-base">{announcement.title}</strong>
+            </span>
+            {short && <p className="mt-1 text-sm text-[var(--text-muted)]">{short}</p>}
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-1 pl-0 md:pl-2">
+          {announcement.actionUrl ? (
+            <>
+              <a
+                href={announcement.actionUrl}
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+              >
+                {announcement.actionLabel || 'Открыть'}
+                <LuExternalLink className="size-4" aria-hidden="true" />
+              </a>
+              <button
+                type="button"
+                onClick={() => select(announcement)}
+                className="inline-flex min-h-10 items-center rounded-xl px-3 py-2 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)]"
+              >
+                Подробнее
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => select(announcement)}
+              className="inline-flex min-h-10 items-center rounded-xl bg-[var(--accent)]/10 px-4 py-2 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15"
+            >
+              Подробнее
+            </button>
+          )}
+          {!critical && (
+            <button
+              type="button"
+              onClick={() => void dismiss(announcement)}
+              className="grid size-10 shrink-0 place-items-center rounded-xl text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]"
+              aria-label="Закрыть объявление"
+              title="Закрыть"
+            >
+              <LuX className="size-5" aria-hidden="true" />
+            </button>
+          )}
+        </div>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
 
@@ -129,7 +220,13 @@ function AnnouncementModal({ announcement }: { announcement: Announcement | null
             {announcement.imageUrl && (
               <img src={announcement.imageUrl} alt="" className="mb-4 max-h-56 w-full object-contain" />
             )}
-            <h2 id="announcement-title" className="pr-10 text-2xl sm:text-3xl">{announcement.title}</h2>
+            <div className="flex items-center gap-2">
+              <KindChip kind={announcement.kind} critical={announcement.kind === 'maintenance'} />
+            </div>
+            <h2 id="announcement-title" className="mt-2 pr-10 text-2xl sm:text-3xl">{announcement.title}</h2>
+            {announcement.kind === 'campaign' && (
+              <div className="kilim-edge mt-4" aria-hidden="true" />
+            )}
             <p className="mt-4 whitespace-pre-wrap leading-relaxed text-[var(--text-muted)]">{announcement.body}</p>
 
             {announcement.shareRequired && !announcement.claimedAt && (
@@ -178,8 +275,11 @@ function AnnouncementModal({ announcement }: { announcement: Announcement | null
               </div>
             )}
             {announcement.actionUrl && !announcement.shareRequired && (
-              <a href={announcement.actionUrl} className="mt-6 inline-flex items-center gap-2 font-semibold text-[var(--accent)]">
-                {announcement.actionLabel || 'Открыть'} <LuExternalLink className="size-4" />
+              <a
+                href={announcement.actionUrl}
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+              >
+                {announcement.actionLabel || 'Открыть'} <LuExternalLink className="size-4" aria-hidden="true" />
               </a>
             )}
           </motion.section>
@@ -190,12 +290,21 @@ function AnnouncementModal({ announcement }: { announcement: Announcement | null
 }
 
 function NotificationCenter({ open }: { open: boolean }) {
-  const { notifications, unread, setCenterOpen, openNotification, readAll } = useAnnouncements();
+  const reduceMotion = useReducedMotion();
+  const {
+    announcements, notifications, unread, activeBanners,
+    notifLoading, notifError, refresh,
+    setCenterOpen, openNotification, readAll, select,
+  } = useAnnouncements();
+  const bannerIds = new Set(activeBanners.map((item) => item.id));
+  // Объявления, не попавшие в баннер: баннер показывает не всё.
+  const moreAnnouncements = announcements.filter((item) =>
+    !item.dismissedAt && !bannerIds.has(item.id));
   return (
     <AnimatePresence>
       {open && (
         <motion.aside role="dialog" aria-label="Уведомления"
-          initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
+          initial={reduceMotion ? false : { opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 20 }}
           className="fixed bottom-4 right-4 top-20 z-[65] flex w-[min(390px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] shadow-[var(--shadow-lift)]">
           <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
             <div><h2 className="text-xl">Уведомления</h2><p className="text-xs text-[var(--text-muted)]">Непрочитанных: {unread}</p></div>
@@ -205,7 +314,13 @@ function NotificationCenter({ open }: { open: boolean }) {
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {notifications.length === 0 ? <p className="p-6 text-center text-sm text-[var(--text-muted)]">Новых уведомлений пока нет.</p> : notifications.map((item) => (
+            {notifLoading && notifications.length === 0 && (
+              <p className="p-6 text-center text-sm text-[var(--text-muted)]" role="status">Загружаем уведомления…</p>
+            )}
+            {notifError && notifications.length === 0 && (
+              <div className="p-4"><ErrorNote>{notifError} <button type="button" onClick={() => void refresh()} className="font-bold underline underline-offset-2">Повторить</button></ErrorNote></div>
+            )}
+            {notifications.map((item) => (
               <button key={item.id} type="button" onClick={() => void openNotification(item)}
                 className={`block w-full border-b border-[var(--line)] px-4 py-3 text-left hover:bg-[var(--bg-sunken)] ${item.readAt ? '' : 'bg-[var(--accent)]/5'}`}>
                 <span className="flex items-start gap-2"><span className={`mt-1.5 size-2 shrink-0 rounded-full ${item.readAt ? 'bg-transparent' : 'bg-[var(--accent)]'}`} />
@@ -213,6 +328,28 @@ function NotificationCenter({ open }: { open: boolean }) {
                 </span>
               </button>
             ))}
+            {moreAnnouncements.length > 0 && (
+              <div className="border-t border-[var(--line)]">
+                <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Объявления</p>
+                {moreAnnouncements.map((item) => (
+                  <button key={item.id} type="button" onClick={() => select(item)}
+                    className="block w-full border-b border-[var(--line)] px-4 py-3 text-left last:border-b-0 hover:bg-[var(--bg-sunken)]">
+                    <span className="flex items-center gap-2">
+                      <KindChip kind={item.kind} critical={item.kind === 'maintenance'} />
+                      <strong className="min-w-0 flex-1 truncate text-sm">{item.title}</strong>
+                    </span>
+                    {(item.bannerText || item.body) && (
+                      <span className="mt-1 line-clamp-2 block text-sm text-[var(--text-muted)]">
+                        {item.bannerText || item.body}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+            {!notifLoading && !notifError && notifications.length === 0 && moreAnnouncements.length === 0 && (
+              <p className="p-6 text-center text-sm text-[var(--text-muted)]">Новых уведомлений пока нет.</p>
+            )}
           </div>
         </motion.aside>
       )}

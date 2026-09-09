@@ -156,7 +156,7 @@ export function Materials() {
                   to="/materials"
                   className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
                 >
-                  ← Все материалы
+                  Все материалы
                 </Link>
               )}
               <h1 className="mt-1 text-3xl sm:text-4xl">

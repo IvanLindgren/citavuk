@@ -19,6 +19,7 @@ import {
   type Announcement,
   type UserNotification,
 } from '../api/announcements';
+import { pickBanners } from '../lib/announcementBanners';
 import { useAuth } from './auth';
 
 interface AnnouncementValue {
@@ -26,6 +27,12 @@ interface AnnouncementValue {
   notifications: UserNotification[];
   unread: number;
   activeBanner: Announcement | null;
+  /** Баннеры к показу: критический сервисный + максимум один обычный. */
+  activeBanners: Announcement[];
+  /** Обычных объявлений, не попавших в баннер: ждут в центре уведомлений. */
+  otherBannersCount: number;
+  notifLoading: boolean;
+  notifError: string | null;
   selected: Announcement | null;
   centerOpen: boolean;
   rewards: Record<string, string>;
@@ -54,19 +61,31 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [notifications, setNotifications] = useState<UserNotification[]>([]);
   const [unread, setUnread] = useState(0);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [notifError, setNotifError] = useState<string | null>(null);
   const [selected, select] = useState<Announcement | null>(null);
   const [centerOpen, setCenterOpen] = useState(false);
 
   const refresh = useCallback(async () => {
-    const nextAnnouncements = await getAnnouncements();
-    setAnnouncements(nextAnnouncements);
-    if (account) {
-      const nextNotifications = await getNotifications();
-      setNotifications(nextNotifications.items ?? []);
-      setUnread(nextNotifications.unread ?? 0);
-    } else {
-      setNotifications([]);
-      setUnread(0);
+    setNotifLoading(true);
+    setNotifError(null);
+    try {
+      const nextAnnouncements = await getAnnouncements();
+      setAnnouncements(nextAnnouncements);
+      if (account) {
+        const nextNotifications = await getNotifications();
+        setNotifications(nextNotifications.items ?? []);
+        setUnread(nextNotifications.unread ?? 0);
+      } else {
+        setNotifications([]);
+        setUnread(0);
+      }
+    } catch {
+      // Офлайн-кеша здесь нет — показываем ошибку экраном центра,
+      // а не роняем приложение.
+      setNotifError('Не удалось загрузить уведомления. Проверьте соединение.');
+    } finally {
+      setNotifLoading(false);
     }
   }, [account]);
 
@@ -125,16 +144,24 @@ export function AnnouncementProvider({ children }: { children: ReactNode }) {
   }, [account]);
 
   const dismissedGuests = account ? [] : guestDismissed();
-  const activeBanner = announcements.find((item) =>
-    item.bannerEnabled && !item.dismissedAt && !dismissedGuests.includes(item.id)) ?? null;
+  // Приоритет — в pickBanners (зеркало Flutter): критическое сервисное
+  // отдельно, из обычных — кампания важнее новости.
+  const { banners: activeBanners, rest: otherBanners } =
+    pickBanners(announcements, dismissedGuests);
+  const activeBanner = activeBanners[0] ?? null;
+  const otherBannersCount = otherBanners.length;
   const rewards = Object.fromEntries(announcements
     .filter((item) => item.claimedAt && item.rewardKey && item.rewardAssetUrl)
     .map((item) => [item.rewardKey, item.rewardAssetUrl]));
 
   const value = useMemo<AnnouncementValue>(() => ({
-    announcements, notifications, unread, activeBanner, selected, centerOpen, rewards,
+    announcements, notifications, unread, activeBanner, activeBanners,
+    otherBannersCount, notifLoading, notifError,
+    selected, centerOpen, rewards,
     select: selectAnnouncement, setCenterOpen, dismiss, claim, openNotification, readAll, refresh,
-  }), [announcements, notifications, unread, activeBanner, selected, centerOpen, rewards,
+  }), [announcements, notifications, unread, activeBanner, activeBanners,
+    otherBannersCount, notifLoading, notifError,
+    selected, centerOpen, rewards,
     selectAnnouncement, dismiss, claim, openNotification, readAll, refresh]);
 
   return <AnnouncementContext.Provider value={value}>{children}</AnnouncementContext.Provider>;

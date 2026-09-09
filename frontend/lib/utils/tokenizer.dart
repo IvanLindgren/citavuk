@@ -14,7 +14,7 @@ class Token {
 
 class SerbianTokenizer {
   static final RegExp _wordRegExp =
-      RegExp(r'[a-zA-ZžćčđšŽĆČĐŠа-яА-ЯёЁђјљњћџЂЈЉЊЋЏ]+');
+      RegExp(r"\p{L}[\p{L}\p{M}]*(?:[-‑'’]\p{L}[\p{L}\p{M}]*)*", unicode: true);
 
   static List<Token> tokenize(String text) {
     final List<Token> tokens = [];

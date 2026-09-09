@@ -1,0 +1,63 @@
+.site-footer { margin-top: 48px; background: radial-gradient(ellipse at 80% 0, #a44135 0, transparent 48%), #692624; color: #fff0d7; border-top: 3px solid #c9a366; font-size: 14px; }
+.dark .site-footer { background: radial-gradient(ellipse at 80% 0, #743027 0, transparent 48%), #401c1c; }
+.site-footer-inner { max-width: 1280px; margin: auto; padding: 36px clamp(20px, 4vw, 48px) 22px; }
+.site-footer a { color: inherit; text-decoration: none; }
+.site-footer a:focus-visible { outline: 2px solid #e8c985; outline-offset: 5px; border-radius: 5px; }
+.site-footer-welcome { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-bottom: 28px; border-bottom: 1px solid #f5ecda26; }
+.site-footer-brand { display: inline-flex; align-items: center; gap: 12px; font: 700 28px Lora, serif; }
+.site-footer-brand img { border-radius: 12px; }
+.site-footer .site-footer-headline { font: 400 clamp(25px, 2.8vw, 38px)/1.3 Lora, serif; margin-top: 20px; }
+.site-footer-headline em { font-style: italic; color: #f0cd91; }
+.site-footer .site-footer-caption { max-width: 42ch; margin: 14px 0 20px; color: #efd4c2; line-height: 1.65; }
+.site-footer-intro { flex: 1; min-width: 0; }
+.site-footer-scene { position: relative; flex: 0 0 450px; height: 310px; }
+.site-footer-postcards { position: absolute; inset: 0; }
+.footer-postcard { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 152px; height: 214px; top: 20px; border-radius: 10px; box-shadow: 0 12px 20px #290b1640; transform-origin: 50% 90%; transition: transform 220ms ease; }
+.footer-postcard-book { left: 30px; transform: rotate(-14deg); background: #f4e4c5; border: 4px double #b9803e; }
+.footer-postcard-book > img { width: 88px; height: 88px; object-fit: contain; }
+.site-footer .footer-postcard-book > span { color: #7a3126; text-align: center; font: 16px/1.5 Lora,serif; margin-top: 8px; }
+.footer-postcard-deck { left: 153px; transform: rotate(8deg); overflow: hidden; border: 1px solid #dbb46b; }
+.footer-card-art, .footer-card-frame { position: absolute; width: 100%; height: 100%; inset: 0; object-fit: cover; }
+.footer-card-frame { z-index: 1; object-fit: fill; opacity: .9; }
+.footer-postcard-deck > span { z-index: 2; align-self: stretch; margin-top: auto; padding: 40px 12px 20px; text-align: center; background: linear-gradient(transparent, #411711 40%); font: 16px/1.45 Lora,serif; }
+.footer-postcard:hover, .footer-postcard:focus-visible { transform: translateY(-10px) rotate(0); z-index: 3; }
+.site-footer-wolf { position: absolute; width: 215px; height: 215px; object-fit: contain; right: -5px; bottom: 0; pointer-events: none; }
+.footer-scene-note { position: absolute; left: 37px; bottom: 10px; color: #f0cd91; font: italic 16px Lora,serif; transform: rotate(-5deg); }
+.site-footer-download { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 20px; border: 1px solid #bda36c; border-radius: 12px; background: #f5ecda0a; }
+.site-footer-download:hover { background: #f5ecda14; }
+.site-footer-columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; padding: 30px 0; }
+.site-footer h2 { display: flex; align-items: center; gap: 9px; color: #eed6a5; font: 600 15px var(--font-sans); margin: 0 0 14px; }
+.site-footer h2 svg { width: 19px; height: 19px; flex-shrink: 0; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer li + li { margin-top: 5px; }
+.site-footer li a { display: inline-block; padding: 5px 0; line-height: 1.45; color: #efd4c2; }
+.site-footer li a:hover { color: #fff5df; text-decoration: underline; text-underline-offset: 5px; }
+.site-footer-community { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 18px; border-top: 1px solid #f5ecda26; padding: 22px 0; }
+.site-footer-community > div { display: flex; flex-wrap: wrap; gap: 12px; }
+.site-footer-community > div a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid #f5ecda26; border-radius: 10px; }
+.site-footer-community svg { width: 17px; height: 17px; }
+.site-footer-community svg:last-child { width: 12px; height: 12px; opacity: .7; }
+.site-footer-community > span { color: #efd4c2; }
+.site-footer-community > span a { color: #eed6a5; text-decoration: underline; text-underline-offset: 4px; }
+.site-footer-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 12px; color: #e7c5b6; }
+.site-footer-legal > div { display: flex; flex-wrap: wrap; gap: 20px; }
+.site-footer-legal a:hover { color: #fff5df; }
+.site-footer-credit { opacity: .8; }
+.site-footer-sources { margin-top: 12px; max-width: 80ch; font-size: 11px; line-height: 1.65; color: #dcbaaa; }
+@media (max-width: 1000px) { .site-footer-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .site-footer-welcome { align-items: flex-start; flex-direction: column; gap: 18px; }
+  .site-footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; }
+  .site-footer h2 { font-size: 14px; gap: 7px; }
+  .site-footer li a { font-size: 13px; min-height: 36px; display: flex; align-items: center; }
+  .site-footer-download { width: 100%; font-size: 14px; }
+  .site-footer-community { align-items: flex-start; flex-direction: column; }
+  .site-footer-scene { flex: none; width: 100%; max-width: 360px; height: 270px; align-self: center; }
+  .footer-postcard { width: 130px; height: 184px; top: 6px; }
+  .footer-postcard-book { left: 12px; }
+  .footer-postcard-deck { left: 120px; }
+  .site-footer-wolf { width: 175px; height: 175px; right: -8px; }
+  .footer-scene-note { left: 8px; bottom: 8px; font-size: 14px; }
+}
+@media (min-width: 601px) and (max-width: 900px) { .site-footer-scene { flex-basis: 330px; } .footer-postcard-book { left: 0; } .footer-postcard-deck { left: 114px; } .site-footer-wolf { width: 180px; height: 180px; } }
+@media (prefers-reduced-motion: reduce) { .footer-postcard { transition: none; } .footer-postcard:hover, .footer-postcard:focus-visible { transform: none; } }

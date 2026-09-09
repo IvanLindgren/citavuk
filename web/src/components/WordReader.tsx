@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import {
@@ -18,32 +18,70 @@ import {
   type TranslationResult,
 } from '../api/translate';
 import { parseBlock } from '../lib/blocks';
-import { BIONIC_RATIO, type BionicLevel } from '../lib/readerSettings';
+import { type BionicLevel } from '../lib/readerSettings';
 import { SentenceAnalysisPanel } from './SentenceAnalysisPanel';
 import { Mascot, type MascotPose } from './Mascot';
 import { Link } from '../lib/router';
-import { saveVocabularyWord } from '../lib/vocabulary';
-import { tokenize, type Token } from '../lib/tokenize';
+import { deleteVocabularyWord, saveVocabularyWord, AccountStorageChangedError, type SaveResult } from '../lib/vocabulary';
+import { type Token } from '../lib/tokenize';
 import { useSync } from '../state/sync';
-import { Spinner } from './ui';
+import { SparkleBurst, ThinkingDots } from './ui';
 import { TtsVoicePicker } from './TtsVoicePicker';
 import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 import { ttsAudioUrl } from '../api/listening';
 import { fetchDefinition, type Definition } from '../api/definition';
 import { serbianIpa, serbianIpaParts, splitAccented } from '../lib/serbianPronunciation';
 import {
-  STRESS_MARK,
-  accentWord,
-  stressIndex,
   useStressTable,
-  type StressTable,
 } from '../lib/stress';
+import {
+  companionStart,
+  formLabelOf,
+  hasFormChoice,
+  readerSelectionText,
+} from '../lib/wordReaderUtils';
+import { BookImage, BookTable, Paragraph } from './WordReaderBlocks';
+import { useFocusTrap, useScrollLock } from '../lib/overlay';
+import { MOTION_CARD_S, MOTION_CARD_SHIFT_PX } from '../lib/tokens';
+import type { ReaderMark } from '../lib/wordReaderTypes';
+export {
+  bionicSplit,
+  companionStart,
+  formLabelOf,
+  hasFormChoice,
+  readerSelectionText,
+  shouldOpenWord,
+  wordPieces,
+} from '../lib/wordReaderUtils';
+export type { ReaderMark } from '../lib/wordReaderTypes';
 
-export interface ReaderMark {
-  start: number;
-  end: number;
-  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size' | 'audio';
-  value?: string;
+/** Одно просмотренное слово/фраза: что разбирали и где. Одинаковое слово
+ * в разных предложениях — разные записи: перевод зависит от контекста. */
+type LookupTarget =
+  | {
+      kind: 'word';
+      paragraph: number;
+      cell?: number;
+      token: Token;
+      /** Текст-источник для повторного запроса (абзац или ячейка). */
+      text: string;
+      anchor: DOMRect | null;
+    }
+  | { kind: 'phrase'; phrase: string; anchor: DOMRect | null };
+
+/** Та же цель разбора — повторный тап по тому же слову историей не считается. */
+function sameTarget(a: LookupTarget, b: LookupTarget): boolean {
+  if (a.kind !== b.kind) return false;
+  if (a.kind === 'phrase' && b.kind === 'phrase') return a.phrase === b.phrase;
+  if (a.kind === 'word' && b.kind === 'word') {
+    return (
+      a.token.start === b.token.start &&
+      a.paragraph === b.paragraph &&
+      a.cell === b.cell &&
+      a.text === b.text
+    );
+  }
+  return false;
 }
 
 /**
@@ -61,6 +99,7 @@ export function WordReader({
   className = '',
   bionic = 0,
   stress = false,
+  calm = false,
   paragraphClassName = '',
   paragraphStyle,
   paragraphMarks,
@@ -72,6 +111,8 @@ export function WordReader({
   bionic?: BionicLevel;
   /** Ставить знак над ударной буквой: словарь грузится при первом включении. */
   stress?: boolean;
+  /** Спокойный режим: в карточке нет маскота, только текст. */
+  calm?: boolean;
   /** Оформление абзаца задаёт читалка: кегль, интерлиньяж, отступы. */
   paragraphClassName?: string;
   paragraphStyle?: CSSProperties;
@@ -119,14 +160,61 @@ export function WordReader({
     };
   }, []);
 
-  const selectWord = useCallback(
+  /** Одно просмотренное слово/фраза: что разбирали и где. Одинаковое слово
+   * в разных предложениях — разные записи: перевод зависит от контекста. */
+  type LookupTarget =
+    | {
+        kind: 'word';
+        paragraph: number;
+        cell?: number;
+        token: Token;
+        /** Текст-источник для повторного запроса (абзац или ячейка). */
+        text: string;
+        anchor: DOMRect | null;
+      }
+    | { kind: 'phrase'; phrase: string; anchor: DOMRect | null };
+
+  // Последние просмотренные слова сеанса (до 10) — для кнопки «Назад».
+  // Живут и в состоянии (для отрисовки кнопки), и в ref (для чтения из
+  // колбэков без лишних зависимостей).
+  const [history, setHistory] = useState<LookupTarget[]>([]);
+  const historyRef = useRef<LookupTarget[]>([]);
+  const pushHistory = useCallback((target: LookupTarget) => {
+    const prev = historyRef.current;
+    const last = prev[prev.length - 1];
+    if (last && sameTarget(last, target)) return;
+    const next = [...prev.slice(-(HISTORY_LIMIT - 1)), target];
+    historyRef.current = next;
+    setHistory(next);
+  }, []);
+
+  // Свежие значения для pushHistory: колбэк без зависимостей читает ref.
+  const liveRef = useRef({ selected, activePhrase, anchor, paragraphs });
+  liveRef.current = { selected, activePhrase, anchor, paragraphs };
+
+  const rememberCurrent = useCallback(() => {
+    const live = liveRef.current;
+    if (live.selected) {
+      const { paragraph, cell, token } = live.selected;
+      const source = live.paragraphs[paragraph] ?? '';
+      pushHistory({
+        kind: 'word',
+        paragraph,
+        cell,
+        token,
+        text: cell === undefined ? source : cellTextAt(source, cell),
+        anchor: live.anchor,
+      });
+    } else if (live.activePhrase) {
+      pushHistory({ kind: 'phrase', phrase: live.activePhrase, anchor: live.anchor });
+    }
+  }, [pushHistory]);
+
+  const openWord = useCallback(
     async (
       paragraphIndex: number,
       token: Token,
-      rect: DOMRect,
-      // Ячейка таблицы: сам абзац там — служебная метка, поэтому и текст для
-      // контекста, и номер ячейки приходят снаружи. Без номера выделение
-      // подсветило бы одинаковое слово сразу во всех ячейках таблицы.
+      rect: DOMRect | null,
       cell?: { index: number; text: string },
     ) => {
       const text = cell?.text ?? paragraphs[paragraphIndex];
@@ -137,15 +225,31 @@ export function WordReader({
       setSelected({ paragraph: paragraphIndex, cell: cell?.index, token });
       setAnchor(rect);
 
-      // Запуск внутри пользовательского клика не блокируется политикой autoplay.
-      playAudio(new Audio(ttsAudioUrl(token.text)));
-
       await lookup.lookupWord(text, token);
     },
     [lookup, paragraphs],
   );
 
-  const translatePhrase = useCallback(
+  const selectWord = useCallback(
+    async (
+      paragraphIndex: number,
+      token: Token,
+      rect: DOMRect,
+      // Ячейка таблицы: сам абзац там — служебная метка, поэтому и текст для
+      // контекста, и номер ячейки приходят снаружи. Без номера выделение
+      // подсветило бы одинаковое слово сразу во всех ячейках таблицы.
+      cell?: { index: number; text: string },
+    ) => {
+      rememberCurrent();
+      // Запуск внутри пользовательского клика не блокируется политикой autoplay.
+      playAudio(new Audio(ttsAudioUrl(token.text)));
+
+      await openWord(paragraphIndex, token, rect, cell);
+    },
+    [openWord, rememberCurrent],
+  );
+
+  const openPhrase = useCallback(
     async (phrase: string, rect: DOMRect | null) => {
       setSelected(null);
       // Карточка перевода встаёт там же, где стояло предложение перевести, —
@@ -157,11 +261,39 @@ export function WordReader({
     [lookup],
   );
 
+  const translatePhrase = useCallback(
+    async (phrase: string, rect: DOMRect | null) => {
+      rememberCurrent();
+      await openPhrase(phrase, rect);
+    },
+    [openPhrase, rememberCurrent],
+  );
+
+  /** Назад по истории просмотров: карточка остаётся открытой, содержимое
+   * заменяется предыдущим разбором. Озвучки нет — это возврат, а не новый тап. */
+  const goBack = useCallback(() => {
+    const prev = historyRef.current;
+    const target = prev[prev.length - 1];
+    if (!target) return;
+    const next = prev.slice(0, -1);
+    historyRef.current = next;
+    setHistory(next);
+    if (target.kind === 'word') {
+      void openWord(target.paragraph, target.token, target.anchor, target.cell === undefined
+        ? undefined
+        : { index: target.cell, text: target.text });
+    } else {
+      void openPhrase(target.phrase, target.anchor);
+    }
+  }, [openPhrase, openWord]);
+
   const close = useCallback(() => {
     lookup.reset();
     setSelected(null);
     setSelectedPhrase(null);
     setActivePhrase(null);
+    historyRef.current = [];
+    setHistory([]);
     window.getSelection()?.removeAllRanges();
   }, [lookup]);
 
@@ -268,20 +400,25 @@ export function WordReader({
             analysis={analysis}
             error={error}
             loading={loading}
+            calm={calm}
             onClose={close}
+            sourceSentence={lookup.context}
+            onBack={history.length > 0 ? goBack : undefined}
             onSave={
               result
                 ? async (asLemma) => {
                     const surface = activePhrase ?? selected!.token.text;
-                    await saveFromCard(
+                    const entry = await saveFromCard(
                       bookId,
                       surface,
                       analysis,
                       result,
                       asLemma,
                       lookup.context,
+                      activePhrase ? 'phrase' : 'word',
                     );
                     void sync();
+                    return entry;
                   }
                 : undefined
             }
@@ -431,6 +568,7 @@ export function WordLookupCard({
       error={error}
       loading={loading}
       onClose={onClose}
+      sourceSentence={context}
       onSave={result
         ? (asLemma) => saveFromCard(
             bookId,
@@ -439,10 +577,31 @@ export function WordLookupCard({
             result,
             asLemma,
             context,
-          ).then(sync)
+            'word',
+          ).then((entry) => {
+            sync();
+            return entry;
+          })
         : undefined}
     />
   );
+}
+
+/**
+ * Слово, которое уйдёт в словарь. Одно вычисление на карточку и сохранение:
+ * «vratiti» и «vratiti se» — разные слова, и подпись обязана показывать то,
+ * что сохранится.
+ */
+function saveWordOf(
+  kind: 'word' | 'phrase',
+  surface: string,
+  analysis: WordAnalysis | null,
+  asLemma: boolean,
+): string {
+  if (kind === 'phrase') return surface;
+  if (asLemma && analysis?.reflexive?.lemma) return analysis.reflexive.lemma;
+  const lemma = analysis?.lemma ?? '';
+  return asLemma && lemma ? lemma : surface;
 }
 
 /**
@@ -458,8 +617,11 @@ async function saveFromCard(
   result: TranslationResult,
   asLemma: boolean,
   context = '',
-): Promise<void> {
-  const lemma = analysis?.lemma ?? '';
+  kind: 'word' | 'phrase' = 'word',
+): Promise<SaveResult> {
+  const lemma = analysis?.reflexive?.lemma && asLemma
+    ? analysis.reflexive.lemma
+    : (analysis?.lemma ?? '');
   const label = formLabelOf(analysis);
   const forms: Record<string, unknown> = {};
   if (context.trim()) forms['контекст'] = context.trim();
@@ -470,395 +632,14 @@ async function saveFromCard(
   }
   // Возвратный глагол уходит в словарь вместе с частицей: «vratiti» и
   // «vratiti se» — разные слова, и карточка без «se» учила бы не тому.
-  if (asLemma && analysis?.reflexive?.lemma) {
-    await saveVocabularyWord({
-      bookId,
-      word: analysis.reflexive.lemma,
-      lemma: analysis.reflexive.lemma,
-      pos: analysis.upos,
-      translation: result.text,
-      forms,
-    });
-    return;
-  }
-  await saveVocabularyWord({
+  return saveVocabularyWord({
     bookId,
-    word: asLemma && lemma ? lemma : surface,
+    word: saveWordOf(kind, surface, analysis, asLemma),
     lemma,
     pos: analysis?.upos,
     translation: result.text,
     forms,
   });
-}
-
-/**
- * Иллюстрация из книги.
- *
- * Картинка лежит в общем хранилище и грузится лениво: в учебнике их десятки, и
- * тянуть их все при открытии книги значит потратить чужой трафик на страницы,
- * до которых читатель может и не дойти.
- *
- * Битая ссылка прячет картинку целиком, а не оставляет значок «нет файла»:
- * серый прямоугольник посреди текста выглядит как поломка читалки, хотя дело в
- * исходном документе.
- */
-function BookImage({ url, alt }: { url: string; alt: string }) {
-  const [failed, setFailed] = useState(false);
-  if (failed) return null;
-
-  return (
-    <figure className="my-[var(--reader-gap)]">
-      <img
-        src={url}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        onError={() => setFailed(true)}
-        className="mx-auto max-h-[70vh] w-auto max-w-full rounded-xl"
-      />
-      {alt && (
-        <figcaption className="mt-2 text-center text-sm italic opacity-70">
-          {alt}
-        </figcaption>
-      )}
-    </figure>
-  );
-}
-
-/**
- * Таблица из книги.
- *
- * Ячейки остаются разбираемыми: в сербском учебнике таблица — это чаще всего
- * склонение или спряжение, то есть ровно то место, где по слову и хочется
- * нажать.
- *
- * Прокрутка своя, а не общая для страницы: широкая таблица иначе растянула бы
- * весь лист и увела текст за край экрана телефона.
- */
-function BookTable({
-  rows,
-  bionic,
-  stress,
-  style,
-  selectedCell,
-  selectedStart,
-  cliticStart,
-  onSelect,
-}: {
-  rows: string[][];
-  bionic: BionicLevel;
-  stress: StressTable | null;
-  style?: CSSProperties;
-  selectedCell: number | null;
-  selectedStart: number | null;
-  cliticStart: number | null;
-  onSelect: (
-    cellIndex: number,
-    cellText: string,
-    token: Token,
-    anchor: DOMRect,
-  ) => void;
-}) {
-  const [header, ...body] = rows;
-  let cellIndex = 0;
-
-  const cell = (text: string, index: number) => (
-    <Paragraph
-      text={text}
-      bionic={bionic}
-      stress={stress}
-      className=""
-      marks={[]}
-      selectedStart={selectedCell === index ? selectedStart : null}
-      cliticStart={selectedCell === index ? cliticStart : null}
-      onSelect={(token, rect) => onSelect(index, text, token, rect)}
-    />
-  );
-
-  return (
-    <div
-      className="my-[var(--reader-gap)] overflow-x-auto"
-      style={style}
-      // Прокрутку таблицы нужно уметь достать с клавиатуры, иначе её правая
-      // часть недоступна тем, кто не пользуется мышью.
-      tabIndex={0}
-      role="group"
-      aria-label="Таблица из книги"
-    >
-      <table className="w-full border-collapse text-[0.92em]">
-        {header && (
-          <thead>
-            <tr>
-              {header.map((text) => {
-                const index = cellIndex++;
-                return (
-                  <th
-                    key={index}
-                    scope="col"
-                    className="border border-current/20 px-3 py-2 text-left align-top font-semibold"
-                  >
-                    {cell(text, index)}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-        )}
-        <tbody>
-          {body.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((text) => {
-                const index = cellIndex++;
-                return (
-                  <td
-                    key={index}
-                    className="border border-current/20 px-3 py-2 align-top"
-                  >
-                    {cell(text, index)}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function Paragraph({
-  text,
-  selectedStart,
-  cliticStart,
-  onSelect,
-  bionic,
-  stress,
-  className,
-  style,
-  marks,
-}: {
-  text: string;
-  selectedStart: number | null;
-  /** Начало возвратной частицы «se», если она относится к выбранному глаголу. */
-  cliticStart: number | null;
-  onSelect: (token: Token, anchor: DOMRect) => void;
-  bionic: BionicLevel;
-  /** Словарь ударений или `null`, если помета выключена. */
-  stress: StressTable | null;
-  className: string;
-  style?: CSSProperties;
-  marks: ReaderMark[];
-}) {
-  // Разбор строки не зависит от состояния, но и не бесплатен — считаем один раз
-  // на текст, а не на каждую отрисовку выделения.
-  const tokens = useMemo(() => tokenize(text), [text]);
-
-  const activate = (token: Token, element: HTMLElement) => {
-    if (!shouldOpenWord(window.getSelection())) return;
-    onSelect(token, element.getBoundingClientRect());
-  };
-
-  return (
-    <p
-      className={
-        className ||
-        'reader-selectable font-display text-lg leading-relaxed sm:text-xl sm:leading-[1.85]'
-      }
-      style={style}
-    >
-      {tokens.map((token, index) =>
-        token.isWord ? (
-          <span
-            key={index}
-            onClick={(event) => activate(token, event.currentTarget)}
-            data-reader-word
-            className={[
-              'reader-word transition-colors duration-150',
-              'hover:bg-gold/35',
-              selectedStart === token.start
-                ? 'bg-gold/55 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]'
-                : '',
-              // Частица подсвечивается слабее глагола: она относится к нему,
-              // но нажали всё-таки не на неё.
-              cliticStart === token.start
-                ? 'bg-gold/30 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]'
-                : '',
-            ].join(' ')}
-          >
-            {marks.length > 0
-              ? <MarkedToken text={text} token={token} marks={marks} />
-              : <ReadableWord text={token.text} bionic={bionic} stress={stress} />}
-          </span>
-        ) : (
-          <span key={index}>
-            {marks.length > 0
-              ? <MarkedToken text={text} token={token} marks={marks} />
-              : token.text}
-          </span>
-        ),
-      )}
-    </p>
-  );
-}
-
-function MarkedToken({ text, token, marks }: { text: string; token: Token; marks: ReaderMark[] }) {
-  const boundaries = new Set([token.start, token.end]);
-  for (const mark of marks) {
-    if (mark.start > token.start && mark.start < token.end) boundaries.add(mark.start);
-    if (mark.end > token.start && mark.end < token.end) boundaries.add(mark.end);
-  }
-  const points = [...boundaries].sort((a, b) => a - b);
-  const pieces: ReactNode[] = [];
-  for (let index = 0; index < points.length - 1; index++) {
-    const start = points[index];
-    const end = points[index + 1];
-    if (start === undefined || end === undefined || start >= end) continue;
-    const active = marks.filter((mark) => mark.start <= start && mark.end >= end);
-    const value = text.slice(start, end);
-    const style: CSSProperties = {};
-    const classes: string[] = [];
-    let href: string | undefined;
-    for (const mark of active) {
-      if (mark.kind === 'strong') style.fontWeight = 700;
-      if (mark.kind === 'emphasis') style.fontStyle = 'italic';
-      if (mark.kind === 'strike') style.textDecoration = 'line-through';
-      if (mark.kind === 'font') style.fontFamily = mark.value === 'sans' ? 'var(--font-sans)' : 'var(--font-display)';
-      if (mark.kind === 'size' && mark.value) style.fontSize = `${mark.value}px`;
-      if (mark.kind === 'code') classes.push('rounded bg-[var(--bg-sunken)] px-1 py-0.5 font-mono text-[0.9em]');
-      if (mark.kind === 'audio') classes.push('rounded bg-[var(--accent)] px-0.5 text-white');
-      if (mark.kind === 'link') href = mark.value;
-    }
-    const key = `${start}-${end}`;
-    pieces.push(href
-      ? <a key={key} href={href} target="_blank" rel="noreferrer" className="text-[var(--accent)] underline decoration-1 underline-offset-2" style={style} onClick={(event) => event.stopPropagation()}>{value}</a>
-      : <span key={key} className={classes.join(' ')} style={style}>{value}</span>);
-  }
-  return <>{pieces}</>;
-}
-
-/**
- * Слово с выделенной основой.
- *
- * Приём тот же, что в приложении: жирным набирается начало слова, и глаз
- * цепляется за него, не вчитываясь в окончание. На чужом языке это заметно
- * помогает — сербские падежные окончания длинные и все разные.
- *
- * Длина выделения считается по кодовым точкам, а не по индексу в строке:
- * `split('')` разорвал бы суррогатную пару, а `Intl.Segmenter` здесь избыточен —
- * в сербском нет составных графем, из-за которых он был бы нужен.
- */
-export function bionicSplit(text: string, level: BionicLevel): [string, string] {
-  const ratio = BIONIC_RATIO[level];
-  if (ratio <= 0) return [text, ''];
-  const letters = [...text];
-  // Хотя бы одна буква, но не всё слово целиком: сплошь жирный текст перестаёт
-  // выделять что-либо и просто утомляет.
-  const head = Math.min(
-    Math.max(1, Math.round(letters.length * ratio)),
-    Math.max(1, letters.length - 1),
-  );
-  return [letters.slice(0, head).join(''), letters.slice(head).join('')];
-}
-
-/**
- * Кусок слова с признаками оформления.
- *
- * Выделение основы и помета ударения делят одно и то же слово, и порядок
- * «сначала одно, потом другое» здесь не работает: ударная буква может попасть
- * в жирное начало. Поэтому слово режется по всем границам сразу.
- */
-export interface WordPiece {
-  text: string;
-  /** Начало слова, набираемое жирным. */
-  bold: boolean;
-  /** Ударная буква. */
-  stress: boolean;
-}
-
-export function wordPieces(text: string, head: number, at: number | null): WordPiece[] {
-  const letters = [...text];
-  const points = new Set([0, letters.length]);
-  if (head > 0 && head < letters.length) points.add(head);
-  if (at !== null && at >= 0 && at < letters.length) {
-    points.add(at);
-    points.add(at + 1);
-  }
-
-  const bounds = [...points].sort((a, b) => a - b);
-  const pieces: WordPiece[] = [];
-  for (let index = 0; index < bounds.length - 1; index += 1) {
-    const start = bounds[index]!;
-    const end = bounds[index + 1]!;
-    pieces.push({
-      text: letters.slice(start, end).join(''),
-      bold: start < head,
-      stress: at !== null && start === at,
-    });
-  }
-  return pieces;
-}
-
-/** Слово так, как его показывает читалка: с основой, ударением или без всего. */
-function ReadableWord({
-  text,
-  bionic,
-  stress,
-}: {
-  text: string;
-  bionic: BionicLevel;
-  stress: StressTable | null;
-}) {
-  const at = stress ? stressIndex(text, stress) : null;
-  const [head] = bionicSplit(text, bionic);
-  const headLength = bionic > 0 ? [...head].length : 0;
-  if (headLength === 0 && at === null) return <>{text}</>;
-  // Без выделения основы это один текстовый узел. Так акут прикрепляется к
-  // букве шрифтом, а justify не получает внутренних границ для растяжения.
-  if (headLength === 0 && at !== null) return <>{accentWord(text, at)}</>;
-
-  return (
-    <>
-      {wordPieces(text, headLength, at).map((piece, index) => {
-        const content = piece.stress ? accentWord(piece.text, 0) : piece.text;
-        return piece.bold ? (
-          <b key={index} className="font-bold">
-            {content}
-          </b>
-        ) : (
-          <Fragment key={index}>{content}</Fragment>
-        );
-      })}
-    </>
-  );
-}
-
-/**
- * Где в тексте лежит второе слово пары «глагол + se».
- *
- * Нажали глагол — ищется частица, нажали частицу — её глагол. Сервер называет
- * спутника написанием и стороной, а не смещением: пересылать байтовые смещения
- * Go в индексы JavaScript значит пересчитывать UTF-8 в UTF-16 в обе стороны и
- * ошибиться на кириллице.
- */
-export function companionStart(
-  text: string,
-  token: Token,
-  reflexive: ReflexiveParticle,
-): number | null {
-  const tokens = tokenize(text).filter((item) => item.isWord);
-  const index = tokens.findIndex((item) => item.start === token.start);
-  if (index < 0) return null;
-
-  const wanted = reflexive.companion.toLocaleLowerCase('sr');
-  const step = reflexive.before ? -1 : 1;
-  for (let at = index + step; at >= 0 && at < tokens.length; at += step) {
-    const candidate = tokens[at]!;
-    if (candidate.text.toLocaleLowerCase('sr') === wanted) return candidate.start;
-    // Дальше одного соседнего слова спутник ищется, только если сервер сказал,
-    // что пара стоит не вплотную.
-    if (reflexive.adjacent) return null;
-  }
-  return null;
 }
 
 /** Текст ячейки таблицы по её сквозному номеру — тому же, что в BookTable. */
@@ -873,51 +654,6 @@ function plainTextOf(paragraph: string): string {
   return block.kind === 'text' ? block.text : '';
 }
 
-/**
- * Одиночный клик открывает разбор, а протягивание мышью или долгое нажатие
- * остаётся нативным выделением текста. Проверяем не только `isCollapsed`:
- * Safari иногда сохраняет непустой текст в Selection ещё один тик после
- * отпускания пальца.
- */
-export function shouldOpenWord(selection: Selection | null): boolean {
-  return selection === null || selection.isCollapsed || selection.toString().trim() === '';
-}
-
-/**
- * Возвращает выделенную внутри читалки фразу. Диапазон, который начинается или
- * заканчивается за пределами текста книги, игнорируется, чтобы системное
- * выделение заголовков и кнопок не открывало переводчик.
- */
-export function readerSelectionText(
-  selection: Selection | null,
-  root: HTMLElement | null,
-): string | null {
-  if (
-    !selection ||
-    !root ||
-    selection.isCollapsed ||
-    selection.rangeCount === 0
-  ) {
-    return null;
-  }
-
-  const range = selection.getRangeAt(0);
-  if (
-    !root.contains(range.startContainer) ||
-    !root.contains(range.endContainer)
-  ) {
-    return null;
-  }
-
-  // Знак ударения добавлен только визуально читалкой. Переводчик и
-  // грамматический анализ должны получить исходное написание фразы.
-  const text = selection
-    .toString()
-    .replaceAll(STRESS_MARK, '')
-    .replace(/\s+/gu, ' ')
-    .trim();
-  return text || null;
-}
 
 function PhraseSelectionBar({
   phrase,
@@ -987,7 +723,10 @@ function WordCard({
   analysis,
   error,
   loading,
+  calm = false,
   onClose,
+  onBack,
+  sourceSentence,
   onSave,
 }: {
   word: string;
@@ -998,11 +737,20 @@ function WordCard({
   analysis: WordAnalysis | null;
   error: string | null;
   loading: boolean;
+  /** Спокойный режим: перевод текстом, без маскота. */
+  calm?: boolean;
   onClose: () => void;
-  onSave?: (asLemma: boolean) => Promise<void>;
+  /** Назад по истории просмотров; нет — кнопки «Назад» нет. */
+  onBack?: () => void;
+  /** Исходное сербское предложение для грамматического разбора. */
+  sourceSentence?: string;
+  onSave?: (asLemma: boolean) => Promise<SaveResult>;
 }) {
   const reduceMotion = useReducedMotion();
-  const [saved, setSaved] = useState(false);
+  const [savedEntry, setSavedEntry] = useState<{ id: string; created: boolean } | null>(null);
+  // Кнопка блокируется на время запроса: без этого быстрый двойной клик
+  // уходил двумя сохранениями разом.
+  const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   // Что уйдёт в словарь: начальная форма или словоформа из текста. По
   // умолчанию начальная — это словарная статья, и повторять её карточкой
@@ -1037,16 +785,66 @@ function WordCard({
 
   useEffect(() => () => audioRef.current?.pause(), []);
 
+  // Нижний лист — модальный слой: прокрутка страницы блокируется, Tab ходит
+  // внутри, фокус возвращается на место. Пристыкованная панель и плавающая
+  // карточка немодальны: книгу рядом продолжают читать.
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const isSheet = !placement.floating && !placement.docked;
+  useScrollLock(isSheet);
+  // Автофокус — только если карточку открыли с клавиатуры (фокус на слове):
+  // при открытии мышью прыжок фокуса ничего не даёт, а возврат при смене
+  // слова мешал бы читать.
+  const keyboardOpened =
+    typeof document !== 'undefined' &&
+    !!document.activeElement?.closest?.('[data-reader-word]');
+  useFocusTrap(isSheet, cardRef, { autoFocus: keyboardOpened });
+
+  /** Сохранение и его отмена: «В словарь» → «В словаре» с галочкой.
+   * Повторное нажатие убирает только запись, созданную этим нажатием.
+   * Существовавшую до него запись кнопка показывает как состояние. */
+  const handleSave = useCallback(() => {
+    if (!onSave || saving) return;
+    if (savedEntry) {
+      if (!savedEntry.created) return;
+      setSaveError('');
+      void deleteVocabularyWord(savedEntry.id)
+        .then(() => setSavedEntry(null))
+        .catch(() => setSaveError('Не удалось убрать слово.'));
+      return;
+    }
+    setSaveError('');
+    setSaving(true);
+    void (async () => {
+      try {
+        const { entry, created } = await onSave(formChoice ? saveLemma : true);
+        setSavedEntry({ id: entry.id, created });
+      } catch (caught) {
+        setSaveError(
+          caught instanceof AccountStorageChangedError
+            ? 'Аккаунт сменился — нажми «В словарь» ещё раз.'
+            : kind === 'phrase'
+              ? 'Не удалось сохранить фразу.'
+              : 'Не удалось сохранить слово.',
+        );
+      } finally {
+        setSaving(false);
+      }
+    })();
+  }, [formChoice, kind, onSave, saveLemma, savedEntry, saving]);
+
   const card = (
     <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: placement.floating ? 8 : 24 }}
-      animate={{ opacity: 1, y: 0 }}
+      ref={cardRef}
+      initial={reduceMotion ? false : { opacity: 0, y: placement.floating ? 8 : 24, x: placement.docked ? MOTION_CARD_SHIFT_PX : 0 }}
+      animate={{ opacity: 1, y: 0, x: 0 }}
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: MOTION_CARD_S, ease: [0.22, 1, 0.36, 1] }}
       className={
-        placement.floating
+        placement.docked
           ? 'fixed z-[90] p-2'
-          : 'fixed inset-x-0 bottom-0 z-[90] mx-auto max-w-2xl p-3 sm:p-5'
+          : placement.floating
+            ? 'fixed z-[90] p-2'
+            : 'fixed inset-x-0 bottom-0 z-[90] mx-auto max-w-2xl p-3 sm:p-5'
       }
       style={placement.style}
       role="dialog"
@@ -1124,24 +922,65 @@ function WordCard({
               </div>
             )}
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Закрыть"
-            className="shrink-0 rounded-full p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
-          >
-            <svg viewBox="0 0 20 20" className="size-5 fill-current" aria-hidden="true">
-              <path d="M6.3 5A1 1 0 004.9 6.4L8.5 10l-3.6 3.6a1 1 0 101.4 1.4L10 11.4l3.6 3.6a1 1 0 001.4-1.4L11.4 10l3.6-3.6A1 1 0 0013.6 5L10 8.6 6.4 5z" />
-            </svg>
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            {onBack && (
+              <button
+                type="button"
+                onClick={onBack}
+                aria-label="Назад к предыдущему слову"
+                title="Назад"
+                className="shrink-0 rounded-full p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
+              >
+                <svg viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path d="M12.5 5L7.5 10l5 5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Закрыть"
+              className="shrink-0 rounded-full p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"
+            >
+              <svg viewBox="0 0 20 20" className="size-5 fill-current" aria-hidden="true">
+                <path d="M6.3 5A1 1 0 004.9 6.4L8.5 10l-3.6 3.6a1 1 0 101.4 1.4L10 11.4l3.6 3.6a1 1 0 001.4-1.4L11.4 10l3.6-3.6A1 1 0 0013.6 5L10 8.6 6.4 5z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div className="overflow-y-auto overscroll-contain px-5 py-4">
           {loading && (
-            <div className="flex items-center gap-3 text-[var(--text-muted)]">
-              <Spinner />
-              <span className="text-sm">Переводим в контексте…</span>
-            </div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 text-[var(--text-muted)]"
+            >
+              {!calm && (
+                <motion.div
+                  className="relative size-14 shrink-0"
+                  animate={reduceMotion ? undefined : { rotate: [0, -4, 5, -2, 0], y: [0, -2, 0] }}
+                  transition={{ duration: 1.45, repeat: Infinity, repeatDelay: 0.35, ease: 'easeInOut' }}
+                >
+                  <Mascot pose="citavuk_rule" alt="Читавук думает" className="size-14 object-contain" />
+                  {!reduceMotion && (
+                    <>
+                      <motion.span className="absolute -right-1 top-1 size-1.5 rounded-full bg-gold"
+                        animate={{ opacity: [0, 1, 0], scale: [0.5, 1, 0.5] }} transition={{ duration: 1.1, repeat: Infinity }} />
+                      <motion.span className="absolute -right-3 -top-1 size-2.5 rounded-full border border-gold"
+                        animate={{ opacity: [0, 0.9, 0], scale: [0.5, 1, 0.65] }} transition={{ duration: 1.1, delay: 0.18, repeat: Infinity }} />
+                    </>
+                  )}
+                </motion.div>
+              )}
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-[var(--text)]">Читавук разбирает слово</div>
+                <div className="mt-1 flex items-center gap-2 text-xs">
+                  <span>Ищет значение в этом предложении</span>
+                  <ThinkingDots />
+                </div>
+              </div>
+            </motion.div>
           )}
 
           {error && <p className="text-sm text-[var(--text-muted)]">{error}</p>}
@@ -1154,13 +993,26 @@ function WordCard({
           )}
 
           {result && !loading && (
-            <div className="space-y-4">
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 7, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              className="relative space-y-4"
+            >
+              <motion.span
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-x-5 -top-4 h-20 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+                initial={reduceMotion ? false : { x: '-120%', opacity: 0 }}
+                animate={reduceMotion ? undefined : { x: '120%', opacity: [0, 0.7, 0] }}
+                transition={{ duration: 0.65, delay: 0.06 }}
+              />
               {/* Перевод произносит сам Читавук — так это сделано в приложении
                   («WolfBubble» в читалке). Маскот, стоящий отдельной картинкой
                   в углу, занимает место и ничего не говорит; в реплике он
                   занимает то же место осмысленно. У английского слова свой
-                  маскот ниже, в пояснении, — двух в карточке быть не должно. */}
-              {analysis?.english ? (
+                  маскот ниже, в пояснении, — двух в карточке быть не должно.
+                  В спокойном режиме — просто текст, без маскота. */}
+              {analysis?.english || calm ? (
                 <Field
                   label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
                   emphasis
@@ -1215,7 +1067,9 @@ function WordCard({
               {kind === 'phrase' ? (
                 <SentenceAnalysisPanel sentence={word} defaultOpen />
               ) : (
-                result.sentence && <SentenceAnalysisPanel sentence={result.sentence} />
+                // Разбор строится по исходному сербскому предложению, а не по
+                // русскому переводу: result.sentence — это перевод.
+                sourceSentence && <SentenceAnalysisPanel sentence={sourceSentence} />
               )}
               {onSave && formChoice && (
                 <SaveChoice
@@ -1226,37 +1080,30 @@ function WordCard({
                   lemma={reflexive?.lemma ?? analysis!.lemma}
                   formLabel={formLabelOf(analysis)}
                   saveLemma={saveLemma}
-                  disabled={saved}
+                  disabled={!!savedEntry}
                   onChange={setSaveLemma}
                 />
               )}
               {onSave && (
                 <button
                   type="button"
-                  disabled={saved}
-                  onClick={() => {
-                    setSaveError('');
-                    void onSave(formChoice ? saveLemma : true)
-                      .then(() => setSaved(true))
-                      .catch(() =>
-                        setSaveError(
-                          kind === 'phrase'
-                            ? 'Не удалось сохранить фразу.'
-                            : 'Не удалось сохранить слово.',
-                        ),
-                      );
-                  }}
+                  disabled={saving || (!!savedEntry && !savedEntry.created)}
+                  onClick={handleSave}
+                  title={savedEntry?.created ? 'Убрать из словаря' : undefined}
+                  aria-pressed={!!savedEntry}
                   className={[
+                    'relative overflow-visible',
                     'w-full rounded-xl px-4 py-3 font-semibold transition-colors',
-                    saved
+                    savedEntry
                       ? 'border border-[var(--line)] bg-[var(--bg-sunken)] text-[var(--text-muted)]'
                       : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]',
                   ].join(' ')}
                 >
-                  {saved
+                  {savedEntry && <SparkleBurst />}
+                  {savedEntry
                     ? kind === 'phrase'
-                      ? 'Фраза сохранена'
-                      : 'Слово сохранено'
+                      ? '✓ Фраза в словаре'
+                      : '✓ В словаре'
                     : kind === 'phrase'
                       ? 'Добавить фразу в словарь'
                       : formChoice
@@ -1266,7 +1113,7 @@ function WordCard({
               )}
               {/* Куда именно попало сохранённое — вопрос, который возникает
                   ровно здесь, поэтому и ответ здесь же, а не в разделе помощи. */}
-              {saved && (
+              {savedEntry && (
                 <p className="text-center text-sm text-[var(--text-muted)]">
                   Появится в{' '}
                   <Link
@@ -1283,7 +1130,7 @@ function WordCard({
                   {saveError}
                 </p>
               )}
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
@@ -1301,7 +1148,7 @@ function WordCard({
           initial={reduceMotion ? false : { opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -8 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: MOTION_CARD_S, ease: [0.22, 1, 0.36, 1] }}
           className="fixed z-[88] p-2"
           style={placement.definitionStyle}
           role="complementary"
@@ -1333,6 +1180,13 @@ const DEFINITION_WIDTH = 340;
 const TOOLBAR_WIDTH = 380;
 /** Ниже этой ширины карточка встаёт листом снизу — рядом со словом ей тесно. */
 const FLOATING_MIN_WIDTH = 720;
+/** Шире этого — карточка докируется в боковую панель: книга не затемняется
+ * и строка не скачет. */
+const DOCK_MIN_WIDTH = 1100;
+/** Ширина док-панели. */
+const DOCK_WIDTH = 400;
+/** Сколько последних просмотренных слов помнит сеанс чтения. */
+const HISTORY_LIMIT = 10;
 
 /** Экранные размеры с подпиской на изменение. */
 function useViewport() {
@@ -1405,15 +1259,33 @@ function useToolbarPlacement(anchor: DOMRect | null) {
 /**
  * Где показать карточку.
  *
- * На широком экране она встаёт вплотную к нажатому слову: читатель смотрит в
+ * На широком экране она докируется в боковую панель справа: книга не
+ * затемняется, вёрстка не едет и текущая строка остаётся на месте. Средний
+ * экран — плавающая карточка вплотную к нажатому слову: читатель смотрит в
  * строку, и уводить его взгляд (а на длинной странице ещё и прокрутку) в низ
  * экрана незачем. На узком места рядом нет, поэтому остаётся нижний лист.
  */
 function useCardPlacement(anchor: DOMRect | null) {
   const viewport = useViewport();
 
+  if (viewport.width >= DOCK_MIN_WIDTH) {
+    return {
+      docked: true,
+      floating: false,
+      style: {
+        right: 16,
+        top: 'calc(var(--header-height, 64px) + 12px)',
+        bottom: 16,
+        width: DOCK_WIDTH,
+      } as CSSProperties,
+      contentMaxHeight: '100%',
+      definitionStyle: undefined as CSSProperties | undefined,
+    };
+  }
+
   if (!anchor || viewport.width < FLOATING_MIN_WIDTH) {
     return {
+      docked: false,
       floating: false,
       style: undefined as CSSProperties | undefined,
       contentMaxHeight: '80vh',
@@ -1461,6 +1333,7 @@ function useCardPlacement(anchor: DOMRect | null) {
   }
 
   return {
+    docked: false,
     floating: true,
     style,
     contentMaxHeight: `${Math.max(220, room - CARD_GAP * 2)}px`,
@@ -1468,25 +1341,6 @@ function useCardPlacement(anchor: DOMRect | null) {
   };
 }
 
-/**
- * Короткое описание формы: «мн. ч.», «3 л. ед., презент».
- * Пустая строка — слово и так начальная форма.
- */
-export function formLabelOf(analysis: WordAnalysis | null): string {
-  if (!analysis) return '';
-  if (analysis.english) return analysis.english.formLabel ?? '';
-  return analysis.facts.map((fact) => fact.value).join(', ');
-}
-
-/** Есть ли из чего выбирать: словоформа отличается от начальной формы. */
-export function hasFormChoice(
-  kind: 'word' | 'phrase',
-  word: string,
-  analysis: WordAnalysis | null,
-): boolean {
-  if (kind !== 'word' || !analysis?.lemma) return false;
-  return analysis.lemma.toLocaleLowerCase('sr') !== word.toLocaleLowerCase('sr');
-}
 
 /**
  * Толкование начальной формы слова из сербского толкового словаря.
@@ -1696,23 +1550,18 @@ export function EnglishNotice({ className = '' }: { className?: string }) {
     >
       <Mascot
         pose="citavuk_english"
-        alt="Читавук с чашкой зелёного чая"
+        alt="Читавук"
         className="size-16 shrink-0 self-start object-contain"
       />
       <div className="min-w-0 space-y-2 text-sm leading-relaxed">
         <p className="font-semibold text-[var(--text)]">
-          Кажется, это английское слово.
+          Это английское слово.
         </p>
         <p className="text-[var(--text-muted)]">
-          Хоть основное предназначение для Читавука это анализ сербских слов, но без
-          международного языка общения не могут обойтись даже материалы с основой на
-          сербском. Да и очень много учебников сербского содержат английский как
-          основной язык-посредник. Читавук постарался — и отчаянно проанализировал
-          слово с чашечкой зеленого чая.
+          Покажу перевод и разбор.
         </p>
         <p className="text-xs italic text-[var(--text-muted)]">
-          (А для обучения английскому всё же лучше выбрать другой ресурс, к примеру,
-          знаменитую зеленую сову.)
+          (А для английского лучше подойдёт знаменитая зелёная сова.)
         </p>
       </div>
     </div>

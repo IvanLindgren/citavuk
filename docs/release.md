@@ -22,6 +22,18 @@ export CITAVUK_SSH_KEY=~/.ssh/serbiansubtitles_vps_ed25519
 
 Без них скрипты выкладки сразу останавливаются и говорят, чего не хватает.
 
+Для desktop-обновлений один раз создай Ed25519-ключ **вне репозитория**:
+
+```bash
+./tools/generate_update_signing_key.sh ~/.config/citavuk/update-signing.pem
+```
+
+Сохрани напечатанный `CITAVUK_UPDATE_PUBLIC_KEY` в корневом `.env` и в GitHub
+Secrets под тем же именем. Перед публикацией задай `CITAVUK_UPDATE_SIGNING_KEY`
+с путём к private key; `publish-apps.sh` сверит пару и подпишет `latest.json`.
+Без подписи новые desktop-сборки намеренно не предлагают автоматическое
+обновление.
+
 Для подписанного Android нужны `frontend/android/app/citavuk-release.jks` и
 `frontend/android/key.properties`. Оба закрыты от git. Без них сборка пройдёт,
 но с отладочным ключом, и Play Console такой файл не примет.
@@ -160,7 +172,7 @@ flutter build apk --release --dart-define=MAPTILER_KEY=<ключ>
 **Windows — программа, затем установщик:**
 
 ```bash
-flutter build windows --release --dart-define=MAPTILER_KEY=<ключ>
+flutter build windows --release --dart-define=MAPTILER_KEY=<ключ> --dart-define=CITAVUK_UPDATE_PUBLIC_KEY=<public-key>
 dart run inno_bundle:build --release --no-app
 # → build/windows/x64/installer/Release/Citavuk-x86_64-<версия>-Installer.exe
 ```

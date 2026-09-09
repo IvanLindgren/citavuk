@@ -84,5 +84,6 @@ func (s *Server) handlePutCourseProgress(w http.ResponseWriter, r *http.Request)
 		"courseId":  current.CourseID,
 		"payload":   current.Payload,
 		"updatedAt": current.UpdatedAt,
+		"study":     current.Study,
 	})
 }

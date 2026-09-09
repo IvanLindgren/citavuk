@@ -6,6 +6,9 @@ HF Space стоит за прокси и выставляет X-Forwarded-For �
 """
 
 import threading
+import os
+import ipaddress
+import hmac
 import time
 
 from fastapi import HTTPException, Request
@@ -50,10 +53,26 @@ class TokenBucketLimiter:
 
 
 def _client_ip(request: Request) -> str:
+    peer = request.client.host if request.client else "unknown"
+    secret = os.getenv("CITAVUK_UPSTREAM_SECRET", "")
+    supplied = request.headers.get("x-citavuk-proxy-secret", "")
+    signed_ip = request.headers.get("x-citavuk-client-ip", "")
+    if secret and hmac.compare_digest(secret, supplied):
+        try:
+            return str(ipaddress.ip_address(signed_ip))
+        except ValueError:
+            return peer
+    trusted = {ip.strip() for ip in os.getenv("CITAVUK_TRUSTED_PROXIES", "").split(",") if ip.strip()}
     forwarded = request.headers.get("x-forwarded-for", "")
-    if forwarded:
-        return forwarded.split(",")[0].strip()
-    return request.client.host if request.client else "unknown"
+    if forwarded and peer in trusted:
+        chain = [ip.strip() for ip in forwarded.split(",")] + [peer]
+        while len(chain) > 1 and chain[-1] in trusted:
+            chain.pop()
+        try:
+            return str(ipaddress.ip_address(chain[-1]))
+        except ValueError:
+            pass
+    return peer
 
 
 def make_limiter(rate_per_min: int, burst: int):

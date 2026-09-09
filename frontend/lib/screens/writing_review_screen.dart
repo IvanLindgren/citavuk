@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../services/interface_sounds.dart';
 import '../services/user_db.dart';
+import '../state/app_settings.dart';
 import '../utils/writing.dart';
 import '../widgets/handwriting_pad.dart';
 import '../widgets/wolf_mascot.dart';
@@ -77,8 +82,28 @@ class _WritingReviewScreenState extends State<WritingReviewScreen> {
     if (_queue.isEmpty) return;
     final card = _queue.removeAt(0);
     await UserDb.instance.gradeCard(card['id'] as int, grade);
-    if (grade <= 0) _queue.add(card); // «Снова» — вернуть в конец очереди.
+    if (!mounted) return;
+    if (grade <= 0) {
+      _queue.add(card); // «Снова» — вернуть в конец очереди.
+      // Мягкий сигнал, а не наказание: тот же звук, что за неверный ответ.
+      _playSoft(InterfaceSound.error, 0.2);
+    }
     _reset();
+    // Звучит только настоящая победа: остались одни фразы — это не финал,
+    // а граница режима (фразы письмом не повторяются).
+    if (_queue.isEmpty && _skipped == 0) _playDoneSound();
+  }
+
+  void _playDoneSound() {
+    InterfaceSounds.instance.enabled =
+        context.read<AppSettings>().interfaceSoundEnabled;
+    unawaited(InterfaceSounds.instance.play(InterfaceSound.complete));
+  }
+
+  void _playSoft(InterfaceSound sound, double volume) {
+    InterfaceSounds.instance.enabled =
+        context.read<AppSettings>().interfaceSoundEnabled;
+    unawaited(InterfaceSounds.instance.play(sound, volume: volume));
   }
 
   @override
@@ -108,24 +133,22 @@ class _WritingReviewScreenState extends State<WritingReviewScreen> {
   }
 
   Widget _done(ColorScheme scheme) {
+    final phrasesOnly = _skipped > 0;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const WolfSticker(asset: Wolf.povtor, size: 140),
-            const SizedBox(height: 20),
-            Text('Писать пока нечего',
-                style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: 10),
-            Text(
-              _skipped > 0
+            // Всё написано — победа; остались одни фразы (их письмом не
+            // повторяют) — спокойный знак раздела.
+            WolfBubble(
+              title: phrasesOnly ? 'Только фразы' : 'Готово!',
+              text: phrasesOnly
                   ? 'К повторению остались только фразы, а письмом повторяются '
                       'отдельные слова.'
                   : 'Все слова повторены. Новые появятся, когда подойдёт срок.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: scheme.onSurfaceVariant),
+              asset: phrasesOnly ? Wolf.povtor : Wolf.slavlje,
             ),
           ],
         ),

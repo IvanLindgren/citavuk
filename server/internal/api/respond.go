@@ -90,6 +90,17 @@ func decodeJSON(w http.ResponseWriter, r *http.Request, dst any, maxBytes int64)
 		}
 		return err
 	}
+	var trailing any
+	if err := dec.Decode(&trailing); !errors.Is(err, io.EOF) {
+		if err == nil {
+			return errors.New("ожидался один JSON-объект")
+		}
+		var maxErr *http.MaxBytesError
+		if errors.As(err, &maxErr) {
+			return errTooLarge
+		}
+		return err
+	}
 	return nil
 }
 

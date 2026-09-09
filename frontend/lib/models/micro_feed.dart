@@ -1,5 +1,7 @@
 /// Карточка Вукотока — короткий сербский текст на один экран.
 class MicroFeedItem {
+  final String videoId;
+  final int videoDuration;
   final String id;
   final String category;
   final String titleCyrillic;
@@ -21,6 +23,7 @@ class MicroFeedItem {
   final int reaction;
 
   const MicroFeedItem({
+    this.videoId='',this.videoDuration=0,
     required this.id,
     required this.category,
     required this.titleCyrillic,
@@ -51,6 +54,7 @@ class MicroFeedItem {
     final image = s('imageUrl');
     return MicroFeedItem(
       id: s('id'),
+      videoId:s('videoId'),videoDuration:(j['videoDuration'] as num?)?.toInt()??0,
       category: s('category'),
       titleCyrillic: s('titleCyrillic'),
       titleLatin: s('titleLatin'),

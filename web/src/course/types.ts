@@ -41,14 +41,14 @@ export interface LessonIntro {
 }
 
 export type IntroBlock =
-  | { kind: 'paragraph' | 'tip'; text: string }
+  | { kind: "paragraph" | "tip"; text: string }
   | {
-      kind: 'terms';
+      kind: "terms";
       title: string;
       rows: Array<{ term: string; gloss: string; note?: string }>;
     }
   | {
-      kind: 'example';
+      kind: "example";
       serbian: string;
       russian: string;
       highlight?: string;
@@ -76,13 +76,13 @@ interface ExerciseBase {
 }
 
 export interface MultipleChoiceExercise extends ExerciseBase {
-  type: 'multiple_choice';
+  type: "multiple_choice";
   multi: boolean;
   options: ChoiceOption[];
 }
 
 export interface EndingPickerExercise extends ExerciseBase {
-  type: 'ending_picker';
+  type: "ending_picker";
   contextSentence: string;
   stem: string;
   fullForm: string;
@@ -90,7 +90,7 @@ export interface EndingPickerExercise extends ExerciseBase {
 }
 
 export interface SentenceBuilderExercise extends ExerciseBase {
-  type: 'sentence_builder';
+  type: "sentence_builder";
   tokens: WordTile[];
   distractorTokens: WordTile[];
   acceptedOrders: string[][];
@@ -98,7 +98,7 @@ export interface SentenceBuilderExercise extends ExerciseBase {
 }
 
 export interface LetterUnscrambleExercise extends ExerciseBase {
-  type: 'letter_unscramble';
+  type: "letter_unscramble";
   context: string;
   answer: string;
   extraLetters: string[];
@@ -106,7 +106,7 @@ export interface LetterUnscrambleExercise extends ExerciseBase {
 }
 
 export interface MatchingExercise extends ExerciseBase {
-  type: 'matching';
+  type: "matching";
   leftLabel: string;
   rightLabel: string;
   pairs: Array<{ left: string; right: string }>;
@@ -114,10 +114,9 @@ export interface MatchingExercise extends ExerciseBase {
 }
 
 export interface FillBlankExercise extends ExerciseBase {
-  type: 'fill_blank';
+  type: "fill_blank";
   segments: Array<
-    | { kind: 'text'; text: string }
-    | { kind: 'blank'; id: string }
+    { kind: "text"; text: string } | { kind: "blank"; id: string }
   >;
   blanks: Array<{
     id: string;
@@ -127,8 +126,8 @@ export interface FillBlankExercise extends ExerciseBase {
 }
 
 export interface ImageDescriptionExercise extends ExerciseBase {
-  type: 'image_description';
-  mode: 'choose' | 'free';
+  type: "image_description";
+  mode: "choose" | "free";
   image: {
     path: string;
     altText: string;
@@ -145,7 +144,7 @@ export interface ImageDescriptionExercise extends ExerciseBase {
  * бы чтение в подбор пар.
  */
 export interface ReadingQaExercise extends ExerciseBase {
-  type: 'reading_qa';
+  type: "reading_qa";
   text: string;
   translation: string;
   questions: Array<{
@@ -163,7 +162,7 @@ export interface ReadingQaExercise extends ExerciseBase {
  * разошлось бы с проверкой ответа.
  */
 export interface FormHuntExercise extends ExerciseBase {
-  type: 'form_hunt';
+  type: "form_hunt";
   targetLabel: string;
   translation: string;
   tokens: Array<{ id: string; text: string; tail: string; correct: boolean }>;
@@ -181,7 +180,7 @@ export interface FormHuntExercise extends ExerciseBase {
  * обычное чтение с озвучкой. Число прослушиваний ограничено, как на экзамене.
  */
 export interface ListeningQaExercise extends ExerciseBase {
-  type: 'listening_qa';
+  type: "listening_qa";
   /** Что произносится. На экран попадает только после проверки. */
   transcript: string;
   translation: string;
@@ -244,7 +243,7 @@ export interface CourseProgress {
 
 export interface DialogueProgress {
   dialogueId: string;
-  status: 'notStarted' | 'inProgress' | 'completed';
+  status: "notStarted" | "inProgress" | "completed";
   currentNodeId: string;
   choices: string[];
   updatedAt: string;
@@ -252,13 +251,15 @@ export interface DialogueProgress {
 
 export interface CourseLessonProgress {
   lessonId: string;
+  skipped?: boolean;
+  placementAt?: string | null;
   status:
-    | 'locked'
-    | 'available'
-    | 'inProgress'
-    | 'completed'
-    | 'mastered'
-    | 'needsReview';
+    | "locked"
+    | "available"
+    | "inProgress"
+    | "completed"
+    | "mastered"
+    | "needsReview";
   bestScore: number;
   attemptsCount: number;
   completedAt: string | null;

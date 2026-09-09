@@ -51,7 +51,11 @@ func NewGoogleCodeExchanger(clientID, clientSecret string) *GoogleCodeExchanger 
 }
 
 func (c *GoogleCodeExchanger) Enabled() bool {
-	return c != nil && c.clientID != "" && c.clientSecret != ""
+	// Desktop OAuth — public PKCE-клиент. Google может выдать ему client
+	// secret в JSON, но он не является доказательством личности приложения и
+	// часто отзывается при пересоздании OAuth-клиента. PKCE защищает code flow
+	// без секрета, поэтому наличие client ID достаточно.
+	return c != nil && c.clientID != ""
 }
 
 // ClientID — публичная часть, её приложение получает с сервера и подставляет в
@@ -84,7 +88,11 @@ func (c *GoogleCodeExchanger) Exchange(
 		"code_verifier": {codeVerifier},
 		"redirect_uri":  {redirectURI},
 		"client_id":     {c.clientID},
-		"client_secret": {c.clientSecret},
+	}
+	if c.clientSecret != "" {
+		// Совместимость со старыми confidential-клиентами: для PKCE desktop
+		// конфигурации переменная обычно пустая и secret не отправляется.
+		form.Set("client_secret", c.clientSecret)
 	}
 	req, err := http.NewRequestWithContext(
 		ctx,

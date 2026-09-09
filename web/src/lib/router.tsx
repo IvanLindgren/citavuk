@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type AnchorHTMLAttributes,
   type ReactNode,
@@ -36,24 +37,46 @@ function currentPath(): string {
   return window.location.pathname + window.location.search;
 }
 
+/** Редактор может отменить переход, не перехватывая все ссылки документа. */
+export function allowNavigation(): boolean {
+  return window.dispatchEvent(new Event('citavuk-before-navigate', {cancelable:true}));
+}
+
 export function RouterProvider({ children }: { children: ReactNode }) {
   const [path, setPath] = useState(currentPath);
+  const position = useRef<number>(window.history.state?.citavukIndex ?? 0);
+  const restored = useRef(false);
+  const current = useRef(path);
 
   useEffect(() => {
     // Кнопки «назад» и «вперёд» меняют адрес мимо navigate — состояние нужно
     // подхватывать из события, иначе интерфейс останется на прежнем экране.
-    const onPopState = () => setPath(currentPath());
+    window.history.replaceState({...window.history.state,citavukIndex:position.current}, '', currentPath());
+    const onPopState = () => {
+      if (restored.current) { restored.current=false; return; }
+      const next=window.history.state?.citavukIndex as number|undefined;
+      if(!allowNavigation()) {
+        if(next!==undefined && next!==position.current) {
+          restored.current=true; window.history.go(position.current-next);
+        } else window.history.pushState({citavukIndex:position.current},'',current.current);
+        return;
+      }
+      position.current=next??position.current-1;
+      current.current=currentPath(); setPath(current.current);
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   const navigate = useCallback((to: string, options?: { replace?: boolean }) => {
     if (to === currentPath()) return;
+    if (!allowNavigation()) return;
     if (options?.replace) {
-      window.history.replaceState(null, '', to);
+      window.history.replaceState({citavukIndex:position.current}, '', to);
     } else {
-      window.history.pushState(null, '', to);
+      window.history.pushState({citavukIndex:++position.current}, '', to);
     }
+    current.current=to;
     setPath(to);
     // Новый экран должен открываться сверху. Браузер сам этого не делает:
     // для него это та же страница.

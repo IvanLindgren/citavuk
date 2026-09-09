@@ -5,6 +5,7 @@ import {
   LuBookOpen,
   LuBoxes,
   LuDownload,
+  LuExternalLink,
   LuDumbbell,
   LuFlower2,
   LuGraduationCap,
@@ -12,6 +13,7 @@ import {
   LuHeartHandshake,
   LuInfo,
   LuLanguages,
+  LuLayers,
   LuLibrary,
   LuMap,
   LuMapPin,
@@ -92,6 +94,7 @@ interface Section {
  * зацепиться, и нужный раздел приходится искать перебором.
  */
 const GROUPS: { title: string; items: Section[] }[] = [
+  {title:'Твой день',items:[{to:'/personal',label:'Урок дня',icon:LuSparkles}]},
   {
     title: 'Читать',
     items: [
@@ -240,11 +243,11 @@ export function Header() {
     >
       <div
         className={[
-          'mx-auto flex max-w-6xl items-center gap-3 px-5 transition-[height] duration-300',
+          'mx-auto flex max-w-6xl items-center gap-3 px-5 max-[380px]:gap-1 max-[380px]:px-2 transition-[height] duration-300',
           scrolled ? 'h-14' : 'h-16',
         ].join(' ')}
       >
-        <Link to="/" className="group flex shrink-0 items-center gap-2.5 font-display text-xl font-bold">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5 font-display text-xl max-[380px]:text-lg font-bold">
           <img
             src="/img/citavuk_icon.webp"
             srcSet="/img/citavuk_icon.webp 1x, /img/citavuk_icon@2x.webp 2x"
@@ -271,16 +274,16 @@ export function Header() {
             aria-current={isVukotok(path) ? 'page' : undefined}
             aria-label="Вукоток"
             title="Вукоток · лента коротких сербских текстов"
-            className="group inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-[var(--accent)]/35 bg-[var(--accent)] px-2.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
+            className="header-feature-link group inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold"
           >
-            <WolfGlyph className="size-5 transition-transform duration-300 ease-[var(--ease-soft)] group-hover:-rotate-12 group-hover:scale-110" />
+            <LuLayers className="size-5" aria-hidden="true" />
             <span className="hidden sm:inline">Вукоток</span>
           </Link>
           <Link
             to="/lessons"
             aria-current={path.startsWith('/lessons') ? 'page' : undefined}
             title="Уроки преподавателей"
-            className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-2.5 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
+            className="header-feature-link hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold lg:inline-flex"
           >
             <LuGraduationCap className="size-4" aria-hidden="true" />
             Уроки
@@ -394,7 +397,7 @@ export function Header() {
 /** Оба адреса Вукотока: новый и прежний, который ещё ходит по чужим закладкам. */
 export function isVukotok(path: string): boolean {
   const clean = path.split('?')[0] ?? '';
-  return clean === VUKOTOK_PATH || clean === '/micro-feed';
+  return clean === VUKOTOK_PATH || clean === '/micro-feed' || clean==='/vukotok/video';
 }
 
 /** Длинное «Денис Корнилов» ломало кнопку на две строки. */
@@ -444,7 +447,7 @@ function SectionTile({
       <span className="min-w-0 leading-tight">{label}</span>
       {item.external && (
         <span className="ml-auto shrink-0 text-xs opacity-60" aria-hidden="true">
-          ↗
+          <LuExternalLink className="size-3" aria-hidden="true" />
         </span>
       )}
     </>
@@ -647,14 +650,14 @@ function SupportStrip() {
     () => localStorage.getItem(SUPPORT_STRIP_DISMISSED) === '1',
   );
 
-  if (dismissed || odysseyAvailable() || path.startsWith('/support') || isVukotok(path)) {
+  if (dismissed || odysseyAvailable() || path.startsWith('/support') || path.split('?')[0]==='/personal' || isVukotok(path)) {
     return null;
   }
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-5 py-1.5">
-        <p className="min-w-0 flex-1 text-xs font-semibold leading-snug text-[var(--text-muted)]">
+        <p className="min-w-0 basis-full text-xs font-semibold leading-snug text-[var(--text-muted)] sm:basis-0 sm:flex-1">
           Читавук продолжает быть бесплатным. Скорее вступай в Telegram-чат
           обсуждения Читавука, а то волк укусит за бочок!{' '}
           <a

@@ -79,7 +79,7 @@ type SentenceAnalysis struct {
 }
 
 // wordSpan — слово сербской латиницы или кириллицы вместе с апострофом внутри.
-var wordSpan = regexp.MustCompile(`[\p{L}][\p{L}'’-]*`)
+var wordSpan = regexp.MustCompile(`\p{L}[\p{L}\p{M}]*([-‑'’]\p{L}[\p{L}\p{M}]*)*`)
 
 // Span — границы слова в исходной строке.
 type Span struct {
@@ -121,7 +121,7 @@ func Analyze(sentence string, tokens []Token) SentenceAnalysis {
 	// своих слов. Именные группы строятся уже по уточнённому.
 	taken := make([]bool, len(tokens))
 	result.Chunks = append(result.Chunks, prepositionChunks(result.Tokens, taken)...)
-	result.Chunks = append(result.Chunks, verbChunks(result.Tokens, taken)...)
+	result.Chunks = append(result.Chunks, verbChunks(sentence, result.Tokens, taken)...)
 	result.Chunks = append(result.Chunks, nounChunks(result.Tokens, taken)...)
 	sortChunks(result.Chunks)
 	return result
@@ -361,8 +361,8 @@ func governmentMeaning(gov []Government, gcase string) string {
 // В сербском время и наклонение почти всегда собираются из нескольких слов:
 // «sam čitao» — перфект, «ću čitati» — будущее, «bih čitao» — условное. По
 // отдельности эти слова описываются неверно: «sam» само по себе — «я есть».
-func verbChunks(tokens []Token, taken []bool) []Chunk {
-	promoteAuxiliaries(tokens)
+func verbChunks(sentence string, tokens []Token, taken []bool) []Chunk {
+	promoteAuxiliaries(sentence, tokens)
 	out := []Chunk{}
 	for i := range tokens {
 		if taken[i] || (tokens[i].UPOS != "VERB" && tokens[i].UPOS != "AUX") {
@@ -371,17 +371,22 @@ func verbChunks(tokens []Token, taken []bool) []Chunk {
 		group := []int{i}
 		// Вспомогательный глагол ищется и слева, и справа: «sam čitao», но и
 		// «čitao sam» — порядок в сербском свободный.
-		for _, j := range []int{i - 1, i + 1} {
+		for _, j := range verbNeighbours(sentence, tokens, i) {
 			if j < 0 || j >= len(tokens) || taken[j] || contains(group, j) {
 				continue
 			}
 			if pairsWithVerb(tokens[i], tokens[j]) {
 				group = append(group, j)
+				for k := min(i, j) + 1; k < max(i, j); k++ {
+					if !taken[k] && !contains(group, k) {
+						group = append(group, k)
+					}
+				}
 			}
 		}
 		// Отрицание и возвратная частица — часть той же формы.
 		for j := max(0, i-2); j < min(len(tokens), i+3); j++ {
-			if taken[j] || contains(group, j) {
+			if taken[j] || contains(group, j) || crossesClauseBoundary(sentence, tokens, i, j) {
 				continue
 			}
 			if isNegation(tokens[j]) || isReflexiveParticle(tokens[j]) {
@@ -414,9 +419,9 @@ func verbChunks(tokens []Token, taken []bool) []Chunk {
 // «bio» рядом с «je» — это перфект, а не прилагательное, и решает тут именно
 // соседство. Проверка идёт по разборам, которые у формы уже есть: выдумывать
 // вспомогательный глагол там, где словарь его не видит, нельзя.
-func promoteAuxiliaries(tokens []Token) {
+func promoteAuxiliaries(sentence string, tokens []Token) {
 	for i := range tokens {
-		if tokens[i].UPOS == "AUX" || !hasNeighbourVerbForm(tokens, i) {
+		if tokens[i].UPOS == "AUX" || !hasNeighbourVerbForm(sentence, tokens, i) {
 			continue
 		}
 		for _, reading := range tokens[i].Readings {
@@ -435,8 +440,8 @@ func promoteAuxiliaries(tokens []Token) {
 
 // hasNeighbourVerbForm сообщает, стоит ли вплотную причастие или инфинитив —
 // то, с чем вспомогательный глагол и образует форму.
-func hasNeighbourVerbForm(tokens []Token, i int) bool {
-	for _, j := range []int{i - 1, i + 1} {
+func hasNeighbourVerbForm(sentence string, tokens []Token, i int) bool {
+	for _, j := range verbNeighbours(sentence, tokens, i) {
 		if j < 0 || j >= len(tokens) {
 			continue
 		}
@@ -471,6 +476,11 @@ func pairsWithVerb(main, other Token) bool {
 // нему, «sam» ничего не сообщает о действии.
 func verbHead(tokens []Token, group []int) int {
 	for _, i := range group {
+		if tokens[i].UPOS != "AUX" && tokens[i].Feats["VerbForm"] == "Part" {
+			return i
+		}
+	}
+	for _, i := range group {
 		if tokens[i].UPOS == "VERB" {
 			return i
 		}
@@ -500,6 +510,8 @@ func verbLabel(tokens []Token, group []int, head int) string {
 // rekao» («я бы не сказал») подписывалось прошедшим временем.
 func compoundForm(aux, verb Token) string {
 	switch {
+	case verb.Feats["Voice"] == "Pass":
+		return "страдательный залог (пассив)"
 	case aux.Feats["Mood"] == "Cnd":
 		return "условное наклонение (потенцијал)"
 	case aux.Lemma == "hteti" || aux.Lemma == "htjeti":
@@ -511,6 +523,51 @@ func compoundForm(aux, verb Token) string {
 		return "прошедшее время (перфекат)"
 	}
 	return ""
+}
+
+// Через местоименные клитики проходит связь sam — mu — rekao. Через
+// союзы, самостоятельные слова и знаки конца клаузы она не переносится.
+func verbNeighbours(sentence string, tokens []Token, index int) []int {
+	out := []int{}
+	for _, step := range []int{-1, 1} {
+		for j := index + step; j >= 0 && j < len(tokens); j += step {
+			if crossesClauseBoundary(sentence, tokens, index, j) {
+				break
+			}
+			if isVerbBridge(tokens[j]) {
+				continue
+			}
+			out = append(out, j)
+			break
+		}
+	}
+	return out
+}
+
+func isVerbBridge(token Token) bool {
+	if token.UPOS == "AUX" || token.UPOS == "VERB" {
+		return false
+	}
+	if c := token.Feats["Case"]; c != "" && c != "Dat" && c != "Acc" && c != "Gen" {
+		return false
+	}
+	switch strings.ToLower(token.Surface) {
+	case "me", "te", "ga", "je", "ju", "nas", "vas", "ih", "mi", "ti", "mu", "joj", "nam", "vam", "im", "se", "ne",
+		"ме", "те", "га", "је", "ју", "нас", "вас", "их", "ми", "ти", "му", "јој", "нам", "вам", "им", "се", "не":
+		return true
+	}
+	return false
+}
+
+func crossesClauseBoundary(sentence string, tokens []Token, a, b int) bool {
+	for i := min(a, b); i < max(a, b); i++ {
+		left, right := tokens[i].End, tokens[i+1].Start
+		if left >= 0 && right > left && right <= len(sentence) &&
+			strings.ContainsAny(sentence[left:right], ",.;:!?…\n\r—–()") {
+			return true
+		}
+	}
+	return false
 }
 
 // auxOf находит вспомогательный глагол группы. Возвращает -1, если его нет.

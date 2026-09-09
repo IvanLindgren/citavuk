@@ -12,6 +12,7 @@ import 'translation_client.dart';
 import '../utils/transliteration.dart';
 import 'lexicon_db.dart';
 import 'user_db.dart';
+import 'analysis_cache_key.dart';
 
 /// Разбор слова/фразы: сначала онлайн (CLASSLA-сервер), при недоступности —
 /// офлайн по локальному лексикону (LexiconDb).
@@ -29,6 +30,20 @@ class AnalysisRepository {
   /// адреса сервера в настройках.
   static TranslationClient? _translator;
   static String _translatorUrl = '';
+
+  /// Ошибка внешнего переводчика не является переводом и не должна переживать
+  /// перезапуск приложения в кэше. Раньше Python-сервис возвращал эту строку
+  /// с HTTP 200, из-за чего карточка слова запоминала ошибку как значение.
+  static String? _usableTranslation(String? value) {
+    final text = value?.trim() ?? '';
+    if (text.isEmpty ||
+        RegExp(r'^\[?перевод (недоступен|временно недоступен|доступен только онлайн)',
+                caseSensitive: false)
+            .hasMatch(text)) {
+      return null;
+    }
+    return text;
+  }
 
   static TranslationClient get _translationClient {
     if (_translator == null || _translatorUrl != translationUrl) {
@@ -74,27 +89,50 @@ class AnalysisRepository {
     // Кэш разборов: повторный тап по слову не ходит в сеть за морфологией и
     // общим переводом — онлайн остаётся только контекстный перевод (он зависит
     // от предложения и не кэшируется).
-    final cachedJson = await UserDb.instance.getCachedAnalysis(token);
+    final url = backendUrl ?? baseUrl;
+    final cacheKey = analysisCacheKey(
+      token: token,
+      sentence: sent,
+      start: startOffset,
+      end: end,
+      backend: url,
+    );
+    final cachedJson = await UserDb.instance.getCachedAnalysis(cacheKey);
     if (cachedJson != null) {
       try {
-        final base = WordAnalysis.fromCacheJson(
+        var base = WordAnalysis.fromCacheJson(
             jsonDecode(cachedJson) as Map<String, dynamic>, token);
-        final contextual = await _translateContextualOnline(
-          sentence: sent,
-          startOffset: startOffset,
-          endOffset: end,
-          tokenText: token,
-        );
-        return base.copyWith(
+        final translations = await Future.wait<String?>([
+          _recoverGeneralTranslation(
+            surface: token,
+            lemma: base.lemma,
+            proposed: base.translation,
+          ),
+          _translateContextualOnline(
+            sentence: sent,
+            startOffset: startOffset,
+            endOffset: end,
+            tokenText: token,
+          ),
+        ]);
+        final general = translations[0];
+        final contextual = translations[1];
+        final displayTranslation =
+            general ?? contextual ?? '[Перевод временно недоступен]';
+        base = base.copyWith(
+          translation: displayTranslation,
           contextualTranslation: contextual,
-          isOffline: contextual == null,
+          isOffline: general == null && contextual == null,
         );
+        if (general != null) {
+          await UserDb.instance.cacheTranslation(base.lemma, general);
+        }
+        return base;
       } catch (_) {
         // битый кэш — идём обычным путём
       }
     }
 
-    final url = backendUrl ?? baseUrl;
     try {
       final resp = await http
           .post(
@@ -117,17 +155,44 @@ class AnalysisRepository {
         // Сервер и локальный лексикон — одна система: если CLASSLA не определил
         // часть речи / признаки / формы, дополняем из локального словаря.
         result = await _mergeWithLexicon(result);
-        if (result.translation.trim().isNotEmpty) {
-          UserDb.instance.cacheTranslation(token, result.translation);
+        // Даже успешный /analyze не является переводчиком: Python может
+        // вернуть морфологию, но не суметь сходить к Google. Контекстный
+        // перевод идёт через основной Go-сервер всегда, иначе первый тап
+        // показывал сохранённую строку «[Перевод недоступен]».
+        final translations = await Future.wait<String?>([
+          _recoverGeneralTranslation(
+            surface: token,
+            lemma: result.lemma,
+            proposed: result.translation,
+          ),
+          _translateContextualOnline(
+            sentence: sent,
+            startOffset: startOffset,
+            endOffset: end,
+            tokenText: token,
+          ),
+        ]);
+        final general = translations[0];
+        final contextual = translations[1];
+        final displayTranslation =
+            general ?? contextual ?? '[Перевод временно недоступен]';
+        result = result.copyWith(
+          translation: displayTranslation,
+          contextualTranslation: contextual,
+          isOffline: general == null && contextual == null,
+        );
+        if (general != null) {
+          await UserDb.instance.cacheTranslation(result.lemma, general);
         }
         // Кэшируем только серверные разборы (CLASSLA): они самые дорогие
         // (прогрев HF Space) и самые качественные. Офлайн-результаты не пишем,
         // чтобы слабый разбор не «закрывал» дорогу лучшему серверному.
-        if (!result.isPhrase &&
+        if (general != null &&
+            !result.isPhrase &&
             result.upos != 'UNKNOWN' &&
-            result.translation.trim().isNotEmpty) {
+            _usableTranslation(result.translation) != null) {
           UserDb.instance
-              .cacheAnalysis(token, jsonEncode(result.toCacheJson()));
+              .cacheAnalysis(cacheKey, jsonEncode(result.toCacheJson()));
         }
         return result;
       }
@@ -136,6 +201,23 @@ class AnalysisRepository {
     }
     return _offlineOrOnline(token,
         sentence: sent, startOffset: startOffset, endOffset: end);
+  }
+
+  /// Возвращает пригодный общий перевод для уже разобранного слова. Лексикон
+  /// и старый хороший кэш дешевле сети; заглушки от старых версий игнорируются.
+  Future<String?> _recoverGeneralTranslation({
+    required String surface,
+    required String lemma,
+    String? proposed,
+  }) async {
+    var translation = _usableTranslation(proposed);
+    translation ??=
+        await LexiconDb.instance.getOfflineTranslation(surface, lemma);
+    translation ??=
+        _usableTranslation(await UserDb.instance.getCachedTranslation(lemma));
+    translation ??=
+        _usableTranslation(await UserDb.instance.getCachedTranslation(surface));
+    return translation;
   }
 
   /// Разбор английского слова: словарь + перевод en→ru.
@@ -161,7 +243,8 @@ class AnalysisRepository {
 
       // Словарное значение берём у начальной формы — как и в сербском пути:
       // «ran» в словаре нет, там «run».
-      var general = await UserDb.instance.getCachedTranslation(parsed.lemma);
+      var general = await UserDb.instance
+          .getCachedTranslation(parsed.lemma, source: 'en');
       final needGeneral = general == null;
 
       final results = await Future.wait<String?>([
@@ -180,7 +263,8 @@ class AnalysisRepository {
       final generalNet = needGeneral ? results[0] : null;
       final contextual = results[1];
       if (generalNet != null) {
-        await UserDb.instance.cacheTranslation(parsed.lemma, generalNet);
+        await UserDb.instance
+            .cacheTranslation(parsed.lemma, generalNet, source: 'en');
       }
       general ??= generalNet;
 
@@ -348,7 +432,7 @@ class AnalysisRepository {
 
       final tagged =
           '${w.text.substring(0, w.start)}<w>$tokenText</w>${w.text.substring(w.end)}';
-      final translated = await _translateOnline(tagged);
+      final translated = await _translateOnline(tagged, source: source);
       if (translated != null) {
         final reg =
             RegExp(r'<w[^>]*>(.*?)</w>', caseSensitive: false, dotAll: true);

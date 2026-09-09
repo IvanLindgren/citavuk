@@ -34,7 +34,8 @@ webkit2gtk 4.1 (вход через Google и Яндекс открываетс�
 Debian, Ubuntu и производные:
 
     sudo apt install libgtk-3-0 libgstreamer1.0-0 \
-        gstreamer1.0-plugins-good libwebkit2gtk-4.1-0
+        gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-libav \
+        libwebkit2gtk-4.1-0
 
 Fedora:
 

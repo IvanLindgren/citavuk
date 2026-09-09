@@ -7,23 +7,17 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-
-	"github.com/citavuk/server/internal/config"
 )
 
-// testStore подключается к базе из CITAVUK_TEST_DATABASE_URL, а если её нет —
-// к обычной DATABASE_URL из .env репозитория. Без базы тест пропускается:
-// сборка на машине без доступа к PostgreSQL не должна падать.
+// testStore использует только явно указанную тестовую базу.
 func testStore(t *testing.T) *Store {
 	t.Helper()
 
 	url := os.Getenv("CITAVUK_TEST_DATABASE_URL")
 	if url == "" {
-		if cfg, err := config.Load("../../../.env"); err == nil {
-			url = cfg.DatabaseURL
+		if os.Getenv("CI") != "" {
+			t.Fatal("CI требует CITAVUK_TEST_DATABASE_URL")
 		}
-	}
-	if url == "" {
 		t.Skip("нет строки подключения к PostgreSQL — тест пропущен")
 	}
 
@@ -32,7 +26,7 @@ func testStore(t *testing.T) *Store {
 
 	s, err := Open(ctx, url)
 	if err != nil {
-		t.Skipf("PostgreSQL недоступен: %v", err)
+		t.Fatalf("Тестовый PostgreSQL недоступен: %v", err)
 	}
 	t.Cleanup(s.Close)
 	return s

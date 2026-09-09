@@ -84,6 +84,8 @@ type Config struct {
 	// UpstreamURL — старый Python-бэкенд. Go пока не умеет CLASSLA, новости и
 	// TTS, поэтому такие запросы проксируются. Пустая строка выключает проксирование.
 	UpstreamURL string
+	// UpstreamSecret подписывает доверенную передачу исходного IP в Python.
+	UpstreamSecret string
 
 	// AllowedOrigins — список origin для CORS. Пустой список означает, что
 	// браузерные запросы с других origin запрещены.
@@ -202,6 +204,7 @@ func Load(envPath string) (*Config, error) {
 		DeepLRunesPerDay: envIntAllowZero(
 			"CITAVUK_DEEPL_RUNES_PER_DAY", translate.DefaultRunesPerDay),
 		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
+		UpstreamSecret: strings.TrimSpace(os.Getenv("CITAVUK_UPSTREAM_SECRET")),
 		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
 		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
 		MaxBookBytes:   int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),

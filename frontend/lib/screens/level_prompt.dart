@@ -133,7 +133,7 @@ class _LevelPromptSheetState extends State<_LevelPromptSheet> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const WolfSticker(asset: Wolf.zdravo, size: 84, frame: false),
+            const WolfSticker(asset: Wolf.zdravo, size: 96, frame: false),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -222,7 +222,8 @@ class _LevelPromptSheetState extends State<_LevelPromptSheet> {
       ];
 
   List<Widget> _resultView(LevelTestResult result) => [
-        const Center(child: WolfSticker(asset: Wolf.zdravo, size: 110)),
+        // Проверка позади — маленькая победа, а не новое знакомство.
+        const Center(child: WolfSticker(asset: Wolf.slavlje, size: 130)),
         const SizedBox(height: 12),
         Center(
           child: Text('Верных ответов ${result.correct} из ${result.total}',

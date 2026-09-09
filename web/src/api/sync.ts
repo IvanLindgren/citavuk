@@ -10,12 +10,11 @@ import {
   type BookMeta,
 } from '../lib/books';
 import { contentSha } from '../lib/content';
-import { getMeta, setMeta } from '../lib/db';
+import { activateAccountStorage, getMeta, setMeta } from '../lib/db';
 import {
   applyRemotePalace,
   clearPalaceDirty,
   dirtyPalaces,
-  markPalacesDirty,
   purgePalaceTombstones,
   type Palace,
 } from '../lib/palace';
@@ -26,7 +25,6 @@ import {
   clearVocabularyDirty,
   dirtyReviews,
   dirtyVocabulary,
-  markAllStudyDataDirty,
   type Review,
   type VocabEntry,
 } from '../lib/vocabulary';
@@ -121,7 +119,7 @@ function toRemote(book: BookMeta): Record<string, unknown> {
     sourceKey: book.sourceKey,
     paraCount: book.paragraphCount,
     lastPara: book.lastParagraph,
-    contentSha: book.contentSha,
+    contentSha: book.contentUploaded || book.textMissing ? book.contentSha : '',
     deleted: book.deleted === 1,
     updatedAt: new Date(book.updatedAt).toISOString(),
   };
@@ -136,13 +134,9 @@ function parseTime(value: string): number {
 export async function runSync(): Promise<SyncReport> {
   const report: SyncReport = { sent: 0, received: 0, uploaded: 0 };
 
+  report.uploaded = await uploadMissingContent();
   report.sent = await pushChanges();
   report.received = await pullChanges();
-  report.uploaded = await uploadMissingContent();
-
-  // Выгруженные тексты меняют адреса книг — их нужно донести до сервера,
-  // иначе другое устройство не узнает, что текст появился.
-  if (report.uploaded > 0) report.sent += await pushChanges();
 
   await setMeta(LAST_SYNC_KEY, Date.now());
   await purgeTombstones();
@@ -374,7 +368,7 @@ async function applyRemoteBook(remote: RemoteBook): Promise<boolean> {
     return true;
   }
 
-  if (existing.updatedAt > remoteAt) return false;
+  if (existing.dirty && existing.updatedAt > remoteAt) return false;
 
   // Текст перекачивать нужно, только если адрес изменился.
   const textChanged =
@@ -401,8 +395,7 @@ async function uploadMissingContent(): Promise<number> {
   const candidates = await booksWithLocalText(20);
   if (candidates.length === 0) return 0;
 
-  const shas = candidates.map((book) => book.contentSha).filter(Boolean);
-  if (shas.length === 0) return 0;
+  const shas = candidates.map((book) => book.contentSha);
 
   // Один запрос вместо проверки по книге: тексты весят мегабайты, и выгружать
   // уже имеющееся — впустую потраченный трафик пользователя.
@@ -413,7 +406,14 @@ async function uploadMissingContent(): Promise<number> {
 
   let uploaded = 0;
   for (const book of candidates) {
-    if (!book.contentSha || present[book.contentSha]) continue;
+    if (!book.contentSha) continue;
+    if (present[book.contentSha]) {
+      const current = (await allBooks()).find((item) => item.id === book.id);
+      if (current && current.contentSha === book.contentSha && !current.deleted) {
+        await saveMeta({ ...current, contentUploaded: true, dirty: 1 });
+      }
+      continue;
+    }
 
     const paragraphs = await getParagraphs(book.id);
     if (paragraphs.length === 0) continue;
@@ -426,11 +426,18 @@ async function uploadMissingContent(): Promise<number> {
         timeoutMs: 180_000,
       });
       uploaded++;
+      const current = (await allBooks()).find((item) => item.id === book.id);
+      if (current && current.contentSha === book.contentSha && !current.deleted) {
+        await saveMeta({ ...current, contentUploaded: true, dirty: 1 });
+      }
     } catch (error) {
       // Книга больше допустимого размера — помечаем, чтобы не пытаться
       // выгружать её при каждой синхронизации.
       if (error instanceof ApiError && error.status === 413) {
-        await saveMeta({ ...book, contentSha: '', dirty: 0 });
+        const current = (await allBooks()).find((item) => item.id === book.id);
+        if (current && current.contentSha === book.contentSha) {
+          await saveMeta({ ...current, contentTooLarge: true, contentUploaded: false });
+        }
         continue;
       }
       throw error;
@@ -453,7 +460,7 @@ export async function downloadContent(book: BookMeta): Promise<string[] | null> 
       `/v1/sync/content/${book.contentSha}`,
       { timeoutMs: 120_000 },
     );
-    if (!Array.isArray(paragraphs)) return null;
+    if (!Array.isArray(paragraphs) || paragraphs.some((p) => typeof p !== 'string')) return null;
 
     // Адрес проверяется на месте: скачанный текст обязан соответствовать тому,
     // за чем мы шли. Иначе книга молча подменилась бы.
@@ -491,20 +498,16 @@ export async function lastSyncAt(): Promise<number> {
 /**
  * Сбрасывает синхронизацию при смене аккаунта.
  *
- * Курсор обнуляется, а всё локальное помечается к отправке: иначе книги двух
- * пользователей перемешались бы в одной библиотеке.
+ * У каждого аккаунта собственная IndexedDB. Гостевая библиотека не загружается
+ * в аккаунт автоматически: это единственный безопасный вариант для общего
+ * устройства.
  */
 export async function resetForAccount(userId: string): Promise<void> {
+  await activateAccountStorage(userId);
   const previous = await getMeta<string>(USER_KEY, '');
   if (previous === userId) return;
 
   await setMeta(USER_KEY, userId);
   await setMeta(CURSOR_KEY, 0);
-
-  const books = await allBooks();
-  for (const book of books) {
-    await saveMeta({ ...book, dirty: 1 });
-  }
-  await markAllStudyDataDirty();
-  await markPalacesDirty();
+  await setMeta(LAST_SYNC_KEY, 0);
 }

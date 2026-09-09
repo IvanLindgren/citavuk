@@ -35,6 +35,7 @@ import {
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
 import { AdminAnnouncementsPanel } from '../components/AdminAnnouncementsPanel';
 import { AdminMicroFeedPanel } from '../components/AdminMicroFeedPanel';
+import {AdminVideos} from '../components/AdminVideos';
 import { AdminRoadmapPanel } from '../components/AdminRoadmapPanel';
 import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
@@ -166,7 +167,7 @@ export function Admin() {
             {tab === 'courses' && <CoursesPanel />}
             {tab === 'teachers' && <TeacherModerationPanel />}
             {tab === 'announcements' && <AdminAnnouncementsPanel />}
-            {tab === 'micro-feed' && <AdminMicroFeedPanel />}
+            {tab === 'micro-feed' && <><AdminVideos/><AdminMicroFeedPanel /></>}
             {tab === 'roadmap' && <AdminRoadmapPanel />}
           </div>
         </div>

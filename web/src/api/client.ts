@@ -9,6 +9,7 @@
 export const API_BASE = import.meta.env.DEV ? '' : 'https://api.citavuk.ru';
 
 const TOKEN_KEY = 'citavuk-token';
+const EPHEMERAL_TOKEN_KEY = 'citavuk-session-token';
 
 export class ApiError extends Error {
   constructor(
@@ -32,16 +33,15 @@ export class ApiError extends Error {
 }
 
 /**
- * Токен сессии хранится в localStorage.
- *
- * Не в cookie: сервер отвечает на нескольких поддоменах и не ставит cookie сам,
- * а токен всё равно передаётся заголовком Authorization. Против XSS localStorage
- * не защищает, но и httpOnly-cookie в этой схеме недоступна — защита строится
- * на том, что сайт не выполняет стороннего кода.
+ * В localStorage хранится только признак сессии. Секрет — в HttpOnly cookie.
+ * Старые bearer-сессии требуют повторного входа после обновления.
  */
 export function getToken(): string | null {
   try {
-    return localStorage.getItem(TOKEN_KEY);
+    const value = localStorage.getItem(TOKEN_KEY);
+    if (value === 'cookie') return value;
+    localStorage.removeItem(TOKEN_KEY);
+    return sessionStorage.getItem(EPHEMERAL_TOKEN_KEY);
   } catch {
     return null;
   }
@@ -49,8 +49,14 @@ export function getToken(): string | null {
 
 export function setToken(token: string | null): void {
   try {
-    if (token) localStorage.setItem(TOKEN_KEY, token);
-    else localStorage.removeItem(TOKEN_KEY);
+    if (token === 'cookie') {
+      localStorage.setItem(TOKEN_KEY, 'cookie');
+      sessionStorage.removeItem(EPHEMERAL_TOKEN_KEY);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+      if (token) sessionStorage.setItem(EPHEMERAL_TOKEN_KEY, token);
+      else sessionStorage.removeItem(EPHEMERAL_TOKEN_KEY);
+    }
   } catch {
     // Приватный режим браузера: сессия проживёт до перезагрузки вкладки.
   }
@@ -79,15 +85,17 @@ export async function request<T>(
   // «вечная загрузка» — худшее, что может увидеть пользователь.
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const abort = () => controller.abort();
   if (options.signal) {
-    options.signal.addEventListener('abort', () => controller.abort(), { once: true });
+    if (options.signal.aborted) abort();
+    else options.signal.addEventListener('abort', abort, { once: true });
   }
 
-  const headers: Record<string, string> = { Accept: 'application/json', ...options.headers };
+  const headers: Record<string, string> = { Accept: 'application/json', 'X-Citavuk-Client': 'web', ...options.headers };
   if (body !== undefined) headers['Content-Type'] = 'application/json; charset=utf-8';
+  const token = getToken();
   if (!anonymous) {
-    const token = getToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
+    if (token && token !== 'cookie') headers.Authorization = `Bearer ${token}`;
   }
 
   let response: Response;
@@ -95,6 +103,7 @@ export async function request<T>(
     response = await fetch(API_BASE + path, {
       method,
       headers,
+      credentials: token === 'cookie' || path.startsWith('/v1/auth/') ? 'include' : 'omit',
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: controller.signal,
     });
@@ -104,6 +113,7 @@ export async function request<T>(
     throw new ApiError('Нет связи с сервером.');
   } finally {
     clearTimeout(timer);
+    options.signal?.removeEventListener('abort', abort);
   }
 
   const text = await response.text();

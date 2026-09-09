@@ -1,0 +1,26 @@
+import {readFileSync} from 'node:fs';
+import {act} from 'react';
+import {createRoot,type Root} from 'react-dom/client';
+import {afterEach,beforeEach,expect,it,vi} from 'vitest';
+import type {CourseBundle} from './types';
+const navigate=vi.hoisted(()=>vi.fn());
+vi.mock('../lib/router',()=>({useRouter:()=>({navigate})}));
+import {CourseStartDialog} from './CourseStartDialog';
+import {loadProgress,lessonUnlocked} from './data';
+const bundle=JSON.parse(readFileSync('../frontend/assets/course/course_bundle.json','utf8')) as CourseBundle;
+const lessons=bundle.units.flatMap(u=>u.skills.flatMap(s=>s.lessons));
+let host:HTMLDivElement,root:Root;
+beforeEach(()=>{localStorage.clear();navigate.mockClear();vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT',true);vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new Error('offline')));host=document.createElement('div');document.body.append(host);root=createRoot(host);});
+afterEach(async()=>{await act(()=>root.unmount());host.remove();vi.unstubAllGlobals();localStorage.clear();});
+it('отмена ничего не меняет, подтверждение открывает выбранный урок офлайн без XP',async()=>{
+ const close=vi.fn();const lesson=lessons[3]!;
+ await act(()=>root.render(<CourseStartDialog bundle={bundle} lesson={lesson} close={close}/>));
+ const buttons=document.querySelectorAll<HTMLButtonElement>('[role=dialog] button');
+ await act(()=>buttons[0]!.click());expect(close).toHaveBeenCalledTimes(1);expect(navigate).not.toHaveBeenCalled();
+ expect(loadProgress(bundle).lessons[lesson.id]?.placementAt).toBeUndefined();
+ await act(()=>buttons[1]!.click());
+ const progress=loadProgress(bundle);
+ expect(lessonUnlocked(lesson,progress)).toBe(true);expect(progress.xp).toBe(0);
+ expect(progress.lessons[lessons[0]!.id]?.skipped).toBe(true);
+ expect(navigate).toHaveBeenCalledWith(`/course/lesson/${lesson.id}`);
+});

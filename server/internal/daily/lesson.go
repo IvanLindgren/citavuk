@@ -34,11 +34,12 @@ type Word struct {
 
 // Exercise — задание к тексту.
 type Exercise struct {
-	Kind     string   `json:"kind"`
-	Question string   `json:"question"`
-	Options  []string `json:"options,omitempty"`
-	Answer   string   `json:"answer"`
-	Hint     string   `json:"hint,omitempty"`
+	Kind            string   `json:"kind"`
+	Question        string   `json:"question"`
+	Options         []string `json:"options,omitempty"`
+	Answer          string   `json:"answer"`
+	AcceptedAnswers []string `json:"acceptedAnswers,omitempty"`
+	Hint            string   `json:"hint,omitempty"`
 }
 
 // Lesson — то, что вернула модель.

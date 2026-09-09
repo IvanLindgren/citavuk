@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import { ApiError, getToken, request, setToken } from '../api/client';
+import { activateAccountStorage, activateGuestStorage } from '../lib/db';
 import { forgetGoogleAccount } from '../lib/google';
 
 export interface Account {
@@ -107,7 +108,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     let cancelled = false;
     request<Account>('/v1/auth/me')
-      .then((user) => {
+      .then(async (user) => {
+        await activateAccountStorage(user.id);
         if (!cancelled) setAccount(user);
       })
       .catch((error: unknown) => {
@@ -132,6 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           body: { ...body, device: deviceInfo() },
           anonymous: true,
         });
+        await activateAccountStorage(response.user.id);
         setToken(response.token);
         setAccount(response.user);
       } finally {
@@ -195,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           body: { password, confirm: 'УДАЛИТЬ' },
         });
         setToken(null);
+        await activateGuestStorage();
         setAccount(null);
         forgetGoogleAccount();
       },
@@ -206,6 +210,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // выйти; серверная сессия доживёт до своего срока.
         }
         setToken(null);
+        await activateGuestStorage();
         setAccount(null);
         // Иначе Google при следующем заходе молча подставит тот же аккаунт,
         // и «выйти» окажется бессмысленным.

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import {
   HiArrowDownTray,
@@ -28,6 +28,7 @@ export function PublicLibrary() {
   });
   const { navigate } = useRouter();
   const { sync } = useSync();
+  const reduceMotion = useReducedMotion();
   const [items, setItems] = useState<PublicLibraryItem[] | null>(null);
   const [error, setError] = useState('');
   const [query, setQuery] = useState('');
@@ -163,11 +164,11 @@ export function PublicLibrary() {
             {books.map((item, index) => (
               <motion.article
                 key={item.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(index * 0.035, 0.25) }}
+                transition={{ delay: reduceMotion ? 0 : Math.min(index * 0.035, 0.25) }}
               >
-                <Card className="group flex h-full flex-col overflow-hidden p-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
+                <Card tone="contour" className="group flex h-full flex-col overflow-hidden p-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
                   <div className="aspect-[18/26] overflow-hidden bg-[var(--bg-sunken)]">
                     <img
                       src={item.coverUrl}

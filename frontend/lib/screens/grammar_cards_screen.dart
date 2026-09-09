@@ -36,13 +36,9 @@ class GrammarCardsScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               children: [
-                const WolfBubble(
-                  asset: Wolf.rule,
-                  title: 'Учим правила',
-                  text:
-                      'Выбери тему: внутри — подробное правило по шагам и карточки для запоминания.',
-                ),
-                const SizedBox(height: 12),
+                // Без волка: список тем говорит сам за себя, а инструкция
+                // «выбери тему» — не разговор. Волк-учитель остался внутри
+                // темы, где он представляет правило.
                 for (final (i, t) in topics.indexed)
                   FadeSlideIn(
                     delay: Duration(milliseconds: 30 * i.clamp(0, 10)),
