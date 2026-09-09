@@ -1,0 +1,21 @@
+.account-passport { position: relative; overflow: hidden; border-radius: 24px 8px 24px 8px; border-top: 3px solid #b58b4b; background: linear-gradient(115deg,var(--bg-raised),var(--bg)); }
+.account-passport:after { content: ''; position: absolute; width: 150px; height: 150px; top: -22px; right: -20px; background: url('/personal/decor/ravanica-medallion.png') center/contain no-repeat; opacity: .12; pointer-events: none; }
+.account-eyebrow { margin-bottom: 20px; color: var(--text-muted); font-size: 12px; letter-spacing: .04em; }
+.account-monogram { display: grid; place-items: center; flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%; background: #80372e; color: #f9e6be; border: 4px double #d0ad70; font: 700 28px Lora,serif; }
+.account-passport-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 22px; font-size: 13px; color: var(--text-muted); }
+.account-level { display: inline-flex; align-items: center; gap: 10px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 8px; }
+.account-level b { color: var(--text); font-size: 15px; }
+.account-word-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+.account-stat-tile { position: relative; border-bottom: 3px solid #b18a553b; }
+.account-stat-tile > svg { padding: 9px; width: 39px; height: 39px; background: #b18a5512; border-radius: 12px; color: #8e5a30; }
+.account-stat-tile strong { font-family: Lora,serif; font-weight: 500; }
+.account-achievement.is-unlocked { background: linear-gradient(125deg,var(--bg-raised),#b7935210); border-color: #b58b4b60; }
+.account-achievement-medal { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border: 4px double var(--line); border-radius: 50%; color: var(--text-muted); background: var(--bg); }
+.account-achievement-medal.is-unlocked { color: #855521; background: #f1deb7; border-color: #ba995b; box-shadow: 0 3px 0 #b79b6540; }
+.dark .account-stat-tile > svg { color: #d0ae73; }
+@media(max-width:600px) {
+  .account-word-stats { gap: 8px; }
+  .account-stat-tile { padding: 14px 10px; }
+  .account-passport-bottom > span:first-child { font-size: 12px; }
+  .account-monogram { width: 52px; height: 52px; }
+}
