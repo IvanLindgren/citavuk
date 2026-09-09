@@ -249,13 +249,13 @@ export function ListeningPlayer() {
           </div>
           <div className="min-w-0 flex-1">
             <Link to="/listening" className="text-sm font-semibold text-[var(--accent)]">
-              ← Все аудиоуроки
+              Все аудиоуроки
             </Link>
             <h1 className="mt-2 text-2xl sm:text-3xl">{state.lesson.title}</h1>
             <p className="mt-1 text-sm text-[var(--text-muted)]">{state.lesson.subtitle}</p>
           </div>
           <span className="rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold text-white">
-            БЕТА
+            АУДИО
           </span>
         </div>
       </section>
@@ -277,7 +277,7 @@ export function ListeningPlayer() {
         <div className="space-y-2">
           {!loadingTranscript && cues.length === 0 && (
             <div className="border-y border-[var(--line)] py-8 text-center">
-              <p className="font-bold">Транскрипция этого эпизода готовится</p>
+              <p className="font-bold">Этот эпизод можно слушать без текста</p>
               <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">
                 Запись уже можно слушать. Текст появится после проверки
                 автоматической расшифровки.

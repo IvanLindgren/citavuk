@@ -34,6 +34,12 @@ scp_put() {
     for try in $(seq 1 12); do
         got=$(ssh_run "stat -c%s \"$dst\" 2>/dev/null || echo 0")
         [[ "$got" == "$size" ]] && return 0
+        # Обрыв мог оставить на сервере файл больше текущего: `reput` только
+        # дописывает и никогда его не уменьшит, поэтому начинаем заново.
+        if (( got > size )); then
+            ssh_run "rm -f \"$dst\""
+            got=0
+        fi
         # Пустого файла reput не понимает, начатый — продолжает с места обрыва.
         if [[ "$got" == 0 ]]; then cmd=put; else cmd=reput; fi
         [[ $try -gt 1 ]] && echo "    попытка $try: долито $got из $size"
@@ -46,9 +52,8 @@ scp_put() {
 
 echo "==> Проверки перед выкаткой"
 go vet ./...
-# Без CITAVUK_TEST_DATABASE_URL тесты берут DATABASE_URL из .env — то есть
-# боевую базу, где они заводят и удаляют пользователей. Выкатка обязана идти
-# мимо неё: см. README, раздел про одноразовую базу в Docker.
+# Тестовая база задаётся только явно: production .env никогда не используется
+# как запасной источник. См. README, раздел про одноразовую базу в Docker.
 : "${CITAVUK_TEST_DATABASE_URL:?укажите CITAVUK_TEST_DATABASE_URL — тесты пишут в базу, боевая не годится}"
 # -p 1: база одна на все пакеты, а параллельные пакеты накатывают миграции
 # друг другу под руку и падают вразнобой.
@@ -84,7 +89,8 @@ if [[ "${1:-}" == "--nginx" ]]; then
     # На рабочем сервере Certbot дописывает TLS заново ДО reload nginx.
     # Без этого простой scp затёр бы managed-блок и api начал бы отдавать
     # сертификат соседнего vhost.
-    ssh_run "certbot --nginx -d api.citavuk.ru --non-interactive --redirect
+    ssh_run "set -e
+        certbot --nginx -d api.citavuk.ru --non-interactive --redirect
         nginx -t
         systemctl reload nginx"
 fi

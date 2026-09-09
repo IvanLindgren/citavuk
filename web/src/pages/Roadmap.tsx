@@ -176,7 +176,7 @@ export function Roadmap() {
 
       <Reveal delay={0.05}>
         <div className="grid gap-4 sm:grid-cols-2">
-          {(overview?.categories ?? []).map((item) => {
+          {(overview?.categories ?? []).filter((item) => !item.planned).map((item) => {
             const Icon = CATEGORY_ICONS[item.key] ?? LuBookOpen;
             return (
               <article
@@ -200,11 +200,6 @@ export function Roadmap() {
                       {item.local}
                     </span>
                   </h2>
-                  {item.planned && (
-                    <span className="ml-auto rounded-full bg-[var(--bg-sunken)] px-2.5 py-1 text-xs font-semibold text-[var(--text-muted)]">
-                      скоро
-                    </span>
-                  )}
                 </div>
                 <p className="mt-3 leading-7 text-[var(--text-muted)]">{item.about}</p>
               </article>
@@ -301,7 +296,7 @@ export function Roadmap() {
 
             <RoadmapPath
               levels={overview.levels}
-              categories={overview.categories}
+              categories={overview.categories.filter((item) => !item.planned)}
               selected={selected}
               target={overview.target}
               current={overview.current}
@@ -348,7 +343,7 @@ export function Roadmap() {
               )}
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {overview.categories.map((item) => {
+                {overview.categories.filter((item) => !item.planned).map((item) => {
                   const progress = level.categories[item.key];
                   const active = category?.key === item.key;
                   return (
@@ -367,26 +362,20 @@ export function Roadmap() {
                       <p className="text-sm text-[var(--text-muted)]" lang="sr">
                         {item.local}
                       </p>
-                      {item.planned ? (
+                      <>
                         <p className="mt-3 text-sm text-[var(--text-muted)]">
-                          Скоро будет
+                          {progress?.done ?? 0} из {progress?.total ?? 0} ·{' '}
+                          {Math.round((progress?.ratio ?? 0) * 100)}%
                         </p>
-                      ) : (
-                        <>
-                          <p className="mt-3 text-sm text-[var(--text-muted)]">
-                            {progress?.done ?? 0} из {progress?.total ?? 0} ·{' '}
-                            {Math.round((progress?.ratio ?? 0) * 100)}%
-                          </p>
-                          <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
-                            <span
-                              className={`block h-full ${
-                                progress?.passed ? 'bg-emerald-700' : 'bg-[var(--accent)]'
-                              }`}
-                              style={{ width: `${(progress?.ratio ?? 0) * 100}%` }}
-                            />
-                          </span>
-                        </>
-                      )}
+                        <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
+                          <span
+                            className={`block h-full ${
+                              progress?.passed ? 'bg-emerald-700' : 'bg-[var(--accent)]'
+                            }`}
+                            style={{ width: `${(progress?.ratio ?? 0) * 100}%` }}
+                          />
+                        </span>
+                      </>
                     </button>
                   );
                 })}

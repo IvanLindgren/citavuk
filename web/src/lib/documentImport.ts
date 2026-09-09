@@ -1,7 +1,7 @@
 import { API_BASE } from '../api/client';
 import { MAX_BOOK_IMAGES, uploadBookImage } from '../api/bookImages';
 import { isBlock, plainParagraphs } from './blocks';
-import { applyImageUrls } from './formats/htmlBlocks';
+import { applyImageUrls, htmlToBlocks } from './formats/htmlBlocks';
 import { cleanLatexLayout } from './latexText';
 import { reflowDocumentWithLayout, type LayoutLine } from './reflow';
 import { fixSerbianDocument, fixSerbianText } from './serbianEncodingFix';
@@ -384,7 +384,6 @@ async function extractDocx(
   file: File,
 ): Promise<{ text: string; paragraphs: string[]; images: Blob[] }> {
   const mammoth = await import('mammoth');
-  const { htmlToBlocks } = await import('./formats/htmlBlocks');
 
   // mammoth зовёт обработчик картинки асинхронно и ждёт его, поэтому данные
   // здесь уже готовы, а обход HTML ниже остаётся синхронным.

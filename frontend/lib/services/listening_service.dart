@@ -16,14 +16,41 @@ class ListeningService {
     'nicholas': 'Никола',
   };
   static const _voicePreferenceKey = 'citavuk_tts_voice';
+
+  /// Категория относится к теме выпуска, а не к имени подкаста/издателя.
+  static String topicOf(String title) {
+    final text = title
+        .toLowerCase()
+        .replaceFirst(
+          RegExp(
+              r'^learn serbian\s*&\s*može kafa podcast:\s*(?:episode\s+\d+\s*[-–—]\s*)?'),
+          '',
+        )
+        .replaceFirst(
+            RegExp(r'^(?:intermediate|beginner|advanced) serbian:\s*'), '');
+    if (RegExp(r'food|hrana|kafa|coffee|kuhinj|restaurant').hasMatch(text)) {
+      return 'Еда';
+    }
+    if (RegExp(r'textbook|language|grammar|uč|school|alphabet|say it right')
+        .hasMatch(text)) {
+      return 'Учёба';
+    }
+    if (RegExp(
+            r'culture|serbia|srbija|history|music|book|tradition|new year|protest')
+        .hasMatch(text)) {
+      return 'Культура';
+    }
+    return 'Разговоры';
+  }
+
   String _voice = 'sophie';
 
   String get voice => _voice;
   String get voiceLabel => serbianVoices[_voice] ?? serbianVoices.values.first;
 
   Future<void> loadPreferences() async {
-    final value = (await SharedPreferences.getInstance())
-        .getString(_voicePreferenceKey);
+    final value =
+        (await SharedPreferences.getInstance()).getString(_voicePreferenceKey);
     if (value != null && serbianVoices.containsKey(value)) _voice = value;
   }
 

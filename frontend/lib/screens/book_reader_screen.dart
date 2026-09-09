@@ -24,6 +24,7 @@ import '../services/analysis_repository.dart';
 import '../services/announcements_controller.dart';
 import '../services/definition_service.dart';
 import '../services/grammar_engine.dart';
+import '../services/interface_sounds.dart';
 import '../services/listening_service.dart';
 import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
@@ -36,6 +37,7 @@ import '../services/sync_service.dart';
 import '../services/user_db.dart';
 import '../state/app_settings.dart';
 import '../utils/pages.dart';
+import '../utils/haptics.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../widgets/keep_awake.dart';
 import '../utils/tokenizer.dart';
@@ -47,8 +49,15 @@ import '../widgets/radio_sheet.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/shortcuts_sheet.dart';
 import '../widgets/wolf_mascot.dart';
+import '../course/widgets/mascot_view.dart';
+import '../course/state/lesson_controller.dart';
 import 'grammar_screen.dart';
 import 'vocabulary_screen.dart';
+
+part 'reader_share.dart';
+part 'reader_discussion.dart';
+part 'reader_settings_sheet.dart';
+part 'word_analysis_sheet.dart';
 
 class BookReaderScreen extends StatefulWidget {
   final int bookId;
@@ -116,6 +125,22 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   int? _selStart;
   int? _selEnd;
 
+  /// Текущий разбор слова. null — ничего не открыто.
+  ///
+  /// Один источник правды для нижней шторки (узкий экран) и боковой панели
+  /// (широкий): смена значения меняет содержимое уже открытого слоя, а не
+  /// плодит слои поверх друг друга.
+  final ValueNotifier<_LookupEntry?> _lookup = ValueNotifier(null);
+  bool _lookupSheetOpen = false;
+
+  /// Последние просмотренные слова сеанса (до 10). Одинаковое слово в разных
+  /// предложениях — разные записи: перевод зависит от контекста.
+  final List<_LookupEntry> _lookupHistory = [];
+
+  /// Первый абзац стартовой страницы — место остановки. Подсвечивается
+  /// тихо (без баннера, сдвигающего текст) первые секунды после открытия.
+  int? _resumePara;
+
   /// Предупреждает, если книга сильно выше уровня читателя.
   ///
   /// Оценка идёт по редкости слов: сколько текста укладывается в словарь
@@ -132,6 +157,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     // Служба берётся до первого await: после него контекст может уже не
     // относиться к этому экрану.
     final levels = context.read<LevelService>();
+    final calm = context.read<AppSettings>().reader.calm;
     if (reader.isEmpty || widget.paragraphs.length < 3) return;
 
     final key = 'citavuk_book_level_warned_${widget.bookId}';
@@ -152,7 +178,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     final messenger = ScaffoldMessenger.of(context);
     messenger.showMaterialBanner(
       MaterialBanner(
-        leading: const WolfSticker(asset: Wolf.zadumch, size: 44, frame: false),
+        leading: WolfSticker(
+            asset: Wolf.zadumch, size: 52, frame: false, animate: !calm),
         content: Text(
           'Читавук думает, что книга сейчас будет для тебя тяжеловата! '
           'Она рассчитана на уровень: ${level.level}, а твой уровень: $reader. '
@@ -187,7 +214,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       _discussionOpen = true;
     }
     if (startPage > 0) {
-      _resumeHintVisible = true; // лапка-указатель «вы остановились здесь»
+      _resumeHintVisible = true; // тихая подсветка «ты остановился здесь»
+      _resumePara =
+          startPage < _pageStartPara.length ? _pageStartPara[startPage] : null;
       Future.delayed(const Duration(seconds: 5), () {
         if (mounted) setState(() => _resumeHintVisible = false);
       });
@@ -326,7 +355,12 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         k == LogicalKeyboardKey.question) {
       showShortcutsSheet(context, ReaderShortcuts.reader);
     } else if (k == LogicalKeyboardKey.escape) {
-      Navigator.of(context).maybePop();
+      // Открыт разбор слова — первым делом закрываем его, а не книгу.
+      if (_lookup.value != null) {
+        _closeLookup();
+      } else {
+        Navigator.of(context).maybePop();
+      }
     } else {
       return KeyEventResult.ignored;
     }
@@ -479,6 +513,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     _continuousPositions.itemPositions.removeListener(_onContinuousPositions);
     _pageController.dispose();
     _kbFocus.dispose();
+    _lookup.dispose();
     super.dispose();
   }
 
@@ -494,14 +529,14 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void _onTapWord(int pageIndex, int pIndex, int tokenIndex, Token token,
       List<Token> tokens) {
     // Обычный режим — одно слово.
-    setState(() {
-      _selPage = pageIndex;
-      _selPara = pIndex;
-      _selCell = null;
-      _selStart = tokenIndex;
-      _selEnd = tokenIndex;
-    });
-    _showAnalysisSheet(token, _pages[pageIndex][pIndex]);
+    _openLookup(
+      page: pageIndex,
+      para: pIndex,
+      start: tokenIndex,
+      end: tokenIndex,
+      token: token,
+      sentence: _pages[pageIndex][pIndex],
+    );
   }
 
   /// Слово внутри ячейки таблицы.
@@ -512,14 +547,15 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   /// подсветилось бы сразу во всех ячейках таблицы.
   void _onTapCellWord(int pageIndex, int pIndex, int cellIndex, String cellText,
       int tokenIndex, Token token) {
-    setState(() {
-      _selPage = pageIndex;
-      _selPara = pIndex;
-      _selCell = cellIndex;
-      _selStart = tokenIndex;
-      _selEnd = tokenIndex;
-    });
-    _showAnalysisSheet(token, cellText);
+    _openLookup(
+      page: pageIndex,
+      para: pIndex,
+      cell: cellIndex,
+      start: tokenIndex,
+      end: tokenIndex,
+      token: token,
+      sentence: cellText,
+    );
   }
 
   void _onPhraseSelectionStart(int pageIndex, int pIndex, int tokenIndex) {
@@ -572,14 +608,18 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       }
       final tokens = SerbianTokenizer.tokenize(_pages[pageIndex][pIndex]);
       final phrase = tokens.sublist(start, end + 1).map((t) => t.text).join();
-      _showAnalysisSheet(
-        Token(
+      _openLookup(
+        page: pageIndex,
+        para: pIndex,
+        start: start,
+        end: end,
+        token: Token(
           text: phrase,
           start: tokens[start].start,
           end: tokens[end].end,
           isWord: true,
         ),
-        _pages[pageIndex][pIndex],
+        sentence: _pages[pageIndex][pIndex],
       );
     }
   }
@@ -588,19 +628,108 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     _clearSelection();
   }
 
-  void _showAnalysisSheet(Token token, String sentence) {
+  /// На широком экране разбор живёт в боковой панели поверх текста: книга не
+  /// затемняется и строка не скачет. На узком — в нижней шторке.
+  bool get _wideLookup =>
+      MediaQuery.sizeOf(context).width >= _lookupPanelBreakpoint;
+
+  /// Открывает разбор слова. Подсветка ставится сразу (синхронно), данные
+  /// подтянутся. Открытый слой не дублируется: новое слово заменяет
+  /// содержимое уже открытого.
+  void _openLookup({
+    required int page,
+    required int para,
+    int? cell,
+    required int start,
+    required int end,
+    required Token token,
+    required String sentence,
+  }) {
+    setState(() {
+      _selPage = page;
+      _selPara = para;
+      _selCell = cell;
+      _selStart = start;
+      _selEnd = end;
+    });
+    final entry = _LookupEntry(
+      page: page,
+      para: para,
+      cell: cell,
+      start: start,
+      end: end,
+      sentence: sentence,
+      token: token,
+    );
+    if (_lookupHistory.isEmpty || _lookupHistory.last.key != entry.key) {
+      _lookupHistory.add(entry);
+      while (_lookupHistory.length > _lookupHistoryLimit) {
+        _lookupHistory.removeAt(0);
+      }
+    }
+    _lookup.value = entry;
+    if (!_wideLookup && !_lookupSheetOpen) _showLookupSheet();
+  }
+
+  /// Закрывает разбор: на узком экране уводит шторку, на широком гасит
+  /// панель. Фокус возвращается в текст, чтобы стрелки снова листали.
+  void _closeLookup() {
+    if (_wideLookup) {
+      _lookup.value = null;
+      _clearSelection();
+    } else if (_lookupSheetOpen) {
+      Navigator.of(context).pop();
+    } else {
+      _lookup.value = null;
+      _clearSelection();
+    }
+    _kbFocus.requestFocus();
+  }
+
+  /// Назад по истории просмотров сеанса: панель/шторка остаётся открытой,
+  /// содержимое заменяется предыдущим разбором.
+  void _backLookup() {
+    if (_lookupHistory.length < 2) return;
+    _lookupHistory.removeLast();
+    final prev = _lookupHistory.last;
+    setState(() {
+      _selPage = prev.page;
+      _selPara = prev.para;
+      _selCell = prev.cell;
+      _selStart = prev.start;
+      _selEnd = prev.end;
+    });
+    _lookup.value = prev;
+  }
+
+  void _showLookupSheet() {
+    _lookupSheetOpen = true;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       // Фон рисует сама панель (реактивно к теме) — иначе при переключении
       // тёмной темы фон оставался светлым, а текст становился невидимым.
       backgroundColor: Colors.transparent,
-      builder: (_) => WordAnalysisSheet(
-        bookId: widget.bookId,
-        sentence: sentence,
-        token: token,
+      builder: (_) => ValueListenableBuilder<_LookupEntry?>(
+        valueListenable: _lookup,
+        builder: (_, entry, __) {
+          if (entry == null) return const SizedBox.shrink();
+          return WordAnalysisSheet(
+            key: ValueKey(entry.key),
+            bookId: widget.bookId,
+            sentence: entry.sentence,
+            token: entry.token,
+            canGoBack: _lookupHistory.length > 1,
+            onBack: _backLookup,
+            onClose: () => Navigator.of(context).pop(),
+          );
+        },
       ),
-    ).then((_) => _clearSelection());
+    ).then((_) {
+      _lookupSheetOpen = false;
+      _lookup.value = null;
+      _clearSelection();
+    });
   }
 
   void _openVocabulary() {
@@ -714,8 +843,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (pageIndex == 0 && widget.leadImageUrl != null) _leadImage(),
-              if (pageIndex == _startPage && _resumeHintVisible)
-                _resumeHint(scheme, settings.fontSize),
               ...List.generate(paras.length, (pIndex) {
                 final isSel = _selPage == pageIndex && _selPara == pIndex;
                 final globalPara = _pageStartPara[pageIndex] + pIndex;
@@ -724,16 +851,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                     _audiobookCues[_audiobookCue].paragraph == globalPara &&
                     _audiobookToken >= 0;
                 final block = parseBookBlock(paras[pIndex]);
+                late final Widget body;
                 if (block.kind == BookBlockKind.image) {
-                  return BookImageView(
+                  body = BookImageView(
                     url: block.url,
                     caption: block.text,
                     textColor: textColor,
                     fontSize: settings.fontSize,
                   );
-                }
-                if (block.kind == BookBlockKind.table) {
-                  return BookTableView(
+                } else if (block.kind == BookBlockKind.table) {
+                  body = BookTableView(
                     rows: block.rows,
                     settings: settings,
                     textColor: textColor,
@@ -751,38 +878,41 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                       token,
                     ),
                   );
+                } else {
+                  body = Padding(
+                    padding: EdgeInsets.only(bottom: settings.paragraphSpacing),
+                    child: ReaderParagraph(
+                      text: block.text,
+                      settings: settings,
+                      textColor: textColor,
+                      highlightColor: scheme.primary,
+                      highlightTextColor: scheme.onPrimary,
+                      selStart: isSel
+                          ? _selStart
+                          : isAudiobook
+                              ? _audiobookToken
+                              : null,
+                      selEnd: isSel
+                          ? _selEnd
+                          : isAudiobook
+                              ? _audiobookToken
+                              : null,
+                      justify: settings.justify,
+                      firstLineIndent: settings.firstLineIndent,
+                      dragToSelect: dragToSelect,
+                      onTapWord: (ti, token, tokens) =>
+                          _onTapWord(pageIndex, pIndex, ti, token, tokens),
+                      onPhraseSelectionStart: (ti) =>
+                          _onPhraseSelectionStart(pageIndex, pIndex, ti),
+                      onPhraseSelectionUpdate: (ti) =>
+                          _onPhraseSelectionUpdate(pageIndex, pIndex, ti),
+                      onPhraseSelectionEnd: _onPhraseSelectionEnd,
+                      onPhraseSelectionCancel: _onPhraseSelectionCancel,
+                    ),
+                  );
                 }
-                return Padding(
-                  padding: EdgeInsets.only(bottom: settings.paragraphSpacing),
-                  child: ReaderParagraph(
-                    text: block.text,
-                    settings: settings,
-                    textColor: textColor,
-                    highlightColor: scheme.primary,
-                    highlightTextColor: scheme.onPrimary,
-                    selStart: isSel
-                        ? _selStart
-                        : isAudiobook
-                            ? _audiobookToken
-                            : null,
-                    selEnd: isSel
-                        ? _selEnd
-                        : isAudiobook
-                            ? _audiobookToken
-                            : null,
-                    justify: settings.justify,
-                    firstLineIndent: settings.firstLineIndent,
-                    dragToSelect: dragToSelect,
-                    onTapWord: (ti, token, tokens) =>
-                        _onTapWord(pageIndex, pIndex, ti, token, tokens),
-                    onPhraseSelectionStart: (ti) =>
-                        _onPhraseSelectionStart(pageIndex, pIndex, ti),
-                    onPhraseSelectionUpdate: (ti) =>
-                        _onPhraseSelectionUpdate(pageIndex, pIndex, ti),
-                    onPhraseSelectionEnd: _onPhraseSelectionEnd,
-                    onPhraseSelectionCancel: _onPhraseSelectionCancel,
-                  ),
-                );
+                return _resumeGlow(
+                    globalPara: globalPara, scheme: scheme, child: body);
               }),
               if (showDiscussion && !showWolfAside)
                 Center(child: _discussionWolf()),
@@ -1074,10 +1204,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                                       widget.leadImageUrl !=
                                                           null)
                                                     _leadImage(),
-                                                  if (pageIndex == _startPage &&
-                                                      _resumeHintVisible)
-                                                    _resumeHint(scheme,
-                                                        settings.fontSize),
                                                   ...List.generate(paras.length,
                                                       (pIndex) {
                                                     final isSel =
@@ -1102,19 +1228,19 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                                     final block =
                                                         parseBookBlock(
                                                             paras[pIndex]);
+                                                    late final Widget body;
                                                     if (block.kind ==
                                                         BookBlockKind.image) {
-                                                      return BookImageView(
+                                                      body = BookImageView(
                                                         url: block.url,
                                                         caption: block.text,
                                                         textColor: textColor,
                                                         fontSize:
                                                             settings.fontSize,
                                                       );
-                                                    }
-                                                    if (block.kind ==
+                                                    } else if (block.kind ==
                                                         BookBlockKind.table) {
-                                                      return BookTableView(
+                                                      body = BookTableView(
                                                         rows: block.rows,
                                                         settings: settings,
                                                         textColor: textColor,
@@ -1141,61 +1267,66 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                                                 ti,
                                                                 token),
                                                       );
+                                                    } else {
+                                                      body = Padding(
+                                                        padding: EdgeInsets.only(
+                                                            bottom: settings
+                                                                .paragraphSpacing),
+                                                        child: ReaderParagraph(
+                                                          text: block.text,
+                                                          settings: settings,
+                                                          textColor: textColor,
+                                                          highlightColor:
+                                                              scheme.primary,
+                                                          highlightTextColor:
+                                                              scheme.onPrimary,
+                                                          selStart: isSel
+                                                              ? _selStart
+                                                              : isAudiobook
+                                                                  ? _audiobookToken
+                                                                  : null,
+                                                          selEnd: isSel
+                                                              ? _selEnd
+                                                              : isAudiobook
+                                                                  ? _audiobookToken
+                                                                  : null,
+                                                          justify:
+                                                              settings.justify,
+                                                          firstLineIndent: settings
+                                                              .firstLineIndent,
+                                                          dragToSelect:
+                                                              dragToSelect,
+                                                          onTapWord: (ti, token,
+                                                                  tokens) =>
+                                                              _onTapWord(
+                                                                  pageIndex,
+                                                                  pIndex,
+                                                                  ti,
+                                                                  token,
+                                                                  tokens),
+                                                          onPhraseSelectionStart:
+                                                              (ti) =>
+                                                                  _onPhraseSelectionStart(
+                                                                      pageIndex,
+                                                                      pIndex,
+                                                                      ti),
+                                                          onPhraseSelectionUpdate:
+                                                              (ti) =>
+                                                                  _onPhraseSelectionUpdate(
+                                                                      pageIndex,
+                                                                      pIndex,
+                                                                      ti),
+                                                          onPhraseSelectionEnd:
+                                                              _onPhraseSelectionEnd,
+                                                          onPhraseSelectionCancel:
+                                                              _onPhraseSelectionCancel,
+                                                        ),
+                                                      );
                                                     }
-                                                    return Padding(
-                                                      padding: EdgeInsets.only(
-                                                          bottom: settings
-                                                              .paragraphSpacing),
-                                                      child: ReaderParagraph(
-                                                        text: block.text,
-                                                        settings: settings,
-                                                        textColor: textColor,
-                                                        highlightColor:
-                                                            scheme.primary,
-                                                        highlightTextColor:
-                                                            scheme.onPrimary,
-                                                        selStart: isSel
-                                                            ? _selStart
-                                                            : isAudiobook
-                                                                ? _audiobookToken
-                                                                : null,
-                                                        selEnd: isSel
-                                                            ? _selEnd
-                                                            : isAudiobook
-                                                                ? _audiobookToken
-                                                                : null,
-                                                        justify:
-                                                            settings.justify,
-                                                        firstLineIndent: settings
-                                                            .firstLineIndent,
-                                                        dragToSelect:
-                                                            dragToSelect,
-                                                        onTapWord: (ti, token,
-                                                                tokens) =>
-                                                            _onTapWord(
-                                                                pageIndex,
-                                                                pIndex,
-                                                                ti,
-                                                                token,
-                                                                tokens),
-                                                        onPhraseSelectionStart:
-                                                            (ti) =>
-                                                                _onPhraseSelectionStart(
-                                                                    pageIndex,
-                                                                    pIndex,
-                                                                    ti),
-                                                        onPhraseSelectionUpdate:
-                                                            (ti) =>
-                                                                _onPhraseSelectionUpdate(
-                                                                    pageIndex,
-                                                                    pIndex,
-                                                                    ti),
-                                                        onPhraseSelectionEnd:
-                                                            _onPhraseSelectionEnd,
-                                                        onPhraseSelectionCancel:
-                                                            _onPhraseSelectionCancel,
-                                                      ),
-                                                    );
+                                                    return _resumeGlow(
+                                                        globalPara: globalPara,
+                                                        scheme: scheme,
+                                                        child: body);
                                                   }),
                                                   if (_discussionToken
                                                           .isNotEmpty &&
@@ -1245,6 +1376,32 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                             _buildArrow(scheme, left: true),
                             _buildArrow(scheme, left: false),
                           ],
+                          // Плашка места остановки и панель разбора висят
+                          // поверх текста: вёрстку не трогают, строка не скачет.
+                          if (_resumeHintVisible && !settings.calm)
+                            Positioned(
+                              top: 10,
+                              left: 0,
+                              right: 0,
+                              child: Center(child: _resumePill(scheme)),
+                            ),
+                          ValueListenableBuilder<_LookupEntry?>(
+                            valueListenable: _lookup,
+                            builder: (_, entry, __) {
+                              if (entry == null ||
+                                  MediaQuery.sizeOf(context).width <
+                                      _lookupPanelBreakpoint) {
+                                return const SizedBox.shrink();
+                              }
+                              return Positioned(
+                                right: _lookupPanelMargin,
+                                top: _lookupPanelMargin,
+                                bottom: _lookupPanelMargin,
+                                width: _lookupPanelWidth,
+                                child: _lookupPanel(entry),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -1383,9 +1540,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
           borderRadius: BorderRadius.circular(12),
           onTap: () => setState(() => _discussionOpen = !_discussionOpen),
           child: Image.asset(
-            'assets/imgs/citavuk_zadumch.png',
+            'assets/imgs/citavuk_zadumch.webp',
             width: 118,
-            cacheWidth: 236,
+            cacheWidth: mascotCacheWidth(context, 118),
             semanticLabel: 'Обсуждение этой страницы',
           ),
         ),
@@ -1415,49 +1572,111 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     );
   }
 
-  Widget _resumeHint(ColorScheme scheme, double fontSize) {
-    // Лапка масштабируется вместе с текстом и «покачивается», указывая на
-    // абзац, с которого продолжаем читать.
-    final pawH = (fontSize * 2.6).clamp(46.0, 96.0);
-    return FadeSlideIn(
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.fromLTRB(6, 6, 16, 6),
+  /// Тихая подсветка места остановки: только фон абзаца, гаснущий за три
+  /// секунды. Ничего не вставляется и не убирается из вёрстки, поэтому
+  /// страница не сдвигается ни при появлении, ни при исчезновении.
+  Widget _resumeGlow({
+    required int globalPara,
+    required ColorScheme scheme,
+    required Widget child,
+  }) {
+    if (!_resumeHintVisible || globalPara != _resumePara) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 1, end: 0),
+      duration: const Duration(seconds: 3),
+      builder: (_, value, c) => DecoratedBox(
         decoration: BoxDecoration(
-          color: scheme.primary.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: scheme.primary.withValues(alpha: 0.30)),
+          color: scheme.primary.withValues(alpha: 0.10 * value),
+          borderRadius: BorderRadius.circular(8),
         ),
+        child: c,
+      ),
+      child: child,
+    );
+  }
+
+  /// Плашка «Ты остановился здесь»: висит поверх текста и тоже ничего не
+  /// сдвигает. В спокойном режиме её нет — остаётся только подсветка абзаца.
+  Widget _resumePill(ColorScheme scheme) {
+    return Material(
+      color: scheme.primaryContainer,
+      elevation: 3,
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 7, 14, 7),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FloatingBob(
-              amplitude: 5,
-              child: Image.asset(Wolf.ukaz, height: pawH),
-            ),
-            const SizedBox(width: 4),
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Ты остановился здесь',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          color: scheme.primary,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700)),
-                  Text('Продолжаем с этого абзаца',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: scheme.onSurface.withValues(alpha: 0.6))),
-                ],
-              ),
-            ),
+            Image.asset(Wolf.ukaz, height: 22),
+            const SizedBox(width: 6),
+            Text('Ты остановился здесь',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: scheme.onPrimaryContainer)),
           ],
         ),
       ),
     );
+  }
+
+  /// Боковая панель разбора для широкого экрана: висит поверх текста справа,
+  /// книгу не затемняет и вёрстку не трогает — строка остаётся на месте.
+  /// Смена слова меняет содержимое (коротким появлением), панель не
+  /// закрывается.
+  Widget _lookupPanel(_LookupEntry entry) {
+    final scheme = Theme.of(context).colorScheme;
+    return Focus(
+      onKeyEvent: _onPanelKey,
+      child: Material(
+        color: scheme.surface,
+        elevation: 8,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: scheme.onSurface.withValues(alpha: 0.12)),
+          ),
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+          child: Column(
+            children: [
+              _lookupNavRow(
+                scheme: scheme,
+                canGoBack: _lookupHistory.length > 1,
+                onBack: _backLookup,
+                onClose: _closeLookup,
+              ),
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: AppMotion.card,
+                  transitionBuilder: cardTransitionBuilder,
+                  child: WordAnalysisBody(
+                    key: ValueKey(entry.key),
+                    request: WordLookupRequest(
+                      bookId: widget.bookId,
+                      sentence: entry.sentence,
+                      token: entry.token,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Клавиши внутри панели: Escape закрывает её, остальное (стрелки листания,
+  /// размер шрифта) работает как в тексте — фокус ушёл в панель, а чинить
+  /// листание надо.
+  KeyEventResult _onPanelKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      _closeLookup();
+      return KeyEventResult.handled;
+    }
+    return _onKey(node, event);
   }
 
   Widget _buildArrow(ColorScheme scheme, {required bool left}) {
@@ -1504,6 +1723,42 @@ class _AudiobookCue {
   final int start;
 }
 
+/// Ширина экрана, с которой разбор слова живёт в боковой панели, а не
+/// в шторке. Совпадает с порогом боковой колонки обсуждения (900).
+const _lookupPanelBreakpoint = 900.0;
+
+/// Размеры панели разбора: фиксированная ширина у правого края.
+const _lookupPanelWidth = 384.0;
+const _lookupPanelMargin = 12.0;
+
+/// Сколько последних просмотренных слов помнит сеанс чтения.
+const _lookupHistoryLimit = 10;
+
+/// Одно просмотренное слово: где нажали и что разбирали. Хранится и
+/// выделение (для возврата подсветки), и предложение (для контекста):
+/// одинаковое слово в разных местах — разные записи.
+class _LookupEntry {
+  const _LookupEntry({
+    required this.page,
+    required this.para,
+    required this.cell,
+    required this.start,
+    required this.end,
+    required this.sentence,
+    required this.token,
+  });
+
+  final int page;
+  final int para;
+  final int? cell;
+  final int start;
+  final int end;
+  final String sentence;
+  final Token token;
+
+  String get key => '$sentence\n${token.text}@${token.start}-${token.end}';
+}
+
 /// Прокрутка/листание читалки.
 ///
 /// На телефоне листаем пальцем (touch). На десктопе/вебе НЕ листаем мышью и
@@ -1526,1761 +1781,4 @@ class _DragScrollBehavior extends MaterialScrollBehavior {
       PointerDeviceKind.trackpad,
     };
   }
-}
-
-class _ShareSheet extends StatefulWidget {
-  const _ShareSheet({
-    required this.share,
-    required this.onLinkCopied,
-  });
-
-  final BookShare share;
-  final VoidCallback onLinkCopied;
-
-  @override
-  State<_ShareSheet> createState() => _ShareSheetState();
-}
-
-class _ShareSheetState extends State<_ShareSheet> {
-  bool _copied = false;
-
-  Future<void> _copy({bool unlockDiscussion = true}) async {
-    await Clipboard.setData(ClipboardData(text: widget.share.url));
-    if (unlockDiscussion) widget.onLinkCopied();
-    if (mounted) setState(() => _copied = true);
-  }
-
-  Future<void> _open(String url) async {
-    final uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication) &&
-        mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не удалось открыть приложение')),
-      );
-    }
-  }
-
-  Future<void> _instagram() async {
-    await _copy(unlockDiscussion: false);
-    await _open('https://www.instagram.com/');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final bottom = MediaQuery.viewInsetsOf(context).bottom;
-    final text = '«${widget.share.title}» — читаю в Читавуке';
-    final encodedUrl = Uri.encodeComponent(widget.share.url);
-    final encodedText = Uri.encodeComponent(text);
-    final combined = Uri.encodeComponent('$text ${widget.share.url}');
-    final socials = <({
-      String label,
-      FaIconData icon,
-      String? url,
-      Future<void> Function()? action
-    })>[
-      (
-        label: 'Telegram',
-        icon: FontAwesomeIcons.telegram,
-        url: 'https://t.me/share/url?url=$encodedUrl&text=$encodedText',
-        action: null,
-      ),
-      (
-        label: 'ВКонтакте',
-        icon: FontAwesomeIcons.vk,
-        url: 'https://vk.com/share.php?url=$encodedUrl&title=$encodedText',
-        action: null,
-      ),
-      (
-        label: 'WhatsApp',
-        icon: FontAwesomeIcons.whatsapp,
-        url: 'https://wa.me/?text=$combined',
-        action: null,
-      ),
-      (
-        label: 'Viber',
-        icon: FontAwesomeIcons.viber,
-        url: 'viber://forward?text=$combined',
-        action: null,
-      ),
-      (
-        label: 'Threads',
-        icon: FontAwesomeIcons.threads,
-        url: 'https://www.threads.net/intent/post?text=$combined',
-        action: null,
-      ),
-      (
-        label: 'Instagram',
-        icon: FontAwesomeIcons.instagram,
-        url: null,
-        action: _instagram,
-      ),
-    ];
-
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20 + bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Поделиться книгой',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text(
-              'В каталог она не попадает — останется только у тебя и у тех, кому ты дашь ссылку',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 18),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                for (final social in socials)
-                  SizedBox.square(
-                    dimension: 48,
-                    child: IconButton.filledTonal(
-                      tooltip: social.label,
-                      onPressed: () {
-                        if (social.action != null) {
-                          social.action!();
-                        } else if (social.url != null) {
-                          _open(social.url!);
-                        }
-                      },
-                      icon: FaIcon(social.icon, size: 20),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: SelectableText(
-                    widget.share.url,
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
-                IconButton.filledTonal(
-                  tooltip: 'Скопировать ссылку',
-                  onPressed: _copy,
-                  icon: const Icon(Icons.link),
-                ),
-              ],
-            ),
-            if (_copied)
-              const Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: Text(
-                  'Ссылка скопирована. Волк ждёт рядом со страницей.',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DiscussionPanel extends StatefulWidget {
-  const _DiscussionPanel({
-    super.key,
-    required this.token,
-    required this.paragraph,
-  });
-
-  final String token;
-  final int paragraph;
-
-  @override
-  State<_DiscussionPanel> createState() => _DiscussionPanelState();
-}
-
-class _DiscussionPanelState extends State<_DiscussionPanel> {
-  final _controller = TextEditingController();
-  List<BookComment>? _comments;
-  bool _sending = false;
-  String _error = '';
-
-  ShareService get _service => ShareService(context.read<ApiClient>());
-
-  @override
-  void initState() {
-    super.initState();
-    _load();
-  }
-
-  Future<void> _load() async {
-    try {
-      final comments = await _service.comments(widget.token, widget.paragraph);
-      if (mounted) setState(() => _comments = comments);
-    } catch (_) {
-      if (mounted) setState(() => _comments = const []);
-    }
-  }
-
-  Future<void> _send() async {
-    final body = _controller.text.trim();
-    if (body.isEmpty) return;
-    setState(() {
-      _sending = true;
-      _error = '';
-    });
-    try {
-      final comment =
-          await _service.addComment(widget.token, widget.paragraph, body);
-      if (!mounted) return;
-      setState(() {
-        _comments = [...?_comments, comment];
-        _controller.clear();
-      });
-    } on ApiException catch (error) {
-      if (mounted) setState(() => _error = error.message);
-    } finally {
-      if (mounted) setState(() => _sending = false);
-    }
-  }
-
-  Future<void> _delete(BookComment comment) async {
-    await _service.deleteComment(comment.id);
-    if (mounted) {
-      setState(() => _comments =
-          _comments?.where((item) => item.id != comment.id).toList());
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final signedIn = context.watch<AuthService>().isSignedIn;
-    final scheme = Theme.of(context).colorScheme;
-    return Card(
-      color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Обсуждение этой страницы',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-                const Text(
-                  'само по-сербски',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            if (_comments == null)
-              const Center(child: CircularProgressIndicator())
-            else if (_comments!.isEmpty)
-              Text(
-                'Здесь пока тихо. Напишите первым.',
-                style: TextStyle(color: scheme.onSurfaceVariant),
-              )
-            else
-              for (final comment in _comments!)
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(comment.author,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(comment.body),
-                  trailing: comment.mine
-                      ? IconButton(
-                          tooltip: 'Убрать сообщение',
-                          onPressed: () => _delete(comment),
-                          icon: const Icon(Icons.delete_outline),
-                        )
-                      : null,
-                ),
-            if (signedIn) ...[
-              const SizedBox(height: 10),
-              TextField(
-                controller: _controller,
-                minLines: 2,
-                maxLines: 5,
-                maxLength: 1000,
-                decoration: const InputDecoration(
-                  hintText: 'Napišite nešto o ovoj strani…',
-                ),
-              ),
-              if (_error.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(_error,
-                      style: TextStyle(color: scheme.error, fontSize: 12)),
-                ),
-              FilledButton.icon(
-                onPressed: _sending ? null : _send,
-                icon: _sending
-                    ? const SizedBox.square(
-                        dimension: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.send_outlined),
-                label: const Text('Отправить'),
-              ),
-            ] else
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  'Войдите в аккаунт, чтобы писать.',
-                  style: TextStyle(color: scheme.onSurfaceVariant),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Верхняя полоса нижней панели: «ручка» по центру + явный крестик «закрыть»
-/// справа (на жестовой навигации Pixel свайпом закрыть бывает неочевидно).
-Widget _sheetHandleBar(BuildContext context, ColorScheme scheme) {
-  return SizedBox(
-    height: 44,
-    child: Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: const EdgeInsets.only(top: 8),
-            width: 42,
-            height: 4,
-            decoration: BoxDecoration(
-              color: scheme.onSurface.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            tooltip: 'Закрыть',
-            visualDensity: VisualDensity.compact,
-            icon: Icon(Icons.close,
-                color: scheme.onSurface.withValues(alpha: 0.65)),
-            onPressed: () => Navigator.of(context).maybePop(),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-/// Нижняя панель настроек чтения: шрифт, размер, межстрочный, трекинг,
-/// bionic-режим и тема. Меняет глобальные настройки в реальном времени.
-class ReaderSettingsSheet extends StatelessWidget {
-  const ReaderSettingsSheet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final appSettings = context.watch<AppSettings>();
-    final s = appSettings.reader;
-
-    void set(ReaderSettings next) => context.read<AppSettings>().update(next);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: scheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _sheetHandleBar(context, scheme),
-              const SizedBox(height: 8),
-              Text('Настройки чтения',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: scheme.onSurface)),
-              const SizedBox(height: 16),
-              _label('Режим чтения', scheme),
-              Wrap(
-                spacing: 8,
-                children: ReaderFlow.values
-                    .map((flow) => ChoiceChip(
-                          label: Text(flow.label),
-                          selected: s.flow == flow,
-                          onSelected: (_) => set(s.copyWith(flow: flow)),
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 16),
-              _label('Шрифт', scheme),
-              Wrap(
-                spacing: 8,
-                children: ReaderFont.values
-                    .map((f) => ChoiceChip(
-                          label: Text(f.label),
-                          selected: s.font == f,
-                          onSelected: (_) => set(s.copyWith(font: f)),
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 14),
-              _slider(
-                context,
-                'Размер: ${s.fontSize.round()}',
-                s.fontSize,
-                14,
-                32,
-                (v) => set(s.copyWith(fontSize: v)),
-              ),
-              _slider(
-                context,
-                'Межстрочный: ${s.lineHeight.toStringAsFixed(2)}',
-                s.lineHeight,
-                1.2,
-                2.4,
-                (v) => set(s.copyWith(lineHeight: v)),
-              ),
-              _slider(
-                context,
-                'Трекинг: ${s.letterSpacing.toStringAsFixed(1)}',
-                s.letterSpacing,
-                0,
-                3,
-                (v) => set(s.copyWith(letterSpacing: v)),
-              ),
-              const SizedBox(height: 6),
-              _label('Выделение основы слова (быстрое чтение)', scheme),
-              Wrap(
-                spacing: 8,
-                children: BionicLevel.values
-                    .map((b) => ChoiceChip(
-                          label: Text(b.label),
-                          selected: s.bionic == b,
-                          onSelected: (_) => set(s.copyWith(bionic: b)),
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 16),
-              _label('Тема', scheme),
-              Wrap(
-                spacing: 8,
-                children: AppThemeMode.values
-                    .map((m) => ChoiceChip(
-                          label: Text(m.label),
-                          selected: s.themeMode == m,
-                          onSelected: (_) => set(s.copyWith(themeMode: m)),
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 16),
-              _label('Вёрстка страницы', scheme),
-              _slider(
-                context,
-                s.fullWidth
-                    ? 'Ширина колонки: вся ширина'
-                    : 'Ширина колонки: ${s.maxWidth.round()}',
-                s.maxWidth,
-                360,
-                1100,
-                (v) => set(s.copyWith(maxWidth: v)),
-              ),
-              _slider(
-                context,
-                'Отступ между абзацами: ${s.paragraphSpacing.round()}',
-                s.paragraphSpacing,
-                4,
-                40,
-                (v) => set(s.copyWith(paragraphSpacing: v)),
-              ),
-              _slider(
-                context,
-                'Красная строка: ${s.firstLineIndent.round()}',
-                s.firstLineIndent,
-                0,
-                48,
-                (v) => set(s.copyWith(firstLineIndent: v)),
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Выравнивание по ширине'),
-                value: s.justify,
-                onChanged: (v) => set(s.copyWith(justify: v)),
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Шелест при перелистывании'),
-                value: s.pageTurnSound,
-                onChanged: s.flow == ReaderFlow.pages
-                    ? (v) => set(s.copyWith(pageTurnSound: v))
-                    : null,
-              ),
-              // Настройка живёт в AppSettings, а не в ReaderSettings: она
-              // действует и в плеере, а тот про настройки чтения не знает.
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Не гасить экран'),
-                subtitle: const Text(
-                    'В читалке и при прослушивании. Расходует батарею.'),
-                value: context.watch<AppSettings>().keepScreenOn,
-                onChanged: (v) =>
-                    context.read<AppSettings>().setKeepScreenOn(v),
-              ),
-              const SizedBox(height: 12),
-              _label('Фон страницы', scheme),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  _bgSwatch(context, s, 0),
-                  for (final c in _bgPresets) _bgSwatch(context, s, c),
-                ],
-              ),
-              // Фоны-награды показываются, только когда они открыты текущим
-              // аккаунтом: чужая награда на общем устройстве видна быть не должна.
-              ..._rewardSection(context, s, scheme),
-              const SizedBox(height: 10),
-              Text('Свой оттенок',
-                  style: TextStyle(
-                      fontSize: 13,
-                      color: scheme.onSurface.withValues(alpha: 0.7))),
-              Slider(
-                value: _hueOf(s.bgColor),
-                min: 0,
-                max: 360,
-                onChanged: (h) => set(s.copyWith(
-                    bgColor: HSVColor.fromAHSV(1, h, 0.16, 0.97)
-                        .toColor()
-                        .toARGB32())),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  static const _bgPresets = [
-    0xFFF3E9D2, // пергамент
-    0xFFF4ECD8, // сепия
-    0xFFFFFDF7, // тёплый белый
-    0xFFE9E9E6, // светло-серый
-    0xFFE2EFE3, // мятный
-    0xFFE3ECF5, // небесный
-    0xFFF5E6E8, // розовый
-    0xFFEDE7F4, // лавандовый
-    0xFF201A14, // тёмный
-    0xFF000000, // чёрный
-  ];
-
-  double _hueOf(int argb) =>
-      argb == 0 ? 0 : HSVColor.fromColor(Color(argb)).hue;
-
-  /// Фоны-награды. Пустой список — раздела нет вовсе: обещать награду, которой
-  /// у человека ещё нет, в настройках незачем, для этого есть экран событий.
-  List<Widget> _rewardSection(
-      BuildContext context, ReaderSettings s, ColorScheme scheme) {
-    final rewards = [
-      ...context.watch<EventsController>().rewards,
-      for (final entry
-          in context.watch<AnnouncementsController>().rewardAssets.entries)
-        serverReaderReward(entry.key, entry.value),
-    ];
-    if (rewards.isEmpty) return const [];
-    return [
-      const SizedBox(height: 14),
-      _label('Фон из события', scheme),
-      Wrap(
-        spacing: 10,
-        runSpacing: 10,
-        children: [
-          for (final reward in rewards) _rewardSwatch(context, s, reward),
-        ],
-      ),
-    ];
-  }
-
-  Widget _rewardSwatch(
-      BuildContext context, ReaderSettings s, ReaderReward reward) {
-    final scheme = Theme.of(context).colorScheme;
-    final selected = s.bgTexture == reward.id;
-    final rewardImage = reward.image;
-    return Tooltip(
-      message: reward.label,
-      child: GestureDetector(
-        onTap: () => context
-            .read<AppSettings>()
-            .update(s.copyWith(bgTexture: selected ? '' : reward.id)),
-        child: Container(
-          width: 40,
-          height: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: reward.background,
-            shape: BoxShape.circle,
-            image: rewardImage == null
-                ? null
-                : DecorationImage(
-                    image: rewardImage,
-                    repeat: ImageRepeat.repeat,
-                    alignment: Alignment.topLeft,
-                    opacity: reward.opacity < 0.25 ? 0.35 : reward.opacity,
-                  ),
-            border: Border.all(
-              color: selected
-                  ? scheme.primary
-                  : scheme.onSurface.withValues(alpha: 0.2),
-              width: selected ? 3 : 1,
-            ),
-          ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              if (reward.isNetworkSvg)
-                ClipOval(
-                  child: SvgPicture.network(
-                    reward.networkAsset,
-                    fit: BoxFit.cover,
-                    placeholderBuilder: (_) => const SizedBox.shrink(),
-                  ),
-                ),
-              if (selected)
-                const Center(
-                  child: Icon(Icons.check, size: 18, color: Colors.black87),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _bgSwatch(BuildContext context, ReaderSettings s, int argb) {
-    final scheme = Theme.of(context).colorScheme;
-    // Текстура рисуется поверх цвета, поэтому выбор обычного фона её снимает —
-    // иначе нажатие на цвет выглядело бы как «ничего не произошло».
-    final selected = s.bgColor == argb && s.bgTexture.isEmpty;
-    final color = argb == 0 ? scheme.surface : Color(argb);
-    return GestureDetector(
-      onTap: () => context
-          .read<AppSettings>()
-          .update(s.copyWith(bgColor: argb, bgTexture: '')),
-      child: Container(
-        width: 40,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: selected
-                ? scheme.primary
-                : scheme.onSurface.withValues(alpha: 0.2),
-            width: selected ? 3 : 1,
-          ),
-        ),
-        child: argb == 0
-            ? Icon(Icons.format_color_reset,
-                size: 18, color: scheme.onSurface.withValues(alpha: 0.6))
-            : (selected
-                ? Icon(Icons.check,
-                    size: 18,
-                    color: color.computeLuminance() > 0.5
-                        ? Colors.black54
-                        : Colors.white)
-                : null),
-      ),
-    );
-  }
-
-  Widget _label(String text, ColorScheme scheme) => Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Text(text,
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: scheme.onSurface.withValues(alpha: 0.7))),
-      );
-
-  Widget _slider(BuildContext context, String label, double value, double min,
-      double max, ValueChanged<double> onChanged) {
-    final scheme = Theme.of(context).colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TextStyle(fontSize: 13, color: scheme.onSurface)),
-        Slider(
-          value: value.clamp(min, max),
-          min: min,
-          max: max,
-          onChanged: onChanged,
-        ),
-      ],
-    );
-  }
-}
-
-class WordAnalysisSheet extends StatefulWidget {
-  final int bookId;
-  final String sentence;
-  final Token token;
-
-  const WordAnalysisSheet({
-    super.key,
-    required this.bookId,
-    required this.sentence,
-    required this.token,
-  });
-
-  @override
-  State<WordAnalysisSheet> createState() => _WordAnalysisSheetState();
-}
-
-class _WordAnalysisSheetState extends State<WordAnalysisSheet> {
-  late Future<WordAnalysis> _future;
-
-  /// Толкование начальной формы. null — ещё не спрашивали (слово английское,
-  /// фраза или разбор не дошёл); ответ null внутри — слова в словаре нет.
-  Future<Definition?>? _definition;
-  final AudioPlayer _ttsPlayer = AudioPlayer();
-  bool _isSaved = false;
-  bool _speaking = false;
-  String _voice = ListeningService.instance.voice;
-
-  /// Что уйдёт в словарь: начальная форма или словоформа из текста.
-  /// По умолчанию начальная — это словарная статья, и повторять её карточкой
-  /// полезнее, чем одну случайную форму.
-  bool _saveLemma = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _future = AnalysisRepository.instance.analyzeToken(
-      sentence: widget.sentence,
-      startOffset: widget.token.start,
-      endOffset: widget.token.end,
-      tokenText: widget.token.text,
-    );
-    _ttsPlayer.onPlayerStateChanged.listen((state) {
-      if (mounted) setState(() => _speaking = state == PlayerState.playing);
-    });
-    _future.then((data) {
-      _playPronunciation(data.isEnglish ? 'en' : 'sr');
-      _lookUpDefinition(data);
-    });
-  }
-
-  /// Толкование запрашивается после разбора: спрашивать надо начальную форму,
-  /// а она известна только из него.
-  ///
-  /// Английские слова и фразы пропускаются: сербский толковый словарь про них
-  /// ничего не знает, и ходить за пустым ответом незачем.
-  void _lookUpDefinition(WordAnalysis data) {
-    if (data.isEnglish || data.isPhrase) return;
-    final lemma = data.lemma.trim();
-    if (lemma.isEmpty) return;
-    final request = DefinitionService.instance.lookup(lemma);
-    if (!mounted) return;
-    setState(() => _definition = request);
-  }
-
-  Future<void> _playPronunciation([String lang = 'sr']) async {
-    await _ttsPlayer.stop();
-    await _ttsPlayer.play(UrlSource(
-      ListeningService.instance.ttsUrl(widget.token.text, lang: lang),
-    ));
-  }
-
-  @override
-  void dispose() {
-    _ttsPlayer.dispose();
-    super.dispose();
-  }
-
-  /// Короткое описание формы: «мн. ч.», «3 л. ед., презент».
-  /// Пустое, если слово и так начальная форма.
-  static String formLabelOf(WordAnalysis data) {
-    if (data.english != null) return data.english!.formLabel;
-    if (data.feats.isEmpty) return '';
-    final facts = GrammarEngine.humanFacts(data.upos, data.feats);
-    return facts.map((f) => f.value).join(', ');
-  }
-
-  /// Есть ли из чего выбирать: словоформа отличается от начальной формы.
-  static bool hasFormChoice(WordAnalysis data) =>
-      !data.isPhrase &&
-      data.lemma.isNotEmpty &&
-      data.surface.toLowerCase() != data.lemma.toLowerCase();
-
-  Future<void> _save(WordAnalysis data, {required bool asLemma}) async {
-    String translation = data.translation;
-    final ctx = data.contextualTranslation?.trim();
-    final gen = data.translation.trim();
-    if (ctx != null &&
-        ctx.isNotEmpty &&
-        ctx.toLowerCase() != gen.toLowerCase()) {
-      translation = 'В тексте: $ctx\nВ общем: $gen';
-    }
-
-    // При сохранении словоформы в карточку кладётся ещё и разбор этой формы:
-    // иначе через неделю непонятно, почему в словаре «svira», а не «svirati».
-    final forms = Map<String, dynamic>.from(data.forms);
-    final label = formLabelOf(data);
-    if (!asLemma && label.isNotEmpty) {
-      forms['форма в тексте'] = label;
-      forms['начальная форма'] = data.lemma;
-    }
-
-    await UserDb.instance.addVocabulary(
-      bookId: widget.bookId,
-      word: asLemma && data.lemma.isNotEmpty ? data.lemma : data.surface,
-      lemma: data.lemma,
-      pos: data.upos,
-      translation: translation,
-      forms: forms,
-    );
-    setState(() => _isSaved = true);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: scheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Padding(
-        // Отступ снизу складывается из клавиатуры и системной навигации.
-        // Приложение рисует под строку навигации (edgeToEdge), и без второго
-        // слагаемого низ панели — кнопка «в словарь», таблица форм — уезжал под
-        // кнопки Android. На Android 15 режим edge-to-edge включён всегда,
-        // поэтому это видно у всех.
-        //
-        // MediaQuery.padding уже вычитает viewInsets, так что при открытой
-        // клавиатуре слагаемые не складываются дважды.
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 8,
-          bottom: MediaQuery.of(context).viewInsets.bottom +
-              MediaQuery.of(context).padding.bottom +
-              24,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _sheetHandleBar(context, scheme),
-            Flexible(
-              child: FutureBuilder<WordAnalysis>(
-                future: _future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox(
-                      height: 220,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  if (snapshot.hasError || !snapshot.hasData) {
-                    return SizedBox(
-                      height: 180,
-                      child: Center(
-                        child: Text('Ошибка при анализе',
-                            style: TextStyle(color: scheme.error)),
-                      ),
-                    );
-                  }
-
-                  final data = snapshot.data!;
-                  final surface = data.surface;
-                  final lemma = data.lemma;
-                  final upos = data.upos;
-                  final feats = data.feats;
-                  final forms = data.forms;
-                  final translation = data.translation;
-                  final isOffline = data.isOffline;
-                  final isPhrase = data.isPhrase;
-
-                  // Контекстный перевод (для этого предложения) — главный; «общий»
-                  // перевод слова показываем мельче ниже, если он отличается.
-                  final ctx = data.contextualTranslation?.trim();
-                  final gen = translation.trim();
-                  final hasContext = ctx != null &&
-                      ctx.isNotEmpty &&
-                      ctx.toLowerCase() != gen.toLowerCase();
-                  final primaryTranslation =
-                      hasContext ? ctx : (gen.isNotEmpty ? gen : translation);
-
-                  // Авто-подсказка: если это предлог (или фраза, начинающаяся с
-                  // предлога) — показываем, каким падежом он управляет. Для не-предлогов
-                  // список пустой, и карточка не появляется.
-                  final prepWord = isPhrase
-                      ? surface.trim().split(RegExp(r'\s+')).first
-                      : surface;
-                  final government =
-                      GrammarEngine.prepositionGovernment(prepWord);
-
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                        child: Text(surface,
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: scheme.onSurface)),
-                                      ),
-                                      IconButton(
-                                        tooltip: 'Произнести слово',
-                                        onPressed: () => _playPronunciation(
-                                            data.isEnglish ? 'en' : 'sr'),
-                                        icon: Icon(_speaking
-                                            ? Icons.stop_circle_outlined
-                                            : Icons.volume_up_outlined),
-                                      ),
-                                      if (!data.isEnglish)
-                                        PopupMenuButton<String>(
-                                          tooltip: 'Выбрать диктора',
-                                          initialValue: _voice,
-                                          onSelected: (voice) async {
-                                            await ListeningService.instance
-                                                .setVoice(voice);
-                                            if (!mounted) return;
-                                            setState(() => _voice = voice);
-                                            await _playPronunciation('sr');
-                                          },
-                                          itemBuilder: (_) => [
-                                            for (final entry in ListeningService
-                                                .serbianVoices.entries)
-                                              PopupMenuItem(
-                                                value: entry.key,
-                                                child: Text(entry.value),
-                                              ),
-                                          ],
-                                          icon: const Icon(
-                                              Icons.record_voice_over_outlined),
-                                        ),
-                                    ],
-                                  ),
-                                  // Ударение выделяется жирным прямо в
-                                  // транскрипции. Подпись словами («ударение не
-                                  // на последнем слоге») — это рассуждение о
-                                  // произношении, а не само произношение.
-                                  if (!isPhrase && !data.isEnglish)
-                                    Builder(builder: (context) {
-                                      final (before, stressed, after) =
-                                          SerbianPronunciation.ipaParts(
-                                              surface);
-                                      final style = TextStyle(
-                                        color: scheme.onSurface
-                                            .withValues(alpha: 0.65),
-                                        fontSize: 13,
-                                      );
-                                      return Text.rich(
-                                        TextSpan(
-                                          style: style,
-                                          children: [
-                                            TextSpan(text: before),
-                                            TextSpan(
-                                              text: stressed,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: scheme.onSurface,
-                                              ),
-                                            ),
-                                            TextSpan(text: after),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                                  const SizedBox(height: 6),
-                                  Wrap(
-                                    spacing: 8,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 3),
-                                        decoration: BoxDecoration(
-                                          color: isPhrase
-                                              ? scheme.secondary
-                                              : scheme.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: Text(
-                                            isPhrase
-                                                ? 'фраза'
-                                                : GrammarEngine.posShort(upos),
-                                            style: const TextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white)),
-                                      ),
-                                      if (!isPhrase)
-                                        Text('нач. форма: $lemma',
-                                            style: TextStyle(
-                                                color: scheme.onSurface
-                                                    .withValues(alpha: 0.6),
-                                                fontSize: 13)),
-                                      if (isOffline)
-                                        Icon(Icons.wifi_off,
-                                            size: 14,
-                                            color: scheme.onSurface
-                                                .withValues(alpha: 0.5)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Когда есть из чего выбирать (форма ≠ начальная
-                            // форма), сохранение живёт в блоке выбора ниже —
-                            // двух кнопок «в словарь» в одной карточке быть
-                            // не должно.
-                            if (!hasFormChoice(data))
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: _isSaved
-                                      ? scheme.surfaceContainerHighest
-                                      : scheme.primary,
-                                  foregroundColor: _isSaved
-                                      ? scheme.onSurface
-                                      : scheme.onPrimary,
-                                ),
-                                icon: Icon(
-                                    _isSaved ? Icons.check : Icons.bookmark_add,
-                                    size: 18),
-                                label:
-                                    Text(_isSaved ? 'В словаре' : 'В словарь'),
-                                onPressed: _isSaved
-                                    ? null
-                                    : () => _save(data, asLemma: true),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 18),
-                        if (data.isEnglish) ...[
-                          _englishNotice(scheme),
-                          const SizedBox(height: 14),
-                        ],
-                        WolfBubble(
-                          title: hasContext ? 'В этом тексте' : 'Перевод',
-                          text: primaryTranslation,
-                          asset: data.isEnglish ? Wolf.english : Wolf.gram,
-                        ),
-                        if (hasContext) ...[
-                          const SizedBox(height: 10),
-                          _generalTranslationCard(scheme, gen),
-                        ],
-                        // Толкование по-сербски: перевод отвечает «что это
-                        // по-русски», толкование — «что это значит». Пока идёт
-                        // запрос и когда слова в словаре нет, места оно не
-                        // занимает: пустая рамка хуже, чем ничего.
-                        if (_definition != null)
-                          FutureBuilder<Definition?>(
-                            future: _definition,
-                            builder: (context, snap) {
-                              final entry = snap.data;
-                              if (entry == null) return const SizedBox.shrink();
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: FadeSlideIn(child: DefinitionCard(entry)),
-                              );
-                            },
-                          ),
-                        if (isPhrase && data.sentenceAnalysis != null) ...[
-                          const SizedBox(height: 14),
-                          _sentenceAnalysisCard(scheme, data.sentenceAnalysis!),
-                        ] else if (isPhrase && data.phraseInsight != null) ...[
-                          const SizedBox(height: 14),
-                          _phraseGrammarCard(scheme, data.phraseInsight!),
-                        ],
-                        if (government.isNotEmpty) ...[
-                          const SizedBox(height: 14),
-                          PrepositionGovernmentCard(
-                              preposition: prepWord, government: government),
-                        ],
-                        if (data.isEnglish) ...[
-                          const SizedBox(height: 18),
-                          _englishGrammar(scheme, data.english!),
-                        ],
-                        if (!data.isEnglish &&
-                            !isPhrase &&
-                            const {
-                              'NOUN',
-                              'PROPN',
-                              'ADJ',
-                              'VERB',
-                              'AUX',
-                              'PRON'
-                            }.contains(upos)) ...[
-                          const SizedBox(height: 12),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: OutlinedButton.icon(
-                              icon: const Text('🐺',
-                                  style: TextStyle(fontSize: 16)),
-                              label: const Text('Почему так?'),
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => GrammarScreen(
-                                      word: surface,
-                                      lemma: lemma,
-                                      upos: upos,
-                                      feats: feats,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                        if (feats.isNotEmpty &&
-                            !isPhrase &&
-                            !data.isEnglish) ...[
-                          const SizedBox(height: 18),
-                          _section('Грамматика', scheme),
-                          const SizedBox(height: 6),
-                          _chips(
-                            GrammarEngine.humanFacts(upos, feats)
-                                .map((f) => '${f.label}: ${f.value}')
-                                .toList(),
-                            scheme,
-                            scheme.secondary,
-                          ),
-                          // Слова нет в словаре форм, и начальную форму
-                          // подсказала нейросеть. Падеж и таблицы посчитаны по
-                          // правилам, но читатель должен знать, что словарной
-                          // статьи за этим разбором не стоит.
-                          if (data.generated) ...[
-                            const SizedBox(height: 8),
-                            Text(
-                              'Этого слова нет в словаре Читавука: начальную '
-                              'форму подсказала нейросеть, а падеж и склонение '
-                              'построены по правилам языка.',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.4,
-                                  fontStyle: FontStyle.italic,
-                                  color: scheme.onSurface
-                                      .withValues(alpha: 0.65)),
-                            ),
-                          ],
-                        ],
-                        if (hasFormChoice(data)) ...[
-                          const SizedBox(height: 18),
-                          _saveChoice(context, scheme, data),
-                        ],
-                        if (forms.isNotEmpty &&
-                            !isPhrase &&
-                            !data.isEnglish) ...[
-                          const SizedBox(height: 18),
-                          _section('Основные формы', scheme),
-                          const SizedBox(height: 6),
-                          _chips(
-                            forms.entries
-                                .map((e) =>
-                                    '${GrammarEngine.formKeyRu(e.key)}: ${e.value}')
-                                .toList(),
-                            scheme,
-                            scheme.primary,
-                          ),
-                        ],
-                        const SizedBox(height: 8),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Объяснение, почему сербская читалка разбирает английское слово.
-  Widget _englishNotice(ColorScheme scheme) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: scheme.tertiary.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.tertiary.withValues(alpha: 0.25)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.translate, size: 16, color: scheme.tertiary),
-              const SizedBox(width: 6),
-              Text('Кажется, это английское слово.',
-                  style: TextStyle(
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.bold,
-                      color: scheme.tertiary)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Хоть основное предназначение для Читавука это анализ сербских '
-            'слов, но без международного языка общения не могут обойтись даже '
-            'материалы с основой на сербском.\n'
-            'Да и очень много учебников сербского содержат английский как '
-            'основной язык-посредник.\n'
-            'Читавук постарался — и отчаянно проанализировал слово с чашечкой '
-            'зеленого чая.',
-            style: TextStyle(
-                fontSize: 12.5,
-                height: 1.4,
-                color: scheme.onSurface.withValues(alpha: 0.8)),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '(А для обучения английскому всё же лучше выбрать другой ресурс, '
-            'к примеру, знаменитую зеленую сову.)',
-            style: TextStyle(
-                fontSize: 11.5,
-                height: 1.35,
-                fontStyle: FontStyle.italic,
-                color: scheme.onSurface.withValues(alpha: 0.6)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Разбор английской формы: часть речи, признаки и «почему так».
-  Widget _englishGrammar(ColorScheme scheme, EnglishAnalysis english) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _section('Разбор формы', scheme),
-        const SizedBox(height: 6),
-        _chips(
-          [
-            for (final fact in english.facts) '${fact.label}: ${fact.value}',
-            if (english.formLabel.isNotEmpty) 'Форма: ${english.formLabel}',
-          ],
-          scheme,
-          scheme.secondary,
-        ),
-        if (english.why.isNotEmpty) ...[
-          const SizedBox(height: 10),
-          Text(english.why,
-              style: TextStyle(
-                  fontSize: 12.5,
-                  height: 1.4,
-                  color: scheme.onSurface.withValues(alpha: 0.75))),
-        ],
-        // Омоним: «saw» — и прошедшее от «see», и «пила». Молчать об этом
-        // нельзя, иначе разбор выглядит уверенной ошибкой.
-        if (english.alsoLemma) ...[
-          const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.info_outline, size: 13, color: scheme.tertiary),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  '«${english.surface}» бывает и самостоятельным словом — '
-                  'здесь показан разбор формы.',
-                  style: TextStyle(
-                      fontSize: 11.5,
-                      fontStyle: FontStyle.italic,
-                      color: scheme.onSurface.withValues(alpha: 0.6)),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ],
-    );
-  }
-
-  /// Выбор, что уходит в словарь: словоформа из текста или начальная форма.
-  ///
-  /// Спрашиваем каждый раз, а не прячем в настройки: выбор зависит от слова.
-  /// Неправильный глагол полезнее запомнить формой, а незнакомое
-  /// существительное — словарной статьёй.
-  Widget _saveChoice(
-      BuildContext context, ColorScheme scheme, WordAnalysis data) {
-    final label = formLabelOf(data);
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.primary.withValues(alpha: 0.22)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _section('Добавить в словарь', scheme),
-          const SizedBox(height: 8),
-          _saveOption(
-            selected: !_saveLemma,
-            title: data.surface,
-            subtitle: label.isEmpty ? 'форма из текста' : 'форма — $label',
-            scheme: scheme,
-            onTap: () => setState(() => _saveLemma = false),
-          ),
-          const SizedBox(height: 6),
-          _saveOption(
-            selected: _saveLemma,
-            title: data.lemma,
-            subtitle: 'начальная форма',
-            scheme: scheme,
-            onTap: () => setState(() => _saveLemma = true),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    _isSaved ? scheme.surfaceContainerHighest : scheme.primary,
-                foregroundColor: _isSaved ? scheme.onSurface : scheme.onPrimary,
-              ),
-              icon: Icon(_isSaved ? Icons.check : Icons.bookmark_add, size: 18),
-              label: Text(_isSaved ? 'Слово сохранено' : 'Сохранить'),
-              onPressed:
-                  _isSaved ? null : () => _save(data, asLemma: _saveLemma),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _saveOption({
-    required bool selected,
-    required String title,
-    required String subtitle,
-    required ColorScheme scheme,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: _isSaved ? null : onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-        child: Row(
-          children: [
-            Icon(
-              selected ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 20,
-              color: selected
-                  ? scheme.primary
-                  : scheme.onSurface.withValues(alpha: 0.4),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'NotoSerif',
-                        fontWeight: FontWeight.bold,
-                        color: scheme.onSurface,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '  ·  $subtitle',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        color: scheme.onSurface.withValues(alpha: 0.65),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Color _posColor(String upos, ColorScheme scheme) => switch (upos) {
-        'NOUN' => const Color(0xFF2563EB),
-        'PROPN' => const Color(0xFF0891B2),
-        'VERB' => const Color(0xFFDC2626),
-        'AUX' => const Color(0xFFEA580C),
-        'ADJ' => const Color(0xFF16A34A),
-        'ADV' => const Color(0xFF0D9488),
-        'PRON' => const Color(0xFF9333EA),
-        'DET' => const Color(0xFFC026D3),
-        'ADP' => const Color(0xFFA16207),
-        'NUM' => const Color(0xFF4F46E5),
-        'PART' => const Color(0xFFDB2777),
-        'INTJ' => const Color(0xFFE11D48),
-        _ => scheme.onSurface.withValues(alpha: 0.58),
-      };
-
-  Color _chunkColor(String kind, ColorScheme scheme) => switch (kind) {
-        'prep' => const Color(0xFF2563EB),
-        'verb' => const Color(0xFFF59E0B),
-        'noun' => const Color(0xFF10B981),
-        _ => scheme.onSurface.withValues(alpha: 0.55),
-      };
-
-  String _chunkKind(String kind) => switch (kind) {
-        'prep' => 'Предлог',
-        'verb' => 'Глагол',
-        'noun' => 'Согласование',
-        _ => 'Связь',
-      };
-
-  Widget _sentenceAnalysisCard(ColorScheme scheme, SentenceAnalysis analysis) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.42),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.onSurface.withValues(alpha: 0.12)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.account_tree_outlined,
-                  size: 17, color: scheme.secondary),
-              const SizedBox(width: 7),
-              Text(
-                'Грамматический разбор',
-                style: TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.bold,
-                  color: scheme.secondary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            crossAxisAlignment: WrapCrossAlignment.end,
-            children: [
-              for (final token in analysis.tokens)
-                _sentenceToken(scheme, token),
-            ],
-          ),
-          if (analysis.chunks.isNotEmpty) ...[
-            const SizedBox(height: 14),
-            Divider(color: scheme.onSurface.withValues(alpha: 0.12)),
-            const SizedBox(height: 5),
-            for (final chunk in analysis.chunks)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      margin: const EdgeInsets.only(top: 5),
-                      decoration: BoxDecoration(
-                        color: _chunkColor(chunk.kind, scheme),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 9),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: chunk.text,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: scheme.onSurface,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '  ${_chunkKind(chunk.kind)}',
-                                  style: TextStyle(
-                                    fontSize: 11.5,
-                                    color: scheme.onSurface
-                                        .withValues(alpha: 0.58),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            chunk.label,
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              height: 1.35,
-                              color: scheme.onSurface.withValues(alpha: 0.72),
-                            ),
-                          ),
-                          if (chunk.note.isNotEmpty)
-                            Text(
-                              chunk.note,
-                              style: TextStyle(
-                                fontSize: 12,
-                                height: 1.35,
-                                color: scheme.onSurface.withValues(alpha: 0.62),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ] else ...[
-            const SizedBox(height: 12),
-            Text(
-              'Части речи определены, но устойчивых связей во фразе не найдено.',
-              style: TextStyle(
-                fontSize: 12,
-                color: scheme.onSurface.withValues(alpha: 0.62),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _sentenceToken(ColorScheme scheme, SentenceTokenAnalysis token) {
-    final color = _posColor(token.upos, scheme);
-    final details = <String>[
-      if (token.lemma.isNotEmpty) 'Начальная форма: ${token.lemma}',
-      if (token.translation.isNotEmpty) 'Перевод: ${token.translation}',
-    ].join('\n');
-    return Tooltip(
-      message: details,
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 48, minHeight: 54),
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withValues(alpha: 0.36)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              token.posShort.isEmpty ? 'слово' : token.posShort,
-              style: TextStyle(
-                fontSize: 9.5,
-                height: 1.05,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              token.surface,
-              style: TextStyle(
-                fontFamily: 'NotoSerif',
-                fontSize: 16,
-                height: 1.05,
-                fontWeight: FontWeight.bold,
-                color: scheme.onSurface,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Грамматика выделенной фразы: составное время (перфекат/футур/потенцијал)
-  /// и энклитики с объяснением порядка (закон Ваккернагеля).
-  Widget _phraseGrammarCard(ColorScheme scheme, PhraseInsight insight) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: scheme.secondary.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.secondary.withValues(alpha: 0.25)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.account_tree_outlined,
-                  size: 16, color: scheme.secondary),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(insight.title,
-                    style: TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.bold,
-                        color: scheme.secondary)),
-              ),
-            ],
-          ),
-          if (insight.parts.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            ...insight.parts.map((p) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(p.label,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'NotoSerif',
-                              fontWeight: FontWeight.bold,
-                              color: scheme.primary)),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text('— ${p.value}',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color:
-                                    scheme.onSurface.withValues(alpha: 0.8))),
-                      ),
-                    ],
-                  ),
-                )),
-          ],
-          const SizedBox(height: 6),
-          Text(insight.note,
-              style: TextStyle(
-                  fontSize: 11.5,
-                  height: 1.35,
-                  fontStyle: FontStyle.italic,
-                  color: scheme.onSurface.withValues(alpha: 0.65))),
-        ],
-      ),
-    );
-  }
-
-  /// «Общий» (внеконтекстный) перевод слова + пометка, что значение зависит
-  /// от контекста. Показывается под основным (контекстным) переводом.
-  Widget _generalTranslationCard(ColorScheme scheme, String general) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.onSurface.withValues(alpha: 0.10)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.public,
-                  size: 14, color: scheme.onSurface.withValues(alpha: 0.5)),
-              const SizedBox(width: 6),
-              Text('В общем (вне контекста)',
-                  style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: scheme.onSurface.withValues(alpha: 0.55))),
-            ],
-          ),
-          const SizedBox(height: 3),
-          Text(general,
-              style: TextStyle(
-                  fontSize: 15,
-                  color: scheme.onSurface.withValues(alpha: 0.85))),
-          const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.info_outline, size: 13, color: scheme.tertiary),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  'Точное значение зависит от контекста — выше перевод именно '
-                  'для этого предложения.',
-                  style: TextStyle(
-                      fontSize: 11.5,
-                      fontStyle: FontStyle.italic,
-                      color: scheme.onSurface.withValues(alpha: 0.6)),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _section(String text, ColorScheme scheme) => Text(text,
-      style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: scheme.onSurface.withValues(alpha: 0.6)));
-
-  Widget _chips(List<String> items, ColorScheme scheme, Color border) => Wrap(
-        spacing: 8,
-        runSpacing: 6,
-        children: items
-            .map((t) => Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: scheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: border.withValues(alpha: 0.4)),
-                  ),
-                  child: Text(t,
-                      style: TextStyle(fontSize: 12, color: scheme.onSurface)),
-                ))
-            .toList(),
-      );
 }

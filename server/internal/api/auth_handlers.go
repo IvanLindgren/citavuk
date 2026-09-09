@@ -324,15 +324,20 @@ func (s *Server) issueSession(w http.ResponseWriter, r *http.Request, user *stor
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось войти.")
 		return
 	}
+	if s.browserSession(r) {
+		setSessionCookie(w, token, expires)
+		token = "cookie"
+	}
 	writeJSON(w, http.StatusOK, authResponse{Token: token, ExpiresAt: expires, User: viewOf(user)})
 }
 
 func (s *Server) handleLogout(w http.ResponseWriter, r *http.Request) {
-	if token := auth.BearerToken(r.Header.Get("Authorization")); token != "" {
+	if token := requestToken(r); token != "" {
 		if err := s.store.DeleteSession(r.Context(), auth.HashToken(token)); err != nil {
 			slog.Error("удаление сессии", "err", err)
 		}
 	}
+	setSessionCookie(w, "", time.Unix(1, 0))
 	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
 }
 
@@ -364,6 +369,12 @@ func (s *Server) handleDeleteAccount(w http.ResponseWriter, r *http.Request) {
 	if user.PasswordHash != "" {
 		if err := auth.VerifyPassword(req.Password, user.PasswordHash); err != nil {
 			writeError(w, http.StatusUnauthorized, codeUnauthorized, "Пароль неверен.")
+			return
+		}
+	} else {
+		recent, err := s.store.SessionIsRecent(r.Context(), user.ID, auth.HashToken(requestToken(r)))
+		if err != nil || !recent {
+			writeError(w, http.StatusForbidden, codeForbidden, "Войди через свой провайдер заново, затем повтори удаление в течение пяти минут.")
 			return
 		}
 	}
@@ -401,6 +412,12 @@ func (s *Server) handleChangePassword(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusUnauthorized, codeUnauthorized, "Текущий пароль неверен.")
 			return
 		}
+	} else {
+		recent, err := s.store.SessionIsRecent(r.Context(), user.ID, auth.HashToken(requestToken(r)))
+		if err != nil || !recent {
+			writeError(w, http.StatusForbidden, codeForbidden, "Войди через свой провайдер заново, затем задай пароль в течение пяти минут.")
+			return
+		}
 	}
 
 	hash, err := auth.HashPassword(req.NewPassword)
@@ -408,7 +425,7 @@ func (s *Server) handleChangePassword(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось сменить пароль.")
 		return
 	}
-	if err := s.store.SetPasswordHash(r.Context(), user.ID, hash); err != nil {
+	if err := s.store.ChangePasswordAndRevoke(r.Context(), user.ID, hash); err != nil {
 		slog.Error("смена пароля", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось сменить пароль.")
 		return
@@ -416,9 +433,6 @@ func (s *Server) handleChangePassword(w http.ResponseWriter, r *http.Request) {
 
 	// Смена пароля завершает все сессии: сменивший пароль рассчитывает, что
 	// чужое устройство потеряет доступ. Текущему устройству выдаётся новая.
-	if err := s.store.DeleteUserSessions(r.Context(), user.ID); err != nil {
-		slog.Error("сброс сессий после смены пароля", "err", err)
-	}
 	user.PasswordHash = hash
 	s.issueSession(w, r, user, deviceInfo{})
 }

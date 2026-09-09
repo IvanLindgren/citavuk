@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../services/answer_evaluator.dart';
 import '../services/serbian_text.dart';
+import '../../widgets/animated_widgets.dart';
 
 class FeedbackPanel extends StatelessWidget {
   const FeedbackPanel({
@@ -31,69 +32,78 @@ class FeedbackPanel extends StatelessWidget {
     return Semantics(
       liveRegion: true,
       label: correct ? 'Верно' : 'Ошибка. Правильно: ${result.correctDisplay}',
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: accent.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: accent.withValues(alpha: 0.65), width: 1.4),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          if (correct)
+            const Positioned(
+                right: -18, top: -34, child: SparkleBurst(size: 96)),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(14),
+              border:
+                  Border.all(color: accent.withValues(alpha: 0.65), width: 1.4),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  correct ? Icons.check_circle : Icons.cancel,
-                  color: accent,
-                  size: 24,
+                Row(
+                  children: [
+                    Icon(
+                      correct ? Icons.check_circle : Icons.cancel,
+                      color: accent,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      correct ? 'Верно' : 'Неверно',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: accent,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  correct ? 'Верно' : 'Неверно',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: accent,
+                if (!correct) ...[
+                  const SizedBox(height: 12),
+                  _AnswerRow(
+                    label: 'Твой ответ',
+                    value: result.userDisplay,
+                    strikethrough: true,
                   ),
-                ),
+                  const SizedBox(height: 6),
+                  _CorrectAnswerRow(
+                    correctAnswer: result.correctDisplay,
+                    userAnswer: result.userDisplay,
+                    divergenceIndex: result.divergenceIndex,
+                  ),
+                ],
+                if (result.explanation.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    result.explanation,
+                    style: const TextStyle(fontSize: 15, height: 1.45),
+                  ),
+                ],
+                if (!correct && onShowRule != null) ...[
+                  const SizedBox(height: 6),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: onShowRule,
+                      icon: const Icon(Icons.menu_book_outlined, size: 18),
+                      label: const Text('Показать правило'),
+                    ),
+                  ),
+                ],
               ],
             ),
-            if (!correct) ...[
-              const SizedBox(height: 12),
-              _AnswerRow(
-                label: 'Твой ответ',
-                value: result.userDisplay,
-                strikethrough: true,
-              ),
-              const SizedBox(height: 6),
-              _CorrectAnswerRow(
-                correctAnswer: result.correctDisplay,
-                userAnswer: result.userDisplay,
-                divergenceIndex: result.divergenceIndex,
-              ),
-            ],
-            if (result.explanation.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Text(
-                result.explanation,
-                style: const TextStyle(fontSize: 15, height: 1.45),
-              ),
-            ],
-            if (!correct && onShowRule != null) ...[
-              const SizedBox(height: 6),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  onPressed: onShowRule,
-                  icon: const Icon(Icons.menu_book_outlined, size: 18),
-                  label: const Text('Показать правило'),
-                ),
-              ),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

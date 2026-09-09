@@ -106,6 +106,11 @@ func declensionTables(lemma, gender string, entries []Entry, surface string) []T
 // нужную человек в ней не найдёт.
 func adjectiveTables(lemma string, feats map[string]string, entries []Entry, surface string) []Table {
 	tables := adjectiveGenders(entries, surface)
+	// Лемма причастия в UD может быть инфинитивом: от неё нельзя строить
+	// прилагательное или степень сравнения. Сохраняем точные словарные формы.
+	if feats["VerbForm"] == "Part" && feats["Voice"] == "Pass" {
+		lemma = ""
+	}
 
 	gender := feats["Gender"]
 	if gender == "" {
@@ -118,7 +123,7 @@ func adjectiveTables(lemma string, feats map[string]string, entries []Entry, sur
 	if table := adjectiveDeclension(lemma, gender, number, entries, surface); table != nil {
 		tables = append(tables, *table)
 	}
-	if table := comparisonTable(lemma, entries, surface); table != nil {
+	if table := comparisonTable(lemma, entries, surface); lemma != "" && table != nil {
 		tables = append(tables, *table)
 	}
 	return tables
@@ -129,7 +134,7 @@ func adjectiveTables(lemma string, feats map[string]string, entries []Entry, sur
 // Точная форма из лексикона всегда важнее достроенной, поэтому сначала
 // спрашивается он. Определённость в лексиконе размечена как Definite=Def|Ind.
 func adjectiveDeclension(lemma, gender, number string, entries []Entry, surface string) *Table {
-	if adjectiveStem(lemma) == "" {
+	if lemma != "" && adjectiveStem(lemma) == "" {
 		return nil
 	}
 	fromLexicon := func(caseKey, definite string) string {
@@ -143,11 +148,11 @@ func adjectiveDeclension(lemma, gender, number string, entries []Entry, surface 
 	for _, caseKey := range CaseOrder {
 		indefinite := fromLexicon(caseKey, "Ind")
 		definite := fromLexicon(caseKey, "Def")
-		generated := indefinite == "" || definite == ""
-		if indefinite == "" {
+		generated := lemma != "" && (indefinite == "" || definite == "")
+		if indefinite == "" && lemma != "" {
 			indefinite = AdjectiveForm(lemma, gender, number, caseKey, false)
 		}
-		if definite == "" {
+		if definite == "" && lemma != "" {
 			definite = AdjectiveForm(lemma, gender, number, caseKey, true)
 		}
 		if indefinite == "" && definite == "" {
@@ -156,7 +161,9 @@ func adjectiveDeclension(lemma, gender, number string, entries []Entry, surface 
 		// Совпали — показываем одну форму. Это не экономия места, а факт языка:
 		// в женском роде и во множественном числе вид не различается вовсе.
 		form := indefinite
-		if definite != "" && definite != indefinite {
+		if form == "" {
+			form = definite
+		} else if definite != "" && definite != indefinite {
 			form = indefinite + " / " + definite
 		}
 		rows = append(rows, Cell{
@@ -296,6 +303,11 @@ func conjugation(lemma string, entries []Entry, surface string) []Table {
 	if future := futureTable(lemma, entries); future != nil {
 		tables = append(tables, *future)
 	}
+	for _, tense := range []string{"Past", "Imp"} {
+		if table := simplePastTable(lemma, entries, surface, tense); table != nil {
+			tables = append(tables, *table)
+		}
+	}
 	return tables
 }
 
@@ -320,9 +332,9 @@ func perfectTable(lemma string, entries []Entry, surface string) *Table {
 	}
 
 	mascSg, genMascSg := pick("Masc", "Sing", 0)
-	femSg, _ := pick("Fem", "Sing", 1)
-	mascPl, _ := pick("Masc", "Plur", 3)
-	femPl, _ := pick("Fem", "Plur", 4)
+	femSg, genFemSg := pick("Fem", "Sing", 1)
+	mascPl, genMascPl := pick("Masc", "Plur", 3)
+	femPl, genFemPl := pick("Fem", "Plur", 4)
 	if mascSg == "" && femSg == "" {
 		return nil
 	}
@@ -332,8 +344,10 @@ func perfectTable(lemma string, entries []Entry, surface string) *Table {
 	rows := make([]Cell, 0, 6)
 	for i := 0; i < 6; i++ {
 		parts := singular
+		generated := genMascSg || genFemSg
 		if i >= 3 {
 			parts = plural
+			generated = genMascPl || genFemPl
 		}
 		form := "—"
 		if parts[0] != "" {
@@ -346,7 +360,7 @@ func perfectTable(lemma string, entries []Entry, surface string) *Table {
 			Label:     Persons[i],
 			Form:      form,
 			Current:   surface != "" && strings.Contains(form, surface),
-			Generated: genMascSg,
+			Generated: generated,
 		})
 	}
 	return &Table{

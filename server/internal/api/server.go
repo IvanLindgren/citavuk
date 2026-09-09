@@ -16,6 +16,7 @@ import (
 	"github.com/citavuk/server/internal/formhint"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
+	"github.com/citavuk/server/internal/personal"
 	"github.com/citavuk/server/internal/photoscan"
 	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
@@ -42,6 +43,7 @@ type Server struct {
 	documentHTTP    *http.Client
 	quiz            *quiz.Generator
 	daily           *daily.Generator
+	personal        *personal.Generator
 	podcasts        *podcast.Service
 	media           *media.Service
 	microFeed       *feed.Generator
@@ -125,6 +127,7 @@ func New(
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
+		personal:     personal.New(cfg.DailyAIKey, cfg.DailyAIURL),
 		daily: daily.NewGenerator(
 			cfg.DailyAIKey, cfg.DailyAIModel, cfg.DailyAIURL,
 		),
@@ -201,7 +204,7 @@ func New(
 	}
 
 	if cfg.UpstreamURL != "" {
-		proxy, err := newUpstreamProxy(cfg.UpstreamURL)
+		proxy, err := newUpstreamProxy(cfg.UpstreamURL, cfg.UpstreamSecret, cfg.TrustProxy)
 		if err != nil {
 			return nil, err
 		}
@@ -219,6 +222,7 @@ func New(
 	go s.photoScanLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
 	go s.sweepDuelPeriodically()
+	go s.runPersonalJobs()
 
 	return s, nil
 }
@@ -359,6 +363,18 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/photo/scan", s.requireAuth(s.rateLimitIdentity(s.photoScanLimit, s.handlePhotoScan)))
 	mux.HandleFunc("POST /v1/daily/learn", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyLearn)))
 	mux.HandleFunc("GET /v1/daily/progress", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDailyProgress)))
+	mux.HandleFunc("GET /v1/study", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleStudy)))
+	mux.HandleFunc("POST /v1/study/attempts", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleStudyAttempt)))
+	mux.HandleFunc("PUT /v1/study", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleStudy)))
+	mux.HandleFunc("GET /v1/personal", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalLatest)))
+	mux.HandleFunc("POST /v1/personal", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalCreate)))
+	mux.HandleFunc("GET /v1/personal/{plan}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalPlan)))
+	mux.HandleFunc("POST /v1/personal/{plan}/regenerate", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalRegenerate)))
+	mux.HandleFunc("POST /v1/personal/{plan}/retry", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalRetry)))
+	mux.HandleFunc("GET /v1/personal/{plan}/days/{day}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalLesson)))
+	mux.HandleFunc("PUT /v1/personal/{plan}/days/{day}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalEdit)))
+	mux.HandleFunc("POST /v1/personal/{plan}/days/{day}/complete", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalComplete)))
+	mux.HandleFunc("PUT /v1/personal/{plan}/days/{day}/rating", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handlePersonalRate)))
 
 	mux.HandleFunc("GET /v1/garden", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGarden)))
 	mux.HandleFunc("POST /v1/garden/plant", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleGardenPlant)))
@@ -505,6 +521,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/admin/announcements/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handlePublishAnnouncement)))
 	mux.HandleFunc("POST /v1/admin/announcements/{id}/archive", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleArchiveAnnouncement)))
 	mux.HandleFunc("GET /v1/admin/micro-feed/sources", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminMicroFeedSources)))
+	mux.HandleFunc("GET /v1/admin/micro-videos", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleVideoList)))
+	mux.HandleFunc("POST /v1/admin/micro-videos", s.requireAdmin(s.rateLimitIdentity(s.quizLimit, s.handleVideoDraft)))
+	mux.HandleFunc("POST /v1/admin/micro-videos/{id}/publish", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleVideoPublish)))
 	mux.HandleFunc("POST /v1/admin/micro-feed/sources/{slug}/sync", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSyncMicroFeedSource)))
 	mux.HandleFunc("GET /v1/admin/micro-feed/imports", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminMicroFeedImports)))
 	mux.HandleFunc("POST /v1/admin/micro-feed/imports/{id}/generate", s.requireAdmin(s.rateLimitIdentity(s.quizLimit, s.handleAdminGenerateMicroFeedItem)))

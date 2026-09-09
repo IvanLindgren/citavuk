@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { DropOverlay } from "../components/DropOverlay";
@@ -45,10 +45,12 @@ import {
   type ImportStage,
 } from "../lib/documentImport";
 import { Link, useQuery, useRouter } from "../lib/router";
+import { allReviews, allVocabulary } from "../lib/vocabulary";
 import { pickImportableFile, useFileDrop } from "../lib/useFileDrop";
 import { useAuth } from "../state/auth";
 import { useSync } from "../state/sync";
 import { useSeo } from '../lib/seo';
+import { MOTION_CARD_S, MOTION_LIST_STEP_S } from "../lib/tokens";
 
 /** Пример на случай пустой библиотеки: без него первый экран нечем занять. */
 const SAMPLE = `Ово је прича о вуку који је волео да чита.
@@ -113,6 +115,7 @@ export function Library() {
   const { revision, sync } = useSync();
 
   const [books, setBooks] = useState<BookMeta[] | null>(null);
+  const [dueCount, setDueCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [importStage, setImportStage] = useState<ImportStage | null>(null);
   // Документ разобран, но язык оказался не сербским: ждём решения человека.
@@ -131,7 +134,25 @@ export function Library() {
 
   const reload = useCallback(async () => {
     try {
-      setBooks(await listBooks());
+      const [all, reviews, vocab] = await Promise.all([
+        listBooks(),
+        allReviews(),
+        allVocabulary(),
+      ]);
+      setBooks(all);
+      // Слов к повторению: живые карточки со сроком не позже сейчас.
+      const gone = new Set(
+        vocab.filter((entry) => entry.deleted).map((entry) => entry.id),
+      );
+      const now = Date.now();
+      setDueCount(
+        reviews.filter(
+          (review) =>
+            !review.deleted &&
+            review.dueAt <= now &&
+            !gone.has(review.vocabId),
+        ).length,
+      );
     } catch (caught) {
       setBooks([]);
       setError(
@@ -157,6 +178,18 @@ export function Library() {
     if (view.kind === "loose") return all.filter((book) => !book.folder);
     return all.filter((book) => book.folder === view.name);
   }, [books, view]);
+
+  // Книги, уже показанные хотя бы раз. Появляются с анимацией только новые:
+  // возврат из читалки, синхронизация и обновление состояния не должны
+  // заново проигрывать каскад всей библиотеки.
+  const seenIds = useRef<Set<string>>(new Set());
+  const freshIds = useMemo(
+    () => new Set(shown.filter((book) => !seenIds.current.has(book.id)).map((book) => book.id)),
+    [shown],
+  );
+  useEffect(() => {
+    for (const book of shown) seenIds.current.add(book.id);
+  }, [shown]);
 
   // Папка могла исчезнуть после того, как из неё вынули последнюю книгу, — в
   // этом случае возвращаемся ко всей библиотеке, а не показываем пустоту.
@@ -404,6 +437,10 @@ export function Library() {
         )}
 
         {books !== null && books.length > 0 && (
+          <ContinueCard books={books} dueCount={dueCount} />
+        )}
+
+        {books !== null && books.length > 0 && (
           <FolderBar
             view={view}
             folders={folders}
@@ -447,7 +484,7 @@ export function Library() {
           ) : books.length === 0 ? (
             <EmptyState onSample={() => void addText("Вук и орао", SAMPLE)} />
           ) : shown.length === 0 ? (
-            <Card className="px-6 py-12 text-center">
+            <Card tone="contour" className="px-6 py-12 text-center">
               <p className="text-lg">В этой папке пока пусто</p>
               <p className="mt-2 text-[var(--text-muted)]">
                 Перетащите сюда документ или переложите книгу из другой папки.
@@ -461,6 +498,7 @@ export function Library() {
                     key={book.id}
                     book={book}
                     index={index}
+                    animateIn={freshIds.has(book.id)}
                     folders={folders.map((folder) => folder.name)}
                     onMove={async (folder) => {
                       await moveToFolder(book.id, folder);
@@ -481,8 +519,70 @@ export function Library() {
   );
 }
 
-function FolderBar({
-  view,
+/**
+ * Витрина «Продолжить»: нейтральная карточка с названием, прогрессом
+ * и компактной кнопкой «Читать». Слова к повторению — отдельное действие,
+ * а не строка внутри чужой карточки.
+ */
+function ContinueCard({
+  books,
+  dueCount,
+}: {
+  books: BookMeta[];
+  dueCount: number;
+}) {
+  const current = books.find((book) => book.lastParagraph > 0);
+  if (!current) return null;
+  const progress =
+    current.paragraphCount > 0
+      ? Math.min(
+          100,
+          Math.round(
+            ((current.lastParagraph + 1) / current.paragraphCount) * 100,
+          ),
+        )
+      : 0;
+  return (
+    <div className="mb-6">
+      <Card tone="contour" className="p-5">
+        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          Продолжить чтение
+        </div>
+        <div className="mt-1 font-display text-xl font-bold [overflow-wrap:anywhere]">
+          {current.title}
+        </div>
+        <div className="mt-1 text-sm text-[var(--text-muted)]">
+          {progress > 0 ? `Прочитано ${progress}%` : "Ещё не начата"}
+        </div>
+        <div
+          className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--accent)]/15"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Прочитано ${progress}%`}
+        >
+          <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${progress}%` }} />
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Link to={`/reader/${current.id}`}>
+            <Button size="sm">Читать</Button>
+          </Link>
+          {dueCount > 0 && (
+            <Link to="/cards">
+              <Button size="sm" variant="secondary">
+                К повторению: {dueCount}{" "}
+                {plural(dueCount, "слово", "слова", "слов")}
+              </Button>
+            </Link>
+          )}
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function FolderBar({  view,
   folders,
   total,
   loose,
@@ -594,17 +694,22 @@ function FolderChip({
 function BookCard({
   book,
   index,
+  animateIn,
   folders,
   onMove,
   onDelete,
 }: {
   book: BookMeta;
   index: number;
+  /** Книга ещё не показывалась: только такие появляются с анимацией. */
+  animateIn: boolean;
   folders: string[];
   onMove: (folder: string) => void;
   onDelete: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const entrance = animateIn && !reduceMotion;
   const progress =
     book.paragraphCount > 0
       ? Math.min(
@@ -617,16 +722,16 @@ function BookCard({
     <motion.div
       className="min-w-0 w-full"
       layout
-      initial={{ opacity: 0, y: 16 }}
+      initial={entrance ? { opacity: 0, y: 16 } : false}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.94 }}
       transition={{
-        duration: 0.32,
-        delay: index * 0.04,
+        duration: MOTION_CARD_S,
+        delay: entrance ? Math.min(index, 6) * MOTION_LIST_STEP_S : 0,
         ease: [0.22, 1, 0.36, 1],
       }}
     >
-      <Card className="group h-full min-w-0 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
+      <Card tone="contour" className="group h-full min-w-0 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
         <Link to={`/reader/${book.id}`} className="block min-w-0 p-5">
           <div className="flex items-start gap-2">
             <h3 className="line-clamp-2 min-w-0 flex-1 break-words text-xl leading-snug [overflow-wrap:anywhere]">
@@ -652,7 +757,7 @@ function BookCard({
           <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
             <motion.div
               className="h-full rounded-full bg-[var(--accent)]"
-              initial={{ width: 0 }}
+              initial={reduceMotion ? false : { width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{
                 duration: 0.7,

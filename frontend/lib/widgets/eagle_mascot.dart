@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'animated_widgets.dart';
+import 'wolf_mascot.dart' show mascotCacheWidth;
 
 /// Маскот аудирования — черногорский орёл Слухао (assets/imgs).
 ///
 /// Арты добавляются позже (три вариации). Пока файла нет, виджеты показывают
 /// эмодзи 🦅 через errorBuilder — фича работает и без артов.
 class Eagle {
-  static const zdravo = 'assets/imgs/sluhao_zdravo.png'; // приветствие
-  static const slusa = 'assets/imgs/sluhao_slusa.png'; // слушает (в плеере)
-  static const savet = 'assets/imgs/sluhao_savet.png'; // совет/подсказка
+  static const zdravo = 'assets/imgs/sluhao_zdravo.webp'; // приветствие
+  static const slusa = 'assets/imgs/sluhao_slusa.webp'; // слушает (в плеере)
+  static const savet = 'assets/imgs/sluhao_savet.webp'; // совет/подсказка
 }
 
 /// Орёл-стикер: арт целиком, с фолбэком на эмодзи, пока артов нет.
@@ -33,7 +34,7 @@ class EagleSticker extends StatelessWidget {
       child: Image.asset(
         asset,
         fit: BoxFit.contain,
-        cacheWidth: (size * 3).round(),
+        cacheWidth: mascotCacheWidth(context, size),
         errorBuilder: (_, __, ___) => Container(
           alignment: Alignment.center,
           decoration: const BoxDecoration(

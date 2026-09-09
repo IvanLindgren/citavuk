@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'video_feed_screen.dart';
 
 import '../models/definition.dart';
 import '../models/micro_feed.dart';
@@ -14,6 +15,7 @@ import '../services/user_db.dart';
 import '../theme/app_theme.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
+import '../widgets/animated_widgets.dart';
 import '../widgets/definition_card.dart';
 import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
@@ -34,13 +36,56 @@ Widget vukotokTheme({required Widget child}) =>
 /// вертикальный свайп у ленты, и переход к следующей карточке срабатывает через
 /// раз (ровно это уже было на вебе).
 class VukotokScreen extends StatefulWidget {
-  const VukotokScreen({super.key});
+  const VukotokScreen({super.key, this.active = true});
+  final bool active;
 
   @override
   State<VukotokScreen> createState() => _VukotokScreenState();
 }
 
 class _VukotokScreenState extends State<VukotokScreen> {
+  bool _video = false;
+  bool _videoOpened = false;
+  @override
+  Widget build(BuildContext context) => vukotokTheme(
+          child: Column(children: [
+        SafeArea(
+            bottom: false,
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: SegmentedButton<bool>(
+                    segments: const [
+                      ButtonSegment(
+                          value: false,
+                          label: Text('Тексты'),
+                          icon: Icon(Icons.article_outlined)),
+                      ButtonSegment(
+                          value: true,
+                          label: Text('Видео'),
+                          icon: Icon(Icons.play_circle_outline))
+                    ],
+                    selected: {
+                      _video
+                    },
+                    onSelectionChanged: (v) =>
+                        setState(() { _video = v.first; _videoOpened |= _video; })))),
+        Expanded(
+            child: IndexedStack(index: _video ? 1 : 0, children: [
+              VukotokTextScreen(active: widget.active && !_video),
+              if (_videoOpened) VideoFeedScreen(active: widget.active && _video)
+              else const SizedBox.shrink(),
+            ]))
+      ]));
+}
+
+class VukotokTextScreen extends StatefulWidget {
+  const VukotokTextScreen({super.key, this.active = true});
+  final bool active;
+  @override
+  State<VukotokTextScreen> createState() => _VukotokTextScreenState();
+}
+
+class _VukotokTextScreenState extends State<VukotokTextScreen> {
   final PageController _pages = PageController();
   final List<MicroFeedItem> _items = [];
   final Set<String> _seen = {};
@@ -109,12 +154,24 @@ class _VukotokScreenState extends State<VukotokScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => vukotokTheme(child: _body(context));
+  Widget build(BuildContext context) => vukotokTheme(
+        child: Builder(builder: (themedContext) => _body(themedContext)),
+      );
 
   Widget _body(BuildContext context) {
     if (_loading) {
+      // Лента грузится — волк ждёт вместе с тобой, а не спиннер в пустоте.
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              WolfSticker(asset: Wolf.vukotok, size: 140, animate: false),
+              SizedBox(height: 16),
+              ThinkingDots(color: Colors.white70),
+            ],
+          ),
+        ),
       );
     }
 
@@ -139,7 +196,7 @@ class _VukotokScreenState extends State<VukotokScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const WolfSticker(asset: Wolf.zdravo, size: 150),
+                const WolfSticker(asset: Wolf.zbunjen, size: 140),
                 const SizedBox(height: 18),
                 Text(
                   _error.isEmpty ? 'Вукоток пока пуст' : _error,
@@ -175,6 +232,7 @@ class _VukotokScreenState extends State<VukotokScreen> {
               key: ValueKey(_items[i].id),
               item: _items[i],
               cyrillic: _cyrillic,
+              active: widget.active && _index == i,
             ),
           ),
           _TopBar(
@@ -199,7 +257,19 @@ class _VukotokScreenState extends State<VukotokScreen> {
   }
 
   Future<void> _showLiked() async {
-    final items = await MicroFeedService.instance.liked();
+    List<MicroFeedItem> items;
+    try {
+      items = await MicroFeedService.instance.liked();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text('Не удалось загрузить сохранённое. Попробуй ещё раз.')),
+        );
+      }
+      return;
+    }
     if (!mounted) return;
     showModalBottomSheet<void>(
       context: context,
@@ -274,16 +344,22 @@ class _TopBar extends StatelessWidget {
 
 /// Одна карточка ленты.
 class _VukotokCard extends StatefulWidget {
-  const _VukotokCard({super.key, required this.item, required this.cyrillic});
+  const _VukotokCard(
+      {super.key,
+      required this.item,
+      required this.cyrillic,
+      this.active = true});
 
   final MicroFeedItem item;
   final bool cyrillic;
+  final bool active;
 
   @override
   State<_VukotokCard> createState() => _VukotokCardState();
 }
 
-class _VukotokCardState extends State<_VukotokCard> {
+class _VukotokCardState extends State<_VukotokCard>
+    with WidgetsBindingObserver {
   late int _reaction = widget.item.reaction;
   late int _likes = widget.item.likesCount;
   late int _dislikes = widget.item.dislikesCount;
@@ -294,16 +370,54 @@ class _VukotokCardState extends State<_VukotokCard> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _startView();
+  }
+
+  void _startView() {
+    final lifecycle = WidgetsBinding.instance.lifecycleState;
+    if (!widget.active ||
+        _shownAt != null ||
+        (lifecycle != null && lifecycle != AppLifecycleState.resumed)) {
+      return;
+    }
     _shownAt = DateTime.now();
     MicroFeedService.instance.record(widget.item.id, 'view');
   }
 
   @override
+  void didUpdateWidget(_VukotokCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.active) {
+      _startView();
+    } else {
+      _finishView();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _startView();
+    } else {
+      _finishView();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _finishView();
+    super.dispose();
+  }
+
+  void _finishView() {
     final shown = _shownAt;
+    _shownAt = null;
     if (shown != null) {
       final dwell = DateTime.now().difference(shown).inMilliseconds;
-      final words = widget.item.text(widget.cyrillic).split(RegExp(r'\s+')).length;
+      final words =
+          widget.item.text(widget.cyrillic).split(RegExp(r'\s+')).length;
       final expected = (words / 180 * 60000 * .65).clamp(15000, 600000).toInt();
       if (dwell < 2000) {
         MicroFeedService.instance
@@ -313,7 +427,6 @@ class _VukotokCardState extends State<_VukotokCard> {
             .record(widget.item.id, 'complete', dwellMs: dwell);
       }
     }
-    super.dispose();
   }
 
   Future<void> _react(int next) async {
@@ -361,7 +474,8 @@ class _VukotokCardState extends State<_VukotokCard> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (_) => _FullTextSheet(item: widget.item, cyrillic: widget.cyrillic),
+      builder: (_) =>
+          _FullTextSheet(item: widget.item, cyrillic: widget.cyrillic),
     );
   }
 
@@ -370,7 +484,8 @@ class _VukotokCardState extends State<_VukotokCard> {
     final item = widget.item;
     final title = item.title(widget.cyrillic);
     final text = item.text(widget.cyrillic);
-    final minutes = (text.split(RegExp(r'\s+')).length / 180).ceil().clamp(1, 99);
+    final minutes =
+        (text.split(RegExp(r'\s+')).length / 180).ceil().clamp(1, 99);
 
     return Stack(
       fit: StackFit.expand,
@@ -405,7 +520,9 @@ class _VukotokCardState extends State<_VukotokCard> {
                         spacing: 8,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          _Chip(text: microFeedCategories[item.category] ?? item.category),
+                          _Chip(
+                              text: microFeedCategories[item.category] ??
+                                  item.category),
                           Text('${item.cefr} · $minutes мин',
                               style: const TextStyle(
                                   color: Colors.white70,
@@ -438,7 +555,9 @@ class _VukotokCardState extends State<_VukotokCard> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     _Action(
-                      icon: _reaction == 1 ? Icons.favorite : Icons.favorite_border,
+                      icon: _reaction == 1
+                          ? Icons.favorite
+                          : Icons.favorite_border,
                       active: _reaction == 1,
                       count: _likes,
                       label: 'Нравится',
@@ -549,11 +668,7 @@ class _CardText extends StatelessWidget {
                   shaderCallback: (rect) => const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white,
-                      Colors.white,
-                      Colors.transparent
-                    ],
+                    colors: [Colors.white, Colors.white, Colors.transparent],
                     stops: [0, .82, 1],
                   ).createShader(rect),
                   blendMode: BlendMode.dstIn,
@@ -613,8 +728,8 @@ class _PlainCover extends StatelessWidget {
               ),
               Align(
                 alignment: const Alignment(0, -.46),
-                child: WolfSticker(
-                    asset: Wolf.zdravo, size: sticker, frame: false),
+                child: Icon(Icons.auto_stories_outlined,
+                    size: sticker * .5, color: Colors.white12),
               ),
             ],
           ),
@@ -773,7 +888,8 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
     );
     // У частицы «se» своего ударения нет — она безударная, и показывать нужно
     // ударение глагола пары.
-    final target = reflexive?.onParticle == true ? reflexive!.verb : widget.token.text;
+    final target =
+        reflexive?.onParticle == true ? reflexive!.verb : widget.token.text;
     final accent = await LexiconDb.instance.accent(target);
     if (!mounted) return;
     setState(() {
@@ -787,13 +903,14 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
     final reflexive = _reflexive;
     await UserDb.instance.addVocabulary(
       bookId: bookId,
-      word: reflexive?.lemma.isNotEmpty == true ? reflexive!.lemma : data.surface,
-      lemma: reflexive?.lemma.isNotEmpty == true ? reflexive!.lemma : data.lemma,
+      word:
+          reflexive?.lemma.isNotEmpty == true ? reflexive!.lemma : data.surface,
+      lemma:
+          reflexive?.lemma.isNotEmpty == true ? reflexive!.lemma : data.lemma,
       pos: data.upos,
-      translation:
-          (data.contextualTranslation?.trim().isNotEmpty ?? false)
-              ? data.contextualTranslation!.trim()
-              : data.translation,
+      translation: (data.contextualTranslation?.trim().isNotEmpty ?? false)
+          ? data.contextualTranslation!.trim()
+          : data.translation,
       forms: data.forms,
     );
     if (mounted) setState(() => _saved = true);
@@ -847,7 +964,8 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
               children: [
                 Text(
                   reflexive != null ? reflexive.phrase : data.surface,
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                  style: const TextStyle(
+                      fontSize: 26, fontWeight: FontWeight.w800),
                 ),
                 if (_accent != null) ...[
                   const SizedBox(height: 4),
@@ -866,7 +984,7 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                   title: hasContext ? 'В этом предложении' : 'Перевод',
                   text: primary.isEmpty ? 'Перевода нет' : primary,
                   asset: Wolf.gram,
-                  wolfSize: 104,
+                  wolfSize: 120,
                 ),
                 if (hasContext) ...[
                   const SizedBox(height: 12),
@@ -917,8 +1035,8 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                   Text(
                     'Эту форму Читавук в словаре не нашёл: перевод есть, '
                     'а разбора и склонения не будет.',
-                    style: TextStyle(
-                        fontSize: 13, color: scheme.onSurfaceVariant),
+                    style:
+                        TextStyle(fontSize: 13, color: scheme.onSurfaceVariant),
                   ),
                 ],
                 const SizedBox(height: 16),
@@ -926,7 +1044,8 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: _saved ? null : () => _save(data),
-                    child: Text(_saved ? 'Слово сохранено' : 'Добавить в словарь'),
+                    child:
+                        Text(_saved ? 'Слово сохранено' : 'Добавить в словарь'),
                   ),
                 ),
               ],
@@ -957,13 +1076,15 @@ class _AccentLine extends StatelessWidget {
     final base = TextStyle(fontSize: 14, color: scheme.onSurfaceVariant);
     if (written.isEmpty) return Text(ipa, style: base);
 
-    final (before, stressed, after) = SerbianPronunciation.splitAccented(written);
+    final (before, stressed, after) =
+        SerbianPronunciation.splitAccented(written);
     return Text.rich(
       TextSpan(style: base, children: [
         TextSpan(text: before),
         TextSpan(
           text: stressed,
-          style: TextStyle(fontWeight: FontWeight.w900, color: scheme.onSurface),
+          style:
+              TextStyle(fontWeight: FontWeight.w900, color: scheme.onSurface),
         ),
         TextSpan(text: after),
         if (ipa.isNotEmpty) TextSpan(text: '  $ipa'),
@@ -1051,7 +1172,7 @@ class _LikedSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            WolfSticker(asset: Wolf.zdravo, size: 120),
+            WolfSticker(asset: Wolf.vukotok, size: 140),
             SizedBox(height: 14),
             Text('Пока пусто',
                 style: TextStyle(
@@ -1135,8 +1256,12 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
       _saving = true;
       _failed = false;
     });
-    final saved =
-        await MicroFeedService.instance.savePreferences(chosen, _level);
+    MicroFeedPreferences? saved;
+    try {
+      saved = await MicroFeedService.instance.savePreferences(chosen, _level);
+    } catch (_) {
+      // Ошибка сети/сессии не должна оставлять кнопку заблокированной.
+    }
     if (!mounted) return;
     if (saved == null) {
       setState(() {
@@ -1159,7 +1284,7 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
             const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                WolfSticker(asset: Wolf.zdravo, size: 96, frame: false),
+                Icon(Icons.interests_outlined, size: 40, color: Colors.white70),
                 SizedBox(width: 14),
                 Expanded(
                   child: Column(

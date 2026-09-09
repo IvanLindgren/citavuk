@@ -6,16 +6,19 @@ import type {
   Exercise,
   Evaluation,
   WordTile,
-} from './types';
+} from "./types";
 import {
   getRemoteCourseProgress,
   getPublishedCourse,
   putRemoteCourseProgress,
-} from '../api/course';
-import { stripAnswerPunctuation } from '../lib/answerMatch';
+} from "../api/course";
+import { stripAnswerPunctuation } from "../lib/answerMatch";
+import { activeStorageName } from "../lib/db";
 
-const PROGRESS_KEY = 'citavuk-course-progress-v1';
-const DEFAULT_COURSE_ID = 'sr_grammar_prosvirina';
+// Старый общий v1 сохраняется как резерв, но не присваивается аккаунту.
+const progressKey = (courseId: string) =>
+  `citavuk-course-progress-v2:${activeStorageName()}:${encodeURIComponent(courseId)}`;
+const DEFAULT_COURSE_ID = "sr_grammar_prosvirina";
 let bundlePromise: Promise<CourseBundle> | null = null;
 
 export function loadCourse(): Promise<CourseBundle> {
@@ -27,7 +30,7 @@ export function loadCourse(): Promise<CourseBundle> {
     .catch(() => bundled)
     .then((bundle) => {
       if (!bundle.courseId || !Array.isArray(bundle.units)) {
-        throw new Error('Файл курса повреждён.');
+        throw new Error("Файл курса повреждён.");
       }
       return bundle;
     });
@@ -40,8 +43,8 @@ export function loadCourse(): Promise<CourseBundle> {
 }
 
 async function loadBundledCourse(): Promise<CourseBundle> {
-  const response = await fetch('/course/course_bundle.json');
-  if (!response.ok) throw new Error('Не удалось загрузить курс.');
+  const response = await fetch("/course/course_bundle.json");
+  if (!response.ok) throw new Error("Не удалось загрузить курс.");
   return (await response.json()) as CourseBundle;
 }
 
@@ -86,17 +89,19 @@ export function loadProgress(bundle: CourseBundle): CourseProgress {
 
 function loadStoredProgress(bundle: CourseBundle): StoredProgress {
   try {
-    const parsed = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? '') as
-      | StoredProgress
-      | CourseProgress
-      | Record<string, unknown>;
-    if (!parsed || typeof parsed !== 'object') {
+    const parsed = JSON.parse(
+      localStorage.getItem(progressKey(bundle.courseId)) ?? "",
+    ) as StoredProgress | CourseProgress | Record<string, unknown>;
+    if (!parsed || typeof parsed !== "object") {
       return { payload: emptyProgress(bundle), updatedAt: 0 };
     }
     const envelope =
-      'payload' in parsed && parsed.payload
+      "payload" in parsed && parsed.payload
         ? (parsed as StoredProgress)
-        : migrateLegacyProgress(parsed as unknown as Record<string, unknown>, bundle);
+        : migrateLegacyProgress(
+            parsed as unknown as Record<string, unknown>,
+            bundle,
+          );
     const progress = envelope.payload;
     if (progress.courseId !== bundle.courseId) {
       return { payload: emptyProgress(bundle), updatedAt: 0 };
@@ -104,7 +109,9 @@ function loadStoredProgress(bundle: CourseBundle): StoredProgress {
 
     const validLessons = new Set(
       bundle.units.flatMap((unit) =>
-        unit.skills.flatMap((skill) => skill.lessons.map((lesson) => lesson.id)),
+        unit.skills.flatMap((skill) =>
+          skill.lessons.map((lesson) => lesson.id),
+        ),
       ),
     );
     const lessons = Object.fromEntries(
@@ -139,7 +146,9 @@ export function saveLessonProgress(
   const passed = score >= bundle.config.passThreshold;
   const wasCompleted = isLessonDone(previous);
   const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86_400_000)
+    .toISOString()
+    .slice(0, 10);
 
   let streak = progress.streak;
   if (progress.streak.lastStudyDate !== today) {
@@ -166,17 +175,18 @@ export function saveLessonProgress(
         status: wasCompleted
           ? previous!.status
           : passed
-            ? 'completed'
-            : 'available',
+            ? "completed"
+            : "available",
         bestScore: Math.max(previous?.bestScore ?? 0, score),
         attemptsCount: (previous?.attemptsCount ?? 0) + 1,
+        placementAt: previous?.placementAt ?? null,
         completedAt:
           previous?.completedAt ?? (passed ? new Date().toISOString() : null),
       },
     },
   };
   storeProgress(next, Date.now());
-  window.dispatchEvent(new CustomEvent('citavuk-course-progress'));
+  window.dispatchEvent(new CustomEvent("citavuk-course-progress"));
   return next;
 }
 
@@ -193,7 +203,7 @@ export function saveDialogueProgress(
     },
   };
   storeProgress(next, Date.now());
-  window.dispatchEvent(new CustomEvent('citavuk-course-progress'));
+  window.dispatchEvent(new CustomEvent("citavuk-course-progress"));
   return next;
 }
 
@@ -201,25 +211,68 @@ export function lessonUnlocked(
   lesson: CourseLesson,
   progress: CourseProgress,
 ): boolean {
+  if (
+    progress.lessons[lesson.id]?.skipped ||
+    !!progress.lessons[lesson.id]?.placementAt ||
+    isLessonDone(progress.lessons[lesson.id])
+  )
+    return true;
   return lesson.prerequisites.every((id) => {
     const prerequisite = progress.lessons[id];
-    return isLessonDone(prerequisite) && (prerequisite?.bestScore ?? 0) >= 0.6;
+    return (
+      prerequisite?.skipped === true ||
+      (isLessonDone(prerequisite) && (prerequisite?.bestScore ?? 0) >= 0.6)
+    );
   });
 }
 
+/** Выбирает точку входа, не выдавая награды за пропущенные уроки. */
+export function startCourseFrom(
+  bundle: CourseBundle,
+  lessonId: string,
+): CourseProgress {
+  const all = bundle.units.flatMap((u) => u.skills.flatMap((s) => s.lessons));
+  const index = all.findIndex((l) => l.id === lessonId);
+  if (index < 0) throw new Error("Урок не найден.");
+  const progress = loadProgress(bundle),
+    lessons = { ...progress.lessons };
+  const placementAt = new Date().toISOString();
+  for (let i = 0; i <= index; i++) {
+    const id = all[i]!.id;
+    const record = lessons[id] ?? {
+      lessonId: id,
+      status: "available" as const,
+      bestScore: 0,
+      attemptsCount: 0,
+      completedAt: null,
+    };
+    if (isLessonDone(record)) continue;
+    lessons[id] = {
+      ...record,
+      status: "available",
+      skipped: i < index,
+      placementAt,
+    };
+  }
+  const next = { ...progress, lessons, activeLesson: null };
+  storeProgress(next, Date.now());
+  window.dispatchEvent(new CustomEvent("citavuk-course-progress"));
+  return next;
+}
+
 function isLessonDone(
-  progress: CourseProgress['lessons'][string] | undefined,
+  progress: CourseProgress["lessons"][string] | undefined,
 ): boolean {
   return (
-    progress?.status === 'completed' ||
-    progress?.status === 'mastered' ||
-    progress?.status === 'needsReview'
+    progress?.status === "completed" ||
+    progress?.status === "mastered" ||
+    progress?.status === "needsReview"
   );
 }
 
 function storeProgress(progress: CourseProgress, updatedAt: number): void {
   localStorage.setItem(
-    PROGRESS_KEY,
+    progressKey(progress.courseId),
     JSON.stringify({ payload: progress, updatedAt } satisfies StoredProgress),
   );
 }
@@ -242,7 +295,7 @@ function migrateLegacyProgress(
       id,
       {
         lessonId: id,
-        status: value.completed ? 'completed' : 'available',
+        status: value.completed ? "completed" : "available",
         bestScore: value.bestScore ?? 0,
         attemptsCount: value.attempts ?? 0,
         completedAt: value.updatedAt
@@ -250,17 +303,17 @@ function migrateLegacyProgress(
           : null,
       },
     ]),
-  ) as CourseProgress['lessons'];
-  const streakValue = typeof raw.streak === 'number' ? raw.streak : 0;
+  ) as CourseProgress["lessons"];
+  const streakValue = typeof raw.streak === "number" ? raw.streak : 0;
   const payload: CourseProgress = {
     ...emptyProgress(bundle),
     lessons,
-    xp: typeof raw.xp === 'number' ? raw.xp : 0,
+    xp: typeof raw.xp === "number" ? raw.xp : 0,
     streak: {
       currentDays: streakValue,
       longestDays: streakValue,
       lastStudyDate:
-        typeof raw.lastStudyDay === 'string' && raw.lastStudyDay
+        typeof raw.lastStudyDay === "string" && raw.lastStudyDay
           ? raw.lastStudyDay
           : null,
     },
@@ -276,8 +329,11 @@ function migrateLegacyProgress(
 export async function syncCourseProgress(
   bundle: CourseBundle,
 ): Promise<CourseProgress> {
+  const owner = activeStorageName();
   const local = loadStoredProgress(bundle);
   const remote = await getRemoteCourseProgress(bundle.courseId);
+  if (owner !== activeStorageName())
+    throw new Error("Аккаунт изменился во время синхронизации.");
   if (!remote) {
     if (
       Object.keys(local.payload.lessons).length > 0 ||
@@ -300,7 +356,7 @@ export async function syncCourseProgress(
   if (changed) {
     await putRemoteCourseProgress(bundle.courseId, merged, updatedAt);
   }
-  window.dispatchEvent(new CustomEvent('citavuk-course-progress'));
+  window.dispatchEvent(new CustomEvent("citavuk-course-progress"));
   return merged;
 }
 
@@ -313,7 +369,7 @@ export async function uploadCourseProgress(
   await putRemoteCourseProgress(bundle.courseId, progress, updatedAt);
 }
 
-function mergeProgress(
+export function mergeProgress(
   local: CourseProgress,
   remote: CourseProgress,
   bundle: CourseBundle,
@@ -325,19 +381,28 @@ function mergeProgress(
       lessons[id] = candidate;
       continue;
     }
-    const candidateAt = Date.parse(candidate.completedAt ?? '') || 0;
-    const currentAt = Date.parse(current.completedAt ?? '') || 0;
+    const candidateAt = Date.parse(candidate.completedAt ?? "") || 0;
+    const currentAt = Date.parse(current.completedAt ?? "") || 0;
     const newest = candidateAt >= currentAt ? candidate : current;
     const bestScore = Math.max(candidate.bestScore, current.bestScore);
+    const placement =
+      (Date.parse(candidate.placementAt ?? "") || 0) >=
+      (Date.parse(current.placementAt ?? "") || 0)
+        ? candidate
+        : current;
     lessons[id] = {
       ...newest,
       bestScore,
+      skipped:
+        bestScore < bundle.config.passThreshold && placement.skipped === true,
+      placementAt: placement.placementAt,
       attemptsCount: Math.max(candidate.attemptsCount, current.attemptsCount),
-      status: bestScore >= bundle.config.passThreshold
-        ? newest.status === 'mastered' || current.status === 'mastered'
-          ? 'mastered'
-          : 'completed'
-        : 'available',
+      status:
+        bestScore >= bundle.config.passThreshold
+          ? newest.status === "mastered" || current.status === "mastered"
+            ? "mastered"
+            : "completed"
+          : "available",
     };
   }
   const normalizedLessons = Object.fromEntries(
@@ -346,8 +411,8 @@ function mergeProgress(
       normalizeLessonProgress(lesson, bundle.config.passThreshold),
     ]),
   );
-  const localStudy = local.streak?.lastStudyDate ?? '';
-  const remoteStudy = remote.streak?.lastStudyDate ?? '';
+  const localStudy = local.streak?.lastStudyDate ?? "";
+  const remoteStudy = remote.streak?.lastStudyDate ?? "";
   const streak = localStudy >= remoteStudy ? local.streak : remote.streak;
   const dialogues = { ...(remote.dialogues ?? {}) };
   for (const [id, candidate] of Object.entries(local.dialogues ?? {})) {
@@ -379,50 +444,49 @@ function mergeProgress(
 }
 
 function normalizeLessonProgress(
-  lesson: CourseProgress['lessons'][string],
+  lesson: CourseProgress["lessons"][string],
   threshold: number,
-): CourseProgress['lessons'][string] {
+): CourseProgress["lessons"][string] {
   if (lesson.bestScore >= threshold) {
     return {
       ...lesson,
+      skipped: false,
       status:
-        lesson.status === 'mastered' || lesson.status === 'needsReview'
+        lesson.status === "mastered" || lesson.status === "needsReview"
           ? lesson.status
-          : 'completed',
+          : "completed",
     };
   }
   return {
     ...lesson,
-    status: lesson.status === 'locked' ? 'locked' : 'available',
+    status: lesson.status === "locked" ? "locked" : "available",
     completedAt: null,
   };
 }
 
-export function normalizeAnswer(
-  input: string,
-  caseSensitive = false,
-): string {
+export function normalizeAnswer(input: string, caseSensitive = false): string {
   // Пунктуация снимается вся и везде — правило общее с уроками
   // (src/lib/answerMatch.ts): пропущенная запятая не должна отменять верный
   // ответ. Апострофы при этом остаются, поэтому кавычки-ёлочки сводятся к
   // прямым до того, как знаки уберут.
   let value = stripAnswerPunctuation(
     input
-      .normalize('NFC')
+      .normalize("NFC")
       .replace(/[‘’]/g, "'")
       .replace(/[“”«»]/g, '"'),
   );
-  if (!caseSensitive) value = value.toLocaleLowerCase('sr');
+  if (!caseSensitive) value = value.toLocaleLowerCase("sr");
   return value;
 }
 
 export function splitLetters(input: string, digraphsAsUnits = false): string[] {
-  const letters = Array.from(input.normalize('NFC'));
+  const letters = Array.from(input.normalize("NFC"));
   if (!digraphsAsUnits) return letters;
   const result: string[] = [];
   for (let index = 0; index < letters.length; index++) {
-    const pair = `${letters[index] ?? ''}${letters[index + 1] ?? ''}`.toLowerCase();
-    if (pair === 'lj' || pair === 'nj' || pair === 'dž') {
+    const pair =
+      `${letters[index] ?? ""}${letters[index + 1] ?? ""}`.toLowerCase();
+    if (pair === "lj" || pair === "nj" || pair === "dž") {
       result.push(`${letters[index]}${letters[index + 1]}`);
       index++;
     } else {
@@ -434,67 +498,63 @@ export function splitLetters(input: string, digraphsAsUnits = false): string[] {
 
 function joinWords(words: string[]): string {
   return words.reduce(
-    (out, word) =>
-      out + (out && !/^[.,!?;:]$/u.test(word) ? ' ' : '') + word,
-    '',
+    (out, word) => out + (out && !/^[.,!?;:]$/u.test(word) ? " " : "") + word,
+    "",
   );
 }
 
 export type ExerciseDraft =
-  | { kind: 'choice'; ids: string[] }
-  | { kind: 'order'; ids: string[] }
-  | { kind: 'text'; value: string }
-  | { kind: 'pairs'; values: Record<string, string> }
-  | { kind: 'blanks'; values: Record<string, string> };
+  | { kind: "choice"; ids: string[] }
+  | { kind: "order"; ids: string[] }
+  | { kind: "text"; value: string }
+  | { kind: "pairs"; values: Record<string, string> }
+  | { kind: "blanks"; values: Record<string, string> };
 
 /** Проверка доступна только после заполнения всех обязательных частей ответа. */
-export function canEvaluate(
-  exercise: Exercise,
-  draft: ExerciseDraft,
-): boolean {
+export function canEvaluate(exercise: Exercise, draft: ExerciseDraft): boolean {
   switch (exercise.type) {
-    case 'multiple_choice':
-    case 'ending_picker':
-      return draft.kind === 'choice' && draft.ids.length > 0;
-    case 'sentence_builder':
-      return draft.kind === 'order' && draft.ids.length > 0;
-    case 'letter_unscramble':
-      return draft.kind === 'text' && draft.value.trim().length > 0;
-    case 'matching':
+    case "multiple_choice":
+    case "ending_picker":
+      return draft.kind === "choice" && draft.ids.length > 0;
+    case "sentence_builder":
+      return draft.kind === "order" && draft.ids.length > 0;
+    case "letter_unscramble":
+      return draft.kind === "text" && draft.value.trim().length > 0;
+    case "matching":
       return (
-        draft.kind === 'pairs' &&
+        draft.kind === "pairs" &&
         exercise.pairs.length > 0 &&
         exercise.pairs.every(
-          (pair) => (draft.values[pair.left] ?? '').trim().length > 0,
+          (pair) => (draft.values[pair.left] ?? "").trim().length > 0,
         )
       );
-    case 'fill_blank':
+    case "fill_blank":
       return (
-        draft.kind === 'blanks' &&
+        draft.kind === "blanks" &&
         exercise.blanks.length > 0 &&
         exercise.blanks.every(
-          (blank) => (draft.values[blank.id] ?? '').trim().length > 0,
+          (blank) => (draft.values[blank.id] ?? "").trim().length > 0,
         )
       );
-    case 'image_description':
-      return exercise.mode === 'choose'
-        ? draft.kind === 'choice' && draft.ids.length > 0
-        : draft.kind === 'text' && draft.value.trim().length > 0;
-    case 'reading_qa':
+    case "image_description":
+      return exercise.mode === "choose"
+        ? draft.kind === "choice" && draft.ids.length > 0
+        : draft.kind === "text" && draft.value.trim().length > 0;
+    case "reading_qa":
       // Все вопросы, а не первый: иначе «Проверить» откроется на половине.
       return (
-        draft.kind === 'pairs' &&
+        draft.kind === "pairs" &&
         exercise.questions.length > 0 &&
         exercise.questions.every((question) => draft.values[question.id])
       );
-    case 'listening_qa':
+    case "listening_qa":
       return (
-        draft.kind === 'pairs' &&
+        draft.kind === "pairs" &&
         exercise.questions.length > 0 &&
         exercise.questions.every((question) => draft.values[question.id])
       );
-    case 'form_hunt':
-      return draft.kind === 'choice' && draft.ids.length > 0;
+    case "form_hunt":
+      return draft.kind === "choice" && draft.ids.length > 0;
   }
 }
 
@@ -531,9 +591,9 @@ function shuffle<T>(items: T[], random: () => number): T[] {
 export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
   const explanation = exercise.explanation;
   switch (exercise.type) {
-    case 'multiple_choice':
-    case 'ending_picker': {
-      if (draft.kind !== 'choice') throw new Error('Неверный тип ответа.');
+    case "multiple_choice":
+    case "ending_picker": {
+      if (draft.kind !== "choice") throw new Error("Неверный тип ответа.");
       const correct = exercise.options.filter((option) => option.correct);
       const correctIds = new Set(correct.map((option) => option.id));
       const isCorrect =
@@ -543,22 +603,22 @@ export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
         exercise.options
           .filter((option) => ids.includes(option.id))
           .map((option) => option.text)
-          .join(', ');
+          .join(", ");
       return {
         correct: isCorrect,
         userDisplay:
-          exercise.type === 'ending_picker'
+          exercise.type === "ending_picker"
             ? `${exercise.stem}${labels(draft.ids)}`
             : labels(draft.ids),
         correctDisplay:
-          exercise.type === 'ending_picker'
+          exercise.type === "ending_picker"
             ? exercise.fullForm
-            : correct.map((option) => option.text).join(', '),
+            : correct.map((option) => option.text).join(", "),
         explanation,
       };
     }
-    case 'sentence_builder': {
-      if (draft.kind !== 'order') throw new Error('Неверный тип ответа.');
+    case "sentence_builder": {
+      if (draft.kind !== "order") throw new Error("Неверный тип ответа.");
       const optional = new Set(exercise.optionalTokenIds);
       const correct = exercise.acceptedOrders.some((order) => {
         let given = 0;
@@ -575,7 +635,7 @@ export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
         ]),
       );
       const render = (ids: string[]) =>
-        joinWords(ids.map((id) => tiles.get(id) ?? '?'));
+        joinWords(ids.map((id) => tiles.get(id) ?? "?"));
       return {
         correct,
         userDisplay: render(draft.ids),
@@ -583,82 +643,85 @@ export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
         explanation,
       };
     }
-    case 'letter_unscramble': {
-      if (draft.kind !== 'text') throw new Error('Неверный тип ответа.');
+    case "letter_unscramble": {
+      if (draft.kind !== "text") throw new Error("Неверный тип ответа.");
       return {
-        correct: normalizeAnswer(draft.value) === normalizeAnswer(exercise.answer),
+        correct:
+          normalizeAnswer(draft.value) === normalizeAnswer(exercise.answer),
         userDisplay: draft.value,
         correctDisplay: exercise.answer,
         explanation,
       };
     }
-    case 'matching': {
-      if (draft.kind !== 'pairs') throw new Error('Неверный тип ответа.');
+    case "matching": {
+      if (draft.kind !== "pairs") throw new Error("Неверный тип ответа.");
       const correct = exercise.pairs.every(
         (pair) =>
-          normalizeAnswer(draft.values[pair.left] ?? '') ===
+          normalizeAnswer(draft.values[pair.left] ?? "") ===
           normalizeAnswer(pair.right),
       );
       const render = (right: (left: string, expected: string) => string) =>
         exercise.pairs
-          .map((pair) => `${pair.left} → ${right(pair.left, pair.right)}`)
-          .join('; ');
+          .map((pair) => `${pair.left} — ${right(pair.left, pair.right)}`)
+          .join("; ");
       return {
         correct,
-        userDisplay: render((left) => draft.values[left] ?? '—'),
+        userDisplay: render((left) => draft.values[left] ?? "—"),
         correctDisplay: render((_, expected) => expected),
         explanation,
       };
     }
-    case 'fill_blank': {
-      if (draft.kind !== 'blanks') throw new Error('Неверный тип ответа.');
+    case "fill_blank": {
+      if (draft.kind !== "blanks") throw new Error("Неверный тип ответа.");
       const correct = exercise.blanks.every((blank) =>
         blank.acceptedAnswers.some(
           (accepted) =>
             normalizeAnswer(accepted, blank.caseSensitive) ===
-            normalizeAnswer(draft.values[blank.id] ?? '', blank.caseSensitive),
+            normalizeAnswer(draft.values[blank.id] ?? "", blank.caseSensitive),
         ),
       );
       return {
         correct,
         userDisplay: exercise.blanks
-          .map((blank) => draft.values[blank.id] || '—')
-          .join(' / '),
+          .map((blank) => draft.values[blank.id] || "—")
+          .join(" / "),
         correctDisplay: exercise.blanks
-          .map((blank) => blank.acceptedAnswers[0] ?? '')
-          .join(' / '),
+          .map((blank) => blank.acceptedAnswers[0] ?? "")
+          .join(" / "),
         explanation,
       };
     }
-    case 'image_description': {
-      if (exercise.mode === 'choose') {
-        if (draft.kind !== 'choice') throw new Error('Неверный тип ответа.');
+    case "image_description": {
+      if (exercise.mode === "choose") {
+        if (draft.kind !== "choice") throw new Error("Неверный тип ответа.");
         const options = exercise.options ?? [];
-        const selected = options.find((option) => draft.ids.includes(option.id));
+        const selected = options.find((option) =>
+          draft.ids.includes(option.id),
+        );
         const correct = options.find((option) => option.correct);
         return {
           correct: selected?.correct === true,
-          userDisplay: selected?.text ?? '',
-          correctDisplay: correct?.text ?? '',
+          userDisplay: selected?.text ?? "",
+          correctDisplay: correct?.text ?? "",
           explanation,
         };
       }
-      if (draft.kind !== 'text') throw new Error('Неверный тип ответа.');
+      if (draft.kind !== "text") throw new Error("Неверный тип ответа.");
       const accepted = exercise.acceptedAnswers ?? [];
       return {
         correct: accepted.some(
           (answer) => normalizeAnswer(answer) === normalizeAnswer(draft.value),
         ),
         userDisplay: draft.value,
-        correctDisplay: accepted[0] ?? '',
+        correctDisplay: accepted[0] ?? "",
         explanation,
       };
     }
     // Проверка у чтения и слушания одна: разница между ними в том, показан ли
     // текст, а не в том, как считается ответ.
-    case 'listening_qa':
-    case 'reading_qa': {
-      if (draft.kind !== 'pairs') throw new Error('Неверный тип ответа.');
+    case "listening_qa":
+    case "reading_qa": {
+      if (draft.kind !== "pairs") throw new Error("Неверный тип ответа.");
       // Задание засчитывается целиком: половина верных ответов о тексте это
       // не половина понимания, а угаданное место.
       const given: string[] = [];
@@ -670,31 +733,31 @@ export function evaluate(exercise: Exercise, draft: ExerciseDraft): Evaluation {
         );
         const right = question.options.find((option) => option.correct);
         if (!chosen?.correct) isCorrect = false;
-        given.push(chosen?.text ?? '—');
-        expected.push(right?.text ?? '');
+        given.push(chosen?.text ?? "—");
+        expected.push(right?.text ?? "");
       }
       return {
         correct: isCorrect,
-        userDisplay: given.join('; '),
-        correctDisplay: expected.join('; '),
+        userDisplay: given.join("; "),
+        correctDisplay: expected.join("; "),
         explanation,
       };
     }
-    case 'form_hunt': {
-      if (draft.kind !== 'choice') throw new Error('Неверный тип ответа.');
+    case "form_hunt": {
+      if (draft.kind !== "choice") throw new Error("Неверный тип ответа.");
       const target = exercise.tokens.filter((token) => token.correct);
       const targetIds = new Set(target.map((token) => token.id));
       const label = (ids: string[]) =>
         exercise.tokens
           .filter((token) => ids.includes(token.id))
           .map((token) => token.text)
-          .join(', ');
+          .join(", ");
       return {
         correct:
           draft.ids.length === targetIds.size &&
           draft.ids.every((id) => targetIds.has(id)),
-        userDisplay: draft.ids.length === 0 ? '—' : label(draft.ids),
-        correctDisplay: target.map((token) => token.text).join(', '),
+        userDisplay: draft.ids.length === 0 ? "—" : label(draft.ids),
+        correctDisplay: target.map((token) => token.text).join(", "),
         explanation,
       };
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/micro_feed.dart';
 import '../services/micro_feed_service.dart';
+import '../services/api_client.dart';
 
 /// Обсуждение карточки Вукотока.
 ///
@@ -85,7 +86,9 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
       // «слишком часто», «длиннее 600 символов». Подменять его общим «не
       // удалось» значит скрыть единственное, что человеку нужно знать.
       setState(() {
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = e is ApiException
+            ? e.message
+            : e.toString().replaceFirst('Exception: ', '');
         _sending = false;
       });
     }

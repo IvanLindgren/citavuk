@@ -5,10 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../utils/uuid.dart';
 import 'api_client.dart';
 import 'desktop_oauth.dart';
+import 'user_db.dart';
 
 /// Учётная запись пользователя на сервере Citavuk.
 @immutable
@@ -93,6 +95,7 @@ class AuthService extends ChangeNotifier {
   final ApiClient api;
 
   static const _kToken = 'citavuk_session_token';
+  static const _secureStorage = FlutterSecureStorage();
   static const _kAccount = 'citavuk_account';
   static const _kDeviceId = 'citavuk_device_id';
 
@@ -121,11 +124,23 @@ class AuthService extends ChangeNotifier {
         await prefs.setString(_kDeviceId, _deviceId);
       }
 
-      final token = prefs.getString(_kToken);
+      String? token;
+      try {
+        token = await _secureStorage.read(key: _kToken);
+      } catch (_) {}
+      final legacyToken = prefs.getString(_kToken);
+      if (token == null && legacyToken != null) {
+        token = legacyToken;
+        try {
+          await _secureStorage.write(key: _kToken, value: legacyToken);
+          await prefs.remove(_kToken);
+        } catch (_) {}
+      }
       final raw = prefs.getString(_kAccount);
       if (token != null && token.isNotEmpty && raw != null) {
         api.token = token;
         _account = Account.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+        await UserDb.instance.activateAccount(_account!.id);
       }
     } catch (_) {
       // Повреждённое хранилище: считаем, что пользователь не вошёл.
@@ -415,6 +430,7 @@ class AuthService extends ChangeNotifier {
       api.token = token;
       _account =
           Account.fromJson(response['user'] as Map<String, dynamic>? ?? {});
+      await UserDb.instance.activateAccount(_account!.id);
       await _persist(token, _account!);
     } finally {
       _busy = false;
@@ -447,7 +463,8 @@ class AuthService extends ChangeNotifier {
   Future<void> _persist(String token, Account account) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_kToken, token);
+      await _secureStorage.write(key: _kToken, value: token);
+      await prefs.remove(_kToken);
       await prefs.setString(_kAccount, jsonEncode(account.toJson()));
     } catch (_) {
       // Не удалось сохранить: сессия проживёт до перезапуска приложения.
@@ -469,6 +486,7 @@ class AuthService extends ChangeNotifier {
       api.token = token;
       _account =
           Account.fromJson(response['user'] as Map<String, dynamic>? ?? {});
+      await UserDb.instance.activateAccount(_account!.id);
       await _persist(token, _account!);
       notifyListeners();
     }
@@ -514,6 +532,10 @@ class AuthService extends ChangeNotifier {
   Future<void> _clearLocal() async {
     api.token = null;
     _account = null;
+    await UserDb.instance.activateGuest();
+    try {
+      await _secureStorage.delete(key: _kToken);
+    } catch (_) {}
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_kToken);

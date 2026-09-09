@@ -12,9 +12,12 @@ export interface DifficultWord {
 }
 
 export interface MicroFeedItem {
+  videoId?:string;
+  videoDuration?:number;
+  videoLanguageConfirmed?:boolean;
   id: string;
   status: MicroFeedStatus;
-  kind: 'news' | 'fact' | 'culture' | 'science' | 'fiction' | 'society' | 'book_excerpt';
+  kind: 'news' | 'fact' | 'culture' | 'science' | 'fiction' | 'society' | 'book_excerpt' | 'video';
   category:
     | 'history' | 'culture' | 'science' | 'fiction' | 'society' | 'news'
     | 'travel' | 'food' | 'sport' | 'music' | 'language';
@@ -109,8 +112,9 @@ function rememberVisitorToken(token: string | undefined) {
   if (token) localStorage.setItem(VISITOR_TOKEN_KEY, token);
 }
 
-export async function getMicroFeed(exclude: string[], signal?: AbortSignal) {
+export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode='text') {
   const query = new URLSearchParams({ limit: '8' });
+  query.set('mode',mode);
   // Первый заход идёт без токена — сервер заведёт его и вернёт вместе с лентой.
   const token = microFeedVisitorToken();
   if (token) query.set('visitorToken', token);

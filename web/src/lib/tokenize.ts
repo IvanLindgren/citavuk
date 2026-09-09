@@ -23,6 +23,7 @@ export interface Token {
  * č и ć, dž и đ — разные буквы, и «нормализация» слепила бы разные слова.
  */
 const LETTER = /\p{L}/u;
+const MARK = /\p{M}/u;
 
 /** Дефис и апостроф внутри слова его не разрывают: «српско-руски», «d'Artanjan». */
 const INNER_WORD = new Set(['-', '‑', "'", '’']);
@@ -38,7 +39,7 @@ export function tokenize(text: string): Token[] {
       const start = index;
       while (index < text.length) {
         const current = text[index] ?? '';
-        if (LETTER.test(current)) {
+        if (LETTER.test(current) || MARK.test(current)) {
           index++;
           continue;
         }

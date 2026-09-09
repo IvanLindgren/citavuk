@@ -23,6 +23,7 @@ import { useAuth } from "../state/auth";
 import { useAnnouncements } from '../state/announcements';
 import { useSync } from "../state/sync";
 import { useSeo } from '../lib/seo';
+import {StudyStats} from '../components/StudyRuntime';
 
 export function Account() {
   useSeo({
@@ -109,6 +110,7 @@ export function Account() {
               </div>
             </Reveal>
 
+            <StudyStats initial={stats.study}/>
             <Reveal delay={0.07} className="mt-5">
               <GoalPanel stats={stats} onOpen={() => navigate('/roadmap')} />
             </Reveal>

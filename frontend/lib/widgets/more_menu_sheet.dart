@@ -92,13 +92,25 @@ class _MoreMenuSheet extends StatelessWidget {
                 // Пункты лежат плиткой, а не строками: так раздел из четырёх
                 // пунктов занимает две строки вместо четырёх, и всё меню
                 // помещается на экран без прокрутки.
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final item in section.items)
-                      _MoreMenuTile(item: item),
-                  ],
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    // Ширина — от содержимого шторки, а не от окна: на
+                    // планшете и десктопе шторка уже окна. Вертикальная
+                    // прокрутка ограничений по ширине не снимает, но на
+                    // всякий случай есть запасной вариант.
+                    final max = constraints.maxWidth.isFinite
+                        ? constraints.maxWidth
+                        : MediaQuery.sizeOf(context).width - 24;
+                    final tileWidth = ((max - 8) / 2).clamp(140.0, 240.0);
+                    return Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final item in section.items)
+                          _MoreMenuTile(item: item, width: tileWidth),
+                      ],
+                    );
+                  },
                 ),
               ],
             ],
@@ -110,23 +122,24 @@ class _MoreMenuSheet extends StatelessWidget {
 }
 
 class _MoreMenuTile extends StatelessWidget {
-  const _MoreMenuTile({required this.item});
+  const _MoreMenuTile({required this.item, required this.width});
 
   final MoreMenuItem item;
+
+  /// Ширина плитки, посчитанная от ограничений шторки (см. выше).
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    // Две плитки в ряд на телефоне, шире — сколько поместится. Ширина считается
-    // от шторки, а не от экрана: на планшете и на десктопе это разные числа.
-    final width = (MediaQuery.sizeOf(context).width - 24 - 8) / 2;
     // Wrap не выравнивает высоту детей в ряду: плитка в две строки или с
     // подписью торчала бы выше соседней. Высота задаётся здесь и растёт
     // вместе с системным размером шрифта.
-    final height = MediaQuery.textScalerOf(context).scale(76).clamp(76.0, 132.0);
+    final height =
+        MediaQuery.textScalerOf(context).scale(76).clamp(76.0, 132.0);
 
     return SizedBox(
-      width: width.clamp(150.0, 240.0),
+      width: width,
       height: height,
       child: Material(
         color: scheme.surfaceContainerHighest.withValues(alpha: 0.5),

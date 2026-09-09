@@ -3,6 +3,7 @@ import { lazy, Suspense, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
 import { DailyWindow } from "./components/DailyWindow";
+import {StudyRuntime} from './components/StudyRuntime';
 import { LevelPrompt } from "./components/LevelPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
 import { ServerAnnouncements } from "./components/ServerAnnouncements";
@@ -146,7 +147,12 @@ const Travel = lazy(() =>
   import("./pages/Travel").then((m) => ({ default: m.Travel })),
 );
 
+const PersonalLessons = lazy(() => import('./pages/PersonalLessons').then(m => ({default:m.PersonalLessons})));
+const VideoFeed=lazy(()=>import('./pages/VideoFeed').then(m=>({default:m.VideoFeed})));
+
 const ROUTES: RouteDefinition[] = [
+  {pattern:'/vukotok/video',element:<VideoFeed/>},
+  { pattern: '/personal', element: <PersonalLessons /> },
   { pattern: "/", element: <Landing /> },
   { pattern: "/login", element: <Login /> },
   { pattern: "/library", element: <Library /> },
@@ -227,11 +233,12 @@ function AppFrame() {
   const travel = pathname === '/putovanje';
   const fullscreen = garden || travel;
   const immersive = vukotok || fullscreen;
+  const personalLesson = pathname === '/personal';
 
   return (
     <div className="flex min-h-dvh flex-col">
       <DuelSearchNotice />
-      {!immersive && <EventBanner />}
+      {!immersive && !personalLesson && <EventBanner />}
       {/*
         На телефоне Вукоток занимает экран целиком: полоса навигации над лентой
         оставляла её «страницей сайта с видео», а не тем, чем раздел является.
@@ -242,8 +249,8 @@ function AppFrame() {
           <Header />
         </div>
       )}
-      {!immersive && <ServerAnnouncements />}
-      {!immersive && <CommunityAnnouncement />}
+      {!immersive && <ServerAnnouncements quiet={personalLesson} />}
+      {!immersive && !personalLesson && <CommunityAnnouncement />}
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>
@@ -254,7 +261,8 @@ function AppFrame() {
         </PageErrorBoundary>
       </div>
       {!immersive && <Footer />}
-      {!immersive && <AppPrompt />}
+      {!immersive && !personalLesson && <AppPrompt />}
+      <StudyRuntime/>
       {/*
         Вопрос об уровне встаёт поверх любой страницы и ровно один раз за
         аккаунт. Не в Вукотоке и не в настройках, потому что уровень нужен всем
@@ -265,7 +273,7 @@ function AppFrame() {
         Слова дня приходят раз в сутки и только к тому, у кого уровень уже
         назван: пока его нет, поверх страницы стоит вопрос об уровне.
       */}
-      {!fullscreen && <DailyWindow />}
+      {!fullscreen && !personalLesson && <DailyWindow />}
     </div>
   );
 }

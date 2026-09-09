@@ -52,6 +52,7 @@ class DailyExercise {
     required this.answer,
     this.options = const [],
     this.hint = '',
+    this.acceptedAnswers=const [],
   });
 
   /// choice — выбор варианта, fill — вписать пропущенное, translate — перевод.
@@ -60,6 +61,7 @@ class DailyExercise {
   final String answer;
   final List<String> options;
   final String hint;
+  final List<String> acceptedAnswers;
 
   bool get hasOptions => options.length >= 2;
 
@@ -72,6 +74,7 @@ class DailyExercise {
             item.toString(),
         ],
         hint: (json['hint'] ?? '').toString(),
+        acceptedAnswers:(json['acceptedAnswers'] as List? ?? []).map((a)=>a.toString()).toList(),
       );
 }
 

@@ -23,6 +23,7 @@ export interface DailyExercise {
   question: string;
   options?: string[];
   answer: string;
+  acceptedAnswers?:string[];
   hint?: string;
 }
 

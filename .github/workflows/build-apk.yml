@@ -195,8 +195,10 @@ jobs:
         shell: pwsh
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
         run: |
-          flutter build windows --release "--dart-define=MAPTILER_KEY=$env:MAPTILER_KEY"
+          if ([string]::IsNullOrWhiteSpace($env:CITAVUK_UPDATE_PUBLIC_KEY)) { throw 'Нет CITAVUK_UPDATE_PUBLIC_KEY' }
+          flutter build windows --release "--dart-define=MAPTILER_KEY=$env:MAPTILER_KEY" "--dart-define=CITAVUK_UPDATE_PUBLIC_KEY=$env:CITAVUK_UPDATE_PUBLIC_KEY"
           dart run inno_bundle:build --release --no-app
 
       # Проверяется ПОСЛЕ установщика: именно inno_bundle способен перезаписать

@@ -200,7 +200,7 @@ export function CourseDialogue() {
             to="/dialogues"
             className="font-semibold text-[var(--text-muted)] hover:text-[var(--accent)]"
           >
-            ← Все диалоги
+            Все диалоги
           </Link>
           <div className="flex items-center gap-2">
             <span className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-semibold">
@@ -224,7 +224,7 @@ export function CourseDialogue() {
 
         <header className="py-6 text-center">
           <p className="text-xs font-bold uppercase text-[var(--accent)]">
-            Игровой диалог · Бета
+            Игровой диалог
           </p>
           <h1 className="mt-2 text-3xl sm:text-4xl">{dialogue.title}</h1>
           <p className="mt-1 font-display text-lg text-[var(--text-muted)]">

@@ -52,7 +52,11 @@ class _CourseButtonState extends State<CourseButton> {
     };
     final foreground = switch (widget.tone) {
       CourseButtonTone.neutral => scheme.onSurface,
-      _ => Colors.white,
+      CourseButtonTone.primary => scheme.onPrimary,
+      CourseButtonTone.danger => scheme.onError,
+      CourseButtonTone.success => scheme.brightness == Brightness.dark
+          ? const Color(0xFF102512)
+          : Colors.white,
     };
     // Подошва — тот же цвет, но заметно темнее.
     final sole = Color.lerp(base, Colors.black, 0.32)!;

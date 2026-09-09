@@ -18,8 +18,12 @@ class AppSettings extends ChangeNotifier {
   static const _kSyncUrl = 'sync_url';
   static const _kFirstRunDone = 'first_run_done';
   static const _kCourseSound = 'course_sound_enabled';
+  static const _kInterfaceSound = 'interface_sound_enabled';
   static const _kAutoUpdate = 'auto_update_check';
   static const _kKeepScreenOn = 'keep_screen_on';
+  static const _kLastLibraryVisit = 'citavuk_last_library_visit_ms';
+  static const _kLastFarewellDay = 'citavuk_last_farewell_day';
+  static const _kLastSeasonalDay = 'citavuk_last_seasonal_day';
 
   /// Сервер разбора/перевода по умолчанию — твой Hugging Face Space.
   /// На реальном телефоне localhost (10.0.2.2/127.0.0.1) недоступен, поэтому
@@ -71,6 +75,73 @@ class AppSettings extends ChangeNotifier {
   /// и радио он не прерывает (master-prompt §19).
   bool _courseSoundEnabled = true;
   bool get courseSoundEnabled => _courseSoundEnabled;
+
+  bool _interfaceSoundEnabled = true;
+  bool get interfaceSoundEnabled => _interfaceSoundEnabled;
+
+  /// Последний визит в библиотеку: волк встречает после перерыва, а не при
+  /// каждой перерисовке. Перерыв — первый визит или больше 6 часов тишины.
+  int _lastLibraryVisitMs = 0;
+
+  /// Отмечает визит и возвращает, был ли перерыв. Ошибка хранилища визит не
+  /// отменяет: молчание волка хуже лишнего приветствия.
+  Future<bool> markLibraryVisit() async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final hadBreak = _lastLibraryVisitMs == 0 ||
+        now - _lastLibraryVisitMs > const Duration(hours: 6).inMilliseconds;
+    _lastLibraryVisitMs = now;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_kLastLibraryVisit, now);
+    } catch (_) {}
+    return hadBreak;
+  }
+
+  /// День последнего вечернего прощания (`год-месяц-день`, локальное время).
+  String _lastFarewellDay = '';
+
+  /// День последнего сезонного приветствия (как у прощания).
+  String _lastSeasonalDay = '';
+
+  /// Сезонное приветствие: раз в сутки. Возвращает, показывать ли сегодня.
+  /// Пустой id (обычный день) не запоминается — завтра календарь спросят снова.
+  Future<bool> markSeasonal(String id) async {
+    if (id.isEmpty) return false;
+    final now = DateTime.now();
+    final today = '${now.year}-${now.month}-${now.day}:$id';
+    if (_lastSeasonalDay == today) return false;
+    _lastSeasonalDay = today;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_kLastSeasonalDay, today);
+    } catch (_) {}
+    return true;
+  }
+
+  /// Прощание на ночь: раз в сутки, вечером (после 21 или до 5), когда
+  /// повторять нечего. Симметрия утренней встрече: волк провожает так же
+  /// лично, как встречает.
+  Future<bool> markFarewell() async {
+    final now = DateTime.now();
+    final evening = now.hour >= 21 || now.hour < 5;
+    final today = '${now.year}-${now.month}-${now.day}';
+    final due = evening && _lastFarewellDay != today;
+    if (due) {
+      _lastFarewellDay = today;
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(_kLastFarewellDay, today);
+      } catch (_) {}
+    }
+    return due;
+  }
+
+  Future<void> setInterfaceSoundEnabled(bool value) async {
+    _interfaceSoundEnabled = value;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kInterfaceSound, value);
+  }
 
   Future<void> setCourseSoundEnabled(bool value) async {
     _courseSoundEnabled = value;
@@ -130,7 +201,11 @@ class AppSettings extends ChangeNotifier {
         _syncUrl = savedSync.trim();
       }
       _firstRunDone = prefs.getBool(_kFirstRunDone) ?? false;
+      _lastFarewellDay = prefs.getString(_kLastFarewellDay) ?? '';
+      _lastSeasonalDay = prefs.getString(_kLastSeasonalDay) ?? '';
+      _lastLibraryVisitMs = prefs.getInt(_kLastLibraryVisit) ?? 0;
       _courseSoundEnabled = prefs.getBool(_kCourseSound) ?? true;
+      _interfaceSoundEnabled = prefs.getBool(_kInterfaceSound) ?? true;
       _autoUpdateCheck = prefs.getBool(_kAutoUpdate) ?? true;
       _keepScreenOn = prefs.getBool(_kKeepScreenOn) ?? true;
     } catch (_) {

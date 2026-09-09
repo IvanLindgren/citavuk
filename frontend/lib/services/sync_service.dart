@@ -41,29 +41,101 @@ class SyncService extends ChangeNotifier {
   DateTime? get lastSyncAt => _lastSyncAt;
 
   bool _running = false;
+  Completer<void>? _runFinished;
+  Database? _runDb;
+  ApiClient? _runApi;
+  String? _runAccount;
+  String? _runToken;
+  int? _runGeneration;
+
+  bool get _sessionCurrent =>
+      auth.isSignedIn &&
+      auth.account?.id == _runAccount &&
+      api.token == _runToken &&
+      UserDb.instance.generation == _runGeneration;
+
+  void _checkSession() {
+    if (!_sessionCurrent) throw StateError('Сессия синхронизации сменилась.');
+  }
+
+  Database get _syncDb {
+    _checkSession();
+    return _runDb!;
+  }
+
+  ApiClient get _syncApi {
+    _checkSession();
+    return _runApi!;
+  }
+
+  PalaceStore get _syncPalaces => PalaceStore.forDatabase(_syncDb);
 
   /// Максимум записей в одной посылке. Совпадает с ограничением сервера.
   static const _pageSize = 500;
 
-  /// Полный цикл: отправить своё, забрать чужое, докачать недостающие тексты.
+  /// Полный цикл: отправить метаданные, разрешить конфликты, выгрузить тексты
+  /// и получить итоговое состояние сервера.
   ///
   /// Возвращает true, если цикл дошёл до конца. Повторный вызов во время работы
-  /// игнорируется: две одновременные синхронизации боролись бы за курсор.
+  /// той же сессии игнорируется. Новая сессия ждёт завершения старого цикла.
   Future<bool> sync({bool uploadContent = true}) async {
-    if (_running || !auth.isSignedIn) return false;
+    if (!auth.isSignedIn) return false;
+    if (_running) {
+      if (_sessionCurrent) return false;
+      final account = auth.account!.id;
+      final token = api.token;
+      final generation = UserDb.instance.generation;
+      await _runFinished!.future;
+      if (!auth.isSignedIn ||
+          auth.account?.id != account ||
+          api.token != token ||
+          UserDb.instance.generation != generation) {
+        return false;
+      }
+      return sync(uploadContent: uploadContent);
+    }
     _running = true;
-    _set(SyncStatus.running, 'Синхронизация…');
+    _runFinished = Completer<void>();
+    _runAccount = auth.account!.id;
+    _runToken = api.token!;
+    _runApi = api.withSessionToken(_runToken!);
 
     try {
+      final activation = UserDb.instance.activateAccount(_runAccount!);
+      _runGeneration = UserDb.instance.generation;
+      await activation;
+      _checkSession();
+      _runDb = await UserDb.instance.database;
+      _checkSession();
+      _set(SyncStatus.running, 'Синхронизация…');
       await _push();
       await _pullAll();
-      if (uploadContent) await _uploadMissingContent();
+      if (uploadContent) {
+        await _uploadMissingContent();
+        // Подтверждение текста могло проиграть более свежей серверной правке.
+        await _pullAll();
+        final pending = await _syncDb.query('books',
+            columns: ['id'],
+            where: 'deleted = 0 AND content_pending = 1',
+            limit: 1);
+        _checkSession();
+        if (pending.isNotEmpty) {
+          _set(SyncStatus.idle,
+              'Не все тексты отправлены. Повтори синхронизацию.');
+          return false;
+        }
+      }
 
-      _lastSyncAt = DateTime.now();
       await _saveLastSync();
+      _checkSession();
+      _lastSyncAt = DateTime.now();
       _set(SyncStatus.done, 'Синхронизировано');
       return true;
     } on ApiException catch (e) {
+      if (!_sessionCurrent) {
+        _set(SyncStatus.idle, '');
+        return false;
+      }
       if (e.isUnauthorized) {
         await auth.handleUnauthorized();
         _set(SyncStatus.failed, 'Сессия истекла, войдите снова.');
@@ -76,11 +148,23 @@ class SyncService extends ChangeNotifier {
       }
       return false;
     } catch (e) {
+      if (!_sessionCurrent) {
+        _set(SyncStatus.idle, '');
+        return false;
+      }
       _set(SyncStatus.failed, 'Не удалось синхронизировать.');
       if (kDebugMode) debugPrint('sync: $e');
       return false;
     } finally {
+      _runDb = null;
+      _runApi = null;
+      _runAccount = null;
+      _runToken = null;
+      _runGeneration = null;
       _running = false;
+      final finished = _runFinished;
+      _runFinished = null;
+      finished!.complete();
     }
   }
 
@@ -94,7 +178,7 @@ class SyncService extends ChangeNotifier {
 
   /// Отправляет локальные изменения страницами.
   Future<void> _push() async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
 
     while (true) {
       final books = await db.query('books',
@@ -104,9 +188,10 @@ class SyncService extends ChangeNotifier {
       final reviews = await db.rawQuery(
         'SELECT r.*, v.uuid AS vocab_uuid FROM reviews r '
         "JOIN vocabulary v ON v.id = r.vocab_id "
-        "WHERE r.dirty = 1 AND v.uuid <> '' ORDER BY r.updated_at LIMIT 150",
+        "WHERE r.dirty = 1 AND v.uuid <> '' ORDER BY r.updated_at LIMIT 100",
       );
-      final palaces = await PalaceStore.instance.dirty(limit: 50);
+      // Общий бюджет: 150 книг + 200 слов + 100 повторений + 50 дворцов.
+      final palaces = await _syncPalaces.dirty(limit: 50);
       if (books.isEmpty &&
           words.isEmpty &&
           reviews.isEmpty &&
@@ -127,18 +212,19 @@ class SyncService extends ChangeNotifier {
         'reviews': reviews.map(_reviewToJson).toList(),
         'palaces': palaces.map(_palaceToJson).toList(),
       };
-      await api.post('/v1/sync/push', payload);
+      await _syncApi.post('/v1/sync/push', payload);
+      _checkSession();
 
       // Пометки снимаются только после подтверждения сервером. Снять их раньше
       // значило бы потерять изменения при обрыве связи.
       await _clearDirty(db, 'books', books);
       await _clearDirty(db, 'vocabulary', words);
       await _clearDirty(db, 'reviews', reviews, idColumn: 'vocab_id');
-      await PalaceStore.instance.clearDirty(palaces);
+      await _syncPalaces.clearDirty(palaces);
 
       if (books.length < 150 &&
           words.length < 200 &&
-          reviews.length < 150 &&
+          reviews.length < 100 &&
           palaces.length < 50) {
         return;
       }
@@ -238,7 +324,7 @@ class SyncService extends ChangeNotifier {
     // курсор почему-то перестанет двигаться.
     for (var page = 0; page < 200; page++) {
       final cursor = await _cursor();
-      final response = await api.get('/v1/sync/changes',
+      final response = await _syncApi.get('/v1/sync/changes',
           query: {'since': '$cursor', 'limit': '$_pageSize'});
       if (response is! Map) return;
 
@@ -252,7 +338,7 @@ class SyncService extends ChangeNotifier {
   }
 
   Future<void> _applyChanges(Map<dynamic, dynamic> response) async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
     final books = (response['books'] as List?) ?? const [];
     final words = (response['vocabulary'] as List?) ?? const [];
     final reviews = (response['reviews'] as List?) ?? const [];
@@ -293,7 +379,7 @@ class SyncService extends ChangeNotifier {
       });
     }
 
-    await PalaceStore.instance.applyRemote(Palace(
+    await _syncPalaces.applyRemote(Palace(
       uuid: uuid,
       name: (item['name'] as String?) ?? '',
       sceneId: (item['sceneId'] as String?) ?? '',
@@ -344,7 +430,11 @@ class SyncService extends ChangeNotifier {
 
     final row = existing.first;
     final localAt = row['updated_at'] as int? ?? 0;
-    if (localAt > remoteAt) return;
+    if (row['dirty'] == 1 && localAt > remoteAt) return;
+    // Push подтверждает метаданные, но не текст. Равное время — эхо нашей
+    // посылки, где сервер мог оставить прежний хеш. Оно не отменяет очередь
+    // локального текста; более свежая серверная правка всё ещё побеждает.
+    if (row['content_pending'] == 1 && localAt >= remoteAt) return;
 
     // Текст перекачивать нужно, только если адрес изменился.
     final localSha = (row['content_sha'] as String?) ?? '';
@@ -355,6 +445,7 @@ class SyncService extends ChangeNotifier {
       'books',
       {
         ...values,
+        'content_pending': 0,
         if (textMissing) 'text_missing': 1,
         if (item['deleted'] == true) 'content': '[]',
       },
@@ -405,7 +496,9 @@ class SyncService extends ChangeNotifier {
     }
 
     final row = existing.first;
-    if ((row['updated_at'] as int? ?? 0) > remoteAt) return;
+    if (row['dirty'] == 1 && (row['updated_at'] as int? ?? 0) > remoteAt) {
+      return;
+    }
     await txn
         .update('vocabulary', values, where: 'id = ?', whereArgs: [row['id']]);
   }
@@ -423,6 +516,7 @@ class SyncService extends ChangeNotifier {
     final existing = await txn.query('reviews',
         where: 'vocab_id = ?', whereArgs: [vocabId], limit: 1);
     if (existing.isNotEmpty &&
+        existing.first['dirty'] == 1 &&
         (existing.first['updated_at'] as int? ?? 0) > remoteAt) {
       return;
     }
@@ -456,44 +550,60 @@ class SyncService extends ChangeNotifier {
 
   /// Выгружает тексты книг, которых ещё нет на сервере.
   Future<void> _uploadMissingContent() async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
     final rows = await db.query(
       'books',
-      columns: ['id', 'uuid', 'para_count'],
-      where: "deleted = 0 AND content_sha = '' AND para_count > 0",
-      limit: 40,
+      columns: ['id'],
+      where: 'deleted = 0 AND content_pending = 1',
     );
     if (rows.isEmpty) return;
 
     for (final row in rows) {
       final id = row['id'] as int;
-      final paragraphs = await UserDb.instance.getBookContent(id);
-      if (paragraphs.isEmpty) continue;
-
-      final sha = contentSha(paragraphs);
-      try {
-        await api.putContent(sha, paragraphs);
-      } on ApiException catch (e) {
-        // Книга больше допустимого размера — помечаем адресом, чтобы не
-        // пытаться выгружать её при каждой синхронизации.
-        if (e.status == 413) {
-          await db.update('books', {'content_sha': 'too-large'},
-              where: 'id = ?', whereArgs: [id]);
-          continue;
+      // Повторяем изменившийся текст, но не держим цикл бесконечно, если
+      // пользователь продолжает править книгу. Остаток сохраняется в БД.
+      for (var attempt = 0; attempt < 3; attempt++) {
+        _checkSession();
+        final snapshots = await db.query('books',
+            columns: ['content'],
+            where: 'id = ? AND deleted = 0 AND content_pending = 1',
+            whereArgs: [id]);
+        if (snapshots.isEmpty) break;
+        final rawContent = snapshots.first['content'] as String;
+        final List<String> paragraphs;
+        try {
+          paragraphs = List<String>.from(jsonDecode(rawContent) as List);
+        } catch (_) {
+          // Не снимаем очередь повреждённого текста; остальные отправятся.
+          break;
         }
-        rethrow;
-      }
 
-      await db.update(
-        'books',
-        {
-          'content_sha': sha,
-          'dirty': 1,
-          'updated_at': DateTime.now().millisecondsSinceEpoch,
-        },
-        where: 'id = ?',
-        whereArgs: [id],
-      );
+        var sha = contentSha(paragraphs);
+        try {
+          await _syncApi.putContent(sha, paragraphs);
+        } on ApiException catch (e) {
+          if (e.status != 413) rethrow;
+          sha = 'too-large';
+        }
+        _checkSession();
+
+        // Подтверждение транспорта не является новой пользовательской
+        // правкой: сохраняем updated_at и актуальные название/прогресс.
+        // Сравнение текста защищает от запоздавшего ответа на прежнюю версию.
+        final changed = await db.update(
+          'books',
+          {
+            'content_sha': sha,
+            'content_pending': 0,
+            'text_missing': 0,
+            'dirty': 1,
+          },
+          where:
+              'id = ? AND deleted = 0 AND content_pending = 1 AND content = ?',
+          whereArgs: [id, rawContent],
+        );
+        if (changed > 0) break;
+      }
     }
     // Новые адреса нужно донести до сервера, иначе другое устройство не узнает,
     // что текст появился.
@@ -506,42 +616,60 @@ class SyncService extends ChangeNotifier {
   /// мегабайты, и качать все сразу означало бы долгий старт и лишний трафик.
   Future<bool> downloadContent(int bookId) async {
     if (!auth.isSignedIn) return false;
-    final db = await UserDb.instance.database;
-    final rows = await db.query('books',
-        columns: ['content_sha'],
-        where: 'id = ?',
-        whereArgs: [bookId],
-        limit: 1);
-    if (rows.isEmpty) return false;
-
-    final sha = (rows.first['content_sha'] as String?) ?? '';
-    if (sha.isEmpty || sha == 'too-large') return false;
-
+    final accountId = auth.account!.id;
+    final token = api.token!;
+    final generation = UserDb.instance.generation;
+    final sessionApi = api.withSessionToken(token);
+    bool current() =>
+        auth.isSignedIn &&
+        auth.account?.id == accountId &&
+        api.token == token &&
+        UserDb.instance.generation == generation;
     try {
-      final response = await api.get('/v1/sync/content/$sha');
-      if (response is! List) return false;
-      final paragraphs = response.map((e) => e.toString()).toList();
+      final db = await UserDb.instance.database;
+      if (!current()) return false;
+      final rows = await db.query('books',
+          columns: ['content_sha'],
+          where: 'id = ? AND deleted = 0 AND content_pending = 0',
+          whereArgs: [bookId],
+          limit: 1);
+      if (rows.isEmpty) return false;
 
-      await db.update(
+      final sha = (rows.first['content_sha'] as String?) ?? '';
+      if (sha.isEmpty || sha == 'too-large') return false;
+
+      if (!current()) return false;
+      final response = await sessionApi.get('/v1/sync/content/$sha');
+      if (!current()) return false;
+      if (response is! List || response.any((e) => e is! String)) return false;
+      final paragraphs = response.cast<String>();
+      if (contentSha(paragraphs) != sha) return false;
+
+      final changed = await db.update(
         'books',
         {
           'content': jsonEncode(paragraphs),
           'para_count': paragraphs.length,
           'text_missing': 0,
         },
-        where: 'id = ?',
-        whereArgs: [bookId],
+        where:
+            'id = ? AND content_sha = ? AND deleted = 0 AND content_pending = 0',
+        whereArgs: [bookId, sha],
       );
-      return true;
+      return changed > 0;
     } on ApiException {
       return false;
+    } catch (_) {
+      // Соединение могло закрыться при переключении аккаунта.
+      if (!current()) return false;
+      rethrow;
     }
   }
 
   // --- Курсор ---
 
   Future<int> _cursor() async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
     final rows =
         await db.query('sync_state', columns: ['cursor'], where: 'id = 1');
     if (rows.isEmpty) return 0;
@@ -549,27 +677,27 @@ class SyncService extends ChangeNotifier {
   }
 
   Future<void> _setCursor(int value) async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
     await db.update('sync_state', {'cursor': value}, where: 'id = 1');
   }
 
   Future<void> _saveLastSync() async {
-    final db = await UserDb.instance.database;
+    final db = _syncDb;
     await db.update(
         'sync_state', {'last_sync_at': DateTime.now().millisecondsSinceEpoch},
         where: 'id = 1');
   }
 
-  /// Полный сброс синхронизации: курсор обнуляется, всё локальное помечается к
-  /// отправке. Нужен при смене аккаунта — иначе данные двух пользователей
-  /// перемешались бы.
+  /// Переключает на отдельную локальную БД аккаунта и сбрасывает только её
+  /// курсор. Данные другого аккаунта никогда не становятся dirty здесь.
   Future<void> resetForNewAccount(String userId) async {
+    await UserDb.instance.activateAccount(userId);
     final db = await UserDb.instance.database;
+    final current =
+        await db.query('sync_state', columns: ['user_id'], where: 'id = 1');
+    if (current.isNotEmpty && current.first['user_id'] == userId) return;
     await db.update('sync_state', {'cursor': 0, 'user_id': userId},
         where: 'id = 1');
-    for (final table in ['books', 'vocabulary', 'reviews', 'palaces']) {
-      await db.update(table, {'dirty': 1});
-    }
     _lastSyncAt = null;
     notifyListeners();
   }
@@ -579,8 +707,11 @@ class SyncService extends ChangeNotifier {
     final db = await UserDb.instance.database;
     var total = 0;
     for (final table in ['books', 'vocabulary', 'reviews', 'palaces']) {
-      final rows =
-          await db.rawQuery('SELECT COUNT(*) AS c FROM $table WHERE dirty = 1');
+      final condition = table == 'books'
+          ? 'dirty = 1 OR (deleted = 0 AND content_pending = 1)'
+          : 'dirty = 1';
+      final rows = await db
+          .rawQuery('SELECT COUNT(*) AS c FROM $table WHERE $condition');
       total += (rows.first['c'] as int?) ?? 0;
     }
     return total;

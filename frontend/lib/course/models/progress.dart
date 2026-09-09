@@ -29,12 +29,18 @@ class LessonProgress {
   final int attemptsCount;
   final DateTime? completedAt;
 
+  /// Знакомый материал, пропущенный при выборе стартового урока. Не награда.
+  final bool skipped;
+  final DateTime? placementAt;
+
   const LessonProgress({
     required this.lessonId,
     this.status = LessonStatus.available,
     this.bestScore = 0,
     this.attemptsCount = 0,
     this.completedAt,
+    this.skipped = false,
+    this.placementAt,
   });
 
   bool get isDone =>
@@ -47,6 +53,8 @@ class LessonProgress {
     double? bestScore,
     int? attemptsCount,
     DateTime? completedAt,
+    bool? skipped,
+    DateTime? placementAt,
   }) =>
       LessonProgress(
         lessonId: lessonId,
@@ -54,6 +62,8 @@ class LessonProgress {
         bestScore: bestScore ?? this.bestScore,
         attemptsCount: attemptsCount ?? this.attemptsCount,
         completedAt: completedAt ?? this.completedAt,
+        skipped: skipped ?? this.skipped,
+        placementAt: placementAt ?? this.placementAt,
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,6 +72,8 @@ class LessonProgress {
         'bestScore': bestScore,
         'attemptsCount': attemptsCount,
         'completedAt': completedAt?.toUtc().toIso8601String(),
+        'skipped': skipped,
+        'placementAt': placementAt?.toUtc().toIso8601String(),
       };
 
   factory LessonProgress.fromJson(Map<String, dynamic> j) => LessonProgress(
@@ -74,6 +86,8 @@ class LessonProgress {
         attemptsCount: (j['attemptsCount'] as num?)?.toInt() ?? 0,
         completedAt:
             DateTime.tryParse((j['completedAt'] ?? '') as String)?.toLocal(),
+        skipped: j['skipped'] == true,
+        placementAt: DateTime.tryParse('${j['placementAt'] ?? ''}'),
       );
 }
 
@@ -194,8 +208,7 @@ class DialogueProgress {
         'updatedAt': updatedAt.toUtc().toIso8601String(),
       };
 
-  factory DialogueProgress.fromJson(Map<String, dynamic> j) =>
-      DialogueProgress(
+  factory DialogueProgress.fromJson(Map<String, dynamic> j) => DialogueProgress(
         dialogueId: '${j['dialogueId'] ?? ''}',
         status: '${j['status'] ?? 'notStarted'}',
         currentNodeId: '${j['currentNodeId'] ?? ''}',

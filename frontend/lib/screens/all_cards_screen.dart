@@ -16,6 +16,7 @@ import '../services/user_db.dart';
 import '../services/vocab_context.dart';
 import '../services/vocab_tags.dart';
 import '../utils/short_text.dart';
+import '../widgets/wolf_mascot.dart';
 import 'flashcards_screen.dart';
 
 /// Что показываем: всё, только слова или только фразы.
@@ -363,19 +364,17 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
         ),
       );
 
-  Widget _empty(ColorScheme scheme) => Center(
+  Widget _empty(ColorScheme scheme) => const Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.style_outlined,
-                  size: 56, color: scheme.onSurfaceVariant),
-              const SizedBox(height: 16),
-              Text(
-                'Здесь появятся слова, которые ты сохранишь из книг.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
+              // Пустой словарь — волк зовёт читать: слова берутся из книг.
+              WolfBubble(
+                title: 'Словарь пуст',
+                text: 'Нажимай на слова в книге — и они появятся здесь.',
+                asset: Wolf.zbunjen,
               ),
             ],
           ),

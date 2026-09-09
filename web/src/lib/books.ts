@@ -31,8 +31,11 @@ export interface BookMeta {
   paragraphCount: number;
   /** Индекс абзаца, на котором читатель остановился. */
   lastParagraph: number;
-  /** Адрес текста на сервере. Пусто — текст ещё не выгружен. */
+  /** Адрес текста; наличие blob на сервере отмечает contentUploaded. */
   contentSha: string;
+  /** Локальная отметка успешной выгрузки; старые записи перепроверяются. */
+  contentUploaded?: boolean;
+  contentTooLarge?: boolean;
   /** Метаданные пришли с другого устройства, а текст ещё не скачан. */
   textMissing: boolean;
   addedAt: number;
@@ -214,7 +217,7 @@ export async function allBooks(): Promise<BookMeta[]> {
 export async function booksWithLocalText(limit = 20): Promise<BookMeta[]> {
   const books = await allBooks();
   return books
-    .filter((book) => !book.deleted && !book.textMissing && book.paragraphCount > 0)
+    .filter((book) => Boolean(book.contentSha) && !book.deleted && !book.textMissing && !book.contentUploaded && !book.contentTooLarge && book.paragraphCount > 0)
     .slice(0, limit);
 }
 

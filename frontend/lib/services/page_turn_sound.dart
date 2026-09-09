@@ -1,7 +1,7 @@
 /// Шелест страницы в читалке.
 ///
 /// Как и звуки курса, подмешивается к другому звуку: радио под чтением не
-/// должно прерываться. Файл собирается скриптом tools/make_page_turn.py.
+/// должно прерываться. Запись OwlStorm/Owlish Media, CC0; см. SOUND_CREDITS.md.
 library;
 
 import 'package:audioplayers/audioplayers.dart';

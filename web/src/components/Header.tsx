@@ -5,6 +5,7 @@ import {
   LuBookOpen,
   LuBoxes,
   LuDownload,
+  LuExternalLink,
   LuDumbbell,
   LuFlower2,
   LuGraduationCap,
@@ -92,6 +93,7 @@ interface Section {
  * зацепиться, и нужный раздел приходится искать перебором.
  */
 const GROUPS: { title: string; items: Section[] }[] = [
+  {title:'Твой день',items:[{to:'/personal',label:'Урок дня',icon:LuSparkles}]},
   {
     title: 'Читать',
     items: [
@@ -394,7 +396,7 @@ export function Header() {
 /** Оба адреса Вукотока: новый и прежний, который ещё ходит по чужим закладкам. */
 export function isVukotok(path: string): boolean {
   const clean = path.split('?')[0] ?? '';
-  return clean === VUKOTOK_PATH || clean === '/micro-feed';
+  return clean === VUKOTOK_PATH || clean === '/micro-feed' || clean==='/vukotok/video';
 }
 
 /** Длинное «Денис Корнилов» ломало кнопку на две строки. */
@@ -444,7 +446,7 @@ function SectionTile({
       <span className="min-w-0 leading-tight">{label}</span>
       {item.external && (
         <span className="ml-auto shrink-0 text-xs opacity-60" aria-hidden="true">
-          ↗
+          <LuExternalLink className="size-3" aria-hidden="true" />
         </span>
       )}
     </>
@@ -647,14 +649,14 @@ function SupportStrip() {
     () => localStorage.getItem(SUPPORT_STRIP_DISMISSED) === '1',
   );
 
-  if (dismissed || odysseyAvailable() || path.startsWith('/support') || isVukotok(path)) {
+  if (dismissed || odysseyAvailable() || path.startsWith('/support') || path.split('?')[0]==='/personal' || isVukotok(path)) {
     return null;
   }
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-5 py-1.5">
-        <p className="min-w-0 flex-1 text-xs font-semibold leading-snug text-[var(--text-muted)]">
+        <p className="min-w-0 basis-full text-xs font-semibold leading-snug text-[var(--text-muted)] sm:basis-0 sm:flex-1">
           Читавук продолжает быть бесплатным. Скорее вступай в Telegram-чат
           обсуждения Читавука, а то волк укусит за бочок!{' '}
           <a

@@ -33,7 +33,7 @@ func userFrom(ctx context.Context) *store.User {
 // ошибка, а просто «гость»: иначе истёкшая сессия ломала бы публичную страницу.
 func (s *Server) optionalAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := auth.BearerToken(r.Header.Get("Authorization"))
+		token := requestToken(r)
 		if token == "" {
 			next(w, r)
 			return
@@ -43,6 +43,9 @@ func (s *Server) optionalAuth(next http.HandlerFunc) http.HandlerFunc {
 			next(w, r)
 			return
 		}
+		if actor, ok := r.Context().Value(logActorKey{}).(*string); ok {
+			*actor = user.Email
+		}
 		next(w, r.WithContext(context.WithValue(r.Context(), userKey, user)))
 	}
 }
@@ -50,7 +53,7 @@ func (s *Server) optionalAuth(next http.HandlerFunc) http.HandlerFunc {
 // requireAuth пропускает только запросы с действующим токеном сессии.
 func (s *Server) requireAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := auth.BearerToken(r.Header.Get("Authorization"))
+		token := requestToken(r)
 		if token == "" {
 			writeError(w, http.StatusUnauthorized, codeUnauthorized, "Нужно войти в аккаунт.")
 			return
@@ -61,6 +64,9 @@ func (s *Server) requireAuth(next http.HandlerFunc) http.HandlerFunc {
 			// подсказала бы, какой токен когда-то существовал.
 			writeError(w, http.StatusUnauthorized, codeUnauthorized, "Сессия истекла, войдите снова.")
 			return
+		}
+		if actor, ok := r.Context().Value(logActorKey{}).(*string); ok {
+			*actor = user.Email
 		}
 		next(w, r.WithContext(context.WithValue(r.Context(), userKey, user)))
 	}
@@ -169,10 +175,17 @@ func writeRateLimited(w http.ResponseWriter) {
 func (s *Server) withCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
+		// Cookie-аутентификация требует доверенного Origin и preflight-заголовка.
+		if _, err := r.Cookie(sessionCookie); err == nil && r.Method != http.MethodGet && r.Method != http.MethodHead && r.Method != http.MethodOptions {
+			if !s.browserSession(r) {
+				writeError(w, http.StatusForbidden, codeForbidden, "Недопустимый источник запроса.")
+				return
+			}
+		}
 		if origin != "" && s.originAllowed(origin) {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
-			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Duel-Player")
+			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Duel-Player, X-Citavuk-Client")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition, Content-Type, X-Citavuk-Filename")
 			w.Header().Set("Access-Control-Max-Age", "86400")
@@ -235,8 +248,12 @@ func (s *statusRecorder) Unwrap() http.ResponseWriter {
 }
 
 // withLogging пишет одну строку на запрос и не даёт панике уронить процесс.
+type logActorKey struct{}
+
 func (s *Server) withLogging(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		actor := ""
+		r = r.WithContext(context.WithValue(r.Context(), logActorKey{}, &actor))
 		start := time.Now()
 		rec := &statusRecorder{ResponseWriter: w}
 
@@ -295,6 +312,9 @@ func (s *Server) withLogging(next http.Handler) http.Handler {
 func actorName(r *http.Request) string {
 	if user := userFrom(r.Context()); user != nil {
 		return user.Email
+	}
+	if actor, ok := r.Context().Value(logActorKey{}).(*string); ok {
+		return *actor
 	}
 	return ""
 }

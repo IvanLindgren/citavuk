@@ -8,7 +8,6 @@ import {
   LuLink,
   LuNewspaper,
   LuPlus,
-  LuSparkles,
   LuSquareCheckBig,
 } from 'react-icons/lu';
 
@@ -78,31 +77,11 @@ export function RoadmapSectionPanel({
   if (error) return <ErrorNote>{error}</ErrorNote>;
   if (!section) return <div className="py-10 text-center"><Spinner /></div>;
 
-  const empty =
-    section.items.length === 0 &&
-    section.exercises.length === 0 &&
-    section.words.length === 0;
-
   return (
     <div className="mt-6">
       <p className="max-w-3xl leading-7 text-[var(--text-muted)]">{category.about}</p>
       {section.intro && (
         <p className="mt-4 max-w-3xl whitespace-pre-line leading-7">{section.intro}</p>
-      )}
-
-      {category.planned && (
-        <p className="mt-6 rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)]/50 px-4 py-3">
-          Пока планируется — упражнения на написание предложений. Скоро будет.
-        </p>
-      )}
-
-      {empty && !category.planned && (
-        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--bg-sunken)]/40 px-5 py-6">
-          <LuSparkles className="size-5 shrink-0 text-[var(--accent)]" />
-          <p className="text-[var(--text-muted)]">
-            Увы, тут пока пусто — но скоро что-то появится.
-          </p>
-        </div>
       )}
 
       {section.items.length > 0 && (

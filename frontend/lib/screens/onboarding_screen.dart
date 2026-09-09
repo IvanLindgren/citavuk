@@ -176,7 +176,7 @@ class _WelcomeStep extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     return _StepBody(
       children: [
-        const Center(child: WolfSticker(asset: Wolf.zdravo, size: 150)),
+        const Center(child: WolfSticker(asset: Wolf.zdravo, size: 170)),
         const SizedBox(height: 16),
         Text('Здраво! Я волк Читавук', style: text.headlineSmall),
         const SizedBox(height: 8),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:srbski_read/course/state/lesson_controller.dart';
-import 'package:srbski_read/course/widgets/citavuk_sprite.dart';
+import 'package:srbski_read/course/widgets/bone_mascot.dart';
 import 'package:srbski_read/course/widgets/mascot_view.dart';
 
 /// Читавук одним кадром.
@@ -39,21 +39,14 @@ void main() {
       ),
     );
 
-    // Манифест читается с диска: без реального ожидания FutureBuilder покажет
-    // запасной статичный арт, а не спрайт.
-    await tester.runAsync(() async {
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-    });
-    await tester.pump();
-
-    CitavukSprite spriteOf(String key) => tester.widget<CitavukSprite>(
+    BoneMascot mascotOf(String key) => tester.widget<BoneMascot>(
           find.descendant(
             of: find.byKey(Key(key)),
-            matching: find.byType(CitavukSprite),
+            matching: find.byType(BoneMascot),
           ),
         );
 
-    expect(spriteOf('still').still, isTrue);
-    expect(spriteOf('animated').still, isFalse);
+    expect(mascotOf('still').still, isTrue);
+    expect(mascotOf('animated').still, isFalse);
   });
 }

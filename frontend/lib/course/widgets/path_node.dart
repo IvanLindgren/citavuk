@@ -22,6 +22,7 @@ class PathNode extends StatelessWidget {
     this.isCheckpoint = false,
     this.bestScore = 0,
     this.bubbleText,
+    this.lessonIcon,
   });
 
   final LessonStatus status;
@@ -38,6 +39,10 @@ class PathNode extends StatelessWidget {
   /// Текст парящего пузыря над текущим узлом («НАЧАТЬ», «ПРОДОЛЖИТЬ»).
   final String? bubbleText;
 
+  /// Иконка типа урока: теория, чтение, сборка фраз, словарь. Статус всё
+  /// равно передаётся цветом и небольшим знаком поверх узла.
+  final IconData? lessonIcon;
+
   /// Диаметр верхнего круга.
   static const double _size = 84;
 
@@ -47,6 +52,7 @@ class PathNode extends StatelessWidget {
   IconData get _icon {
     if (status == LessonStatus.locked) return Icons.lock_rounded;
     if (isCheckpoint) return Icons.emoji_events_rounded;
+    if (lessonIcon != null) return lessonIcon!;
     return switch (status) {
       LessonStatus.available => Icons.play_arrow_rounded,
       LessonStatus.inProgress => Icons.hourglass_bottom_rounded,
@@ -74,10 +80,16 @@ class PathNode extends StatelessWidget {
     };
     final sole = Color.lerp(base, Colors.black, locked ? 0.14 : 0.34)!;
     final iconColor = locked
-        ? scheme.onSurface.withValues(alpha: 0.38)
+        ? scheme.onSurfaceVariant
         : (status == LessonStatus.mastered
             ? const Color(0xFF3E2F0C)
-            : Colors.white);
+            : status == LessonStatus.completed
+                ? (scheme.brightness == Brightness.dark
+                    ? const Color(0xFF102512)
+                    : Colors.white)
+                : status == LessonStatus.needsReview
+                    ? scheme.onSecondary
+                    : scheme.onPrimary);
 
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
@@ -147,6 +159,29 @@ class PathNode extends StatelessWidget {
                 ),
                 child: Icon(_icon, size: 40, color: iconColor),
               ),
+              if (!locked &&
+                  (status == LessonStatus.completed ||
+                      status == LessonStatus.mastered))
+                Positioned(
+                  right: 2,
+                  bottom: 8,
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: scheme.surface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: sole, width: 2),
+                    ),
+                    child: Icon(
+                      status == LessonStatus.mastered
+                          ? Icons.star_rounded
+                          : Icons.check_rounded,
+                      size: 16,
+                      color: sole,
+                    ),
+                  ),
+                ),
               // Кольцо лучшего результата поверх круга.
               if (bestScore > 0 && !locked)
                 Positioned(
@@ -178,22 +213,20 @@ class PathNode extends StatelessWidget {
               fontSize: 13.5,
               height: 1.25,
               fontWeight: FontWeight.w700,
-              color: scheme.onSurface.withValues(alpha: locked ? 0.45 : 0.85),
+              color: locked ? scheme.onSurfaceVariant : scheme.onSurface,
             ),
           ),
         ),
       ],
     );
 
-    return Semantics(
-      button: true,
-      enabled: true,
-      label: semanticLabel,
-      child: PressableScale(
-        scale: 0.93,
-        onTap: onTap,
-        child: node,
-      ),
+    // Роль кнопки, подпись и клавиатура — внутри PressableScale: снаружи
+    // ничего оборачивать не нужно.
+    return PressableScale(
+      scale: 0.93,
+      onTap: onTap,
+      semanticLabel: semanticLabel,
+      child: node,
     );
   }
 }

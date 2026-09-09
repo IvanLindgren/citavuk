@@ -97,10 +97,14 @@ class Palace {
 }
 
 class PalaceStore {
-  PalaceStore._();
+  PalaceStore._() : _connection = null;
+  PalaceStore.forDatabase(Database database) : _connection = database;
+  final Database? _connection;
   static final PalaceStore instance = PalaceStore._();
 
-  Future<Database> get _db => UserDb.instance.database;
+  Future<Database> get _db => _connection == null
+      ? UserDb.instance.database
+      : Future<Database>.value(_connection!);
 
   Future<List<Palace>> list() async {
     final db = await _db;
@@ -166,23 +170,25 @@ class PalaceStore {
   /// Принимает дворец с сервера. Возвращает true, если запись изменилась.
   Future<bool> applyRemote(Palace remote) async {
     final db = await _db;
-    final rows =
-        await db.query('palaces', where: 'uuid = ?', whereArgs: [remote.uuid]);
+    return db.transaction((txn) async {
+      final rows = await txn
+          .query('palaces', where: 'uuid = ?', whereArgs: [remote.uuid]);
 
-    if (rows.isNotEmpty) {
-      final current = _fromRow(rows.first);
-      if (current.updatedAt > remote.updatedAt) return false;
-    } else if (remote.deleted) {
-      // Удалённого дворца, которого у нас и не было, заводить незачем.
-      return false;
-    }
+      if (rows.isNotEmpty) {
+        final current = _fromRow(rows.first);
+        if (current.dirty && current.updatedAt > remote.updatedAt) return false;
+      } else if (remote.deleted) {
+        // Удалённого дворца, которого у нас и не было, заводить незачем.
+        return false;
+      }
 
-    await db.insert(
-      'palaces',
-      _toRow(remote.copyWith(dirty: false)),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    return true;
+      await txn.insert(
+        'palaces',
+        _toRow(remote.copyWith(dirty: false)),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return true;
+    });
   }
 
   /// Помечает всё к отправке — при смене аккаунта.

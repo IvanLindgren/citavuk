@@ -19,6 +19,7 @@ type ProfileStats struct {
 	Words        ProfileWordStats    `json:"words"`
 	Activity     []ProfileActivity   `json:"activity"`
 	StreakDays   int                 `json:"streakDays"`
+	Study        *StudyView          `json:"study,omitempty"`
 	Goal         ProfileGoalProgress `json:"goal"`
 	Achievements []AchievementView   `json:"achievements"`
 }
@@ -185,24 +186,12 @@ func (s *Store) GetProfileStats(ctx context.Context, userID uuid.UUID) (ProfileS
 	}
 	rows.Close()
 
-	var reviewDays []time.Time
-	dayRows, err := s.Pool.Query(ctx, `
-		SELECT DISTINCT (to_timestamp(last_reviewed/1000.0) AT TIME ZONE 'UTC')::date
-		  FROM reviews WHERE user_id=$1 AND NOT deleted AND last_reviewed IS NOT NULL
-		 ORDER BY 1 DESC LIMIT 366`, userID)
+	studyView, err := s.GetStudy(ctx, userID, "")
 	if err != nil {
 		return ProfileStats{}, err
 	}
-	for dayRows.Next() {
-		var day time.Time
-		if err := dayRows.Scan(&day); err != nil {
-			dayRows.Close()
-			return ProfileStats{}, err
-		}
-		reviewDays = append(reviewDays, day)
-	}
-	dayRows.Close()
-	stats.StreakDays = currentStreak(reviewDays, time.Now().UTC())
+	stats.StreakDays = studyView.Current
+	stats.Study = &studyView
 
 	target, err := s.GetRoadmapTarget(ctx, userID)
 	if err != nil {

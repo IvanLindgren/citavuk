@@ -424,7 +424,7 @@ export function Reader() {
   const campaignBackground = effectiveTheme === 'campaign100' && campaignRewardUrl
     ? `url(${JSON.stringify(campaignRewardUrl)})`
     : undefined;
-  const flip = settings.animate && !reduceMotion;
+  const flip = settings.animate && !reduceMotion && !settings.calm;
 
   // Отступ между абзацами задаётся переменной, а не полем `marginBottom`:
   // строчный стиль перебил бы любое правило и оставил лишний отступ под
@@ -480,6 +480,7 @@ export function Reader() {
           bookId={state.book.id}
           bionic={settings.bionic}
           stress={settings.stress}
+          calm={settings.calm}
           paragraphClassName="reader-selectable"
           paragraphStyle={paragraphStyle}
           paragraphMarks={marks}
@@ -528,7 +529,7 @@ export function Reader() {
               }
               className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
             >
-              ← {state.book.folder || 'Библиотека'}
+              {state.book.folder || 'Библиотека'}
             </Link>
             <h1 className="mt-1 truncate text-xl sm:text-2xl">{state.book.title}</h1>
           </div>
@@ -676,6 +677,7 @@ export function Reader() {
                     bookId={state.book.id}
                     bionic={settings.bionic}
                     stress={settings.stress}
+                    calm={settings.calm}
                     paragraphClassName="reader-selectable"
                     paragraphStyle={paragraphStyle}
                     paragraphMarks={audioMarks}
@@ -755,7 +757,7 @@ export function Reader() {
 
         <p className="mt-3 text-center text-xs text-[var(--text-muted)]">
           {settings.flow === 'pages'
-            ? 'Стрелки ← → листают страницы.'
+            ? 'Клавиши со стрелками влево и вправо листают страницы.'
             : 'Прокручивайте книгу вниз как обычный документ.'}{' '}
           Нажмите любое слово, чтобы увидеть перевод в этом предложении.
         </p>

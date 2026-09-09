@@ -8,6 +8,8 @@ const frontend = join(repo, 'frontend', 'assets');
 const output = join(root, 'public', 'course');
 
 const files = [
+  ['course/mascot_rig.json', 'mascot_rig.json'],
+  ['imgs/citavuk_rig_face_atlas.png', 'animations/citavuk_rig_face_atlas.png'],
   ['course/course_bundle.json', 'course_bundle.json'],
   ['course/trainer_catalog.json', 'trainer_catalog.json'],
   ['course/dialogues/drinkit.json', 'dialogues/drinkit.json'],

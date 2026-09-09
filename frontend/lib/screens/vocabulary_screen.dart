@@ -34,6 +34,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     setState(() => _isLoading = true);
     final items = await UserDb.instance.getVocabularyForBook(widget.bookId);
     final due = await UserDb.instance.getDueCount(widget.bookId);
+    if (!mounted) return;
     setState(() {
       _vocabItems = items;
       _dueCount = due;

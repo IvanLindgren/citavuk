@@ -27,6 +27,8 @@ class FillBlankView extends StatefulWidget {
 
 class _FillBlankViewState extends State<FillBlankView> {
   late Map<String, TextEditingController> _controllers;
+  final Map<String, FocusNode> _focusNodes = {};
+  String? _activeBlank;
 
   @override
   void initState() {
@@ -41,6 +43,10 @@ class _FillBlankViewState extends State<FillBlankView> {
       for (final c in _controllers.values) {
         c.dispose();
       }
+      for (final node in _focusNodes.values) {
+        node.dispose();
+      }
+      _focusNodes.clear();
       _createControllers();
     }
   }
@@ -51,12 +57,23 @@ class _FillBlankViewState extends State<FillBlankView> {
       for (final b in widget.exercise.blanks)
         b.id: TextEditingController(text: existing[b.id] ?? ''),
     };
+    for (final blank in widget.exercise.blanks) {
+      final node = FocusNode();
+      node.addListener(() {
+        if (node.hasFocus) _activeBlank = blank.id;
+      });
+      _focusNodes[blank.id] = node;
+    }
+    _activeBlank = widget.exercise.blanks.firstOrNull?.id;
   }
 
   @override
   void dispose() {
     for (final c in _controllers.values) {
       c.dispose();
+    }
+    for (final node in _focusNodes.values) {
+      node.dispose();
     }
     super.dispose();
   }
@@ -69,6 +86,21 @@ class _FillBlankViewState extends State<FillBlankView> {
     widget.onChanged(anyFilled ? BlanksAnswer(values) : null);
   }
 
+  void _insert(String letter) {
+    if (!widget.enabled) return;
+    final controller = _controllers[_activeBlank];
+    if (controller == null) return;
+    final selection = controller.selection;
+    final start = selection.isValid ? selection.start : controller.text.length;
+    final end = selection.isValid ? selection.end : start;
+    controller.value = TextEditingValue(
+      text: controller.text.replaceRange(start, end, letter),
+      selection: TextSelection.collapsed(offset: start + letter.length),
+    );
+    _focusNodes[_activeBlank]?.requestFocus();
+    _emit();
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -76,9 +108,8 @@ class _FillBlankViewState extends State<FillBlankView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const ExerciseSectionLabel('ЗАПОЛНИТЕ ПРОПУСК'),
-        // Текст переносится по строкам вместе с полями ввода: длинное
-        // предложение не выходит за границы экрана.
+        const ExerciseSectionLabel('ЗАПОЛНИ ПРОПУСКИ'),
+        // Номер связывает место в тексте с просторным полем ниже.
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 4,
@@ -86,46 +117,80 @@ class _FillBlankViewState extends State<FillBlankView> {
           children: [
             for (final segment in widget.exercise.segments)
               if (segment.isBlank)
-                SizedBox(
-                  width: 128,
-                  child: Semantics(
-                    textField: true,
-                    label: 'Пропуск',
-                    child: TextField(
-                      controller: _controllers[segment.blankId],
-                      enabled: widget.enabled,
-                      onChanged: (_) => _emit(),
-                      textInputAction: TextInputAction.done,
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w600),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 12),
-                        constraints:
-                            const BoxConstraints(minHeight: kMinTouchTarget),
-                        filled: true,
-                        fillColor: scheme.surfaceContainerHighest
-                            .withValues(alpha: 0.6),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: scheme.primary.withValues(alpha: 0.4)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: scheme.primary.withValues(alpha: 0.4)),
-                        ),
-                      ),
-                    ),
-                  ),
+                OutlinedButton(
+                  onPressed: widget.enabled
+                      ? () => _focusNodes[segment.blankId]?.requestFocus()
+                      : null,
+                  child: Text(
+                      '${widget.exercise.blanks.indexWhere((b) => b.id == segment.blankId) + 1}'),
                 )
               else
                 Text(
                   segment.text,
                   style: const TextStyle(fontSize: 17, height: 1.5),
                 ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        for (var i = 0; i < widget.exercise.blanks.length; i++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: TextField(
+              controller: _controllers[widget.exercise.blanks[i].id],
+              focusNode: _focusNodes[widget.exercise.blanks[i].id],
+              enabled: widget.enabled,
+              autocorrect: false,
+              enableSuggestions: false,
+              minLines: 1,
+              maxLines: 3,
+              scrollPadding: const EdgeInsets.all(80),
+              textInputAction: i + 1 < widget.exercise.blanks.length
+                  ? TextInputAction.next
+                  : TextInputAction.done,
+              onTap: () => _activeBlank = widget.exercise.blanks[i].id,
+              onChanged: (_) {
+                _activeBlank = widget.exercise.blanks[i].id;
+                _emit();
+              },
+              onSubmitted: (_) {
+                if (i + 1 < widget.exercise.blanks.length) {
+                  _activeBlank = widget.exercise.blanks[i + 1].id;
+                  _focusNodes[_activeBlank]?.requestFocus();
+                }
+              },
+              style: const TextStyle(fontSize: 17, height: 1.5),
+              decoration: InputDecoration(
+                labelText: 'Пропуск ${i + 1}',
+                hintText: 'Впиши слово или выражение',
+                alignLabelWithHint: true,
+              ),
+            ),
+          ),
+        Text('Сербские буквы',
+            style: TextStyle(color: scheme.onSurfaceVariant)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: [
+            for (final letter in [
+              'č',
+              'ć',
+              'š',
+              'ž',
+              'đ',
+              'ј',
+              'љ',
+              'њ',
+              'ћ',
+              'ђ',
+              'џ'
+            ])
+              TextButton(
+                onPressed: widget.enabled ? () => _insert(letter) : null,
+                style: TextButton.styleFrom(minimumSize: const Size(44, 48)),
+                child: Text(letter, style: const TextStyle(fontSize: 20)),
+              ),
           ],
         ),
       ],

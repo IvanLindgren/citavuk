@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import { Link, useRouter } from '../lib/router';
+import { usePromotionSlot } from '../lib/promotion';
 
 const DISMISS_KEY = 'citavuk-app-prompt-dismissed';
 
@@ -35,6 +36,7 @@ export function AppPrompt() {
   }, []);
 
   const hidden = HIDDEN_ON.some((prefix) => path.startsWith(prefix));
+  const allowed = usePromotionSlot(visible && !hidden);
 
   function dismiss() {
     setVisible(false);
@@ -48,7 +50,7 @@ export function AppPrompt() {
 
   return (
     <AnimatePresence>
-      {visible && !hidden && (
+      {allowed && (
         <motion.aside
           initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

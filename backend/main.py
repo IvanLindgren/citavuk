@@ -16,11 +16,13 @@ try:
     from .urlguard import UrlRejected, check_url, open_checked
     from .ratelimit import make_limiter
     from . import analysis_cache
+    from .nlp_selection import select_word
 except ImportError:
     from redis_cache import redis_cache
     from urlguard import UrlRejected, check_url, open_checked
     from ratelimit import make_limiter
     import analysis_cache
+    from nlp_selection import select_word
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -63,7 +65,8 @@ async def lifespan(app: FastAPI):
     try:
         import classla
         logging.info("Downloading/verifying Serbian models...")
-        classla.download('sr')
+        if os.getenv("CITAVUK_DOWNLOAD_MODELS") == "1":
+            classla.download('sr')
         logging.info("Initializing CLASSLA Serbian pipeline...")
         nlp = classla.Pipeline('sr', processors='tokenize,pos,lemma')
         nlp_active = True
@@ -328,6 +331,18 @@ class AnalyzeRequest(BaseModel):
     end_offset: int
     token_text: str = Field(max_length=100)
 
+    def model_post_init(self, __context):
+        # Контракт клиента — UTF-16, индексы Python/CLASSLA — Unicode code points.
+        encoded = self.sentence.encode('utf-16-le')
+        try:
+            if not 0 <= self.start_offset <= self.end_offset <= len(encoded) // 2:
+                raise ValueError('Смещения вне предложения')
+            start = len(encoded[:self.start_offset * 2].decode('utf-16-le'))
+            end = len(encoded[:self.end_offset * 2].decode('utf-16-le'))
+        except UnicodeDecodeError as exc:
+            raise ValueError('Смещение разрывает символ') from exc
+        self.start_offset, self.end_offset = start, end
+
 def _parse_feats(s: str) -> Dict[str, str]:
     d: Dict[str, str] = {}
     if s and s != "_":
@@ -404,7 +419,7 @@ def get_dictionary_translation(word: str, lemma: str) -> Optional[str]:
         return row[0]
     return None
 
-def fetch_online_translation(word: str) -> str:
+def fetch_online_translation(word: str) -> Optional[str]:
     """Fallback translator using Google Translate."""
     try:
         from deep_translator import GoogleTranslator
@@ -412,13 +427,15 @@ def fetch_online_translation(word: str) -> str:
         return translated
     except Exception as e:
         logging.error(f"Translation service failed: {e}")
-        return "[Перевод недоступен]"
+        # Ошибка провайдера — не перевод. Возвращать пользовательскую строку
+        # здесь нельзя: старые клиенты сохраняли её как словарное значение.
+        return None
 
 @app.post("/analyze")
 def analyze_token(req: AnalyzeRequest, _: None = Depends(_analyze_limit)):
     analysis_key = hashlib.sha256(
         (
-            f"{req.sentence}\0{req.start_offset}\0"
+            f"analysis-v2\0{req.sentence}\0{req.start_offset}\0"
             f"{req.end_offset}\0{req.token_text}"
         ).encode("utf-8")
     ).hexdigest()
@@ -455,30 +472,9 @@ def analyze_token(req: AnalyzeRequest, _: None = Depends(_analyze_limit)):
     if nlp_active and nlp:
         try:
             doc = nlp(req.sentence)
-            matched_word = None
-            
-            # Find the word that corresponds to the character offsets
-            for sentence in doc.sentences:
-                for word in sentence.words:
-                    # Stanza stores character offset inside word.misc as 'start_char=X|end_char=Y'
-                    misc = word.misc if hasattr(word, 'misc') else ""
-                    start_c = None
-                    end_c = None
-                    if misc:
-                        parts = misc.split('|')
-                        for p in parts:
-                            if p.startswith('start_char='):
-                                start_c = int(p.split('=')[1])
-                            elif p.startswith('end_char='):
-                                end_c = int(p.split('=')[1])
-                                
-                    # If offsets overlap or text matches
-                    if (start_c is not None and end_c is not None and 
-                            start_c <= req.start_offset and end_c >= req.end_offset):
-                        matched_word = word
-                        break
-                    elif to_latin(word.text).lower() == word_lat.lower():
-                        matched_word = word
+            matched_word = select_word(
+                doc, req.start_offset, req.end_offset, word_lat, to_latin
+            )
             
             if matched_word:
                 lemma = to_latin(matched_word.lemma)
@@ -626,128 +622,13 @@ def fetch_wiktionary_lemma(word: str) -> Optional[tuple[str, str]]:
 # Парсинг идёт на сервере (нет CORS, надёжные библиотеки), приложение зовёт
 # /news и /article. Ленты можно править под себя.
 # ---------------------------------------------------------------------------
-import calendar
-
 # Ленты проверены (отдают статьи). Темы агрегируют несколько СМИ; дубли по
 # ссылке отсекаются, сортировка — по дате.
-NEWS_FEEDS = {
-    "general": [
-        "https://n1info.rs/feed/",
-        "https://www.danas.rs/feed/",
-        "https://nova.rs/feed/",
-    ],
-    "politics": [
-        "https://n1info.rs/vesti/feed/",
-        "https://nova.rs/vesti/politika/feed/",
-    ],
-    "culture": [
-        "https://www.blic.rs/rss/Kultura",
-        "https://nova.rs/kultura/feed/",
-        "https://n1info.rs/kultura/feed/",
-    ],
-    "trending": [  # «лента дня» — самое читаемое сегодня (Blic) + свежее
-        "https://www.blic.rs/rss/danasnji-najcitaniji",
-        "https://nova.rs/feed/",
-        "https://n1info.rs/feed/",
-    ],
-    "science": [
-        "https://naukakrozprice.rs/feed/",
-        "https://nova.rs/it/feed/",
-        "https://www.blic.rs/rss/IT",
-    ],
-}
-
-# Кэш ленты по теме (чтобы не дёргать RSS на каждый заход).
-_NEWS_CACHE = {}
-_NEWS_TTL = 300  # 5 минут
-
-
-def _clean_summary(html: str) -> str:
-    text = re.sub(r"<[^>]+>", "", html or "")
-    text = re.sub(r"\s+", " ", text).strip()
-    return text[:300]
-
-
-def _entry_timestamp(e) -> int:
-    for key in ("published_parsed", "updated_parsed"):
-        val = e.get(key)
-        if val:
-            try:
-                return calendar.timegm(val)
-            except Exception:
-                pass
-    return 0
-
-
-def _entry_image(e) -> Optional[str]:
-    # media:content / media:thumbnail
-    for key in ("media_content", "media_thumbnail"):
-        media = e.get(key)
-        if media:
-            for m in media:
-                if m.get("url"):
-                    return m["url"]
-    # enclosure-картинки
-    for link in e.get("links", []):
-        if link.get("rel") == "enclosure" and str(link.get("type", "")).startswith("image"):
-            return link.get("href")
-    # первый <img> в summary/content
-    html = e.get("summary", "") or ""
-    if e.get("content"):
-        try:
-            html += e["content"][0].get("value", "")
-        except Exception:
-            pass
-    m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', html)
-    if m:
-        return m.group(1)
-    return None
-
-
-@app.get("/news")
-def news(topic: str = "general", limit: int = 25):
-    import feedparser
-    # Кэш: отдаём свежий результat, не дёргая RSS чаще раза в 5 минут.
-    now = time.time()
-    cached = _NEWS_CACHE.get(topic)
-    if cached and now - cached[0] < _NEWS_TTL:
-        return {"topic": topic, "items": cached[1][:limit], "cached": True}
-    shared = redis_cache.get_json(f"news:{topic}")
-    if isinstance(shared, list):
-        _NEWS_CACHE[topic] = (now, shared)
-        return {"topic": topic, "items": shared[:limit], "cached": True}
-
-    feeds = NEWS_FEEDS.get(topic, NEWS_FEEDS["general"])
-    items = []
-    seen = set()
-    for feed_url in feeds:
-        try:
-            d = feedparser.parse(feed_url)
-            source = ""
-            try:
-                source = d.feed.get("title", "")
-            except Exception:
-                pass
-            for e in d.entries:
-                link = e.get("link", "")
-                if not link or link in seen:
-                    continue
-                seen.add(link)
-                items.append({
-                    "title": (e.get("title", "") or "").strip(),
-                    "summary": _clean_summary(e.get("summary", "")),
-                    "image": _entry_image(e),
-                    "source": source,
-                    "link": link,
-                    "published": e.get("published", "") or e.get("updated", ""),
-                    "published_ts": _entry_timestamp(e),
-                })
-        except Exception as ex:
-            logging.error(f"RSS feed failed ({feed_url}): {ex}")
-    items.sort(key=lambda x: x.get("published_ts", 0), reverse=True)
-    _NEWS_CACHE[topic] = (now, items)
-    redis_cache.set_json(f"news:{topic}", items, _NEWS_TTL)
-    return {"topic": topic, "items": items[:limit]}
+try:
+    from .news import router as news_router
+except ImportError:
+    from news import router as news_router
+app.include_router(news_router)
 
 
 _TRANSLATE_LANGS = {"sr", "ru", "en"}
@@ -1083,7 +964,7 @@ def _extract_transcript_text(html_str: str) -> str:
 
 
 @app.get("/audio/proxy")
-def audio_proxy(url: str, request: Request):
+def audio_proxy(url: str, request: Request, _: None = Depends(make_limiter(30, 10))):
     """Прокси для web-аудио из RSS.
 
     У части podcast/CDN-хостов финальный mp3/m4a не отдаёт CORS-заголовки или
@@ -1108,14 +989,34 @@ def audio_proxy(url: str, request: Request):
         headers["Referer"] = "https://anchor.fm/"
 
     try:
-        req = urllib.request.Request(url, headers=headers)
-        upstream = urllib.request.urlopen(req, timeout=30)
+        def validate_audio(candidate):
+            import socket
+            import ipaddress
+            parsed_audio = urllib.parse.urlparse(candidate)
+            audio_host = (parsed_audio.hostname or "").lower()
+            if parsed_audio.scheme not in {"http", "https"} or audio_host not in _AUDIO_PROXY_HOSTS:
+                raise UrlRejected("Недопустимый адрес аудио")
+            if parsed_audio.username or parsed_audio.password or parsed_audio.port not in {None, 80, 443}:
+                raise UrlRejected("Недопустимый адрес аудио")
+            if any(not ipaddress.ip_address(info[4][0]).is_global
+                   for info in socket.getaddrinfo(audio_host, None)):
+                raise UrlRejected("Служебный адрес аудио")
+            return candidate
+        upstream = open_checked(url, headers=headers, timeout=30, validator=validate_audio)
     except Exception as ex:
         logging.error(f"Audio proxy failed ({url}): {ex}")
         return Response(status_code=502)
 
     status = getattr(upstream, "status", 200)
     content_type = upstream.headers.get("Content-Type") or "application/octet-stream"
+    max_audio_bytes = 128 * 1024 * 1024
+    try:
+        advertised_bytes = int(upstream.headers.get("Content-Length") or 0)
+    except ValueError:
+        advertised_bytes = 0
+    if advertised_bytes > max_audio_bytes:
+        upstream.close()
+        return Response(status_code=413)
     response_headers = {
         "Content-Type": content_type,
         "Accept-Ranges": upstream.headers.get("Accept-Ranges", "bytes"),
@@ -1130,10 +1031,13 @@ def audio_proxy(url: str, request: Request):
 
     def body():
         try:
-            while True:
-                chunk = upstream.read(64 * 1024)
+            remaining = max_audio_bytes
+            deadline = time.monotonic() + 600
+            while remaining > 0 and time.monotonic() < deadline:
+                chunk = upstream.read(min(64 * 1024, remaining))
                 if not chunk:
                     break
+                remaining -= len(chunk)
                 yield chunk
         finally:
             upstream.close()

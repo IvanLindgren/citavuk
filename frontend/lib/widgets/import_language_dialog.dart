@@ -77,8 +77,10 @@ class _ImportLanguageDialogState extends State<_ImportLanguageDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Image.asset(Wolf.gram, height: 110),
+            const Center(
+              // Спокойный стикер без парения: в диалоге и так движется
+              // прогресс, второму движению не место.
+              child: WolfSticker(asset: Wolf.gram, size: 130, animate: false),
             ),
             const SizedBox(height: 12),
             Text(
@@ -167,7 +169,7 @@ class TranslationProgressDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(Wolf.ukaz, height: 90),
+          const WolfSticker(asset: Wolf.ukaz, size: 110, animate: false),
           const SizedBox(height: 16),
           LinearProgressIndicator(value: ratio),
           const SizedBox(height: 8),

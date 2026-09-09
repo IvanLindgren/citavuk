@@ -273,6 +273,7 @@ export function MicroFeed() {
               <LuChevronLeft />
             </Link>
             <h1 className="font-display text-xl font-bold">Вукоток</h1>
+            <Link to="/vukotok/video" className="ml-3 rounded-full border border-white/30 px-3 py-1 text-sm">Видео</Link>
             <span className="hidden rounded-md border border-white/25 px-2 py-0.5 text-[0.68rem] font-bold uppercase sm:inline">эксперимент</span>
             {strategy !== 'cold' && <span className="hidden text-xs text-white/65 md:inline">Для вас</span>}
           </div>

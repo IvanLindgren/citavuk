@@ -239,6 +239,15 @@ export function ReaderSettingsPanel({
                 checked={settings.animate}
                 onChange={(value) => onChange('animate', value)}
               />
+              <Toggle
+                label="Спокойный режим"
+                checked={settings.calm}
+                onChange={(value) => onChange('calm', value)}
+              />
+              <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)]">
+                Без лишних движений: страница не крутится, в карточке слова нет
+                маскота. Переводы и разборы работают как обычно.
+              </p>
             </div>
 
             <div className="border-t border-[var(--line)] px-5 py-4">

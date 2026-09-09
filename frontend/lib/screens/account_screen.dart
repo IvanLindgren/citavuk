@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/profile_stats.dart';
+import '../widgets/study_widgets.dart';
 import '../services/api_client.dart';
 import '../services/announcements_controller.dart';
 import '../services/auth_service.dart';
@@ -156,6 +157,7 @@ class _SignedInViewState extends State<_SignedInView> {
           )
         else if (_stats != null) ...[
           _ProfileCounters(stats: _stats!),
+          StudyStatsPanel(data:_stats!.study),
           const SizedBox(height: 16),
           _GoalProgressCard(stats: _stats!),
           const SizedBox(height: 16),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'dart:async';
 
 import '../palace/scenes.dart';
+import '../services/interface_sounds.dart';
 import '../services/palace_store.dart';
 import '../services/user_db.dart';
+import '../state/app_settings.dart';
 import '../utils/uuid.dart';
 import '../widgets/wolf_mascot.dart';
 
@@ -129,7 +133,7 @@ class _PalaceScreenState extends State<PalaceScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const WolfSticker(asset: Wolf.ukaz, size: 140),
+            const WolfSticker(asset: Wolf.ukaz, size: 160),
             const SizedBox(height: 20),
             Text(
               'Разложите слова по комнате',
@@ -677,6 +681,12 @@ class _PalaceWalkScreenState extends State<PalaceWalkScreen> {
   int _index = 0;
   bool _revealed = false;
 
+  void _playDoneSound() {
+    InterfaceSounds.instance.enabled =
+        context.read<AppSettings>().interfaceSoundEnabled;
+    unawaited(InterfaceSounds.instance.play(InterfaceSound.complete));
+  }
+
   PalaceSpot? get _spot {
     if (_index >= _steps.length) return null;
     for (final spot in widget.scene.spots) {
@@ -766,10 +776,15 @@ class _PalaceWalkScreenState extends State<PalaceWalkScreen> {
                 ),
               const SizedBox(height: 14),
               FilledButton(
-                onPressed: () => setState(() {
-                  _index++;
-                  _revealed = false;
-                }),
+                onPressed: () {
+                  setState(() {
+                    _index++;
+                    _revealed = false;
+                  });
+                  // Финал звучит в переходе на него — один раз. Кнопка
+                  // «Ещё раз» возвращает в начало без звука: это рестарт.
+                  if (_index >= _steps.length) _playDoneSound();
+                },
                 child: Text(_index + 1 >= _steps.length ? 'Закончить' : 'Дальше'),
               ),
             ],
@@ -786,16 +801,13 @@ class _PalaceWalkScreenState extends State<PalaceWalkScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const WolfSticker(asset: Wolf.povtor, size: 150),
-            const SizedBox(height: 20),
-            Text('Комната пройдена',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 10),
-            Text(
-              'Пройдите её ещё раз завтра — маршрут тот же, и слова начнут '
-              'всплывать раньше, чем ты дойдёшь до места.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
+            // Комната пройдена — волк подводит итог и зовёт завтра:
+            // маршрут тот же, повторение — суть приёма.
+            const WolfBubble(
+              title: 'Комната пройдена',
+              text: 'Пройди её ещё раз завтра — маршрут тот же, и слова начнут '
+                  'всплывать раньше, чем ты дойдёшь до места.',
+              asset: Wolf.povtor,
             ),
             const SizedBox(height: 20),
             FilledButton(

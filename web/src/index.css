@@ -1,6 +1,40 @@
 @import 'tailwindcss';
 
 @layer components {
+  .answer-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg-raised);
+    padding: 14px 16px;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+    caret-color: var(--accent);
+    scroll-margin-block: 100px;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .answer-input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+
+  textarea.answer-input {
+    resize: vertical;
+    min-height: 112px;
+    field-sizing: content;
+  }
+
+  .answer-input:disabled {
+    opacity: 0.7;
+  }
+
   .duel-input {
     @apply w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 py-3 outline-none transition-colors focus:border-[var(--accent)];
     overflow-wrap: anywhere;
@@ -61,9 +95,9 @@
   приложение — один продукт, и расхождение цветов сразу читается как небрежность.
 */
 @theme {
-  --color-parchment: #f3e9d2;
-  --color-parchment-dark: #eadfc2;
-  --color-parchment-deep: #e0d3b0;
+  --color-parchment: #faf3e7;
+  --color-parchment-dark: #f6ecda;
+  --color-parchment-deep: #ead3ae;
 
   --color-serb-red: #9e2b25;
   --color-serb-red-bright: #c23b33;
@@ -121,7 +155,7 @@
     /* Семантические токены: компоненты обращаются к ним, а не к палитре
        напрямую, поэтому тёмная тема описывается в одном месте. */
     --bg: var(--color-parchment);
-    --bg-raised: #fbf6ea;
+    --bg-raised: #fffaf0;
     --bg-sunken: var(--color-parchment-dark);
     --text: var(--color-ink);
     --text-muted: var(--color-ink-soft);
@@ -129,6 +163,8 @@
     --accent-hover: var(--color-serb-red-bright);
     --success: #2f7445;
     --success-soft: rgb(47 116 69 / 0.12);
+    --warn: #8a5a00;
+    --warn-soft: rgb(138 90 0 / 0.12);
     --error: var(--color-serb-red);
     --error-soft: rgb(158 43 37 / 0.12);
     /* Сторона машины в дуэли. Индиго палитры: холоднее акцента, но той же
@@ -152,6 +188,8 @@
     --accent-hover: #d9554c;
     --success: #78bd8b;
     --success-soft: rgb(120 189 139 / 0.14);
+    --warn: #e0b34e;
+    --warn-soft: rgb(224 179 78 / 0.14);
     --error: #ef7b73;
     --error-soft: rgb(239 123 115 / 0.14);
     --machine: var(--color-indigo-soft);
@@ -284,6 +322,22 @@
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  /*
+   * Килимная кромка — мотив 2 сербской системы (стилизация ступенчатых
+   * бордюров пиротских килимов, см. KilimEdge во Flutter). Только для
+   * карточек наград и достижений, не для списков и форм.
+   */
+  .kilim-edge {
+    height: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Cpath d='M0 8 L8 0 L16 8 Z' fill='%239e2b25'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 16px 8px;
+  }
+
+  .dark .kilim-edge {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Cpath d='M0 8 L8 0 L16 8 Z' fill='%23c23b33'/%3E%3C/svg%3E");
   }
 
   /*

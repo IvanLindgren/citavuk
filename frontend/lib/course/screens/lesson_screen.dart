@@ -193,16 +193,16 @@ class _LessonScreenState extends State<LessonScreen> {
             autofocus: true,
             onKeyEvent: _onKey,
             child: switch (_controller.phase) {
-            LessonPhase.intro => _IntroView(
-                lesson: widget.lesson,
-                onStart: _controller.startExercises,
-              ),
-            LessonPhase.finished => _ResultView(
-                summary: _controller.summary,
-                passThreshold: widget.course.config.passThreshold,
-                onClose: () => Navigator.of(context).pop(_controller.summary),
-              ),
-            _ => _ExerciseView(controller: _controller),
+              LessonPhase.intro => _IntroView(
+                  lesson: widget.lesson,
+                  onStart: _controller.startExercises,
+                ),
+              LessonPhase.finished => _ResultView(
+                  summary: _controller.summary,
+                  passThreshold: widget.course.config.passThreshold,
+                  onClose: () => Navigator.of(context).pop(_controller.summary),
+                ),
+              _ => _ExerciseView(controller: _controller),
             },
           ),
         ),
@@ -268,8 +268,7 @@ class _LessonProgressBar extends StatelessWidget {
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
                   minHeight: 10,
-                  backgroundColor:
-                      scheme.primary.withValues(alpha: 0.18),
+                  backgroundColor: scheme.primary.withValues(alpha: 0.18),
                   valueColor: AlwaysStoppedAnimation(scheme.primary),
                 ),
               ),
@@ -305,7 +304,7 @@ class _IntroView extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const MascotView(state: MascotState.idle, size: 64),
+                    const Icon(Icons.menu_book_outlined, size: 32),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Text(
@@ -370,50 +369,52 @@ class _ExerciseViewState extends State<_ExerciseView> {
           child: _AlwaysVisibleScrollbar(
             controller: _scrollController,
             child: SingleChildScrollView(
-            controller: _scrollController,
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ExerciseHost(
-                  exercise: exercise,
-                  answer: controller.draft,
-                  enabled: !checked,
-                  onChanged: controller.setAnswer,
-                ),
-                if (!checked &&
-                    exercise.hint != null &&
-                    exercise.hint!.isNotEmpty) ...[
-                  const SizedBox(height: 16),
-                  if (controller.hintShown)
-                    _HintBox(text: exercise.hint!)
-                  else
-                    TextButton.icon(
-                      onPressed: controller.showHint,
-                      icon: const Icon(Icons.lightbulb_outline, size: 18),
-                      label: const Text('Подсказка'),
-                    ),
+              controller: _scrollController,
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ExerciseHost(
+                    exercise: exercise,
+                    answer: controller.draft,
+                    enabled: !checked,
+                    onChanged: controller.setAnswer,
+                  ),
+                  if (!checked &&
+                      exercise.hint != null &&
+                      exercise.hint!.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    if (controller.hintShown)
+                      _HintBox(text: exercise.hint!)
+                    else
+                      TextButton.icon(
+                        onPressed: controller.showHint,
+                        icon: const Icon(Icons.lightbulb_outline, size: 18),
+                        label: const Text('Подсказка'),
+                      ),
+                  ],
+                  if (checked && result != null) ...[
+                    const SizedBox(height: 20),
+                    // Панель въезжает снизу: взгляд сам переходит к разбору.
+                    MediaQuery.disableAnimationsOf(context)
+                        ? FeedbackPanel(result: result)
+                        : FadeSlideIn(
+                            key: ValueKey(
+                                'feedback_${exercise.id}_${controller.step}'),
+                            child: FeedbackPanel(result: result),
+                          ),
+                  ],
+                  const SizedBox(height: 12),
                 ],
-                if (checked && result != null) ...[
-                  const SizedBox(height: 20),
-                  // Панель въезжает снизу: взгляд сам переходит к разбору.
-                  MediaQuery.disableAnimationsOf(context)
-                      ? FeedbackPanel(result: result)
-                      : FadeSlideIn(
-                          key: ValueKey(
-                              'feedback_${exercise.id}_${controller.step}'),
-                          child: FeedbackPanel(result: result),
-                        ),
-                ],
-                const SizedBox(height: 12),
-              ],
-            ),
+              ),
             ),
           ),
         ),
         _BottomBar(
-          // Маскот компактный и стоит рядом с кнопкой, не перекрывая её (§11.8).
-          leading: MascotView(state: controller.mascot, size: 52),
+          // Маскот большой и выглядывает из-за панели (§11.8: кнопку не
+          // перекрывает — стоит слева от неё). Реакция на проверку теперь
+          // видна, а не угадывается.
+          leading: MascotView(state: controller.mascot, size: 120),
           child: checked
               ? CourseButton(
                   label: 'Продолжить',
@@ -489,7 +490,22 @@ class _ResultView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 12),
-                const MascotView(state: MascotState.lessonComplete, size: 120),
+                SizedBox(
+                  width: 210,
+                  height: 190,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      if (passed) const SparkleBurst(size: 170),
+                      MascotView(
+                          state: passed
+                              ? MascotState.lessonComplete
+                              : MascotState.incorrect,
+                          size: 180),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Text(
                   passed ? 'Урок пройден' : 'Урок завершён',
@@ -640,7 +656,18 @@ class _BottomBar extends StatelessWidget {
       child: Row(
         children: [
           if (leading != null) ...[
-            leading!,
+            // Волк стоит ногами в панели, а головой выше неё: в высоту
+            // кнопки (52) персонаж rig-холста не влезал и читался мелко.
+            // OverflowBox не трогает высоту ряда — панель не растёт.
+            SizedBox(
+              width: 96,
+              height: 52,
+              child: OverflowBox(
+                maxHeight: 170,
+                alignment: Alignment.bottomCenter,
+                child: leading!,
+              ),
+            ),
             const SizedBox(width: 12),
           ],
           Expanded(

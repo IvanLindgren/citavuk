@@ -34,11 +34,15 @@ void main() {
         'version': '1.19.0',
         'url': 'https://citavuk.ru/files/citavuk-setup.exe',
         'size': 45198498,
+        'sha256':
+            'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       },
       'linux': {
         'version': '1.18.1',
         'url': 'https://citavuk.ru/files/citavuk-linux-x64.tar.gz',
         'size': 47727414,
+        'sha256':
+            'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
       },
     };
 
@@ -61,10 +65,15 @@ void main() {
     test('без своей версии платформа читает общую', () {
       final old = <String, dynamic>{
         'version': '1.19.0',
-        'windows': {'url': 'https://citavuk.ru/files/citavuk-setup.exe'},
+        'windows': {
+          'url': 'https://citavuk.ru/files/citavuk-setup.exe',
+          'size': 45198498,
+          'sha256':
+              'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        },
       };
-      expect(UpdateService.offerFor(old, 'windows', '1.18.1')?.version,
-          '1.19.0');
+      expect(
+          UpdateService.offerFor(old, 'windows', '1.18.1')?.version, '1.19.0');
     });
 
     test('своей сборки в манифесте нет — предлагать нечего', () {

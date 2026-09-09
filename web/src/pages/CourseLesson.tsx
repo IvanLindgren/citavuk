@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import {LuChevronLeft,LuChevronRight} from 'react-icons/lu';
 import {
   useEffect,
   useMemo,
@@ -50,14 +51,20 @@ import type {
   WordTile,
 } from '../course/types';
 import { ttsAudioUrl } from '../api/listening';
-import { Button, Spinner } from '../components/ui';
+import { Button, SparkleBurst, Spinner } from '../components/ui';
 import { Link, useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
+import {recordStudy} from '../lib/study';
 
 type Phase = 'intro' | 'exercise' | 'result';
 
 export function CourseLesson() {
+  const {account}=useAuth();
+  return <CourseLessonSession key={account?.id??'guest'}/>;
+}
+
+function CourseLessonSession() {
   const { id = '' } = useParams();
   const { account } = useAuth();
   const { navigate } = useRouter();
@@ -175,6 +182,7 @@ export function CourseLesson() {
     setAttempted((current) => new Set(current).add(exercise.id));
     if (result.correct && firstAttempt) setFirstTryCorrect((value) => value + 1);
     setEvaluation(result);
+    if(result.correct)recordStudy('exercise',exercise.id);
     playCourseSound(result.correct ? 'correct' : 'incorrect');
   };
 
@@ -356,7 +364,7 @@ function LessonTheory({ lesson }: { lesson: CourseLessonModel }) {
         to="/course"
         className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
       >
-        ← Курс грамматики
+        Курс грамматики
       </Link>
 
       <div className="mt-4 flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
@@ -506,7 +514,7 @@ function LetterCardDeck({
           aria-label="Предыдущая буква"
           title="Предыдущая буква"
         >
-          ←
+          <LuChevronLeft aria-hidden="true" />
         </button>
         <motion.div
           key={`${row.term}-${row.gloss}`}
@@ -552,7 +560,7 @@ function LetterCardDeck({
           aria-label="Следующая буква"
           title="Следующая буква"
         >
-          →
+          <LuChevronRight aria-hidden="true" />
         </button>
       </div>
       <div className="mt-4 flex justify-center gap-2" aria-label={`Карточка ${index + 1} из ${block.rows.length}`}>
@@ -1169,34 +1177,56 @@ function FillBlank({
 
   return (
     <div>
-      <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-5 py-6 font-display text-xl leading-[2.5]">
+      <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-5 py-6 font-display text-xl leading-loose">
         {exercise.segments.map((segment, index) =>
           segment.kind === 'text' ? (
             <span key={index}>{segment.text}</span>
           ) : (
+            <button key={segment.id} type="button" disabled={disabled}
+              onClick={() => inputs.current[segment.id]?.focus()}
+              aria-label={`Перейти к пропуску ${exercise.blanks.findIndex((blank) => blank.id === segment.id) + 1}`}
+              className="mx-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-[var(--accent)] px-3 font-sans text-base text-[var(--accent)]">
+              {exercise.blanks.findIndex((blank) => blank.id === segment.id) + 1}
+            </button>
+          ),
+        )}
+      </div>
+      <div className="mt-4 grid gap-3">
+        {exercise.blanks.map((blank, index) => (
+          <label key={blank.id} className="grid gap-2 text-sm font-semibold">
+            Пропуск {index + 1}
             <input
-              key={segment.id}
               ref={(element) => {
-                inputs.current[segment.id] = element;
+                inputs.current[blank.id] = element;
               }}
-              value={draft.values[segment.id] ?? ''}
+              value={draft.values[blank.id] ?? ''}
               disabled={disabled}
               autoCapitalize="none"
-              onFocus={() => setActiveBlank(segment.id)}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint={index < exercise.blanks.length - 1 ? 'next' : 'done'}
+              onKeyDown={(event) => {
+                if (event.key !== 'Enter' || event.nativeEvent.isComposing) return;
+                event.preventDefault();
+                const next = exercise.blanks[index + 1];
+                if (next) inputs.current[next.id]?.focus();
+              }}
+              onFocus={() => setActiveBlank(blank.id)}
               onChange={(event) =>
                 onChange({
                   kind: 'blanks',
                   values: {
                     ...draft.values,
-                    [segment.id]: event.target.value,
+                    [blank.id]: event.target.value,
                   },
                 })
               }
-              aria-label="Впишите пропущенную форму"
-              className="mx-1 inline-block w-36 border-0 border-b-2 border-[var(--accent)] bg-transparent px-2 py-1 text-center font-sans text-lg outline-none"
+              placeholder="Впиши слово или выражение"
+              className="answer-input"
             />
-          ),
-        )}
+          </label>
+        ))}
       </div>
       <SerbianKeyboard onInsert={insertCharacter} disabled={disabled} />
     </div>
@@ -1259,8 +1289,11 @@ function ImageDescription({
             disabled={disabled}
             onChange={(event) => onChange({ kind: 'text', value: event.target.value })}
             rows={3}
-            className="w-full rounded-xl border-2 border-[var(--line)] bg-[var(--bg-raised)] p-4 text-lg focus:border-[var(--accent)]"
-            placeholder="Опишите изображение по-сербски"
+            className="answer-input"
+            aria-label="Описание изображения"
+            autoCorrect="off"
+            spellCheck={false}
+            placeholder="Опиши изображение по-сербски"
           />
         ) : null}
         {exercise.mode !== 'choose' && draft.kind === 'text' && (
@@ -1340,19 +1373,25 @@ function WordTileButton({
 }
 
 export function Feedback({ result }: { result: Evaluation }) {
+  const reduced = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={reduced ? false : { opacity: 0, y: 7 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
       role="status"
       className={[
-        'mt-7 border-l-4 px-5 py-4',
+        'relative mt-7 border-l-4 px-5 py-4',
         result.correct
           ? 'border-[#2f7d58] bg-[#2f7d58]/10'
           : 'border-[var(--accent)] bg-[var(--accent)]/10',
       ].join(' ')}
     >
-      <h2 className="text-xl">{result.correct ? 'Верно' : 'Разберём ошибку'}</h2>
+      {result.correct && <SparkleBurst className="left-12 top-7 size-10" />}
+      <div className="flex items-center gap-3">
+        <CourseSprite state={result.correct ? 'correct' : 'incorrect'} size={48} />
+        <h2 className="text-xl">{result.correct ? 'Верно' : 'Разберём ошибку'}</h2>
+      </div>
       {!result.correct && (
         <p className="mt-2">
           Правильный ответ: <b className="text-[var(--accent)]">{result.correctDisplay}</b>
@@ -1380,7 +1419,10 @@ function LessonResult({
       animate={{ opacity: 1, scale: 1 }}
       className="mx-auto flex min-h-[calc(100dvh-8rem)] max-w-xl flex-col items-center justify-center px-5 py-10 text-center"
     >
-      <CourseSprite state="lessonComplete" size={220} />
+      <div className="relative">
+        {passed && <SparkleBurst className="left-1/2 top-1/2 size-16" />}
+        <CourseSprite state="lessonComplete" size={220} />
+      </div>
       <h1 className="mt-5 text-3xl">{passed ? 'Урок пройден' : 'Урок завершён'}</h1>
       <p className="mt-3 text-lg text-[var(--text-muted)]">
         С первой попытки: {firstTryCorrect} из {lesson.exercises.length} ({Math.round(score * 100)}%)

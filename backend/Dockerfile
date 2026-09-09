@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -18,10 +18,11 @@ WORKDIR /home/user/app
 COPY --chown=user requirements.txt ./
 RUN pip install --user --upgrade pip && \
     pip install --user -r requirements.txt
+RUN python -c "import classla; classla.download('sr')"
 
 # Все runtime-модули и данные перечислены явно: Docker не должен случайно
 # захватить venv, модели CLASSLA или локальные кеши из каталога backend.
-COPY --chown=user main.py redis_cache.py urlguard.py ratelimit.py analysis_cache.py ./
+COPY --chown=user main.py news.py redis_cache.py urlguard.py ratelimit.py analysis_cache.py nlp_selection.py ./
 COPY --chown=user lexicon.db audio_lessons.json ./
 
 EXPOSE 7860

@@ -46,6 +46,8 @@ export interface ReaderSettings {
   sound: boolean;
   /** Анимация перелистывания. */
   animate: boolean;
+  /** Спокойный режим: без лишних движений и маскота в карточке. */
+  calm: boolean;
 }
 
 export const FULL_WIDTH = 1100;
@@ -65,6 +67,7 @@ export const DEFAULT_SETTINGS: ReaderSettings = {
   stress: false,
   sound: true,
   animate: true,
+  calm: false,
 };
 
 export const FONT_STACKS: Record<ReaderFont, string> = {
@@ -212,6 +215,7 @@ export function sanitize(raw: unknown): ReaderSettings {
     stress: flag('stress'),
     sound: flag('sound'),
     animate: flag('animate'),
+    calm: flag('calm'),
   };
 }
 

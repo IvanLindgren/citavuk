@@ -310,7 +310,7 @@ function PalaceRoom({
               onClick={onExit}
               className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
             >
-              ← Все дворцы
+              Все дворцы
             </button>
             <h1 className="mt-1 truncate text-2xl">{palace.name}</h1>
           </div>
@@ -679,7 +679,7 @@ function Walk({
             onClick={onFinish}
             className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
           >
-            ← Выйти из обхода
+            Выйти из обхода
           </button>
           <span className="text-sm text-[var(--text-muted)]">
             {step + 1} из {route.length}

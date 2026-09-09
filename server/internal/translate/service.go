@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync"
+	"time"
 	"unicode"
 	"unicode/utf8"
 )
@@ -44,6 +46,39 @@ type Service struct {
 	words  WordProvider
 	cache  Cache
 	budget *Budget
+
+	// cooldownUntil временно запрещает обращаться к ограничившему
+	// провайдеру: получив 429, нет смысла долбить его каждым нажатием —
+	// все эти запросы всё равно закончатся тем же 429. Хранится в памяти
+	// процесса: перезапуск запрет снимает, и это нормально.
+	mu            sync.Mutex
+	cooldownUntil map[string]time.Time
+}
+
+// providerCooldown — сколько молчим после 429.
+//
+// Google снимает ограничение за единицы минут; стучаться чаще — только
+// продлевать бан и жечь таймауты. Пока кулдаун идёт, запросы получают
+// ErrRateLimited сразу, без сети: клиент отвечает 429 с понятным
+// «подождите», а не 502.
+const providerCooldown = time.Minute
+
+// inCooldown сообщает, молчим ли ещё по провайдеру name.
+func (s *Service) inCooldown(name string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	until, ok := s.cooldownUntil[name]
+	return ok && time.Now().Before(until)
+}
+
+// setCooldown включает молчание по провайдеру name.
+func (s *Service) setCooldown(name string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.cooldownUntil == nil {
+		s.cooldownUntil = map[string]time.Time{}
+	}
+	s.cooldownUntil[name] = time.Now().Add(providerCooldown)
 }
 
 // NewService собирает переводчик. Любая из зависимостей может быть nil:
@@ -109,32 +144,40 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 
 	// Одиночное слово без контекста DeepL переводить нельзя.
 	if IsSingleWord(text) {
-		return s.word(ctx, text, source, target)
+		return s.word(ctx, text, source, target, wordFallback{})
 	}
 
 	// Бюджет спрашивается только тогда, когда запасной провайдер есть: иначе
 	// отказ бюджета означал бы «перевода не будет вовсе», а это хуже перерасхода.
-	if s.deepl != nil && (s.words == nil || s.deeplAllowed(text)) {
-		out, err := s.deepl.TranslateTexts(ctx, []string{text}, source, target, Options{})
-		if err == nil && len(out) == 1 && strings.TrimSpace(out[0]) != "" {
+	deeplReady := s.deepl != nil && !s.inCooldown(s.deepl.Name())
+	var deeplErr error
+	if deeplReady && (s.words == nil || s.deeplAllowed(text)) {
+		var out []string
+		out, deeplErr = s.deepl.TranslateTexts(ctx, []string{text}, source, target, Options{})
+		if deeplErr == nil && len(out) == 1 && strings.TrimSpace(out[0]) != "" {
 			s.store(ctx, source, target, text, out[0], s.deepl.Name())
 			return &Result{Text: out[0], Provider: s.deepl.Name(), Aligned: true}, nil
 		}
 		s.refundDeepL(text)
-		if err != nil && s.words == nil {
-			return nil, err
+		if errors.Is(deeplErr, ErrRateLimited) {
+			s.setCooldown(s.deepl.Name())
+		}
+		if deeplErr != nil && s.words == nil {
+			return nil, deeplErr
 		}
 	}
 
 	if s.words == nil {
+		if deeplErr != nil {
+			return nil, deeplErr
+		}
+		if s.deepl != nil {
+			// DeepL есть, но его не пробовали: он в кулдауне после 429.
+			return nil, ErrRateLimited
+		}
 		return nil, ErrNoProvider
 	}
-	out, err := s.words.TranslateWord(ctx, text, source, target)
-	if err != nil {
-		return nil, err
-	}
-	s.store(ctx, source, target, text, out, s.words.Name())
-	return &Result{Text: out, Provider: s.words.Name(), Aligned: true}, nil
+	return s.word(ctx, text, source, target, wordFallback{err: deeplErr, aligned: true})
 }
 
 // InContext переводит слово [start:end) вместе с предложением, в котором оно
@@ -160,15 +203,15 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	}
 	if utf8.RuneCountInString(sentence) > MaxTextRunes {
 		// Слишком длинный контекст: переводим слово как есть, без выравнивания.
-		return s.word(ctx, word, source, target)
+		return s.word(ctx, word, source, target, wordFallback{})
 	}
 	if s.deepl == nil {
-		return s.word(ctx, word, source, target)
+		return s.word(ctx, word, source, target, wordFallback{})
 	}
 
 	marked, err := MarkWord(sentence, start, end)
 	if err != nil {
-		return s.word(ctx, word, source, target)
+		return s.word(ctx, word, source, target, wordFallback{contextHint: sentence})
 	}
 	// Кеш проверяется РАНЬШЕ бюджета: готовый ответ квоты не тратит, и
 	// списывать за него знаки значило бы наказывать за попадание в кеш.
@@ -199,20 +242,48 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	// хуже по качеству, но перевод остаётся, а месячная квота доживает до
 	// конца месяца. Без запасного провайдера бюджет не спрашивается: отказ
 	// означал бы «перевода нет», а это хуже перерасхода.
-	if s.words != nil && !s.deeplAllowed(marked) {
-		return s.word(ctx, word, source, target)
+	//
+	// Пауза и факт списания фиксируются один раз: между двумя проверками
+	// другой запрос может включить кулдаун (знаки списаны, перевода нет,
+	// возврата нет) или пауза может кончиться (запрос ушёл без списания).
+	// Возвращается только действительно зарезервированный бюджет.
+	deeplSkipped := s.inCooldown(s.deepl.Name())
+	spent := false
+	if s.words != nil && !deeplSkipped {
+		if !s.deeplAllowed(marked) {
+			return s.word(ctx, word, source, target, wordFallback{contextHint: sentence})
+		}
+		spent = true
 	}
 
-	out, err := s.deepl.TranslateTexts(ctx, []string{marked}, source, target, Options{XMLTags: true})
-	if err != nil || len(out) != 1 {
-		s.refundDeepL(marked)
-		if fallback, ferr := s.word(ctx, word, source, target); ferr == nil {
+	var out []string
+	var derr error
+	if !deeplSkipped {
+		out, derr = s.deepl.TranslateTexts(ctx, []string{marked}, source, target, Options{XMLTags: true})
+		if errors.Is(derr, ErrRateLimited) {
+			s.setCooldown(s.deepl.Name())
+		}
+	}
+	if deeplSkipped || derr != nil || len(out) != 1 {
+		if spent {
+			s.refundDeepL(marked)
+		}
+		fallback, ferr := s.word(ctx, word, source, target,
+			wordFallback{err: derr, contextHint: sentence})
+		switch {
+		case ferr == nil:
 			return fallback, nil
+		case errors.Is(ferr, ErrRateLimited) || errors.Is(ferr, ErrQuota):
+			// Запасной путь честно сказал «подождите» — это точнее ошибки DeepL.
+			return nil, ferr
+		case deeplSkipped:
+			// DeepL не пробовали: ошибка запасного пути — единственная.
+			return nil, ferr
 		}
-		if err == nil {
-			err = fmt.Errorf("переводчик вернул %d фрагментов вместо одного", len(out))
+		if derr == nil {
+			derr = fmt.Errorf("переводчик вернул %d фрагментов вместо одного", len(out))
 		}
-		return nil, err
+		return nil, derr
 	}
 
 	full, aligned := SplitMarked(out[0])
@@ -241,11 +312,27 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 
 	// Тег не сохранился: показываем перевод предложения, а слово переводим
 	// отдельно, честно пометив, что выравнивания не было.
-	if w, err := s.word(ctx, word, source, target); err == nil {
+	if w, err := s.word(ctx, word, source, target,
+		wordFallback{contextHint: sentence}); err == nil {
 		res.Text = w.Text
 		res.Provider = w.Provider
 	}
 	return res, nil
+}
+
+// wordFallback — чем закончилась попытка DeepL выше по стеку и как вести
+// себя запасному пути.
+type wordFallback struct {
+	// err — ошибка DeepL (nil — не пробовали: бюджет отказал, текст слишком
+	// длинен или DeepL нет вовсе).
+	err error
+	// contextHint — предложение для повтора через DeepL, когда он есть.
+	// С ним галлюцинаций на одиночных словах почти нет.
+	contextHint string
+	// aligned — выставить признак выравнивания у ответа запасного пути.
+	// Ставится только там, где раньше его ставил прямой вызов провайдера
+	// из Text: переведён запрошенный текст целиком, а не слово из контекста.
+	aligned bool
 }
 
 // word переводит одиночное слово запасным провайдером.
@@ -256,7 +343,7 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 // в отрыве от текста. Признак Aligned при этом не выставляется: слово было
 // выровнено в другом предложении, а не в этом, и выдавать чужой контекст за
 // свой нечестно.
-func (s *Service) word(ctx context.Context, word, source, target string) (*Result, error) {
+func (s *Service) word(ctx context.Context, word, source, target string, fb wordFallback) (*Result, error) {
 	word = strings.TrimSpace(word)
 	if word == "" {
 		return nil, ErrEmptyText
@@ -269,12 +356,47 @@ func (s *Service) word(ctx context.Context, word, source, target string) (*Resul
 	if s.words == nil {
 		return nil, ErrNoProvider
 	}
-	out, err := s.words.TranslateWord(ctx, word, source, target)
-	if err != nil {
-		return nil, err
+	var wordsErr error
+	if s.inCooldown(s.words.Name()) {
+		// Не дергаем ограничившего: сразу честный 429 вместо нового.
+		wordsErr = ErrRateLimited
+	} else {
+		var out string
+		out, wordsErr = s.words.TranslateWord(ctx, word, source, target)
+		switch {
+		case wordsErr == nil:
+			s.store(ctx, source, target, word, out, s.words.Name())
+			return &Result{Text: out, Provider: s.words.Name(), Aligned: fb.aligned}, nil
+		case errors.Is(wordsErr, ErrRateLimited):
+			s.setCooldown(s.words.Name())
+		}
 	}
-	s.store(ctx, source, target, word, out, s.words.Name())
-	return &Result{Text: out, Provider: s.words.Name()}, nil
+	// Запасной провайдер отказал. Повтор через DeepL — лучше неточный перевод,
+	// чем никакой. Повтор НЕ кэшируется: словарь общий, и перевод одиночного
+	// слова из режима выживания не должен отравлять его после восстановления
+	// запасного пути.
+	if s.deepl == nil || s.inCooldown(s.deepl.Name()) {
+		return nil, wordsErr
+	}
+	if errors.Is(fb.err, ErrQuota) || errors.Is(fb.err, ErrRateLimited) {
+		return nil, wordsErr
+	}
+	if !s.deeplAllowed(word) {
+		return nil, wordsErr
+	}
+	out, err := s.deepl.TranslateTexts(ctx, []string{word}, source, target, Options{Context: fb.contextHint})
+	if err != nil {
+		s.refundDeepL(word)
+		if errors.Is(err, ErrRateLimited) {
+			s.setCooldown(s.deepl.Name())
+		}
+		return nil, wordsErr
+	}
+	if len(out) != 1 || strings.TrimSpace(out[0]) == "" {
+		s.refundDeepL(word)
+		return nil, wordsErr
+	}
+	return &Result{Text: strings.TrimSpace(out[0]), Provider: s.deepl.Name()}, nil
 }
 
 func (s *Service) store(ctx context.Context, source, target, text, translation, provider string) {

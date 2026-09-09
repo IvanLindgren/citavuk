@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:async';
+import 'study_service.dart';
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../utils/uuid.dart';
+import 'analysis_cache_key.dart';
 
 /// Пользовательская БД (read-write): книги, прогресс, словарь книги, карточки.
 /// Отделена от словаря-лексикона (LexiconDb).
@@ -12,35 +15,114 @@ class UserDb {
   UserDb._();
   static final UserDb instance = UserDb._();
   Database? _db;
+  String _scope = 'guest';
+  Future<Database>? _opening;
 
-  Future<Database> get database async {
-    if (_db != null) return _db!;
-    String path;
-    if (kIsWeb) {
-      // Веб: имя БД (хранится в IndexedDB), файловой системы нет.
-      path = 'chitavuk_user.db';
-    } else {
-      final dir = await getApplicationDocumentsDirectory();
-      path = join(dir.path, 'chitavuk_user.db');
+  // Открытия и закрытия выполняются последовательно, в том числе при A → B → A.
+  // Иначе sqflite может вернуть новому поколению ещё закрываемый экземпляр.
+  Future<void> _lifecycle = Future<void>.value();
+
+  /// Поколение открытия: каждый _activate его увеличивает. Открытие, начатое
+  /// до переключения аккаунта, обязано отбросить свой результат, а не
+  /// подменять им чужое соединение.
+  int _generation = 0;
+  int get generation => _generation;
+
+  /// У каждой учётной записи свой файл. Гостевые данные не отправляются в
+  /// аккаунт автоматически: на общем устройстве это раскрыло бы чужую библиотеку.
+  Future<void> activateAccount(String userId) => _activate('user_$userId');
+
+  Future<void> activateGuest() => _activate('guest');
+
+  Future<void> _activate(String scope) async {
+    if (_scope == scope) {
+      await _lifecycle;
+      return;
     }
+    _generation++;
+    final current = _db;
+    _db = null;
+    _opening = null;
+    _scope = scope;
+    final closing = _lifecycle.then((_) async {
+      if (current != null) await current.close();
+    });
+    _lifecycle = closing;
+    await closing;
+  }
+
+  Future<Database> get database {
+    if (_db != null) return Future<Database>.value(_db!);
+    if (_opening != null) return _opening!;
+    final gen = _generation;
+    final scope = _scope;
+    final opening = _openForGeneration(_lifecycle, gen, scope);
+    _opening = opening;
+    // Ошибка открытия доставляется ожидающим операциями через opening.
+    // В очередь жизненного цикла она не попадает: следующее открытие может
+    // повторить попытку, но старый вызов никогда не переходит в другой аккаунт.
+    _lifecycle =
+        opening.then<void>((_) {}, onError: (Object _, StackTrace __) {});
+    return opening;
+  }
+
+  Future<Database> _databaseForGeneration(int? expectedGeneration) async {
+    final db = await database;
+    if (expectedGeneration != null && expectedGeneration != _generation) {
+      throw StateError('Аккаунт сменился во время операции с хранилищем.');
+    }
+    return db;
+  }
+
+  Future<Database> _openForGeneration(
+    Future<void> previous,
+    int gen,
+    String scope,
+  ) async {
     try {
-      _db = await openDatabase(
-        path,
-        // Версия 2 добавила колонки синхронизации. Старые базы получают их в
-        // onUpgrade; onOpen оставлен ради прежних идемпотентных миграций,
-        // которые ставились до появления версионирования.
-        version: 2,
-        onCreate: (db, _) => _create(db),
-        onUpgrade: (db, from, to) => _upgrade(db, from, to),
-        onOpen: _create,
-      );
-    } catch (e, stack) {
-      debugPrint('=== DATABASE OPEN EXCEPTION ===');
-      debugPrint('Error: $e');
-      debugPrint('Stack: $stack');
-      rethrow;
+      await previous;
+      if (gen != _generation) {
+        throw StateError('Аккаунт сменился во время открытия хранилища.');
+      }
+      final filename =
+          scope == 'guest' ? 'chitavuk_user.db' : 'chitavuk_$scope.db';
+      String path;
+      if (kIsWeb) {
+        // Веб: имя БД (хранится в IndexedDB), файловой системы нет.
+        path = filename;
+      } else {
+        final dir = await getApplicationDocumentsDirectory();
+        path = join(dir.path, filename);
+      }
+      if (gen != _generation) {
+        throw StateError('Аккаунт сменился во время открытия хранилища.');
+      }
+      Database opened;
+      try {
+        opened = await openDatabase(
+          path,
+          // Версия 4 отделяет очередь текстов от dirty метаданных.
+          version: 4,
+          onCreate: (db, _) => _create(db),
+          onUpgrade: (db, from, to) => _upgrade(db, from, to),
+        );
+      } catch (e, stack) {
+        debugPrint('=== DATABASE OPEN EXCEPTION ===');
+        debugPrint('Error: $e');
+        debugPrint('Stack: $stack');
+        rethrow;
+      }
+      // Следующее поколение ждёт завершения этого закрытия через _lifecycle.
+      // Все параллельные запросы текущего поколения разделяют один Future.
+      if (gen != _generation) {
+        await opened.close();
+        throw StateError('Аккаунт сменился во время открытия хранилища.');
+      }
+      _db = opened;
+      return opened;
+    } finally {
+      if (gen == _generation) _opening = null;
     }
-    return _db!;
   }
 
   Future<void> _create(Database db) async {
@@ -101,17 +183,15 @@ class UserDb {
       WHERE id NOT IN (SELECT vocab_id FROM reviews)
     ''');
     // Миграция: папка-коллекция для книги (для старых баз).
-    try {
+    if (!await _hasColumn(db, 'books', 'folder')) {
       await db.execute(
           "ALTER TABLE books ADD COLUMN folder TEXT NOT NULL DEFAULT ''");
-    } catch (_) {
-      // колонка уже есть
     }
     // Миграция: число абзацев книги. Нужно, чтобы список книг на главной НЕ
     // тянул в память тяжёлую колонку content (полный текст КАЖДОЙ книги). ALTER
     // выбросит исключение, если колонка уже есть, — тогда разовый бэкфилл ниже
     // не выполняется (он нужен только один раз, при добавлении колонки).
-    try {
+    if (!await _hasColumn(db, 'books', 'para_count')) {
       await db.execute(
           'ALTER TABLE books ADD COLUMN para_count INTEGER NOT NULL DEFAULT 0');
       // Разовый бэкфилл para_count для существующих книг: читаем content
@@ -125,14 +205,30 @@ class UserDb {
         await db.update('books', {'para_count': count},
             where: 'id = ?', whereArgs: [r['id']]);
       }
-    } catch (_) {
-      // колонка уже есть — бэкфилл не нужен
     }
     await _createSyncColumns(db);
   }
 
   Future<void> _upgrade(Database db, int from, int to) async {
-    if (from < 2) await _createSyncColumns(db);
+    if (from < 3) await _create(db);
+    if (from < 4) await _addContentPending(db);
+  }
+
+  Future<void> _addContentPending(Database db) async {
+    if (await _hasColumn(db, 'books', 'content_pending')) return;
+    await db.execute(
+        'ALTER TABLE books ADD COLUMN content_pending INTEGER NOT NULL DEFAULT 0');
+    // Метаданные скачанных книг не означают, что их текст есть локально.
+    // В старых базах очередь обозначалась пустым хешем; сохраняем её при
+    // миграции, даже если push уже успел снять dirty метаданных.
+    await db.rawUpdate("UPDATE books SET content_pending = 1 "
+        "WHERE deleted = 0 AND text_missing = 0 AND content_sha = '' "
+        "AND (content <> '[]' OR dirty = 1)");
+  }
+
+  Future<bool> _hasColumn(Database db, String table, String column) async {
+    final columns = await db.rawQuery('PRAGMA table_info($table)');
+    return columns.any((row) => row['name'] == column);
   }
 
   /// Колонки, нужные для синхронизации между устройствами.
@@ -149,11 +245,8 @@ class UserDb {
   /// сети сколько угодно и отправить накопленное разом.
   Future<void> _createSyncColumns(Database db) async {
     Future<void> addColumn(String table, String definition) async {
-      try {
+      if (!await _hasColumn(db, table, definition.split(' ').first)) {
         await db.execute('ALTER TABLE $table ADD COLUMN $definition');
-      } catch (_) {
-        // Колонка уже есть. SQLite не умеет ADD COLUMN IF NOT EXISTS, поэтому
-        // единственный переносимый способ — попытаться и не заметить отказ.
       }
     }
 
@@ -166,6 +259,7 @@ class UserDb {
     await addColumn('books', "content_sha TEXT NOT NULL DEFAULT ''");
     // Книга, метаданные которой пришли с сервера, а текст ещё не скачан.
     await addColumn('books', 'text_missing INTEGER NOT NULL DEFAULT 0');
+    await _addContentPending(db);
     await addColumn('reviews', 'updated_at INTEGER NOT NULL DEFAULT 0');
     await addColumn('reviews', 'dirty INTEGER NOT NULL DEFAULT 1');
 
@@ -237,6 +331,7 @@ class UserDb {
       'content': jsonEncode(paragraphs),
       'para_count': paragraphs.length,
       'last_para': 0,
+      'content_pending': 1,
       'uuid': newUuid(),
       'updated_at': DateTime.now().millisecondsSinceEpoch,
       'dirty': 1,
@@ -298,8 +393,9 @@ class UserDb {
   }
 
   /// Текст книги (список абзацев) — грузится только когда книгу открывают.
-  Future<List<String>> getBookContent(int bookId) async {
-    final db = await database;
+  Future<List<String>> getBookContent(int bookId,
+      {Database? connection, int? expectedGeneration}) async {
+    final db = connection ?? await _databaseForGeneration(expectedGeneration);
     final rows = await db.query('books',
         columns: ['content'], where: 'id = ?', whereArgs: [bookId], limit: 1);
     if (rows.isEmpty) return [];
@@ -319,8 +415,9 @@ class UserDb {
 
   /// Заменяет текст книги новым разбором. Позиция чтения сбрасывается: после
   /// переразбора абзацы делятся иначе, и прежний номер указывал бы не туда.
-  Future<void> replaceBookContent(int bookId, List<String> paragraphs) async {
-    final db = await database;
+  Future<void> replaceBookContent(int bookId, List<String> paragraphs,
+      {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
     await db.update(
       'books',
       {
@@ -328,22 +425,27 @@ class UserDb {
         'para_count': paragraphs.length,
         'last_para': 0,
         'text_missing': 0,
+        'content_sha': '',
+        'content_pending': 1,
+        'dirty': 1,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
       },
       where: 'id = ?',
       whereArgs: [bookId],
     );
-    await _touchBook(db, bookId);
   }
 
-  Future<void> renameBook(int bookId, String title) async {
-    final db = await database;
+  Future<void> renameBook(int bookId, String title,
+      {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
     await db.update('books', {'title': title},
         where: 'id = ?', whereArgs: [bookId]);
     await _touchBook(db, bookId);
   }
 
-  Future<void> setBookFolder(int bookId, String folder) async {
-    final db = await database;
+  Future<void> setBookFolder(int bookId, String folder,
+      {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
     await db.update('books', {'folder': folder},
         where: 'id = ?', whereArgs: [bookId]);
     await _touchBook(db, bookId);
@@ -357,30 +459,25 @@ class UserDb {
     return rows.map((r) => r['folder'].toString()).toList();
   }
 
-  /// Удаляет книгу вместе со словами и карточками.
+  /// Удаляет книгу, сохраняя изученные слова и расписание повторений.
   ///
   /// Строки не стираются, а помечаются надгробием: иначе другое устройство,
   /// у которого книга ещё есть, при следующей синхронизации отправит её обратно
   /// и удаление «не запомнится». Тяжёлый текст при этом освобождается сразу —
   /// надгробие занимает считаные байты.
-  Future<void> deleteBook(int bookId) async {
-    final db = await database;
+  Future<void> deleteBook(int bookId, {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    await db.rawUpdate(
-      'UPDATE reviews SET dirty = 1, updated_at = ? '
-      'WHERE vocab_id IN (SELECT id FROM vocabulary WHERE book_id = ?)',
-      [now, bookId],
-    );
-    await db.update(
-      'vocabulary',
-      {'deleted': 1, 'dirty': 1, 'updated_at': now},
-      where: 'book_id = ?',
-      whereArgs: [bookId],
-    );
     await db.update(
       'books',
-      {'deleted': 1, 'dirty': 1, 'updated_at': now, 'content': '[]'},
+      {
+        'deleted': 1,
+        'dirty': 1,
+        'updated_at': now,
+        'content': '[]',
+        'content_pending': 0,
+      },
       where: 'id = ?',
       whereArgs: [bookId],
     );
@@ -388,7 +485,12 @@ class UserDb {
 
   // --- Словарь книги ---
 
-  Future<int> addVocabulary({
+  /// Добавляет слово в словарь одной транзакцией и сообщает, создана ли запись.
+  ///
+  /// Проверка существования и вставка атомарны: две одновременные операции не
+  /// могут найти пустоту и вставить дубликаты. Возвращённый created говорит
+  /// карточке, можно ли отменять: чужую (существовавшую) запись не трогаем.
+  Future<({int id, bool created})> addVocabulary({
     required int bookId,
     required String word,
     required String lemma,
@@ -397,29 +499,34 @@ class UserDb {
     required Map<String, dynamic> forms,
   }) async {
     final db = await database;
-    final existing = await db.query(
-      'vocabulary',
-      where: 'book_id = ? AND LOWER(word) = ? AND deleted = 0',
-      whereArgs: [bookId, word.toLowerCase().trim()],
-    );
-    if (existing.isNotEmpty) {
-      final id = existing.first['id'] as int;
-      await _ensureReview(db, id);
-      return id;
-    }
-    final id = await db.insert('vocabulary', {
-      'book_id': bookId,
-      'word': word,
-      'lemma': lemma,
-      'pos': pos,
-      'translation': translation,
-      'forms': jsonEncode(forms),
-      'uuid': newUuid(),
-      'updated_at': DateTime.now().millisecondsSinceEpoch,
-      'dirty': 1,
+    final w = word.toLowerCase().trim();
+    return db.transaction((txn) async {
+      final existing = await txn.query(
+        'vocabulary',
+        columns: ['id'],
+        where: 'book_id = ? AND LOWER(word) = ? AND deleted = 0',
+        whereArgs: [bookId, w],
+        limit: 1,
+      );
+      if (existing.isNotEmpty) {
+        final id = existing.first['id'] as int;
+        await _ensureReview(txn, id);
+        return (id: id, created: false);
+      }
+      final id = await txn.insert('vocabulary', {
+        'book_id': bookId,
+        'word': word,
+        'lemma': lemma,
+        'pos': pos,
+        'translation': translation,
+        'forms': jsonEncode(forms),
+        'uuid': newUuid(),
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'dirty': 1,
+      });
+      await _ensureReview(txn, id);
+      return (id: id, created: true);
     });
-    await _ensureReview(db, id);
-    return id;
   }
 
   Future<List<Map<String, dynamic>>> getVocabularyForBook(int bookId) async {
@@ -459,9 +566,10 @@ class UserDb {
 
   // --- Кэш онлайн-переводов (офлайн-доступ к уже переведённым словам) ---
 
-  Future<void> cacheTranslation(String word, String translation) async {
-    final w = word.trim().toLowerCase();
-    if (w.isEmpty || translation.trim().isEmpty) return;
+  Future<void> cacheTranslation(String word, String translation,
+      {String source = 'sr'}) async {
+    if (word.trim().isEmpty || translation.trim().isEmpty) return;
+    final w = translationCacheKey(word, source: source);
     try {
       final db = await database;
       await db.insert(
@@ -472,9 +580,10 @@ class UserDb {
     } catch (_) {}
   }
 
-  Future<String?> getCachedTranslation(String word) async {
-    final w = word.trim().toLowerCase();
-    if (w.isEmpty) return null;
+  Future<String?> getCachedTranslation(String word,
+      {String source = 'sr'}) async {
+    if (word.trim().isEmpty) return null;
+    final w = translationCacheKey(word, source: source);
     try {
       final db = await database;
       final r = await db.query('translation_cache',
@@ -544,12 +653,16 @@ class UserDb {
           'title': title,
           'content': jsonEncode(paragraphs),
           'para_count': paragraphs.length,
+          'content_sha': '',
+          'content_pending': 1,
+          'text_missing': 0,
+          'dirty': 1,
+          'updated_at': DateTime.now().millisecondsSinceEpoch,
           if (folder.isNotEmpty) 'folder': folder,
         },
         where: 'id = ?',
         whereArgs: [id],
       );
-      await _touchBook(db, id);
       return id;
     }
     final id = await db.insert('books', {
@@ -559,6 +672,7 @@ class UserDb {
       'para_count': paragraphs.length,
       'last_para': 0,
       'uuid': newUuid(),
+      'content_pending': 1,
       'updated_at': DateTime.now().millisecondsSinceEpoch,
       'dirty': 1,
     });
@@ -585,15 +699,18 @@ class UserDb {
     });
   }
 
-  /// Недавно добавленные слова (для приветствия на главной).
-  Future<List<String>> getRecentWords(int limit) async {
+  /// Недавно добавленные слова для живой колоды на главной.
+  ///
+  /// Возвращаем перевод вместе со словом одним лёгким запросом: открытие
+  /// библиотеки не должно запускать повторный анализ каждой карточки.
+  Future<List<Map<String, dynamic>>> getRecentVocabulary(int limit) async {
     final db = await database;
     final rows = await db.query('vocabulary',
-        columns: ['word'],
+        columns: ['id', 'word', 'translation'],
         where: 'deleted = 0',
         orderBy: 'added_at DESC',
         limit: limit);
-    return rows.map((r) => r['word'].toString()).toList();
+    return rows;
   }
 
   /// Убирает слово из словаря книги.
@@ -611,7 +728,7 @@ class UserDb {
 
   // --- Карточки (SRS) ---
 
-  Future<void> _ensureReview(Database db, int vocabId) async {
+  Future<void> _ensureReview(DatabaseExecutor db, int vocabId) async {
     await db.insert(
       'reviews',
       {'vocab_id': vocabId, 'due_at': DateTime.now().millisecondsSinceEpoch},
@@ -631,6 +748,19 @@ class UserDb {
     );
   }
 
+  /// Сколько карточек ждёт повторения во всех книгах сразу. Нужно витрине
+  /// «Продолжить» на главной: одно число вместо опроса каждой книги.
+  Future<int> getTotalDueCount() async {
+    final db = await database;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final res = await db.rawQuery(
+      'SELECT COUNT(*) AS c FROM vocabulary v JOIN reviews r ON r.vocab_id = v.id '
+      'WHERE v.deleted = 0 AND r.due_at <= ?',
+      [now],
+    );
+    return (res.first['c'] as int?) ?? 0;
+  }
+
   Future<int> getDueCount(int bookId) async {
     final db = await database;
     final now = DateTime.now().millisecondsSinceEpoch;
@@ -644,6 +774,7 @@ class UserDb {
 
   /// SM-2 lite. grade: 0 — снова, 1 — хорошо, 2 — легко.
   Future<void> gradeCard(int vocabId, int grade) async {
+    final studyEpoch = StudyService.instance.accountEpoch;
     final db = await database;
     final now = DateTime.now().millisecondsSinceEpoch;
     const dayMs = 86400000;
@@ -691,5 +822,7 @@ class UserDb {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    unawaited(StudyService.instance
+        .record('review', 'card:$vocabId', accountEpoch: studyEpoch));
   }
 }

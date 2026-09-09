@@ -124,7 +124,7 @@ export function TestRun() {
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="mb-4 flex items-center justify-between gap-3">
         <Link to={backPath} className="text-sm text-[var(--text-muted)] hover:text-[var(--accent)]">
-          ← {quiz.title}
+          {quiz.title}
         </Link>
         <span className="shrink-0 text-sm text-[var(--text-muted)]">
           {index + 1} / {total}

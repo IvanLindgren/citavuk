@@ -129,7 +129,6 @@ export function About() {
               target="_blank"
               rel="noreferrer"
             >
-              <span aria-hidden="true">↗</span>
               github.com/IvanLindgren/citavuk
             </a>
             <p className="mt-4 text-sm text-[var(--text-muted)]">

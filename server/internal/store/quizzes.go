@@ -185,11 +185,25 @@ func (s *Store) SaveAttempt(
 	if err != nil {
 		return err
 	}
-	_, err = s.Pool.Exec(ctx, `
+	tx, err := s.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+	id := uuid.New()
+	_, err = tx.Exec(ctx, `
         INSERT INTO quiz_attempts (id, quiz_id, user_id, correct, total, wrong)
         VALUES ($1, $2, $3, $4, $5, $6)`,
-		uuid.New(), quizID, userID, correct, total, payload)
-	return err
+		id, quizID, userID, correct, total, payload)
+	if err != nil {
+		return err
+	}
+	if total > 0 {
+		if _, err = studyInTx(ctx, tx, userID, "", "quiz:"+id.String(), time.Now()); err != nil {
+			return err
+		}
+	}
+	return tx.Commit(ctx)
 }
 
 // ListAttempts отдаёт историю попыток пользователя.

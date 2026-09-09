@@ -1,36 +1,44 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-import { CourseSprite } from '../course/CourseSprite';
+import { CourseSprite } from "../course/CourseSprite";
+import { CourseEntryPicker } from "../course/CourseEntryPicker";
 import {
   lessonUnlocked,
   loadCourse,
   loadProgress,
   syncCourseProgress,
-} from '../course/data';
+} from "../course/data";
 import {
   courseSoundsMuted,
   playCourseSound,
   preloadCourseSounds,
   setCourseSoundsMuted,
-} from '../course/sounds';
-import type { CourseBundle, CourseProgress } from '../course/types';
-import { Button, Spinner } from '../components/ui';
-import { Link } from '../lib/router';
-import { useAuth } from '../state/auth';
-import { useSeo } from '../lib/seo';
+} from "../course/sounds";
+import type { CourseBundle, CourseProgress } from "../course/types";
+import { Button, Spinner } from "../components/ui";
+import { Link } from "../lib/router";
+import { useAuth } from "../state/auth";
+import { useSeo } from "../lib/seo";
+import {useStudy} from '../lib/useStudy';
 
 export function Course() {
+  const { account } = useAuth();
+  return <CourseSession key={account?.id ?? "guest"} />;
+}
+
+function CourseSession() {
+  const study = useStudy();
   useSeo({
-    title: 'Учить сербский язык с нуля: бесплатный курс грамматики',
+    title: "Учить сербский язык с нуля: бесплатный курс грамматики",
     description:
-      'Бесплатный курс сербского языка с нуля: от письменности до падежей и времён. Коротко теория, дальше упражнения — сербская кириллица и латиница, склонение, спряжение, порядок слов.',
+      "Бесплатный курс сербского языка с нуля: от письменности до падежей и времён. Коротко теория, дальше упражнения — сербская кириллица и латиница, склонение, спряжение, порядок слов.",
   });
 
   const { account } = useAuth();
   const [bundle, setBundle] = useState<CourseBundle | null>(null);
   const [progress, setProgress] = useState<CourseProgress | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [muted, setMuted] = useState(courseSoundsMuted);
 
   useEffect(() => {
@@ -47,7 +55,11 @@ export function Course() {
       })
       .catch((caught) => {
         if (active) {
-          setError(caught instanceof Error ? caught.message : 'Не удалось загрузить курс.');
+          setError(
+            caught instanceof Error
+              ? caught.message
+              : "Не удалось загрузить курс.",
+          );
         }
       });
     return () => {
@@ -58,8 +70,8 @@ export function Course() {
   useEffect(() => {
     if (!bundle) return;
     const refresh = () => setProgress(loadProgress(bundle));
-    window.addEventListener('citavuk-course-progress', refresh);
-    return () => window.removeEventListener('citavuk-course-progress', refresh);
+    window.addEventListener("citavuk-course-progress", refresh);
+    return () => window.removeEventListener("citavuk-course-progress", refresh);
   }, [bundle]);
 
   useEffect(() => {
@@ -87,7 +99,8 @@ export function Course() {
   const completed = lessons.filter((lesson) =>
     isDone(progress.lessons[lesson.id]?.status),
   ).length;
-  const percent = lessons.length === 0 ? 0 : Math.round((completed / lessons.length) * 100);
+  const percent =
+    lessons.length === 0 ? 0 : Math.round((completed / lessons.length) * 100);
 
   return (
     <main className="course-page pb-20">
@@ -101,23 +114,41 @@ export function Course() {
                   Игровой курс
                 </p>
                 <h1 className="text-3xl sm:text-4xl">{bundle.title}</h1>
-                <p className="mt-2 text-[var(--text-muted)]">Пройдено {percent}%</p>
+                <p className="mt-2 text-[var(--text-muted)]">
+                  Пройдено {percent}%
+                </p>
+                {Object.values(progress.lessons).some((l) => l.skipped) && (
+                  <p className="text-sm text-[var(--text-muted)]">
+                    Пропущено знакомых тем:{" "}
+                    {
+                      Object.values(progress.lessons).filter((l) => l.skipped)
+                        .length
+                    }
+                  </p>
+                )}
               </div>
               <button
                 type="button"
                 className="rounded-xl border border-[var(--line)] p-2.5 text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                aria-label={muted ? 'Включить звуки курса' : 'Выключить звуки курса'}
-                title={muted ? 'Включить звуки' : 'Выключить звуки'}
+                aria-label={
+                  muted ? "Включить звуки курса" : "Выключить звуки курса"
+                }
+                title={muted ? "Включить звуки" : "Выключить звуки"}
                 onClick={() => {
                   const next = !muted;
                   setMuted(next);
                   setCourseSoundsMuted(next);
-                  if (!next) playCourseSound('correct');
+                  if (!next) playCourseSound("correct");
                 }}
               >
                 <SoundIcon muted={muted} />
               </button>
             </div>
+            <CourseEntryPicker
+              key={account.id}
+              bundle={bundle}
+              progress={progress}
+            />
             <div className="mt-5 h-3 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
               <motion.div
                 className="h-full bg-[var(--accent)]"
@@ -126,7 +157,10 @@ export function Course() {
               />
             </div>
             <div className="mt-5 flex flex-wrap gap-3 text-sm">
-              <Stat label="Серия" value={`${progress.streak.currentDays} дн.`} />
+              <Stat
+                label="Серия"
+                value={`${study?.current ?? progress.streak.currentDays} дн.`}
+              />
               <Stat label="Опыт" value={`${progress.xp}`} />
               <Stat label="Уроки" value={`${completed}/${lessons.length}`} />
             </div>
@@ -138,7 +172,6 @@ export function Course() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[var(--line)] px-4 py-2.5 font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
             >
               Тренажёрка по темам
-              <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
@@ -164,7 +197,7 @@ function CourseUnitPath({
   unitIndex,
   progress,
 }: {
-  unit: CourseBundle['units'][number];
+  unit: CourseBundle["units"][number];
   unitIndex: number;
   progress: CourseProgress;
 }) {
@@ -176,10 +209,12 @@ function CourseUnitPath({
       <motion.header
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
+        viewport={{ once: true, margin: "-50px" }}
         className="course-unit-band relative overflow-hidden rounded-2xl bg-[var(--accent)] px-6 py-6 text-parchment shadow-[var(--shadow-lift)] sm:px-8"
       >
-        <p className="text-sm font-bold uppercase opacity-75">Раздел {unitIndex + 1}</p>
+        <p className="text-sm font-bold uppercase opacity-75">
+          Раздел {unitIndex + 1}
+        </p>
         <h2 className="mt-1 text-3xl text-inherit">{unit.title}</h2>
         <p className="mt-2 max-w-3xl leading-relaxed text-parchment/85">
           {unit.description}
@@ -204,9 +239,10 @@ function CourseUnitPath({
                 <LessonNode
                   key={lesson.id}
                   lesson={lesson}
-                  side={index % 2 === 0 ? 'left' : 'right'}
+                  side={index % 2 === 0 ? "left" : "right"}
                   unlocked={unlocked}
                   completed={isDone(result?.status)}
+                  skipped={result?.skipped === true}
                   score={result?.bestScore ?? 0}
                 />
               );
@@ -223,28 +259,32 @@ function LessonNode({
   side,
   unlocked,
   completed,
+  skipped,
   score,
 }: {
-  lesson: CourseBundle['units'][number]['skills'][number]['lessons'][number];
-  side: 'left' | 'right';
+  lesson: CourseBundle["units"][number]["skills"][number]["lessons"][number];
+  side: "left" | "right";
   unlocked: boolean;
   completed: boolean;
+  skipped: boolean;
   score: number;
 }) {
   const reduceMotion = useReducedMotion();
   const node = (
     <motion.div
-      whileHover={reduceMotion || !unlocked ? undefined : { y: -4, scale: 1.025 }}
+      whileHover={
+        reduceMotion || !unlocked ? undefined : { y: -4, scale: 1.025 }
+      }
       whileTap={unlocked ? { y: 3 } : undefined}
       className={[
-        'course-lesson-node relative z-10 flex size-20 items-center justify-center rounded-full border-4',
-        'shadow-[0_7px_0_0_color-mix(in_srgb,var(--accent)_55%,black)] transition-colors',
+        "course-lesson-node relative z-10 flex size-20 items-center justify-center rounded-full border-4",
+        "shadow-[0_7px_0_0_color-mix(in_srgb,var(--accent)_55%,black)] transition-colors",
         completed
-          ? 'border-[#f3cf6a] bg-[#2f7d58] text-white'
+          ? "border-[#f3cf6a] bg-[#2f7d58] text-white"
           : unlocked
-            ? 'border-[var(--accent-hover)] bg-[var(--accent)] text-white'
-            : 'border-[var(--line)] bg-[var(--bg-sunken)] text-[var(--text-muted)] shadow-[0_7px_0_0_var(--line)]',
-      ].join(' ')}
+            ? "border-[var(--accent-hover)] bg-[var(--accent)] text-white"
+            : "border-[var(--line)] bg-[var(--bg-sunken)] text-[var(--text-muted)] shadow-[0_7px_0_0_var(--line)]",
+      ].join(" ")}
       aria-hidden="true"
     >
       {completed ? <CheckIcon /> : unlocked ? <StarIcon /> : <LockIcon />}
@@ -254,18 +294,27 @@ function LessonNode({
   return (
     <div
       className={[
-        'relative mb-8 flex min-h-28 items-center gap-4',
-        side === 'left' ? 'flex-row justify-start' : 'flex-row-reverse justify-start',
-      ].join(' ')}
+        "relative mb-8 flex min-h-28 items-center gap-4",
+        side === "left"
+          ? "flex-row justify-start"
+          : "flex-row-reverse justify-start",
+      ].join(" ")}
     >
       {unlocked ? (
         <Link
           to={`/course/lesson/${lesson.id}`}
           className="group flex max-w-[calc(50%+2.5rem)] items-center gap-4"
-          aria-label={`${completed ? 'Повторить' : 'Начать'} урок ${lesson.title}`}
+          aria-label={`${completed ? "Повторить" : "Начать"} урок ${lesson.title}`}
         >
           {node}
-          <LessonLabel lesson={lesson} completed={completed} score={score} />
+          <div>
+            <LessonLabel lesson={lesson} completed={completed} score={score} />
+            {skipped && (
+              <span className="text-xs text-[var(--text-muted)]">
+                Пропущено
+              </span>
+            )}
+          </div>
         </Link>
       ) : (
         <div className="flex max-w-[calc(50%+2.5rem)] items-center gap-4 opacity-70">
@@ -282,18 +331,20 @@ function LessonLabel({
   completed,
   score,
 }: {
-  lesson: CourseBundle['units'][number]['skills'][number]['lessons'][number];
+  lesson: CourseBundle["units"][number]["skills"][number]["lessons"][number];
   completed: boolean;
   score: number;
 }) {
   return (
     <div className="min-w-0">
-      <p className="font-display text-base font-bold leading-snug">{lesson.title}</p>
+      <p className="font-display text-base font-bold leading-snug">
+        {lesson.title}
+      </p>
       <p className="mt-1 text-xs text-[var(--text-muted)]">
         {completed
           ? `Лучший результат ${Math.round(score * 100)}%`
           : lesson.isCheckpoint
-            ? 'Контрольная'
+            ? "Контрольная"
             : `${lesson.exercises.length} упражнений`}
       </p>
     </div>
@@ -315,7 +366,9 @@ function CourseSignIn() {
       <div className="mx-auto grid max-w-4xl items-center gap-8 md:grid-cols-[1fr_1.25fr]">
         <CourseSprite state="idle" size={260} className="mx-auto" />
         <div>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Курс грамматики</p>
+          <p className="text-sm font-bold uppercase text-[var(--accent)]">
+            Курс грамматики
+          </p>
           <h1 className="mt-2 text-4xl">Прогресс должен быть вашим</h1>
           <p className="mt-4 text-lg leading-relaxed text-[var(--text-muted)]">
             Для занятий нужен аккаунт: он сохранит результаты уроков. Чтение и
@@ -326,7 +379,9 @@ function CourseSignIn() {
               <Button size="lg">Создать аккаунт</Button>
             </Link>
             <Link to="/login">
-              <Button size="lg" variant="secondary">Войти</Button>
+              <Button size="lg" variant="secondary">
+                Войти
+              </Button>
             </Link>
           </div>
           <Link
@@ -361,7 +416,11 @@ function DialoguePromo({ status }: { status?: string }) {
         <span>
           Игровые диалоги
           <span className="ml-2 text-sm text-[var(--accent)]">
-            {status === 'completed' ? 'Открыть' : status ? 'Продолжить' : 'Смотреть'} →
+            {status === "completed"
+              ? "Открыть"
+              : status
+                ? "Продолжить"
+                : "Смотреть"}
           </span>
         </span>
       </Link>
@@ -386,23 +445,39 @@ function SoundIcon({ muted }: { muted: boolean }) {
   return (
     <svg viewBox="0 0 24 24" className="size-5 fill-current" aria-hidden="true">
       <path d="M4 9v6h4l5 4V5L8 9H4zm11.5.2v5.6a4 4 0 000-5.6z" />
-      {muted && <path d="M17.4 8L16 9.4l2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1L23 9.4 21.6 8l-2.1 2.1z" />}
+      {muted && (
+        <path d="M17.4 8L16 9.4l2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1L23 9.4 21.6 8l-2.1 2.1z" />
+      )}
     </svg>
   );
 }
 
 function isDone(status?: string): boolean {
-  return status === 'completed' || status === 'mastered' || status === 'needsReview';
+  return (
+    status === "completed" || status === "mastered" || status === "needsReview"
+  );
 }
 
 function StarIcon() {
-  return <svg viewBox="0 0 24 24" className="size-9 fill-current"><path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.3-5.6-3-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z" /></svg>;
+  return (
+    <svg viewBox="0 0 24 24" className="size-9 fill-current">
+      <path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.3-5.6-3-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z" />
+    </svg>
+  );
 }
 
 function CheckIcon() {
-  return <svg viewBox="0 0 24 24" className="size-9 fill-current"><path d="M9.2 17.4L4.8 13l2-2 2.4 2.4 7.9-7.9 2 2z" /></svg>;
+  return (
+    <svg viewBox="0 0 24 24" className="size-9 fill-current">
+      <path d="M9.2 17.4L4.8 13l2-2 2.4 2.4 7.9-7.9 2 2z" />
+    </svg>
+  );
 }
 
 function LockIcon() {
-  return <svg viewBox="0 0 24 24" className="size-8 fill-current"><path d="M7 10V7a5 5 0 0110 0v3h2v11H5V10zm2 0h6V7a3 3 0 00-6 0z" /></svg>;
+  return (
+    <svg viewBox="0 0 24 24" className="size-8 fill-current">
+      <path d="M7 10V7a5 5 0 0110 0v3h2v11H5V10zm2 0h6V7a3 3 0 00-6 0z" />
+    </svg>
+  );
 }

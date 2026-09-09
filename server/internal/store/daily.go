@@ -426,7 +426,8 @@ func (s *Store) DailyProgressOf(ctx context.Context, user uuid.UUID, now time.Ti
 		return progress, err
 	}
 
-	progress.Streak, err = s.dailyStreak(ctx, user, now)
+	studyView, studyErr := s.GetStudy(ctx, user, "")
+	progress.Streak, err = studyView.Current, studyErr
 	if err != nil {
 		return progress, err
 	}

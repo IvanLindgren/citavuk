@@ -28,11 +28,22 @@ import (
 // и обязательная деградация вызывающего кода при ошибке.
 type Google struct {
 	client *http.Client
+	// base — адрес endpoint. Пусто — боевой Google; тестам сюда подставляют
+	// локальный сервер.
+	base string
 }
 
 // NewGoogle создаёт запасной провайдер.
 func NewGoogle() *Google {
 	return &Google{client: &http.Client{Timeout: 12 * time.Second}}
+}
+
+// endpoint возвращает адрес запроса.
+func (g *Google) endpoint() string {
+	if g.base != "" {
+		return g.base
+	}
+	return "https://translate.googleapis.com/translate_a/single"
 }
 
 // Name возвращает идентификатор провайдера.
@@ -62,6 +73,12 @@ func (g *Google) TranslateWord(ctx context.Context, text, source, target string)
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+		// Google режет частоту запросов ответом 429. Выше по стеку он
+		// превращается в понятное «подождите» (ErrRateLimited), а не в 502:
+		// ограничение провайдера — не поломка перевода.
+		if resp.StatusCode == http.StatusTooManyRequests {
+			return "", ErrRateLimited
+		}
 		return "", fmt.Errorf("запасной переводчик вернул %s", resp.Status)
 	}
 	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
@@ -90,12 +107,12 @@ func (g *Google) request(ctx context.Context, text, source, target string) (*htt
 	if utf8.RuneCountInString(text) <= getLimitRunes {
 		params.Set("q", text)
 		return http.NewRequestWithContext(ctx, http.MethodGet,
-			"https://translate.googleapis.com/translate_a/single?"+params.Encode(), nil)
+			g.endpoint()+"?"+params.Encode(), nil)
 	}
 
 	body := url.Values{"q": {text}}.Encode()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		"https://translate.googleapis.com/translate_a/single?"+params.Encode(),
+		g.endpoint()+"?"+params.Encode(),
 		strings.NewReader(body))
 	if err != nil {
 		return nil, err

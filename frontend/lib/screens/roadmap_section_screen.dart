@@ -96,34 +96,6 @@ class _RoadmapSectionScreenState extends State<RoadmapSectionScreen> {
                           style: theme.textTheme.bodyMedium
                               ?.copyWith(height: 1.5)),
                     ],
-                    if (widget.category.planned) ...[
-                      const SizedBox(height: 16),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(14),
-                          child: Text(
-                            'Пока планируется — упражнения на написание '
-                            'предложений. Скоро будет.',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (section.isEmpty && !widget.category.planned) ...[
-                      const SizedBox(height: 16),
-                      Row(children: [
-                        Icon(Icons.auto_awesome_outlined,
-                            size: 20, color: theme.colorScheme.primary),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            'Тут пока пусто — скоро что-то появится.',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant),
-                          ),
-                        ),
-                      ]),
-                    ],
                     if (section.items.isNotEmpty) ...[
                       const SizedBox(height: 18),
                       for (final item in section.items)
