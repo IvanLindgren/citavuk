@@ -17,7 +17,7 @@ import (
 )
 
 const Days = 30
-const Model = "deepseek/deepseek-v4-flash-0731"
+const Model = "qwen/qwen3.8-flash"
 
 var ErrInvalid = errors.New("некорректный урок или анкета")
 
@@ -115,15 +115,15 @@ func ValidKind(s string) bool {
 }
 func (l Lesson) Validate() error {
 	if !validText(l.Title, 120) || !ValidKind(l.Kind) || !validText(l.Theme, 120) || !validText(l.Text, 12000) || len(l.Rules) < 1 || len(l.Rules) > 8 {
-		return ErrInvalid
+		return fmt.Errorf("%w: title/kind/text/rules (1–8)", ErrInvalid)
 	}
 	for _, r := range l.Rules {
 		if !validText(r, 1500) {
-			return ErrInvalid
+			return fmt.Errorf("%w: rule length", ErrInvalid)
 		}
 	}
 	if !validText(l.Scheme.Title, 160) || len(l.Scheme.Columns) < 2 || len(l.Scheme.Columns) > 4 || len(l.Scheme.Rows) < 1 || len(l.Scheme.Rows) > 8 {
-		return ErrInvalid
+		return fmt.Errorf("%w: scheme (2–4 columns, 1–8 rows)", ErrInvalid)
 	}
 	for _, c := range l.Scheme.Columns {
 		if !validText(c, 100) {
@@ -141,7 +141,7 @@ func (l Lesson) Validate() error {
 		}
 	}
 	if len(l.Exercises) < 4 || len(l.Exercises) > 8 {
-		return ErrInvalid
+		return fmt.Errorf("%w: exercises count %d (expected 4–8)", ErrInvalid, len(l.Exercises))
 	}
 	for _, e := range l.Exercises {
 		if len(e.AcceptedAnswers) > 8 {
@@ -160,7 +160,7 @@ func (l Lesson) Validate() error {
 		}
 		if e.Kind == "choice" {
 			if len(e.AcceptedAnswers) > 0 {
-				return ErrInvalid
+				return fmt.Errorf("%w: choice must not have acceptedAnswers", ErrInvalid)
 			}
 			if len(e.Options) < 2 || len(e.Options) > 6 {
 				return ErrInvalid
@@ -175,7 +175,7 @@ func (l Lesson) Validate() error {
 				found = found || o == e.Answer
 			}
 			if !found {
-				return ErrInvalid
+				return fmt.Errorf("%w: choice answer must equal an option", ErrInvalid)
 			}
 		}
 	}

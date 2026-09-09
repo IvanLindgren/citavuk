@@ -314,14 +314,16 @@ func (s *Server) generatePersonalContent(ctx context.Context, job *store.Persona
 	if err != nil {
 		return err
 	}
-	for _, day := range days {
+	return personal.GenerateDays(ctx, days, func(ctx context.Context, day int) error {
+		started := time.Now()
 		lesson, err := s.personal.Lesson(ctx, job.Profile, job.Outline, day, job.Feedback)
 		if err != nil {
 			return err
 		}
-		if err = s.store.SavePersonalGenerated(ctx, job, day, lesson); err != nil {
+		if err := s.store.SavePersonalGenerated(ctx, job, day, lesson); err != nil {
 			return err
 		}
-	}
-	return nil
+		slog.Info("карта урока сохранена", "plan", job.ID, "day", day, "model", personal.Model, "seconds", int(time.Since(started).Seconds()))
+		return nil
+	})
 }

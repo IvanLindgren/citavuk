@@ -54,21 +54,26 @@ func (g *Generator) request(ctx context.Context, instruction string, input any, 
 	}
 	var envelope struct {
 		Choices []struct {
-			Message struct {
+			FinishReason string `json:"finish_reason"`
+			Message      struct {
 				Content string `json:"content"`
 			} `json:"message"`
 		} `json:"choices"`
 	}
 	if json.Unmarshal(raw, &envelope) != nil || len(envelope.Choices) == 0 {
-		return ErrInvalid
+		return fmt.Errorf("%w: empty response choices", ErrInvalid)
+	}
+	if envelope.Choices[0].FinishReason == "length" {
+		return fmt.Errorf("%w: model output truncated at token limit", ErrInvalid)
 	}
 	s := strings.TrimSpace(envelope.Choices[0].Message.Content)
 	a, b := strings.Index(s, "{"), strings.LastIndex(s, "}")
 	if a < 0 || b <= a {
-		return ErrInvalid
+		return fmt.Errorf("%w: response is not a JSON object", ErrInvalid)
 	}
-	if json.Unmarshal([]byte(s[a:b+1]), out) != nil {
-		return ErrInvalid
+	if err := json.Unmarshal([]byte(s[a:b+1]), out); err != nil {
+		// Не логируем содержимое ответа или анкету.
+		return fmt.Errorf("%w: response JSON cannot decode into lesson schema", ErrInvalid)
 	}
 	return nil
 }
