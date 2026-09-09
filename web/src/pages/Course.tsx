@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { CourseSprite } from "../course/CourseSprite";
-import { CourseEntryPicker } from "../course/CourseEntryPicker";
+import { CourseStartDialog } from "../course/CourseStartDialog";
 import {
   lessonUnlocked,
   loadCourse,
@@ -40,6 +40,7 @@ function CourseSession() {
   const [progress, setProgress] = useState<CourseProgress | null>(null);
   const [error, setError] = useState("");
   const [muted, setMuted] = useState(courseSoundsMuted);
+  const [startLesson, setStartLesson] = useState<CourseBundle['units'][number]['skills'][number]['lessons'][number] | null>(null);
 
   useEffect(() => {
     preloadCourseSounds();
@@ -144,11 +145,6 @@ function CourseSession() {
                 <SoundIcon muted={muted} />
               </button>
             </div>
-            <CourseEntryPicker
-              key={account.id}
-              bundle={bundle}
-              progress={progress}
-            />
             <div className="mt-5 h-3 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
               <motion.div
                 className="h-full bg-[var(--accent)]"
@@ -185,9 +181,11 @@ function CourseSession() {
             unit={unit}
             unitIndex={unitIndex}
             progress={progress}
+            onLocked={setStartLesson}
           />
         ))}
       </div>
+      {startLesson && <CourseStartDialog bundle={bundle} lesson={startLesson} close={() => setStartLesson(null)} />}
     </main>
   );
 }
@@ -196,10 +194,12 @@ function CourseUnitPath({
   unit,
   unitIndex,
   progress,
+  onLocked,
 }: {
   unit: CourseBundle["units"][number];
   unitIndex: number;
   progress: CourseProgress;
+  onLocked: (lesson: CourseBundle['units'][number]['skills'][number]['lessons'][number]) => void;
 }) {
   const reduceMotion = useReducedMotion();
   let lessonNumber = 0;
@@ -244,6 +244,7 @@ function CourseUnitPath({
                   completed={isDone(result?.status)}
                   skipped={result?.skipped === true}
                   score={result?.bestScore ?? 0}
+                  onLocked={() => onLocked(lesson)}
                 />
               );
             })}
@@ -261,6 +262,7 @@ function LessonNode({
   completed,
   skipped,
   score,
+  onLocked,
 }: {
   lesson: CourseBundle["units"][number]["skills"][number]["lessons"][number];
   side: "left" | "right";
@@ -268,14 +270,15 @@ function LessonNode({
   completed: boolean;
   skipped: boolean;
   score: number;
+  onLocked: () => void;
 }) {
   const reduceMotion = useReducedMotion();
   const node = (
     <motion.div
       whileHover={
-        reduceMotion || !unlocked ? undefined : { y: -4, scale: 1.025 }
+        reduceMotion ? undefined : { y: -4, scale: 1.025 }
       }
-      whileTap={unlocked ? { y: 3 } : undefined}
+      whileTap={reduceMotion ? undefined : { y: 3 }}
       className={[
         "course-lesson-node relative z-10 flex size-20 items-center justify-center rounded-full border-4",
         "shadow-[0_7px_0_0_color-mix(in_srgb,var(--accent)_55%,black)] transition-colors",
@@ -317,10 +320,10 @@ function LessonNode({
           </div>
         </Link>
       ) : (
-        <div className="flex max-w-[calc(50%+2.5rem)] items-center gap-4 opacity-70">
+        <button type="button" onClick={onLocked} aria-label={`Открыть урок ${lesson.title}`} title="Уже знаешь предыдущие темы? Нажми, чтобы начать отсюда" className="flex max-w-[calc(50%+2.5rem)] cursor-pointer items-center gap-4 rounded-xl text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
           {node}
           <LessonLabel lesson={lesson} completed={false} score={0} />
-        </div>
+        </button>
       )}
     </div>
   );

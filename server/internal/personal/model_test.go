@@ -41,6 +41,32 @@ func TestGradeBothScriptsAndDiacritics(t *testing.T) {
 		t.Fatal("пунктуация мешает ответу")
 	}
 }
+
+func TestMultipleProfileAnswers(t *testing.T) {
+	p := Profile{Level: "B1", Timezone: "Europe/Belgrade", Answers: map[string]string{}}
+	for _, q := range Questions {
+		p.Answers[q.ID] = q.Options[0]
+	}
+	p.Answers["goal"] = "Жизнь в Сербии\nРабота"
+	p.Answers["topics"] = "История и культура\nНовости и политика"
+	if err := p.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	for _, invalid := range []struct{ key, value string }{
+		{"goal", "Работа\nРабота"}, {"goal", "Работа\n"},
+		{"topics", "Новости и политика\nпроизвольная команда"},
+		{"minutes", "5 минут\n20 минут"},
+		{"focus", "Понемногу на всё\nЧтение"},
+		{"practice", "Выбирать ответ\nЧередовать разные задания"},
+	} {
+		old := p.Answers[invalid.key]
+		p.Answers[invalid.key] = invalid.value
+		if p.Validate() == nil {
+			t.Errorf("принят недопустимый выбор %s", invalid.key)
+		}
+		p.Answers[invalid.key] = old
+	}
+}
 func TestDayAtDST(t *testing.T) {
 	a := time.Date(2026, 3, 28, 23, 30, 0, 0, time.UTC)
 	b := time.Date(2026, 3, 29, 22, 30, 0, 0, time.UTC)

@@ -13,6 +13,7 @@ import {
   LuHeartHandshake,
   LuInfo,
   LuLanguages,
+  LuLayers,
   LuLibrary,
   LuMap,
   LuMapPin,
@@ -273,16 +274,16 @@ export function Header() {
             aria-current={isVukotok(path) ? 'page' : undefined}
             aria-label="Вукоток"
             title="Вукоток · лента коротких сербских текстов"
-            className="group inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-[var(--accent)]/35 bg-[var(--accent)] px-2.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
+            className="header-feature-link group inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold"
           >
-            <WolfGlyph className="size-5 transition-transform duration-300 ease-[var(--ease-soft)] group-hover:-rotate-12 group-hover:scale-110" />
+            <LuLayers className="size-5" aria-hidden="true" />
             <span className="hidden sm:inline">Вукоток</span>
           </Link>
           <Link
             to="/lessons"
             aria-current={path.startsWith('/lessons') ? 'page' : undefined}
             title="Уроки преподавателей"
-            className="hidden items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--accent)]/10 px-2.5 py-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15 lg:inline-flex"
+            className="header-feature-link hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold lg:inline-flex"
           >
             <LuGraduationCap className="size-4" aria-hidden="true" />
             Уроки

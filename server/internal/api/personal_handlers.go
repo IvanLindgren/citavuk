@@ -265,6 +265,36 @@ func (s *Server) runPersonalJobs() {
 	}
 }
 func (s *Server) generatePersonal(ctx context.Context, job *store.PersonalJob) error {
+	ctx, cancel := context.WithCancelCause(ctx)
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		ticker := time.NewTicker(30 * time.Second)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				renewCtx, stop := context.WithTimeout(ctx, 10*time.Second)
+				err := s.store.RenewPersonalLease(renewCtx, job)
+				stop()
+				if err != nil {
+					cancel(err)
+					return
+				}
+			}
+		}
+	}()
+	defer func() { cancel(nil); <-done }()
+	err := s.generatePersonalContent(ctx, job)
+	if cause := context.Cause(ctx); cause != nil {
+		return cause
+	}
+	return err
+}
+
+func (s *Server) generatePersonalContent(ctx context.Context, job *store.PersonalJob) error {
 	if job.Attempts > 3 {
 		return personal.ErrInvalid
 	}

@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+.header-feature-link { color: var(--text-muted); border: 1px solid transparent; transition: background-color 160ms, color 160ms, border-color 160ms; }
+.header-feature-link:hover { color: var(--accent); background: var(--bg-sunken); }
+.header-feature-link[aria-current="page"] { color: var(--accent); border-color: var(--line); background: var(--bg-raised); }
+.header-feature-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.dark .header-feature-link:hover, .dark .header-feature-link[aria-current="page"] { color: color-mix(in srgb, var(--accent) 65%, white); }
+
 @layer components {
   .answer-input {
     width: 100%;

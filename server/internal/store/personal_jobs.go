@@ -19,6 +19,20 @@ type PersonalJob struct {
 	Attempts int
 }
 
+// Ожидание модели не должно приводить к истечению аренды. Уже истёкшую
+// аренду не воскрешаем: задачу мог получить другой процесс.
+func (s *Store) RenewPersonalLease(ctx context.Context, j *PersonalJob) error {
+	tag, err := s.Pool.Exec(ctx, `UPDATE personal_plans SET lease_until=now()+interval '2 minutes'
+ WHERE id=$1 AND lease_token=$2 AND status='running' AND lease_until>now()`, j.ID, j.Token)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrPersonalLease
+	}
+	return nil
+}
+
 // Lease и случайный token защищают от двух серверов и запоздалого ответа
 // модели: старый исполнитель не может перезаписать новую генерацию.
 func (s *Store) ClaimPersonal(ctx context.Context) (*PersonalJob, error) {

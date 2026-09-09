@@ -4,6 +4,21 @@ import 'package:srbski_read/models/personal_lesson.dart';
 import 'package:srbski_read/screens/personal_lessons_screen.dart';
 
 void main() {
+  test('множественный выбор и исключающие варианты сохраняют общий контракт',
+      () {
+    final q = PersonalQuestion.fromJson({
+      'id': 'focus',
+      'title': 'Упор',
+      'multiple': true,
+      'exclusive': 'Всё',
+      'options': ['Всё', 'Чтение', 'Письмо']
+    });
+    expect(q.toggle('Чтение', 'Письмо'), 'Чтение\nПисьмо');
+    expect(q.toggle('Чтение\nПисьмо', 'Чтение'), 'Письмо');
+    expect(q.toggle('Чтение', 'Всё'), 'Всё');
+    expect(q.toggle('Всё', 'Письмо'), 'Письмо');
+    expect(q.toggle('Письмо', 'Письмо'), '');
+  });
   testWidgets('анкета помещается на телефоне и требует ответ перед переходом',
       (tester) async {
     tester.view.physicalSize = const Size(360, 800);
@@ -37,5 +52,42 @@ void main() {
     await tester.pump();
     expect(find.text('Вопрос 2 из 10'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+  testWidgets('несколько ответов остаются выбранными после перехода назад',
+      (tester) async {
+    final questions = [
+      PersonalQuestion.fromJson({
+        'id': 'goal',
+        'title': 'Цели',
+        'multiple': true,
+        'options': ['Работа', 'Культура']
+      }),
+      PersonalQuestion.fromJson({
+        'id': 'pace',
+        'title': 'Темп',
+        'options': ['Спокойный', 'Быстрый']
+      }),
+    ];
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: SingleChildScrollView(
+                child: PersonalQuestionnaire(
+                    questions: questions,
+                    level: 'A1',
+                    disabled: false,
+                    onSubmit: (level, zone, answers) async {})))));
+    await tester.tap(find.text('Работа'));
+    await tester.pump();
+    await tester.tap(find.text('Культура'));
+    await tester.pump();
+    expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
+    await tester.tap(find.text('Дальше'));
+    await tester.pump();
+    await tester.tap(find.text('Назад'));
+    await tester.pump();
+    expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
+    await tester.tap(find.text('Работа'));
+    await tester.pump();
+    expect(find.byIcon(Icons.check_circle), findsOneWidget);
   });
 }

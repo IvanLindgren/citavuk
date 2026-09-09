@@ -24,7 +24,6 @@ import '../widgets/path_node.dart';
 import '../../widgets/stove_icon.dart';
 import 'lesson_screen.dart';
 import 'trainer_screen.dart';
-import 'course_entry_picker.dart';
 import '../../services/study_service.dart';
 
 class CoursePathScreen extends StatefulWidget {
@@ -37,6 +36,7 @@ class CoursePathScreen extends StatefulWidget {
 }
 
 class _CoursePathScreenState extends State<CoursePathScreen> {
+  bool _openingLocked = false;
   @override
   void initState() {
     super.initState();
@@ -65,8 +65,21 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
 
     final status = controller.statusOf(lesson);
     if (status == LessonStatus.locked) {
-      final start = await _showLockedSheet(lesson);
-      if (mounted && start == true) await _chooseStart(lesson);
+      if (_openingLocked) return;
+      _openingLocked = true;
+      try {
+        final start = await _showLockedSheet(lesson);
+        if (!mounted || start != true) return;
+        await controller.startFrom(lesson.id);
+        if (mounted) await _startLesson(lesson);
+      } catch (_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Не удалось открыть урок. Попробуй ещё раз.')));
+        }
+      } finally {
+        _openingLocked = false;
+      }
       return;
     }
 
@@ -240,8 +253,9 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
     return showModalBottomSheet<bool>(
       context: context,
       showDragHandle: true,
+      isScrollControlled: true,
       builder: (context) => SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -272,12 +286,15 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
                 style: TextStyle(fontSize: 15, height: 1.45),
               ),
               const SizedBox(height: 18),
+              const Text(
+                  'Пройденные уроки сохранятся. Пропущенные темы не дают опыт и серию. Незавершённая попытка будет сброшена.'),
+              const SizedBox(height: 18),
               CourseButton(
-                  label: 'Начать с этого урока',
+                  label: 'Уже знаю, открыть урок',
                   onPressed: () => Navigator.of(context).pop(true)),
               const SizedBox(height: 12),
               CourseButton(
-                label: 'Понятно',
+                label: 'Отмена',
                 tone: CourseButtonTone.neutral,
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -286,41 +303,6 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _chooseStart(Lesson lesson) async {
-    final course = widget.controller.course;
-    if (course == null) return;
-    final before = course.allLessons
-        .takeWhile((l) => l.id != lesson.id)
-        .where((l) =>
-            !(widget.controller.progress?.lessons[l.id]?.isDone ?? false))
-        .length;
-    final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text('Начать: ${lesson.title}?'),
-              content: Text(
-                  'Предыдущих тем будет отмечено как пропущенные: $before. Результаты пройденных уроков сохранятся. За пропуск не начисляются опыт, серия и награды. Незавершённая попытка будет сброшена.'),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context, false),
-                    child: const Text('Отмена')),
-                FilledButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: const Text('Начать отсюда'))
-              ],
-            ));
-    if (!mounted || confirmed != true) return;
-    await widget.controller.startFrom(lesson.id);
-    if (mounted) await _openNode(lesson);
-  }
-
-  Future<void> _pickStart() async {
-    final course = widget.controller.course;
-    if (course == null) return;
-    final lesson = await showCourseEntryPicker(context, course);
-    if (mounted && lesson != null) await _chooseStart(lesson);
   }
 
   @override
@@ -340,11 +322,6 @@ class _CoursePathScreenState extends State<CoursePathScreen> {
           ],
         ),
         actions: [
-          if (controller.course != null)
-            IconButton(
-                icon: const Icon(Icons.playlist_play),
-                tooltip: 'Начать с любого урока',
-                onPressed: _pickStart),
           // Тренажёрка — вход в произвольный момент, а не по порядку курса,
           // поэтому она в шапке, а не только карточкой в конце карты.
           if (controller.course != null)

@@ -360,9 +360,19 @@ class _PersonalQuestionnaireState extends State<PersonalQuestionnaire> {
   Widget build(BuildContext context) {
     if (widget.questions.isEmpty) return const SizedBox.shrink();
     final q = widget.questions[_step];
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
+    final colors = Theme.of(context).colorScheme;
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 24),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: colors.surfaceContainerLow,
+            border: Border.all(color: colors.outlineVariant),
+            borderRadius: BorderRadius.circular(24)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('Настроим твою колоду',
+              style: TextStyle(
+                  color: colors.primary, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
           Text('Вопрос ${_step + 1} из ${widget.questions.length}'),
           const SizedBox(height: 12),
           LinearProgressIndicator(value: (_step + 1) / widget.questions.length),
@@ -379,21 +389,61 @@ class _PersonalQuestionnaireState extends State<PersonalQuestionnaire> {
                     : (v) => setState(() => _level = v!)),
           const SizedBox(height: 20),
           Text(q.title, style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 8),
+          Text(
+              q.multiple
+                  ? 'Можно выбрать несколько вариантов'
+                  : 'Выбери один вариант',
+              style: TextStyle(color: colors.onSurfaceVariant)),
           const SizedBox(height: 12),
-          Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: q.options
-                  .map((o) => ChoiceChip(
-                      label: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 4),
-                          child: Text(o)),
-                      selected: _answers[q.id] == o,
-                      onSelected: widget.disabled
-                          ? null
-                          : (_) => setState(() => _answers[q.id] = o)))
-                  .toList()),
+          ...q.options.map((o) {
+            final selected = (_answers[q.id] ?? '').split('\n').contains(o);
+            return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Semantics(
+                    selected: selected,
+                    child: Material(
+                      color:
+                          selected ? colors.primaryContainer : colors.surface,
+                      borderRadius: BorderRadius.circular(14),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(14),
+                        onTap: widget.disabled
+                            ? null
+                            : () => setState(() => _answers[q.id] =
+                                q.toggle(_answers[q.id] ?? '', o)),
+                        child: Container(
+                          constraints: const BoxConstraints(minHeight: 56),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: selected
+                                      ? colors.primary
+                                      : colors.outlineVariant),
+                              borderRadius: BorderRadius.circular(14)),
+                          child: Row(children: [
+                            Icon(
+                                selected
+                                    ? Icons.check_circle
+                                    : q.multiple
+                                        ? Icons.check_box_outline_blank
+                                        : Icons.radio_button_unchecked,
+                                color: selected
+                                    ? colors.primary
+                                    : colors.onSurfaceVariant,
+                                size: 22),
+                            const SizedBox(width: 12),
+                            Expanded(
+                                child: Text(o,
+                                    style: TextStyle(
+                                        color: selected
+                                            ? colors.onPrimaryContainer
+                                            : colors.onSurface))),
+                          ]),
+                        ),
+                      ),
+                    )));
+          }),
           const SizedBox(height: 24),
           Wrap(spacing: 16, runSpacing: 12, children: [
             OutlinedButton(
@@ -402,7 +452,7 @@ class _PersonalQuestionnaireState extends State<PersonalQuestionnaire> {
                     : () => setState(() => _step--),
                 child: const Text('Назад')),
             FilledButton(
-                onPressed: widget.disabled || _answers[q.id] == null
+                onPressed: widget.disabled || (_answers[q.id] ?? '').isEmpty
                     ? null
                     : () => _step < widget.questions.length - 1
                         ? setState(() => _step++)

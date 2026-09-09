@@ -17,7 +17,9 @@ type Generator struct {
 }
 
 func New(key, url string) *Generator {
-	return &Generator{key: strings.TrimSpace(key), url: url, client: &http.Client{Timeout: 100 * time.Second}}
+	// Месячный план может приходить дольше минуты. Воркер продлевает аренду
+	// отдельно от HTTP-запроса, поэтому ожидание не запускает вторую генерацию.
+	return &Generator{key: strings.TrimSpace(key), url: url, client: &http.Client{Timeout: 4 * time.Minute}}
 }
 func (g *Generator) Enabled() bool { return g != nil && g.key != "" }
 

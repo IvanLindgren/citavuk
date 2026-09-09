@@ -13,7 +13,7 @@ const study={timezone:'Europe/Belgrade',today:'2026-09-09',todayActive:false,cur
 const browser=await puppeteer.launch({headless:true});
 try{
  for(const width of [1440,390]){
-  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const page=await browser.newPage();const errors=[];let mode='deck';page.on('pageerror',e=>errors.push(e.message));
   await page.setViewport({width,height:940,deviceScaleFactor:1});
   await page.evaluateOnNewDocument(()=>{localStorage.setItem('citavuk-token','cookie');});
   await page.setRequestInterception(true);
@@ -22,7 +22,7 @@ try{
    if(u.pathname.startsWith('/v1/')){
     let body={items:[],unread:0};
     if(u.pathname==='/v1/auth/me')body={id:'ui-test-only',email:'fixture@example.test',displayName:'Проверка интерфейса',serbianLevel:'A2',emailVerified:true,isAdmin:false};
-    else if(u.pathname==='/v1/personal')body={available:true,questions:[],history:[],plan};
+    else if(u.pathname==='/v1/personal')body={available:true,questions:[{id:'goal',title:'Для чего тебе сербский?',multiple:true,options:['Жизнь в Сербии','Работа','Путешествия','Учёба и экзамены','Семья и общение','Культура']},{id:'pace',title:'Какой темп тебе подходит?',options:['Спокойный','Сбалансированный','Интенсивный']}],history:[],plan:mode==='questionnaire'?null:mode==='generating'?{...plan,status:'running',lessons:[],outline:[]}:plan};
     else if(u.pathname.includes('/days/'))body=lesson;
     else if(u.pathname==='/v1/study')body=study;
     else if(u.pathname==='/v1/daily')body={enabled:false,set:null,themes:[],configured:true,progress:{streak:4,dueNow:0,faded:[]}};
@@ -33,6 +33,18 @@ try{
   });
   await page.goto(`${base}/personal`,{waitUntil:'networkidle0'});await page.waitForSelector('.personal-card.is-open');
   await page.screenshot({path:path.join(out,`deck-${width}.png`)});
+  mode='questionnaire';await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('.personal-options');
+  const choices=await page.$$('input[type=checkbox]');
+  await choices[0].click();await choices[1].click();
+  if(await page.$$eval('input:checked',els=>els.length)!==2)throw new Error('Нет множественного выбора');
+  if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw new Error(`Анкета overflow ${width}`);
+  await page.screenshot({path:path.join(out,`questionnaire-${width}.png`),fullPage:true});
+  await page.evaluate(()=>document.documentElement.classList.add('dark'));
+  await page.screenshot({path:path.join(out,`questionnaire-dark-${width}.png`),fullPage:true});
+  await page.evaluate(()=>document.documentElement.classList.remove('dark'));
+  mode='generating';await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('.personal-generation');
+  await page.screenshot({path:path.join(out,`generating-${width}.png`)});
+  mode='deck';await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('.personal-card.is-open');
   await page.click('.personal-card.is-open');await page.waitForSelector('.personal-prose');
   await page.screenshot({path:path.join(out,`lesson-${width}.png`)});
   if(!await page.$('audio'))throw new Error('Нет озвучки listening');
@@ -45,7 +57,7 @@ try{
   await page.waitForFunction(()=>!!document.querySelector('textarea'));
   if(!asked)throw new Error('Нет защиты несохранённых правок');
   if(errors.length)throw new Error(errors.join('\n'));
-  console.log(`OK ${width}px: колода, урок, TTS, редактор, защита ухода`);await page.close();
+  console.log(`OK ${width}px: колода, анкета с множественным выбором, состояние генерации, урок, TTS, редактор, защита ухода`);await page.close();
  }
  console.log(out);
 }finally{await browser.close();}

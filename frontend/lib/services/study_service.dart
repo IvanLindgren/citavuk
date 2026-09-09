@@ -53,17 +53,27 @@ class StudyService extends ChangeNotifier {
         snapshot = jsonDecode(cached) as Map<String, dynamic>;
         notifyListeners();
       }
-      // Сначала пояс устройства. У старой активной серии сервер сохраняет
-      // закреплённый пояс; 409 не является ошибкой самой синхронизации.
-      try {
-        final zone = await FlutterTimezone.getLocalTimezone();
-        await api.put('/v1/study', {'timezone': zone.identifier},
-            timeout: const Duration(seconds: 8));
-      } on ApiException catch (e) {
-        if (e.status != 409) rethrow;
-      }
-      final data = Map<String, dynamic>.from(await api.get('/v1/study',
+      var data = Map<String, dynamic>.from(await api.get('/v1/study',
           timeout: const Duration(seconds: 8)) as Map);
+      if (epoch != _epoch) return;
+      if (data['activeDays'] == 0) {
+        try {
+          final zone = await FlutterTimezone.getLocalTimezone();
+          if (epoch != _epoch) return;
+          if (data['timezone'] != zone.identifier) {
+            data = Map<String, dynamic>.from(await api.put(
+                '/v1/study', {'timezone': zone.identifier},
+                timeout: const Duration(seconds: 8)) as Map);
+          }
+        } on ApiException catch (e) {
+          if (e.status != 409) rethrow;
+          // Первое занятие могло закончиться на другом устройстве.
+          data = Map<String, dynamic>.from(await api.get('/v1/study',
+              timeout: const Duration(seconds: 8)) as Map);
+        } catch (_) {
+          // Недоступность системного пояса не мешает показать серверную серию.
+        }
+      }
       await accept(data, token: api.token);
       unawaited(_flush());
     } catch (_) {/* Офлайн остаётся последний снимок, без выдуманной серии. */}
@@ -73,11 +83,17 @@ class StudyService extends ChangeNotifier {
       {int answered = 1, int? accountEpoch}) {
     if (accountEpoch != null && accountEpoch != _epoch) return Future.value();
     final owner = _owner, epoch = _epoch;
-    if (owner == null || answered < 1 || answered > 1000 || reference.trim().isEmpty) return Future.value();
+    if (owner == null ||
+        answered < 1 ||
+        answered > 1000 ||
+        reference.trim().isEmpty) {
+      return Future.value();
+    }
     final event = {
       'eventId': newUuid(),
       'source': source,
-      'reference': reference.length > 200 ? reference.substring(0, 200) : reference,
+      'reference':
+          reference.length > 200 ? reference.substring(0, 200) : reference,
       'answered': answered,
       'occurredAt': DateTime.now().toUtc().toIso8601String()
     };
@@ -152,7 +168,9 @@ class StudyService extends ChangeNotifier {
     final momentKey = 'citavuk-study-moment-v1:$owner';
     // Один эпизод на устройстве после настоящего ответа. Синхронизация SRS
     // могла уже зачесть день раньше этого ответа; GET сам сцену не запускает.
-    if (userAction && data['todayActive'] == true && data['today'] is String &&
+    if (userAction &&
+        data['todayActive'] == true &&
+        data['today'] is String &&
         prefs.getString(momentKey) != data['today'] &&
         (snapshot?['today'] == null || data['today'] == snapshot?['today'])) {
       await prefs.setString(momentKey, data['today'] as String);

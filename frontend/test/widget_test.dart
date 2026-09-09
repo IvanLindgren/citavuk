@@ -225,7 +225,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Этот урок идёт после'), findsOneWidget);
-    expect(find.text('Начать с этого урока'), findsOneWidget);
+    expect(find.text('Уже знаю, открыть урок'), findsOneWidget);
     // Урок при этом не открылся.
     expect(find.text('Что такое вокатив?'), findsNothing);
   });
@@ -237,13 +237,11 @@ void main() {
     await _scrollToLesson(tester, 'Вокатив');
     await tester.tap(find.text('Вокатив'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Начать с этого урока'));
+    expect(find.textContaining('Пропущенные темы не дают'), findsOneWidget);
+    await tester.tap(find.text('Уже знаю, открыть урок'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('За пропуск не начисляются'), findsOneWidget);
-    await tester.tap(find.text('Начать отсюда'));
-    await tester.pumpAndSettle();
-    expect(find.text('Начать с этого урока'), findsNothing);
-    expect(find.text('Вокатив'), findsWidgets);
+    expect(find.text('Уже знаю, открыть урок'), findsNothing);
+    expect(find.text('Что такое вокатив?'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

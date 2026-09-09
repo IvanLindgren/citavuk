@@ -24,6 +24,8 @@ export interface Question {
   id: string;
   title: string;
   options: string[];
+  multiple?: boolean;
+  exclusive?: string;
 }
 export interface LessonContent {
   title: string;

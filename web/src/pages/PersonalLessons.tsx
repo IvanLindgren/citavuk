@@ -3,11 +3,16 @@ import {PersonalAudio} from '../components/PersonalAudio';
 import {lessonSuit} from '../components/PlayingCardFrame';
 import {PersonalPlayingCard} from '../components/PersonalPlayingCard';
 import {allowNavigation} from '../lib/router';
+import {toggleAnswer} from '../personal/answers';
 import {
   LuArrowLeft,
   LuPencil,
   LuThumbsDown,
   LuThumbsUp,
+  LuBookOpen,
+  LuCalendarDays,
+  LuLayers,
+  LuSparkles,
 } from "react-icons/lu";
 import {
   personalApi,
@@ -124,9 +129,11 @@ function PersonalHome({ level }: { level: string }) {
     <main className="personal">
       <header className="personal-heading">
         <div>
+          <p className="personal-eyebrow"><LuLayers aria-hidden /> Личные уроки на каждый день</p>
           <h1>Колода сербского. Ого!</h1>
-          <p>Волк Читавук разрисовал игральные карты, и теперь с помощью колоды вы можете самостоятельно создать себе уроки... На каждый день!</p>
+          <p className="personal-intro">Волк Читавук разрисовал игральные карты, и теперь с помощью колоды вы можете самостоятельно создать себе уроки... <em>На каждый день!</em></p>
         </div>
+        <img className="personal-heading-seal" src="/personal/decor/ravanica-medallion.png" alt="" />
       </header>
       {!newPlan && (state?.history?.length ?? 0) > 1 && (
         <label>
@@ -178,15 +185,14 @@ function PersonalHome({ level }: { level: string }) {
       {p && !newPlan && (
         <>
           <div className="personal-summary">
-            <span>
-              Уровень {p.profile.level}
-            </span><span>
-              {p.lessons.filter((l) => l.completedAt).length} из 30 уроков
-            </span>
-            <span>{p.profile.timezone}</span>
+            <span><LuBookOpen aria-hidden /><span>Твой уровень <b>{p.profile.level}</b></span></span>
+            <span><LuLayers aria-hidden /><span>Пройдено <b>{p.lessons.filter((l) => l.completedAt).length} из 30</b></span></span>
+            <span title={`Дни открываются по часовому поясу ${p.profile.timezone}`}><LuCalendarDays aria-hidden /><span>Карта дня <b>{Math.min(p.today, 30)} / 30</b></span></span>
           </div>
           {p.status === "error" && (
-            <div role="status">
+            <div role="status" className="personal-generation personal-generation-error">
+              <LuBookOpen aria-hidden />
+              <div><h2>Колода сохранена, но ещё не готова</h2>
               <p>{p.error}</p>
               <Button
                 disabled={busy}
@@ -194,13 +200,17 @@ function PersonalHome({ level }: { level: string }) {
               >
                 Досоставить колоду
               </Button>
+              </div>
             </div>
           )}
           {["queued", "running"].includes(p.status) && (
-            <p role="status">
-              Читавук составляет колоду: {p.lessons.length} из 30. Готовый урок
-              можно открыть сразу.
-            </p>
+            <div role="status" className="personal-generation">
+              <Spinner className="size-6 shrink-0" />
+              <div><h2>{p.outline.length === 0 ? 'Собираем маршрут твоих занятий' : 'Читавук наполняет колоду'}</h2>
+              <p>{p.lessons.length === 0 ? 'Сначала план на месяц, затем сами уроки. Это может занять несколько минут.' : `Готово ${p.lessons.length} из 30 уроков. Сегодняшнюю карту уже можно открыть.`}</p>
+              <progress aria-label="Готовность колоды" max={30} value={p.lessons.length} />
+              <small>Можно уйти со страницы: колода продолжит составляться.</small></div>
+            </div>
           )}
           <Deck plan={p} open={setDay} />
           {p.suggestRegeneration && p.status === "ready" && (
@@ -244,7 +254,7 @@ function PersonalHome({ level }: { level: string }) {
   );
 }
 
-function Questionnaire({
+export function Questionnaire({
   questions,
   defaultLevel,
   disabled,
@@ -263,36 +273,39 @@ function Questionnaire({
     [answers, setAnswers] = useState<Record<string, string>>({}),
     [step, setStep] = useState(0);
   const q = questions[step];
+  const questionTitle = useRef<HTMLLegendElement>(null);
+  useEffect(() => { if (step > 0) questionTitle.current?.focus(); }, [step]);
   if (!q) return null;
   return (
     <section className="personal-panel personal-question">
-      <p>
-        Вопрос {step + 1} из {questions.length}
-      </p>
-      <progress max={questions.length} value={step + 1} />
+      <div className="personal-question-top"><span className="personal-eyebrow"><LuSparkles aria-hidden /> Настроим твою колоду</span><span aria-live="polite">Вопрос {step + 1} из {questions.length}</span></div>
+      <progress aria-label="Прогресс анкеты" max={questions.length} value={step + 1} />
       {step === 0 && (
         <label>
           Твой уровень
-          <select value={level} onChange={(e) => setLevel(e.target.value)}>
+          <select disabled={disabled} value={level} onChange={(e) => setLevel(e.target.value)}>
             {["A1", "A2", "B1", "B2", "C1", "C2"].map((l) => (
               <option key={l}>{l}</option>
             ))}
           </select>
         </label>
       )}
-      <fieldset>
-        <legend>{q.title}</legend>
+      <fieldset key={q.id} disabled={disabled}>
+        <legend ref={questionTitle} tabIndex={-1}>{q.title}</legend>
+        <p className="personal-question-hint">{q.multiple ? 'Можно выбрать несколько вариантов' : 'Выбери один вариант'}</p>
+        <div className="personal-options">
         {q.options.map((o) => (
           <label className="personal-choice" key={o}>
             <input
-              type="radio"
+              type={q.multiple ? 'checkbox' : 'radio'}
               name={q.id}
-              checked={answers[q.id] === o}
-              onChange={() => setAnswers((a) => ({ ...a, [q.id]: o }))}
+              checked={(answers[q.id] || '').split('\n').includes(o)}
+              onChange={() => setAnswers((a) => ({ ...a, [q.id]: toggleAnswer(q, a[q.id] || '', o) }))}
             />
-            {o}
+            <span>{o}</span>
           </label>
         ))}
+        </div>
       </fieldset>
       <div className="personal-actions">
         <Button

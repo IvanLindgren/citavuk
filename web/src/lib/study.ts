@@ -20,9 +20,21 @@ export function acceptStudy(data:Study,owner=activeStorageName(),userAction=fals
 export async function refreshStudy(){
  const owner=activeStorageName();if(!getToken()||!owner.startsWith('citavuk-user-'))return;
  try{
-  try{await request('/v1/study',{method:'PUT',body:{timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'},timeoutMs:8000});}catch{/* Закреплённый пояс возвращается GET. */}
+  let data=await request<Study>('/v1/study',{timeoutMs:8000});
   if(owner!==activeStorageName())return;
-  acceptStudy(await request<Study>('/v1/study',{timeoutMs:8000}),owner);
+  const timezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
+  // После первого занятия пояс уже закреплён. Не пытаемся менять его на
+  // каждом экране: это создавало ложные 409 рядом с созданием колоды.
+  if(data.activeDays===0&&data.timezone!==timezone){
+   try{data=await request<Study>('/v1/study',{method:'PUT',body:{timezone},timeoutMs:8000});}
+   catch(error){
+    if(!(error instanceof ApiError)||error.status!==409)throw error;
+    // Другое устройство могло завершить первое занятие между GET и PUT.
+    if(owner!==activeStorageName())return;
+    data=await request<Study>('/v1/study',{timeoutMs:8000});
+   }
+  }
+  acceptStudy(data,owner);
   void flushStudy();
  }catch{/* Офлайн сохраняется снимок. */}
 }

@@ -26,6 +26,7 @@ func TestPersonalOwnershipRevisionsAndStudy(t *testing.T) {
 	for _, q := range personal.Questions {
 		p.Answers[q.ID] = q.Options[0]
 	}
+	p.Answers["goal"] = "Работа\nКультура"
 	id, err := s.CreatePersonal(ctx, u.ID, p)
 	if err != nil {
 		t.Fatal(err)
@@ -49,7 +50,28 @@ func TestPersonalOwnershipRevisionsAndStudy(t *testing.T) {
 	if err != nil || job == nil || job.ID != id {
 		t.Fatal("очередь", job, err)
 	}
+	if job.Profile.Answers["goal"] != p.Answers["goal"] {
+		t.Fatal("множественный выбор потерян в очереди")
+	}
 	outline := make([]personal.Outline, 30)
+	if err = s.RenewPersonalLease(ctx, job); err != nil {
+		t.Fatal("аренда не продлена", err)
+	}
+	stale := *job
+	stale.Token = uuid.New()
+	if err = s.RenewPersonalLease(ctx, &stale); !errors.Is(err, ErrPersonalLease) {
+		t.Fatal("чужая аренда продлена", err)
+	}
+	if _, err = s.Pool.Exec(ctx, `UPDATE personal_plans SET lease_until=now()-interval '1 second' WHERE id=$1`, id); err != nil {
+		t.Fatal(err)
+	}
+	if err = s.RenewPersonalLease(ctx, job); !errors.Is(err, ErrPersonalLease) {
+		t.Fatal("истёкшая аренда ожила", err)
+	}
+	job, err = s.ClaimPersonal(ctx)
+	if err != nil || job == nil {
+		t.Fatal("повторный захват", err)
+	}
 	for i := range outline {
 		outline[i] = personal.Outline{Day: i + 1, Title: "Поздороваемся", Kind: "vocabulary", Goal: "Приветствие"}
 	}

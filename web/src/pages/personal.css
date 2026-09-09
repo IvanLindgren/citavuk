@@ -3,7 +3,9 @@
   margin: auto;
   padding: 32px clamp(16px, 4vw, 56px);
   color: var(--text);
+  --personal-accent-text: var(--accent);
 }
+.dark .personal { color-scheme: dark; --personal-accent-text: color-mix(in srgb, var(--accent) 65%, white); }
 .personal h1 {
   font-family: Lora, serif;
   font-size: clamp(28px, 4vw, 48px);
@@ -21,9 +23,20 @@
   align-items: center;
   gap: 24px;
   margin-bottom: 28px;
+  padding: clamp(22px, 3vw, 42px);
+  border: 1px solid var(--line);
+  border-radius: 24px 8px 24px 8px;
+  background: linear-gradient(120deg, var(--bg-raised), var(--bg));
+  box-shadow: var(--shadow-soft);
 }
+.personal-heading > div { min-width: 0; }
+.personal-heading h1 { font-size: clamp(28px, 3.3vw, 44px); max-width: 24ch; }
+.personal-intro { max-width: 66ch; font-size: clamp(16px, 1.35vw, 19px); line-height: 1.8; color: var(--text-muted); }
+.personal-intro em { color: var(--personal-accent-text); font-family: Lora, serif; font-style: normal; white-space: nowrap; }
+.personal-heading-seal { width: clamp(72px, 10vw, 130px); flex-shrink: 0; opacity: .8; }
+.personal-eyebrow { display: flex; align-items: center; gap: 9px; font-size: 13px; }
 .personal-eyebrow {
-  color: var(--accent);
+  color: var(--personal-accent-text);
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -39,6 +52,16 @@
   font-size: 14px;
   color: var(--text-muted);
 }
+.personal-summary > span { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-left: 2px solid var(--line); }
+.personal-summary svg { width: 22px; height: 22px; color: var(--personal-accent-text); }
+.personal-summary b { display: block; color: var(--text); font-size: 18px; font-weight: 600; margin-top: 2px; }
+.personal-generation { display: flex; align-items: flex-start; gap: 18px; padding: 24px; margin: 20px 0 28px; background: var(--bg-raised); border: 1px solid var(--line); border-radius: 18px; }
+.personal-generation > svg { color: var(--accent); margin-top: 4px; flex-shrink: 0; width: 24px; height: 24px; }
+.personal-generation > div { min-width: 0; flex: 1; }
+.personal-generation h2 { font-family: Lora, serif; font-size: 21px; margin: 0 0 8px; }
+.personal-generation p { line-height: 1.7; color: var(--text-muted); margin-bottom: 12px; }
+.personal-generation progress { width: 100%; max-width: 480px; height: 6px; margin-bottom: 10px; }
+.personal-generation-error { border-color: var(--accent); }
 .personal-panel {
   background: var(--bg-raised);
   border: 1px solid var(--line);
@@ -47,8 +70,20 @@
   margin: 24px 0;
 }
 .personal-question {
-  max-width: 760px;
+  max-width: 900px;
+  margin-inline: auto;
+  border-top: 3px solid var(--accent);
 }
+.personal-question-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); }
+.personal-question legend { font-family: Lora, serif; font-size: clamp(22px, 2.3vw, 30px); line-height: 1.4; margin-bottom: 8px; }
+.personal-question-hint { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; }
+.personal-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.personal-options .personal-choice { margin: 0; min-height: 72px; padding: 16px; }
+.personal-question > label { max-width: 220px; font-size: 14px; }
+.personal progress { appearance: none; border: 0; border-radius: 99px; height: 6px; overflow: hidden; background: var(--line); color: var(--accent); }
+.personal progress::-webkit-progress-bar { background: var(--line); }
+.personal progress::-webkit-progress-value { background: var(--accent); border-radius: 99px; }
+.personal progress::-moz-progress-bar { background: var(--accent); border-radius: 99px; }
 .personal-question progress {
   width: 100%;
   accent-color: var(--accent);
@@ -70,7 +105,7 @@
   margin: 12px 0;
   font-weight: 600;
 }
-.personal input:not([type="radio"]),
+.personal input:not([type="radio"]):not([type="checkbox"]),
 .personal textarea,
 .personal select {
   display: block;
@@ -106,11 +141,22 @@
   border-color: var(--accent);
   background: var(--bg-sunken);
 }
-.personal input[type="radio"] {
+.personal .personal-choice:hover { border-color: var(--accent); }
+.personal fieldset:disabled .personal-choice { cursor: default; opacity: .65; }
+.personal input[type="radio"],
+.personal input[type="checkbox"] {
   accent-color: var(--accent);
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .personal-options { grid-template-columns: 1fr; }
+  .personal-heading-seal { display: none; }
+  .personal-summary { gap: 6px; }
+  .personal-summary > span { padding: 8px 10px; }
+  .personal-summary b { font-size: 16px; }
+  .personal-generation { padding: 18px; gap: 12px; }
 }
 .personal-lesson {
   max-width: 1000px;

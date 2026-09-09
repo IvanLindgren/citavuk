@@ -4,9 +4,29 @@ class PersonalQuestion {
   PersonalQuestion.fromJson(Map<String, dynamic> j)
       : id = j['id'] as String,
         title = j['title'] as String,
-        options = (j['options'] as List).cast<String>();
+        options = (j['options'] as List).cast<String>(),
+        multiple = j['multiple'] == true,
+        exclusive = j['exclusive'] as String?;
   final String id, title;
   final List<String> options;
+  final bool multiple;
+  final String? exclusive;
+
+  String toggle(String current, String option) {
+    if (!multiple) return option;
+    final selected = current.isEmpty ? <String>{} : current.split('\n').toSet();
+    if (selected.contains(option)) {
+      selected.remove(option);
+    } else {
+      if (option == exclusive) {
+        selected.clear();
+      } else {
+        selected.remove(exclusive);
+      }
+      selected.add(option);
+    }
+    return options.where(selected.contains).join('\n');
+  }
 }
 
 class PersonalContent {

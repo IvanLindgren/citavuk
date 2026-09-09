@@ -2,11 +2,22 @@ import {beforeEach,afterEach,expect,it,vi} from 'vitest';
 import type {Study} from '../api/personal';
 const session=vi.hoisted(()=>({owner:'citavuk-user-a'}));
 vi.mock('./db',()=>({activeStorageName:()=>session.owner}));
-import {acceptStudy,readStudy,recordStudy,flushStudy} from './study';
+import {acceptStudy,readStudy,recordStudy,flushStudy,refreshStudy} from './study';
 import {setToken} from '../api/client';
 const state=(asOf='2026-09-09T10:00:00Z'):Study=>({timezone:'Europe/Belgrade',today:'2026-09-09',current:2,longest:2,freezes:2,activeDays:2,todayActive:true,newDay:true,days:[],asOf});
 beforeEach(()=>{session.owner='citavuk-user-a';localStorage.clear();setToken('cookie');});
 afterEach(()=>{vi.unstubAllGlobals();localStorage.clear();});
+it('не пытается менять закреплённый пояс и не вызывает ложный 409',async()=>{
+ const fetch=vi.fn().mockResolvedValue(new Response(JSON.stringify(state())));vi.stubGlobal('fetch',fetch);
+ await refreshStudy();
+ expect(fetch).toHaveBeenCalledTimes(1);
+ expect(fetch.mock.calls[0]![1].method??'GET').toBe('GET');
+ expect(readStudy()?.timezone).toBe('Europe/Belgrade');
+});
+it('смена аккаунта во время GET не отправляет PUT новому владельцу',async()=>{
+ const fetch=vi.fn().mockImplementation(async()=>{session.owner='citavuk-user-b';return new Response(JSON.stringify({...state(),activeDays:0}));});vi.stubGlobal('fetch',fetch);
+ await refreshStudy();expect(fetch).toHaveBeenCalledTimes(1);expect(readStudy()).toBeNull();
+});
 it('не переносит поздний ответ в другой аккаунт и не откатывает снимок',()=>{
  acceptStudy(state());acceptStudy({...state('2026-09-09T09:00:00Z'),current:1});expect(readStudy()?.current).toBe(2);
  session.owner='citavuk-user-b';acceptStudy(state(),'citavuk-user-a');expect(readStudy()).toBeNull();
