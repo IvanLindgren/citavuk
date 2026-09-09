@@ -454,7 +454,16 @@ function Lesson({
               <LessonEmblem />
               <div className="lesson-kilim"><Ornament animated={false} count={19} /></div>
             </header>
-            <nav className="lesson-chapters" aria-label="Разделы урока">
+            <nav className="lesson-chapters" aria-label="Разделы урока" onClick={(e) => {
+              if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+              const anchor = e.target instanceof Element ? e.target.closest('a') : null;
+              const section = anchor && document.getElementById(anchor.hash.slice(1));
+              if (!section) return;
+              // Прокрутка внутри урока не создаёт записи без индекса нашего
+              // роутера: иначе «назад» конфликтует с защитой редактора.
+              e.preventDefault();
+              section.scrollIntoView({ block: 'start' });
+            }}>
               <a href="#lesson-text"><LessonArt name="open-book" /><span><small>01</small>Материал</span></a>
               <a href="#lesson-rules"><LessonArt name="quill-ink" /><span><small>02</small>Правила</span></a>
               <a href="#lesson-scheme"><LessonArt name="cog" /><span><small>03</small>Схема</span></a>

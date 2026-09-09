@@ -50,6 +50,7 @@ try{
   await page.evaluate(()=>{document.querySelector('.lesson-hero h1').textContent='Падежи: именительный и родительный';});
   await page.screenshot({path:path.join(out,`lesson-long-title-${width}.png`)});
   await page.click('.lesson-chapters a[href="#lesson-practice"]');
+  if(new URL(page.url()).hash)throw new Error('Переход внутри урока меняет историю роутера');
   await page.waitForSelector('.lesson-exercise input');
   await page.type('.lesson-exercise input','Tražim knjigu');
   if(await page.$eval('.lesson-answer-count',el=>el.textContent)!=='1 / 4')throw new Error('Не обновился счётчик ответов');
