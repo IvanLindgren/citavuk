@@ -64,4 +64,13 @@ describe('micro-feed anonymous identity', () => {
     // Учитывать действие не за кем — запрос слать незачем.
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it('records signed-in reactions without a guest token', async () => {
+    localStorage.setItem('citavuk-token', 'cookie');
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 204 }));
+    vi.stubGlobal('fetch', fetchMock);
+    await recordMicroFeedInteraction('22222222-2222-4222-8222-222222222222', 'like');
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(JSON.parse(fetchMock.mock.calls[0]![1].body)).toMatchObject({ event: 'like', visitorToken: '' });
+  });
 });

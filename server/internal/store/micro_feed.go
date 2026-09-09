@@ -796,6 +796,9 @@ func (s *Store) ListMicroFeed(
 	}
 	profile := s.microFeedProfile(ctx, actorKey)
 	profile.Video = len(media) > 0 && media[0] == "video"
+	if profile.Video {
+		return s.listRecommendedVideos(ctx, actorKey, exclude, limit, profile)
+	}
 	seen := make(map[uuid.UUID]bool, len(exclude)+limit)
 	for _, id := range exclude {
 		seen[id] = true
@@ -969,7 +972,7 @@ func (s *Store) microFeedCandidates(
 	// векторов и исследование новой темы не делают B2 понятным читателю A2.
 	extra := " AND " + levelPosition + " <= " + maxLevel
 	if profile.Video {
-		extra += " AND i.kind='video' AND i.video_language_confirmed"
+		extra += " AND i.kind='video' AND i.video_language_confirmed AND COALESCE(r.reaction,0)<>-1"
 	} else {
 		extra += " AND i.kind<>'video'"
 	}
@@ -1034,7 +1037,7 @@ func (s *Store) microFeedCandidates(
 			SELECT 1 FROM micro_feed_interactions recent
 			WHERE recent.actor_key=$1 AND recent.item_id=i.id
 			  AND recent.created_at > now()-interval '14 days'
-			  AND recent.event IN ('view','quick_skip')
+			  AND recent.event IN ('view','quick_skip','complete')
 		  )` + extra + `
 		ORDER BY ` + order + ` LIMIT $3`
 	rows, err := s.Pool.Query(ctx, query, args...)
@@ -1061,7 +1064,7 @@ func (s *Store) RecordMicroFeedInteraction(
 		var exists bool
 		if err := tx.QueryRow(ctx, `
 			SELECT true FROM micro_feed_content_items
-			WHERE id=$1 AND status='published'`, itemID).Scan(&exists); err != nil {
+			WHERE id=$1 AND status='published' FOR UPDATE`, itemID).Scan(&exists); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return ErrMicroFeedNotFound
 			}

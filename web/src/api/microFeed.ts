@@ -1,4 +1,4 @@
-import { request } from './client';
+import { getToken, request } from './client';
 
 export type MicroFeedStatus = 'draft' | 'published' | 'archived';
 export type MicroFeedScript = 'cyrillic' | 'latin';
@@ -159,8 +159,8 @@ export function saveMicroFeedPreferences(
 }
 
 /** Карточки, отмеченные лайком: лайк работает ещё и закладкой. */
-export async function getLikedMicroFeed(signal?: AbortSignal) {
-  const query = new URLSearchParams({ visitorToken: microFeedVisitorToken() });
+export async function getLikedMicroFeed(signal?: AbortSignal, mode = 'text') {
+  const query = new URLSearchParams({ visitorToken: microFeedVisitorToken(), mode });
   const response = await request<{ items: MicroFeedItem[] }>(
     `/v1/micro-feed/liked?${query}`,
     { signal },
@@ -191,7 +191,9 @@ export function recordMicroFeedInteraction(
   // есть к первому действию уже есть; отсутствие означает, что лента вообще не
   // загрузилась, и слать действие незачем.
   const token = microFeedVisitorToken();
-  if (!token) return Promise.resolve();
+  // Cookie-сессии сервер узнаёт без гостевого токена. Его отсутствие у
+  // вошедшего раньше превращало все реакции и досмотры в молчаливый no-op.
+  if (!token && !getToken()) return Promise.resolve();
   return request<void>(`/v1/micro-feed/${encodeURIComponent(itemId)}/interactions`, {
     method: 'POST',
     body: { visitorToken: token, event, dwellMs: Math.max(0, Math.round(dwellMs)) },

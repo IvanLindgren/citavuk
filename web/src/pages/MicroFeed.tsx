@@ -35,6 +35,8 @@ import {
 } from '../api/microFeed';
 import { ttsAudioUrl } from '../api/listening';
 import { FeedComments } from '../components/FeedComments';
+import { FeedModeNav } from '../components/FeedModeNav';
+import { useAuth } from '../state/auth';
 import { Mascot } from '../components/Mascot';
 import { MicroFeedOnboarding } from '../components/MicroFeedOnboarding';
 import { WordReader } from '../components/WordReader';
@@ -49,6 +51,11 @@ import { saveVocabularyWord } from '../lib/vocabulary';
 import { useSync } from '../state/sync';
 
 export function MicroFeed() {
+  const { account } = useAuth();
+  return <TextFeedSession key={account?.id ?? 'guest'} />;
+}
+
+function TextFeedSession() {
   useSeo({
     title: 'Вукоток — сербский тикток: короткие тексты на сербском лентой',
     description:
@@ -272,10 +279,9 @@ export function MicroFeed() {
             <Link to="/" aria-label="На главную Читавука" className="-ml-1 grid size-9 shrink-0 place-items-center rounded-full text-xl hover:bg-white/10 lg:hidden">
               <LuChevronLeft />
             </Link>
-            <h1 className="font-display text-xl font-bold">Вукоток</h1>
-            <Link to="/vukotok/video" className="ml-3 rounded-full border border-white/30 px-3 py-1 text-sm">Видео</Link>
-            <span className="hidden rounded-md border border-white/25 px-2 py-0.5 text-[0.68rem] font-bold uppercase sm:inline">эксперимент</span>
-            {strategy !== 'cold' && <span className="hidden text-xs text-white/65 md:inline">Для вас</span>}
+            <h1 className="hidden font-display text-xl font-bold md:block">Вукоток</h1>
+            <FeedModeNav mode="text" />
+            {strategy !== 'cold' && <span className="hidden text-xs text-white/65 xl:inline">Для тебя</span>}
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden min-w-10 text-center text-xs font-bold tabular-nums text-white/70 sm:inline">
@@ -394,6 +400,9 @@ function FeedStory({
   const [comments, setComments] = useState(item.commentsCount);
   const [discussing, setDiscussing] = useState(false);
   const [justLiked, setJustLiked] = useState(false);
+  const { account } = useAuth();
+  const reactionPending = useRef(false);
+  const [reactionError, setReactionError] = useState(false);
   // Сообщает только та карточка, которая обсуждение открыла. Если бы о своём
   // закрытом состоянии сообщали все, догруженная карточка снимала бы блокировку
   // с уже открытой шторки соседа.
@@ -438,11 +447,18 @@ function FeedStory({
   }, [item.id, stopSpeech]);
 
   async function toggleReaction(next: Exclude<MicroFeedReaction, 0>) {
+    if (reactionPending.current) return;
+    reactionPending.current = true;
+    setReactionError(false);
     const previous = reaction;
+    const previousLikes = likes;
+    const previousDislikes = dislikes;
     const final: MicroFeedReaction = previous === next ? 0 : next;
     setReaction(final);
-    setLikes((value) => value + (final === 1 ? 1 : 0) - (previous === 1 ? 1 : 0));
-    setDislikes((value) => value + (final === -1 ? 1 : 0) - (previous === -1 ? 1 : 0));
+    if (account) {
+      setLikes((value) => Math.max(0, value + Number(final === 1) - Number(previous === 1)));
+      setDislikes((value) => Math.max(0, value + Number(final === -1) - Number(previous === -1)));
+    }
     try {
       await recordMicroFeedInteraction(
         item.id,
@@ -456,8 +472,11 @@ function FeedStory({
       }
     } catch {
       setReaction(previous);
-      setLikes(item.likesCount);
-      setDislikes(item.dislikesCount);
+      setLikes(previousLikes);
+      setDislikes(previousDislikes);
+      setReactionError(true);
+    } finally {
+      reactionPending.current = false;
     }
   }
 
@@ -596,9 +615,9 @@ function FeedStory({
           </ActionButton>
         </div>
 
-        {speech.state === 'error' && (
+        {(speech.state === 'error' || reactionError) && (
           <p className="pointer-events-none absolute inset-x-4 bottom-1 z-10 text-center text-xs font-semibold text-[#ffb4ae]">
-            Озвучка сейчас недоступна.
+            {reactionError ? 'Реакция не сохранилась. Попробуй ещё раз.' : 'Озвучка сейчас недоступна.'}
           </p>
         )}
 
@@ -607,7 +626,7 @@ function FeedStory({
             role="status"
             className="pointer-events-none absolute inset-x-4 bottom-2 z-20 mx-auto max-w-sm rounded-xl bg-white/95 px-4 py-2.5 text-center text-sm font-semibold text-black shadow-lg"
           >
-            Сохранено — ищите в <LuHeart className="inline size-4 align-[-2px]" /> наверху
+            Сохранено: ищи в <LuHeart className="inline size-4 align-[-2px]" /> наверху
           </div>
         )}
 

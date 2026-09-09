@@ -10,6 +10,7 @@ import {
 } from '../api/microFeed';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
+import { useFocusTrap, useScrollLock } from '../lib/overlay';
 import { ErrorNote, Spinner } from './ui';
 
 /**
@@ -39,6 +40,10 @@ export function FeedComments({
   const [draft, setDraft] = useState('');
   const [sending, setSending] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const backdrop = useRef(false);
+  useScrollLock(true);
+  useFocusTrap(true, panelRef);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -62,7 +67,7 @@ export function FeedComments({
 
   const send = useCallback(async () => {
     const body = draft.trim();
-    if (body === '' || sending) return;
+    if (body === '' || sending || body.length > COMMENT_MAX) return;
     setSending(true);
     setError('');
     try {
@@ -100,7 +105,8 @@ export function FeedComments({
       role="dialog"
       aria-modal="true"
       aria-label="Обсуждение карточки"
-      onClick={onClose}
+      onPointerDown={event => { backdrop.current = event.target === event.currentTarget; }}
+      onClick={event => { if (backdrop.current && event.target === event.currentTarget) onClose(); }}
     >
       {/*
         На широком экране обсуждение повторяет габариты карточки: та же
@@ -109,6 +115,7 @@ export function FeedComments({
         лежала панель втрое шире, и вместе они не читались как один экран.
       */}
       <div
+        ref={panelRef}
         onClick={(event) => event.stopPropagation()}
         onWheel={(event) => event.stopPropagation()}
         className="flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-t-3xl bg-[#1c1814] text-white shadow-2xl sm:rounded-3xl lg:h-[calc(100dvh-13rem)] lg:max-h-none lg:w-[min(30rem,calc((100dvh-13rem)*10/16))] lg:min-w-[23rem] lg:rounded-[1.75rem] lg:border lg:border-white/10"
@@ -131,7 +138,7 @@ export function FeedComments({
           {loading && <div className="grid place-items-center py-10"><Spinner className="size-6 text-white" /></div>}
           {!loading && items.length === 0 && (
             <p className="py-8 text-center text-white/55">
-              Пока никто не написал. Напишите первым — можно и по-сербски.
+              Начни разговор. Можно написать и по-сербски.
             </p>
           )}
           <ul className="space-y-4">
@@ -186,14 +193,14 @@ export function FeedComments({
                   onKeyDown={(event) => {
                     // Enter отправляет, Shift+Enter переводит строку: реплика в
                     // ленте — одна фраза, и тянуться к кнопке ради неё незачем.
-                    if (event.key === 'Enter' && !event.shiftKey) {
+                    if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
                       event.preventDefault();
                       void send();
                     }
                   }}
                   rows={2}
-                  placeholder="Što mislite?"
-                  aria-label="Ваш комментарий"
+                  placeholder="Что думаешь?"
+                  aria-label="Твой комментарий"
                   className="w-full resize-none rounded-xl border border-white/15 bg-black/30 px-3 py-2 text-white placeholder:text-white/35 focus:border-white/40 focus:outline-none"
                 />
                 <p className={`mt-1 text-right text-xs ${left < 0 ? 'text-[#ffb4ae]' : 'text-white/35'}`}>
@@ -212,7 +219,7 @@ export function FeedComments({
           ) : (
             <p className="text-sm text-white/60">
               <Link to="/login" className="font-semibold text-white underline underline-offset-4">
-                Войдите
+                Войди
               </Link>
               , чтобы написать. Читать обсуждение можно и без входа.
             </p>
