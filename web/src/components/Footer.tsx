@@ -30,14 +30,30 @@ export function Footer() {
   return <footer className="site-footer">
     <div className="site-footer-inner">
       <div className="site-footer-welcome">
-        <div>
+        <div className="site-footer-intro">
           <Link to="/" className="site-footer-brand">
             <img src="/img/citavuk_icon.webp" srcSet="/img/citavuk_icon.webp 1x, /img/citavuk_icon@2x.webp 2x" width={44} height={44} alt="" />
             <span>Читавук</span>
           </Link>
-          <p>Читай. Слушай. Говори.<br /><span>Сербский становится ближе с каждым днём.</span></p>
+          <p className="site-footer-headline">Ещё одна страница.<br /><em>И Сербия чуть ближе.</em></p>
+          <p className="site-footer-caption">Выбирай историю, собирай слова и возвращайся за новым открытием.</p>
+          <Link to="/downloads" className="site-footer-download"><LuDownload aria-hidden /> Возьми Читавука с собой</Link>
         </div>
-        <Link to="/downloads" className="site-footer-download"><LuDownload aria-hidden /> Возьми Читавука с собой</Link>
+        <div className="site-footer-scene">
+          <div className="site-footer-postcards">
+            <Link to="/public-library" className="footer-postcard footer-postcard-book" aria-label="Открыть публичную библиотеку">
+              <img src="/personal/decor/ravanica-medallion.png" alt="" loading="lazy" />
+              <span>Истории<br /><b>ждут тебя</b></span>
+            </Link>
+            <Link to="/personal" className="footer-postcard footer-postcard-deck" aria-label="Открыть колоду сербского">
+              <img className="footer-card-art" src="/personal/months/09.webp" alt="" loading="lazy" />
+              <img className="footer-card-frame" src="/personal/decor/engraved-frame.png" alt="" loading="lazy" />
+              <span>Твоя колода<br /><b>сербского</b></span>
+            </Link>
+          </div>
+          <img className="site-footer-wolf" src="/img/citavuk_zdravo.webp" srcSet="/img/citavuk_zdravo.webp 1x, /img/citavuk_zdravo@2x.webp 2x" alt="Читавук машет тебе лапой" loading="lazy" width={240} height={240} />
+          <span className="footer-scene-note">До новой встречи!</span>
+        </div>
       </div>
       <div className="site-footer-columns">
         {COLUMNS.map(({title, icon: Icon, links}) => <nav key={title} aria-label={`Внизу страницы: ${title}`}>
