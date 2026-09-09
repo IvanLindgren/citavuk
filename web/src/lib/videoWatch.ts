@@ -7,6 +7,8 @@ export class VideoWatch {
   private finished = false;
   private failed = false;
   playing(now: number) {
+    // YouTube может восстановить воспроизведение после временного отказа.
+    this.failed = false;
     if (this.started === null && !this.finished) this.started = now;
   }
   pause(now: number) {

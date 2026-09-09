@@ -12,7 +12,7 @@ const browser=await puppeteer.launch({headless:true});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 try {
  for(const [width,height,signed] of [[1440,940,true],[390,844,true],[360,740,false]]){
-  const page=await browser.newPage();const errors=[],events=[],queries=[];let comments=[],failReaction=false;
+  const page=await browser.newPage();const errors=[],events=[],queries=[],dailyCalls=[];let comments=[],failReaction=false;
   const fixtures=Array.from({length:18},(_,n)=>({id:`00000000-0000-4000-8000-${String(n+1).padStart(12,'0')}`,kind:'video',videoId:`testvideo${String(n).padStart(2,'0')}`,videoDuration:30,sourceTitle:n%2?'Ozbiljne Teme':'N1 Srbija',sourceUrl:'https://www.youtube.com/watch?v=testvideo00',titleLatin:`${n+1}. Kako izgleda život u Srbiji: male priče iz Beograda`,titleCyrillic:'Живот у Србији',cefr:'A2',category:'culture',tags:['culture'],reaction:0,likesCount:0,commentsCount:0}));
   await page.setViewport({width,height,hasTouch:width<500,isMobile:width<500});
   page.on('pageerror',e=>{errors.push(e.message);console.log('PAGE ERROR',e.stack);});
@@ -40,7 +40,7 @@ try {
      else body={items:comments};
     }else if(u.pathname==='/v1/micro-feed/preferences')body={categories:JSON.parse(r.postData()).categories,cefr:'A2',onboarded:true,levelFromAccount:signed};
     else if(u.pathname.includes('/sync/'))body={books:[],vocabulary:[],reviews:[],palaces:[],changes:[],cursor:0,hasMore:false};
-    else if(u.pathname==='/v1/daily')body={enabled:false,set:null,themes:[],configured:true,progress:{streak:0,dueNow:0,faded:[]}};
+    else if(u.pathname.startsWith('/v1/daily')){dailyCalls.push(u.pathname);body={enabled:false,set:null,themes:[],available:[],level:'A2',configured:true,progress:{streak:0,dueNow:0,faded:[]}};}
     else if(u.pathname==='/v1/study')body={timezone:'UTC',today:'2026-09-09',days:[],freezes:2};
     await r.respond({status,contentType:'application/json',body:body===null?'':JSON.stringify(body)});
    }else if(u.href==='https://www.youtube.com/iframe_api'){
@@ -94,7 +94,7 @@ try {
   try { await page.waitForFunction(id=>document.querySelector('.feed-video-card')?.dataset.videoId===id,{timeout:5000},first); }
   catch(e){console.log('BACK DEBUG',first,await page.evaluate(()=>({active:document.activeElement?.outerHTML.slice(0,500),video:document.querySelector('.feed-video-card')?.dataset.videoId,dialogs:document.querySelectorAll('[role=dialog]').length,context:document.querySelector('.video-feed-context')?.textContent})));throw e;}
   assert.equal(await page.$$eval('.feed-video-screen iframe',e=>e.length),1);
-  assert.deepEqual(errors,[]);console.log(`OK ${width}: ${signed?'cookie без guest-token':'гость'}, жесты, клавиатура, реакции, рекомендации, обсуждение, пауза, настройки`);
+  assert.deepEqual(errors,[]);assert.deepEqual(dailyCalls,[],'Окно дня вмешалось в видеоленту');console.log(`OK ${width}: ${signed?'cookie без guest-token':'гость'}, жесты, клавиатура, реакции, рекомендации, обсуждение, пауза, настройки, без прерывающего промо`);
   await page.close();
  }
  console.log(out);

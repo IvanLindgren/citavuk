@@ -17,6 +17,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
   const frame = useRef<HTMLIFrameElement>(null);
   const [state, setState] = useState(-1);
   const [error, setError] = useState('');
+  const [playbackError, setPlaybackError] = useState(false);
   const [nativeControls, setNativeControls] = useState(false);
   const [reactionBusy, setReactionBusy] = useState(false);
   const reacting = useRef(false);
@@ -45,10 +46,11 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
       if (typeof e.data.duration === 'number' && Number.isFinite(e.data.duration) && e.data.duration > 0) duration.current = e.data.duration;
       if (typeof e.data.state !== 'number') return;
       const next = e.data.state; setState(next);
+      if (next === 1) setPlaybackError(false);
       if (next === 1 && !document.hidden && !live.current.paused) tracker.playing(performance.now());
       else tracker.pause(performance.now());
       if (next === 1 && (document.hidden || live.current.paused)) send('pause');
-      if (next === -2) { tracker.fail(performance.now()); setError('Этот ролик не воспроизводится. Открой его на YouTube или листай дальше.'); }
+      if (next === -2) { tracker.fail(performance.now()); setPlaybackError(true); }
     };
     const visibility = () => {
       if (document.hidden) { tracker.pause(performance.now()); send('pause'); }
@@ -99,7 +101,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
     <div className="feed-video-controls" data-no-swipe>
       <button type="button" aria-label={state === 1 ? 'Пауза' : 'Воспроизвести'} onClick={() => send(state === 1 ? 'pause' : 'play')} disabled={paused}>{state === 1 ? <LuPause /> : <LuPlay />}</button>
       <button type="button" aria-label={muted ? 'Включить звук' : 'Выключить звук'} aria-pressed={!muted} onClick={() => onMuted(!muted)}>{muted ? <LuVolumeX /> : <LuVolume2 />}</button>
-      <span>{state === -1 ? 'Загружаем видео…' : state === 5 ? 'Нажми воспроизвести' : `Сербская речь · ${Math.floor((item.videoDuration ?? 0) / 60)}:${String((item.videoDuration ?? 0) % 60).padStart(2, '0')}`}</span>
+      <span>{playbackError ? 'YouTube не воспроизводит ролик' : state === -1 ? 'Загружаем видео…' : state === 5 ? 'Нажми воспроизвести' : `Сербская речь · ${Math.floor((item.videoDuration ?? 0) / 60)}:${String((item.videoDuration ?? 0) % 60).padStart(2, '0')}`}</span>
       <button type="button" aria-label="Управление YouTube" title="Все кнопки YouTube, без перехвата жестов" aria-pressed={nativeControls} onClick={() => setNativeControls(!nativeControls)}><LuSettings2 /></button>
     </div>
     <div className="feed-video-caption">
@@ -112,5 +114,6 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
       <button type="button" aria-label="Меньше такого" aria-pressed={item.reaction === -1} disabled={reactionBusy} onClick={() => void react(-1)}><LuThumbsDown /><span>Не моё</span></button>
     </div>
     {error && <p className="feed-video-error" role="alert">{error}</p>}
+    {playbackError && <p className="feed-video-error" role="status">Этот ролик не воспроизводится. Открой его на YouTube или листай дальше.</p>}
   </article>;
 }

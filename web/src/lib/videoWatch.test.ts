@@ -19,6 +19,10 @@ describe('video watch signals', () => {
       expect(watch.finish(ms,30).map(e=>e.event)).toEqual(expected);
     }
   });
+  it('accepts playback recovered after a temporary player error', () => {
+    const watch = new VideoWatch(); watch.fail(0); watch.playing(1000);
+    expect(watch.finish(26000,30).map(e=>e.event)).toEqual(['view','complete']);
+  });
 });
 it('only intentional vertical swipes change videos', () => {
   expect(videoSwipe(4,-90)).toBe(1); expect(videoSwipe(4,90)).toBe(-1);
