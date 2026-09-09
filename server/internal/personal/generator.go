@@ -33,7 +33,7 @@ func (g *Generator) request(ctx context.Context, instruction string, input any, 
 	if err != nil {
 		return err
 	}
-	body, _ := json.Marshal(map[string]any{"model": Model, "messages": []map[string]string{{"role": "system", "content": teacher + "\n" + instruction}, {"role": "user", "content": string(data)}}, "max_tokens": 6500, "temperature": 0.6, "response_format": map[string]string{"type": "json_object"}})
+	body, _ := json.Marshal(map[string]any{"model": Model, "messages": []map[string]string{{"role": "system", "content": teacher + "\n" + instruction}, {"role": "user", "content": string(data)}}, "max_tokens": 6500, "temperature": 0.6, "reasoning": map[string]bool{"enabled": false}, "response_format": map[string]string{"type": "json_object"}})
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, g.url, bytes.NewReader(body))
 	if err != nil {
 		return err

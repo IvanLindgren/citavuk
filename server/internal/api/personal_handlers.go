@@ -318,6 +318,7 @@ func (s *Server) generatePersonalContent(ctx context.Context, job *store.Persona
 		started := time.Now()
 		lesson, err := s.personal.Lesson(ctx, job.Profile, job.Outline, day, job.Feedback)
 		if err != nil {
+			slog.Warn("карта урока не составлена", "plan", job.ID, "day", day, "model", personal.Model, "seconds", int(time.Since(started).Seconds()), "err", err)
 			return err
 		}
 		if err := s.store.SavePersonalGenerated(ctx, job, day, lesson); err != nil {
