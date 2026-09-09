@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import '../widgets/linux_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/micro_feed.dart';
@@ -205,7 +207,9 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                       '${item.sourceTitle} · ${item.cefr} · ${item.videoDuration} сек.'),
                   const SizedBox(height: 12),
                   Expanded(
-                      child: widget.active && _foreground
+                      child: !kIsWeb && defaultTargetPlatform == TargetPlatform.linux
+                          ? LinuxVideoPlayer(item: item, active: widget.active)
+                          : widget.active && _foreground
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(18),
                               child: InAppWebView(

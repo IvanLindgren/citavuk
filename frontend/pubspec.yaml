@@ -61,6 +61,7 @@ dependencies:
   # web/scripts/export-palace.tsx, поэтому картинка и координаты предметов
   # получены из одного источника и не могут разойтись.
   flutter_svg: ^2.0.10
+  desktop_webview_window: 0.3.0
   desktop_drop: ^0.7.1
   # Чтение файла по пути одинаково на всех платформах, включая веб, где dart:io
   # нет. Приходил транзитивно с desktop_drop; объявлен явно, потому что
@@ -81,6 +82,8 @@ dependencies:
 # path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
 # под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
 dependency_overrides:
+  flutter_inappwebview_linux:
+    path: third_party/flutter_inappwebview_linux
   # Официальный Windows-плагин требует ATL (atlstr.h), которого нет в
   # установленной Visual Studio. Локальная копия сохраняет BCrypt-шифрование,
   # но использует Win32 UTF-8 conversion без ATL.

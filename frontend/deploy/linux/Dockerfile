@@ -40,14 +40,6 @@ COPY --chown=builder:builder pubspec.yaml pubspec.lock ./
 COPY --chown=builder:builder third_party/ third_party/
 RUN flutter pub get
 
-# Видеоплеер использует DOWNLOAD_EXTRACT_TIMESTAMP (CMake >= 3.24).
-# Сохраняем glibc Ubuntu 22.04; обновляем только инструмент сборки.
-USER root
-RUN apt-get update && apt-get install -y --no-install-recommends python3-pip \
-    && python3 -m pip install --no-cache-dir cmake==3.31.10 \
-    && rm -rf /var/lib/apt/lists/*
-USER builder
-
 COPY --chown=builder:builder . .
 
 # Ключ карты Путешествия. Он клиентский и всё равно уезжает в сборку, но в

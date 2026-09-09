@@ -35,7 +35,7 @@ Debian, Ubuntu и производные:
 
     sudo apt install libgtk-3-0 libgstreamer1.0-0 \
         gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-libav \
-        libwebkit2gtk-4.1-0 libwpewebkit-1.0-3 libwpebackend-fdo-1.0-1 libwpe-1.0-1
+        libwebkit2gtk-4.1-0
 
 Fedora:
 

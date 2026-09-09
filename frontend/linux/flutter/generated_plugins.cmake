@@ -7,7 +7,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_drop
   desktop_webview_window
   file_selector_linux
-  flutter_inappwebview_linux
   flutter_secure_storage_linux
   flutter_timezone
   url_launcher_linux

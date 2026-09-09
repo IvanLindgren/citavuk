@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'package:desktop_webview_window/desktop_webview_window.dart';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
@@ -71,8 +72,12 @@ import 'utils/short_text.dart';
 
 part 'screens/dashboard_screen.dart';
 
-Future<void> main() async {
+Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux &&
+      args.length > 1 && runWebViewTitleBarWidget(args)) {
+    return;
+  }
   // Контент под системными панелями: на Android иначе остаётся серая полоса
   // навигации, из-за которой приложение выглядит старым.
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
