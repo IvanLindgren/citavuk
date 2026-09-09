@@ -4,6 +4,8 @@ import {lessonSuit} from '../components/PlayingCardFrame';
 import {PersonalPlayingCard} from '../components/PersonalPlayingCard';
 import {allowNavigation} from '../lib/router';
 import {toggleAnswer} from '../personal/answers';
+import {LessonArt, LessonEmblem} from '../components/LessonDecoration';
+import {Ornament} from '../components/Ornament';
 import {
   LuArrowLeft,
   LuPencil,
@@ -27,6 +29,7 @@ import { Link } from "../lib/router";
 import { useAuth } from "../state/auth";
 import { PersonalEditor } from "./PersonalEditor";
 import "./personal.css";
+import "./personal-lesson.css";
 
 const kinds: Record<string, string> = {
   reading: "Чтение",
@@ -437,27 +440,44 @@ function Lesson({
           />
         ) : (
           <>
-            <header>
+            <header className="lesson-hero">
+              <div className="lesson-hero-copy">
               <div className="lesson-identity"><span className="lesson-rank"><span aria-hidden>{lessonSuit(c.kind)}</span> Карта {day}</span><span className="lesson-kind">{kinds[c.kind]}</span></div>
               <h1>{c.title}</h1>
               <p className="lesson-theme">{c.theme}</p>
-              <Button variant="ghost" onClick={() => setEdit(true)}>
+              <div className="lesson-facts"><span>Уровень <b>{plan.profile.level}</b></span><span>Заданий <b>{c.exercises.length}</b></span><span>Правил <b>{c.rules.length}</b></span></div>
+              <Button className="lesson-edit-button" variant="ghost" onClick={() => setEdit(true)}>
                 <LuPencil /> Изменить свой урок
               </Button>
               {lesson.edited && <small>С твоими правками</small>}
+              </div>
+              <LessonEmblem />
+              <div className="lesson-kilim"><Ornament animated={false} count={19} /></div>
             </header>
-            <article className="personal-panel">
+            <nav className="lesson-chapters" aria-label="Разделы урока">
+              <a href="#lesson-text"><LessonArt name="open-book" /><span><small>01</small>Материал</span></a>
+              <a href="#lesson-rules"><LessonArt name="quill-ink" /><span><small>02</small>Правила</span></a>
+              <a href="#lesson-scheme"><LessonArt name="cog" /><span><small>03</small>Схема</span></a>
+              <a href="#lesson-practice"><LessonArt name="crossed-swords" /><span><small>04</small>Практика</span></a>
+            </nav>
+            <article className="lesson-manuscript">
+              <section className="personal-panel lesson-paper" id="lesson-text" aria-labelledby="lesson-text-heading">
+              <header className="lesson-section-heading"><LessonArt name="open-book" /><div><span>Читаем и замечаем</span><h2 id="lesson-text-heading">Материал урока</h2></div></header>
               {c.kind==='listening'&&<PersonalAudio key={`${lesson.revision}:${day}`} text={c.text}/>}
               <div className="personal-prose">{c.text}</div>
-              <h2>Разберёмся</h2>
-              <ul>
+              </section>
+              <section className="personal-panel lesson-rules-panel" id="lesson-rules" aria-labelledby="lesson-rules-heading">
+              <header className="lesson-section-heading"><LessonArt name="quill-ink" /><div><span>На полях тетради</span><h2 id="lesson-rules-heading">Разберёмся</h2></div></header>
+              <ol className="lesson-rules-list">
                 {c.rules.map((r, i) => (
-                  <li key={i}>{r}</li>
+                  <li key={i}><span className="lesson-rule-number" aria-hidden>{String(i + 1).padStart(2, '0')}</span><p>{r}</p></li>
                 ))}
-              </ul>
-              <h2>{c.scheme.title}</h2>
+              </ol>
+              </section>
+              <section className="personal-panel lesson-scheme-panel" id="lesson-scheme" aria-labelledby="lesson-scheme-heading">
+              <header className="lesson-section-heading"><LessonArt name="clockwork" /><div><span>Собираем всё вместе</span><h2 id="lesson-scheme-heading">{c.scheme.title}</h2></div></header>
               <div className="personal-table">
-                <table>
+                <table aria-labelledby="lesson-scheme-heading">
                   <thead>
                     <tr>
                       {c.scheme.columns.map((v, i) => (
@@ -476,9 +496,10 @@ function Lesson({
                   </tbody>
                 </table>
               </div>
+              </section>
             </article>
             <form
-              className="personal-panel"
+              className="personal-panel lesson-practice" id="lesson-practice"
               onSubmit={(e) => {
                 e.preventDefault();
                 void act(async () => {
@@ -493,11 +514,12 @@ function Lesson({
                 });
               }}
             >
-              <h2>Попробуй сам</h2>
+              <header className="lesson-practice-heading"><LessonArt name="crossed-swords" /><div><span>Время применить знания</span><h2>Попробуй сам</h2></div><span className="lesson-answer-count" aria-live="polite">{answers.filter(a => a.trim()).length} / {c.exercises.length}</span></header>
+              <progress aria-label="Заполнено заданий" max={c.exercises.length} value={answers.filter(a => a.trim()).length} />
               {c.exercises.map((ex, i) => (
-                <fieldset key={i}>
+                <fieldset className={`lesson-exercise ${answers[i]?.trim() ? 'has-answer' : ''}`} key={i} disabled={busy || !!result}>
                   <legend>
-                    {i + 1}. {ex.question}
+                    <span className="lesson-exercise-number">{String(i + 1).padStart(2, '0')}</span>{ex.question}
                   </legend>
                   {ex.kind === "choice" ? (
                     ex.options?.map((o) => (
@@ -539,20 +561,21 @@ function Lesson({
                     </details>
                   )}
                   {result && (
-                    <p>
+                    <p className="lesson-example-answer">
                       Образец ответа: <strong lang="sr">{ex.answer}</strong>
                     </p>
                   )}
                 </fieldset>
               ))}
-              <Button
+              <div className="lesson-submit-row"><p>{result ? 'Результат сохранён' : 'Ответь на все задания, чтобы завершить урок.'}</p><Button
                 disabled={busy || answers.some((a) => !a.trim()) || !!result}
               >
                 Завершить урок
-              </Button>
+              </Button></div>
             </form>
             {(result || lesson.completedAt) && (
-              <section className="personal-panel" role="status">
+              <section className="personal-panel lesson-completed" role="status">
+                <LessonArt name="visored-helm" />
                 <h2>
                   Урок пройден: {result?.score ?? lesson.score} из{" "}
                   {result?.total ?? lesson.total}
@@ -585,6 +608,7 @@ function Lesson({
                 </div>
               </section>
             )}
+            <details className="lesson-art-credits"><summary>Художники и детали оформления</summary><p>Мечи, шлем, книга, перо и часовые механизмы: <a href="https://game-icons.net/" target="_blank" rel="noreferrer">Lorc / Game-icons.net</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Цвет и композиция адаптированы для Читавука. Медальон Раваницы: Tadija, Antonu, public domain. Гравированная рамка: johnny_automatic, CC0. <a href="/personal/lesson-art/CREDITS.txt" target="_blank" rel="noreferrer">Все источники</a>.</p></details>
           </>
         ))}
     </main>

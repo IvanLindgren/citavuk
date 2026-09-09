@@ -1,0 +1,27 @@
+Lesson decoration assets for Citavuk. Downloaded 2026-09-09.
+
+Game-icons.net illustrations by Lorc (https://lorcblog.blogspot.com/),
+licensed under Creative Commons Attribution 3.0 Unported (CC BY 3.0).
+License: https://creativecommons.org/licenses/by/3.0/
+Files: cog.svg, clockwork.svg, crossed-swords.svg, visored-helm.svg,
+quill-ink.svg, open-book.svg. Original SVG files are unmodified;
+Citavuk applies CSS masks, brass/red colours, sizing and a composed emblem.
+Sources:
+https://game-icons.net/1x1/lorc/cog.html
+https://game-icons.net/1x1/lorc/clockwork.html
+https://game-icons.net/1x1/lorc/crossed-swords.html
+https://game-icons.net/1x1/lorc/visored-helm.html
+https://game-icons.net/1x1/lorc/quill-ink.html
+https://game-icons.net/1x1/lorc/open-book.html
+
+Existing decorations (see /personal/decor/CREDITS.md):
+Ravanica medallion: Spomenik Kulture.svg by Tadija, Antonu, Public Domain Mark.
+https://commons.wikimedia.org/wiki/File:Spomenik_Kulture.svg
+Engraved frame: johnny_automatic, Powers Theater Program 1900-1901, CC0.
+https://openclipart.org/detail/201536/ornate-frame
+
+Pinterest visual references, not copied into runtime:
+https://it.pinterest.com/pin/290411875955867701/ (medieval Serbian rosette)
+https://ch.pinterest.com/pin/860398703849713501/ (Serbian fresco ornaments)
+The lesson style is a modern decorative interpretation, not a reconstruction
+of historical Serbian armour or a religious/official endorsement.

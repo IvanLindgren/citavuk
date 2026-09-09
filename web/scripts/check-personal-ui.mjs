@@ -47,6 +47,16 @@ try{
   mode='deck';await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('.personal-card.is-open');
   await page.click('.personal-card.is-open');await page.waitForSelector('.personal-prose');
   await page.screenshot({path:path.join(out,`lesson-${width}.png`)});
+  await page.evaluate(()=>{document.querySelector('.lesson-hero h1').textContent='Падежи: именительный и родительный';});
+  await page.screenshot({path:path.join(out,`lesson-long-title-${width}.png`)});
+  await page.click('.lesson-chapters a[href="#lesson-practice"]');
+  await page.waitForSelector('.lesson-exercise input');
+  await page.type('.lesson-exercise input','Tražim knjigu');
+  if(await page.$eval('.lesson-answer-count',el=>el.textContent)!=='1 / 4')throw new Error('Не обновился счётчик ответов');
+  await page.screenshot({path:path.join(out,`lesson-practice-${width}.png`)});
+  await page.evaluate(()=>document.documentElement.classList.add('dark'));
+  await page.screenshot({path:path.join(out,`lesson-practice-dark-${width}.png`)});
+  await page.evaluate(()=>document.documentElement.classList.remove('dark'));
   if(!await page.$('audio'))throw new Error('Нет озвучки listening');
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
   if(overflow)throw new Error(`Горизонтальный overflow ${width}`);
