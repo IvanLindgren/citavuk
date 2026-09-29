@@ -150,7 +150,7 @@ function TeacherWorkspace({ lessons }: { lessons: Lesson[] }) {
     <><ProfileEditor/><section className="mt-10 border-t border-[var(--line)] pt-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div><h2 className="text-2xl">Мои уроки</h2><p className="mt-1 text-sm text-[var(--text-muted)]">{lessons.length || 'Пока ни одного'}</p></div>
-        <Link to="/teachers/lessons/new" className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 font-semibold text-white"><LuFilePlus2 /> Новый урок</Link>
+        <Link to="/teachers/lessons/new" className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 font-semibold text-parchment"><LuFilePlus2 /> Новый урок</Link>
       </div>
       {lessons.length === 0 ? (
         <div className="mt-12 max-w-xl text-center"><LuBookOpen className="mx-auto size-10 text-[var(--accent)]" /><h3 className="mt-4 text-xl">Начните с небольшого урока</h3><p className="mt-2 text-[var(--text-muted)]">Одна тема, несколько примеров и короткая практика.</p></div>

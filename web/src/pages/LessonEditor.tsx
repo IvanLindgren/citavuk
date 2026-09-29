@@ -218,7 +218,7 @@ export function LessonEditor() {
           <ActionButton title="Сохранить" onClick={() => void save()} disabled={busy}><LuSave /><span className="hidden sm:inline">Сохранить</span></ActionButton>
           {lesson && <ActionButton title="Удалить урок" onClick={() => void removeLesson()} disabled={busy}><LuTrash2 /></ActionButton>}
           <ActionButton title="Опубликовать по ссылке" onClick={() => void publish('unlisted')} disabled={busy}><LuUpload /><span className="hidden lg:inline">По ссылке</span></ActionButton>
-          <button type="button" title="Отправить в каталог" aria-label="Отправить в каталог" onClick={() => void publish('public')} disabled={busy} className="inline-flex h-10 items-center gap-2 rounded-md bg-[var(--accent)] px-4 font-semibold text-white hover:bg-[var(--accent-hover)] disabled:opacity-50"><LuSend /><span className="hidden sm:inline">В каталог</span></button>
+          <button type="button" title="Отправить в каталог" aria-label="Отправить в каталог" onClick={() => void publish('public')} disabled={busy} className="inline-flex h-10 items-center gap-2 rounded-md bg-[var(--accent)] px-4 font-semibold text-parchment hover:bg-[var(--accent-hover)] disabled:opacity-50"><LuSend /><span className="hidden sm:inline">В каталог</span></button>
         </div>
       </div>
 

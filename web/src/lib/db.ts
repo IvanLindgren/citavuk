@@ -15,7 +15,7 @@ const DB_PREFIX = 'citavuk';
 // Прежняя общая БД остаётся гостевой: старые книги видны после выхода, но
 // больше никогда не отправляются в учётную запись автоматически.
 const GUEST_DB_NAME = DB_PREFIX;
-const DB_VERSION = 4;
+const DB_VERSION = 7;
 
 export const STORE_BOOKS = 'books';
 export const STORE_CONTENT = 'content';
@@ -23,6 +23,10 @@ export const STORE_META = 'meta';
 export const STORE_VOCABULARY = 'vocabulary';
 export const STORE_REVIEWS = 'reviews';
 export const STORE_PALACES = 'palaces';
+export const STORE_AUDIO_FILES = 'audioFiles';
+export const STORE_AUDIO_BLOBS = 'audioBlobs';
+export const STORE_AUDIO_TRANSCRIPTS = 'audioTranscripts';
+export const STORE_QUOTES = 'readerQuotes';
 
 let connection: Promise<IDBDatabase> | null = null;
 let activeName = GUEST_DB_NAME;
@@ -30,8 +34,17 @@ let activeName = GUEST_DB_NAME;
 function openNamed(name: string): Promise<IDBDatabase> {
   return new Promise<IDBDatabase>((resolve, reject) => {
     const request = indexedDB.open(name, DB_VERSION);
+    let finished = false;
+    const fail = (error: Error) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      reject(error);
+    };
+    const timer = setTimeout(() => fail(new Error('Хранилище браузера не отвечает. Закрой другие вкладки Читавука и попробуй снова.')), 12_000);
 
     request.onupgradeneeded = () => {
+      if (finished) { request.transaction?.abort(); return; }
       const db = request.result;
       const upgrade = request.transaction;
       if (!db.objectStoreNames.contains(STORE_BOOKS)) {
@@ -66,9 +79,40 @@ function openNamed(name: string): Promise<IDBDatabase> {
           };
         }
       }
+      if (!db.objectStoreNames.contains(STORE_AUDIO_FILES)) {
+        db.createObjectStore(STORE_AUDIO_FILES, { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains(STORE_AUDIO_BLOBS)) {
+        db.createObjectStore(STORE_AUDIO_BLOBS, { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains(STORE_AUDIO_TRANSCRIPTS)) {
+        db.createObjectStore(STORE_AUDIO_TRANSCRIPTS, { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains(STORE_QUOTES)) {
+        const quotes = db.createObjectStore(STORE_QUOTES, { keyPath: 'id' });
+        quotes.createIndex('bookId', 'bookId');
+        quotes.createIndex('dirty', 'dirty');
+      } else if (upgrade) {
+        const quotes = upgrade.objectStore(STORE_QUOTES);
+        if (!quotes.indexNames.contains('dirty')) {
+          quotes.createIndex('dirty', 'dirty');
+          const cursorRequest = quotes.openCursor();
+          cursorRequest.onsuccess = () => {
+            const cursor = cursorRequest.result;
+            if (!cursor) return;
+            const item = cursor.value as Record<string, unknown>;
+            cursor.update({ ...item, deleted: item.deleted ?? 0,
+              dirty: item.dirty ?? 1, updatedAt: item.updatedAt ?? Date.now() });
+            cursor.continue();
+          };
+        }
+      }
     };
     request.onsuccess = () => {
       const db = request.result;
+      if (finished) { db.close(); return; }
+      finished = true;
+      clearTimeout(timer);
       db.onversionchange = () => {
         db.close();
         if (activeName === name) connection = null;
@@ -76,21 +120,22 @@ function openNamed(name: string): Promise<IDBDatabase> {
       db.onclose = () => { if (activeName === name) connection = null; };
       resolve(db);
     };
-    request.onerror = () => reject(request.error ?? new Error('Не удалось открыть хранилище браузера.'));
-    request.onblocked = () => reject(new Error('Хранилище занято другой вкладкой Читавука.'));
+    request.onerror = () => fail(request.error ?? new Error('Не удалось открыть хранилище браузера.'));
+    request.onblocked = () => fail(new Error('Хранилище занято другой вкладкой Читавука.'));
   });
 }
 
 function open(): Promise<IDBDatabase> {
   if (connection) return connection;
-  connection = openNamed(activeName);
+  const pending = openNamed(activeName);
+  connection = pending;
 
   // Неудачную попытку не кешируем: следующий вызов должен попробовать снова.
-  connection.catch(() => {
-    connection = null;
+  pending.catch(() => {
+    if (connection === pending) connection = null;
   });
 
-  return connection;
+  return pending;
 }
 
 /** Переключает все локальные данные на отдельное хранилище аккаунта. */
@@ -99,8 +144,8 @@ export async function activateAccountStorage(userId: string): Promise<void> {
   if (next === activeName) return;
   const current = connection;
   connection = null;
-  if (current) (await current).close();
   activeName = next;
+  if (current) void current.then(db => db.close(), () => {});
   await open();
 }
 
@@ -117,8 +162,8 @@ export async function activateGuestStorage(): Promise<void> {
   if (activeName === GUEST_DB_NAME) return;
   const current = connection;
   connection = null;
-  if (current) (await current).close();
   activeName = GUEST_DB_NAME;
+  if (current) void current.then(db => db.close(), () => {});
   await open();
 }
 
@@ -154,7 +199,7 @@ export async function tx<T>(
       const error = transaction.error;
       reject(
         error?.name === 'QuotaExceededError'
-          ? new Error('В браузере закончилось место. Удалите часть книг.')
+          ? new Error('В браузере закончилось место. Удалите часть книг или аудиофайлов.')
           : (error ?? new Error('Транзакция отменена.')),
       );
     };

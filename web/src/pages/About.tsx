@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Card, Reveal } from '../components/ui';
+import { Link } from '../lib/router';
 import { useSeo } from '../lib/seo';
 
 /**
@@ -12,7 +13,6 @@ import { useSeo } from '../lib/seo';
 
 const PHOTO = '/img/denis.webp';
 const REPO = 'https://github.com/IvanLindgren/citavuk';
-const FUND_URL = 'https://yoomoney.ru/fundraise/1JBLJQ46SFR.260730';
 
 const CONTACTS = [
   { label: 'Телеграм', value: '@ivanlindgren', href: 'https://t.me/ivanlindgren' },
@@ -99,18 +99,20 @@ export function About() {
           <Card className="mt-5 border-[var(--accent)]/35 p-6 sm:p-8">
             <h2 className="text-2xl">Читавук остаётся бесплатным</h2>
             <p className="mt-3 leading-relaxed text-[var(--text-muted)]">
-              Сервер, API и выпуск приложений требуют регулярных расходов.
-              Поддержка пользователей ускорит выход Читавука на iOS и macOS и
-              поможет развивать бесплатные функции.
+              Сервер, перевод и выпуск приложений требуют регулярных расходов.
+              Поддержка читателей ускорит выход Читавука на iOS и macOS, а имена
+              поддержавших я с благодарностью показываю на{' '}
+              <Link to="/supporters" className="font-semibold text-[var(--accent)] underline underline-offset-2">
+                странице друзей проекта
+              </Link>
+              .
             </p>
-            <a
-              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
-              href={FUND_URL}
-              target="_blank"
-              rel="noreferrer noopener"
+            <Link
+              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
+              to="/support"
             >
-              Поддержать развитие Читавука
-            </a>
+              Поддержать Читавук
+            </Link>
           </Card>
         </Reveal>
 

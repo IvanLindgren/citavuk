@@ -211,7 +211,7 @@ export function FeedComments({
                 type="submit"
                 disabled={sending || draft.trim() === '' || left < 0}
                 aria-label="Отправить"
-                className="mb-6 grid size-11 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-white transition-colors hover:bg-[var(--accent-hover)] disabled:opacity-40"
+                className="mb-6 grid size-11 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-parchment transition-colors hover:bg-[var(--accent-hover)] disabled:opacity-40"
               >
                 {sending ? <Spinner className="size-4" /> : <LuSend className="size-5" />}
               </button>

@@ -23,6 +23,7 @@ import { isHardToHear } from '../listening/language';
 import type { AudioCue, AudioLesson } from '../listening/types';
 import { tokenize, type Token } from '../lib/tokenize';
 import { Link, useParams } from '../lib/router';
+import { LuExternalLink } from 'react-icons/lu';
 
 type LoadState =
   | { kind: 'loading' }
@@ -254,9 +255,19 @@ export function ListeningPlayer() {
             <h1 className="mt-2 text-2xl sm:text-3xl">{state.lesson.title}</h1>
             <p className="mt-1 text-sm text-[var(--text-muted)]">{state.lesson.subtitle}</p>
           </div>
-          <span className="rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold text-white">
+          <span className="rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold text-parchment">
             АУДИО
           </span>
+          {state.lesson.external_url && (
+            <a
+              href={state.lesson.external_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden items-center gap-1 rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-semibold text-[var(--accent)] hover:bg-[var(--bg-sunken)] sm:flex"
+            >
+              Полная книга <LuExternalLink className="size-3.5" />
+            </a>
+          )}
         </div>
       </section>
 
@@ -379,7 +390,7 @@ function KaraokeCue({
         className={[
           'mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full transition-colors',
           current
-            ? 'bg-[var(--accent)] text-white'
+            ? 'bg-[var(--accent)] text-parchment'
             : 'text-[var(--text-muted)] hover:bg-[var(--accent)]/15 hover:text-[var(--accent)]',
         ].join(' ')}
       >
@@ -407,7 +418,7 @@ function KaraokeCue({
               className={[
                 'rounded px-0.5 transition-colors',
                 hard ? 'font-bold text-[var(--accent)] underline decoration-[var(--accent)]/35 decoration-2 underline-offset-4' : '',
-                active ? 'bg-[var(--accent)] text-white no-underline' : 'hover:bg-gold/30',
+                active ? 'bg-[var(--accent)] text-parchment no-underline' : 'hover:bg-gold/30',
               ].join(' ')}
             >
               {token.text}
@@ -451,7 +462,7 @@ function PlayerControls({
             type="button"
             onClick={onToggle}
             aria-label={playing ? 'Пауза' : 'Слушать'}
-            className="flex size-14 items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-[0_4px_0_0_color-mix(in_srgb,var(--accent)_55%,black)] active:translate-y-1 active:shadow-none"
+            className="flex size-14 items-center justify-center rounded-full bg-[var(--accent)] text-parchment shadow-[0_4px_0_0_color-mix(in_srgb,var(--accent)_55%,black)] active:translate-y-1 active:shadow-none"
           >
             {playing ? <PauseIcon /> : <PlayIcon />}
           </button>
@@ -473,7 +484,7 @@ function PlayerControls({
               className={[
                 'min-w-12 rounded-lg px-2.5 py-2 text-sm font-bold transition-colors',
                 speed === value
-                  ? 'bg-[var(--accent)] text-white'
+                  ? 'bg-[var(--accent)] text-parchment'
                   : 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]',
               ].join(' ')}
             >

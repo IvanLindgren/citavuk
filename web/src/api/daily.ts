@@ -101,7 +101,7 @@ export function saveDailySettings(settings: {
 
 /** Текст пишет модель, поэтому ждём дольше обычного запроса. */
 export function composeDailyLesson(): Promise<{ lesson: DailyLesson }> {
-  return request('/v1/daily/lesson', { method: 'POST', timeoutMs: 75_000 });
+  return request('/v1/daily/lesson', { method: 'POST', timeoutMs: 210_000 });
 }
 
 export function markDailyLearned(lemma: string): Promise<{ learned: string[] }> {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IconType } from 'react-icons';
 import {
   LuBookOpen, LuChartNoAxesColumn, LuCircleAlert, LuGauge, LuGraduationCap,
-  LuKeyRound, LuMap, LuMegaphone, LuNewspaper, LuSwords, LuUsers,
+  LuHeartHandshake, LuKeyRound, LuLibrary, LuMap, LuMegaphone, LuNewspaper, LuSwords, LuUsers,
 } from 'react-icons/lu';
 
 import {
@@ -34,6 +34,8 @@ import {
 } from '../api/lessons';
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
 import { AdminAnnouncementsPanel } from '../components/AdminAnnouncementsPanel';
+import { AdminDonationsPanel } from '../components/AdminDonationsPanel';
+import { AdminSupporterLibraryPanel } from '../components/AdminSupporterLibraryPanel';
 import { AdminMicroFeedPanel } from '../components/AdminMicroFeedPanel';
 import {AdminVideos} from '../components/AdminVideos';
 import { AdminRoadmapPanel } from '../components/AdminRoadmapPanel';
@@ -43,8 +45,8 @@ import { useAuth } from '../state/auth';
 
 type AdminTab =
   | 'overview' | 'keys' | 'live' | 'errors' | 'stats'
-  | 'users' | 'teachers'
-  | 'courses' | 'announcements' | 'micro-feed' | 'roadmap';
+  | 'users' | 'teachers' | 'donations'
+  | 'courses' | 'announcements' | 'micro-feed' | 'roadmap' | 'library';
 
 /**
  * Разделы собраны в три группы: «Что происходит», «Люди» и «Содержимое».
@@ -70,6 +72,7 @@ const GROUPS: Array<{ title: string; tabs: Array<{ id: AdminTab; label: string; 
     tabs: [
       { id: 'users', label: 'Пользователи', icon: LuUsers },
       { id: 'teachers', label: 'Преподаватели', icon: LuGraduationCap },
+      { id: 'donations', label: 'Поддержка', icon: LuHeartHandshake },
     ],
   },
   {
@@ -79,6 +82,7 @@ const GROUPS: Array<{ title: string; tabs: Array<{ id: AdminTab; label: string; 
       { id: 'announcements', label: 'Объявления', icon: LuMegaphone },
       { id: 'micro-feed', label: 'Вукоток', icon: LuNewspaper },
       { id: 'roadmap', label: 'Дорожная карта', icon: LuMap },
+      { id: 'library', label: 'Закрытая библиотека', icon: LuLibrary },
     ],
   },
 ];
@@ -166,9 +170,11 @@ export function Admin() {
             {tab === 'users' && <UsersPanel />}
             {tab === 'courses' && <CoursesPanel />}
             {tab === 'teachers' && <TeacherModerationPanel />}
+            {tab === 'donations' && <AdminDonationsPanel />}
             {tab === 'announcements' && <AdminAnnouncementsPanel />}
             {tab === 'micro-feed' && <><AdminVideos/><AdminMicroFeedPanel /></>}
             {tab === 'roadmap' && <AdminRoadmapPanel />}
+            {tab === 'library' && <AdminSupporterLibraryPanel />}
           </div>
         </div>
       </div>
@@ -272,7 +278,7 @@ function TeacherModerationPanel() {
   return <div className="space-y-10">
     {error && <ErrorNote>{error}</ErrorNote>}
     <section><h2 className="text-2xl">Заявки преподавателей</h2><div className="mt-4 space-y-3">{pending.length === 0 ? <p className="text-[var(--text-muted)]">Очередь пуста.</p> : pending.map((item) => <div key={item.userId} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="text-lg">{item.displayName || item.email}</h3><p className="mt-1 text-sm text-[var(--text-muted)]">{item.email} · сербский {item.serbianLevel}</p></div><span className="text-sm">{item.nativeSpeaker ? 'Носитель' : `Русский ${item.russianLevel || 'не указан'}`}</span></div><p className="mt-4 whitespace-pre-wrap text-sm">{item.teachingExperience}</p>{item.certificates && <p className="mt-2 text-sm text-[var(--text-muted)]">Образование: {item.certificates}</p>}<textarea className={`${inputClass('')} mt-4`} rows={2} placeholder="Комментарий автору" value={comments[item.userId ?? ''] ?? ''} onChange={(event) => item.userId && setComments({ ...comments, [item.userId]: event.target.value })} /><div className="mt-3 flex gap-2"><Button size="sm" onClick={() => void decideApplication(item, 'approved')}>Одобрить</Button><Button size="sm" variant="secondary" onClick={() => void decideApplication(item, 'rejected')}>Отклонить</Button></div></div>)}</div></section>
-    <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Уроки на модерации</h2><p className="mt-2 text-[var(--text-muted)]">Очередь уроков вынесена в отдельный экран с полным ученическим предпросмотром.</p><Link to="/admin/lessons" className="mt-4 inline-flex rounded-md bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-white">Открыть модерацию уроков</Link></section>
+    <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Уроки на модерации</h2><p className="mt-2 text-[var(--text-muted)]">Очередь уроков вынесена в отдельный экран с полным ученическим предпросмотром.</p><Link to="/admin/lessons" className="mt-4 inline-flex rounded-md bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-parchment">Открыть модерацию уроков</Link></section>
     <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Жалобы на уроки</h2><div className="mt-4 space-y-3">{reports.length === 0 ? <p className="text-[var(--text-muted)]">Открытых жалоб нет.</p> : reports.map((item) => <div key={item.id} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><h3 className="text-lg">{item.lessonTitle}</h3><p className="mt-2 font-semibold">{item.reason}</p>{item.details && <p className="mt-2 text-sm text-[var(--text-muted)]">{item.details}</p>}<div className="mt-3 flex gap-2"><Button size="sm" onClick={async () => { await reviewLessonReport(item.id, 'resolved'); await load(); }}>Решено</Button><Button size="sm" variant="secondary" onClick={async () => { await reviewLessonReport(item.id, 'dismissed'); await load(); }}>Отклонить</Button></div></div>)}</div></section>
   </div>;
 }

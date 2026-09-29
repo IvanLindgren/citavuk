@@ -62,6 +62,21 @@ const MIME = {
 function serveDist() {
   const server = createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
+    // Повторяем production-прокси: иначе /api/... вернул бы index.html,
+    // и пререндер сохранил бы ошибки загрузки вместо каталогов.
+    if (url.pathname.startsWith('/api/')) {
+      if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405).end(); return; }
+      try {
+        const response = await fetch('https://api.citavuk.ru' + url.pathname.slice(4) + url.search, {
+          signal: AbortSignal.timeout(12000),
+        });
+        res.writeHead(response.status, { 'Content-Type': response.headers.get('content-type') || 'application/json' });
+        res.end(Buffer.from(await response.arrayBuffer()));
+      } catch {
+        res.writeHead(503, { 'Content-Type': 'application/json' }).end('{"message":"API недоступен при пререндере"}');
+      }
+      return;
+    }
     const target = path.join(DIST, decodeURIComponent(url.pathname));
     const file = existsSync(target) && !target.endsWith(path.sep) && path.extname(target)
       ? target

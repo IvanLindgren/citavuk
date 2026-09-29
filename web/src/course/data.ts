@@ -271,10 +271,16 @@ function isLessonDone(
 }
 
 function storeProgress(progress: CourseProgress, updatedAt: number): void {
-  localStorage.setItem(
-    progressKey(progress.courseId),
-    JSON.stringify({ payload: progress, updatedAt } satisfies StoredProgress),
-  );
+  // Переполненное или запрещённое хранилище не должно ронять урок: прогресс
+  // всё равно уйдёт на сервер синхронизацией.
+  try {
+    localStorage.setItem(
+      progressKey(progress.courseId),
+      JSON.stringify({ payload: progress, updatedAt } satisfies StoredProgress),
+    );
+  } catch {
+    // Остаётся версия в памяти и на сервере.
+  }
 }
 
 function migrateLegacyProgress(

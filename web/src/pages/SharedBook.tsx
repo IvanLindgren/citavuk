@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { getShare, getShareContent, type SharedBook as Share } from '../api/share';
-import { Button, Card, ErrorNote, Spinner } from '../components/ui';
+import { Button, ButtonLink, Card, ErrorNote, Spinner } from '../components/ui';
 import { importText, plural } from '../lib/books';
-import { Link, useParams, useRouter } from '../lib/router';
+import { useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
@@ -72,11 +72,9 @@ export function SharedBook() {
     return (
       <main className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
         <ErrorNote>{error}</ErrorNote>
-        <Link to="/library">
-          <Button variant="secondary" className="mt-4">
+        <ButtonLink to="/library" variant="secondary" className="mt-4">
             В свою библиотеку
-          </Button>
-        </Link>
+          </ButtonLink>
       </main>
     );
   }

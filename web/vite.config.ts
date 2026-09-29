@@ -61,13 +61,28 @@ export default defineConfig(({ mode }) => {
     // файлы должны оставаться отдельными — иначе они попадут в тот же бандл,
     // который обязан перекачиваться при каждом изменении кода.
     assetsInlineLimit: 4096,
+    // WebKit 17+ может навсегда «отравить» MemoryCache после неудачного
+    // modulepreload на нестабильной мобильной сети: последующий import()
+    // зависает, но нового запроса в nginx уже нет. Предзагружаем только CSS;
+    // JS-чанк пусть загружает сам dynamic import — тогда ошибка отклонит
+    // Promise и попадёт в штатное восстановление страницы.
+    modulePreload: {
+      resolveDependencies: (_filename, dependencies) =>
+        dependencies.filter((dependency) => dependency.endsWith('.css')),
+    },
     rollupOptions: {
       output: {
+        // Одноразовый namespace меняет адрес каждого JS-чанка после iOS
+        // hotfix. Одного нового entry недостаточно: WebKit мог отравить кеш
+        // любого lazy/shared чанка из прежнего графа.
+        entryFileNames: 'assets/[name]-ios2-[hash].js',
+        chunkFileNames: 'assets/[name]-ios2-[hash].js',
         manualChunks: {
           // Библиотека анимаций весит заметно и меняется реже нашего кода:
           // отдельный чанк переживает выкатки и остаётся в кеше браузера.
           motion: ['framer-motion'],
           maplibre: ['maplibre-gl'],
+          three: ['three'],
         },
       },
     },
@@ -75,6 +90,11 @@ export default defineConfig(({ mode }) => {
   server: {
     port: 5173,
     proxy: {
+      '/api': {
+        target: devApiTarget,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api(?=\/)/, ''),
+      },
       // В разработке API проксируется: так путь совпадает с production и не
       // приходится думать про CORS.
       //

@@ -163,14 +163,6 @@ function VideoSession() {
       </div>
     </header>
     <div className="video-feed-layout">
-      <aside className="video-feed-intro">
-        <span className="video-feed-kicker">Слушай. Замечай. Понимай.</span>
-        <h2>Сербский<br />в движении.</h2>
-        <p>Короткие истории и живая речь. Каждый новый ролик ближе к тому, что тебе интересно.</p>
-        <div className="video-feed-guide"><LuHeart /><p>Лайки и досмотры помогают подобрать похожее. «Не моё» уменьшает такие рекомендации.</p></div>
-        <button type="button" disabled={!preferences} onClick={() => setSettings(true)}><LuSlidersHorizontal />Выбрать темы</button>
-        <p className="video-feed-note">Реакции и обсуждения здесь относятся к Читавуку, а не к YouTube.</p>
-      </aside>
       <div ref={stage} className="video-feed-stage" onPointerDown={pointerDown} onPointerUp={pointerUp} onPointerCancel={() => { pointer.current = null; }}
         onClickCapture={e => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}>
         <div className="video-feed-context"><span>{liked ? 'Понравившиеся' : 'Для тебя'}</span><span>{item ? `${index + 1} / ${items.length}` : 'Короткие видео'}</span></div>

@@ -28,6 +28,7 @@ import {
   type PalaceObject,
   type PalaceScene,
 } from '../palace/scenes';
+import { askConfirm, askText } from '../components/AskDialog';
 
 /**
  * Дворец памяти.
@@ -155,7 +156,12 @@ export function Palace() {
                     <button
                       type="button"
                       onClick={async () => {
-                        if (!window.confirm(`Удалить дворец «${palace.name}»?`)) return;
+                        const sure = await askConfirm(`Удалить дворец «${palace.name}»?`, {
+                          text: 'Предметы и слова в нём пропадут.',
+                          confirmLabel: 'Удалить',
+                          danger: true,
+                        });
+                        if (!sure) return;
                         await deletePalace(palace.id);
                         await reload();
                         if (account) void sync();
@@ -173,7 +179,7 @@ export function Palace() {
 
         <Reveal>
           <h2 className="mb-4 text-2xl">
-            {palaces.length > 0 ? 'Построить ещё один' : 'Выберите комнату'}
+            {palaces.length > 0 ? 'Построить ещё один' : 'Выбери комнату'}
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {SCENES.map((scene) => (
@@ -192,9 +198,11 @@ export function Palace() {
                   size="sm"
                   className="mt-4"
                   onClick={async () => {
-                    const name =
-                      window.prompt('Название дворца', scene.title) ?? '';
-                    if (!name.trim()) return;
+                    const name = await askText('Как назовёшь дворец?', {
+                      initial: scene.title,
+                      confirmLabel: 'Занять комнату',
+                    });
+                    if (!name) return;
                     const palace = await createPalace(name, scene.id);
                     await reload();
                     if (account) void sync();

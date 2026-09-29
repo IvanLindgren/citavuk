@@ -10,7 +10,7 @@ const DISMISS_KEY = 'citavuk-app-prompt-dismissed';
 const DELAY_MS = 25_000;
 
 /** Страницы, где предложение только мешает. */
-const HIDDEN_ON = ['/reader/', '/course/lesson/', '/listening/', '/downloads', '/login'];
+const HIDDEN_ON = ['/reader/', '/course/lesson/', '/listening/', '/audio-files', '/downloads', '/login'];
 
 /**
  * Ненавязчивое предложение поставить приложение.

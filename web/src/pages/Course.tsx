@@ -69,7 +69,7 @@ function CourseSession() {
       <button type="button" className="journey-sound" aria-pressed={!muted} aria-label={muted ? 'Включить звуки курса' : 'Выключить звуки курса'} onClick={() => { const next = !muted; setMuted(next); setCourseSoundsMuted(next); if (!next) playCourseSound('correct'); }}>{muted ? <LuVolumeX /> : <LuVolume2 />}<span>Звуки {muted ? 'выключены' : 'включены'}</span></button>
     </section>
     <div className="journey-layout">
-      <aside className="journey-index">
+      <section className="journey-index" aria-label="Программа курса">
         <h2>Твоя программа</h2>
         <div className="journey-progress-label"><span>Пройдено</span><strong>{percent}%</strong></div>
         <progress value={completed} max={lessons.length || 1} aria-label="Прогресс курса" />
@@ -77,7 +77,7 @@ function CourseSession() {
         <Link className="journey-resource" to="/trainer"><LuDumbbell /><span>Тренажёрка<small>Повтори нужную тему</small></span></Link>
         <Link className="journey-resource" to="/dialogues"><LuMessageCircle /><span>Игровые диалоги<small>Попробуй себя в разговоре</small></span></Link>
         <p className="journey-index-note"><LuBookOpen />Знакомые темы можно пропустить: нажми на урок с замком и подтверди, что уже знаешь предыдущее.</p>
-      </aside>
+      </section>
       <div className="journey-chapters">{bundle.units.map((unit, index) => <CourseJourney key={unit.id} unit={unit} index={index} progress={progress} currentId={next?.id} onLocked={setStartLesson} />)}</div>
     </div>
     {startLesson && <CourseStartDialog bundle={bundle} lesson={startLesson} close={() => setStartLesson(null)} />}

@@ -20,9 +20,19 @@ KEY="${CITAVUK_SSH_KEY:?укажите CITAVUK_SSH_KEY — путь к ssh-кл�
 # Тильду в значении переменной оболочка не раскрывает — иначе ssh молча
 # ищет ключ в каталоге с именем «~».
 KEY="${KEY/#\~/$HOME}"
-SIGNING_KEY="${CITAVUK_UPDATE_SIGNING_KEY:?укажите CITAVUK_UPDATE_SIGNING_KEY — Ed25519 private key обновлений}"
+SIGNING_KEY="${CITAVUK_UPDATE_SIGNING_KEY:-}"
+REMOTE_SIGNING_KEY="${CITAVUK_UPDATE_SIGNING_KEY_REMOTE:-}"
+if [[ -z "$SIGNING_KEY" && -z "$REMOTE_SIGNING_KEY" ]]; then
+    echo "укажите CITAVUK_UPDATE_SIGNING_KEY или CITAVUK_UPDATE_SIGNING_KEY_REMOTE" >&2
+    exit 1
+fi
 SIGNING_KEY="${SIGNING_KEY/#\~/$HOME}"
+ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 public_key() {
+    if [[ -n "$REMOTE_SIGNING_KEY" ]]; then
+        ssh_run "openssl pkey -in '$REMOTE_SIGNING_KEY' -pubout -outform DER | tail -c 32 | base64 -w0"
+        return
+    fi
     if command -v openssl >/dev/null 2>&1; then
         openssl pkey -in "$SIGNING_KEY" -pubout -outform DER | tail -c 32 | base64 -w0
     elif command -v node >/dev/null 2>&1; then
@@ -38,6 +48,15 @@ NODE
     fi
 }
 sign_manifest() {
+    if [[ -n "$REMOTE_SIGNING_KEY" ]]; then
+        local remote_manifest="/tmp/citavuk-latest-$$.json"
+        local remote_signature="$remote_manifest.sig"
+        sftp -i "$KEY" -o BatchMode=yes "$HOST" >/dev/null <<<"put \"$1\" \"$remote_manifest\""
+        ssh_run "set -e; openssl pkeyutl -sign -rawin -inkey '$REMOTE_SIGNING_KEY' -in '$remote_manifest' -out '$remote_signature'"
+        sftp -i "$KEY" -o BatchMode=yes "$HOST" >/dev/null <<<"get \"$remote_signature\" \"$2\""
+        ssh_run "rm -f '$remote_manifest' '$remote_signature'"
+        return
+    fi
     if command -v openssl >/dev/null 2>&1; then
         openssl pkeyutl -sign -rawin -inkey "$SIGNING_KEY" -in "$1" -out "$2"
     else
@@ -56,8 +75,6 @@ if [[ "$CITAVUK_UPDATE_PUBLIC_KEY" != "$PUBLIC_KEY" ]]; then
 fi
 REMOTE_DIR=/var/www/citavuk-files
 FRONTEND="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../frontend" && pwd)"
-
-ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
 # Заливка с докачкой. Простой scp на этих файлах рвётся посередине:
 # «message authentication code incorrect» — канал бьёт пакеты, и ssh закрывает

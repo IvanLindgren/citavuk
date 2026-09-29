@@ -8,7 +8,7 @@ import {
 import { Mascot } from '../components/Mascot';
 import { writable } from '../lib/writing';
 import { SyncBadge } from '../components/SyncBadge';
-import { Button, Card, Reveal, Spinner } from '../components/ui';
+import { Button, ButtonLink, Card, Reveal, Spinner } from '../components/ui';
 import { playCourseSound } from '../course/sounds';
 import { allBooks, getParagraphs, plural, type BookMeta } from '../lib/books';
 import { findSentence } from '../lib/vocabContext';
@@ -219,9 +219,7 @@ export function Cards() {
               <SyncBadge />
             </div>
           </div>
-          <Link to="/palace">
-            <Button variant="secondary">Дворец памяти</Button>
-          </Link>
+          <ButtonLink to="/palace" variant="secondary">Дворец памяти</ButtonLink>
         </Reveal>
 
         {rows.length === 0 ? (
@@ -348,9 +346,7 @@ function ReviewSession({
             Вернуться к обычному повторению
           </Button>
         ) : (
-          <Link to="/library">
-            <Button className="mt-7">К чтению</Button>
-          </Link>
+          <ButtonLink to="/library" className="mt-7">К чтению</ButtonLink>
         )}
       </Card>
     );
@@ -679,9 +675,7 @@ function WritingSession({
             ? 'К повторению остались только фразы, а письмом повторяются отдельные слова.'
             : 'Все слова повторены. Новые появятся, когда подойдёт срок.'}
         </p>
-        <Link to="/library">
-          <Button className="mt-7">К чтению</Button>
-        </Link>
+        <ButtonLink to="/library" className="mt-7">К чтению</ButtonLink>
       </Card>
     );
   }
@@ -1365,14 +1359,10 @@ function EmptyState() {
         карточкой со сроком повторения.
       </p>
       <div className="mt-7 flex flex-wrap justify-center gap-3">
-        <Link to="/library">
-          <Button size="lg">Открыть книгу</Button>
-        </Link>
-        <Link to="/materials">
-          <Button variant="secondary" size="lg">
+        <ButtonLink to="/library" size="lg">Открыть книгу</ButtonLink>
+        <ButtonLink to="/materials" variant="secondary" size="lg">
             Взять материал
-          </Button>
-        </Link>
+          </ButtonLink>
       </div>
     </Card>
   );

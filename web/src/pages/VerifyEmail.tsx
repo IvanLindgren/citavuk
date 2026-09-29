@@ -71,7 +71,7 @@ export function VerifyEmail() {
         {state !== 'checking' && (
           <Link
             to="/login"
-            className="mt-7 inline-flex rounded-xl bg-[var(--accent)] px-6 py-3 font-semibold text-white"
+            className="mt-7 inline-flex rounded-xl bg-[var(--accent)] px-6 py-3 font-semibold text-parchment"
           >
             Перейти ко входу
           </Link>

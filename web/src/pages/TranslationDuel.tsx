@@ -16,7 +16,7 @@
  * вставленная в сайт, и было выброшено. Азарт держат темп и звук, а не
  * подсветка.
  *
- * Счёт бой не трогает. Кто выиграл предложение, по-прежнему решает Gemma или
+ * Счёт бой не трогает. Кто выиграл предложение, по-прежнему решает ИИ или
  * сам человек; полосы показывают ровно это (правила — lib/duelScore.ts).
  */
 
@@ -118,7 +118,7 @@ export function TranslationDuel() {
 function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: () => void }) {
   useSeo({
     title: 'Ты против переводчика — игра с DeepL и Google Translate',
-    description: 'Переведите сербские фразы лучше DeepL или Google Translate и попросите Gemma 4 рассудить спор.',
+    description: 'Переведи сербские фразы лучше DeepL или Google Translate и попроси ИИ-судью рассудить спор.',
   });
 
   const reduced = useReducedMotion() ?? false;
@@ -359,7 +359,7 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
     }
   };
 
-  const askGemma = async () => {
+  const askJudge = async () => {
     if (!round || !allFilled) return;
     setLoading(true);
     setError('');
@@ -378,7 +378,7 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
       setSummary(result.summary);
       runReveal(sorted);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Gemma 4 не ответила.');
+      setError(caught instanceof Error ? caught.message : 'ИИ-судья не ответил.');
       setPose('think');
     } finally {
       setLoading(false);
@@ -540,7 +540,7 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
                   ? (sentence?.text ?? '')
                   : phase === 'resolve' && shown > 0
                     ? (sentences[shown - 1]?.text ?? '')
-                    : 'Отметьте, чей перевод точнее и живее, или доверьте это Gemma 4.'}
+                    : 'Отметь, чей перевод точнее и живее, или доверь это ИИ-судье.'}
               </p>
             )}
           </div>
@@ -623,12 +623,12 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
           </div>
         )}
 
-        {/* Пока Gemma читает, панель сравнений уходит: пустая страница с
+        {/* Пока модель читает, панель сравнений уходит: пустая страница с
             крутящимся кружком в кнопке читается как зависший сайт. */}
         {phase === 'choose' && loading && (
           <div className="relative mt-4">
             <DuelWaiting
-              title="Gemma сравнивает переводы"
+              title="ИИ-судья сравнивает переводы"
               text="Судья не знает, где чей перевод: он видит только два текста под метками."
             >
               <motion.div
@@ -672,9 +672,9 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
 
             {phase === 'choose' && (
               <div className="flex flex-wrap gap-3 pt-1">
-                <Button variant="secondary" disabled={loading || !round.judgeEnabled} onClick={() => void askGemma()}>
+                <Button variant="secondary" disabled={loading || !round.judgeEnabled} onClick={() => void askJudge()}>
                   {loading ? <Spinner className="size-5" /> : <LuBot />}
-                  Спросить Gemma 4
+                  Спросить ИИ-судью
                 </Button>
                 <Button disabled={!manualComplete} onClick={finishManual}>
                   <LuSwords />
@@ -880,7 +880,7 @@ function Setup({
           <h1 className="text-3xl sm:text-4xl">Матч с машиной</h1>
           <p className="mt-4 max-w-xl text-lg leading-8 text-[var(--text-muted)]">
             Три раунда по пять фраз. Сначала переводите вы под часы, затем открывается ответ машины.
-            Победителя выбираете сами или Gemma 4.
+            Победителя выбираешь ты или ИИ-судья.
           </p>
         </div>
       </header>

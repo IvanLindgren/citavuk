@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Mascot } from '../components/Mascot';
 import { PdfPreview } from '../components/PdfPreview';
 import { PdfStrip } from '../components/PdfStrip';
-import { Button, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
+import { Button, ButtonLink, Card, ErrorNote, Reveal, Spinner } from '../components/ui';
 import { importText, plural } from '../lib/books';
 import {
   extractDocumentFromUrl,
@@ -144,6 +144,18 @@ export function Materials() {
     // Предмет мог существовать только на прежнем уровне.
     setSubjectId(null);
   });
+
+  // Страница не пересоздаётся при смене одной строки запроса: ссылка из
+  // подвала «Приём в гимназию», нажатая прямо на /materials, меняет только
+  // ?level=. Уровень подхватывается во время рендера, без лишнего кадра.
+  const queryLevel = LEVELS.some((entry) => entry.id === query0.level)
+    ? (query0.level as MaterialLevel)
+    : null;
+  const [seenQueryLevel, setSeenQueryLevel] = useState(queryLevel);
+  if (queryLevel !== seenQueryLevel) {
+    setSeenQueryLevel(queryLevel);
+    chooseLevel(queryLevel);
+  }
 
   return (
     <main className="overflow-x-hidden px-4 py-8 sm:px-5 sm:py-14">
@@ -609,12 +621,10 @@ function MaterialCard({
 
         <div className="mt-auto pt-3 sm:pt-4">
           {quiz ? (
-            <Link to={`/tests/${quiz.quizId}`} className="block">
-              <Button variant="secondary" size="sm" className="mb-2 w-full text-center">
-                Потренироваться и решить тест на сайте
-                {quiz.attempts > 0 && ` · было ${quiz.bestScore}%`}
-              </Button>
-            </Link>
+            <ButtonLink to={`/tests/${quiz.quizId}`} variant="secondary" size="sm" className="mb-2 w-full text-center">
+              Потренироваться и решить тест на сайте
+              {quiz.attempts > 0 && ` · было ${quiz.bestScore}%`}
+            </ButtonLink>
           ) : (
             <Button
               variant="secondary"

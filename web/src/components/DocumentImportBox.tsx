@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 
 import { DropOverlay } from "./DropOverlay";
+import { ClipboardImportButton } from "./ClipboardImportButton";
 import { Button, Card, ErrorNote, Spinner } from "./ui";
 import { importText } from "../lib/books";
 import {
@@ -14,6 +15,7 @@ import { useRouter } from "../lib/router";
 import { pickImportableFile, useFileDrop } from "../lib/useFileDrop";
 import { useAuth } from "../state/auth";
 import { useSync } from "../state/sync";
+import { isAudioClipboardFile, type ClipboardPayload } from "../lib/clipboard";
 
 const ACCEPTED_DOCUMENTS =
   ".txt,.md,.pdf,.docx,.fb2,.epub,.djvu,.djv,.html,text/plain,text/markdown,application/pdf,application/epub+zip,image/vnd.djvu,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -49,6 +51,25 @@ export function DocumentImportBox() {
       }
     },
     [save],
+  );
+
+  const importClipboard = useCallback(
+    (payload: ClipboardPayload) => {
+      if (payload.kind === "text") {
+        void importFile(
+          new File([payload.text], "Вставка из буфера.txt", {
+            type: "text/plain",
+          }),
+        );
+        return;
+      }
+      if (isAudioClipboardFile(payload.file)) {
+        setError("MP3 и другие записи добавляются в разделе «Звуковые файлы».");
+        return;
+      }
+      void importFile(payload.file);
+    },
+    [importFile, save],
   );
 
   const importUrl = useCallback(async () => {
@@ -109,6 +130,17 @@ export function DocumentImportBox() {
                 "Выбрать файл"
               )}
             </Button>
+            <ClipboardImportButton
+              disabled={busy}
+              onPayload={importClipboard}
+              onError={(caught) =>
+                setError(
+                  caught instanceof Error
+                    ? caught.message
+                    : "Не удалось прочитать буфер обмена.",
+                )
+              }
+            />
           </div>
 
           <input

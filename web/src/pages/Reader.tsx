@@ -9,7 +9,7 @@ import { Mascot } from '../components/Mascot';
 import { BookLevelNotice } from '../components/BookLevelNotice';
 import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
 import { ShareBook } from '../components/ShareBook';
-import { Button, Spinner } from '../components/ui';
+import { Button, ButtonLink, Spinner } from '../components/ui';
 import { WordReader, type ReaderMark } from '../components/WordReader';
 import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
 import { odysseyRewardUnlocked } from '../events/odyssey';
@@ -30,6 +30,9 @@ import { TtsVoicePicker } from '../components/TtsVoicePicker';
 import { parseBlock } from '../lib/blocks';
 import { tokenize } from '../lib/tokenize';
 import { setReadingProgress } from '../lib/readingProgress';
+import { deleteReaderQuote, listReaderQuotes, quoteColor, recolorReaderQuote, saveReaderQuote, type QuoteColor, type ReaderQuote } from '../lib/readerQuotes';
+import { HighlightPicker, QUOTE_SWATCH } from '../components/HighlightPicker';
+import { useSync } from '../state/sync';
 
 type LoadState =
   | { kind: 'loading' }
@@ -51,6 +54,9 @@ export function Reader() {
   });
 
   const { id } = useParams();
+  const { revision, sync } = useSync();
+  const [quotes, setQuotes] = useState<ReaderQuote[]>([]);
+  const [quotesOpen, setQuotesOpen] = useState(false);
   const { navigate } = useRouter();
   const { account } = useAuth();
   const { rewards } = useAnnouncements();
@@ -165,6 +171,39 @@ export function Reader() {
 
   /** Первый абзац каждой страницы — прогресс хранится в абзацах, не в страницах. */
   const pageStarts = useMemo(() => pages.map((entry) => entry.start), [pages]);
+  useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+    setQuotes([]);
+    void listReaderQuotes(id).then(items => { if (!cancelled) setQuotes(items); }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [id, account?.id, revision]);
+  const quoteMarks = (pageIndex: number) => (pages[pageIndex]?.texts ?? []).map<ReaderMark[]>((_, paragraph) =>
+    quotes.filter(quote => quote.page === pageIndex && quote.paragraph === paragraph)
+      .map(quote => ({ start: quote.start, end: quote.end, kind: 'quote' as const, value: quoteColor(quote.color) || undefined })));
+  const addQuote = async (pageIndex: number, paragraph: number, start: number, end: number, text: string, color: QuoteColor = '') => {
+    if (!id) return;
+    // Тот же фрагмент ещё раз — значит, его перекрашивают, а не дублируют.
+    const same = quotes.find(item => !item.deleted && item.page === pageIndex && item.paragraph === paragraph && item.start === start && item.end === end);
+    try {
+      if (same) {
+        if (quoteColor(same.color) === color) return;
+        const updated = await recolorReaderQuote(same.id, color);
+        if (updated) setQuotes(previous => previous.map(item => item.id === same.id ? updated : item));
+      } else {
+        const item = await saveReaderQuote({bookId:id, page:pageIndex, paragraph, start, end, text, color});
+        setQuotes(previous => [...previous, item]);
+      }
+      void sync();
+    } catch { /* Чтение книги продолжает работать и без локальной записи. */ }
+  };
+  const recolorQuote = async (quoteId: string, color: QuoteColor) => {
+    const updated = await recolorReaderQuote(quoteId, color).catch(() => null);
+    if (updated) {
+      setQuotes(previous => previous.map(item => item.id === quoteId ? updated : item));
+      void sync();
+    }
+  };
 
   // Открываем на том месте, где остановились.
   useEffect(() => {
@@ -379,9 +418,7 @@ export function Reader() {
         <p className="mt-3 text-[var(--text-muted)]">
           Возможно, её удалили или открыли в другом браузере.
         </p>
-        <Link to="/library">
-          <Button className="mt-6">В библиотеку</Button>
-        </Link>
+        <ButtonLink to="/library" className="mt-6">В библиотеку</ButtonLink>
       </main>
     );
   }
@@ -457,13 +494,14 @@ export function Reader() {
 
   const renderContinuousPage = (pageIndex: number) => {
     const entry = pages[pageIndex];
-    const marks = (entry?.texts ?? []).map<ReaderMark[]>((_, paragraph) =>
+    const marks = quoteMarks(pageIndex).map<ReaderMark[]>((quoteRanges, paragraph) => [
+      ...quoteRanges,
       audioMark &&
       audioMark.page === pageIndex &&
       audioMark.paragraph === paragraph
-        ? [{ ...audioMark, kind: 'audio' }]
-        : [],
-    );
+        ? { ...audioMark, kind: 'audio' as const }
+        : null,
+    ].filter((mark): mark is ReaderMark => mark !== null));
 
     return (
       <section
@@ -478,6 +516,7 @@ export function Reader() {
         <WordReader
           paragraphs={entry?.texts ?? []}
           bookId={state.book.id}
+          onSaveQuote={(paragraph, start, end, text, color) => void addQuote(pageIndex, paragraph, start, end, text, color)}
           bionic={settings.bionic}
           stress={settings.stress}
           calm={settings.calm}
@@ -485,6 +524,9 @@ export function Reader() {
           paragraphStyle={paragraphStyle}
           paragraphMarks={marks}
         />
+        <p className="my-5 text-center text-xs tabular-nums text-[var(--text-muted)]" aria-label={`Страница ${pageIndex + 1} из ${pages.length}`}>
+          {pageIndex + 1} / {pages.length}
+        </p>
 
         {discussionToken && pageIndex === page && (
           <div className="mt-4">
@@ -536,6 +578,10 @@ export function Reader() {
 
 
           <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2">
+            <button type="button" onClick={() => setQuotesOpen(true)}
+              className="rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2.5 text-sm text-[var(--text)] hover:text-[var(--accent)]">
+              Выделения {quotes.length > 0 ? `(${quotes.length})` : ''}
+            </button>
             <button
               type="button"
               onClick={() => playAudiobookCue(audiobookCue)}
@@ -675,12 +721,13 @@ export function Reader() {
                   <WordReader
                     paragraphs={current}
                     bookId={state.book.id}
+                    onSaveQuote={(paragraph, start, end, text, color) => void addQuote(page, paragraph, start, end, text, color)}
                     bionic={settings.bionic}
                     stress={settings.stress}
                     calm={settings.calm}
                     paragraphClassName="reader-selectable"
                     paragraphStyle={paragraphStyle}
-                    paragraphMarks={audioMarks}
+                    paragraphMarks={audioMarks.map((items, index) => [...(quoteMarks(page)[index] ?? []), ...items])}
                   />
                 </div>
               </motion.article>
@@ -783,6 +830,36 @@ export function Reader() {
         )}
       </div>
 
+      {quotesOpen && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/50 p-4" role="presentation" onClick={() => setQuotesOpen(false)}>
+          <section role="dialog" aria-label="Выделения в книге" onClick={event => event.stopPropagation()}
+            className="max-h-[80vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] p-5 shadow-[var(--shadow-lift)]">
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-xl">Выделения</h2>
+              <button type="button" onClick={() => setQuotesOpen(false)} aria-label="Закрыть выделения"><HiXMark className="size-6" /></button>
+            </div>
+            {quotes.length === 0 && <p className="mt-5 text-[var(--text-muted)]">Выдели фрагмент текста — и подчеркни его или отметь цветом. Выделения видны на всех твоих устройствах.</p>}
+            <ul className="mt-4 space-y-3">
+              {quotes.map(quote => {
+                const target = quote.page;
+                return <li key={quote.id} className="rounded-xl border border-[var(--line)] p-3">
+                  <button type="button" onClick={() => { setQuotesOpen(false); goTo(target); }} className="block w-full text-left">
+                    <span className="text-sm text-[var(--text-muted)]">Страница {target + 1}</span>
+                    <span className={['mt-1 block font-display', quoteColor(quote.color) ? QUOTE_SWATCH[quoteColor(quote.color)] : 'underline decoration-[var(--accent)] decoration-2 underline-offset-4'].join(' ')}>{quote.text}</span>
+                  </button>
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                    <HighlightPicker current={quoteColor(quote.color)} onPick={color => void recolorQuote(quote.id, color)} />
+                    <button type="button" className="ml-auto text-xs text-[var(--accent)]" onClick={() => void deleteReaderQuote(quote.id).then(() => { setQuotes(current => current.filter(item => item.id !== quote.id)); void sync(); })}>
+                      Убрать выделение
+                    </button>
+                  </div>
+                </li>;
+              })}
+            </ul>
+          </section>
+        </div>
+      )}
+
       <ReaderSettingsPanel
         open={panelOpen}
         settings={settings}
@@ -813,7 +890,7 @@ export function Reader() {
                 else if (audio.paused) void audio.play();
                 else audio.pause();
               }}
-              className="rounded-full bg-[var(--accent)] p-3 text-white"
+              className="rounded-full bg-[var(--accent)] p-3 text-parchment"
               aria-label={audiobookPlaying ? 'Пауза' : 'Продолжить'}
             >
               {audiobookPlaying ? <HiPause className="size-5" /> : <HiPlay className="size-5" />}

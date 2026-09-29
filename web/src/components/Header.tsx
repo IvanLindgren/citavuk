@@ -4,16 +4,22 @@ import { createPortal } from 'react-dom';
 import {
   LuBookOpen,
   LuBoxes,
+  LuCalendarDays,
   LuDownload,
   LuExternalLink,
+  LuFileText,
+  LuFileAudio,
   LuDumbbell,
   LuFlower2,
   LuGraduationCap,
   LuHeadphones,
   LuHeartHandshake,
   LuInfo,
+  LuKeyboard,
+  LuMic,
   LuLanguages,
   LuLayers,
+  LuLock,
   LuLibrary,
   LuMap,
   LuMapPin,
@@ -24,6 +30,7 @@ import {
   LuSparkles,
   LuPresentation,
   LuRows3,
+  LuSchool,
   LuShieldCheck,
   LuVideo,
   LuX,
@@ -79,6 +86,14 @@ interface Section {
   featured?: boolean;
   /** Ведёт на другой сайт: обычная ссылка, а не переход роутера. */
   external?: boolean;
+  /** Только для друзей Читавука и администраторов. */
+  supporters?: boolean;
+}
+
+/** Разделы, которые видит этот читатель: закрытые — только друзьям проекта. */
+function visibleItems(items: Section[], account: { supporterSince?: string; isAdmin: boolean } | null) {
+  const friend = Boolean(account?.supporterSince || account?.isAdmin);
+  return items.filter((item) => !item.supporters || friend);
 }
 
 /**
@@ -94,7 +109,6 @@ interface Section {
  * зацепиться, и нужный раздел приходится искать перебором.
  */
 const GROUPS: { title: string; items: Section[] }[] = [
-  {title:'Твой день',items:[{to:'/personal',label:'Урок дня',icon:LuSparkles}]},
   {
     title: 'Читать',
     items: [
@@ -113,13 +127,15 @@ const GROUPS: { title: string; items: Section[] }[] = [
         short: 'Публичная',
         icon: LuBookOpen,
       },
-      { to: '/events', label: 'События', icon: LuSparkles, featured: true },
-      { to: '/books', label: 'Что читать', icon: LuNotebookTabs },
+      { to: '/friends-library', label: 'Закрытая библиотека', short: 'Закрытая', icon: LuLock, supporters: true },
+      { to: '/events', label: 'События', icon: LuCalendarDays, featured: true },
+      { to: '/books', label: 'Что почитать', icon: LuNotebookTabs },
     ],
   },
   {
     title: 'Учиться',
     items: [
+      { to: '/personal', label: 'Урок дня', icon: LuSparkles },
       {
         to: '/roadmap',
         label: 'Дорожная карта',
@@ -130,29 +146,32 @@ const GROUPS: { title: string; items: Section[] }[] = [
       },
       { to: '/course', label: 'Курс', icon: LuGraduationCap, place: 'nav' },
       { to: '/trainer', label: 'Тренажёрка', icon: LuDumbbell, place: 'nav' },
+      { to: '/padezi', label: 'Уничтожь падежи', short: 'Падежи', icon: LuKeyboard, featured: true },
+      { to: '/govori', label: 'Говори! Тема на барабане', short: 'Говори', icon: LuMic },
       { to: '/cards', label: 'Словарь', icon: LuLanguages, place: 'nav' },
       { to: '/listening', label: 'Слушание', icon: LuHeadphones, place: 'nav' },
+      { to: '/audio-files', label: 'Звуковые файлы', icon: LuFileAudio },
       {
         to: '/lessons',
         label: 'Уроки преподавателей',
         short: 'Уроки',
-        icon: LuGraduationCap,
+        icon: LuSchool,
         place: 'pill',
       },
       { to: '/dialogues', label: 'Диалоги', icon: LuBoxes },
       { to: '/basta', label: 'Сад Читавука', short: 'Сад', icon: LuFlower2 },
       { to: '/putovanje', label: 'Путешествие', icon: LuMapPin },
       { to: '/exams', label: 'Экзамены', icon: LuScrollText },
-      { to: '/materials', label: 'Материалы', icon: LuNotebookTabs },
+      { to: '/materials', label: 'Материалы', icon: LuFileText },
       { to: '/teachers', label: 'Для учителей', icon: LuPresentation },
     ],
   },
   {
     title: 'Читавук',
     items: [
-      { to: '/support', label: 'Поддержать проект', short: 'Поддержать', icon: LuHeartHandshake },
-      { to: '/downloads', label: 'Скачать', icon: LuDownload },
-      { to: '/about', label: 'О разработчике', icon: LuInfo },
+      { to: '/support', label: 'Поддержать Читавук', short: 'Поддержать', icon: LuHeartHandshake },
+      { to: '/downloads', label: 'Приложения', icon: LuDownload },
+      { to: '/about', label: 'О проекте', icon: LuInfo },
       {
         to: VIDEO_URL,
         label: 'Видео с субтитрами',
@@ -285,7 +304,7 @@ export function Header() {
             title="Уроки преподавателей"
             className="header-feature-link hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold lg:inline-flex"
           >
-            <LuGraduationCap className="size-4" aria-hidden="true" />
+            <LuSchool className="size-4" aria-hidden="true" />
             Уроки
           </Link>
 
@@ -358,7 +377,7 @@ export function Header() {
                       {group.title}
                     </p>
                     <div className="grid grid-cols-2 gap-1.5">
-                      {group.items.map((item) => (
+                      {visibleItems(group.items, account).map((item) => (
                         <SectionTile
                           key={item.to}
                           item={item}
@@ -430,13 +449,13 @@ function SectionTile({
     'flex items-center gap-2 rounded-xl text-sm font-semibold transition-colors',
     compact ? 'whitespace-nowrap px-2.5 py-1.5' : 'min-h-12 gap-2.5 px-3 py-2.5',
     active
-      ? 'bg-[var(--accent)] text-white'
+      ? 'bg-[var(--accent)] text-parchment'
       : compact
         ? 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]'
         : 'bg-[var(--bg-sunken)] text-[var(--text-muted)] hover:text-[var(--text)]',
     // Временное событие обведено рамкой: среди полутора десятков разделов
     // одного цвета текста мало, чтобы его заметили, пока оно идёт.
-    item.featured && !active ? 'border border-[#b68a4e] text-[var(--accent)]' : '',
+    item.featured && !active ? 'border border-gold text-[var(--accent)]' : '',
   ].join(' ');
 
   const content = (
@@ -480,6 +499,7 @@ function SectionTile({
  * пункт «убегал» из-под курсора.
  */
 function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
+  const { account } = useAuth();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -532,7 +552,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
-        aria-haspopup="menu"
+        aria-controls="header-more-panel"
         className={[
           'flex items-center gap-1 whitespace-nowrap rounded-xl px-2.5 py-2 text-sm font-semibold transition-colors',
           active
@@ -566,7 +586,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
             // Ограничение по окну оставлено на случай узкого экрана.
             className="absolute left-0 top-full z-50 max-w-[calc(100vw-3rem)] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]"
           >
-            <nav aria-label="Остальные разделы" role="menu">
+            <nav id="header-more-panel" aria-label="Остальные разделы">
               <div className="flex gap-1">
                 {MORE_GROUPS.map((group) => (
                   <div key={group.title} className="min-w-0">
@@ -574,7 +594,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
                       {group.title}
                     </p>
                     <div className="space-y-px">
-                      {group.items.map((item) => (
+                      {visibleItems(group.items, account).map((item) => (
                         <SectionTile
                           key={item.to}
                           item={item}
@@ -634,54 +654,66 @@ function ReadingProgressBar() {
 /** Ключ отметки «полосу поддержки закрыли». */
 const SUPPORT_STRIP_DISMISSED = 'citavuk-support-strip-dismissed';
 
+function readStripDismissed(): boolean {
+  try {
+    return localStorage.getItem(SUPPORT_STRIP_DISMISSED) === '1';
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Полоса поддержки под шапкой.
  *
- * Закрывается насовсем. Полоса живёт ВНУТРИ `sticky`-шапки и на телефоне
- * переносится на две-три строки, поэтому несколько десятков пикселей верха
- * экрана она занимает на каждой странице и на всех прокрутках. Просьба, которую
- * нельзя убрать, перестаёт читаться примерно на третий раз и начинает
- * восприниматься как реклама — а раздел «Поддержать» никуда не девается: он
- * есть и в панели «Ещё», и в подвале.
+ * Закрывается насовсем: просьба, которую нельзя убрать, на третий раз
+ * начинает восприниматься как реклама. Раздел «Поддержать» остаётся в панели
+ * «Ещё» и в подвале. Чтение `localStorage` обёрнуто: шапка стоит вне
+ * `PageErrorBoundary`, и исключение здесь уронило бы весь сайт.
  */
 function SupportStrip() {
   const { path } = useRouter();
-  const [dismissed, setDismissed] = useState(
-    () => localStorage.getItem(SUPPORT_STRIP_DISMISSED) === '1',
-  );
+  const { account } = useAuth();
+  const [dismissed, setDismissed] = useState(readStripDismissed);
+  const pathname = path.split('?')[0] ?? path;
 
-  if (dismissed || odysseyAvailable() || path.startsWith('/support') || path.split('?')[0]==='/personal' || isVukotok(path)) {
+  if (
+    dismissed ||
+    account?.supporterSince ||
+    odysseyAvailable() ||
+    pathname.startsWith('/support') ||
+    pathname === '/supporters' ||
+    pathname === '/personal' ||
+    pathname === '/padezi' ||
+    pathname === '/govori' ||
+    isVukotok(path)
+  ) {
     return null;
   }
 
   return (
     <div className="border-t border-[var(--line)]/60 bg-[var(--bg-raised)]/60">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-5 py-1.5">
-        <p className="min-w-0 basis-full text-xs font-semibold leading-snug text-[var(--text-muted)] sm:basis-0 sm:flex-1">
-          Читавук продолжает быть бесплатным. Скорее вступай в Telegram-чат
-          обсуждения Читавука, а то волк укусит за бочок!{' '}
-          <a
-            href="https://t.me/citavukchat"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="whitespace-nowrap text-[var(--accent)] underline underline-offset-2"
-          >
-            t.me/citavukchat
-          </a>
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-x-4 px-5 py-1.5">
+        <p className="min-w-0 flex-1 text-xs font-semibold leading-snug text-[var(--text-muted)]">
+          Читавук бесплатный и живёт на поддержке читателей.
+          <span className="hidden sm:inline"> Имена поддержавших — на странице друзей проекта.</span>
         </p>
         <div className="flex shrink-0 items-center gap-1">
           <Link
             to="/support"
-            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
           >
-            Поддержать развитие
+            Поддержать
           </Link>
           <button
             type="button"
             aria-label="Скрыть полосу поддержки"
             title="Скрыть"
             onClick={() => {
-              localStorage.setItem(SUPPORT_STRIP_DISMISSED, '1');
+              try {
+                localStorage.setItem(SUPPORT_STRIP_DISMISSED, '1');
+              } catch {
+                // Полоса скроется до перезагрузки.
+              }
               setDismissed(true);
             }}
             className="grid size-6 place-items-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--text)]"

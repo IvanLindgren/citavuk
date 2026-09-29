@@ -73,6 +73,7 @@ function TextFeedSession() {
   // Анкета приезжает вместе с лентой: решать, показывать ли опрос, нужно ДО
   // первой карточки, иначе он встаёт поверх уже открытой ленты.
   const [preferences, setPreferences] = useState<MicroFeedPreferences | null>(null);
+  const [onboardingDismissed, setOnboardingDismissed] = useState(false);
   const [showLiked, setShowLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -244,11 +245,11 @@ function TextFeedSession() {
 
   // Анкета встаёт до ленты, а не поверх неё: спрашивать «что вам интересно» уже
   // после первой карточки — значит спрашивать с опозданием.
-  if (preferences && !preferences.onboarded) {
+  if (preferences && !preferences.onboarded && !onboardingDismissed) {
     return (
       <MicroFeedOnboarding
         preferences={preferences}
-        onDone={(saved) => { setPreferences(saved); void load(true); }}
+        onDone={(saved) => { setOnboardingDismissed(true); setPreferences(saved); void load(true); }}
       />
     );
   }
@@ -1159,7 +1160,7 @@ function SourceLine({ item }: { item: MicroFeedItem }) {
 function BookLink({ item }: { item: MicroFeedItem }) {
   const content = <><LuBookOpen className="size-4" /> Nastavi čitanje knjige</>;
   const onClick = () => void recordMicroFeedInteraction(item.id, 'read_more_clicked').catch(() => {});
-  const className = 'inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 font-semibold text-white hover:bg-[var(--accent-hover)]';
+  const className = 'inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 font-semibold text-parchment hover:bg-[var(--accent-hover)]';
   if (item.bookTargetUrl.startsWith('/')) {
     return <Link to={item.bookTargetUrl} onClick={onClick} className={className}>{content}</Link>;
   }

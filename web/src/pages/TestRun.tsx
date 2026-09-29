@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { Button, Card, ErrorNote, Spinner } from '../components/ui';
+import { Button, ButtonLink, Card, ErrorNote, Spinner } from '../components/ui';
 import { getQuiz, saveAttempt, type Quiz } from '../api/quizzes';
 import { plural } from '../lib/books';
 import { Link, useParams } from '../lib/router';
@@ -50,9 +50,7 @@ export function TestRun() {
       <main className="mx-auto w-full max-w-2xl px-4 py-16 text-center sm:px-6">
         <Card className="p-6">
           <p>Чтобы решать тесты, войдите в аккаунт.</p>
-          <Link to="/login">
-            <Button className="mt-4">Войти</Button>
-          </Link>
+          <ButtonLink to="/login" className="mt-4">Войти</ButtonLink>
         </Card>
       </main>
     );
@@ -62,11 +60,9 @@ export function TestRun() {
     return (
       <main className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
         <ErrorNote>{error}</ErrorNote>
-        <Link to="/materials">
-          <Button variant="secondary" className="mt-4">
+        <ButtonLink to="/materials" variant="secondary" className="mt-4">
             К материалам
-          </Button>
-        </Link>
+          </ButtonLink>
       </main>
     );
   }
@@ -269,11 +265,9 @@ function Result({
                   : 'Материал стоит перечитать — тест вернётся завтра.'}
         </p>
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-          <Link to={isExam ? '/exams' : '/materials'}>
-            <Button variant="secondary" className="w-full sm:w-auto">
+          <ButtonLink to={isExam ? '/exams' : '/materials'} variant="secondary" className="w-full sm:w-auto">
               {isExam ? 'К экзаменам' : 'К материалам'}
-            </Button>
-          </Link>
+            </ButtonLink>
           <Button className="w-full sm:w-auto" onClick={() => window.location.reload()}>
             Пройти заново
           </Button>

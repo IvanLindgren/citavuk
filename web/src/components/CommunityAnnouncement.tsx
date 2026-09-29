@@ -75,7 +75,7 @@ export function CommunityAnnouncement() {
                 href={CHAT_URL}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+                className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
               >
                 <TelegramIcon />
                 Вступить в чат

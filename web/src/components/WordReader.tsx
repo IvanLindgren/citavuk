@@ -44,6 +44,8 @@ import { BookImage, BookTable, Paragraph } from './WordReaderBlocks';
 import { useFocusTrap, useScrollLock } from '../lib/overlay';
 import { MOTION_CARD_S, MOTION_CARD_SHIFT_PX } from '../lib/tokens';
 import type { ReaderMark } from '../lib/wordReaderTypes';
+import { HighlightPicker } from './HighlightPicker';
+import type { QuoteColor } from '../lib/readerQuotes';
 export {
   bionicSplit,
   companionStart,
@@ -103,6 +105,7 @@ export function WordReader({
   paragraphClassName = '',
   paragraphStyle,
   paragraphMarks,
+  onSaveQuote,
 }: {
   paragraphs: string[];
   bookId?: string | null;
@@ -118,6 +121,7 @@ export function WordReader({
   paragraphStyle?: CSSProperties;
   /** Inline Markdown formatting ranges for each source paragraph. */
   paragraphMarks?: ReaderMark[][];
+  onSaveQuote?: (paragraph: number, start: number, end: number, text: string, color: QuoteColor) => void;
 }) {
   const { sync } = useSync();
   const readerRef = useRef<HTMLDivElement | null>(null);
@@ -134,6 +138,28 @@ export function WordReader({
   // внизу экрана оно оставалось незамеченным, а на длинной странице человек
   // ещё и терял место, куда смотрел.
   const [phraseAnchor, setPhraseAnchor] = useState<DOMRect | null>(null);
+  const saveSelectedQuote = (color: QuoteColor) => {
+    if (!onSaveQuote || !readerRef.current) return;
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    const range = selection.getRangeAt(0);
+    const element = (node: Node) => node.nodeType === Node.ELEMENT_NODE ? node as Element : node.parentElement;
+    const startParagraph = element(range.startContainer)?.closest('p.reader-selectable');
+    const endParagraph = element(range.endContainer)?.closest('p.reader-selectable');
+    if (!startParagraph || startParagraph !== endParagraph || !readerRef.current.contains(startParagraph)) return;
+    const paragraphs = [...readerRef.current.querySelectorAll('p.reader-selectable')];
+    const paragraph = paragraphs.indexOf(startParagraph);
+    if (paragraph < 0) return;
+    const before = range.cloneRange();
+    before.selectNodeContents(startParagraph);
+    before.setEnd(range.startContainer, range.startOffset);
+    const start = before.toString().length;
+    const end = start + range.toString().length;
+    const text = range.toString().trim();
+    if (!text || text.length > 4000) return;
+    onSaveQuote(paragraph, start, end, text, color);
+    selection.removeAllRanges();
+  };
   const [activePhrase, setActivePhrase] = useState<string | null>(null);
 
   const lookup = useWordLookup();
@@ -381,6 +407,7 @@ export function WordReader({
             phrase={selectedPhrase}
             anchor={phraseAnchor}
             onTranslate={() => void translatePhrase(selectedPhrase, phraseAnchor)}
+            onQuote={onSaveQuote ? saveSelectedQuote : undefined}
           />
         )}
       </AnimatePresence>
@@ -659,11 +686,13 @@ function PhraseSelectionBar({
   phrase,
   anchor,
   onTranslate,
+  onQuote,
 }: {
   phrase: string;
   /** Прямоугольник выделения; null — панель встаёт внизу экрана. */
   anchor: DOMRect | null;
   onTranslate: () => void;
+  onQuote?: (color: QuoteColor) => void;
 }) {
   const reduceMotion = useReducedMotion();
   const placement = useToolbarPlacement(anchor);
@@ -680,7 +709,7 @@ function PhraseSelectionBar({
         // Слой выше всех шторок приложения: разбор вызывается ИЗ них — из
         // шторки Вукотока, из панели урока, — и панель «перевести выделенное»
         // на z-40 уходила под ту самую шторку, в которой её и вызвали.
-        'fixed z-[85] flex items-center gap-3 rounded-2xl border border-[var(--line)]',
+        'fixed z-[85] flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-[var(--line)]',
         'bg-[var(--bg-raised)] p-2.5 shadow-[var(--shadow-lift)]',
         placement.floating ? '' : 'inset-x-3 bottom-5 mx-auto max-w-xl',
       ].join(' ')}
@@ -688,7 +717,7 @@ function PhraseSelectionBar({
       role="toolbar"
       aria-label="Действия с выделенной фразой"
     >
-      <div className="min-w-0 flex-1 px-2">
+      <div className="min-w-0 flex-1 basis-40 px-2">
         <div className="text-xs font-semibold uppercase text-[var(--text-muted)]">
           {tooLong ? 'Фрагмент слишком длинный' : 'Выделенная фраза'}
         </div>
@@ -696,12 +725,13 @@ function PhraseSelectionBar({
           {preview}
         </div>
       </div>
+      {onQuote && <HighlightPicker disabled={tooLong} onPick={onQuote} />}
       <button
         type="button"
         disabled={tooLong}
         onPointerDown={(event) => event.preventDefault()}
         onClick={onTranslate}
-        className="shrink-0 rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-45"
+        className="shrink-0 rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-parchment transition-colors hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-45"
       >
         Перевести
       </button>
@@ -770,7 +800,7 @@ function WordCard({
 
   const pronounce = useCallback(() => {
     audioRef.current?.pause();
-    const audio = new Audio(ttsAudioUrl(word, analysis?.english ? 'en' : 'sr'));
+    const audio = new Audio(ttsAudioUrl(word));
     audioRef.current = audio;
     setSpeaking(true);
     audio.addEventListener('ended', () => setSpeaking(false), { once: true });
@@ -781,7 +811,7 @@ function WordCard({
     } catch {
       setSpeaking(false);
     }
-  }, [analysis?.english, word]);
+  }, [word]);
 
   useEffect(() => () => audioRef.current?.pause(), []);
 
@@ -858,14 +888,14 @@ function WordCard({
         className="flex flex-col overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] shadow-[var(--shadow-lift)]"
         style={{ maxHeight: placement.contentMaxHeight }}
       >
-        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--line)] px-5 py-4">
-          <div className="min-w-0">
+        <div className={`flex shrink-0 items-start justify-between gap-4 border-b border-[var(--line)] px-5 py-4 ${kind === 'phrase' ? 'flex-wrap' : ''}`}>
+          <div className={kind === 'phrase' ? 'min-w-0 w-full' : 'min-w-0'}>
             <div className="flex items-center gap-2">
               {/* Пара идёт в заголовок целиком: «zove» и «zove se» — разные
                   слова, и показывать одно, а переводить другое нельзя. Слабее
                   набрано то, на что не нажимали: при нажатии на частицу это
                   глагол, при нажатии на глагол — частица. */}
-              <div className="font-display text-2xl font-bold text-[var(--accent)]">
+              <div className={kind === 'phrase' ? 'text-xl leading-relaxed font-semibold text-[var(--accent)] [overflow-wrap:anywhere]' : 'font-display text-2xl font-bold text-[var(--accent)]'}>
                 {reflexive?.onParticle && (
                   <span className="text-[var(--text-muted)]">{reflexive.verb} </span>
                 )}
@@ -1096,7 +1126,7 @@ function WordCard({
                     'w-full rounded-xl px-4 py-3 font-semibold transition-colors',
                     savedEntry
                       ? 'border border-[var(--line)] bg-[var(--bg-sunken)] text-[var(--text-muted)]'
-                      : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]',
+                      : 'bg-[var(--accent)] text-parchment hover:bg-[var(--accent-hover)]',
                   ].join(' ')}
                 >
                   {savedEntry && <SparkleBurst />}

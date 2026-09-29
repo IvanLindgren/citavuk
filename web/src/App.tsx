@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { lazy, Suspense, type ReactNode } from "react";
+import { lazy, Suspense, useLayoutEffect, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
+import { AskDialogHost } from "./components/AskDialog";
 import { DailyWindow } from "./components/DailyWindow";
 import {StudyRuntime} from './components/StudyRuntime';
 import { LevelPrompt } from "./components/LevelPrompt";
@@ -13,6 +14,7 @@ import { Header, isVukotok } from "./components/Header";
 import { PageErrorBoundary } from "./components/PageErrorBoundary";
 import { Spinner } from "./components/ui";
 import {
+  applyPendingScroll,
   Link,
   RouterProvider,
   Routes,
@@ -77,6 +79,12 @@ const Listening = lazy(() =>
 const ListeningPlayer = lazy(() =>
   import("./pages/ListeningPlayer").then((m) => ({ default: m.ListeningPlayer })),
 );
+const AudioFiles = lazy(() =>
+  import("./pages/AudioFiles").then((m) => ({ default: m.AudioFiles })),
+);
+const AudioFilePlayer = lazy(() =>
+  import("./pages/AudioFilePlayer").then((m) => ({ default: m.AudioFilePlayer })),
+);
 const Admin = lazy(() =>
   import("./pages/Admin").then((m) => ({ default: m.Admin })),
 );
@@ -106,6 +114,24 @@ const About = lazy(() =>
 );
 const Support = lazy(() =>
   import("./pages/Support").then((m) => ({ default: m.Support })),
+);
+const SupportThanks = lazy(() =>
+  import("./pages/SupportThanks").then((m) => ({ default: m.SupportThanks })),
+);
+const Supporters = lazy(() =>
+  import("./pages/Supporters").then((m) => ({ default: m.Supporters })),
+);
+const CaseGame = lazy(() =>
+  import("./pages/CaseGame").then((m) => ({ default: m.CaseGame })),
+);
+const Speaking = lazy(() =>
+  import("./pages/Speaking").then((m) => ({ default: m.Speaking })),
+);
+const SupporterLibrary = lazy(() =>
+  import("./pages/SupporterLibrary").then((m) => ({ default: m.SupporterLibrary })),
+);
+const SupporterPodcast = lazy(() =>
+  import("./pages/SupporterLibrary").then((m) => ({ default: m.SupporterPodcast })),
 );
 const Privacy = lazy(() =>
   import("./pages/Privacy").then((m) => ({ default: m.Privacy })),
@@ -157,12 +183,16 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/login", element: <Login /> },
   { pattern: "/library", element: <Library /> },
   { pattern: "/public-library", element: <PublicLibrary /> },
+  { pattern: "/friends-library", element: <SupporterLibrary /> },
+  { pattern: "/friends-library/:id", element: <SupporterPodcast /> },
   { pattern: "/reader/:id", element: <Reader /> },
   { pattern: "/cards", element: <Cards /> },
   { pattern: "/palace", element: <Palace /> },
   { pattern: "/account", element: <Account /> },
   { pattern: "/listening", element: <Listening /> },
   { pattern: "/listening/:id", element: <ListeningPlayer /> },
+  { pattern: "/audio-files", element: <AudioFiles /> },
+  { pattern: "/audio-files/:id", element: <AudioFilePlayer /> },
   { pattern: "/events", element: <Events /> },
   { pattern: "/events/odyssey", element: <OdysseyGate /> },
   { pattern: "/course", element: <Course /> },
@@ -182,6 +212,8 @@ const ROUTES: RouteDefinition[] = [
   // Старые сохранённые ссылки продолжают открываться после переноса раздела.
   { pattern: "/course/dialogue/:id", element: <CourseDialogue /> },
   { pattern: "/trainer", element: <Trainer /> },
+  { pattern: "/padezi", element: <CaseGame /> },
+  { pattern: "/govori", element: <Speaking /> },
   { pattern: "/basta", element: <Garden /> },
   { pattern: "/basta/:nickname", element: <PublicGarden /> },
   { pattern: "/putovanje", element: <Travel /> },
@@ -198,6 +230,8 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/privacy", element: <Privacy /> },
   { pattern: "/about", element: <About /> },
   { pattern: "/support", element: <Support /> },
+  { pattern: "/support/thanks", element: <SupportThanks /> },
+  { pattern: "/supporters", element: <Supporters /> },
   { pattern: "/auth/yandex", element: <YandexCallback /> },
   { pattern: "/admin/lessons", element: <AdminLessons /> },
   { pattern: "/admin", element: <Admin /> },
@@ -234,11 +268,17 @@ function AppFrame() {
   const fullscreen = garden || travel;
   const immersive = vukotok || fullscreen;
   const personalLesson = pathname === '/personal';
+  // Игра на падежи: шапка остаётся, а баннеры, подвал и всплывающие окна
+  // уходят — машинка должна помещаться в экран целиком.
+  const game = pathname === '/padezi';
+  // «Говори!»: подвал остаётся, но баннеры и окна не должны перебивать запись.
+  const speaking = pathname === '/govori';
+  const quiet = personalLesson || game || speaking;
 
   return (
     <div className="flex min-h-dvh flex-col">
       <DuelSearchNotice />
-      {!immersive && !personalLesson && <EventBanner />}
+      {!immersive && !quiet && <EventBanner />}
       {/*
         На телефоне Вукоток занимает экран целиком: полоса навигации над лентой
         оставляла её «страницей сайта с видео», а не тем, чем раздел является.
@@ -249,8 +289,8 @@ function AppFrame() {
           <Header />
         </div>
       )}
-      {!immersive && <ServerAnnouncements quiet={personalLesson} />}
-      {!immersive && !personalLesson && <CommunityAnnouncement />}
+      {!immersive && !game && <ServerAnnouncements quiet={personalLesson || speaking} />}
+      {!immersive && !quiet && <CommunityAnnouncement />}
       <div className="flex-1">
         <PageErrorBoundary key={path.split("?")[0]}>
           <PageTransition>
@@ -260,21 +300,22 @@ function AppFrame() {
           </PageTransition>
         </PageErrorBoundary>
       </div>
-      {!immersive && <Footer />}
-      {!immersive && !personalLesson && <AppPrompt />}
+      {!immersive && !game && <Footer />}
+      {!immersive && !quiet && <AppPrompt />}
       <StudyRuntime/>
+      <AskDialogHost />
       {/*
         Вопрос об уровне встаёт поверх любой страницы и ровно один раз за
         аккаунт. Не в Вукотоке и не в настройках, потому что уровень нужен всем
         разделам сразу: и подбору ленты, и предупреждению о тяжёлой книге.
       */}
-      {!immersive && <LevelPrompt />}
+      {!immersive && !game && <LevelPrompt />}
       {/*
         Слова дня приходят раз в сутки и только к тому, у кого уровень уже
         назван. В полноэкранной ленте не прерываем чтение и воспроизведение
         неожиданным окном: предложение останется до выхода из Вукотока.
       */}
-      {!immersive && !personalLesson && <DailyWindow />}
+      {!immersive && !quiet && <DailyWindow />}
     </div>
   );
 }
@@ -290,13 +331,19 @@ function AppFrame() {
 function PageTransition({ children }: { children: ReactNode }) {
   const { path } = useRouter();
   const reduceMotion = useReducedMotion();
+  const key = path.split("?")[0];
+
+  // Без анимации ухода нет, и прокрутка применяется сразу после смены экрана.
+  useLayoutEffect(() => {
+    if (reduceMotion) applyPendingScroll();
+  }, [key, reduceMotion]);
 
   if (reduceMotion) return <>{children}</>;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="wait" initial={false} onExitComplete={applyPendingScroll}>
       <motion.div
-        key={path.split("?")[0]}
+        key={key}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -6 }}

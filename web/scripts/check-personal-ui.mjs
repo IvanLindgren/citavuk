@@ -19,14 +19,15 @@ try{
   await page.setRequestInterception(true);
   page.on('request',async r=>{
    const u=new URL(r.url());
-   if(u.pathname.startsWith('/v1/')){
+   const pathname=u.pathname.replace(/^\/api(?=\/v1\/)/,'');
+   if(pathname.startsWith('/v1/')){
     let body={items:[],unread:0};
-    if(u.pathname==='/v1/auth/me')body={id:'ui-test-only',email:'fixture@example.test',displayName:'Проверка интерфейса',serbianLevel:'A2',emailVerified:true,isAdmin:false};
-    else if(u.pathname==='/v1/personal')body={available:true,questions:[{id:'goal',title:'Для чего тебе сербский?',multiple:true,options:['Жизнь в Сербии','Работа','Путешествия','Учёба и экзамены','Семья и общение','Культура']},{id:'pace',title:'Какой темп тебе подходит?',options:['Спокойный','Сбалансированный','Интенсивный']}],history:[],plan:mode==='questionnaire'?null:mode==='generating'?{...plan,status:'running',lessons:[],outline:[]}:plan};
-    else if(u.pathname.includes('/days/'))body=lesson;
-    else if(u.pathname==='/v1/study')body=study;
-    else if(u.pathname==='/v1/daily')body={enabled:false,set:null,themes:[],configured:true,progress:{streak:4,dueNow:0,faded:[]}};
-    else if(u.pathname.includes('/sync/'))body={changes:[],cursor:0,hasMore:false};
+    if(pathname==='/v1/auth/me')body={id:'ui-test-only',email:'fixture@example.test',displayName:'Проверка интерфейса',serbianLevel:'A2',emailVerified:true,isAdmin:false};
+    else if(pathname==='/v1/personal')body={available:true,questions:[{id:'goal',title:'Для чего тебе сербский?',multiple:true,options:['Жизнь в Сербии','Работа','Путешествия','Учёба и экзамены','Семья и общение','Культура']},{id:'pace',title:'Какой темп тебе подходит?',options:['Спокойный','Сбалансированный','Интенсивный']}],history:[],plan:mode==='questionnaire'?null:mode==='generating'?{...plan,status:'running',lessons:[],outline:[]}:plan};
+    else if(pathname.includes('/days/'))body=lesson;
+    else if(pathname==='/v1/study')body=study;
+    else if(pathname==='/v1/daily')body={enabled:false,set:null,themes:[],configured:true,progress:{streak:4,dueNow:0,faded:[]}};
+    else if(pathname.includes('/sync/'))body={changes:[],cursor:0,hasMore:false};
     await r.respond({status:200,contentType:'application/json',body:JSON.stringify(body)});
    }else if(u.origin!==new URL(base).origin && !['data:','blob:'].includes(u.protocol))await r.abort();
    else await r.continue();

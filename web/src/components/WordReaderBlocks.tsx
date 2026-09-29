@@ -5,6 +5,8 @@ import { accentWord, stressIndex, type StressTable } from '../lib/stress';
 import { tokenize, type Token } from '../lib/tokenize';
 import { bionicSplit, shouldOpenWord, wordPieces } from '../lib/wordReaderUtils';
 import type { ReaderMark } from '../lib/wordReaderTypes';
+// Те же полупрозрачные цвета, что у кружков выбора: маркер читается на любой теме.
+import { QUOTE_SWATCH } from './HighlightPicker';
 
 /** Иллюстрация из книги: битая ссылка скрывает блок целиком. */
 export function BookImage({ url, alt }: { url: string; alt: string }) {
@@ -162,7 +164,11 @@ function MarkedToken({ text, token, marks }: { text: string; token: Token; marks
       if (mark.kind === 'font') style.fontFamily = mark.value === 'sans' ? 'var(--font-sans)' : 'var(--font-display)';
       if (mark.kind === 'size' && mark.value) style.fontSize = `${mark.value}px`;
       if (mark.kind === 'code') classes.push('rounded bg-[var(--bg-sunken)] px-1 py-0.5 font-mono text-[0.9em]');
-      if (mark.kind === 'audio') classes.push('rounded bg-[var(--accent)] px-0.5 text-white');
+      if (mark.kind === 'audio') classes.push('rounded bg-[var(--accent)] px-0.5 text-parchment');
+      if (mark.kind === 'quote') {
+        if (mark.value && QUOTE_SWATCH[mark.value]) classes.push(QUOTE_SWATCH[mark.value]!);
+        else classes.push('underline decoration-[var(--accent)] decoration-2 underline-offset-4');
+      }
       if (mark.kind === 'link') href = mark.value;
     }
     const key = `${start}-${end}`;

@@ -59,6 +59,7 @@ export VITE_MAPTILER_KEY
 : "${VITE_GOOGLE_CLIENT_ID:?нет client_id Google: задайте VITE_GOOGLE_CLIENT_ID или GOOGLE_CLIENT_ID_WEB в корневом .env — без него вход через Google с сайта пропадёт}"
 export VITE_GOOGLE_CLIENT_ID
 
+if [[ "${1:-}" != "--publish-built" ]]; then
 echo "==> Проверки перед выкаткой"
 checks_started=$SECONDS
 node scripts/prepare-course-assets.mjs
@@ -74,6 +75,7 @@ build_started=$SECONDS
 # ошибка вылезает только при попытке открыть документ.
 npm run build
 echo "  сборка: $((SECONDS - build_started)) с"
+fi
 
 if [[ ! -f dist/index.html ]]; then
     echo "сборка не создала dist/index.html" >&2
@@ -175,6 +177,7 @@ check_type() {
 
 failed=0
 check_type "/" "text/html" || failed=1
+check_type "/api/v1/auth/providers" "application/json" || failed=1
 check_type "/materials" "text/html" || failed=1
 check_type "/trainer/translation-duel" "text/html" || failed=1
 # Комната матча: ссылку-приглашение открывают прямо этим адресом, и без

@@ -23,7 +23,7 @@ import {
   type TrainerDomain,
   type TrainerTopic,
 } from '../course/trainerCatalog';
-import { Button, Card, Spinner } from '../components/ui';
+import { Button, ButtonLink, Card, Spinner } from '../components/ui';
 import { Link, useQuery, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAnnouncements } from '../state/announcements';
@@ -191,13 +191,13 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
 
         <Link to="/trainer/translation-duel" className="mb-8 block">
           <Card className="flex items-center gap-4 border-[var(--accent)]/35 bg-[var(--accent)]/8 p-5 transition-colors hover:bg-[var(--accent)]/12 sm:p-6">
-            <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-white">
+            <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-parchment">
               <LuSwords className="size-6" />
             </span>
             <div className="min-w-0 flex-1">
               <h2 className="text-xl">Ты против переводчика</h2>
               <p className="mt-1 text-sm leading-relaxed text-[var(--text-muted)]">
-                Победите DeepL или Google Translate в трёх раундах. Судья — вы или Gemma 4.
+                Победи DeepL или Google Translate в трёх раундах. Судья — ты или ИИ.
               </p>
             </div>
             <span className="hidden font-bold text-[var(--accent)] sm:block">Играть</span>
@@ -212,9 +212,7 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
               успело забыться.
             </p>
           </div>
-          <Link to={`/trainer?topic=all-${domain}`}>
-            <Button size="lg">Начать</Button>
-          </Link>
+          <ButtonLink to={`/trainer?topic=all-${domain}`} size="lg">Начать</ButtonLink>
         </Card>
 
         {byLevel.map(([level, levelTopics]) => (

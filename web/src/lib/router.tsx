@@ -37,6 +37,41 @@ function currentPath(): string {
   return window.location.pathname + window.location.search;
 }
 
+function pathnameOf(path: string): string {
+  return path.split('?')[0] ?? path;
+}
+
+/**
+ * Прокрутка, которую надо применить, когда старая страница доиграет уход.
+ *
+ * Прокручивать сразу при переходе нельзя: на экране ещё уходящая страница, и
+ * она дёргается вверх. Страница выставляет цель, а `PageTransition` применяет
+ * её в `onExitComplete`. Для «назад» целью служит сохранённая позиция.
+ */
+let pendingScroll: number | null = null;
+
+export function applyPendingScroll(): void {
+  if (pendingScroll === null) return;
+  const target = pendingScroll;
+  pendingScroll = null;
+  window.scrollTo({ top: target });
+  if (target === 0) return;
+  // Высота страницы может дорасти за пару кадров, пока догружаются данные.
+  let frames = 0;
+  const retry = () => {
+    if (Math.abs(window.scrollY - target) < 2 || ++frames > 20) return;
+    window.scrollTo({ top: target });
+    requestAnimationFrame(retry);
+  };
+  requestAnimationFrame(retry);
+}
+
+function scheduleScroll(from: string, to: string, top: number): void {
+  pendingScroll = top;
+  // В пределах одной страницы смены экрана нет, значит и ждать нечего.
+  if (pathnameOf(from) === pathnameOf(to)) applyPendingScroll();
+}
+
 /** Редактор может отменить переход, не перехватывая все ссылки документа. */
 export function allowNavigation(): boolean {
   return window.dispatchEvent(new Event('citavuk-before-navigate', {cancelable:true}));
@@ -47,8 +82,12 @@ export function RouterProvider({ children }: { children: ReactNode }) {
   const position = useRef<number>(window.history.state?.citavukIndex ?? 0);
   const restored = useRef(false);
   const current = useRef(path);
+  const positions = useRef(new Map<number, number>());
 
   useEffect(() => {
+    // Позицию при «назад» восстанавливаем сами: браузер делает это до того, как
+    // новая страница отрисована, и попадает мимо.
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
     // Кнопки «назад» и «вперёд» меняют адрес мимо navigate — состояние нужно
     // подхватывать из события, иначе интерфейс останется на прежнем экране.
     window.history.replaceState({...window.history.state,citavukIndex:position.current}, '', currentPath());
@@ -61,8 +100,11 @@ export function RouterProvider({ children }: { children: ReactNode }) {
         } else window.history.pushState({citavukIndex:position.current},'',current.current);
         return;
       }
+      positions.current.set(position.current, window.scrollY);
       position.current=next??position.current-1;
+      const from=current.current;
       current.current=currentPath(); setPath(current.current);
+      scheduleScroll(from, current.current, positions.current.get(position.current) ?? 0);
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
@@ -71,6 +113,8 @@ export function RouterProvider({ children }: { children: ReactNode }) {
   const navigate = useCallback((to: string, options?: { replace?: boolean }) => {
     if (to === currentPath()) return;
     if (!allowNavigation()) return;
+    positions.current.set(position.current, window.scrollY);
+    const from = current.current;
     if (options?.replace) {
       window.history.replaceState({citavukIndex:position.current}, '', to);
     } else {
@@ -78,9 +122,9 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     }
     current.current=to;
     setPath(to);
-    // Новый экран должен открываться сверху. Браузер сам этого не делает:
-    // для него это та же страница.
-    window.scrollTo({ top: 0 });
+    // Новый экран открывается сверху. Браузер сам этого не делает: для него
+    // это та же страница.
+    scheduleScroll(from, to, 0);
   }, []);
 
   const back = useCallback(() => window.history.back(), []);

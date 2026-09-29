@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
+
+import { Link } from '../lib/router';
 
 /** Базовые элементы интерфейса, общие для всех страниц. */
 
@@ -18,6 +20,31 @@ const VARIANTS: Record<ButtonVariant, string> = {
   ghost: 'text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-[var(--bg-sunken)]',
 };
 
+type ButtonSize = 'sm' | 'md' | 'lg';
+
+const SIZES: Record<ButtonSize, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+export function buttonClass(
+  variant: ButtonVariant = 'primary',
+  size: ButtonSize = 'md',
+  className = '',
+): string {
+  return [
+    'relative inline-flex items-center justify-center gap-2 rounded-2xl font-semibold',
+    // Смещение вниз при нажатии имитирует настоящую кнопку с толщиной —
+    // тот же приём, что на «тропе уровней» в приложении.
+    'transition-[background-color,border-color,transform,box-shadow] duration-150',
+    'disabled:pointer-events-none disabled:opacity-50',
+    VARIANTS[variant],
+    SIZES[size],
+    className,
+  ].join(' ');
+}
+
 export function Button({
   variant = 'primary',
   size = 'md',
@@ -26,32 +53,41 @@ export function Button({
   ...rest
 }: {
   variant?: ButtonVariant;
-  size?: 'sm' | 'md' | 'lg';
+  size?: ButtonSize;
   children: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
-  const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
-  };
-
   return (
-    <button
-      className={[
-        'relative inline-flex items-center justify-center gap-2 rounded-2xl font-semibold',
-        // Смещение вниз при нажатии имитирует настоящую кнопку с толщиной —
-        // тот же приём, что на «тропе уровней» в приложении.
-        'transition-[background-color,border-color,transform,box-shadow] duration-150',
-        'disabled:pointer-events-none disabled:opacity-50',
-        VARIANTS[variant],
-        sizes[size],
-        className,
-      ].join(' ')}
-      {...rest}
-    >
+    <button className={buttonClass(variant, size, className)} {...rest}>
       {children}
     </button>
   );
+}
+
+/**
+ * Ссылка в виде кнопки. Кнопку нельзя класть внутрь ссылки: получаются два
+ * элемента в порядке табуляции, а скринридер читает их как разные действия.
+ * Адрес с «#» или внешний уходит обычным `<a>`, остальное — через роутер.
+ */
+export function ButtonLink({
+  to,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  children,
+  onClick,
+  ...rest
+}: {
+  to: string;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  children: ReactNode;
+  onClick?: () => void;
+} & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'>) {
+  const classes = buttonClass(variant, size, className);
+  if (to.startsWith('#') || /^[a-z]+:/i.test(to)) {
+    return <a href={to} className={classes} onClick={onClick} {...rest}>{children}</a>;
+  }
+  return <Link to={to} className={classes} onClick={onClick} {...rest}>{children}</Link>;
 }
 
 /**

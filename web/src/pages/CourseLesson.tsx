@@ -51,7 +51,7 @@ import type {
   WordTile,
 } from '../course/types';
 import { ttsAudioUrl } from '../api/listening';
-import { Button, SparkleBurst, Spinner } from '../components/ui';
+import { Button, ButtonLink, SparkleBurst, Spinner } from '../components/ui';
 import { Link, useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
@@ -144,7 +144,7 @@ function CourseLessonSession() {
       <main className="flex min-h-[60vh] flex-col items-center justify-center px-5 text-center">
         <CourseSprite state="incorrect" size={150} />
         <h1 className="mt-5 text-2xl">{error}</h1>
-        <Link to="/course"><Button className="mt-6">К карте курса</Button></Link>
+        <ButtonLink to="/course" className="mt-6">К карте курса</ButtonLink>
       </main>
     );
   }
@@ -387,9 +387,7 @@ function LessonTheory({ lesson }: { lesson: CourseLessonModel }) {
           Правило запоминается, когда его применяешь. Войдите, чтобы пройти
           упражнения и сохранить прогресс.
         </p>
-        <Link to="/login">
-          <Button className="mt-6" size="lg">Войти и продолжить</Button>
-        </Link>
+        <ButtonLink to="/login" className="mt-6" size="lg">Войти и продолжить</ButtonLink>
       </div>
     </main>
   );
@@ -1433,9 +1431,7 @@ function LessonResult({
         </p>
       )}
       <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-        <Link to="/course" className="flex-1">
-          <Button className="w-full" size="lg">К карте курса</Button>
-        </Link>
+        <ButtonLink to="/course" className="flex-1 w-full" size="lg">К карте курса</ButtonLink>
         {!passed && (
           <Button className="flex-1" size="lg" variant="secondary" onClick={() => window.location.reload()}>
             Повторить

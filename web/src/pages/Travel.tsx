@@ -293,7 +293,7 @@ export function Travel() {
               onClick={() => chooseView(false)}
               aria-pressed={!tilted}
               title="Карта сверху"
-              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${!tilted ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${!tilted ? 'bg-[var(--accent)] text-parchment' : 'text-[var(--text-muted)]'}`}
             >
               <LuMap className="size-4" />2D
             </button>
@@ -302,7 +302,7 @@ export function Travel() {
               onClick={() => chooseView(true)}
               aria-pressed={tilted}
               title="Наклонить камеру и поднять дома"
-              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${tilted ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}
+              className={`flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-xs font-semibold ${tilted ? 'bg-[var(--accent)] text-parchment' : 'text-[var(--text-muted)]'}`}
             >
               <LuBox className="size-4" />3D
             </button>

@@ -23,13 +23,15 @@ export function installChunkRecovery(
 ): () => void {
   const now = options.now ?? Date.now;
   const reload = options.reload ?? (() => window.location.reload());
-  const storage = options.storage ?? window.sessionStorage;
+  let storage = options.storage;
+  try { storage ??= window.sessionStorage; } catch { /* Хранилище заблокировано браузером. */ }
+  let memoryRecord: RecoveryRecord | null = null;
   const path = options.path ?? (() => window.location.pathname);
 
   const onPreloadError = (event: Event) => {
     const currentPath = path();
     const currentTime = now();
-    const previous = readRecord(storage);
+    const previous = (storage ? readRecord(storage) : null) ?? memoryRecord;
 
     if (
       previous &&
@@ -41,10 +43,18 @@ export function installChunkRecovery(
       return;
     }
 
+    memoryRecord = { path: currentPath, at: currentTime };
+    try {
+    if (!storage) return;
     storage.setItem(
       RECOVERY_KEY,
       JSON.stringify({ path: currentPath, at: currentTime } satisfies RecoveryRecord),
     );
+    } catch {
+      // Без сохранённого ограничителя перезагрузка зациклится.
+      // Ошибка импорта дойдёт до PageErrorBoundary.
+      return;
+    }
     event.preventDefault();
     reload();
   };
@@ -52,9 +62,9 @@ export function installChunkRecovery(
   window.addEventListener('vite:preloadError', onPreloadError);
 
   const cleanupTimer = window.setTimeout(() => {
-    const previous = readRecord(storage);
+    const previous = storage ? readRecord(storage) : null;
     if (previous && now() - previous.at >= RECOVERY_WINDOW_MS) {
-      storage.removeItem(RECOVERY_KEY);
+      try { storage?.removeItem(RECOVERY_KEY); } catch { /* Не мешаем работе страницы. */ }
     }
   }, RECOVERY_WINDOW_MS);
 

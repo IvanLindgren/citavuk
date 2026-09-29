@@ -29,6 +29,7 @@ import {
   type VocabEntry,
 } from '../lib/vocabulary';
 import { ApiError, request } from './client';
+import { applyRemoteReaderQuote, clearReaderQuoteDirty, dirtyReaderQuotes, quoteColor, type ReaderQuote } from '../lib/readerQuotes';
 
 /**
  * Синхронизация книг между браузером и другими устройствами.
@@ -66,8 +67,14 @@ interface PullResponse {
   vocabulary: RemoteVocabulary[] | null;
   reviews: RemoteReview[] | null;
   palaces: RemotePalace[] | null;
+  quotes?: RemoteQuote[] | null;
   rev: number;
   hasMore: boolean;
+}
+
+interface RemoteQuote {
+  id: string; bookId: string; page: number; paragraph: number;
+  start: number; end: number; text: string; color?: string; deleted: boolean; updatedAt: string;
 }
 
 interface RemotePalace {
@@ -151,13 +158,14 @@ async function pushChanges(): Promise<number> {
   for (let page = 0; page < 50; page++) {
     const books = await dirtyBooks(150);
     const vocabulary = await dirtyVocabulary(200);
-    const reviews = await dirtyReviews(150);
-    const palaces = await dirtyPalaces(50);
+    const reviews = await dirtyReviews(100);
+    const palaces = await dirtyPalaces(25);
+    const quotes = await dirtyReaderQuotes(25);
     if (
       books.length === 0 &&
       vocabulary.length === 0 &&
       reviews.length === 0 &&
-      palaces.length === 0
+      palaces.length === 0 && quotes.length === 0
     ) {
       return total;
     }
@@ -169,6 +177,12 @@ async function pushChanges(): Promise<number> {
         vocabulary: vocabulary.map(toRemoteVocabulary),
         reviews: reviews.map(toRemoteReview),
         palaces: palaces.map(toRemotePalace),
+        quotes: quotes.map((quote: ReaderQuote) => ({
+          id: quote.id, bookId: quote.bookId, page: quote.page,
+          paragraph: quote.paragraph, start: quote.start, end: quote.end,
+          text: quote.text, color: quoteColor(quote.color), deleted: !!quote.deleted,
+          updatedAt: new Date(quote.updatedAt).toISOString(),
+        })),
       },
     });
 
@@ -178,13 +192,14 @@ async function pushChanges(): Promise<number> {
     await clearVocabularyDirty(vocabulary);
     await clearReviewDirty(reviews);
     await clearPalaceDirty(palaces);
-    total += books.length + vocabulary.length + reviews.length + palaces.length;
+    await clearReaderQuoteDirty(quotes);
+    total += books.length + vocabulary.length + reviews.length + palaces.length + quotes.length;
 
     if (
       books.length < 150 &&
       vocabulary.length < 200 &&
-      reviews.length < 150 &&
-      palaces.length < 50
+      reviews.length < 100 &&
+      palaces.length < 25 && quotes.length < 25
     ) {
       return total;
     }
@@ -318,6 +333,14 @@ async function pullChanges(): Promise<number> {
       ) {
         total++;
       }
+    }
+    for (const remote of response.quotes ?? []) {
+      if (await applyRemoteReaderQuote({
+        id: remote.id, bookId: remote.bookId, page: remote.page,
+        paragraph: remote.paragraph, start: remote.start, end: remote.end,
+        text: remote.text, color: quoteColor(remote.color), deleted: remote.deleted ? 1 : 0,
+        updatedAt: parseTime(remote.updatedAt), dirty: 0,
+      })) total++;
     }
 
     const next = response.rev ?? cursor;

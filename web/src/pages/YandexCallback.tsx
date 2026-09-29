@@ -48,7 +48,7 @@ export function YandexCallback() {
             <p className="mt-4 text-[var(--text-muted)]">{error}</p>
             <Link
               to="/login"
-              className="mt-7 inline-flex rounded-xl bg-[var(--accent)] px-6 py-3 font-semibold text-white"
+              className="mt-7 inline-flex rounded-xl bg-[var(--accent)] px-6 py-3 font-semibold text-parchment"
             >
               Вернуться ко входу
             </Link>

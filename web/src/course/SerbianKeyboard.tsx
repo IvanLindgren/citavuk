@@ -49,7 +49,7 @@ export function SerbianKeyboard({
           className={[
             'flex size-9 items-center justify-center rounded-lg border font-bold transition-colors',
             uppercase
-              ? 'border-[var(--accent)] bg-[var(--accent)] text-white'
+              ? 'border-[var(--accent)] bg-[var(--accent)] text-parchment'
               : 'border-[var(--line)] bg-[var(--bg-raised)]',
           ].join(' ')}
         >

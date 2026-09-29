@@ -12,4 +12,10 @@ export interface AudioLesson {
   cues: AudioCue[];
   transcript_url?: string | null;
   duration?: number;
+  kind?: 'podcast' | 'audiobook' | 'radio' | 'tts';
+  category?: string;
+  cefr?: string;
+  source_title?: string;
+  source_url?: string;
+  external_url?: string;
 }

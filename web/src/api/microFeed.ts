@@ -1,4 +1,8 @@
-import { getToken, request } from './client';
+import { apiResourceUrl, getToken, request } from './client';
+
+function withLocalMedia(item: MicroFeedItem): MicroFeedItem {
+  return { ...item, imageUrl: apiResourceUrl(item.imageUrl), audioUrl: apiResourceUrl(item.audioUrl) };
+}
 
 export type MicroFeedStatus = 'draft' | 'published' | 'archived';
 export type MicroFeedScript = 'cyrillic' | 'latin';
@@ -104,12 +108,25 @@ export type MicroFeedItemDraft = Pick<MicroFeedItem,
  */
 const VISITOR_TOKEN_KEY = 'citavuk-micro-feed-visitor-token';
 
+// Запасная копия на случай запрещённого хранилища: лента должна работать и в
+// приватном окне, пусть и без памяти между визитами.
+let visitorTokenInMemory = '';
+
 export function microFeedVisitorToken(): string {
-  return localStorage.getItem(VISITOR_TOKEN_KEY) ?? '';
+  try {
+    return localStorage.getItem(VISITOR_TOKEN_KEY) ?? '';
+  } catch {
+    return visitorTokenInMemory;
+  }
 }
 
 function rememberVisitorToken(token: string | undefined) {
-  if (token) localStorage.setItem(VISITOR_TOKEN_KEY, token);
+  if (!token) return;
+  try {
+    localStorage.setItem(VISITOR_TOKEN_KEY, token);
+  } catch {
+    visitorTokenInMemory = token;
+  }
 }
 
 export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode='text') {
@@ -127,7 +144,7 @@ export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode
     visitorToken?: string;
   }>(`/v1/micro-feed?${query}`, { signal });
   rememberVisitorToken(response.visitorToken);
-  return response;
+  return { ...response, items: response.items.map(withLocalMedia) };
 }
 
 export type MicroFeedStrategy = 'cold' | 'declared' | 'personalized';
@@ -165,7 +182,7 @@ export async function getLikedMicroFeed(signal?: AbortSignal, mode = 'text') {
     `/v1/micro-feed/liked?${query}`,
     { signal },
   );
-  return response.items;
+  return response.items.map(withLocalMedia);
 }
 
 /**

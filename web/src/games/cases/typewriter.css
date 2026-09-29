@@ -1,0 +1,354 @@
+/*
+ * Печатная машинка игры на падежи. Цвета намеренно не из темы сайта: машинка —
+ * предмет, и в тёмной теме она остаётся чёрной с хромом, а лист — бумажным.
+ */
+
+.tw-stage {
+  /* Клавиша подбирается под ширину (13 клавиш в ряду) и под высоту окна:
+     машинка вместе с листом занимает около 14 клавиш по высоте. */
+  --key: clamp(24px, min(calc((100vw - 32px) / 13.6), calc((100dvh - 290px) / 13.5)), 46px);
+  --gap: calc(var(--key) * 0.2);
+  --ink: #1d1a17;
+  --ink-red: #b3261e;
+  --paper: #fbf6e8;
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 780px;
+  overflow: hidden;
+  /* Сцена стоит у нижнего края окна: руки уходят за край экрана — к игроку. */
+  padding: 0 4px calc(var(--key) * 0.9);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --- Лист --- */
+
+.tw-paper-window {
+  position: relative;
+  /* Лист забирает свободную высоту: на высоком телефоне видно больше строк. */
+  flex: 1 1 auto;
+  min-height: calc(var(--key) * 4.4);
+  max-height: calc(var(--key) * 10);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 42%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 42%);
+}
+
+.tw-paper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 50ch;
+  min-height: 100%;
+  padding: 2.2em 3ch 0.55em;
+  background:
+    linear-gradient(90deg, transparent 2.2ch, rgb(179 38 30 / 0.28) 2.2ch, rgb(179 38 30 / 0.28) calc(2.2ch + 1px), transparent calc(2.2ch + 1px)),
+    var(--paper);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06), 0 6px 18px rgb(0 0 0 / 0.18);
+  color: var(--ink);
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: calc(var(--key) * 0.46);
+  line-height: 1.6;
+  white-space: pre;
+  /* Текущая строка всегда у валика, прежние уходят вверх. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 80ms linear;
+}
+
+.tw-paper.is-returning {
+  transition: transform 420ms cubic-bezier(0.3, 0.9, 0.25, 1);
+}
+
+.tw-line {
+  display: block;
+  min-height: 1.6em;
+}
+
+.tw-line-feed {
+  animation: tw-line-feed 260ms cubic-bezier(0.3, 0.9, 0.25, 1);
+}
+
+@keyframes tw-line-feed {
+  from { transform: translateY(1.6em); }
+  to { transform: translateY(0); }
+}
+
+.tw-ink-faint { opacity: 0.35; }
+.tw-ink-red { color: var(--ink-red); }
+.tw-ink-struck {
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--ink-red);
+}
+.tw-margin-note {
+  color: var(--ink-red);
+  font-size: 0.8em;
+  margin-left: 1.5ch;
+}
+.tw-slip {
+  text-decoration: underline wavy var(--ink-red);
+  text-underline-offset: 4px;
+}
+
+/* Ограничитель над печатным местом: рамка, в которую бьют литеры. */
+.tw-guide {
+  position: absolute;
+  bottom: 0.35em;
+  left: 50%;
+  width: calc(var(--key) * 0.9);
+  height: calc(var(--key) * 0.2);
+  transform: translateX(-50%);
+  border: 2px solid #9ea2a8;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  pointer-events: none;
+}
+
+.tw-caret {
+  display: inline-block;
+  width: 1ch;
+  height: 0.12em;
+  margin-bottom: -0.05em;
+  background: var(--ink-red);
+  animation: tw-blink 1s steps(2) infinite;
+  vertical-align: baseline;
+}
+
+@keyframes tw-blink {
+  50% { opacity: 0; }
+}
+
+/* --- Валик и каретка --- */
+
+.tw-platen {
+  position: relative;
+  z-index: 2;
+  height: calc(var(--key) * 0.95);
+  margin: calc(var(--key) * -0.25) 7% 0;
+  border-radius: 999px;
+  background: linear-gradient(#3a3835, #0e0d0c 55%, #24221f);
+  box-shadow: inset 0 2px 1px rgb(255 255 255 / 0.12), 0 4px 10px rgb(0 0 0 / 0.35);
+}
+
+.tw-platen::before,
+.tw-platen::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(var(--key) * 0.75);
+  height: calc(var(--key) * 0.75);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #c4c8cd 35%, #7e8388 70%, #4d5156);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.4);
+  transform: translateY(-50%);
+}
+
+.tw-platen::before { left: calc(var(--key) * -0.55); }
+.tw-platen::after { right: calc(var(--key) * -0.55); }
+
+.tw-bail {
+  position: absolute;
+  top: calc(var(--key) * -0.08);
+  left: 12%;
+  right: 12%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7e8388, #eef0f2, #7e8388);
+}
+
+.tw-lever {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--key) * -0.55);
+  left: calc(7% - var(--key) * 1.55);
+  width: calc(var(--key) * 1.5);
+  height: calc(var(--key) * 0.34);
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(#f4f5f6, #9ea3a8 60%, #6c7075);
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.35);
+  transform: rotate(-24deg);
+  transform-origin: 100% 50%;
+  cursor: pointer;
+  transition: transform 160ms ease;
+}
+
+.tw-lever:hover { transform: rotate(-30deg); }
+.tw-lever.is-pulled { transform: rotate(-8deg) translateX(calc(var(--key) * 0.3)); }
+
+/* --- Корпус --- */
+
+.tw-body {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--key) * -0.45);
+  /* Снизу — передняя панель: на ней лежат лапы, пока не печатают. */
+  padding: calc(var(--key) * 0.75) calc(var(--key) * 0.4) calc(var(--key) * 1.5);
+  border-radius: calc(var(--key) * 1.1) calc(var(--key) * 1.1) calc(var(--key) * 0.45) calc(var(--key) * 0.45);
+  background:
+    radial-gradient(120% 70% at 50% 0%, #45403a 0%, #1d1a17 55%, #121010 100%);
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.1),
+    inset 0 -6px 12px rgb(0 0 0 / 0.5),
+    0 22px 40px -12px rgb(0 0 0 / 0.55);
+}
+
+.tw-basket {
+  position: relative;
+  width: 58%;
+  height: calc(var(--key) * 1.05);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: repeating-conic-gradient(from 270deg at 50% 100%, #9ca0a6 0deg 1.1deg, transparent 1.1deg 5.6deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 34%, #000 35%);
+  mask-image: radial-gradient(circle at 50% 100%, transparent 34%, #000 35%);
+  opacity: 0.8;
+}
+
+.tw-decal {
+  margin: calc(var(--key) * 0.15) 0 calc(var(--key) * 0.25);
+  color: #d9b25f;
+  font-family: var(--font-display);
+  font-size: calc(var(--key) * 0.36);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-align: center;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
+  text-transform: uppercase;
+}
+
+.tw-decal small {
+  display: block;
+  margin-top: 0.15em;
+  color: rgb(217 178 95 / 0.7);
+  font-size: 0.45em;
+  letter-spacing: 0.4em;
+}
+
+.tw-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  margin-top: calc(var(--gap) * 1.2);
+}
+
+.tw-row-2 { padding-left: calc(var(--key) * 0.4); }
+.tw-row-3 { padding-left: calc(var(--key) * 0.2); }
+
+.tw-key {
+  position: relative;
+  flex: none;
+  width: var(--key);
+  height: var(--key);
+  padding: calc(var(--key) * 0.085);
+  border: none;
+  border-radius: 50%;
+  background: conic-gradient(from 200deg, #f7f8f9, #8c9196, #e9ebed, #6e7378, #f7f8f9);
+  box-shadow:
+    0 calc(var(--key) * 0.1) 0 #2a2826,
+    0 calc(var(--key) * 0.16) calc(var(--key) * 0.14) rgb(0 0 0 / 0.55);
+  cursor: pointer;
+  transition: transform 70ms ease-out, box-shadow 70ms ease-out;
+}
+
+.tw-key-face {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #fffdf6, #f1e7cc 58%, #d9cba5);
+  box-shadow: inset 0 -2px 3px rgb(90 70 30 / 0.3);
+  color: #1a1714;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: calc(var(--key) * 0.4);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tw-key-face svg { width: 48%; height: 48%; }
+
+.tw-key.is-pressed,
+.tw-key:active {
+  transform: translateY(calc(var(--key) * 0.09));
+  box-shadow:
+    0 calc(var(--key) * 0.02) 0 #2a2826,
+    0 calc(var(--key) * 0.05) calc(var(--key) * 0.08) rgb(0 0 0 / 0.5);
+}
+
+.tw-key:focus-visible {
+  outline: 3px solid #d9b25f;
+  outline-offset: 3px;
+}
+
+.tw-key.is-serbian .tw-key-face {
+  background: radial-gradient(circle at 50% 30%, #fff6f3, #f4dcd4 58%, #d9b0a3);
+}
+
+.tw-space-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--key) * 0.5);
+  margin-top: calc(var(--gap) * 1.6);
+  padding-left: calc(var(--key) * 1.5);
+}
+
+@media (max-width: 520px) {
+  .tw-stage { --gap: calc(var(--key) * 0.12); }
+  .tw-body { padding-inline: calc(var(--key) * 0.25); }
+}
+
+.tw-space {
+  width: calc(var(--key) * 6.5);
+  height: calc(var(--key) * 0.5);
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(#f7f8f9, #a5aaaf 55%, #6e7378);
+  box-shadow: 0 calc(var(--key) * 0.08) 0 #2a2826, 0 calc(var(--key) * 0.12) calc(var(--key) * 0.12) rgb(0 0 0 / 0.5);
+  cursor: pointer;
+  transition: transform 70ms ease-out, box-shadow 70ms ease-out;
+}
+
+.tw-space.is-pressed,
+.tw-space:active {
+  transform: translateY(calc(var(--key) * 0.07));
+  box-shadow: 0 1px 0 #2a2826;
+}
+
+/* --- Лапы Читавука --- */
+
+.tw-paw {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: calc(var(--key) * 2.5);
+  pointer-events: none;
+  transform-origin: 50% 8%;
+  transition: transform 95ms cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
+  filter: drop-shadow(0 10px 10px rgb(0 0 0 / 0.35));
+}
+
+.tw-paw.is-resting {
+  transition: transform 380ms cubic-bezier(0.3, 0.9, 0.25, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-paper,
+  .tw-paper.is-returning,
+  .tw-paw,
+  .tw-paw.is-resting { transition: none; }
+  .tw-line-feed { animation: none; }
+}

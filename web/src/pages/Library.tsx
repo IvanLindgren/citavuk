@@ -2,9 +2,10 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { DropOverlay } from "../components/DropOverlay";
+import { ClipboardImportButton } from "../components/ClipboardImportButton";
 import { Mascot } from "../components/Mascot";
 import { SyncBadge } from "../components/SyncBadge";
-import { Button, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
+import { Button, ButtonLink, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
 import {
   deleteBook,
   importParagraphs,
@@ -47,10 +48,12 @@ import {
 import { Link, useQuery, useRouter } from "../lib/router";
 import { allReviews, allVocabulary } from "../lib/vocabulary";
 import { pickImportableFile, useFileDrop } from "../lib/useFileDrop";
+import { isAudioClipboardFile, type ClipboardPayload } from "../lib/clipboard";
 import { useAuth } from "../state/auth";
 import { useSync } from "../state/sync";
 import { useSeo } from '../lib/seo';
 import { MOTION_CARD_S, MOTION_LIST_STEP_S } from "../lib/tokens";
+import { askConfirm, askText } from "../components/AskDialog";
 
 /** Пример на случай пустой библиотеки: без него первый экран нечем занять. */
 const SAMPLE = `Ово је прича о вуку који је волео да чита.
@@ -284,6 +287,21 @@ export function Library() {
     [account, save],
   );
 
+  const importClipboard = useCallback(
+    (payload: ClipboardPayload) => {
+      if (payload.kind === "text") {
+        void addText("Вставка из буфера", payload.text);
+        return;
+      }
+      if (isAudioClipboardFile(payload.file)) {
+        setError("MP3 и другие записи добавляются в разделе «Звуковые файлы».");
+        return;
+      }
+      void readFile(payload.file);
+    },
+    [addText, readFile],
+  );
+
   /** Ответ на вопрос «переводить или оставить как есть». */
   const choose = useCallback(
     async (choice: ImportChoice) => {
@@ -330,8 +348,8 @@ export function Library() {
     },
   });
 
-  const createFolder = useCallback(() => {
-    const name = normalizeFolder(window.prompt("Название папки") ?? "");
+  const createFolder = useCallback(async () => {
+    const name = normalizeFolder((await askText("Новая папка", { confirmLabel: "Создать" })) ?? "");
     if (!name) return;
     addDraftFolder(name);
     setView({ kind: "folder", name });
@@ -392,6 +410,17 @@ export function Library() {
                 "Добавить документ"
               )}
             </Button>
+            <ClipboardImportButton
+              disabled={importStage !== null}
+              onPayload={importClipboard}
+              onError={(caught) =>
+                setError(
+                  caught instanceof Error
+                    ? caught.message
+                    : "Не удалось прочитать буфер обмена.",
+                )
+              }
+            />
           </div>
         </Reveal>
 
@@ -427,11 +456,9 @@ export function Library() {
                 Книги и папки хранятся только в этом браузере. Войдите, чтобы
                 они появились на телефоне и компьютере.
               </p>
-              <Link to="/login">
-                <Button variant="secondary" size="sm">
+              <ButtonLink to="/login" variant="secondary" size="sm">
                   Войти
-                </Button>
-              </Link>
+                </ButtonLink>
             </Card>
           </Reveal>
         )}
@@ -448,20 +475,18 @@ export function Library() {
             loose={loose}
             onSelect={setView}
             onRename={async (from) => {
-              const to = window.prompt("Новое название папки", from);
+              const to = await askText("Переименовать папку", { initial: from, confirmLabel: "Сохранить" });
               if (!to) return;
               await renameFolder(books, from, to);
               setView({ kind: "folder", name: normalizeFolder(to) });
               await afterChange();
             }}
             onDissolve={async (name) => {
-              if (
-                !window.confirm(
-                  `Убрать папку «${name}»? Книги останутся в библиотеке.`,
-                )
-              ) {
-                return;
-              }
+              const sure = await askConfirm(`Убрать папку «${name}»?`, {
+                text: "Книги останутся в библиотеке.",
+                confirmLabel: "Убрать",
+              });
+              if (!sure) return;
               await dissolveFolder(books, name);
               setView({ kind: "all" });
               await afterChange();
@@ -565,16 +590,12 @@ function ContinueCard({
           <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${progress}%` }} />
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Link to={`/reader/${current.id}`}>
-            <Button size="sm">Читать</Button>
-          </Link>
+          <ButtonLink to={`/reader/${current.id}`} size="sm">Читать</ButtonLink>
           {dueCount > 0 && (
-            <Link to="/cards">
-              <Button size="sm" variant="secondary">
+            <ButtonLink to="/cards" size="sm" variant="secondary">
                 К повторению: {dueCount}{" "}
                 {plural(dueCount, "слово", "слова", "слов")}
-              </Button>
-            </Link>
+              </ButtonLink>
           )}
         </div>
       </Card>
@@ -823,10 +844,10 @@ function BookCard({
                     </MoveChip>
                   ))}
                 <MoveChip
-                  onClick={() => {
-                    const name = window.prompt("Название папки") ?? "";
+                  onClick={async () => {
                     setMenuOpen(false);
-                    if (name.trim()) onMove(name);
+                    const name = await askText("Новая папка", { confirmLabel: "Переложить" });
+                    if (name) onMove(name);
                   }}
                 >
                   + Новая папка

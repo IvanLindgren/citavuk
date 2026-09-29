@@ -118,7 +118,7 @@ export function OdysseyReader({ accountId }: { accountId: string }) {
       <main className="flex min-h-[60vh] flex-col items-center justify-center px-5 text-center">
         <h1 className="text-2xl">Не удалось открыть песнь</h1>
         <p className="mt-3 text-[var(--text-muted)]">Проверьте соединение и попробуйте ещё раз.</p>
-        <button type="button" onClick={() => setLoadAttempt((value) => value + 1)} className="mt-6 rounded-xl bg-[var(--accent)] px-5 py-2.5 font-semibold text-white">
+        <button type="button" onClick={() => setLoadAttempt((value) => value + 1)} className="mt-6 rounded-xl bg-[var(--accent)] px-5 py-2.5 font-semibold text-parchment">
           Повторить
         </button>
       </main>

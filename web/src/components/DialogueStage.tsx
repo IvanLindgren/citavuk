@@ -262,7 +262,7 @@ export function DialogueChoiceBar({
               whileTap={{ y: 2 }}
               className="flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-3 text-left font-semibold shadow-[0_3px_0_0_var(--line)] transition-colors hover:border-[var(--accent)]"
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-bold text-white">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-bold text-parchment">
                 {index + 1}
               </span>
               <span>{choice.label}</span>

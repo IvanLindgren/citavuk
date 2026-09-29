@@ -5,8 +5,18 @@
  * перевод. Схема ответов описана в server/README.md.
  */
 
-/** Адрес API. В разработке запросы идут через прокси Vite, см. vite.config.ts. */
-export const API_BASE = import.meta.env.DEV ? '' : 'https://api.citavuk.ru';
+/** Один origin со страницей: без отдельного DNS/TLS-соединения и preflight. */
+export const API_BASE = '/api';
+
+/** Старые ответы API содержат абсолютные адреса картинок и аудио. */
+export function apiResourceUrl(value: string): string {
+  if (/^\/(?:v1|audio|documents)\//.test(value)) return API_BASE + value;
+  try {
+    const url = new URL(value);
+    if (url.origin === 'https://api.citavuk.ru') return API_BASE + url.pathname + url.search + url.hash;
+  } catch { /* Локальные и внешние адреса сохраняем. */ }
+  return value;
+}
 
 const TOKEN_KEY = 'citavuk-token';
 const EPHEMERAL_TOKEN_KEY = 'citavuk-session-token';
@@ -99,6 +109,7 @@ export async function request<T>(
   }
 
   let response: Response;
+  let text: string;
   try {
     response = await fetch(API_BASE + path, {
       method,
@@ -107,6 +118,9 @@ export async function request<T>(
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: controller.signal,
     });
+    // Полученные заголовки ещё не означают, что тело ответа дочитано.
+    // Таймаут должен прерывать и зависшую загрузку JSON.
+    text = await response.text();
   } catch {
     // Сюда попадают и обрыв сети, и таймаут, и блокировка CORS. Для
     // вызывающего смысл один: ответа нет.
@@ -115,8 +129,6 @@ export async function request<T>(
     clearTimeout(timer);
     options.signal?.removeEventListener('abort', abort);
   }
-
-  const text = await response.text();
 
   if (!response.ok) {
     let message = `Ошибка сервера (${response.status}).`;

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Проверка открытия Читавука</title>
+  <style>
+    body{margin:0;padding:24px;background:#faf4e8;color:#302217;font:16px/1.6 system-ui,sans-serif}
+    main{max-width:640px;margin:auto}h1{font-size:26px;line-height:1.2}
+    li{margin:12px 0;overflow-wrap:anywhere}button{padding:12px 20px;border:0;border-radius:12px;background:#a52c25;color:white;font:inherit}
+    textarea{box-sizing:border-box;width:100%;height:220px;margin-top:16px;font:12px/1.5 monospace}
+    iframe{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  </style>
+</head>
+<body><main>
+  <h1>Проверка открытия Читавука</h1>
+  <p id="status">Если эта надпись не меняется, JavaScript на странице не запустился.</p>
+  <ul id="results"></ul>
+  <p>Когда проверка закончится, отправь разработчику результат из поля ниже или снимок экрана.</p>
+  <button id="copy" type="button">Скопировать результат</button>
+  <textarea id="report" readonly aria-label="Результат проверки"></textarea>
+  <p><a href="/">Открыть Читавук</a></p>
+</main>
+<script>
+(function () {
+  var status = document.getElementById('status');
+  var report = document.getElementById('report');
+  var lines = ['Проверка Читавука v1', new Date().toISOString(), navigator.userAgent];
+  status.textContent = 'Проверяем загрузку. Обычно это занимает до 20 секунд.';
+  function show(name, message) {
+    var row = document.createElement('li');
+    row.textContent = name + ': ' + message;
+    document.getElementById('results').appendChild(row);
+    lines.push(row.textContent); report.value = lines.join('\n');
+  }
+  function check(name, work) {
+    var start = Date.now();
+    return Promise.resolve().then(work).then(function (detail) {
+      show(name, 'OK (' + ((Date.now()-start)/1000).toFixed(1) + ' с)' + (detail ? ', ' + detail : ''));
+    }, function (error) { show(name, 'ОШИБКА: ' + error.message); });
+  }
+  function get(url, expectedType, api) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url); xhr.timeout = 15000;
+      if (api) xhr.setRequestHeader('X-Citavuk-Client', 'web');
+      xhr.onload = function () {
+        if (xhr.status !== 200) return reject(new Error('HTTP ' + xhr.status));
+        var type = xhr.getResponseHeader('content-type') || '';
+        if (type.indexOf(expectedType) < 0) return reject(new Error('Неверный тип ответа: ' + type));
+        resolve(xhr.responseText);
+      };
+      xhr.onerror = function () { reject(new Error('Соединение или доступ браузера')); };
+      xhr.ontimeout = function () { reject(new Error('Нет полного ответа за 15 секунд')); };
+      xhr.send();
+    });
+  }
+  function moduleCheck() {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      var timer = setTimeout(function () { finish(new Error('Модуль не запустился за 15 секунд')); }, 15000);
+      function finish(error) {
+        clearTimeout(timer); window.removeEventListener('citavuk-connection-module-ready', ready);
+        script.remove(); if (error) reject(error); else resolve();
+      }
+      function ready() { finish(); }
+      window.addEventListener('citavuk-connection-module-ready', ready);
+      script.type = 'module'; script.src = '/connection-module.js';
+      script.onerror = function () { finish(new Error('Не удалось загрузить JavaScript-модуль')); };
+      document.head.appendChild(script);
+    });
+  }
+  function styleCheck(url) {
+    return new Promise(function (resolve, reject) {
+      var frame = document.createElement('iframe'); frame.title = 'Проверка стилей';
+      frame.setAttribute('aria-hidden', 'true'); document.body.appendChild(frame);
+      var doc = frame.contentDocument;
+      var link = doc.createElement('link'); link.rel = 'stylesheet'; link.href = url;
+      var timer = setTimeout(function () { finish(new Error('Стили не применились за 15 секунд')); }, 15000);
+      function finish(error) { clearTimeout(timer); frame.remove(); if(error) reject(error); else resolve(); }
+      link.onload = function () {
+        var accent = frame.contentWindow.getComputedStyle(doc.documentElement).getPropertyValue('--accent').trim();
+        finish(accent ? null : new Error('Файл получен, но цвета темы не применились'));
+      };
+      link.onerror = function () { finish(new Error('Браузер не загрузил таблицу стилей')); };
+      doc.head.appendChild(link);
+    });
+  }
+  var page = get('/?connection-check=1', 'text/html');
+  var tasks = [
+    check('Главная страница', function () { return page.then(function () {}); }),
+    check('Стили сайта', function () { return page.then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var link = doc.querySelector('link[rel="stylesheet"][href*="/assets/index-"]');
+      if (!link) throw new Error('В HTML отсутствует ссылка на стили');
+      return styleCheck(new URL(link.getAttribute('href'), location.origin).href);
+    }); }),
+    check('Основной JavaScript', function () { return page.then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var script = doc.querySelector('script[type="module"][src]');
+      if (!script) throw new Error('В HTML отсутствует основной скрипт');
+      return get(new URL(script.getAttribute('src'), location.origin).href, 'javascript').then(function () { return 'файл скачан'; });
+    }); }),
+    check('Выполнение JavaScript-модуля', moduleCheck),
+    check('Связь с API через сайт', function () { return get('/api/v1/auth/providers', 'application/json', true).then(function (text) { JSON.parse(text); }); }),
+    check('Доступ к настройкам браузера', function () { localStorage.getItem('citavuk-theme'); sessionStorage.getItem('citavuk-chunk-recovery-v1'); })
+  ];
+  Promise.all(tasks).then(function () { status.textContent = 'Проверка закончена. Результат можно отправить разработчику.'; status.dataset.done = 'true'; });
+  document.getElementById('copy').onclick = function () {
+    report.focus(); report.select(); report.setSelectionRange(0, report.value.length);
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(report.value).catch(function () {});
+  };
+})();
+</script></body></html>

@@ -52,7 +52,7 @@ export function NotificationBell() {
     >
       <LuBell className="size-5" aria-hidden="true" />
       {unread > 0 && (
-        <span className="absolute right-0.5 top-0.5 min-w-4 rounded-full bg-[var(--accent)] px-1 text-center text-[10px] font-bold leading-4 text-white">
+        <span className="absolute right-0.5 top-0.5 min-w-4 rounded-full bg-[var(--accent)] px-1 text-center text-[10px] font-bold leading-4 text-parchment">
           {unread > 99 ? '99+' : unread}
         </span>
       )}
@@ -126,7 +126,7 @@ function AnnouncementBanner({ announcement }: { announcement: Announcement }) {
             <>
               <a
                 href={announcement.actionUrl}
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
               >
                 {announcement.actionLabel || 'Открыть'}
                 <LuExternalLink className="size-4" aria-hidden="true" />
@@ -277,7 +277,7 @@ function AnnouncementModal({ announcement }: { announcement: Announcement | null
             {announcement.actionUrl && !announcement.shareRequired && (
               <a
                 href={announcement.actionUrl}
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[var(--accent-hover)]"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
               >
                 {announcement.actionLabel || 'Открыть'} <LuExternalLink className="size-4" aria-hidden="true" />
               </a>

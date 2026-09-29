@@ -4,12 +4,12 @@ import './footer.css';
 
 const COLUMNS = [
   { title: 'Читать и слушать', icon: LuBookOpen, links: [
-    ['/library', 'Моя библиотека'], ['/public-library', 'Книги для всех'],
+    ['/library', 'Моя библиотека'], ['/public-library', 'Публичная библиотека'],
     ['/books', 'Что почитать'], ['/listening', 'Слушание'], ['/vukotok', 'Вукоток'],
   ] },
   { title: 'Учиться', icon: LuGraduationCap, links: [
-    ['/personal', 'Колода сербского'], ['/course', 'Курс грамматики'],
-    ['/roadmap', 'Дорожная карта'], ['/trainer', 'Тренажёрка'], ['/cards', 'Мой словарь'],
+    ['/personal', 'Урок дня'], ['/course', 'Курс грамматики'],
+    ['/roadmap', 'Дорожная карта'], ['/trainer', 'Тренажёрка'], ['/padezi', 'Уничтожь падежи'], ['/cards', 'Мой словарь'],
   ] },
   { title: 'Открывать', icon: LuCompass, links: [
     ['/putovanje', 'Путешествие по Сербии'], ['/basta', 'Сад Читавука'],
@@ -20,8 +20,8 @@ const COLUMNS = [
     ['/materials?level=fakultet', 'Вступительные на факультет'], ['/exams', 'Экзамены'], ['/lessons', 'Уроки преподавателей'],
   ] },
   { title: 'О Читавуке', icon: LuHeart, links: [
-    ['/about', 'О проекте'], ['/support', 'Поддержать развитие'],
-    ['/teachers', 'Для учителей'], ['/account', 'Мой аккаунт'], ['/downloads', 'Приложения'],
+    ['/about', 'О проекте'], ['/support', 'Поддержать Читавук'], ['/supporters', 'Друзья Читавука'],
+    ['/teachers', 'Для учителей'], ['/downloads', 'Приложения'],
   ] },
 ] as const;
 
@@ -64,7 +64,7 @@ export function Footer() {
       <div className="site-footer-community">
         <div>
           <a href="https://t.me/citavuk" target="_blank" rel="noreferrer noopener"><LuSend aria-hidden /> Наш Telegram <LuExternalLink aria-hidden /></a>
-          <a href="https://serbiansubtitles.online/" target="_blank" rel="noreferrer noopener"><LuFilm aria-hidden /> Кино с субтитрами <LuExternalLink aria-hidden /></a>
+          <a href="https://serbiansubtitles.online/" target="_blank" rel="noreferrer noopener"><LuFilm aria-hidden /> Видео с субтитрами <LuExternalLink aria-hidden /></a>
         </div>
         <span>Есть идея? <a href="https://t.me/ivanlindgren" target="_blank" rel="noreferrer noopener">Напиши Денису</a></span>
       </div>

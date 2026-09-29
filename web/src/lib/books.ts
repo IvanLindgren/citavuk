@@ -2,6 +2,7 @@ import { contentSha } from './content';
 import {
   STORE_BOOKS,
   STORE_CONTENT,
+  STORE_QUOTES,
   get,
   getAll,
   getAllByIndex,
@@ -172,7 +173,7 @@ export async function deleteBook(id: string): Promise<void> {
   const book = await getBook(id);
   if (!book) return;
 
-  await tx([STORE_BOOKS, STORE_CONTENT], 'readwrite', async (transaction) => {
+  await tx([STORE_BOOKS, STORE_CONTENT, STORE_QUOTES], 'readwrite', async (transaction) => {
     await put(transaction, STORE_BOOKS, {
       ...book,
       deleted: 1,
@@ -181,6 +182,8 @@ export async function deleteBook(id: string): Promise<void> {
       paragraphCount: 0,
     });
     await remove(transaction, STORE_CONTENT, id);
+    const quotes = await getAllByIndex<{id: string; deleted: number; dirty: number; updatedAt: number}>(transaction, STORE_QUOTES, 'bookId', id);
+    for (const quote of quotes) await put(transaction, STORE_QUOTES, { ...quote, deleted: 1, dirty: 1, updatedAt: now() });
   });
 }
 

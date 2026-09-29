@@ -6,8 +6,12 @@ import { Link } from '../lib/router';
 type Unit = CourseBundle['units'][number];
 type Lesson = Unit['skills'][number]['lessons'][number];
 export const courseDone = (status?: string) => ['completed', 'mastered', 'needsReview'].includes(status ?? '');
-export function CourseArt({ pose, hero = false }: { pose: 'guide' | 'reading' | 'celebrate'; hero?: boolean }) {
-  return <img className="journey-mascot" src={`/course/art/citavuk-${pose}-v1.webp`} width={720} height={720} alt="" loading={hero ? 'eager' : 'lazy'} decoding="async" />;
+type CoursePose = 'guide' | 'reading' | 'celebrate' | 'reading-new' | 'teaching' | 'celebrating' | 'thinking' | 'writing' | 'listening' | 'speaking' | 'supporting';
+const generatedPoses = new Set<CoursePose>(['reading-new','teaching','celebrating','thinking','writing','listening','speaking','supporting']);
+const chapterPoses: CoursePose[] = ['teaching','reading-new','writing','thinking','listening','speaking','supporting','celebrating'];
+export function CourseArt({ pose, hero = false }: { pose: CoursePose; hero?: boolean }) {
+  const version = generatedPoses.has(pose) ? 'v2' : 'v1';
+  return <img className="journey-mascot" src={`/course/art/citavuk-${pose}-${version}.webp`} width={720} height={720} alt="" loading={hero ? 'eager' : 'lazy'} decoding="async" />;
 }
 
 /** Геометрия не зависит от длины подписи; для неё выделяется отдельная строка. */
@@ -58,7 +62,7 @@ export function CourseJourney({ unit, index, progress, currentId, onLocked }: {
       </svg>
       {labels.map((label, n) => <h3 key={n} className="journey-skill" style={{ top: label.y }}><span>{label.title}</span></h3>)}
       {nodes.length > 0 && <div className="journey-scene-mascot" style={{ top: nodes[0]!.y + 30 }}>
-        <CourseArt pose={done ? 'celebrate' : index % 2 === 0 ? 'guide' : 'reading'} />
+        <CourseArt pose={done ? 'celebrating' : chapterPoses[index % chapterPoses.length]!} />
       </div>}
       {nodes.map(({ lesson, x, y }) => {
         const record = progress.lessons[lesson.id];

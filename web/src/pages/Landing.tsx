@@ -1,15 +1,19 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState } from 'react';
+import { LuArrowRight, LuCaptions, LuFileAudio, LuUpload } from 'react-icons/lu';
 
 import { VUKOTOK_PATH } from '../components/Header';
 import { Mascot } from '../components/Mascot';
 import { Ornament } from '../components/Ornament';
-import { DocumentImportBox } from '../components/DocumentImportBox';
-import { Button, Card, Reveal } from '../components/ui';
-import { WordReader } from '../components/WordReader';
+import { DeferredSection } from '../components/DeferredSection';
+import { ButtonLink, Card, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
+import { getSupporters, type Supporter } from '../api/donations';
 import { useSeo } from '../lib/seo';
+
+const DocumentImportBox = lazy(() => import('../components/DocumentImportBox').then(m => ({ default: m.DocumentImportBox })));
+const WordReader = lazy(() => import('../components/WordReader').then(m => ({ default: m.WordReader })));
 
 /** Отрывок для демонстрации. Обычный сербский текст, а не подобранные слова. */
 const DEMO_PARAGRAPHS = [
@@ -21,7 +25,7 @@ export function Landing() {
   useSeo({
     title: 'Читавук — учить сербский язык через чтение: перевод слова в контексте',
     description:
-      'Учите сербский язык чтением: откройте книгу или новость на сербском и нажмите любое слово — Читавук покажет перевод в этом предложении, разберёт падеж и время, объяснит правило. Бесплатно: сербские тексты, курс грамматики, карточки повторения и лента Вукоток.',
+      'Учи сербский язык чтением и на слух: открой книгу, подкаст или свою аудиозапись и нажми любое слово — Читавук покажет перевод в контексте, разберёт форму и объяснит правило.',
   });
 
   const { account, loading } = useAuth();
@@ -30,9 +34,11 @@ export function Landing() {
     <main>
       <Hero />
       <DocumentImport />
+      <AudioImportPromo />
       <Demo />
       <Features />
       <Sections />
+      <SupportersStrip />
       {!loading && !account && <CallToAction />}
     </main>
   );
@@ -43,7 +49,9 @@ function DocumentImport() {
     <section id="import" className="scroll-mt-24 px-5 py-10 sm:py-14">
       <div className="mx-auto max-w-4xl">
         <Reveal>
-          <DocumentImportBox />
+          <DeferredSection fallback={<Card className="p-8"><h2 className="text-2xl">Добавь свою книгу</h2><p className="mt-3">Открой документ или вставь текст в <Link to="/library" className="text-[var(--accent)] underline">своей библиотеке</Link>.</p></Card>}>
+            <DocumentImportBox />
+          </DeferredSection>
         </Reveal>
       </div>
     </section>
@@ -51,33 +59,13 @@ function DocumentImport() {
 }
 
 /**
- * Слайды первого экрана.
- *
- * Первый — то, чем Читавук является всегда. Остальные — новости: раздел,
- * который иначе заметят только те, кто дочитал главную до конца. Слайд, а не
- * ещё один блок ниже, именно поэтому: новость должна попасть на первый экран,
- * не отняв его у главного.
+ * Первый экран — то, чем Читавук является всегда. Новые разделы стоят сразу
+ * под ним карточками: раньше они крутились каруселью, и до третьего слайда
+ * почти никто не доживал, а заголовок страницы первые девять секунд был скрыт.
  */
-const HERO_SLIDES = ['roadmap', 'reading', 'vukotok'] as const;
-
-/** Как называется слайд для тех, кто листает с клавиатуры или скринридером. */
-const SLIDE_LABELS: Record<(typeof HERO_SLIDES)[number], string> = {
-  roadmap: 'Новость про дорожную карту',
-  reading: 'Читавук',
-  vukotok: 'Новость про Вукоток',
-};
-
-/** Сколько новость держится на экране, прежде чем сменится. */
-const HERO_INTERVAL = 9000;
-
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
-  const [slide, setSlide] = useState(0);
-  // Взявшись за точки, человек листает сам. Возвращать автолистание после
-  // этого значило бы уводить страницу из-под того, кто её только что выбрал.
-  const [manual, setManual] = useState(false);
-  const [paused, setPaused] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -88,100 +76,133 @@ function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  useEffect(() => {
-    if (manual || paused || reduceMotion) return;
-    const timer = window.setInterval(
-      () => setSlide((current) => (current + 1) % HERO_SLIDES.length),
-      HERO_INTERVAL,
-    );
-    return () => window.clearInterval(timer);
-  }, [manual, paused, reduceMotion]);
-
   return (
     <section
       ref={ref}
-      className="paper-grain relative overflow-hidden px-5 pt-16 pb-20 sm:pt-24 sm:pb-28"
-      aria-roledescription="карусель"
-      aria-label="Читавук и новости"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
+      className="paper-grain relative overflow-hidden px-5 pt-16 pb-14 sm:pt-24 sm:pb-20"
     >
       <div className="glow-warm pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      {/*
-        Слайды лежат в одной ячейке сетки, а не сменяют друг друга в потоке:
-        высота секции остаётся наибольшей из двух, и страница не прыгает под
-        курсором в момент смены.
-      */}
-      <div className="relative mx-auto grid max-w-6xl">
-        {HERO_SLIDES.map((id, index) => {
-          const active = index === slide;
-          return (
-            <motion.div
-              key={id}
-              className="grid items-center gap-10 [grid-area:1/1] lg:grid-cols-[1.1fr_0.9fr] lg:gap-16"
-              animate={active
-                ? { opacity: 1, visibility: 'visible' }
-                : { opacity: 0, transitionEnd: { visibility: 'hidden' } }}
-              transition={{ duration: reduceMotion ? 0 : 0.5 }}
-              aria-hidden={!active}
-            >
-              <motion.div style={reduceMotion ? undefined : { y: textY, opacity: fade }}>
-                {id === 'roadmap' ? <RoadmapSlide /> : id === 'reading' ? <ReadingSlide /> : <VukotokSlide />}
-              </motion.div>
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <motion.div style={reduceMotion ? undefined : { y: textY, opacity: fade }}>
+          <HeroEyebrow label="Сербский через чтение" />
 
-              <motion.div
-                style={reduceMotion ? undefined : { y: mascotY }}
-                className="relative mx-auto w-full max-w-sm lg:max-w-md"
-              >
-                {id === 'roadmap' ? (
-                  <Mascot
-                    pose="citavuk_roadmap"
-                    alt="Волк Читавук с картой сербского языка"
-                    float
-                    priority
-                  />
-                ) : id === 'reading' ? (
-                  <Mascot
-                    pose="citavuk_zdravo"
-                    alt="Волк Читавук приветственно машет лапой"
-                    float
-                  />
-                ) : (
-                  <Mascot
-                    pose="citavuk_vukotok"
-                    alt="Волк Читавук читает ленту с телефона"
-                    float
-                  />
-                )}
-              </motion.div>
-            </motion.div>
-          );
-        })}
-      </div>
+          <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+            Читай по-сербски.{' '}
+            <span className="text-[var(--accent)]">Слово за словом.</span>
+          </h1>
 
-      <div className="relative mx-auto mt-10 flex max-w-6xl justify-center gap-2 lg:justify-start">
-        {HERO_SLIDES.map((id, index) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => { setSlide(index); setManual(true); }}
-            aria-label={SLIDE_LABELS[id]}
-            aria-current={index === slide ? 'true' : undefined}
-            className={[
-              'h-2 rounded-full transition-all duration-300',
-              index === slide
-                ? 'w-8 bg-[var(--accent)]'
-                : 'w-2 bg-[var(--line)] hover:bg-[var(--text-muted)]',
-            ].join(' ')}
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+            Открой книгу или новость на сербском и нажми любое слово.
+            Читавук покажет перевод <em className="not-italic text-[var(--text)]">в этом
+            предложении</em>, разберёт форму и объяснит правило.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <ButtonLink to="#import" size="lg">Открыть документ</ButtonLink>
+            <ButtonLink to="/library" variant="secondary" size="lg">
+              Моя библиотека
+            </ButtonLink>
+            <ButtonLink to="#demo" variant="ghost" size="lg">
+              Посмотреть, как работает
+            </ButtonLink>
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={reduceMotion ? undefined : { y: mascotY }}
+          className="relative mx-auto w-full max-w-sm lg:max-w-md"
+        >
+          <Mascot
+            pose="citavuk_zdravo"
+            alt="Волк Читавук приветственно машет лапой"
+            float
+            priority
           />
-        ))}
+        </motion.div>
       </div>
 
-      <div className="relative mx-auto mt-10 max-w-3xl text-[var(--accent)] opacity-70">
+      <div className="relative mx-auto mt-12 grid max-w-6xl gap-4 md:grid-cols-2">
+        <NewsCard
+          to="/roadmap"
+          image="/img/citavuk_roadmap.webp"
+          title="Дорожная карта сербского"
+          text="Слова, темы, тексты и задания по уровням от A1 до C1: чтение, грамматика, лексика и письмо. Прогресс считается сам."
+          action="Открыть карту"
+        />
+        <NewsCard
+          to={VUKOTOK_PATH}
+          image="/img/citavuk_vukotok.webp"
+          title="Вукоток — лента на сербском"
+          text="Короткие статьи одна за другой. Лента запоминает, что ты дочитываешь, и подбирает похожее."
+          action="Листать ленту"
+        />
+      </div>
+
+      <div className="relative mx-auto mt-12 max-w-3xl text-[var(--accent)] opacity-70">
         <Ornament />
+      </div>
+    </section>
+  );
+}
+
+function NewsCard({
+  to,
+  image,
+  title,
+  text,
+  action,
+}: {
+  to: string;
+  image: string;
+  title: string;
+  text: string;
+  action: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className="group flex items-center gap-4 rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)]/80 p-4 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] sm:p-5"
+    >
+      <img src={image} srcSet={`${image} 1x, ${image.replace(".webp", "@2x.webp")} 2x`} alt="" width={96} height={96} loading="lazy" className="size-20 shrink-0 object-contain sm:size-24" />
+      <span className="min-w-0">
+        <span className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">Новое</span>
+        <span className="mt-1 block font-display text-xl font-bold leading-snug">{title}</span>
+        <span className="mt-1 block text-sm leading-relaxed text-[var(--text-muted)]">{text}</span>
+        <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent)] group-hover:underline">
+          {action}
+          <LuArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function AudioImportPromo() {
+  return (
+    <section className="px-5 pb-10 sm:pb-14">
+      <div className="mx-auto max-w-4xl">
+        <Reveal>
+          <Card className="flex flex-col gap-5 border-[var(--accent)]/25 bg-[linear-gradient(120deg,color-mix(in_srgb,var(--accent)_8%,var(--bg-raised)),var(--bg-raised))] p-6 sm:flex-row sm:items-center sm:p-8">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)] text-parchment shadow-[0_4px_0_0_color-mix(in_srgb,var(--accent)_60%,black)]">
+              <LuFileAudio className="size-7" aria-hidden="true" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="mb-1 text-xs font-bold uppercase tracking-[.1em] text-[var(--accent)]">Не только книги</p>
+              <h2 className="text-2xl">Загружай свои аудиозаписи</h2>
+              <p className="mt-2 leading-relaxed text-[var(--text-muted)]">
+                MP3, M4A, WAV и другие форматы: Читавук найдёт сербскую речь, разделит говорящих и сделает расшифровку с таймкодами. Нажми на слово — запись перемотается к нему.
+              </p>
+              <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-1.5"><LuCaptions className="text-[var(--accent)]" aria-hidden="true" />Слова синхронизированы со звуком</span>
+                <span className="inline-flex items-center gap-1.5"><LuFileAudio className="text-[var(--accent)]" aria-hidden="true" />Файлы остаются на вашем устройстве</span>
+              </p>
+            </div>
+            <Link to="/audio-files" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 font-semibold text-parchment shadow-[0_4px_0_0_color-mix(in_srgb,var(--accent)_60%,black)] transition-[background-color,transform,box-shadow] duration-150 hover:bg-[var(--accent-hover)] active:translate-y-[3px] active:shadow-[0_1px_0_0_color-mix(in_srgb,var(--accent)_60%,black)]">
+              <LuUpload className="size-4" aria-hidden="true" />Добавить аудио
+            </Link>
+          </Card>
+        </Reveal>
       </div>
     </section>
   );
@@ -205,118 +226,19 @@ function HeroEyebrow({ label }: { label: string }) {
   );
 }
 
-function ReadingSlide() {
-  return (
-    <>
-      <HeroEyebrow label="Сербский через чтение" />
-
-      <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
-        Читайте по-сербски.{' '}
-        <span className="text-[var(--accent)]">Слово за словом.</span>
-      </h1>
-
-      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
-        Откройте книгу или новость на сербском и нажмите любое слово.
-        Читавук покажет перевод <em className="not-italic text-[var(--text)]">в этом
-        предложении</em>, разберёт форму и объяснит правило.
-      </p>
-
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <a href="#import">
-          <Button size="lg">Открыть документ</Button>
-        </a>
-        <Link to="/library">
-          <Button variant="secondary" size="lg">
-            Моя библиотека
-          </Button>
-        </Link>
-        <a href="#demo">
-          <Button variant="ghost" size="lg">
-            Посмотреть, как работает
-          </Button>
-        </a>
-      </div>
-    </>
-  );
-}
-
-function RoadmapSlide() {
-  return (
-    <>
-      <HeroEyebrow label="Новое в Читавуке" />
-
-      <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
-        <span className="text-[var(--accent)]">Дорожная карта</span> сербского
-        языка.
-      </h2>
-
-      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
-        Что делать после пары грамматических упражнений и быстрых онлайн-курсов?
-        Слова, темы, тексты и задания разложены по уровням CEFR и по четырём
-        категориям: Reading, Grammar, Vocabulary, Writing.
-      </p>
-
-      <p className="mt-3 text-sm text-[var(--text-muted)]">
-        Прогресс считается сам, а обсудить карту можно прямо на странице.
-      </p>
-
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <Link to="/roadmap">
-          <Button size="lg">Открыть карту</Button>
-        </Link>
-        <Link to="/cards">
-          <Button variant="ghost" size="lg">
-            Мой словарь
-          </Button>
-        </Link>
-      </div>
-    </>
-  );
-}
-
-function VukotokSlide() {
-  return (
-    <>
-      <HeroEyebrow label="Новое в Читавуке" />
-
-      <h2 className="text-balance text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
-        <span className="text-[var(--accent)]">Вукоток</span> — лента,
-        которую хочется листать.
-      </h2>
-
-      <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
-        Читайте небольшие статьи на сербском, как будто вы в тиктоке, но вместо
-        видео — текст. Лента подстраивается под то, что вы дочитываете
-        до конца.
-      </p>
-
-      <p className="mt-3 text-sm text-[var(--text-muted)]">Проект экспериментальный.</p>
-
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <Link to={VUKOTOK_PATH}>
-          <Button size="lg">Открыть Вукоток</Button>
-        </Link>
-        <Link to="/books">
-          <Button variant="ghost" size="lg">
-            Что ещё читать
-          </Button>
-        </Link>
-      </div>
-    </>
-  );
-}
-
 function Demo() {
   return (
     <section id="demo" className="scroll-mt-20 px-5 py-16 sm:py-24">
       <div className="mx-auto max-w-3xl">
         <Reveal className="mb-8 text-center">
-          <h2 className="text-3xl sm:text-4xl">Нажмите на любое слово</h2>
+          <h2 className="text-3xl sm:text-4xl">Нажми на любое слово</h2>
         </Reveal>
 
         <Reveal delay={0.1}>
           <Card className="paper-grain p-6 sm:p-10">
-            <WordReader paragraphs={DEMO_PARAGRAPHS} />
+            <DeferredSection fallback={<div>{DEMO_PARAGRAPHS.map(text => <p className="mb-4 text-lg" key={text}>{text}</p>)}</div>}>
+              <WordReader paragraphs={DEMO_PARAGRAPHS} />
+            </DeferredSection>
           </Card>
         </Reveal>
       </div>
@@ -346,6 +268,11 @@ const FEATURES = [
     title: 'Карточки повторения',
     text: 'Сохранённые слова становятся карточками с интервальным повторением. Прогресс синхронизируется между устройствами.',
     icon: <path d="M4 4h11l5 5v11H4zm2 2v12h12v-8h-5V6z" />,
+  },
+  {
+    title: 'Свои аудиозаписи',
+    text: 'Загружай запись на сербском: Читавук проверит речь, разделит говорящих и свяжет слова расшифровки с точным местом в дорожке.',
+    icon: <path d="M7 4h8l4 4v12H7a3 3 0 01-3-3V7a3 3 0 013-3zm7 2H7a1 1 0 00-1 1v10a1 1 0 001 1h10V9h-3V6zm-1 7a3 3 0 016 0v3h-2v-3a1 1 0 00-2 0v3h-2v-3z" />,
   },
 ];
 
@@ -379,13 +306,6 @@ function Features() {
 
 const SECTIONS = [
   {
-    to: VUKOTOK_PATH,
-    pose: 'citavuk_vukotok',
-    title: 'Вукоток',
-    text: 'Небольшие статьи на сербском лентой: листаете, читаете то, что зацепило, а лента подстраивается под вас. Проект экспериментальный.',
-    alt: 'Волк Читавук читает ленту с телефона',
-  },
-  {
     to: '/books',
     pose: 'citavuk_zdravo',
     title: 'Чтение',
@@ -396,7 +316,7 @@ const SECTIONS = [
     to: '/listening',
     pose: 'sluhao_slusa',
     title: 'Слушание',
-    text: 'Подкасты и уроки с транскриптом. Слова подсвечиваются по мере звучания, а сложные на слух разбираются отдельно.',
+    text: 'Подкасты, аудиокниги и свои записи с расшифровкой. Слова подсвечиваются по мере звучания, а сложные на слух разбираются отдельно.',
     alt: 'Орёл Слухао слушает',
   },
   {
@@ -405,6 +325,13 @@ const SECTIONS = [
     title: 'Курс грамматики',
     text: 'Уровни от письменности до падежей и времён. Сначала коротко правило, потом упражнения.',
     alt: 'Волк Читавук объясняет грамматику',
+  },
+  {
+    to: '/cards',
+    pose: 'citavuk_povtor',
+    title: 'Повторение',
+    text: 'Слова из книг и уроков превращаются в карточки. Читавук напоминает о них ровно тогда, когда они начинают забываться.',
+    alt: 'Волк Читавук повторяет слова',
   },
 ] as const;
 
@@ -460,6 +387,53 @@ function Sections() {
   );
 }
 
+/** Имена поддержавших на главной: их видит каждый, кто сюда заходит. */
+function SupportersStrip() {
+  const [supporters, setSupporters] = useState<Supporter[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getSupporters()
+      .then((list) => !cancelled && setSupporters(list))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (supporters.length === 0) return null;
+
+  return (
+    <section className="px-5 pb-16">
+      <div className="mx-auto max-w-4xl text-center">
+        <Reveal>
+          <p className="text-sm font-bold uppercase text-[var(--accent)]">Хвала!</p>
+          <h2 className="mt-1 text-2xl sm:text-3xl">Читавук бесплатный благодаря им</h2>
+          <ul className="mt-6 flex flex-wrap justify-center gap-2">
+            {supporters.slice(0, 10).map((supporter) => (
+              <li
+                key={supporter.name + supporter.since}
+                className="rounded-full border border-gold/50 bg-[var(--bg-raised)] px-4 py-1.5 font-semibold"
+              >
+                {supporter.name}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm">
+            <Link to="/supporters" className="font-semibold text-[var(--accent)] underline underline-offset-2">
+              Все друзья Читавука
+            </Link>
+            <span className="mx-2 text-[var(--text-muted)]">·</span>
+            <Link to="/support" className="font-semibold text-[var(--accent)] underline underline-offset-2">
+              Поддержать
+            </Link>
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function CallToAction() {
   return (
     <section className="px-5 pb-24">
@@ -471,20 +445,16 @@ function CallToAction() {
               <div className="mx-auto mb-6 w-28">
                 <Mascot pose="citavuk_ukaz" alt="Волк Читавук указывает вперёд" width={224} />
               </div>
-              <h2 className="text-3xl sm:text-4xl">Заведите аккаунт</h2>
+              <h2 className="text-3xl sm:text-4xl">Заведи аккаунт</h2>
               <p className="mx-auto mt-4 max-w-lg leading-relaxed text-[var(--text-muted)]">
                 Книги, сохранённые слова и карточки повторения будут одинаковыми
                 на телефоне, компьютере и в браузере.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link to="/login?mode=register">
-                  <Button size="lg">Создать аккаунт</Button>
-                </Link>
-                <Link to="/login">
-                  <Button variant="secondary" size="lg">
-                    Войти
-                  </Button>
-                </Link>
+                <ButtonLink to="/login?mode=register" size="lg">Создать аккаунт</ButtonLink>
+                <ButtonLink to="/login" variant="secondary" size="lg">
+                  Войти
+                </ButtonLink>
               </div>
             </div>
           </Card>

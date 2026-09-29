@@ -83,7 +83,7 @@ export function Dialogues() {
                 alt="Марья Спилберич"
                 className="absolute inset-0 size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
               />
-              <span className="absolute left-3 top-3 rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold uppercase text-white">
+              <span className="absolute left-3 top-3 rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-bold uppercase text-parchment">
                 Доступен всем
               </span>
             </div>

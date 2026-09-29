@@ -5,12 +5,19 @@ let lastStep = 0;
 
 export function readGardenSoundSetting(): boolean {
   if (typeof window === 'undefined') return true;
-  return window.localStorage.getItem('citavuk:garden-sound') !== 'off';
+  try {
+    return window.localStorage.getItem('citavuk:garden-sound') !== 'off';
+  } catch {
+    return true;
+  }
 }
 
 export function saveGardenSoundSetting(enabled: boolean): void {
-  if (typeof window !== 'undefined') {
+  if (typeof window === 'undefined') return;
+  try {
     window.localStorage.setItem('citavuk:garden-sound', enabled ? 'on' : 'off');
+  } catch {
+    // Настройка проживёт до перезагрузки страницы.
   }
 }
 

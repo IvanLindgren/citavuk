@@ -66,7 +66,7 @@ export function Exams() {
               onClick={() => navigate(`/exams?level=${exam.level}`, { replace: true })}
               className={`min-h-11 min-w-0 flex-1 rounded-md px-2 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
                 active
-                  ? 'bg-[var(--accent)] text-white shadow-sm'
+                  ? 'bg-[var(--accent)] text-parchment shadow-sm'
                   : 'text-[var(--text-muted)] hover:bg-[var(--bg-raised)] hover:text-[var(--text)]'
               }`}
             >
@@ -97,7 +97,7 @@ export function Exams() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 to={`/tests/${nativeQuiz?.quizId ?? selected.nativeQuizId}`}
-                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-5 py-3 font-bold text-white transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-5 py-3 font-bold text-parchment transition-colors hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:w-auto"
               >
                 Пройти в Читавуке
                 <LuArrowRight className="size-4" />

@@ -257,7 +257,7 @@ function TableBuilder({ onClose, onInsert }: { onClose: () => void; onInsert: (r
         </div>
         <div className="mt-5 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="rounded-md px-4 py-2 font-semibold text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]">Отмена</button>
-          <button type="button" onClick={() => onInsert(cells)} className="rounded-md bg-[var(--accent)] px-4 py-2 font-semibold text-white hover:bg-[var(--accent-hover)]">Вставить</button>
+          <button type="button" onClick={() => onInsert(cells)} className="rounded-md bg-[var(--accent)] px-4 py-2 font-semibold text-parchment hover:bg-[var(--accent-hover)]">Вставить</button>
         </div>
       </div>
     </div>
@@ -269,5 +269,5 @@ function ToolButton({ title, onClick, disabled, children }: { title: string; onC
 }
 
 function ModeButton({ title, active, onClick, children }: { title: string; active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return <button type="button" title={title} aria-label={title} aria-pressed={active} onClick={onClick} className={`grid size-8 place-items-center rounded text-base ${active ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]'}`}>{children}</button>;
+  return <button type="button" title={title} aria-label={title} aria-pressed={active} onClick={onClick} className={`grid size-8 place-items-center rounded text-base ${active ? 'bg-[var(--accent)] text-parchment' : 'text-[var(--text-muted)] hover:bg-[var(--bg-sunken)]'}`}>{children}</button>;
 }

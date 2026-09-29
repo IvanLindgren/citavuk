@@ -132,9 +132,9 @@ function PersonalHome({ level }: { level: string }) {
     <main className="personal">
       <header className="personal-heading">
         <div>
-          <p className="personal-eyebrow"><LuLayers aria-hidden /> Личные уроки на каждый день</p>
+          <p className="personal-eyebrow"><LuLayers aria-hidden /> Твоя колода на каждый день</p>
           <h1>Колода сербского. Ого!</h1>
-          <p className="personal-intro">Волк Читавук разрисовал игральные карты, и теперь с помощью колоды вы можете самостоятельно создать себе уроки... <em>На каждый день!</em></p>
+          <p className="personal-intro">Читавук подбирает тебе маршрут из растущей коллекции сербских уроков. Каждый день открывается новая карта, а твои ответы и правки остаются только твоими.</p>
         </div>
         <img className="personal-heading-seal" src="/personal/decor/ravanica-medallion.png" alt="" />
       </header>
@@ -209,8 +209,8 @@ function PersonalHome({ level }: { level: string }) {
           {["queued", "running"].includes(p.status) && (
             <div role="status" className="personal-generation">
               <Spinner className="size-6 shrink-0" />
-              <div><h2>{p.outline.length === 0 ? 'Собираем маршрут твоих занятий' : 'Читавук наполняет колоду'}</h2>
-              <p>{p.lessons.length === 0 ? 'Сначала план на месяц, затем сами уроки. Это может занять несколько минут.' : `Готово ${p.lessons.length} из 30 уроков. Сегодняшнюю карту уже можно открыть.`}</p>
+              <div><h2>Подбираем карты для твоего маршрута</h2>
+              <p>{p.lessons.length === 0 ? 'Подбираем уроки по твоему уровню и интересам.' : `Готово ${p.lessons.length} из 30 уроков. Сегодняшнюю карту уже можно открыть.`}</p>
               <progress aria-label="Готовность колоды" max={30} value={p.lessons.length} />
               <small>Можно уйти со страницы: колода продолжит составляться.</small></div>
             </div>
@@ -342,7 +342,7 @@ export function Questionnaire({
         )}
       </div>
       <small>
-        Ответы отправятся модели для составления личных уроков. Не добавляй
+        Ответы помогают подобрать порядок уроков из общей коллекции. Не добавляй
         личные данные. Часовой пояс серии закрепляется после первого занятия.
       </small>
     </section>

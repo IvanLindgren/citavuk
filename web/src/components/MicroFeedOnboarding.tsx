@@ -62,7 +62,7 @@ export function MicroFeedOnboarding({
   // всего приложения, и здесь остаётся только не спрашивать заново.
   const [level, setLevel] = useState<Level>(preferences.cefr);
   const [saving, setSaving] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
 
   useScrollLock(true);
@@ -75,12 +75,13 @@ export function MicroFeedOnboarding({
   }
 
   async function submit(chosen: Category[]) {
+    if (saving) return;
     setSaving(true);
-    setFailed(false);
+    setFailed('');
     try {
       onDone(await saveMicroFeedPreferences(chosen, level));
-    } catch {
-      setFailed(true);
+    } catch (error) {
+      setFailed(error instanceof Error ? error.message : 'Не удалось сохранить ответы.');
       setSaving(false);
     }
   }
@@ -179,11 +180,16 @@ export function MicroFeedOnboarding({
 
         {failed && (
           <p className="mt-4 text-sm text-[#ffb4ae]" role="alert">
-            Не удалось сохранить ответы. Попробуйте ещё раз.
+            {failed} Можно повторить или продолжить без сохранения интересов.
           </p>
         )}
 
         <div className="mt-7 flex flex-wrap items-center gap-3">
+          {failed && <button type="button" disabled={saving}
+            className="rounded-xl border border-white/40 px-4 py-3 text-sm font-semibold"
+            onClick={() => onDone({ ...preferences, onboarded: true })}>
+            Продолжить без сохранения
+          </button>}
           <button
             type="button"
             disabled={saving}

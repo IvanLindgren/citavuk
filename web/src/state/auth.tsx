@@ -28,6 +28,8 @@ export interface Account {
    * разные вещи, иначе у новичка не осталось бы права ответить.
    */
   serbianLevel: string;
+  /** С какого дня у аккаунта значок поддержавшего Читавук. */
+  supporterSince?: string;
 }
 
 interface AuthResponse {
@@ -67,6 +69,8 @@ interface AuthValue {
   logout: () => Promise<void>;
   /** Удаление аккаунта со всеми данными на сервере. */
   deleteAccount: (password: string) => Promise<void>;
+  /** Перечитать аккаунт с сервера: например, после оплаты поддержки. */
+  refreshAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
@@ -159,6 +163,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
         } finally {
           setBusy(false);
+        }
+      },
+      refreshAccount: async () => {
+        if (!getToken()) return;
+        try {
+          const user = await request<Account>('/v1/auth/me');
+          setAccount((current) => (current && current.id === user.id ? user : current));
+        } catch {
+          // Значок подтянется при следующем входе на сайт.
         }
       },
       login: (email, password) => authenticate('/v1/auth/login', { email, password }),

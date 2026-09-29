@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getTranscript, getTtsVoice, setTtsVoice, ttsAudioUrl } from './listening';
+import { getTranscript, getTtsVoice, playableAudioUrl, setTtsVoice, ttsAudioUrl } from './listening';
 import type { AudioLesson } from '../listening/types';
 
 const lesson = (overrides: Partial<AudioLesson> = {}): AudioLesson => ({
@@ -21,6 +21,11 @@ afterEach(() => {
 });
 
 describe('TTS voice', () => {
+  it('always uses Serbian, including words shared with English', () => {
+    for (const word of ['on', 'to', 'most', 'hello', 'добар']) {
+      expect(new URL(ttsAudioUrl(word), 'https://citavuk.ru').searchParams.get('lang')).toBe('sr');
+    }
+  });
   it('persists the selected Serbian speaker and includes it in the URL', () => {
     setTtsVoice('nicholas');
 
@@ -67,5 +72,15 @@ describe('getTranscript', () => {
 
     await expect(getTranscript(current)).resolves.toEqual([]);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('playableAudioUrl', () => {
+  it('переносит старые адреса аудио API на основной домен', () => {
+    expect(playableAudioUrl('https://api.citavuk.ru/audio/proxy?url=sample')).toBe('/api/audio/proxy?url=sample');
+  });
+  it('plays the public Slušaj.rs preview directly', () => {
+    const url = 'https://slusaj.rs/wp-content/uploads/2025/09/Laza-Lazarevic-Na-bunaru.mp3';
+    expect(playableAudioUrl(url)).toBe(url);
   });
 });

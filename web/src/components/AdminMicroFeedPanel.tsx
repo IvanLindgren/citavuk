@@ -267,7 +267,7 @@ export function AdminMicroFeedPanel() {
   );
 }
 
-function AdminSwitch({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) { return <button type="button" role="tab" aria-selected={active} onClick={onClick} className={`rounded-md px-3 py-2 text-sm font-semibold ${active ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-muted)]'}`}>{children}</button>; }
+function AdminSwitch({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) { return <button type="button" role="tab" aria-selected={active} onClick={onClick} className={`rounded-md px-3 py-2 text-sm font-semibold ${active ? 'bg-[var(--accent)] text-parchment' : 'text-[var(--text-muted)]'}`}>{children}</button>; }
 function Field({ label, children }: { label: string; children: React.ReactNode }) { return <label className="text-sm font-semibold">{label}{children}</label>; }
 const inputClass = 'mt-1.5 w-full rounded-md border border-[var(--line)] bg-[var(--bg)] px-3 py-2.5 text-[var(--text)] outline-none focus:border-[var(--accent)]';
 const kinds: Array<[MicroFeedItemDraft['kind'], string]> = [['news','Новость'],['fact','Факт'],['culture','Культура'],['science','Наука'],['fiction','Литература'],['society','Общество'],['book_excerpt','Отрывок из книги']];

@@ -12,6 +12,16 @@ function memoryStorage() {
 }
 
 describe('chunk recovery', () => {
+  it('does not crash or reload without a writable recovery guard', () => {
+    const reload = vi.fn();
+    const storage = { getItem: () => null, setItem: () => { throw new Error('blocked'); }, removeItem: () => {} };
+    const cleanup = installChunkRecovery({ storage, reload });
+    const event = new Event('vite:preloadError', { cancelable: true });
+    window.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(false);
+    expect(reload).not.toHaveBeenCalled();
+    cleanup();
+  });
   it('reloads once when a lazy page belongs to the previous deployment', () => {
     const reload = vi.fn();
     const storage = memoryStorage();

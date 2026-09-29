@@ -1,5 +1,5 @@
 import type { AudioCue, AudioLesson } from '../listening/types';
-import { API_BASE, request } from './client';
+import { API_BASE, apiResourceUrl, request } from './client';
 
 export async function getAudioLessons(signal?: AbortSignal): Promise<AudioLesson[]> {
   const response = await request<{ items?: AudioLesson[] }>('/audio/lessons', {
@@ -11,7 +11,7 @@ export async function getAudioLessons(signal?: AbortSignal): Promise<AudioLesson
   // запись можно и до неё. Прежнее условие требовало непустых cues, и раздел
   // прятал всё, для чего расшифровки ещё нет.
   return (response.items ?? []).filter(
-    (lesson) => lesson.id && lesson.title && lesson.audio_url,
+    (lesson) => lesson.id && lesson.title && (lesson.audio_url || lesson.external_url),
   );
 }
 
@@ -70,10 +70,19 @@ async function fetchOwnTranscript(
 }
 
 export function playableAudioUrl(url: string): string {
+  const local = apiResourceUrl(url);
+  if (local !== url) return local;
   try {
     const audio = new URL(url);
     const api = new URL(API_BASE || window.location.origin, window.location.origin);
     if (audio.host === api.host) return url;
+    // Slušaj.rs intentionally exposes short, public previews. They support
+    // byte ranges and playback directly, while the full audiobook stays on
+    // the publisher's page. Keeping this tiny allowlist client-side also
+    // lets previews work before the optional Python proxy is redeployed.
+    if (new Set(['slusaj.rs', 'www.slusaj.rs']).has(audio.hostname.toLowerCase())) {
+      return url;
+    }
   } catch {
     return url;
   }
@@ -96,6 +105,6 @@ export function setTtsVoice(voice: SerbianTtsVoice): void {
   window.dispatchEvent(new CustomEvent(TTS_VOICE_EVENT, { detail: voice }));
 }
 
-export function ttsAudioUrl(text: string, lang = 'sr', voice = getTtsVoice()): string {
-  return `${API_BASE}/audio/tts?text=${encodeURIComponent(text)}&lang=${encodeURIComponent(lang)}&voice=${encodeURIComponent(voice)}`;
+export function ttsAudioUrl(text: string, voice = getTtsVoice()): string {
+  return `${API_BASE}/audio/tts?text=${encodeURIComponent(text)}&lang=sr&voice=${encodeURIComponent(voice)}`;
 }

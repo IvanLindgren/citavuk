@@ -114,7 +114,7 @@ export function LevelPrompt() {
               <button
                 type="button"
                 onClick={() => setMode('test')}
-                className="rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-white transition-opacity hover:opacity-90"
+                className="rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-parchment transition-opacity hover:opacity-90"
               >
                 Не знаю — проверьте меня
               </button>
@@ -225,7 +225,7 @@ function LevelTest({
                   }
                   className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
                     answers[question.id] === index
-                      ? 'border-[var(--accent)] bg-[var(--accent)] font-semibold text-white'
+                      ? 'border-[var(--accent)] bg-[var(--accent)] font-semibold text-parchment'
                       : 'border-[var(--line)] hover:border-[var(--accent)]'
                   }`}
                 >
@@ -242,7 +242,7 @@ function LevelTest({
           type="button"
           disabled={sending}
           onClick={() => void submit()}
-          className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 font-bold text-parchment transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {sending && <Spinner className="size-4" />}
           Узнать уровень
@@ -286,7 +286,7 @@ function TestResult({
       <button
         type="button"
         onClick={onClose}
-        className="mt-6 rounded-xl bg-[var(--accent)] px-6 py-3 font-bold text-white transition-opacity hover:opacity-90"
+        className="mt-6 rounded-xl bg-[var(--accent)] px-6 py-3 font-bold text-parchment transition-opacity hover:opacity-90"
       >
         Понятно
       </button>

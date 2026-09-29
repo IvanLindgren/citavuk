@@ -134,7 +134,7 @@ function BulkAdd({ onAdd, onClose }: { onAdd: (items: LessonExercise[]) => void;
           type="button"
           disabled={result.exercises.length === 0}
           onClick={() => { onAdd(result.exercises); setText(''); }}
-          className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-4 py-2.5 font-semibold text-white disabled:opacity-40"
+          className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-4 py-2.5 font-semibold text-parchment disabled:opacity-40"
         >
           <LuPlus />Добавить {countLabel(result.exercises.length)}
         </button>

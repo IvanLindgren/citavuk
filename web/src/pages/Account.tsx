@@ -15,9 +15,11 @@ import {
 import { getProfileStats, type ProfileStats } from '../api/profile';
 import { listMaterialQuizzes, type MaterialQuiz } from '../api/quizzes';
 import { Mascot } from "../components/Mascot";
+import { CaseGameStats } from "../games/cases/CaseGameStats";
 import { Button, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
 import { plural } from "../lib/books";
-import { useRouter } from "../lib/router";
+import { Link, useRouter } from "../lib/router";
+import { LuHeartHandshake, LuLock } from "react-icons/lu";
 import { useAuth } from "../state/auth";
 import { useAnnouncements } from '../state/announcements';
 import { useSync } from "../state/sync";
@@ -96,6 +98,16 @@ function AccountSession() {
                 <p className="truncate text-sm text-[var(--text-muted)]">
                   {account.email}
                 </p>
+                {account.supporterSince && (
+                  <Link
+                    to="/supporters"
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gold/60 bg-gold/12 px-3 py-1 text-xs font-bold text-[var(--text)]"
+                    title="Спасибо за поддержку Читавука"
+                  >
+                    <LuHeartHandshake className="size-3.5 text-[var(--accent)]" aria-hidden="true" />
+                    Друг Читавука с {new Date(account.supporterSince).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' }).replace(' г.', '')}
+                  </Link>
+                )}
               </div>
             </div>
             <div className="account-passport-bottom"><span>Каждое занятие становится частью твоего пути.</span>{account.serbianLevel && <span className="account-level">Сербский <b>{account.serbianLevel}</b></span>}</div>
@@ -124,6 +136,8 @@ function AccountSession() {
             <Reveal delay={0.1} className="mt-5">
               <ActivityChart stats={stats} />
             </Reveal>
+
+            <CaseGameStats />
 
             {examQuizzes.length > 0 && (
               <Reveal delay={0.12} className="mt-5">
@@ -338,11 +352,39 @@ const achievementIcons = {
 function AchievementTile({ achievement }: { achievement: ProfileStats['achievements'][number] }) {
   const Icon = achievementIcons[achievement.icon as keyof typeof achievementIcons] ?? LuTrophy;
   const unlocked = Boolean(achievement.unlockedAt);
+  // Арт маскота к достижению (tools/build_achievement_art.py). Нового
+  // достижения без картинки ещё может не быть — тогда прежний значок.
+  const [artMissing, setArtMissing] = useState(false);
   return (
     <Card className={`account-achievement flex min-h-32 items-start gap-4 p-5 ${unlocked ? 'is-unlocked' : ''}`}>
-      <div className={`account-achievement-medal ${unlocked ? 'is-unlocked' : ''}`}>
-        <Icon className="size-5" />
-      </div>
+      {artMissing ? (
+        <div className={`account-achievement-medal ${unlocked ? 'is-unlocked' : ''}`}>
+          <Icon className="size-5" />
+        </div>
+      ) : (
+        <div className="relative size-20 shrink-0">
+          {unlocked && (
+            <span
+              className="absolute inset-0 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-gold)_45%,transparent),transparent_70%)]"
+              aria-hidden="true"
+            />
+          )}
+          <img
+            src={`/img/achievements/${achievement.key}.webp`}
+            alt=""
+            width={80}
+            height={80}
+            loading="lazy"
+            onError={() => setArtMissing(true)}
+            className={['relative size-20 object-contain transition-[filter,transform] duration-300', unlocked ? 'hover:-rotate-3 hover:scale-105' : 'opacity-60 grayscale'].join(' ')}
+          />
+          {!unlocked && (
+            <span className="absolute -bottom-1 -right-1 grid size-6 place-items-center rounded-full bg-[var(--bg-raised)] text-[var(--text-muted)] shadow">
+              <LuLock className="size-3.5" aria-hidden="true" />
+            </span>
+          )}
+        </div>
+      )}
       <div className="min-w-0">
         <h3 className="text-base">{achievement.title}</h3>
         <p className="mt-1 text-sm leading-5 text-[var(--text-muted)]">{achievement.description}</p>

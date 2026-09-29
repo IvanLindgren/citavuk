@@ -1,5 +1,6 @@
 node_modules/
 dist/
+dist-embed/
 *.local
 .vite/
 
@@ -38,6 +39,9 @@ public/fonts/*
 !public/fonts/NotoSans-Bold.woff2
 !public/fonts/NotoSans-SemiBold.woff2
 !public/fonts/NotoSans-OFL.txt
+# Шрифт печатной машинки для игры на падежи (латиница с č ć š ž đ).
+!public/fonts/CourierPrime-*.woff2
+!public/fonts/CourierPrime-OFL.txt
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
 public/course/
