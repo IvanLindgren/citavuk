@@ -87,6 +87,7 @@ func testServerWithApp(t *testing.T) (*httptest.Server, *store.Store, *Server) {
 	// запросов с одного loopback-IP. Сами лимитеры покрыты отдельными unit-тестами.
 	srv.authLimit = newLimiter("test_auth", 10_000, 10_000, nil)
 	srv.generalLimit = newLimiter("test_general", 10_000, 10_000, nil)
+	srv.quizLimit = newLimiter("test_quiz", 10_000, 10_000, nil)
 	srv.mailer = &testMailer{store: st}
 	t.Cleanup(srv.Close)
 
