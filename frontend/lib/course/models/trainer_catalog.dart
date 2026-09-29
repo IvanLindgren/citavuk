@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'course.dart';
@@ -84,6 +85,11 @@ class TrainerTopic {
 Future<List<TrainerTopicSpec>> loadTrainerCatalog() async {
   final raw = await rootBundle.loadString('assets/course/trainer_catalog.json',
       cache: true);
+  // 450 КиБ разбираются в фоновом изоляте, а не на главном потоке.
+  return compute(_parseTrainerCatalog, raw);
+}
+
+List<TrainerTopicSpec> _parseTrainerCatalog(String raw) {
   final json = (jsonDecode(raw) as Map).cast<String, dynamic>();
   if (json['version'] != 1) {
     throw const FormatException('Неизвестная версия каталога Тренажёрки.');

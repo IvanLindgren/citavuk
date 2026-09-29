@@ -129,7 +129,7 @@ class PersonalDeckIntro extends StatelessWidget {
         child: LayoutBuilder(builder: (context, limits) {
           final copy =
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('ТВОЯ ЛИЧНАЯ КОЛОДА',
+            Text('ТВОЯ КОЛОДА НА КАЖДЫЙ ДЕНЬ',
                 style: TextStyle(
                     color: scheme.primary,
                     fontSize: 11,
@@ -144,7 +144,7 @@ class PersonalDeckIntro extends StatelessWidget {
                     height: 1.3)),
             const SizedBox(height: 14),
             Text(
-                'Волк Читавук разрисовал игральные карты, и теперь с помощью колоды вы можете самостоятельно создать себе уроки... На каждый день!',
+                'Читавук подбирает тебе маршрут из растущей коллекции сербских уроков. Каждый день открывается новая карта, а твои ответы и правки остаются только твоими.',
                 style: TextStyle(
                     color: scheme.onSurfaceVariant, fontSize: 15, height: 1.7)),
           ]);

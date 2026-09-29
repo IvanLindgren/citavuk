@@ -169,8 +169,8 @@ class _DuelMenuScreenState extends State<DuelMenuScreen> {
                             ?.copyWith(fontWeight: FontWeight.w800)),
                     const SizedBox(height: 8),
                     const Text(
-                      'Три раунда по пять фраз. Переводы сравнивает Gemma, '
-                      'а если она промолчит — вы сами.',
+                      'Три раунда по пять фраз. Переводы сравнивает ИИ-судья, '
+                      'а если он промолчит, победителя выбираешь ты.',
                       style: TextStyle(height: 1.45),
                     ),
                   ],

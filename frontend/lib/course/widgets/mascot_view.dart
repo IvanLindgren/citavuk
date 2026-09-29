@@ -4,6 +4,7 @@
 /// атласа показывается статичный арт Wolf; размер области не меняется.
 library;
 
+import '../../widgets/sized_asset_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/wolf_mascot.dart';
@@ -92,9 +93,8 @@ class _StaticMascot extends StatelessWidget {
     return Semantics(
       image: true,
       label: label,
-      child: Image.asset(
+      child: SizedAssetImage(
         asset,
-        fit: BoxFit.contain,
         errorBuilder: (_, __, ___) => const SizedBox.shrink(),
       ),
     );

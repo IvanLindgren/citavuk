@@ -28,6 +28,7 @@ Widget _lookupNavRow({
   required bool canGoBack,
   required VoidCallback? onBack,
   required VoidCallback? onClose,
+  ValueChanged<String>? onSaveQuote,
 }) {
   return Row(
     children: [
@@ -38,6 +39,8 @@ Widget _lookupNavRow({
           label: const Text('Назад'),
         ),
       const Spacer(),
+      if (onSaveQuote != null)
+        HighlightMenuButton(tooltip: 'Выделить фрагмент', onPick: onSaveQuote),
       if (onClose != null)
         IconButton(
           tooltip: 'Закрыть разбор',
@@ -57,6 +60,7 @@ class WordAnalysisSheet extends StatelessWidget {
   final bool canGoBack;
   final VoidCallback? onBack;
   final VoidCallback? onClose;
+  final ValueChanged<String>? onSaveQuote;
 
   const WordAnalysisSheet({
     super.key,
@@ -66,6 +70,7 @@ class WordAnalysisSheet extends StatelessWidget {
     this.canGoBack = false,
     this.onBack,
     this.onClose,
+    this.onSaveQuote,
   });
 
   @override
@@ -103,6 +108,7 @@ class WordAnalysisSheet extends StatelessWidget {
                 canGoBack: canGoBack,
                 onBack: onBack,
                 onClose: onClose,
+                onSaveQuote: onSaveQuote,
               ),
             Flexible(
               child: WordAnalysisBody(
@@ -181,7 +187,7 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
     );
     _future.then((data) {
       if (!mounted) return;
-      _playPronunciation(data.isEnglish ? 'en' : 'sr');
+      _playPronunciation();
       _lookUpDefinition(data);
     });
   }
@@ -206,10 +212,10 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
     setState(() => _definition = request);
   }
 
-  Future<void> _playPronunciation([String lang = 'sr']) async {
+  Future<void> _playPronunciation() async {
     await _ttsPlayer.stop();
     await _ttsPlayer.play(UrlSource(
-      ListeningService.instance.ttsUrl(widget.request.token.text, lang: lang),
+      ListeningService.instance.ttsUrl(widget.request.token.text),
     ));
   }
 
@@ -406,6 +412,16 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 4),
+                if (isPhrase)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(surface,
+                        style: TextStyle(
+                            fontSize: 20,
+                            height: 1.35,
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onSurface)),
+                  ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -416,17 +432,17 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Flexible(
-                                child: Text(surface,
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: scheme.onSurface)),
-                              ),
+                              if (!isPhrase)
+                                Flexible(
+                                  child: Text(surface,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: scheme.onSurface)),
+                                ),
                               IconButton(
                                 tooltip: 'Произнести слово',
-                                onPressed: () => _playPronunciation(
-                                    data.isEnglish ? 'en' : 'sr'),
+                                onPressed: () => _playPronunciation(),
                                 icon: Icon(_speaking
                                     ? Icons.stop_circle_outlined
                                     : Icons.volume_up_outlined),
@@ -440,7 +456,7 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
                                         .setVoice(voice);
                                     if (!mounted) return;
                                     setState(() => _voice = voice);
-                                    await _playPronunciation('sr');
+                                    await _playPronunciation();
                                   },
                                   itemBuilder: (_) => [
                                     for (final entry in ListeningService

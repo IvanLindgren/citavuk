@@ -8,7 +8,7 @@
 /// из этого тёмную арену с неоном и искрами; выглядело как чужая игра,
 /// вставленная в Читавук, и было выброшено. Азарт держат темп и звук.
 ///
-/// Счёт бой не трогает. Кто выиграл предложение, решает Gemma или сам человек;
+/// Счёт бой не трогает. Кто выиграл предложение, решает ИИ или сам человек;
 /// полосы показывают ровно это (правила — course/duel_score.dart).
 library;
 
@@ -359,7 +359,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
     }
   }
 
-  Future<void> _askGemma() async {
+  Future<void> _askJudge() async {
     final round = _round;
     if (round == null || !_allFilled) return;
     setState(() {
@@ -659,7 +659,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
                             : _phase == _Phase.resolve && _shown > 0
                                 ? _sentences[_shown - 1].text
                                 : 'Отметь, чей перевод точнее и живее, '
-                                    'или доверь это Gemma 4.',
+                                    'или доверь это ИИ-судье.',
                         style: const TextStyle(
                             fontFamily: 'NotoSerif', fontSize: 18, height: 1.45),
                       ),
@@ -764,7 +764,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
             ShuffleDeck(count: _sentences.length),
             const DuelWaiting(
               title: 'Судья читает',
-              text: 'Gemma 4 сравнивает переводы по точности и живости.',
+              text: 'ИИ-судья сравнивает переводы по точности и живости.',
             ),
           ] else if (_phase != _Phase.translate) ...[
             const SizedBox(height: 18),
@@ -777,13 +777,13 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
                 style:
                     OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
                 onPressed:
-                    _loading || !(_round?.judgeEnabled ?? false) ? null : _askGemma,
+                    _loading || !(_round?.judgeEnabled ?? false) ? null : _askJudge,
                 icon: _loading
                     ? const SizedBox.square(
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2))
                     : const Icon(Icons.smart_toy_outlined),
-                label: const Text('Спросить Gemma 4'),
+                label: const Text('Спросить ИИ-судью'),
               ),
               const SizedBox(height: 8),
               FilledButton.icon(

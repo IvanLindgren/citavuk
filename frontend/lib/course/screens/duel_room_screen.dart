@@ -509,7 +509,7 @@ class _DuelRoomScreenState extends State<DuelRoomScreen> {
 
   Widget _judging(DuelRoom room) => Card(
         child: DuelWaiting(
-          title: 'Gemma сравнивает переводы',
+          title: 'ИИ-судья сравнивает переводы',
           text: 'Авторы скрыты даже от судьи: он видит только тексты под '
               'метками. Если судья промолчит, победителя выберете вы сами.',
           child: Column(

@@ -494,7 +494,7 @@ class _ConfettiPainter extends CustomPainter {
 
 /// Рубашки переводов, которые тасует судья.
 ///
-/// Пока Gemma читает, на экране должно что-то происходить: пустая панель с
+/// Пока модель читает, на экране должно что-то происходить: пустая панель с
 /// надписью «идёт разбор» читается как зависшее приложение.
 class ShuffleDeck extends StatefulWidget {
   const ShuffleDeck({super.key, required this.count});

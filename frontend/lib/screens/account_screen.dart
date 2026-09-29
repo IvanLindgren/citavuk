@@ -5,6 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../games/cases/case_game_data.dart';
+import '../games/cases/case_game_service.dart';
+import '../games/cases/case_game_screen.dart';
 import '../models/profile_stats.dart';
 import '../widgets/study_widgets.dart';
 import '../services/api_client.dart';
@@ -57,6 +60,8 @@ class _SignedInViewState extends State<_SignedInView> {
   void initState() {
     super.initState();
     _refreshProfile();
+    // Значок поддержки выдаётся после оплаты на сайте.
+    unawaited(context.read<AuthService>().refreshAccount());
   }
 
   Future<void> _refreshProfile() async {
@@ -133,10 +138,20 @@ class _SignedInViewState extends State<_SignedInView> {
               ),
             ),
             title: Text(account.label),
-            subtitle: Text(account.email),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(account.email),
+                if (account.supporterSince != null) ...[
+                  const SizedBox(height: 6),
+                  const _SupporterBadge(),
+                ],
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 16),
+        const _CaseGameStats(),
         if (_loadingStats)
           const Padding(
             padding: EdgeInsets.all(24),
@@ -603,8 +618,8 @@ class _AchievementsSection extends StatelessWidget {
               crossAxisSpacing: 8,
               childAspectRatio: columns == 2 ? 2.7 : 2.55,
               children: [
-                for (final achievement in stats.achievements)
-                  _AchievementTile(achievement: achievement),
+                for (final (index, achievement) in stats.achievements.indexed)
+                  _AchievementTile(achievement: achievement, index: index),
               ],
             );
           },
@@ -614,28 +629,89 @@ class _AchievementsSection extends StatelessWidget {
   }
 }
 
+/// Плитка достижения: иллюстрация маскота, у закрытого — серая.
+///
+/// Раньше закрытая плитка целиком шла через Opacity, а это отдельный слой на
+/// каждую карточку. Теперь приглушается одна картинка цветовым фильтром.
 class _AchievementTile extends StatelessWidget {
-  const _AchievementTile({required this.achievement});
+  const _AchievementTile({required this.achievement, this.index = 0});
 
   final ProfileAchievement achievement;
+  final int index;
+
+  static const _grey = ColorFilter.matrix([
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0, 0, 0, 0.55, 0,
+  ]);
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Opacity(
-      opacity: achievement.unlocked ? 1 : 0.52,
+    final unlocked = achievement.unlocked;
+    const size = 64.0;
+    final pixels = (size * MediaQuery.devicePixelRatioOf(context)).round();
+    Widget art = Image.asset(
+      'assets/imgs/achievements/${achievement.key}.webp',
+      width: size,
+      height: size,
+      cacheWidth: pixels,
+      filterQuality: FilterQuality.medium,
+      // Новое достижение без картинки показывает прежний значок.
+      errorBuilder: (_, __, ___) => CircleAvatar(
+        radius: 22,
+        backgroundColor: unlocked ? scheme.primary : scheme.surfaceContainerHighest,
+        foregroundColor: unlocked ? scheme.onPrimary : scheme.outline,
+        child: Icon(_achievementIcon(achievement.icon), size: 20),
+      ),
+    );
+    if (!unlocked) art = ColorFiltered(colorFilter: _grey, child: art);
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: 320 + index * 45),
+      curve: Curves.easeOutCubic,
+      builder: (_, t, child) => Opacity(
+        opacity: t,
+        child: Transform.translate(offset: Offset(0, 14 * (1 - t)), child: child),
+      ),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: achievement.unlocked
-                    ? scheme.primary
-                    : scheme.surfaceContainerHighest,
-                foregroundColor:
-                    achievement.unlocked ? scheme.onPrimary : scheme.outline,
-                child: Icon(_achievementIcon(achievement.icon), size: 20),
+              SizedBox(
+                width: size,
+                height: size,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    if (unlocked)
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(colors: [
+                            const Color(0xFFE0BD6B).withValues(alpha: .45),
+                            const Color(0xFFE0BD6B).withValues(alpha: 0),
+                          ]),
+                        ),
+                        child: const SizedBox.expand(),
+                      ),
+                    art,
+                    if (!unlocked)
+                      Positioned(
+                        right: -2,
+                        bottom: -2,
+                        child: Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(color: scheme.surface, shape: BoxShape.circle),
+                          child: Icon(Icons.lock_outline, size: 14, color: scheme.outline),
+                        ),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -647,14 +723,19 @@ class _AchievementTile extends StatelessWidget {
                       achievement.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: unlocked ? null : scheme.onSurfaceVariant,
+                      ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       achievement.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: unlocked ? null : scheme.outline,
+                          ),
                     ),
                   ],
                 ),
@@ -1091,6 +1172,119 @@ class _AuthFormState extends State<_AuthForm> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SupporterBadge extends StatelessWidget {
+  const _SupporterBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    const gold = Color(0xFFC9A24B);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: gold.withValues(alpha: 0.14),
+        border: Border.all(color: gold.withValues(alpha: 0.6)),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.favorite, size: 14, color: scheme.primary),
+          const SizedBox(width: 6),
+          Text(
+            'Друг Читавука',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: scheme.onSurface,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Игра на падежи в профиле: рекорды по времени и последние партии.
+class _CaseGameStats extends StatefulWidget {
+  const _CaseGameStats();
+
+  @override
+  State<_CaseGameStats> createState() => _CaseGameStatsState();
+}
+
+class _CaseGameStatsState extends State<_CaseGameStats> {
+  List<CaseGameRecord>? _results;
+
+  @override
+  void initState() {
+    super.initState();
+    CaseGameService(context.read<ApiClient>()).results().then((items) {
+      if (mounted) setState(() => _results = items);
+    }).catchError((_) {
+      if (mounted) setState(() => _results = const []);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final results = _results;
+    if (results == null || results.isEmpty) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    const labels = {60: '1 минута', 300: '5 минут', 900: '15 минут', 0: 'без конца'};
+    final records = [
+      for (final limit in const [60, 300, 900])
+        results.where((r) => r.limitSeconds == limit).fold<CaseGameRecord?>(
+            null, (best, r) => best == null || r.correct > best.correct ? r : best),
+    ].whereType<CaseGameRecord>().toList();
+    String title(String scope) {
+      final parts = scope.split(':');
+      return scopeTitle(parts.length > 1 ? parts.sublist(0, parts.length - 1).join(':') : scope);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Expanded(child: Text('Уничтожь эти падежи', style: theme.textTheme.titleMedium)),
+                TextButton.icon(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CaseGameScreen())),
+                  icon: const Icon(Icons.keyboard_alt_outlined, size: 18),
+                  label: const Text('Играть'),
+                ),
+              ]),
+              if (records.isNotEmpty)
+                Wrap(spacing: 12, runSpacing: 8, children: [
+                  for (final r in records)
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(labels[r.limitSeconds] ?? '', style: theme.textTheme.labelSmall),
+                      Text('${r.correct}', style: const TextStyle(fontFamily: 'CourierPrime', fontWeight: FontWeight.w700, fontSize: 24)),
+                      Text('${r.accuracy.round()}%', style: theme.textTheme.bodySmall),
+                    ]),
+                ]),
+              const SizedBox(height: 8),
+              for (final r in results.take(5))
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    '${title(r.scope)} · ${labels[r.limitSeconds]}: ${r.correct} верно, ${r.wrong} ошибок'
+                    '${r.weak.isNotEmpty ? ' · слабое место: ${r.weak.first.toLowerCase()}' : ''}',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+            ],
           ),
         ),
       ),

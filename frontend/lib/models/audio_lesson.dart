@@ -31,6 +31,12 @@ class AudioLesson {
   /// её лениво через /audio/transcript и заменяет реплики из описания.
   final String? transcriptUrl;
   final double durationSec;
+  final String kind;
+  final String category;
+  final String cefr;
+  final String sourceTitle;
+  final String? sourceUrl;
+  final String? externalUrl;
 
   bool get isTts => audioUrl == null;
 
@@ -42,6 +48,12 @@ class AudioLesson {
     required this.cues,
     this.transcriptUrl,
     this.durationSec = 0,
+    this.kind = 'podcast',
+    this.category = 'Учебные',
+    this.cefr = '',
+    this.sourceTitle = '',
+    this.sourceUrl,
+    this.externalUrl,
   });
 
   factory AudioLesson.fromJson(Map<String, dynamic> j) => AudioLesson(
@@ -59,5 +71,15 @@ class AudioLesson {
             ? null
             : (j['transcript_url'] as String).trim(),
         durationSec: (j['duration'] as num?)?.toDouble() ?? 0,
+        kind: (j['kind'] ?? 'podcast').toString(),
+        category: (j['category'] ?? 'Учебные').toString(),
+        cefr: (j['cefr'] ?? '').toString(),
+        sourceTitle: (j['source_title'] ?? '').toString(),
+        sourceUrl: (j['source_url'] as String?)?.trim().isEmpty ?? true
+            ? null
+            : (j['source_url'] as String).trim(),
+        externalUrl: (j['external_url'] as String?)?.trim().isEmpty ?? true
+            ? null
+            : (j['external_url'] as String).trim(),
       );
 }

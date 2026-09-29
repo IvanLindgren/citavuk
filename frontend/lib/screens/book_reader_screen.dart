@@ -1,3 +1,5 @@
+import '../widgets/highlight_picker.dart';
+import '../models/highlight_colors.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -124,6 +126,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   int? _selCell;
   int? _selStart;
   int? _selEnd;
+  List<ReaderQuote> _quotes = const [];
+  SyncService? _quoteSyncService;
+  DateTime? _quotesSyncedAt;
 
   /// Текущий разбор слова. null — ничего не открыто.
   ///
@@ -199,6 +204,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void initState() {
     super.initState();
     _chunkParagraphs();
+    unawaited(_loadQuotes());
     _buildAudiobookCues();
     // initialParagraph — индекс абзаца; находим страницу, содержащую его.
     // (Старые сохранения хранили индекс страницы — он меньше либо равен
@@ -244,6 +250,24 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       _audiobookPlayer.onPlayerComplete.listen((_) => _nextAudiobookCue()),
     ]);
     unawaited(_restoreAudiobook());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final service = context.read<SyncService>();
+    if (_quoteSyncService == service) return;
+    _quoteSyncService?.removeListener(_onQuoteSync);
+    _quoteSyncService = service..addListener(_onQuoteSync);
+  }
+
+  void _onQuoteSync() {
+    final service = _quoteSyncService;
+    if (service?.status == SyncStatus.done &&
+        service?.lastSyncAt != _quotesSyncedAt) {
+      _quotesSyncedAt = service?.lastSyncAt;
+      unawaited(_loadQuotes());
+    }
   }
 
   void _goToPage(int delta) {
@@ -506,6 +530,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
 
   @override
   void dispose() {
+    _quoteSyncService?.removeListener(_onQuoteSync);
     for (final subscription in _audiobookSubscriptions) {
       subscription.cancel();
     }
@@ -628,6 +653,166 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     _clearSelection();
   }
 
+  Future<void> _loadQuotes() async {
+    final generation = UserDb.instance.generation;
+    final quotes = await UserDb.instance.readerQuotes(widget.bookId);
+    if (mounted && UserDb.instance.generation == generation) {
+      setState(() => _quotes = quotes);
+    }
+  }
+
+  Future<void> _saveSelectedQuote(String color) async {
+    final page = _selPage,
+        para = _selPara,
+        startToken = _selStart,
+        endToken = _selEnd;
+    if (page == null ||
+        para == null ||
+        startToken == null ||
+        endToken == null ||
+        _selCell != null) {
+      return;
+    }
+    final paragraph = _pages[page][para];
+    final tokens = SerbianTokenizer.tokenize(paragraph);
+    final start = tokens[startToken < endToken ? startToken : endToken].start;
+    final end = tokens[startToken > endToken ? startToken : endToken].end;
+    final quote = paragraph.substring(start, end).trim();
+    if (quote.isEmpty) {
+      return;
+    }
+    try {
+      await UserDb.instance.saveReaderQuote(
+          widget.bookId, page, para, start, end, quote,
+          color: color);
+      await _loadQuotes();
+      if (mounted && context.read<AuthService>().isSignedIn) {
+        unawaited(context.read<SyncService>().sync());
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(
+                content: Text(color.isEmpty
+                    ? 'Фрагмент подчёркнут'
+                    : 'Фрагмент выделен')));
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Не удалось сохранить выделение')));
+      }
+    }
+  }
+
+  void _showQuotes() {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (sheetContext) {
+          return StatefulBuilder(
+              builder: (context, update) => SafeArea(
+                      child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Text('Выделения',
+                          style: Theme.of(context).textTheme.titleLarge),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * .55,
+                          child: _quotes.isEmpty
+                              ? const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Text(
+                                      'Выдели фрагмент и нажми «Выделить» в разборе: подчеркни его или отметь цветом. Выделения видны на всех твоих устройствах.',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ))
+                              : ListView.builder(
+                                  itemCount: _quotes.length,
+                                  itemBuilder: (_, index) {
+                                    final quote = _quotes[index];
+                                    final marker =
+                                        HighlightColors.marker(quote.color);
+                                    return ListTile(
+                                      leading: Container(
+                                        width: 14,
+                                        height: 14,
+                                        decoration: BoxDecoration(
+                                          color: marker == null
+                                              ? null
+                                              : HighlightColors.dot(
+                                                  quote.color),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              width: marker == null ? 2 : 0),
+                                        ),
+                                      ),
+                                      title: Text(quote.text,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              backgroundColor: marker)),
+                                      subtitle:
+                                          Text('Страница ${quote.page + 1}'),
+                                      onTap: () {
+                                        Navigator.of(sheetContext).pop();
+                                        _jumpTo(quote.page);
+                                      },
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          HighlightMenuButton(
+                                            tooltip: 'Сменить цвет',
+                                            current: quote.color,
+                                            icon: Icons.palette_outlined,
+                                            onPick: (color) async {
+                                              await UserDb.instance
+                                                  .recolorReaderQuote(
+                                                      quote.id, color);
+                                              await _loadQuotes();
+                                              if (context.mounted &&
+                                                  context
+                                                      .read<AuthService>()
+                                                      .isSignedIn) {
+                                                unawaited(context
+                                                    .read<SyncService>()
+                                                    .sync());
+                                              }
+                                              if (context.mounted) {
+                                                update(() {});
+                                              }
+                                            },
+                                          ),
+                                          IconButton(
+                                          tooltip: 'Убрать выделение',
+                                          icon:
+                                              const Icon(Icons.delete_outline),
+                                          onPressed: () async {
+                                            await UserDb.instance
+                                                .deleteReaderQuote(quote.id);
+                                            await _loadQuotes();
+                                            if (context.mounted &&
+                                                context
+                                                    .read<AuthService>()
+                                                    .isSignedIn) {
+                                              unawaited(context
+                                                  .read<SyncService>()
+                                                  .sync());
+                                            }
+                                            if (context.mounted) update(() {});
+                                          }),
+                                        ],
+                                      ),
+                                    );
+                                  })),
+                    ]),
+                  )));
+        });
+  }
+
   /// На широком экране разбор живёт в боковой панели поверх текста: книга не
   /// затемняется и строка не скачет. На узком — в нижней шторке.
   bool get _wideLookup =>
@@ -722,6 +907,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             canGoBack: _lookupHistory.length > 1,
             onBack: _backLookup,
             onClose: () => Navigator.of(context).pop(),
+            onSaveQuote: _saveSelectedQuote,
           );
         },
       ),
@@ -900,6 +1086,12 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                       justify: settings.justify,
                       firstLineIndent: settings.firstLineIndent,
                       dragToSelect: dragToSelect,
+                      quoteRanges: _quotes
+                          .where((q) =>
+                              q.page == pageIndex && q.paragraph == pIndex)
+                          .map((q) => (q.start, q.end, q.color))
+                          .toList(),
+                      quoteColor: scheme.primary,
                       onTapWord: (ti, token, tokens) =>
                           _onTapWord(pageIndex, pIndex, ti, token, tokens),
                       onPhraseSelectionStart: (ti) =>
@@ -951,7 +1143,20 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
           : 60,
     );
     if (continuous) return Padding(padding: padding, child: content);
-    return SingleChildScrollView(padding: padding, child: content);
+    return SingleChildScrollView(
+      padding: padding,
+      child: Column(children: [
+        content,
+        const SizedBox(height: 24),
+        Semantics(
+          label: 'Страница ${pageIndex + 1} из ${_pages.length}',
+          child: Text('${pageIndex + 1} / ${_pages.length}',
+              style: TextStyle(
+                  color: scheme.onSurface.withValues(alpha: .65),
+                  fontSize: 12)),
+        ),
+      ]),
+    );
   }
 
   @override
@@ -1038,6 +1243,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
               style:
                   const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
           actions: [
+            IconButton(
+                tooltip: 'Цитаты',
+                icon: const Icon(Icons.format_underlined),
+                onPressed: _showQuotes),
             const RadioAppBarButton(),
             IconButton(
               tooltip: 'Аудиокнига',
@@ -1607,7 +1816,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(Wolf.ukaz, height: 22),
+            Image.asset(Wolf.ukaz,
+                height: 22,
+                cacheHeight: (22 * MediaQuery.devicePixelRatioOf(context)).round()),
             const SizedBox(width: 6),
             Text('Ты остановился здесь',
                 style: TextStyle(
@@ -1645,6 +1856,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 canGoBack: _lookupHistory.length > 1,
                 onBack: _backLookup,
                 onClose: _closeLookup,
+                onSaveQuote: _saveSelectedQuote,
               ),
               Expanded(
                 child: AnimatedSwitcher(

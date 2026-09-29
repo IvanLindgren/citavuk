@@ -103,13 +103,13 @@ class ListeningService {
         .where((l) =>
             l.id.isNotEmpty &&
             l.title.isNotEmpty &&
-            (l.audioUrl != null || l.cues.isNotEmpty))
+            (l.audioUrl != null || l.cues.isNotEmpty || l.externalUrl != null))
         .toList();
   }
 
   /// URL озвучки одной реплики (нейросетевой голос с серверным fallback).
-  String ttsUrl(String text, {String lang = 'sr'}) =>
-      '$_base/audio/tts?text=${Uri.encodeComponent(text)}&lang=${Uri.encodeComponent(lang)}&voice=${Uri.encodeComponent(_voice)}';
+  String ttsUrl(String text) =>
+      '$_base/audio/tts?text=${Uri.encodeComponent(text)}&lang=sr&voice=${Uri.encodeComponent(_voice)}';
 
   /// На web HTMLAudioElement требует CORS от финального mp3/m4a-хоста.
   /// Podcast CDN часто CORS не отдаёт, поэтому внешние RSS-аудио гоняем через
@@ -172,7 +172,7 @@ class ListeningService {
     return AudioLesson(
       id: id,
       title: title,
-      subtitle: 'озвучка текста · ${cues.length} фраз',
+      subtitle: 'Озвучка текста, ${cues.length} фраз',
       cues: cues,
     );
   }

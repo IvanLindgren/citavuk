@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/analysis_repository.dart';
@@ -98,54 +99,60 @@ class _ServerSettingsSheetState extends State<_ServerSettingsSheet> {
               ),
             ),
             const SizedBox(height: 16),
-            Text('Сервер и словарь',
+            // Адрес сервера — настройка для разработки. Обычному читателю
+            // она видна, только если адрес уже изменён: так его можно вернуть.
+            if (kDebugMode ||
+                context.read<AppSettings>().backendUrl !=
+                    AppSettings.defaultBackendUrl) ...[
+              Text('Сервер',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: scheme.onSurface)),
+              const SizedBox(height: 6),
+              Text(
+                'Адрес сервера для разбора и перевода слов. Кнопка справа '
+                'возвращает стандартный.',
+                style: TextStyle(
+                    fontSize: 13,
+                    color: scheme.onSurface.withValues(alpha: 0.65)),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _ctrl,
+                keyboardType: TextInputType.url,
+                decoration: InputDecoration(
+                  labelText: 'Адрес сервера',
+                  isDense: true,
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    tooltip: 'Сбросить по умолчанию',
+                    icon: const Icon(Icons.restart_alt),
+                    onPressed: () => setState(
+                        () => _ctrl.text = AppSettings.defaultBackendUrl),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  onPressed: _save,
+                  icon: const Icon(Icons.save_outlined, size: 18),
+                  label: const Text('Сохранить адрес'),
+                ),
+              ),
+              const Divider(height: 28),
+            ],
+            Text('Офлайн-словарь',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: scheme.onSurface)),
-            const SizedBox(height: 6),
-            Text(
-              'Сервер используется для точного разбора и перевода слов. По '
-              'умолчанию — публичный Hugging Face Space. Можно указать свой.',
-              style: TextStyle(
-                  fontSize: 13,
-                  color: scheme.onSurface.withValues(alpha: 0.65)),
-            ),
-            const SizedBox(height: 14),
-            TextField(
-              controller: _ctrl,
-              keyboardType: TextInputType.url,
-              decoration: InputDecoration(
-                labelText: 'Адрес сервера',
-                isDense: true,
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  tooltip: 'Сбросить по умолчанию',
-                  icon: const Icon(Icons.restart_alt),
-                  onPressed: () => setState(
-                      () => _ctrl.text = AppSettings.defaultBackendUrl),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton.icon(
-                onPressed: _save,
-                icon: const Icon(Icons.save_outlined, size: 18),
-                label: const Text('Сохранить адрес'),
-              ),
-            ),
-            const Divider(height: 28),
-            Text('Офлайн-словарь',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: scheme.onSurface)),
             const SizedBox(height: 4),
             Text(
-              'Скачивает словарь с сервера для перевода без интернета. Сейчас '
-              'офлайн доступно слов (из кэша): $_cached.',
+              'Словарь для перевода без интернета: в метро, в самолёте, на '
+              'даче. Сейчас без сети доступно слов: $_cached.',
               style: TextStyle(
                   fontSize: 13,
                   color: scheme.onSurface.withValues(alpha: 0.65)),

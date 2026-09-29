@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../utils/store_policy.dart';
 import '../services/update_service.dart';
 import '../state/app_settings.dart';
 import 'privacy_screen.dart';
@@ -54,7 +55,7 @@ class AboutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            '(Для связи и сообщения проблем: @ivanlindgren в тг)',
+            'Связь и сообщения об ошибках: @ivanlindgren в Telegram',
             style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
             textAlign: TextAlign.center,
           ),
@@ -68,7 +69,7 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Следите за обновлениями в:',
+                  'Новости Читавука — в Telegram-канале',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
@@ -84,68 +85,92 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 24),
           const OrnamentDivider(height: 20),
           const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: scheme.primary.withValues(alpha: 0.08),
-              border: Border.all(
-                color: scheme.primary.withValues(alpha: 0.28),
+          // Поддержка открывает цифровые бонусы; из Android-приложения к оплате
+          // мимо биллинга Google Play вести нельзя (см. store_policy.dart).
+          if (!supportLinksHidden) ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: scheme.primary.withValues(alpha: 0.08),
+                border: Border.all(
+                  color: scheme.primary.withValues(alpha: 0.28),
+                ),
+                borderRadius: BorderRadius.circular(14),
               ),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  'Дорогие другови!',
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 14),
-                const Text(
-                  'Проект Читавук является полностью бесплатным: я никогда не буду внедрять платные функции, разве что небольшую косметику для тех, кто пожертвует на сбор, и, может быть, если появится выкладывание книг, то я сделаю эту функцию за символическую плату, чтобы не приходилось модерировать выкладываемые книги.',
-                  style: TextStyle(fontSize: 15, height: 1.45),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Однако поддержание работы сервера и некоторые цели развития, такие как выход Читавука на iOS и macOS, плата за API и прочее, требуют достаточного количества денег, которых у автора проекта пока нет. Он, конечно, когда-то их соберёт и всё сделает, но с вашей помощью это будет кратно быстрее.',
-                  style: TextStyle(fontSize: 15, height: 1.45),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Если вам небезразлична судьба проекта и вам нравится его функционал, то вот виджет для сбора:',
-                  style: TextStyle(fontSize: 15, height: 1.45),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.favorite),
-                    label: const Text('Поддержать развитие Читавука'),
-                    onPressed: () => _launchUrl(
-                      'https://yoomoney.ru/fundraise/1JBLJQ46SFR.260730',
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: scheme.primary,
-                      foregroundColor: scheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+              child: Column(
+                children: [
+                  const Text(
+                    'Привет, друже!',
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'Читавук бесплатный и таким останется: платить за чтение, курс и словарь не придётся никогда.',
+                    style: TextStyle(fontSize: 15, height: 1.45),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Но сервер, перевод, озвучка и выход на iOS и macOS стоят денег. Я делаю Читавук один, и твоя поддержка помогает выпускать новое заметно быстрее.',
+                    style: TextStyle(fontSize: 15, height: 1.45),
+                  ),
+                  const SizedBox(height: 16),
+                  const _Perk(
+                    icon: Icons.groups_outlined,
+                    text: 'Имя среди друзей Читавука — на сайте, если разрешишь',
+                  ),
+                  const _Perk(
+                    icon: Icons.verified_outlined,
+                    text: 'Значок «Друг Читавука» в профиле',
+                  ),
+                  const _Perk(
+                    icon: Icons.lightbulb_outline,
+                    text: 'Твою идею рассмотрю первой',
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'За поддержку от 200 ₽ — одной оплатой или несколькими. Оплата проходит на сайте.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: scheme.onSurface.withValues(alpha: 0.65),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.favorite),
+                      label: const Text('Поддержать Читавук'),
+                      onPressed: () =>
+                          _launchUrl('https://citavuk.ru/support'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: scheme.primary,
+                        foregroundColor: scheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        _launchUrl('https://citavuk.ru/supporters'),
+                    child: const Text('Друзья Читавука'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          const OrnamentDivider(height: 20),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
+            const OrnamentDivider(height: 20),
+            const SizedBox(height: 24),
+          ],
           const Text(
-            'Код проекта является открыто распространяемым ПО под MIT-лицензией. Если вы является разработчиком на Python и Dart и имеете лишнее время для анализа чужого кода, то можете глянуть гит проекта и сделать пулл-реквест, если найдете баг/плохой код по вашему мнению:',
+            'Код Читавука открыт под лицензией MIT. Если вы пишете на Dart, Go или TypeScript и нашли ошибку или неудачное место — присылайте пулл-реквест в репозиторий:',
             style: TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           OutlinedButton.icon(
             icon: const Icon(Icons.code),
-            label: const Text('GitHub Репозиторий'),
+            label: const Text('Репозиторий на GitHub'),
             onPressed: () =>
                 _launchUrl('https://github.com/IvanLindgren/citavuk'),
           ),
@@ -168,6 +193,30 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+}
+
+class _Perk extends StatelessWidget {
+  const _Perk({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: scheme.primary),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(text, style: const TextStyle(fontSize: 14.5)),
+          ),
         ],
       ),
     );

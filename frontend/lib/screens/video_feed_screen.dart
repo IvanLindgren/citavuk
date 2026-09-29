@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'vukotok_comments.dart';
 import '../widgets/linux_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -10,6 +11,7 @@ import '../models/micro_feed.dart';
 import '../services/micro_feed_service.dart';
 import '../services/api_client.dart';
 import '../services/study_service.dart';
+import '../utils/haptics.dart';
 
 class VideoFeedScreen extends StatefulWidget {
   const VideoFeedScreen({super.key, required this.active});
@@ -101,10 +103,44 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
     super.dispose();
   }
 
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is KeyUpEvent || !widget.active) return KeyEventResult.ignored;
+    final key = event.logicalKey;
+    if (key == LogicalKeyboardKey.arrowDown ||
+        key == LogicalKeyboardKey.pageDown) {
+      _move(1);
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.arrowUp || key == LogicalKeyboardKey.pageUp) {
+      _move(-1);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  void _toggleSaved() {
+    lightHaptic();
+    _request++;
+    setState(() {
+      _saved = !_saved;
+      _items.clear();
+      _index = 0;
+      _loading = false;
+      _exhausted = false;
+    });
+    unawaited(_load());
+  }
+
   @override
   Widget build(BuildContext context) {
     final item = _items.isEmpty ? null : _items[_index];
-    return GestureDetector(
+    final scheme = Theme.of(context).colorScheme;
+    final last = _exhausted && _index == _items.length - 1;
+    return Focus(
+      autofocus: true,
+      canRequestFocus: widget.active,
+      onKeyEvent: _onKey,
+      child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onVerticalDragStart: (_) => _drag = 0,
         onVerticalDragUpdate: (event) => _drag += event.delta.dy,
@@ -112,96 +148,92 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
           if (_drag.abs() > 48) _move(_drag < 0 ? 1 : -1);
         },
         child: Listener(
-            onPointerSignal: (event) {
-              if (event is PointerScrollEvent &&
-                  event.scrollDelta.dy.abs() > 35) {
-                _move(event.scrollDelta.dy > 0 ? 1 : -1);
-              }
-            },
-            child: Column(children: [
+          onPointerSignal: (event) {
+            if (event is PointerScrollEvent &&
+                event.scrollDelta.dy.abs() > 35) {
+              _move(event.scrollDelta.dy > 0 ? 1 : -1);
+            }
+          },
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 2, 8, 0),
+              child: Row(children: [
+                Text(_saved ? 'Понравившиеся' : 'Для тебя',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w800)),
+                if (_items.isNotEmpty) ...[
+                  const SizedBox(width: 10),
+                  Text('${_index + 1} / ${_items.length}',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: scheme.onSurfaceVariant)),
+                ],
+                const Spacer(),
+                IconButton(
+                  tooltip: _saved
+                      ? 'Вернуться к рекомендациям'
+                      : 'Понравившиеся видео',
+                  icon: Icon(_saved ? Icons.favorite : Icons.favorite_border,
+                      color: _saved ? const Color(0xFFE86A5B) : null),
+                  onPressed: _toggleSaved,
+                ),
+              ]),
+            ),
+            if (_error != null)
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-                  child: Row(children: [
-                    Text(_saved ? 'Понравившиеся' : 'Для тебя',
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600)),
-                    const Spacer(),
-                    IconButton(
-                        tooltip: _saved
-                            ? 'Вернуться к рекомендациям'
-                            : 'Понравившиеся видео',
-                        icon: Icon(
-                            _saved ? Icons.favorite : Icons.favorite_border),
-                        onPressed: () {
-                          _request++;
-                          setState(() {
-                            _saved = !_saved;
-                            _items.clear();
-                            _index = 0;
-                            _loading = false;
-                            _exhausted = false;
-                          });
-                          unawaited(_load());
-                        }),
-                  ])),
-              if (_error != null)
-                Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(_error!,
-                        style: const TextStyle(color: Colors.white))),
-              Expanded(
-                  child: item == null
-                      ? Center(
-                          child: _loading
-                              ? const CircularProgressIndicator()
-                              : const Padding(
-                                  padding: EdgeInsets.all(24),
-                                  child: Text(
-                                      'Доступные ролики закончились. Можно вернуться к предыдущим или открыть текстовую ленту.',
-                                      textAlign: TextAlign.center)))
-                      : _VideoCard(
-                          key: ValueKey(item.id),
-                          item: item,
-                          active: widget.active,
-                          reaction: _reactions[item.id] ?? item.reaction,
-                          onReaction: (value) {
-                            _reactions[item.id] = value;
-                            if (!_saved) unawaited(_load(refresh: true));
-                          })),
-              SafeArea(
-                  top: false,
-                  child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton.outlined(
-                                tooltip: 'Предыдущее видео',
-                                onPressed: _index > 0 ? () => _move(-1) : null,
-                                icon: const Icon(Icons.keyboard_arrow_up)),
-                            Flexible(
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Text(
-                                        _loading
-                                            ? 'Подбираем ещё'
-                                            : _exhausted &&
-                                                    _index == _items.length - 1
-                                                ? 'Пока это последний ролик'
-                                                : 'Листай вверх к следующему',
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(fontSize: 12)))),
-                            IconButton.outlined(
-                                tooltip: 'Следующее видео',
-                                onPressed:
-                                    _exhausted && _index == _items.length - 1
-                                        ? null
-                                        : () => _move(1),
-                                icon: const Icon(Icons.keyboard_arrow_down))
-                          ]))),
-            ])));
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                child: Text(_error!,
+                    style: TextStyle(color: scheme.error, fontSize: 13)),
+              ),
+            Expanded(
+              child: item == null
+                  ? Center(
+                      child: _loading
+                          ? const CircularProgressIndicator()
+                          : const Padding(
+                              padding: EdgeInsets.all(24),
+                              child: Text(
+                                  'Доступные ролики закончились. Можно вернуться к предыдущим или открыть текстовую ленту.',
+                                  textAlign: TextAlign.center)))
+                  : AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 240),
+                      switchInCurve: Curves.easeOut,
+                      transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween(
+                                  begin: const Offset(0, .03), end: Offset.zero)
+                              .animate(animation),
+                          child: child,
+                        ),
+                      ),
+                      child: _VideoCard(
+                        key: ValueKey(item.id),
+                        item: item,
+                        active: widget.active,
+                        reaction: _reactions[item.id] ?? item.reaction,
+                        onPrev: _index > 0 ? () => _move(-1) : null,
+                        onNext: last ? null : () => _move(1),
+                        onReaction: (value) {
+                          _reactions[item.id] = value;
+                          if (!_saved) unawaited(_load(refresh: true));
+                        },
+                      ),
+                    ),
+            ),
+            if (_loading && item != null || last)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                    _loading ? 'Подбираем ещё…' : 'Пока это последний ролик',
+                    style: TextStyle(
+                        fontSize: 12, color: scheme.onSurfaceVariant)),
+              ),
+          ]),
+        ),
+      ),
+    );
   }
 
   void _move(int direction) {
@@ -229,11 +261,14 @@ class _VideoCard extends StatefulWidget {
       required this.item,
       required this.active,
       required this.reaction,
-      required this.onReaction});
+      required this.onReaction,
+      this.onPrev,
+      this.onNext});
   final MicroFeedItem item;
   final bool active;
   final int reaction;
   final ValueChanged<int> onReaction;
+  final VoidCallback? onPrev, onNext;
   @override
   State<_VideoCard> createState() => _VideoCardState();
 }
@@ -316,38 +351,8 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final item = widget.item;
-    return Align(
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(children: [
-                  Text(item.titleLatin,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 17,
-                          height: 1.45,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 4),
-                  Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 14,
-                      runSpacing: 6,
-                      children: [
-                        Text(item.sourceTitle,
-                            style: const TextStyle(fontSize: 12)),
-                        Text(item.cefr, style: const TextStyle(fontSize: 12)),
-                        Text('${item.videoDuration} сек.',
-                            style: const TextStyle(fontSize: 12))
-                      ]),
-                  const SizedBox(height: 12),
-                  Expanded(
-                      child: !kIsWeb &&
+  Widget _playerView(MicroFeedItem item) =>
+      !kIsWeb &&
                               defaultTargetPlatform == TargetPlatform.linux
                           ? LinuxVideoPlayer(
                               item: item, active: widget.active && !_discussing)
@@ -357,11 +362,11 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                                   child: InAppWebView(
                                     initialUrlRequest: URLRequest(
                                         url: WebUri(
-                                            'https://citavuk.ru/video-player.html?v=${Uri.encodeComponent(item.videoId)}')),
+                                            'https://citavuk.ru/video-player.html?v=${Uri.encodeComponent(item.videoId)}&feed=1')),
                                     initialSettings: InAppWebViewSettings(
                                         javaScriptEnabled: true,
                                         allowsInlineMediaPlayback: true,
-                                        mediaPlaybackRequiresUserGesture: true,
+                                        mediaPlaybackRequiresUserGesture: false,
                                         useShouldOverrideUrlLoading: true,
                                         javaScriptHandlersForMainFrameOnly:
                                             true,
@@ -456,37 +461,123 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                                             action:
                                                 PermissionResponseAction.DENY),
                                   ))
-                              : const SizedBox.shrink()),
-                  if (_error != null) Text(_error!),
-                  const SizedBox(height: 8),
-                  Wrap(spacing: 8, children: [
-                    TextButton.icon(
-                        onPressed: _busy ? null : () => _react(1),
-                        icon: Icon(
-                            _reaction == 1
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: _reaction == 1
-                                ? const Color(0xFFFF9385)
-                                : null),
-                        label: const Text('Нравится')),
-                    TextButton.icon(
-                        onPressed: _openComments,
-                        icon: const Icon(Icons.chat_bubble_outline),
-                        label: Text(_comments > 0
-                            ? 'Обсудить $_comments'
-                            : 'Обсудить')),
-                    TextButton.icon(
-                        onPressed: _busy ? null : () => _react(-1),
-                        icon: const Icon(Icons.thumb_down_outlined),
-                        label: const Text('Не моё')),
-                    IconButton(
-                        tooltip: 'Открыть на YouTube',
-                        onPressed: () => launchUrl(Uri.parse(item.sourceUrl),
-                            mode: LaunchMode.externalApplication),
-                        icon: const Icon(Icons.open_in_new))
-                  ]),
-                ]))));
+                              : const SizedBox.shrink();
+
+  @override
+  Widget build(BuildContext context) {
+    final item = widget.item;
+    final scheme = Theme.of(context).colorScheme;
+    Widget meta(String text) => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+          decoration: BoxDecoration(
+            color: scheme.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: Text(text,
+              style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.onSurfaceVariant)),
+        );
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 560),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          child: Column(children: [
+            const SizedBox(height: 4),
+            // Плеер занимает всё свободное место: это главное на экране, а не
+            // строка между заголовком и кнопками.
+            Expanded(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: _playerView(item),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(item.titleLatin,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)),
+            ),
+            const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Wrap(spacing: 6, runSpacing: 6, children: [
+                if (item.sourceTitle.isNotEmpty) meta(item.sourceTitle),
+                meta(item.cefr),
+                if (item.videoDuration > 0) meta('${item.videoDuration} сек.'),
+              ]),
+            ),
+            if (_error != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(_error!,
+                      style: TextStyle(color: scheme.error, fontSize: 13)),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _VideoAction(
+                    icon: Icons.keyboard_arrow_up,
+                    label: 'Назад',
+                    onTap: widget.onPrev,
+                  ),
+                  _VideoAction(
+                    icon: _reaction == 1
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    label: 'Нравится',
+                    active: _reaction == 1,
+                    onTap: _busy ? null : () => _react(1),
+                  ),
+                  _VideoAction(
+                    icon: Icons.chat_bubble_outline,
+                    label: _comments > 0 ? '$_comments' : 'Обсудить',
+                    onTap: _openComments,
+                  ),
+                  _VideoAction(
+                    icon: _reaction == -1
+                        ? Icons.thumb_down
+                        : Icons.thumb_down_outlined,
+                    label: 'Не моё',
+                    active: _reaction == -1,
+                    onTap: _busy ? null : () => _react(-1),
+                  ),
+                  _VideoAction(
+                    icon: Icons.open_in_new,
+                    label: 'YouTube',
+                    onTap: () => launchUrl(Uri.parse(item.sourceUrl),
+                        mode: LaunchMode.externalApplication),
+                  ),
+                  _VideoAction(
+                    icon: Icons.keyboard_arrow_down,
+                    label: 'Дальше',
+                    onTap: widget.onNext,
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 
   Future<void> _openComments() async {
@@ -508,5 +599,46 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
         if (count != null) _comments = count;
       });
     }
+  }
+}
+
+/// Кнопка панели под роликом: значок и подпись друг под другом.
+class _VideoAction extends StatelessWidget {
+  const _VideoAction({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.active = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final color = onTap == null
+        ? scheme.onSurface.withValues(alpha: .3)
+        : active
+            ? const Color(0xFFE86A5B)
+            : scheme.onSurface;
+    return InkResponse(
+      onTap: onTap,
+      radius: 32,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 24, color: color),
+          const SizedBox(height: 2),
+          Text(label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 10.5, fontWeight: FontWeight.w600, color: color)),
+        ]),
+      ),
+    );
   }
 }

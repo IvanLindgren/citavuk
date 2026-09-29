@@ -4,6 +4,11 @@ import 'package:srbski_read/services/listening_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('озвучка всегда сербская, независимо от текста', () {
+    for (final word in ['on', 'to', 'most', 'hello', 'добар']) {
+      expect(Uri.parse(ListeningService.instance.ttsUrl(word)).queryParameters['lang'], 'sr');
+    }
+  });
 
   test('selected Serbian voice is persisted and included in TTS URL', () async {
     SharedPreferences.setMockInitialValues({});

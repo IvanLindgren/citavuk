@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -165,7 +166,11 @@ class AppTheme {
       colorScheme: scheme,
       scaffoldBackgroundColor: scheme.surface,
       fontFamily: uiFont,
-      splashFactory: InkRipple.splashFactory,
+      // На Android — современная волна Material 3 (шейдер); на остальных
+      // платформах шейдер поддерживается не везде, там прежняя.
+      splashFactory: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+          ? InkSparkle.splashFactory
+          : InkRipple.splashFactory,
       textTheme: _textTheme(scheme),
       appBarTheme: AppBarTheme(
         backgroundColor: appBarColor,

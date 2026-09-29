@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.21.0+49
+version: 1.22.0+55
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -41,6 +41,8 @@ dependencies:
   cryptography: ^2.7.0
   # Windows/Android. После добавления: flutter clean + flutter pub get.
   audioplayers: ^6.1.0
+  # Голосовой режим игры на падежи. Linux не поддерживается — там режим скрыт.
+  speech_to_text: ^7.5.0
   url_launcher: ^6.3.0
   package_info_plus: ^8.0.0
   google_sign_in: ^7.2.0
@@ -78,6 +80,12 @@ dependencies:
   # десктопа нет вовсе.
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
+  # Чтение текста и файлов из системного буфера (CF_HDROP/URI на десктопе,
+  # paste event и стандартные форматы на Android/iOS/Web).
+  super_clipboard: ^0.9.1
+  # Запись голоса в игре «Говори!»: файл уходит на ту же расшифровку, что и
+  # загруженные записи.
+  record: ^7.1.1
 
 # path_provider_android 2.3.x тянет нативный плагин `jni`, который ломает сборку
 # под Windows. Закрепляем на 2.2.x (без jni); на Android работает штатно.
@@ -122,8 +130,6 @@ flutter:
 
   assets:
     - assets/lexicon.db
-    - assets/test_story.docx
-    - assets/test_story.pdf
     # assets/library/ намеренно не входит в сборку: там книги, защищённые
     # авторским правом. Раздел «Бесплатная библиотека» сам скрывается, когда
     # ассетов нет.
@@ -144,6 +150,12 @@ flutter:
     # Каталоги во Flutter не рекурсивны: без отдельной строки звуки дуэли в
     # сборку не попадут. Собираются tools/build_duel_sounds.py.
     - assets/sounds/duel/
+    # Машинка игры на падежи: tools/build_typewriter_sounds.py.
+    - assets/sounds/typewriter/
+    # Слова игры на падежи: tools/build_case_game.py (та же копия на сайте).
+    - assets/games/
+    # Картинки достижений: tools/build_achievement_art.py (исходники — design/achievements).
+    - assets/imgs/achievements/
     - assets/palace/
     # Каталог материалов для поступления. Собирается общим для сайта и
     # приложения скриптом web/scripts/build-materials.py.
@@ -179,6 +191,12 @@ flutter:
         - asset: assets/fonts/Lora-Regular.ttf
         - asset: assets/fonts/Lora-Bold.ttf
           weight: 700
+    # Шрифт печатной машинки в игре на падежи (OFL, латиница с č ć š ž đ).
+    - family: CourierPrime
+      fonts:
+        - asset: assets/fonts/CourierPrime-Regular.ttf
+        - asset: assets/fonts/CourierPrime-Bold.ttf
+          weight: 700
 
 inno_bundle:
   id: a2cc5770-60d4-11f1-bfd5-31efbcab4b3e
@@ -186,7 +204,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.21.0
+  version: 1.22.0
   publisher: Denis Kornilov
   languages:
     - english

@@ -1,9 +1,14 @@
+import 'utils/store_policy.dart';
+import 'games/cases/case_game_screen.dart';
+import 'games/speaking/speaking_screen.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'package:desktop_webview_window/desktop_webview_window.dart';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
@@ -33,6 +38,8 @@ import 'services/document_parser.dart';
 import 'services/document_translation_service.dart';
 import 'services/local_file.dart';
 import 'services/listening_service.dart';
+import 'services/clipboard_import.dart';
+import 'services/audio_file_service.dart';
 import 'services/level_service.dart';
 import 'services/roadmap_service.dart';
 import 'services/profile_service.dart';
@@ -60,6 +67,7 @@ import 'screens/palace_screen.dart';
 import 'travel/travel_screen.dart';
 import 'screens/daily_window.dart';
 import 'screens/personal_lessons_screen.dart';
+import 'screens/audio_files_screen.dart';
 import 'screens/garden_screen.dart';
 import 'widgets/more_menu_sheet.dart';
 import 'widgets/radio_sheet.dart';
@@ -74,8 +82,10 @@ part 'screens/dashboard_screen.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux &&
-      args.length > 1 && runWebViewTitleBarWidget(args)) {
+  if (!kIsWeb &&
+      defaultTargetPlatform == TargetPlatform.linux &&
+      args.length > 1 &&
+      runWebViewTitleBarWidget(args)) {
     return;
   }
   // Контент под системными панелями: на Android иначе остаётся серая полоса
@@ -166,7 +176,8 @@ class ChitavukApp extends StatelessWidget {
       // каждый кадр. Для тяжёлых читалки и карты меняем палитру атомарно.
       themeAnimationDuration: Duration.zero,
       title: 'Читавук',
-      builder:(context,child)=>StudyOverlay(child:child??const SizedBox.shrink()),
+      builder: (context, child) =>
+          StudyOverlay(child: child ?? const SizedBox.shrink()),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),

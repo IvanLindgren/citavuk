@@ -181,9 +181,16 @@ class ApiClient {
     try {
       final parsed = jsonDecode(response.body);
       if (parsed is Map) {
-        message = (parsed['message'] as String?)?.trim().isNotEmpty == true
-            ? parsed['message'] as String
-            : message;
+        final serverMessage = parsed['message'] as String?;
+        // Прямые Go-ручки возвращают message, FastAPI за доверенным proxy —
+        // detail. Клиент всё равно должен показать человеку точную причину,
+        // например что в записи нет сербской речи.
+        final upstreamDetail = parsed['detail'] as String?;
+        if (serverMessage?.trim().isNotEmpty == true) {
+          message = serverMessage!;
+        } else if (upstreamDetail?.trim().isNotEmpty == true) {
+          message = upstreamDetail!;
+        }
         code = (parsed['code'] as String?) ?? '';
       }
     } catch (_) {

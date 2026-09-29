@@ -6,10 +6,16 @@ class CourseArt extends StatelessWidget {
   final String pose;
   final double size;
   @override
-  Widget build(BuildContext context) => ExcludeSemantics(
+  Widget build(BuildContext context) {
+    const generated = {
+      'reading-new', 'teaching', 'celebrating', 'thinking',
+      'writing', 'listening', 'speaking', 'supporting'
+    };
+    final version = generated.contains(pose) ? 'v2' : 'v1';
+    return ExcludeSemantics(
         child: RepaintBoundary(
             child: Image.asset(
-          'assets/course/citavuk-$pose-v1.webp',
+          'assets/course/citavuk-$pose-$version.webp',
           width: size,
           height: size,
           fit: BoxFit.contain,
@@ -19,4 +25,5 @@ class CourseArt extends StatelessWidget {
               .clamp(1, 720),
         )),
       );
+  }
 }

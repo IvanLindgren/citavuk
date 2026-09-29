@@ -52,13 +52,13 @@ class DailyService {
 
   /// Просит модель написать текст с сегодняшними словами.
   ///
-  /// Ждём дольше обычного запроса: сервер сам держит соединение с моделью до
-  /// семидесяти секунд, и оборвать его раньше значит потерять готовый текст.
+  /// Недорогая модель иногда отвечает дольше минуты. Сервер продолжит
+  /// генерацию даже после обрыва связи, но лучше дождаться результата здесь.
   Future<DailyLesson> compose() async {
     final data = await api.post(
       '/v1/daily/lesson',
       null,
-      timeout: const Duration(seconds: 80),
+      timeout: const Duration(seconds: 210),
     );
     final lesson = (data as Map<String, dynamic>)['lesson'];
     return DailyLesson.fromJson(lesson as Map<String, dynamic>);

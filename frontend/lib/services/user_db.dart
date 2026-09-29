@@ -1,13 +1,26 @@
+import '../models/highlight_colors.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'study_service.dart';
-import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:flutter/foundation.dart' show compute, debugPrint, kIsWeb;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../utils/uuid.dart';
+import '../models/local_audio_file.dart';
 import 'analysis_cache_key.dart';
+
+class ReaderQuote {
+  const ReaderQuote({required this.id, required this.bookId, required this.page, required this.paragraph,
+    required this.start, required this.end, required this.text, this.color = ''});
+  final String id;
+  final int bookId, page, paragraph, start, end;
+  final String text;
+
+  /// Цвет выделения (HighlightColors); пусто — подчёркивание.
+  final String color;
+}
 
 /// Пользовательская БД (read-write): книги, прогресс, словарь книги, карточки.
 /// Отделена от словаря-лексикона (LexiconDb).
@@ -101,8 +114,9 @@ class UserDb {
       try {
         opened = await openDatabase(
           path,
-          // Версия 4 отделяет очередь текстов от dirty метаданных.
-          version: 4,
+          // Версия 5 добавляет локальную медиатеку звуковых файлов,
+          // версия 8 — цвет выделения у цитат.
+          version: 8,
           onCreate: (db, _) => _create(db),
           onUpgrade: (db, from, to) => _upgrade(db, from, to),
         );
@@ -207,11 +221,129 @@ class UserDb {
       }
     }
     await _createSyncColumns(db);
+    await _createAudioFiles(db);
+    await _createReaderQuotes(db);
   }
 
   Future<void> _upgrade(Database db, int from, int to) async {
     if (from < 3) await _create(db);
     if (from < 4) await _addContentPending(db);
+    if (from < 5) await _createAudioFiles(db);
+    if (from < 6) await _createReaderQuotes(db);
+    if (from == 6) await _upgradeReaderQuotesForSync(db);
+    if (from < 8 && !await _hasColumn(db, 'reader_quotes', 'color')) {
+      await db.execute("ALTER TABLE reader_quotes ADD COLUMN color TEXT NOT NULL DEFAULT ''");
+    }
+  }
+
+  Future<void> _upgradeReaderQuotesForSync(Database db) async {
+    if (await _hasColumn(db, 'reader_quotes', 'book_uuid')) return;
+    final old = await db.query('reader_quotes');
+    await db.execute('DROP TABLE reader_quotes');
+    await _createReaderQuotes(db);
+    for (final row in old) {
+      final bookId = row['book_id'] as int;
+      final books = await db.query('books', columns: ['uuid'], where: 'id = ?', whereArgs: [bookId], limit: 1);
+      if (books.isEmpty) continue;
+      await db.insert('reader_quotes', {
+        'id': newUuid(), 'book_id': bookId, 'book_uuid': books.first['uuid'],
+        'page': row['page'], 'paragraph': row['paragraph'],
+        'start_offset': row['start_offset'], 'end_offset': row['end_offset'],
+        'text': row['text'], 'deleted': 0,
+        'updated_at': DateTime.now().millisecondsSinceEpoch, 'dirty': 1,
+      });
+    }
+  }
+
+  Future<void> _createReaderQuotes(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS reader_quotes (
+        id TEXT PRIMARY KEY,
+        book_id INTEGER NOT NULL,
+        book_uuid TEXT NOT NULL,
+        page INTEGER NOT NULL,
+        paragraph INTEGER NOT NULL,
+        start_offset INTEGER NOT NULL,
+        end_offset INTEGER NOT NULL,
+        text TEXT NOT NULL,
+        color TEXT NOT NULL DEFAULT '',
+        deleted INTEGER NOT NULL DEFAULT 0,
+        updated_at INTEGER NOT NULL,
+        dirty INTEGER NOT NULL DEFAULT 1,
+        UNIQUE(book_id, page, paragraph, start_offset, end_offset)
+      )
+    ''');
+    await db.execute('CREATE INDEX IF NOT EXISTS reader_quotes_book_idx ON reader_quotes(book_id, page)');
+  }
+
+  Future<List<ReaderQuote>> readerQuotes(int bookId) async {
+    final db = await database;
+    final rows = await db.query('reader_quotes', where: 'book_id = ? AND deleted = 0', whereArgs: [bookId], orderBy: 'page, paragraph, start_offset');
+    return rows.map((row) => ReaderQuote(
+      id: row['id'] as String, bookId: bookId, page: row['page'] as int, paragraph: row['paragraph'] as int,
+      start: row['start_offset'] as int, end: row['end_offset'] as int,
+      text: row['text'] as String,
+      color: HighlightColors.sanitize(row['color']),
+    )).toList(growable: false);
+  }
+
+  /// Сохраняет подчёркивание или цветное выделение фрагмента.
+  ///
+  /// Тот же фрагмент ещё раз — это перекраска или возврат снятого выделения:
+  /// строка обновляется, а не вставляется. Раньше вставка шла с ignore, и
+  /// снятое однажды подчёркивание было уже не вернуть — уникальный ключ по
+  /// диапазону молча отбрасывал новую запись.
+  Future<void> saveReaderQuote(int bookId, int page, int paragraph, int start, int end, String text, {String color = ''}) async {
+    final db = await database;
+    final books = await db.query('books', columns: ['uuid'], where: 'id = ?', whereArgs: [bookId], limit: 1);
+    if (books.isEmpty || (books.first['uuid'] as String?)?.isEmpty != false) { throw StateError('Книга не найдена'); }
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final updated = await db.update('reader_quotes', {
+      'text': text, 'color': HighlightColors.sanitize(color), 'deleted': 0, 'updated_at': now, 'dirty': 1,
+    }, where: 'book_id = ? AND page = ? AND paragraph = ? AND start_offset = ? AND end_offset = ?',
+        whereArgs: [bookId, page, paragraph, start, end]);
+    if (updated > 0) return;
+    await db.insert('reader_quotes', {
+      'id': newUuid(), 'book_id': bookId, 'book_uuid': books.first['uuid'],
+      'page': page, 'paragraph': paragraph, 'start_offset': start,
+      'end_offset': end, 'text': text, 'color': HighlightColors.sanitize(color), 'deleted': 0,
+      'updated_at': now, 'dirty': 1,
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+  }
+
+  Future<void> recolorReaderQuote(String id, String color) async {
+    final db = await database;
+    await db.update('reader_quotes', {
+      'color': HighlightColors.sanitize(color), 'dirty': 1, 'updated_at': DateTime.now().millisecondsSinceEpoch,
+    }, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteReaderQuote(String id) async {
+    final db = await database;
+    await db.update('reader_quotes', {'deleted': 1, 'dirty': 1, 'updated_at': DateTime.now().millisecondsSinceEpoch}, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> _createAudioFiles(Database db) async {
+    // Записи намеренно локальные: исходный звук слишком велик для обычной
+    // синхронизации книг, а чужие голосовые сообщения нельзя незаметно
+    // отправлять на другие устройства. На сервер файл уходит только на время
+    // распознавания, готовый transcript хранится рядом с локальным путём.
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS audio_files (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        filename TEXT NOT NULL,
+        stored_path TEXT NOT NULL,
+        mime_type TEXT NOT NULL,
+        size_bytes INTEGER NOT NULL,
+        duration REAL NOT NULL,
+        speaker_count INTEGER NOT NULL,
+        transcript_json TEXT NOT NULL,
+        added_at INTEGER NOT NULL
+      )
+    ''');
+    await db.execute(
+        'CREATE INDEX IF NOT EXISTS audio_files_added_idx ON audio_files (added_at)');
   }
 
   Future<void> _addContentPending(Database db) async {
@@ -322,6 +454,65 @@ class UserDb {
 
   // --- Книги ---
 
+  // --- Звуковые файлы (локально, отдельно от книг) ---
+
+  Future<List<LocalAudioFile>> getAudioFiles() async {
+    final db = await database;
+    final rows = await db.query(
+      'audio_files',
+      columns: [
+        'id',
+        'title',
+        'filename',
+        'stored_path',
+        'mime_type',
+        'size_bytes',
+        'duration',
+        'speaker_count',
+        'added_at',
+      ],
+      orderBy: 'added_at DESC',
+    );
+    return rows.map(LocalAudioFile.fromDb).toList(growable: false);
+  }
+
+  Future<LocalAudioFile?> getAudioFile(String id) async {
+    final db = await database;
+    final rows = await db.query(
+      'audio_files',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : LocalAudioFile.fromDb(rows.first);
+  }
+
+  Future<void> insertAudioFile(LocalAudioFile file,
+      {int? expectedGeneration}) async {
+    final transcript = file.transcript;
+    if (transcript == null) {
+      throw ArgumentError.value(file.id, 'file', 'Нет расшифровки.');
+    }
+    final db = await _databaseForGeneration(expectedGeneration);
+    await db.insert('audio_files', {
+      'id': file.id,
+      'title': file.title,
+      'filename': file.filename,
+      'stored_path': file.storedPath,
+      'mime_type': file.mimeType,
+      'size_bytes': file.sizeBytes,
+      'duration': file.duration,
+      'speaker_count': file.speakerCount,
+      'transcript_json': transcript.encode(),
+      'added_at': file.addedAt,
+    });
+  }
+
+  Future<void> deleteAudioFile(String id, {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
+    await db.delete('audio_files', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<int> insertBook(
       String title, String filepath, List<String> paragraphs) async {
     final db = await database;
@@ -399,11 +590,12 @@ class UserDb {
     final rows = await db.query('books',
         columns: ['content'], where: 'id = ?', whereArgs: [bookId], limit: 1);
     if (rows.isEmpty) return [];
-    try {
-      return List<String>.from(jsonDecode(rows.first['content'] as String));
-    } catch (_) {
-      return [];
-    }
+    final raw = rows.first['content'] as String? ?? '';
+    // Роман — это мегабайты JSON, и разбор на главном потоке подвешивал
+    // открытие книги. Большие тексты разбираются в фоновом изоляте; короткие
+    // быстрее разобрать на месте, чем передавать.
+    if (raw.length > 200000) return compute(_decodeParagraphs, raw);
+    return _decodeParagraphs(raw);
   }
 
   Future<void> updateBookProgress(int bookId, int lastPara) async {
@@ -468,6 +660,8 @@ class UserDb {
   Future<void> deleteBook(int bookId, {int? expectedGeneration}) async {
     final db = await _databaseForGeneration(expectedGeneration);
     final now = DateTime.now().millisecondsSinceEpoch;
+
+    await db.update('reader_quotes', {'deleted': 1, 'dirty': 1, 'updated_at': now}, where: 'book_id = ?', whereArgs: [bookId]);
 
     await db.update(
       'books',
@@ -824,5 +1018,13 @@ class UserDb {
     );
     unawaited(StudyService.instance
         .record('review', 'card:$vocabId', accountEpoch: studyEpoch));
+  }
+}
+
+List<String> _decodeParagraphs(String raw) {
+  try {
+    return List<String>.from(jsonDecode(raw));
+  } catch (_) {
+    return [];
   }
 }

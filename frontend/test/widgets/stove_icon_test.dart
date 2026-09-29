@@ -12,7 +12,9 @@ void main() {
     );
 
     final image = tester.widget<Image>(find.byType(Image));
-    expect((image.image as AssetImage).assetName,
+    // Картинка декодируется под размер: провайдер обёрнут в ResizeImage.
+    final provider = image.image is ResizeImage ? (image.image as ResizeImage).imageProvider : image.image;
+    expect((provider as AssetImage).assetName,
         'assets/imgs/citavuk_stove.png');
     expect(image.width, 24);
   });

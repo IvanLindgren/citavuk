@@ -432,7 +432,6 @@ class _PathBodyState extends State<_PathBody> {
   @override
   Widget build(BuildContext context) {
     final course = controller.course!;
-    final scheme = Theme.of(context).colorScheme;
     final rows = <WidgetBuilder>[
       (_) => _HeaderCard(
           controller: controller,
@@ -457,77 +456,9 @@ class _PathBodyState extends State<_PathBody> {
       itemCount: rows.length,
       itemBuilder: (context, index) => rows[index](context),
     );
-    return LayoutBuilder(builder: (context, limits) {
-      if (limits.maxWidth < 1050) return list;
-      return Center(
-          child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1320),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                SizedBox(
-                    width: 240,
-                    child: SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(20, 30, 14, 20),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Твоя программа',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600)),
-                              const SizedBox(height: 20),
-                              LinearProgressIndicator(
-                                  value: controller.completionRatio,
-                                  minHeight: 6,
-                                  borderRadius: BorderRadius.circular(8)),
-                              const SizedBox(height: 18),
-                              for (var i = 0; i < course.units.length; i++)
-                                TextButton(
-                                    onPressed: () {
-                                      if (!_scroll.isAttached) return;
-                                      if (MediaQuery.disableAnimationsOf(
-                                          context)) {
-                                        _scroll.jumpTo(index: 2 + i * 2);
-                                      } else {
-                                        _scroll.scrollTo(
-                                            index: 2 + i * 2,
-                                            duration: const Duration(
-                                                milliseconds: 280),
-                                            curve: Curves.easeOutCubic);
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                        alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 14, horizontal: 8)),
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('${i + 1}'.padLeft(2, '0'),
-                                              style: TextStyle(
-                                                  color: scheme.primary,
-                                                  fontSize: 12)),
-                                          const SizedBox(width: 12),
-                                          Expanded(
-                                              child: Text(course.units[i].title,
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      height: 1.5,
-                                                      color: scheme
-                                                          .onSurfaceVariant))),
-                                        ])),
-                              const SizedBox(height: 22),
-                              Text(
-                                  'Знакомые темы можно пропустить. Нажми на урок с замком и подтверди, что знаешь предыдущее.',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      height: 1.7,
-                                      color: scheme.onSurfaceVariant)),
-                            ]))),
-                Expanded(child: list),
-              ])));
-    });
+    return Center(
+        child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1060), child: list));
   }
 }
 
@@ -694,10 +625,16 @@ class _LessonPath extends StatelessWidget {
                   left: limits.maxWidth * .74 - artSize / 2,
                   child: CourseArt(
                       pose: done
-                          ? 'celebrate'
-                          : unitIndex.isEven
-                              ? 'guide'
-                              : 'reading',
+                          ? 'celebrating'
+                          : const [
+                              'teaching',
+                              'reading-new',
+                              'writing',
+                              'thinking',
+                              'listening',
+                              'speaking',
+                              'supporting',
+                            ][unitIndex % 7],
                       size: artSize)),
             for (var i = 0; i < lessons.length; i++)
               Positioned(

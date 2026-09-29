@@ -1,3 +1,4 @@
+import '../models/highlight_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,6 +18,9 @@ class ReaderParagraph extends StatefulWidget {
   final Color textColor;
   final Color highlightColor;
   final Color highlightTextColor;
+  /// Выделения абзаца: начало, конец и цвет (пусто — подчёркивание).
+  final List<(int, int, String)> quoteRanges;
+  final Color? quoteColor;
 
   /// Индексы токенов (включительно), которые надо подсветить — для выделения
   /// слова/фразы. null, если в этом абзаце ничего не выделено.
@@ -45,6 +49,8 @@ class ReaderParagraph extends StatefulWidget {
     required this.textColor,
     required this.highlightColor,
     required this.highlightTextColor,
+    this.quoteRanges = const [],
+    this.quoteColor,
     required this.onTapWord,
     this.onPhraseSelectionStart,
     this.onPhraseSelectionUpdate,
@@ -155,6 +161,20 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
     for (var i = 0; i < _tokens.length; i++) {
       final t = _tokens[i];
       final selected = _isSelected(i);
+      final ranges = widget.quoteRanges
+          .where((range) => t.start < range.$2 && t.end > range.$1);
+      final marker = ranges
+          .map((range) => HighlightColors.marker(range.$3))
+          .whereType<Color>()
+          .firstOrNull;
+      final quotedStyle = marker != null
+          ? base.copyWith(backgroundColor: marker)
+          : ranges.isNotEmpty
+              ? base.copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationColor: widget.quoteColor ?? widget.textColor,
+                  decorationThickness: 2)
+              : base;
 
       if (!t.isWord) {
         spans.add(TextSpan(
@@ -163,7 +183,7 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
               ? base.copyWith(
                   color: widget.highlightTextColor,
                   backgroundColor: widget.highlightColor)
-              : null,
+              : quotedStyle,
         ));
         continue;
       }
@@ -173,7 +193,7 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
           ? base.copyWith(
               color: widget.highlightTextColor,
               backgroundColor: widget.highlightColor)
-          : base;
+          : quotedStyle;
 
       if (ratio > 0 && t.text.length > 1) {
         final headLen = (t.text.length * ratio).ceil().clamp(1, t.text.length);

@@ -232,7 +232,12 @@ class _HomeShellState extends State<HomeShell> {
                 ],
               ),
             ),
-            const VerticalDivider(width: 1, thickness: 1),
+            // Цвет линии берётся из темы панели: в светлой теме приложения
+            // разделитель был светлым и на тёмном Вукотоке читался белой чертой.
+            Theme(
+              data: navTheme,
+              child: const VerticalDivider(width: 1, thickness: 1),
+            ),
             Expanded(child: pages),
           ],
         ),

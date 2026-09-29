@@ -142,7 +142,8 @@ class _StoveMomentState extends State<StoveMoment>
                 child: BoneMascot(
                     reaction: 'stoke',
                     height: 170,
-                    fallback: Image.asset(Wolf.zdravo)))),
+                    fallback: Image.asset(Wolf.zdravo,
+                        cacheHeight: (170 * MediaQuery.devicePixelRatioOf(context)).round())))),
         Positioned(
             right: 30,
             bottom: 10,

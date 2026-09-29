@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/audio_lesson.dart';
 import '../services/listening_service.dart';
 import '../services/user_db.dart';
@@ -180,6 +181,10 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
   }
 
   Future<void> _playCue(int i) async {
+    if (i < 0 || i >= _cues.length) {
+      if (!lesson.isTts && _cues.isEmpty) await _playStream();
+      return;
+    }
     setState(() {
       _cue = i;
       _activeChar = -1;
@@ -213,11 +218,31 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
     }
   }
 
+  Future<void> _playStream() async {
+    try {
+      if (!_started) {
+        await _player.play(
+            UrlSource(ListeningService.instance.playableAudioUrl(lesson.audioUrl!)));
+        _started = true;
+      } else {
+        await _player.resume();
+      }
+      await _applySpeed();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Не удалось включить аудио: $e')),
+      );
+    }
+  }
+
   Future<void> _togglePlay() async {
     if (_playing) {
       await _player.pause();
     } else if (_finished) {
       await _playCue(0);
+    } else if (!lesson.isTts && _cues.isEmpty) {
+      await _playStream();
     } else if (lesson.isTts && !_started) {
       _started = true;
       await _playCue(_cue);
@@ -232,6 +257,13 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
   Future<void> _setSpeed(double v) async {
     setState(() => _speed = v);
     await _applySpeed();
+  }
+
+  Future<void> _openSource() async {
+    final raw = lesson.externalUrl;
+    if (raw == null) return;
+    final uri = Uri.tryParse(raw);
+    if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   // --- Разбор слова ---
@@ -270,6 +302,14 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
               _betaChip(scheme),
             ],
           ),
+          actions: [
+            if (lesson.externalUrl != null)
+              IconButton(
+                tooltip: 'Открыть полную книгу',
+                onPressed: _openSource,
+                icon: const Icon(Icons.open_in_new_rounded),
+              ),
+          ],
         ),
         body: Column(
           children: [
@@ -386,7 +426,10 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
                   icon: const Icon(Icons.skip_next),
                 ),
                 const SizedBox(width: 16),
-                Text('${_cue + 1} / ${_cues.length}',
+                Text(
+                    _cues.isEmpty
+                        ? 'без текста'
+                        : '${_cue + 1} / ${_cues.length}',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: scheme.onSurface.withValues(alpha: 0.7))),

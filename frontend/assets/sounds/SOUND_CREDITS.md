@@ -47,3 +47,14 @@ https://opengameart.org/content/sound-effects-pack
 
 Старые WAV курса и дуэли сохранены для существующего веб-процесса сборки;
 Flutter использует новые OGG. Не перезаписывать page_turn.wav генератором.
+
+## BigSoundBank — печатная машинка (игра «Уничтожь эти падежи»)
+
+Joseph Sardin, https://bigsoundbank.com, CC0 1.0. Нарезка и выравнивание
+громкости — `tools/build_typewriter_sounds.py`; те же файлы лежат в
+`web/public/sounds/typewriter/`.
+
+- typewriter/key-1…6.mp3 ← удары из «Typewriter #8» (s2841)
+- typewriter/key-7.mp3 ← «Typewriter, Key» (s2842, Hermes Precisa 305)
+- typewriter/space.mp3 ← «Typewriter, space» (s2843)
+- typewriter/bell.mp3 ← «Typewriter, Bell #1» (s2844)

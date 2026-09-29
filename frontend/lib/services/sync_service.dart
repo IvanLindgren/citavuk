@@ -1,3 +1,4 @@
+import '../models/highlight_colors.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -190,12 +191,13 @@ class SyncService extends ChangeNotifier {
         "JOIN vocabulary v ON v.id = r.vocab_id "
         "WHERE r.dirty = 1 AND v.uuid <> '' ORDER BY r.updated_at LIMIT 100",
       );
-      // Общий бюджет: 150 книг + 200 слов + 100 повторений + 50 дворцов.
-      final palaces = await _syncPalaces.dirty(limit: 50);
+      // Общий бюджет запроса: 150 + 200 + 100 + 25 + 25 = 500.
+      final palaces = await _syncPalaces.dirty(limit: 25);
+      final quotes = await db.query('reader_quotes', where: 'dirty = 1', orderBy: 'updated_at', limit: 25);
       if (books.isEmpty &&
           words.isEmpty &&
           reviews.isEmpty &&
-          palaces.isEmpty) {
+          palaces.isEmpty && quotes.isEmpty) {
         return;
       }
 
@@ -211,6 +213,14 @@ class SyncService extends ChangeNotifier {
         'vocabulary': words.map((w) => _wordToJson(w, bookUuid)).toList(),
         'reviews': reviews.map(_reviewToJson).toList(),
         'palaces': palaces.map(_palaceToJson).toList(),
+        'quotes': quotes.map((q) => {
+          'id': q['id'], 'bookId': q['book_uuid'], 'page': q['page'],
+          'paragraph': q['paragraph'], 'start': q['start_offset'],
+          'end': q['end_offset'], 'text': q['text'],
+          'color': HighlightColors.sanitize(q['color']),
+          'deleted': q['deleted'] == 1,
+          'updatedAt': DateTime.fromMillisecondsSinceEpoch(q['updated_at'] as int, isUtc: true).toIso8601String(),
+        }).toList(),
       };
       await _syncApi.post('/v1/sync/push', payload);
       _checkSession();
@@ -221,11 +231,12 @@ class SyncService extends ChangeNotifier {
       await _clearDirty(db, 'vocabulary', words);
       await _clearDirty(db, 'reviews', reviews, idColumn: 'vocab_id');
       await _syncPalaces.clearDirty(palaces);
+      await _clearDirty(db, 'reader_quotes', quotes);
 
       if (books.length < 150 &&
           words.length < 200 &&
           reviews.length < 100 &&
-          palaces.length < 50) {
+          palaces.length < 25 && quotes.length < 25) {
         return;
       }
     }
@@ -343,6 +354,7 @@ class SyncService extends ChangeNotifier {
     final words = (response['vocabulary'] as List?) ?? const [];
     final reviews = (response['reviews'] as List?) ?? const [];
     final palaces = (response['palaces'] as List?) ?? const [];
+    final quotes = (response['quotes'] as List?) ?? const [];
 
     await db.transaction((txn) async {
       for (final item in books) {
@@ -354,6 +366,9 @@ class SyncService extends ChangeNotifier {
       for (final item in reviews) {
         if (item is Map) await _applyReview(txn, item);
       }
+      for (final item in quotes) {
+        if (item is Map) await _applyReaderQuote(txn, item);
+      }
     });
 
     // Дворцы идут вне общей транзакции: их хранилище работает со своим
@@ -362,6 +377,25 @@ class SyncService extends ChangeNotifier {
     for (final item in palaces) {
       if (item is Map) await _applyPalace(item);
     }
+  }
+
+  Future<void> _applyReaderQuote(Transaction txn, Map<dynamic, dynamic> item) async {
+    final id = item['id'] as String? ?? '';
+    final bookUuid = item['bookId'] as String? ?? '';
+    if (!isUuid(id) || !isUuid(bookUuid)) return;
+    final books = await txn.query('books', columns: ['id'], where: 'uuid = ? AND deleted = 0', whereArgs: [bookUuid], limit: 1);
+    if (books.isEmpty) return;
+    final remoteAt = _parseTime(item['updatedAt']);
+    final existing = await txn.query('reader_quotes', columns: ['updated_at'], where: 'id = ?', whereArgs: [id], limit: 1);
+    if (existing.isNotEmpty && (existing.first['updated_at'] as int? ?? 0) > remoteAt) return;
+    await txn.insert('reader_quotes', {
+      'id': id, 'book_id': books.first['id'], 'book_uuid': bookUuid,
+      'page': item['page'] ?? 0, 'paragraph': item['paragraph'] ?? 0,
+      'start_offset': item['start'] ?? 0, 'end_offset': item['end'] ?? 0,
+      'text': item['text'] ?? '', 'color': HighlightColors.sanitize(item['color']),
+      'deleted': item['deleted'] == true ? 1 : 0,
+      'updated_at': remoteAt, 'dirty': 0,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Применяет дворец с сервера.
@@ -706,7 +740,7 @@ class SyncService extends ChangeNotifier {
   Future<int> pendingCount() async {
     final db = await UserDb.instance.database;
     var total = 0;
-    for (final table in ['books', 'vocabulary', 'reviews', 'palaces']) {
+    for (final table in ['books', 'vocabulary', 'reviews', 'palaces', 'reader_quotes']) {
       final condition = table == 'books'
           ? 'dirty = 1 OR (deleted = 0 AND content_pending = 1)'
           : 'dirty = 1';

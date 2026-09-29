@@ -22,6 +22,7 @@ class Account {
     this.hasPassword = true,
     this.emailVerified = true,
     this.serbianLevel = '',
+    this.supporterSince,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -31,6 +32,8 @@ class Account {
         hasPassword: json['hasPassword'] as bool? ?? true,
         emailVerified: json['emailVerified'] as bool? ?? true,
         serbianLevel: json['serbianLevel'] as String? ?? '',
+        supporterSince:
+            DateTime.tryParse(json['supporterSince'] as String? ?? ''),
       );
 
   final String id;
@@ -45,6 +48,9 @@ class Account {
   /// аккаунте, а не в разделе: спросили один раз — знают везде.
   final String serbianLevel;
 
+  /// С какого дня у аккаунта значок «Друг Читавука»; null — не поддерживал.
+  final DateTime? supporterSince;
+
   Account withLevel(String level) => Account(
         id: id,
         email: email,
@@ -52,6 +58,7 @@ class Account {
         hasPassword: hasPassword,
         emailVerified: emailVerified,
         serbianLevel: level,
+        supporterSince: supporterSince,
       );
 
   /// Что показать в интерфейсе: имя, а если его нет — почту.
@@ -64,6 +71,8 @@ class Account {
         'hasPassword': hasPassword,
         'emailVerified': emailVerified,
         'serbianLevel': serbianLevel,
+        if (supporterSince != null)
+          'supporterSince': supporterSince!.toUtc().toIso8601String(),
       };
 }
 
@@ -449,6 +458,24 @@ class AuthService extends ChangeNotifier {
     _account = account.withLevel(level);
     unawaited(_saveAccount(_account!));
     notifyListeners();
+  }
+
+  /// Перечитывает аккаунт с сервера: значок поддержки выдаётся на сайте, и
+  /// приложение узнаёт о нём только так. Ошибка сети не страшна — остаётся
+  /// сохранённая копия.
+  Future<void> refreshAccount() async {
+    if (_account == null) return;
+    try {
+      final response = await api.get('/v1/auth/me');
+      if (response is! Map<String, dynamic>) return;
+      final fresh = Account.fromJson(response);
+      if (_account == null || fresh.id != _account!.id) return;
+      _account = fresh;
+      unawaited(_saveAccount(fresh));
+      notifyListeners();
+    } catch (_) {
+      // Офлайн или сессия истекла — последнее обработает handleUnauthorized.
+    }
   }
 
   Future<void> _saveAccount(Account account) async {

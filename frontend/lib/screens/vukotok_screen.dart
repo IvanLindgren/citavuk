@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:ui' show ImageFilter;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'video_feed_screen.dart';
 
 import '../models/definition.dart';
@@ -6,6 +11,7 @@ import '../models/micro_feed.dart';
 import '../models/reader_settings.dart';
 import '../models/word_analysis.dart';
 import '../services/analysis_repository.dart';
+import '../services/api_client.dart';
 import '../services/definition_service.dart';
 import '../services/grammar_engine.dart';
 import '../services/lexicon_db.dart';
@@ -13,6 +19,7 @@ import '../services/micro_feed_service.dart';
 import '../services/reflexive.dart';
 import '../services/user_db.dart';
 import '../theme/app_theme.dart';
+import '../utils/haptics.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
 import '../widgets/animated_widgets.dart';
@@ -21,12 +28,16 @@ import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
 import 'vukotok_comments.dart';
 
-/// Раздел всегда тёмный — как кинозал: карточка занимает экран целиком, и
-/// светлый пергамент вокруг неё соперничал бы с картинкой. Но тёмный он теперь
-/// ночной темой приложения, а не собственной палитрой: раньше здесь жили свои
-/// `0xFF100E0C` и `0xFF1C1814`, похожие на ночные цвета, но не равные им.
-Widget vukotokTheme({required Widget child}) =>
-    Theme(data: AppTheme.dark(), child: child);
+/// Раздел всегда тёмный: боковая и нижняя панели на его вкладке уходят в ночную
+/// тему вместе с ним (`HomeShell`), поэтому и оболочка, и лента, и видео живут в
+/// одной палитре — светлая полоса между ними читалась швом.
+Widget vukotokTheme({required Widget child}) => Builder(builder: (context) {
+      final theme = AppTheme.dark();
+      return Theme(
+        data: theme,
+        child: Material(color: theme.scaffoldBackgroundColor, child: child),
+      );
+    });
 
 /// Вукоток — лента коротких сербских текстов, которую листают как тикток.
 ///
@@ -46,36 +57,105 @@ class VukotokScreen extends StatefulWidget {
 class _VukotokScreenState extends State<VukotokScreen> {
   bool _video = false;
   bool _videoOpened = false;
+
   @override
   Widget build(BuildContext context) => vukotokTheme(
-          child: Column(children: [
-        SafeArea(
+        child: Column(children: [
+          SafeArea(
             bottom: false,
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: SegmentedButton<bool>(
-                    segments: const [
-                      ButtonSegment(
-                          value: false,
-                          label: Text('Тексты'),
-                          icon: Icon(Icons.article_outlined)),
-                      ButtonSegment(
-                          value: true,
-                          label: Text('Видео'),
-                          icon: Icon(Icons.play_circle_outline))
-                    ],
-                    selected: {
-                      _video
-                    },
-                    onSelectionChanged: (v) =>
-                        setState(() { _video = v.first; _videoOpened |= _video; })))),
-        Expanded(
-            child: IndexedStack(index: _video ? 1 : 0, children: [
-              VukotokTextScreen(active: widget.active && !_video),
-              if (_videoOpened) VideoFeedScreen(active: widget.active && _video)
-              else const SizedBox.shrink(),
-            ]))
-      ]));
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+              child: _ModePill(
+                video: _video,
+                onChanged: (video) => setState(() {
+                  _video = video;
+                  _videoOpened |= video;
+                }),
+              ),
+            ),
+          ),
+          // Верхний отступ под системной панелью уже отдан SafeArea выше: без
+          // этого лента отступала от неё второй раз.
+          Expanded(
+            child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: IndexedStack(index: _video ? 1 : 0, children: [
+                VukotokTextScreen(active: widget.active && !_video),
+                if (_videoOpened)
+                  VideoFeedScreen(active: widget.active && _video)
+                else
+                  const SizedBox.shrink(),
+              ]),
+            ),
+          ),
+        ]),
+      );
+}
+
+/// Переключатель «Тексты / Видео»: одна плашка вместо кнопки на всю ширину.
+class _ModePill extends StatelessWidget {
+  const _ModePill({required this.video, required this.onChanged});
+  final bool video;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    Widget segment(bool value, IconData icon, String label) {
+      final selected = video == value;
+      return Semantics(
+        button: true,
+        selected: selected,
+        label: label,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            if (!selected) {
+              lightHaptic();
+              onChanged(value);
+            }
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: selected ? scheme.primary : Colors.transparent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(icon,
+                  size: 18,
+                  color: selected ? scheme.onPrimary : scheme.onSurfaceVariant),
+              const SizedBox(width: 6),
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color:
+                          selected ? scheme.onPrimary : scheme.onSurfaceVariant)),
+            ]),
+          ),
+        ),
+      );
+    }
+
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: scheme.outlineVariant),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          segment(false, Icons.article_outlined, 'Тексты'),
+          segment(true, Icons.play_circle_outline, 'Видео'),
+        ]),
+      ),
+    );
+  }
 }
 
 class VukotokTextScreen extends StatefulWidget {
@@ -97,6 +177,7 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
   bool _cyrillic = false;
   int _index = 0;
   MicroFeedPreferences? _preferences;
+  bool _onboardingDismissed = false;
 
   @override
   void initState() {
@@ -108,6 +189,45 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
   void dispose() {
     _pages.dispose();
     super.dispose();
+  }
+
+  /// Листает ровно на одну карточку: колесо, клавиши и кнопки на десктопе.
+  void _step(int direction) {
+    final next = _index + direction;
+    if (next < 0 || next >= _items.length || !_pages.hasClients) return;
+    _pages.animateToPage(next,
+        duration: const Duration(milliseconds: 380),
+        curve: Curves.easeOutCubic);
+  }
+
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is KeyUpEvent || !widget.active) return KeyEventResult.ignored;
+    final key = event.logicalKey;
+    if (key == LogicalKeyboardKey.arrowDown ||
+        key == LogicalKeyboardKey.pageDown ||
+        key == LogicalKeyboardKey.space) {
+      _step(1);
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.arrowUp ||
+        key == LogicalKeyboardKey.pageUp) {
+      _step(-1);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  /// Следующая обложка грузится, пока читают текущую карточку: иначе она
+  /// проявлялась бы уже на экране.
+  void _warmUp(int index) {
+    for (final i in [index + 1, index + 2]) {
+      if (i >= _items.length || _items[i].imageUrl.isEmpty) continue;
+      precacheImage(
+        ResizeImage(NetworkImage(_items[i].imageUrl), width: 1080),
+        context,
+        onError: (_, __) {},
+      );
+    }
   }
 
   Future<void> _load({bool reset = false}) async {
@@ -178,11 +298,11 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
     // Анкета встаёт ДО ленты, а не поверх неё: спрашивать «что тебе интересно»
     // после первой карточки — значит спрашивать с опозданием.
     final prefs = _preferences;
-    if (prefs != null && !prefs.onboarded) {
+    if (prefs != null && !prefs.onboarded && !_onboardingDismissed) {
       return VukotokOnboarding(
         preferences: prefs,
         onDone: (saved) {
-          setState(() => _preferences = saved);
+          setState(() { _preferences = saved; _onboardingDismissed = true; });
           _load(reset: true);
         },
       );
@@ -217,41 +337,82 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
       );
     }
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          PageView.builder(
-            controller: _pages,
-            scrollDirection: Axis.vertical,
-            itemCount: _items.length,
-            onPageChanged: (i) {
-              setState(() => _index = i);
-              if (i >= _items.length - 2) _load();
-            },
-            itemBuilder: (context, i) => _VukotokCard(
-              key: ValueKey(_items[i].id),
-              item: _items[i],
-              cyrillic: _cyrillic,
-              active: widget.active && _index == i,
-            ),
-          ),
-          _TopBar(
-            cyrillic: _cyrillic,
-            position: '${_index + 1} / ${_items.length}',
-            onScript: () => setState(() => _cyrillic = !_cyrillic),
-            onLiked: _showLiked,
-          ),
-          if (_loadingMore)
-            const Positioned(
-              left: 16,
-              bottom: 16,
-              child: SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2),
+    final wide = MediaQuery.sizeOf(context).width >= 760;
+    return Focus(
+      autofocus: true,
+      canRequestFocus: widget.active,
+      onKeyEvent: _onKey,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            // Мышью ленту тоже можно тянуть: по умолчанию на десктопе жест
+            // мыши прокруткой не считается, и лента листалась только колесом.
+            ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                  PointerDeviceKind.trackpad,
+                  PointerDeviceKind.stylus,
+                },
+              ),
+              child: PageView.builder(
+                controller: _pages,
+                scrollDirection: Axis.vertical,
+                itemCount: _items.length,
+                onPageChanged: (i) {
+                  setState(() => _index = i);
+                  _warmUp(i);
+                  if (i >= _items.length - 2) _load();
+                },
+                itemBuilder: (context, i) => _VukotokCard(
+                  key: ValueKey(_items[i].id),
+                  item: _items[i],
+                  cyrillic: _cyrillic,
+                  active: widget.active && _index == i,
+                ),
               ),
             ),
-        ],
+            _TopBar(
+              cyrillic: _cyrillic,
+              position: '${_index + 1} / ${_items.length}',
+              onScript: () => setState(() => _cyrillic = !_cyrillic),
+              onLiked: _showLiked,
+            ),
+            if (wide)
+              Positioned(
+                right: 20,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    IconButton.filledTonal(
+                      tooltip: 'Предыдущая карточка',
+                      onPressed: _index > 0 ? () => _step(-1) : null,
+                      icon: const Icon(Icons.keyboard_arrow_up),
+                    ),
+                    const SizedBox(height: 10),
+                    IconButton.filledTonal(
+                      tooltip: 'Следующая карточка',
+                      onPressed:
+                          _index < _items.length - 1 ? () => _step(1) : null,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                    ),
+                  ]),
+                ),
+              ),
+            if (_loadingMore)
+              const Positioned(
+                left: 16,
+                bottom: 16,
+                child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -303,7 +464,7 @@ class _TopBar extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+        padding: const EdgeInsets.only(top: 4),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -314,14 +475,11 @@ class _TopBar extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 16),
-            const Text('Вукоток',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800)),
-            const SizedBox(width: 10),
             Text(position,
-                style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700)),
             const Spacer(),
             IconButton(
               tooltip: 'Сохранённое',
@@ -366,6 +524,8 @@ class _VukotokCardState extends State<_VukotokCard>
   late int _comments = widget.item.commentsCount;
   bool _justLiked = false;
   DateTime? _shownAt;
+  Offset? _burstAt;
+  int _burstId = 0;
 
   @override
   void initState() {
@@ -432,6 +592,7 @@ class _VukotokCardState extends State<_VukotokCard>
   Future<void> _react(int next) async {
     final previous = _reaction;
     final target = previous == next ? 0 : next;
+    if (target == 1) lightHaptic();
     setState(() {
       _reaction = target;
       _likes += (target == 1 ? 1 : 0) - (previous == 1 ? 1 : 0);
@@ -448,6 +609,14 @@ class _VukotokCardState extends State<_VukotokCard>
       await Future<void>.delayed(const Duration(seconds: 4));
       if (mounted) setState(() => _justLiked = false);
     }
+  }
+
+  /// Двойное касание — лайк, как в ленте, к которой все привыкли. Уже
+  /// поставленный лайк повторное касание не снимает: случайный второй тап не
+  /// должен отбирать то, что человек только что отметил.
+  void _likeByTap() {
+    setState(() => _burstId++);
+    if (_reaction != 1) unawaited(_react(1));
   }
 
   Future<void> _openComments() async {
@@ -479,6 +648,34 @@ class _VukotokCardState extends State<_VukotokCard>
     );
   }
 
+  Widget _cover(MicroFeedItem item, String title, bool wide) {
+    if (item.imageUrl.isEmpty) return _PlainCover(title: title);
+    Widget image = Image.network(
+      item.imageUrl,
+      fit: BoxFit.cover,
+      cacheWidth: 1080,
+      gaplessPlayback: true,
+      // Обложка проявляется, а не выскакивает: пока она грузится, под ней
+      // тёмный фон раздела.
+      frameBuilder: (context, child, frame, sync) => AnimatedOpacity(
+        opacity: frame != null || sync ? 1 : 0,
+        duration: const Duration(milliseconds: 450),
+        curve: Curves.easeOut,
+        child: child,
+      ),
+      errorBuilder: (_, __, ___) => _PlainCover(title: title),
+    );
+    // На широком экране карточка — телефон посреди окна, а не растянутая на
+    // монитор картинка: обложка уходит в размытый фон.
+    if (wide) {
+      image = ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 26, sigmaY: 26),
+        child: image,
+      );
+    }
+    return image;
+  }
+
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
@@ -487,126 +684,187 @@ class _VukotokCardState extends State<_VukotokCard>
     final minutes =
         (text.split(RegExp(r'\s+')).length / 180).ceil().clamp(1, 99);
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (item.imageUrl.isNotEmpty)
-          Image.network(item.imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const SizedBox.shrink())
-        else
-          _PlainCover(title: title),
-        const DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Color(0xF2000000), Color(0xB8000000), Color(0x4D000000)],
-            ),
+    return LayoutBuilder(builder: (context, constraints) {
+      final wide = constraints.maxWidth >= 760;
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onDoubleTapDown: (details) => _burstAt = details.localPosition,
+            onDoubleTap: _likeByTap,
+            child: _cover(item, title, wide),
           ),
-        ),
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 64, 12, 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Wrap(
-                        spacing: 8,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          _Chip(
-                              text: microFeedCategories[item.category] ??
-                                  item.category),
-                          Text('${item.cefr}, $minutes мин',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700)),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      // Заголовок разбирается по словам наравне с текстом: это
-                      // самые заметные слова карточки, и молчать о них нельзя.
-                      _Tappable(sentence: title, fontSize: 24, bold: true),
-                      const SizedBox(height: 10),
-                      Flexible(
-                        child: _CardText(
-                          text: text,
-                          onReadMore: _openFull,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      if (item.attributionText.isNotEmpty)
-                        Text(item.attributionText,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                color: Colors.white54, fontSize: 11)),
-                    ],
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _Action(
-                      icon: _reaction == 1
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      active: _reaction == 1,
-                      count: _likes,
-                      label: 'Нравится',
-                      onTap: () => _react(1),
-                    ),
-                    _Action(
-                      icon: _reaction == -1
-                          ? Icons.thumb_down
-                          : Icons.thumb_down_outlined,
-                      active: _reaction == -1,
-                      count: _dislikes,
-                      label: 'Не показывать похожее',
-                      onTap: () => _react(-1),
-                    ),
-                    // Обсуждение в приложении отсутствовало вовсе: на сайте оно
-                    // было, а здесь кнопки не существовало, и запросы ленты
-                    // уходили без токена сессии — писать всё равно было нечем.
-                    _Action(
-                      icon: Icons.mode_comment_outlined,
-                      active: false,
-                      count: _comments,
-                      label: 'Обсуждение',
-                      onTap: _openComments,
-                    ),
+          IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    const Color(0xF2000000),
+                    const Color(0xB8000000),
+                    Color(wide ? 0x99000000 : 0x4D000000),
                   ],
                 ),
-              ],
+              ),
             ),
+          ),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.center,
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints(maxWidth: wide ? 640 : double.infinity),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 56, 12, 16),
+                  child: _content(item, title, text, minutes),
+                ),
+              ),
+            ),
+          ),
+          if (_burstAt != null)
+            Positioned(
+              left: _burstAt!.dx - 56,
+              top: _burstAt!.dy - 56,
+              child: IgnorePointer(child: _HeartBurst(key: ValueKey(_burstId))),
+            ),
+          if (_justLiked)
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 24,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .95),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Text(
+                      'Сохранено — ищи в ♡ наверху',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700, color: Colors.black87),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      );
+    });
+  }
+
+  Widget _content(MicroFeedItem item, String title, String text, int minutes) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  _Chip(
+                      text:
+                          microFeedCategories[item.category] ?? item.category),
+                  Text('${item.cefr}, $minutes мин',
+                      style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700)),
+                ],
+              ),
+              const SizedBox(height: 10),
+              // Заголовок разбирается по словам наравне с текстом: это
+              // самые заметные слова карточки, и молчать о них нельзя.
+              _Tappable(sentence: title, fontSize: 24, bold: true),
+              const SizedBox(height: 10),
+              Flexible(
+                child: _CardText(
+                  text: text,
+                  onReadMore: _openFull,
+                ),
+              ),
+              const SizedBox(height: 10),
+              if (item.attributionText.isNotEmpty)
+                Text(item.attributionText,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        const TextStyle(color: Colors.white54, fontSize: 11)),
+            ],
           ),
         ),
-        if (_justLiked)
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: 24,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: .95),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Text(
-                'Сохранено — ищи в ♡ наверху',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _Action(
+              icon: _reaction == 1 ? Icons.favorite : Icons.favorite_border,
+              active: _reaction == 1,
+              count: _likes,
+              label: 'Нравится',
+              onTap: () => _react(1),
+            ),
+            _Action(
+              icon: _reaction == -1
+                  ? Icons.thumb_down
+                  : Icons.thumb_down_outlined,
+              active: _reaction == -1,
+              count: _dislikes,
+              label: 'Не показывать похожее',
+              onTap: () => _react(-1),
+            ),
+            // Обсуждение в приложении отсутствовало вовсе: на сайте оно
+            // было, а здесь кнопки не существовало, и запросы ленты
+            // уходили без токена сессии — писать всё равно было нечем.
+            _Action(
+              icon: Icons.mode_comment_outlined,
+              active: false,
+              count: _comments,
+              label: 'Обсуждение',
+              onTap: _openComments,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Сердце, вспыхивающее в точке двойного касания.
+class _HeartBurst extends StatelessWidget {
+  const _HeartBurst({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 750),
+      builder: (context, t, _) {
+        final scale = Curves.easeOutBack.transform((t * 2).clamp(0.0, 1.0));
+        final opacity = t < .6 ? 1.0 : (1 - (t - .6) / .4).clamp(0.0, 1.0);
+        return Opacity(
+          opacity: opacity,
+          child: Transform.translate(
+            offset: Offset(0, -30 * t),
+            child: Transform.scale(
+              scale: .4 + .8 * scale,
+              child: const Icon(Icons.favorite,
+                  size: 112,
+                  color: Color(0xFFE86A5B),
+                  shadows: [Shadow(color: Colors.black54, blurRadius: 18)]),
             ),
           ),
-      ],
+        );
+      },
     );
   }
 }
@@ -1246,12 +1504,14 @@ class VukotokOnboarding extends StatefulWidget {
 }
 
 class _VukotokOnboardingState extends State<VukotokOnboarding> {
-  final Set<String> _categories = {};
+  late final Set<String> _categories = widget.preferences.categories.toSet();
   late String _level = widget.preferences.cefr;
   bool _saving = false;
   bool _failed = false;
+  String _saveError = '';
 
   Future<void> _submit(List<String> chosen) async {
+    if (_saving) return;
     setState(() {
       _saving = true;
       _failed = false;
@@ -1259,8 +1519,10 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
     MicroFeedPreferences? saved;
     try {
       saved = await MicroFeedService.instance.savePreferences(chosen, _level);
+    } on ApiException catch (error) {
+      _saveError = error.message;
     } catch (_) {
-      // Ошибка сети/сессии не должна оставлять кнопку заблокированной.
+      _saveError = 'Не удалось сохранить ответы.';
     }
     if (!mounted) return;
     if (saved == null) {
@@ -1354,8 +1616,17 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
             ],
             if (_failed) ...[
               const SizedBox(height: 14),
-              const Text('Не удалось сохранить. Попробуй ещё раз.',
-                  style: TextStyle(color: Color(0xFFFFB4AE))),
+              Text('$_saveError Можно повторить или открыть ленту без сохранения интересов.',
+                  style: const TextStyle(color: Color(0xFFFFB4AE))),
+              TextButton(
+                onPressed: _saving ? null : () => widget.onDone(MicroFeedPreferences(
+                  categories: widget.preferences.categories,
+                  cefr: widget.preferences.cefr,
+                  onboarded: true,
+                  levelFromAccount: widget.preferences.levelFromAccount,
+                )),
+                child: const Text('Продолжить без сохранения'),
+              ),
             ],
             const SizedBox(height: 26),
             FilledButton(

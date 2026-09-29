@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Микрофон нужен для голосового режима игры на падежи: ты говоришь форму слова, Читавук её распознаёт.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Распознавание речи превращает сказанное слово в текст для проверки ответа в игре на падежи.</string>
 </dict>
 </plist>

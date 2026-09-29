@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/english_analysis.dart';
@@ -38,11 +39,10 @@ class EnglishEngine {
   Future<void> _read() async {
     try {
       final raw = await rootBundle.loadString(_asset);
-      final data = jsonDecode(raw) as Map<String, dynamic>;
-      _words = (data['words'] as Map).map(
-          (key, value) => MapEntry(key.toString(), value.toString()));
-      _irregular = (data['irregular'] as Map).map(
-          (key, value) => MapEntry(key.toString(), value.toString()));
+      // Словарь в 360 КиБ разбирается в фоновом изоляте.
+      final parsed = await compute(_parseEnglishLexicon, raw);
+      _words = parsed.$1;
+      _irregular = parsed.$2;
       _loaded = true;
     } catch (_) {
       // Без словаря английская ветка просто не включается — разбор остаётся
@@ -410,4 +410,11 @@ class _Rule {
   final List<EnglishFact> facts;
 
   const _Rule(this.lemma, this.code, this.label, this.why, this.facts);
+}
+
+(Map<String, String>, Map<String, String>) _parseEnglishLexicon(String raw) {
+  final data = jsonDecode(raw) as Map<String, dynamic>;
+  Map<String, String> strings(Object? value) => (value as Map)
+      .map((key, value) => MapEntry(key.toString(), value.toString()));
+  return (strings(data['words']), strings(data['irregular']));
 }

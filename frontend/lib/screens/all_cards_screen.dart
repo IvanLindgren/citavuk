@@ -10,6 +10,7 @@
 /// Тот же разбор на сайте — web/src/pages/Cards.tsx.
 library;
 
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 
 import '../services/user_db.dart';
@@ -109,10 +110,13 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
       final paragraphs = await UserDb.instance.getBookContent(book.key);
       if (!mounted) return;
       if (paragraphs.isEmpty) continue;
-      final sentences = findSentences(
-        paragraphs,
-        book.value.map((e) => e.row['word'] as String? ?? ''),
+      // Поиск по всему тексту книги — в фоновом изоляте: на романе он
+      // занимал главный поток на заметные доли секунды.
+      final sentences = await compute(
+        _findSentencesJob,
+        (paragraphs, [for (final e in book.value) e.row['word'] as String? ?? '']),
       );
+      if (!mounted) return;
       final found = {
         for (final entry in book.value)
           if (sentences[entry.row['word'] as String? ?? ''] case final s?)
@@ -507,3 +511,6 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
     );
   }
 }
+
+Map<String, String> _findSentencesJob((List<String>, List<String>) job) =>
+    findSentences(job.$1, job.$2);

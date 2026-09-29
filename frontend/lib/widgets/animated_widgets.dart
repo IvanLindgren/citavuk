@@ -236,19 +236,21 @@ class _FadeSlideInState extends State<FadeSlideIn>
     if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
       return widget.child;
     }
-    return AnimatedBuilder(
-      animation: _t,
-      builder: (context, child) {
-        final v = _t.value;
-        return Opacity(
-          opacity: v.clamp(0.0, 1.0),
-          child: Transform.translate(
+    // FadeTransition меняет прозрачность слоя, не перестраивая виджеты: на
+    // каскаде из десятка карточек это заметно дешевле Opacity в builder.
+    return FadeTransition(
+      opacity: _t,
+      child: AnimatedBuilder(
+        animation: _t,
+        builder: (context, child) {
+          final v = _t.value;
+          return Transform.translate(
             offset: Offset(widget.offsetX * (1 - v), widget.offsetY * (1 - v)),
             child: child,
-          ),
-        );
-      },
-      child: widget.child,
+          );
+        },
+        child: widget.child,
+      ),
     );
   }
 }
@@ -496,4 +498,183 @@ class _MascotReactionState extends State<MascotReaction>
           );
         },
       );
+}
+
+/// Мерцающий «скелет» полки книг на время загрузки: видно, что появится и
+/// где, а не пустой экран с кругом посередине. Один контроллер на весь скелет,
+/// при «уменьшить движение» — статичные плашки.
+class SkeletonShelf extends StatefulWidget {
+  const SkeletonShelf({super.key, this.cards = 6});
+
+  final int cards;
+
+  @override
+  State<SkeletonShelf> createState() => _SkeletonShelfState();
+}
+
+class _SkeletonShelfState extends State<SkeletonShelf>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1400));
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if ((MediaQuery.maybeDisableAnimationsOf(context) ?? false) ||
+        !TickerMode.valuesOf(context).enabled) {
+      _c.stop();
+    } else if (!_c.isAnimating) {
+      _c.repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final base = scheme.surfaceContainerHighest;
+    final shine = scheme.surfaceContainerLow;
+    Widget bar(double width, double height) => Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(color: base, borderRadius: BorderRadius.circular(6)),
+        );
+    final card = Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: scheme.outlineVariant),
+      ),
+      child: Row(children: [
+        Container(
+          width: 96,
+          decoration: BoxDecoration(color: base, borderRadius: BorderRadius.circular(8)),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              bar(double.infinity, 16),
+              const SizedBox(height: 8),
+              bar(120, 12),
+              const SizedBox(height: 18),
+              bar(double.infinity, 6),
+            ],
+          ),
+        ),
+      ]),
+    );
+    return LayoutBuilder(builder: (context, constraints) {
+      final columns = constraints.maxWidth >= 900 ? 3 : constraints.maxWidth >= 600 ? 2 : 1;
+      final grid = GridView.count(
+        crossAxisCount: columns,
+        padding: const EdgeInsets.all(16),
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: columns > 1 ? 1.46 : 2.4,
+        physics: const NeverScrollableScrollPhysics(),
+        children: List.filled(widget.cards, card),
+      );
+      return AnimatedBuilder(
+        animation: _c,
+        builder: (context, child) => ShaderMask(
+          blendMode: BlendMode.srcATop,
+          shaderCallback: (rect) => LinearGradient(
+            colors: [base, shine, base],
+            stops: const [0.35, 0.5, 0.65],
+            transform: _SlideGradient(_c.value),
+          ).createShader(rect),
+          child: child,
+        ),
+        child: RepaintBoundary(child: grid),
+      );
+    });
+  }
+}
+
+class _SlideGradient extends GradientTransform {
+  const _SlideGradient(this.t);
+  final double t;
+
+  @override
+  Matrix4 transform(Rect bounds, {TextDirection? textDirection}) =>
+      Matrix4.translationValues(bounds.width * (t * 2 - 1), 0, 0);
+}
+
+/// Карточка слегка приподнимается под курсором мыши. На телефоне событий
+/// наведения нет, и обёртка ничего не делает.
+class HoverLift extends StatefulWidget {
+  const HoverLift({super.key, required this.child, this.radius = 22});
+
+  final Widget child;
+  final double radius;
+
+  @override
+  State<HoverLift> createState() => _HoverLiftState();
+}
+
+class _HoverLiftState extends State<HoverLift> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) return widget.child;
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.translationValues(0, _hover ? -3 : 0, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(widget.radius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: _hover ? .14 : 0),
+              blurRadius: _hover ? 22 : 0,
+              offset: Offset(0, _hover ? 10 : 0),
+            ),
+          ],
+        ),
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// Полоса прогресса, которая при появлении плавно наполняется до значения.
+class AnimatedProgressBar extends StatelessWidget {
+  const AnimatedProgressBar({
+    super.key,
+    required this.value,
+    this.minHeight = 6,
+    this.backgroundColor,
+  });
+
+  final double value;
+  final double minHeight;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget bar(double v) => LinearProgressIndicator(
+          value: v,
+          minHeight: minHeight,
+          backgroundColor: backgroundColor,
+        );
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) return bar(value);
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: value),
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeOutCubic,
+      builder: (_, v, __) => bar(v),
+    );
+  }
 }

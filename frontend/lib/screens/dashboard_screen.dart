@@ -498,54 +498,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _showNonSerbianWarning() {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Похоже, это не сербский'),
-        content: const Text(
-          'Текст не распознан как сербский язык. Приложение предназначено для чтения на сербском — разбор грамматики и словарные формы могут работать некорректно. Будет доступен только автоматический перевод.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Понятно'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _loadTestStory(String assetPath, String title) async {
-    setState(() {
-      _isLoading = true;
-      _loadProgress = 0.0;
-    });
-    try {
-      final data = await rootBundle.load(assetPath);
-      final bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      final paragraphs = assetPath.endsWith('.pdf')
-          ? await DocumentParser.parsePdfWithProgress(bytes, _onParseProgress)
-          : await DocumentParser.parseDocxWithProgress(bytes, _onParseProgress);
-
-      await UserDb.instance.insertBook(title, assetPath, paragraphs);
-      await _loadBooks();
-
-      if (mounted) {
-        if (!LanguageDetector.isLikelySerbian(paragraphs)) {
-          _showNonSerbianWarning();
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Ошибка загрузки теста: $e')));
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
   Future<void> _deleteBook(Map<String, dynamic> book) async {
     final generation = _bookGeneration(book);
     if (generation == null) return;
@@ -864,7 +816,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const ServerAnnouncementBanner(),
           const _EventBanner(),
           Expanded(
-            child: _isLoading
+            child: _isLoading && _loadProgress <= 0
+                // Обычная загрузка полок — скелет; импорт книги с процентами
+                // остаётся кругом с подписью ниже.
+                ? const SkeletonShelf()
+                : _isLoading
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -949,6 +905,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   _importFile();
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.content_paste_rounded),
+                title: const Text('Вставить из буфера'),
+                subtitle: const Text('Текст, документ или аудиозапись'),
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  _pasteFromClipboard();
+                },
+              ),
               if (_photoScan)
                 ListTile(
                   leading: const Icon(Icons.photo_camera_outlined),
@@ -982,7 +947,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Icon(Icons.file_download_outlined,
                       size: 52, color: scheme.primary),
                   const SizedBox(height: 12),
-                  Text('Отпустите файл — откроем книгу',
+                  Text('Отпусти файл — откроем книгу',
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 6),
                   Text(DocumentParser.supportedExtensions.join(', '),
@@ -1016,7 +981,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const WolfBubble(
                   title: 'Здраво!',
                   text:
-                      'Я волк Читавук. Импортируй книгу (PDF/DOCX) или открой тестовую историю — и начнём читать по-сербски.',
+                      'Я волк Читавук. Открой свою книгу или возьми любую из общей библиотеки ниже — и начнём читать по-сербски.',
                   asset: Wolf.zdravo,
                 ),
                 const SizedBox(height: 28),
@@ -1031,18 +996,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         icon: const Icon(Icons.add),
                         label: const Text('Добавить книгу'),
                         onPressed: _showAddSheet,
-                      ),
-                      OutlinedButton.icon(
-                        icon: const Icon(Icons.text_snippet_outlined),
-                        label: const Text('Открыть рассказ'),
-                        onPressed: () => _loadTestStory(
-                            'assets/test_story.docx', 'Сербский рассказ'),
-                      ),
-                      OutlinedButton.icon(
-                        icon: const Icon(Icons.picture_as_pdf_outlined),
-                        label: const Text('Тот же рассказ в PDF'),
-                        onPressed: () => _loadTestStory(
-                            'assets/test_story.pdf', 'Сербский рассказ (PDF)'),
                       ),
                     ],
                   ),
@@ -1313,10 +1266,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text('Открыть словарь  →',
-                          style: TextStyle(
-                              color: scheme.secondary,
-                              fontWeight: FontWeight.w800)),
+                      Row(mainAxisSize: MainAxisSize.min, children: [
+                        Text('Открыть словарь',
+                            style: TextStyle(
+                                color: scheme.secondary,
+                                fontWeight: FontWeight.w800)),
+                        const SizedBox(width: 6),
+                        Icon(Icons.arrow_forward, size: 16, color: scheme.secondary),
+                      ]),
                     ],
                   ),
                 ),
@@ -1326,6 +1283,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _pasteFromClipboard() async {
+    try {
+      final payload = await readClipboardPayload();
+      if (!mounted) return;
+      if (payload == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('В буфере нет текста или файла.')),
+        );
+        return;
+      }
+      if (payload.isFile) {
+        final name = payload.filename!;
+        final bytes = payload.bytes!;
+        final extension =
+            name.contains('.') ? name.split('.').last.toLowerCase() : '';
+        if (audioFileExtensions.contains(extension)) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AudioFilesScreen(
+                initialPayload: payload,
+              ),
+            ),
+          );
+          return;
+        }
+        if (!DocumentParser.isSupported(name)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Этот формат Читавук не открывает.')),
+          );
+          return;
+        }
+        await _importBytes(name, 'clipboard://$name', bytes);
+        return;
+      }
+      final text = payload.text?.trim() ?? '';
+      if (text.isEmpty) return;
+      await _importBytes(
+        'Вставка из буфера.txt',
+        'clipboard://text.txt',
+        Uint8List.fromList(utf8.encode(text)),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Не удалось прочитать буфер: $error')),
+      );
+    }
   }
 
   Widget _libraryHeading(
@@ -1519,7 +1526,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final lastPara = book['last_para'] as int? ?? 0;
     final paraCount = book['para_count'] as int? ?? 0;
     final progress = paraCount <= 0 ? 0.0 : (lastPara + 1) / paraCount;
-    return Material(
+    return HoverLift(child: Material(
       color: scheme.surfaceContainerLow,
       borderRadius: BorderRadius.circular(22),
       clipBehavior: Clip.antiAlias,
@@ -1606,18 +1613,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 8),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: LinearProgressIndicator(
+                        child: AnimatedProgressBar(
                           value: progress,
-                          minHeight: 6,
                           backgroundColor:
                               scheme.primary.withValues(alpha: .12),
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('Открыть книгу  →',
-                          style: TextStyle(
-                              color: scheme.primary,
-                              fontWeight: FontWeight.w800)),
+                      Row(children: [
+                        Text('Открыть книгу',
+                            style: TextStyle(
+                                color: scheme.primary,
+                                fontWeight: FontWeight.w800)),
+                        const SizedBox(width: 6),
+                        Icon(Icons.arrow_forward, size: 16, color: scheme.primary),
+                      ]),
                     ],
                   ),
                 ),
@@ -1626,7 +1636,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget _bookMenu(Map<String, dynamic> book) => PopupMenuButton<String>(
@@ -1951,8 +1961,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  /// Справочник грамматических правил. Сам курс живёт в отдельной вкладке
-  /// нижней навигации (master-prompt §26).
   /// Меню «ещё»: разделы вместо плоского списка из четырнадцати строк.
   ///
   /// Часть пунктов дублирует кнопки верхней панели и показывается только там,
@@ -1992,6 +2000,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ]),
       MoreMenuSection('УЧИТЬСЯ', [
+        MoreMenuItem(
+          label: 'Уничтожь падежи',
+          note: 'Печатная машинка и голос',
+          icon: Icons.keyboard_alt_outlined,
+          onTap: () => open(const CaseGameScreen()),
+        ),
+        MoreMenuItem(
+          label: 'Говори!',
+          note: 'Тема на барабане',
+          icon: Icons.record_voice_over_outlined,
+          onTap: () => open(const SpeakingScreen()),
+        ),
         if (signedIn)
           MoreMenuItem(
               label: 'Урок дня',
@@ -2044,7 +2064,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         MoreMenuItem(
           label: 'Все слова и карточки',
-          icon: Icons.style_outlined,
+          icon: Icons.translate_outlined,
           onTap: _openAllCards,
         ),
       ]),
@@ -2065,7 +2085,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           label: context.read<AppSettings>().interfaceSoundEnabled
               ? 'Выключить звуки интерфейса'
               : 'Включить звуки интерфейса',
-          icon: Icons.volume_up_outlined,
+          icon: context.read<AppSettings>().interfaceSoundEnabled
+              ? Icons.volume_off_outlined
+              : Icons.volume_up_outlined,
           onTap: () {
             final settings = context.read<AppSettings>();
             final enabled = !settings.interfaceSoundEnabled;
@@ -2096,8 +2118,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
         MoreMenuItem(
-          label: 'Сервер и словарь',
-          icon: Icons.cloud_outlined,
+          label: 'Офлайн-словарь',
+          note: 'Перевод без интернета',
+          icon: Icons.download_for_offline_outlined,
           onTap: _openServerSettings,
         ),
         MoreMenuItem(
@@ -2106,6 +2129,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: Icons.refresh,
           onTap: _refreshAll,
         ),
+        // Поддержка открывает цифровые бонусы, а Google Play запрещает вести
+        // из Android-приложения к оплате мимо своего биллинга. Там пункта нет;
+        // купленное на сайте в приложении работает как обычно.
+        if (!supportLinksHidden)
+          MoreMenuItem(
+            label: 'Поддержать Читавук',
+            note: 'Откроется на сайте',
+            icon: Icons.favorite_border,
+            onTap: _openSupportSite,
+          ),
         MoreMenuItem(
           label: 'О приложении',
           icon: Icons.info_outline,
@@ -2130,6 +2163,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _openServerSettings() {
     showServerSettings(context);
+  }
+
+  /// Оплата поддержки живёт только на сайте: приложение ничего не продаёт само.
+  Future<void> _openSupportSite() async {
+    await launchUrl(
+      Uri.parse('https://citavuk.ru/support'),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   /// Видео с сербскими субтитрами живут на отдельном сайте, поэтому открываются

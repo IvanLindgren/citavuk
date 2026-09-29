@@ -66,7 +66,8 @@ Future<void> openDialogue(WidgetTester tester, CommunityLesson lesson) async {
 
 List<String> assetsOf(WidgetTester tester) => tester
     .widgetList<Image>(find.byType(Image))
-    .map((image) => image.image)
+    // Лица декодируются под размер рамки: провайдер обёрнут в ResizeImage.
+    .map((image) => image.image is ResizeImage ? (image.image as ResizeImage).imageProvider : image.image)
     .whereType<AssetImage>()
     .map((image) => image.assetName)
     .toList();

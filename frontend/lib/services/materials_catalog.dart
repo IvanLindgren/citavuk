@@ -135,7 +135,8 @@ class MaterialsCatalog {
 
   static Future<MaterialsCatalog> _read() async {
     final raw = await rootBundle.loadString(_assetPath);
-    final json = jsonDecode(raw) as Map<String, dynamic>;
+    // Каталог почти в полмегабайта разбирается в фоновом изоляте.
+    final json = await compute(_decodeCatalog, raw);
 
     List<MaterialGroup> groups(String key, String titleKey) => [
           for (final item in (json[key] as List? ?? const []))
@@ -203,3 +204,5 @@ class MaterialsCatalog {
     ];
   }
 }
+
+Map<String, dynamic> _decodeCatalog(String raw) => jsonDecode(raw) as Map<String, dynamic>;

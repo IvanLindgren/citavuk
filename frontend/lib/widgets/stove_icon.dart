@@ -16,6 +16,7 @@ class StoveIcon extends StatelessWidget {
         'assets/imgs/citavuk_stove.png',
         width: size,
         height: size,
+        cacheWidth: (size * MediaQuery.devicePixelRatioOf(context)).round(),
         filterQuality: FilterQuality.medium,
         // Печь цветная и остаётся собой в обеих темах: перекрашивать её под
         // цвет текста значило бы потерять и латунь, и огонь.

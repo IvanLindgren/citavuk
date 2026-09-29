@@ -153,6 +153,8 @@ class DialogueAvatar extends StatelessWidget {
         face.asset,
         width: size,
         height: size,
+        // Лица квадратные: декодируем ровно под рамку.
+        cacheWidth: (size * MediaQuery.devicePixelRatioOf(context)).round(),
         fit: BoxFit.cover,
         alignment: Alignment.topCenter,
       ),

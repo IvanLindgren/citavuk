@@ -197,7 +197,7 @@ class _PersonalLessonsScreenState extends State<PersonalLessonsScreen>
                                 Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Text(
-                                        'Составлено ${p.lessons.length} из 30. Готовый урок можно открыть сразу.')),
+                                        'Подобрано ${p.lessons.length} из 30. Готовый урок можно открыть сразу.')),
                               if (p.status == 'error') ...[
                                 Text(p.error ??
                                     'Не все занятия удалось составить.'),
@@ -459,7 +459,7 @@ class _PersonalQuestionnaireState extends State<PersonalQuestionnaire> {
           ]),
           const SizedBox(height: 16),
           const Text(
-              'Ответы отправятся модели для составления личных уроков. Не добавляй личные данные. Часовой пояс серии закрепляется после первого занятия.'),
+              'Ответы помогают подобрать порядок уроков из общей коллекции. Не добавляй личные данные. Часовой пояс серии закрепляется после первого занятия.'),
           if (_error != null) Text(_error!),
         ]));
   }

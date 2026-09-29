@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../course/widgets/course_art.dart';
 import '../models/audio_lesson.dart';
 import '../services/listening_service.dart';
 import '../services/user_db.dart';
 import '../widgets/animated_widgets.dart';
-import '../widgets/eagle_mascot.dart';
+import 'audio_files_screen.dart';
 import 'listening_player_screen.dart';
 
 /// Тематическая медиатека сербской речи и озвучки собственных книг.
@@ -21,7 +23,14 @@ class _ListeningScreenState extends State<ListeningScreen> {
   bool _opening = false;
   String _topic = 'Все';
 
-  static const _topics = ['Все', 'Разговоры', 'Еда', 'Культура', 'Учёба'];
+  static const _topics = [
+    'Все',
+    'Учебные',
+    'История',
+    'Культура',
+    'Аудиокниги',
+    'Радио'
+  ];
 
   @override
   void initState() {
@@ -58,7 +67,9 @@ class _ListeningScreenState extends State<ListeningScreen> {
   }
 
   String _topicOf(AudioLesson lesson) {
-    return ListeningService.topicOf(lesson.title);
+    return lesson.category.isEmpty
+        ? ListeningService.topicOf(lesson.title)
+        : lesson.category;
   }
 
   String _lessonSubtitle(AudioLesson lesson) {
@@ -71,14 +82,27 @@ class _ListeningScreenState extends State<ListeningScreen> {
       if (lesson.subtitle.isNotEmpty) lesson.subtitle,
       if (duration.isNotEmpty) duration,
       transcript,
-    ].join(' · ');
+    ].join(', ');
   }
 
-  Future<void> _open(AudioLesson lesson) => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => ListeningPlayerScreen(lesson: lesson)),
-      );
+  Future<void> _open(AudioLesson lesson) async {
+    // У книг есть короткий публичный preview и отдельная страница полной
+    // записи. Preview слушаем в Читавуке, а каталог без аудио открываем снаружи.
+    if (lesson.audioUrl == null) {
+      final url = lesson.externalUrl;
+      if (url != null) {
+        final uri = Uri.tryParse(url);
+        if (uri != null) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+        return;
+      }
+    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ListeningPlayerScreen(lesson: lesson)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,12 +135,29 @@ class _ListeningScreenState extends State<ListeningScreen> {
                   final filtered = _topic == 'Все'
                       ? all
                       : all.where((item) => _topicOf(item) == _topic).toList();
+                  final playable =
+                      filtered.where((item) => item.audioUrl != null).toList();
+                  final audiobooks = playable
+                      .where((item) => item.kind == 'audiobook')
+                      .toList();
+                  final programs = playable
+                      .where((item) => item.kind != 'audiobook')
+                      .toList();
+                  final resources = filtered
+                      .where((item) =>
+                          item.audioUrl == null && item.externalUrl != null)
+                      .toList();
                   return CustomScrollView(
                     slivers: [
                       SliverPadding(
                         padding:
                             EdgeInsets.fromLTRB(horizontal, 22, horizontal, 0),
                         sliver: SliverToBoxAdapter(child: _intro()),
+                      ),
+                      SliverPadding(
+                        padding:
+                            EdgeInsets.fromLTRB(horizontal, 14, horizontal, 0),
+                        sliver: SliverToBoxAdapter(child: _audioFilesEntry()),
                       ),
                       SliverPadding(
                         padding:
@@ -153,8 +194,23 @@ class _ListeningScreenState extends State<ListeningScreen> {
                           sliver: SliverToBoxAdapter(
                             child: Text('В этой подборке пока нет записей.'),
                           ),
-                        )
-                      else
+                        ),
+                      if (snapshot.connectionState != ConnectionState.waiting &&
+                          !snapshot.hasError &&
+                          programs.isNotEmpty)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontal, 8, horizontal, 12),
+                          sliver: SliverToBoxAdapter(
+                            child: _sectionHeading(
+                                Icons.mic_rounded,
+                                'Подкасты и передачи',
+                                'Слушай прямо в Читавуке'),
+                          ),
+                        ),
+                      if (snapshot.connectionState != ConnectionState.waiting &&
+                          !snapshot.hasError &&
+                          programs.isNotEmpty)
                         SliverPadding(
                           padding: EdgeInsets.fromLTRB(
                               horizontal, 0, horizontal, 32),
@@ -168,7 +224,7 @@ class _ListeningScreenState extends State<ListeningScreen> {
                             ),
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                final lesson = filtered[index];
+                                final lesson = programs[index];
                                 return FadeSlideIn(
                                   delay: Duration(
                                       milliseconds: 35 * index.clamp(0, 8)),
@@ -176,7 +232,79 @@ class _ListeningScreenState extends State<ListeningScreen> {
                                   child: _episodeCard(lesson),
                                 );
                               },
-                              childCount: filtered.length,
+                              childCount: programs.length,
+                            ),
+                          ),
+                        ),
+                      if (snapshot.connectionState != ConnectionState.waiting &&
+                          !snapshot.hasError &&
+                          audiobooks.isNotEmpty)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontal, 8, horizontal, 12),
+                          sliver: SliverToBoxAdapter(
+                            child: _sectionHeading(
+                                Icons.auto_stories_rounded,
+                                'Аудиокниги',
+                                'Бесплатные фрагменты и страницы полных записей'),
+                          ),
+                        ),
+                      if (snapshot.connectionState != ConnectionState.waiting &&
+                          !snapshot.hasError &&
+                          audiobooks.isNotEmpty)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontal, 0, horizontal, 32),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: columns,
+                              mainAxisSpacing: 14,
+                              crossAxisSpacing: 14,
+                              childAspectRatio: width < 720 ? 2.45 : 2.05,
+                            ),
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => FadeSlideIn(
+                                delay: Duration(
+                                    milliseconds: 35 * index.clamp(0, 8)),
+                                offsetY: 8,
+                                child: _episodeCard(audiobooks[index]),
+                              ),
+                              childCount: audiobooks.length,
+                            ),
+                          ),
+                        ),
+                      if (resources.isNotEmpty)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontal, 0, horizontal, 12),
+                          sliver: SliverToBoxAdapter(
+                            child: _sectionHeading(
+                                Icons.auto_stories_rounded,
+                                'Аудиокниги и радио',
+                                'Официальные каталоги и архивы'),
+                          ),
+                        ),
+                      if (resources.isNotEmpty)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(
+                              horizontal, 0, horizontal, 32),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: columns,
+                              mainAxisSpacing: 14,
+                              crossAxisSpacing: 14,
+                              childAspectRatio: width < 720 ? 2.45 : 2.05,
+                            ),
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => FadeSlideIn(
+                                delay: Duration(
+                                    milliseconds: 35 * index.clamp(0, 8)),
+                                offsetY: 8,
+                                child: _episodeCard(resources[index]),
+                              ),
+                              childCount: resources.length,
                             ),
                           ),
                         ),
@@ -240,17 +368,18 @@ class _ListeningScreenState extends State<ListeningScreen> {
       ),
       child: Row(
         children: [
-          const EagleSticker(asset: Eagle.slusa, size: 86),
+          const CourseArt(pose: 'listening', size: 104),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Сербский на слух', style: theme.textTheme.headlineSmall),
+                Text('Слушай аудиокниги и подкасты.',
+                    style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 5),
                 Text(
-                  'Выбери тему, слушай живую речь и открывай расшифровку. '
-                  'Незнакомое слово можно разобрать прямо в плеере.',
+                  'Учебные диалоги для старта, настоящие подкасты для темпа, '
+                  'радио и аудиокниги для погружения.',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -277,14 +406,67 @@ class _ListeningScreenState extends State<ListeningScreen> {
             for (final topic in _topics)
               FilterChip(
                 label: Text(topic == 'Все'
-                    ? 'Все · ${lessons.length}'
-                    : '$topic · ${lessons.where((l) => _topicOf(l) == topic).length}'),
+                    ? 'Все (${lessons.length})'
+                    : '$topic (${lessons.where((l) => _topicOf(l) == topic).length})'),
                 selected: _topic == topic,
                 onSelected: (_) => setState(() => _topic = topic),
               ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget _audioFilesEntry() {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Material(
+      color: scheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AudioFilesScreen()),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: scheme.outlineVariant),
+          ),
+          child: Row(children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: scheme.primaryContainer,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(Icons.audio_file_rounded,
+                  color: scheme.onPrimaryContainer),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Мои звуковые файлы',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 3),
+                  Text(
+                    'Отдельная аудиотека с говорящими, таймкодами и разбором слов',
+                    style:
+                        TextStyle(fontSize: 12, color: scheme.onSurfaceVariant),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: scheme.primary),
+          ]),
+        ),
+      ),
     );
   }
 
@@ -312,8 +494,14 @@ class _ListeningScreenState extends State<ListeningScreen> {
                   color: scheme.secondary,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Icon(Icons.graphic_eq_rounded,
-                    color: scheme.onSecondary, size: 32),
+                child: Icon(
+                    lesson.kind == 'audiobook'
+                        ? Icons.auto_stories_rounded
+                        : lesson.kind == 'radio'
+                            ? Icons.radio_rounded
+                            : Icons.graphic_eq_rounded,
+                    color: scheme.onSecondary,
+                    size: 32),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -344,14 +532,32 @@ class _ListeningScreenState extends State<ListeningScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              Icon(Icons.play_circle_fill_rounded,
-                  color: scheme.primary, size: 32),
+              Icon(
+                  lesson.audioUrl != null
+                      ? Icons.play_circle_fill_rounded
+                      : Icons.open_in_new_rounded,
+                  color: scheme.primary,
+                  size: 32),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _sectionHeading(IconData icon, String title, String subtitle) => Row(
+        children: [
+          Icon(icon, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 10),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: Theme.of(context).textTheme.titleLarge),
+            Text(subtitle,
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant)),
+          ]),
+        ],
+      );
 
   Widget _myBooksHeading() => Row(
         children: [

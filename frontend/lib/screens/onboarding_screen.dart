@@ -294,7 +294,7 @@ class _DictionaryStep extends StatelessWidget {
         Text(
           'Девять тысяч слов с переводом и формами — чтобы читать в метро, '
           'самолёте и на даче без интернета. Можно скачать позже в «Ещё → '
-          'Сервер и словарь».',
+          'Офлайн-словарь».',
           style: text.bodyLarge,
         ),
         const SizedBox(height: 20),

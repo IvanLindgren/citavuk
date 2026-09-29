@@ -53,7 +53,9 @@ class CourseContentLoader {
     final cachedRaw = prefs.getString(_remoteCourseCacheKey);
     if (cachedRaw != null) {
       try {
-        final cached = parseBundle(cachedRaw);
+        // Разбор в фоновом изоляте: полмегабайта JSON на главном потоке —
+        // заметный рывок при открытии курса на телефоне.
+        final cached = await compute(parseBundle, cachedRaw);
         unawaited(_refreshRemote(prefs));
         return cached;
       } catch (_) {
@@ -64,7 +66,7 @@ class CourseContentLoader {
     // Первый запуск не должен ждать сеть: базовый курс уже входит в приложение.
     // Опубликованная серверная версия сохранится в фоне и будет использована при
     // следующем открытии курса.
-    final bundled = parseBundle(await rootBundle.loadString(assetPath));
+    final bundled = await compute(parseBundle, await rootBundle.loadString(assetPath));
     unawaited(_refreshRemote(prefs));
     return bundled;
   }
@@ -75,7 +77,7 @@ class CourseContentLoader {
       if (remote != null) {
         // Не кладём повреждённую публикацию в кеш: иначе следующий запуск
         // покажет пустой экран до ручной очистки данных приложения.
-        parseBundle(remote);
+        await compute(parseBundle, remote);
         await prefs.setString(_remoteCourseCacheKey, remote);
       }
     } catch (e) {

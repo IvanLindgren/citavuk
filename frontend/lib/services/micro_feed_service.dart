@@ -88,8 +88,11 @@ class MicroFeedService {
 
   Future<MicroFeedPreferences?> savePreferences(
       List<String> categories, String cefr) async {
-    final token = await _visitorToken();
-    if (token.isEmpty && !await signedIn()) return null;
+    var token = await _visitorToken();
+    if (token.isEmpty && !await signedIn()) {
+      await load();
+      token = await _visitorToken();
+    }
     final data = await _api.put('/v1/micro-feed/preferences', {
       'visitorToken': token,
       'categories': categories,
