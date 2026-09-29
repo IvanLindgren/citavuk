@@ -2,6 +2,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -45,7 +46,9 @@ func writeJSON(w http.ResponseWriter, status int, payload any) {
 	// читаемы в логах и при отладке, а размер тела меньше.
 	enc.SetEscapeHTML(false)
 	if err := enc.Encode(payload); err != nil {
-		slog.Error("не удалось записать ответ", "err", err)
+		if !errors.Is(err, context.Canceled) && !errors.Is(err, io.ErrClosedPipe) && !strings.Contains(err.Error(), "broken pipe") {
+			slog.Error("не удалось записать ответ", "err", err)
+		}
 	}
 }
 

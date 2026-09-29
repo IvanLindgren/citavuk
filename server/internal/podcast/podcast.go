@@ -31,15 +31,20 @@ import (
 
 // Feed — лента подкаста.
 type Feed struct {
-	ID    string
-	Title string
-	URL   string
+	ID       string
+	Title    string
+	URL      string
+	Category string
+	CEFR     string
+	Website  string
 }
 
 // Feeds — ленты, которые показываются в разделе «Слушание».
 var Feeds = []Feed{
-	{ID: "learn-serbian", Title: "Learn Serbian", URL: "https://rss.buzzsprout.com/1246415.rss"},
-	{ID: "moze-kafa", Title: "Može kafa", URL: "https://anchor.fm/s/aef64434/podcast/rss"},
+	{ID: "learn-serbian", Title: "Learn Serbian", URL: "https://rss.buzzsprout.com/1246415.rss", Category: "Учебные", CEFR: "A2", Website: "https://serbianlanguagelessons.com/"},
+	{ID: "moze-kafa", Title: "Može kafa", URL: "https://anchor.fm/s/aef64434/podcast/rss", Category: "Учебные", CEFR: "B1", Website: "https://www.learnserbianblog.com/podcast"},
+	{ID: "historycast", Title: "HistoryCast", URL: "https://media.rss.com/rs-historycast/feed.xml", Category: "История", CEFR: "B2", Website: "https://podcast.rs/show/historycast/"},
+	{ID: "tacka-razno", Title: "Tačka razno", URL: "https://media.rss.com/tacka-razno/feed.xml", Category: "Культура", CEFR: "B2", Website: "https://podcast.rs/show/tacka-razno/"},
 }
 
 // TranscriptsBase — где лежат наши расшифровки.
@@ -68,6 +73,12 @@ type Lesson struct {
 	// TranscriptURL пуст, если расшифровки ещё нет.
 	TranscriptURL string  `json:"transcript_url,omitempty"`
 	Duration      float64 `json:"duration,omitempty"`
+	Kind          string  `json:"kind,omitempty"`
+	Category      string  `json:"category,omitempty"`
+	CEFR          string  `json:"cefr,omitempty"`
+	SourceTitle   string  `json:"source_title,omitempty"`
+	SourceURL     string  `json:"source_url,omitempty"`
+	ExternalURL   string  `json:"external_url,omitempty"`
 }
 
 // Transcript — расшифровка эпизода.
@@ -83,6 +94,7 @@ type Service struct {
 	client          *http.Client
 	feeds           []Feed
 	transcriptsBase string
+	external        []Lesson
 
 	mu        sync.Mutex
 	lessons   []Lesson
@@ -97,11 +109,13 @@ const cacheTTL = time.Hour
 
 // New собирает службу.
 func New() *Service {
-	return newService(
+	service := newService(
 		&http.Client{Timeout: 45 * time.Second},
 		Feeds,
 		TranscriptsBase,
 	)
+	service.external = externalListeningResources()
+	return service
 }
 
 func newService(client *http.Client, feeds []Feed, transcriptsBase string) *Service {
@@ -147,6 +161,13 @@ func (s *Service) Lessons(ctx context.Context) ([]Lesson, error) {
 			// Одна недоступная лента не должна прятать вторую.
 			continue
 		}
+		// Огромные архивы (у HistoryCast больше 180 выпусков) не должны
+		// превращать первый экран в сотни одновременно созданных карточек.
+		// RSS уже отсортирован от нового к старому; полный архив доступен на
+		// странице источника.
+		if len(items) > 48 {
+			items = items[:48]
+		}
 		for _, item := range items {
 			audio := strings.SplitN(item.Enclosure.URL, "?", 2)[0]
 			if audio == "" {
@@ -160,6 +181,8 @@ func (s *Service) Lessons(ctx context.Context) ([]Lesson, error) {
 				AudioURL: audio,
 				Cues:     []Cue{},
 				Duration: duration,
+				Kind:     "podcast", Category: feed.Category, CEFR: feed.CEFR,
+				SourceTitle: feed.Title, SourceURL: feed.Website,
 			}
 			if lesson.Title == "" {
 				lesson.Title = "Без названия"
@@ -170,6 +193,7 @@ func (s *Service) Lessons(ctx context.Context) ([]Lesson, error) {
 			lessons = append(lessons, lesson)
 		}
 	}
+	lessons = append(lessons, s.external...)
 	if len(lessons) == 0 {
 		return nil, errors.New("ленты подкастов недоступны")
 	}
@@ -178,6 +202,44 @@ func (s *Service) Lessons(ctx context.Context) ([]Lesson, error) {
 	s.lessons, s.lessonsAt = lessons, time.Now()
 	s.mu.Unlock()
 	return lessons, nil
+}
+
+func externalListeningResources() []Lesson {
+	books := []Lesson{
+		audiobookPreview("na-bunaru", "Na bunaru", "Laza Lazarević", "na-bunaru", "https://slusaj.rs/wp-content/uploads/2025/09/Laza-Lazarevic-Na-bunaru.mp3"),
+		audiobookPreview("vlaovici", "Vlaovići", "Isidora Sekulić", "vlaovici", "https://slusaj.rs/wp-content/uploads/2025/09/Isidora-Sekulic-Vlaovici.mp3"),
+		audiobookPreview("mrtvo-more", "Mrtvo more", "Radoje Domanović", "mrtvo-more", "https://slusaj.rs/wp-content/uploads/2025/09/Radoje-Domanovic-Mrtvo-more.mp3"),
+		audiobookPreview("pokojnikova-zena", "Pokojnikova žena", "Bora Stanković", "pokojnikova-zena", "https://slusaj.rs/wp-content/uploads/2025/09/Bora-Stankovic-Pokojnikova-zena.mp3"),
+		audiobookPreview("plac-serbiji", "Plač Serbiji", "Zaharije Orfelin", "plac-serbiji", "https://slusaj.rs/wp-content/uploads/2025/09/Zaharije-Orfelin-Plac-Serbiji.mp3"),
+		audiobookPreview("bozicna-pecenica", "Božićna pečenica", "Stevan Sremac", "bozicna-pecenica", "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Bozicna-pecenica.mp3"),
+		audiobookPreview("gospa-nola", "Gospa Nola", "Isidora Sekulić", "gospa-nola", "https://slusaj.rs/wp-content/uploads/2025/09/Isidora-Sekulic-Gospa-Nola.mp3"),
+		audiobookPreview("bodulica", "Bodulica", "Simo Matavulj", "bodulica", "https://slusaj.rs/wp-content/uploads/2025/09/Simo-Matavulj-Bodulica.mp3"),
+		audiobookPreview("zlatni-jelenak", "Zlatni jelenak", "Edgar Alan Po", "zlatni-jelenak", "https://slusaj.rs/wp-content/uploads/2026/04/Edgar-Alan-Po-Zlatni-jelenak.mp3"),
+		audiobookPreview("pocetak-bune-protiv-dahija", "Početak bune protiv dahija", "Epska narodna pesma", "pocetak-bune-protiv-dahija", "https://slusaj.rs/wp-content/uploads/2025/09/Epska-narodna-pesma-Pocetak-bune-protiv-dahija.mp3"),
+		audiobookPreview("jedna-noc", "Jedna noć", "Đura Jakšić", "jedna-noc", "https://slusaj.rs/wp-content/uploads/2025/09/Djura-Jaksic-Jedna-noc.mp3"),
+		audiobookPreview("kostana", "Koštana", "Bora Stanković", "kostana", "https://slusaj.rs/wp-content/uploads/2025/09/Bora-Stankovic-Kostana.mp3"),
+		audiobookPreview("zona-zamfirova", "Zona Zamfirova", "Stevan Sremac", "zona-zamfirova", "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Zona-Zamfirova.mp3"),
+		audiobookPreview("necista-krv", "Nečista krv", "Bora Stanković", "necista-krv", "https://slusaj.rs/wp-content/uploads/2025/09/Bora-Stankovic-Necista-krv.mp3"),
+		audiobookPreview("pop-cira-i-pop-spira", "Pop Ćira i pop Spira", "Stevan Sremac", "pop-cira-i-pop-spira", "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Pop-Cira-i-pop-Spira.mp3"),
+		audiobookPreview("jazavac-pred-sudom", "Jazavac pred sudom", "Petar Kočić", "jazavac-pred-sudom", "https://slusaj.rs/wp-content/uploads/2025/09/Petar-Kocic-Jazavac-pred-sudom.mp3"),
+	}
+	return append(books,
+		Lesson{ID: "radio-put-u-reci", Title: "Пут у речи", Subtitle: "Передача о сербском языке и культуре речи", Kind: "radio", Category: "Язык", CEFR: "B2", SourceTitle: "Радио Београд 2", ExternalURL: "https://www.rts.rs/radio/radio-beograd-2/emisija/5664/put-u-reci-.html?s=5664", Cues: []Cue{}},
+		Lesson{ID: "radio-rtrs", Title: "Аудиоархив РТРС", Subtitle: "Наука, культура, новости и разговорные передачи", Kind: "radio", Category: "Радио", CEFR: "B2–C2", SourceTitle: "РТРС", ExternalURL: "https://www.rtrs.tv/av/audio.php", Cues: []Cue{}},
+	)
+}
+
+// audiobookPreview — отдельная книга с бесплатным фрагментом. Полную запись
+// не копируем на сервер: ссылка ведёт на страницу правообладателя, а mp3
+// используется только для короткого публичного preview.
+func audiobookPreview(id, title, author, slug, previewURL string) Lesson {
+	pageURL := "https://slusaj.rs/sve-knjige/" + slug + "/"
+	return Lesson{
+		ID: "audiobook-" + id, Title: title,
+		Subtitle: "Фрагмент · " + author + " · полная книга на Slušaj.rs",
+		AudioURL: previewURL, Kind: "audiobook", Category: "Аудиокниги", CEFR: "B1–C2",
+		SourceTitle: "Slušaj.rs", SourceURL: pageURL, ExternalURL: pageURL, Cues: []Cue{},
+	}
 }
 
 func (s *Service) fetchFeed(ctx context.Context, url string) ([]rssItem, error) {
@@ -295,7 +357,7 @@ func subtitle(feedTitle string, duration float64) string {
 	if duration <= 0 {
 		return feedTitle
 	}
-	return fmt.Sprintf("%s · %d мин", feedTitle, int(duration)/60)
+	return fmt.Sprintf("%s, %d мин", feedTitle, int(duration)/60)
 }
 
 // parseDuration понимает и «1:02:03», и «3723» — itunes:duration пишут по-разному.

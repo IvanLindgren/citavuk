@@ -384,7 +384,8 @@ func (s *Server) advanceDuel(room *duel.Room, now time.Time) []func() {
 // startDuelRound берёт фразы очередного раунда. Перевод для машин за столом
 // сюда не входит: он идёт отдельно и после записи.
 func startDuelRound(room *duel.Room, now time.Time) error {
-	sentences, err := translationgame.Round(room.Level, room.Round+1, room.Direction)
+	sentences, err := translationgame.RoundWithSeed(room.Level, room.Round+1, room.Direction,
+		room.Code+room.CreatedAt.UTC().Format(time.RFC3339Nano))
 	if err != nil {
 		return err
 	}

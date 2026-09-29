@@ -55,6 +55,8 @@ type userView struct {
 	// клиент решает, показывать ли вопрос об уровне, ещё до первого экрана.
 	// Пусто — значит не спрашивали.
 	SerbianLevel string `json:"serbianLevel"`
+	// SupporterSince — с какого дня у аккаунта значок поддержавшего.
+	SupporterSince *time.Time `json:"supporterSince,omitempty"`
 }
 
 func viewOf(u *store.User) userView {
@@ -67,6 +69,7 @@ func viewOf(u *store.User) userView {
 		IsAdmin:       u.IsAdmin,
 		EmailVerified: u.EmailVerified,
 		SerbianLevel:  u.SerbianLevel,
+		SupporterSince: u.SupporterSince,
 	}
 }
 

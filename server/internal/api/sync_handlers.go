@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"errors"
 	"log/slog"
 	"net/http"
@@ -22,6 +23,9 @@ func (s *Server) handlePull(w http.ResponseWriter, r *http.Request) {
 
 	res, err := s.store.Pull(r.Context(), user.ID, since, limit)
 	if err != nil {
+		if r.Context().Err() != nil || errors.Is(err, context.Canceled) {
+			return
+		}
 		slog.Error("выдача изменений", "err", err, "user", user.ID)
 		writeError(w, http.StatusInternalServerError, codeInternal,
 			"Не удалось получить изменения.")

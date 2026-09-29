@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -99,19 +100,41 @@ type Palace struct {
 
 // Changes — порция изменений в обе стороны.
 //
+// ReaderQuote — подчёркнутый фрагмент на детерминированной странице книги.
+// Позиции считаются в UTF-16, как в Flutter и браузере.
+type ReaderQuote struct {
+	ID        uuid.UUID `json:"id"`
+	BookID    uuid.UUID `json:"bookId"`
+	Page      int       `json:"page"`
+	Paragraph int       `json:"paragraph"`
+	Start     int       `json:"start"`
+	End       int       `json:"end"`
+	Text      string    `json:"text"`
+	// Color — цвет выделения; пусто — подчёркивание. Старые клиенты поле не
+	// присылают и получают прежнее поведение.
+	Color     string    `json:"color"`
+	Deleted   bool      `json:"deleted"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Rev       int64     `json:"rev"`
+}
+
+// QuoteColors — допустимые цвета выделения.
+var QuoteColors = map[string]bool{"": true, "red": true, "yellow": true, "green": true, "blue": true, "purple": true}
+
 // Новые виды записей добавляются полем, а не новым запросом: курсор
 // синхронизации общий, и отдельная лента заводила бы второй курсор, который
 // пришлось бы согласовывать с первым.
 type Changes struct {
-	Books      []Book       `json:"books"`
-	Vocabulary []VocabEntry `json:"vocabulary"`
-	Reviews    []Review     `json:"reviews"`
-	Palaces    []Palace     `json:"palaces"`
+	Books      []Book        `json:"books"`
+	Vocabulary []VocabEntry  `json:"vocabulary"`
+	Reviews    []Review      `json:"reviews"`
+	Palaces    []Palace      `json:"palaces"`
+	Quotes     []ReaderQuote `json:"quotes"`
 }
 
 // Len — общее число записей в порции.
 func (c *Changes) Len() int {
-	return len(c.Books) + len(c.Vocabulary) + len(c.Reviews) + len(c.Palaces)
+	return len(c.Books) + len(c.Vocabulary) + len(c.Reviews) + len(c.Palaces) + len(c.Quotes)
 }
 
 // PullResult — ответ на запрос изменений.
@@ -193,6 +216,11 @@ func (s *Store) Push(ctx context.Context, userID uuid.UUID, in *Changes) (int64,
 		for i := range in.Palaces {
 			if err := upsertPalace(ctx, tx, userID, &in.Palaces[i], rev); err != nil {
 				return fmt.Errorf("дворец %s: %w", in.Palaces[i].ID, err)
+			}
+		}
+		for i := range in.Quotes {
+			if err := upsertReaderQuote(ctx, tx, userID, &in.Quotes[i], rev); err != nil {
+				return fmt.Errorf("цитата %s: %w", in.Quotes[i].ID, err)
 			}
 		}
 		return nil
@@ -409,6 +437,35 @@ func upsertPalace(ctx context.Context, tx pgx.Tx, userID uuid.UUID, p *Palace, r
 	return err
 }
 
+func upsertReaderQuote(ctx context.Context, tx pgx.Tx, userID uuid.UUID, q *ReaderQuote, rev int64) error {
+	if q.ID == uuid.Nil || q.BookID == uuid.Nil || q.Page < 0 || q.Page > 1000000 || q.Paragraph < 0 || q.Paragraph > 1000000 ||
+		q.Start < 0 || q.End < q.Start || q.End > 1000000 || utf8.RuneCountInString(q.Text) > 4000 ||
+		(!q.Deleted && strings.TrimSpace(q.Text) == "") {
+		return errors.New("некорректная цитата")
+	}
+	if !QuoteColors[q.Color] {
+		// Незнакомый цвет от будущего клиента не должен ронять всю порцию.
+		q.Color = ""
+	}
+	if q.UpdatedAt.IsZero() || q.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
+		q.UpdatedAt = time.Now().UTC()
+	}
+	tag, err := tx.Exec(ctx, `
+        INSERT INTO reader_quotes (id,user_id,book_id,page,paragraph,start_offset,end_offset,text,deleted,updated_at,rev,color)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+        ON CONFLICT (id) DO UPDATE SET
+          book_id=EXCLUDED.book_id,page=EXCLUDED.page,paragraph=EXCLUDED.paragraph,
+          start_offset=EXCLUDED.start_offset,end_offset=EXCLUDED.end_offset,text=EXCLUDED.text,
+          deleted=EXCLUDED.deleted,updated_at=EXCLUDED.updated_at,rev=EXCLUDED.rev,color=EXCLUDED.color
+        WHERE reader_quotes.user_id=EXCLUDED.user_id
+          AND (reader_quotes.updated_at <= EXCLUDED.updated_at OR reader_quotes.updated_at > now() + interval '5 minutes')`,
+		q.ID, userID, q.BookID, q.Page, q.Paragraph, q.Start, q.End, q.Text, q.Deleted, q.UpdatedAt, rev, q.Color)
+	if err == nil && tag.RowsAffected() == 0 {
+		_, err = tx.Exec(ctx, `UPDATE reader_quotes SET rev=$3 WHERE id=$1 AND user_id=$2`, q.ID, userID, rev)
+	}
+	return err
+}
+
 // Pull возвращает изменения новее курсора since.
 //
 // Записи всех трёх видов отдаются с одним общим лимитом, поэтому клиент,
@@ -463,6 +520,9 @@ func (s *Store) Pull(ctx context.Context, userID uuid.UUID, since int64, limit i
                 UNION ALL
                 SELECT rev, count(*) FROM palaces
                  WHERE user_id = $1 AND rev > $2 GROUP BY rev
+                UNION ALL
+                SELECT rev, count(*) FROM reader_quotes
+                 WHERE user_id = $1 AND rev > $2 GROUP BY rev
               ) per_rev
         ) cumulative
         WHERE running <= $3`, userID, since, limit).Scan(&upto)
@@ -477,6 +537,7 @@ func (s *Store) Pull(ctx context.Context, userID uuid.UUID, since int64, limit i
                 UNION SELECT rev FROM vocabulary WHERE user_id = $1 AND rev > $2
                 UNION SELECT rev FROM reviews    WHERE user_id = $1 AND rev > $2
                 UNION SELECT rev FROM palaces    WHERE user_id = $1 AND rev > $2
+                UNION SELECT rev FROM reader_quotes WHERE user_id = $1 AND rev > $2
             ) r`, userID, since).Scan(&upto); err != nil {
 			return nil, err
 		}
@@ -492,6 +553,9 @@ func (s *Store) Pull(ctx context.Context, userID uuid.UUID, since int64, limit i
 		return nil, err
 	}
 	if res.Palaces, err = selectPalaces(ctx, s, userID, since, upto); err != nil {
+		return nil, err
+	}
+	if res.Quotes, err = selectReaderQuotes(ctx, s, userID, since, upto); err != nil {
 		return nil, err
 	}
 
@@ -603,6 +667,24 @@ func selectPalaces(ctx context.Context, s *Store, userID uuid.UUID, since, upto 
 			p.Pins = map[string]PalacePin{}
 		}
 		out = append(out, p)
+	}
+	return out, rows.Err()
+}
+
+func selectReaderQuotes(ctx context.Context, s *Store, userID uuid.UUID, since, upto int64) ([]ReaderQuote, error) {
+	rows, err := s.Pool.Query(ctx, `SELECT id,book_id,page,paragraph,start_offset,end_offset,text,color,deleted,updated_at,rev
+      FROM reader_quotes WHERE user_id=$1 AND rev>$2 AND rev<=$3 ORDER BY rev,id`, userID, since, upto)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []ReaderQuote{}
+	for rows.Next() {
+		var q ReaderQuote
+		if err := rows.Scan(&q.ID, &q.BookID, &q.Page, &q.Paragraph, &q.Start, &q.End, &q.Text, &q.Color, &q.Deleted, &q.UpdatedAt, &q.Rev); err != nil {
+			return nil, err
+		}
+		out = append(out, q)
 	}
 	return out, rows.Err()
 }

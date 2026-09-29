@@ -63,6 +63,7 @@ func (s *Server) handleAdminHealth(w http.ResponseWriter, r *http.Request) {
 	keys := []keyState{
 		{"deepl", "DeepL — перевод", s.deepl != nil, ""},
 		{"gemma", "Судья матча (Polza AI)", s.cfg.TranslationGameAIKey != "", s.cfg.TranslationGameAIModel},
+		{"speaking", "Говори! — разбор ошибок", s.cfg.SpeakingAIKey != "", s.cfg.SpeakingAIModel},
 		{"quiz", "Генератор тестов", s.cfg.QuizAPIKey != "", s.cfg.QuizModel},
 		{"feed", "Вукоток — тексты", s.cfg.FeedAIKey != "", s.cfg.FeedAIModel},
 		{"embedding", "Вукоток — подбор", s.cfg.FeedEmbeddingKey != "", s.cfg.FeedEmbeddingModel},

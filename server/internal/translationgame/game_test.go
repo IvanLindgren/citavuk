@@ -48,8 +48,8 @@ func TestEmptyDirectionStaysSerbian(t *testing.T) {
 // фраза означала бы, что кто-то перевёл сербский список вместо своего.
 func TestBanksDoNotShareSentences(t *testing.T) {
 	for level, bank := range russianSentences {
-		if len(bank) != 15 {
-			t.Fatalf("%s: %d русских фраз вместо 15", level, len(bank))
+		if len(bank) < 45 {
+			t.Fatalf("%s: только %d русских фраз", level, len(bank))
 		}
 		for _, text := range bank {
 			for _, serbian := range serbianSentences[level] {

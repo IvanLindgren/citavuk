@@ -154,7 +154,10 @@ func (s *Server) handleDailySet(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if len(words) > 0 {
-			set, err = s.store.SaveDailySet(r.Context(), user.ID, now, level.Level, words)
+			// Короткую запись уже подобранных слов завершаем даже при закрытии окна.
+			saveCtx, cancelSave := context.WithTimeout(context.WithoutCancel(r.Context()), 5*time.Second)
+			set, err = s.store.SaveDailySet(saveCtx, user.ID, now, level.Level, words)
+			cancelSave()
 			if err != nil {
 				slog.Error("сохранение набора дня", "err", err)
 				writeError(w, http.StatusInternalServerError, codeInternal,
@@ -182,7 +185,7 @@ func (s *Server) handleDailySet(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// handleDailyLesson просит Gemma написать текст с сегодняшними словами.
+// handleDailyLesson просит языковую модель написать текст с сегодняшними словами.
 func (s *Server) handleDailyLesson(w http.ResponseWriter, r *http.Request) {
 	user := userFrom(r.Context())
 	now := time.Now()
@@ -215,32 +218,44 @@ func (s *Server) handleDailyLesson(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
-	ctx, cancel := context.WithTimeout(r.Context(), 70*time.Second)
-	defer cancel()
+	// Закрытие окна/потеря мобильной сети не должны уничтожать оплаченный
+	// результат. Повторные запросы одного набора ждут ту же генерацию.
+	result, err, _ := s.dailyLessons.Do(set.ID.String(), func() (any, error) {
+		ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 200*time.Second)
+		defer cancel()
+		current, err := s.store.TodayDailySet(ctx, user.ID, now)
+		if err != nil {
+			return nil, err
+		}
+		if current != nil && current.ID == set.ID && current.Lesson != nil {
+			return *current.Lesson, nil
+		}
+		lesson, err := s.daily.Compose(ctx, set.Level, words)
+		if err != nil {
+			return nil, err
+		}
 
-	lesson, err := s.daily.Compose(ctx, set.Level, words)
+		saved := store.DailyLesson{Title: lesson.Title, Text: lesson.Text}
+		for _, item := range lesson.Exercises {
+			saved.Exercises = append(saved.Exercises, store.DailyExercise{
+				Kind:     item.Kind,
+				Question: item.Question,
+				Options:  item.Options,
+				Answer:   item.Answer,
+				Hint:     item.Hint,
+			})
+		}
+		if err := s.store.SaveDailyLesson(ctx, set.ID, saved); err != nil {
+			return nil, err
+		}
+		return saved, nil
+	})
 	if err != nil {
 		slog.Error("текст дня", "err", err)
-		writeError(w, http.StatusBadGateway, codeUpstream,
-			"Текст не получился. Слова остаются на месте — попробуй позже.")
+		writeError(w, http.StatusBadGateway, codeUpstream, "Текст не получился. Слова остаются на месте — попробуй позже.")
 		return
 	}
-
-	saved := store.DailyLesson{Title: lesson.Title, Text: lesson.Text}
-	for _, item := range lesson.Exercises {
-		saved.Exercises = append(saved.Exercises, store.DailyExercise{
-			Kind:     item.Kind,
-			Question: item.Question,
-			Options:  item.Options,
-			Answer:   item.Answer,
-			Hint:     item.Hint,
-		})
-	}
-	if err := s.store.SaveDailyLesson(r.Context(), set.ID, saved); err != nil {
-		slog.Error("сохранение текста дня", "err", err)
-	}
-
-	writeJSON(w, http.StatusOK, map[string]any{"lesson": saved})
+	writeJSON(w, http.StatusOK, map[string]any{"lesson": result})
 }
 
 type dailyLearnRequest struct {

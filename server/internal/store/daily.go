@@ -41,7 +41,7 @@ type DailyExercise struct {
 	Hint     string   `json:"hint,omitempty"`
 }
 
-// DailyLesson — то, что сочинила Gemma по словам набора.
+// DailyLesson — то, что сочинила языковая модель по словам набора.
 type DailyLesson struct {
 	Title     string          `json:"title"`
 	Text      string          `json:"text"`

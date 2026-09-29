@@ -40,6 +40,9 @@ type User struct {
 	SerbianLevel string
 	// SerbianLevelSource — «declared» (сказал сам) или «test» (прошёл тест).
 	SerbianLevelSource string
+	// SupporterSince — когда сумма оплат через ЮKassa достигла порога; nil у
+	// тех, кто не поддерживал.
+	SupporterSince *time.Time
 }
 
 // NormalizeEmail приводит почту к каноническому виду для сравнения.
@@ -115,8 +118,8 @@ func (s *Store) CreateUser(
 	return u, nil
 }
 
-const userColumns = `id, email, coalesce(password_hash, ''), display_name, sync_rev, is_admin, email_verified_at IS NOT NULL, created_at, serbian_level, serbian_level_source`
-const qualifiedUserColumns = `u.id, u.email, coalesce(u.password_hash, ''), u.display_name, u.sync_rev, u.is_admin, u.email_verified_at IS NOT NULL, u.created_at, u.serbian_level, u.serbian_level_source`
+const userColumns = `id, email, coalesce(password_hash, ''), display_name, sync_rev, is_admin, email_verified_at IS NOT NULL, created_at, serbian_level, serbian_level_source, supporter_since`
+const qualifiedUserColumns = `u.id, u.email, coalesce(u.password_hash, ''), u.display_name, u.sync_rev, u.is_admin, u.email_verified_at IS NOT NULL, u.created_at, u.serbian_level, u.serbian_level_source, u.supporter_since`
 
 func scanUser(row pgx.Row) (*User, error) {
 	var u User
@@ -131,6 +134,7 @@ func scanUser(row pgx.Row) (*User, error) {
 		&u.CreatedAt,
 		&u.SerbianLevel,
 		&u.SerbianLevelSource,
+		&u.SupporterSince,
 	)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, ErrUserNotFound

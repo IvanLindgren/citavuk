@@ -61,9 +61,9 @@ func NewGenerator(apiKey, model, url string) *Generator {
 		apiKey: strings.TrimSpace(apiKey),
 		model:  model,
 		url:    url,
-		// Текст короткий, но модель думает: минуты хватает, две — уже повод
-		// показать слова без текста.
-		client: &http.Client{Timeout: 60 * time.Second},
+		// Недорогой провайдер иногда отвечает дольше минуты. Клиенту лучше
+		// дождаться оплаченного текста, чем потерять его из-за HTTP-таймаута.
+		client: &http.Client{Timeout: 180 * time.Second},
 	}
 }
 
@@ -73,23 +73,15 @@ func (g *Generator) Enabled() bool { return g != nil && g.apiKey != "" }
 // день не должно выглядеть как контрольная.
 const maxExercises = 5
 
-const systemPrompt = `Ты преподаватель сербского языка для русскоязычных.
-
-По списку из десяти сербских слов ты пишешь короткий связный текст на сербском
-и упражнения к нему.
-
-Правила:
-- текст 60–110 слов, все десять слов набора обязаны в нём встретиться;
-- сербский текст кириллицей, уровень не выше указанного;
-- текст бытовой и цельный: маленькая сценка, а не набор предложений про каждое слово;
-- упражнений ровно 4: два "choice" (вопрос по тексту, 4 варианта, answer — точный текст верного варианта),
-  одно "fill" (фраза из текста с пропуском ___, answer — пропущенное слово),
-  одно "translate" (короткая русская фраза, answer — её перевод на сербский);
-- hint — одна фраза-подсказка, зачем это слово или в чём подвох;
-- title — заголовок текста по-сербски, 2–4 слова.
-
-Ответ строго в JSON:
-{"title":"...","text":"...","exercises":[{"kind":"choice","question":"...","options":["...","...","...","..."],"answer":"...","hint":"..."}]}`
+const systemPrompt = `Ты пишешь материалы для русскоязычного ученика сербского.
+Ответь только JSON-объектом с полями title, text, exercises.
+title: 2–4 сербских слова. text: связная бытовая сценка 60–110 слов на
+сербском кириллицей, уровень не выше указанного; используй все 10 слов.
+exercises: ровно 4 объекта, у КАЖДОГО обязательны kind, question, answer, hint.
+Порядок kind: choice, choice, fill, translate. Для choice добавь options из
+4 вариантов, answer равен одному из них. Для fill пропуск обозначь ___,
+answer — слово из текста. Для translate вопрос по-русски, ответ по-сербски.
+Никаких других полей, пояснений или markdown.`
 
 type chatMessage struct {
 	Role    string `json:"role"`
@@ -97,10 +89,11 @@ type chatMessage struct {
 }
 
 type chatRequest struct {
-	Model          string        `json:"model"`
-	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
-	MaxTokens      int           `json:"max_tokens"`
+	Reasoning      map[string]string `json:"reasoning,omitempty"`
+	Model          string            `json:"model"`
+	Messages       []chatMessage     `json:"messages"`
+	Temperature    float64           `json:"temperature,omitempty"`
+	MaxTokens      int               `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
 	} `json:"response_format"`
@@ -108,7 +101,8 @@ type chatRequest struct {
 
 type chatResponse struct {
 	Choices []struct {
-		Message struct {
+		FinishReason string `json:"finish_reason"`
+		Message      struct {
 			Content string `json:"content"`
 		} `json:"message"`
 	} `json:"choices"`
@@ -119,6 +113,15 @@ type chatResponse struct {
 
 // Compose пишет текст с этими словами и упражнения к нему.
 func (g *Generator) Compose(ctx context.Context, level string, words []Word) (*Lesson, error) {
+	lesson, err := g.composeOnce(ctx, level, words)
+	if errors.Is(err, ErrBadAnswer) && ctx.Err() == nil {
+		// Один ограниченный повтор, без сохранения невалидного ответа.
+		return g.composeOnce(ctx, level, words)
+	}
+	return lesson, err
+}
+
+func (g *Generator) composeOnce(ctx context.Context, level string, words []Word) (*Lesson, error) {
 	if !g.Enabled() {
 		return nil, ErrNotConfigured
 	}
@@ -145,8 +148,9 @@ func (g *Generator) Compose(ctx context.Context, level string, words []Word) (*L
 		},
 		// Температура выше, чем у теста: текст должен быть живым, а не
 		// пересказом словаря. Но не настолько, чтобы слова уехали из набора.
-		Temperature: 0.7,
-		MaxTokens:   2000,
+		Temperature: 0,
+		MaxTokens:   4096,
+		Reasoning:   map[string]string{"effort": "low"},
 	}
 	request.ResponseFormat.Type = "json_object"
 
@@ -182,9 +186,17 @@ func (g *Generator) Compose(ctx context.Context, level string, words []Word) (*L
 
 	var parsed chatResponse
 	if err := json.Unmarshal(raw, &parsed); err != nil || len(parsed.Choices) == 0 {
-		return nil, ErrBadAnswer
+		return nil, fmt.Errorf("%w: некорректная оболочка ответа", ErrBadAnswer)
 	}
-	return ParseLesson(parsed.Choices[0].Message.Content)
+	choice := parsed.Choices[0]
+	if choice.FinishReason == "length" {
+		return nil, fmt.Errorf("%w: ответ обрезан лимитом токенов", ErrBadAnswer)
+	}
+	lesson, err := ParseLesson(choice.Message.Content)
+	if err != nil {
+		return nil, fmt.Errorf("%w (finish_reason=%s, bytes=%d)", err, choice.FinishReason, len(choice.Message.Content))
+	}
+	return lesson, nil
 }
 
 // ParseLesson достаёт урок из ответа модели.
@@ -197,17 +209,17 @@ func ParseLesson(content string) (*Lesson, error) {
 	start := strings.Index(text, "{")
 	end := strings.LastIndex(text, "}")
 	if start < 0 || end <= start {
-		return nil, ErrBadAnswer
+		return nil, fmt.Errorf("%w: JSON-объект отсутствует", ErrBadAnswer)
 	}
 
 	var lesson Lesson
 	if err := json.Unmarshal([]byte(text[start:end+1]), &lesson); err != nil {
-		return nil, ErrBadAnswer
+		return nil, fmt.Errorf("%w: JSON не соответствует схеме урока", ErrBadAnswer)
 	}
 	lesson.Title = trim(lesson.Title, 120)
 	lesson.Text = trim(strings.TrimSpace(lesson.Text), 2000)
 	if lesson.Text == "" {
-		return nil, ErrBadAnswer
+		return nil, fmt.Errorf("%w: пустой текст урока", ErrBadAnswer)
 	}
 	lesson.Exercises = ValidExercises(lesson.Exercises)
 	return &lesson, nil

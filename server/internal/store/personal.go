@@ -143,7 +143,8 @@ func (s *Store) CreatePersonal(ctx context.Context, userID uuid.UUID, profile pe
 	}
 	defer tx.Rollback(ctx)
 	var lock uuid.UUID
-	if err = tx.QueryRow(ctx, `SELECT id FROM users WHERE id=$1 FOR UPDATE`, userID).Scan(&lock); err != nil {
+	// Совместимо с FK-проверками study_events: id пользователя не меняется.
+	if err = tx.QueryRow(ctx, `SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE`, userID).Scan(&lock); err != nil {
 		return uuid.Nil, err
 	}
 	p, err := scanPersonal(tx.QueryRow(ctx, `SELECT `+personalColumns+` FROM personal_plans WHERE user_id=$1 ORDER BY created_at DESC,id DESC LIMIT 1`, userID))
@@ -346,12 +347,14 @@ func (s *Store) RegeneratePersonal(ctx context.Context, userID, id uuid.UUID, fe
 }
 
 func (s *Store) RetryPersonal(ctx context.Context, userID, id uuid.UUID) error {
-	tag, err := s.Pool.Exec(ctx, `UPDATE personal_plans SET status='queued',attempts=0,retries=retries+1,error='',lease_until=NULL,lease_token=NULL,updated_at=now() WHERE id=$1 AND user_id=$2 AND status='error' AND retries<3`, id, userID)
+	// Повтор теперь берёт готовые карты из общей коллекции и не тратит деньги
+	// на модель, поэтому прежний лимит в три нажатия больше не нужен.
+	tag, err := s.Pool.Exec(ctx, `UPDATE personal_plans SET status='queued',attempts=0,retries=retries+1,error='',lease_until=NULL,lease_token=NULL,updated_at=now() WHERE id=$1 AND user_id=$2 AND status='error'`, id, userID)
 	if err != nil {
 		return err
 	}
 	if tag.RowsAffected() == 0 {
-		return ErrPersonalLimit
+		return ErrPersonalConflict
 	}
 	return nil
 }

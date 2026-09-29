@@ -1,6 +1,70 @@
 package daily
 
-import "testing"
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+	"time"
+)
+
+func TestComposeRetriesInvalidFormat(t *testing.T) {
+	calls := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		var req chatRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			t.Error(err)
+		}
+		if req.MaxTokens < 4096 || req.Reasoning["effort"] != "low" {
+			t.Error("неверные ограничения генерации")
+		}
+		content := `{"title":"Јутро","text":"Ана чита књигу.","exercises":[]}`
+		if calls == 1 {
+			content = "invalid"
+		}
+		json.NewEncoder(w).Encode(map[string]any{"choices": []any{map[string]any{"finish_reason": "stop", "message": map[string]string{"content": content}}}})
+	}))
+	defer srv.Close()
+	result, err := NewGenerator("test", "test", srv.URL).Compose(t.Context(), "A1", []Word{{Lemma: "књига"}})
+	if err != nil || result == nil || calls != 2 {
+		t.Fatalf("calls=%d err=%v", calls, err)
+	}
+}
+
+func TestComposeRejectsTruncatedJSONAndBoundsRetries(t *testing.T) {
+	calls := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		json.NewEncoder(w).Encode(map[string]any{"choices": []any{map[string]any{"finish_reason": "length", "message": map[string]string{"content": `{"text":"обрезано"}`}}}})
+	}))
+	defer srv.Close()
+	_, err := NewGenerator("test", "test", srv.URL).Compose(t.Context(), "A1", []Word{{Lemma: "књига"}})
+	if !errors.Is(err, ErrBadAnswer) || calls != 2 {
+		t.Fatalf("calls=%d err=%v", calls, err)
+	}
+}
+
+func TestDailyLunaLive(t *testing.T) {
+	key := os.Getenv("CITAVUK_DAILY_LIVE_KEY")
+	if key == "" {
+		t.Skip("явный ключ для платной проверки не задан")
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 200*time.Second)
+	defer cancel()
+	words := []Word{{Lemma: "кућа"}, {Lemma: "књига"}, {Lemma: "вода"}, {Lemma: "дан"}, {Lemma: "град"}, {Lemma: "хлеб"}, {Lemma: "читати"}, {Lemma: "добар"}, {Lemma: "друг"}, {Lemma: "школа"}}
+	lesson, err := NewGenerator(key, "deepseek/deepseek-v4-flash-0731", "https://api.polza.ai/api/v1/chat/completions").Compose(ctx, "A1", words)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(lesson.Exercises) != 4 {
+		t.Fatalf("заданий: %d", len(lesson.Exercises))
+	}
+	t.Logf("валидный урок: %d символов, %d упражнений", len([]rune(lesson.Text)), len(lesson.Exercises))
+}
 
 func TestParseLessonAcceptsFencedJSON(t *testing.T) {
 	// Модель просили отвечать чистым JSON, но она регулярно оборачивает его в

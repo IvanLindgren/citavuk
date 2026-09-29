@@ -87,7 +87,7 @@ type translationGameJudgeRequest struct {
 
 func (s *Server) handleTranslationGameJudge(w http.ResponseWriter, r *http.Request) {
 	if !s.translationGame.Enabled() {
-		writeError(w, http.StatusServiceUnavailable, "judge_disabled", "Оценка Gemma 4 сейчас недоступна. Можно оценить раунд самостоятельно.")
+		writeError(w, http.StatusServiceUnavailable, "judge_disabled", "ИИ-судья сейчас недоступен. Можно оценить раунд самостоятельно.")
 		return
 	}
 	var req translationGameJudgeRequest
@@ -101,9 +101,9 @@ func (s *Server) handleTranslationGameJudge(w http.ResponseWriter, r *http.Reque
 		case errors.Is(err, translationgame.ErrInvalidEntries):
 			writeError(w, http.StatusBadRequest, "invalid_entries", "Заполните все пять переводов перед оценкой.")
 		case errors.Is(err, translationgame.ErrBadAnswer):
-			writeError(w, http.StatusBadGateway, "judge_bad_answer", "Gemma 4 не смогла оценить этот раунд. Попробуйте ещё раз или оцените сами.")
+			writeError(w, http.StatusBadGateway, "judge_bad_answer", "ИИ-судья не смог оценить этот раунд. Попробуй ещё раз или оцени сам.")
 		default:
-			writeError(w, http.StatusBadGateway, "judge_failed", "Gemma 4 сейчас не ответила. Попробуйте ещё раз или оцените сами.")
+			writeError(w, http.StatusBadGateway, "judge_failed", "ИИ-судья сейчас не ответил. Попробуй ещё раз или оцени сам.")
 		}
 		return
 	}

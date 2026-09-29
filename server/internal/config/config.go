@@ -70,6 +70,17 @@ type Config struct {
 	YandexClientSecret string
 	YandexRedirectURI  string
 
+	// ЮKassa принимает поддержку проекта. Без ключей форма оплаты выключена.
+	YooKassaShopID string
+	YooKassaSecret string
+	// YooKassaTestPayers — почты аккаунтов, которым тестовый магазин открыт
+	// наравне с администраторами: проверяющие ЮKassa проходят оплату сами.
+	YooKassaTestPayers []string
+
+	// SupporterMediaDir — каталог аудио закрытой библиотеки. Относительный путь
+	// считается от рабочего каталога сервиса (/opt/citavuk на VPS).
+	SupporterMediaDir string
+
 	// Resend отправляет письма подтверждения для парольной регистрации.
 	ResendAPIKey         string
 	EmailFrom            string
@@ -116,11 +127,17 @@ type Config struct {
 	QuizURL    string
 
 	// TranslationGameAI* — судья игры «Ты против переводчика». Отдельная
-	// модель не зависит от модели Вукотока и всегда по умолчанию использует
-	// Gemma 4 через тот же серверный ключ Polza AI.
+	// модель не зависит от модели Вукотока, но использует тот же ключ Polza AI.
 	TranslationGameAIKey   string
 	TranslationGameAIModel string
 	TranslationGameAIURL   string
+
+	// SpeakingAI* — разбор ошибок в игре «Говори!». Та же модель и тот же
+	// ключ Polza AI, что у остальных текстовых вызовов.
+	SpeakingAIKey       string
+	SpeakingAIModel     string
+	SpeakingAIURL       string
+	SpeakingAIReasoning string
 
 	// DailyAI* — текст «На каждый день»: короткий рассказ с десятью словами
 	// набора и упражнениями к нему. Ключ по умолчанию тот же, что у остальных
@@ -220,7 +237,7 @@ func Load(envPath string) (*Config, error) {
 		S3SecretKey:        strings.TrimSpace(os.Getenv("S3_SECRET_ACCESS_KEY")),
 		PublicMediaBaseURL: strings.TrimRight(strings.TrimSpace(os.Getenv("PUBLIC_MEDIA_BASE_URL")), "/"),
 		QuizAPIKey:         firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "google/gemma-4-31b-it"),
+		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -229,16 +246,27 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_TRANSLATION_GAME_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		TranslationGameAIModel: envOr(
-			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "google/gemma-4-31b-it",
+			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
 		),
 		TranslationGameAIURL: envOr(
 			"CITAVUK_TRANSLATION_GAME_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
+		SpeakingAIKey: firstEnv(
+			"CITAVUK_SPEAKING_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		SpeakingAIModel: envOr(
+			"CITAVUK_SPEAKING_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
+		),
+		SpeakingAIURL: envOr(
+			"CITAVUK_SPEAKING_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
+		SpeakingAIReasoning: envOr("CITAVUK_SPEAKING_AI_REASONING", "low"),
 		DailyAIKey: firstEnv(
 			"CITAVUK_DAILY_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
-		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "google/gemma-4-31b-it"),
+		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		DailyAIURL: envOr(
 			"CITAVUK_DAILY_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -247,7 +275,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_DEFINITION_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		DefinitionAIModel: envOr(
-			"CITAVUK_DEFINITION_AI_MODEL", "google/gemini-3.7-flash",
+			"CITAVUK_DEFINITION_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
 		),
 		DefinitionAIURL: envOr(
 			"CITAVUK_DEFINITION_AI_URL",
@@ -258,7 +286,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_FORM_HINT_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		FormHintAIModel: envOr(
-			"CITAVUK_FORM_HINT_AI_MODEL", "google/gemini-3.7-flash",
+			"CITAVUK_FORM_HINT_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
 		),
 		FormHintAIURL: envOr(
 			"CITAVUK_FORM_HINT_AI_URL",
@@ -269,14 +297,14 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_PHOTO_SCAN_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		PhotoScanModel: envOr(
-			"CITAVUK_PHOTO_SCAN_MODEL", "google/gemini-3.7-flash",
+			"CITAVUK_PHOTO_SCAN_MODEL", "openai/gpt-6-luna-pro",
 		),
 		PhotoScanURL: envOr(
 			"CITAVUK_PHOTO_SCAN_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "google/gemma-4-26b-a4b-it"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
 			"https://polza.ai/api/v1/chat/completions",
@@ -299,7 +327,11 @@ func Load(envPath string) (*Config, error) {
 			"YANDEX_REDIRECT_URI",
 			"https://api.citavuk.ru/v1/auth/yandex/callback",
 		),
-		ResendAPIKey: strings.TrimSpace(os.Getenv("RESEND_API_KEY")),
+		YooKassaShopID:     strings.TrimSpace(os.Getenv("YOOKASSA_SHOP_ID")),
+		YooKassaSecret:     strings.TrimSpace(os.Getenv("YOOKASSA_SECRET_KEY")),
+		YooKassaTestPayers: splitList(os.Getenv("YOOKASSA_TEST_PAYERS")),
+		SupporterMediaDir:  envOr("CITAVUK_SUPPORTER_MEDIA_DIR", "supporter-media"),
+		ResendAPIKey:       strings.TrimSpace(os.Getenv("RESEND_API_KEY")),
 		EmailFrom: envOr(
 			"CITAVUK_EMAIL_FROM",
 			"Читавук <noreply@citavuk.ru>",

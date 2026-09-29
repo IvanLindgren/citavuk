@@ -17,7 +17,7 @@ import (
 )
 
 const Days = 30
-const Model = "qwen/qwen3.8-flash"
+const Model = "deepseek/deepseek-v4-flash-0731"
 
 var ErrInvalid = errors.New("некорректный урок или анкета")
 

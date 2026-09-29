@@ -96,10 +96,11 @@ type chatMessage struct {
 }
 
 type chatRequest struct {
-	Model          string        `json:"model"`
-	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
-	MaxTokens      int           `json:"max_tokens"`
+	Model          string            `json:"model"`
+	Messages       []chatMessage     `json:"messages"`
+	Temperature    float64           `json:"temperature,omitempty"`
+	Reasoning      map[string]string `json:"reasoning,omitempty"`
+	MaxTokens      int               `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
 	} `json:"response_format"`
@@ -157,6 +158,7 @@ func (s *Scanner) ask(ctx context.Context, image []byte, mime string) (string, e
 		// Страница тетради — это тысячи знаков, и обрезанный на середине текст
 		// человек унесёт в книгу, не заметив пропажи.
 		MaxTokens: 8000,
+		Reasoning: map[string]string{"effort": "medium"},
 	}
 	request.ResponseFormat.Type = "json_object"
 

@@ -141,10 +141,11 @@ type chatMessage struct {
 }
 
 type chatRequest struct {
-	Model          string        `json:"model"`
-	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
-	MaxTokens      int           `json:"max_tokens"`
+	Model          string            `json:"model"`
+	Messages       []chatMessage     `json:"messages"`
+	Temperature    float64           `json:"temperature,omitempty"`
+	Reasoning      map[string]string `json:"reasoning,omitempty"`
+	MaxTokens      int               `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
 	} `json:"response_format"`
@@ -231,8 +232,9 @@ SOURCE TEXT:
 			{Role: "system", Content: SystemPrompt},
 			{Role: "user", Content: userPrompt},
 		},
-		Temperature: .25,
+		Temperature: 0,
 		MaxTokens:   2400,
+		Reasoning:   map[string]string{"effort": "low"},
 	}
 	request.ResponseFormat.Type = "json_object"
 	var response chatResponse

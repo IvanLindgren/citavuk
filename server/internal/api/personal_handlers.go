@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/citavuk/server/internal/personal"
@@ -55,16 +56,30 @@ func (s *Server) handlePersonalLatest(w http.ResponseWriter, r *http.Request) {
 		personalError(w, err)
 		return
 	}
-	writeJSON(w, 200, map[string]any{"available": s.personal.Enabled(), "questions": personal.Questions, "plan": p, "history": history})
-}
-func (s *Server) handlePersonalCreate(w http.ResponseWriter, r *http.Request) {
-	if !s.personal.Enabled() {
-		writeError(w, 503, "unavailable", "Составление уроков сейчас недоступно.")
+	level := "A1"
+	if p != nil {
+		level = p.Profile.Level
+	}
+	available, err := s.store.SharedPersonalAvailable(r.Context(), level)
+	if err != nil {
+		personalError(w, err)
 		return
 	}
+	writeJSON(w, 200, map[string]any{"available": available, "questions": personal.Questions, "plan": p, "history": history})
+}
+func (s *Server) handlePersonalCreate(w http.ResponseWriter, r *http.Request) {
 	var p personal.Profile
 	if decodeJSON(w, r, &p, 16<<10) != nil {
 		personalError(w, personal.ErrInvalid)
+		return
+	}
+	available, err := s.store.SharedPersonalAvailable(r.Context(), p.Level)
+	if err != nil {
+		personalError(w, err)
+		return
+	}
+	if !available {
+		writeError(w, 503, "unavailable", "Колода пока недоступна. Попробуй чуть позже.")
 		return
 	}
 	id, err := s.store.CreatePersonal(r.Context(), userFrom(r.Context()).ID, p)
@@ -166,10 +181,6 @@ func (s *Server) handlePersonalRegenerate(w http.ResponseWriter, r *http.Request
 		personalError(w, err)
 		return
 	}
-	if !s.personal.Enabled() {
-		writeError(w, 503, "unavailable", "Составление уроков сейчас недоступно.")
-		return
-	}
 	var in struct {
 		Feedback string `json:"feedback"`
 	}
@@ -187,10 +198,6 @@ func (s *Server) handlePersonalRetry(w http.ResponseWriter, r *http.Request) {
 	id, _, err := personalPath(r)
 	if err != nil {
 		personalError(w, err)
-		return
-	}
-	if !s.personal.Enabled() {
-		writeError(w, 503, "unavailable", "Составление уроков сейчас недоступно.")
 		return
 	}
 	if err = s.store.RetryPersonal(r.Context(), userFrom(r.Context()).ID, id); err != nil {
@@ -233,23 +240,51 @@ func (s *Server) runPersonalJobs() {
 		case <-ctx.Done():
 		}
 	}()
-	ticker := time.NewTicker(10 * time.Second)
-	defer ticker.Stop()
+	retrySeed := time.NewTicker(10 * time.Second)
+	defer retrySeed.Stop()
 	for {
+		added, err := s.store.SeedPersonalSharedFromRoadmap(ctx)
+		if err == nil {
+			_, err = s.store.RequeueIncompletePersonal(ctx)
+		}
+		if err == nil {
+			slog.Info("общая коллекция уроков готова", "changed", added)
+			break
+		}
+		slog.Error("общая коллекция уроков", "err", err)
 		select {
 		case <-ctx.Done():
 			return
-		case <-ticker.C:
+		case <-retrySeed.C:
 		}
-		if !s.personal.Enabled() || s.store == nil || s.store.Pool == nil {
-			continue
-		}
+	}
+	// Подбор из готовых карт короткий и не вызывает модель. Четыре
+	// исполнителя разгружают наплыв аккаунтов без роста AI-расходов.
+	var workers sync.WaitGroup
+	for range 4 {
+		workers.Add(1)
+		go func() {
+			defer workers.Done()
+			s.personalPoolWorker(ctx)
+		}()
+	}
+	workers.Wait()
+}
+
+func (s *Server) personalPoolWorker(ctx context.Context) {
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	for ctx.Err() == nil {
 		job, err := s.store.ClaimPersonal(ctx)
 		if err != nil {
 			slog.Error("очередь персональных уроков", "err", err)
-			continue
 		}
-		if job == nil {
+		if err != nil || job == nil {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+			}
 			continue
 		}
 		err = s.generatePersonal(ctx, job)
@@ -257,7 +292,7 @@ func (s *Server) runPersonalJobs() {
 			return
 		}
 		if err != nil && !errors.Is(err, store.ErrPersonalLease) {
-			slog.Warn("генерация персональных уроков прервана", "plan", job.ID, "err", err)
+			slog.Warn("подбор общей колоды прерван", "plan", job.ID, "err", err)
 		}
 		if finishErr := s.store.FinishPersonalJob(ctx, job, err != nil); finishErr != nil && !errors.Is(finishErr, store.ErrPersonalLease) {
 			slog.Error("сохранение статуса колоды", "err", finishErr)
@@ -301,30 +336,5 @@ func (s *Server) generatePersonalContent(ctx context.Context, job *store.Persona
 	if err := job.Profile.Validate(); err != nil {
 		return err
 	}
-	if len(job.Outline) == 0 {
-		outline, err := s.personal.Outline(ctx, job.Profile)
-		if err != nil {
-			return err
-		}
-		if err = s.store.SavePersonalOutline(ctx, job, outline); err != nil {
-			return err
-		}
-	}
-	days, err := s.store.PersonalJobDays(ctx, job)
-	if err != nil {
-		return err
-	}
-	return personal.GenerateDays(ctx, days, func(ctx context.Context, day int) error {
-		started := time.Now()
-		lesson, err := s.personal.Lesson(ctx, job.Profile, job.Outline, day, job.Feedback)
-		if err != nil {
-			slog.Warn("карта урока не составлена", "plan", job.ID, "day", day, "model", personal.Model, "seconds", int(time.Since(started).Seconds()), "err", err)
-			return err
-		}
-		if err := s.store.SavePersonalGenerated(ctx, job, day, lesson); err != nil {
-			return err
-		}
-		slog.Info("карта урока сохранена", "plan", job.ID, "day", day, "model", personal.Model, "seconds", int(time.Since(started).Seconds()))
-		return nil
-	})
+	return s.store.FillPersonalFromShared(ctx, job)
 }

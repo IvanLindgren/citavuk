@@ -31,6 +31,89 @@ func newTestUser(t *testing.T, s *Store) *User {
 	return u
 }
 
+func TestReaderQuoteSyncAndDeletion(t *testing.T) {
+	s := testStore(t)
+	u := newTestUser(t, s)
+	ctx := context.Background()
+	now := time.Now().UTC().Truncate(time.Millisecond)
+	bookID, quoteID := uuid.New(), uuid.New()
+	first, err := s.Push(ctx, u.ID, &Changes{
+		Books:  []Book{{ID: bookID, Title: "Книга", UpdatedAt: now}},
+		Quotes: []ReaderQuote{{ID: quoteID, BookID: bookID, Page: 2, Paragraph: 1, Start: 3, End: 14, Text: "добар дан", UpdatedAt: now}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	pulled, err := s.Pull(ctx, u.ID, 0, 500)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(pulled.Quotes) != 1 || pulled.Quotes[0].Text != "добар дан" || pulled.Quotes[0].BookID != bookID {
+		t.Fatalf("цитата не дошла: %+v", pulled.Quotes)
+	}
+	if _, err = s.Push(ctx, u.ID, &Changes{Quotes: []ReaderQuote{{ID: quoteID, BookID: bookID, Page: 2, Paragraph: 1, Start: 3, End: 14, Text: "добар дан", Deleted: true, UpdatedAt: now.Add(time.Second)}}}); err != nil {
+		t.Fatal(err)
+	}
+	pulled, err = s.Pull(ctx, u.ID, first, 500)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(pulled.Quotes) != 1 || !pulled.Quotes[0].Deleted {
+		t.Fatalf("удаление не дошло: %+v", pulled.Quotes)
+	}
+}
+
+func TestReaderQuoteColorSync(t *testing.T) {
+	s := testStore(t)
+	u := newTestUser(t, s)
+	ctx := context.Background()
+	now := time.Now().UTC().Truncate(time.Millisecond)
+	bookID, quoteID := uuid.New(), uuid.New()
+	quote := ReaderQuote{ID: quoteID, BookID: bookID, Page: 0, Paragraph: 0, Start: 0, End: 5, Text: "Zdravo", Color: "yellow", UpdatedAt: now}
+	if _, err := s.Push(ctx, u.ID, &Changes{Books: []Book{{ID: bookID, Title: "Книга", UpdatedAt: now}}, Quotes: []ReaderQuote{quote}}); err != nil {
+		t.Fatal(err)
+	}
+	color := func() string {
+		pulled, err := s.Pull(ctx, u.ID, 0, 500)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(pulled.Quotes) != 1 {
+			t.Fatalf("выделений: %d", len(pulled.Quotes))
+		}
+		return pulled.Quotes[0].Color
+	}
+	if got := color(); got != "yellow" {
+		t.Fatalf("цвет не дошёл: %q", got)
+	}
+
+	quote.Color, quote.UpdatedAt = "red", now.Add(time.Second)
+	if _, err := s.Push(ctx, u.ID, &Changes{Quotes: []ReaderQuote{quote}}); err != nil {
+		t.Fatal(err)
+	}
+	if got := color(); got != "red" {
+		t.Fatalf("смена цвета не дошла: %q", got)
+	}
+
+	// Старое устройство с прежним цветом не перетирает более новый.
+	quote.Color, quote.UpdatedAt = "green", now
+	if _, err := s.Push(ctx, u.ID, &Changes{Quotes: []ReaderQuote{quote}}); err != nil {
+		t.Fatal(err)
+	}
+	if got := color(); got != "red" {
+		t.Fatalf("устаревшая правка победила: %q", got)
+	}
+
+	// Незнакомый цвет от будущего клиента превращается в подчёркивание.
+	quote.Color, quote.UpdatedAt = "ultraviolet", now.Add(2*time.Second)
+	if _, err := s.Push(ctx, u.ID, &Changes{Quotes: []ReaderQuote{quote}}); err != nil {
+		t.Fatal(err)
+	}
+	if got := color(); got != "" {
+		t.Fatalf("незнакомый цвет должен стать подчёркиванием: %q", got)
+	}
+}
+
 func TestPushThenPullReturnsEverything(t *testing.T) {
 	s := testStore(t)
 	u := newTestUser(t, s)

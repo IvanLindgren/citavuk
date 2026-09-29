@@ -66,17 +66,23 @@ GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build \
     -ldflags "-s -w -X github.com/citavuk/server/internal/api.Version=$VERSION" \
     -o /tmp/citavukd ./cmd/citavukd
 ls -lh /tmp/citavukd
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build \
+    -trimpath -ldflags "-s -w" -o /tmp/citavuk-personalpool ./cmd/personalpool
 
 echo "==> Загрузка"
 # Файл кладётся рядом и переименовывается: замена работающего бинарника на
 # месте оборвала бы текущие запросы на середине.
 scp_put /tmp/citavukd "$REMOTE_DIR/citavukd.new"
+scp_put /tmp/citavuk-personalpool "$REMOTE_DIR/personalpool.new"
 
 echo "==> Перезапуск"
 ssh_run "set -e
     mv $REMOTE_DIR/citavukd.new $REMOTE_DIR/citavukd
     chmod 755 $REMOTE_DIR/citavukd
     chown citavuk:citavuk $REMOTE_DIR/citavukd
+    mv $REMOTE_DIR/personalpool.new $REMOTE_DIR/personalpool
+    chmod 755 $REMOTE_DIR/personalpool
+    chown citavuk:citavuk $REMOTE_DIR/personalpool
     sudo -u citavuk $REMOTE_DIR/citavukd -env $REMOTE_DIR/.env -migrate-only
     systemctl restart citavuk-api
     sleep 2

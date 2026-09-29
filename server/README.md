@@ -74,6 +74,7 @@ go test -p 1 ./...
 | `YANDEX_CLIENT_ID` | — | идентификатор OAuth-приложения Яндекса |
 | `YANDEX_CLIENT_SECRET` | — | секрет Яндекса; хранится только на сервере |
 | `YANDEX_REDIRECT_URI` | `https://api.citavuk.ru/v1/auth/yandex/callback` | точный callback из настроек Яндекса |
+| `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY` | — | магазин ЮKassa для поддержки проекта; без них оплата выключена |
 | `RESEND_API_KEY` | — | отправка писем подтверждения |
 | `CITAVUK_EMAIL_FROM` | `Читавук <noreply@citavuk.ru>` | подтверждённый отправитель Resend |
 | `CITAVUK_WEB_URL` | `https://citavuk.ru` | база ссылки из письма и OAuth-возврата |
@@ -277,6 +278,28 @@ ID аккаунта, публичные — по IP. Счётчики распр
 нельзя: заголовок «X-Forwarded-For: 1.2.3.4» выдавал бы новое ведро токенов на
 каждый запрос и обнулял и лимит гостя, и защиту от перебора паролей.
 
+## Поддержка проекта
+
+| Метод | Доступ | Что делает |
+| --- | --- | --- |
+| `POST /v1/donations` | гость или аккаунт | создаёт платёж ЮKassa, отдаёт `confirmationUrl` |
+| `GET /v1/donations/{id}` | все | статус для страницы благодарности |
+| `POST /v1/donations/yookassa` | ЮKassa | уведомление; статус перезапрашивается у API |
+| `GET /v1/supporters` | все | имена поддержавших от 200 ₽, без сумм |
+| `GET /v1/admin/donations?month=` | админ | платежи месяца для чеков «Мой налог» |
+| `POST /v1/admin/donations/manual` | админ | внести поддержку мимо ЮKassa |
+| `GET /v1/donations/availability` | все | открыта ли оплата этому посетителю (тестовый магазин — только админам) |
+| `GET /v1/supporter-library` | друзья | книги и подкасты закрытой библиотеки без текстов |
+| `GET /v1/supporter-library/{id}` | друзья | запись с текстом книги или расшифровкой |
+| `GET /v1/supporter-library/{id}/audio` | друзья | аудио подкаста, с Range |
+| `GET/POST/PUT/DELETE /v1/admin/supporter-library…` | админ | правка закрытой библиотеки |
+| `PUT /v1/admin/supporter-library/{id}/audio?offset=&final=` | админ | аудио частями до 24 МБ |
+| `GET /v1/games/cases/access` | все | открыта ли игра на падежи (ранний доступ друзьям) |
+| `POST /v1/games/cases/results` | аккаунт | итог партии; продлевает серию |
+| `GET /v1/games/cases/results` | аккаунт | последние партии для профиля |
+
+Подробно — [docs/yookassa.md](../docs/yookassa.md).
+
 ## Авторские уроки преподавателей
 
 Миграция `0010_teacher_lessons.sql` хранит заявки, публичные профили, стабильные
@@ -341,6 +364,18 @@ Let's Encrypt выпущен, HTTP редиректит на HTTPS, продле
 расшифровки Groq Whisper с пословными таймингами. RSS-описание никогда не
 превращается в реплики. Эпизод без готового JSON возвращается с пустыми
 `cues` и без `transcript_url`.
+
+`POST /v1/audio/transcribe` — авторизованный multipart-вход для локальной
+аудиотеки. Тело до 50 МиБ проксируется во внутренний Python
+`/audio/transcribe-file`; Go не сохраняет его. Python сначала вызывает Groq
+`whisper-large-v3-turbo`, проверяет метрики качества ответа и при сбое/плохом
+результате повторяет распознавание через Aiesa `aiesa/transcribe` в Polza.ai.
+Перед запросом длинные MP3 режутся по кадрам, а M4A/WAV/OGG перекодируются
+ffmpeg в небольшие моно-фрагменты; сервер затем сдвигает и объединяет их
+таймкоды. Оба пути возвращают сербский, говорящих и пословные таймкоды;
+локально клиент сохраняет результат только после подтверждения языка. Нужны
+`GROQ_AUDIO_TRANSCRIPTION_KEY` и `POLZA_AUDIO_TRANSCRIPTION_KEY` на Python
+Space (допустимы общие `GROQ_API_KEY`/`POLZA_AI_KEY`).
 
 Порт на Go имеет смысл делать по одному разделу, и первым — новости: они не
 требуют моделей и укладываются в стандартную библиотеку. Разбор CLASSLA

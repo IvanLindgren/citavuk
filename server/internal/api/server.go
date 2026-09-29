@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"golang.org/x/sync/singleflight"
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
@@ -16,13 +17,14 @@ import (
 	"github.com/citavuk/server/internal/formhint"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
-	"github.com/citavuk/server/internal/personal"
 	"github.com/citavuk/server/internal/photoscan"
 	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
+	"github.com/citavuk/server/internal/speaking"
 	"github.com/citavuk/server/internal/store"
 	"github.com/citavuk/server/internal/translate"
 	"github.com/citavuk/server/internal/translationgame"
+	"github.com/citavuk/server/internal/yookassa"
 )
 
 // Version подставляется при сборке через -ldflags.
@@ -43,11 +45,13 @@ type Server struct {
 	documentHTTP    *http.Client
 	quiz            *quiz.Generator
 	daily           *daily.Generator
-	personal        *personal.Generator
+	dailyLessons    singleflight.Group
 	podcasts        *podcast.Service
 	media           *media.Service
 	microFeed       *feed.Generator
 	translationGame *translationgame.Judge
+	speaking        speechReviewer
+	speakingCatalog *speaking.Catalog
 	feedSources     *feed.SourceFetcher
 	dictionary      definitionLookup
 	explainer       wordExplainer
@@ -55,6 +59,7 @@ type Server struct {
 	formHint        formHinter
 	formHints       formHintCache
 	photoScan       photoScanner
+	yookassa        *yookassa.Client
 
 	authLimit            *limiter
 	anonTranslateLimit   *limiter
@@ -65,6 +70,7 @@ type Server struct {
 	quizLimit            *limiter
 	documentFetchLimit   *limiter
 	photoScanLimit       *limiter
+	audioTranscribeLimit *limiter
 	// Последние ответы с ошибкой: живой журнал админки. В базе лежат только
 	// аварии, а разобраться в жалобе «у меня не работает» помогают как раз
 	// отказы клиенту.
@@ -84,6 +90,10 @@ func New(
 		AccessKey: cfg.S3AccessKey, SecretKey: cfg.S3SecretKey,
 		PublicBaseURL: cfg.PublicMediaBaseURL,
 	})
+	if err != nil {
+		return nil, err
+	}
+	catalog, err := speaking.Load()
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +137,6 @@ func New(
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
-		personal:     personal.New(cfg.DailyAIKey, cfg.DailyAIURL),
 		daily: daily.NewGenerator(
 			cfg.DailyAIKey, cfg.DailyAIModel, cfg.DailyAIURL,
 		),
@@ -136,8 +145,13 @@ func New(
 			cfg.TranslationGameAIModel,
 			cfg.TranslationGameAIURL,
 		),
+		speakingCatalog: catalog,
+		speaking: speaking.NewReviewer(
+			cfg.SpeakingAIKey, cfg.SpeakingAIModel, cfg.SpeakingAIURL, cfg.SpeakingAIReasoning,
+		),
 		podcasts: podcast.New(),
 		media:    mediaService,
+		yookassa: yookassa.New(cfg.YooKassaShopID, cfg.YooKassaSecret),
 		microFeed: feed.NewGenerator(
 			cfg.FeedAIKey, cfg.FeedAIModel, cfg.FeedAIURL,
 			cfg.FeedEmbeddingKey, cfg.FeedEmbeddingModel, cfg.FeedEmbeddingURL,
@@ -199,8 +213,11 @@ func New(
 		// общий: десяток кадров в минуту — это уже быстрее, чем человек
 		// успевает навести телефон.
 		photoScanLimit: newLimiter("photo_scan", 12, 4, redisClient),
-		errors:         newRecentErrors(400),
-		stop:           make(chan struct{}),
+		// Расшифровка отправляет до 48 МБ во внешние STT-провайдеры. Один пользователь
+		// не должен запускать несколько тяжёлых файлов одновременно.
+		audioTranscribeLimit: newLimiter("audio_transcribe", 2, 1, redisClient),
+		errors:               newRecentErrors(400),
+		stop:                 make(chan struct{}),
 	}
 
 	if cfg.UpstreamURL != "" {
@@ -220,6 +237,7 @@ func New(
 	go s.quizLimit.runCleanup(s.stop)
 	go s.documentFetchLimit.runCleanup(s.stop)
 	go s.photoScanLimit.runCleanup(s.stop)
+	go s.audioTranscribeLimit.runCleanup(s.stop)
 	go s.purgeSessionsPeriodically()
 	go s.sweepDuelPeriodically()
 	go s.runPersonalJobs()
@@ -470,6 +488,7 @@ func (s *Server) Handler() http.Handler {
 	// тайминги реплик там выдумывались пропорционально длине текста.
 	mux.HandleFunc("GET /audio/lessons", s.rateLimit(s.generalLimit, s.handleAudioLessons))
 	mux.HandleFunc("GET /audio/transcript", s.rateLimit(s.generalLimit, s.handleAudioTranscript))
+	mux.HandleFunc("POST /v1/audio/transcribe", s.requireAuth(s.rateLimitIdentity(s.audioTranscribeLimit, s.handleAudioFileTranscribe)))
 
 	// Тесты по материалам. Составление и попытки требуют аккаунта: без него
 	// некому вести статистику, а обращение к модели ещё и стоит денег. Список
@@ -515,6 +534,27 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/admin/lesson-revisions", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonQueue)))
 	mux.HandleFunc("POST /v1/admin/lesson-revisions/{revisionId}/review", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminReviewLesson)))
 	mux.HandleFunc("GET /v1/admin/lesson-reports", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminLessonReports)))
+	mux.HandleFunc("GET /v1/supporter-library", s.requireSupporter(s.rateLimitIdentity(s.generalLimit, s.handleSupporterLibrary)))
+	mux.HandleFunc("GET /v1/supporter-library/{id}", s.requireSupporter(s.rateLimitIdentity(s.generalLimit, s.handleSupporterLibraryItem)))
+	mux.HandleFunc("GET /v1/supporter-library/{id}/audio", s.requireSupporter(s.handleSupporterLibraryAudio))
+	mux.HandleFunc("GET /v1/admin/supporter-library", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminSupporterLibrary)))
+	mux.HandleFunc("POST /v1/admin/supporter-library", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminCreateLibraryItem)))
+	mux.HandleFunc("PUT /v1/admin/supporter-library/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminUpdateLibraryItem)))
+	mux.HandleFunc("DELETE /v1/admin/supporter-library/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDeleteLibraryItem)))
+	mux.HandleFunc("PUT /v1/admin/supporter-library/{id}/audio", s.requireAdmin(s.handleAdminLibraryAudioChunk))
+	mux.HandleFunc("GET /v1/games/cases/access", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleCaseGameAccess)))
+	mux.HandleFunc("POST /v1/games/cases/results", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSaveCaseGameResult)))
+	mux.HandleFunc("GET /v1/games/cases/results", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCaseGameResults)))
+	mux.HandleFunc("GET /v1/games/speaking/access", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleSpeakingAccess)))
+	mux.HandleFunc("GET /v1/games/speaking/topics", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleSpeakingTopics)))
+	mux.HandleFunc("POST /v1/games/speaking/review", s.requireAuth(s.rateLimitIdentity(s.quizLimit, s.handleSpeakingReview)))
+	mux.HandleFunc("GET /v1/donations/availability", s.optionalAuth(s.rateLimit(s.generalLimit, s.handleDonationAvailability)))
+	mux.HandleFunc("POST /v1/donations", s.optionalAuth(s.rateLimitIdentity(s.authLimit, s.handleCreateDonation)))
+	mux.HandleFunc("GET /v1/donations/{id}", s.rateLimit(s.generalLimit, s.handleDonationStatus))
+	mux.HandleFunc("POST /v1/donations/yookassa", s.handleYooKassaNotification)
+	mux.HandleFunc("GET /v1/supporters", s.rateLimit(s.generalLimit, s.handleSupporters))
+	mux.HandleFunc("GET /v1/admin/donations", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDonations)))
+	mux.HandleFunc("POST /v1/admin/donations/manual", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminManualDonation)))
 	mux.HandleFunc("GET /v1/admin/announcements", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminAnnouncements)))
 	mux.HandleFunc("POST /v1/admin/announcements", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleCreateAnnouncement)))
 	mux.HandleFunc("PUT /v1/admin/announcements/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUpdateAnnouncement)))

@@ -118,19 +118,13 @@ func Excerpt(text string, limit int) string {
 // CountRunes считает длину материала в символах.
 func CountRunes(text string) int { return len([]rune(text)) }
 
-const systemPrompt = `Ты преподаватель. По присланному учебному материалу ты составляешь проверочный тест.
-
-Правила:
-- вопросы только по содержанию материала, ничего от себя;
-- каждый вопрос с ровно 4 вариантами ответа, верный ровно один;
-- варианты правдоподобные: неверные должны быть ошибками по существу, а не отпиской;
-- поле explanation объясняет, почему верный вариант верен, со ссылкой на материал;
-- поле wrongHint одной фразой объясняет, в чём ошибаются те, кто выбрал другие варианты;
-- язык вопросов и объяснений — тот же, на котором написан материал;
-- title — короткое название темы, subject — учебный предмет одним-двумя словами.
-
-Ответ строго в JSON:
-{"title":"...","subject":"...","questions":[{"question":"...","options":["...","...","...","..."],"answer":0,"explanation":"...","wrongHint":"..."}]}`
+const systemPrompt = `Ты преподаватель. По присланному материалу составь проверочный тест.
+Вопросы только по материалу, каждый с четырьмя правдоподобными вариантами
+и одним верным. Язык вопросов и объяснений совпадает с языком материала.
+Верни только JSON-объект: title (краткая тема), subject (предмет), questions.
+Каждый объект questions обязан содержать question, options (4 строки),
+answer (индекс 0–3), explanation (почему верно, по материалу) и wrongHint
+(одна фраза о типичной ошибке). Без других полей, пояснений и markdown.`
 
 type chatMessage struct {
 	Role    string `json:"role"`
@@ -138,10 +132,11 @@ type chatMessage struct {
 }
 
 type chatRequest struct {
-	Model          string        `json:"model"`
-	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
-	MaxTokens      int           `json:"max_tokens"`
+	Model          string            `json:"model"`
+	Messages       []chatMessage     `json:"messages"`
+	Temperature    float64           `json:"temperature,omitempty"`
+	Reasoning      map[string]string `json:"reasoning,omitempty"`
+	MaxTokens      int               `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
 	} `json:"response_format"`
@@ -186,8 +181,9 @@ func (g *Generator) Generate(ctx context.Context, source string, want int) (*Res
 			)},
 		},
 		// Низкая температура: тест должен проверять материал, а не фантазию.
-		Temperature: 0.25,
+		Temperature: 0,
 		MaxTokens:   4000,
+		Reasoning:   map[string]string{"effort": "low"},
 	}
 	request.ResponseFormat.Type = "json_object"
 

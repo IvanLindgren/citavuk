@@ -58,7 +58,10 @@ func (s *Store) PutCourseProgress(
 	defer tx.Rollback(ctx)
 	// Один порядок блокировок со sync: сначала аккаунт, затем серия.
 	var owner uuid.UUID
-	if err = tx.QueryRow(ctx, `SELECT id FROM users WHERE id=$1 FOR UPDATE`, userID).Scan(&owner); err != nil {
+	// Ключ пользователя не меняем. FOR UPDATE конфликтует с KEY SHARE,
+	// который берёт запись события серии через внешний ключ, и создаёт цикл
+	// users -> study_streaks -> users при параллельном зачёте упражнения.
+	if err = tx.QueryRow(ctx, `SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE`, userID).Scan(&owner); err != nil {
 		return false, nil, err
 	}
 	var previous []byte

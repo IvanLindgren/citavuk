@@ -105,10 +105,11 @@ type chatMessage struct {
 }
 
 type chatRequest struct {
-	Model          string        `json:"model"`
-	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
-	MaxTokens      int           `json:"max_tokens"`
+	Model          string            `json:"model"`
+	Messages       []chatMessage     `json:"messages"`
+	Temperature    float64           `json:"temperature,omitempty"`
+	Reasoning      map[string]string `json:"reasoning,omitempty"`
+	MaxTokens      int               `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
 	} `json:"response_format"`
@@ -207,8 +208,9 @@ func (j *Judge) ask(ctx context.Context, system, user string, maxTokens int) (st
 			{Role: "system", Content: system},
 			{Role: "user", Content: user},
 		},
-		Temperature: 0.1,
+		Temperature: 0,
 		MaxTokens:   maxTokens,
+		Reasoning:   map[string]string{"effort": "low"},
 	}
 	request.ResponseFormat.Type = "json_object"
 	body, err := json.Marshal(request)

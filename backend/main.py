@@ -3,6 +3,7 @@ import io
 import os
 import sqlite3
 import hashlib
+import hmac
 from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI, File, HTTPException, Query, Request, UploadFile
@@ -17,12 +18,24 @@ try:
     from .ratelimit import make_limiter
     from . import analysis_cache
     from .nlp_selection import select_word
+    from .audio_transcription import (
+        AudioTranscriptionError,
+        MAX_AUDIO_BYTES,
+        NotSerbianError,
+        transcribe_audio,
+    )
 except ImportError:
     from redis_cache import redis_cache
     from urlguard import UrlRejected, check_url, open_checked
     from ratelimit import make_limiter
     import analysis_cache
     from nlp_selection import select_word
+    from audio_transcription import (
+        AudioTranscriptionError,
+        MAX_AUDIO_BYTES,
+        NotSerbianError,
+        transcribe_audio,
+    )
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -104,6 +117,21 @@ _translate_limit = make_limiter(30, 10)
 _img_limit = make_limiter(60, 20)
 _article_limit = make_limiter(20, 5)
 _tts_limit = make_limiter(30, 10)
+_audio_transcribe_limit = make_limiter(4, 1)
+
+
+def _require_citavuk_proxy(request: Request) -> None:
+    """Закрывает платные внутренние ручки от прямого адреса HF Space."""
+    expected = os.getenv("CITAVUK_UPSTREAM_SECRET", "").strip()
+    if not expected:
+        raise HTTPException(
+            status_code=503,
+            detail="Внутренняя расшифровка не настроена.",
+        )
+    if not hmac.compare_digest(
+        expected, request.headers.get("x-citavuk-proxy-secret", "")
+    ):
+        raise HTTPException(status_code=403, detail="Доступ только через Читавук.")
 
 # ---------------------------------------------------------------------------
 # Извлечение документов. Обычные PDF и DOCX веб-клиент разбирает локально,
@@ -764,6 +792,7 @@ def article(url: str, _: None = Depends(_article_limit)):
 # ---------------------------------------------------------------------------
 import json as _json
 from fastapi.responses import Response, StreamingResponse
+from tts_service import normalize as normalize_tts, provider_id as tts_provider_id, synthesize as synthesize_tts
 
 _TTS_CACHE: Dict[str, bytes] = {}
 _TTS_CACHE_MAX = 600  # ~ десятки минут речи; примитивный FIFO достаточен
@@ -785,44 +814,20 @@ def audio_tts(
         raise HTTPException(status_code=400, detail="Неподдерживаемый язык.")
     if voice not in ("sophie", "nicholas"):
         raise HTTPException(status_code=400, detail="Неподдерживаемый диктор.")
-    text = (text or "").strip()
+    text = normalize_tts((text or "").strip(), lang)
     if not text or len(text) > 400:
         return Response(status_code=400)
-    serbian_name = "SophieNeural" if voice == "sophie" else "NicholasNeural"
-    voices = {
-        # edge-tts 7.x отклоняет трёхчастный locale sr-Latn-RS ещё до
-        # запроса, хотя Azure публикует такой alias. sr-RS принимает обе
-        # сербские письменности и не сваливается на роботизированный gTTS.
-        "sr": f"sr-RS-{serbian_name}",
-        "ru": "ru-RU-SvetlanaNeural",
-        "en": "en-US-JennyNeural",
-    }
-    voice = voices[lang]
-    key = hashlib.sha1(f"neural-v2:{voice}:{text}".encode("utf-8")).hexdigest()
+    provider = tts_provider_id(lang, voice, text)
+    key = hashlib.sha1(f"{provider}:{lang}:{voice}:{text}".encode("utf-8")).hexdigest()
     data = _TTS_CACHE.get(key)
     if data is None:
         data = redis_cache.get_bytes(f"tts:{key}")
     if data is None:
         try:
-            import edge_tts
-            chunks = []
-            for message in edge_tts.Communicate(text, voice, rate="-4%").stream_sync():
-                if message["type"] == "audio":
-                    chunks.append(message["data"])
-            data = b"".join(chunks)
-            if not data:
-                raise RuntimeError("neural TTS returned no audio")
+            data, provider = synthesize_tts(text, lang, voice)
         except Exception as neural_error:
-            logging.warning(f"Neural TTS failed, falling back to gTTS: {neural_error}")
-            try:
-                from io import BytesIO
-                from gtts import gTTS
-                buf = BytesIO()
-                gTTS(text=text, lang=lang).write_to_fp(buf)
-                data = buf.getvalue()
-            except Exception as fallback_error:
-                logging.error(f"TTS failed: {fallback_error}")
-                return Response(status_code=502)
+            logging.error(f"TTS failed: {neural_error}")
+            return Response(status_code=502)
         if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
             _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
         _TTS_CACHE[key] = data
@@ -834,7 +839,7 @@ def audio_tts(
     return Response(
         content=data,
         media_type="audio/mpeg",
-        headers={"Cache-Control": "public, max-age=86400"},
+        headers={"Cache-Control": "public, max-age=86400", "X-Citavuk-TTS": provider},
     )
 
 
@@ -857,6 +862,12 @@ _AUDIO_PROXY_HOSTS = {
     "buzzsprout.com",
     "anchor.fm",
     "audio.buzzsprout.com",
+    "media.rss.com",
+    "content.rss.com",
+    # Публичные короткие preview отдельных книг Slušaj.rs. Полные записи
+    # остаются на странице правообладателя и через этот прокси не скачиваются.
+    "slusaj.rs",
+    "www.slusaj.rs",
 }
 
 
@@ -963,13 +974,73 @@ def _extract_transcript_text(html_str: str) -> str:
     return "\n".join(lines[start:])[:60000]
 
 
+@app.post("/audio/transcribe-file")
+async def audio_transcribe_file(
+    request: Request,
+    file: UploadFile = File(...),
+    _: None = Depends(_audio_transcribe_limit),
+):
+    """Распознаёт локальный аудиофайл, язык и говорящих.
+
+    В production эту ручку вызывает только авторизованный Go-маршрут
+    `/v1/audio/transcribe`. Основной путь — Groq Fast, а низкое качество или
+    сбой переключают его на Aiesa через Polza.ai. Исходный файл после ответа
+    нигде не сохраняется.
+    """
+    _require_citavuk_proxy(request)
+    data = await file.read(MAX_AUDIO_BYTES + 1)
+    if len(data) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="Аудиофайл должен быть не больше 48 МБ.")
+    try:
+        result = await asyncio.to_thread(
+            transcribe_audio,
+            data,
+            file.filename or "audio",
+            file.content_type or "application/octet-stream",
+            groq_api_key=os.getenv(
+                "GROQ_AUDIO_TRANSCRIPTION_KEY", os.getenv("GROQ_API_KEY", "")
+            ),
+            polza_api_key=os.getenv(
+                "POLZA_AUDIO_TRANSCRIPTION_KEY", os.getenv("POLZA_AI_KEY", "")
+            ),
+        )
+        logging.info(
+            "Audio transcription provider=%s model=%s quality=%s fallback=%s",
+            result.get("provider", "unknown"),
+            result.get("model", "unknown"),
+            result.get("quality_score", "unknown"),
+            result.get("fallback_used", False),
+        )
+        return result
+    except NotSerbianError as error:
+        language = error.language_code if error.language_code != "unknown" else "неизвестный язык"
+        raise HTTPException(
+            status_code=422,
+            detail=f"Сербская речь не найдена: распознан {language}.",
+        ) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except AudioTranscriptionError as error:
+        logging.error("Audio transcription failed: %s", error)
+        message = str(error)
+        if "не настроен" in message.lower():
+            raise HTTPException(status_code=503, detail=message) from error
+        raise HTTPException(
+            status_code=502,
+            detail="Не удалось расшифровать запись. Попробуйте позже.",
+        ) from error
+    finally:
+        await file.close()
+
+
 @app.get("/audio/proxy")
 def audio_proxy(url: str, request: Request, _: None = Depends(make_limiter(30, 10))):
     """Прокси для web-аудио из RSS.
 
     У части podcast/CDN-хостов финальный mp3/m4a не отдаёт CORS-заголовки или
     режет запросы с Origin, из-за чего HTMLAudioElement получает HTML-ошибку
-    вместо аудио. Проксируем только известные podcast-хосты и пробрасываем Range.
+    вместо аудио. Проксируем только известные podcast-хосты и публичные preview
+    Slušaj.rs, пробрасываем Range.
     """
     parsed = urllib.parse.urlparse(url)
     host = (parsed.hostname or "").lower()
@@ -987,6 +1058,10 @@ def audio_proxy(url: str, request: Request, _: None = Depends(make_limiter(30, 1
         headers["Referer"] = "https://www.buzzsprout.com/"
     elif host == "anchor.fm":
         headers["Referer"] = "https://anchor.fm/"
+    elif host.endswith("rss.com"):
+        headers["Referer"] = "https://rss.com/"
+    elif host.endswith("slusaj.rs"):
+        headers["Referer"] = "https://slusaj.rs/"
 
     try:
         def validate_audio(candidate):

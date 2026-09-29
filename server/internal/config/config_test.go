@@ -116,3 +116,40 @@ func TestDuplicateGoogleClientIDsCollapse(t *testing.T) {
 		t.Errorf("дубликаты audience не схлопнулись: %v", cfg.GoogleClientIDs)
 	}
 }
+
+func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
+	t.Setenv("DB_URL", "postgres://x/y")
+	t.Setenv("DATABASE_URL", "")
+	for _, name := range []string{
+		"CITAVUK_QUIZ_MODEL", "CITAVUK_TRANSLATION_GAME_AI_MODEL",
+		"CITAVUK_DAILY_AI_MODEL", "CITAVUK_DEFINITION_AI_MODEL",
+		"CITAVUK_FORM_HINT_AI_MODEL", "CITAVUK_FEED_AI_MODEL",
+		"CITAVUK_PHOTO_SCAN_MODEL", "CITAVUK_DEFINITION_AI_REASONING",
+		"CITAVUK_FORM_HINT_AI_REASONING",
+	} {
+		t.Setenv(name, "")
+	}
+	cfg, err := Load("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	const model = "deepseek/deepseek-v4-flash-0731"
+	for name, got := range map[string]string{
+		"quiz":       cfg.QuizModel,
+		"judge":      cfg.TranslationGameAIModel,
+		"daily":      cfg.DailyAIModel,
+		"definition": cfg.DefinitionAIModel,
+		"form_hint":  cfg.FormHintAIModel,
+		"feed":       cfg.FeedAIModel,
+	} {
+		if got != model {
+			t.Errorf("%s model = %q, want %q", name, got, model)
+		}
+	}
+	if cfg.DefinitionAIReasoning != "low" || cfg.FormHintAIReasoning != "low" {
+		t.Errorf("reasoning = %q/%q, want low/low", cfg.DefinitionAIReasoning, cfg.FormHintAIReasoning)
+	}
+	if cfg.PhotoScanModel != "openai/gpt-6-luna-pro" {
+		t.Errorf("photo model changed: %q", cfg.PhotoScanModel)
+	}
+}

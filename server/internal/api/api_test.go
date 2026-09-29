@@ -41,6 +41,14 @@ func (m *testMailer) SendNotification(context.Context, string, string, string, s
 // Без базы тест пропускается.
 func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 	t.Helper()
+	ts, st, _ := testServerWithApp(t)
+	return ts, st
+}
+
+// testServerWithApp — то же, но отдаёт и сам Server: тестам, которые
+// подменяют внешние сервисы (нейросеть), нужен доступ к его полям.
+func testServerWithApp(t *testing.T) (*httptest.Server, *store.Store, *Server) {
+	t.Helper()
 
 	url := os.Getenv("CITAVUK_TEST_DATABASE_URL")
 	if url == "" {
@@ -66,6 +74,8 @@ func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 		SessionTTLDays: 30,
 		MaxBookBytes:   4 << 20,
 		AllowedOrigins: []string{"https://citavuk.ru"},
+		// Аудио закрытой библиотеки пишется на диск — в тестах во временный каталог.
+		SupporterMediaDir: t.TempDir(),
 		// Переводчик и верхний сервис в тестах не нужны: они ходят в сеть.
 		UpstreamURL: "",
 	}
@@ -82,7 +92,7 @@ func testServer(t *testing.T) (*httptest.Server, *store.Store) {
 
 	ts := httptest.NewServer(srv.Handler())
 	t.Cleanup(ts.Close)
-	return ts, st
+	return ts, st, srv
 }
 
 // client — минимальный клиент к тестовому серверу.
@@ -294,6 +304,7 @@ func TestProtectedRoutesRequireToken(t *testing.T) {
 		{http.MethodPost, "/v1/sync/push"},
 		{http.MethodGet, "/v1/sync/content/" + fmt.Sprintf("%064d", 1)},
 		{http.MethodGet, "/v1/course/progress/serbian-grammar"},
+		{http.MethodPost, "/v1/audio/transcribe"},
 	}
 	for _, p := range paths {
 		t.Run(p.path, func(t *testing.T) {

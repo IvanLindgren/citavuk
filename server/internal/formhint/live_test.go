@@ -23,7 +23,7 @@ func TestLiveGuess(t *testing.T) {
 		t.Skip("нет POLZA_AI_KEY")
 	}
 	hinter := New(key,
-		envOr("CITAVUK_FORM_HINT_AI_MODEL", "google/gemini-3.7-flash"),
+		envOr("CITAVUK_FORM_HINT_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		envOr("CITAVUK_FORM_HINT_AI_URL", "https://api.polza.ai/api/v1/chat/completions"),
 		envOr("CITAVUK_FORM_HINT_AI_REASONING", "low"))
 

@@ -75,7 +75,7 @@ Odgovori isključivo JSON-om, bez razmišljanja naglas:
 type explainRequest struct {
 	Model          string        `json:"model"`
 	Messages       []chatMessage `json:"messages"`
-	Temperature    float64       `json:"temperature"`
+	Temperature    float64       `json:"temperature,omitempty"`
 	MaxTokens      int           `json:"max_tokens"`
 	ResponseFormat struct {
 		Type string `json:"type"`
@@ -135,7 +135,7 @@ func (e *Explainer) ask(ctx context.Context, word string) (string, error) {
 			{Role: "system", Content: explainPrompt},
 			{Role: "user", Content: "Reč: " + word},
 		},
-		Temperature: 0.1,
+		Temperature: 0,
 		MaxTokens:   1500,
 	}
 	request.ResponseFormat.Type = "json_object"

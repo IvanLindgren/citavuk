@@ -65,7 +65,9 @@ func newUpstreamProxy(rawURL, secret string, trustProxy bool) (*httputil.Reverse
 			// OCR сканированного PDF на бесплатном CPU Space может занимать
 			// несколько минут. Для остальных путей это только верхняя граница,
 			// соединение всё равно завершится сразу после получения заголовков.
-			ResponseHeaderTimeout: 6 * time.Minute,
+			// Groq/Aiesa могут обрабатывать длинный файл до пятнадцати минут после
+			// загрузки. Внешний маршрут отдельно авторизован и ограничен.
+			ResponseHeaderTimeout: 25 * time.Minute,
 		},
 		ModifyResponse: func(response *http.Response) error {
 			// CORS задаёт внешний Go-сервер после проверки origin. Если

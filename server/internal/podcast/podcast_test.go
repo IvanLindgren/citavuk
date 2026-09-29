@@ -27,7 +27,7 @@ func TestParseDuration(t *testing.T) {
 }
 
 func TestSubtitleShowsMinutesOnlyWhenKnown(t *testing.T) {
-	if got := subtitle("Learn Serbian", 2160); got != "Learn Serbian · 36 мин" {
+	if got := subtitle("Learn Serbian", 2160); got != "Learn Serbian, 36 мин" {
 		t.Fatalf("неожиданный подзаголовок: %q", got)
 	}
 	if got := subtitle("Learn Serbian", 0); got != "Learn Serbian" {
@@ -53,6 +53,35 @@ func TestLessonIDIsStableAndSafe(t *testing.T) {
 	// Заголовок вместо guid: у части лент guid нет вовсе.
 	if lessonID("moze-kafa", rssItem{Title: "Epizoda 5"}) == "moze-kafa-" {
 		t.Fatal("заголовок должен попадать в идентификатор")
+	}
+}
+
+func TestExternalAudiobooksAreIndividualPreviews(t *testing.T) {
+	resources := externalListeningResources()
+	var books []Lesson
+	for _, resource := range resources {
+		if resource.Kind == "audiobook" {
+			books = append(books, resource)
+		}
+	}
+	if len(books) != 16 {
+		t.Fatalf("ожидалось 16 отдельных аудиокниг, получено %d", len(books))
+	}
+	seen := make(map[string]bool, len(books))
+	for _, book := range books {
+		if seen[book.ID] {
+			t.Fatalf("повторяющийся id аудиокниги: %q", book.ID)
+		}
+		seen[book.ID] = true
+		if book.AudioURL == "" || book.ExternalURL == "" {
+			t.Fatalf("у %q должны быть preview и страница источника", book.Title)
+		}
+		if !strings.HasPrefix(book.ExternalURL, "https://slusaj.rs/sve-knjige/") {
+			t.Fatalf("%q ведёт не на индивидуальную страницу Slušaj.rs: %s", book.Title, book.ExternalURL)
+		}
+		if strings.Contains(book.ExternalURL, "audio-knjige-srbija") {
+			t.Fatalf("вместо отдельной книги добавлена общая подборка: %s", book.ExternalURL)
+		}
 	}
 }
 

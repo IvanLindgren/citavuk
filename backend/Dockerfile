@@ -6,9 +6,11 @@ ENV PYTHONUNBUFFERED=1 \
     PATH="/home/user/.local/bin:$PATH"
 
 # pytesseract — только Python-обёртка; сам OCR-движок должен быть в образе.
+# ffmpeg нужен для безопасной разбивки больших M4A/WAV/OGG перед STT: Groq и
+# Polza ограничивают размер multipart-запроса, а резать контейнер побайтно нельзя.
 # libgomp нужен Torch/CLASSLA на базовом CPU-образе.
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends tesseract-ocr libgomp1 && \
+    apt-get install -y --no-install-recommends tesseract-ocr ffmpeg libgomp1 && \
     rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -u 1000 user
@@ -22,7 +24,7 @@ RUN python -c "import classla; classla.download('sr')"
 
 # Все runtime-модули и данные перечислены явно: Docker не должен случайно
 # захватить venv, модели CLASSLA или локальные кеши из каталога backend.
-COPY --chown=user main.py news.py redis_cache.py urlguard.py ratelimit.py analysis_cache.py nlp_selection.py ./
+COPY --chown=user main.py news.py redis_cache.py urlguard.py ratelimit.py analysis_cache.py nlp_selection.py tts_service.py audio_transcription.py ./
 COPY --chown=user lexicon.db audio_lessons.json ./
 
 EXPOSE 7860

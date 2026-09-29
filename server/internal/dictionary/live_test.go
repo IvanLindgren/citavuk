@@ -50,7 +50,7 @@ func TestLiveExplain(t *testing.T) {
 	if key == "" {
 		t.Skip("нет POLZA_AI_KEY")
 	}
-	explainer := NewExplainer(key, envOrDefault("CITAVUK_DEFINITION_AI_MODEL", "google/gemini-3.7-flash"),
+	explainer := NewExplainer(key, envOrDefault("CITAVUK_DEFINITION_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
 		envOrDefault("CITAVUK_DEFINITION_AI_URL", "https://api.polza.ai/api/v1/chat/completions"),
 		envOrDefault("CITAVUK_DEFINITION_AI_REASONING", "low"))
 
