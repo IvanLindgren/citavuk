@@ -40,7 +40,7 @@ const PLATFORMS: Platform[] = [
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
     version: VERSION,
-    size: '149 МБ',
+    size: '108 МБ',
     note:
       'Установка из файла: разрешите её для браузера в настройках Android. ' +
       'Если у вас стояла старая версия приложения, и Android не даёт её ' +
@@ -54,12 +54,12 @@ const PLATFORMS: Platform[] = [
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '79 МБ',
+    size: '50 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '84 МБ',
+      size: '63 МБ',
     },
   },
   {
@@ -70,7 +70,7 @@ const PLATFORMS: Platform[] = [
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
     version: VERSION,
-    size: '81 МБ',
+    size: '39 МБ',
     note: 'Распакуй архив и запусти ./install.sh. Нужны GTK 3, GStreamer и webkit2gtk 4.1; команды установки библиотек есть в README внутри архива. Видео открывается в отдельном окне приложения.',
   },
   {
