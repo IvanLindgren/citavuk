@@ -11,7 +11,10 @@ export interface SpeakingAccess {
 
 export interface SpeakingGenre {
   id: string;
+  /** Эмодзи для старых приложений; сайт рисует art. */
   icon: string;
+  /** Содержимое значка 24×24 без обёртки <svg>. */
+  art?: string;
   ru: string;
   sr: string;
 }

@@ -30,6 +30,9 @@
   box-shadow: var(--shadow-soft);
 }
 .personal-heading > div { min-width: 0; }
+/* С колодой на столе шапка — просто заголовок: первый экран отдан карте дня. */
+.personal-heading.is-compact { display: block; margin-bottom: 18px; padding: 4px 0 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.personal-heading.is-compact h1 { margin: 8px 0 0; font-size: clamp(26px, 3vw, 38px); }
 .personal-heading h1 { font-size: clamp(28px, 3.3vw, 44px); max-width: 24ch; }
 .personal-intro { max-width: 66ch; font-size: clamp(16px, 1.35vw, 19px); line-height: 1.8; color: var(--text-muted); }
 .personal-intro em { color: var(--personal-accent-text); font-family: Lora, serif; font-style: normal; white-space: nowrap; }
@@ -211,6 +214,16 @@
 .personal-panel button:disabled { opacity:.5; cursor:default; }
 .lesson-identity { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:24px; }
 .lesson-rank { display:inline-flex; align-items:center; gap:10px; color:var(--accent); font-family:Lora,serif; font-weight:700; padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:var(--bg-raised); }
-.lesson-rank>span { font-size:24px; }
+.lesson-rank-icon { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; color:#f6e0a8; background:radial-gradient(circle at 35% 30%, var(--k1), var(--k2)); box-shadow:0 0 0 1px #e3c27580; }
+.lesson-rank-icon svg { width:18px; height:18px; }
+/* Урок раскрывается из карты: шапка и разделы проступают по очереди. */
+.lesson-hero { animation: lesson-enter .55s cubic-bezier(.22,1,.36,1) both; }
+.lesson-chapters a { animation: lesson-enter .5s cubic-bezier(.22,1,.36,1) both; }
+.lesson-chapters a:nth-child(1) { animation-delay: .12s; }
+.lesson-chapters a:nth-child(2) { animation-delay: .18s; }
+.lesson-chapters a:nth-child(3) { animation-delay: .24s; }
+.lesson-chapters a:nth-child(4) { animation-delay: .30s; }
+@keyframes lesson-enter { from { opacity:0; transform:translateY(14px); } }
+@media (prefers-reduced-motion: reduce) { .lesson-hero, .lesson-chapters a { animation:none; } }
 .lesson-kind { font-size:14px; font-weight:600; color:var(--text-muted); }
 .lesson-theme { color:var(--text-muted); font-size:17px; margin-bottom:16px; }

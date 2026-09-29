@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -11,7 +12,7 @@ import 'package:srbski_read/services/auth_service.dart';
 
 Map<String, Object?> _topics() => {
       'genres': [
-        {'id': 'politika', 'icon': 'P', 'ru': 'Политика', 'sr': 'Politika'},
+        {'id': 'politika', 'icon': 'P', 'art': '<path d="M4 4h16"/>', 'ru': 'Политика', 'sr': 'Politika'},
         {'id': 'hrana', 'icon': 'H', 'ru': 'Еда', 'sr': 'Hrana'},
       ],
       'topics': [
@@ -114,6 +115,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Крутить барабан'), findsOneWidget);
+    // Жанры рисуются значками: эмодзи из поля icon на экран не попадает.
+    expect(find.byType(SvgPicture), findsWidgets);
+    expect(find.text('P'), findsNothing);
+    expect(find.byIcon(Icons.chat_bubble_outline), findsWidgets);
 
     await tester.tap(find.text('Крутить барабан'));
     await tester.pump();

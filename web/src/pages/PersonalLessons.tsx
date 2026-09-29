@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {PersonalAudio} from '../components/PersonalAudio';
-import {lessonSuit} from '../components/PlayingCardFrame';
-import {PersonalPlayingCard} from '../components/PersonalPlayingCard';
+import {DeckPile, PersonalPlayingCard, type CardState} from '../components/PersonalPlayingCard';
+import {PersonalTodayStage} from '../components/PersonalTodayStage';
+import {KIND_LABELS, KIND_ORDER, KindIcon, lessonKind} from '../personal/kinds';
 import {allowNavigation} from '../lib/router';
 import {toggleAnswer} from '../personal/answers';
 import {LessonArt, LessonEmblem} from '../components/LessonDecoration';
@@ -31,13 +33,6 @@ import { PersonalEditor } from "./PersonalEditor";
 import "./personal.css";
 import "./personal-lesson.css";
 
-const kinds: Record<string, string> = {
-  reading: "Чтение",
-  grammar: "Грамматика",
-  vocabulary: "Лексика",
-  listening: "Понимание речи",
-  writing: "Письмо",
-};
 const message = (e: unknown) =>
   e instanceof Error ? e.message : "Не удалось связаться с сервером.";
 
@@ -128,15 +123,17 @@ function PersonalHome({ level }: { level: string }) {
       />
     );
   const p = state?.plan;
+  // С колодой на столе главное — карта дня, и шапка уступает ей место.
+  const stage = !!p && !newPlan && p.today <= 30 && p.lessons.some((l) => l.day === p.today);
   return (
     <main className="personal">
-      <header className="personal-heading">
+      <header className={`personal-heading ${p && !newPlan ? "is-compact" : ""}`}>
         <div>
           <p className="personal-eyebrow"><LuLayers aria-hidden /> Твоя колода на каждый день</p>
           <h1>Колода сербского. Ого!</h1>
-          <p className="personal-intro">Читавук подбирает тебе маршрут из растущей коллекции сербских уроков. Каждый день открывается новая карта, а твои ответы и правки остаются только твоими.</p>
+          {!(p && !newPlan) && <p className="personal-intro">Читавук подбирает тебе маршрут из растущей коллекции сербских уроков. Каждый день открывается новая карта, а твои ответы и правки остаются только твоими.</p>}
         </div>
-        <img className="personal-heading-seal" src="/personal/decor/ravanica-medallion.png" alt="" />
+        {!(p && !newPlan) && <img className="personal-heading-seal" src="/personal/decor/ravanica-medallion.png" alt="" />}
       </header>
       {!newPlan && (state?.history?.length ?? 0) > 1 && (
         <label>
@@ -187,11 +184,11 @@ function PersonalHome({ level }: { level: string }) {
       )}
       {p && !newPlan && (
         <>
-          <div className="personal-summary">
+          {!stage && <div className="personal-summary">
             <span><LuBookOpen aria-hidden /><span>Твой уровень <b>{p.profile.level}</b></span></span>
             <span><LuLayers aria-hidden /><span>Пройдено <b>{p.lessons.filter((l) => l.completedAt).length} из 30</b></span></span>
             <span title={`Дни открываются по часовому поясу ${p.profile.timezone}`}><LuCalendarDays aria-hidden /><span>Карта дня <b>{Math.min(p.today, 30)} / 30</b></span></span>
-          </div>
+          </div>}
           {p.status === "error" && (
             <div role="status" className="personal-generation personal-generation-error">
               <LuBookOpen aria-hidden />
@@ -215,6 +212,7 @@ function PersonalHome({ level }: { level: string }) {
               <small>Можно уйти со страницы: колода продолжит составляться.</small></div>
             </div>
           )}
+          {stage && <PersonalTodayStage plan={p} onOpen={setDay} />}
           <Deck plan={p} open={setDay} />
           {p.suggestRegeneration && p.status === "ready" && (
             <section className="personal-panel">
@@ -349,15 +347,85 @@ export function Questionnaire({
   );
 }
 
-function Deck({plan,open}:{plan:PersonalPlan;open:(day:number)=>void}) {
- return <div className="personal-deck">{Array.from({length:30},(_,i)=>{
-  const day=i+1,meta=plan.outline.find(o=>o.day===day),lesson=plan.lessons.find(l=>l.day===day);
-  return <PersonalPlayingCard key={day} day={day} month={plan.month}
-    kind={meta?.kind||'vocabulary'} title={meta?.title||`Урок ${day}`}
-    ready={!!lesson&&day<=plan.today} today={day===plan.today}
-    completed={lesson?.completedAt?`${lesson.score}/${lesson.total}`:undefined}
-    onOpen={()=>open(day)}/>;
- })}</div>;
+/** Колода раздаётся один раз за визит: после урока карты уже лежат на столе. */
+let dealtThisVisit = false;
+
+/** Сколько закрытых карт лежит на столе рубашкой вверх; остальные — стопкой. */
+const AHEAD_ON_TABLE = 5;
+
+function Deck({ plan, open }: { plan: PersonalPlan; open: (day: number) => void }) {
+  const reduced = useReducedMotion();
+  const [deal] = useState(() => !reduced && !dealtThisVisit);
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    dealtThisVisit = true;
+  }, []);
+  return (
+    <section className="personal-deck-section" aria-labelledby="deck-title">
+      <div className="deck-head">
+        <div>
+          <h2 id="deck-title">Вся колода</h2>
+          <p>Каждый день открывается новая карта. Пройденные получают печать с оценкой.</p>
+        </div>
+        <ul className="deck-legend" aria-label="Масти колоды">
+          {KIND_ORDER.map((k) => (
+            <li key={k} className={`kind-${k}`}>
+              <span><KindIcon kind={k} /></span>
+              {KIND_LABELS[k]}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <motion.div
+        className="personal-deck"
+        initial={deal ? "hidden" : false}
+        whileInView="dealt"
+        viewport={{ once: true, amount: 0.05 }}
+      >
+        {(() => {
+          const cards = Array.from({ length: 30 }, (_, i) => {
+            const day = i + 1;
+            const meta = plan.outline.find((o) => o.day === day);
+            const lesson = plan.lessons.find((l) => l.day === day);
+            const ready = !!lesson && day <= plan.today;
+            const state: CardState = !ready
+              ? "locked"
+              : lesson.completedAt
+                ? "done"
+                : day === plan.today
+                  ? "today"
+                  : "open";
+            return { day, meta, lesson, state };
+          });
+          const locked = cards.filter((c) => c.state === "locked");
+          const hidden = expanded || locked.length <= AHEAD_ON_TABLE + 2 ? [] : locked.slice(AHEAD_ON_TABLE);
+          const visible = cards.filter((c) => !hidden.includes(c));
+          const firstExtra = locked[AHEAD_ON_TABLE]?.day ?? 0;
+          return (
+            <>
+              {visible.map(({ day, meta, lesson, state }, i) => (
+                <PersonalPlayingCard
+                  key={day}
+                  index={expanded && day >= firstExtra ? day - firstExtra : i}
+                  appear={expanded && day >= firstExtra}
+                  day={day}
+                  kind={meta?.kind || "vocabulary"}
+                  title={meta?.title || `Урок ${day}`}
+                  state={state}
+                  score={lesson?.completedAt ? `${lesson.score}/${lesson.total}` : undefined}
+                  daysAhead={day - plan.today}
+                  onOpen={() => open(day)}
+                />
+              ))}
+              {hidden.length > 0 && (
+                <DeckPile count={hidden.length} index={visible.length} onExpand={() => setExpanded(true)} />
+              )}
+            </>
+          );
+        })()}
+      </motion.div>
+    </section>
+  );
 }
 
 function Lesson({
@@ -442,7 +510,7 @@ function Lesson({
           <>
             <header className="lesson-hero">
               <div className="lesson-hero-copy">
-              <div className="lesson-identity"><span className="lesson-rank"><span aria-hidden>{lessonSuit(c.kind)}</span> Карта {day}</span><span className="lesson-kind">{kinds[c.kind]}</span></div>
+              <div className="lesson-identity"><span className={`lesson-rank kind-${lessonKind(c.kind)}`}><span className="lesson-rank-icon" aria-hidden><KindIcon kind={c.kind} /></span> Карта {day}</span><span className="lesson-kind">{KIND_LABELS[lessonKind(c.kind)]}</span></div>
               <h1>{c.title}</h1>
               <p className="lesson-theme">{c.theme}</p>
               <div className="lesson-facts"><span>Уровень <b>{plan.profile.level}</b></span><span>Заданий <b>{c.exercises.length}</b></span><span>Правил <b>{c.rules.length}</b></span></div>

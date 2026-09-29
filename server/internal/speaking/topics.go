@@ -10,16 +10,51 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"regexp"
 )
 
 //go:embed topics.json
 var topicsJSON []byte
 
 type Genre struct {
-	ID   string `json:"id"`
+	ID string `json:"id"`
+	// Icon — эмодзи для приложений 1.22.0; новые клиенты рисуют Art.
 	Icon string `json:"icon"`
-	RU   string `json:"ru"`
-	SR   string `json:"sr"`
+	// Art — содержимое рисованного значка 24×24 без обёртки <svg>. Клиенты
+	// вставляют его как разметку, поэтому Load пропускает только простые фигуры.
+	Art string `json:"art"`
+	RU  string `json:"ru"`
+	SR  string `json:"sr"`
+}
+
+var (
+	artElement = regexp.MustCompile(`<\s*/?\s*([a-zA-Z]+)`)
+	artAttr    = regexp.MustCompile(`[\s"'/]([a-zA-Z:-]+)\s*=`)
+	artTags    = map[string]bool{"path": true, "circle": true, "rect": true, "ellipse": true, "line": true, "polyline": true}
+	artAttrs   = map[string]bool{
+		"d": true, "cx": true, "cy": true, "r": true, "rx": true, "ry": true,
+		"x": true, "y": true, "x1": true, "y1": true, "x2": true, "y2": true,
+		"width": true, "height": true, "points": true, "transform": true,
+	}
+)
+
+// validArt отсекает всё, кроме фигур и их геометрии: ни скриптов, ни ссылок,
+// ни обработчиков событий в значке оказаться не может.
+func validArt(art string) error {
+	if art == "" {
+		return fmt.Errorf("пустой значок")
+	}
+	for _, m := range artElement.FindAllStringSubmatch(art, -1) {
+		if !artTags[m[1]] {
+			return fmt.Errorf("недопустимый элемент %q", m[1])
+		}
+	}
+	for _, m := range artAttr.FindAllStringSubmatch(art, -1) {
+		if !artAttrs[m[1]] {
+			return fmt.Errorf("недопустимый атрибут %q", m[1])
+		}
+	}
+	return nil
 }
 
 type Word struct {
@@ -51,6 +86,9 @@ func Load() (*Catalog, error) {
 	}
 	genres := make(map[string]bool, len(c.Genres))
 	for _, g := range c.Genres {
+		if err := validArt(g.Art); err != nil {
+			return nil, fmt.Errorf("speaking: жанр %q: %w", g.ID, err)
+		}
 		genres[g.ID] = true
 	}
 	c.byID = make(map[string]*Topic, len(c.Topics))

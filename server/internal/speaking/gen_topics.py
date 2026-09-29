@@ -2,6 +2,7 @@
 """Собирает topics.json из таблицы ниже. Запуск: python gen_topics.py"""
 import json
 import pathlib
+import re
 
 GENRES = [
     ("politika", "🏛️", "Политика и общество", "Politika i društvo"),
@@ -205,7 +206,18 @@ T = {
     ],
 }
 
-genres = [{"id": g, "icon": i, "ru": r, "sr": s} for g, i, r, s in GENRES]
+HERE = pathlib.Path(__file__).parent
+
+
+def art(genre):
+    """Рисованный значок жанра без обёртки <svg>: рамку добавляет клиент."""
+    raw = (HERE / "genres" / f"{genre}.svg").read_text(encoding="utf-8")
+    body = re.search(r"<svg[^>]*>(.*)</svg>", raw, re.S).group(1)
+    return " ".join(line.strip() for line in body.strip().splitlines())
+
+
+# icon — эмодзи для приложений 1.22.0, новые клиенты рисуют art.
+genres = [{"id": g, "icon": i, "art": art(g), "ru": r, "sr": s} for g, i, r, s in GENRES]
 topics = []
 for g, *_ in GENRES:
     assert len(T[g]) == 10, g
@@ -214,6 +226,6 @@ for g, *_ in GENRES:
         topics.append({"id": f"{g}-{n:02d}", "genre": g, "sr": sr, "ru": ru,
                        "words": [{"sr": a, "ru": b} for a, b in words]})
 assert len(topics) == 150, len(topics)
-out = pathlib.Path(__file__).with_name("topics.json")
+out = HERE / "topics.json"
 out.write_text(json.dumps({"genres": genres, "topics": topics}, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
 print("ok", len(topics))

@@ -28,16 +28,23 @@ class SpeakingAccess {
 }
 
 class SpeakingGenre {
-  const SpeakingGenre({required this.id, required this.icon, required this.ru, required this.sr});
+  const SpeakingGenre({required this.id, required this.icon, required this.ru, required this.sr, this.art = ''});
 
   factory SpeakingGenre.fromJson(Map<String, dynamic> json) => SpeakingGenre(
         id: json['id'] as String? ?? '',
-        icon: json['icon'] as String? ?? '💬',
+        icon: json['icon'] as String? ?? '',
+        art: json['art'] as String? ?? '',
         ru: json['ru'] as String? ?? '',
         sr: json['sr'] as String? ?? '',
       );
 
-  final String id, icon, ru, sr;
+  final String id, ru, sr;
+
+  /// Эмодзи для приложений 1.22.0, новые рисуют [art].
+  final String icon;
+
+  /// Содержимое значка 24×24 без обёртки `<svg>`.
+  final String art;
 }
 
 class SpeakingWord {

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'genre_icon.dart';
 import 'speaking_models.dart';
 
 const _rowHeight = 76.0;
@@ -227,10 +228,11 @@ class _TopicRow extends StatelessWidget {
               height: 44,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest,
+                color: theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.colorScheme.outlineVariant),
               ),
-              child: Text(genre?.icon ?? '💬', style: const TextStyle(fontSize: 24)),
+              child: GenreIcon(genre: genre, size: 24, color: theme.colorScheme.primary),
             ),
             const SizedBox(width: 12),
             Expanded(

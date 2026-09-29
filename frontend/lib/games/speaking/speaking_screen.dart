@@ -13,6 +13,7 @@ import '../../services/auth_service.dart';
 import '../../services/listening_service.dart';
 import '../../services/study_service.dart';
 import '../../utils/uuid.dart';
+import 'genre_icon.dart';
 import 'highlight.dart';
 import 'speaking_models.dart';
 import 'speaking_service.dart';
@@ -326,7 +327,8 @@ class _GameState extends State<_Game> {
                   Wrap(spacing: 8, runSpacing: 8, children: [
                     for (final genre in widget.catalog.genres)
                       FilterChip(
-                        label: Text('${genre.icon} ${genre.ru}'),
+                        avatar: GenreIcon(genre: genre, size: 18),
+                        label: Text(genre.ru),
                         selected: _genres.contains(genre.id),
                         onSelected: (on) {
                           setState(() => on ? _genres.add(genre.id) : _genres.remove(genre.id));
@@ -419,9 +421,15 @@ class _GameState extends State<_Game> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text('${genre?.icon ?? ''} ${(genre?.ru ?? '').toUpperCase()} · ТВОЯ ТЕМА',
-                style: theme.textTheme.labelSmall
-                    ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w800, letterSpacing: .5)),
+            Row(children: [
+              GenreIcon(genre: genre, size: 18, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text('${(genre?.ru ?? '').toUpperCase()} · ТВОЯ ТЕМА',
+                    style: theme.textTheme.labelSmall
+                        ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w800, letterSpacing: .5)),
+              ),
+            ]),
             const SizedBox(height: 8),
             Text(topic.ru, style: theme.textTheme.headlineSmall?.copyWith(height: 1.2)),
             const SizedBox(height: 6),

@@ -39,6 +39,35 @@ func TestCatalog(t *testing.T) {
 	}
 }
 
+func TestGenreArt(t *testing.T) {
+	c, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, g := range c.Genres {
+		if !strings.Contains(g.Art, "<") {
+			t.Errorf("%s: нет значка", g.ID)
+		}
+	}
+	for _, bad := range []string{
+		`<script>alert(1)</script>`,
+		`<path d="M0 0" onload="x()"/>`,
+		`<path d="M0 0"onload="x()"/>`,
+		`<path xlink:href="#x" d="M0 0"/>`,
+		`<image href="https://example.com/x.png"/>`,
+		`<a href="javascript:x"><path d="M0 0"/></a>`,
+		`<path style="fill:url(#x)" d="M0 0"/>`,
+		``,
+	} {
+		if validArt(bad) == nil {
+			t.Errorf("пропущен опасный значок %q", bad)
+		}
+	}
+	if err := validArt(`<path d="M1 1h2"/> <circle cx="3" cy="3" r="1"/>`); err != nil {
+		t.Errorf("отклонён простой значок: %v", err)
+	}
+}
+
 func TestCleanText(t *testing.T) {
 	got, err := CleanText("  Ja   volim\n\nBeograd,  to je moj grad. ")
 	if err != nil || got != "Ja volim Beograd, to je moj grad." {

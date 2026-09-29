@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
 import type { SpeakingGenre, SpeakingTopic } from '../../api/speaking';
+import { GenreIcon } from './GenreIcon';
 
 const ROW = 76;
 const SPIN_MS = 3600;
@@ -46,8 +47,11 @@ function TopicRow({ topic, genre, dim }: { topic: SpeakingTopic; genre?: Speakin
       className={['flex items-center gap-3 px-4 transition-opacity', dim ? 'opacity-60' : ''].join(' ')}
       style={{ height: ROW }}
     >
-      <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-[var(--bg-sunken)] text-2xl" aria-hidden="true">
-        {genre?.icon ?? '💬'}
+      <span
+        className="grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--line)] bg-[var(--bg)] text-[var(--accent)] shadow-[inset_0_-2px_0_var(--line)]"
+        aria-hidden="true"
+      >
+        <GenreIcon genre={genre} className="size-6" />
       </span>
       <span className="min-w-0">
         <span className="block text-xs font-bold uppercase tracking-wide text-[var(--accent)]">{genre?.ru}</span>

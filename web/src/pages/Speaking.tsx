@@ -16,6 +16,7 @@ import {
 import { Button, ButtonLink, Card, Spinner } from '../components/ui';
 import { AnswerField, HintWords, ReviewView, VoiceRecorder } from '../games/speaking/panels';
 import { countWords } from '../games/speaking/highlight';
+import { GenreIcon } from '../games/speaking/GenreIcon';
 import { recordingSupported } from '../games/speaking/recorder';
 import { Reel } from '../games/speaking/Reel';
 import { activeStorageName } from '../lib/db';
@@ -294,7 +295,7 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
           <div className="mt-2 flex flex-wrap gap-2">
             {catalog.genres.map((item) => (
               <Chip key={item.id} active={chosen.includes(item.id)} onClick={() => toggleGenre(item.id)}>
-                <span aria-hidden="true">{item.icon}</span> {item.ru}
+                <GenreIcon genre={item} className="size-4" /> {item.ru}
               </Chip>
             ))}
           </div>
@@ -320,8 +321,9 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
         <div ref={answerRef} className="scroll-mt-20">
           {topic && landed && !done && (
             <Card className="mt-6 p-5 sm:p-7">
-              <p className="text-sm font-bold uppercase tracking-wide text-[var(--accent)]">
-                {genre?.icon} {genre?.ru} · твоя тема
+              <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[var(--accent)]">
+                <GenreIcon genre={genre} className="size-5" />
+                {genre?.ru} · твоя тема
               </p>
               <h2 className="mt-2 text-balance text-2xl leading-snug sm:text-3xl">{topic.ru}</h2>
               <p className="mt-2 text-lg text-[var(--text-muted)]" lang="sr">{topic.sr}</p>
