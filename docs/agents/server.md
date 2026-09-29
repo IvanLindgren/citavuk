@@ -5,6 +5,23 @@ Python-сервисе. Подробности ручек — `server/README.md`.
 
 ## Go-сервер (`server/`)
 
+С 26.09.2026 текстовые вызовы Polza используют
+`deepseek/deepseek-v4-flash-0731` с `reasoning.effort=low`: тесты, судья
+переводов, текст дня, толкования, подсказки форм и генерация ленты.
+Персональная колода теперь подбирается из общей коллекции без вызова модели
+на каждого ученика. Фото по просьбе владельца осталось на
+`openai/gpt-6-luna-pro` с `reasoning.effort=medium`: DeepSeek 0731 принимает
+только текст. Явные `CITAVUK_*MODEL` в production `.env` имеют приоритет над
+дефолтами в коде, поэтому их нужно обновлять при выкатке.
+Аудио-распознавание, TTS, embedding и DeepL используют отдельные типы моделей,
+поэтому chat-модель их не заменяет. Upstash Redis может исчерпать запросы;
+Go сохраняет локальные лимиты и PostgreSQL в качестве источника истины.
+
+Блокировки строки аккаунта в `PutCourseProgress` и `CreatePersonal` должны быть
+`FOR NO KEY UPDATE`: `FOR UPDATE` конфликтует с FK-проверками записей серии
+и создаёт взаимную блокировку users/study_streaks. Параллельный сценарий покрыт
+`TestStudyConcurrentWithPersonalCreation` на отдельной PostgreSQL.
+
 Отдельный сервис на Go. Подробности — `server/README.md`, здесь только то, что
 обязан знать агент, правящий клиент.
 
@@ -210,6 +227,21 @@ DeepL переиспользует бюджет и инфраструктуру,
 
 Разбор лежит в истории задачи; повторить можно тем же промптом из этого пакета.
 
+## Игра «Говори!» (`internal/speaking`, `internal/api/speaking_handlers.go`)
+
+Каталог тем, разбор ошибок и правила доступа описаны в
+[speaking.md](speaking.md). Коротко о серверной части:
+
+- `GET /v1/games/speaking/access` и `/topics` — `optionalAuth`; темы до даты
+  открытия отдаются только друзьям и администраторам (403 `supporter_only`).
+- `POST /v1/games/speaking/review` — `requireAuth`, `quizLimit` на человека,
+  тело до 24 КБ. Тему берёт из встроенного каталога по `topicId`. Без ключа
+  (`CITAVUK_SPEAKING_AI_KEY` → `POLZA_AI_KEY`) отвечает 503 `review_disabled`.
+- Ключ, модель и адрес — `CITAVUK_SPEAKING_AI_{KEY,MODEL,URL,REASONING}`, в панели
+  состояния — строка «Говори! — разбор ошибок».
+- Тест `TestSpeakingFlow` ходит в настоящую БД и подменяет нейросеть
+  (`Server.speaking`); без `CITAVUK_TEST_DATABASE_URL` пропускается.
+
 ## Состояние сервиса для админки
 
 Четыре ручки под `requireAdmin`, все — снимки, ничего не копится специально:
@@ -256,14 +288,40 @@ Swagger/OpenAPI в проде отключён; локально включае�
 при пересборке, поэтому Redis остаётся основным межпроцессным кешем.
 
 Аудирование:
-- Go `/audio/lessons` читает RSS `Learn Serbian` и `Može Kafa`, но отдаёт
+- Go `/audio/lessons` читает RSS `Learn Serbian`, `Može Kafa`, `HistoryCast`
+  и `Tačka razno`, добавляет метаданные полки/уровня и ссылки на легальные
+  аудиобиблиотеки, но отдаёт
   реплики только при наличии файла в `web/public/transcripts/index.json`.
+- В тот же ответ входят отдельные карточки книг Slušaj.rs с короткими публичными
+  preview (остальные части остаются на странице правообладателя). Для них
+  `kind=audiobook`, `audio_url` указывает на preview, а `external_url` — на
+  страницу конкретной книги, не на общий каталог.
 - Go `/audio/transcript?url=...` разрешает только JSON внутри
   `https://citavuk.ru/transcripts/`; это не открытый прокси.
 - Python пока обслуживает `/audio/proxy` и `/audio/tts`; TTS кэшируется.
+  Публичный `/audio/tts` сначала пробует ElevenLabs v3, когда заданы
+  `ELEVENLABS_API_KEY` и сербский voice ID. Ошибка провайдера, исчерпанная
+  квота или отсутствие ключей безопасно переводят запрос на бесплатный Edge
+  Neural. Роботизированный gTTS выключен по умолчанию и включается только
+  аварийным `CITAVUK_TTS_ALLOW_ROBOTIC_FALLBACK=1`. Для заранее выбранных
+  реплик остаётся операторская команда `backend/generate_studio_tts.py`.
+- Пользовательский `POST /v1/audio/transcribe` живёт в Go, требует сессию,
+  принимает только multipart до 50 МиБ и ограничен отдельным платным limiter.
+  Он потоково проксирует тело во внутренний Python
+  `/audio/transcribe-file`; оба сервиса файл не сохраняют. Python проверяет
+  сигнатуру/размер, сначала вызывает Groq Fast
+  `whisper-large-v3-turbo` с word+segment timestamps, а при сбое или низком
+  качестве повторяет через Aiesa `aiesa/transcribe` в Polza.ai. Метрики
+  Whisper (`avg_logprob`, `no_speech_prob`, `compression_ratio`), покрытие
+  дорожки и фильтр галлюцинаций не дают сохранить пустой/шумовой ответ.
+  Ответ сохраняется клиентом только при `language_code=srp`. На Python Space
+  нужны `GROQ_AUDIO_TRANSCRIPTION_KEY` и `POLZA_AUDIO_TRANSCRIPTION_KEY`
+  (запасные имена `GROQ_API_KEY`/`POLZA_AI_KEY`) и одинаковый
+  `CITAVUK_UPSTREAM_SECRET` на Go и Space.
 - Генерация реальных реплик:
   `GROQ_API_KEY=... python web/scripts/transcribe-podcasts.py --limit 0
-  --feed learn-serbian --feed moze-kafa --ffmpeg /path/to/ffmpeg`.
+  --feed learn-serbian --feed moze-kafa --feed historycast
+  --feed tacka-razno --ffmpeg /path/to/ffmpeg`.
   После генерации обязательно:
   `python web/scripts/transcribe-podcasts.py --normalize-only`.
 - `/documents/extract` принимает PDF/DOCX до 32 МБ. PDFium читает текстовый

@@ -5,6 +5,12 @@
 
 ## Скрипты и грабли общей машины
 
+Для vhost сайта включены HTTP/2 (`http2 on`, nginx >= 1.25.1) и
+`ssl_buffer_size 4k`. Изменяя рабочий vhost, сохранять блок TLS Certbot,
+проверять `nginx -t` и держать копию для отката. `deploy.sh --publish-built`
+публикует уже проверенный `dist` без повторной сборки; использовать только
+после успешных проверок текущих исходников и production build.
+
 VPS `85.137.89.21` — **общая машина**: там же ISPmanager, чужие сайты, почта
 (exim4/dovecot), DNS (BIND) и mysql. Скрипты трогают только `/opt/citavuk`,
 `/var/www/citavuk`, `/var/www/citavuk-files` и свои файлы в `conf.d`.
@@ -111,9 +117,12 @@ Content-Type, а затем отправляет IndexNow. Добавляя кр
 
 ## Сборка Android
 
-- Android release использует AGP 9.0.1, Gradle 9.1, NDK 28.2 и оптимизированный
-  R8 (`minify` + `shrinkResources`). Пока плагины переходят на built-in Kotlin,
+- Android release использует AGP 8.11.1, Gradle 8.14.3 (этого требует Flutter
+  3.47) и R8 (`minify` + `shrinkResources`). AGP 9 пока нельзя: он удалил
+  `Project.exec`, которым ещё пользуется CargoKit (`super_clipboard`).
   `file_picker` получает legacy KGP точечно в `android/build.gradle.kts`.
+- Плагин `super_clipboard` собирает Rust: локальная сборка Windows и Android и
+  контейнер Linux ставят его тулчейн через CargoKit сами, первый прогон долгий.
 
 ---
 

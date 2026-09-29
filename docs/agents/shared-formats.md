@@ -242,6 +242,42 @@ React-сцены; `web/scripts/export-palace.tsx` рендерит из них
   началась; при разрыве длинного абзаца несколько страниц подряд ссылаются на
   один и тот же абзац, и это верно — прогресс указывает именно в него.
 
+## Расшифровка пользовательского аудио
+
+`backend/audio_transcription.py`, `web/src/lib/audioFiles.ts` и
+`frontend/lib/models/local_audio_file.dart` используют один JSON-контракт:
+
+```json
+{
+  "language_code": "srp",
+  "language_probability": 0.97,
+  "duration": 12.4,
+  "speakers": ["speaker_0"],
+  "segments": [{
+    "speaker": "speaker_0",
+    "start": 0.2,
+    "end": 2.1,
+    "text": "Dobar dan.",
+    "words": [{"text": "Dobar", "start": 0.2, "end": 0.7}]
+  }]
+}
+```
+
+- Сервер всегда нормализует подтверждённый сербский в `srp`; клиенты не
+  сохраняют ответ с другим кодом или без сегментов. Python сначала использует
+  Groq Fast, а при провале проверки качества повторяет запрос через Aiesa в
+  Polza.ai; имя провайдера и score остаются диагностическими полями и не
+  меняют формат сегментов.
+- Время задаётся секундами от начала исходного файла. `words` идут в порядке
+  текста сегмента и содержат только произнесённые слова с валидным интервалом.
+- `speaker` — стабильный машинный id внутри одной записи. Подписи
+  «Говорящий 1» строит клиент по порядку массива `speakers`.
+- Загрузка до 48 МиБ разрешена клиенту. Части длиннее лимита провайдера
+  сервер режет по MP3-кадрам или перекодирует ffmpeg в моно OGG, затем
+  возвращает объединённую шкалу времени; клиенту не нужно знать о кусках.
+- Исходный файл и готовый JSON локальны для устройства и аккаунта. Они не
+  входят в синхронизацию книг; Go и Python не сохраняют тело запроса.
+
 ## Рост цветов сада (`server/internal/store/garden.go`, `web/src/garden/scene.ts`, `frontend/lib/models/garden.dart`)
 
 Единственное в проекте, что посчитано **трижды**. Так вышло не по недосмотру:
@@ -292,3 +328,58 @@ React-сцены; `web/scripts/export-palace.tsx` рендерит из них
 ---
 
 [← Карта документации](../../AGENTS.md)
+# Язык озвучки
+
+## Подчёркнутые цитаты и цветные выделения
+
+Web и Flutter записывают `id` UUID, глобальный `bookId` UUID, номера страницы и
+абзаца внутри страницы, смещения UTF-16, исходный текст, `color`, `updatedAt`,
+`dirty` и `deleted`. Обе реализации страницы используют одинаковый `paginate` с
+порогом 1500 символов. Сервер включает `quotes` в общий `/v1/sync/push` и
+`/v1/sync/changes`; удаление — надгробие. Старые клиенты игнорируют поле.
+
+`color` — `''` (подчёркивание), `yellow`, `green`, `blue`, `purple`, `red`.
+Незнакомое значение и сервер (`QuoteColors`), и оба клиента (`quoteColor`,
+`HighlightColors.sanitize`) превращают в подчёркивание. Оттенки маркера общие:
+`web/src/components/HighlightPicker.tsx` и `lib/models/highlight_colors.dart`.
+Тот же фрагмент ещё раз — перекраска той же записи, а не новая: во Flutter
+уникальный ключ по диапазону, на вебе поиск по диапазону в `Reader.addQuote`.
+
+## Игра «Уничтожь эти падежи»
+
+Логика продублирована: `web/src/games/cases/{data,keyboard,voice}.ts` и
+`frontend/lib/games/cases/case_game_data.dart`. Совпадать обязаны задания и
+рамки (`bez ___`, `Vidim ___`), запрет кратких форм местоимений после предлога,
+перфект в обоих порядках (`sam radio` / `radio sam`), проверка ответа (буква без
+чёрточки и `dj` вместо `đ` — «засчитано с отметкой», лишняя чёрточка — ошибка,
+сербская кириллица переводится), голосовое сопоставление целыми словами без
+чёрточек, итоги и выбор лапы (q–t, a–g, y–b — левой). Тесты-близнецы:
+`games/cases/*.test.ts` и `test/games/case_game_data_test.dart`.
+
+Слова — одна копия `cases.json` в `web/public/games/` и `frontend/assets/games/`
+(`tools/build_case_game.py`), звуки — `tools/build_typewriter_sounds.py`.
+Буква с физической клавиатуры берётся по месту клавиши, а не по раскладке
+системы (у пользователя включена кириллица): `event.code` на вебе,
+`PhysicalKeyboardKey` во Flutter.
+
+Объёмная машинка в приложении — не вторая реализация, а та же
+`typewriterScene.ts`, упакованная в `frontend/assets/games/typewriter3d.html`
+(`web`: `npm run build:typewriter-embed`). Это **производный файл, который лежит
+в Git**: после правки сцены, раскладки (`keyboard.ts`) или текста-хвоста
+(`frameTail` в `data.ts`) его надо пересобрать, иначе приложение будет рисовать
+прежнюю машинку. Формат состояния листа между Flutter и страницей —
+`PaperState` из `typewriterScene.ts` (`lines[]{before,typed,after,status,correct,missing}`
+и `before/typed/after` текущей строки); Dart-сторона —
+`TypewriterStage._paperJson`.
+
+## Игра «Говори!»
+
+См. [speaking.md](speaking.md). Совпадать обязаны алгоритм подсветки ошибок
+(`highlight.ts` / `highlight.dart`), границы текста (5 слов, 4000 знаков) и
+формат ответа `POST /v1/games/speaking/review`: `text` (то, что разбиралось) и
+`review{level,onTopic,summary,strengths[],mistakes[]{original,fixed,kind,label,explanation},polished,tips[],words[]{sr,ru}}`.
+Каталог тем — только на сервере (`speaking/topics.json`).
+
+Web `ttsAudioUrl` и Flutter `ListeningService.ttsUrl` всегда отправляют `lang=sr`.
+Результат английского разбора слова не переключает голос ни при нажатии,
+ни при автоматическом произношении. Выбор Софии/Николы сохраняется.

@@ -78,3 +78,7 @@ tools/assets/packs/
 # Ключ подписи desktop-обновлений всегда хранится вне репозитория.
 update-signing-*.pem
 .local-secrets/
+# Рабочие каталоги оператора: черновики, проверки, копии для Hugging Face.
+output/
+.hf-space-deploy/
+.achievement_icons_contact.png
