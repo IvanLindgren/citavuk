@@ -66,6 +66,8 @@ export function Reader() {
   const [state, setState] = useState<LoadState>({ kind: 'loading' });
   const [downloading, setDownloading] = useState(false);
   const [page, setPage] = useState(0);
+  const pageRef = useRef(page);
+  pageRef.current = page;
   const [panelOpen, setPanelOpen] = useState(false);
   const [discussionToken, setDiscussionToken] = useState('');
   const [discussionOpen, setDiscussionOpen] = useState(false);
@@ -75,7 +77,7 @@ export function Reader() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const continuousRef = useRef<VirtuosoHandle>(null);
   const flowRef = useRef(settings.flow);
-  const playCueRef = useRef<(index: number) => void>(() => {});
+  const playCueRef = useRef<(index: number, manual?: boolean) => void>(() => {});
   const [audiobookEnabled, setAudiobookEnabled] = useState(false);
   const [audiobookPlaying, setAudiobookPlaying] = useState(false);
   const [audiobookCue, setAudiobookCue] = useState(0);
@@ -252,16 +254,17 @@ export function Reader() {
   const audiobookStorageKey = `citavuk-audiobook-${id ?? 'unknown'}`;
 
   const saveAudiobook = useCallback((enabled: boolean, cue: number, speed: number) => {
-    localStorage.setItem(
+    try { localStorage.setItem(
       audiobookStorageKey,
       JSON.stringify({ enabled, cue, speed }),
-    );
+    ); } catch { /* Недоступное хранилище не должно прерывать озвучку. */ }
   }, [audiobookStorageKey]);
 
-  const showAudiobookCue = useCallback((index: number) => {
+  const showAudiobookCue = useCallback((index: number, manual = false) => {
     const cue = audiobookCues[index];
     if (!cue || state.kind !== 'ready') return;
-    setDirection(cue.page >= page ? 1 : -1);
+    if (!manual && (!settings.audioFollow || cue.page === pageRef.current)) return;
+    setDirection(cue.page >= pageRef.current ? 1 : -1);
     setPage(cue.page);
     if (settings.flow === 'scroll') {
       continuousRef.current?.scrollToIndex({
@@ -273,9 +276,12 @@ export function Reader() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     void saveProgress(state.book.id, pageStarts[cue.page] ?? 0);
-  }, [audiobookCues, page, pageStarts, settings.flow, state]);
+  }, [audiobookCues, pageStarts, settings.flow, settings.audioFollow, state]);
 
-  const playAudiobookCue = useCallback((index: number) => {
+  const showCueRef = useRef(showAudiobookCue);
+  showCueRef.current = showAudiobookCue;
+
+  const playAudiobookCue = useCallback((index: number, manual = false) => {
     const cue = audiobookCues[index];
     if (!cue) {
       setAudiobookPlaying(false);
@@ -288,7 +294,7 @@ export function Reader() {
     setAudiobookEnabled(true);
     setAudiobookCue(index);
     setAudioMark(null);
-    showAudiobookCue(index);
+    showAudiobookCue(index, manual);
     saveAudiobook(true, index, audiobookSpeed);
     audio.onplay = () => setAudiobookPlaying(true);
     audio.onpause = () => setAudiobookPlaying(false);
@@ -331,11 +337,11 @@ export function Reader() {
       setAudiobookEnabled(true);
       setAudiobookCue(cue);
       setAudiobookSpeed(speed);
-      showAudiobookCue(cue);
+      showCueRef.current(cue);
     } catch {
-      localStorage.removeItem(audiobookStorageKey);
+      try { localStorage.removeItem(audiobookStorageKey); } catch { /* Приватное окно. */ }
     }
-  }, [audiobookCues, audiobookStorageKey, showAudiobookCue]);
+  }, [audiobookCues, audiobookStorageKey]);
 
   useEffect(() => () => audioRef.current?.pause(), []);
 
@@ -875,7 +881,7 @@ export function Reader() {
           <div className="mx-auto flex max-w-5xl items-center gap-1 px-3 py-2 sm:gap-2">
             <button
               type="button"
-              onClick={() => playAudiobookCue(audiobookCue - 1)}
+              onClick={() => playAudiobookCue(audiobookCue - 1, true)}
               disabled={audiobookCue === 0}
               className="rounded-full p-2 disabled:opacity-35"
               aria-label="Предыдущая фраза"
@@ -897,7 +903,7 @@ export function Reader() {
             </button>
             <button
               type="button"
-              onClick={() => playAudiobookCue(audiobookCue + 1)}
+              onClick={() => playAudiobookCue(audiobookCue + 1, true)}
               disabled={audiobookCue + 1 >= audiobookCues.length}
               className="rounded-full p-2 disabled:opacity-35"
               aria-label="Следующая фраза"
@@ -941,6 +947,10 @@ export function Reader() {
               <HiXMark className="size-5" />
             </button>
           </div>
+          <label className="mx-auto mb-2 flex w-fit items-center gap-2 text-xs text-[var(--text-muted)]">
+            <input type="checkbox" className="accent-[var(--accent)]" checked={settings.audioFollow} onChange={event => update('audioFollow', event.target.checked)} />
+            Автопрокрутка при озвучке
+          </label>
         </div>
       )}
     </main>

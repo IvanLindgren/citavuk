@@ -62,6 +62,9 @@ describe('разбор сохранённых настроек', () => {
     expect(sanitize({ sound: false }).sound).toBe(false);
     expect(sanitize({ stress: 'да' }).stress).toBe(false);
     expect(sanitize({ stress: true }).stress).toBe(true);
+    expect(sanitize({ audioFollow: true }).audioFollow).toBe(true);
+    expect(sanitize({ audioFollow: false }).audioFollow).toBe(false);
+    expect(sanitize({ audioFollow: 'да' }).audioFollow).toBe(false);
   });
 });
 

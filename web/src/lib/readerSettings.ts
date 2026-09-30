@@ -48,6 +48,8 @@ export interface ReaderSettings {
   animate: boolean;
   /** Спокойный режим: без лишних движений и маскота в карточке. */
   calm: boolean;
+  /** Только веб: автоматически переходить к странице текущей озвучки. */
+  audioFollow: boolean;
 }
 
 export const FULL_WIDTH = 1100;
@@ -68,6 +70,7 @@ export const DEFAULT_SETTINGS: ReaderSettings = {
   sound: true,
   animate: true,
   calm: false,
+  audioFollow: false,
 };
 
 export const FONT_STACKS: Record<ReaderFont, string> = {
@@ -216,6 +219,7 @@ export function sanitize(raw: unknown): ReaderSettings {
     sound: flag('sound'),
     animate: flag('animate'),
     calm: flag('calm'),
+    audioFollow: flag('audioFollow'),
   };
 }
 

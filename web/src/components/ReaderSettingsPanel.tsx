@@ -235,6 +235,11 @@ export function ReaderSettingsPanel({
                 onChange={(value) => onChange('sound', value)}
               />
               <Toggle
+                label="Автопрокрутка при озвучке"
+                checked={settings.audioFollow}
+                onChange={(value) => onChange('audioFollow', value)}
+              />
+              <Toggle
                 label="Анимация страницы"
                 checked={settings.animate}
                 onChange={(value) => onChange('animate', value)}
