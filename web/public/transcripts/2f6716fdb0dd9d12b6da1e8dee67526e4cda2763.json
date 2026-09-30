@@ -1,0 +1,435 @@
+{
+ "title": "Na bunaru",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Laza-Lazarevic-Na-bunaru.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/na-bunaru/",
+ "duration": 39.58,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "I teško bi se žene i opet odvažile da kažu da Radojka sve to već izodavno i ne sluša i ne gleda i da nije sam Arsen sutradan, kad je ona svoj nov novcat jelek isekla na drvljaniku, otišao džedi na tužbu.",
+   "start": 0.0,
+   "end": 18.64,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "I",
+     "start": 0.02,
+     "end": 0.26
+    },
+    {
+     "text": "teško",
+     "start": 0.26,
+     "end": 0.72
+    },
+    {
+     "text": "bi",
+     "start": 0.72,
+     "end": 0.86
+    },
+    {
+     "text": "se",
+     "start": 0.86,
+     "end": 1.08
+    },
+    {
+     "text": "žene",
+     "start": 1.08,
+     "end": 1.46
+    },
+    {
+     "text": "i",
+     "start": 1.46,
+     "end": 1.66
+    },
+    {
+     "text": "opet",
+     "start": 1.66,
+     "end": 2.0
+    },
+    {
+     "text": "odvažile",
+     "start": 2.0,
+     "end": 2.8
+    },
+    {
+     "text": "da",
+     "start": 2.8,
+     "end": 2.96
+    },
+    {
+     "text": "kažu",
+     "start": 2.96,
+     "end": 3.46
+    },
+    {
+     "text": "da",
+     "start": 3.46,
+     "end": 3.62
+    },
+    {
+     "text": "Radojka",
+     "start": 3.62,
+     "end": 4.2
+    },
+    {
+     "text": "sve",
+     "start": 4.2,
+     "end": 4.56
+    },
+    {
+     "text": "to",
+     "start": 4.56,
+     "end": 4.76
+    },
+    {
+     "text": "već",
+     "start": 4.76,
+     "end": 5.16
+    },
+    {
+     "text": "izodavno",
+     "start": 5.16,
+     "end": 6.1
+    },
+    {
+     "text": "i",
+     "start": 6.1,
+     "end": 6.2
+    },
+    {
+     "text": "ne",
+     "start": 6.2,
+     "end": 6.46
+    },
+    {
+     "text": "sluša",
+     "start": 6.46,
+     "end": 7.0
+    },
+    {
+     "text": "i",
+     "start": 7.0,
+     "end": 7.1
+    },
+    {
+     "text": "ne",
+     "start": 7.1,
+     "end": 7.4
+    },
+    {
+     "text": "gleda",
+     "start": 7.4,
+     "end": 7.78
+    },
+    {
+     "text": "i",
+     "start": 7.78,
+     "end": 8.36
+    },
+    {
+     "text": "da",
+     "start": 8.36,
+     "end": 8.52
+    },
+    {
+     "text": "nije",
+     "start": 8.52,
+     "end": 8.72
+    },
+    {
+     "text": "sam",
+     "start": 8.72,
+     "end": 9.16
+    },
+    {
+     "text": "Arsen",
+     "start": 9.16,
+     "end": 9.6
+    },
+    {
+     "text": "sutradan,",
+     "start": 9.6,
+     "end": 10.6
+    },
+    {
+     "text": "kad",
+     "start": 10.6,
+     "end": 11.04
+    },
+    {
+     "text": "je",
+     "start": 11.04,
+     "end": 11.18
+    },
+    {
+     "text": "ona",
+     "start": 11.18,
+     "end": 11.5
+    },
+    {
+     "text": "svoj",
+     "start": 11.5,
+     "end": 12.16
+    },
+    {
+     "text": "nov",
+     "start": 12.16,
+     "end": 12.6
+    },
+    {
+     "text": "novcat",
+     "start": 12.6,
+     "end": 13.42
+    },
+    {
+     "text": "jelek",
+     "start": 13.42,
+     "end": 14.04
+    },
+    {
+     "text": "isekla",
+     "start": 14.04,
+     "end": 14.66
+    },
+    {
+     "text": "na",
+     "start": 14.66,
+     "end": 14.86
+    },
+    {
+     "text": "drvljaniku,",
+     "start": 14.86,
+     "end": 16.58
+    },
+    {
+     "text": "otišao",
+     "start": 16.58,
+     "end": 17.08
+    },
+    {
+     "text": "džedi",
+     "start": 17.08,
+     "end": 17.78
+    },
+    {
+     "text": "na",
+     "start": 17.78,
+     "end": 17.96
+    },
+    {
+     "text": "tužbu.",
+     "start": 17.96,
+     "end": 18.62
+    }
+   ]
+  },
+  {
+   "text": "Arsen je tih čovek, od detinstva naučio samoslušati. Ni drva on ne ume prodati dok mu kod kuće ne kažu.",
+   "start": 19.4,
+   "end": 29.26,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Arsen",
+     "start": 19.84,
+     "end": 20.26
+    },
+    {
+     "text": "je",
+     "start": 20.26,
+     "end": 20.52
+    },
+    {
+     "text": "tih",
+     "start": 20.52,
+     "end": 21.14
+    },
+    {
+     "text": "čovek,",
+     "start": 21.14,
+     "end": 22.38
+    },
+    {
+     "text": "od",
+     "start": 22.38,
+     "end": 22.54
+    },
+    {
+     "text": "detinstva",
+     "start": 22.54,
+     "end": 23.24
+    },
+    {
+     "text": "naučio",
+     "start": 23.24,
+     "end": 23.82
+    },
+    {
+     "text": "samoslušati.",
+     "start": 23.82,
+     "end": 24.94
+    },
+    {
+     "text": "Ni",
+     "start": 24.94,
+     "end": 25.8
+    },
+    {
+     "text": "drva",
+     "start": 25.8,
+     "end": 26.22
+    },
+    {
+     "text": "on",
+     "start": 26.22,
+     "end": 26.44
+    },
+    {
+     "text": "ne",
+     "start": 26.44,
+     "end": 26.7
+    },
+    {
+     "text": "ume",
+     "start": 26.7,
+     "end": 26.94
+    },
+    {
+     "text": "prodati",
+     "start": 26.94,
+     "end": 27.5
+    },
+    {
+     "text": "dok",
+     "start": 27.5,
+     "end": 27.72
+    },
+    {
+     "text": "mu",
+     "start": 27.72,
+     "end": 27.9
+    },
+    {
+     "text": "kod",
+     "start": 27.9,
+     "end": 28.1
+    },
+    {
+     "text": "kuće",
+     "start": 28.1,
+     "end": 28.58
+    },
+    {
+     "text": "ne",
+     "start": 28.58,
+     "end": 28.72
+    },
+    {
+     "text": "kažu.",
+     "start": 28.72,
+     "end": 29.4
+    }
+   ]
+  },
+  {
+   "text": "Koliko da ište i pošto da da. Đe dam? Kad Arsen uđe k njemu, sedjaše sam u sobi.",
+   "start": 29.26,
+   "end": 39.58,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Koliko",
+     "start": 29.88,
+     "end": 30.28
+    },
+    {
+     "text": "da",
+     "start": 30.28,
+     "end": 30.48
+    },
+    {
+     "text": "ište",
+     "start": 30.48,
+     "end": 30.98
+    },
+    {
+     "text": "i",
+     "start": 30.98,
+     "end": 31.24
+    },
+    {
+     "text": "pošto",
+     "start": 31.24,
+     "end": 31.86
+    },
+    {
+     "text": "da",
+     "start": 31.86,
+     "end": 32.08
+    },
+    {
+     "text": "da.",
+     "start": 32.08,
+     "end": 32.62
+    },
+    {
+     "text": "Đe",
+     "start": 32.62,
+     "end": 33.84
+    },
+    {
+     "text": "dam?",
+     "start": 33.84,
+     "end": 34.46
+    },
+    {
+     "text": "Kad",
+     "start": 34.46,
+     "end": 35.48
+    },
+    {
+     "text": "Arsen",
+     "start": 35.48,
+     "end": 35.88
+    },
+    {
+     "text": "uđe",
+     "start": 35.88,
+     "end": 36.4
+    },
+    {
+     "text": "k",
+     "start": 36.4,
+     "end": 36.52
+    },
+    {
+     "text": "njemu,",
+     "start": 36.52,
+     "end": 37.42
+    },
+    {
+     "text": "sedjaše",
+     "start": 37.42,
+     "end": 37.98
+    },
+    {
+     "text": "sam",
+     "start": 37.98,
+     "end": 38.56
+    },
+    {
+     "text": "u",
+     "start": 38.56,
+     "end": 38.76
+    },
+    {
+     "text": "sobi.",
+     "start": 38.76,
+     "end": 40.06
+    }
+   ]
+  }
+ ]
+}

@@ -71,8 +71,9 @@ type Config struct {
 	YandexRedirectURI  string
 
 	// ЮKassa принимает поддержку проекта. Без ключей форма оплаты выключена.
-	YooKassaShopID string
-	YooKassaSecret string
+	YooKassaShopID    string
+	YooKassaSecret    string
+	YooKassaRecurring bool
 	// YooKassaTestPayers — почты аккаунтов, которым тестовый магазин открыт
 	// наравне с администраторами: проверяющие ЮKassa проходят оплату сами.
 	YooKassaTestPayers []string
@@ -237,7 +238,7 @@ func Load(envPath string) (*Config, error) {
 		S3SecretKey:        strings.TrimSpace(os.Getenv("S3_SECRET_ACCESS_KEY")),
 		PublicMediaBaseURL: strings.TrimRight(strings.TrimSpace(os.Getenv("PUBLIC_MEDIA_BASE_URL")), "/"),
 		QuizAPIKey:         firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "deepseek/deepseek-v4-flash-0731"),
+		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "openai/gpt-6-luna"),
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -246,7 +247,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_TRANSLATION_GAME_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		TranslationGameAIModel: envOr(
-			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
+			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "openai/gpt-6-luna",
 		),
 		TranslationGameAIURL: envOr(
 			"CITAVUK_TRANSLATION_GAME_AI_URL",
@@ -256,7 +257,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_SPEAKING_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		SpeakingAIModel: envOr(
-			"CITAVUK_SPEAKING_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
+			"CITAVUK_SPEAKING_AI_MODEL", "openai/gpt-6-luna",
 		),
 		SpeakingAIURL: envOr(
 			"CITAVUK_SPEAKING_AI_URL",
@@ -266,7 +267,7 @@ func Load(envPath string) (*Config, error) {
 		DailyAIKey: firstEnv(
 			"CITAVUK_DAILY_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
-		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
+		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "openai/gpt-6-luna"),
 		DailyAIURL: envOr(
 			"CITAVUK_DAILY_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -275,7 +276,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_DEFINITION_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		DefinitionAIModel: envOr(
-			"CITAVUK_DEFINITION_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
+			"CITAVUK_DEFINITION_AI_MODEL", "openai/gpt-6-luna",
 		),
 		DefinitionAIURL: envOr(
 			"CITAVUK_DEFINITION_AI_URL",
@@ -286,7 +287,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_FORM_HINT_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		FormHintAIModel: envOr(
-			"CITAVUK_FORM_HINT_AI_MODEL", "deepseek/deepseek-v4-flash-0731",
+			"CITAVUK_FORM_HINT_AI_MODEL", "openai/gpt-6-luna",
 		),
 		FormHintAIURL: envOr(
 			"CITAVUK_FORM_HINT_AI_URL",
@@ -297,14 +298,14 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_PHOTO_SCAN_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		PhotoScanModel: envOr(
-			"CITAVUK_PHOTO_SCAN_MODEL", "openai/gpt-6-luna-pro",
+			"CITAVUK_PHOTO_SCAN_MODEL", "openai/gpt-6-luna",
 		),
 		PhotoScanURL: envOr(
 			"CITAVUK_PHOTO_SCAN_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "openai/gpt-6-luna"),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
 			"https://polza.ai/api/v1/chat/completions",
@@ -327,8 +328,9 @@ func Load(envPath string) (*Config, error) {
 			"YANDEX_REDIRECT_URI",
 			"https://api.citavuk.ru/v1/auth/yandex/callback",
 		),
-		YooKassaShopID:     strings.TrimSpace(os.Getenv("YOOKASSA_SHOP_ID")),
-		YooKassaSecret:     strings.TrimSpace(os.Getenv("YOOKASSA_SECRET_KEY")),
+		YooKassaShopID:     firstEnv("YOOKASSA_SHOP_ID", "shopId"),
+		YooKassaSecret:     firstEnv("YOOKASSA_SECRET_KEY", "shopKey"),
+		YooKassaRecurring:  envBool("YOOKASSA_RECURRING_ENABLED", false),
 		YooKassaTestPayers: splitList(os.Getenv("YOOKASSA_TEST_PAYERS")),
 		SupporterMediaDir:  envOr("CITAVUK_SUPPORTER_MEDIA_DIR", "supporter-media"),
 		ResendAPIKey:       strings.TrimSpace(os.Getenv("RESEND_API_KEY")),

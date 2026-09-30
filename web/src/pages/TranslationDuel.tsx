@@ -377,8 +377,9 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
       setVerdicts(sorted);
       setSummary(result.summary);
       runReveal(sorted);
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'ИИ-судья не ответил.');
+    } catch {
+      setError('');
+      setSummary('Сравни переводы и выбери лучший для каждой фразы.');
       setPose('think');
     } finally {
       setLoading(false);

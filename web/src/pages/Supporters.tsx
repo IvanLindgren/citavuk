@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { getSupporters, type Supporter } from '../api/donations';
 import { ButtonLink, Card, Reveal, Spinner } from '../components/ui';
+import { SupporterPodium } from '../components/SupportShowcase';
 import { useSeo } from '../lib/seo';
 
 const DATE = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -58,8 +59,10 @@ export function Supporters() {
               <p className="mt-2 text-[var(--text-muted)]">Может быть, твоё?</p>
             </Card>
           ) : (
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {supporters.map((supporter, index) => (
+            <div>
+            <SupporterPodium supporters={supporters} />
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {supporters.slice(3).map((supporter, index) => (
                 <li key={supporter.name + supporter.since}>
                   <Reveal delay={Math.min(index, 12) * 0.03} className="relative flex h-full flex-col justify-center overflow-hidden rounded-2xl border border-gold/45 bg-[var(--bg-raised)] px-5 py-4 shadow-[var(--shadow-soft)]">
                     <span
@@ -76,6 +79,7 @@ export function Supporters() {
                 </li>
               ))}
             </ul>
+            </div>
           )}
         </div>
 

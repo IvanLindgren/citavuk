@@ -1,0 +1,377 @@
+{
+ "title": "Početak bune protiv dahija",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Epska-narodna-pesma-Pocetak-bune-protiv-dahija.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/pocetak-bune-protiv-dahija/",
+ "duration": 41.67,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Dok pogubim crnoga Đorđija i stopole sela ponosita, koji s bečkim trguje Česarom, on je kadar svu džebanu kupit, od bijela grada Varadina i oružje što je za potrebe.",
+   "start": 0.0,
+   "end": 14.96,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Dok",
+     "start": 0.02,
+     "end": 0.38
+    },
+    {
+     "text": "pogubim",
+     "start": 0.38,
+     "end": 0.86
+    },
+    {
+     "text": "crnoga",
+     "start": 0.86,
+     "end": 1.34
+    },
+    {
+     "text": "Đorđija",
+     "start": 1.34,
+     "end": 1.96
+    },
+    {
+     "text": "i",
+     "start": 1.96,
+     "end": 2.52
+    },
+    {
+     "text": "stopole",
+     "start": 2.52,
+     "end": 2.96
+    },
+    {
+     "text": "sela",
+     "start": 2.96,
+     "end": 3.38
+    },
+    {
+     "text": "ponosita,",
+     "start": 3.38,
+     "end": 4.22
+    },
+    {
+     "text": "koji",
+     "start": 4.22,
+     "end": 4.94
+    },
+    {
+     "text": "s",
+     "start": 4.94,
+     "end": 5.04
+    },
+    {
+     "text": "bečkim",
+     "start": 5.04,
+     "end": 5.52
+    },
+    {
+     "text": "trguje",
+     "start": 5.52,
+     "end": 5.98
+    },
+    {
+     "text": "Česarom,",
+     "start": 5.98,
+     "end": 6.6
+    },
+    {
+     "text": "on",
+     "start": 6.6,
+     "end": 7.38
+    },
+    {
+     "text": "je",
+     "start": 7.38,
+     "end": 7.56
+    },
+    {
+     "text": "kadar",
+     "start": 7.56,
+     "end": 7.94
+    },
+    {
+     "text": "svu",
+     "start": 7.94,
+     "end": 8.76
+    },
+    {
+     "text": "džebanu",
+     "start": 8.76,
+     "end": 9.38
+    },
+    {
+     "text": "kupit,",
+     "start": 9.38,
+     "end": 9.92
+    },
+    {
+     "text": "od",
+     "start": 9.92,
+     "end": 10.68
+    },
+    {
+     "text": "bijela",
+     "start": 10.68,
+     "end": 11.16
+    },
+    {
+     "text": "grada",
+     "start": 11.16,
+     "end": 11.62
+    },
+    {
+     "text": "Varadina",
+     "start": 11.62,
+     "end": 12.3
+    },
+    {
+     "text": "i",
+     "start": 12.3,
+     "end": 13.06
+    },
+    {
+     "text": "oružje",
+     "start": 13.06,
+     "end": 13.64
+    },
+    {
+     "text": "što",
+     "start": 13.64,
+     "end": 14.22
+    },
+    {
+     "text": "je",
+     "start": 14.22,
+     "end": 14.3
+    },
+    {
+     "text": "za",
+     "start": 14.3,
+     "end": 14.46
+    },
+    {
+     "text": "potrebe.",
+     "start": 14.46,
+     "end": 15.1
+    },
+    {
+     "text": "On",
+     "start": 14.96,
+     "end": 16.0
+    }
+   ]
+  },
+  {
+   "text": "On je kadar na nas zavojštiti, on caruje, a ja subašujem. Dok pogubim prototop Nikolu iz lijepa sela Ritopeka, on pašuje, a ja subašujem. Dok pogubim Đorđija Guzonju i njegova brata Arsenija iz lijepa sela Željeznika, ko je kadar Topčidar zatvorit,",
+   "start": 14.96,
+   "end": 41.44,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "je",
+     "start": 16.0,
+     "end": 16.2
+    },
+    {
+     "text": "kadar",
+     "start": 16.2,
+     "end": 16.64
+    },
+    {
+     "text": "na",
+     "start": 16.64,
+     "end": 17.38
+    },
+    {
+     "text": "nas",
+     "start": 17.38,
+     "end": 17.92
+    },
+    {
+     "text": "zavojštiti,",
+     "start": 17.92,
+     "end": 19.14
+    },
+    {
+     "text": "on",
+     "start": 19.14,
+     "end": 19.76
+    },
+    {
+     "text": "caruje,",
+     "start": 19.76,
+     "end": 20.86
+    },
+    {
+     "text": "a",
+     "start": 20.86,
+     "end": 21.0
+    },
+    {
+     "text": "ja",
+     "start": 21.0,
+     "end": 21.26
+    },
+    {
+     "text": "subašujem.",
+     "start": 21.26,
+     "end": 22.78
+    },
+    {
+     "text": "Dok",
+     "start": 22.78,
+     "end": 23.5
+    },
+    {
+     "text": "pogubim",
+     "start": 23.5,
+     "end": 24.16
+    },
+    {
+     "text": "prototop",
+     "start": 24.16,
+     "end": 25.34
+    },
+    {
+     "text": "Nikolu",
+     "start": 25.34,
+     "end": 25.88
+    },
+    {
+     "text": "iz",
+     "start": 25.88,
+     "end": 26.58
+    },
+    {
+     "text": "lijepa",
+     "start": 26.58,
+     "end": 27.12
+    },
+    {
+     "text": "sela",
+     "start": 27.12,
+     "end": 27.36
+    },
+    {
+     "text": "Ritopeka,",
+     "start": 27.36,
+     "end": 28.26
+    },
+    {
+     "text": "on",
+     "start": 28.26,
+     "end": 28.88
+    },
+    {
+     "text": "pašuje,",
+     "start": 28.88,
+     "end": 29.76
+    },
+    {
+     "text": "a",
+     "start": 29.76,
+     "end": 29.92
+    },
+    {
+     "text": "ja",
+     "start": 29.92,
+     "end": 30.2
+    },
+    {
+     "text": "subašujem.",
+     "start": 30.2,
+     "end": 31.44
+    },
+    {
+     "text": "Dok",
+     "start": 31.44,
+     "end": 32.26
+    },
+    {
+     "text": "pogubim",
+     "start": 32.26,
+     "end": 32.9
+    },
+    {
+     "text": "Đorđija",
+     "start": 32.9,
+     "end": 33.88
+    },
+    {
+     "text": "Guzonju",
+     "start": 33.88,
+     "end": 34.48
+    },
+    {
+     "text": "i",
+     "start": 34.48,
+     "end": 34.92
+    },
+    {
+     "text": "njegova",
+     "start": 34.92,
+     "end": 35.36
+    },
+    {
+     "text": "brata",
+     "start": 35.36,
+     "end": 35.68
+    },
+    {
+     "text": "Arsenija",
+     "start": 35.68,
+     "end": 36.34
+    },
+    {
+     "text": "iz",
+     "start": 36.34,
+     "end": 36.98
+    },
+    {
+     "text": "lijepa",
+     "start": 36.98,
+     "end": 37.54
+    },
+    {
+     "text": "sela",
+     "start": 37.54,
+     "end": 37.86
+    },
+    {
+     "text": "Željeznika,",
+     "start": 37.86,
+     "end": 39.32
+    },
+    {
+     "text": "ko",
+     "start": 39.32,
+     "end": 39.5
+    },
+    {
+     "text": "je",
+     "start": 39.5,
+     "end": 39.68
+    },
+    {
+     "text": "kadar",
+     "start": 39.68,
+     "end": 40.2
+    },
+    {
+     "text": "Topčidar",
+     "start": 40.2,
+     "end": 40.8
+    },
+    {
+     "text": "zatvorit,",
+     "start": 40.8,
+     "end": 41.66
+    }
+   ]
+  }
+ ]
+}

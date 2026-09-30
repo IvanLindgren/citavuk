@@ -55,9 +55,17 @@ var ErrForeignTranscript = errors.New("посторонний адрес рас�
 
 // Cue — реплика с временем звучания.
 type Cue struct {
+	Start   float64 `json:"start"`
+	End     float64 `json:"end"`
+	Text    string  `json:"text"`
+	Speaker string  `json:"speaker,omitempty"`
+	Words   []Word  `json:"words,omitempty"`
+}
+
+type Word struct {
+	Text  string  `json:"text"`
 	Start float64 `json:"start"`
 	End   float64 `json:"end"`
-	Text  string  `json:"text"`
 }
 
 // Lesson — эпизод в списке.
@@ -193,7 +201,12 @@ func (s *Service) Lessons(ctx context.Context) ([]Lesson, error) {
 			lessons = append(lessons, lesson)
 		}
 	}
-	lessons = append(lessons, s.external...)
+	for _, item := range s.external {
+		if name := index[item.AudioURL]; name != "" {
+			item.TranscriptURL = s.transcriptsBase + "/" + name
+		}
+		lessons = append(lessons, item)
+	}
 	if len(lessons) == 0 {
 		return nil, errors.New("ленты подкастов недоступны")
 	}

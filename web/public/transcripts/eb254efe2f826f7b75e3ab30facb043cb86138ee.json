@@ -1,0 +1,367 @@
+{
+ "title": "Zlatni jelenak",
+ "audio": "https://slusaj.rs/wp-content/uploads/2026/04/Edgar-Alan-Po-Zlatni-jelenak.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/zlatni-jelenak/",
+ "duration": 34.554,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Pre mnogo godina sklopio sam prisno prijateljstvo sa Williamom Legrandom. On je bio potomak jedne stare hugenotske porodice, koja mu je ostavila veliko nasledstvo. Ali izgubivši u raznim nesrećnim slučajevima svoje imanje, on napusti New Orleans, svoj rodni grad, da se spasa od poniženja koje ga ne bi poštedela u njegovoj nesreći.",
+   "start": 0.0,
+   "end": 25.9,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Pre",
+     "start": 0.02,
+     "end": 0.26
+    },
+    {
+     "text": "mnogo",
+     "start": 0.26,
+     "end": 0.62
+    },
+    {
+     "text": "godina",
+     "start": 0.62,
+     "end": 1.06
+    },
+    {
+     "text": "sklopio",
+     "start": 1.06,
+     "end": 1.64
+    },
+    {
+     "text": "sam",
+     "start": 1.64,
+     "end": 1.9
+    },
+    {
+     "text": "prisno",
+     "start": 1.9,
+     "end": 2.4
+    },
+    {
+     "text": "prijateljstvo",
+     "start": 2.4,
+     "end": 3.28
+    },
+    {
+     "text": "sa",
+     "start": 3.28,
+     "end": 3.56
+    },
+    {
+     "text": "Williamom",
+     "start": 3.56,
+     "end": 4.24
+    },
+    {
+     "text": "Legrandom.",
+     "start": 4.24,
+     "end": 5.22
+    },
+    {
+     "text": "On",
+     "start": 5.22,
+     "end": 5.96
+    },
+    {
+     "text": "je",
+     "start": 5.96,
+     "end": 6.12
+    },
+    {
+     "text": "bio",
+     "start": 6.12,
+     "end": 6.34
+    },
+    {
+     "text": "potomak",
+     "start": 6.34,
+     "end": 6.98
+    },
+    {
+     "text": "jedne",
+     "start": 6.98,
+     "end": 7.28
+    },
+    {
+     "text": "stare",
+     "start": 7.28,
+     "end": 7.82
+    },
+    {
+     "text": "hugenotske",
+     "start": 7.82,
+     "end": 8.62
+    },
+    {
+     "text": "porodice,",
+     "start": 8.62,
+     "end": 9.5
+    },
+    {
+     "text": "koja",
+     "start": 9.5,
+     "end": 10.06
+    },
+    {
+     "text": "mu",
+     "start": 10.06,
+     "end": 10.22
+    },
+    {
+     "text": "je",
+     "start": 10.22,
+     "end": 10.36
+    },
+    {
+     "text": "ostavila",
+     "start": 10.36,
+     "end": 11.02
+    },
+    {
+     "text": "veliko",
+     "start": 11.02,
+     "end": 11.52
+    },
+    {
+     "text": "nasledstvo.",
+     "start": 11.52,
+     "end": 12.36
+    },
+    {
+     "text": "Ali",
+     "start": 12.36,
+     "end": 13.22
+    },
+    {
+     "text": "izgubivši",
+     "start": 13.22,
+     "end": 14.1
+    },
+    {
+     "text": "u",
+     "start": 14.1,
+     "end": 14.16
+    },
+    {
+     "text": "raznim",
+     "start": 14.16,
+     "end": 14.56
+    },
+    {
+     "text": "nesrećnim",
+     "start": 14.56,
+     "end": 15.22
+    },
+    {
+     "text": "slučajevima",
+     "start": 15.22,
+     "end": 16.04
+    },
+    {
+     "text": "svoje",
+     "start": 16.04,
+     "end": 16.46
+    },
+    {
+     "text": "imanje,",
+     "start": 16.46,
+     "end": 17.58
+    },
+    {
+     "text": "on",
+     "start": 17.58,
+     "end": 17.7
+    },
+    {
+     "text": "napusti",
+     "start": 17.7,
+     "end": 18.3
+    },
+    {
+     "text": "New",
+     "start": 18.3,
+     "end": 18.48
+    },
+    {
+     "text": "Orleans,",
+     "start": 18.48,
+     "end": 19.48
+    },
+    {
+     "text": "svoj",
+     "start": 19.48,
+     "end": 19.86
+    },
+    {
+     "text": "rodni",
+     "start": 19.86,
+     "end": 20.16
+    },
+    {
+     "text": "grad,",
+     "start": 20.16,
+     "end": 20.7
+    },
+    {
+     "text": "da",
+     "start": 20.7,
+     "end": 21.04
+    },
+    {
+     "text": "se",
+     "start": 21.04,
+     "end": 21.2
+    },
+    {
+     "text": "spasa",
+     "start": 21.2,
+     "end": 21.72
+    },
+    {
+     "text": "od",
+     "start": 21.72,
+     "end": 21.88
+    },
+    {
+     "text": "poniženja",
+     "start": 21.88,
+     "end": 22.72
+    },
+    {
+     "text": "koje",
+     "start": 22.72,
+     "end": 23.16
+    },
+    {
+     "text": "ga",
+     "start": 23.16,
+     "end": 23.28
+    },
+    {
+     "text": "ne",
+     "start": 23.28,
+     "end": 23.54
+    },
+    {
+     "text": "bi",
+     "start": 23.54,
+     "end": 23.62
+    },
+    {
+     "text": "poštedela",
+     "start": 23.62,
+     "end": 24.44
+    },
+    {
+     "text": "u",
+     "start": 24.44,
+     "end": 24.72
+    },
+    {
+     "text": "njegovoj",
+     "start": 24.72,
+     "end": 25.24
+    },
+    {
+     "text": "nesreći.",
+     "start": 25.24,
+     "end": 25.96
+    },
+    {
+     "text": "Na",
+     "start": 25.9,
+     "end": 26.46
+    }
+   ]
+  },
+  {
+   "text": "Na ostrvu Saliven u blizini Charlstona u Južnej Kaliforniji potroži i nađe mesto da se nastani.",
+   "start": 25.9,
+   "end": 34.08,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "ostrvu",
+     "start": 26.46,
+     "end": 26.94
+    },
+    {
+     "text": "Saliven",
+     "start": 26.94,
+     "end": 27.62
+    },
+    {
+     "text": "u",
+     "start": 27.62,
+     "end": 27.9
+    },
+    {
+     "text": "blizini",
+     "start": 27.9,
+     "end": 28.36
+    },
+    {
+     "text": "Charlstona",
+     "start": 28.36,
+     "end": 29.1
+    },
+    {
+     "text": "u",
+     "start": 29.1,
+     "end": 29.38
+    },
+    {
+     "text": "Južnej",
+     "start": 29.38,
+     "end": 29.76
+    },
+    {
+     "text": "Kaliforniji",
+     "start": 29.76,
+     "end": 30.54
+    },
+    {
+     "text": "potroži",
+     "start": 30.54,
+     "end": 31.72
+    },
+    {
+     "text": "i",
+     "start": 31.72,
+     "end": 31.94
+    },
+    {
+     "text": "nađe",
+     "start": 31.94,
+     "end": 32.36
+    },
+    {
+     "text": "mesto",
+     "start": 32.36,
+     "end": 32.88
+    },
+    {
+     "text": "da",
+     "start": 32.88,
+     "end": 33.18
+    },
+    {
+     "text": "se",
+     "start": 33.18,
+     "end": 33.4
+    },
+    {
+     "text": "nastani.",
+     "start": 33.4,
+     "end": 34.08
+    }
+   ]
+  }
+ ]
+}

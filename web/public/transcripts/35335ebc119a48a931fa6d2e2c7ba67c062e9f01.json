@@ -1,0 +1,668 @@
+{
+ "title": "Bodulica",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Simo-Matavulj-Bodulica.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/bodulica/",
+ "duration": 60.38,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "To bi, kao što vidite, bilo dosta da namamljio ljude k mrnaru, ali opet velju to je sporedni uzrok, a glavni biješe ona ista, nastrana roza, koji niko ne biješe neznan, koja je sve šalom začinjala, joj ne mogaše da zamjeri.",
+   "start": 0.0,
+   "end": 17.84,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "To",
+     "start": 0.0,
+     "end": 0.44
+    },
+    {
+     "text": "bi,",
+     "start": 0.44,
+     "end": 0.86
+    },
+    {
+     "text": "kao",
+     "start": 0.86,
+     "end": 1.02
+    },
+    {
+     "text": "što",
+     "start": 1.02,
+     "end": 1.22
+    },
+    {
+     "text": "vidite,",
+     "start": 1.22,
+     "end": 1.82
+    },
+    {
+     "text": "bilo",
+     "start": 1.82,
+     "end": 2.1
+    },
+    {
+     "text": "dosta",
+     "start": 2.1,
+     "end": 2.62
+    },
+    {
+     "text": "da",
+     "start": 2.62,
+     "end": 3.14
+    },
+    {
+     "text": "namamljio",
+     "start": 3.14,
+     "end": 3.7
+    },
+    {
+     "text": "ljude",
+     "start": 3.7,
+     "end": 4.08
+    },
+    {
+     "text": "k",
+     "start": 4.08,
+     "end": 4.2
+    },
+    {
+     "text": "mrnaru,",
+     "start": 4.2,
+     "end": 4.96
+    },
+    {
+     "text": "ali",
+     "start": 4.96,
+     "end": 5.38
+    },
+    {
+     "text": "opet",
+     "start": 5.38,
+     "end": 5.78
+    },
+    {
+     "text": "velju",
+     "start": 5.78,
+     "end": 6.14
+    },
+    {
+     "text": "to",
+     "start": 6.14,
+     "end": 6.34
+    },
+    {
+     "text": "je",
+     "start": 6.34,
+     "end": 6.44
+    },
+    {
+     "text": "sporedni",
+     "start": 6.44,
+     "end": 7.08
+    },
+    {
+     "text": "uzrok,",
+     "start": 7.08,
+     "end": 8.02
+    },
+    {
+     "text": "a",
+     "start": 8.02,
+     "end": 8.14
+    },
+    {
+     "text": "glavni",
+     "start": 8.14,
+     "end": 8.62
+    },
+    {
+     "text": "biješe",
+     "start": 8.62,
+     "end": 9.16
+    },
+    {
+     "text": "ona",
+     "start": 9.16,
+     "end": 9.4
+    },
+    {
+     "text": "ista,",
+     "start": 9.4,
+     "end": 10.12
+    },
+    {
+     "text": "nastrana",
+     "start": 10.12,
+     "end": 11.16
+    },
+    {
+     "text": "roza,",
+     "start": 11.16,
+     "end": 11.72
+    },
+    {
+     "text": "koji",
+     "start": 11.72,
+     "end": 12.2
+    },
+    {
+     "text": "niko",
+     "start": 12.2,
+     "end": 12.52
+    },
+    {
+     "text": "ne",
+     "start": 12.52,
+     "end": 12.76
+    },
+    {
+     "text": "biješe",
+     "start": 12.76,
+     "end": 13.2
+    },
+    {
+     "text": "neznan,",
+     "start": 13.2,
+     "end": 14.12
+    },
+    {
+     "text": "koja",
+     "start": 14.12,
+     "end": 14.3
+    },
+    {
+     "text": "je",
+     "start": 14.3,
+     "end": 14.36
+    },
+    {
+     "text": "sve",
+     "start": 14.36,
+     "end": 14.54
+    },
+    {
+     "text": "šalom",
+     "start": 14.54,
+     "end": 15.06
+    },
+    {
+     "text": "začinjala,",
+     "start": 15.06,
+     "end": 16.14
+    },
+    {
+     "text": "joj",
+     "start": 16.14,
+     "end": 16.22
+    },
+    {
+     "text": "ne",
+     "start": 16.22,
+     "end": 16.46
+    },
+    {
+     "text": "mogaše",
+     "start": 16.46,
+     "end": 16.96
+    },
+    {
+     "text": "da",
+     "start": 16.96,
+     "end": 17.16
+    },
+    {
+     "text": "zamjeri.",
+     "start": 17.16,
+     "end": 17.96
+    }
+   ]
+  },
+  {
+   "text": "Uđeš, ako si joj znan, ne zove te po imenu, nego kako te ona krstila. Koliko biješe gostiju, svak je imao zgoda nadimak.",
+   "start": 18.4,
+   "end": 28.36,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Uđeš,",
+     "start": 18.52,
+     "end": 19.44
+    },
+    {
+     "text": "ako",
+     "start": 19.44,
+     "end": 19.7
+    },
+    {
+     "text": "si",
+     "start": 19.7,
+     "end": 19.9
+    },
+    {
+     "text": "joj",
+     "start": 19.9,
+     "end": 20.02
+    },
+    {
+     "text": "znan,",
+     "start": 20.02,
+     "end": 20.62
+    },
+    {
+     "text": "ne",
+     "start": 20.62,
+     "end": 21.02
+    },
+    {
+     "text": "zove",
+     "start": 21.02,
+     "end": 21.34
+    },
+    {
+     "text": "te",
+     "start": 21.34,
+     "end": 21.54
+    },
+    {
+     "text": "po",
+     "start": 21.54,
+     "end": 21.76
+    },
+    {
+     "text": "imenu,",
+     "start": 21.76,
+     "end": 22.36
+    },
+    {
+     "text": "nego",
+     "start": 22.36,
+     "end": 22.76
+    },
+    {
+     "text": "kako",
+     "start": 22.76,
+     "end": 23.12
+    },
+    {
+     "text": "te",
+     "start": 23.12,
+     "end": 23.28
+    },
+    {
+     "text": "ona",
+     "start": 23.28,
+     "end": 23.54
+    },
+    {
+     "text": "krstila.",
+     "start": 23.54,
+     "end": 24.18
+    },
+    {
+     "text": "Koliko",
+     "start": 24.18,
+     "end": 25.08
+    },
+    {
+     "text": "biješe",
+     "start": 25.08,
+     "end": 25.64
+    },
+    {
+     "text": "gostiju,",
+     "start": 25.64,
+     "end": 26.34
+    },
+    {
+     "text": "svak",
+     "start": 26.34,
+     "end": 26.64
+    },
+    {
+     "text": "je",
+     "start": 26.64,
+     "end": 26.76
+    },
+    {
+     "text": "imao",
+     "start": 26.76,
+     "end": 27.08
+    },
+    {
+     "text": "zgoda",
+     "start": 27.08,
+     "end": 27.54
+    },
+    {
+     "text": "nadimak.",
+     "start": 27.54,
+     "end": 28.32
+    }
+   ]
+  },
+  {
+   "text": "Ako joj se ne desi pri pameti, onda ona dava naslove, ali tek imenom ne zove nikoga, niti hoće da kaže kome gospodine, pa da bi joj isti Česar došao.",
+   "start": 28.36,
+   "end": 41.36,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Ako",
+     "start": 28.96,
+     "end": 29.28
+    },
+    {
+     "text": "joj",
+     "start": 29.28,
+     "end": 29.44
+    },
+    {
+     "text": "se",
+     "start": 29.44,
+     "end": 29.64
+    },
+    {
+     "text": "ne",
+     "start": 29.64,
+     "end": 29.92
+    },
+    {
+     "text": "desi",
+     "start": 29.92,
+     "end": 30.28
+    },
+    {
+     "text": "pri",
+     "start": 30.28,
+     "end": 30.52
+    },
+    {
+     "text": "pameti,",
+     "start": 30.52,
+     "end": 31.3
+    },
+    {
+     "text": "onda",
+     "start": 31.3,
+     "end": 31.84
+    },
+    {
+     "text": "ona",
+     "start": 31.84,
+     "end": 32.12
+    },
+    {
+     "text": "dava",
+     "start": 32.12,
+     "end": 32.52
+    },
+    {
+     "text": "naslove,",
+     "start": 32.52,
+     "end": 33.7
+    },
+    {
+     "text": "ali",
+     "start": 33.7,
+     "end": 33.82
+    },
+    {
+     "text": "tek",
+     "start": 33.82,
+     "end": 34.12
+    },
+    {
+     "text": "imenom",
+     "start": 34.12,
+     "end": 34.66
+    },
+    {
+     "text": "ne",
+     "start": 34.66,
+     "end": 34.82
+    },
+    {
+     "text": "zove",
+     "start": 34.82,
+     "end": 35.14
+    },
+    {
+     "text": "nikoga,",
+     "start": 35.14,
+     "end": 35.9
+    },
+    {
+     "text": "niti",
+     "start": 35.9,
+     "end": 36.4
+    },
+    {
+     "text": "hoće",
+     "start": 36.4,
+     "end": 36.82
+    },
+    {
+     "text": "da",
+     "start": 36.82,
+     "end": 36.96
+    },
+    {
+     "text": "kaže",
+     "start": 36.96,
+     "end": 37.38
+    },
+    {
+     "text": "kome",
+     "start": 37.38,
+     "end": 37.74
+    },
+    {
+     "text": "gospodine,",
+     "start": 37.74,
+     "end": 39.14
+    },
+    {
+     "text": "pa",
+     "start": 39.14,
+     "end": 39.28
+    },
+    {
+     "text": "da",
+     "start": 39.28,
+     "end": 39.46
+    },
+    {
+     "text": "bi",
+     "start": 39.46,
+     "end": 39.62
+    },
+    {
+     "text": "joj",
+     "start": 39.62,
+     "end": 39.76
+    },
+    {
+     "text": "isti",
+     "start": 39.76,
+     "end": 40.16
+    },
+    {
+     "text": "Česar",
+     "start": 40.16,
+     "end": 40.64
+    },
+    {
+     "text": "došao.",
+     "start": 40.64,
+     "end": 41.32
+    },
+    {
+     "text": "Ko",
+     "start": 41.38,
+     "end": 42.16
+    }
+   ]
+  },
+  {
+   "text": "Ko kroči s praga, ona ga sreta po svome adetu. Dobro dos obilizija, manje moska hardalo, osjor pozmiren, benvenja cubro, adio conte, barone, principe moj, a da si već macije srdasce.",
+   "start": 41.36,
+   "end": 60.38,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "kroči",
+     "start": 42.16,
+     "end": 42.68
+    },
+    {
+     "text": "s",
+     "start": 42.68,
+     "end": 42.82
+    },
+    {
+     "text": "praga,",
+     "start": 42.82,
+     "end": 43.3
+    },
+    {
+     "text": "ona",
+     "start": 43.3,
+     "end": 43.8
+    },
+    {
+     "text": "ga",
+     "start": 43.8,
+     "end": 43.9
+    },
+    {
+     "text": "sreta",
+     "start": 43.9,
+     "end": 44.44
+    },
+    {
+     "text": "po",
+     "start": 44.44,
+     "end": 44.66
+    },
+    {
+     "text": "svome",
+     "start": 44.66,
+     "end": 45.08
+    },
+    {
+     "text": "adetu.",
+     "start": 45.08,
+     "end": 45.98
+    },
+    {
+     "text": "Dobro",
+     "start": 45.98,
+     "end": 46.78
+    },
+    {
+     "text": "dos",
+     "start": 46.78,
+     "end": 47.1
+    },
+    {
+     "text": "obilizija,",
+     "start": 47.1,
+     "end": 48.58
+    },
+    {
+     "text": "manje",
+     "start": 48.58,
+     "end": 49.02
+    },
+    {
+     "text": "moska",
+     "start": 49.02,
+     "end": 49.62
+    },
+    {
+     "text": "hardalo,",
+     "start": 49.62,
+     "end": 50.72
+    },
+    {
+     "text": "osjor",
+     "start": 50.72,
+     "end": 51.16
+    },
+    {
+     "text": "pozmiren,",
+     "start": 51.16,
+     "end": 52.64
+    },
+    {
+     "text": "benvenja",
+     "start": 52.64,
+     "end": 53.28
+    },
+    {
+     "text": "cubro,",
+     "start": 53.28,
+     "end": 54.1
+    },
+    {
+     "text": "adio",
+     "start": 54.1,
+     "end": 54.6
+    },
+    {
+     "text": "conte,",
+     "start": 54.6,
+     "end": 55.58
+    },
+    {
+     "text": "barone,",
+     "start": 55.58,
+     "end": 56.56
+    },
+    {
+     "text": "principe",
+     "start": 56.56,
+     "end": 57.02
+    },
+    {
+     "text": "moj,",
+     "start": 57.02,
+     "end": 58.0
+    },
+    {
+     "text": "a",
+     "start": 58.0,
+     "end": 58.16
+    },
+    {
+     "text": "da",
+     "start": 58.16,
+     "end": 58.32
+    },
+    {
+     "text": "si",
+     "start": 58.32,
+     "end": 58.5
+    },
+    {
+     "text": "već",
+     "start": 58.5,
+     "end": 58.8
+    },
+    {
+     "text": "macije",
+     "start": 58.8,
+     "end": 59.4
+    },
+    {
+     "text": "srdasce.",
+     "start": 59.4,
+     "end": 60.34
+    }
+   ]
+  }
+ ]
+}

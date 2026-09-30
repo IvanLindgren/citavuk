@@ -1,0 +1,560 @@
+{
+ "title": "Pop Ćira i pop Spira",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Pop-Cira-i-pop-Spira.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/pop-cira-i-pop-spira/",
+ "duration": 47.48,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Molim vas lijepo malo od onih krofne iz onoga tanjira tamo. Čini mi se da su se tamo malo rumenije, a bolje narasle. A svaki pop čudo što voli krofne. Otkud sad to, Bog će ga sveti znati? Ali to je nepobitan fakat, poznat svakom pravom sinu naše svete pravoslavne crkve.",
+   "start": 0.0,
+   "end": 22.22,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Molim",
+     "start": 0.0,
+     "end": 0.58
+    },
+    {
+     "text": "vas",
+     "start": 0.58,
+     "end": 0.72
+    },
+    {
+     "text": "lijepo",
+     "start": 0.72,
+     "end": 1.28
+    },
+    {
+     "text": "malo",
+     "start": 1.28,
+     "end": 1.82
+    },
+    {
+     "text": "od",
+     "start": 1.82,
+     "end": 1.96
+    },
+    {
+     "text": "onih",
+     "start": 1.96,
+     "end": 2.16
+    },
+    {
+     "text": "krofne",
+     "start": 2.16,
+     "end": 2.6
+    },
+    {
+     "text": "iz",
+     "start": 2.6,
+     "end": 2.74
+    },
+    {
+     "text": "onoga",
+     "start": 2.74,
+     "end": 2.94
+    },
+    {
+     "text": "tanjira",
+     "start": 2.94,
+     "end": 3.44
+    },
+    {
+     "text": "tamo.",
+     "start": 3.44,
+     "end": 4.0
+    },
+    {
+     "text": "Čini",
+     "start": 4.0,
+     "end": 5.12
+    },
+    {
+     "text": "mi",
+     "start": 5.12,
+     "end": 5.3
+    },
+    {
+     "text": "se",
+     "start": 5.3,
+     "end": 5.42
+    },
+    {
+     "text": "da",
+     "start": 5.42,
+     "end": 5.56
+    },
+    {
+     "text": "su",
+     "start": 5.56,
+     "end": 5.7
+    },
+    {
+     "text": "se",
+     "start": 5.7,
+     "end": 5.86
+    },
+    {
+     "text": "tamo",
+     "start": 5.86,
+     "end": 6.24
+    },
+    {
+     "text": "malo",
+     "start": 6.24,
+     "end": 6.8
+    },
+    {
+     "text": "rumenije,",
+     "start": 6.8,
+     "end": 7.46
+    },
+    {
+     "text": "a",
+     "start": 7.46,
+     "end": 7.92
+    },
+    {
+     "text": "bolje",
+     "start": 7.92,
+     "end": 8.18
+    },
+    {
+     "text": "narasle.",
+     "start": 8.18,
+     "end": 8.86
+    },
+    {
+     "text": "A",
+     "start": 8.86,
+     "end": 10.04
+    },
+    {
+     "text": "svaki",
+     "start": 10.04,
+     "end": 10.5
+    },
+    {
+     "text": "pop",
+     "start": 10.5,
+     "end": 10.84
+    },
+    {
+     "text": "čudo",
+     "start": 10.84,
+     "end": 11.28
+    },
+    {
+     "text": "što",
+     "start": 11.28,
+     "end": 11.52
+    },
+    {
+     "text": "voli",
+     "start": 11.52,
+     "end": 11.76
+    },
+    {
+     "text": "krofne.",
+     "start": 11.76,
+     "end": 12.78
+    },
+    {
+     "text": "Otkud",
+     "start": 12.78,
+     "end": 13.72
+    },
+    {
+     "text": "sad",
+     "start": 13.72,
+     "end": 13.9
+    },
+    {
+     "text": "to,",
+     "start": 13.9,
+     "end": 14.26
+    },
+    {
+     "text": "Bog",
+     "start": 14.26,
+     "end": 14.36
+    },
+    {
+     "text": "će",
+     "start": 14.36,
+     "end": 14.54
+    },
+    {
+     "text": "ga",
+     "start": 14.54,
+     "end": 14.64
+    },
+    {
+     "text": "sveti",
+     "start": 14.64,
+     "end": 15.08
+    },
+    {
+     "text": "znati?",
+     "start": 15.08,
+     "end": 15.58
+    },
+    {
+     "text": "Ali",
+     "start": 15.58,
+     "end": 16.52
+    },
+    {
+     "text": "to",
+     "start": 16.52,
+     "end": 16.7
+    },
+    {
+     "text": "je",
+     "start": 16.7,
+     "end": 16.8
+    },
+    {
+     "text": "nepobitan",
+     "start": 16.8,
+     "end": 17.5
+    },
+    {
+     "text": "fakat,",
+     "start": 17.5,
+     "end": 18.44
+    },
+    {
+     "text": "poznat",
+     "start": 18.44,
+     "end": 19.24
+    },
+    {
+     "text": "svakom",
+     "start": 19.24,
+     "end": 19.66
+    },
+    {
+     "text": "pravom",
+     "start": 19.66,
+     "end": 20.08
+    },
+    {
+     "text": "sinu",
+     "start": 20.08,
+     "end": 20.44
+    },
+    {
+     "text": "naše",
+     "start": 20.44,
+     "end": 20.74
+    },
+    {
+     "text": "svete",
+     "start": 20.74,
+     "end": 21.1
+    },
+    {
+     "text": "pravoslavne",
+     "start": 21.1,
+     "end": 21.76
+    },
+    {
+     "text": "crkve.",
+     "start": 21.76,
+     "end": 22.22
+    }
+   ]
+  },
+  {
+   "text": "I jedan i drugi pop iz ovog mesta gde se naša priča razvija, mogao je za čudo i za pripovest mnogo krovni pojesti.",
+   "start": 22.22,
+   "end": 31.82,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "I",
+     "start": 23.3,
+     "end": 23.34
+    },
+    {
+     "text": "jedan",
+     "start": 23.34,
+     "end": 23.66
+    },
+    {
+     "text": "i",
+     "start": 23.66,
+     "end": 23.76
+    },
+    {
+     "text": "drugi",
+     "start": 23.76,
+     "end": 24.06
+    },
+    {
+     "text": "pop",
+     "start": 24.06,
+     "end": 24.28
+    },
+    {
+     "text": "iz",
+     "start": 24.28,
+     "end": 24.44
+    },
+    {
+     "text": "ovog",
+     "start": 24.44,
+     "end": 24.72
+    },
+    {
+     "text": "mesta",
+     "start": 24.72,
+     "end": 25.12
+    },
+    {
+     "text": "gde",
+     "start": 25.12,
+     "end": 25.72
+    },
+    {
+     "text": "se",
+     "start": 25.72,
+     "end": 25.86
+    },
+    {
+     "text": "naša",
+     "start": 25.86,
+     "end": 26.22
+    },
+    {
+     "text": "priča",
+     "start": 26.22,
+     "end": 26.52
+    },
+    {
+     "text": "razvija,",
+     "start": 26.52,
+     "end": 28.08
+    },
+    {
+     "text": "mogao",
+     "start": 28.08,
+     "end": 28.42
+    },
+    {
+     "text": "je",
+     "start": 28.42,
+     "end": 28.54
+    },
+    {
+     "text": "za",
+     "start": 28.54,
+     "end": 28.8
+    },
+    {
+     "text": "čudo",
+     "start": 28.8,
+     "end": 29.08
+    },
+    {
+     "text": "i",
+     "start": 29.08,
+     "end": 29.78
+    },
+    {
+     "text": "za",
+     "start": 29.78,
+     "end": 29.94
+    },
+    {
+     "text": "pripovest",
+     "start": 29.94,
+     "end": 30.46
+    },
+    {
+     "text": "mnogo",
+     "start": 30.46,
+     "end": 30.86
+    },
+    {
+     "text": "krovni",
+     "start": 30.86,
+     "end": 31.28
+    },
+    {
+     "text": "pojesti.",
+     "start": 31.28,
+     "end": 32.08
+    }
+   ]
+  },
+  {
+   "text": "Već čisto čovek da ne veruje. Za jednog od ove dvojice, i to baš, boga mi biće za popćiru, pripovedaju da je u jednim svatovima pojao punu jednu veš korpu krovni.",
+   "start": 32.92,
+   "end": 47.48,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Već",
+     "start": 32.84,
+     "end": 33.12
+    },
+    {
+     "text": "čisto",
+     "start": 33.12,
+     "end": 33.5
+    },
+    {
+     "text": "čovek",
+     "start": 33.5,
+     "end": 33.84
+    },
+    {
+     "text": "da",
+     "start": 33.84,
+     "end": 33.96
+    },
+    {
+     "text": "ne",
+     "start": 33.96,
+     "end": 34.14
+    },
+    {
+     "text": "veruje.",
+     "start": 34.14,
+     "end": 34.74
+    },
+    {
+     "text": "Za",
+     "start": 34.74,
+     "end": 35.66
+    },
+    {
+     "text": "jednog",
+     "start": 35.66,
+     "end": 36.0
+    },
+    {
+     "text": "od",
+     "start": 36.0,
+     "end": 36.16
+    },
+    {
+     "text": "ove",
+     "start": 36.16,
+     "end": 36.32
+    },
+    {
+     "text": "dvojice,",
+     "start": 36.32,
+     "end": 37.02
+    },
+    {
+     "text": "i",
+     "start": 37.02,
+     "end": 37.58
+    },
+    {
+     "text": "to",
+     "start": 37.58,
+     "end": 37.74
+    },
+    {
+     "text": "baš,",
+     "start": 37.74,
+     "end": 38.34
+    },
+    {
+     "text": "boga",
+     "start": 38.34,
+     "end": 38.88
+    },
+    {
+     "text": "mi",
+     "start": 38.88,
+     "end": 39.04
+    },
+    {
+     "text": "biće",
+     "start": 39.04,
+     "end": 39.38
+    },
+    {
+     "text": "za",
+     "start": 39.38,
+     "end": 39.56
+    },
+    {
+     "text": "popćiru,",
+     "start": 39.56,
+     "end": 40.44
+    },
+    {
+     "text": "pripovedaju",
+     "start": 40.44,
+     "end": 41.92
+    },
+    {
+     "text": "da",
+     "start": 41.92,
+     "end": 42.08
+    },
+    {
+     "text": "je",
+     "start": 42.08,
+     "end": 42.3
+    },
+    {
+     "text": "u",
+     "start": 42.3,
+     "end": 42.68
+    },
+    {
+     "text": "jednim",
+     "start": 42.68,
+     "end": 43.08
+    },
+    {
+     "text": "svatovima",
+     "start": 43.08,
+     "end": 43.74
+    },
+    {
+     "text": "pojao",
+     "start": 43.74,
+     "end": 44.2
+    },
+    {
+     "text": "punu",
+     "start": 44.2,
+     "end": 44.8
+    },
+    {
+     "text": "jednu",
+     "start": 44.8,
+     "end": 45.46
+    },
+    {
+     "text": "veš",
+     "start": 45.46,
+     "end": 46.0
+    },
+    {
+     "text": "korpu",
+     "start": 46.0,
+     "end": 46.46
+    },
+    {
+     "text": "krovni.",
+     "start": 46.46,
+     "end": 47.1
+    }
+   ]
+  }
+ ]
+}

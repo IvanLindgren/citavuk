@@ -97,6 +97,7 @@ func TestNewBudgetDisabledByZero(t *testing.T) {
 func TestInContextFallsBackWhenBudgetIsSpent(t *testing.T) {
 	clock := time.Unix(1_700_000_000, 0)
 	fake := newFake()
+	fake.out = "дом"
 	service := NewService(NewDeepL("test-key:fx"), fake, nil).
 		WithBudget(newTestBudget(1, &clock))
 

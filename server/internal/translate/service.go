@@ -9,6 +9,8 @@ import (
 	"time"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 // Result — перевод и сведения о его происхождении.
@@ -137,7 +139,7 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 	}
 
 	if s.cache != nil {
-		if cached, provider, ok := s.cache.Get(ctx, source, target, text); ok {
+		if cached, provider, ok := s.cache.Get(ctx, source, target, text); ok && aioutput.Translation(cached, text, target) {
 			return &Result{Text: cached, Provider: provider, Cached: true, Aligned: true}, nil
 		}
 	}
@@ -154,7 +156,7 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 	if deeplReady && (s.words == nil || s.deeplAllowed(text)) {
 		var out []string
 		out, deeplErr = s.deepl.TranslateTexts(ctx, []string{text}, source, target, Options{})
-		if deeplErr == nil && len(out) == 1 && strings.TrimSpace(out[0]) != "" {
+		if deeplErr == nil && len(out) == 1 && aioutput.Translation(out[0], text, target) {
 			s.store(ctx, source, target, text, out[0], s.deepl.Name())
 			return &Result{Text: out[0], Provider: s.deepl.Name(), Aligned: true}, nil
 		}
@@ -226,7 +228,7 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	// сотым читателем одной книги квота уже не тратится вовсе.
 	if s.cache != nil {
 		if cached, provider, ok := s.cache.Get(ctx, source, target, marked); ok {
-			if full, aligned := SplitMarked(cached); aligned != "" {
+			if full, aligned := SplitMarked(cached); aligned != "" && aioutput.Translation(aligned, word, target) && aioutput.Translation(full, sentence, target) {
 				return &Result{
 					Text:     aligned,
 					Sentence: full,
@@ -288,7 +290,7 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 
 	full, aligned := SplitMarked(out[0])
 	res := &Result{Sentence: full, Provider: s.deepl.Name()}
-	if aligned != "" {
+	if aligned != "" && aioutput.Translation(aligned, word, target) && aioutput.Translation(full, sentence, target) {
 		res.Text = aligned
 		res.Aligned = true
 		// Один запрос к DeepL наполняет кеш тремя разными ключами. Записи идут
@@ -312,6 +314,9 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 
 	// Тег не сохранился: показываем перевод предложения, а слово переводим
 	// отдельно, честно пометив, что выравнивания не было.
+	if !aioutput.Translation(full, sentence, target) {
+		res.Sentence = ""
+	}
 	if w, err := s.word(ctx, word, source, target,
 		wordFallback{contextHint: sentence}); err == nil {
 		res.Text = w.Text
@@ -349,7 +354,7 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 		return nil, ErrEmptyText
 	}
 	if s.cache != nil {
-		if cached, provider, ok := s.cache.Get(ctx, source, target, word); ok {
+		if cached, provider, ok := s.cache.Get(ctx, source, target, word); ok && aioutput.Translation(cached, word, target) {
 			return &Result{Text: cached, Provider: provider, Cached: true}, nil
 		}
 	}
@@ -363,6 +368,9 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 	} else {
 		var out string
 		out, wordsErr = s.words.TranslateWord(ctx, word, source, target)
+		if wordsErr == nil && !aioutput.Translation(out, word, target) {
+			wordsErr = errors.New("переводчик ответил на другом языке")
+		}
 		switch {
 		case wordsErr == nil:
 			s.store(ctx, source, target, word, out, s.words.Name())
@@ -392,7 +400,7 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 		}
 		return nil, wordsErr
 	}
-	if len(out) != 1 || strings.TrimSpace(out[0]) == "" {
+	if len(out) != 1 || !aioutput.Translation(out[0], word, target) {
 		s.refundDeepL(word)
 		return nil, wordsErr
 	}
@@ -400,7 +408,7 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 }
 
 func (s *Service) store(ctx context.Context, source, target, text, translation, provider string) {
-	if s.cache == nil || strings.TrimSpace(translation) == "" {
+	if s.cache == nil || !aioutput.Translation(translation, text, target) {
 		return
 	}
 	_ = s.cache.Put(ctx, source, target, text, translation, provider)

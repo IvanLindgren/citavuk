@@ -50,7 +50,7 @@ def main():
             "Review grammar, cases, diacritics and sentence completeness before responding. "
             'Return ONLY JSON {"sentences":["...", "..."]} with exactly 100 different strings.'
         )
-        payload = {"model": "deepseek/deepseek-v4-flash-0731",
+        payload = {"model": "openai/gpt-6-luna",
                    "reasoning": {"effort": "low"}, "max_tokens": 18000,
                    "response_format": {"type": "json_object"},
                    "messages": [{"role": "system", "content": "You are a careful native-language educational content editor."},

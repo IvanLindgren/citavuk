@@ -22,6 +22,23 @@ export interface DonationState {
 export interface Supporter {
   name: string;
   since: string;
+  amountKopecks?: number;
+}
+
+export interface SupportSpotlight { name: string; message?: string; amountKopecks?: number; day: string }
+export interface SupportShowcase { supporters: Supporter[]; spotlight: SupportSpotlight | null }
+export interface SupportSubscription { id: string; amountKopecks: number; status: 'pending' | 'active' | 'paused' | 'canceled'; nextChargeAt?: string }
+export function getSupportShowcase(): Promise<SupportShowcase> {
+  return request<SupportShowcase>('/v1/supporters', { anonymous: true });
+}
+export async function getSupportSubscriptions(): Promise<SupportSubscription[]> {
+  return (await request<{ subscriptions: SupportSubscription[] }>('/v1/support-subscriptions')).subscriptions;
+}
+export function cancelSupportSubscription(id: string): Promise<void> {
+  return request<void>(`/v1/support-subscriptions/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 50_000 });
+}
+export function moderateDonationMessage(id: string, approved: boolean): Promise<void> {
+  return request<void>(`/v1/admin/donations/${encodeURIComponent(id)}/message`, { method: 'PUT', body: { approved } });
 }
 
 export interface AdminDonation {
@@ -34,6 +51,8 @@ export interface AdminDonation {
   source: 'yookassa' | 'manual';
   providerPaymentId?: string;
   isTest: boolean;
+  showMessage?: boolean;
+  messageApproved?: boolean;
   paidAt?: string;
   userEmail?: string;
 }
@@ -50,6 +69,7 @@ export interface DonationAvailability {
   available: boolean;
   /** Тестовый магазин: видно только администратору. */
   testMode: boolean;
+  monthlyAvailable?: boolean;
 }
 
 export function getDonationAvailability(): Promise<DonationAvailability> {
@@ -61,6 +81,10 @@ export function startDonation(input: {
   name: string;
   showPublic: boolean;
   message: string;
+  showAmount?: boolean;
+  showMessage?: boolean;
+  monthly?: boolean;
+  monthlyConsent?: boolean;
 }): Promise<DonationStart> {
   return request<DonationStart>('/v1/donations', { method: 'POST', body: input, timeoutMs: 40_000 });
 }

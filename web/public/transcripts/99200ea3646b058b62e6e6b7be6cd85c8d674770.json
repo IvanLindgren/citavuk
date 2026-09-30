@@ -1,0 +1,395 @@
+{
+ "title": "Božićna pečenica",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Bozicna-pecenica.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/bozicna-pecenica/",
+ "duration": 34.48,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Znam da će vas interesovati priča, zato ću malo poizdalje početi i neću prećudati ni pojedine sitnice, samo da bi vam slika što plastičnija ispala.",
+   "start": 0.0,
+   "end": 10.9,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Znam",
+     "start": 0.02,
+     "end": 0.56
+    },
+    {
+     "text": "da",
+     "start": 0.56,
+     "end": 0.72
+    },
+    {
+     "text": "će",
+     "start": 0.72,
+     "end": 0.88
+    },
+    {
+     "text": "vas",
+     "start": 0.88,
+     "end": 1.0
+    },
+    {
+     "text": "interesovati",
+     "start": 1.0,
+     "end": 1.7
+    },
+    {
+     "text": "priča,",
+     "start": 1.7,
+     "end": 2.32
+    },
+    {
+     "text": "zato",
+     "start": 2.32,
+     "end": 3.14
+    },
+    {
+     "text": "ću",
+     "start": 3.14,
+     "end": 3.32
+    },
+    {
+     "text": "malo",
+     "start": 3.32,
+     "end": 3.6
+    },
+    {
+     "text": "poizdalje",
+     "start": 3.6,
+     "end": 4.26
+    },
+    {
+     "text": "početi",
+     "start": 4.26,
+     "end": 4.78
+    },
+    {
+     "text": "i",
+     "start": 4.78,
+     "end": 5.02
+    },
+    {
+     "text": "neću",
+     "start": 5.02,
+     "end": 5.38
+    },
+    {
+     "text": "prećudati",
+     "start": 5.38,
+     "end": 6.1
+    },
+    {
+     "text": "ni",
+     "start": 6.1,
+     "end": 6.56
+    },
+    {
+     "text": "pojedine",
+     "start": 6.56,
+     "end": 7.04
+    },
+    {
+     "text": "sitnice,",
+     "start": 7.04,
+     "end": 8.3
+    },
+    {
+     "text": "samo",
+     "start": 8.3,
+     "end": 8.5
+    },
+    {
+     "text": "da",
+     "start": 8.5,
+     "end": 8.66
+    },
+    {
+     "text": "bi",
+     "start": 8.66,
+     "end": 8.74
+    },
+    {
+     "text": "vam",
+     "start": 8.74,
+     "end": 8.9
+    },
+    {
+     "text": "slika",
+     "start": 8.9,
+     "end": 9.38
+    },
+    {
+     "text": "što",
+     "start": 9.38,
+     "end": 9.8
+    },
+    {
+     "text": "plastičnija",
+     "start": 9.8,
+     "end": 10.46
+    },
+    {
+     "text": "ispala.",
+     "start": 10.46,
+     "end": 10.9
+    }
+   ]
+  },
+  {
+   "text": "I Pavle Postiljonović, i Jovan Maksić, i Polaženik, i Domaćin bili su činovnici jednog tunavog narlešta u jednom istom mestu, ali u kom, to vam neću kazati, jer nisam rade da imam posla sa sudovima, niti da vređam o tačastvene poštere.",
+   "start": 12.22,
+   "end": 29.14,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "I",
+     "start": 12.24,
+     "end": 12.36
+    },
+    {
+     "text": "Pavle",
+     "start": 12.36,
+     "end": 12.74
+    },
+    {
+     "text": "Postiljonović,",
+     "start": 12.74,
+     "end": 13.82
+    },
+    {
+     "text": "i",
+     "start": 13.82,
+     "end": 13.94
+    },
+    {
+     "text": "Jovan",
+     "start": 13.94,
+     "end": 14.18
+    },
+    {
+     "text": "Maksić,",
+     "start": 14.18,
+     "end": 14.96
+    },
+    {
+     "text": "i",
+     "start": 14.96,
+     "end": 15.06
+    },
+    {
+     "text": "Polaženik,",
+     "start": 15.06,
+     "end": 16.0
+    },
+    {
+     "text": "i",
+     "start": 16.0,
+     "end": 16.08
+    },
+    {
+     "text": "Domaćin",
+     "start": 16.08,
+     "end": 16.68
+    },
+    {
+     "text": "bili",
+     "start": 16.68,
+     "end": 17.3
+    },
+    {
+     "text": "su",
+     "start": 17.3,
+     "end": 17.52
+    },
+    {
+     "text": "činovnici",
+     "start": 17.52,
+     "end": 18.3
+    },
+    {
+     "text": "jednog",
+     "start": 18.3,
+     "end": 18.54
+    },
+    {
+     "text": "tunavog",
+     "start": 18.54,
+     "end": 19.46
+    },
+    {
+     "text": "narlešta",
+     "start": 19.46,
+     "end": 20.04
+    },
+    {
+     "text": "u",
+     "start": 20.04,
+     "end": 20.16
+    },
+    {
+     "text": "jednom",
+     "start": 20.16,
+     "end": 20.4
+    },
+    {
+     "text": "istom",
+     "start": 20.4,
+     "end": 20.76
+    },
+    {
+     "text": "mestu,",
+     "start": 20.76,
+     "end": 21.2
+    },
+    {
+     "text": "ali",
+     "start": 21.2,
+     "end": 21.92
+    },
+    {
+     "text": "u",
+     "start": 21.92,
+     "end": 22.1
+    },
+    {
+     "text": "kom,",
+     "start": 22.1,
+     "end": 22.36
+    },
+    {
+     "text": "to",
+     "start": 22.36,
+     "end": 23.0
+    },
+    {
+     "text": "vam",
+     "start": 23.0,
+     "end": 23.12
+    },
+    {
+     "text": "neću",
+     "start": 23.12,
+     "end": 23.38
+    },
+    {
+     "text": "kazati,",
+     "start": 23.38,
+     "end": 23.98
+    },
+    {
+     "text": "jer",
+     "start": 23.98,
+     "end": 24.56
+    },
+    {
+     "text": "nisam",
+     "start": 24.56,
+     "end": 24.98
+    },
+    {
+     "text": "rade",
+     "start": 24.98,
+     "end": 25.22
+    },
+    {
+     "text": "da",
+     "start": 25.22,
+     "end": 25.34
+    },
+    {
+     "text": "imam",
+     "start": 25.34,
+     "end": 25.52
+    },
+    {
+     "text": "posla",
+     "start": 25.52,
+     "end": 25.88
+    },
+    {
+     "text": "sa",
+     "start": 25.88,
+     "end": 26.08
+    },
+    {
+     "text": "sudovima,",
+     "start": 26.08,
+     "end": 26.68
+    },
+    {
+     "text": "niti",
+     "start": 26.68,
+     "end": 27.3
+    },
+    {
+     "text": "da",
+     "start": 27.3,
+     "end": 27.46
+    },
+    {
+     "text": "vređam",
+     "start": 27.46,
+     "end": 27.9
+    },
+    {
+     "text": "o",
+     "start": 27.9,
+     "end": 28.04
+    },
+    {
+     "text": "tačastvene",
+     "start": 28.04,
+     "end": 28.68
+    },
+    {
+     "text": "poštere.",
+     "start": 28.68,
+     "end": 29.24
+    }
+   ]
+  },
+  {
+   "text": "Dakle, prvo ćemo početi sa domaćinam.",
+   "start": 29.14,
+   "end": 34.48,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Dakle,",
+     "start": 30.42,
+     "end": 31.44
+    },
+    {
+     "text": "prvo",
+     "start": 31.44,
+     "end": 32.22
+    },
+    {
+     "text": "ćemo",
+     "start": 32.22,
+     "end": 32.46
+    },
+    {
+     "text": "početi",
+     "start": 32.46,
+     "end": 32.9
+    },
+    {
+     "text": "sa",
+     "start": 32.9,
+     "end": 33.14
+    },
+    {
+     "text": "domaćinam.",
+     "start": 33.14,
+     "end": 33.76
+    }
+   ]
+  }
+ ]
+}

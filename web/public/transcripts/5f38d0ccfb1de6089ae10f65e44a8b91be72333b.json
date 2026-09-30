@@ -1,0 +1,605 @@
+{
+ "title": "Pokojnikova žena",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Bora-Stankovic-Pokojnikova-zena.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/pokojnikova-zena/",
+ "duration": 49.22,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "U tom bi počeli komšike da ju dolaze. One su samo tada kada nije sama, već kad joj mati dođe dolazile k njoj. Inače ne. Nešto nisu volele, već nisu mogle. Nije bio red. Sama je. Muške glave nema u kući, a ona onako sama u dovica, još mlada i lepa. I zato nije bilo u redu da je ko dolazi, posećuje.",
+   "start": 0.0,
+   "end": 25.98,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "U",
+     "start": 0.0,
+     "end": 0.22
+    },
+    {
+     "text": "tom",
+     "start": 0.22,
+     "end": 0.46
+    },
+    {
+     "text": "bi",
+     "start": 0.46,
+     "end": 0.66
+    },
+    {
+     "text": "počeli",
+     "start": 0.66,
+     "end": 1.14
+    },
+    {
+     "text": "komšike",
+     "start": 1.14,
+     "end": 1.84
+    },
+    {
+     "text": "da",
+     "start": 1.84,
+     "end": 2.02
+    },
+    {
+     "text": "ju",
+     "start": 2.02,
+     "end": 2.1
+    },
+    {
+     "text": "dolaze.",
+     "start": 2.1,
+     "end": 2.86
+    },
+    {
+     "text": "One",
+     "start": 2.86,
+     "end": 3.5
+    },
+    {
+     "text": "su",
+     "start": 3.5,
+     "end": 3.7
+    },
+    {
+     "text": "samo",
+     "start": 3.7,
+     "end": 4.04
+    },
+    {
+     "text": "tada",
+     "start": 4.04,
+     "end": 4.46
+    },
+    {
+     "text": "kada",
+     "start": 4.46,
+     "end": 4.78
+    },
+    {
+     "text": "nije",
+     "start": 4.78,
+     "end": 5.06
+    },
+    {
+     "text": "sama,",
+     "start": 5.06,
+     "end": 5.72
+    },
+    {
+     "text": "već",
+     "start": 5.72,
+     "end": 6.08
+    },
+    {
+     "text": "kad",
+     "start": 6.08,
+     "end": 6.32
+    },
+    {
+     "text": "joj",
+     "start": 6.32,
+     "end": 6.44
+    },
+    {
+     "text": "mati",
+     "start": 6.44,
+     "end": 6.82
+    },
+    {
+     "text": "dođe",
+     "start": 6.82,
+     "end": 7.24
+    },
+    {
+     "text": "dolazile",
+     "start": 7.24,
+     "end": 7.84
+    },
+    {
+     "text": "k",
+     "start": 7.84,
+     "end": 8.04
+    },
+    {
+     "text": "njoj.",
+     "start": 8.04,
+     "end": 8.44
+    },
+    {
+     "text": "Inače",
+     "start": 8.44,
+     "end": 9.26
+    },
+    {
+     "text": "ne.",
+     "start": 9.26,
+     "end": 9.64
+    },
+    {
+     "text": "Nešto",
+     "start": 9.64,
+     "end": 10.44
+    },
+    {
+     "text": "nisu",
+     "start": 10.44,
+     "end": 10.86
+    },
+    {
+     "text": "volele,",
+     "start": 10.86,
+     "end": 11.46
+    },
+    {
+     "text": "već",
+     "start": 11.46,
+     "end": 11.58
+    },
+    {
+     "text": "nisu",
+     "start": 11.58,
+     "end": 12.0
+    },
+    {
+     "text": "mogle.",
+     "start": 12.0,
+     "end": 12.62
+    },
+    {
+     "text": "Nije",
+     "start": 12.62,
+     "end": 13.14
+    },
+    {
+     "text": "bio",
+     "start": 13.14,
+     "end": 13.36
+    },
+    {
+     "text": "red.",
+     "start": 13.36,
+     "end": 14.02
+    },
+    {
+     "text": "Sama",
+     "start": 14.02,
+     "end": 14.76
+    },
+    {
+     "text": "je.",
+     "start": 14.76,
+     "end": 15.1
+    },
+    {
+     "text": "Muške",
+     "start": 15.1,
+     "end": 16.0
+    },
+    {
+     "text": "glave",
+     "start": 16.0,
+     "end": 16.44
+    },
+    {
+     "text": "nema",
+     "start": 16.44,
+     "end": 16.84
+    },
+    {
+     "text": "u",
+     "start": 16.84,
+     "end": 16.96
+    },
+    {
+     "text": "kući,",
+     "start": 16.96,
+     "end": 17.56
+    },
+    {
+     "text": "a",
+     "start": 17.56,
+     "end": 17.98
+    },
+    {
+     "text": "ona",
+     "start": 17.98,
+     "end": 18.24
+    },
+    {
+     "text": "onako",
+     "start": 18.24,
+     "end": 18.6
+    },
+    {
+     "text": "sama",
+     "start": 18.6,
+     "end": 19.1
+    },
+    {
+     "text": "u",
+     "start": 19.1,
+     "end": 19.26
+    },
+    {
+     "text": "dovica,",
+     "start": 19.26,
+     "end": 20.3
+    },
+    {
+     "text": "još",
+     "start": 20.3,
+     "end": 20.48
+    },
+    {
+     "text": "mlada",
+     "start": 20.48,
+     "end": 21.0
+    },
+    {
+     "text": "i",
+     "start": 21.0,
+     "end": 21.16
+    },
+    {
+     "text": "lepa.",
+     "start": 21.16,
+     "end": 21.68
+    },
+    {
+     "text": "I",
+     "start": 21.68,
+     "end": 22.62
+    },
+    {
+     "text": "zato",
+     "start": 22.62,
+     "end": 22.94
+    },
+    {
+     "text": "nije",
+     "start": 22.94,
+     "end": 23.22
+    },
+    {
+     "text": "bilo",
+     "start": 23.22,
+     "end": 23.54
+    },
+    {
+     "text": "u",
+     "start": 23.54,
+     "end": 23.66
+    },
+    {
+     "text": "redu",
+     "start": 23.66,
+     "end": 23.9
+    },
+    {
+     "text": "da",
+     "start": 23.9,
+     "end": 24.08
+    },
+    {
+     "text": "je",
+     "start": 24.08,
+     "end": 24.16
+    },
+    {
+     "text": "ko",
+     "start": 24.16,
+     "end": 24.28
+    },
+    {
+     "text": "dolazi,",
+     "start": 24.28,
+     "end": 25.3
+    },
+    {
+     "text": "posećuje.",
+     "start": 25.3,
+     "end": 26.16
+    }
+   ]
+  },
+  {
+   "text": "Bojale su se da izbog toga tih njenih poseta, mešavine, ne bi kakav vrđav glas izišao, čulo se što lošo.",
+   "start": 25.98,
+   "end": 36.34,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Bojale",
+     "start": 26.78,
+     "end": 27.24
+    },
+    {
+     "text": "su",
+     "start": 27.24,
+     "end": 27.44
+    },
+    {
+     "text": "se",
+     "start": 27.44,
+     "end": 27.68
+    },
+    {
+     "text": "da",
+     "start": 27.68,
+     "end": 28.2
+    },
+    {
+     "text": "izbog",
+     "start": 28.2,
+     "end": 28.54
+    },
+    {
+     "text": "toga",
+     "start": 28.54,
+     "end": 28.96
+    },
+    {
+     "text": "tih",
+     "start": 28.96,
+     "end": 29.42
+    },
+    {
+     "text": "njenih",
+     "start": 29.42,
+     "end": 29.82
+    },
+    {
+     "text": "poseta,",
+     "start": 29.82,
+     "end": 30.96
+    },
+    {
+     "text": "mešavine,",
+     "start": 30.96,
+     "end": 32.02
+    },
+    {
+     "text": "ne",
+     "start": 32.02,
+     "end": 32.14
+    },
+    {
+     "text": "bi",
+     "start": 32.14,
+     "end": 32.28
+    },
+    {
+     "text": "kakav",
+     "start": 32.28,
+     "end": 32.7
+    },
+    {
+     "text": "vrđav",
+     "start": 32.7,
+     "end": 33.08
+    },
+    {
+     "text": "glas",
+     "start": 33.08,
+     "end": 33.46
+    },
+    {
+     "text": "izišao,",
+     "start": 33.46,
+     "end": 34.54
+    },
+    {
+     "text": "čulo",
+     "start": 34.54,
+     "end": 34.76
+    },
+    {
+     "text": "se",
+     "start": 34.76,
+     "end": 35.0
+    },
+    {
+     "text": "što",
+     "start": 35.0,
+     "end": 35.38
+    },
+    {
+     "text": "lošo.",
+     "start": 35.38,
+     "end": 36.36
+    }
+   ]
+  },
+  {
+   "text": "Ali i sada, kada bi one došle, ona nije izlazila iz sobe. Ostavljala je majku da se tamo s njima razgovara. Navikla se već i teško je da se s njima sastaje.",
+   "start": 37.34,
+   "end": 49.22,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Ali",
+     "start": 37.34,
+     "end": 37.54
+    },
+    {
+     "text": "i",
+     "start": 37.54,
+     "end": 37.72
+    },
+    {
+     "text": "sada,",
+     "start": 37.72,
+     "end": 38.18
+    },
+    {
+     "text": "kada",
+     "start": 38.18,
+     "end": 38.38
+    },
+    {
+     "text": "bi",
+     "start": 38.38,
+     "end": 38.56
+    },
+    {
+     "text": "one",
+     "start": 38.56,
+     "end": 38.78
+    },
+    {
+     "text": "došle,",
+     "start": 38.78,
+     "end": 39.68
+    },
+    {
+     "text": "ona",
+     "start": 39.68,
+     "end": 39.92
+    },
+    {
+     "text": "nije",
+     "start": 39.92,
+     "end": 40.16
+    },
+    {
+     "text": "izlazila",
+     "start": 40.16,
+     "end": 40.72
+    },
+    {
+     "text": "iz",
+     "start": 40.72,
+     "end": 40.86
+    },
+    {
+     "text": "sobe.",
+     "start": 40.86,
+     "end": 41.48
+    },
+    {
+     "text": "Ostavljala",
+     "start": 41.48,
+     "end": 42.32
+    },
+    {
+     "text": "je",
+     "start": 42.32,
+     "end": 42.4
+    },
+    {
+     "text": "majku",
+     "start": 42.4,
+     "end": 42.86
+    },
+    {
+     "text": "da",
+     "start": 42.86,
+     "end": 43.02
+    },
+    {
+     "text": "se",
+     "start": 43.02,
+     "end": 43.22
+    },
+    {
+     "text": "tamo",
+     "start": 43.22,
+     "end": 43.6
+    },
+    {
+     "text": "s",
+     "start": 43.6,
+     "end": 43.7
+    },
+    {
+     "text": "njima",
+     "start": 43.7,
+     "end": 43.9
+    },
+    {
+     "text": "razgovara.",
+     "start": 43.9,
+     "end": 44.88
+    },
+    {
+     "text": "Navikla",
+     "start": 44.88,
+     "end": 45.7
+    },
+    {
+     "text": "se",
+     "start": 45.7,
+     "end": 45.88
+    },
+    {
+     "text": "već",
+     "start": 45.88,
+     "end": 46.28
+    },
+    {
+     "text": "i",
+     "start": 46.28,
+     "end": 46.84
+    },
+    {
+     "text": "teško",
+     "start": 46.84,
+     "end": 47.38
+    },
+    {
+     "text": "je",
+     "start": 47.38,
+     "end": 47.48
+    },
+    {
+     "text": "da",
+     "start": 47.48,
+     "end": 47.64
+    },
+    {
+     "text": "se",
+     "start": 47.64,
+     "end": 47.82
+    },
+    {
+     "text": "s",
+     "start": 47.82,
+     "end": 47.98
+    },
+    {
+     "text": "njima",
+     "start": 47.98,
+     "end": 48.2
+    },
+    {
+     "text": "sastaje.",
+     "start": 48.2,
+     "end": 49.14
+    }
+   ]
+  }
+ ]
+}

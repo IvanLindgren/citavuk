@@ -33,6 +33,9 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
   late List<List<bool>> _hardFlags;
   late List<GlobalKey> _cueKeys;
   bool _loadingTranscript = false;
+  bool _buffering = false;
+  String? _audioError;
+  Duration _position = Duration.zero;
 
   int _cue = 0;
   int _activeChar = -1; // позиция «звучащего» символа внутри текущей реплики
@@ -72,7 +75,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
         if (!mounted) return;
         setState(() {
           _loadingTranscript = false;
-          if (cues.length > _cues.length) {
+          if (cues.isNotEmpty) {
             _setCues(cues);
             _cue = 0;
             _activeChar = -1;
@@ -86,7 +89,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
     });
 
     _subs.add(_player.onDurationChanged.listen((d) => _cueDuration = d));
-    _subs.add(_player.onPositionChanged.listen(_onPosition));
+    _subs.add(_player.onPositionChanged.listen(_onPosition, onError: (_) => _showAudioError()));
     _subs.add(_player.onPlayerComplete.listen((_) => _onComplete()));
     _subs.add(_player.onPlayerStateChanged.listen((s) {
       if (!mounted) return;
@@ -107,6 +110,8 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
 
   void _onPosition(Duration pos) {
     if (!mounted) return;
+    setState(() => _position = pos);
+    if (_cues.isEmpty) return;
     if (lesson.isTts) {
       // Реплика = отдельный файл: позицию слова оцениваем пропорционально
       // символам (TTS читает с почти постоянной скоростью).
@@ -116,7 +121,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
       final char = (pos.inMilliseconds / ms * text.length).round();
       if (char != _activeChar) setState(() => _activeChar = char);
     } else {
-      // Поток: ищем реплику по таймингам, внутри неё — пропорционально.
+      // Поток: реплика и слово по таймкодам распознавания.
       final sec = pos.inMilliseconds / 1000.0;
       var idx = _cue;
       for (var i = 0; i < _cues.length; i++) {
@@ -129,10 +134,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
         }
       }
       final c = _cues[idx];
-      var char = -1;
-      if (c.start != null && c.end != null && c.end! > c.start!) {
-        char = ((sec - c.start!) / (c.end! - c.start!) * c.text.length).round();
-      }
+      final char = c.characterAt(sec);
       if (idx != _cue) {
         setState(() {
           _cue = idx;
@@ -172,6 +174,24 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
 
   // --- Управление воспроизведением ---
 
+  void _showAudioError() {
+    if (!mounted) return;
+    setState(() { _buffering = false; _playing = false; _started = false; _audioError = 'Запись не загрузилась. Попробуй ещё раз или открой источник.'; });
+  }
+
+  Future<void> _startRecording() async {
+    if (_started) return;
+    setState(() { _buffering = true; _audioError = null; });
+    try {
+      await _player.play(UrlSource(ListeningService.instance.playableAudioUrl(lesson.audioUrl!))).timeout(const Duration(seconds: 20));
+    } catch (_) {
+      await _player.stop();
+      await _player.play(UrlSource(ListeningService.instance.proxyAudioUrl(lesson.audioUrl!))).timeout(const Duration(seconds: 25));
+    }
+    _started = true;
+    if (mounted) setState(() => _buffering = false);
+  }
+
   Future<void> _applySpeed() async {
     try {
       await _player.setPlaybackRate(_speed);
@@ -198,11 +218,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
         await _player
             .play(UrlSource(ListeningService.instance.ttsUrl(_cues[i].text)));
       } else {
-        if (!_started) {
-          await _player.play(UrlSource(
-              ListeningService.instance.playableAudioUrl(lesson.audioUrl!)));
-          _started = true;
-        }
+        await _startRecording();
         final start = _cues[i].start;
         if (start != null) {
           await _player.seek(Duration(milliseconds: (start * 1000).round()));
@@ -210,29 +226,18 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
         }
       }
       await _applySpeed();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Не удалось включить аудио: $e')),
-      );
+    } catch (_) {
+      _showAudioError();
     }
   }
 
   Future<void> _playStream() async {
     try {
-      if (!_started) {
-        await _player.play(
-            UrlSource(ListeningService.instance.playableAudioUrl(lesson.audioUrl!)));
-        _started = true;
-      } else {
-        await _player.resume();
-      }
+      await _startRecording();
+      await _player.resume();
       await _applySpeed();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Не удалось включить аудио: $e')),
-      );
+    } catch (_) {
+      _showAudioError();
     }
   }
 
@@ -270,6 +275,10 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
 
   Future<void> _onTapWord(int cueIndex, Token token) async {
     await _player.pause();
+    if (!lesson.isTts && _started) {
+      final time = _cues[cueIndex].timeAtCharacter(token.start);
+      if (time != null) await _player.seek(Duration(milliseconds: (time * 1000).round()));
+    }
     if (!mounted || _bookId == null) return;
     showModalBottomSheet(
       context: context,
@@ -351,7 +360,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
                 ),
               ),
             Expanded(
-              child: ListView.builder(
+              child: _cues.isEmpty ? Center(child: Padding(padding: const EdgeInsets.all(24), child: Text(_loadingTranscript ? 'Загружаю расшифровку…' : 'Слушай запись. Текст появится здесь, когда для неё будет доступна расшифровка.', textAlign: TextAlign.center, style: TextStyle(color: scheme.onSurfaceVariant)))) : ListView.builder(
                 padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
                 itemCount: _cues.length,
                 itemBuilder: (context, i) => Padding(
@@ -403,6 +412,9 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (_audioError != null) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(_audioError!, style: TextStyle(color: scheme.error), textAlign: TextAlign.center)),
+            if (!lesson.isTts && _cueDuration > Duration.zero)
+              Slider(value: _position.inMilliseconds.toDouble().clamp(0, _cueDuration.inMilliseconds.toDouble()), max: _cueDuration.inMilliseconds.toDouble(), onChanged: _started ? (v) => _player.seek(Duration(milliseconds: v.round())) : null),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -415,8 +427,8 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
                 IconButton.filled(
                   tooltip: _playing ? 'Пауза' : 'Слушать',
                   iconSize: 34,
-                  onPressed: _togglePlay,
-                  icon: Icon(_playing ? Icons.pause : Icons.play_arrow),
+                  onPressed: _buffering ? null : _togglePlay,
+                  icon: _buffering ? const SizedBox(width: 28, height: 28, child: CircularProgressIndicator(strokeWidth: 2)) : Icon(_playing ? Icons.pause : Icons.play_arrow),
                 ),
                 const SizedBox(width: 10),
                 IconButton.filledTonal(

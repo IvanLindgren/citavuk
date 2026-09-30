@@ -12,15 +12,20 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 // GeneratedSource — что показывается вместо названия словаря.
 const GeneratedSource = "Объяснение составлено нейросетью"
+
+var errBadAnswer = errors.New("dictionary: неразборчивый ответ нейросети")
 
 const (
 	// Больше шести значений читателю на карточке не нужно, а модель, если её
@@ -121,11 +126,13 @@ func (e *Explainer) Explain(ctx context.Context, word string) (*Entry, error) {
 	if !e.Enabled() || word == "" {
 		return nil, ErrNotFound
 	}
-	content, err := e.ask(ctx, word)
-	if err != nil {
-		return nil, err
-	}
-	return parseGenerated(content, word)
+	return aioutput.Retry(ctx, errBadAnswer, func(attempt context.Context) (*Entry, error) {
+		content, err := e.ask(attempt, word)
+		if err != nil {
+			return nil, err
+		}
+		return parseGenerated(content, word)
+	})
 }
 
 func (e *Explainer) ask(ctx context.Context, word string) (string, error) {
@@ -136,7 +143,7 @@ func (e *Explainer) ask(ctx context.Context, word string) (string, error) {
 			{Role: "user", Content: "Reč: " + word},
 		},
 		Temperature: 0,
-		MaxTokens:   1500,
+		MaxTokens:   2200,
 	}
 	request.ResponseFormat.Type = "json_object"
 	if e.effort != "" {
@@ -164,6 +171,9 @@ func (e *Explainer) ask(ctx context.Context, word string) (string, error) {
 	}
 	var parsed chatResponse
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if resp.StatusCode == 429 || resp.StatusCode >= 500 {
+			return "", aioutput.ErrTemporary
+		}
 		reason := fmt.Sprintf("код %d", resp.StatusCode)
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
 			reason = parsed.Error.Message
@@ -177,6 +187,9 @@ func (e *Explainer) ask(ctx context.Context, word string) (string, error) {
 }
 
 func parseGenerated(content, word string) (*Entry, error) {
+	if aioutput.ForeignScript(content) {
+		return nil, errBadAnswer
+	}
 	text := strings.TrimSpace(content)
 	if start := strings.Index(text, "{"); start > 0 {
 		text = text[start:]
@@ -186,7 +199,7 @@ func parseGenerated(content, word string) (*Entry, error) {
 	}
 	var answer generatedEntry
 	if json.Unmarshal([]byte(text), &answer) != nil {
-		return nil, fmt.Errorf("dictionary: неразборчивый ответ нейросети")
+		return nil, errBadAnswer
 	}
 	if answer.Exists != nil && !*answer.Exists {
 		return nil, ErrNotFound

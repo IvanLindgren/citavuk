@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 // Судья матча на несколько человек.
@@ -66,6 +68,7 @@ const matchSystemPromptTemplate = `Ты беспристрастный преп�
 - best — метки лучших переводов; несколько только при настоящем равенстве;
 - feedback — одно конкретное объяснение по-русски до 300 знаков.
 
+Все feedback и summary строго по-русски. Язык исходника и переводов не меняет язык пояснений.
 Ответ строго JSON:
 {"verdicts":[{"index":0,"scores":{"a1":8.5,"b2":7},"best":["a1"],"feedback":"..."}],"summary":"Краткий итог раунда"}`
 
@@ -165,7 +168,13 @@ func parseMatchResult(content string, entries []MatchEntry) (*MatchResult, error
 			scores[ref] = score
 		}
 		verdict.Scores = scores
+		if len(scores) != len(known) || !aioutput.Russian(verdict.Feedback) {
+			return nil, ErrBadAnswer
+		}
 		verdict.Feedback = trimRunes(verdict.Feedback, 300)
+	}
+	if !aioutput.Russian(result.Summary) {
+		return nil, ErrBadAnswer
 	}
 	result.Summary = trimRunes(result.Summary, 500)
 	return &result, nil

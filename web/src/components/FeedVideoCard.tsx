@@ -18,6 +18,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
   const [state, setState] = useState(-1);
   const [error, setError] = useState('');
   const [playbackError, setPlaybackError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const [nativeControls, setNativeControls] = useState(false);
   const [reactionBusy, setReactionBusy] = useState(false);
   const reacting = useRef(false);
@@ -31,6 +32,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
     const tracker = new VideoWatch(); watch.current = tracker;
     const owner = activeStorageName();
     let ready = false;
+    const timeout = window.setTimeout(() => { if (!ready) { tracker.fail(performance.now()); setPlaybackError(true); } }, 25000);
     const flush = async () => {
       const events = tracker.finish(performance.now(), duration.current);
       if (owner !== activeStorageName()) return;
@@ -40,6 +42,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
     const message = (e: MessageEvent) => {
       if (e.origin !== location.origin || e.source !== frame.current?.contentWindow || e.data?.type !== 'citavuk-video' || e.data.id !== item.videoId) return;
       if (e.data.ready && !ready) {
+        window.clearTimeout(timeout);
         ready = true; send('mute', live.current.muted);
         if (live.current.paused || document.hidden) send('pause');
       }
@@ -59,10 +62,11 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
     document.addEventListener('visibilitychange', visibility);
     return () => {
       registerFlush(null); tracker.pause(performance.now()); void flush().catch(() => {});
+      window.clearTimeout(timeout);
       window.removeEventListener('message', message);
       document.removeEventListener('visibilitychange', visibility);
     };
-  }, [item.id, item.videoId, registerFlush]);
+  }, [item.id, item.videoId, registerFlush, attempt]);
 
   useEffect(() => { if (paused) { watch.current.pause(performance.now()); send('pause'); } }, [paused]);
   useEffect(() => { send('mute', muted); }, [muted]);
@@ -92,7 +96,7 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
 
   return <article className="feed-video-card" data-video-id={item.id}>
     <div className="feed-video-screen">
-      <iframe ref={frame} src={`/video-player.html?v=${encodeURIComponent(item.videoId ?? '')}&feed=1`}
+      <iframe key={attempt} ref={frame} src={`/video-player.html?v=${encodeURIComponent(item.videoId ?? '')}&feed=1`}
         title={item.titleLatin} allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
       {/* Шапка и нижние кнопки YouTube доступны. В паузе/после конца нативный
           плеер доступен целиком, включая ссылки и рекомендации YouTube. */}
@@ -114,6 +118,6 @@ export function FeedVideoCard({ item, paused, muted, onMuted, onChange, onDiscus
       <button type="button" aria-label="Меньше такого" aria-pressed={item.reaction === -1} disabled={reactionBusy} onClick={() => void react(-1)}><LuThumbsDown /><span>Не моё</span></button>
     </div>
     {error && <p className="feed-video-error" role="alert">{error}</p>}
-    {playbackError && <p className="feed-video-error" role="status">Этот ролик не воспроизводится. Открой его на YouTube или листай дальше.</p>}
+    {playbackError && <div className="feed-video-error" role="status" data-no-swipe><p>Ролик не загрузился. Можно открыть его на YouTube или листать дальше.</p><button type="button" className="mt-2 underline" onClick={() => { setPlaybackError(false); setState(-1); setAttempt(v => v + 1); }}>Повторить загрузку</button></div>}
   </article>;
 }

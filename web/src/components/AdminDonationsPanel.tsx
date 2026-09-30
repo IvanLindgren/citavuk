@@ -5,6 +5,7 @@ import {
   addManualDonation,
   formatRubles,
   getAdminDonations,
+  moderateDonationMessage,
   type AdminDonationsMonth,
 } from '../api/donations';
 import { Button, ErrorNote, Spinner } from './ui';
@@ -125,7 +126,12 @@ export function AdminDonationsPanel() {
                             <span className="block text-xs text-[var(--text-muted)]">{d.userEmail}</span>
                           )}
                         </td>
-                        <td className="max-w-xs px-4 py-2.5 text-[var(--text-muted)]">{d.message}</td>
+                        <td className="max-w-xs px-4 py-2.5 text-[var(--text-muted)]">
+                          <p className="break-words">{d.message}</p>
+                          {d.showMessage && d.message && !d.isTest && d.status === 'succeeded' && <button type="button" className="mt-2 text-xs font-semibold text-[var(--accent)]" onClick={() => {
+                            void moderateDonationMessage(d.id, !d.messageApproved).then(load).catch(() => setError('Не удалось обновить сообщение.'));
+                          }}>{d.messageApproved ? 'Снять с публикации' : 'Разрешить публикацию'}</button>}
+                        </td>
                         <td className="whitespace-nowrap px-4 py-2.5 text-xs text-[var(--text-muted)]">
                           {d.source === 'manual' ? 'вручную' : d.providerPaymentId}
                         </td>

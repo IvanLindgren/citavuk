@@ -282,6 +282,8 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
   bool _discussing = false, _failed = false;
   InAppWebViewController? _player;
   String? _error;
+  Timer? _loadTimeout;
+  int _playerAttempt = 0;
   @override
   void initState() {
     super.initState();
@@ -303,6 +305,7 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _loadTimeout?.cancel();
     _playing.stop();
     WidgetsBinding.instance.removeObserver(this);
     if (!_failed &&
@@ -360,6 +363,7 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(18),
                                   child: InAppWebView(
+                                    key: ValueKey('${item.videoId}-$_playerAttempt'),
                                     initialUrlRequest: URLRequest(
                                         url: WebUri(
                                             'https://citavuk.ru/video-player.html?v=${Uri.encodeComponent(item.videoId)}&feed=1')),
@@ -376,6 +380,10 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                                         supportMultipleWindows: false),
                                     onWebViewCreated: (controller) {
                                       _player = controller;
+                                      _loadTimeout?.cancel();
+                                      _loadTimeout = Timer(const Duration(seconds: 25), () {
+                                        if (mounted) setState(() { _failed = true; _error = 'YouTube не ответил. Попробуй снова или открой ролик отдельно.'; });
+                                      });
                                       controller.addJavaScriptHandler(
                                           handlerName: 'citavukVideo',
                                           callback:
@@ -398,6 +406,7 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                                                 !mounted) {
                                               return null;
                                             }
+                                            if (event['ready'] == true || event['state'] == -2) _loadTimeout?.cancel();
                                             if (event['state'] == 1 &&
                                                 widget.active &&
                                                 _foreground &&
@@ -498,7 +507,7 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: _playerView(item),
+                  child: SizedBox.expand(child: _playerView(item)),
                 ),
               ),
             ),
@@ -529,6 +538,11 @@ class _VideoCardState extends State<_VideoCard> with WidgetsBindingObserver {
                       style: TextStyle(color: scheme.error, fontSize: 13)),
                 ),
               ),
+            if (_failed)
+              Wrap(spacing: 10, children: [
+                TextButton.icon(onPressed: () => setState(() { _failed = false; _error = null; _playerAttempt++; }), icon: const Icon(Icons.refresh), label: const Text('Повторить')),
+                TextButton.icon(onPressed: () => launchUrl(Uri.parse(item.sourceUrl), mode: LaunchMode.externalApplication), icon: const Icon(Icons.open_in_new), label: const Text('Открыть YouTube')),
+              ]),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Row(

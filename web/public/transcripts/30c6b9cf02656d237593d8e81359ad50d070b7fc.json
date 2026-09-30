@@ -1,0 +1,458 @@
+{
+ "title": "Zona Zamfirova",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Stevan-Sremac-Zona-Zamfirova.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/zona-zamfirova/",
+ "duration": 41.06,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Zona je bila kći čuvenog Čorbađizamfira, bogatog i uvaženog Čorbađije, silnog negda Čorbađije.",
+   "start": 0.0,
+   "end": 7.5,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Zona",
+     "start": 0.02,
+     "end": 0.58
+    },
+    {
+     "text": "je",
+     "start": 0.58,
+     "end": 0.7
+    },
+    {
+     "text": "bila",
+     "start": 0.7,
+     "end": 0.94
+    },
+    {
+     "text": "kći",
+     "start": 0.94,
+     "end": 1.28
+    },
+    {
+     "text": "čuvenog",
+     "start": 1.28,
+     "end": 1.74
+    },
+    {
+     "text": "Čorbađizamfira,",
+     "start": 1.74,
+     "end": 3.24
+    },
+    {
+     "text": "bogatog",
+     "start": 3.24,
+     "end": 3.76
+    },
+    {
+     "text": "i",
+     "start": 3.76,
+     "end": 3.9
+    },
+    {
+     "text": "uvaženog",
+     "start": 3.9,
+     "end": 4.44
+    },
+    {
+     "text": "Čorbađije,",
+     "start": 4.44,
+     "end": 5.66
+    },
+    {
+     "text": "silnog",
+     "start": 5.66,
+     "end": 6.26
+    },
+    {
+     "text": "negda",
+     "start": 6.26,
+     "end": 6.72
+    },
+    {
+     "text": "Čorbađije.",
+     "start": 6.72,
+     "end": 7.48
+    }
+   ]
+  },
+  {
+   "text": "Dugo se još pričalo kakva je sila bio Čorbađizamfir. Takve sile i takvog gospodstva nema nigde.",
+   "start": 8.32,
+   "end": 15.64,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Dugo",
+     "start": 8.26,
+     "end": 8.58
+    },
+    {
+     "text": "se",
+     "start": 8.58,
+     "end": 8.8
+    },
+    {
+     "text": "još",
+     "start": 8.8,
+     "end": 9.06
+    },
+    {
+     "text": "pričalo",
+     "start": 9.06,
+     "end": 9.68
+    },
+    {
+     "text": "kakva",
+     "start": 9.68,
+     "end": 10.3
+    },
+    {
+     "text": "je",
+     "start": 10.3,
+     "end": 10.48
+    },
+    {
+     "text": "sila",
+     "start": 10.48,
+     "end": 10.92
+    },
+    {
+     "text": "bio",
+     "start": 10.92,
+     "end": 11.16
+    },
+    {
+     "text": "Čorbađizamfir.",
+     "start": 11.16,
+     "end": 12.54
+    },
+    {
+     "text": "Takve",
+     "start": 12.54,
+     "end": 13.34
+    },
+    {
+     "text": "sile",
+     "start": 13.34,
+     "end": 13.7
+    },
+    {
+     "text": "i",
+     "start": 13.7,
+     "end": 13.86
+    },
+    {
+     "text": "takvog",
+     "start": 13.86,
+     "end": 14.24
+    },
+    {
+     "text": "gospodstva",
+     "start": 14.24,
+     "end": 14.9
+    },
+    {
+     "text": "nema",
+     "start": 14.9,
+     "end": 15.18
+    },
+    {
+     "text": "nigde.",
+     "start": 15.18,
+     "end": 15.74
+    },
+    {
+     "text": "Pred",
+     "start": 15.64,
+     "end": 16.52
+    }
+   ]
+  },
+  {
+   "text": "Pred Pašu je u tursko vreme izlazio, kad god je hteo, upo dana, upo noći i bio vićan i mio gostu Pašinom konaku.",
+   "start": 15.64,
+   "end": 25.54,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Pašu",
+     "start": 16.52,
+     "end": 16.98
+    },
+    {
+     "text": "je",
+     "start": 16.98,
+     "end": 17.12
+    },
+    {
+     "text": "u",
+     "start": 17.12,
+     "end": 17.28
+    },
+    {
+     "text": "tursko",
+     "start": 17.28,
+     "end": 17.68
+    },
+    {
+     "text": "vreme",
+     "start": 17.68,
+     "end": 18.0
+    },
+    {
+     "text": "izlazio,",
+     "start": 18.0,
+     "end": 18.9
+    },
+    {
+     "text": "kad",
+     "start": 18.9,
+     "end": 19.12
+    },
+    {
+     "text": "god",
+     "start": 19.12,
+     "end": 19.36
+    },
+    {
+     "text": "je",
+     "start": 19.36,
+     "end": 19.54
+    },
+    {
+     "text": "hteo,",
+     "start": 19.54,
+     "end": 20.54
+    },
+    {
+     "text": "upo",
+     "start": 20.54,
+     "end": 20.98
+    },
+    {
+     "text": "dana,",
+     "start": 20.98,
+     "end": 21.52
+    },
+    {
+     "text": "upo",
+     "start": 21.52,
+     "end": 21.84
+    },
+    {
+     "text": "noći",
+     "start": 21.84,
+     "end": 22.3
+    },
+    {
+     "text": "i",
+     "start": 22.3,
+     "end": 22.78
+    },
+    {
+     "text": "bio",
+     "start": 22.78,
+     "end": 23.08
+    },
+    {
+     "text": "vićan",
+     "start": 23.08,
+     "end": 23.56
+    },
+    {
+     "text": "i",
+     "start": 23.56,
+     "end": 23.66
+    },
+    {
+     "text": "mio",
+     "start": 23.66,
+     "end": 23.86
+    },
+    {
+     "text": "gostu",
+     "start": 23.86,
+     "end": 24.44
+    },
+    {
+     "text": "Pašinom",
+     "start": 24.44,
+     "end": 25.0
+    },
+    {
+     "text": "konaku.",
+     "start": 25.0,
+     "end": 25.6
+    }
+   ]
+  },
+  {
+   "text": "Paša se vrlo često savetovao s njim. Koliko su samo kafa i nargila posrkali i čibuka popušili i mastika popili i zamfir u pašinom konaku i paša u zamfirovoj gospodskoj kući.",
+   "start": 25.54,
+   "end": 41.06,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Paša",
+     "start": 26.24,
+     "end": 26.66
+    },
+    {
+     "text": "se",
+     "start": 26.66,
+     "end": 26.82
+    },
+    {
+     "text": "vrlo",
+     "start": 26.82,
+     "end": 27.12
+    },
+    {
+     "text": "često",
+     "start": 27.12,
+     "end": 27.6
+    },
+    {
+     "text": "savetovao",
+     "start": 27.6,
+     "end": 28.48
+    },
+    {
+     "text": "s",
+     "start": 28.48,
+     "end": 28.66
+    },
+    {
+     "text": "njim.",
+     "start": 28.66,
+     "end": 29.14
+    },
+    {
+     "text": "Koliko",
+     "start": 29.14,
+     "end": 30.04
+    },
+    {
+     "text": "su",
+     "start": 30.04,
+     "end": 30.16
+    },
+    {
+     "text": "samo",
+     "start": 30.16,
+     "end": 30.46
+    },
+    {
+     "text": "kafa",
+     "start": 30.46,
+     "end": 30.94
+    },
+    {
+     "text": "i",
+     "start": 30.94,
+     "end": 31.06
+    },
+    {
+     "text": "nargila",
+     "start": 31.06,
+     "end": 31.52
+    },
+    {
+     "text": "posrkali",
+     "start": 31.52,
+     "end": 32.34
+    },
+    {
+     "text": "i",
+     "start": 32.34,
+     "end": 32.5
+    },
+    {
+     "text": "čibuka",
+     "start": 32.5,
+     "end": 32.96
+    },
+    {
+     "text": "popušili",
+     "start": 32.96,
+     "end": 33.74
+    },
+    {
+     "text": "i",
+     "start": 33.74,
+     "end": 34.36
+    },
+    {
+     "text": "mastika",
+     "start": 34.36,
+     "end": 34.88
+    },
+    {
+     "text": "popili",
+     "start": 34.88,
+     "end": 35.44
+    },
+    {
+     "text": "i",
+     "start": 35.44,
+     "end": 36.08
+    },
+    {
+     "text": "zamfir",
+     "start": 36.08,
+     "end": 36.54
+    },
+    {
+     "text": "u",
+     "start": 36.54,
+     "end": 36.7
+    },
+    {
+     "text": "pašinom",
+     "start": 36.7,
+     "end": 37.22
+    },
+    {
+     "text": "konaku",
+     "start": 37.22,
+     "end": 37.76
+    },
+    {
+     "text": "i",
+     "start": 37.76,
+     "end": 38.3
+    },
+    {
+     "text": "paša",
+     "start": 38.3,
+     "end": 38.82
+    },
+    {
+     "text": "u",
+     "start": 38.82,
+     "end": 38.94
+    },
+    {
+     "text": "zamfirovoj",
+     "start": 38.94,
+     "end": 39.64
+    },
+    {
+     "text": "gospodskoj",
+     "start": 39.64,
+     "end": 40.26
+    },
+    {
+     "text": "kući.",
+     "start": 40.26,
+     "end": 41.08
+    }
+   ]
+  }
+ ]
+}

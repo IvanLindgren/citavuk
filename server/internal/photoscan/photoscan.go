@@ -34,6 +34,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 // ErrNoText — на снимке не нашлось читаемого текста.
@@ -134,11 +136,17 @@ func (s *Scanner) Recognize(ctx context.Context, image []byte, mime string) ([]s
 		return nil, fmt.Errorf("photoscan: снимок больше %d МБ", MaxImageBytes>>20)
 	}
 
-	content, err := s.ask(ctx, image, mime)
-	if err != nil {
-		return nil, err
-	}
-	return Paragraphs(content)
+	return aioutput.Retry(ctx, aioutput.ErrTemporary, func(attempt context.Context) ([]string, error) {
+		content, err := s.ask(attempt, image, mime)
+		if err != nil {
+			return nil, err
+		}
+		paragraphs, err := Paragraphs(content)
+		if err != nil && !errors.Is(err, ErrNoText) {
+			return nil, fmt.Errorf("%w: %v", aioutput.ErrTemporary, err)
+		}
+		return paragraphs, err
+	})
 }
 
 func (s *Scanner) ask(ctx context.Context, image []byte, mime string) (string, error) {
@@ -158,7 +166,7 @@ func (s *Scanner) ask(ctx context.Context, image []byte, mime string) (string, e
 		// Страница тетради — это тысячи знаков, и обрезанный на середине текст
 		// человек унесёт в книгу, не заметив пропажи.
 		MaxTokens: 8000,
-		Reasoning: map[string]string{"effort": "medium"},
+		Reasoning: map[string]string{"effort": "low"},
 	}
 	request.ResponseFormat.Type = "json_object"
 
@@ -184,6 +192,9 @@ func (s *Scanner) ask(ctx context.Context, image []byte, mime string) (string, e
 	}
 	var parsed chatResponse
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if resp.StatusCode == 429 || resp.StatusCode >= 500 {
+			return "", aioutput.ErrTemporary
+		}
 		reason := fmt.Sprintf("код %d", resp.StatusCode)
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
 			reason = parsed.Error.Message

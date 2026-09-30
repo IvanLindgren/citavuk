@@ -1,0 +1,1112 @@
+{
+ "title": "Mrtvo more",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Radoje-Domanovic-Mrtvo-more.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/mrtvo-more/",
+ "duration": 74.8,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Ali kad se čovek bolje razmisli, ako to jest uopštima ljudi koji se takvim opasnim sportom bave, mora moje pokojne strini dati dublji značaj. Zamislite samo, kakva se meni bude laština uvrtila u glavu. U mnogom je mi cela ova naša, mila nam i napaćena zemlja, liči na moju pokojnu strinu.",
+   "start": 0.0,
+   "end": 18.2,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Ali",
+     "start": 0.0,
+     "end": 0.4
+    },
+    {
+     "text": "kad",
+     "start": 0.4,
+     "end": 0.54
+    },
+    {
+     "text": "se",
+     "start": 0.54,
+     "end": 0.68
+    },
+    {
+     "text": "čovek",
+     "start": 0.68,
+     "end": 0.98
+    },
+    {
+     "text": "bolje",
+     "start": 0.98,
+     "end": 1.26
+    },
+    {
+     "text": "razmisli,",
+     "start": 1.26,
+     "end": 1.92
+    },
+    {
+     "text": "ako",
+     "start": 1.92,
+     "end": 2.34
+    },
+    {
+     "text": "to",
+     "start": 2.34,
+     "end": 2.52
+    },
+    {
+     "text": "jest",
+     "start": 2.52,
+     "end": 2.68
+    },
+    {
+     "text": "uopštima",
+     "start": 2.68,
+     "end": 3.14
+    },
+    {
+     "text": "ljudi",
+     "start": 3.14,
+     "end": 3.54
+    },
+    {
+     "text": "koji",
+     "start": 3.54,
+     "end": 3.64
+    },
+    {
+     "text": "se",
+     "start": 3.64,
+     "end": 3.82
+    },
+    {
+     "text": "takvim",
+     "start": 3.82,
+     "end": 4.12
+    },
+    {
+     "text": "opasnim",
+     "start": 4.12,
+     "end": 4.6
+    },
+    {
+     "text": "sportom",
+     "start": 4.6,
+     "end": 5.1
+    },
+    {
+     "text": "bave,",
+     "start": 5.1,
+     "end": 6.18
+    },
+    {
+     "text": "mora",
+     "start": 6.18,
+     "end": 6.42
+    },
+    {
+     "text": "moje",
+     "start": 6.42,
+     "end": 6.62
+    },
+    {
+     "text": "pokojne",
+     "start": 6.62,
+     "end": 7.02
+    },
+    {
+     "text": "strini",
+     "start": 7.02,
+     "end": 7.34
+    },
+    {
+     "text": "dati",
+     "start": 7.34,
+     "end": 7.66
+    },
+    {
+     "text": "dublji",
+     "start": 7.66,
+     "end": 7.88
+    },
+    {
+     "text": "značaj.",
+     "start": 7.88,
+     "end": 8.68
+    },
+    {
+     "text": "Zamislite",
+     "start": 8.68,
+     "end": 9.46
+    },
+    {
+     "text": "samo,",
+     "start": 9.46,
+     "end": 9.88
+    },
+    {
+     "text": "kakva",
+     "start": 9.88,
+     "end": 10.54
+    },
+    {
+     "text": "se",
+     "start": 10.54,
+     "end": 10.68
+    },
+    {
+     "text": "meni",
+     "start": 10.68,
+     "end": 10.9
+    },
+    {
+     "text": "bude",
+     "start": 10.9,
+     "end": 11.08
+    },
+    {
+     "text": "laština",
+     "start": 11.08,
+     "end": 11.5
+    },
+    {
+     "text": "uvrtila",
+     "start": 11.5,
+     "end": 11.86
+    },
+    {
+     "text": "u",
+     "start": 11.86,
+     "end": 12.02
+    },
+    {
+     "text": "glavu.",
+     "start": 12.02,
+     "end": 12.4
+    },
+    {
+     "text": "U",
+     "start": 12.4,
+     "end": 13.18
+    },
+    {
+     "text": "mnogom",
+     "start": 13.18,
+     "end": 13.5
+    },
+    {
+     "text": "je",
+     "start": 13.5,
+     "end": 13.66
+    },
+    {
+     "text": "mi",
+     "start": 13.66,
+     "end": 13.74
+    },
+    {
+     "text": "cela",
+     "start": 13.74,
+     "end": 14.02
+    },
+    {
+     "text": "ova",
+     "start": 14.02,
+     "end": 14.32
+    },
+    {
+     "text": "naša,",
+     "start": 14.32,
+     "end": 15.04
+    },
+    {
+     "text": "mila",
+     "start": 15.04,
+     "end": 15.28
+    },
+    {
+     "text": "nam",
+     "start": 15.28,
+     "end": 15.38
+    },
+    {
+     "text": "i",
+     "start": 15.38,
+     "end": 15.48
+    },
+    {
+     "text": "napaćena",
+     "start": 15.48,
+     "end": 15.9
+    },
+    {
+     "text": "zemlja,",
+     "start": 15.9,
+     "end": 16.36
+    },
+    {
+     "text": "liči",
+     "start": 16.36,
+     "end": 17.06
+    },
+    {
+     "text": "na",
+     "start": 17.06,
+     "end": 17.18
+    },
+    {
+     "text": "moju",
+     "start": 17.18,
+     "end": 17.36
+    },
+    {
+     "text": "pokojnu",
+     "start": 17.36,
+     "end": 17.76
+    },
+    {
+     "text": "strinu.",
+     "start": 17.76,
+     "end": 18.3
+    }
+   ]
+  },
+  {
+   "text": "U detinjstvu me je pre škole vaspitala sirota strina i to razume se kao pametna žena bez batina, a posle sam išao u školu, gde su od osnovne škole pa do najviše programi tako divni da ja i dan danji verujem da je moja strina bila jadnica u prosvetnom svetu i imala najjači utjecaj.",
+   "start": 18.2,
+   "end": 36.34,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "U",
+     "start": 19.02,
+     "end": 19.04
+    },
+    {
+     "text": "detinjstvu",
+     "start": 19.04,
+     "end": 19.6
+    },
+    {
+     "text": "me",
+     "start": 19.6,
+     "end": 19.7
+    },
+    {
+     "text": "je",
+     "start": 19.7,
+     "end": 19.86
+    },
+    {
+     "text": "pre",
+     "start": 19.86,
+     "end": 20.02
+    },
+    {
+     "text": "škole",
+     "start": 20.02,
+     "end": 20.42
+    },
+    {
+     "text": "vaspitala",
+     "start": 20.42,
+     "end": 21.06
+    },
+    {
+     "text": "sirota",
+     "start": 21.06,
+     "end": 21.42
+    },
+    {
+     "text": "strina",
+     "start": 21.42,
+     "end": 21.78
+    },
+    {
+     "text": "i",
+     "start": 21.78,
+     "end": 21.9
+    },
+    {
+     "text": "to",
+     "start": 21.9,
+     "end": 22.04
+    },
+    {
+     "text": "razume",
+     "start": 22.04,
+     "end": 22.4
+    },
+    {
+     "text": "se",
+     "start": 22.4,
+     "end": 22.56
+    },
+    {
+     "text": "kao",
+     "start": 22.56,
+     "end": 23.06
+    },
+    {
+     "text": "pametna",
+     "start": 23.06,
+     "end": 23.44
+    },
+    {
+     "text": "žena",
+     "start": 23.44,
+     "end": 23.74
+    },
+    {
+     "text": "bez",
+     "start": 23.74,
+     "end": 24.02
+    },
+    {
+     "text": "batina,",
+     "start": 24.02,
+     "end": 24.86
+    },
+    {
+     "text": "a",
+     "start": 24.86,
+     "end": 24.96
+    },
+    {
+     "text": "posle",
+     "start": 24.96,
+     "end": 25.2
+    },
+    {
+     "text": "sam",
+     "start": 25.2,
+     "end": 25.4
+    },
+    {
+     "text": "išao",
+     "start": 25.4,
+     "end": 25.68
+    },
+    {
+     "text": "u",
+     "start": 25.68,
+     "end": 25.8
+    },
+    {
+     "text": "školu,",
+     "start": 25.8,
+     "end": 26.22
+    },
+    {
+     "text": "gde",
+     "start": 26.22,
+     "end": 26.66
+    },
+    {
+     "text": "su",
+     "start": 26.66,
+     "end": 26.82
+    },
+    {
+     "text": "od",
+     "start": 26.82,
+     "end": 26.98
+    },
+    {
+     "text": "osnovne",
+     "start": 26.98,
+     "end": 27.32
+    },
+    {
+     "text": "škole",
+     "start": 27.32,
+     "end": 27.7
+    },
+    {
+     "text": "pa",
+     "start": 27.7,
+     "end": 27.86
+    },
+    {
+     "text": "do",
+     "start": 27.86,
+     "end": 27.98
+    },
+    {
+     "text": "najviše",
+     "start": 27.98,
+     "end": 28.42
+    },
+    {
+     "text": "programi",
+     "start": 28.42,
+     "end": 28.92
+    },
+    {
+     "text": "tako",
+     "start": 28.92,
+     "end": 29.28
+    },
+    {
+     "text": "divni",
+     "start": 29.28,
+     "end": 29.66
+    },
+    {
+     "text": "da",
+     "start": 29.66,
+     "end": 30.02
+    },
+    {
+     "text": "ja",
+     "start": 30.02,
+     "end": 30.12
+    },
+    {
+     "text": "i",
+     "start": 30.12,
+     "end": 30.28
+    },
+    {
+     "text": "dan",
+     "start": 30.28,
+     "end": 30.58
+    },
+    {
+     "text": "danji",
+     "start": 30.58,
+     "end": 30.98
+    },
+    {
+     "text": "verujem",
+     "start": 30.98,
+     "end": 31.36
+    },
+    {
+     "text": "da",
+     "start": 31.36,
+     "end": 31.5
+    },
+    {
+     "text": "je",
+     "start": 31.5,
+     "end": 31.52
+    },
+    {
+     "text": "moja",
+     "start": 31.52,
+     "end": 31.72
+    },
+    {
+     "text": "strina",
+     "start": 31.72,
+     "end": 32.1
+    },
+    {
+     "text": "bila",
+     "start": 32.1,
+     "end": 32.46
+    },
+    {
+     "text": "jadnica",
+     "start": 32.46,
+     "end": 33.26
+    },
+    {
+     "text": "u",
+     "start": 33.26,
+     "end": 34.0
+    },
+    {
+     "text": "prosvetnom",
+     "start": 34.0,
+     "end": 34.46
+    },
+    {
+     "text": "svetu",
+     "start": 34.46,
+     "end": 34.84
+    },
+    {
+     "text": "i",
+     "start": 34.84,
+     "end": 35.12
+    },
+    {
+     "text": "imala",
+     "start": 35.12,
+     "end": 35.42
+    },
+    {
+     "text": "najjači",
+     "start": 35.42,
+     "end": 35.84
+    },
+    {
+     "text": "utjecaj.",
+     "start": 35.84,
+     "end": 36.66
+    }
+   ]
+  },
+  {
+   "text": "Dakle, škola je produžila vaspitanje isto anako kao i strina, samo malo savršenije batinama. Škola mi je, moram priznati, bila mnogo gora i teža od strine.",
+   "start": 36.68,
+   "end": 45.96,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Dakle,",
+     "start": 37.04,
+     "end": 37.34
+    },
+    {
+     "text": "škola",
+     "start": 37.34,
+     "end": 37.58
+    },
+    {
+     "text": "je",
+     "start": 37.58,
+     "end": 37.7
+    },
+    {
+     "text": "produžila",
+     "start": 37.7,
+     "end": 38.14
+    },
+    {
+     "text": "vaspitanje",
+     "start": 38.14,
+     "end": 38.76
+    },
+    {
+     "text": "isto",
+     "start": 38.76,
+     "end": 39.06
+    },
+    {
+     "text": "anako",
+     "start": 39.06,
+     "end": 39.36
+    },
+    {
+     "text": "kao",
+     "start": 39.36,
+     "end": 39.6
+    },
+    {
+     "text": "i",
+     "start": 39.6,
+     "end": 39.74
+    },
+    {
+     "text": "strina,",
+     "start": 39.74,
+     "end": 40.52
+    },
+    {
+     "text": "samo",
+     "start": 40.52,
+     "end": 40.72
+    },
+    {
+     "text": "malo",
+     "start": 40.72,
+     "end": 41.0
+    },
+    {
+     "text": "savršenije",
+     "start": 41.0,
+     "end": 41.74
+    },
+    {
+     "text": "batinama.",
+     "start": 41.74,
+     "end": 42.42
+    },
+    {
+     "text": "Škola",
+     "start": 42.42,
+     "end": 43.46
+    },
+    {
+     "text": "mi",
+     "start": 43.46,
+     "end": 43.62
+    },
+    {
+     "text": "je,",
+     "start": 43.62,
+     "end": 43.72
+    },
+    {
+     "text": "moram",
+     "start": 43.72,
+     "end": 43.86
+    },
+    {
+     "text": "priznati,",
+     "start": 43.86,
+     "end": 44.36
+    },
+    {
+     "text": "bila",
+     "start": 44.36,
+     "end": 44.54
+    },
+    {
+     "text": "mnogo",
+     "start": 44.54,
+     "end": 44.84
+    },
+    {
+     "text": "gora",
+     "start": 44.84,
+     "end": 45.1
+    },
+    {
+     "text": "i",
+     "start": 45.1,
+     "end": 45.22
+    },
+    {
+     "text": "teža",
+     "start": 45.22,
+     "end": 45.46
+    },
+    {
+     "text": "od",
+     "start": 45.46,
+     "end": 45.6
+    },
+    {
+     "text": "strine.",
+     "start": 45.6,
+     "end": 46.44
+    },
+    {
+     "text": "Odmah,",
+     "start": 45.96,
+     "end": 47.34
+    }
+   ]
+  },
+  {
+   "text": "Odmah, još s bukvarom, počeše pouke kako se treba vladati.",
+   "start": 45.96,
+   "end": 50.46,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "još",
+     "start": 47.34,
+     "end": 47.72
+    },
+    {
+     "text": "s",
+     "start": 47.72,
+     "end": 47.84
+    },
+    {
+     "text": "bukvarom,",
+     "start": 47.84,
+     "end": 48.66
+    },
+    {
+     "text": "počeše",
+     "start": 48.66,
+     "end": 48.96
+    },
+    {
+     "text": "pouke",
+     "start": 48.96,
+     "end": 49.4
+    },
+    {
+     "text": "kako",
+     "start": 49.4,
+     "end": 49.62
+    },
+    {
+     "text": "se",
+     "start": 49.62,
+     "end": 49.76
+    },
+    {
+     "text": "treba",
+     "start": 49.76,
+     "end": 49.98
+    },
+    {
+     "text": "vladati.",
+     "start": 49.98,
+     "end": 50.94
+    }
+   ]
+  },
+  {
+   "text": "Dobro dete ide iz škole pravo kući, mirno, nogu pred nogu, gleda predase, a nezvira levo i desno.",
+   "start": 51.34,
+   "end": 57.26,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Dobro",
+     "start": 51.3,
+     "end": 51.66
+    },
+    {
+     "text": "dete",
+     "start": 51.66,
+     "end": 52.0
+    },
+    {
+     "text": "ide",
+     "start": 52.0,
+     "end": 52.26
+    },
+    {
+     "text": "iz",
+     "start": 52.26,
+     "end": 52.44
+    },
+    {
+     "text": "škole",
+     "start": 52.44,
+     "end": 52.82
+    },
+    {
+     "text": "pravo",
+     "start": 52.82,
+     "end": 53.22
+    },
+    {
+     "text": "kući,",
+     "start": 53.22,
+     "end": 53.66
+    },
+    {
+     "text": "mirno,",
+     "start": 53.66,
+     "end": 54.08
+    },
+    {
+     "text": "nogu",
+     "start": 54.08,
+     "end": 54.2
+    },
+    {
+     "text": "pred",
+     "start": 54.2,
+     "end": 54.42
+    },
+    {
+     "text": "nogu,",
+     "start": 54.42,
+     "end": 55.0
+    },
+    {
+     "text": "gleda",
+     "start": 55.0,
+     "end": 55.3
+    },
+    {
+     "text": "predase,",
+     "start": 55.3,
+     "end": 56.06
+    },
+    {
+     "text": "a",
+     "start": 56.06,
+     "end": 56.18
+    },
+    {
+     "text": "nezvira",
+     "start": 56.18,
+     "end": 56.56
+    },
+    {
+     "text": "levo",
+     "start": 56.56,
+     "end": 56.82
+    },
+    {
+     "text": "i",
+     "start": 56.82,
+     "end": 56.92
+    },
+    {
+     "text": "desno.",
+     "start": 56.92,
+     "end": 57.36
+    }
+   ]
+  },
+  {
+   "text": "Kad dođe kući, ostavi pažljivo svoje knjižice, poljubi stariju ruku, pa sede na svoje mesto.",
+   "start": 57.26,
+   "end": 62.74,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Kad",
+     "start": 57.6,
+     "end": 57.76
+    },
+    {
+     "text": "dođe",
+     "start": 57.76,
+     "end": 58.12
+    },
+    {
+     "text": "kući,",
+     "start": 58.12,
+     "end": 58.62
+    },
+    {
+     "text": "ostavi",
+     "start": 58.62,
+     "end": 58.92
+    },
+    {
+     "text": "pažljivo",
+     "start": 58.92,
+     "end": 59.34
+    },
+    {
+     "text": "svoje",
+     "start": 59.34,
+     "end": 59.6
+    },
+    {
+     "text": "knjižice,",
+     "start": 59.6,
+     "end": 60.2
+    },
+    {
+     "text": "poljubi",
+     "start": 60.2,
+     "end": 60.62
+    },
+    {
+     "text": "stariju",
+     "start": 60.62,
+     "end": 60.98
+    },
+    {
+     "text": "ruku,",
+     "start": 60.98,
+     "end": 61.38
+    },
+    {
+     "text": "pa",
+     "start": 61.38,
+     "end": 61.76
+    },
+    {
+     "text": "sede",
+     "start": 61.76,
+     "end": 62.0
+    },
+    {
+     "text": "na",
+     "start": 62.0,
+     "end": 62.18
+    },
+    {
+     "text": "svoje",
+     "start": 62.18,
+     "end": 62.42
+    },
+    {
+     "text": "mesto.",
+     "start": 62.42,
+     "end": 62.88
+    }
+   ]
+  },
+  {
+   "text": "Kad polazi od kuće u školu, opet tako isto, ide mirno, nogu pred nogu, gleda predase, i čim dođe u školu, ostavi svoje knjižice i seda mirno na svoje mesto, a ručice opruži na klupi.",
+   "start": 63.38,
+   "end": 74.8,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Kad",
+     "start": 63.48,
+     "end": 63.64
+    },
+    {
+     "text": "polazi",
+     "start": 63.64,
+     "end": 64.0
+    },
+    {
+     "text": "od",
+     "start": 64.0,
+     "end": 64.16
+    },
+    {
+     "text": "kuće",
+     "start": 64.16,
+     "end": 64.38
+    },
+    {
+     "text": "u",
+     "start": 64.38,
+     "end": 64.5
+    },
+    {
+     "text": "školu,",
+     "start": 64.5,
+     "end": 64.96
+    },
+    {
+     "text": "opet",
+     "start": 64.96,
+     "end": 65.14
+    },
+    {
+     "text": "tako",
+     "start": 65.14,
+     "end": 65.44
+    },
+    {
+     "text": "isto,",
+     "start": 65.44,
+     "end": 65.84
+    },
+    {
+     "text": "ide",
+     "start": 65.84,
+     "end": 65.96
+    },
+    {
+     "text": "mirno,",
+     "start": 65.96,
+     "end": 66.52
+    },
+    {
+     "text": "nogu",
+     "start": 66.52,
+     "end": 66.64
+    },
+    {
+     "text": "pred",
+     "start": 66.64,
+     "end": 66.88
+    },
+    {
+     "text": "nogu,",
+     "start": 66.88,
+     "end": 67.36
+    },
+    {
+     "text": "gleda",
+     "start": 67.36,
+     "end": 67.74
+    },
+    {
+     "text": "predase,",
+     "start": 67.74,
+     "end": 68.36
+    },
+    {
+     "text": "i",
+     "start": 68.36,
+     "end": 68.62
+    },
+    {
+     "text": "čim",
+     "start": 68.62,
+     "end": 68.86
+    },
+    {
+     "text": "dođe",
+     "start": 68.86,
+     "end": 69.18
+    },
+    {
+     "text": "u",
+     "start": 69.18,
+     "end": 69.3
+    },
+    {
+     "text": "školu,",
+     "start": 69.3,
+     "end": 69.76
+    },
+    {
+     "text": "ostavi",
+     "start": 69.76,
+     "end": 70.1
+    },
+    {
+     "text": "svoje",
+     "start": 70.1,
+     "end": 70.34
+    },
+    {
+     "text": "knjižice",
+     "start": 70.34,
+     "end": 70.82
+    },
+    {
+     "text": "i",
+     "start": 70.82,
+     "end": 71.02
+    },
+    {
+     "text": "seda",
+     "start": 71.02,
+     "end": 71.24
+    },
+    {
+     "text": "mirno",
+     "start": 71.24,
+     "end": 71.62
+    },
+    {
+     "text": "na",
+     "start": 71.62,
+     "end": 71.76
+    },
+    {
+     "text": "svoje",
+     "start": 71.76,
+     "end": 72.02
+    },
+    {
+     "text": "mesto,",
+     "start": 72.02,
+     "end": 72.56
+    },
+    {
+     "text": "a",
+     "start": 72.56,
+     "end": 72.8
+    },
+    {
+     "text": "ručice",
+     "start": 72.8,
+     "end": 73.2
+    },
+    {
+     "text": "opruži",
+     "start": 73.2,
+     "end": 73.74
+    },
+    {
+     "text": "na",
+     "start": 73.74,
+     "end": 73.86
+    },
+    {
+     "text": "klupi.",
+     "start": 73.86,
+     "end": 74.72
+    }
+   ]
+  }
+ ]
+}

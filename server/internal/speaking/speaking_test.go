@@ -125,7 +125,7 @@ func TestParseReviewRejects(t *testing.T) {
 	if _, err := parseReview(`{"language":"sr","summary":""}`, sampleText); !errors.Is(err, ErrBadAnswer) {
 		t.Errorf("пустой итог: %v", err)
 	}
-	review, err := parseReview(`{"language":"sr","level":"Z9","summary":"ok"}`, sampleText)
+	review, err := parseReview(`{"language":"sr","level":"Z9","summary":"Хорошо."}`, sampleText)
 	if err != nil || review.Level != "" || review.Mistakes == nil || review.Words == nil {
 		t.Errorf("пустые поля должны быть массивами и без уровня: %+v %v", review, err)
 	}

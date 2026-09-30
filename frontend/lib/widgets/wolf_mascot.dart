@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../state/app_settings.dart';
 import '../services/interface_sounds.dart';
+import '../services/api_client.dart';
+import '../services/supporter_service.dart';
 import 'animated_widgets.dart';
 
 /// Пути к артам маскота-волка Читавука (assets/imgs) + сведения о фоне арта.
@@ -213,10 +216,16 @@ class WolfBubble extends StatefulWidget {
 
 class _WolfBubbleState extends State<WolfBubble> {
   bool _isPetting = false;
+  String _petReply = 'Ой, спасибо! Я так тебя люблю! ❤️';
 
   void _petWolf() {
     if (_isPetting) return;
     setState(() => _isPetting = true);
+    try {
+      unawaited(SupporterService.names(context.read<ApiClient>()).then((names) {
+        if (mounted && _isPetting && names.isNotEmpty) setState(() => _petReply = 'Спасибо за поддержку, ${names[Random().nextInt(names.length)]}! ❤️');
+      }));
+    } catch (_) { /* Маскот доступен и вне оболочки с API. */ }
     // Довольное подтверждение — тихо: поглаживание не должно пугать.
     InterfaceSounds.instance.enabled =
         context.read<AppSettings>().interfaceSoundEnabled;
@@ -240,7 +249,7 @@ class _WolfBubbleState extends State<WolfBubble> {
         : widget.wolfSize;
 
     final currentText =
-        _isPetting ? 'Ой, спасибо! Я так тебя люблю! ❤️' : widget.text;
+        _isPetting ? _petReply : widget.text;
     final currentAsset = _isPetting ? Wolf.zdravo : widget.asset;
 
     return FadeSlideIn(

@@ -37,6 +37,8 @@ class AnalysisRepository {
   static String? _usableTranslation(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty ||
+        !RegExp(r'[А-Яа-яЁё]').hasMatch(text) ||
+        RegExp(r'[\u3400-\u9fff]').hasMatch(text) ||
         RegExp(r'^\[?перевод (недоступен|временно недоступен|доступен только онлайн)',
                 caseSensitive: false)
             .hasMatch(text)) {
@@ -122,6 +124,7 @@ class AnalysisRepository {
         base = base.copyWith(
           translation: displayTranslation,
           contextualTranslation: contextual,
+          clearContextualTranslation: contextual == null,
           isOffline: general == null && contextual == null,
         );
         if (general != null) {
@@ -179,6 +182,7 @@ class AnalysisRepository {
         result = result.copyWith(
           translation: displayTranslation,
           contextualTranslation: contextual,
+          clearContextualTranslation: contextual == null,
           isOffline: general == null && contextual == null,
         );
         if (general != null) {
@@ -427,7 +431,7 @@ class AnalysisRepository {
         source: source,
       );
       if (viaServer != null && viaServer.aligned && viaServer.text.isNotEmpty) {
-        return viaServer.text;
+        return _usableTranslation(viaServer.text);
       }
 
       final tagged =
@@ -441,7 +445,7 @@ class AnalysisRepository {
           final inner = match.group(1)?.trim();
           // Иногда Google теряет тег и переводит «<w>» как слово — отсекаем мусор.
           if (inner != null && inner.isNotEmpty && !inner.contains('<')) {
-            return inner;
+            return _usableTranslation(inner);
           }
         }
       }
@@ -487,7 +491,7 @@ class AnalysisRepository {
     // ненадёжен. Заодно работает общий кеш, экономящий квоту.
     final viaServer = await _translationClient.translate(text, source: source);
     if (viaServer != null && viaServer.text.isNotEmpty) {
-      return viaServer.text;
+      return _usableTranslation(viaServer.text);
     }
 
     try {
@@ -499,7 +503,7 @@ class AnalysisRepository {
           final data =
               jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
           final out = (data['translation'] ?? '').toString().trim();
-          return out.isEmpty ? null : out;
+          return _usableTranslation(out);
         }
         return null;
       }
@@ -513,7 +517,7 @@ class AnalysisRepository {
           sb.write((seg as List).first);
         }
         final out = sb.toString().trim();
-        return out.isEmpty ? null : out;
+        return _usableTranslation(out);
       }
     } catch (_) {}
     return null;

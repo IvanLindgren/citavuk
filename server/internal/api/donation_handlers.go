@@ -20,10 +20,14 @@ const (
 )
 
 type createDonationRequest struct {
-	AmountRubles int64  `json:"amountRubles"`
-	Name         string `json:"name"`
-	ShowPublic   bool   `json:"showPublic"`
-	Message      string `json:"message"`
+	AmountRubles   int64  `json:"amountRubles"`
+	Name           string `json:"name"`
+	ShowPublic     bool   `json:"showPublic"`
+	Message        string `json:"message"`
+	ShowAmount     bool   `json:"showAmount"`
+	ShowMessage    bool   `json:"showMessage"`
+	Monthly        bool   `json:"monthly"`
+	MonthlyConsent bool   `json:"monthlyConsent"`
 }
 
 type createDonationResponse struct {
@@ -63,8 +67,9 @@ func (s *Server) testPayer(u *store.User) bool {
 }
 
 type donationAvailability struct {
-	Available bool `json:"available"`
-	TestMode  bool `json:"testMode"`
+	Available        bool `json:"available"`
+	TestMode         bool `json:"testMode"`
+	MonthlyAvailable bool `json:"monthlyAvailable"`
 }
 
 func (s *Server) handleDonationAvailability(w http.ResponseWriter, r *http.Request) {
@@ -72,7 +77,8 @@ func (s *Server) handleDonationAvailability(w http.ResponseWriter, r *http.Reque
 	writeJSON(w, http.StatusOK, donationAvailability{
 		Available: s.paymentsOpenFor(u),
 		// Режим магазина видят только те, кому он открыт.
-		TestMode: s.testPayer(u) && s.yookassa.TestMode(),
+		TestMode:         s.testPayer(u) && s.yookassa.TestMode(),
+		MonthlyAvailable: s.paymentsOpenFor(u) && s.cfg != nil && s.cfg.YooKassaRecurring,
 	})
 }
 
@@ -93,6 +99,14 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	name := strings.Join(strings.Fields(req.Name), " ")
+	if req.Monthly && (userFrom(r.Context()) == nil || !req.MonthlyConsent || !s.cfg.YooKassaRecurring) {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Для ежемесячной поддержки войди в аккаунт и подтверди условия автоплатежа.")
+		return
+	}
+	if len([]rune(req.Message)) > 300 {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Сообщение — не длиннее 300 знаков.")
+		return
+	}
 	if len([]rune(name)) > 60 {
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Имя для списка — не длиннее 60 знаков.")
 		return
@@ -103,6 +117,8 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 		ShowPublic:    req.ShowPublic && name != "",
 		Message:       strings.TrimSpace(req.Message),
 		AmountKopecks: req.AmountRubles * 100,
+		ShowAmount:    req.ShowPublic && req.ShowAmount && name != "",
+		ShowMessage:   req.ShowPublic && req.ShowMessage && name != "",
 	}
 	if u := userFrom(r.Context()); u != nil {
 		in.UserID = &u.ID
@@ -114,11 +130,19 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	payment, err := s.yookassa.Create(r.Context(), d.ID.String(),
+	if req.Monthly {
+		if err := s.store.CreateSupportSubscription(r.Context(), d); err != nil {
+			slog.Error("создание ежемесячной поддержки", "err", err)
+			writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось начать оплату.")
+			return
+		}
+	}
+	payment, err := s.yookassa.CreateWithSaving(r.Context(), d.ID.String(),
 		yookassa.RUB(d.AmountKopecks),
 		"Поддержка проекта Читавук",
 		s.cfg.WebURL+"/support/thanks?d="+d.ID.String(),
 		map[string]string{"donation_id": d.ID.String()},
+		req.Monthly,
 	)
 	if err != nil || payment.Confirmation == nil || payment.Confirmation.ConfirmationURL == "" {
 		slog.Error("ЮKassa: создание платежа", "err", err, "donation", d.ID)
@@ -272,7 +296,7 @@ func (s *Server) syncPayment(ctx context.Context, paymentID string) (*store.Dona
 	switch {
 	case p.RefundedAmount != nil && p.RefundedAmount.Value != "" && p.RefundedAmount.Value != "0.00":
 		status = "refunded"
-	case p.Status == "succeeded":
+	case p.Status == "succeeded" && p.Paid:
 		status = "succeeded"
 		paidAt = p.CapturedAt
 		if paidAt == nil {
@@ -282,10 +306,23 @@ func (s *Server) syncPayment(ctx context.Context, paymentID string) (*store.Dona
 	case p.Status == "canceled":
 		status = "canceled"
 	}
-	if status == "" || status == d.Status {
+	if status == "" {
 		return d, nil
 	}
-	return s.store.SetDonationStatus(ctx, d.ID, status, paidAt)
+	if status != d.Status {
+		d, err = s.store.SetDonationStatus(ctx, d.ID, status, paidAt)
+		if err != nil {
+			return nil, err
+		}
+	}
+	methodID, saved := "", false
+	if p.PaymentMethod != nil {
+		methodID, saved = p.PaymentMethod.ID, p.PaymentMethod.Saved
+	}
+	if err := s.store.SyncSupportSubscription(ctx, d, methodID, saved); err != nil {
+		return nil, err
+	}
+	return d, nil
 }
 
 func (s *Server) donationForPayment(ctx context.Context, p *yookassa.Payment) (*store.Donation, error) {
@@ -316,7 +353,11 @@ func (s *Server) handleSupporters(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Cache-Control", "public, max-age=300")
-	writeJSON(w, http.StatusOK, map[string]any{"supporters": list})
+	spot, err := s.store.Spotlight(r.Context(), time.Now())
+	if err != nil {
+		slog.Warn("благодарность дня", "err", err)
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"supporters": list, "spotlight": spot})
 }
 
 type adminDonationsResponse struct {

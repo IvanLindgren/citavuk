@@ -1,4 +1,12 @@
 /// Одна реплика аудиоурока (предложение/строка субтитров).
+class AudioWord {
+  final String text;
+  final double start;
+  final double end;
+  const AudioWord({required this.text, required this.start, required this.end});
+  factory AudioWord.fromJson(Map<String, dynamic> j) => AudioWord(text: (j['text'] ?? j['word'] ?? '').toString(), start: (j['start'] as num?)?.toDouble() ?? -1, end: (j['end'] as num?)?.toDouble() ?? -1);
+}
+
 class AudioCue {
   final String text;
 
@@ -6,13 +14,44 @@ class AudioCue {
   /// субтитрами). В TTS-режиме null: каждая реплика — отдельный файл.
   final double? start;
   final double? end;
+  final List<AudioWord> words;
+  final String? speaker;
 
-  const AudioCue({required this.text, this.start, this.end});
+  const AudioCue({required this.text, this.start, this.end, this.words = const [], this.speaker});
+
+  // Реальные времена ASR; для записи не растягиваем текст по длине.
+  int characterAt(double seconds) {
+    var cursor = 0;
+    for (final word in words) {
+      final needle = word.text.replaceAll(RegExp(r'^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$', unicode: true), '').toLowerCase();
+      if (needle.isEmpty) continue;
+      final offset = text.toLowerCase().indexOf(needle, cursor);
+      if (offset < 0) continue;
+      if (seconds >= word.start && seconds < word.end) return offset;
+      cursor = offset + needle.length;
+    }
+    return -1;
+  }
+
+  double? timeAtCharacter(int character) {
+    var cursor = 0;
+    for (final word in words) {
+      final needle = word.text.replaceAll(RegExp(r'^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$', unicode: true), '').toLowerCase();
+      if (needle.isEmpty) continue;
+      final offset = text.toLowerCase().indexOf(needle, cursor);
+      if (offset < 0) continue;
+      if (character >= offset && character < offset + needle.length) return word.start;
+      cursor = offset + needle.length;
+    }
+    return start;
+  }
 
   factory AudioCue.fromJson(Map<String, dynamic> j) => AudioCue(
         text: (j['text'] ?? '').toString(),
         start: (j['start'] as num?)?.toDouble(),
         end: (j['end'] as num?)?.toDouble(),
+        speaker: j['speaker'] as String?,
+        words: ((j['words'] as List?) ?? const []).whereType<Map<String, dynamic>>().map(AudioWord.fromJson).where((w) => w.start >= 0 && w.end > w.start && w.text.isNotEmpty).toList(),
       );
 }
 

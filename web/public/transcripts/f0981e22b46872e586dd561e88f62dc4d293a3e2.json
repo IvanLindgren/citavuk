@@ -1,0 +1,227 @@
+{
+ "title": "Koštana",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Bora-Stankovic-Kostana.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/kostana/",
+ "duration": 39.963,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Eto, viš, a tamo s njima i on je. Vaska, jetko. A za njega, ne boj se, ništa njemu neće biti. Stana. Jest ništa, pogleda na ulicu, odakle se čuju pesme i svirke i po neki pucen iz pušaka.",
+   "start": 0.0,
+   "end": 23.32,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Eto,",
+     "start": 0.14,
+     "end": 0.98
+    },
+    {
+     "text": "viš,",
+     "start": 0.98,
+     "end": 1.62
+    },
+    {
+     "text": "a",
+     "start": 1.62,
+     "end": 2.06
+    },
+    {
+     "text": "tamo",
+     "start": 2.06,
+     "end": 2.5
+    },
+    {
+     "text": "s",
+     "start": 2.5,
+     "end": 2.68
+    },
+    {
+     "text": "njima",
+     "start": 2.68,
+     "end": 3.04
+    },
+    {
+     "text": "i",
+     "start": 3.04,
+     "end": 3.62
+    },
+    {
+     "text": "on",
+     "start": 3.62,
+     "end": 3.94
+    },
+    {
+     "text": "je.",
+     "start": 3.94,
+     "end": 4.36
+    },
+    {
+     "text": "Vaska,",
+     "start": 4.36,
+     "end": 6.44
+    },
+    {
+     "text": "jetko.",
+     "start": 6.44,
+     "end": 7.58
+    },
+    {
+     "text": "A",
+     "start": 7.58,
+     "end": 8.04
+    },
+    {
+     "text": "za",
+     "start": 8.04,
+     "end": 8.26
+    },
+    {
+     "text": "njega,",
+     "start": 8.26,
+     "end": 8.8
+    },
+    {
+     "text": "ne",
+     "start": 8.8,
+     "end": 9.3
+    },
+    {
+     "text": "boj",
+     "start": 9.3,
+     "end": 9.56
+    },
+    {
+     "text": "se,",
+     "start": 9.56,
+     "end": 10.3
+    },
+    {
+     "text": "ništa",
+     "start": 10.3,
+     "end": 10.82
+    },
+    {
+     "text": "njemu",
+     "start": 10.82,
+     "end": 11.18
+    },
+    {
+     "text": "neće",
+     "start": 11.18,
+     "end": 11.6
+    },
+    {
+     "text": "biti.",
+     "start": 11.6,
+     "end": 12.26
+    },
+    {
+     "text": "Stana.",
+     "start": 12.26,
+     "end": 13.86
+    },
+    {
+     "text": "Jest",
+     "start": 13.86,
+     "end": 14.92
+    },
+    {
+     "text": "ništa,",
+     "start": 14.92,
+     "end": 16.34
+    },
+    {
+     "text": "pogleda",
+     "start": 16.34,
+     "end": 16.84
+    },
+    {
+     "text": "na",
+     "start": 16.84,
+     "end": 16.96
+    },
+    {
+     "text": "ulicu,",
+     "start": 16.96,
+     "end": 17.92
+    },
+    {
+     "text": "odakle",
+     "start": 17.92,
+     "end": 18.28
+    },
+    {
+     "text": "se",
+     "start": 18.28,
+     "end": 18.48
+    },
+    {
+     "text": "čuju",
+     "start": 18.48,
+     "end": 18.9
+    },
+    {
+     "text": "pesme",
+     "start": 18.9,
+     "end": 19.62
+    },
+    {
+     "text": "i",
+     "start": 19.62,
+     "end": 20.0
+    },
+    {
+     "text": "svirke",
+     "start": 20.0,
+     "end": 20.72
+    },
+    {
+     "text": "i",
+     "start": 20.72,
+     "end": 21.16
+    },
+    {
+     "text": "po",
+     "start": 21.16,
+     "end": 21.32
+    },
+    {
+     "text": "neki",
+     "start": 21.32,
+     "end": 21.64
+    },
+    {
+     "text": "pucen",
+     "start": 21.64,
+     "end": 22.34
+    },
+    {
+     "text": "iz",
+     "start": 22.34,
+     "end": 22.64
+    },
+    {
+     "text": "pušaka.",
+     "start": 22.64,
+     "end": 23.3
+    }
+   ]
+  },
+  {
+   "text": "Vaska.",
+   "start": 23.32,
+   "end": 39.96,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Vaska.",
+     "start": 24.74,
+     "end": 29.5
+    }
+   ]
+  }
+ ]
+}

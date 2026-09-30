@@ -21,6 +21,7 @@ import { WordLookupCard } from '../components/WordReader';
 import { Button, ErrorNote, Spinner } from '../components/ui';
 import { isHardToHear } from '../listening/language';
 import type { AudioCue, AudioLesson } from '../listening/types';
+import { characterAt, timeAtCharacter } from '../listening/timing';
 import { tokenize, type Token } from '../lib/tokenize';
 import { Link, useParams } from '../lib/router';
 import { LuExternalLink } from 'react-icons/lu';
@@ -185,10 +186,7 @@ export function ListeningPlayer() {
       }
     }
     const cue = cues[next]!;
-    const character =
-      cue.start != null && cue.end != null && cue.end > cue.start
-        ? Math.round(((time - cue.start) / (cue.end - cue.start)) * cue.text.length)
-        : -1;
+    const character = characterAt(cue, time);
     setActiveCharacter(character);
     if (next !== cueIndex) {
       setCueIndex(next);
@@ -304,6 +302,8 @@ export function ListeningPlayer() {
               onPlay={() => void playCue(index)}
               onWord={(token, rect) => {
                 audio.current?.pause();
+                const position = timeAtCharacter(cue, token.start);
+                if (!isTts && audio.current && position != null) audio.current.currentTime = position;
                 setSelected({ cue: index, token, anchor: rect });
               }}
               element={(element) => {

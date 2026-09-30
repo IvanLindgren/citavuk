@@ -1,5 +1,13 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { getSupporters } from '../api/donations';
+
+// Одна ленивая загрузка на страницу, а не запрос от каждой картинки маскота.
+let donorNames: Promise<string[]> | null = null;
+function publicDonorNames() {
+  donorNames ??= getSupporters().then(list => list.map(p => p.name)).catch(() => { donorNames = null; return []; });
+  return donorNames;
+}
 
 /** Позы маскотов, доступные в вебе. Файлы готовит scripts/prepare-assets.py. */
 export type MascotPose =
@@ -62,6 +70,7 @@ export function Mascot({
 }) {
   const reduceMotion = useReducedMotion();
   const [petting, setPetting] = useState(false);
+  const [reply, setReply] = useState(PET_REPLIES[0]);
   const replyIndex = useRef(0);
   const timer = useRef<number | null>(null);
 
@@ -107,6 +116,10 @@ export function Mascot({
   function onPet() {
     if (petting) return;
     replyIndex.current = (replyIndex.current + 1) % PET_REPLIES.length;
+    setReply(PET_REPLIES[replyIndex.current]);
+    void publicDonorNames().then(names => {
+      if (names.length) setReply(`Спасибо за поддержку, ${names[Math.floor(Math.random() * names.length)]}! ❤️`);
+    });
     setPetting(true);
     if (timer.current != null) window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setPetting(false), 2600);
@@ -138,7 +151,7 @@ export function Mascot({
             exit={{ opacity: 0 }}
             className="pointer-events-none absolute -top-2 left-1/2 z-10 w-max max-w-[14rem] -translate-x-1/2 -translate-y-full rounded-2xl bg-[var(--bg-raised)] px-3 py-2 text-center font-sans text-xs font-semibold leading-snug text-[var(--text)] shadow-[var(--shadow-lift)] ring-1 ring-[var(--line)]"
           >
-            {PET_REPLIES[replyIndex.current]}
+            {reply}
           </motion.span>
         )}
       </AnimatePresence>

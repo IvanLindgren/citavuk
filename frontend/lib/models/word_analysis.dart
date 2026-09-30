@@ -56,6 +56,7 @@ class WordAnalysis {
     Map<String, String>? forms,
     String? translation,
     String? contextualTranslation,
+    bool clearContextualTranslation = false,
     bool? isOffline,
     PhraseInsight? phraseInsight,
     SentenceAnalysis? sentenceAnalysis,
@@ -70,7 +71,7 @@ class WordAnalysis {
         forms: forms ?? this.forms,
         translation: translation ?? this.translation,
         contextualTranslation:
-            contextualTranslation ?? this.contextualTranslation,
+            clearContextualTranslation ? null : contextualTranslation ?? this.contextualTranslation,
         isOffline: isOffline ?? this.isOffline,
         isPhrase: isPhrase,
         phraseInsight: phraseInsight ?? this.phraseInsight,

@@ -22,7 +22,7 @@ func TestLiveFormHintPipeline(t *testing.T) {
 	if key == "" {
 		t.Skip("нет POLZA_AI_KEY")
 	}
-	hinter := formhint.New(key, envOrDefault("CITAVUK_FORM_HINT_AI_MODEL", "deepseek/deepseek-v4-flash-0731"),
+	hinter := formhint.New(key, envOrDefault("CITAVUK_FORM_HINT_AI_MODEL", "openai/gpt-6-luna"),
 		envOrDefault("CITAVUK_FORM_HINT_AI_URL", "https://api.polza.ai/api/v1/chat/completions"),
 		envOrDefault("CITAVUK_FORM_HINT_AI_REASONING", "low"))
 	lex := testLexicon(t)

@@ -43,7 +43,7 @@ func TestComposeRejectsTruncatedJSONAndBoundsRetries(t *testing.T) {
 	}))
 	defer srv.Close()
 	_, err := NewGenerator("test", "test", srv.URL).Compose(t.Context(), "A1", []Word{{Lemma: "књига"}})
-	if !errors.Is(err, ErrBadAnswer) || calls != 2 {
+	if !errors.Is(err, ErrBadAnswer) || calls != 3 {
 		t.Fatalf("calls=%d err=%v", calls, err)
 	}
 }
@@ -56,7 +56,7 @@ func TestDailyLunaLive(t *testing.T) {
 	ctx, cancel := context.WithTimeout(t.Context(), 200*time.Second)
 	defer cancel()
 	words := []Word{{Lemma: "кућа"}, {Lemma: "књига"}, {Lemma: "вода"}, {Lemma: "дан"}, {Lemma: "град"}, {Lemma: "хлеб"}, {Lemma: "читати"}, {Lemma: "добар"}, {Lemma: "друг"}, {Lemma: "школа"}}
-	lesson, err := NewGenerator(key, "deepseek/deepseek-v4-flash-0731", "https://api.polza.ai/api/v1/chat/completions").Compose(ctx, "A1", words)
+	lesson, err := NewGenerator(key, "openai/gpt-6-luna", "https://api.polza.ai/api/v1/chat/completions").Compose(ctx, "A1", words)
 	if err != nil {
 		t.Fatal(err)
 	}

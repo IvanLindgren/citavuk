@@ -241,6 +241,7 @@ func New(
 	go s.purgeSessionsPeriodically()
 	go s.sweepDuelPeriodically()
 	go s.runPersonalJobs()
+	go s.runSupportRenewals()
 
 	return s, nil
 }
@@ -553,6 +554,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/donations/{id}", s.rateLimit(s.generalLimit, s.handleDonationStatus))
 	mux.HandleFunc("POST /v1/donations/yookassa", s.handleYooKassaNotification)
 	mux.HandleFunc("GET /v1/supporters", s.rateLimit(s.generalLimit, s.handleSupporters))
+	mux.HandleFunc("GET /v1/support-subscriptions", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleSupportSubscriptions)))
+	mux.HandleFunc("DELETE /v1/support-subscriptions/{id}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCancelSupportSubscription)))
+	mux.HandleFunc("PUT /v1/admin/donations/{id}/message", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleModerateDonationMessage)))
 	mux.HandleFunc("GET /v1/admin/donations", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDonations)))
 	mux.HandleFunc("POST /v1/admin/donations/manual", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminManualDonation)))
 	mux.HandleFunc("GET /v1/admin/announcements", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminAnnouncements)))

@@ -1,0 +1,662 @@
+{
+ "title": "Jedna noć",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Djura-Jaksic-Jedna-noc.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/jedna-noc/",
+ "duration": 51.54,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Moj pobrat im spusti ruku sa moga ramena, a ja sam primetio da se duboko zamislio. A kad se kolo opet odpočelo igrati, on se je nanovo uhvatio do stane. Sad je već lakše igrao kad i kad se samo prignuo njenom uvetu i nešto je šaptao, na kojemu je ona takođe šapućući odgovarala. Kad su se pustili, on se je izgubi nagde među drvima, a ni nju nisam vidao.",
+   "start": 0.0,
+   "end": 26.62,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Moj",
+     "start": 0.0,
+     "end": 0.46
+    },
+    {
+     "text": "pobrat",
+     "start": 0.46,
+     "end": 0.94
+    },
+    {
+     "text": "im",
+     "start": 0.94,
+     "end": 1.08
+    },
+    {
+     "text": "spusti",
+     "start": 1.08,
+     "end": 1.6
+    },
+    {
+     "text": "ruku",
+     "start": 1.6,
+     "end": 1.92
+    },
+    {
+     "text": "sa",
+     "start": 1.92,
+     "end": 2.16
+    },
+    {
+     "text": "moga",
+     "start": 2.16,
+     "end": 2.4
+    },
+    {
+     "text": "ramena,",
+     "start": 2.4,
+     "end": 3.08
+    },
+    {
+     "text": "a",
+     "start": 3.08,
+     "end": 3.48
+    },
+    {
+     "text": "ja",
+     "start": 3.48,
+     "end": 3.64
+    },
+    {
+     "text": "sam",
+     "start": 3.64,
+     "end": 3.84
+    },
+    {
+     "text": "primetio",
+     "start": 3.84,
+     "end": 4.44
+    },
+    {
+     "text": "da",
+     "start": 4.44,
+     "end": 4.62
+    },
+    {
+     "text": "se",
+     "start": 4.62,
+     "end": 4.76
+    },
+    {
+     "text": "duboko",
+     "start": 4.76,
+     "end": 5.2
+    },
+    {
+     "text": "zamislio.",
+     "start": 5.2,
+     "end": 5.96
+    },
+    {
+     "text": "A",
+     "start": 5.96,
+     "end": 6.6
+    },
+    {
+     "text": "kad",
+     "start": 6.6,
+     "end": 6.74
+    },
+    {
+     "text": "se",
+     "start": 6.74,
+     "end": 6.94
+    },
+    {
+     "text": "kolo",
+     "start": 6.94,
+     "end": 7.34
+    },
+    {
+     "text": "opet",
+     "start": 7.34,
+     "end": 7.88
+    },
+    {
+     "text": "odpočelo",
+     "start": 7.88,
+     "end": 8.56
+    },
+    {
+     "text": "igrati,",
+     "start": 8.56,
+     "end": 9.2
+    },
+    {
+     "text": "on",
+     "start": 9.2,
+     "end": 9.56
+    },
+    {
+     "text": "se",
+     "start": 9.56,
+     "end": 9.72
+    },
+    {
+     "text": "je",
+     "start": 9.72,
+     "end": 9.82
+    },
+    {
+     "text": "nanovo",
+     "start": 9.82,
+     "end": 10.2
+    },
+    {
+     "text": "uhvatio",
+     "start": 10.2,
+     "end": 10.6
+    },
+    {
+     "text": "do",
+     "start": 10.6,
+     "end": 10.8
+    },
+    {
+     "text": "stane.",
+     "start": 10.8,
+     "end": 11.38
+    },
+    {
+     "text": "Sad",
+     "start": 11.38,
+     "end": 12.02
+    },
+    {
+     "text": "je",
+     "start": 12.02,
+     "end": 12.14
+    },
+    {
+     "text": "već",
+     "start": 12.14,
+     "end": 12.34
+    },
+    {
+     "text": "lakše",
+     "start": 12.34,
+     "end": 12.76
+    },
+    {
+     "text": "igrao",
+     "start": 12.76,
+     "end": 13.1
+    },
+    {
+     "text": "kad",
+     "start": 13.1,
+     "end": 13.42
+    },
+    {
+     "text": "i",
+     "start": 13.42,
+     "end": 13.5
+    },
+    {
+     "text": "kad",
+     "start": 13.5,
+     "end": 13.68
+    },
+    {
+     "text": "se",
+     "start": 13.68,
+     "end": 13.8
+    },
+    {
+     "text": "samo",
+     "start": 13.8,
+     "end": 14.2
+    },
+    {
+     "text": "prignuo",
+     "start": 14.2,
+     "end": 14.64
+    },
+    {
+     "text": "njenom",
+     "start": 14.64,
+     "end": 15.02
+    },
+    {
+     "text": "uvetu",
+     "start": 15.02,
+     "end": 15.46
+    },
+    {
+     "text": "i",
+     "start": 15.46,
+     "end": 15.9
+    },
+    {
+     "text": "nešto",
+     "start": 15.9,
+     "end": 16.28
+    },
+    {
+     "text": "je",
+     "start": 16.28,
+     "end": 16.4
+    },
+    {
+     "text": "šaptao,",
+     "start": 16.4,
+     "end": 17.1
+    },
+    {
+     "text": "na",
+     "start": 17.1,
+     "end": 17.58
+    },
+    {
+     "text": "kojemu",
+     "start": 17.58,
+     "end": 18.0
+    },
+    {
+     "text": "je",
+     "start": 18.0,
+     "end": 18.08
+    },
+    {
+     "text": "ona",
+     "start": 18.08,
+     "end": 18.3
+    },
+    {
+     "text": "takođe",
+     "start": 18.3,
+     "end": 18.92
+    },
+    {
+     "text": "šapućući",
+     "start": 18.92,
+     "end": 19.72
+    },
+    {
+     "text": "odgovarala.",
+     "start": 19.72,
+     "end": 20.52
+    },
+    {
+     "text": "Kad",
+     "start": 20.52,
+     "end": 21.38
+    },
+    {
+     "text": "su",
+     "start": 21.38,
+     "end": 21.48
+    },
+    {
+     "text": "se",
+     "start": 21.48,
+     "end": 21.7
+    },
+    {
+     "text": "pustili,",
+     "start": 21.7,
+     "end": 22.48
+    },
+    {
+     "text": "on",
+     "start": 22.48,
+     "end": 22.92
+    },
+    {
+     "text": "se",
+     "start": 22.92,
+     "end": 23.1
+    },
+    {
+     "text": "je",
+     "start": 23.1,
+     "end": 23.18
+    },
+    {
+     "text": "izgubi",
+     "start": 23.18,
+     "end": 23.6
+    },
+    {
+     "text": "nagde",
+     "start": 23.6,
+     "end": 23.94
+    },
+    {
+     "text": "među",
+     "start": 23.94,
+     "end": 24.3
+    },
+    {
+     "text": "drvima,",
+     "start": 24.3,
+     "end": 24.98
+    },
+    {
+     "text": "a",
+     "start": 24.98,
+     "end": 25.44
+    },
+    {
+     "text": "ni",
+     "start": 25.44,
+     "end": 25.56
+    },
+    {
+     "text": "nju",
+     "start": 25.56,
+     "end": 25.7
+    },
+    {
+     "text": "nisam",
+     "start": 25.7,
+     "end": 26.2
+    },
+    {
+     "text": "vidao.",
+     "start": 26.2,
+     "end": 26.66
+    }
+   ]
+  },
+  {
+   "text": "Tek posle, kad su se ljudi počeli razilaziti, vratio se i on, ali ona se nije više vraćala. Po svoj prilici otišla je kući svojoj. Živko celim putem do kuće nije progovorio ni reči. Bio je zabrinut, guste obrve su se naklopile na oči. Ko zna o čemu je premjišljao, ponekad je ustahnuo, bolelo ga je nešto.",
+   "start": 26.62,
+   "end": 51.54,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Tek",
+     "start": 27.26,
+     "end": 27.46
+    },
+    {
+     "text": "posle,",
+     "start": 27.46,
+     "end": 28.36
+    },
+    {
+     "text": "kad",
+     "start": 28.36,
+     "end": 28.48
+    },
+    {
+     "text": "su",
+     "start": 28.48,
+     "end": 28.62
+    },
+    {
+     "text": "se",
+     "start": 28.62,
+     "end": 28.82
+    },
+    {
+     "text": "ljudi",
+     "start": 28.82,
+     "end": 29.08
+    },
+    {
+     "text": "počeli",
+     "start": 29.08,
+     "end": 29.62
+    },
+    {
+     "text": "razilaziti,",
+     "start": 29.62,
+     "end": 30.58
+    },
+    {
+     "text": "vratio",
+     "start": 30.58,
+     "end": 30.96
+    },
+    {
+     "text": "se",
+     "start": 30.96,
+     "end": 31.14
+    },
+    {
+     "text": "i",
+     "start": 31.14,
+     "end": 31.32
+    },
+    {
+     "text": "on,",
+     "start": 31.32,
+     "end": 32.12
+    },
+    {
+     "text": "ali",
+     "start": 32.12,
+     "end": 32.28
+    },
+    {
+     "text": "ona",
+     "start": 32.28,
+     "end": 32.52
+    },
+    {
+     "text": "se",
+     "start": 32.52,
+     "end": 32.72
+    },
+    {
+     "text": "nije",
+     "start": 32.72,
+     "end": 32.94
+    },
+    {
+     "text": "više",
+     "start": 32.94,
+     "end": 33.28
+    },
+    {
+     "text": "vraćala.",
+     "start": 33.28,
+     "end": 34.5
+    },
+    {
+     "text": "Po",
+     "start": 34.5,
+     "end": 34.96
+    },
+    {
+     "text": "svoj",
+     "start": 34.96,
+     "end": 35.34
+    },
+    {
+     "text": "prilici",
+     "start": 35.34,
+     "end": 36.0
+    },
+    {
+     "text": "otišla",
+     "start": 36.0,
+     "end": 36.78
+    },
+    {
+     "text": "je",
+     "start": 36.78,
+     "end": 36.9
+    },
+    {
+     "text": "kući",
+     "start": 36.9,
+     "end": 37.34
+    },
+    {
+     "text": "svojoj.",
+     "start": 37.34,
+     "end": 38.2
+    },
+    {
+     "text": "Živko",
+     "start": 38.2,
+     "end": 39.22
+    },
+    {
+     "text": "celim",
+     "start": 39.22,
+     "end": 39.68
+    },
+    {
+     "text": "putem",
+     "start": 39.68,
+     "end": 40.1
+    },
+    {
+     "text": "do",
+     "start": 40.1,
+     "end": 40.28
+    },
+    {
+     "text": "kuće",
+     "start": 40.28,
+     "end": 40.68
+    },
+    {
+     "text": "nije",
+     "start": 40.68,
+     "end": 40.96
+    },
+    {
+     "text": "progovorio",
+     "start": 40.96,
+     "end": 41.68
+    },
+    {
+     "text": "ni",
+     "start": 41.68,
+     "end": 41.88
+    },
+    {
+     "text": "reči.",
+     "start": 41.88,
+     "end": 42.92
+    },
+    {
+     "text": "Bio",
+     "start": 42.92,
+     "end": 43.1
+    },
+    {
+     "text": "je",
+     "start": 43.1,
+     "end": 43.2
+    },
+    {
+     "text": "zabrinut,",
+     "start": 43.2,
+     "end": 44.04
+    },
+    {
+     "text": "guste",
+     "start": 44.04,
+     "end": 44.42
+    },
+    {
+     "text": "obrve",
+     "start": 44.42,
+     "end": 44.8
+    },
+    {
+     "text": "su",
+     "start": 44.8,
+     "end": 44.98
+    },
+    {
+     "text": "se",
+     "start": 44.98,
+     "end": 45.18
+    },
+    {
+     "text": "naklopile",
+     "start": 45.18,
+     "end": 45.86
+    },
+    {
+     "text": "na",
+     "start": 45.86,
+     "end": 46.04
+    },
+    {
+     "text": "oči.",
+     "start": 46.04,
+     "end": 46.56
+    },
+    {
+     "text": "Ko",
+     "start": 46.56,
+     "end": 47.1
+    },
+    {
+     "text": "zna",
+     "start": 47.1,
+     "end": 47.36
+    },
+    {
+     "text": "o",
+     "start": 47.36,
+     "end": 47.52
+    },
+    {
+     "text": "čemu",
+     "start": 47.52,
+     "end": 47.74
+    },
+    {
+     "text": "je",
+     "start": 47.74,
+     "end": 47.9
+    },
+    {
+     "text": "premjišljao,",
+     "start": 47.9,
+     "end": 48.7
+    },
+    {
+     "text": "ponekad",
+     "start": 48.7,
+     "end": 49.16
+    },
+    {
+     "text": "je",
+     "start": 49.16,
+     "end": 49.3
+    },
+    {
+     "text": "ustahnuo,",
+     "start": 49.3,
+     "end": 50.34
+    },
+    {
+     "text": "bolelo",
+     "start": 50.34,
+     "end": 50.78
+    },
+    {
+     "text": "ga",
+     "start": 50.78,
+     "end": 50.88
+    },
+    {
+     "text": "je",
+     "start": 50.88,
+     "end": 51.02
+    },
+    {
+     "text": "nešto.",
+     "start": 51.02,
+     "end": 51.56
+    }
+   ]
+  }
+ ]
+}

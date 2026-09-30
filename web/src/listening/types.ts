@@ -2,6 +2,8 @@ export interface AudioCue {
   text: string;
   start?: number | null;
   end?: number | null;
+  speaker?: string;
+  words?: Array<{ text: string; start: number; end: number }>;
 }
 
 export interface AudioLesson {

@@ -1,0 +1,305 @@
+{
+ "title": "Plač Serbiji",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Zaharije-Orfelin-Plac-Serbiji.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/plac-serbiji/",
+ "duration": 39.881,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Srpske moje granice i zemlje rudajut, čto hrabri mi vitezi tud ne proježdajut. Razoreni gradovi svi pusti već stali, kule bojne Srpske, sve i dvorovi pali.",
+   "start": 0.0,
+   "end": 19.22,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Srpske",
+     "start": 0.02,
+     "end": 1.22
+    },
+    {
+     "text": "moje",
+     "start": 1.22,
+     "end": 1.5
+    },
+    {
+     "text": "granice",
+     "start": 1.5,
+     "end": 2.32
+    },
+    {
+     "text": "i",
+     "start": 2.32,
+     "end": 2.58
+    },
+    {
+     "text": "zemlje",
+     "start": 2.58,
+     "end": 3.14
+    },
+    {
+     "text": "rudajut,",
+     "start": 3.14,
+     "end": 4.86
+    },
+    {
+     "text": "čto",
+     "start": 4.86,
+     "end": 5.1
+    },
+    {
+     "text": "hrabri",
+     "start": 5.1,
+     "end": 5.88
+    },
+    {
+     "text": "mi",
+     "start": 5.88,
+     "end": 6.06
+    },
+    {
+     "text": "vitezi",
+     "start": 6.06,
+     "end": 6.8
+    },
+    {
+     "text": "tud",
+     "start": 6.8,
+     "end": 7.3
+    },
+    {
+     "text": "ne",
+     "start": 7.3,
+     "end": 7.54
+    },
+    {
+     "text": "proježdajut.",
+     "start": 7.54,
+     "end": 9.08
+    },
+    {
+     "text": "Razoreni",
+     "start": 9.08,
+     "end": 10.56
+    },
+    {
+     "text": "gradovi",
+     "start": 10.56,
+     "end": 11.2
+    },
+    {
+     "text": "svi",
+     "start": 11.2,
+     "end": 11.54
+    },
+    {
+     "text": "pusti",
+     "start": 11.54,
+     "end": 12.34
+    },
+    {
+     "text": "već",
+     "start": 12.34,
+     "end": 12.68
+    },
+    {
+     "text": "stali,",
+     "start": 12.68,
+     "end": 13.92
+    },
+    {
+     "text": "kule",
+     "start": 13.92,
+     "end": 14.24
+    },
+    {
+     "text": "bojne",
+     "start": 14.24,
+     "end": 15.0
+    },
+    {
+     "text": "Srpske,",
+     "start": 15.0,
+     "end": 16.1
+    },
+    {
+     "text": "sve",
+     "start": 16.1,
+     "end": 17.1
+    },
+    {
+     "text": "i",
+     "start": 17.1,
+     "end": 17.88
+    },
+    {
+     "text": "dvorovi",
+     "start": 17.88,
+     "end": 18.62
+    },
+    {
+     "text": "pali.",
+     "start": 18.62,
+     "end": 19.18
+    }
+   ]
+  },
+  {
+   "text": "Ah, nesreća ta moja, do Adame svede, svako veće zlo svoje spustiv na me sede.",
+   "start": 19.22,
+   "end": 29.64,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Ah,",
+     "start": 20.4,
+     "end": 20.9
+    },
+    {
+     "text": "nesreća",
+     "start": 20.9,
+     "end": 21.7
+    },
+    {
+     "text": "ta",
+     "start": 21.7,
+     "end": 22.0
+    },
+    {
+     "text": "moja,",
+     "start": 22.0,
+     "end": 22.72
+    },
+    {
+     "text": "do",
+     "start": 22.72,
+     "end": 23.3
+    },
+    {
+     "text": "Adame",
+     "start": 23.3,
+     "end": 23.82
+    },
+    {
+     "text": "svede,",
+     "start": 23.82,
+     "end": 24.92
+    },
+    {
+     "text": "svako",
+     "start": 24.92,
+     "end": 25.68
+    },
+    {
+     "text": "veće",
+     "start": 25.68,
+     "end": 26.18
+    },
+    {
+     "text": "zlo",
+     "start": 26.18,
+     "end": 26.7
+    },
+    {
+     "text": "svoje",
+     "start": 26.7,
+     "end": 27.46
+    },
+    {
+     "text": "spustiv",
+     "start": 27.46,
+     "end": 28.46
+    },
+    {
+     "text": "na",
+     "start": 28.46,
+     "end": 28.72
+    },
+    {
+     "text": "me",
+     "start": 28.72,
+     "end": 29.04
+    },
+    {
+     "text": "sede.",
+     "start": 29.04,
+     "end": 29.98
+    }
+   ]
+  },
+  {
+   "text": "Uvi meni nesrećnoj, gdi su cari moji, gdi vojvode preslavne sa hrabrimi voji.",
+   "start": 30.18,
+   "end": 39.88,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Uvi",
+     "start": 30.78,
+     "end": 31.2
+    },
+    {
+     "text": "meni",
+     "start": 31.2,
+     "end": 31.72
+    },
+    {
+     "text": "nesrećnoj,",
+     "start": 31.72,
+     "end": 33.1
+    },
+    {
+     "text": "gdi",
+     "start": 33.1,
+     "end": 33.6
+    },
+    {
+     "text": "su",
+     "start": 33.6,
+     "end": 33.84
+    },
+    {
+     "text": "cari",
+     "start": 33.84,
+     "end": 34.46
+    },
+    {
+     "text": "moji,",
+     "start": 34.46,
+     "end": 35.1
+    },
+    {
+     "text": "gdi",
+     "start": 35.1,
+     "end": 35.78
+    },
+    {
+     "text": "vojvode",
+     "start": 35.78,
+     "end": 36.46
+    },
+    {
+     "text": "preslavne",
+     "start": 36.46,
+     "end": 37.44
+    },
+    {
+     "text": "sa",
+     "start": 37.44,
+     "end": 37.78
+    },
+    {
+     "text": "hrabrimi",
+     "start": 37.78,
+     "end": 38.6
+    },
+    {
+     "text": "voji.",
+     "start": 38.6,
+     "end": 39.22
+    }
+   ]
+  }
+ ]
+}

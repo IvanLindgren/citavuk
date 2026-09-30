@@ -1,0 +1,507 @@
+{
+ "title": "Gospa Nola",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Isidora-Sekulic-Gospa-Nola.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/gospa-nola/",
+ "duration": 42.368,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Pa zar ti ne znaš? Vlajko je na Robiji. Kako je bilo? Evo, zviznuo po očima gazda Mojsila i onda mu pretresao džepove. Buđelar kažu kao glava kupusa. Gazdi je stradalo jedno oko. Dobit će na to oko, kazao je Vlajko sudijama, Monokov, pa sve u redu. Baš da ga čovek i ne žali, gazda Mojsila. Možda će od sad bolje kontrolisati kantar i manje zakidati.",
+   "start": 0.0,
+   "end": 28.94,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Pa",
+     "start": 0.0,
+     "end": 0.2
+    },
+    {
+     "text": "zar",
+     "start": 0.2,
+     "end": 0.38
+    },
+    {
+     "text": "ti",
+     "start": 0.38,
+     "end": 0.66
+    },
+    {
+     "text": "ne",
+     "start": 0.66,
+     "end": 0.98
+    },
+    {
+     "text": "znaš?",
+     "start": 0.98,
+     "end": 1.82
+    },
+    {
+     "text": "Vlajko",
+     "start": 1.82,
+     "end": 2.36
+    },
+    {
+     "text": "je",
+     "start": 2.36,
+     "end": 2.52
+    },
+    {
+     "text": "na",
+     "start": 2.52,
+     "end": 2.72
+    },
+    {
+     "text": "Robiji.",
+     "start": 2.72,
+     "end": 3.34
+    },
+    {
+     "text": "Kako",
+     "start": 3.34,
+     "end": 4.02
+    },
+    {
+     "text": "je",
+     "start": 4.02,
+     "end": 4.14
+    },
+    {
+     "text": "bilo?",
+     "start": 4.14,
+     "end": 4.66
+    },
+    {
+     "text": "Evo,",
+     "start": 4.66,
+     "end": 5.56
+    },
+    {
+     "text": "zviznuo",
+     "start": 5.56,
+     "end": 6.38
+    },
+    {
+     "text": "po",
+     "start": 6.38,
+     "end": 6.52
+    },
+    {
+     "text": "očima",
+     "start": 6.52,
+     "end": 6.86
+    },
+    {
+     "text": "gazda",
+     "start": 6.86,
+     "end": 7.28
+    },
+    {
+     "text": "Mojsila",
+     "start": 7.28,
+     "end": 7.82
+    },
+    {
+     "text": "i",
+     "start": 7.82,
+     "end": 8.16
+    },
+    {
+     "text": "onda",
+     "start": 8.16,
+     "end": 8.44
+    },
+    {
+     "text": "mu",
+     "start": 8.44,
+     "end": 8.62
+    },
+    {
+     "text": "pretresao",
+     "start": 8.62,
+     "end": 9.34
+    },
+    {
+     "text": "džepove.",
+     "start": 9.34,
+     "end": 10.08
+    },
+    {
+     "text": "Buđelar",
+     "start": 10.08,
+     "end": 11.08
+    },
+    {
+     "text": "kažu",
+     "start": 11.08,
+     "end": 11.56
+    },
+    {
+     "text": "kao",
+     "start": 11.56,
+     "end": 11.94
+    },
+    {
+     "text": "glava",
+     "start": 11.94,
+     "end": 12.42
+    },
+    {
+     "text": "kupusa.",
+     "start": 12.42,
+     "end": 13.46
+    },
+    {
+     "text": "Gazdi",
+     "start": 13.46,
+     "end": 14.2
+    },
+    {
+     "text": "je",
+     "start": 14.2,
+     "end": 14.32
+    },
+    {
+     "text": "stradalo",
+     "start": 14.32,
+     "end": 14.92
+    },
+    {
+     "text": "jedno",
+     "start": 14.92,
+     "end": 15.34
+    },
+    {
+     "text": "oko.",
+     "start": 15.34,
+     "end": 16.12
+    },
+    {
+     "text": "Dobit",
+     "start": 16.12,
+     "end": 16.46
+    },
+    {
+     "text": "će",
+     "start": 16.46,
+     "end": 16.58
+    },
+    {
+     "text": "na",
+     "start": 16.58,
+     "end": 16.74
+    },
+    {
+     "text": "to",
+     "start": 16.74,
+     "end": 16.88
+    },
+    {
+     "text": "oko,",
+     "start": 16.88,
+     "end": 17.44
+    },
+    {
+     "text": "kazao",
+     "start": 17.44,
+     "end": 17.98
+    },
+    {
+     "text": "je",
+     "start": 17.98,
+     "end": 18.1
+    },
+    {
+     "text": "Vlajko",
+     "start": 18.1,
+     "end": 18.48
+    },
+    {
+     "text": "sudijama,",
+     "start": 18.48,
+     "end": 19.4
+    },
+    {
+     "text": "Monokov,",
+     "start": 19.4,
+     "end": 20.02
+    },
+    {
+     "text": "pa",
+     "start": 20.02,
+     "end": 20.24
+    },
+    {
+     "text": "sve",
+     "start": 20.24,
+     "end": 20.5
+    },
+    {
+     "text": "u",
+     "start": 20.5,
+     "end": 20.66
+    },
+    {
+     "text": "redu.",
+     "start": 20.66,
+     "end": 21.32
+    },
+    {
+     "text": "Baš",
+     "start": 21.32,
+     "end": 21.88
+    },
+    {
+     "text": "da",
+     "start": 21.88,
+     "end": 21.98
+    },
+    {
+     "text": "ga",
+     "start": 21.98,
+     "end": 22.14
+    },
+    {
+     "text": "čovek",
+     "start": 22.14,
+     "end": 22.58
+    },
+    {
+     "text": "i",
+     "start": 22.58,
+     "end": 22.74
+    },
+    {
+     "text": "ne",
+     "start": 22.74,
+     "end": 22.94
+    },
+    {
+     "text": "žali,",
+     "start": 22.94,
+     "end": 23.44
+    },
+    {
+     "text": "gazda",
+     "start": 23.44,
+     "end": 23.76
+    },
+    {
+     "text": "Mojsila.",
+     "start": 23.76,
+     "end": 24.68
+    },
+    {
+     "text": "Možda",
+     "start": 24.68,
+     "end": 25.26
+    },
+    {
+     "text": "će",
+     "start": 25.26,
+     "end": 25.48
+    },
+    {
+     "text": "od",
+     "start": 25.48,
+     "end": 25.82
+    },
+    {
+     "text": "sad",
+     "start": 25.82,
+     "end": 25.88
+    },
+    {
+     "text": "bolje",
+     "start": 25.88,
+     "end": 26.26
+    },
+    {
+     "text": "kontrolisati",
+     "start": 26.26,
+     "end": 27.06
+    },
+    {
+     "text": "kantar",
+     "start": 27.06,
+     "end": 27.6
+    },
+    {
+     "text": "i",
+     "start": 27.6,
+     "end": 27.9
+    },
+    {
+     "text": "manje",
+     "start": 27.9,
+     "end": 28.2
+    },
+    {
+     "text": "zakidati.",
+     "start": 28.2,
+     "end": 29.02
+    },
+    {
+     "text": "Da",
+     "start": 28.94,
+     "end": 29.58
+    }
+   ]
+  },
+  {
+   "text": "Da bude pošten, dosta mu je i jedno oko. Moja pomajka kaže, mudroj glavi dosta i jedno oko, a ja onda kao velim i poštenoj glavi dosta i jedno oko.",
+   "start": 28.94,
+   "end": 42.06,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "bude",
+     "start": 29.58,
+     "end": 29.9
+    },
+    {
+     "text": "pošten,",
+     "start": 29.9,
+     "end": 30.72
+    },
+    {
+     "text": "dosta",
+     "start": 30.72,
+     "end": 31.04
+    },
+    {
+     "text": "mu",
+     "start": 31.04,
+     "end": 31.24
+    },
+    {
+     "text": "je",
+     "start": 31.24,
+     "end": 31.38
+    },
+    {
+     "text": "i",
+     "start": 31.38,
+     "end": 31.68
+    },
+    {
+     "text": "jedno",
+     "start": 31.68,
+     "end": 32.02
+    },
+    {
+     "text": "oko.",
+     "start": 32.02,
+     "end": 32.58
+    },
+    {
+     "text": "Moja",
+     "start": 32.58,
+     "end": 33.28
+    },
+    {
+     "text": "pomajka",
+     "start": 33.28,
+     "end": 33.82
+    },
+    {
+     "text": "kaže,",
+     "start": 33.82,
+     "end": 34.6
+    },
+    {
+     "text": "mudroj",
+     "start": 34.6,
+     "end": 35.16
+    },
+    {
+     "text": "glavi",
+     "start": 35.16,
+     "end": 35.56
+    },
+    {
+     "text": "dosta",
+     "start": 35.56,
+     "end": 36.08
+    },
+    {
+     "text": "i",
+     "start": 36.08,
+     "end": 36.36
+    },
+    {
+     "text": "jedno",
+     "start": 36.36,
+     "end": 36.72
+    },
+    {
+     "text": "oko,",
+     "start": 36.72,
+     "end": 37.68
+    },
+    {
+     "text": "a",
+     "start": 37.68,
+     "end": 37.82
+    },
+    {
+     "text": "ja",
+     "start": 37.82,
+     "end": 38.02
+    },
+    {
+     "text": "onda",
+     "start": 38.02,
+     "end": 38.38
+    },
+    {
+     "text": "kao",
+     "start": 38.38,
+     "end": 38.76
+    },
+    {
+     "text": "velim",
+     "start": 38.76,
+     "end": 39.16
+    },
+    {
+     "text": "i",
+     "start": 39.16,
+     "end": 39.48
+    },
+    {
+     "text": "poštenoj",
+     "start": 39.48,
+     "end": 40.06
+    },
+    {
+     "text": "glavi",
+     "start": 40.06,
+     "end": 40.5
+    },
+    {
+     "text": "dosta",
+     "start": 40.5,
+     "end": 41.22
+    },
+    {
+     "text": "i",
+     "start": 41.22,
+     "end": 41.44
+    },
+    {
+     "text": "jedno",
+     "start": 41.44,
+     "end": 41.68
+    },
+    {
+     "text": "oko.",
+     "start": 41.68,
+     "end": 42.06
+    }
+   ]
+  }
+ ]
+}

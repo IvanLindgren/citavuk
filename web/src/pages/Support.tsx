@@ -8,6 +8,9 @@ import {
   startDonation,
   type DonationAvailability,
   type Supporter,
+  getSupportSubscriptions,
+  cancelSupportSubscription,
+  type SupportSubscription,
 } from '../api/donations';
 import { Button, Card, ErrorNote, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
@@ -131,6 +134,10 @@ function DonationForm() {
   const [name, setName] = useState(account?.displayName ?? '');
   const [showPublic, setShowPublic] = useState(true);
   const [message, setMessage] = useState('');
+  const [showAmount, setShowAmount] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [monthly, setMonthly] = useState(false);
+  const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [availability, setAvailability] = useState<DonationAvailability | null>(null);
@@ -168,6 +175,10 @@ function DonationForm() {
         name: name.trim(),
         showPublic: showPublic && name.trim() !== '',
         message: message.trim(),
+        showAmount,
+        showMessage,
+        monthly,
+        monthlyConsent: consent,
       });
       window.location.assign(started.confirmationUrl);
     } catch (reason) {
@@ -180,6 +191,10 @@ function DonationForm() {
     <Card className="mt-5 border-[var(--accent)]/35 p-6 sm:p-8">
       <form onSubmit={submit}>
         <h2 className="text-2xl">Сколько поддержать</h2>
+        {availability?.monthlyAvailable && <div className="mt-4 flex flex-wrap gap-3">
+          <AmountChip active={!monthly} onClick={() => setMonthly(false)}>Один раз</AmountChip>
+          <AmountChip active={monthly} onClick={() => setMonthly(true)}>Каждый месяц</AmountChip>
+        </div>}
         <div className="mt-4 flex flex-wrap gap-2" role="radiogroup" aria-label="Сумма">
           {PRESETS.map((value) => (
             <AmountChip
@@ -257,6 +272,15 @@ function DonationForm() {
           </span>
         </label>
 
+        {showPublic && name.trim() && <div className="mt-3 space-y-3 text-sm">
+          <label className="flex items-start gap-2.5"><input type="checkbox" checked={showAmount} onChange={e => setShowAmount(e.target.checked)} className="mt-0.5 size-4 accent-[var(--accent)]" />Показывать сумму поддержки на пьедестале и в благодарности дня</label>
+          <label className="flex items-start gap-2.5"><input type="checkbox" checked={showMessage} onChange={e => setShowMessage(e.target.checked)} className="mt-0.5 size-4 accent-[var(--accent)]" />Разрешаю опубликовать сообщение, если моя поддержка станет самой большой за день. Сообщение проверяется перед публикацией.</label>
+        </div>}
+        {monthly && <div className="mt-5 rounded-xl bg-[var(--bg-sunken)] p-4 text-sm leading-relaxed">
+          <p>Первый платёж — сейчас, затем {valid ? `${amount.toLocaleString('ru-RU')} ₽` : 'выбранная сумма'} каждый месяц в то же число по Москве. Если такого числа нет — в последний день месяца. Способ оплаты сохранит ЮKassa. Отмена — здесь, в разделе «Моя ежемесячная поддержка», в любой момент до следующего списания.</p>
+          <label className="mt-3 flex items-start gap-2.5"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} className="mt-1 size-4 shrink-0 accent-[var(--accent)]" />Согласен на сохранение способа оплаты и ежемесячное списание указанной суммы</label>
+        </div>}
+
         {!account && (
           <p className="mt-4 rounded-xl bg-[var(--bg-sunken)] px-4 py-3 text-sm leading-relaxed text-[var(--text-muted)]">
             <Link to="/login" className="font-semibold text-[var(--accent)] underline underline-offset-2">
@@ -281,19 +305,38 @@ function DonationForm() {
         )}
 
         <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-          <Button type="submit" size="lg" disabled={!valid || busy || closed}>
+          <Button type="submit" size="lg" disabled={!valid || busy || closed || (monthly && (!consent || !account))}>
             <LuHeart className="size-5" aria-hidden="true" />
-            {busy ? 'Открываю оплату…' : valid ? `Поддержать на ${amount.toLocaleString('ru-RU')} ₽` : 'Поддержать'}
+            {busy ? 'Открываю оплату…' : valid ? `Поддержать на ${amount.toLocaleString('ru-RU')} ₽${monthly ? ' в месяц' : ''}` : 'Поддержать'}
           </Button>
           <p className="flex max-w-xs items-start gap-2 text-xs leading-relaxed text-[var(--text-muted)]">
             <LuShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-            Оплата картой, через СБП или ЮMoney на странице ЮKassa. Данные карты
+            Карты, СБП, T‑Pay, SberPay и ЮMoney — на странице ЮKassa. Данные карты
             Читавук не видит.
           </p>
         </div>
       </form>
+      <MonthlySupport />
     </Card>
   );
+}
+
+function MonthlySupport() {
+  const { account } = useAuth();
+  const [items, setItems] = useState<SupportSubscription[]>([]);
+  const [busy, setBusy] = useState('');
+  const [error, setError] = useState('');
+  useEffect(() => { let alive = true; if (account) void getSupportSubscriptions().then(list => { if (alive) setItems(list); }).catch(() => {}); return () => { alive = false; }; }, [account]);
+  const active = items.filter(s => s.status !== 'canceled');
+  if (!account || !active.length) return null;
+  return <section className="mt-6 border-t border-[var(--line)] pt-5">
+    <h3 className="text-xl">Моя ежемесячная поддержка</h3>
+    {active.map(s => <div key={s.id} className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <p>{(s.amountKopecks / 100).toLocaleString('ru-RU')} ₽ в месяц<br /><span className="text-sm text-[var(--text-muted)]">{s.status === 'active' && s.nextChargeAt ? `Следующий платёж: ${new Date(s.nextChargeAt).toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' })}` : s.status === 'pending' ? 'Подключится после подтверждения оплаты' : 'Автоплатёж приостановлен'}</span></p>
+      <Button variant="secondary" size="sm" disabled={!!busy} onClick={() => { setBusy(s.id); setError(''); void cancelSupportSubscription(s.id).then(() => setItems(list => list.filter(x => x.id !== s.id))).catch(() => setError('Не удалось отменить. Попробуй ещё раз.')).finally(() => setBusy('')); }}>{busy === s.id ? 'Отменяю…' : 'Отключить автоплатёж'}</Button>
+    </div>)}
+    {error && <ErrorNote>{error}</ErrorNote>}
+  </section>;
 }
 
 function AmountChip({

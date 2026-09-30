@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 var (
@@ -206,7 +208,7 @@ func (r *Reviewer) ask(ctx context.Context, user string) (string, error) {
 			{Role: "system", Content: systemPrompt},
 			{Role: "user", Content: user},
 		},
-		Temperature: 0.2,
+		Temperature: 0,
 		MaxTokens:   3000,
 	}
 	if r.effort != "" {
@@ -279,7 +281,7 @@ func parseReview(content, text string) (*Review, error) {
 	if strings.EqualFold(strings.TrimSpace(raw.Language), "other") {
 		return nil, ErrNotSerbian
 	}
-	if strings.TrimSpace(raw.Summary) == "" {
+	if !aioutput.Russian(raw.Summary) || aioutput.ForeignScript(content) {
 		return nil, ErrBadAnswer
 	}
 	out := &Review{
@@ -298,6 +300,9 @@ func parseReview(content, text string) (*Review, error) {
 	lower := strings.ToLower(text)
 	seen := map[string]bool{}
 	for _, m := range raw.Mistakes {
+		if !aioutput.Russian(m.Explanation) {
+			return nil, ErrBadAnswer
+		}
 		original := strings.TrimSpace(m.Original)
 		fixed := strings.TrimSpace(m.Fixed)
 		if original == "" || fixed == "" || original == fixed ||

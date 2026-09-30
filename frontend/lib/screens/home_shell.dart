@@ -164,8 +164,8 @@ class _HomeShellState extends State<HomeShell> {
     // Вукоток всегда тёмный, и при светлой теме под ним оставалась светлая
     // панель — на границе получался шов. Панель уходит в ночную тему вместе
     // с разделом.
-    final dark = HomeTab.values[_index] == HomeTab.vukotok;
-    final navTheme = dark ? AppTheme.dark() : Theme.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final navTheme = Theme.of(context);
     final scheme = navTheme.colorScheme;
     // На широком экране — постоянная боковая навигация, на узком — нижняя.
     // Конфигурация разделов одна (HomeTab), различается только оболочка.

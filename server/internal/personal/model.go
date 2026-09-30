@@ -17,7 +17,7 @@ import (
 )
 
 const Days = 30
-const Model = "deepseek/deepseek-v4-flash-0731"
+const Model = "openai/gpt-6-luna"
 
 var ErrInvalid = errors.New("некорректный урок или анкета")
 

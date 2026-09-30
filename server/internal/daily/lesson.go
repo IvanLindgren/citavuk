@@ -16,6 +16,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/citavuk/server/internal/aioutput"
 	"time"
 )
 
@@ -113,12 +115,9 @@ type chatResponse struct {
 
 // Compose пишет текст с этими словами и упражнения к нему.
 func (g *Generator) Compose(ctx context.Context, level string, words []Word) (*Lesson, error) {
-	lesson, err := g.composeOnce(ctx, level, words)
-	if errors.Is(err, ErrBadAnswer) && ctx.Err() == nil {
-		// Один ограниченный повтор, без сохранения невалидного ответа.
-		return g.composeOnce(ctx, level, words)
-	}
-	return lesson, err
+	return aioutput.Retry(ctx, ErrBadAnswer, func(attempt context.Context) (*Lesson, error) {
+		return g.composeOnce(attempt, level, words)
+	})
 }
 
 func (g *Generator) composeOnce(ctx context.Context, level string, words []Word) (*Lesson, error) {
@@ -177,6 +176,9 @@ func (g *Generator) composeOnce(ctx context.Context, level string, words []Word)
 		return nil, err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if resp.StatusCode == 429 || resp.StatusCode >= 500 {
+			return nil, aioutput.ErrTemporary
+		}
 		var parsed chatResponse
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
 			return nil, fmt.Errorf("модель отказала: %s", parsed.Error.Message)
@@ -205,6 +207,9 @@ func (g *Generator) composeOnce(ctx context.Context, level string, words []Word)
 // или предварит вежливой фразой. Проще вырезать объект по скобкам, чем каждый
 // раз терять готовый ответ.
 func ParseLesson(content string) (*Lesson, error) {
+	if aioutput.ForeignScript(content) {
+		return nil, ErrBadAnswer
+	}
 	text := strings.TrimSpace(content)
 	start := strings.Index(text, "{")
 	end := strings.LastIndex(text, "}")

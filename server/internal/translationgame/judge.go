@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 var (
@@ -96,6 +98,7 @@ const judgeSystemPromptTemplate = `Ты беспристрастный преп�
 - userScore и translatorScore от 0 до 10;
 - feedback — одно конкретное объяснение по-русски до 300 знаков.
 
+Все feedback и summary строго на русском языке, даже если исходник или переводы на другом языке. Не используй китайский или английский для пояснений.
 Ответ строго JSON:
 {"verdicts":[{"index":0,"winner":"user","userScore":8.5,"translatorScore":7,"feedback":"..."}],"summary":"Краткий итог раунда"}`
 
@@ -291,7 +294,13 @@ func parseResult(content string, count int) (*Result, error) {
 			return nil, ErrBadAnswer
 		}
 		seen[verdict.Index] = true
+		if !aioutput.Russian(verdict.Feedback) {
+			return nil, ErrBadAnswer
+		}
 		verdict.Feedback = trimRunes(verdict.Feedback, 300)
+	}
+	if !aioutput.Russian(result.Summary) {
+		return nil, ErrBadAnswer
 	}
 	result.Summary = trimRunes(result.Summary, 500)
 	return &result, nil

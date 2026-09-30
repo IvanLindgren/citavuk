@@ -21,6 +21,10 @@ type Donation struct {
 	UserID            *uuid.UUID `json:"userId,omitempty"`
 	PublicName        string     `json:"publicName"`
 	ShowPublic        bool       `json:"showPublic"`
+	ShowAmount        bool       `json:"showAmount"`
+	ShowMessage       bool       `json:"showMessage"`
+	MessageApproved   bool       `json:"messageApproved"`
+	SubscriptionID    *uuid.UUID `json:"subscriptionId,omitempty"`
 	Message           string     `json:"message"`
 	AmountKopecks     int64      `json:"amountKopecks"`
 	Status            string     `json:"status"`
@@ -40,22 +44,25 @@ type NewDonation struct {
 	Message       string
 	AmountKopecks int64
 	Source        string
+	ShowAmount    bool
+	ShowMessage   bool
 }
 
 type Supporter struct {
-	Name  string    `json:"name"`
-	Since time.Time `json:"since"`
+	Name          string    `json:"name"`
+	Since         time.Time `json:"since"`
+	AmountKopecks int64     `json:"amountKopecks,omitempty"`
 }
 
 const donationColumns = `d.id, d.user_id, d.public_name, d.show_public, d.message,
     d.amount_kopecks, d.status, d.source, coalesce(d.provider_payment_id, ''),
-    d.is_test, d.created_at, d.paid_at`
+    d.is_test, d.created_at, d.paid_at, d.show_amount, d.show_message, d.message_approved, d.subscription_id`
 
 func scanDonation(row pgx.Row, extra ...any) (*Donation, error) {
 	var d Donation
 	dest := append([]any{&d.ID, &d.UserID, &d.PublicName, &d.ShowPublic, &d.Message,
 		&d.AmountKopecks, &d.Status, &d.Source, &d.ProviderPaymentID,
-		&d.IsTest, &d.CreatedAt, &d.PaidAt}, extra...)
+		&d.IsTest, &d.CreatedAt, &d.PaidAt, &d.ShowAmount, &d.ShowMessage, &d.MessageApproved, &d.SubscriptionID}, extra...)
 	if err := row.Scan(dest...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrDonationNotFound
@@ -71,11 +78,11 @@ func (s *Store) CreateDonation(ctx context.Context, in NewDonation) (*Donation, 
 		source = "yookassa"
 	}
 	return scanDonation(s.Pool.QueryRow(ctx, `
-        INSERT INTO donations AS d (user_id, public_name, show_public, message, amount_kopecks, source)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO donations AS d (user_id, public_name, show_public, message, amount_kopecks, source, show_amount, show_message)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING `+donationColumns,
 		in.UserID, trunc(in.PublicName, 60), in.ShowPublic, trunc(in.Message, 300),
-		in.AmountKopecks, source))
+		in.AmountKopecks, source, in.ShowAmount, in.ShowMessage))
 }
 
 func (s *Store) DonationByID(ctx context.Context, id uuid.UUID) (*Donation, error) {
@@ -162,22 +169,23 @@ func (s *Store) Supporters(ctx context.Context, limit int) ([]Supporter, error) 
 	rows, err := s.Pool.Query(ctx, `
         WITH paid AS (
             SELECT coalesce(user_id::text, id::text) AS who,
-                   public_name, show_public, amount_kopecks, paid_at
+                   public_name, show_public, amount_kopecks, paid_at, show_amount
               FROM donations
              WHERE status = 'succeeded' AND NOT is_test
         ), grouped AS (
             SELECT who,
                    sum(amount_kopecks) AS total,
+                   coalesce(sum(amount_kopecks) FILTER (WHERE show_public AND show_amount),0)::bigint AS public_total,
                    min(paid_at) AS since,
                    (array_agg(public_name ORDER BY paid_at DESC)
                        FILTER (WHERE show_public AND public_name <> ''))[1] AS name
               FROM paid
              GROUP BY who
         )
-        SELECT name, since FROM grouped
+        SELECT name, since, public_total FROM grouped
          WHERE total >= $1 AND name IS NOT NULL
-         ORDER BY since DESC
-         LIMIT $2`, SupporterThresholdKopecks, limit)
+         ORDER BY public_total DESC, since, who
+         LIMIT $2`, int64(1), limit)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +193,7 @@ func (s *Store) Supporters(ctx context.Context, limit int) ([]Supporter, error) 
 	out := []Supporter{}
 	for rows.Next() {
 		var sp Supporter
-		if err := rows.Scan(&sp.Name, &sp.Since); err != nil {
+		if err := rows.Scan(&sp.Name, &sp.Since, &sp.AmountKopecks); err != nil {
 			return nil, err
 		}
 		out = append(out, sp)

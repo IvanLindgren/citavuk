@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/citavuk/server/internal/aioutput"
 	"io"
 	"net/http"
 	"regexp"
@@ -293,6 +294,9 @@ SOURCE TEXT:
 }
 
 func parseGeneration(content string) (*generationResult, error) {
+	if aioutput.ForeignScript(content) {
+		return nil, ErrBadAnswer
+	}
 	text := strings.TrimSpace(content)
 	if start := strings.Index(text, "{"); start > 0 {
 		text = text[start:]

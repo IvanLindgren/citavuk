@@ -21,6 +21,7 @@ type fakeProvider struct {
 	// разделитель абзацев.
 	keepNewlines bool
 	err          error
+	out          string
 }
 
 func (f *fakeProvider) Name() string { return "fake" }
@@ -29,6 +30,9 @@ func (f *fakeProvider) TranslateWord(_ context.Context, text, _, _ string) (stri
 	f.calls = append(f.calls, text)
 	if f.err != nil {
 		return "", f.err
+	}
+	if f.out != "" {
+		return f.out, nil
 	}
 	out := "<" + text + ">"
 	if !f.keepNewlines {

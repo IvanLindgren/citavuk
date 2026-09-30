@@ -383,10 +383,11 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
         _summary = result.summary;
       });
       _runReveal(sorted);
-    } on ApiException catch (error) {
+    } catch (_) {
       if (mounted) {
         setState(() {
-          _error = error.message;
+          _error = '';
+          _summary = 'Сравни переводы и выбери лучший для каждой фразы.';
           _pose = DuelPose.think;
         });
       }

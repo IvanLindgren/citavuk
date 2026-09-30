@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { lazy, useEffect, useRef, useState } from 'react';
+import { lazy, useRef } from 'react';
 import { LuArrowRight, LuCaptions, LuFileAudio, LuUpload } from 'react-icons/lu';
 
 import { VUKOTOK_PATH } from '../components/Header';
@@ -9,7 +9,7 @@ import { DeferredSection } from '../components/DeferredSection';
 import { ButtonLink, Card, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
-import { getSupporters, type Supporter } from '../api/donations';
+import { SupportShowcase } from '../components/SupportShowcase';
 import { useSeo } from '../lib/seo';
 
 const DocumentImportBox = lazy(() => import('../components/DocumentImportBox').then(m => ({ default: m.DocumentImportBox })));
@@ -33,12 +33,12 @@ export function Landing() {
   return (
     <main>
       <Hero />
+      <SupportShowcase />
       <DocumentImport />
       <AudioImportPromo />
       <Demo />
       <Features />
       <Sections />
-      <SupportersStrip />
       {!loading && !account && <CallToAction />}
     </main>
   );
@@ -382,53 +382,6 @@ function Sections() {
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-/** Имена поддержавших на главной: их видит каждый, кто сюда заходит. */
-function SupportersStrip() {
-  const [supporters, setSupporters] = useState<Supporter[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    getSupporters()
-      .then((list) => !cancelled && setSupporters(list))
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (supporters.length === 0) return null;
-
-  return (
-    <section className="px-5 pb-16">
-      <div className="mx-auto max-w-4xl text-center">
-        <Reveal>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Хвала!</p>
-          <h2 className="mt-1 text-2xl sm:text-3xl">Читавук бесплатный благодаря им</h2>
-          <ul className="mt-6 flex flex-wrap justify-center gap-2">
-            {supporters.slice(0, 10).map((supporter) => (
-              <li
-                key={supporter.name + supporter.since}
-                className="rounded-full border border-gold/50 bg-[var(--bg-raised)] px-4 py-1.5 font-semibold"
-              >
-                {supporter.name}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-5 text-sm">
-            <Link to="/supporters" className="font-semibold text-[var(--accent)] underline underline-offset-2">
-              Все друзья Читавука
-            </Link>
-            <span className="mx-2 text-[var(--text-muted)]">·</span>
-            <Link to="/support" className="font-semibold text-[var(--accent)] underline underline-offset-2">
-              Поддержать
-            </Link>
-          </p>
-        </Reveal>
       </div>
     </section>
   );

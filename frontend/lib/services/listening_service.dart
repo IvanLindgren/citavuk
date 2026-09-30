@@ -123,8 +123,9 @@ class ListeningService {
     return '$_base/audio/proxy?url=${Uri.encodeComponent(url)}';
   }
 
-  /// Полный транскрипт эпизода (страница подкаста → trafilatura на бэкенде).
-  /// Возвращает реплики с пропорциональными таймингами или пустой список.
+  String proxyAudioUrl(String url) => '$_base/audio/proxy?url=${Uri.encodeComponent(url)}';
+
+  /// Настоящая расшифровка записи с таймкодами ASR.
   Future<List<AudioCue>> fetchTranscriptCues(
       String transcriptUrl, double durationSec) async {
     try {

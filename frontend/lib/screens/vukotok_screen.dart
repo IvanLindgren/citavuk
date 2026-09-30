@@ -18,7 +18,6 @@ import '../services/lexicon_db.dart';
 import '../services/micro_feed_service.dart';
 import '../services/reflexive.dart';
 import '../services/user_db.dart';
-import '../theme/app_theme.dart';
 import '../utils/haptics.dart';
 import '../utils/serbian_pronunciation.dart';
 import '../utils/tokenizer.dart';
@@ -28,11 +27,15 @@ import '../widgets/reader_text.dart';
 import '../widgets/wolf_mascot.dart';
 import 'vukotok_comments.dart';
 
+Color _feedInk(BuildContext context) => Theme.of(context).colorScheme.onSurface;
+Color _feedBackdrop(BuildContext context, double alpha) =>
+    Theme.of(context).colorScheme.surface.withValues(alpha: alpha);
+
 /// Раздел всегда тёмный: боковая и нижняя панели на его вкладке уходят в ночную
 /// тему вместе с ним (`HomeShell`), поэтому и оболочка, и лента, и видео живут в
 /// одной палитре — светлая полоса между ними читалась швом.
 Widget vukotokTheme({required Widget child}) => Builder(builder: (context) {
-      final theme = AppTheme.dark();
+      final theme = Theme.of(context);
       return Theme(
         data: theme,
         child: Material(color: theme.scaffoldBackgroundColor, child: child),
@@ -243,7 +246,7 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
     }
     try {
       final page = await MicroFeedService.instance
-          .load(exclude: reset ? const [] : _seen.toList());
+          .load(exclude: reset ? [] : _seen.toList());
       if (!mounted) return;
       setState(() {
         if (reset) {
@@ -281,14 +284,14 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
   Widget _body(BuildContext context) {
     if (_loading) {
       // Лента грузится — волк ждёт вместе с тобой, а не спиннер в пустоте.
-      return const Scaffold(
+      return Scaffold(
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              WolfSticker(asset: Wolf.vukotok, size: 140, animate: false),
-              SizedBox(height: 16),
-              ThinkingDots(color: Colors.white70),
+              const WolfSticker(asset: Wolf.vukotok, size: 140, animate: false),
+              const SizedBox(height: 16),
+              ThinkingDots(color: _feedInk(context).withValues(alpha: .7)),
             ],
           ),
         ),
@@ -434,7 +437,7 @@ class _VukotokTextScreenState extends State<VukotokTextScreen> {
     if (!mounted) return;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: SerbColors.nightSurface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -476,21 +479,21 @@ class _TopBar extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Text(position,
-                style: const TextStyle(
-                    color: Colors.white70,
+                style: TextStyle(
+                    color: _feedInk(context).withValues(alpha: .7),
                     fontSize: 13,
                     fontWeight: FontWeight.w700)),
             const Spacer(),
             IconButton(
               tooltip: 'Сохранённое',
               onPressed: onLiked,
-              icon: const Icon(Icons.favorite_border, color: Colors.white),
+              icon: Icon(Icons.favorite_border, color: _feedInk(context)),
             ),
             TextButton(
               onPressed: onScript,
               child: Text(cyrillic ? 'ЋИР' : 'LAT',
-                  style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w800)),
+                  style: TextStyle(
+                      color: _feedInk(context), fontWeight: FontWeight.w800)),
             ),
             const SizedBox(width: 8),
           ],
@@ -625,7 +628,7 @@ class _VukotokCardState extends State<_VukotokCard>
     final added = await showModalBottomSheet<int>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: SerbColors.nightSurface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -639,7 +642,7 @@ class _VukotokCardState extends State<_VukotokCard>
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: SerbColors.nightSurface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -702,9 +705,9 @@ class _VukotokCardState extends State<_VukotokCard>
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    const Color(0xF2000000),
-                    const Color(0xB8000000),
-                    Color(wide ? 0x99000000 : 0x4D000000),
+                    _feedBackdrop(context, .95),
+                    _feedBackdrop(context, .72),
+                    _feedBackdrop(context, wide ? .6 : .3),
                   ],
                 ),
               ),
@@ -741,14 +744,14 @@ class _VukotokCardState extends State<_VukotokCard>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: .95),
+                      color: _feedInk(context).withValues(alpha: .95),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Сохранено — ищи в ♡ наверху',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontWeight: FontWeight.w700, color: Colors.black87),
+                          fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.surface),
                     ),
                   ),
                 ),
@@ -776,8 +779,8 @@ class _VukotokCardState extends State<_VukotokCard>
                       text:
                           microFeedCategories[item.category] ?? item.category),
                   Text('${item.cefr}, $minutes мин',
-                      style: const TextStyle(
-                          color: Colors.white70,
+                      style: TextStyle(
+                          color: _feedInk(context).withValues(alpha: .7),
                           fontSize: 12,
                           fontWeight: FontWeight.w700)),
                 ],
@@ -799,7 +802,7 @@ class _VukotokCardState extends State<_VukotokCard>
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style:
-                        const TextStyle(color: Colors.white54, fontSize: 11)),
+                        TextStyle(color: _feedInk(context).withValues(alpha: .54), fontSize: 11)),
             ],
           ),
         ),
@@ -923,11 +926,11 @@ class _CardText extends StatelessWidget {
               height: band,
               child: ClipRect(
                 child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
+                  shaderCallback: (rect) => LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.white, Colors.white, Colors.transparent],
-                    stops: [0, .82, 1],
+                    colors: [_feedInk(context), _feedInk(context), Colors.transparent],
+                    stops: const [0, .82, 1],
                   ).createShader(rect),
                   blendMode: BlendMode.dstIn,
                   child: OverflowBox(
@@ -966,11 +969,11 @@ class _PlainCover extends StatelessWidget {
       builder: (context, constraints) {
         final sticker = (constraints.maxWidth * .46).clamp(120.0, 210.0);
         return DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [SerbColors.nightSurface2, SerbColors.nightBg],
+              colors: [Theme.of(context).colorScheme.surfaceContainerHighest, Theme.of(context).colorScheme.surface],
             ),
           ),
           child: Stack(
@@ -982,12 +985,12 @@ class _PlainCover extends StatelessWidget {
                         fontSize: sticker * 1.1,
                         height: 1,
                         fontWeight: FontWeight.w900,
-                        color: Colors.white.withValues(alpha: .06))),
+                        color: _feedInk(context).withValues(alpha: .06))),
               ),
               Align(
                 alignment: const Alignment(0, -.46),
                 child: Icon(Icons.auto_stories_outlined,
-                    size: sticker * .5, color: Colors.white12),
+                    size: sticker * .5, color: _feedInk(context).withValues(alpha: .12)),
               ),
             ],
           ),
@@ -1005,13 +1008,13 @@ class _Chip extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: .35),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(7),
-          border: Border.all(color: Colors.white24),
+          border: Border.all(color: _feedInk(context).withValues(alpha: .24)),
         ),
         child: Text(text.toUpperCase(),
-            style: const TextStyle(
-                color: Colors.white,
+            style: TextStyle(
+                color: _feedInk(context),
                 fontSize: 11,
                 fontWeight: FontWeight.w800)),
       );
@@ -1041,14 +1044,14 @@ class _Action extends StatelessWidget {
               tooltip: label,
               onPressed: onTap,
               icon: Icon(icon,
-                  color: active ? const Color(0xFFE86A5B) : Colors.white),
+                  color: active ? const Color(0xFFE86A5B) : _feedInk(context)),
             ),
             // Ноль не показываем: три нуля на каждой карточке выглядят как
             // мёртвая лента, хотя означают лишь «ещё никто не нажимал».
             if (count > 0)
               Text('$count',
-                  style: const TextStyle(
-                      color: Colors.white70,
+                  style: TextStyle(
+                      color: _feedInk(context).withValues(alpha: .7),
                       fontSize: 12,
                       fontWeight: FontWeight.w700)),
           ],
@@ -1081,9 +1084,9 @@ class _Tappable extends StatelessWidget {
     return ReaderParagraph(
       text: sentence,
       settings: cardTextSettings(fontSize),
-      textColor: Colors.white,
+      textColor: _feedInk(context),
       highlightColor: const Color(0x66FFD37A),
-      highlightTextColor: Colors.white,
+      highlightTextColor: _feedInk(context),
       onTapWord: (index, token, tokens) => showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -1409,7 +1412,7 @@ class _FullTextSheet extends StatelessWidget {
           const SizedBox(height: 18),
           if (item.attributionText.isNotEmpty)
             Text(item.attributionText,
-                style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                style: TextStyle(color: _feedInk(context).withValues(alpha: .54), fontSize: 12)),
         ],
       ),
     );
@@ -1425,20 +1428,20 @@ class _LikedSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(28),
+      return Padding(
+        padding: const EdgeInsets.all(28),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            WolfSticker(asset: Wolf.vukotok, size: 140),
-            SizedBox(height: 14),
+            const WolfSticker(asset: Wolf.vukotok, size: 140),
+            const SizedBox(height: 14),
             Text('Пока пусто',
                 style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.w700)),
-            SizedBox(height: 6),
+                    color: _feedInk(context), fontWeight: FontWeight.w700)),
+            const SizedBox(height: 6),
             Text('Нажми ♡ на карточке — она окажется здесь.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70)),
+                style: TextStyle(color: _feedInk(context).withValues(alpha: .7))),
           ],
         ),
       );
@@ -1456,18 +1459,18 @@ class _LikedSheet extends StatelessWidget {
             title: Text(item.title(cyrillic),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.w700)),
+                style: TextStyle(
+                    color: _feedInk(context), fontWeight: FontWeight.w700)),
             subtitle: Text(
                 '${microFeedCategories[item.category] ?? item.category}, ${item.cefr}',
-                style: const TextStyle(color: Colors.white54)),
-            trailing: const Icon(Icons.menu_book, color: Colors.white38),
+                style: TextStyle(color: _feedInk(context).withValues(alpha: .54))),
+            trailing: Icon(Icons.menu_book, color: _feedInk(context).withValues(alpha: .38)),
             onTap: () {
               Navigator.of(context).pop();
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: SerbColors.nightSurface,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
@@ -1538,29 +1541,29 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SerbColors.nightBg,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
           children: [
-            const Row(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.interests_outlined, size: 40, color: Colors.white70),
-                SizedBox(width: 14),
+                Icon(Icons.interests_outlined, size: 40, color: _feedInk(context).withValues(alpha: .7)),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Просто выбери то, что тебе интересно',
                           style: TextStyle(
-                              color: Colors.white,
+                              color: _feedInk(context),
                               fontSize: 22,
                               height: 1.2,
                               fontWeight: FontWeight.w800)),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Text('Ничего сложного!',
-                          style: TextStyle(color: Colors.white70)),
+                          style: TextStyle(color: _feedInk(context).withValues(alpha: .7))),
                     ],
                   ),
                 ),
@@ -1592,11 +1595,11 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
             // первый ответ никуда не записали.
             if (widget.preferences.levelFromAccount)
               Text('Уровень сербского беру из твоего аккаунта: $_level.',
-                  style: const TextStyle(color: Colors.white54))
+                  style: TextStyle(color: _feedInk(context).withValues(alpha: .54)))
             else ...[
-              const Text('Сербский сейчас',
+              Text('Сербский сейчас',
                   style: TextStyle(
-                      color: Colors.white70,
+                      color: _feedInk(context).withValues(alpha: .7),
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
                       letterSpacing: .6)),
@@ -1637,7 +1640,7 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
             // Отказ — тоже ответ, и записывается он так же. Иначе анкета
             // встречала бы человека при каждом заходе.
             TextButton(
-              onPressed: _saving ? null : () => _submit(const []),
+              onPressed: _saving ? null : () => _submit([]),
               child: const Text('Показывай всё подряд'),
             ),
           ],

@@ -23,10 +23,13 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/citavuk/server/internal/aioutput"
 )
 
 // ErrNoHint — модель не смогла или не захотела разбирать это слово.
 var ErrNoHint = errors.New("formhint: подсказки нет")
+var errBadAnswer = errors.New("formhint: неразборчивый ответ")
 
 // Hint — гипотеза о слове. Ничего, кроме этих трёх полей, у модели не берётся.
 type Hint struct {
@@ -123,11 +126,16 @@ func (h *Hinter) Guess(ctx context.Context, form string) (*Hint, error) {
 	if !h.Enabled() || form == "" {
 		return nil, ErrNoHint
 	}
-	content, err := h.ask(ctx, form)
-	if err != nil {
-		return nil, err
-	}
-	return parse(content)
+	return aioutput.Retry(ctx, errBadAnswer, func(attempt context.Context) (*Hint, error) {
+		content, err := h.ask(attempt, form)
+		if err != nil {
+			return nil, err
+		}
+		if !json.Valid([]byte(strings.TrimSpace(content))) || aioutput.ForeignScript(content) {
+			return nil, errBadAnswer
+		}
+		return parse(content)
+	})
 }
 
 func (h *Hinter) ask(ctx context.Context, form string) (string, error) {
@@ -140,7 +148,7 @@ func (h *Hinter) ask(ctx context.Context, form string) (string, error) {
 		Temperature: 0,
 		// Ответ — три коротких поля, и запас нужен только на случай, если модель
 		// начнёт рассуждать вслух вопреки просьбе.
-		MaxTokens: 300,
+		MaxTokens: 1500,
 	}
 	request.ResponseFormat.Type = "json_object"
 	if h.effort != "" {
@@ -168,6 +176,9 @@ func (h *Hinter) ask(ctx context.Context, form string) (string, error) {
 	}
 	var parsed chatResponse
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if resp.StatusCode == 429 || resp.StatusCode >= 500 {
+			return "", aioutput.ErrTemporary
+		}
 		reason := fmt.Sprintf("код %d", resp.StatusCode)
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
 			reason = parsed.Error.Message

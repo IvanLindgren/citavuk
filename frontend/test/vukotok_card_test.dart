@@ -8,9 +8,9 @@ import 'package:srbski_read/theme/app_theme.dart';
 /// «Читать целиком» будет появляться не там, где текст правда обрезан.
 void main() {
   for (final appDark in [false, true]) {
-    testWidgets('оболочка Вукотока всегда ночная: тема приложения dark=$appDark',
+    testWidgets('Вукоток следует теме приложения dark=$appDark',
         (tester) async {
-      final night = AppTheme.dark();
+      final expected = appDark ? AppTheme.dark() : AppTheme.light();
       late ThemeData inner;
       await tester.pumpWidget(MaterialApp(
         theme: appDark ? AppTheme.dark() : AppTheme.light(),
@@ -21,14 +21,14 @@ void main() {
           }),
         ),
       ));
-      expect(inner.brightness, Brightness.dark);
-      expect(inner.colorScheme.primary, night.colorScheme.primary);
+      expect(inner.brightness, expected.brightness);
+      expect(inner.colorScheme.primary, expected.colorScheme.primary);
       final material = tester.widgetList<Material>(find.byType(Material))
-          .firstWhere((value) => value.color == night.scaffoldBackgroundColor);
-      expect(material.color, night.scaffoldBackgroundColor);
+          .firstWhere((value) => value.color == expected.scaffoldBackgroundColor);
+      expect(material.color, expected.scaffoldBackgroundColor);
       final foreground = inner.colorScheme.onSurface.computeLuminance();
-      final background = night.scaffoldBackgroundColor.computeLuminance();
-      final ratio = (foreground + .05) / (background + .05);
+      final background = expected.scaffoldBackgroundColor.computeLuminance();
+      final ratio = foreground > background ? (foreground + .05) / (background + .05) : (background + .05) / (foreground + .05);
       expect(ratio, greaterThan(4.5));
     });
   }
@@ -40,7 +40,7 @@ void main() {
     expect(s.paragraphSpacing, 0);
   });
 
-  testWidgets('раздел уходит в ночную тему приложения, а не в свою палитру',
+  testWidgets('светлая тема не заменяется принудительно тёмной',
       (tester) async {
     late ThemeData inner;
     await tester.pumpWidget(
@@ -54,7 +54,7 @@ void main() {
         ),
       ),
     );
-    expect(inner.brightness, Brightness.dark);
-    expect(inner.colorScheme.surface, AppTheme.dark().colorScheme.surface);
+    expect(inner.brightness, Brightness.light);
+    expect(inner.colorScheme.surface, AppTheme.light().colorScheme.surface);
   });
 }

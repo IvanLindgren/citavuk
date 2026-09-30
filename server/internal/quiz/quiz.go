@@ -18,6 +18,8 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+
+	"github.com/citavuk/server/internal/aioutput"
 	"time"
 	"unicode"
 )
@@ -156,6 +158,12 @@ type chatResponse struct {
 
 // Generate составляет тест по материалу.
 func (g *Generator) Generate(ctx context.Context, source string, want int) (*Result, error) {
+	return aioutput.Retry(ctx, ErrBadAnswer, func(attempt context.Context) (*Result, error) {
+		return g.generateOnce(attempt, source, want)
+	})
+}
+
+func (g *Generator) generateOnce(ctx context.Context, source string, want int) (*Result, error) {
 	if !g.Enabled() {
 		return nil, ErrNotConfigured
 	}
@@ -210,6 +218,9 @@ func (g *Generator) Generate(ctx context.Context, source string, want int) (*Res
 		return nil, err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		if resp.StatusCode == 429 || resp.StatusCode >= 500 {
+			return nil, aioutput.ErrTemporary
+		}
 		var parsed chatResponse
 		if json.Unmarshal(raw, &parsed) == nil && parsed.Error != nil {
 			return nil, fmt.Errorf("модель отказала: %s", parsed.Error.Message)
@@ -230,6 +241,9 @@ func (g *Generator) Generate(ctx context.Context, source string, want int) (*Res
 // или предварит вежливой фразой. Проще вырезать объект по скобкам, чем каждый
 // раз терять готовый ответ.
 func parseResult(content string) (*Result, error) {
+	if aioutput.ForeignScript(content) {
+		return nil, ErrBadAnswer
+	}
 	text := strings.TrimSpace(content)
 	if start := strings.Index(text, "{"); start > 0 {
 		text = text[start:]

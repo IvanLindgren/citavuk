@@ -98,14 +98,20 @@ type Payment struct {
 		ConfirmationURL string `json:"confirmation_url"`
 	} `json:"confirmation,omitempty"`
 	RefundedAmount *Amount `json:"refunded_amount,omitempty"`
+	PaymentMethod  *struct {
+		ID    string `json:"id"`
+		Saved bool   `json:"saved"`
+		Type  string `json:"type"`
+	} `json:"payment_method,omitempty"`
 }
 
 type CreatePayment struct {
-	Amount       Amount            `json:"amount"`
-	Capture      bool              `json:"capture"`
-	Confirmation confirmation      `json:"confirmation"`
-	Description  string            `json:"description"`
-	Metadata     map[string]string `json:"metadata,omitempty"`
+	Amount            Amount            `json:"amount"`
+	Capture           bool              `json:"capture"`
+	Confirmation      confirmation      `json:"confirmation"`
+	Description       string            `json:"description"`
+	Metadata          map[string]string `json:"metadata,omitempty"`
+	SavePaymentMethod bool              `json:"save_payment_method,omitempty"`
 }
 
 type confirmation struct {
@@ -119,15 +125,37 @@ func (c *Client) Create(
 	ctx context.Context, idempotenceKey string, amount Amount,
 	description, returnURL string, metadata map[string]string,
 ) (*Payment, error) {
+	return c.CreateWithSaving(ctx, idempotenceKey, amount, description, returnURL, metadata, false)
+}
+
+func (c *Client) CreateWithSaving(ctx context.Context, idempotenceKey string, amount Amount,
+	description, returnURL string, metadata map[string]string, save bool) (*Payment, error) {
 	body := CreatePayment{
-		Amount:       amount,
-		Capture:      true,
-		Confirmation: confirmation{Type: "redirect", ReturnURL: returnURL},
-		Description:  truncRunes(description, 128),
-		Metadata:     metadata,
+		Amount:            amount,
+		Capture:           true,
+		Confirmation:      confirmation{Type: "redirect", ReturnURL: returnURL},
+		Description:       truncRunes(description, 128),
+		Metadata:          metadata,
+		SavePaymentMethod: save,
 	}
 	var p Payment
 	if err := c.do(ctx, http.MethodPost, "/payments", idempotenceKey, body, &p); err != nil {
+		return nil, err
+	}
+	return &p, nil
+}
+
+// Charge использует только способ оплаты, сохранённый с явным согласием.
+func (c *Client) Charge(ctx context.Context, key string, amount Amount, methodID string, metadata map[string]string) (*Payment, error) {
+	var p Payment
+	body := struct {
+		Amount          Amount            `json:"amount"`
+		Capture         bool              `json:"capture"`
+		PaymentMethodID string            `json:"payment_method_id"`
+		Description     string            `json:"description"`
+		Metadata        map[string]string `json:"metadata"`
+	}{amount, true, methodID, "Ежемесячная поддержка Читавука", metadata}
+	if err := c.do(ctx, http.MethodPost, "/payments", key, body, &p); err != nil {
 		return nil, err
 	}
 	return &p, nil

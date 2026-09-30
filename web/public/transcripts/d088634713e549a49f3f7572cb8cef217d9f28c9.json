@@ -1,0 +1,645 @@
+{
+ "title": "Vlaovići",
+ "audio": "https://slusaj.rs/wp-content/uploads/2025/09/Isidora-Sekulic-Vlaovici.mp3",
+ "source_url": "https://slusaj.rs/sve-knjige/vlaovici/",
+ "duration": 58.266,
+ "source": "groq",
+ "model": "whisper-large-v3-turbo",
+ "language_code": "srp",
+ "cues": [
+  {
+   "text": "Pomagao je sirotne ljude rado novcem, zaposlenjem i kao pravnik savetom. Stari ljudi su govorili, u Stefanu kao da je Cornel Vlaović, ali tolike pravde ne beše ni za Cornela i nikada. Bog neka Stefanu da zdravlja i dug život.",
+   "start": 0.0,
+   "end": 18.82,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Pomagao",
+     "start": 0.1,
+     "end": 0.78
+    },
+    {
+     "text": "je",
+     "start": 0.78,
+     "end": 0.92
+    },
+    {
+     "text": "sirotne",
+     "start": 0.92,
+     "end": 1.46
+    },
+    {
+     "text": "ljude",
+     "start": 1.46,
+     "end": 1.9
+    },
+    {
+     "text": "rado",
+     "start": 1.9,
+     "end": 2.42
+    },
+    {
+     "text": "novcem,",
+     "start": 2.42,
+     "end": 3.26
+    },
+    {
+     "text": "zaposlenjem",
+     "start": 3.26,
+     "end": 4.0
+    },
+    {
+     "text": "i",
+     "start": 4.0,
+     "end": 4.5
+    },
+    {
+     "text": "kao",
+     "start": 4.5,
+     "end": 4.74
+    },
+    {
+     "text": "pravnik",
+     "start": 4.74,
+     "end": 5.26
+    },
+    {
+     "text": "savetom.",
+     "start": 5.26,
+     "end": 6.4
+    },
+    {
+     "text": "Stari",
+     "start": 6.4,
+     "end": 6.84
+    },
+    {
+     "text": "ljudi",
+     "start": 6.84,
+     "end": 7.22
+    },
+    {
+     "text": "su",
+     "start": 7.22,
+     "end": 7.36
+    },
+    {
+     "text": "govorili,",
+     "start": 7.36,
+     "end": 8.4
+    },
+    {
+     "text": "u",
+     "start": 8.4,
+     "end": 8.48
+    },
+    {
+     "text": "Stefanu",
+     "start": 8.48,
+     "end": 9.1
+    },
+    {
+     "text": "kao",
+     "start": 9.1,
+     "end": 9.5
+    },
+    {
+     "text": "da",
+     "start": 9.5,
+     "end": 9.62
+    },
+    {
+     "text": "je",
+     "start": 9.62,
+     "end": 9.7
+    },
+    {
+     "text": "Cornel",
+     "start": 9.7,
+     "end": 10.16
+    },
+    {
+     "text": "Vlaović,",
+     "start": 10.16,
+     "end": 10.96
+    },
+    {
+     "text": "ali",
+     "start": 10.96,
+     "end": 11.48
+    },
+    {
+     "text": "tolike",
+     "start": 11.48,
+     "end": 11.92
+    },
+    {
+     "text": "pravde",
+     "start": 11.92,
+     "end": 12.54
+    },
+    {
+     "text": "ne",
+     "start": 12.54,
+     "end": 12.96
+    },
+    {
+     "text": "beše",
+     "start": 12.96,
+     "end": 13.18
+    },
+    {
+     "text": "ni",
+     "start": 13.18,
+     "end": 13.36
+    },
+    {
+     "text": "za",
+     "start": 13.36,
+     "end": 13.58
+    },
+    {
+     "text": "Cornela",
+     "start": 13.58,
+     "end": 14.08
+    },
+    {
+     "text": "i",
+     "start": 14.08,
+     "end": 14.54
+    },
+    {
+     "text": "nikada.",
+     "start": 14.54,
+     "end": 15.52
+    },
+    {
+     "text": "Bog",
+     "start": 15.52,
+     "end": 16.12
+    },
+    {
+     "text": "neka",
+     "start": 16.12,
+     "end": 16.42
+    },
+    {
+     "text": "Stefanu",
+     "start": 16.42,
+     "end": 17.04
+    },
+    {
+     "text": "da",
+     "start": 17.04,
+     "end": 17.16
+    },
+    {
+     "text": "zdravlja",
+     "start": 17.16,
+     "end": 17.8
+    },
+    {
+     "text": "i",
+     "start": 17.8,
+     "end": 18.14
+    },
+    {
+     "text": "dug",
+     "start": 18.14,
+     "end": 18.36
+    },
+    {
+     "text": "život.",
+     "start": 18.36,
+     "end": 19.2
+    }
+   ]
+  },
+  {
+   "text": "Stefan je međutim bio slabašan i to se mnogo isticalo zato što je bio visok bez malo koliko otac. Lik je počeo od jedare da mu se menja. Lepa njegova glava dobila fizionomiju ptičiju. Mati lebdi nad njim pretvorila se u sveticu od posta i molitve, ali je srećna.",
+   "start": 18.82,
+   "end": 39.74,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Stefan",
+     "start": 19.54,
+     "end": 19.82
+    },
+    {
+     "text": "je",
+     "start": 19.82,
+     "end": 20.0
+    },
+    {
+     "text": "međutim",
+     "start": 20.0,
+     "end": 20.5
+    },
+    {
+     "text": "bio",
+     "start": 20.5,
+     "end": 20.78
+    },
+    {
+     "text": "slabašan",
+     "start": 20.78,
+     "end": 21.46
+    },
+    {
+     "text": "i",
+     "start": 21.46,
+     "end": 21.8
+    },
+    {
+     "text": "to",
+     "start": 21.8,
+     "end": 21.94
+    },
+    {
+     "text": "se",
+     "start": 21.94,
+     "end": 22.08
+    },
+    {
+     "text": "mnogo",
+     "start": 22.08,
+     "end": 22.44
+    },
+    {
+     "text": "isticalo",
+     "start": 22.44,
+     "end": 23.24
+    },
+    {
+     "text": "zato",
+     "start": 23.24,
+     "end": 23.6
+    },
+    {
+     "text": "što",
+     "start": 23.6,
+     "end": 23.76
+    },
+    {
+     "text": "je",
+     "start": 23.76,
+     "end": 23.9
+    },
+    {
+     "text": "bio",
+     "start": 23.9,
+     "end": 24.04
+    },
+    {
+     "text": "visok",
+     "start": 24.04,
+     "end": 24.6
+    },
+    {
+     "text": "bez",
+     "start": 24.6,
+     "end": 24.96
+    },
+    {
+     "text": "malo",
+     "start": 24.96,
+     "end": 25.3
+    },
+    {
+     "text": "koliko",
+     "start": 25.3,
+     "end": 25.76
+    },
+    {
+     "text": "otac.",
+     "start": 25.76,
+     "end": 26.38
+    },
+    {
+     "text": "Lik",
+     "start": 26.38,
+     "end": 27.04
+    },
+    {
+     "text": "je",
+     "start": 27.04,
+     "end": 27.16
+    },
+    {
+     "text": "počeo",
+     "start": 27.16,
+     "end": 27.6
+    },
+    {
+     "text": "od",
+     "start": 27.6,
+     "end": 27.86
+    },
+    {
+     "text": "jedare",
+     "start": 27.86,
+     "end": 28.24
+    },
+    {
+     "text": "da",
+     "start": 28.24,
+     "end": 28.48
+    },
+    {
+     "text": "mu",
+     "start": 28.48,
+     "end": 28.52
+    },
+    {
+     "text": "se",
+     "start": 28.52,
+     "end": 28.7
+    },
+    {
+     "text": "menja.",
+     "start": 28.7,
+     "end": 29.26
+    },
+    {
+     "text": "Lepa",
+     "start": 29.26,
+     "end": 30.1
+    },
+    {
+     "text": "njegova",
+     "start": 30.1,
+     "end": 30.5
+    },
+    {
+     "text": "glava",
+     "start": 30.5,
+     "end": 30.96
+    },
+    {
+     "text": "dobila",
+     "start": 30.96,
+     "end": 31.7
+    },
+    {
+     "text": "fizionomiju",
+     "start": 31.7,
+     "end": 32.56
+    },
+    {
+     "text": "ptičiju.",
+     "start": 32.56,
+     "end": 33.2
+    },
+    {
+     "text": "Mati",
+     "start": 33.2,
+     "end": 34.14
+    },
+    {
+     "text": "lebdi",
+     "start": 34.14,
+     "end": 34.5
+    },
+    {
+     "text": "nad",
+     "start": 34.5,
+     "end": 34.72
+    },
+    {
+     "text": "njim",
+     "start": 34.72,
+     "end": 34.96
+    },
+    {
+     "text": "pretvorila",
+     "start": 34.96,
+     "end": 35.8
+    },
+    {
+     "text": "se",
+     "start": 35.8,
+     "end": 36.0
+    },
+    {
+     "text": "u",
+     "start": 36.0,
+     "end": 36.2
+    },
+    {
+     "text": "sveticu",
+     "start": 36.2,
+     "end": 36.8
+    },
+    {
+     "text": "od",
+     "start": 36.8,
+     "end": 37.06
+    },
+    {
+     "text": "posta",
+     "start": 37.06,
+     "end": 37.56
+    },
+    {
+     "text": "i",
+     "start": 37.56,
+     "end": 37.88
+    },
+    {
+     "text": "molitve,",
+     "start": 37.88,
+     "end": 38.88
+    },
+    {
+     "text": "ali",
+     "start": 38.88,
+     "end": 39.04
+    },
+    {
+     "text": "je",
+     "start": 39.04,
+     "end": 39.18
+    },
+    {
+     "text": "srećna.",
+     "start": 39.18,
+     "end": 40.12
+    },
+    {
+     "text": "Stefan",
+     "start": 39.74,
+     "end": 40.74
+    }
+   ]
+  },
+  {
+   "text": "Stefan Jen na sve ljude u okolini utiče očaravajuće. Pravdoljublje njegovo i snažna mudra njegova reč rešavala je kao mađijom stare sporove između teško zavađenih, spasavala nekoliko puta očajne ljude od nepromišljenih odluka.",
+   "start": 39.74,
+   "end": 57.88,
+   "speaker": "speaker_0",
+   "words": [
+    {
+     "text": "Jen",
+     "start": 40.74,
+     "end": 41.04
+    },
+    {
+     "text": "na",
+     "start": 41.04,
+     "end": 41.38
+    },
+    {
+     "text": "sve",
+     "start": 41.38,
+     "end": 41.58
+    },
+    {
+     "text": "ljude",
+     "start": 41.58,
+     "end": 41.94
+    },
+    {
+     "text": "u",
+     "start": 41.94,
+     "end": 42.08
+    },
+    {
+     "text": "okolini",
+     "start": 42.08,
+     "end": 42.62
+    },
+    {
+     "text": "utiče",
+     "start": 42.62,
+     "end": 43.26
+    },
+    {
+     "text": "očaravajuće.",
+     "start": 43.26,
+     "end": 44.54
+    },
+    {
+     "text": "Pravdoljublje",
+     "start": 44.54,
+     "end": 45.6
+    },
+    {
+     "text": "njegovo",
+     "start": 45.6,
+     "end": 46.12
+    },
+    {
+     "text": "i",
+     "start": 46.12,
+     "end": 46.4
+    },
+    {
+     "text": "snažna",
+     "start": 46.4,
+     "end": 46.96
+    },
+    {
+     "text": "mudra",
+     "start": 46.96,
+     "end": 47.38
+    },
+    {
+     "text": "njegova",
+     "start": 47.38,
+     "end": 47.84
+    },
+    {
+     "text": "reč",
+     "start": 47.84,
+     "end": 48.18
+    },
+    {
+     "text": "rešavala",
+     "start": 48.18,
+     "end": 49.16
+    },
+    {
+     "text": "je",
+     "start": 49.16,
+     "end": 49.24
+    },
+    {
+     "text": "kao",
+     "start": 49.24,
+     "end": 49.6
+    },
+    {
+     "text": "mađijom",
+     "start": 49.6,
+     "end": 50.14
+    },
+    {
+     "text": "stare",
+     "start": 50.14,
+     "end": 50.56
+    },
+    {
+     "text": "sporove",
+     "start": 50.56,
+     "end": 51.18
+    },
+    {
+     "text": "između",
+     "start": 51.18,
+     "end": 51.78
+    },
+    {
+     "text": "teško",
+     "start": 51.78,
+     "end": 52.18
+    },
+    {
+     "text": "zavađenih,",
+     "start": 52.18,
+     "end": 53.32
+    },
+    {
+     "text": "spasavala",
+     "start": 53.32,
+     "end": 54.02
+    },
+    {
+     "text": "nekoliko",
+     "start": 54.02,
+     "end": 54.68
+    },
+    {
+     "text": "puta",
+     "start": 54.68,
+     "end": 55.1
+    },
+    {
+     "text": "očajne",
+     "start": 55.1,
+     "end": 55.72
+    },
+    {
+     "text": "ljude",
+     "start": 55.72,
+     "end": 56.14
+    },
+    {
+     "text": "od",
+     "start": 56.14,
+     "end": 56.64
+    },
+    {
+     "text": "nepromišljenih",
+     "start": 56.64,
+     "end": 57.42
+    },
+    {
+     "text": "odluka.",
+     "start": 57.42,
+     "end": 57.94
+    }
+   ]
+  }
+ ]
+}

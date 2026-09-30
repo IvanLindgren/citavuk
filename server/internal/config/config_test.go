@@ -133,7 +133,7 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	const model = "deepseek/deepseek-v4-flash-0731"
+	const model = "openai/gpt-6-luna"
 	for name, got := range map[string]string{
 		"quiz":       cfg.QuizModel,
 		"judge":      cfg.TranslationGameAIModel,
@@ -149,7 +149,7 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 	if cfg.DefinitionAIReasoning != "low" || cfg.FormHintAIReasoning != "low" {
 		t.Errorf("reasoning = %q/%q, want low/low", cfg.DefinitionAIReasoning, cfg.FormHintAIReasoning)
 	}
-	if cfg.PhotoScanModel != "openai/gpt-6-luna-pro" {
+	if cfg.PhotoScanModel != "openai/gpt-6-luna" {
 		t.Errorf("photo model changed: %q", cfg.PhotoScanModel)
 	}
 }

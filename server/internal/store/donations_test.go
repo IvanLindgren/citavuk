@@ -18,6 +18,7 @@ func TestDonationsSupporterThreshold(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	name := "Ана-" + u.ID.String()
 	pay := func(kopecks int64, name string) *Donation {
 		d, err := s.CreateDonation(ctx, NewDonation{UserID: &u.ID, PublicName: name, ShowPublic: true, AmountKopecks: kopecks})
 		if err != nil {
@@ -38,11 +39,11 @@ func TestDonationsSupporterThreshold(t *testing.T) {
 		return got.SupporterSince
 	}
 
-	pay(100_00, "Ана")
+	pay(100_00, name)
 	if since() != nil {
 		t.Fatal("100 ₽ не должны давать значок")
 	}
-	second := pay(150_00, "Ана П.")
+	second := pay(150_00, name+" П.")
 	if since() == nil {
 		t.Fatal("сумма 250 ₽ должна дать значок")
 	}
@@ -55,10 +56,10 @@ func TestDonationsSupporterThreshold(t *testing.T) {
 	}
 	found := false
 	for _, sp := range list {
-		if sp.Name == "Ана П." {
+		if sp.Name == name+" П." {
 			found = true
 		}
-		if sp.Name == "Ана" {
+		if sp.Name == name {
 			t.Error("аккаунт должен быть в списке один раз под последним именем")
 		}
 	}
