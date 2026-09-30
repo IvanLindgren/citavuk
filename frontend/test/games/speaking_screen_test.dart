@@ -11,6 +11,11 @@ import 'package:srbski_read/games/speaking/speaking_screen.dart';
 import 'package:srbski_read/services/api_client.dart';
 import 'package:srbski_read/services/auth_service.dart';
 
+// API задаёт момент в МСК; экран показывает календарную дату устройства.
+// Windows CI работает не в московском часовом поясе.
+const _publicFrom = '2026-10-13T00:00:00+03:00';
+final _openingDate = '${DateTime.parse(_publicFrom).toLocal().day} октября';
+
 Map<String, Object?> _topics() => {
       'genres': [
         {
@@ -50,7 +55,7 @@ ApiClient _api(
           final allowed = accessOpen?.call() ?? open;
           body = {
             'open': allowed,
-            'publicFrom': '2026-10-13T00:00:00+03:00',
+            'publicFrom': _publicFrom,
             'supporter': allowed,
             'signedIn': true,
           };
@@ -126,7 +131,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
     expect(find.text('Говори или пиши'), findsOneWidget);
     expect(find.text('Выбрать тему'), findsNothing);
-    expect(find.textContaining('13 октября'), findsOneWidget);
+    expect(find.textContaining(_openingDate), findsOneWidget);
   }, variant: TargetPlatformVariant.only(TargetPlatform.linux));
 
   testWidgets('барабан выдаёт тему, ответ разбирается и подсвечивается',
@@ -219,6 +224,6 @@ void main() {
     expect(find.text('Выбрать тему'), findsNothing);
     expect(find.textContaining('Личный ответ друга'), findsNothing);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.textContaining('13 октября'), findsOneWidget);
+    expect(find.textContaining(_openingDate), findsOneWidget);
   }, variant: TargetPlatformVariant.only(TargetPlatform.linux));
 }
