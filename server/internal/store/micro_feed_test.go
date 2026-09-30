@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -139,6 +140,52 @@ func TestFeedLevelCapAllowsOnlyOneStepUp(t *testing.T) {
 		if got := maxFeedLevelIndex(item.level); got != item.want {
 			t.Errorf("%s: потолок %d, ожидался %d", item.level, got, item.want)
 		}
+	}
+}
+
+func TestExplicitFeedLevelIsStrictAndDoesNotChangePreferences(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	actor := "test-feed-level-" + uuid.NewString()
+	t.Cleanup(func() {
+		_, _ = s.Pool.Exec(ctx, "DELETE FROM micro_feed_profiles_embeddings WHERE actor_key=$1", actor)
+	})
+	if _, err := s.SaveMicroFeedPreferences(ctx, actor, uuid.Nil, []string{}, "C1"); err != nil {
+		t.Fatal(err)
+	}
+	for _, kind := range []string{"fact", "video"} {
+		id := uuid.New()
+		videoID := ""
+		if kind == "video" {
+			videoID = strings.ReplaceAll(id.String(), "-", "")[:11]
+		}
+		_, err := s.Pool.Exec(ctx, `INSERT INTO micro_feed_content_items (id,status,kind,category,title_cyrillic,title_latin,text_cyrillic,text_latin,cefr,video_id,video_language_confirmed,video_duration,video_checked_at)
+		 VALUES($1,'published',$2,'culture','Тест','Test','Српски текст','Srpski tekst','A1',$3,true,30,now())`, id, kind, videoID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Cleanup(func() { _, _ = s.Pool.Exec(ctx, "DELETE FROM micro_feed_content_items WHERE id=$1", id) })
+	}
+	for _, media := range []string{"text", "video"} {
+		items, _, err := s.ListMicroFeedAtLevel(ctx, actor, nil, 8, "A1", media)
+		if err != nil || len(items) == 0 {
+			t.Fatalf("%s: %v, items %d", media, err, len(items))
+		}
+		for _, item := range items {
+			if item.CEFR != "A1" {
+				t.Fatalf("explicit A1 received %s", item.CEFR)
+			}
+		}
+	}
+	prefs, err := s.GetMicroFeedPreferences(ctx, actor, uuid.Nil)
+	if err != nil || prefs.CEFR != "C1" {
+		t.Fatal("override changed stored level", prefs, err)
+	}
+	if _, _, err := s.ListMicroFeedAtLevel(ctx, actor, nil, 8, "C2"); err == nil {
+		t.Fatal("invalid level accepted")
 	}
 }
 

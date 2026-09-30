@@ -55,7 +55,7 @@ func (s *Store) listRecommendedVideos(ctx context.Context, actor string, exclude
 		  (i.cefr=$7) DESC,
 		  ln(2+i.likes_count*3+i.comments_count*4)-i.dislikes_count*.5 DESC,
 		  md5(i.id::text || $1 || current_date::text)
-		LIMIT $3`, actor, exclude, limit*16, maxFeedLevelIndex(profile.CEFR), nonNilStrings(profile.Declared), actorUserID(actor), profile.CEFR)
+		LIMIT $3`, actor, exclude, limit*16, profile.maxLevelIndex(), nonNilStrings(profile.Declared), actorUserID(actor), profile.CEFR)
 	if err != nil {
 		return nil, "cold", err
 	}

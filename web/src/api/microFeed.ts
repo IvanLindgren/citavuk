@@ -129,9 +129,10 @@ function rememberVisitorToken(token: string | undefined) {
   }
 }
 
-export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode='text') {
+export async function getMicroFeed(exclude: string[], signal?: AbortSignal, mode='text', readerLevel?: MicroFeedItem['cefr']) {
   const query = new URLSearchParams({ limit: '8' });
   query.set('mode',mode);
+  if (readerLevel && MICRO_FEED_LEVELS.includes(readerLevel)) query.set('readerLevel', readerLevel);
   // Первый заход идёт без токена — сервер заведёт его и вернёт вместе с лентой.
   const token = microFeedVisitorToken();
   if (token) query.set('visitorToken', token);

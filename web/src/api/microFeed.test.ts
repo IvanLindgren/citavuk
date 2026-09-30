@@ -14,6 +14,15 @@ afterEach(() => {
 const SIGNED = 'v1.33333333-3333-4333-8333-333333333333.podpis';
 
 describe('micro-feed anonymous identity', () => {
+  it('sends the separate level override without changing account preferences', async () => {
+    const fetchMock=vi.fn(async (..._args: unknown[]) => new Response(JSON.stringify({items:[],strategy:'cold'})));
+    vi.stubGlobal('fetch',fetchMock);
+    await getMicroFeed([],undefined,'text','A1');
+    expect(String(fetchMock.mock.calls[0]![0])).toContain('readerLevel=A1');
+    await getMicroFeed([],undefined,'video');
+    expect(String(fetchMock.mock.calls[1]![0])).not.toContain('readerLevel');
+    expect(fetchMock.mock.calls).toHaveLength(2);
+  });
   it('stores the token the server issued', async () => {
     // Ответ создаётся на каждый вызов: тело Response читается ровно один раз.
     const fetchMock = vi.fn(async (..._args: unknown[]) => new Response(

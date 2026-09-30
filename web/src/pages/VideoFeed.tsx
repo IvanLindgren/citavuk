@@ -3,6 +3,8 @@ import { LuChevronDown, LuChevronLeft, LuChevronUp, LuHeart, LuRefreshCw, LuSlid
 import { getLikedMicroFeed, getMicroFeed, type MicroFeedItem, type MicroFeedPreferences } from '../api/microFeed';
 import { FeedComments } from '../components/FeedComments';
 import { FeedModeNav } from '../components/FeedModeNav';
+import { FeedLevelPicker } from '../components/FeedLevelPicker';
+import { readFeedLevel, saveFeedLevel, type FeedLevel } from '../lib/feedLevel';
 import { FeedVideoCard } from '../components/FeedVideoCard';
 import { MicroFeedOnboarding } from '../components/MicroFeedOnboarding';
 import { Spinner } from '../components/ui';
@@ -16,10 +18,17 @@ import './video-feed.css';
 export function VideoFeed() {
   const { account } = useAuth();
   useSeo({ title: 'Вукоток: короткие видео на сербском', description: 'Слушай живую сербскую речь, листай короткие видео и обсуждай их в Читавуке.' });
-  return <VideoSession key={account?.id ?? 'guest'} />;
+  const scope = account?.id ?? 'guest';
+  return <VideoScope key={scope} scope={scope} />;
 }
 
-function VideoSession() {
+function VideoScope({ scope }: { scope: string }) {
+  const [level, setLevel] = useState(() => readFeedLevel(scope));
+  const change = (next: FeedLevel | undefined) => { saveFeedLevel(scope, next); setLevel(next); };
+  return <VideoSession key={level ?? 'auto'} level={level} onLevelChange={change} />;
+}
+
+function VideoSession({ level, onLevelChange }: { level?: FeedLevel; onLevelChange: (value: FeedLevel | undefined) => void }) {
   const [items, setItems] = useState<MicroFeedItem[]>([]);
   const [index, setIndex] = useState(0);
   const [busy, setBusy] = useState(true);
@@ -53,7 +62,7 @@ function VideoSession() {
       // Обновляем только ещё не открытые рекомендации. Назад можно вернуться,
       // а реакция никогда не перезапускает текущий ролик.
       const base = reset ? [] : dirty.current ? data.current.items.slice(0, data.current.index + 1) : data.current.items;
-      const response = saved ? { items: await getLikedMicroFeed(controller.signal, 'video') } : await getMicroFeed(base.map(v => v.id), controller.signal, 'video');
+      const response = saved ? { items: await getLikedMicroFeed(controller.signal, 'video') } : await getMicroFeed(base.map(v => v.id), controller.signal, 'video', level);
       if (controller.signal.aborted) return;
       if ('preferences' in response && response.preferences) setPreferences(response.preferences);
       // Во время запроса человек мог поставить лайк или перейти вперёд.
@@ -70,7 +79,7 @@ function VideoSession() {
     } finally {
       if (abort.current === controller) { pending.current = false; setBusy(false); }
     }
-  }, []);
+  }, [level]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' }); void load(true);
@@ -162,13 +171,14 @@ function VideoSession() {
         <button type="button" aria-label="Настроить интересы" disabled={!preferences} onClick={() => setSettings(true)}><LuSlidersHorizontal /></button>
       </div>
     </header>
+    <div className="feed-level-row"><FeedLevelPicker value={level} onChange={onLevelChange} automatic={preferences?.cefr} /></div>
     <div className="video-feed-layout">
       <div ref={stage} className="video-feed-stage" onPointerDown={pointerDown} onPointerUp={pointerUp} onPointerCancel={() => { pointer.current = null; }}
         onClickCapture={e => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}>
         <div className="video-feed-context"><span>{liked ? 'Понравившиеся' : 'Для тебя'}</span><span>{item ? `${index + 1} / ${items.length}` : 'Короткие видео'}</span></div>
         {item ? <FeedVideoCard key={item.id} item={item} paused={discussing || settings} muted={muted} onMuted={setMuted} onChange={update}
           registerFlush={registerFlush} onDiscuss={() => setDiscussing(true)} onSignal={() => { dirty.current = true; if (!liked) void load(false, false, true); }} />
-          : <div className="video-feed-empty">{busy ? <><Spinner /><h2>Находим видео для тебя</h2></> : <><LuVideo /><h2>{liked ? 'Твои находки будут здесь' : 'Ты посмотрел доступные ролики'}</h2><p>{liked ? 'Нажми на сердце под роликом, чтобы вернуться к нему позже.' : 'Можно вернуться к предыдущим видео или почитать текстовую ленту.'}</p></>}</div>}
+          : <div className="video-feed-empty">{busy ? <><Spinner /><h2>Находим видео для тебя</h2></> : <><LuVideo /><h2>{liked ? 'Твои находки будут здесь' : level ? `Нет доступных видео для ${level}` : 'Ты посмотрел доступные ролики'}</h2><p>{liked ? 'Нажми на сердце под роликом, чтобы вернуться к нему позже.' : 'Выбери другой уровень или почитай текстовую ленту.'}</p></>}</div>}
         <nav className="video-feed-paging" aria-label="Перелистывание видео" data-no-swipe>
           <button type="button" aria-label="Предыдущее видео" disabled={index === 0} onClick={() => move(-1)}><LuChevronUp /></button>
           <span aria-live="polite">{busy ? 'Подбираем ещё…' : exhausted && index === items.length - 1 ? 'Пока это последний ролик' : 'Листай вверх к следующему'}</span>

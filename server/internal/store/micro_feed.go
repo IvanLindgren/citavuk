@@ -730,9 +730,17 @@ type microProfile struct {
 	// Avoided — темы, которые читатель раз за разом пролистывает не читая.
 	Avoided []string
 	// Declared — темы и уровень, названные читателем в анкете.
-	Declared []string
-	CEFR     string
-	Warm     bool
+	Declared   []string
+	CEFR       string
+	StrictCEFR bool
+	Warm       bool
+}
+
+func (p microProfile) maxLevelIndex() int {
+	if p.StrictCEFR {
+		return feedLevelIndex(p.CEFR)
+	}
+	return maxFeedLevelIndex(p.CEFR)
 }
 
 func (s *Store) microFeedProfile(ctx context.Context, actorKey string) microProfile {
@@ -786,6 +794,14 @@ func (s *Store) ListMicroFeed(
 	limit int,
 	media ...string,
 ) ([]MicroFeedItem, string, error) {
+	return s.ListMicroFeedAtLevel(ctx, actorKey, exclude, limit, "", media...)
+}
+
+// Ручной уровень относится только к выдаче, не к аккаунту или курсу.
+func (s *Store) ListMicroFeedAtLevel(ctx context.Context, actorKey string, exclude []uuid.UUID, limit int, readerLevel string, media ...string) ([]MicroFeedItem, string, error) {
+	if readerLevel != "" && !allowedFeedValue(readerLevel, MicroFeedLevels) {
+		return nil, "", errors.New("неподдерживаемый уровень Вукотока")
+	}
 	if limit <= 0 || limit > 20 {
 		limit = 8
 	}
@@ -795,6 +811,10 @@ func (s *Store) ListMicroFeed(
 		exclude = []uuid.UUID{}
 	}
 	profile := s.microFeedProfile(ctx, actorKey)
+	if readerLevel != "" {
+		profile.CEFR = readerLevel
+		profile.StrictCEFR = true
+	}
 	profile.Video = len(media) > 0 && media[0] == "video"
 	if profile.Video {
 		return s.listRecommendedVideos(ctx, actorKey, exclude, limit, profile)
@@ -967,7 +987,7 @@ func (s *Store) microFeedCandidates(
 
 	levelPosition := "array_position(ARRAY['A1','A2','B1','B2','C1'], i.cefr)"
 	readerLevel := next(feedLevelIndex(profile.CEFR))
-	maxLevel := next(maxFeedLevelIndex(profile.CEFR))
+	maxLevel := next(profile.maxLevelIndex())
 	// Ограничение применяется ко ВСЕМ стратегиям: популярность, сходство
 	// векторов и исследование новой темы не делают B2 понятным читателю A2.
 	extra := " AND " + levelPosition + " <= " + maxLevel

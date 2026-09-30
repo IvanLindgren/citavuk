@@ -36,6 +36,8 @@ import {
 import { ttsAudioUrl } from '../api/listening';
 import { FeedComments } from '../components/FeedComments';
 import { FeedModeNav } from '../components/FeedModeNav';
+import { FeedLevelPicker } from '../components/FeedLevelPicker';
+import { readFeedLevel, saveFeedLevel, type FeedLevel } from '../lib/feedLevel';
 import { useAuth } from '../state/auth';
 import { Mascot } from '../components/Mascot';
 import { MicroFeedOnboarding } from '../components/MicroFeedOnboarding';
@@ -52,10 +54,17 @@ import { useSync } from '../state/sync';
 
 export function MicroFeed() {
   const { account } = useAuth();
-  return <TextFeedSession key={account?.id ?? 'guest'} />;
+  const scope = account?.id ?? 'guest';
+  return <TextFeedScope key={scope} scope={scope} />;
 }
 
-function TextFeedSession() {
+function TextFeedScope({ scope }: { scope: string }) {
+  const [level, setLevel] = useState(() => readFeedLevel(scope));
+  const change = (next: FeedLevel | undefined) => { saveFeedLevel(scope, next); setLevel(next); };
+  return <TextFeedSession key={level ?? 'auto'} level={level} onLevelChange={change} />;
+}
+
+function TextFeedSession({ level, onLevelChange }: { level?: FeedLevel; onLevelChange: (value: FeedLevel | undefined) => void }) {
   useSeo({
     title: 'Вукоток — сербский тикток: короткие тексты на сербском лентой',
     description:
@@ -121,7 +130,7 @@ function TextFeedSession() {
     abortRef.current = controller;
     try {
       const exclude = reset ? [] : idsRef.current;
-      const response = await getMicroFeed(exclude, controller.signal);
+      const response = await getMicroFeed(exclude, controller.signal, 'text', level);
       setStrategy(response.strategy);
       if (response.preferences) setPreferences(response.preferences);
       setItems((current) => {
@@ -143,7 +152,7 @@ function TextFeedSession() {
         setLoadingMore(false);
       }
     }
-  }, []);
+  }, [level]);
 
   useEffect(() => { void load(true); }, [load]);
   useEffect(() => { expandedRef.current = expanded; }, [expanded]);
@@ -240,7 +249,7 @@ function TextFeedSession() {
   }
 
   if (loading) {
-    return <main className="grid min-h-[70dvh] place-items-center"><Spinner className="size-7" /></main>;
+    return <main className="grid min-h-[70dvh] place-items-center"><div className="grid justify-items-center gap-6"><FeedLevelPicker value={level} onChange={onLevelChange} /><Spinner className="size-7" /></div></main>;
   }
 
   // Анкета встаёт до ленты, а не поверх неё: спрашивать «что вам интересно» уже
@@ -259,8 +268,9 @@ function TextFeedSession() {
       <main className="mx-auto grid min-h-[70dvh] max-w-xl place-items-center px-5 text-center">
         <div>
           <img src="/img/citavuk_zadumch.png" alt="" className="mx-auto h-36 w-auto object-contain" />
-          <h1 className="mt-5 text-3xl">Вукоток пока пуст</h1>
-          <p className="mt-3 text-[var(--text-muted)]">Первые материалы проходят редакторскую проверку.</p>
+          <h1 className="mt-5 text-3xl">Больше нет подходящих текстов</h1>
+          <p className="mt-3 text-[var(--text-muted)]">Попробуй другой уровень или вернись позже.</p>
+          <div className="mt-5"><FeedLevelPicker value={level} onChange={onLevelChange} automatic={preferences?.cefr} /></div>
           {error && <div className="mt-5"><ErrorNote>{error}</ErrorNote></div>}
           <button type="button" onClick={() => void load(true)} className="mt-5 inline-flex items-center gap-2 rounded-lg border border-[var(--line)] px-4 py-2.5 font-semibold hover:border-[var(--accent)]">
             <LuRefreshCw className="size-4" /> Обновить
@@ -303,6 +313,7 @@ function TextFeedSession() {
             <div className="hidden sm:block [&_label]:!text-white/75 [&_label:hover]:!bg-white/10"><TtsVoicePicker compact /></div>
           </div>
         </div>
+        <div className="feed-level-row mx-auto max-w-6xl"><FeedLevelPicker value={level} onChange={onLevelChange} automatic={preferences?.cefr} /></div>
       </div>
 
       <div

@@ -10,6 +10,7 @@ assert.equal(new URL(base).hostname,'127.0.0.1');
 const out=path.join(os.tmpdir(),'citavuk-video-ui'); await mkdir(out,{recursive:true});
 const browser=await puppeteer.launch({headless:true});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const waitFor=async predicate=>{for(let n=0;n<100;n++){if(predicate())return;await pause(50);}assert(predicate(),'Запрос не завершился');};
 try {
  for(const [width,height,signed] of [[1440,940,true],[390,844,true],[360,740,false]]){
   const page=await browser.newPage();const errors=[],events=[],queries=[],dailyCalls=[];let comments=[],failReaction=false;
@@ -23,12 +24,14 @@ try {
   await page.setRequestInterception(true);
   page.on('request',async r=>{
    const u=new URL(r.url());
+   if(u.pathname.startsWith('/api/'))u.pathname=u.pathname.slice(4);
    if(u.pathname.startsWith('/v1/')){
     let body={items:[],unread:0},status=200;
     if(u.pathname==='/v1/auth/me') {if(signed)body={id:'video-ui-fixture',email:'ui@example.test',displayName:'Проверка',serbianLevel:'A2',emailVerified:true};else {status=401;body={message:'Войди'};}}
     else if(u.pathname==='/v1/micro-feed'){
      queries.push(r.url());const exclude=new Set((u.searchParams.get('exclude')||'').split(','));
-     body={items:fixtures.filter(v=>!exclude.has(v.id)).slice(0,8),strategy:'personalized',preferences:{categories:['culture'],cefr:'A2',onboarded:true,levelFromAccount:signed},...(!signed?{visitorToken:'fixture-signed-token'}:{})};
+     const items=fixtures.filter(v=>!exclude.has(v.id)).slice(0,8);
+     body={items:u.searchParams.get('mode')==='text'?items.map(v=>({...v,kind:'fact',textLatin:'Ovo je kratka priča o životu u Srbiji. Ljudi čitaju knjige i razgovaraju.',textCyrillic:'Ово је кратка прича о животу у Србији. Људи читају књиге и разговарају.',difficultWords:[],estimatedReadSeconds:30})):items,strategy:'personalized',preferences:{categories:['culture'],cefr:'A2',onboarded:true,levelFromAccount:signed},...(!signed?{visitorToken:'fixture-signed-token'}:{})};
     }else if(u.pathname==='/v1/micro-feed/liked')body={items:fixtures.filter(v=>v.reaction===1)};
     else if(u.pathname.endsWith('/interactions')){
      const payload=JSON.parse(r.postData());events.push(payload);
@@ -59,7 +62,7 @@ try {
   // Первое нажатие: cookie-сессия без visitor-token тоже отправляет POST.
   await page.click('[aria-label="Нравится"]');
   await page.waitForFunction(()=>document.querySelector('[aria-label="Нравится"]').getAttribute('aria-pressed')==='true');
-  assert(events.some(e=>e.event==='like'));assert(queries.length>=2,'нет обновления подбора');
+  await waitFor(()=>events.some(e=>e.event==='like')&&queries.length>=2);
   // Сохранённые видео используют video mode и сохраняют реакцию.
   await page.click('[aria-label="Понравившиеся видео"]');await page.waitForSelector('.feed-video-gesture');
   await page.waitForFunction(()=>document.querySelector('.video-feed-context').textContent.includes('Понравившиеся'));
@@ -94,7 +97,25 @@ try {
   try { await page.waitForFunction(id=>document.querySelector('.feed-video-card')?.dataset.videoId===id,{timeout:5000},first); }
   catch(e){console.log('BACK DEBUG',first,await page.evaluate(()=>({active:document.activeElement?.outerHTML.slice(0,500),video:document.querySelector('.feed-video-card')?.dataset.videoId,dialogs:document.querySelectorAll('[role=dialog]').length,context:document.querySelector('.video-feed-context')?.textContent})));throw e;}
   assert.equal(await page.$$eval('.feed-video-screen iframe',e=>e.length),1);
-  assert.deepEqual(errors,[]);assert.deepEqual(dailyCalls,[],'Окно дня вмешалось в видеоленту');console.log(`OK ${width}: ${signed?'cookie без guest-token':'гость'}, жесты, клавиатура, реакции, рекомендации, обсуждение, пауза, настройки, без прерывающего промо`);
+  // Выбор относится только к ленте, сохраняется при переходе к текстам,
+  // а «Авто» снова отправляет старый контракт без readerLevel.
+  const picker='select[aria-label="Уровень Вукотока"]';
+  await page.select(picker,'A1');await waitFor(()=>new URL(queries.at(-1)).searchParams.get('readerLevel')==='A1');await page.waitForSelector('.feed-video-gesture');
+  assert.equal(new URL(queries.at(-1)).searchParams.get('readerLevel'),'A1');
+  assert.equal(await page.$eval(picker,e=>e.value),'A1');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'overflow после выбора уровня');
+  await page.screenshot({path:path.join(out,`level-${width}.png`)});
+  await page.goto(`${base}/vukotok`,{waitUntil:'networkidle0'});
+  await page.waitForSelector(picker);
+  assert.equal(await page.$eval(picker,e=>e.value),'A1');
+  assert.equal(new URL(queries.at(-1)).searchParams.get('readerLevel'),'A1');
+  assert.equal(new URL(queries.at(-1)).searchParams.get('mode'),'text');
+  await page.select(picker,'');
+  await page.waitForFunction(selector=>document.querySelector(selector)?.value==='',{},picker);
+  await waitFor(()=>!new URL(queries.at(-1)).searchParams.has('readerLevel'));
+  assert.equal(new URL(queries.at(-1)).searchParams.has('readerLevel'),false);
+  await page.screenshot({path:path.join(out,`text-level-${width}.png`)});
+  assert.deepEqual(errors,[]);assert.deepEqual(dailyCalls,[],'Окно дня вмешалось в видеоленту');console.log(`OK ${width}: ${signed?'cookie без guest-token':'гость'}, жесты, клавиатура, реакции, рекомендации, обсуждение, пауза, настройки, уровень и Авто, без прерывающего промо`);
   await page.close();
  }
  console.log(out);

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -13,6 +14,11 @@ import (
 )
 
 func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
+	readerLevel := strings.ToUpper(strings.TrimSpace(r.URL.Query().Get("readerLevel")))
+	if readerLevel != "" && !slices.Contains(store.MicroFeedLevels, readerLevel) {
+		writeError(w, http.StatusBadRequest, codeBadRequest, "Выбери уровень Вукотока от A1 до C1.")
+		return
+	}
 	// Гость приходит с подписанным токеном; если его ещё нет или он не прошёл
 	// проверку — выдаём новый и возвращаем клиенту вместе с лентой. Отказывать
 	// нельзя: первый заход всегда без токена, и лента обязана открыться.
@@ -44,7 +50,7 @@ func (s *Server) handleMicroFeed(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-	items, strategy, err := s.store.ListMicroFeed(r.Context(), actorKey, exclude, limit,r.URL.Query().Get("mode"))
+	items, strategy, err := s.store.ListMicroFeedAtLevel(r.Context(), actorKey, exclude, limit, readerLevel, r.URL.Query().Get("mode"))
 	if err != nil {
 		slog.Error("handleMicroFeed", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось собрать микро-ленту.")
@@ -112,7 +118,7 @@ func (s *Server) handleMicroFeedLiked(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-	items, err := s.store.ListLikedMicroFeed(r.Context(), actorKey, limit,r.URL.Query().Get("mode"))
+	items, err := s.store.ListLikedMicroFeed(r.Context(), actorKey, limit, r.URL.Query().Get("mode"))
 	if err != nil {
 		slog.Error("handleMicroFeedLiked", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось загрузить сохранённое.")
