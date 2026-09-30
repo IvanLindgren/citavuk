@@ -117,6 +117,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -r backend/requirements.txt
-      - run: python -m py_compile backend/main.py backend/news.py backend/urlguard.py backend/ratelimit.py backend/analysis_cache.py
+      - run: pip install -r backend/requirements.txt -r backend/requirements-test.txt
+      - run: python -m py_compile backend/main.py backend/news.py backend/urlguard.py backend/ratelimit.py backend/analysis_cache.py backend/audio_transcription.py backend/transcription_app.py
       - run: python -m unittest discover -s backend -p '*test*.py'
