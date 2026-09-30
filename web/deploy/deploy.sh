@@ -110,7 +110,22 @@ ssh_run "rm -rf ${REMOTE_DIR}.new && mkdir -p ${REMOTE_DIR}.new"
 tar -C dist -czf "$ARCHIVE" .
 # Сжатие существенно уменьшает архив из HTML/JSON и снижает вероятность
 # обрыва SSH на общей машине; сервер распаковывает тот же tar.gz.
-scp -C -i "$KEY" -o BatchMode=yes "$ARCHIVE" "$HOST:$REMOTE_ARCHIVE"
+size=$(stat -c%s "$ARCHIVE")
+for upload_try in $(seq 1 12); do
+    got=$(ssh_run "stat -c%s '$REMOTE_ARCHIVE' 2>/dev/null || echo 0")
+    [[ "$got" == "$size" ]] && break
+    if [[ "$got" == 0 ]]; then upload_command=put; else upload_command=reput; fi
+    [[ $upload_try -gt 1 ]] && echo "  докачка $upload_try: $got из $size"
+    sftp -i "$KEY" -o BatchMode=yes "$HOST" >/dev/null <<<"$upload_command \"$ARCHIVE\" \"$REMOTE_ARCHIVE\"" || true
+done
+if [[ "$(ssh_run "stat -c%s '$REMOTE_ARCHIVE' 2>/dev/null || echo 0")" != "$size" ]]; then
+    echo "не удалось загрузить архив сайта" >&2
+    exit 1
+fi
+# Размер защищает от обрыва, хеш — от повреждения передачи.
+expected_hash=$(sha256sum "$ARCHIVE" | cut -d' ' -f1)
+actual_hash=$(ssh_run "sha256sum '$REMOTE_ARCHIVE'" | cut -d' ' -f1)
+[[ "$actual_hash" == "$expected_hash" ]] || { echo "хеш архива сайта не совпадает" >&2; exit 1; }
 
 ssh_run "set -e
     tar -xzf $REMOTE_ARCHIVE -C ${REMOTE_DIR}.new
