@@ -3,7 +3,7 @@
 Основной путь — быстрый ``whisper-large-v3-turbo`` у Groq. Если запрос не
 прошёл или ответ выглядит сомнительно (низкий logprob, много no-speech,
 галлюцинации, слишком маленькое покрытие дорожки), тот же файл отправляется
-в Aiesa через OpenAI-совместимый STT Polza.ai. Исходный файл не сохраняется.
+в Aiesa через JSON API Polza.ai. Исходный файл не сохраняется приложением.
 
 Провайдеры возвращают немного разные JSON, поэтому наружу выходит один
 контракт: сербский ``srp``, реплики, говорящие и пословные таймкоды. Клиентам
@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import hashlib
+import base64
 import json
 import math
 import os
@@ -36,10 +37,10 @@ POLZA_AIESA_MODEL = "aiesa/transcribe"
 POLZA_FALLBACK_MODEL = "openai/whisper-large-v3"
 MAX_AUDIO_BYTES = 48 * 1024 * 1024
 # У Groq free-tier multipart-запрос ограничен 25 МБ, а у Polza на больших
-# вложениях возможен 502. Держим запас под multipart-заголовки и режем только
+# вложениях возможен 502. Держим запас под base64/JSON и режем только
 # длинные записи; короткие файлы идут провайдеру без перекодирования.
 # Polza прямо предупреждает о сбоях на вложениях около 15 МБ; берём 12 МиБ,
-# чтобы запас остался и для multipart-обвязки, и для разных тарифов.
+# чтобы запас остался и для base64-обвязки, и для разных тарифов.
 MAX_PROVIDER_UPLOAD_BYTES = 12 * 1024 * 1024
 MP3_CHUNK_TARGET_BYTES = 5 * 1024 * 1024
 GENERIC_CHUNK_SECONDS = 240
@@ -899,13 +900,14 @@ def _provider_json(
     provider: str,
     api_key: str,
     timeout: float,
+    content_type: str | None = None,
 ) -> dict[str, Any]:
     request = urllib.request.Request(
         url,
         data=body,
         headers={
             "Authorization": f"Bearer {api_key.strip()}",
-            "Content-Type": f"multipart/form-data; boundary={boundary}",
+            "Content-Type": content_type or f"multipart/form-data; boundary={boundary}",
             "Accept": "application/json",
             "User-Agent": "Citavuk audio transcriber/2.0",
         },
@@ -976,25 +978,17 @@ def request_groq_transcription(
     return payload
 
 
-def _polza_fields(model: str) -> list[tuple[str, str]]:
-    return [
-        ("model", model),
-        # Локальная аудиотека принимает только сербскую речь. Явная подсказка
-        # заметно уменьшает подмену č/ć/đ и переключение на русский/английский
-        # в коротких фрагментах.
-        ("language", "sr"),
-        ("response_format", "diarized_json" if model.startswith("aiesa/") else "verbose_json"),
-        ("temperature", "0"),
-        ("timestamp_granularities[0]", "word"),
-        ("timestamp_granularities[1]", "segment"),
-        ("chunking_strategy", "auto"),
-        ("stream", "false"),
-        (
-            "prompt",
-            "Serbian speech. Preserve Serbian Latin and Cyrillic, including č ć đ š ž and ј љ њ ћ ђ џ. "
-            "Do not translate, paraphrase, invent subtitles, or add text during silence.",
-        ),
-    ]
+def _polza_payload(data: bytes, mime_type: str, model: str) -> dict[str, Any]:
+    # Aiesa принимает JSON с data URI, а не бинарный multipart Whisper.
+    payload = {
+        "model": model,
+        "file": f"data:{mime_type or 'audio/mpeg'};base64,{base64.b64encode(data).decode('ascii')}",
+    }
+    if not model.startswith("aiesa/"):
+        payload["language"] = "sr"
+        payload["prompt"] = "Serbian speech. Preserve Serbian Latin and Cyrillic, including č ć đ š ž. Do not translate or add text during silence."
+        payload["response_format"] = "json"
+    return payload
 
 
 def _polza_error_message(payload: dict[str, Any], fallback: str) -> str:
@@ -1024,14 +1018,15 @@ def request_polza_transcription(
     *,
     model: str = POLZA_AIESA_MODEL,
 ) -> dict[str, Any]:
-    body, boundary = _multipart(data, filename, mime_type, _polza_fields(model))
+    body = json.dumps(_polza_payload(data, mime_type, model), ensure_ascii=False).encode("utf8")
     payload = _provider_json(
         POLZA_URL,
         body,
-        boundary,
+        "",
         provider="Aiesa через Polza.ai",
         api_key=api_key,
         timeout=4 * 60,
+        content_type="application/json",
     )
     payload = _unwrap_transcription_payload(payload)
     if isinstance(payload.get("segments"), list) or payload.get("text"):
@@ -1298,6 +1293,22 @@ def _finalise_candidate(
     return result
 
 
+def transcription_keys(
+    api_key: str | None = None,
+    *,
+    groq_api_key: str | None = None,
+    polza_api_key: str | None = None,
+) -> tuple[str, str]:
+    """Пустой отдельный секрет не должен скрывать настроенный общий ключ."""
+    def first(*values: str | None) -> str:
+        return next((value.strip() for value in values if value and value.strip()), "")
+
+    return (
+        first(groq_api_key, api_key, os.getenv("GROQ_AUDIO_TRANSCRIPTION_KEY"), os.getenv("GROQ_API_KEY")),
+        first(polza_api_key, os.getenv("POLZA_AUDIO_TRANSCRIPTION_KEY"), os.getenv("POLZA_AI_KEY"), os.getenv("POLZA_API_KEY")),
+    )
+
+
 def transcribe_audio(
     data: bytes,
     filename: str,
@@ -1310,14 +1321,9 @@ def transcribe_audio(
     """Распознаёт аудио через Groq Fast и при необходимости Aiesa/Polza."""
 
     validate_audio(data, mime_type, filename)
-    groq_key = (groq_api_key if groq_api_key is not None else api_key) or os.getenv(
-        "GROQ_AUDIO_TRANSCRIPTION_KEY", os.getenv("GROQ_API_KEY", "")
+    groq_key, polza_key = transcription_keys(
+        api_key, groq_api_key=groq_api_key, polza_api_key=polza_api_key,
     )
-    polza_key = polza_api_key or os.getenv(
-        "POLZA_AUDIO_TRANSCRIPTION_KEY", os.getenv("POLZA_AI_KEY", "")
-    )
-    groq_key = groq_key.strip()
-    polza_key = polza_key.strip()
     if not groq_key and not polza_key:
         raise AudioTranscriptionError(
             "Не настроен ни Groq Fast, ни Aiesa через Polza.ai для расшифровки."

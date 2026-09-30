@@ -997,12 +997,6 @@ async def audio_transcribe_file(
             data,
             file.filename or "audio",
             file.content_type or "application/octet-stream",
-            groq_api_key=os.getenv(
-                "GROQ_AUDIO_TRANSCRIPTION_KEY", os.getenv("GROQ_API_KEY", "")
-            ),
-            polza_api_key=os.getenv(
-                "POLZA_AUDIO_TRANSCRIPTION_KEY", os.getenv("POLZA_AI_KEY", "")
-            ),
         )
         logging.info(
             "Audio transcription provider=%s model=%s quality=%s fallback=%s",

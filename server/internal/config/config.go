@@ -96,6 +96,8 @@ type Config struct {
 	// UpstreamURL — старый Python-бэкенд. Go пока не умеет CLASSLA, новости и
 	// TTS, поэтому такие запросы проксируются. Пустая строка выключает проксирование.
 	UpstreamURL string
+	// AudioUpstreamURL позволяет запускать STT отдельно от NLP Space.
+	AudioUpstreamURL string
 	// UpstreamSecret подписывает доверенную передачу исходного IP в Python.
 	UpstreamSecret string
 
@@ -221,11 +223,12 @@ func Load(envPath string) (*Config, error) {
 		DeepLKey:      firstEnv("DEEPL_API_KEY", "DEEPL_KEY"),
 		DeepLRunesPerDay: envIntAllowZero(
 			"CITAVUK_DEEPL_RUNES_PER_DAY", translate.DefaultRunesPerDay),
-		UpstreamURL:    envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
-		UpstreamSecret: strings.TrimSpace(os.Getenv("CITAVUK_UPSTREAM_SECRET")),
-		AllowedOrigins: splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
-		SessionTTLDays: envInt("CITAVUK_SESSION_TTL_DAYS", 90),
-		MaxBookBytes:   int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
+		UpstreamURL:      envOr("CITAVUK_UPSTREAM", "https://ivanessalingren-citavukspace.hf.space"),
+		AudioUpstreamURL: strings.TrimSpace(os.Getenv("CITAVUK_AUDIO_UPSTREAM")),
+		UpstreamSecret:   strings.TrimSpace(os.Getenv("CITAVUK_UPSTREAM_SECRET")),
+		AllowedOrigins:   splitList(envOr("CITAVUK_ALLOWED_ORIGINS", "https://citavuk.ru,https://www.citavuk.ru")),
+		SessionTTLDays:   envInt("CITAVUK_SESSION_TTL_DAYS", 90),
+		MaxBookBytes:     int64(envInt("CITAVUK_MAX_BOOK_BYTES", 12<<20)),
 
 		DocumentTranslationsPerDay: envInt("CITAVUK_DOC_TRANSLATIONS_PER_DAY", 1),
 

@@ -93,6 +93,35 @@ Content-Type, а затем отправляет IndexNow. Добавляя кр
    одну строку, Content-Type у всех страниц стал пустым, и выкатка падала уже
    после заливки. Теперь там `$'\r'`, который так не испортить.
 
+## Изолированное распознавание речи на VPS
+
+`backend/transcription_app.py` использует общий ASR-движок без CLASSLA.
+Рабочий каталог `/opt/citavuk/audio`, отдельный venv с
+`backend/requirements-transcription.txt`; нужен системный ffmpeg для длинных
+контейнеров. Сервис `backend/deploy/citavuk-audio.service` слушает **только
+127.0.0.1:8092**, не публиковать этот порт через nginx или firewall.
+
+В каталог копируются `audio_transcription.py` и `transcription_app.py`,
+зависимости ставятся в `.venv`, unit — в `/etc/systemd/system/`.
+Общий ключ Polza и upstream secret читаются из существующего `/opt/citavuk/.env`.
+Дополнительный Groq можно хранить в `/opt/citavuk/audio/provider.env`
+(`GROQ_AUDIO_TRANSCRIPTION_KEY=...`, владелец citavuk, права 600).
+Этот файл никогда не копируется в репозиторий или webroot.
+
+После `systemctl daemon-reload` и запуска `citavuk-audio` локальный `/health`
+должен показывать `configured=true`; проверить реальный сербский файл с
+совпадающим `X-Citavuk-Proxy-Secret` и ответ `srp` с непустыми words.
+Только затем установить `backend/deploy/audio-upstream.conf` как
+`/etc/systemd/system/citavuk-api.service.d/audio.conf`, выполнить daemon-reload
+и выкатить Go штатным скриптом. Откат маршрута — убрать этот drop-in и
+перезапустить только citavuk-api. Не трогать соседние сервисы/порты общей машины.
+
+Обновление Python-кода worker требует перезапуска только `citavuk-audio`.
+Space обновляется отдельно файлами `backend/main.py` и
+`backend/audio_transcription.py`; наличие секретов в панели HF само по себе
+не доказывает, что работающий процесс читает их. Не просить пользователя
+заново добавлять уже заполненные ключи без проверки фактического ответа.
+
 ## Сборка под Linux (`frontend/deploy/linux/`)
 
 `./deploy/linux/build.sh` из каталога `frontend/` собирает приложение в

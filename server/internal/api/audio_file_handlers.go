@@ -14,7 +14,11 @@ const maxAudioTranscriptionBody = 50 << 20
 // Aiesa/Polza); Go не сохраняет файл и только ограничивает размер, частоту и
 // доступ.
 func (s *Server) handleAudioFileTranscribe(w http.ResponseWriter, r *http.Request) {
-	if s.proxy == nil {
+	proxy := s.audioProxy
+	if proxy == nil {
+		proxy = s.proxy
+	}
+	if proxy == nil {
 		writeError(w, http.StatusServiceUnavailable, codeUpstream,
 			"Расшифровка аудио пока не настроена.")
 		return
@@ -41,5 +45,5 @@ func (s *Server) handleAudioFileTranscribe(w http.ResponseWriter, r *http.Reques
 	r.Body = http.MaxBytesReader(w, r.Body, maxAudioTranscriptionBody)
 	r.URL.Path = "/audio/transcribe-file"
 	r.URL.RawPath = ""
-	s.proxy.ServeHTTP(w, r)
+	proxy.ServeHTTP(w, r)
 }

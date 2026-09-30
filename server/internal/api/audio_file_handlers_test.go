@@ -35,6 +35,42 @@ func TestAudioFileTranscribeRewritesOnlyTheInternalPath(t *testing.T) {
 	}
 }
 
+func TestAudioFileTranscribeUsesDedicatedWorker(t *testing.T) {
+	var called bool
+	worker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		if r.URL.Path != "/audio/transcribe-file" || r.Header.Get("X-Citavuk-Proxy-Secret") != "internal-secret" {
+			t.Error("неверная маршрутизация или подпись")
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"language_code":"srp","provider":"polza"}`))
+	}))
+	defer worker.Close()
+	proxy, err := newUpstreamProxy(worker.URL, "internal-secret", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	server := &Server{audioProxy: proxy, proxy: &httputil.ReverseProxy{}}
+	r := httptest.NewRequest(http.MethodPost, "/v1/audio/transcribe", bytes.NewBufferString("--boundary--"))
+	r.Header.Set("Content-Type", "multipart/form-data; boundary=boundary")
+	w := httptest.NewRecorder()
+	server.handleAudioFileTranscribe(w, r)
+	if !called || w.Code != http.StatusOK {
+		t.Fatalf("STT-worker не вызван: %d", w.Code)
+	}
+}
+
+func TestInternalTranscriptionCannotBeReachedThroughLegacyProxy(t *testing.T) {
+	server := &Server{proxy: &httputil.ReverseProxy{}}
+	for _, path := range []string{"/audio/transcribe-file", "/audio/transcribe-file/"} {
+		w := httptest.NewRecorder()
+		server.handleFallback(w, httptest.NewRequest(http.MethodPost, path, nil))
+		if w.Code != http.StatusNotFound {
+			t.Fatalf("внутренний путь открыт: %s, %d", path, w.Code)
+		}
+	}
+}
+
 func TestAudioFileTranscribeRejectsWrongContentType(t *testing.T) {
 	server := &Server{proxy: &httputil.ReverseProxy{}}
 	request := httptest.NewRequest(http.MethodPost, "/v1/audio/transcribe", bytes.NewBufferString("not multipart"))

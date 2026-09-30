@@ -324,8 +324,20 @@ Swagger/OpenAPI в проде отключён; локально включае�
   дорожки и фильтр галлюцинаций не дают сохранить пустой/шумовой ответ.
   Ответ сохраняется клиентом только при `language_code=srp`. На Python Space
   нужны `GROQ_AUDIO_TRANSCRIPTION_KEY` и `POLZA_AUDIO_TRANSCRIPTION_KEY`
-  (запасные имена `GROQ_API_KEY`/`POLZA_AI_KEY`) и одинаковый
+  (запасные имена `GROQ_API_KEY`/`POLZA_AI_KEY`/`POLZA_API_KEY`) и одинаковый
   `CITAVUK_UPSTREAM_SECRET` на Go и Space.
+  Ключ выбирается по первому непустому значению: пустой dedicated secret
+  не должен скрывать действующий общий ключ.
+  Polza принимает **JSON с base64 data URI**, не multipart Groq; для Aiesa
+  отправляются `model` и `file`, результат очереди опрашивается через
+  `/api/v1/audio/transcriptions/{id}`. Не передавать Whisper-форматы
+  `verbose_json`/`diarized_json` и строковые `temperature`/`stream`.
+  Если Aiesa искажает сербскую речь, проверка языка/качества остаётся включённой.
+  На VPS распознавание может работать отдельно от CLASSLA:
+  `CITAVUK_AUDIO_UPSTREAM=http://127.0.0.1:8092` направляет только эту ручку
+  в `backend/transcription_app.py` (см. deploy.md). Без настройки сохраняется
+  прежний Space upstream. Прямой публичный `/audio/transcribe-file` заблокирован,
+  чтобы нельзя было обойти авторизацию и платный limiter Go.
 - Генерация реальных реплик:
   `GROQ_API_KEY=... python web/scripts/transcribe-podcasts.py --limit 0
   --feed learn-serbian --feed moze-kafa --feed historycast

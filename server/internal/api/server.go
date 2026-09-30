@@ -41,6 +41,7 @@ type Server struct {
 	deepl           *translate.DeepL
 	translator      *translate.Service
 	proxy           *httputil.ReverseProxy
+	audioProxy      *httputil.ReverseProxy
 	redis           *rediscache.Redis
 	documentHTTP    *http.Client
 	quiz            *quiz.Generator
@@ -226,6 +227,13 @@ func New(
 			return nil, err
 		}
 		s.proxy = proxy
+	}
+	if cfg.AudioUpstreamURL != "" {
+		proxy, err := newUpstreamProxy(cfg.AudioUpstreamURL, cfg.UpstreamSecret, cfg.TrustProxy)
+		if err != nil {
+			return nil, err
+		}
+		s.audioProxy = proxy
 	}
 
 	go s.authLimit.runCleanup(s.stop)
@@ -662,6 +670,11 @@ func (s *Server) handleAuthProviders(w http.ResponseWriter, _ *http.Request) {
 
 // handleFallback направляет запрос наверх либо отвечает 404.
 func (s *Server) handleFallback(w http.ResponseWriter, r *http.Request) {
+	// Внутренняя платная ручка доступна только через авторизованный /v1/audio/transcribe.
+	if r.URL.Path == "/audio/transcribe-file" || r.URL.Path == "/audio/transcribe-file/" {
+		writeError(w, http.StatusNotFound, codeNotFound, "Такого метода нет.")
+		return
+	}
 	if s.proxy != nil && isLegacyPath(r.URL.Path) {
 		if !s.generalLimit.allow(r.Context(), clientIP(r, s.cfg.TrustProxy)) {
 			writeError(w, http.StatusTooManyRequests, codeRateLimited,

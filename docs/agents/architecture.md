@@ -37,6 +37,10 @@ Citavuk — монорепозиторий, но не монолит. В product
 - Пользовательские клиенты ходят в `https://api.citavuk.ru`. Go обслуживает
   собственные `/v1/*` и часть `/audio/*`, а неизвестные старые пути проксирует в
   Python upstream. Не вшивать адрес Hugging Face в новый клиентский код.
+- `POST /v1/audio/transcribe` может использовать отдельный Python STT-worker
+  на VPS (`CITAVUK_AUDIO_UPSTREAM`, localhost:8092). Он разделяет алгоритм
+  `audio_transcription.py` со Space, но не загружает CLASSLA. Остальные NLP/TTS
+  запросы продолжают идти в прежний upstream; клиентский контракт не меняется.
 - React-сайт и его статические файлы отдаёт nginx из `/var/www/citavuk`.
   Go-сервис запущен отдельно из `/opt/citavuk`; релизные архивы приложений лежат
   в `/var/www/citavuk-files`.
