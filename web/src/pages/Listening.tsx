@@ -63,7 +63,6 @@ export function Listening() {
         <span><LuUpload /></span>
       </div>
       <div className="listening-own-audio-copy">
-        <p className="listening-own-audio-eyebrow">Твоя практика</p>
         <h2 id="listening-own-audio-title">Добавляй свои аудиозаписи</h2>
         <p>Загрузи MP3, M4A, WAV, OGG, FLAC или WebM. Читавук проверит сербскую речь, разделит говорящих и сделает расшифровку с таймкодами. Нажми на слово, чтобы перейти к нужному месту в записи.</p>
         <div className="listening-own-audio-meta"><span><LuCaptions />Слова синхронизированы со звуком</span><span><LuFileAudio />Хранится на этом устройстве</span></div>
@@ -73,7 +72,7 @@ export function Listening() {
 
     <section className="listening-catalog">
       <header className="listening-toolbar">
-        <div><p>Аудиотека</p><h2>Выбери, что слушать сегодня</h2></div>
+        <div><h2>Аудиотека</h2></div>
         <label><LuSearch /><span className="sr-only">Поиск по аудиотеке</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Название, тема или подкаст" /></label>
       </header>
       <nav className="listening-shelves" aria-label="Разделы аудиотеки">

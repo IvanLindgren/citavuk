@@ -1279,8 +1279,8 @@ class _CaseGameStatsState extends State<_CaseGameStats> {
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    '${title(r.scope)} · ${labels[r.limitSeconds]}: ${r.correct} верно, ${r.wrong} ошибок'
-                    '${r.weak.isNotEmpty ? ' · слабое место: ${r.weak.first.toLowerCase()}' : ''}',
+                    '${title(r.scope)}, ${labels[r.limitSeconds]}: ${r.correct} верно, ${r.wrong} ошибок'
+                    '${r.weak.isNotEmpty ? ', слабое место: ${r.weak.first.toLowerCase()}' : ''}',
                     style: theme.textTheme.bodySmall,
                   ),
                 ),

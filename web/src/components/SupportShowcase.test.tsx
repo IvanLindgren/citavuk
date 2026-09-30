@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { SupporterPodium } from './SupportShowcase';
+import { SupporterPodium, SupportShowcase } from './SupportShowcase';
+import { RouterProvider } from '../lib/router';
 
 describe('supporter podium', () => {
+  it('shows the approved day-place copy with a line break', () => {
+    const html = renderToStaticMarkup(<RouterProvider><SupportShowcase /></RouterProvider>);
+    expect(html).toContain('Место дня получает самая большая поддержка за предыдущий день по МСК.\nИмя и сумма показываются с разрешения автора, а сообщение, которое он хотел оставить, после проверки.');
+  });
   it('handles zero or one supporter without empty podium places', () => {
     expect(renderToStaticMarkup(<SupporterPodium supporters={[]} />)).not.toContain('<li');
     const html = renderToStaticMarkup(<SupporterPodium supporters={[{name:'Ана',since:'2026-09-30',amountKopecks:50000}]} />);

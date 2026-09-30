@@ -511,7 +511,7 @@ class _ListeningScreenState extends State<ListeningScreen> {
                     Text(topic.toUpperCase(),
                         style: TextStyle(
                             fontSize: 10,
-                            letterSpacing: .8,
+                            letterSpacing: 0,
                             fontWeight: FontWeight.w800,
                             color: scheme.secondary)),
                     const SizedBox(height: 5),

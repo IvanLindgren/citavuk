@@ -125,7 +125,7 @@ class _OdysseyCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.6,
+                        letterSpacing: 0,
                         color: Color(0xFFF2CA81),
                       ),
                     ),
@@ -163,7 +163,7 @@ class _OdysseyCard extends StatelessWidget {
                         : progress.rewardUnlocked
                             ? 'Перечитать'
                             : percent > 0
-                                ? 'Продолжить · $percent%'
+                                ? 'Продолжить, $percent%'
                                 : 'Начать путешествие'),
                     onPressed: onOpen,
                   ),
@@ -219,7 +219,7 @@ class _RewardCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Награда · Спартанские шлемы',
+                Text('Награда, Спартанские шлемы',
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,

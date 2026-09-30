@@ -225,7 +225,7 @@ class _PhaseCurtainState extends State<PhaseCurtain>
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 2.4,
+                    letterSpacing: 0,
                     color: SerbColors.serbRed,
                   ),
                 ),

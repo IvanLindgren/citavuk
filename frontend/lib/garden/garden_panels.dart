@@ -51,7 +51,7 @@ Future<void> showSeedShop(
             contentPadding: EdgeInsets.zero,
             leading: SeedIcon(index: state.catalog.indexOf(species), size: 26),
             title: Text(species.serbian),
-            subtitle: Text('${species.russian} · ${species.theme}'),
+            subtitle: Text('${species.russian}, ${species.theme}'),
             trailing: FilledButton.tonal(
               onPressed: busy || state.coins < species.price
                   ? null
@@ -315,7 +315,7 @@ class _GardenersPanelState extends State<GardenersPanel> {
                   : const Icon(Icons.local_florist_outlined),
               title: Text(row.nickname),
               subtitle: Text(
-                '${Garden.bloomed.ru}: ${row.bloomed} · ${Garden.growing.ru}: ${row.plants}',
+                '${Garden.bloomed.ru}: ${row.bloomed}, ${Garden.growing.ru}: ${row.plants}',
               ),
               onTap: () => widget.onOpen(row.nickname),
             ),

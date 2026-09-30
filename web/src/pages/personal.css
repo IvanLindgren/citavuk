@@ -41,7 +41,7 @@
 .personal-eyebrow {
   color: var(--personal-accent-text);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
 }
 .personal-summary,
 .personal-actions {

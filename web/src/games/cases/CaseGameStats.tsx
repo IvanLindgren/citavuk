@@ -54,7 +54,7 @@ export function CaseGameStats() {
               </p>
               <p className="mt-1 font-['Courier_Prime',monospace] text-3xl font-bold">{item.correct}</p>
               <p className="text-sm text-[var(--text-muted)]">
-                верно · {Math.round(item.accuracy)}% · {titleOf(item.scope).toLowerCase()}
+                верно, {Math.round(item.accuracy)}%, {titleOf(item.scope).toLowerCase()}
               </p>
             </Card>
           ))}
@@ -64,7 +64,7 @@ export function CaseGameStats() {
         {results.slice(0, 6).map((item) => (
           <li key={item.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 text-sm">
             <span className="w-14 text-[var(--text-muted)]">{item.createdAt ? DATE.format(new Date(item.createdAt)) : ''}</span>
-            <span className="min-w-0 flex-1 font-semibold">{titleOf(item.scope)} · {LIMIT_LABELS[item.limitSeconds]?.toLowerCase()}</span>
+            <span className="min-w-0 flex-1 font-semibold">{titleOf(item.scope)}, {LIMIT_LABELS[item.limitSeconds]?.toLowerCase()}</span>
             <span>{item.correct} верно, {item.wrong} ошибок</span>
             <span className="text-[var(--text-muted)]">{Math.round(item.accuracy)}%</span>
             {item.weak[0] && <span className="basis-full text-xs text-[var(--text-muted)]">Слабое место: {item.weak[0].label.toLowerCase()}</span>}

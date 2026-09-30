@@ -89,7 +89,7 @@ export function PhaseCurtain({ label, title }: { label: string; title: string })
       transition={{ duration: CURTAIN_MS / 1000, times: [0, 0.22, 0.78, 1], ease: EASE }}
     >
       <div className="rounded-3xl border border-[var(--line)] bg-[var(--bg-raised)] px-8 py-6 text-center shadow-[var(--shadow-lift)]">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--accent)]">{label}</p>
+        <p className="text-xs font-bold uppercase  text-[var(--accent)]">{label}</p>
         <h2 className="mt-1 font-display text-3xl">{title}</h2>
         <Ornament className="mx-auto mt-3 w-40" count={7} />
       </div>
@@ -191,7 +191,7 @@ function Seat({
       <div className="min-w-0 flex-1">
         <p className="flex items-center gap-1.5 truncate font-bold">
           {player.name}
-          {player.you && <span className="text-xs font-normal text-[var(--text-muted)]">· ты</span>}
+          {player.you && <span className="text-xs font-normal text-[var(--text-muted)]">, ты</span>}
           {player.host && <LuCrown className="size-3.5 shrink-0 text-[var(--color-gold)]" />}
         </p>
         <SeatStatus

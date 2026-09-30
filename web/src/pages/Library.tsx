@@ -570,7 +570,7 @@ function ContinueCard({
   return (
     <div className="mb-6">
       <Card tone="contour" className="p-5">
-        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
           Продолжить чтение
         </div>
         <div className="mt-1 font-display text-xl font-bold [overflow-wrap:anywhere]">
@@ -760,7 +760,7 @@ function BookCard({
             </h3>
             {book.textMissing && (
               <span
-                className="mt-1 shrink-0 rounded-full bg-[var(--accent)]/12 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--accent)]"
+                className="mt-1 shrink-0 rounded-full bg-[var(--accent)]/12 px-2 py-0.5 text-[10px] font-semibold uppercase  text-[var(--accent)]"
                 title="Книга с другого устройства — текст загрузится при открытии"
               >
                 в облаке
@@ -770,9 +770,9 @@ function BookCard({
 
           <p className="mt-2 min-w-0 break-words text-sm text-[var(--text-muted)] [overflow-wrap:anywhere]">
             {book.paragraphCount}{" "}
-            {plural(book.paragraphCount, "абзац", "абзаца", "абзацев")} ·{" "}
+            {plural(book.paragraphCount, "абзац", "абзаца", "абзацев")},{" "}
             {readingMinutes(book.paragraphCount)} мин
-            {book.folder && <> · {book.folder}</>}
+            {book.folder && <>, {book.folder}</>}
           </p>
 
           <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">

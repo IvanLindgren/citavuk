@@ -169,12 +169,12 @@ export function AdminMicroFeedPanel() {
           <div>
             <h2 className="text-2xl">Источники</h2>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              Генератор: {generatorEnabled ? 'включён' : 'не настроен'} · векторы: {embeddingsEnabled ? 'включены' : 'резервный режим'}
+              Генератор: {generatorEnabled ? 'включён' : 'не настроен'}, векторы: {embeddingsEnabled ? 'включены' : 'резервный режим'}
             </p>
           </div>
           <div className="flex rounded-lg border border-[var(--line)] p-1" role="tablist">
-            <AdminSwitch active={view === 'queue'} onClick={() => setView('queue')}>Очередь · {imports.length}</AdminSwitch>
-            <AdminSwitch active={view === 'cards'} onClick={() => setView('cards')}>Карточки · {items.length}</AdminSwitch>
+            <AdminSwitch active={view === 'queue'} onClick={() => setView('queue')}>Очередь, {imports.length}</AdminSwitch>
+            <AdminSwitch active={view === 'cards'} onClick={() => setView('cards')}>Карточки, {items.length}</AdminSwitch>
           </div>
         </div>
         <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
@@ -182,7 +182,7 @@ export function AdminMicroFeedPanel() {
             <div key={source.slug} className="flex min-w-0 items-center gap-3 rounded-lg border border-[var(--line)] px-3 py-2.5">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{source.title}</p>
-                <p className="truncate text-xs text-[var(--text-muted)]">{rightsLabel(source.rightsMode)} · {source.licenseCode}</p>
+                <p className="truncate text-xs text-[var(--text-muted)]">{rightsLabel(source.rightsMode)}, {source.licenseCode}</p>
               </div>
               {source.enabled && source.sourceKind !== 'manual' && (
                 <button type="button" title="Загрузить свежие материалы" onClick={() => void syncSource(source)} disabled={Boolean(busy)} className="grid size-9 shrink-0 place-items-center rounded-md border border-[var(--line)] hover:border-[var(--accent)] disabled:opacity-50">
@@ -205,7 +205,7 @@ export function AdminMicroFeedPanel() {
             {imports.map((input) => (
               <article key={input.id} className="grid gap-4 py-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-[var(--text-muted)]"><span>{input.sourceTitle}</span><span>·</span><span>{input.sourcePublishedAt ? new Date(input.sourcePublishedAt).toLocaleDateString('ru') : 'без даты'}</span></div>
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-[var(--text-muted)]"><span>{input.sourceTitle}</span><span>,</span><span>{input.sourcePublishedAt ? new Date(input.sourcePublishedAt).toLocaleDateString('ru') : 'без даты'}</span></div>
                   <h3 className="mt-2 text-lg font-semibold">{input.title}</h3>
                   <p className="mt-2 line-clamp-3 text-sm leading-6 text-[var(--text-muted)]">{input.rawText}</p>
                   <a href={input.sourceUrl} target="_blank" rel="noreferrer noopener" className="mt-2 inline-block text-xs text-[var(--accent)] underline">Открыть первоисточник</a>
@@ -240,8 +240,8 @@ export function AdminMicroFeedPanel() {
 
             <fieldset disabled={Boolean(busy) || Boolean(selected && selected.status !== 'draft')} className="grid gap-4 disabled:opacity-70">
               <div className="grid gap-4 sm:grid-cols-3"><Field label="Тип"><select className={inputClass} value={draft.kind} onChange={(event) => setDraft({ ...draft, kind: event.target.value as MicroFeedItemDraft['kind'] })}>{kinds.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field><Field label="Категория"><select className={inputClass} value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value as MicroFeedItemDraft['category'] })}>{categories.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field><Field label="CEFR"><select className={inputClass} value={draft.cefr} onChange={(event) => setDraft({ ...draft, cefr: event.target.value as MicroFeedItemDraft['cefr'] })}>{['A1','A2','B1','B2','C1'].map((value) => <option key={value}>{value}</option>)}</select></Field></div>
-              <div className="grid gap-4 md:grid-cols-2"><Field label="Заголовок · кириллица"><input className={inputClass} value={draft.titleCyrillic} onChange={(event) => setDraft({ ...draft, titleCyrillic: event.target.value })} /></Field><Field label="Заголовок · латиница"><input className={inputClass} value={draft.titleLatin} onChange={(event) => setDraft({ ...draft, titleLatin: event.target.value })} /></Field></div>
-              <div className="grid gap-4 md:grid-cols-2"><Field label={`Текст · кириллица (${wordCount(draft.textCyrillic)} слов)`}><textarea rows={10} className={inputClass} value={draft.textCyrillic} onChange={(event) => setDraft({ ...draft, textCyrillic: event.target.value })} /></Field><Field label={`Текст · латиница (${wordCount(draft.textLatin)} слов)`}><textarea rows={10} className={inputClass} value={draft.textLatin} onChange={(event) => setDraft({ ...draft, textLatin: event.target.value })} /></Field></div>
+              <div className="grid gap-4 md:grid-cols-2"><Field label="Заголовок, кириллица"><input className={inputClass} value={draft.titleCyrillic} onChange={(event) => setDraft({ ...draft, titleCyrillic: event.target.value })} /></Field><Field label="Заголовок, латиница"><input className={inputClass} value={draft.titleLatin} onChange={(event) => setDraft({ ...draft, titleLatin: event.target.value })} /></Field></div>
+              <div className="grid gap-4 md:grid-cols-2"><Field label={`Текст, кириллица (${wordCount(draft.textCyrillic)} слов)`}><textarea rows={10} className={inputClass} value={draft.textCyrillic} onChange={(event) => setDraft({ ...draft, textCyrillic: event.target.value })} /></Field><Field label={`Текст, латиница (${wordCount(draft.textLatin)} слов)`}><textarea rows={10} className={inputClass} value={draft.textLatin} onChange={(event) => setDraft({ ...draft, textLatin: event.target.value })} /></Field></div>
               <div className="grid gap-4 md:grid-cols-3"><Field label="Исходный язык"><input className={inputClass} value={draft.originalLanguage} onChange={(event) => setDraft({ ...draft, originalLanguage: event.target.value })} /></Field><Field label="Исходный алфавит"><select className={inputClass} value={draft.originalScript} onChange={(event) => setDraft({ ...draft, originalScript: event.target.value as MicroFeedItemDraft['originalScript'] })}><option value="cyrillic">Кириллица</option><option value="latin">Латиница</option><option value="translated">Перевод</option></select></Field><Field label="Теги через запятую"><input className={inputClass} value={draft.tags.join(', ')} onChange={(event) => setDraft({ ...draft, tags: event.target.value.split(',').map((tag) => tag.trim()).filter(Boolean) })} /></Field></div>
 
               <div><p className="text-sm font-semibold">Сложные слова</p><div className="mt-2 space-y-2">{draft.difficultWords.map((word, index) => <div key={index} className="grid gap-2 sm:grid-cols-4"><input aria-label={`Слово ${index + 1}`} placeholder="слово" className={inputClass} value={word.word} onChange={(event) => updateWord(index, 'word', event.target.value, draft, setDraft)} /><input aria-label={`Лемма ${index + 1}`} placeholder="лемма" className={inputClass} value={word.lemma} onChange={(event) => updateWord(index, 'lemma', event.target.value, draft, setDraft)} /><input aria-label={`Транскрипция ${index + 1}`} placeholder="/IPA/" className={inputClass} value={word.transcription} onChange={(event) => updateWord(index, 'transcription', event.target.value, draft, setDraft)} /><input aria-label={`Перевод ${index + 1}`} placeholder="перевод" className={inputClass} value={word.translationRu} onChange={(event) => updateWord(index, 'translationRu', event.target.value, draft, setDraft)} /></div>)}</div></div>
@@ -259,7 +259,7 @@ export function AdminMicroFeedPanel() {
               {selected && <button type="button" title="Удалить" disabled={Boolean(busy)} onClick={() => void remove()} className="grid size-11 place-items-center rounded-lg border border-red-500/35 text-red-700 hover:bg-red-500/10 dark:text-red-300"><LuTrash2 /></button>}
             </div>
 
-            {draft.textCyrillic && <div className="mt-8 border-t border-[var(--line)] pt-6"><p className="text-xs font-bold uppercase text-[var(--text-muted)]">Предпросмотр · кириллица</p><h3 className="mt-3 font-display text-2xl font-bold">{draft.titleCyrillic}</h3><WordReader paragraphs={[draft.textCyrillic]} className="mt-4" paragraphClassName="font-display text-lg leading-8" /></div>}
+            {draft.textCyrillic && <div className="mt-8 border-t border-[var(--line)] pt-6"><p className="text-xs font-bold uppercase text-[var(--text-muted)]">Предпросмотр, кириллица</p><h3 className="mt-3 font-display text-2xl font-bold">{draft.titleCyrillic}</h3><WordReader paragraphs={[draft.textCyrillic]} className="mt-4" paragraphClassName="font-display text-lg leading-8" /></div>}
           </div>
         </section>
       )}

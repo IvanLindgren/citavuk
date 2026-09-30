@@ -50,6 +50,7 @@ animations/qa/
 
 # Сборки сайта и веб-зависимости
 web/dist/
+web/dist-roulette-embed/
 web/node_modules/
 web/tsconfig.tsbuildinfo
 

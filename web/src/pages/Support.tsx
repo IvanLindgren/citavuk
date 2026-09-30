@@ -62,7 +62,6 @@ export function Support() {
     <main className="paper-grain relative min-h-[calc(100dvh-4rem)] overflow-x-hidden px-4 py-10 sm:px-5 sm:py-16">
       <div className="mx-auto max-w-3xl">
         <Reveal>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Развитие проекта</p>
           <h1 className="mt-2 text-4xl sm:text-5xl">Поддержать Читавук</h1>
         </Reveal>
 
@@ -286,7 +285,7 @@ function DonationForm() {
             <Link to="/login" className="font-semibold text-[var(--accent)] underline underline-offset-2">
               Войди в аккаунт
             </Link>
-            , чтобы значок появился в профиле. Без аккаунта имя всё равно попадёт
+           , чтобы значок появился в профиле. Без аккаунта имя всё равно попадёт
             на страницу друзей.
           </p>
         )}
@@ -420,7 +419,7 @@ function Terms() {
         <a href={`mailto:${SUPPORT_SELLER.email}`} className="underline underline-offset-2">
           {SUPPORT_SELLER.email}
         </a>
-        , деньги вернутся тем же способом, а бонусы снимутся.
+       , деньги вернутся тем же способом, а бонусы снимутся.
       </p>
       <p className="mt-2">
         Исполнитель: {SUPPORT_SELLER.name}, самозанятый (налог на профессиональный доход)
@@ -428,7 +427,7 @@ function Terms() {
         <a href={`mailto:${SUPPORT_SELLER.email}`} className="underline underline-offset-2">
           {SUPPORT_SELLER.email}
         </a>
-        ,{' '}
+       ,{' '}
         <a href="https://t.me/ivanlindgren" target="_blank" rel="noreferrer noopener" className="underline underline-offset-2">
           Telegram
         </a>

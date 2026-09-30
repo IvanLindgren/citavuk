@@ -399,7 +399,7 @@ class _Compare extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('·  '),
+                      const Text(',  '),
                       Expanded(
                         child: Text(p,
                             style: Theme.of(context).textTheme.bodySmall),

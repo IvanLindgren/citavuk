@@ -118,11 +118,14 @@ export function CaseGame() {
   const [phase, setPhase] = useState<'setup' | 'play' | 'done'>('setup');
   const [finished, setFinished] = useState<{ attempts: Attempt[]; elapsed: number } | null>(null);
   const [history, setHistory] = useState<CaseGameResult[]>([]);
+  const [owner,setOwner] = useState<string|null|undefined>(undefined);
 
   useEffect(() => {
     let cancelled = false;
+    const scope=account?.id ?? null;
+    setPhase('setup');setFinished(null);setHistory([]);setFailed(false);
     getCaseGameAccess()
-      .then((value) => !cancelled && setAccess(value))
+      .then((value) => { if(!cancelled){setAccess(value);setOwner(scope);} })
       .catch(() => !cancelled && setFailed(true));
     loadData()
       .then((value) => !cancelled && setData(value))
@@ -163,7 +166,7 @@ export function CaseGame() {
       </Shell>
     );
   }
-  if (!access || !data) {
+  if (owner !== (account?.id ?? null) || !access || !data) {
     return (
       <Shell>
         <div className="flex justify-center py-24"><Spinner className="size-7" /></div>
@@ -292,7 +295,6 @@ function Setup({
         <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
           <img src="/img/citavuk_gram.webp" alt="" width={140} height={140} className="w-28 object-contain sm:w-32" />
           <div>
-            <p className="text-sm font-bold uppercase tracking-wide text-[var(--accent)]">Игра-тренажёр</p>
             <h1 className="mt-1 text-balance text-3xl leading-tight sm:text-4xl">{TITLE}</h1>
             <p className="mt-3 leading-relaxed text-[var(--text-muted)]">
               Читавук даёт слово и падеж — ты печатаешь форму на машинке или
@@ -361,8 +363,8 @@ function Setup({
           <div className="flex flex-wrap items-center gap-4 border-t border-[var(--line)] pt-5">
             <Button size="lg" onClick={onStart}>Начать</Button>
             <p className="text-sm text-[var(--text-muted)]">
-              {scopeTitle(settings.scope)} · {LIMITS.find((item) => item.seconds === settings.limit)?.label.toLowerCase()}
-              {best && <> · рекорд: {best.correct} верно, {Math.round(best.accuracy)}%</>}
+              {scopeTitle(settings.scope)}, {LIMITS.find((item) => item.seconds === settings.limit)?.label.toLowerCase()}
+              {best && <>, рекорд: {best.correct} верно, {Math.round(best.accuracy)}%</>}
             </p>
           </div>
         </Card>
@@ -374,7 +376,7 @@ function Setup({
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
-      <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">{title}</h2>
+      <h2 className="mb-2 text-sm font-bold uppercase  text-[var(--text-muted)]">{title}</h2>
       <div className="flex flex-wrap gap-2">{children}</div>
     </section>
   );
@@ -840,12 +842,11 @@ function Results({
       <div className="mx-auto max-w-3xl">
         <Card className="overflow-hidden p-0">
           <div className="bg-[#1d1a17] px-6 py-5 text-[#f4ead0] sm:px-8">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#d9b25f]">Protokol</p>
             <h1 className="mt-1 font-['Courier_Prime',monospace] text-3xl font-bold sm:text-4xl">
               {summary.correct > 0 ? 'Падежи уничтожены!' : 'Падежи устояли'}
             </h1>
             <p className="mt-1 text-sm text-[#f4ead0]/75">
-              {scopeTitle(settings.scope)} · {formatClock(elapsed)}
+              {scopeTitle(settings.scope)}, {formatClock(elapsed)}
               {record && <span className="ml-2 inline-flex items-center gap-1 font-bold text-[#d9b25f]"><LuTrophy className="size-4" aria-hidden="true" /> новый рекорд</span>}
             </p>
           </div>
@@ -857,8 +858,8 @@ function Results({
           </div>
           <div className="space-y-6 p-6 sm:p-8">
             <p className="text-[var(--text-muted)]">
-              {summary.cpm} знаков в минуту · без чёрточек: {summary.diacriticSlips}
-              {previousBest && settings.limit > 0 && <> · прежний рекорд: {previousBest.correct} верно</>}
+              {summary.cpm} знаков в минуту, без чёрточек: {summary.diacriticSlips}
+              {previousBest && settings.limit > 0 && <>, прежний рекорд: {previousBest.correct} верно</>}
             </p>
 
             {summary.weak.length > 0 && (
@@ -886,7 +887,7 @@ function Results({
                 <ul className="mt-3 grid gap-2 font-['Courier_Prime',monospace] sm:grid-cols-2">
                   {mistakes.map((item, index) => (
                     <li key={index} className="rounded-xl bg-[var(--bg-sunken)] px-3 py-2">
-                      <span className="text-xs font-sans text-[var(--text-muted)]">{item.task.lemma} · {item.task.label}</span>
+                      <span className="text-xs font-sans text-[var(--text-muted)]">{item.task.lemma}, {item.task.label}</span>
                       <span className="block">
                         {item.task.before} <s className="opacity-60">{item.typed || '…'}</s>{' '}
                         <b className="text-[var(--accent)]">{item.verdict.matched}</b>
@@ -902,7 +903,7 @@ function Results({
                 <h2 className="text-xl">Чёрточки</h2>
                 <p className="mt-1 text-sm text-[var(--text-muted)]">Засчитано, но в этих словах буквы с чёрточкой:</p>
                 <p className="mt-2 font-['Courier_Prime',monospace]">
-                  {slips.map((item) => item.verdict.matched).join(' · ')}
+                  {slips.map((item) => item.verdict.matched).join(', ')}
                 </p>
               </section>
             )}

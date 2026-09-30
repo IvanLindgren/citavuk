@@ -193,7 +193,7 @@ class AppTheme {
           fontFamily: uiFont,
           fontSize: 19,
           fontWeight: FontWeight.w700,
-          letterSpacing: 0.2,
+          letterSpacing: 0,
           color: scheme.onSurface,
         ),
       ),
@@ -446,7 +446,7 @@ class AppTheme {
         fontSize: 26,
         height: 1.2,
         fontWeight: FontWeight.w600,
-        letterSpacing: -0.3,
+        letterSpacing: 0,
         color: ink,
       ),
       headlineSmall: TextStyle(
@@ -454,7 +454,7 @@ class AppTheme {
         fontSize: 22,
         height: 1.25,
         fontWeight: FontWeight.w600,
-        letterSpacing: -0.2,
+        letterSpacing: 0,
         color: ink,
       ),
       titleLarge: TextStyle(
@@ -509,7 +509,7 @@ class AppTheme {
         fontFamily: uiFont,
         fontSize: 11,
         fontWeight: FontWeight.w600,
-        letterSpacing: 0.3,
+        letterSpacing: 0,
         color: muted,
       ),
     );

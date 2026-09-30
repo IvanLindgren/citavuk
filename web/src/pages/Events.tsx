@@ -51,7 +51,7 @@ export function Events() {
                     ? progress.rewardUnlocked
                       ? 'Перечитать'
                       : percent > 0
-                        ? `Продолжить · ${percent}%`
+                        ? `Продолжить, ${percent}%`
                         : 'Начать путешествие'
                     : 'Войти и участвовать'}
                 </Link>

@@ -370,7 +370,6 @@ function LessonTheory({ lesson }: { lesson: CourseLessonModel }) {
       <div className="mt-4 flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
         <CourseSprite state="idle" size={140} />
         <div>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Правило</p>
           <h1 className="mt-1 text-3xl">{lesson.title}</h1>
         </div>
       </div>
@@ -420,7 +419,6 @@ function LessonIntroView({
       <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
         <CourseSprite state="idle" size={140} />
         <div>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Перед уроком</p>
           <h1 className="mt-1 text-3xl">{lesson.title}</h1>
           <p className="mt-2 text-[var(--text-muted)]">
             Сначала правило и примеры, затем {lesson.exercises.length} упражнений.

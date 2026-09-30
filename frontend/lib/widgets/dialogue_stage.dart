@@ -672,7 +672,7 @@ class _DialogueWordSheetState extends State<DialogueWordSheet> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${GrammarEngine.posShort(data.upos)} · ${data.lemma}',
+                            '${GrammarEngine.posShort(data.upos)}, ${data.lemma}',
                             style: TextStyle(
                               color: scheme.onSurface.withValues(alpha: 0.62),
                             ),

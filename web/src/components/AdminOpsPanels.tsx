@@ -59,7 +59,7 @@ export function AdminKeysPanel() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-[var(--text-muted)]">
-          Версия {health.version} · сервер живёт {duration(health.uptime)}
+          Версия {health.version}, сервер живёт {duration(health.uptime)}
         </p>
         <Button size="sm" variant="ghost" disabled={busy} onClick={() => void load()}>
           <LuRefreshCw className={busy ? 'animate-spin' : ''} /> Обновить
@@ -176,7 +176,7 @@ export function AdminLivePanel() {
       </div>
 
       <p className="text-xs text-[var(--text-muted)]">
-        Обновляется само каждые {LIVE_MS / 1000} с{updated ? ` · последний ответ в ${clock(updated)}` : ''}
+        Обновляется само каждые {LIVE_MS / 1000} с{updated ? `, последний ответ в ${clock(updated)}` : ''}
       </p>
 
       <section>
@@ -204,7 +204,7 @@ export function AdminLivePanel() {
               <div key={`${item.name}-${item.since}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 text-sm">
                 <b>{item.name}</b>
                 <span className="text-[var(--text-muted)]">
-                  {item.level} · {item.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'} · мест {item.seats}
+                  {item.level}, {item.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'}, мест {item.seats}
                 </span>
                 <span className="ml-auto text-[var(--text-muted)]">
                   ждёт {duration((Date.now() - new Date(item.since).getTime()) / 1000)}
@@ -237,8 +237,8 @@ function RoomCard({ room }: { room: LiveRoom }) {
           {PHASES[room.phase] ?? room.phase}
         </span>
         <span className="text-sm text-[var(--text-muted)]">
-          {room.level} · {room.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'} · раунд {room.round || 0} из 3
-          {' · '}{room.people} чел.{room.machines > 0 ? ` + ${room.machines} маш.` : ''} из {room.seats}
+          {room.level}, {room.direction === 'ru-sr' ? 'с русского на сербский' : 'с сербского на русский'}, раунд {room.round || 0} из 3
+          {', '}{room.people} чел.{room.machines > 0 ? ` + ${room.machines} маш.` : ''} из {room.seats}
         </span>
         <span className="ml-auto text-xs text-[var(--text-muted)]">
           {room.matched ? 'подбор' : room.open ? 'открытая' : 'по ссылке'}
@@ -358,7 +358,7 @@ function IncidentJournal() {
               active={severity === facet.value}
               onClick={() => setSeverity(severity === facet.value ? '' : facet.value)}
             >
-              {facet.value} · {facet.count}
+              {facet.value}, {facet.count}
             </Chip>
           ))}
           {(facets.source ?? []).map((facet) => (
@@ -367,7 +367,7 @@ function IncidentJournal() {
               active={source === facet.value}
               onClick={() => setSource(source === facet.value ? '' : facet.value)}
             >
-              {facet.value} · {facet.count}
+              {facet.value}, {facet.count}
             </Chip>
           ))}
         </div>
@@ -440,8 +440,8 @@ function IncidentRow({
         >
           <p className="break-words font-semibold">{incident.message}</p>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
-            {incident.source} · {incident.occurrences} раз · последний {when(incident.lastSeen)}
-            {incident.resolvedAt ? ' · закрыт' : ''}
+            {incident.source}, {incident.occurrences} раз, последний {when(incident.lastSeen)}
+            {incident.resolvedAt ? ', закрыт' : ''}
           </p>
         </button>
         {!incident.resolvedAt && (
@@ -529,7 +529,7 @@ function LiveErrors() {
               {event.message && <span className="min-w-0 basis-full truncate text-xs text-[var(--text-muted)] sm:basis-auto">{event.message}</span>}
               {event.user && <span className="text-xs text-[var(--text-muted)]">{event.user}</span>}
               <span className="shrink-0 text-xs tabular-nums text-[var(--text-muted)]">
-                {event.ms} мс · {clock(new Date(event.at).getTime())}
+                {event.ms} мс, {clock(new Date(event.at).getTime())}
               </span>
             </div>
           ))}

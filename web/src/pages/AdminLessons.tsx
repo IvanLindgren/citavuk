@@ -112,7 +112,6 @@ export function AdminLessons() {
       </Link>
       <header className="mt-6 flex flex-wrap items-end justify-between gap-4 border-b border-[var(--line)] pb-6">
         <div>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">Администрирование</p>
           <h1 className="mt-1 text-3xl sm:text-4xl">Модерация уроков</h1>
           <p className="mt-2 text-[var(--text-muted)]">
             Проверьте урок в том же режиме, который увидит ученик, затем опубликуйте или верните его автору.
@@ -141,9 +140,9 @@ export function AdminLessons() {
               <div className="min-w-0">
                 <div className="flex flex-wrap gap-2 text-xs font-bold uppercase text-[var(--accent)]">
                   <span>{lesson.level}</span>
-                  <span>·</span>
+                  <span>,</span>
                   <span>{lessonTypeLabel(lesson.lessonType)}</span>
-                  {lesson.topic && <><span>·</span><span>{lesson.topic}</span></>}
+                  {lesson.topic && <><span>,</span><span>{lesson.topic}</span></>}
                 </div>
                 <h2 className="mt-2 text-2xl">{lesson.title}</h2>
                 <p className="mt-1 text-sm text-[var(--text-muted)]">Автор: {lesson.authorName}</p>

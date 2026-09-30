@@ -214,7 +214,7 @@ export function Cards() {
                   называть их словами значит начать врать прямо в заголовке. */}
               <span>
                 {rows.length} {plural(rows.length, 'запись', 'записи', 'записей')}
-                {due.length > 0 && ` · ${due.length} к повторению`}
+                {due.length > 0 && `, ${due.length} к повторению`}
               </span>
               <SyncBadge />
             </div>
@@ -444,7 +444,7 @@ function ReviewSession({
 
       <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
         Осталось {due.length} {plural(due.length, 'карточка', 'карточки', 'карточек')}
-        {' · '}
+        {', '}
         {building
           ? 'цифры 1–3 оценивают'
           : 'пробел показывает перевод, цифры 1–3 оценивают'}
@@ -758,7 +758,7 @@ function WritingSession({
         Осталось {due.length}{' '}
         {plural(due.length, 'слово', 'слова', 'слов')}
         {skipped > 0 && (
-          <> · фраз пропущено: {skipped}, их письмом не повторяем</>
+          <>, фраз пропущено: {skipped}, их письмом не повторяем</>
         )}
       </p>
     </div>
@@ -973,7 +973,7 @@ function Dictionary({
     if (shape !== 'all') parts.push(shape === 'слово' ? 'слова' : 'фразы');
     for (const id of picked) parts.push(`#${id}`);
     if (query.trim()) parts.push(`«${query.trim()}»`);
-    return parts.join(' · ') || 'весь словарь';
+    return parts.join(', ') || 'весь словарь';
   }, [shape, picked, query]);
 
   return (
@@ -1038,7 +1038,7 @@ function Dictionary({
               )
             }
           >
-            Повторить отобранное · {visible.length}
+            Повторить отобранное, {visible.length}
           </Button>
         )}
         {visible.length > 0 && (
@@ -1059,7 +1059,7 @@ function Dictionary({
                 лист, обманывает: её просто нет. */}
             {printableCount > 0 && (
               <Button variant="secondary" onClick={() => setPrinting(true)}>
-                На печать · {printableCount}
+                На печать, {printableCount}
               </Button>
             )}
           </>

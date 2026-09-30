@@ -63,7 +63,6 @@ export function AudioFiles() {
   return <main className="audio-files-page">
     <section className="audio-files-hero">
       <div>
-        <p className="audio-files-eyebrow">Твоя локальная медиатека</p>
         <h1>Звуковые файлы</h1>
         <p>Читавук определит, есть ли в записи сербская речь, разделит говорящих и привяжет каждое слово к точному месту в дорожке.</p>
       </div>

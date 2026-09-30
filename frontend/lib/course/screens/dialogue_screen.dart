@@ -248,7 +248,7 @@ class _DialogueHeader extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'ИГРОВОЙ ДИАЛОГ · БЕТА',
+            'ИГРОВОЙ ДИАЛОГ, БЕТА',
             style: TextStyle(
               color: scheme.primary,
               fontWeight: FontWeight.w800,

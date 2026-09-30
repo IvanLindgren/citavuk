@@ -567,7 +567,7 @@ class _ExerciseViewState extends State<ExerciseView> {
     final last = step + 1 >= pairs.length;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('${step + 1} из ${pairs.length} · верных $_drillRight',
+      Text('${step + 1} из ${pairs.length}, верных $_drillRight',
           style: Theme.of(context).textTheme.bodySmall),
       const SizedBox(height: 10),
       Text(pair['left']?.toString() ?? '',

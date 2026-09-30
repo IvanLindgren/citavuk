@@ -84,7 +84,6 @@ function AccountSession() {
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <Card className="account-passport p-7 sm:p-9">
-            <p className="account-eyebrow">Твоя история с Читавуком</p>
             <div className="flex items-center gap-4">
               <div className="account-monogram">
                 {(account.displayName || account.email)

@@ -147,7 +147,7 @@ export function HouseRoom({
           <span className="block text-[11px] text-[#5e4635]">{GARDEN.home.ru}</span>
           {playing && station && (
             <span className="mt-1 block text-[11px] font-semibold text-[#8a4d27]">
-              {radio.status === 'loading' ? GARDEN.tuning.sr : '● уживо'} · {station.name}
+              {radio.status === 'loading' ? GARDEN.tuning.sr : '● уживо'}, {station.name}
             </span>
           )}
         </span>
@@ -413,11 +413,11 @@ function RadioPanel({ radio }: { radio: ReturnType<typeof useRadio> }) {
                 <span className="min-w-0">
                   <span className="block font-display font-bold">{item.name}</span>
                   <span className="block text-xs text-[#6b4d38]">
-                    {item.city} · {item.sr} — {item.ru}
+                    {item.city}, {item.sr} — {item.ru}
                   </span>
                 </span>
                 {active && (
-                  <span className="ml-auto shrink-0 text-xs font-semibold uppercase tracking-wide text-[#8a4d27]">
+                  <span className="ml-auto shrink-0 text-xs font-semibold uppercase  text-[#8a4d27]">
                     {radio.status === 'loading'
                       ? GARDEN.tuning.sr
                       : radio.status === 'error'

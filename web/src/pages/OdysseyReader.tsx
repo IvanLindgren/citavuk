@@ -155,7 +155,7 @@ export function OdysseyReader({ accountId }: { accountId: string }) {
               События
             </Link>
             <h1 className="mt-2 text-3xl sm:text-4xl">Одиссея</h1>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">Пройдено {readingProgress}% · доступно до 1 сентября</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">Пройдено {readingProgress}%, доступно до 1 сентября</p>
           </div>
 
           <label className="flex items-center gap-2 text-sm font-semibold">

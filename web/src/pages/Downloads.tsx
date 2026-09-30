@@ -14,7 +14,7 @@ import { useSeo } from '../lib/seo';
  * что уходит в магазин, а настольные сборки выпускаются реже. Один номер на всех
  * означал бы, что страница обещает под Windows то, чего в файле нет.
  */
-const VERSION = '1.22.0';
+const VERSION = '1.22.2';
 
 type Platform = {
   id: 'android' | 'windows' | 'linux' | 'macos' | 'ios';
@@ -35,7 +35,7 @@ const PLATFORMS: Platform[] = [
   {
     id: 'android',
     title: 'Android',
-    subtitle: 'Android 7 и новее · Google Play или APK',
+    subtitle: 'Android 7 и новее, Google Play или APK',
     description:
       'Мобильная читалка (PDF, DOCX, FB2, EPUB, DjVu), карточки, грамматический курс, аудирование и материалы для поступления.',
     href: '/files/citavuk.apk',
@@ -50,22 +50,22 @@ const PLATFORMS: Platform[] = [
   {
     id: 'windows',
     title: 'Windows',
-    subtitle: 'Windows 10 и новее · 64 бита',
+    subtitle: 'Windows 10 и новее, 64 бита',
     description:
       'Настольная версия для больших книг: перетащите файл в окно — и читайте. Всё то же, что в вебе, плюс работа без интернета.',
     href: '/files/citavuk-setup.exe',
-    size: '50 МБ',
+    size: '36 МБ',
     note: 'Установщик без подписи, поэтому SmartScreen спросит подтверждение: «Подробнее» и «Выполнить в любом случае».',
     alternate: {
       href: '/files/citavuk-windows.zip',
       label: 'Портативная версия (zip)',
-      size: '63 МБ',
+      size: '42 МБ',
     },
   },
   {
     id: 'linux',
     title: 'Linux',
-    subtitle: 'x86-64 · glibc 2.35 и новее',
+    subtitle: 'x86-64, glibc 2.35 и новее',
     description:
       'Та же настольная версия. Ставится в домашний каталог, права root не нужны.',
     href: '/files/citavuk-linux-x64.tar.gz',
@@ -76,7 +76,7 @@ const PLATFORMS: Platform[] = [
   {
     id: 'macos',
     title: 'macOS',
-    subtitle: 'macOS 11 и новее · Apple Silicon и Intel',
+    subtitle: 'macOS 11 и новее, Apple Silicon и Intel',
     description:
       'Читалка для Mac с синхронизацией, курсом, диалогами и аудированием.',
     // macOS-релиз временно не публикуется: сборка требует macOS runner.
@@ -107,9 +107,6 @@ export function Downloads() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
           >
-            <p className="text-sm font-bold uppercase text-[var(--accent)]">
-              Приложения Читавука
-            </p>
             <h1 className="mt-2 text-4xl sm:text-5xl">Читайте на любом устройстве</h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]">
               Книги, словарь, карточки и прогресс курса синхронизируются между
@@ -237,7 +234,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 font-semibold text-parchment transition-colors hover:bg-[var(--accent-hover)]"
           >
             <DownloadIcon />
-            Скачать · {platform.size}
+            Скачать, {platform.size}
           </a>
           {platform.alternate && (
             <a
@@ -245,7 +242,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
               download
               className="mt-2 text-center text-xs font-semibold text-[var(--text-muted)] underline-offset-2 transition-colors hover:text-[var(--accent)] hover:underline"
             >
-              {platform.alternate.label} · {platform.alternate.size}
+              {platform.alternate.label}, {platform.alternate.size}
             </a>
           )}
         </>

@@ -1,7 +1,7 @@
 .course-journey{--journey-red:#9e302a;max-width:1240px;margin:auto;padding:28px 28px 80px;font-family:var(--font-sans,'Noto Sans',sans-serif)}
-.course-journey h1,.course-journey h2,.course-journey h3,.journey-signin h1{font-family:inherit;letter-spacing:-.025em;font-weight:600}
+.course-journey h1,.course-journey h2,.course-journey h3,.journey-signin h1{font-family:inherit;letter-spacing: normal;font-weight:600}
 .journey-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 320px;align-items:center;gap:32px;padding:40px;border:1px solid var(--line);border-radius:28px;background:var(--bg-raised);overflow:hidden}
-.journey-hero-copy{position:relative;z-index:1}.journey-eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 12px}
+.journey-hero-copy{position:relative;z-index:1}.journey-eyebrow{font-size:12px;letter-spacing: normal;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 12px}
 .journey-hero h1,.journey-signin h1{font-size:clamp(30px,3.4vw,46px);line-height:1.15;margin:0 0 16px}
 .journey-subtitle{max-width:460px;font-size:17px;line-height:1.7;color:var(--text-muted);margin-bottom:24px}
 .journey-primary{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:13px 23px;border-radius:15px;background:var(--journey-red,#9e302a);color:#fff8ed;font-weight:700;font-size:15px;box-shadow:0 4px 0 #671d19;text-decoration:none}

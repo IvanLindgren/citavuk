@@ -380,7 +380,7 @@ function SubjectIndex() {
             <span className="font-semibold">{subject.title}</span>
             <span className="shrink-0 text-sm text-[var(--text-muted)]">
               {subject.count}
-              {subject.yearFrom ? ` · ${subject.yearFrom}–${subject.yearTo}` : ''}
+              {subject.yearFrom ? `, ${subject.yearFrom}–${subject.yearTo}` : ''}
             </span>
           </Link>
         ))}
@@ -412,7 +412,7 @@ function Sources() {
                 {source.publisher}
               </a>
               <span className="ml-1.5 text-[var(--text-muted)]">
-                · {source.count}
+               , {source.count}
               </span>
             </li>
           ))}
@@ -584,7 +584,7 @@ function MaterialCard({
           )}
           {document.bytes > 0 && (
             <span className="text-xs text-[var(--text-muted)]">
-              · {formatBytes(document.bytes)}
+             , {formatBytes(document.bytes)}
             </span>
           )}
         </div>
@@ -623,7 +623,7 @@ function MaterialCard({
           {quiz ? (
             <ButtonLink to={`/tests/${quiz.quizId}`} variant="secondary" size="sm" className="mb-2 w-full text-center">
               Потренироваться и решить тест на сайте
-              {quiz.attempts > 0 && ` · было ${quiz.bestScore}%`}
+              {quiz.attempts > 0 && `, было ${quiz.bestScore}%`}
             </ButtonLink>
           ) : (
             <Button
@@ -695,7 +695,7 @@ function KindBadge({ kind, label }: { kind: DocumentKind; label: string }) {
 
   return (
     <span
-      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${styles[kind]}`}
+      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase  ${styles[kind]}`}
     >
       {label}
     </span>
@@ -711,7 +711,7 @@ function FilterRow({
 }) {
   return (
     <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-baseline">
-      <span className="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <span className="w-16 shrink-0 text-xs font-semibold uppercase  text-[var(--text-muted)]">
         {label}
       </span>
       <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">{children}</div>

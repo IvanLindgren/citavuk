@@ -143,7 +143,7 @@ class _Seat extends StatelessWidget {
                           ),
                         ),
                         if (player.you)
-                          Text(' · ты',
+                          Text(', ты',
                               overflow: TextOverflow.clip,
                               softWrap: false,
                               style: theme.textTheme.bodySmall),

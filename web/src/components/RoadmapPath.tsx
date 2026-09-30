@@ -189,8 +189,8 @@ function Station({
         <span className="block font-display text-lg">{level.name}</span>
         <span className="block text-sm text-[var(--text-muted)]">
           {Math.round(ratio * 100)}%
-          {isCurrent && ' · ваш уровень'}
-          {isTarget && ' · цель'}
+          {isCurrent && ', ваш уровень'}
+          {isTarget && ', цель'}
         </span>
       </span>
     </button>

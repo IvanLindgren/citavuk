@@ -458,7 +458,7 @@ function Catalogue({
         </div>
         {groups.map(([group, label]) => (
           <section key={group} className="mb-6">
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+            <h3 className="mb-2 text-sm font-semibold uppercase  text-[var(--text-muted)]">
               {label}
             </h3>
             <ul className="grid gap-2 sm:grid-cols-2">

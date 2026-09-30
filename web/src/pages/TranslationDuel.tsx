@@ -490,7 +490,7 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
         style={burning ? { borderColor: 'var(--accent)' } : undefined}
       >
         <div className="relative flex items-start justify-between gap-4">
-          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase  text-[var(--accent)]">
             <span>{level}</span>
             <MatchMetaOrnament />
             <span>Раунд {roundNumber} из {TOTAL_ROUNDS}</span>
@@ -528,7 +528,7 @@ function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: ()
         <div className="relative mt-7 flex items-start gap-4 sm:gap-6">
           <Fighter pose={pose} className="w-16 shrink-0 sm:w-20" />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">
+            <p className="text-xs font-bold uppercase  text-[var(--text-muted)]">
               {phase === 'translate' ? stageLabel : STAGE_LABEL[phase]}
             </p>
             {phase === 'result' ? (
@@ -780,7 +780,7 @@ function Pair({
             animate={{ opacity: 1 }}
             className="mt-3 rounded-md bg-[var(--bg-sunken)] px-3 py-2 text-sm leading-6"
           >
-            <strong>{winnerLabel(verdict.winner, translatorName)}</strong> · {verdict.userScore.toFixed(1)} :{' '}
+            <strong>{winnerLabel(verdict.winner, translatorName)}</strong>, {verdict.userScore.toFixed(1)} :{' '}
             {verdict.translatorScore.toFixed(1)}. {verdict.feedback}
           </motion.p>
         )}
@@ -1006,14 +1006,13 @@ function Finished({
         {won && <Confetti />}
         <div className="relative">
           <Fighter pose={won ? 'trophy' : drawn ? 'compare' : 'think'} className="mx-auto w-28" />
-          <p className="mt-4 text-xs font-bold uppercase tracking-wide text-[var(--accent)]">Матч завершён</p>
           <h1 className="mt-1 font-display text-3xl sm:text-4xl">
             {won ? 'Ты победил' : drawn ? 'Ничья' : 'В следующий раз получится'}
           </h1>
           <Ornament className="mx-auto my-6 w-48" count={7} />
           <Podium rows={rows} you="me" />
           <p className="mt-6 text-[var(--text-muted)]">
-            Ничьих: {score.ties} · всего {TOTAL_ROUNDS * 5} предложений
+            Ничьих: {score.ties}, всего {TOTAL_ROUNDS * 5} предложений
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Button size="lg" onClick={onRestart}>

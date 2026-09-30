@@ -150,7 +150,7 @@ describe('ошибки', () => {
     expect(text).toContain('судья матча не ответил');
     expect(text).toContain('12 раз');
     // Отбор по источнику и важности — с числами, чтобы видеть, где горит.
-    expect(text).toContain('server · 1');
+    expect(text).toContain('server, 1');
   });
 
   it('живой список считает самые шумные ручки', async () => {

@@ -268,7 +268,7 @@ class _DuelRoomScreenState extends State<DuelRoomScreen> {
                 style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                    letterSpacing: 0,
                     color: SerbColors.serbRed)),
             Text(_title(room), style: const TextStyle(fontSize: 18)),
           ],
@@ -394,7 +394,7 @@ class _DuelRoomScreenState extends State<DuelRoomScreen> {
             fontFamily: 'Lora',
             fontSize: 34,
             fontWeight: FontWeight.bold,
-            letterSpacing: 6,
+            letterSpacing: 0,
           ),
         ),
       ),
@@ -659,7 +659,7 @@ class _DuelRoomScreenState extends State<DuelRoomScreen> {
                               Expanded(
                                 child: Text(
                                   answer.you
-                                      ? '${answer.name} · ты'
+                                      ? '${answer.name}, ты'
                                       : answer.name,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
@@ -733,7 +733,7 @@ class _DuelRoomScreenState extends State<DuelRoomScreen> {
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
+                        letterSpacing: 0,
                         color: SerbColors.serbRed)),
                 Text(
                   won

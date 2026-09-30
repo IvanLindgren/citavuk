@@ -26,3 +26,13 @@ it('в интерфейсе нет текстовых стрелок',()=>{
  for(const dir of ['pages','components'])scan(join(root,dir));
  expect(found).toEqual([]);
 });
+
+it('в интерфейсном тексте нет точек-разделителей и растянутых букв',()=>{
+ const root=resolve(process.cwd(),'src');const found:string[]=[];
+ const scan=(dir:string)=>{for(const e of readdirSync(dir,{withFileTypes:true})){
+  const file=join(dir,e.name);if(e.isDirectory()){scan(file);continue;}
+  if(!e.name.endsWith('.tsx')||e.name.includes('.test.'))continue;
+  const text=readFileSync(file,'utf8');
+  if(text.includes('·')||/tracking-(?:wide|wider|widest|\[[^\]]+\])/.test(text))found.push(file);
+ }};for(const dir of ['pages','components'])scan(join(root,dir));expect(found).toEqual([]);
+});

@@ -534,7 +534,7 @@ class _UnitBanner extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
+              letterSpacing: 0,
               color: Color(0xFFF4DDC3),
             ),
           ),
@@ -790,13 +790,6 @@ class _HeaderCard extends StatelessWidget {
           final compact = limits.maxWidth < 600;
           final heading =
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('ТВОЙ МАРШРУТ',
-                style: TextStyle(
-                    color: scheme.primary,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2)),
-            const SizedBox(height: 12),
             Text(controller.course!.title,
                 style: TextStyle(
                     fontFamily: 'NotoSans',

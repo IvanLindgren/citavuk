@@ -76,7 +76,7 @@ class _RoadmapSectionScreenState extends State<RoadmapSectionScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.level} · ${widget.category.title}'),
+        title: Text('${widget.level}, ${widget.category.title}'),
       ),
       body: _error.isNotEmpty
           ? Center(
@@ -271,7 +271,7 @@ class _ExerciseCardState extends State<_ExerciseCard> {
             title: Text(set.title),
             subtitle: Text(
               '$total заданий'
-              '${set.done ? ' · пройдено на ${(set.score * 100).round()}%' : ''}',
+              '${set.done ? ', пройдено на ${(set.score * 100).round()}%' : ''}',
             ),
             trailing: Icon(_open ? Icons.expand_less : Icons.expand_more),
             onTap: () => setState(() => _open = !_open),
@@ -293,7 +293,7 @@ class _ExerciseCardState extends State<_ExerciseCard> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: Row(
                 children: [
-                  Text('${_index + 1} из $total · верных $_right'),
+                  Text('${_index + 1} из $total, верных $_right'),
                   const Spacer(),
                   if (_index + 1 < total)
                     FilledButton(

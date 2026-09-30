@@ -166,7 +166,7 @@ function NewsCard({
     >
       <img src={image} srcSet={`${image} 1x, ${image.replace(".webp", "@2x.webp")} 2x`} alt="" width={96} height={96} loading="lazy" className="size-20 shrink-0 object-contain sm:size-24" />
       <span className="min-w-0">
-        <span className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">Новое</span>
+        <span className="text-xs font-bold uppercase  text-[var(--accent)]">Новое</span>
         <span className="mt-1 block font-display text-xl font-bold leading-snug">{title}</span>
         <span className="mt-1 block text-sm leading-relaxed text-[var(--text-muted)]">{text}</span>
         <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent)] group-hover:underline">
@@ -188,7 +188,6 @@ function AudioImportPromo() {
               <LuFileAudio className="size-7" aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="mb-1 text-xs font-bold uppercase tracking-[.1em] text-[var(--accent)]">Не только книги</p>
               <h2 className="text-2xl">Загружай свои аудиозаписи</h2>
               <p className="mt-2 leading-relaxed text-[var(--text-muted)]">
                 MP3, M4A, WAV и другие форматы: Читавук найдёт сербскую речь, разделит говорящих и сделает расшифровку с таймкодами. Нажми на слово — запись перемотается к нему.

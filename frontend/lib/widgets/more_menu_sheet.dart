@@ -84,7 +84,7 @@ class _MoreMenuSheet extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
+                      letterSpacing: 0,
                       color: scheme.onSurfaceVariant,
                     ),
                   ),

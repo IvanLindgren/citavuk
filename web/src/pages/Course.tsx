@@ -45,7 +45,7 @@ function CourseSession() {
     return () => { active = false; };
   }, [account, bundle]);
 
-  if (!account) return <main className="journey-signin"><CourseArt pose="guide" hero /><div><p className="journey-eyebrow">Учимся вместе</p><h1>Курс сербского</h1><p>Разбирай правила и пробуй их в упражнениях. Войди, чтобы твои результаты сохранились на всех устройствах.</p><div><Link className="journey-primary" to="/login?mode=register">Создать аккаунт</Link><Link className="journey-quiet" to="/login">Войти</Link></div></div></main>;
+  if (!account) return <main className="journey-signin"><CourseArt pose="guide" hero /><div><h1>Курс сербского</h1><p>Разбирай правила и пробуй их в упражнениях. Войди, чтобы твои результаты сохранились на всех устройствах.</p><div><Link className="journey-primary" to="/login?mode=register">Создать аккаунт</Link><Link className="journey-quiet" to="/login">Войти</Link></div></div></main>;
   if (error) return <main className="journey-signin"><CourseArt pose="reading" /><div><h1>Не удалось открыть курс</h1><p>{error}</p><Button onClick={() => location.reload()}>Попробовать снова</Button></div></main>;
   if (!bundle || !progress) return <div className="grid min-h-[60vh] place-items-center"><Spinner /></div>;
   const lessons = bundle.units.flatMap(u => u.skills.flatMap(s => s.lessons));
@@ -55,7 +55,7 @@ function CourseSession() {
   return <main className="course-journey">
     <section className="journey-hero">
       <div className="journey-hero-copy">
-        <p className="journey-eyebrow">Твой маршрут</p><h1>Курс сербского</h1>
+        <h1>Курс сербского</h1>
         <p className="journey-subtitle">От азбуки до причастий. Разбирайся в правилах и сразу пробуй их в деле.</p>
         <CourseNext lesson={next} />
         {next && <p className="journey-next-title">Следующий урок: <strong>{next.title}</strong></p>}

@@ -97,9 +97,6 @@ export function SharedBook() {
           height={180}
           className="mx-auto -mb-2 w-36"
         />
-        <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
-          книгой поделились с вами
-        </p>
         <h1 className="mt-2 font-display text-2xl font-bold sm:text-3xl">
           {share.title}
         </h1>

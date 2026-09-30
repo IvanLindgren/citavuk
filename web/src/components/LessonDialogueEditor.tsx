@@ -143,7 +143,7 @@ export function LessonDialogueEditor({
               {preview ? 'Скрыть предпросмотр' : 'Пройти диалог'}
             </button>
             <span className="text-sm text-[var(--text-muted)]">
-              {nodes.length} реплик · {endingsCount(nodes)} концовок
+              {nodes.length} реплик, {endingsCount(nodes)} концовок
             </span>
           </div>
 

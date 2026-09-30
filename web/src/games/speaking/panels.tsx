@@ -46,7 +46,7 @@ export function WordCounter({ text }: { text: string }) {
   return (
     <p className={['text-sm', left > 0 ? 'text-[var(--text-muted)]' : 'text-[var(--success,#2f7a3b)]'].join(' ')}>
       {words} {wordForm(words)}
-      {left > 0 ? ` · нужно ещё хотя бы ${left}` : ''}
+      {left > 0 ? `, нужно ещё хотя бы ${left}` : ''}
     </p>
   );
 }
@@ -260,7 +260,7 @@ function usePolishedAudio(text: string) {
 function Block({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-6">
-      <h3 className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">{title}</h3>
+      <h3 className="text-sm font-bold uppercase  text-[var(--text-muted)]">{title}</h3>
       <div className="mt-2">{children}</div>
     </section>
   );

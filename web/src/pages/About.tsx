@@ -35,9 +35,6 @@ export function About() {
     <main className="paper-grain relative min-h-[calc(100dvh-4rem)] px-5 py-10 sm:py-16">
       <div className="mx-auto max-w-3xl">
         <Reveal>
-          <p className="text-sm font-bold uppercase text-[var(--accent)]">
-            О проекте
-          </p>
           <h1 className="mt-2 text-4xl">О разработчике</h1>
         </Reveal>
 

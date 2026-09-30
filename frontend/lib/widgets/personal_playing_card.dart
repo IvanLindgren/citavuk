@@ -186,7 +186,7 @@ class _PersonalPlayingCardState extends State<PersonalPlayingCard>
                         color: gold,
                         fontSize: 9,
                         height: 1.3,
-                        letterSpacing: .4,
+                        letterSpacing: 0,
                         fontWeight: FontWeight.w700)),
                 const SizedBox(height: 8),
                 Text(widget.title,

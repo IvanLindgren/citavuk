@@ -221,7 +221,7 @@ export function FeedComments({
               <Link to="/login" className="font-semibold text-white underline underline-offset-4">
                 Войди
               </Link>
-              , чтобы написать. Читать обсуждение можно и без входа.
+             , чтобы написать. Читать обсуждение можно и без входа.
             </p>
           )}
         </div>

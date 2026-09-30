@@ -156,7 +156,7 @@ function DailyPanel({ onClose }: { onClose: () => void }) {
         <header className="flex items-center gap-3 border-b border-[var(--line)] px-5 py-4 sm:px-7">
           <Mascot pose="citavuk_zdravo" alt="" className="w-12 shrink-0" />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+            <p className="text-xs font-bold uppercase  text-[var(--accent)]">
               На каждый день
             </p>
             <h2 className="font-display text-xl sm:text-2xl">
@@ -477,7 +477,7 @@ function WordRow({
         forms: {
           контекст: plainExample(word.example ?? ''),
           перевод: plainExample(word.exampleTranslation ?? ''),
-          источник: `Слова дня · ${word.theme}`,
+          источник: `Слова дня, ${word.theme}`,
         },
       });
       setAdded(true);

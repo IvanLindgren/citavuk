@@ -113,7 +113,7 @@ export function SentenceAnalysisPanel({
 
   return (
     <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4">
-      <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">
+      <p className="text-xs font-bold uppercase  text-[var(--text-muted)]">
         Грамматический разбор
       </p>
       <div className="mt-3 flex flex-wrap items-end gap-2" aria-label="Части речи во фразе">

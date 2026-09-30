@@ -65,7 +65,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
-    expect(find.text('A2 · раунд 1 из 3'), findsOneWidget);
+    expect(find.text('A2, раунд 1 из 3'), findsOneWidget);
     expect(find.text('ПЕРЕВЕДИ НА РУССКИЙ'), findsOneWidget);
     expect(find.text('Ovo je probna rečenica broj 1.'), findsOneWidget);
     // Фразы идут по одной, значит поле ровно одно.

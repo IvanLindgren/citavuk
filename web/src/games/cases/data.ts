@@ -46,7 +46,7 @@ export interface Task {
   kind: 'noun' | 'pronoun' | 'verb';
   lemma: string;
   translation: string;
-  /** Что сделать, по-русски: «Родительный · мн. ч.». */
+  /** Что сделать, по-русски: «Родительный, мн. ч.». */
   label: string;
   /** То же по-сербски — так падеж называют в учебниках. */
   labelSr: string;
@@ -160,8 +160,8 @@ function nounTask(noun: NounEntry, cell: `${NumberKey}${CaseKey}`): Task | null 
     kind: 'noun',
     lemma: noun.l,
     translation: noun.t,
-    label: `${info.ru} · ${numberLabel(number)}`,
-    labelSr: `${info.sr} · ${numberLabelSr(number)}`,
+    label: `${info.ru}, ${numberLabel(number)}`,
+    labelSr: `${info.sr}, ${numberLabelSr(number)}`,
     before,
     after,
     answers,
@@ -181,7 +181,7 @@ function pronounTask(pronoun: PronounEntry, key: CaseKey): Task | null {
     kind: 'pronoun',
     lemma: pronoun.l,
     translation: pronoun.t,
-    label: `${info.ru} · местоимение`,
+    label: `${info.ru}, местоимение`,
     labelSr: info.sr,
     before,
     after,
@@ -206,8 +206,8 @@ function verbTask(verb: VerbEntry, tense: TenseKey, random: Random): Task | null
     const who = person === '2s' ? 'ti' : person === '1p' ? 'mi' : 'vi';
     return {
       ...base,
-      label: `${info.ru} · ${who}`,
-      labelSr: `${info.sr} · ${who}`,
+      label: `${info.ru}, ${who}`,
+      labelSr: `${info.sr}, ${who}`,
       before: `(${who})`,
       after: '!',
       answers: verb.im[person],
@@ -217,7 +217,7 @@ function verbTask(verb: VerbEntry, tense: TenseKey, random: Random): Task | null
   if (tense === 'pres') {
     return {
       ...base,
-      label: `${info.ru} · ${person.ru}`,
+      label: `${info.ru}, ${person.ru}`,
       labelSr: info.sr,
       before: person.pronoun,
       after: '',
@@ -231,7 +231,7 @@ function verbTask(verb: VerbEntry, tense: TenseKey, random: Random): Task | null
     const answers = [analytic, ...(verb.fu?.[person.key] ?? [])];
     return {
       ...base,
-      label: `${info.ru} · ${person.ru}`,
+      label: `${info.ru}, ${person.ru}`,
       labelSr: info.sr,
       before: person.pronoun,
       after: '',
@@ -265,7 +265,7 @@ function verbTask(verb: VerbEntry, tense: TenseKey, random: Random): Task | null
   const showGender = person.key === '1s' || person.key === '2s';
   return {
     ...base,
-    label: `${info.ru} · ${person.ru}${showGender ? `, ${genderRu} род` : ''}`,
+    label: `${info.ru}, ${person.ru}${showGender ? `, ${genderRu} род` : ''}`,
     labelSr: info.sr,
     before: showGender ? `${pronoun} (${gender === 'm' ? 'm' : 'ž'})` : pronoun,
     after: '',

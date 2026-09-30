@@ -395,7 +395,7 @@ class _ListeningPlayerScreenState extends State<ListeningPlayerScreen> {
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
+                letterSpacing: 0,
                 color: scheme.tertiary)),
       );
 

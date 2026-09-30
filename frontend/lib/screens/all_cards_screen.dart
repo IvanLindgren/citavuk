@@ -157,7 +157,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_all.isEmpty ? 'Словарь' : 'Словарь · ${_all.length}'),
+        title: Text(_all.isEmpty ? 'Словарь' : 'Словарь, ${_all.length}'),
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
@@ -208,7 +208,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
       for (final id in _picked) '#$id',
       if (_query.trim().isNotEmpty) '«${_query.trim()}»',
     ];
-    return parts.isEmpty ? 'весь словарь' : parts.join(' · ');
+    return parts.isEmpty ? 'весь словарь' : parts.join(', ');
   }
 
   Widget _reviewButton(List<_Entry> entries) => Padding(
@@ -217,7 +217,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
           width: double.infinity,
           child: FilledButton.icon(
             icon: const Icon(Icons.play_arrow_rounded),
-            label: Text('Повторить отобранное · ${entries.length}'),
+            label: Text('Повторить отобранное, ${entries.length}'),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -253,7 +253,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
       Padding(
         padding: const EdgeInsets.only(right: 6),
         child: ChoiceChip(
-          label: Text('$label · $count'),
+          label: Text('$label, $count'),
           selected: _shape == shape,
           onSelected: (_) => setState(() => _shape = shape),
         ),
@@ -271,7 +271,7 @@ class _AllCardsScreenState extends State<AllCardsScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 6),
               child: FilterChip(
-                label: Text('${chip.tag.id} · ${chip.count}'),
+                label: Text('${chip.tag.id}, ${chip.count}'),
                 selected: _picked.contains(chip.tag.id),
                 visualDensity: VisualDensity.compact,
                 side: BorderSide(color: _toneOf(scheme, chip.tag.kind)),

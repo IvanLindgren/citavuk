@@ -292,7 +292,7 @@ export function Header() {
             to={VUKOTOK_PATH}
             aria-current={isVukotok(path) ? 'page' : undefined}
             aria-label="Вукоток"
-            title="Вукоток · лента коротких сербских текстов"
+            title="Вукоток, лента коротких сербских текстов"
             className="header-feature-link group inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold"
           >
             <LuLayers className="size-5" aria-hidden="true" />
@@ -590,7 +590,7 @@ function MoreMenu({ path, isAdmin }: { path: string; isAdmin: boolean }) {
               <div className="flex gap-1">
                 {MORE_GROUPS.map((group) => (
                   <div key={group.title} className="min-w-0">
-                    <p className="mb-1 px-2.5 text-[0.68rem] font-bold uppercase tracking-wide text-[var(--text-muted)]/70">
+                    <p className="mb-1 px-2.5 text-[0.68rem] font-bold uppercase  text-[var(--text-muted)]/70">
                       {group.title}
                     </p>
                     <div className="space-y-px">

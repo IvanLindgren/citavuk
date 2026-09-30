@@ -152,7 +152,7 @@ class _DailySheetState extends State<_DailySheet> {
                 Text('НА КАЖДЫЙ ДЕНЬ',
                     style: theme.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w800,
-                      letterSpacing: 1.2,
+                      letterSpacing: 0,
                       color: theme.colorScheme.primary,
                     )),
                 const SizedBox(height: 2),
@@ -392,7 +392,7 @@ class _SetViewState extends State<_SetView>
       forms: {
         'контекст': plainExample(word.example),
         'перевод': plainExample(word.exampleTranslation),
-        'источник': 'Слова дня · ${word.theme}',
+        'источник': 'Слова дня, ${word.theme}',
       },
     );
     widget.sync?.sync();

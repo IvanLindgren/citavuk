@@ -600,7 +600,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
 
     return Scaffold(
       appBar: _bar(
-        title: '$_level · раунд $_roundNumber из $_rounds',
+        title: '$_level, раунд $_roundNumber из $_rounds',
         onClose: _restart,
       ),
       body: ListView(
@@ -638,7 +638,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
                       _stageLabel(),
                       style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
+                        letterSpacing: 0,
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -857,7 +857,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    '${_winnerLabel(verdict.winner)} · '
+                    '${_winnerLabel(verdict.winner)}, '
                     '${verdict.userScore.toStringAsFixed(1)} : '
                     '${verdict.translatorScore.toStringAsFixed(1)}. '
                     '${verdict.feedback}',
@@ -890,7 +890,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
               label.toUpperCase(),
               style: TextStyle(
                 fontSize: 10,
-                letterSpacing: 0.8,
+                letterSpacing: 0,
                 fontWeight: FontWeight.w800,
                 color: won ? color : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -1013,7 +1013,7 @@ class _TranslationDuelScreenState extends State<TranslationDuelScreen> {
               Podium(rows: rows, you: 'me'),
               const SizedBox(height: 16),
               Center(
-                child: Text('Ничьих: $_tiesTotal · всего 15 предложений',
+                child: Text('Ничьих: $_tiesTotal, всего 15 предложений',
                     style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
               ),
               const SizedBox(height: 28),

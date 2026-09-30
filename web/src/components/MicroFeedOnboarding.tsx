@@ -106,7 +106,7 @@ export function MicroFeedOnboarding({
         </div>
 
         <fieldset className="mt-7">
-          <legend className="text-xs font-bold uppercase tracking-wide text-white/60">
+          <legend className="text-xs font-bold uppercase  text-white/60">
             Темы: выбери сколько хочешь
           </legend>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -154,7 +154,7 @@ export function MicroFeedOnboarding({
           </p>
         ) : (
         <fieldset className="mt-6">
-          <legend className="text-xs font-bold uppercase tracking-wide text-white/60">
+          <legend className="text-xs font-bold uppercase  text-white/60">
             Сербский сейчас
           </legend>
           <div className="mt-3 flex flex-wrap gap-2">

@@ -270,7 +270,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       appBar: AppBar(
         title: Text(widget.focusLabel == null
             ? 'Карточки'
-            : 'Карточки · ${widget.focusLabel}'),
+            : 'Карточки, ${widget.focusLabel}'),
         actions: [
           if (!_loading && _queue.isNotEmpty)
             Center(
@@ -448,7 +448,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                                   if (pos.isNotEmpty)
                                     GrammarEngine.posShort(pos),
                                   if (lemma.isNotEmpty) 'нач. форма: $lemma',
-                                ].join('  ·  '),
+                                ].join(' ,  '),
                                 style: TextStyle(
                                     fontSize: 13,
                                     color: scheme.onSurface

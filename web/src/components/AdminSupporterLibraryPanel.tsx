@@ -109,7 +109,7 @@ export function AdminSupporterLibraryPanel() {
               <div className="min-w-0 flex-1">
                 <p className="font-semibold">{item.title}</p>
                 <p className="text-xs text-[var(--text-muted)]">
-                  {[item.author, item.level, `${item.bodyChars.toLocaleString('ru-RU')} знаков`, item.audioSize ? `аудио ${formatSize(item.audioSize)}` : ''].filter(Boolean).join(' · ')}
+                  {[item.author, item.level, `${item.bodyChars.toLocaleString('ru-RU')} знаков`, item.audioSize ? `аудио ${formatSize(item.audioSize)}` : ''].filter(Boolean).join(', ')}
                 </p>
               </div>
               <span className={['rounded-full px-2.5 py-1 text-xs font-bold', item.published ? 'bg-[var(--success-soft)] text-[var(--success)]' : 'bg-[var(--bg-sunken)] text-[var(--text-muted)]'].join(' ')}>

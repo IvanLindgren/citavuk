@@ -330,7 +330,7 @@ function Room({ code }: { code: string }) {
           <LuArrowLeft />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">Комната {room.code}</p>
+          <p className="text-xs font-bold uppercase  text-[var(--accent)]">Комната {room.code}</p>
           <h1 className="font-display text-2xl sm:text-3xl">{phaseTitle(room)}</h1>
         </div>
         <button
@@ -804,7 +804,7 @@ function Result({ room }: { room: DuelRoom }) {
                 >
                   <div className="flex min-w-0 items-center justify-between gap-3">
                     <b className="min-w-0 break-words [overflow-wrap:anywhere]">
-                      {answer.name}{answer.you ? ' · ты' : ''}
+                      {answer.name}{answer.you ? ', ты' : ''}
                     </b>
                     <span className="flex shrink-0 items-center gap-2">
                       {typeof answer.score === 'number' && answer.score > 0 && (
@@ -857,7 +857,7 @@ function FinishedRoom({ room, onBack }: { room: DuelRoom; onBack: () => void }) 
       {result !== 'lost' && <Confetti />}
       <div className="relative">
         <Fighter pose={result === 'lost' ? 'hurt' : 'trophy'} className="mx-auto w-24" />
-        <p className="mt-3 text-sm font-bold uppercase tracking-wide text-[var(--accent)]">Матч завершён</p>
+        <p className="mt-3 text-sm font-bold uppercase  text-[var(--accent)]">Матч завершён</p>
         <h2 className="mt-1 font-display text-3xl">
           {result === 'won' ? 'Ты победил' : result === 'tie' ? 'Ничья' : 'В следующий раз получится'}
         </h2>

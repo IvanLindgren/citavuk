@@ -221,7 +221,7 @@
   font-family: var(--font-display);
   font-size: calc(var(--key) * 0.36);
   font-weight: 700;
-  letter-spacing: 0.32em;
+  letter-spacing: normal;
   text-align: center;
   text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
   text-transform: uppercase;
@@ -232,7 +232,7 @@
   margin-top: 0.15em;
   color: rgb(217 178 95 / 0.7);
   font-size: 0.45em;
-  letter-spacing: 0.4em;
+  letter-spacing: normal;
 }
 
 .tw-row {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { LuDices, LuEye, LuEyeOff, LuLock, LuMic, LuPencilLine, LuRotateCcw, LuVolume2, LuVolumeX } from 'react-icons/lu';
+import { LuDices, LuEye, LuEyeOff, LuMic, LuPencilLine, LuRotateCcw, LuVolume2, LuVolumeX } from 'react-icons/lu';
 
 import { ApiError } from '../api/client';
 import {
@@ -23,8 +23,9 @@ import { activeStorageName } from '../lib/db';
 import { useSeo } from '../lib/seo';
 import { acceptStudy } from '../lib/study';
 import { useAuth } from '../state/auth';
+import { useQuery } from '../lib/router';
 
-const TITLE = 'Говори! Тема на барабане';
+const TITLE = 'Говори или пиши';
 const SETTINGS_KEY = 'citavuk-speaking-settings';
 const HISTORY_KEY = 'citavuk-speaking-history';
 
@@ -51,9 +52,10 @@ function readJSON<T>(key: string, fallback: T): T {
   }
 }
 
+function historyKey() { return `${HISTORY_KEY}:${activeStorageName()}`; }
 function readHistory(): HistoryItem[] {
   try {
-    const value = JSON.parse(localStorage.getItem(HISTORY_KEY) ?? '[]') as HistoryItem[];
+    const value = JSON.parse(localStorage.getItem(historyKey()) ?? '[]') as HistoryItem[];
     return Array.isArray(value) ? value : [];
   } catch {
     return [];
@@ -78,13 +80,9 @@ function Teaser({ access }: { access: SpeakingAccess }) {
     <Shell>
       <Card className="mx-auto max-w-2xl p-7 text-center sm:p-10">
         <img src="/img/citavuk_gram.webp" alt="" width={160} height={160} className="mx-auto w-32 object-contain" />
-        <p className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-sm font-bold">
-          <LuLock className="size-4" aria-hidden="true" /> Ранний доступ
-        </p>
         <h1 className="mt-4 text-balance text-3xl sm:text-4xl">{TITLE}</h1>
         <p className="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-[var(--text-muted)]">
-          Крути барабан — выпадает тема из полутораста: политика, наука, мода, искусство и другие. Скажи о ней
-          пару минут или напиши текст, а Читавук разберёт твои ошибки.
+          Случайная тема для разговора или короткого текста по-сербски.
         </p>
         <p className="mx-auto mt-3 max-w-lg leading-relaxed">
           До {date} игра открыта друзьям Читавука — тем, кто поддержал проект. С {date} в неё сможет играть каждый.
@@ -128,6 +126,7 @@ interface Done {
 }
 
 export function Speaking() {
+  const query = useQuery();
   useSeo({
     title: `${TITLE} — Читавук`,
     description:
@@ -137,15 +136,20 @@ export function Speaking() {
   const [access, setAccess] = useState<SpeakingAccess | null>(null);
   const [catalog, setCatalog] = useState<SpeakingCatalog | null>(null);
   const [failed, setFailed] = useState(false);
+  const [owner, setOwner] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
     let cancelled = false;
+    const scope = account?.id ?? null;
     setFailed(false);
     getSpeakingAccess()
       .then(async (value) => {
         if (cancelled) return;
+        const nextCatalog = value.open ? await getSpeakingTopics() : null;
+        if (cancelled) return;
         setAccess(value);
-        if (value.open) setCatalog(await getSpeakingTopics());
+        setOwner(scope);
+        setCatalog(nextCatalog);
       })
       .catch(() => !cancelled && setFailed(true));
     return () => {
@@ -162,7 +166,7 @@ export function Speaking() {
       </Shell>
     );
   }
-  if (!access || (access.open && !catalog)) {
+  if (owner !== (account?.id ?? null) || !access || (access.open && !catalog)) {
     return (
       <Shell>
         <div className="flex justify-center py-24"><Spinner className="size-7" /></div>
@@ -170,10 +174,10 @@ export function Speaking() {
     );
   }
   if (!access.open || !catalog) return <Teaser access={access} />;
-  return <Game catalog={catalog} signedIn={!!account} />;
+  return <Game key={account?.id ?? 'guest'} catalog={catalog} signedIn={!!account} initialMode={query.mode === 'speak' || query.mode === 'write' ? query.mode : null} />;
 }
 
-function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boolean }) {
+function Game({ catalog, signedIn, initialMode }: { catalog: SpeakingCatalog; signedIn: boolean; initialMode: 'speak' | 'write' | null }) {
   const [settings, setSettings] = useState<Settings>(() =>
     readJSON<Settings>(SETTINGS_KEY, { genres: [], muted: false, hints: true }),
   );
@@ -204,8 +208,10 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
     writeStorage(SETTINGS_KEY, next);
   };
 
-  const toggleGenre = (id: string) =>
+  const toggleGenre = (id: string) => {
+    if (spinId > 0 && !landed) return;
     update({ genres: chosen.includes(id) ? chosen.filter((item) => item !== id) : [...chosen, id] });
+  };
 
   const spin = useCallback(() => {
     if (spinId > 0 && !landed) return;
@@ -231,9 +237,11 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
   const submit = async (text: string, source: SpeakingSource) => {
     if (!topic || busy) return;
     setBusy(true);
+    const owner = activeStorageName();
     setError('');
     try {
       const response = await reviewSpeaking({ sessionId: session.current, topicId: topic.id, text, source });
+      if (owner !== activeStorageName()) return;
       if (response.study) acceptStudy(response.study, activeStorageName(), true);
       setDone({ topic, text: response.text, review: response.review });
       const item: HistoryItem = {
@@ -246,7 +254,7 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
       };
       const next = [item, ...history.filter((entry) => entry.id !== item.id)].slice(0, 8);
       setHistory(next);
-      writeStorage(HISTORY_KEY, next);
+      writeStorage(historyKey(), next);
       session.current = crypto.randomUUID();
     } catch (caught) {
       setError(
@@ -265,24 +273,22 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
 
   return (
     <Shell>
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
         <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
-          <img src="/img/citavuk_gram.webp" alt="" width={140} height={140} className="w-28 object-contain sm:w-32" />
           <div>
-            <p className="text-sm font-bold uppercase tracking-wide text-[var(--accent)]">Разговорная практика</p>
-            <h1 className="mt-1 text-balance text-3xl leading-tight sm:text-4xl">{TITLE}</h1>
+            <h1 className="text-balance text-3xl leading-tight sm:text-4xl">{initialMode === 'speak' ? 'Говори!' : initialMode === 'write' ? 'Пиши!' : TITLE}</h1>
             <p className="mt-3 leading-relaxed text-[var(--text-muted)]">
-              Крути барабан, получай тему и говори о ней по-сербски — или напиши текст. Читавук найдёт ошибки,
-              объяснит их и покажет, как сказать правильно.
+              Получи тему и ответь по-сербски.
             </p>
           </div>
         </div>
 
-        <Card className="mt-7 p-5 sm:p-7">
+        <section className="mt-5">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
-              Жанр {chosen.length === 0 ? '— любой' : ''}
-            </h2>
+            <details className="min-w-0 flex-1">
+              <summary className="cursor-pointer text-sm text-[var(--text-muted)]">{chosen.length ? `Темы: ${chosen.length}` : 'Все темы'}</summary>
+              <div className="mt-3 flex flex-wrap gap-2">{catalog.genres.map(item => <Chip key={item.id} active={chosen.includes(item.id)} onClick={() => toggleGenre(item.id)}><GenreIcon genre={item} className="size-4" />{item.ru}</Chip>)}</div>
+            </details>
             <button
               type="button"
               onClick={() => update({ muted: !settings.muted })}
@@ -292,13 +298,6 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
               {settings.muted ? <LuVolumeX className="size-5" /> : <LuVolume2 className="size-5" />}
             </button>
           </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {catalog.genres.map((item) => (
-              <Chip key={item.id} active={chosen.includes(item.id)} onClick={() => toggleGenre(item.id)}>
-                <GenreIcon genre={item} className="size-4" /> {item.ru}
-              </Chip>
-            ))}
-          </div>
 
           <div className="mt-6">
             <Reel
@@ -307,23 +306,23 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
               spinId={spinId}
               target={topic}
               muted={settings.muted}
-              onLanded={() => setLanded(true)}
+              onLanded={() => { setLanded(true); if (initialMode === 'write') setAnswer({mode:'write',text:''}); else if (initialMode === 'speak' && canRecord) setAnswer({mode:'speak',text:null}); }}
             />
           </div>
           <div className="mt-5 flex justify-center">
             <Button size="lg" onClick={spin} disabled={spinId > 0 && !landed}>
               <LuDices className="size-5" aria-hidden="true" />
-              {spinId === 0 ? 'Крутить барабан' : landed ? 'Крутить ещё' : 'Крутится…'}
+              {spinId === 0 ? 'Выбрать тему' : landed ? 'Другая тема' : 'Крутится…'}
             </Button>
           </div>
-        </Card>
+        </section>
 
         <div ref={answerRef} className="scroll-mt-20">
           {topic && landed && !done && (
             <Card className="mt-6 p-5 sm:p-7">
-              <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[var(--accent)]">
+              <p className="flex items-center gap-2 text-sm font-bold uppercase  text-[var(--accent)]">
                 <GenreIcon genre={genre} className="size-5" />
-                {genre?.ru} · твоя тема
+                {genre?.ru}
               </p>
               <h2 className="mt-2 text-balance text-2xl leading-snug sm:text-3xl">{topic.ru}</h2>
               <p className="mt-2 text-lg text-[var(--text-muted)]" lang="sr">{topic.sr}</p>
@@ -374,7 +373,7 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
                         onChange={(value) => setAnswer({ ...answer, text: value } as Answer)}
                         disabled={busy}
                         label="Твой ответ"
-                        placeholder="Пиши по-сербски — латиницей или кириллицей. Хватит пяти-восьми предложений."
+                        placeholder="Напиши несколько предложений по-сербски."
                       />
                       {error && (
                         <p className="mt-3 text-[var(--accent)]" role="alert">{error}</p>
@@ -411,7 +410,7 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
 
           {done && (
             <Card className="mt-6 p-5 sm:p-7">
-              <p className="text-sm font-bold uppercase tracking-wide text-[var(--accent)]">Разбор · {done.topic.ru}</p>
+              <p className="text-sm font-bold uppercase  text-[var(--accent)]">Разбор, {done.topic.ru}</p>
               <ReviewView
                 text={done.text}
                 review={done.review}
@@ -427,7 +426,7 @@ function Game({ catalog, signedIn }: { catalog: SpeakingCatalog; signedIn: boole
 
         {history.length > 0 && (
           <section className="mt-8" aria-label="Недавние попытки">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">Недавние попытки</h2>
+            <h2 className="text-sm font-bold uppercase  text-[var(--text-muted)]">Недавние попытки</h2>
             <ul className="mt-2 divide-y divide-[var(--line)] rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)]">
               {history.map((item) => (
                 <li key={item.id} className="flex items-center gap-3 px-4 py-3">

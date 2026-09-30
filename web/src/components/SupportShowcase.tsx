@@ -25,8 +25,7 @@ export function SupportShowcase() {
   useEffect(() => { let alive = true; getSupportShowcase().then(d => { if (alive) setData(d); }).catch(() => {}); return () => { alive = false; }; }, []);
   return <section className="px-5 py-8 sm:py-12" aria-label="Поддержка проекта">
     <div className="mx-auto max-w-4xl rounded-3xl border border-gold/45 bg-[var(--bg-raised)] p-5 shadow-[var(--shadow-soft)] sm:p-8">
-      <p className="text-sm font-semibold text-[var(--accent)]">Друзья Читавука</p>
-      <h2 className="mt-1 text-2xl sm:text-3xl">Помогаем сербскому стать ближе</h2>
+      <h2 className="text-2xl sm:text-3xl">Друзья Читавука</h2>
       {data && data.supporters.length > 0 ? <SupporterPodium supporters={data.supporters} /> : <p className="mt-4 text-[var(--text-muted)]">Твоя поддержка помогает оплачивать сервер и выпускать новые возможности.</p>}
       {data?.spotlight && <aside className="mt-6 rounded-2xl border border-gold/40 bg-gold/8 p-5">
         <p className="text-xs font-bold uppercase text-[var(--accent)]">Благодарность дня</p>
@@ -34,7 +33,7 @@ export function SupportShowcase() {
         {data.spotlight.message && <blockquote className="mt-2 whitespace-pre-wrap break-words leading-relaxed">{data.spotlight.message}</blockquote>}
         {!!data.spotlight.amountKopecks && <p className="mt-2 text-sm text-[var(--text-muted)]">Вклад в проект: {formatRubles(data.spotlight.amountKopecks)}</p>}
       </aside>}
-      <p className="mt-5 text-sm leading-relaxed text-[var(--text-muted)]">Место дня получает самая большая поддержка за предыдущий день по Москве. Имя и сумма показываются с разрешения автора, сообщение — после проверки.</p>
+      <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">{'Место дня получает самая большая поддержка за предыдущий день по МСК.\nИмя и сумма показываются с разрешения автора, а сообщение, которое он хотел оставить, после проверки.'}</p>
       <div className="mt-5 flex flex-wrap gap-5 font-semibold text-[var(--accent)]">
         <Link to="/support">Поддержать Читавук</Link><Link to="/supporters">Все друзья</Link>
       </div>

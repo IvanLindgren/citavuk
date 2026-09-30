@@ -351,7 +351,7 @@ function ExerciseCard({
           <span className="block font-semibold">{set.title}</span>
           <span className="block text-sm text-[var(--text-muted)]">
             {exercises.length} заданий
-            {set.done && ` · пройдено на ${Math.round(set.score * 100)}%`}
+            {set.done && `, пройдено на ${Math.round(set.score * 100)}%`}
           </span>
         </span>
         <LuChevronDown className={open ? 'rotate-180 transition-transform' : 'transition-transform'} />
@@ -428,7 +428,7 @@ function WordList({
         <div>
           <h3 className="font-display text-2xl">Слова уровня</h3>
           <p className="text-sm text-[var(--text-muted)]">
-            {themes.length} тем · {words.length} слов
+            {themes.length} тем, {words.length} слов
           </p>
         </div>
         <div className="text-right">
@@ -568,7 +568,7 @@ function WordRow({ word, onMarked }: { word: RoadmapWord; onMarked: () => void }
         forms: {
           контекст: plainExample(word.example ?? ''),
           перевод: plainExample(word.exampleTranslation ?? ''),
-          источник: `Дорожная карта ${word.level} · ${word.theme}`,
+          источник: `Дорожная карта ${word.level}, ${word.theme}`,
         },
       });
       setSaved(true);

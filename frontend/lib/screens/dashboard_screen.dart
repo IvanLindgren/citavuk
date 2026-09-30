@@ -2288,7 +2288,7 @@ class _EventBanner extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w800,
-                              letterSpacing: 1,
+                              letterSpacing: 0,
                               color: Color(0xFFF2CA81),
                             ),
                           ),

@@ -127,9 +127,6 @@ export function Roadmap() {
     <main className="mx-auto w-full max-w-5xl px-5 py-10 sm:py-14">
       <Reveal>
         <header className="max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
-            Читавук
-          </p>
           <h1 className="mt-3 text-4xl sm:text-5xl">Дорожная карта сербского языка</h1>
         </header>
       </Reveal>
@@ -311,7 +308,7 @@ export function Roadmap() {
             <section className="mt-14 border-t border-[var(--line)] pt-10">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="font-display text-3xl">
-                  {level.level} · {level.name}
+                  {level.level}, {level.name}
                 </h2>
                 {account && overview.target !== level.level && (
                   <Button variant="secondary" onClick={() => chooseTarget(level.level)}>
@@ -364,7 +361,7 @@ export function Roadmap() {
                       </p>
                       <>
                         <p className="mt-3 text-sm text-[var(--text-muted)]">
-                          {progress?.done ?? 0} из {progress?.total ?? 0} ·{' '}
+                          {progress?.done ?? 0} из {progress?.total ?? 0},{' '}
                           {Math.round((progress?.ratio ?? 0) * 100)}%
                         </p>
                         <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-[var(--bg-sunken)]">

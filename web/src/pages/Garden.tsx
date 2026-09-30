@@ -409,13 +409,13 @@ function TaskBadge({ task }: { task: GardenTask }) {
   const phrase = taskPhrase(task.kind, task.target);
   return (
     <div className="garden-game-plaque pointer-events-none absolute left-3 top-20 z-[118] max-w-[15rem] px-3 py-2 sm:left-4 sm:top-24">
-      <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-[#7a5b43]">
+      <p className="flex items-center gap-2 text-[11px] font-semibold uppercase  text-[#7a5b43]">
         {GARDEN.task.sr}
       </p>
       <p className="font-display text-base font-bold leading-tight">{phrase.sr}</p>
       <p className="text-[11px] text-[#6b4d38]">{phrase.ru}</p>
       <p className="mt-1 text-xs tabular-nums">
-        {task.done ? `${GARDEN.done.sr} · +${task.reward}` : `${task.progress} / ${task.target}`}
+        {task.done ? `${GARDEN.done.sr}, +${task.reward}` : `${task.progress} / ${task.target}`}
       </p>
     </div>
   );
@@ -448,7 +448,7 @@ function Herbarium({ state }: { state: GardenState }) {
               />
               <span className="min-w-0">
                 <span className="block font-display text-lg font-bold">{species.serbian}</span>
-                <span className="block text-sm text-[#6b4d38]">{species.russian} · {species.theme}</span>
+                <span className="block text-sm text-[#6b4d38]">{species.russian}, {species.theme}</span>
               </span>
               <span className="ml-auto shrink-0 font-bold tabular-nums">
                 {item ? `×${item.count}` : '—'}
@@ -701,7 +701,7 @@ function SeedShelf({
                 <span aria-hidden className="block size-12 shrink-0 bg-no-repeat" style={{ backgroundImage: `url(${gardenArt('/img/garden/garden_seeds.webp')})`, backgroundSize: `${catalog.length * 3}rem 3rem`, backgroundPosition: `-${index * 3}rem 0` }} />
                 <span className="min-w-0">
                   <span className="block font-display text-lg font-bold">{species.serbian}</span>
-                  <span className="block text-sm text-[#6b4d38]">{species.russian} · {species.theme}</span>
+                  <span className="block text-sm text-[#6b4d38]">{species.russian}, {species.theme}</span>
                 </span>
                 <span className="ml-auto shrink-0 font-bold tabular-nums">{species.price}</span>
               </button>
@@ -833,7 +833,7 @@ function Leaderboard({ board }: { board: GardenBoardRow[] }) {
             <li key={row.nickname} className="flex items-baseline gap-3 py-2 text-sm">
               <span className="w-6 tabular-nums text-[#6b4d38]">{index + 1}</span>
               <Link to={`/basta/${encodeURIComponent(row.nickname)}`} className="truncate font-semibold">{row.nickname}</Link>
-              <span className="ml-auto tabular-nums">{row.bloomed} · {row.plants}</span>
+              <span className="ml-auto tabular-nums">{row.bloomed}, {row.plants}</span>
             </li>
           ))}
         </ol>

@@ -229,7 +229,7 @@ function ItemsEditor({
             <span className="min-w-0 flex-1">
               <span className="block font-semibold">{item.title}</span>
               <span className="block text-sm text-[var(--text-muted)]">
-                {KIND_LABELS[item.kind]} ·{' '}
+                {KIND_LABELS[item.kind]},{' '}
                 {item.status === 'published' ? 'опубликован' : 'черновик'}
               </span>
             </span>
@@ -450,7 +450,7 @@ function ExercisesEditor({
             <span className="min-w-0 flex-1">
               <span className="block font-semibold">{set.title}</span>
               <span className="block text-sm text-[var(--text-muted)]">
-                {set.content?.exercises?.length ?? 0} заданий ·{' '}
+                {set.content?.exercises?.length ?? 0} заданий,{' '}
                 {set.status === 'published' ? 'опубликован' : 'черновик'}
               </span>
             </span>

@@ -225,7 +225,7 @@ class _OdysseyScreenState extends State<OdysseyScreen> {
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
+                        letterSpacing: 0,
                         color: Color(0xFF8D3038))),
                 const SizedBox(height: 6),
                 Text(chapter.subtitle,

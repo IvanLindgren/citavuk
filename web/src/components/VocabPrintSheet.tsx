@@ -57,7 +57,7 @@ export function VocabPrintSheet({
           <div>
             <h2 className="text-2xl">Карточки на печать</h2>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              {cards.length} шт. · {pages.length} {sheetWord(pages.length)} ·{' '}
+              {cards.length} шт., {pages.length} {sheetWord(pages.length)},{' '}
               {CARDS_PER_PAGE} на лист
             </p>
           </div>
@@ -91,12 +91,12 @@ export function VocabPrintSheet({
             <Sheet
               cards={page.front}
               side="front"
-              caption={`${title} · лист ${index + 1}, лицо`}
+              caption={`${title}, лист ${index + 1}, лицо`}
             />
             <Sheet
               cards={page.back}
               side="back"
-              caption={`${title} · лист ${index + 1}, оборот`}
+              caption={`${title}, лист ${index + 1}, оборот`}
             />
           </div>
         ))}

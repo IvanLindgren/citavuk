@@ -470,7 +470,7 @@ class _CategoryCards extends StatelessWidget {
                 title: Text(nameOf(category.key),
                     style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text(
-                  '${category.local} · ${category.title}',
+                  '${category.local}, ${category.title}',
                   style: TextStyle(color: scheme.onSurfaceVariant),
                 ),
                 children: [
@@ -660,7 +660,7 @@ class _Station extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.w700)),
                       Text(
                         '${(ratio * 100).round()}%'
-                        '${marks.isEmpty ? '' : ' · ${marks.join(' · ')}'}',
+                        '${marks.isEmpty ? '' : ', ${marks.join(', ')}'}',
                         style: TextStyle(
                             fontSize: 12, color: scheme.onSurfaceVariant),
                       ),
@@ -708,7 +708,7 @@ class _LevelPanel extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Text('${current.level} · ${current.name}',
+              child: Text('${current.level}, ${current.name}',
                   style: theme.textTheme.titleLarge),
             ),
             if (signedIn && overview.target != current.level)
@@ -821,7 +821,7 @@ class _CategoryTile extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${category.local} · ${progress.done} из ${progress.total} · '
+            Text('${category.local}, ${progress.done} из ${progress.total}, '
                 '${(progress.ratio * 100).round()}%'),
             const SizedBox(height: 6),
             LinearProgressIndicator(

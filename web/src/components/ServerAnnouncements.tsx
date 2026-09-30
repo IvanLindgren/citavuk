@@ -330,7 +330,7 @@ function NotificationCenter({ open }: { open: boolean }) {
             ))}
             {moreAnnouncements.length > 0 && (
               <div className="border-t border-[var(--line)]">
-                <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Объявления</p>
+                <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase  text-[var(--text-muted)]">Объявления</p>
                 {moreAnnouncements.map((item) => (
                   <button key={item.id} type="button" onClick={() => select(item)}
                     className="block w-full border-b border-[var(--line)] px-4 py-3 text-left last:border-b-0 hover:bg-[var(--bg-sunken)]">

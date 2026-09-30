@@ -66,7 +66,7 @@ class _PlaceSheetState extends State<PlaceSheet> {
               style: theme.textTheme.headlineSmall
                   ?.copyWith(fontWeight: FontWeight.w800)),
           Text(
-            '${inScript(widget.kind.sr, widget.script)} · ${widget.kind.ru}',
+            '${inScript(widget.kind.sr, widget.script)}, ${widget.kind.ru}',
             style: theme.textTheme.bodySmall,
           ),
           if (content.hint.isNotEmpty) ...[
@@ -132,7 +132,7 @@ class _PlaceSheetState extends State<PlaceSheet> {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 0.8,
+                  letterSpacing: 0,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),

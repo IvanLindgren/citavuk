@@ -1021,7 +1021,7 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
                       ),
                     ),
                     TextSpan(
-                      text: '  ·  $subtitle',
+                      text: ' ,  $subtitle',
                       style: TextStyle(
                         fontSize: 12.5,
                         color: scheme.onSurface.withValues(alpha: 0.65),

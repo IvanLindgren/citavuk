@@ -84,7 +84,7 @@
 .card-emblem { width: 52%; height: 52%; color: var(--gold-soft); filter: drop-shadow(0 1px 1px #0006); }
 
 .card-caption { position: absolute; left: 16px; right: 14px; bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
-.card-kind { font-size: 9.5px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; color: color-mix(in srgb, var(--gold-soft) 85%, transparent); }
+.card-kind { font-size: 9.5px; font-weight: 800; letter-spacing: normal; text-transform: uppercase; color: color-mix(in srgb, var(--gold-soft) 85%, transparent); }
 .personal-card-title {
   font: 400 16px/1.28 Prata, serif; color: #fff5de; overflow-wrap: anywhere; text-wrap: balance;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -120,7 +120,7 @@
 
 .card-ribbon {
   position: absolute; top: 12px; right: 11px; z-index: 2; padding: 4px 9px; border-radius: 999px;
-  font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  font-size: 9.5px; font-weight: 800; letter-spacing: normal; text-transform: uppercase;
   color: #3a2208; background: linear-gradient(180deg, #fbe7b0, #d9ad55); box-shadow: 0 2px 6px #0000004d;
 }
 
@@ -172,7 +172,7 @@
 .deck-pile-label b { font: 400 24px/1.1 Prata, serif; color: #fbe7b0; }
 .deck-pile-label > span { font-size: 12px; color: #f3dfc8d9; }
 .deck-pile-label .deck-pile-action {
-  margin-top: 8px; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .06em;
+  margin-top: 8px; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: normal;
   text-transform: uppercase; color: #3a2208; background: linear-gradient(180deg, #fbe7b0, #d9ad55); text-shadow: none;
 }
 .deck-pile:focus-visible { outline: 3px solid #e3c275; outline-offset: 4px; border-radius: 16px; }
@@ -259,7 +259,7 @@
   .card-index { left: 13px; top: 11px; font-size: 18px; }
   .card-caption { left: 13px; right: 11px; bottom: 12px; gap: 4px; }
   .personal-card-title { font-size: 14.5px; }
-  .card-kind { font-size: 8.5px; letter-spacing: .08em; }
+  .card-kind { font-size: 8.5px; letter-spacing: normal; }
   .personal-card-bottom { font-size: 10.5px; }
   .wax-seal { width: 42px; height: 42px; }
   .wax-seal-score { font-size: 11.5px; }

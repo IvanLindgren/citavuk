@@ -81,7 +81,7 @@ export function DeckProgress({ plan }: { plan: PersonalPlan }) {
         })}
       </div>
       <p>
-        Пройдено <b>{done}</b> из 30 · уровень <b>{plan.profile.level}</b>
+        Пройдено <b>{done}</b> из 30, уровень <b>{plan.profile.level}</b>
       </p>
     </div>
   );
@@ -198,7 +198,7 @@ export function PersonalTodayStage({ plan, onOpen }: { plan: PersonalPlan; onOpe
         transition={{ delay: revealing ? 1.2 : 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <p className="personal-eyebrow">
-          <LuSparkles aria-hidden /> Карта дня · {day} из 30
+          <LuSparkles aria-hidden /> Карта дня, {day} из 30
         </p>
         <h2 id="today-title" className="today-title" lang="sr">
           {title}

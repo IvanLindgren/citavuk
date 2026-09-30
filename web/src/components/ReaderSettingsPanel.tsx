@@ -110,7 +110,7 @@ export function ReaderSettingsPanel({
                     id,
                     label: (id === 'odyssey' && !odysseyRewardUnlocked) ||
                       (id === 'campaign100' && !campaignRewardUrl)
-                        ? `${THEME_LABELS[id]} · закрыто`
+                        ? `${THEME_LABELS[id]}, закрыто`
                         : THEME_LABELS[id],
                     swatch: paletteFor(id)?.background,
                     swatchImage: id === 'campaign100' && campaignRewardUrl
@@ -269,7 +269,7 @@ export function ReaderSettingsPanel({
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <div className="mb-2 text-xs font-semibold uppercase  text-[var(--text-muted)]">
         {title}
       </div>
       {children}
@@ -349,7 +349,7 @@ function Slider({
   return (
     <label className="block">
       <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        <span className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
           {label}
         </span>
         <span className="text-sm tabular-nums text-[var(--text)]">

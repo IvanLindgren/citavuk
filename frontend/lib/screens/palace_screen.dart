@@ -252,7 +252,7 @@ class _ScenePicker extends StatelessWidget {
                     ListTile(
                       title: Text(scene.title),
                       subtitle: Text(
-                          '${scene.subtitle} · ${scene.spots.length} мест'),
+                          '${scene.subtitle}, ${scene.spots.length} мест'),
                     ),
                   ],
                 ),

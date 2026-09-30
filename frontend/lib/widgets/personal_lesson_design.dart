@@ -58,7 +58,7 @@ class PersonalLessonHero extends StatelessWidget {
                                 color: scheme.primary,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
-                                letterSpacing: 1.2)),
+                                letterSpacing: 0)),
                         const SizedBox(height: 8),
                         Text(kind,
                             style: TextStyle(
@@ -134,7 +134,7 @@ class PersonalDeckIntro extends StatelessWidget {
                     color: scheme.primary,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    letterSpacing: 1.1)),
+                    letterSpacing: 0)),
             const SizedBox(height: 12),
             Text('Колода сербского. Ого!',
                 style: TextStyle(

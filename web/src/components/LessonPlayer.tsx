@@ -89,7 +89,7 @@ export function LessonPlayer({ lesson, preview = false, previewMode, initialStag
       {isPreview && <div className="mt-5 rounded-md border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-4 py-3 text-sm"><strong>{isModeration ? 'Предпросмотр модератора.' : 'Предпросмотр преподавателя.'}</strong> Урок работает как у ученика, но ответы и письма никуда не отправляются.</div>}
       {stage === 'theory' && lesson.coverUrl && <div className="mt-7 aspect-[16/7] w-full overflow-hidden rounded-md bg-[var(--bg-sunken)]"><img src={lesson.coverUrl} alt="" className="size-full object-cover" /></div>}
       <header className="mt-7 max-w-3xl">
-        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase text-[var(--accent)]"><span>{lesson.level}</span><span>·</span><span>{typeLabel(lesson.lessonType)}</span>{lesson.topic && <><span>·</span><span>{lesson.topic}</span></>}</div>
+        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase text-[var(--accent)]"><span>{lesson.level}</span><span>,</span><span>{typeLabel(lesson.lessonType)}</span>{lesson.topic && <><span>,</span><span>{lesson.topic}</span></>}</div>
         <h1 className={`mt-3 text-3xl ${stage === 'theory' ? 'sm:text-5xl' : 'sm:text-4xl'}`}>{lesson.title || 'Урок без названия'}</h1>
         {stage === 'theory' && lesson.summary && <p className="mt-4 text-lg leading-8 text-[var(--text-muted)]">{lesson.summary}</p>}
         {/* Автор и время — сведения об уроке. Пришедшему за разговором они
@@ -165,7 +165,7 @@ function WordDrill({ exercise }: { exercise: LessonExercise }) {
   const correct = normalize(value) === normalize(pair.right);
   const last = index + 1 >= pairs.length;
   return <div>
-    <p className="text-sm text-[var(--text-muted)]">{index + 1} из {pairs.length} · верных {right}</p>
+    <p className="text-sm text-[var(--text-muted)]">{index + 1} из {pairs.length}, верных {right}</p>
     <p className="mt-3 font-display text-2xl">{pair.left}</p>
     <input value={value} onChange={(event) => { setValue(event.target.value); setChecked(false); }} placeholder="Слово по-сербски" className="mt-4 w-full rounded-md border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2.5 outline-none focus:border-[var(--accent)]" />
     <CheckRow disabled={!value.trim()} checked={checked} correct={correct} onCheck={() => { setChecked(true); if (correct) setRight((count) => count + 1); }} />

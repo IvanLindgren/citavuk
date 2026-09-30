@@ -86,7 +86,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   Widget build(BuildContext context) {
     final info = widget.info;
     final megabytes = info.size > 0
-        ? ' · ${(info.size / 1024 / 1024).round()} МБ'
+        ? ', ${(info.size / 1024 / 1024).round()} МБ'
         : '';
 
     return AlertDialog(

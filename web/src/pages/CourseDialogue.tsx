@@ -223,9 +223,6 @@ export function CourseDialogue() {
         </div>
 
         <header className="py-6 text-center">
-          <p className="text-xs font-bold uppercase text-[var(--accent)]">
-            Игровой диалог
-          </p>
           <h1 className="mt-2 text-3xl sm:text-4xl">{dialogue.title}</h1>
           <p className="mt-1 font-display text-lg text-[var(--text-muted)]">
             {dialogue.titleSr}

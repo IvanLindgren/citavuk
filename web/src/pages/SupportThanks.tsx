@@ -131,7 +131,7 @@ function Celebrated({ state }: { state: DonationState }) {
           />
         </Glory>
 
-        <motion.p {...rise(0.35)} className="mt-2 text-sm font-bold uppercase tracking-wide text-[var(--accent)]">
+        <motion.p {...rise(0.35)} className="mt-2 text-sm font-bold uppercase  text-[var(--accent)]">
           Поддержка {formatRubles(state.amountKopecks)} получена
         </motion.p>
         <motion.h1 {...rise(0.45)} className="mt-2 text-balance text-4xl leading-tight sm:text-5xl">

@@ -940,9 +940,9 @@ function WordCard({
                   {reflexive ? 'возвратный глагол' : analysis.posShort}
                 </span>
                 {reflexive?.lemma
-                  ? <> · основа <b>{reflexive.lemma}</b></>
+                  ? <>, основа <b>{reflexive.lemma}</b></>
                   : analysis.lemma !== analysis.surface.toLowerCase() && (
-                      <> · основа <b>{analysis.lemma}</b></>
+                      <>, основа <b>{analysis.lemma}</b></>
                     )}
               </div>
             )}
@@ -1435,7 +1435,7 @@ function DefinitionCard({
       style={{ maxHeight }}
     >
       <div className="shrink-0 border-b border-[var(--line)] px-4 py-3">
-        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
           Значение по-сербски
         </div>
         <div className="mt-1 font-display text-lg font-bold text-[var(--text)]">
@@ -1555,7 +1555,7 @@ function MascotSays({
         />
       </svg>
       <div className="min-w-0 flex-1 rounded-2xl rounded-tl-sm border border-[var(--line)] bg-[var(--bg-sunken)] px-4 py-3">
-        <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        <div className="mb-1 text-xs font-semibold uppercase  text-[var(--text-muted)]">
           {label}
         </div>
         <div className="font-display text-lg font-semibold leading-snug">
@@ -1629,7 +1629,7 @@ function Transcription({ word, accent }: { word: string; accent?: WordAccent }) 
       <span>
         {serbianIpa(word)}
         <span className="ml-1.5">
-          · начальная форма <Accented written={accent.lemma} />
+         , начальная форма <Accented written={accent.lemma} />
         </span>
       </span>
     );
@@ -1669,7 +1669,7 @@ function Accented({ written }: { written: string }) {
 function ReflexivePanel({ reflexive }: { reflexive: ReflexiveParticle }) {
   return (
     <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4">
-      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
         Возвратный глагол
       </div>
       <div className="mt-1.5 font-display text-lg font-bold text-[var(--text)]">
@@ -1677,7 +1677,7 @@ function ReflexivePanel({ reflexive }: { reflexive: ReflexiveParticle }) {
         {reflexive.lemma && (
           <span className="font-sans text-sm font-normal text-[var(--text-muted)]">
             {' '}
-            · начальная форма {reflexive.lemma}
+           , начальная форма {reflexive.lemma}
           </span>
         )}
       </div>
@@ -1703,7 +1703,7 @@ function EnglishGrammarPanel({ english }: { english: EnglishAnalysis }) {
       <div className="text-sm">
         <span className="text-[var(--text-muted)]">Начальная форма: </span>
         <b className="font-display">{english.lemma}</b>
-        <span className="text-[var(--text-muted)]"> · {english.posFull}</span>
+        <span className="text-[var(--text-muted)]">, {english.posFull}</span>
       </div>
 
       {facts.length > 0 && (
@@ -1774,7 +1774,7 @@ function SaveChoice({
       className="rounded-2xl border border-[var(--line)] bg-[var(--bg-sunken)] p-4"
       disabled={disabled}
     >
-      <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <legend className="px-1 text-xs font-semibold uppercase  text-[var(--text-muted)]">
         Добавить в словарь
       </legend>
       <div className="space-y-1.5">
@@ -1792,7 +1792,7 @@ function SaveChoice({
             />
             <span className="min-w-0">
               <b className="font-display">{option.title}</b>
-              <span className="text-[var(--text-muted)]"> · {option.subtitle}</span>
+              <span className="text-[var(--text-muted)]">, {option.subtitle}</span>
             </span>
           </label>
         ))}
@@ -1827,7 +1827,7 @@ function GrammarPanel({ analysis }: { analysis: WordAnalysis }) {
 
       {analysis.facts.length > 0 && (
         <div className={analysis.translation ? 'mt-3' : ''}>
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          <div className="mb-2 text-xs font-semibold uppercase  text-[var(--text-muted)]">
             Разбор формы
           </div>
           <div className="flex flex-wrap gap-2">
@@ -1847,7 +1847,7 @@ function GrammarPanel({ analysis }: { analysis: WordAnalysis }) {
       {/* У предлога главное — какого падежа он требует. */}
       {analysis.prepositions && analysis.prepositions.length > 0 && (
         <div className="mt-3 space-y-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
             Требует падежа
           </div>
           {analysis.prepositions.map((government) => (
@@ -1952,7 +1952,7 @@ function Field({
 }) {
   return (
     <div>
-      <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <div className="mb-1 text-xs font-semibold uppercase  text-[var(--text-muted)]">
         {label}
       </div>
       <div

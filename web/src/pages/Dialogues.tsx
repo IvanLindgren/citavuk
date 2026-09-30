@@ -151,7 +151,7 @@ function LessonDialogueCard({ dialogue }: { dialogue: PublicDialogue }) {
         <div className="flex items-center gap-2 text-xs font-bold uppercase text-[var(--accent)]">
           <HiSpeakerWave aria-hidden="true" />
           {dialogue.level}
-          <span aria-hidden="true" className="text-[var(--text-muted)]">·</span>
+          <span aria-hidden="true" className="text-[var(--text-muted)]">,</span>
           <span className="text-[var(--text-muted)]">{linesLabel(dialogue.lines)}</span>
         </div>
         <h3 className="mt-2 text-lg leading-snug">{dialogue.title}</h3>

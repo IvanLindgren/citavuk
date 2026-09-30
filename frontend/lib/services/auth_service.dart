@@ -23,6 +23,7 @@ class Account {
     this.emailVerified = true,
     this.serbianLevel = '',
     this.supporterSince,
+    this.isAdmin = false,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -32,6 +33,7 @@ class Account {
         hasPassword: json['hasPassword'] as bool? ?? true,
         emailVerified: json['emailVerified'] as bool? ?? true,
         serbianLevel: json['serbianLevel'] as String? ?? '',
+        isAdmin: json['isAdmin'] == true,
         supporterSince:
             DateTime.tryParse(json['supporterSince'] as String? ?? ''),
       );
@@ -50,6 +52,7 @@ class Account {
 
   /// С какого дня у аккаунта значок «Друг Читавука»; null — не поддерживал.
   final DateTime? supporterSince;
+  final bool isAdmin;
 
   Account withLevel(String level) => Account(
         id: id,
@@ -59,6 +62,7 @@ class Account {
         emailVerified: emailVerified,
         serbianLevel: level,
         supporterSince: supporterSince,
+        isAdmin: isAdmin,
       );
 
   /// Что показать в интерфейсе: имя, а если его нет — почту.
@@ -71,6 +75,7 @@ class Account {
         'hasPassword': hasPassword,
         'emailVerified': emailVerified,
         'serbianLevel': serbianLevel,
+        if (isAdmin) 'isAdmin': true,
         if (supporterSince != null)
           'supporterSince': supporterSince!.toUtc().toIso8601String(),
       };

@@ -27,6 +27,8 @@ import '../../services/auth_service.dart';
 import '../../services/roadmap_service.dart';
 import 'lesson_screen.dart';
 import 'duel_menu_screen.dart';
+import '../../games/cases/case_game_screen.dart';
+import '../../games/speaking/speaking_screen.dart';
 
 /// Сколько заданий в одном заходе. Больше двенадцати уже утомляет.
 const int _roundSize = 10;
@@ -112,9 +114,7 @@ class _TrainerScreenState extends State<TrainerScreen> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
           Text(
-            'Практика собрана по уровню и навыку. Полностью правильный заход '
-            'сразу отмечает тему в дорожной карте. Сейчас '
-            'доступно $total упражнений выбранного раздела.',
+            '$total упражнений. Выбери тему или играй вперемешку.',
             style: TextStyle(
               fontSize: 15,
               height: 1.45,
@@ -127,6 +127,27 @@ class _TrainerScreenState extends State<TrainerScreen> {
             onChanged: (value) => setState(() => _domain = value),
           ),
           const SizedBox(height: 18),
+          if ((context.watch<AuthService>().account?.supporterSince != null) ||
+              (context.watch<AuthService>().account?.isAdmin ?? false)) ...[
+            _TopicTile(
+              title: _domain == TrainerDomain.grammar
+                  ? 'Падежи'
+                  : _domain == TrainerDomain.reading
+                      ? 'Говори!'
+                      : 'Пиши!',
+              subtitle: _domain == TrainerDomain.grammar
+                  ? 'Склоняй слова на печатной машинке'
+                  : 'Получи тему и ответь по-сербски',
+              onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => _domain == TrainerDomain.grammar
+                      ? const CaseGameScreen()
+                      : SpeakingScreen(
+                          initialMode: _domain == TrainerDomain.reading
+                              ? SpeakingEntryMode.speak
+                              : SpeakingEntryMode.write))),
+            ),
+            const SizedBox(height: 18),
+          ],
           _TranslationDuelTile(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
@@ -158,7 +179,7 @@ class _TrainerScreenState extends State<TrainerScreen> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w800,
-                letterSpacing: 0.6,
+                letterSpacing: 0,
                 color: scheme.onSurface.withValues(alpha: 0.55),
               ),
             ),

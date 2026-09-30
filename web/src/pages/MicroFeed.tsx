@@ -534,7 +534,7 @@ function FeedStory({
             <div className="flex shrink-0 flex-wrap items-center gap-2 text-xs font-bold uppercase text-white/70">
               <span className="rounded-md border border-white/20 bg-black/30 px-2 py-1 text-white/90">{categoryLabel(item.category)}</span>
               <span>{item.cefr}</span>
-              <span aria-hidden="true">·</span>
+              <span aria-hidden="true">,</span>
               <span>{minutes} мин</span>
             </div>
 

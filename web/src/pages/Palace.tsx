@@ -112,7 +112,7 @@ export function Palace() {
                     >
                       Войдите
                     </Link>
-                    , чтобы они были и на других устройствах.
+                   , чтобы они были и на других устройствах.
                   </span>
                 )}
               </div>
@@ -135,7 +135,7 @@ export function Palace() {
                   </div>
                   <h2 className="text-xl leading-snug">{palace.name}</h2>
                   <p className="mt-1 text-sm text-[var(--text-muted)]">
-                    {scene.title} · {filled} из {scene.objects.length} предметов
+                    {scene.title}, {filled} из {scene.objects.length} предметов
                   </p>
                   <div className="mt-auto flex flex-wrap gap-2 pt-4">
                     <Button
@@ -192,7 +192,7 @@ export function Palace() {
                 </div>
                 <h3 className="mt-3 text-lg">{scene.title}</h3>
                 <p className="text-sm text-[var(--text-muted)]">
-                  {scene.subtitle} · {scene.objects.length} предметов
+                  {scene.subtitle}, {scene.objects.length} предметов
                 </p>
                 <Button
                   size="sm"
@@ -520,7 +520,7 @@ function PinEditor({
     <Card className="p-5">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
             Предмет
           </div>
           <div className="font-display text-xl font-bold">
@@ -565,7 +565,7 @@ function PinEditor({
       )}
 
       <label className="block">
-        <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+        <span className="mb-1.5 block text-xs font-semibold uppercase  text-[var(--text-muted)]">
           Из словаря или своё
         </span>
         <input
@@ -705,7 +705,7 @@ function Walk({
         </Card>
 
         <Card className="mt-5 px-6 py-8 text-center">
-          <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          <div className="text-xs font-semibold uppercase  text-[var(--text-muted)]">
             {object?.label ?? 'Предмет'}
           </div>
           <AnimatePresence mode="wait">

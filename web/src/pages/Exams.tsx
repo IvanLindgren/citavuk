@@ -114,7 +114,7 @@ export function Exams() {
             </div>
             <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
               {nativeQuiz && nativeQuiz.attempts > 0
-                ? `Попыток: ${nativeQuiz.attempts} · лучший результат: ${nativeQuiz.bestScore}%`
+                ? `Попыток: ${nativeQuiz.attempts}, лучший результат: ${nativeQuiz.bestScore}%`
                 : 'Внутренний тест сохраняет результат и разбор ошибок в вашем профиле.'}
             </p>
           </div>

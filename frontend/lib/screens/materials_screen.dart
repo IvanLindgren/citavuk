@@ -245,7 +245,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
           [
             _Choice(null, 'Всё', _level == null),
             for (final level in catalog.levels)
-              _Choice(level.id, '${level.title} · ${level.count}',
+              _Choice(level.id, '${level.title}, ${level.count}',
                   _level == level.id),
           ],
           (value) => setState(() {
@@ -260,7 +260,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
           [
             _Choice(null, 'Все', _subjectId == null),
             for (final subject in subjects)
-              _Choice(subject.id, '${subject.title} · ${subject.count}',
+              _Choice(subject.id, '${subject.title}, ${subject.count}',
                   _subjectId == subject.id),
           ],
           (value) => setState(() {
@@ -350,7 +350,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       document.track ?? document.publisherShort,
       if (document.year != null) '${document.year}',
       if (document.sizeLabel.isNotEmpty) document.sizeLabel,
-    ].join(' · ');
+    ].join(', ');
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
@@ -434,7 +434,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
               child: Text(
-                '• ${source.title} · ${source.count}',
+                '• ${source.title}, ${source.count}',
                 style: theme.textTheme.bodySmall,
               ),
             ),

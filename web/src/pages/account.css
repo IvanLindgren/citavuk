@@ -1,6 +1,6 @@
 .account-passport { position: relative; overflow: hidden; border-radius: 24px 8px 24px 8px; border-top: 3px solid #b58b4b; background: linear-gradient(115deg,var(--bg-raised),var(--bg)); }
 .account-passport:after { content: ''; position: absolute; width: 150px; height: 150px; top: -22px; right: -20px; background: url('/personal/decor/ravanica-medallion.png') center/contain no-repeat; opacity: .12; pointer-events: none; }
-.account-eyebrow { margin-bottom: 20px; color: var(--text-muted); font-size: 12px; letter-spacing: .04em; }
+.account-eyebrow { margin-bottom: 20px; color: var(--text-muted); font-size: 12px; letter-spacing: normal; }
 .account-monogram { display: grid; place-items: center; flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%; background: #80372e; color: #f9e6be; border: 4px double #d0ad70; font: 700 28px Lora,serif; }
 .account-passport-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 22px; font-size: 13px; color: var(--text-muted); }
 .account-level { display: inline-flex; align-items: center; gap: 10px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 8px; }

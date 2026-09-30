@@ -177,8 +177,8 @@ GameTask? _nounTask(NounEntry noun, String cell) {
     kind: 'noun',
     lemma: noun.lemma,
     translation: noun.translation,
-    label: '${info.ru} · ${_number(number)}',
-    labelSr: '${info.sr} · ${_numberSr(number)}',
+    label: '${info.ru}, ${_number(number)}',
+    labelSr: '${info.sr}, ${_numberSr(number)}',
     before: frame.$1,
     after: frame.$2,
     answers: answers,
@@ -200,7 +200,7 @@ GameTask? _pronounTask(PronounEntry pronoun, String key) {
     kind: 'pronoun',
     lemma: pronoun.lemma,
     translation: pronoun.translation,
-    label: '${info.ru} · местоимение',
+    label: '${info.ru}, местоимение',
     labelSr: info.sr,
     before: frame.$1,
     after: frame.$2,
@@ -229,16 +229,16 @@ GameTask? _verbTask(VerbEntry verb, String tense, Random random) {
     if (imperative == null) return null;
     final person = const ['2s', '1p', '2p'][random.nextInt(3)];
     final who = person == '2s' ? 'ti' : person == '1p' ? 'mi' : 'vi';
-    return make('${info.ru} · $who', '${info.sr} · $who', '($who)', '!', imperative[person]!);
+    return make('${info.ru}, $who', '${info.sr}, $who', '($who)', '!', imperative[person]!);
   }
   final person = _persons[random.nextInt(_persons.length)];
   if (tense == 'pres') {
-    return make('${info.ru} · ${person.$3}', info.sr, person.$2, '', verb.present[person.$1]!);
+    return make('${info.ru}, ${person.$3}', info.sr, person.$2, '', verb.present[person.$1]!);
   }
   if (tense == 'fut') {
     // С подлежащим клитика идёт второй: «ja ću raditi».
     final answers = ['${_auxFuture[person.$1]} ${verb.lemma}', ...?verb.future?[person.$1]];
-    return make('${info.ru} · ${person.$3}', info.sr, person.$2, '', answers);
+    return make('${info.ru}, ${person.$3}', info.sr, person.$2, '', answers);
   }
   final plural = person.$1.endsWith('p');
   var gender = random.nextBool() ? 'm' : 'f';
@@ -263,7 +263,7 @@ GameTask? _verbTask(VerbEntry verb, String tense, Random random) {
   final showGender = person.$1 == '1s' || person.$1 == '2s';
   final genderRu = gender == 'm' ? 'муж.' : gender == 'f' ? 'жен.' : 'ср.';
   return make(
-    '${info.ru} · ${person.$3}${showGender ? ', $genderRu род' : ''}',
+    '${info.ru}, ${person.$3}${showGender ? ', $genderRu род' : ''}',
     info.sr,
     showGender ? '$pronoun (${gender == 'm' ? 'm' : 'ž'})' : pronoun,
     '',

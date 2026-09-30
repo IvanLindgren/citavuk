@@ -398,8 +398,8 @@ class _TaskBadge extends StatelessWidget {
                     ),
                     Text(
                       task.done
-                          ? '${Garden.done.ru} · +${task.reward}'
-                          : '${phrase.ru} · ${task.progress} из ${task.target}',
+                          ? '${Garden.done.ru}, +${task.reward}'
+                          : '${phrase.ru}, ${task.progress} из ${task.target}',
                       style: const TextStyle(
                           fontSize: 11, color: Color(0xFF7A5B43)),
                     ),

@@ -38,7 +38,7 @@ class DefinitionCard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 0.6,
+                        letterSpacing: 0,
                         color: muted)),
                 const SizedBox(height: 4),
                 Text.rich(

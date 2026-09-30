@@ -117,9 +117,6 @@ export function Admin() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
-              Управление Читавуком
-            </p>
             <h1 className="mt-1 font-display text-3xl sm:text-4xl">{TITLES[tab]}</h1>
           </div>
           <p className="text-sm text-[var(--text-muted)]">{account.email}</p>
@@ -134,7 +131,7 @@ export function Admin() {
             <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-2 lg:mx-0 lg:block lg:space-y-5 lg:overflow-visible lg:px-0 lg:pb-0">
               {GROUPS.map((group) => (
                 <div key={group.title} className="flex gap-1.5 lg:block">
-                  <p className="hidden text-xs font-bold uppercase tracking-wide text-[var(--text-muted)] lg:block">
+                  <p className="hidden text-xs font-bold uppercase  text-[var(--text-muted)] lg:block">
                     {group.title}
                   </p>
                   <div className="flex gap-1.5 lg:mt-2 lg:block lg:space-y-0.5">
@@ -277,7 +274,7 @@ function TeacherModerationPanel() {
   const pending = applications.filter((item) => item.status === 'pending');
   return <div className="space-y-10">
     {error && <ErrorNote>{error}</ErrorNote>}
-    <section><h2 className="text-2xl">Заявки преподавателей</h2><div className="mt-4 space-y-3">{pending.length === 0 ? <p className="text-[var(--text-muted)]">Очередь пуста.</p> : pending.map((item) => <div key={item.userId} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="text-lg">{item.displayName || item.email}</h3><p className="mt-1 text-sm text-[var(--text-muted)]">{item.email} · сербский {item.serbianLevel}</p></div><span className="text-sm">{item.nativeSpeaker ? 'Носитель' : `Русский ${item.russianLevel || 'не указан'}`}</span></div><p className="mt-4 whitespace-pre-wrap text-sm">{item.teachingExperience}</p>{item.certificates && <p className="mt-2 text-sm text-[var(--text-muted)]">Образование: {item.certificates}</p>}<textarea className={`${inputClass('')} mt-4`} rows={2} placeholder="Комментарий автору" value={comments[item.userId ?? ''] ?? ''} onChange={(event) => item.userId && setComments({ ...comments, [item.userId]: event.target.value })} /><div className="mt-3 flex gap-2"><Button size="sm" onClick={() => void decideApplication(item, 'approved')}>Одобрить</Button><Button size="sm" variant="secondary" onClick={() => void decideApplication(item, 'rejected')}>Отклонить</Button></div></div>)}</div></section>
+    <section><h2 className="text-2xl">Заявки преподавателей</h2><div className="mt-4 space-y-3">{pending.length === 0 ? <p className="text-[var(--text-muted)]">Очередь пуста.</p> : pending.map((item) => <div key={item.userId} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="text-lg">{item.displayName || item.email}</h3><p className="mt-1 text-sm text-[var(--text-muted)]">{item.email}, сербский {item.serbianLevel}</p></div><span className="text-sm">{item.nativeSpeaker ? 'Носитель' : `Русский ${item.russianLevel || 'не указан'}`}</span></div><p className="mt-4 whitespace-pre-wrap text-sm">{item.teachingExperience}</p>{item.certificates && <p className="mt-2 text-sm text-[var(--text-muted)]">Образование: {item.certificates}</p>}<textarea className={`${inputClass('')} mt-4`} rows={2} placeholder="Комментарий автору" value={comments[item.userId ?? ''] ?? ''} onChange={(event) => item.userId && setComments({ ...comments, [item.userId]: event.target.value })} /><div className="mt-3 flex gap-2"><Button size="sm" onClick={() => void decideApplication(item, 'approved')}>Одобрить</Button><Button size="sm" variant="secondary" onClick={() => void decideApplication(item, 'rejected')}>Отклонить</Button></div></div>)}</div></section>
     <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Уроки на модерации</h2><p className="mt-2 text-[var(--text-muted)]">Очередь уроков вынесена в отдельный экран с полным ученическим предпросмотром.</p><Link to="/admin/lessons" className="mt-4 inline-flex rounded-md bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-parchment">Открыть модерацию уроков</Link></section>
     <section className="border-t border-[var(--line)] pt-8"><h2 className="text-2xl">Жалобы на уроки</h2><div className="mt-4 space-y-3">{reports.length === 0 ? <p className="text-[var(--text-muted)]">Открытых жалоб нет.</p> : reports.map((item) => <div key={item.id} className="rounded-lg border border-[var(--line)] bg-[var(--bg-raised)] p-5"><h3 className="text-lg">{item.lessonTitle}</h3><p className="mt-2 font-semibold">{item.reason}</p>{item.details && <p className="mt-2 text-sm text-[var(--text-muted)]">{item.details}</p>}<div className="mt-3 flex gap-2"><Button size="sm" onClick={async () => { await reviewLessonReport(item.id, 'resolved'); await load(); }}>Решено</Button><Button size="sm" variant="secondary" onClick={async () => { await reviewLessonReport(item.id, 'dismissed'); await load(); }}>Отклонить</Button></div></div>)}</div></section>
   </div>;
@@ -630,7 +627,7 @@ function CoursesPanel() {
                   <ReleaseStatus value={release.status} />
                 </div>
                 <p className="mt-1 text-xs text-[var(--text-muted)]">
-                  {release.courseId} · {release.version}
+                  {release.courseId}, {release.version}
                 </p>
               </button>
             ))

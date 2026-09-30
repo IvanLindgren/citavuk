@@ -1252,7 +1252,7 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
                       style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
-                          letterSpacing: .6,
+                          letterSpacing: 0,
                           color: scheme.onSurfaceVariant)),
                   const SizedBox(height: 4),
                   Text(general),
@@ -1374,7 +1374,7 @@ class _ReflexiveCard extends StatelessWidget {
               style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: .6,
+                  letterSpacing: 0,
                   color: scheme.onSurfaceVariant)),
           const SizedBox(height: 6),
           Text(reflexive.meaning, style: const TextStyle(height: 1.4)),
@@ -1601,7 +1601,7 @@ class _VukotokOnboardingState extends State<VukotokOnboarding> {
                       color: _feedInk(context).withValues(alpha: .7),
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
-                      letterSpacing: .6)),
+                      letterSpacing: 0)),
               const SizedBox(height: 10),
               Wrap(
                 spacing: 8,

@@ -98,7 +98,7 @@ export function ScoreBar({
 
   return (
     <div>
-      <div className="flex items-baseline justify-between gap-3 text-xs font-bold uppercase tracking-wide">
+      <div className="flex items-baseline justify-between gap-3 text-xs font-bold uppercase ">
         <span className="text-[var(--accent)]">Вы</span>
         {/* Цифрами — выигранные предложения, а не внутренние очки полос:
             «72 : 32» человеку ничего не говорит, «3 : 1» говорит всё. */}

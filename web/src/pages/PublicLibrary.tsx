@@ -94,9 +94,6 @@ export function PublicLibrary() {
         <Reveal>
           <div className="grid items-end gap-6 border-b border-[var(--line)] pb-8 md:grid-cols-[1fr_auto]">
             <div className="max-w-3xl">
-              <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
-                Свободные тексты
-              </p>
               <h1 className="mt-2 text-3xl sm:text-4xl">Публичная библиотека</h1>
               <p className="mt-4 text-lg leading-relaxed text-[var(--text-muted)]">
                 Сербская классика и фольклор, которые можно читать и скачивать
@@ -234,7 +231,7 @@ export function PublicLibrary() {
                         href={item.coverSourceUrl}
                         target="_blank"
                         rel="noreferrer noopener"
-                        title={`${item.coverAuthor ?? 'Wikimedia Commons'} · ${item.coverLicense ?? ''}`}
+                        title={`${item.coverAuthor ?? 'Wikimedia Commons'}, ${item.coverLicense ?? ''}`}
                         className="mt-1 text-[11px] text-[var(--text-muted)] underline-offset-2 hover:text-[var(--accent)] hover:underline"
                       >
                         Изображение: Wikimedia Commons
@@ -266,7 +263,7 @@ function ExternalCollection({ item }: { item: PublicLibraryItem }) {
             className="h-52 w-full object-cover md:h-full"
           />
           <div className="flex min-w-0 flex-col justify-center p-5 sm:p-7">
-            <p className="text-xs font-bold uppercase tracking-wide text-[var(--accent)]">
+            <p className="text-xs font-bold uppercase  text-[var(--accent)]">
               Внешняя подборка
             </p>
             <h2 className="mt-2 text-2xl">{item.title}</h2>

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import {recordStudy} from '../lib/study';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LuBookOpen, LuLanguages, LuPencilLine, LuSwords } from 'react-icons/lu';
+import { LuBookOpen, LuLanguages, LuPencilLine, LuSwords, LuMic, LuKeyboard } from 'react-icons/lu';
 
 import { markRoadmapDone } from '../api/roadmap';
 import { CourseSprite } from '../course/CourseSprite';
@@ -141,7 +141,9 @@ export function Trainer() {
   return <TopicPicker topics={topics} />;
 }
 
-function TopicPicker({ topics }: { topics: Topic[] }) {
+export function TopicPicker({ topics }: { topics: Topic[] }) {
+  const { account } = useAuth();
+  const friend = Boolean(account?.supporterSince || account?.isAdmin);
   const [domain, setDomain] = useState<TrainerDomain>('grammar');
   const byLevel = useMemo(() => {
     const groups = new Map<string, Topic[]>();
@@ -164,9 +166,7 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
           <div>
             <h1 className="text-3xl sm:text-4xl">Тренажёрка</h1>
             <p className="mt-3 max-w-2xl leading-relaxed text-[var(--text-muted)]">
-              Практика собрана по уровню и навыку. Полностью правильный заход
-              сразу отмечает тему в дорожной карте. Сейчас доступно
-              {` ${total} `}упражнений выбранного раздела.
+              {total} упражнений. Выбери тему или играй вперемешку.
             </p>
           </div>
         </header>
@@ -188,6 +188,13 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
             );
           })}
         </div>
+
+        {friend && <Link to={domain === 'grammar' ? '/padezi' : `/govori?mode=${domain === 'reading' ? 'speak' : 'write'}`} className="mb-5 block">
+          <Card className="flex items-center gap-4 border-gold/40 p-5 transition-colors hover:border-[var(--accent)]">
+            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-gold/15 text-[var(--accent)]">{domain === 'grammar' ? <LuKeyboard className="size-6" /> : domain === 'reading' ? <LuMic className="size-6" /> : <LuPencilLine className="size-6" />}</span>
+            <div><h2 className="text-xl">{domain === 'grammar' ? 'Падежи' : domain === 'reading' ? 'Говори!' : 'Пиши!'}</h2><p className="mt-1 text-sm text-[var(--text-muted)]">{domain === 'grammar' ? 'Склоняй слова на печатной машинке.' : domain === 'reading' ? 'Получи тему и ответь по-сербски.' : 'Получи тему и напиши короткий текст.'}</p></div>
+          </Card>
+        </Link>}
 
         <Link to="/trainer/translation-duel" className="mb-8 block">
           <Card className="flex items-center gap-4 border-[var(--accent)]/35 bg-[var(--accent)]/8 p-5 transition-colors hover:bg-[var(--accent)]/12 sm:p-6">
@@ -217,7 +224,7 @@ function TopicPicker({ topics }: { topics: Topic[] }) {
 
         {byLevel.map(([level, levelTopics]) => (
           <section key={level} className="mb-10">
-            <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
+            <h2 className="mb-4 font-display text-sm font-bold uppercase  text-[var(--text-muted)]">
               {level}
             </h2>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -382,7 +389,7 @@ function Round({ topic, onExit }: { topic: Topic; onExit: () => void }) {
         >
           <div className="flex-1 py-8">
             <p className="text-sm font-bold uppercase text-[var(--accent)]">
-              {topic.title} · {exerciseTypeLabel(exercise.type)}
+              {topic.title}, {exerciseTypeLabel(exercise.type)}
             </p>
             <h1 className="mt-1 mb-7 text-2xl sm:text-3xl">{exercise.prompt}</h1>
 

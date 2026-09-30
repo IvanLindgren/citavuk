@@ -161,7 +161,7 @@ class _CommunityLessonsScreenState extends State<CommunityLessonsScreen> {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
-                  '${lesson.authorName} · ${lesson.estimatedMinutes} мин\n${lesson.summary}',
+                  '${lesson.authorName}, ${lesson.estimatedMinutes} мин\n${lesson.summary}',
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                 ),
