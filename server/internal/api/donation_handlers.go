@@ -155,6 +155,10 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := s.store.SetDonationPaymentID(r.Context(), d.ID, payment.ID); err != nil {
 		slog.Error("сохранение id платежа", "err", err, "donation", d.ID)
+		// Не отправляем человека оплачивать запись, которую резервная сверка
+		// не сможет найти, если уведомление тоже потеряется.
+		writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось начать оплату. Попробуй ещё раз чуть позже.")
+		return
 	}
 	writeJSON(w, http.StatusOK, createDonationResponse{
 		ID:              d.ID.String(),

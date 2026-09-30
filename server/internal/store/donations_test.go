@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"sync"
 	"testing"
 	"time"
 
@@ -83,5 +84,101 @@ func TestDonationsSupporterThreshold(t *testing.T) {
 	}
 	if err := s.DeleteUser(ctx, u.ID); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestConcurrentSmallDonationsReachSupporterThreshold(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	u, err := s.CreateUser(ctx, uuid.NewString()+"@example.com", "", "Друг", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = s.DeleteUser(ctx, u.ID) })
+	var payments []*Donation
+	for i := 0; i < 2; i++ {
+		d, err := s.CreateDonation(ctx, NewDonation{UserID: &u.ID, AmountKopecks: 100_00})
+		if err != nil {
+			t.Fatal(err)
+		}
+		payments = append(payments, d)
+		t.Cleanup(func() { _, _ = s.Pool.Exec(ctx, "DELETE FROM donations WHERE id=$1", d.ID) })
+	}
+	start := make(chan struct{})
+	errs := make(chan error, 2)
+	var wg sync.WaitGroup
+	for _, d := range payments {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			<-start
+			now := time.Now()
+			_, err := s.SetDonationStatus(ctx, d.ID, "succeeded", &now)
+			errs <- err
+		}()
+	}
+	close(start)
+	wg.Wait()
+	close(errs)
+	for err := range errs {
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	u, err = s.UserByID(ctx, u.ID)
+	if err != nil || u.SupporterSince == nil {
+		t.Fatal("две одновременные оплаты по 100 ₽ не выдали статус", err)
+	}
+}
+
+func TestSupportersRankByContributionWithoutRevealingHiddenAmounts(t *testing.T) {
+	s := testStore(t)
+	ctx := context.Background()
+	if _, err := s.Migrate(ctx); err != nil {
+		t.Fatal(err)
+	}
+	names := []string{"Первый-" + uuid.NewString(), "Второй-" + uuid.NewString(), "Третий-" + uuid.NewString()}
+	for i, amount := range []int64{1000_00, 500_00, 200_00} {
+		u, err := s.CreateUser(ctx, uuid.NewString()+"@example.com", "", names[i], true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Cleanup(func() { _ = s.DeleteUser(ctx, u.ID) })
+		pay := func(amount int64, public bool) {
+			d, err := s.CreateDonation(ctx, NewDonation{UserID: &u.ID, PublicName: names[i], AmountKopecks: amount, ShowPublic: public, ShowAmount: false})
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Cleanup(func() { _, _ = s.Pool.Exec(ctx, "DELETE FROM donations WHERE id=$1", d.ID) })
+			now := time.Now()
+			if _, err = s.SetDonationStatus(ctx, d.ID, "succeeded", &now); err != nil {
+				t.Fatal(err)
+			}
+		}
+		pay(amount, true)
+		if i == 2 {
+			pay(10000_00, false)
+		} // Анонимный вклад не раскрывает себя сменой места.
+	}
+	list, err := s.Supporters(ctx, 1000)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var ordered []string
+	for _, p := range list {
+		for _, name := range names {
+			if p.Name == name {
+				ordered = append(ordered, p.Name)
+				if p.AmountKopecks != 0 {
+					t.Fatal("скрытая сумма раскрыта")
+				}
+			}
+		}
+	}
+	if len(ordered) != 3 || ordered[0] != names[0] || ordered[1] != names[1] || ordered[2] != names[2] {
+		t.Fatalf("неверный порядок: %v", ordered)
 	}
 }

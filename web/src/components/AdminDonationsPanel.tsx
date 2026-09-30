@@ -9,6 +9,7 @@ import {
   type AdminDonationsMonth,
 } from '../api/donations';
 import { Button, ErrorNote, Spinner } from './ui';
+import { donationMessageModeration } from '../lib/donationModeration';
 
 const inputClass =
   'min-w-0 rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-3 text-sm outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]';
@@ -128,7 +129,8 @@ export function AdminDonationsPanel() {
                         </td>
                         <td className="max-w-xs px-4 py-2.5 text-[var(--text-muted)]">
                           <p className="break-words">{d.message}</p>
-                          {d.showMessage && d.message && !d.isTest && d.status === 'succeeded' && <button type="button" className="mt-2 text-xs font-semibold text-[var(--accent)]" onClick={() => {
+                          <p className="mt-2 text-xs text-[var(--text)]">{donationMessageModeration(d).label}</p>
+                          {donationMessageModeration(d).canModerate && <button type="button" className="mt-2 text-xs font-semibold text-[var(--accent)]" onClick={() => {
                             void moderateDonationMessage(d.id, !d.messageApproved).then(load).catch(() => setError('Не удалось обновить сообщение.'));
                           }}>{d.messageApproved ? 'Снять с публикации' : 'Разрешить публикацию'}</button>}
                         </td>

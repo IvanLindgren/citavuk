@@ -10,8 +10,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// SupporterThresholdKopecks — с какой суммы оплат аккаунт получает значок и
-// место на странице поддержавших. Суммы складываются по всем платежам.
+// SupporterThresholdKopecks — с какой суммы оплат аккаунт получает значок и бонусы.
+// Суммы складываются по всем платежам; публичное имя доступно при любой поддержке.
 const SupporterThresholdKopecks = 200_00
 
 var ErrDonationNotFound = errors.New("donation not found")
@@ -136,6 +136,12 @@ func (s *Store) SetDonationStatus(
 }
 
 func refreshSupporter(ctx context.Context, tx pgx.Tx, userID uuid.UUID) error {
+	// Webhook и резервная сверка могут одновременно подтвердить разные оплаты
+	// одного аккаунта. Сумму читаем отдельным запросом после получения блокировки,
+	// иначе ожидающий UPDATE может записать результат устаревшего снимка.
+	if _, err := tx.Exec(ctx, `SELECT id FROM users WHERE id=$1 FOR NO KEY UPDATE`, userID); err != nil {
+		return err
+	}
 	// Дата значка — момент, когда накопленная сумма впервые перешла порог.
 	_, err := tx.Exec(ctx, `
         WITH paid AS (
@@ -175,6 +181,7 @@ func (s *Store) Supporters(ctx context.Context, limit int) ([]Supporter, error) 
         ), grouped AS (
             SELECT who,
                    sum(amount_kopecks) AS total,
+                   coalesce(sum(amount_kopecks) FILTER (WHERE show_public),0)::bigint AS ranking_total,
                    coalesce(sum(amount_kopecks) FILTER (WHERE show_public AND show_amount),0)::bigint AS public_total,
                    min(paid_at) AS since,
                    (array_agg(public_name ORDER BY paid_at DESC)
@@ -184,7 +191,7 @@ func (s *Store) Supporters(ctx context.Context, limit int) ([]Supporter, error) 
         )
         SELECT name, since, public_total FROM grouped
          WHERE total >= $1 AND name IS NOT NULL
-         ORDER BY public_total DESC, since, who
+         ORDER BY ranking_total DESC, since, who
          LIMIT $2`, int64(1), limit)
 	if err != nil {
 		return nil, err

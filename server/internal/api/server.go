@@ -250,6 +250,7 @@ func New(
 	go s.sweepDuelPeriodically()
 	go s.runPersonalJobs()
 	go s.runSupportRenewals()
+	go s.runDonationReconciliation()
 
 	return s, nil
 }
