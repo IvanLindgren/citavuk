@@ -161,9 +161,7 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
-    // Вукоток всегда тёмный, и при светлой теме под ним оставалась светлая
-    // панель — на границе получался шов. Панель уходит в ночную тему вместе
-    // с разделом.
+    // Панели и Вукоток используют одну выбранную пользователем тему.
     final dark = Theme.of(context).brightness == Brightness.dark;
     final navTheme = Theme.of(context);
     final scheme = navTheme.colorScheme;

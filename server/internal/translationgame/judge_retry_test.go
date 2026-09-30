@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -24,6 +25,22 @@ const goodVerdicts = `{"verdicts":[
   {"index":3,"winner":"translator","userScore":5,"translatorScore":8,"feedback":"Пропущено слово."},
   {"index":4,"winner":"user","userScore":8,"translatorScore":7,"feedback":"Верное время."}
 ],"summary":"Раунд за учеником."}`
+
+func TestJudgeRetriesValidJSONInWrongLanguage(t *testing.T) {
+	var calls atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		if calls.Add(1) == 1 {
+			answerWith(w, strings.Replace(goodVerdicts, "Точнее по смыслу.", "两种译文均正确且自然", 1))
+			return
+		}
+		answerWith(w, goodVerdicts)
+	}))
+	defer server.Close()
+	result, err := NewJudge("key", "openai/gpt-6-luna", server.URL).Evaluate(context.Background(), fiveEntries(), DirectionSrRu)
+	if err != nil || calls.Load() != 2 || result.Verdicts[0].Feedback != "Точнее по смыслу." {
+		t.Fatalf("нерусский JSON не заменён корректным ответом: calls=%d err=%v", calls.Load(), err)
+	}
+}
 
 func fiveEntries() []Entry {
 	entries := make([]Entry, 5)

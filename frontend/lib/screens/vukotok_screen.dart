@@ -31,9 +31,8 @@ Color _feedInk(BuildContext context) => Theme.of(context).colorScheme.onSurface;
 Color _feedBackdrop(BuildContext context, double alpha) =>
     Theme.of(context).colorScheme.surface.withValues(alpha: alpha);
 
-/// Раздел всегда тёмный: боковая и нижняя панели на его вкладке уходят в ночную
-/// тему вместе с ним (`HomeShell`), поэтому и оболочка, и лента, и видео живут в
-/// одной палитре — светлая полоса между ними читалась швом.
+/// Оболочка, текстовая лента и панели следуют общей теме приложения.
+/// Видеокадр использует собственный чёрный фон оригинального плеера.
 Widget vukotokTheme({required Widget child}) => Builder(builder: (context) {
       final theme = Theme.of(context);
       return Theme(
