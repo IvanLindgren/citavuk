@@ -35,13 +35,13 @@ Transform the supplied source into ONE micro-reading card. Return strict JSON on
 
 Editorial rules:
 1. The card must contain 100-150 Serbian BCHS words, be accurate, self-contained and intriguing without clickbait.
-2. Write standard Serbian. Produce equivalent Cyrillic and Latin versions; never mix alphabets inside one version.
+2. Write natural standard Serbian, using Cyrillic as the ONLY primary title/body. The server derives Latin from Cyrillic; never independently rewrite the Latin fields. Use real words, not invented forms or Russian/English calques. Legitimate brands, original foreign titles and scientific Latin names may stay Latin, but never mix alphabets inside a word. Proofread grammar and meaning against the source before returning.
 3. If the source language is not Serbian, translate and adapt it into natural Serbian. Never transliterate English words as if they were Serbian.
 4. For rights_mode=summary_only, write a genuinely new summary. Do not copy more than 8 consecutive source words. Preserve names, dates and facts and do not add facts absent from the source.
 5. For rights_mode=reuse, adaptation is allowed but the card still needs source attribution. Do not silently remove uncertainty from the source.
 6. For a book_excerpt, do not rewrite the excerpt and do not invent book/chapter coordinates. Book linkage is supplied separately by the server.
 7. Classify CEFR as A1, A2, B1, B2 or C1. Prefer A2-B1 wording unless the subject requires more advanced language.
-8. Select 3-5 lowercase Serbian tags and exactly 3 genuinely useful difficult Serbian words. For each word provide the lemma, Serbian IPA and a concise Russian translation.
+8. Select 3-5 lowercase Serbian tags and exactly 3 genuinely useful difficult Serbian words which actually occur as complete words in the body. For each provide the real dictionary lemma, plain Serbian IPA without guessed accent marks and a concise Russian translation. Do not use proper names as vocabulary or invent a definition for an unknown word.
 9. Categories: history, culture, science, fiction, society, news, travel, food, sport, music, language.
    Prefer the most specific one: a text about a Serbian dish is "food", not "culture"; about a
    town worth visiting — "travel"; about a singer or a song — "music"; about a Serbian word,
@@ -212,10 +212,10 @@ Prefer active voice, present tense and simple subject-verb-object order. Avoid j
 Before returning JSON, silently reread the text and replace every word that a beginner is unlikely to know.
 The JSON cefr value MUST be A1 or A2 and MUST NOT exceed %s.
 `, maxCEFR, maxCEFR)
-		if strings.TrimSpace(retryHint) != "" {
-			levelInstruction += "\nTHE PREVIOUS DRAFT FAILED VALIDATION: " + limitRunes(retryHint, 600) +
-				"\nCorrect that exact problem in this new draft.\n"
-		}
+	}
+	if strings.TrimSpace(retryHint) != "" {
+		levelInstruction += "\nTHE PREVIOUS DRAFT FAILED VALIDATION: " + limitRunes(retryHint, 600) +
+			"\nCorrect that exact problem in this new draft.\n"
 	}
 	userPrompt := fmt.Sprintf(`SOURCE TITLE: %s
 SOURCE LANGUAGE: %s
@@ -312,12 +312,13 @@ func parseGeneration(content string) (*generationResult, error) {
 	result.TitleLatin = trim(result.TitleLatin, 140)
 	result.TextCyrillic = cleanText(result.TextCyrillic)
 	result.TextLatin = cleanText(result.TextLatin)
-	if result.TitleLatin == "" && result.TitleCyrillic != "" {
-		result.TitleLatin = lexicon.ToLatin(result.TitleCyrillic)
+	// Два независимо сочинённых варианта расходились даже в фактах и словах.
+	// Кириллица — единственный первичный материал; Latin игнорируется.
+	titleLatin, textLatin, err := CanonicalEditorial(result.TitleCyrillic, result.TextCyrillic, storeDifficultWords(result.DifficultWords))
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrBadAnswer, err)
 	}
-	if result.TextLatin == "" && result.TextCyrillic != "" {
-		result.TextLatin = lexicon.ToLatin(result.TextCyrillic)
-	}
+	result.TitleLatin, result.TextLatin = titleLatin, textLatin
 	result.Tags = normalizedTags(result.Tags)
 	if len(result.DifficultWords) > 3 {
 		result.DifficultWords = result.DifficultWords[:3]
@@ -380,6 +381,13 @@ func ValidateItem(item *store.MicroFeedItem) error {
 	}
 	if item.Kind == "book_excerpt" && item.BookTargetURL == "" {
 		return errors.New("у книжного отрывка должна быть ссылка на книгу")
+	}
+	titleLatin, textLatin, err := CanonicalEditorial(item.TitleCyrillic, item.TextCyrillic, item.DifficultWords)
+	if err != nil {
+		return err
+	}
+	if cleanText(item.TitleLatin) != cleanText(titleLatin) || cleanText(item.TextLatin) != cleanText(textLatin) {
+		return errors.New("латиница должна совпадать с транслитерацией проверенного кириллического текста")
 	}
 	return nil
 }

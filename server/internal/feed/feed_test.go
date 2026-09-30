@@ -28,8 +28,8 @@ func TestParseGenerationRejectsShortCard(t *testing.T) {
 }
 
 func TestParseGenerationAcceptsPromptTranslationField(t *testing.T) {
-	latin := strings.TrimSpace(strings.Repeat("rec ", 80))
-	cyrillic := strings.TrimSpace(strings.Repeat("реч ", 80))
+	latin := strings.TrimSpace(strings.Repeat("reč test primer ", 27))
+	cyrillic := strings.TrimSpace(strings.Repeat("реч тест пример ", 27))
 	raw := fmt.Sprintf(`{"kind":"fact","category":"culture","title_cyrillic":"Тест","title_latin":"Test","text_cyrillic":%q,"text_latin":%q,"original_script":"translated","cefr":"A2","tags":["a","b","c"],"difficult_words":[{"word":"реч","lemma":"реч","transcription":"/retʃ/","translation_ru":"слово"},{"word":"тест","lemma":"тест","transcription":"/test/","translation_ru":"тест"},{"word":"пример","lemma":"пример","transcription":"/primer/","translationRu":"пример"}]}`, cyrillic, latin)
 
 	result, err := parseGeneration(raw)
