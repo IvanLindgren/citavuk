@@ -1,4 +1,4 @@
 web/src/lib/formats/__fixtures__/*.txt text eol=lf
 frontend/test/fixtures/*.txt text eol=lf
 # Пробелы в GLSL-строках — часть upstream-бандла Three.js, а не исходников UI.
-frontend/assets/games/roulette3d.html text eol=lf whitespace=-trailing-space,-space-before-tab
+frontend/assets/games/slot_machine.html text eol=lf whitespace=-trailing-space,-space-before-tab
