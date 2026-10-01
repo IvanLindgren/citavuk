@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BOW_MS, INVITE_EVERY_MS, PULL_MS, TADA_MS, ZAP_AT, magicPose, type MagicInput } from './slotMagic';
 import { REEL_DELAY_MS, REEL_STOP_MS } from './slotMath';
-import { WOLF_REST, nearAngle, wolfFrames } from './slotWolf';
+import { CUFF_MID, WOLF_REST, aim, aimWand, apply, nearAngle, wolfFrames } from './slotWolf';
 
 const aims = { machine: -0.1, left: -0.45, right: 0.05, center: -0.2, lever: -0.35 };
 const input = (patch: Partial<MagicInput>): MagicInput => ({
@@ -86,13 +86,60 @@ describe('сценарий фокуса', () => {
 
 describe('скелет Читавука', () => {
   const place = { x: 200, y: 680, scale: 0.44 };
+  const arms = Array.from({ length: 24 }, (_, i) => -Math.PI + (i * Math.PI) / 12);
 
-  it('кончик палочки там, куда смотрит рука', () => {
-    for (const arm of [-1.5, -0.6, 0, 0.6, 2.5]) {
+  it('запястье всегда в манжете, а кисть смотрит туда же, куда предплечье', () => {
+    for (const arm of arms) {
       const f = wolfFrames(place, { ...WOLF_REST, arm, wand: 0 });
-      const angle = Math.atan2(f.tip.y - f.elbow.y, f.tip.x - f.elbow.x);
-      expect(Math.abs(nearAngle(arm, angle) - arm)).toBeLessThan(0.15);
-      expect(Math.hypot(f.tip.x - f.elbow.x, f.tip.y - f.elbow.y)).toBeGreaterThan(100 * place.scale);
+      const cuff = apply(f.arm, CUFF_MID.x, CUFF_MID.y);
+      const grip = f.grip;
+      // Хват лежит на прямой из манжеты в сторону arm — кисть не согнута в запястье.
+      expect(Math.abs(nearAngle(arm, aim(cuff, grip)) - arm)).toBeLessThan(1e-6);
+      expect(Math.hypot(grip.x - cuff.x, grip.y - cuff.y)).toBeGreaterThan(10 * place.scale);
+    }
+  });
+
+  it('большой палец сверху, куда бы ни показывала рука', () => {
+    for (const arm of arms) {
+      if (Math.abs(Math.cos(arm)) < 0.5) continue;
+      const f = wolfFrames(place, { ...WOLF_REST, arm });
+      // Ноготь большого пальца и низ кулака на рисунке drawFist.
+      const thumb = apply(f.fist, 484, 868);
+      const palm = apply(f.fist, 478, 978);
+      expect(thumb.y).toBeLessThan(palm.y);
+    }
+  });
+
+  it('кулак не выворачивается: плавно идёт за рукой, без скачков размера', () => {
+    let last = wolfFrames(place, { ...WOLF_REST, arm: -Math.PI }).fist;
+    for (let a = -Math.PI; a <= Math.PI; a += 0.02) {
+      const fist = wolfFrames(place, { ...WOLF_REST, arm: a }).fist;
+      const height = Math.hypot(fist[2], fist[3]) / place.scale;
+      expect(height).toBeGreaterThanOrEqual(0.45 - 1e-9);
+      expect(height).toBeLessThanOrEqual(1 + 1e-9);
+      // Направление костяшек (ось x кадра кулака) меняется понемногу.
+      const before = Math.atan2(-last[1], -last[0]);
+      const now = Math.atan2(-fist[1], -fist[0]);
+      expect(Math.abs(nearAngle(before, now) - before)).toBeLessThan(0.05);
+      last = fist;
+    }
+  });
+
+  it('палочка выходит из хвата под углом arm − wand', () => {
+    for (const arm of [-1.5, -0.3, 0.6, 2.5, 3.5]) {
+      for (const wand of [0, -0.35, -1.9]) {
+        const f = wolfFrames(place, { ...WOLF_REST, arm, wand });
+        expect(Math.abs(nearAngle(arm - wand, aim(f.grip, f.tip)) - (arm - wand))).toBeLessThan(1e-6);
+      }
+    }
+  });
+
+  it('aimWand наводит палочку точно на цель', () => {
+    for (const target of [{ x: 520, y: 380 }, { x: 900, y: 300 }, { x: 640, y: 120 }, { x: 1150, y: 220 }]) {
+      const arm = aimWand(place, target);
+      const f = wolfFrames(place, { ...WOLF_REST, arm, wand: 0 });
+      const miss = Math.abs(nearAngle(arm, aim(f.grip, target)) - arm);
+      expect(miss).toBeLessThan((2 * Math.PI) / 180);
     }
   });
 

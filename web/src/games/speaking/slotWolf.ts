@@ -40,11 +40,27 @@ const SHOULDER_LEFT = { x: 212, y: 846 };
 const SLEEVE_BASE = { x: 1186, y: 566 };
 const SLEEVE_CUFF = { x: 958, y: 446 };
 const SLEEVE_DIR = Math.atan2(SLEEVE_CUFF.y - SLEEVE_BASE.y, SLEEVE_CUFF.x - SLEEVE_BASE.x);
+/**
+ * Срез манжеты на рисунке рукава (по нему build.py отделял лапу). Кисть выходит
+ * из середины среза перпендикулярно ему — иначе запястье «ломается»: срез
+ * повёрнут к оси рукава почти на 40°.
+ */
+const CUFF_EDGE = [{ x: 884, y: 466 }, { x: 1040, y: 394 }] as const;
+export const CUFF_MID = { x: (CUFF_EDGE[0].x + CUFF_EDGE[1].x) / 2, y: (CUFF_EDGE[0].y + CUFF_EDGE[1].y) / 2 };
+/** Нормаль к срезу, наружу из рукава: в эту сторону смотрит предплечье. */
+const FOREARM_DIR = Math.atan2(CUFF_EDGE[1].y - CUFF_EDGE[0].y, CUFF_EDGE[1].x - CUFF_EDGE[0].x) - Math.PI / 2;
 /** Поднятая рука нарисована крупнее туловища — уменьшаем до его масштаба. */
 const ARM_SCALE = WOLF_PART_SCALE.sleeve;
-/** Запястье и середина кулака (рисуется вектором в drawFist); костяшки смотрят влево. */
-const FIST_WRIST = { x: 522, y: 918 };
+/**
+ * Кулак рисуется вектором в drawFist в координатах референса: костяшки влево,
+ * большой палец сверху. Запястье — его правый край, хват — середина.
+ */
+const FIST_WRIST = { x: 524, y: 918 };
 const FIST_GRIP = { x: 472, y: 916 };
+/** Хват в кадре кисти: вдоль предплечья от манжеты. */
+const GRIP_ALONG = FIST_WRIST.x - FIST_GRIP.x;
+/** Ниже такой доли кулак не сплющивается, когда рука проходит вертикаль. */
+const FIST_MIN_HEIGHT = 0.45;
 /** Цилиндр: середина полей на рисунке и место на макушке. */
 const HAT_BRIM = { x: 1012, y: 990 };
 const HAT_ON_HEAD = { x: 408, y: 262 };
@@ -74,9 +90,12 @@ export interface WolfPose {
   breathe: number;
   headTilt: number;
   tail: number;
-  /** Направление предплечья с палочкой, радианы в мире (0 — вправо, −π/2 — вверх). */
+  /**
+   * Направление предплечья у манжеты, радианы в мире (0 — вправо, −π/2 — вверх).
+   * Кисть выходит из манжеты ровно в эту сторону.
+   */
   arm: number;
-  /** Угол палочки относительно предплечья: 0 — продолжает руку, −π/2 — торчит вверх из кулака. */
+  /** Палочка относительно предплечья: мировой угол палочки = arm − wand; 0 — продолжает руку. */
   wand: number;
   /** Левая рука: 0 — за спиной, 1 — поднята к публике. */
   wave: number;
@@ -95,9 +114,10 @@ export const WOLF_REST: WolfPose = {
   breathe: 0,
   headTilt: 0,
   tail: 0,
-  arm: Math.PI - 0.1,
-  // Палочка смотрит вверх-вправо, к автомату, и не закрывает мордочку.
-  wand: -2.15,
+  // Кулак у жилета, как на референсе; палочка смотрит вверх-вправо, к автомату,
+  // и не закрывает мордочку.
+  arm: 3.5,
+  wand: -1.9,
   wave: 0,
   hatLift: 0,
   hatSpin: 0,
@@ -133,7 +153,11 @@ export interface WolfFrames {
   tail: Mat;
   arm: Mat;
   fist: Mat;
+  /** Палочка: начало — в хвате, ось +x — вдоль палочки к кончику. */
+  wand: Mat;
   wave: Mat;
+  /** Хват — середина кулака, через неё проходит палочка. */
+  grip: { x: number; y: number };
   /** Кончик палочки в координатах сцены — отсюда летят искры. */
   tip: { x: number; y: number };
   /** Локоть в координатах сцены — от него сцена целится палочкой. */
@@ -158,17 +182,25 @@ export function wolfFrames(place: WolfPlace, pose: WolfPose): WolfFrames {
   hat = scale(hat, HAT_SCALE);
   hat = translate(hat, -HAT_BRIM.x, -HAT_BRIM.y);
   const tail = around(body, TAIL_BASE, pose.tail);
-  // Рука: рукав поставлен базой на локоть и повёрнут так, чтобы смотреть в направлении pose.arm.
-  // Тело не поворачивается (кроме поклона), поэтому мировой угол почти равен локальному.
+  // Рука: рукав поставлен базой на локоть и повёрнут так, чтобы предплечье у манжеты
+  // смотрело в pose.arm. Поклон наклоняет туловище, поэтому его вычитаем — угол мировой.
   let arm = translate(body, ELBOW.x, ELBOW.y);
-  arm = rotate(arm, pose.arm - pose.lean - SLEEVE_DIR);
+  arm = rotate(arm, pose.arm - pose.lean - FOREARM_DIR);
   arm = scale(arm, ARM_SCALE);
   arm = translate(arm, -SLEEVE_BASE.x, -SLEEVE_BASE.y);
-  // Кулак: запястье — в манжету, костяшки — вдоль руки (на рисунке они смотрят влево, то есть на π).
-  let fist = translate(arm, SLEEVE_CUFF.x, SLEEVE_CUFF.y);
-  fist = rotate(fist, SLEEVE_DIR - Math.PI);
-  fist = scale(fist, 1 / ARM_SCALE);
+  // Кадр кисти: начало в середине манжеты, +x вдоль предплечья, масштаб туловища.
+  let hand = translate(arm, CUFF_MID.x, CUFF_MID.y);
+  hand = rotate(hand, FOREARM_DIR);
+  hand = scale(hand, 1 / ARM_SCALE);
+  // Большой палец всегда сверху: когда рука смотрит влево, кулак отражается по вертикали.
+  // У вертикали кулак сжимается, но не до нуля — так видно, как поворачивается запястье.
+  const c = Math.cos(pose.arm);
+  const flip = (c < 0 ? -1 : 1) * Math.max(FIST_MIN_HEIGHT, Math.min(1, Math.abs(c) / 0.5));
+  let fist = scale(hand, -1, flip);
   fist = translate(fist, -FIST_WRIST.x, -FIST_WRIST.y);
+  // Палочка — в своём кадре без отражения: проходит через хват под углом arm − wand.
+  let wand = translate(hand, GRIP_ALONG, 0);
+  wand = rotate(wand, -pose.wand);
   // Левая рука — зеркальная копия поднятой, растёт из-за спины.
   let wave = translate(body, SHOULDER_LEFT.x, SHOULDER_LEFT.y);
   // Опущена вниз за спину (≈100°) → через бок поднята вверх-влево к публике (≈230°).
@@ -177,8 +209,6 @@ export function wolfFrames(place: WolfPlace, pose: WolfPose): WolfFrames {
   wave = scale(wave, -ARM_SCALE, ARM_SCALE);
   wave = rotate(wave, -SLEEVE_DIR + Math.PI);
   wave = translate(wave, -SLEEVE_BASE.x, -SLEEVE_BASE.y);
-  const wandDir = Math.PI - pose.wand;
-  const tip = apply(fist, FIST_GRIP.x + Math.cos(wandDir) * WAND_FRONT, FIST_GRIP.y + Math.sin(wandDir) * WAND_FRONT);
   return {
     body,
     head,
@@ -186,8 +216,10 @@ export function wolfFrames(place: WolfPlace, pose: WolfPose): WolfFrames {
     tail,
     arm,
     fist,
+    wand,
     wave,
-    tip,
+    grip: apply(wand, 0, 0),
+    tip: apply(wand, WAND_FRONT, 0),
     elbow: apply(body, ELBOW.x, ELBOW.y),
     speech: apply(head, 560, 40),
   };
@@ -209,10 +241,8 @@ function put(ctx: CanvasRenderingContext2D, m: Mat, img: CanvasImageSource | und
   ctx.drawImage(img, b.x, b.y, b.w, b.h);
 }
 
-function wand(ctx: CanvasRenderingContext2D, m: Mat, angle: number, glow: number) {
+function drawWand(ctx: CanvasRenderingContext2D, m: Mat, glow: number) {
   setMatrix(ctx, m);
-  ctx.translate(FIST_GRIP.x, FIST_GRIP.y);
-  ctx.rotate(Math.PI - angle);
   if (glow > 0.01) {
     const halo = ctx.createRadialGradient(WAND_FRONT, 0, 0, WAND_FRONT, 0, 70);
     halo.addColorStop(0, `rgba(255,240,180,${0.9 * glow})`);
@@ -389,7 +419,7 @@ export function drawWolf(ctx: CanvasRenderingContext2D, frame: Mat, sprites: Wol
   face(ctx, f.head, pose);
   put(ctx, f.hat, sprites.hat, 'hat');
   put(ctx, f.arm, sprites.sleeve, 'sleeve');
-  wand(ctx, f.fist, pose.wand, wandGlow);
+  drawWand(ctx, f.wand, wandGlow);
   drawFist(ctx, f.fist);
   ctx.restore();
   base = IDENTITY;
@@ -405,6 +435,17 @@ export function mixPose(a: WolfPose, b: WolfPose, t: number): WolfPose {
 
 /** Угол от точки до точки — чтобы целиться палочкой. */
 export const aim = (from: { x: number; y: number }, to: { x: number; y: number }) => Math.atan2(to.y - from.y, to.x - from.x);
+
+/**
+ * Угол руки, при котором прямая палочка (wand = 0) смотрит точно на цель.
+ * Палочка выходит из кулака, а кулак смещается вместе с рукой, поэтому угол
+ * уточняется по хвату — двух шагов хватает с запасом.
+ */
+export function aimWand(place: WolfPlace, target: { x: number; y: number }, rest: WolfPose = WOLF_REST): number {
+  let angle = aim(wolfFrames(place, rest).elbow, target);
+  for (let i = 0; i < 3; i++) angle = aim(wolfFrames(place, { ...rest, arm: angle, wand: 0 }).grip, target);
+  return angle;
+}
 
 /** Ближайший эквивалент угла `to` к углу `from`: рука не крутится «через спину». */
 export function nearAngle(from: number, to: number) {

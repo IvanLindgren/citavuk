@@ -45,13 +45,13 @@ import {
   type Twinkle,
 } from './slotDraw';
 import { ParticleField } from './slotFx';
-import { PULL_MS, SWISH_AT, TADA_MS, ZAP_AT, magicPose, type MagicOutput } from './slotMagic';
+import { PULL_MS, SWISH_AT, TADA_MS, ZAP_AT, magicPose, type MagicAims, type MagicOutput } from './slotMagic';
 import {
   WOLF_BOXES,
   WOLF_PARTS,
   WOLF_PART_SCALE,
   WOLF_REST,
-  aim,
+  aimWand,
   drawWolf,
   wolfFrames,
   type WolfFrames,
@@ -268,6 +268,8 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
     }
   };
   let magic: MagicOutput = { pose: WOLF_REST, glow: 0, trail: false, bubble: null };
+  let aimsFor: SlotLayout | null = null;
+  let aims: MagicAims = { machine: 0, left: 0, right: 0, center: 0, lever: 0 };
   let frames: WolfFrames | null = null;
   let zaps: { from: { x: number; y: number }; to: { x: number; y: number }; at: number; seed: number }[] = [];
   const unfired = () => ({ magic: false, left: false, right: false, center: false, swish: 0, drum: false, hat: false, applause: false });
@@ -556,7 +558,17 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
       center: spot(L.reels.center),
       lever: { x: L.lever.pivot.x + 8, y: L.lever.pivot.y - L.lever.length },
     };
-    const elbow = wolfFrames(L.wolf, WOLF_REST).elbow;
+    // Куда направить руку, чтобы палочка смотрела точно на цель; зависит только от раскладки.
+    if (aimsFor !== L) {
+      aimsFor = L;
+      aims = {
+        machine: aimWand(L.wolf, goals.machine),
+        left: aimWand(L.wolf, goals.left),
+        right: aimWand(L.wolf, goals.right),
+        center: aimWand(L.wolf, goals.center),
+        lever: aimWand(L.wolf, goals.lever),
+      };
+    }
     magic = magicPose({
       now,
       createdAt,
@@ -564,13 +576,7 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
       winAt: won ? winAt : null,
       calm: calm(),
       everSpun,
-      aims: {
-        machine: aim(elbow, goals.machine),
-        left: aim(elbow, goals.left),
-        right: aim(elbow, goals.right),
-        center: aim(elbow, goals.center),
-        lever: aim(elbow, goals.lever),
-      },
+      aims,
     });
     frames = wolfFrames(L.wolf, magic.pose);
     if (!calm()) {
