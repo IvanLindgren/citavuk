@@ -392,11 +392,13 @@ Web и Flutter записывают `id` UUID, глобальный `bookId` UUI
 `review{level,onTopic,summary,strengths[],mistakes[]{original,fixed,kind,label,explanation},polished,tips[],words[]{sr,ru}}`.
 Каталог тем — только на сервере (`speaking/topics.json`).
 
-Рулетка использует общую Three.js-сцену и generated HTML в Flutter. Bridge
-`window.Roulette.setState` принимает `genres[]{id,ru}`, `spinId`, `genre`,
-`reduced`; ответы `ready|landed|failed` идут через handler `roulette`.
-Остановка раскрывает тему только один раз на `spinId`, в том числе при
-переходе на fallback. Подробности и команда пересборки — в `speaking.md`.
+Автомат тем — общая Canvas-сцена и generated HTML в Flutter. Bridge
+`window.SlotMachine.setState` принимает `genres[]{id,ru,art}`,
+`topics[]{id,genre,ru}` (пул, из которого выбирал экран), `title`, `spinId`,
+`topicId`, `reduced`; ответы `ready|pull|landed|failed` идут через handler
+`slot`. `pull` — игрок дёрнул рычаг: тему выбирает Flutter и поднимает
+`spinId`. Остановка раскрывает тему только один раз на `spinId`, в том числе
+при переходе на fallback. Подробности и команда пересборки — в `speaking.md`.
 
 Web `ttsAudioUrl` и Flutter `ListeningService.ttsUrl` всегда отправляют `lang=sr`.
 Результат английского разбора слова не переключает голос ни при нажатии,

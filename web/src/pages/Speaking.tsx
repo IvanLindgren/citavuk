@@ -18,7 +18,7 @@ import { AnswerField, HintWords, ReviewView, VoiceRecorder } from '../games/spea
 import { countWords } from '../games/speaking/highlight';
 import { GenreIcon } from '../games/speaking/GenreIcon';
 import { recordingSupported } from '../games/speaking/recorder';
-import { Reel } from '../games/speaking/Reel';
+import { SlotMachine } from '../games/speaking/SlotMachine';
 import { activeStorageName } from '../lib/db';
 import { useSeo } from '../lib/seo';
 import { acceptStudy } from '../lib/study';
@@ -299,13 +299,16 @@ function Game({ catalog, signedIn, initialMode }: { catalog: SpeakingCatalog; si
             </button>
           </div>
 
-          <div className="mt-6">
-            <Reel
+          {/* Автомат шире текстовой колонки: на большом экране он главный на странице. */}
+          <div className="mt-6 lg:relative lg:left-1/2 lg:w-[min(1040px,calc(100vw-4rem))] lg:-translate-x-1/2">
+            <SlotMachine
               pool={pool}
               genres={catalog.genres}
               spinId={spinId}
               target={topic}
+              title={initialMode === 'write' ? 'Пиши!' : 'Говори!'}
               muted={settings.muted}
+              onPull={spin}
               onLanded={() => { setLanded(true); if (initialMode === 'write') setAnswer({mode:'write',text:''}); else if (initialMode === 'speak' && canRecord) setAnswer({mode:'speak',text:null}); }}
             />
           </div>
@@ -315,6 +318,7 @@ function Game({ catalog, signedIn, initialMode }: { catalog: SpeakingCatalog; si
               {spinId === 0 ? 'Выбрать тему' : landed ? 'Другая тема' : 'Крутится…'}
             </Button>
           </div>
+          {spinId === 0 && <p className="mt-3 text-center text-sm text-[var(--text-muted)]">Потяни рычаг справа или нажми кнопку.</p>}
         </section>
 
         <div ref={answerRef} className="scroll-mt-20">

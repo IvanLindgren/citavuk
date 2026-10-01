@@ -17,7 +17,7 @@ import 'genre_icon.dart';
 import 'highlight.dart';
 import 'speaking_models.dart';
 import 'speaking_service.dart';
-import 'roulette_stage.dart';
+import 'slot_stage.dart';
 import 'voice_recorder.dart';
 
 const _title = 'Говори или пиши';
@@ -433,11 +433,15 @@ class _GameState extends State<_Game> {
                                           }),
                             ])
                           ]),
-                      RouletteStage(
+                      SlotStage(
                         pool: _pool,
                         catalog: widget.catalog,
                         spinId: _spinId,
                         target: topic,
+                        title: widget.initialMode == SpeakingEntryMode.write
+                            ? 'Пиши!'
+                            : 'Говори!',
+                        onPull: _spin,
                         onLanded: () {
                           setState(() {
                             _landed = true;
@@ -466,6 +470,13 @@ class _GameState extends State<_Game> {
                               minimumSize: const Size(220, 52)),
                         ),
                       ),
+                      if (_spinId == 0) ...[
+                        const SizedBox(height: 8),
+                        Text('Потяни рычаг справа или нажми кнопку.',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant)),
+                      ],
                     ]),
               ),
             ),

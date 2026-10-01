@@ -30,6 +30,9 @@ public/img/*
 # Эти двое нигде не собираются: они и есть исходники.
 !public/img/marja-spilberic.png
 !public/img/citavuk_zadumch.png
+# Читавук-фокусник для автомата «Говори!»: SVG собирает tools/citavuk_magician/build.py,
+# prepare-assets.py их не создаёт — без исключения на бою будет 404.
+!public/img/citavuk-magician/
 # Эти четыре WOFF2 нужны уже чистой CI/deploy-сборке. Они производные от TTF,
 # но без них локальная рабочая папка выглядела исправной, а prod отдавал 404.
 public/fonts/*
@@ -42,6 +45,9 @@ public/fonts/*
 # Шрифт печатной машинки для игры на падежи (латиница с č ć š ž đ).
 !public/fonts/CourierPrime-*.woff2
 !public/fonts/CourierPrime-OFL.txt
+# Пиксельный шрифт автомата «Говори!» (вывеска, темы, бегущая строка).
+!public/fonts/PressStart2P-*.woff2
+!public/fonts/PressStart2P-OFL.txt
 # Копируется из node_modules скриптом scripts/copy-pdf-worker.mjs.
 public/pdf.worker.js
 public/course/
