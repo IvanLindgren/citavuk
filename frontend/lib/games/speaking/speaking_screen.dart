@@ -207,6 +207,7 @@ class _GameState extends State<_Game> {
 
   final Set<String> _genres = {};
   bool _hints = true;
+  bool _muted = false;
   List<_HistoryItem> _history = [];
 
   int _spinId = 0;
@@ -251,6 +252,7 @@ class _GameState extends State<_Game> {
               if (known.contains(id)) id as String,
           ]);
         _hints = settings['hints'] != false;
+        _muted = settings['muted'] == true;
         _history = [
           for (final item in history)
             _HistoryItem.fromJson(Map<String, dynamic>.from(item as Map)),
@@ -263,7 +265,8 @@ class _GameState extends State<_Game> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_settingsKey,
-          jsonEncode({'genres': _genres.toList(), 'hints': _hints}));
+          jsonEncode(
+              {'genres': _genres.toList(), 'hints': _hints, 'muted': _muted}));
     } catch (_) {}
   }
 
@@ -413,25 +416,42 @@ class _GameState extends State<_Game> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ExpansionTile(
-                          title: const Text('Темы'),
-                          tilePadding: EdgeInsets.zero,
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Wrap(spacing: 8, runSpacing: 8, children: [
-                              for (final genre in widget.catalog.genres)
-                                FilterChip(
-                                    avatar: GenreIcon(genre: genre, size: 18),
-                                    label: Text(genre.ru),
-                                    selected: _genres.contains(genre.id),
-                                    onSelected: _spinId > 0 && !_landed
-                                        ? null
-                                        : (on) {
-                                            setState(() => on
-                                                ? _genres.add(genre.id)
-                                                : _genres.remove(genre.id));
-                                            unawaited(_saveSettings());
-                                          }),
-                            ])
+                            Expanded(
+                              child: ExpansionTile(
+                                title: const Text('Темы'),
+                                tilePadding: EdgeInsets.zero,
+                                children: [
+                                  Wrap(spacing: 8, runSpacing: 8, children: [
+                                    for (final genre in widget.catalog.genres)
+                                      FilterChip(
+                                          avatar: GenreIcon(genre: genre, size: 18),
+                                          label: Text(genre.ru),
+                                          selected: _genres.contains(genre.id),
+                                          onSelected: _spinId > 0 && !_landed
+                                              ? null
+                                              : (on) {
+                                                  setState(() => on
+                                                      ? _genres.add(genre.id)
+                                                      : _genres.remove(genre.id));
+                                                  unawaited(_saveSettings());
+                                                }),
+                                  ])
+                                ])),
+                            IconButton(
+                              tooltip: _muted
+                                  ? 'Включить звук автомата'
+                                  : 'Выключить звук автомата',
+                              icon: Icon(_muted
+                                  ? Icons.volume_off_outlined
+                                  : Icons.volume_up_outlined),
+                              onPressed: () {
+                                setState(() => _muted = !_muted);
+                                unawaited(_saveSettings());
+                              },
+                            ),
                           ]),
                       SlotStage(
                         pool: _pool,
@@ -441,6 +461,7 @@ class _GameState extends State<_Game> {
                         title: widget.initialMode == SpeakingEntryMode.write
                             ? 'Пиши!'
                             : 'Говори!',
+                        muted: _muted,
                         onPull: _spin,
                         onLanded: () {
                           setState(() {

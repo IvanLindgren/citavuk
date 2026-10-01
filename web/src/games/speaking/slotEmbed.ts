@@ -5,6 +5,7 @@
  */
 import { SLOT_ASSETS, type SlotAssets } from './slotAssets';
 import { createSlotScene, type SlotGenre, type SlotScene, type SlotTopic } from './slotScene';
+import { playSlotSound } from './slotSound';
 
 interface SlotState {
   genres: SlotGenre[];
@@ -13,6 +14,8 @@ interface SlotState {
   spinId: number;
   topicId?: string;
   reduced: boolean;
+  /** Звук выключен в настройках игры в приложении. */
+  muted?: boolean;
 }
 
 function notify(type: string) {
@@ -32,8 +35,16 @@ const assets: SlotAssets = {
 let scene: SlotScene | null = null;
 let lastSpin = 0;
 let lastData = '';
+let muted = true;
 try {
-  scene = createSlotScene(document.querySelector('canvas')!, { landed: () => notify('landed'), pull: () => notify('pull'), failed: () => notify('failed') }, assets);
+  scene = createSlotScene(document.querySelector('canvas')!, {
+      landed: () => notify('landed'),
+      pull: () => notify('pull'),
+      failed: () => notify('failed'),
+      sound: (kind, detail) => {
+        if (!muted) playSlotSound(kind, detail);
+      },
+    }, assets);
   notify('ready');
   window.addEventListener('flutterInAppWebViewPlatformReady', () => notify(scene ? 'ready' : 'failed'));
 } catch {
@@ -43,6 +54,7 @@ try {
 const api = {
   setState(value: SlotState) {
     if (!scene) return;
+    muted = value.muted !== false;
     // Flutter присылает состояние при каждой перерисовке экрана: пул переустанавливаем, только если он сменился.
     const data = `${value.genres.map((genre) => genre.id).join(',')}#${value.topics.map((topic) => topic.id).join(',')}`;
     if (data !== lastData) {

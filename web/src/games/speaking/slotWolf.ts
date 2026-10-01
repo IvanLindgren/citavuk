@@ -1,7 +1,7 @@
 /**
  * Читавук-фокусник у автомата. Рисунок — SVG, обведённый по референсу
  * `design/citavuk_magician_reference.webp` (скрипты — `tools/citavuk_magician`):
- * голова, туловище, хвост, рукав, кулак, лапа и цилиндр лежат отдельными
+ * голова, туловище, хвост, рукав, лапа и цилиндр лежат отдельными
  * файлами в `public/img/citavuk-magician/` и двигаются каждый вокруг своей оси.
  * Все координаты ниже — в пикселях референса 1254 × 1254.
  *
@@ -9,22 +9,21 @@
  * собирает персонажа из готовых картинок, поэтому SVG не пересчитывается.
  */
 
-export type WolfPart = 'head' | 'torso' | 'tail' | 'fist' | 'sleeve' | 'paw' | 'hat';
-export const WOLF_PARTS: readonly WolfPart[] = ['head', 'torso', 'tail', 'fist', 'sleeve', 'paw', 'hat'];
+export type WolfPart = 'head' | 'torso' | 'tail' | 'sleeve' | 'paw' | 'hat';
+export const WOLF_PARTS: readonly WolfPart[] = ['head', 'torso', 'tail', 'sleeve', 'paw', 'hat'];
 
 /** Где деталь лежала на референсе: так все они встают на место без подгонки. */
 export const WOLF_BOXES: Record<WolfPart, { x: number; y: number; w: number; h: number }> = {
   head: { x: 30, y: 34, w: 778, h: 702 },
   torso: { x: 57, y: 684, w: 591, h: 546 },
   tail: { x: 602, y: 822, w: 201, h: 330 },
-  fist: { x: 426, y: 855, w: 109, h: 135 },
   sleeve: { x: 891, y: 390, w: 337, h: 262 },
   paw: { x: 852, y: 276, w: 195, h: 190 },
   hat: { x: 795, y: 726, w: 448, h: 350 },
 };
 
 /** Во сколько раз деталь мельче своего места на референсе: рука и цилиндр нарисованы крупнее туловища. */
-export const WOLF_PART_SCALE: Record<WolfPart, number> = { head: 1, torso: 1, tail: 1, fist: 1, sleeve: 0.62, paw: 0.62, hat: 0.74 };
+export const WOLF_PART_SCALE: Record<WolfPart, number> = { head: 1, torso: 1, tail: 1, sleeve: 0.62, paw: 0.62, hat: 0.74 };
 
 /** Опорная точка персонажа — между ступнями: её сцена ставит на пол или на крышу автомата. */
 export const WOLF_FEET = { x: 430, y: 1222 };
@@ -43,7 +42,7 @@ const SLEEVE_CUFF = { x: 958, y: 446 };
 const SLEEVE_DIR = Math.atan2(SLEEVE_CUFF.y - SLEEVE_BASE.y, SLEEVE_CUFF.x - SLEEVE_BASE.x);
 /** Поднятая рука нарисована крупнее туловища — уменьшаем до его масштаба. */
 const ARM_SCALE = WOLF_PART_SCALE.sleeve;
-/** Запястье и середина кулака на референсе; костяшки смотрят влево. */
+/** Запястье и середина кулака (рисуется вектором в drawFist); костяшки смотрят влево. */
 const FIST_WRIST = { x: 522, y: 918 };
 const FIST_GRIP = { x: 472, y: 916 };
 /** Цилиндр: середина полей на рисунке и место на макушке. */
@@ -63,6 +62,7 @@ const EYES = [
   { x: 252, y: 518, rx: 49, ry: 50, stars: [{ x: 226, y: 523, s: 9 }, { x: 262, y: 537, s: 7 }] },
   { x: 514, y: 571, rx: 49, ry: 53, stars: [{ x: 518, y: 590, s: 9 }] },
 ];
+/** Середина «:3» на референсе: рот открывается вниз от неё. */
 const MOUTH = { x: 380, y: 612 };
 
 export interface WolfPose {
@@ -247,6 +247,61 @@ function wand(ctx: CanvasRenderingContext2D, m: Mat, angle: number, glow: number
   ctx.fill();
 }
 
+/**
+ * Кулак с палочкой. С референса кисть вырезалась с рваным краем, поэтому она
+ * нарисована вектором в том же стиле: подушечки-костяшки, большой палец сверху.
+ */
+function drawFist(ctx: CanvasRenderingContext2D, m: Mat) {
+  setMatrix(ctx, m);
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  const skin = ctx.createRadialGradient(462, 900, 8, 470, 920, 78);
+  skin.addColorStop(0, '#fffaf4');
+  skin.addColorStop(0.65, '#fbe9dd');
+  skin.addColorStop(1, '#efcfbf');
+  ctx.beginPath();
+  ctx.moveTo(521, 868);
+  ctx.bezierCurveTo(502, 854, 462, 851, 446, 864);
+  ctx.bezierCurveTo(428, 872, 422, 893, 434, 903);
+  ctx.bezierCurveTo(419, 912, 419, 932, 433, 939);
+  ctx.bezierCurveTo(420, 949, 424, 969, 442, 974);
+  ctx.bezierCurveTo(466, 985, 508, 982, 523, 966);
+  ctx.bezierCurveTo(536, 950, 536, 884, 521, 868);
+  ctx.closePath();
+  ctx.fillStyle = skin;
+  ctx.fill();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 7;
+  ctx.stroke();
+  // Розовая тень снизу — как на рисунке лап.
+  ctx.save();
+  ctx.clip();
+  ctx.fillStyle = 'rgba(232,160,150,.28)';
+  ctx.beginPath();
+  ctx.ellipse(478, 978, 56, 22, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  // Складки между пальцами.
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(435, 903);
+  ctx.quadraticCurveTo(450, 906, 462, 901);
+  ctx.moveTo(434, 939);
+  ctx.quadraticCurveTo(449, 942, 461, 937);
+  ctx.stroke();
+  // Большой палец обхватывает палочку сверху.
+  ctx.beginPath();
+  ctx.moveTo(452, 877);
+  ctx.bezierCurveTo(460, 861, 503, 860, 512, 875);
+  ctx.bezierCurveTo(517, 886, 503, 894, 488, 892);
+  ctx.bezierCurveTo(472, 890, 455, 893, 452, 877);
+  ctx.closePath();
+  ctx.fillStyle = '#fdf0e6';
+  ctx.fill();
+  ctx.lineWidth = 6;
+  ctx.stroke();
+}
+
 function face(ctx: CanvasRenderingContext2D, m: Mat, pose: WolfPose) {
   setMatrix(ctx, m);
   // Звёздочки-блики в глазах — на рисунке они слишком мелкие для обводки.
@@ -289,31 +344,31 @@ function face(ctx: CanvasRenderingContext2D, m: Mat, pose: WolfPose) {
     }
   }
   if (pose.mouth > 0.04) {
+    // Рот открывается под «:3», как у мультяшного волчонка: тёмный полукруг с язычком,
+    // верх — по линии рта, уголки остаются на месте.
     const open = Math.min(1, pose.mouth);
-    ctx.fillStyle = FACE;
+    const w = 22 + 6 * open;
+    const top = MOUTH.y + 6;
+    const depth = 8 + 30 * open;
     ctx.beginPath();
-    ctx.ellipse(MOUTH.x, MOUTH.y + 4, 40, 18, 0, 0, Math.PI * 2);
-    ctx.fill();
-    const w = 30;
-    const h = 10 + 34 * open;
-    ctx.beginPath();
-    ctx.moveTo(MOUTH.x - w, MOUTH.y);
-    ctx.quadraticCurveTo(MOUTH.x, MOUTH.y - 6, MOUTH.x + w, MOUTH.y);
-    ctx.quadraticCurveTo(MOUTH.x + w * 0.8, MOUTH.y + h, MOUTH.x, MOUTH.y + h);
-    ctx.quadraticCurveTo(MOUTH.x - w * 0.8, MOUTH.y + h, MOUTH.x - w, MOUTH.y);
+    ctx.moveTo(MOUTH.x - w, top);
+    ctx.quadraticCurveTo(MOUTH.x, top - 5, MOUTH.x + w, top);
+    ctx.bezierCurveTo(MOUTH.x + w, top + depth * 0.9, MOUTH.x + w * 0.45, top + depth, MOUTH.x, top + depth);
+    ctx.bezierCurveTo(MOUTH.x - w * 0.45, top + depth, MOUTH.x - w, top + depth * 0.9, MOUTH.x - w, top);
     ctx.closePath();
-    ctx.fillStyle = '#6e1f22';
+    ctx.fillStyle = '#7a2228';
     ctx.fill();
-    ctx.lineWidth = 7;
-    ctx.strokeStyle = INK;
-    ctx.stroke();
     ctx.save();
     ctx.clip();
-    ctx.fillStyle = '#e9727a';
+    ctx.fillStyle = '#f0858c';
     ctx.beginPath();
-    ctx.ellipse(MOUTH.x, MOUTH.y + h, w * 0.7, h * 0.45, 0, 0, Math.PI * 2);
+    ctx.ellipse(MOUTH.x, top + depth + 2, w * 0.68, depth * 0.48, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
+    ctx.lineWidth = 6;
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = INK;
+    ctx.stroke();
   }
 }
 
@@ -335,7 +390,7 @@ export function drawWolf(ctx: CanvasRenderingContext2D, frame: Mat, sprites: Wol
   put(ctx, f.hat, sprites.hat, 'hat');
   put(ctx, f.arm, sprites.sleeve, 'sleeve');
   wand(ctx, f.fist, pose.wand, wandGlow);
-  put(ctx, f.fist, sprites.fist, 'fist');
+  drawFist(ctx, f.fist);
   ctx.restore();
   base = IDENTITY;
 }

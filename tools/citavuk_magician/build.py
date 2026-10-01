@@ -3,7 +3,8 @@
 
 Вход — design/citavuk_magician_reference.webp (рисунок с прозрачным фоном:
 персонаж, отдельно поднятая лапа и цилиндр). Скрипт режет его на детали
-(голова, туловище, хвост, кулак, рукав, лапа, цилиндр), обводит каждую в SVG
+(голова, туловище, хвост, рукав, лапа, цилиндр; кулак с палочкой рисуется
+вектором в slotWolf.ts), обводит каждую в SVG
 двумя слоями — цветные заливки и тёмный контур поверх — и пишет файлы в
 web/public/img/citavuk-magician/. Как детали собираются и двигаются, описано
 в web/src/games/speaking/slotWolf.ts: WOLF_BOXES там должны совпасть с тем,
@@ -202,6 +203,9 @@ def optimize(svg, k, fill=None):
 
 def trace(source, images, boxes, work):
     for name, box in boxes.items():
+        if name == 'fist':
+            # Кулак вырезан только чтобы убрать его с туловища: с палочкой он рисуется вектором (slotWolf.ts).
+            continue
         im = images[name]
         a = np.array(im).astype(np.float32)
         alpha = a[:, :, 3]

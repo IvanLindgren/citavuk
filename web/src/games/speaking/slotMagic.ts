@@ -18,6 +18,8 @@ export const ZAP_AT = {
 } as const;
 export const PULL_MS = 600;
 const CIRCLE_END = 1350;
+/** Палочка рассекает воздух на каждом полукруге над автоматом. */
+export const SWISH_AT = [620, 980, 1340] as const;
 /** «Та-дам» и поклон после выпадения темы. */
 export const TADA_MS = 1300;
 export const BOW_MS = 1000;

@@ -27,6 +27,7 @@ class SlotStage extends StatefulWidget {
       required this.spinId,
       required this.target,
       required this.title,
+      required this.muted,
       required this.onLanded,
       required this.onPull});
   final List<SpeakingTopic> pool;
@@ -36,6 +37,9 @@ class SlotStage extends StatefulWidget {
 
   /// Надпись на вывеске: «Говори!» или «Пиши!».
   final String title;
+
+  /// Звуки автомата и фокусов Читавука выключены.
+  final bool muted;
   final VoidCallback onLanded;
 
   /// Игрок дёрнул рычаг на странице: экран выбирает тему и поднимает [spinId].
@@ -84,6 +88,7 @@ class _SlotStageState extends State<SlotStage> {
         for (final t in widget.pool) {'id': t.id, 'genre': t.genre, 'ru': t.ru}
       ],
       'title': widget.title,
+      'muted': widget.muted,
       'spinId': widget.spinId,
       'topicId': widget.target?.id,
       'reduced': MediaQuery.disableAnimationsOf(context)
@@ -150,6 +155,9 @@ class _SlotStageState extends State<SlotStage> {
                   initialSettings: InAppWebViewSettings(
                       javaScriptEnabled: true,
                       transparentBackground: true,
+                      // Звук фокусов играет страница: кнопка «Выбрать тему» нажата
+                      // во Flutter, а не в WebView, поэтому жест не требуем.
+                      mediaPlaybackRequiresUserGesture: false,
                       supportZoom: false,
                       disableContextMenu: true,
                       disableVerticalScroll: true,

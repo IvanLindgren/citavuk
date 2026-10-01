@@ -45,7 +45,7 @@ import {
   type Twinkle,
 } from './slotDraw';
 import { ParticleField } from './slotFx';
-import { PULL_MS, ZAP_AT, magicPose, type MagicOutput } from './slotMagic';
+import { PULL_MS, SWISH_AT, TADA_MS, ZAP_AT, magicPose, type MagicOutput } from './slotMagic';
 import {
   WOLF_BOXES,
   WOLF_PARTS,
@@ -84,7 +84,22 @@ import {
 
 export interface SlotGenre { id: string; ru: string; art?: string }
 export interface SlotTopic { id: string; genre: string; ru: string }
-export type SlotSoundKind = 'pull' | 'release' | 'tick' | 'stop' | 'coin' | 'win' | 'zap' | 'magic';
+export type SlotSoundKind =
+  | 'pull'
+  | 'release'
+  | 'tick'
+  | 'stop'
+  | 'coin'
+  | 'zap'
+  | 'magic'
+  | 'allez'
+  | 'swish'
+  | 'sparkle'
+  | 'drumroll'
+  | 'tada'
+  | 'hat'
+  | 'applause'
+  | 'invite';
 
 export interface SlotCallbacks {
   /** Тема выпала и анимация дошла до конца. */
@@ -255,8 +270,11 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
   let magic: MagicOutput = { pose: WOLF_REST, glow: 0, trail: false, bubble: null };
   let frames: WolfFrames | null = null;
   let zaps: { from: { x: number; y: number }; to: { x: number; y: number }; at: number; seed: number }[] = [];
-  let fired = { magic: false, left: false, right: false, center: false };
+  const unfired = () => ({ magic: false, left: false, right: false, center: false, swish: 0, drum: false, hat: false, applause: false });
+  let fired = unfired();
   let lastTrail = 0;
+  let lastSparkle = 0;
+  let lastBubble: string | null = null;
 
   const icons = new Map<string, HTMLCanvasElement | null>();
   const iconFor = (id: string): HTMLCanvasElement | null => {
@@ -506,7 +524,6 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
         winAt = now;
         coinsDropped = 0;
         knock(now, 6);
-        callbacks.sound?.('win');
         if (!calm()) {
           const r = L.reels.center;
           fx.fountain(r.x + r.w / 2, r.y + 10, scale);
@@ -580,6 +597,38 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
       }
     }
     zaps = zaps.filter((z) => now - z.at < 400);
+
+    // Звуки фокуса: реплики, свист палочки, дробь, цилиндр, аплодисменты.
+    const said = magic.bubble?.text ?? null;
+    if (said && said !== lastBubble) callbacks.sound?.(said === 'Алле-оп!' ? 'allez' : said === 'Та-дам!' ? 'tada' : 'invite');
+    lastBubble = said;
+    if (!calm()) {
+      if (magic.trail && now - lastSparkle > 170) {
+        lastSparkle = now;
+        callbacks.sound?.('sparkle');
+      }
+      const t = now - spinStart;
+      if (everSpun && spinning) {
+        if (fired.swish < SWISH_AT.length && t >= SWISH_AT[fired.swish]!) {
+          fired.swish++;
+          callbacks.sound?.('swish');
+        }
+        if (!fired.drum && t >= ZAP_AT.right + 60) {
+          fired.drum = true;
+          callbacks.sound?.('drumroll', ZAP_AT.center - t);
+        }
+      }
+      if (won) {
+        if (!fired.hat && sw >= 30) {
+          fired.hat = true;
+          callbacks.sound?.('hat');
+        }
+        if (!fired.applause && sw >= TADA_MS) {
+          fired.applause = true;
+          callbacks.sound?.('applause');
+        }
+      }
+    }
 
     const tray = L.tray;
     fx.step(dt, L.h + 80, { left: tray.x + 18, right: tray.x + tray.w - 18 });
@@ -863,7 +912,7 @@ export function createSlotScene(canvas: HTMLCanvasElement, callbacks: SlotCallba
       }
       fx.clear();
       zaps = [];
-      fired = { magic: false, left: false, right: false, center: false };
+      fired = unfired();
       won = false;
       wonGenre = topic.genre;
       landedFired = false;

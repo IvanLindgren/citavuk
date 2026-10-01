@@ -394,8 +394,8 @@ Web и Flutter записывают `id` UUID, глобальный `bookId` UUI
 
 Автомат тем — общая Canvas-сцена и generated HTML в Flutter. Bridge
 `window.SlotMachine.setState` принимает `genres[]{id,ru,art}`,
-`topics[]{id,genre,ru}` (пул, из которого выбирал экран), `title`, `spinId`,
-`topicId`, `reduced`; ответы `ready|pull|landed|failed` идут через handler
+`topics[]{id,genre,ru}` (пул, из которого выбирал экран), `title`, `muted`,
+`spinId`, `topicId`, `reduced`; ответы `ready|pull|landed|failed` идут через handler
 `slot`. `pull` — игрок дёрнул рычаг: тему выбирает Flutter и поднимает
 `spinId`. Остановка раскрывает тему только один раз на `spinId`, в том числе
 при переходе на fallback. Подробности и команда пересборки — в `speaking.md`.

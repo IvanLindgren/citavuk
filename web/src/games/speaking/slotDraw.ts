@@ -5,7 +5,7 @@
  * статические слои, сцена их кеширует; барабаны, вывеска, медальон, лампочки,
  * бегущая строка, рычаг и все эффекты рисуются покадрово.
  */
-import { PIXEL_FAMILY, WORDMARK_FAMILY } from './slotAssets';
+import { DISPLAY_FAMILY, PIXEL_FAMILY, WORDMARK_FAMILY } from './slotAssets';
 import type { Particle } from './slotFx';
 import { mod, type ReelId, type SlotLayoutKind } from './slotMath';
 
@@ -17,9 +17,11 @@ export interface Circle { x: number; y: number; r: number }
 export interface SlotCell { id: string; label: string; hint?: boolean }
 
 export const PIXEL_FONT = `"${PIXEL_FAMILY}", "Press Start 2P", "Courier New", monospace`;
+/** Вывеска, темы и реплики — Ruslan Display: старинная афиша в духе фокусника. */
+export const DISPLAY_FONT = `"${DISPLAY_FAMILY}", "Ruslan Display", Georgia, serif`;
 export const WORDMARK_FONT = `"${WORDMARK_FAMILY}", Lora, Georgia, serif`;
-/** Межстрочный интервал пиксельного шрифта: буквы в нём высокие и плотные. */
-const PIXEL_LINE = 1.55;
+/** Межстрочный интервал тем на барабане. */
+const TEXT_LINE = 1.24;
 
 export interface DotGrid { x: number; y: number; pitch: number; cols: number; rows: number }
 
@@ -149,12 +151,12 @@ const LAYOUTS: Record<SlotLayoutKind, SlotLayout> = {
     frame: { x: 400, y: 176, w: 660, h: 330 },
     ticker: { x: 450, y: 518, w: 560, h: 52 },
     tray: { x: 530, y: 580, w: 400, h: 76 },
-    wolf: { x: 196, y: 686, scale: 0.44 },
+    wolf: { x: 170, y: 686, scale: 0.42 },
     pad: 14,
     side: 104,
     gap: 12,
     pitch: { side: 104, center: 150 },
-    text: { pad: 16, max: 26, min: 13, lines: 5 },
+    text: { pad: 16, max: 36, min: 16, lines: 5 },
     lever: { pivot: { x: 1116, y: 352 }, length: 200, knob: 27, zone: { x: 1072, y: 90, w: 128, h: 420 } },
     bulbR: 10,
     signStep: 52,
@@ -173,7 +175,7 @@ const LAYOUTS: Record<SlotLayoutKind, SlotLayout> = {
     side: 54,
     gap: 8,
     pitch: { side: 116, center: 206 },
-    text: { pad: 10, max: 26, min: 13, lines: 6 },
+    text: { pad: 10, max: 36, min: 16, lines: 6 },
     lever: { pivot: { x: 542, y: 500 }, length: 158, knob: 21, zone: { x: 500, y: 294, w: 100, h: 340 } },
     bulbR: 8,
     signStep: 44,
@@ -228,13 +230,13 @@ function fitText(ctx: CanvasRenderingContext2D, text: string, maxW: number, maxH
   if (hit) return hit;
   let fit: Fit | null = null;
   for (let size = t.max; size >= t.min && !fit; size--) {
-    ctx.font = `${size}px ${PIXEL_FONT}`;
+    ctx.font = `${size}px ${DISPLAY_FONT}`;
     const lines = wrapWords(ctx, text, maxW);
     const widest = Math.max(...lines.map((line) => ctx.measureText(line).width));
-    if (lines.length <= t.lines && lines.length * size * PIXEL_LINE <= maxH && widest <= maxW) fit = { size, lines };
+    if (lines.length <= t.lines && lines.length * size * TEXT_LINE <= maxH && widest <= maxW) fit = { size, lines };
   }
   if (!fit) {
-    ctx.font = `${t.min}px ${PIXEL_FONT}`;
+    ctx.font = `${t.min}px ${DISPLAY_FONT}`;
     const lines = wrapWords(ctx, text, maxW);
     const kept = lines.slice(0, t.lines);
     if (lines.length > t.lines) kept[t.lines - 1] = `${kept[t.lines - 1]!.replace(/[\s.,;:!?]+$/, '')}…`;
@@ -554,10 +556,10 @@ function drawCell(
   ctx.globalAlpha = alpha;
   if (id === 'center') {
     const fit = fitText(ctx, cell.label, r.w - L.text.pad * 2, pitch - 14, L.text);
-    ctx.font = `${fit.size}px ${PIXEL_FONT}`;
+    ctx.font = `${fit.size}px ${DISPLAY_FONT}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    const lineHeight = fit.size * PIXEL_LINE;
+    const lineHeight = fit.size * TEXT_LINE;
     const top = -((fit.lines.length - 1) * lineHeight) / 2;
     fit.lines.forEach((line, i) => {
       const y = top + i * lineHeight;
@@ -579,11 +581,11 @@ function drawCell(
   } else {
     const size = Math.min(r.w * 0.74, pitch * 0.74);
     if (cell.hint) {
-      ctx.font = `${Math.round(size * 0.62)}px ${PIXEL_FONT}`;
+      ctx.font = `${Math.round(size * 0.9)}px ${DISPLAY_FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = RED;
-      ctx.fillText('?', 2, 2);
+      ctx.fillText('?', 0, 3);
     } else {
       ctx.beginPath();
       ctx.arc(0, 0, size * 0.62, 0, TAU);
@@ -747,11 +749,11 @@ export interface SignSprites {
 export function makeSignSprites(L: SlotLayout, title: string, pixelsPerUnit: number): SignSprites {
   const text = title.toUpperCase();
   const probe = document.createElement('canvas').getContext('2d')!;
-  let size = L.kind === 'wide' ? 52 : 40;
-  probe.font = `${size}px ${PIXEL_FONT}`;
+  let size = L.kind === 'wide' ? 74 : 56;
+  probe.font = `${size}px ${DISPLAY_FONT}`;
   while (size > 16 && probe.measureText(text).width > L.sign.w - 70) {
     size -= 2;
-    probe.font = `${size}px ${PIXEL_FONT}`;
+    probe.font = `${size}px ${DISPLAY_FONT}`;
   }
   const pad = size * 0.7;
   const total = probe.measureText(text).width;
@@ -764,14 +766,14 @@ export function makeSignSprites(L: SlotLayout, title: string, pixelsPerUnit: num
       canvas.height = Math.max(1, Math.ceil((size + pad * 2) * pixelsPerUnit));
       const g = canvas.getContext('2d')!;
       g.scale(pixelsPerUnit, pixelsPerUnit);
-      g.font = `${size}px ${PIXEL_FONT}`;
+      g.font = `${size}px ${DISPLAY_FONT}`;
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       paint(g);
       return canvas;
     };
     const cx = pad + w / 2;
-    const cy = pad + size / 2 + size * 0.06;
+    const cy = pad + size / 2 + size * 0.04;
     const on = make((g) => {
       // Размытие тени задаётся в пикселях устройства, поэтому умножается на масштаб.
       for (const [blur, color] of [
@@ -1072,9 +1074,9 @@ export function drawTwinkles(ctx: CanvasRenderingContext2D, items: readonly Twin
  */
 export function drawBubble(ctx: CanvasRenderingContext2D, L: SlotLayout, x: number, y: number, text: string, appear: number) {
   if (appear <= 0.01) return;
-  const size = L.kind === 'wide' ? 24 : 17;
+  const size = L.kind === 'wide' ? 30 : 21;
   ctx.save();
-  ctx.font = `${size}px ${PIXEL_FONT}`;
+  ctx.font = `${size}px ${DISPLAY_FONT}`;
   const w = ctx.measureText(text).width + size * 1.6;
   const h = size * 2.2;
   // Пузырь не вылезает за край сцены.
