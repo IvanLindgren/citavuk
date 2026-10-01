@@ -121,6 +121,7 @@ const SupportThanks = lazy(() =>
 const Supporters = lazy(() =>
   import("./pages/Supporters").then((m) => ({ default: m.Supporters })),
 );
+const SupportClaim = lazy(() => import('./pages/SupportClaim').then(m=>({default:m.SupportClaim})));
 const CaseGame = lazy(() =>
   import("./pages/CaseGame").then((m) => ({ default: m.CaseGame })),
 );
@@ -231,6 +232,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/about", element: <About /> },
   { pattern: "/support", element: <Support /> },
   { pattern: "/support/thanks", element: <SupportThanks /> },
+  { pattern: "/support/claim", element: <SupportClaim /> },
   { pattern: "/supporters", element: <Supporters /> },
   { pattern: "/auth/yandex", element: <YandexCallback /> },
   { pattern: "/admin/lessons", element: <AdminLessons /> },

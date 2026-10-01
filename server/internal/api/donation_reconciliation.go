@@ -48,6 +48,7 @@ func (s *Server) runDonationReconciliation() {
 	defer ticker.Stop()
 	for {
 		s.reconcilePendingDonations(ctx)
+		s.sendGuestDonationLinks(ctx)
 		select {
 		case <-ctx.Done():
 			return

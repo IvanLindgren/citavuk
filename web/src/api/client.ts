@@ -81,6 +81,8 @@ interface RequestOptions {
   headers?: Record<string, string>;
   timeoutMs?: number;
   signal?: AbortSignal;
+  /** Гостевая поддержка использует отдельное HttpOnly подтверждение. */
+  credentials?: RequestCredentials;
 }
 
 const DEFAULT_TIMEOUT = 20_000;
@@ -114,7 +116,7 @@ export async function request<T>(
     response = await fetch(API_BASE + path, {
       method,
       headers,
-      credentials: token === 'cookie' || path.startsWith('/v1/auth/') ? 'include' : 'omit',
+      credentials: options.credentials ?? (token === 'cookie' || path.startsWith('/v1/auth/') ? 'include' : 'omit'),
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: controller.signal,
     });

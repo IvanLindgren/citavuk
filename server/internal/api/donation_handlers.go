@@ -28,6 +28,7 @@ type createDonationRequest struct {
 	ShowMessage    bool   `json:"showMessage"`
 	Monthly        bool   `json:"monthly"`
 	MonthlyConsent bool   `json:"monthlyConsent"`
+	RecoveryEmail  string `json:"recoveryEmail"`
 }
 
 type createDonationResponse struct {
@@ -67,9 +68,10 @@ func (s *Server) testPayer(u *store.User) bool {
 }
 
 type donationAvailability struct {
-	Available        bool `json:"available"`
-	TestMode         bool `json:"testMode"`
-	MonthlyAvailable bool `json:"monthlyAvailable"`
+	Available          bool `json:"available"`
+	TestMode           bool `json:"testMode"`
+	MonthlyAvailable   bool `json:"monthlyAvailable"`
+	GuestLinkAvailable bool `json:"guestLinkAvailable"`
 }
 
 func (s *Server) handleDonationAvailability(w http.ResponseWriter, r *http.Request) {
@@ -77,8 +79,9 @@ func (s *Server) handleDonationAvailability(w http.ResponseWriter, r *http.Reque
 	writeJSON(w, http.StatusOK, donationAvailability{
 		Available: s.paymentsOpenFor(u),
 		// Режим магазина видят только те, кому он открыт.
-		TestMode:         s.testPayer(u) && s.yookassa.TestMode(),
-		MonthlyAvailable: s.paymentsOpenFor(u) && s.cfg != nil && s.cfg.YooKassaRecurring,
+		TestMode:           s.testPayer(u) && s.yookassa.TestMode(),
+		MonthlyAvailable:   s.paymentsOpenFor(u) && s.cfg != nil && s.cfg.YooKassaRecurring,
+		GuestLinkAvailable: s.mailer.Enabled(),
 	})
 }
 
@@ -99,6 +102,11 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	name := strings.Join(strings.Fields(req.Name), " ")
+	recoveryEmail := store.NormalizeEmail(req.RecoveryEmail)
+	if recoveryEmail != "" && (store.ValidateEmail(recoveryEmail) != nil || !s.mailer.Enabled()) {
+		writeError(w, 400, codeBadRequest, "Проверь почту или продолжи без отправки ссылки.")
+		return
+	}
 	if req.Monthly && (userFrom(r.Context()) == nil || !req.MonthlyConsent || !s.cfg.YooKassaRecurring) {
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Для ежемесячной поддержки войди в аккаунт и подтверди условия автоплатежа.")
 		return
@@ -134,6 +142,13 @@ func (s *Server) handleCreateDonation(w http.ResponseWriter, r *http.Request) {
 		if err := s.store.CreateSupportSubscription(r.Context(), d); err != nil {
 			slog.Error("создание ежемесячной поддержки", "err", err)
 			writeError(w, http.StatusInternalServerError, codeInternal, "Не удалось начать оплату.")
+			return
+		}
+	}
+	if d.UserID == nil {
+		if err := s.prepareGuestDonation(w, r, d.ID, recoveryEmail); err != nil {
+			slog.Error("сохранение подтверждения гостевой поддержки", "err", err)
+			writeError(w, 500, codeInternal, "Не удалось начать оплату. Попробуй ещё раз.")
 			return
 		}
 	}

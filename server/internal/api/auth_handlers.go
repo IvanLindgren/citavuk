@@ -61,14 +61,14 @@ type userView struct {
 
 func viewOf(u *store.User) userView {
 	return userView{
-		ID:            u.ID.String(),
-		Email:         u.Email,
-		DisplayName:   u.DisplayName,
-		SyncRev:       u.SyncRev,
-		HasPassword:   u.PasswordHash != "",
-		IsAdmin:       u.IsAdmin,
-		EmailVerified: u.EmailVerified,
-		SerbianLevel:  u.SerbianLevel,
+		ID:             u.ID.String(),
+		Email:          u.Email,
+		DisplayName:    u.DisplayName,
+		SyncRev:        u.SyncRev,
+		HasPassword:    u.PasswordHash != "",
+		IsAdmin:        u.IsAdmin,
+		EmailVerified:  u.EmailVerified,
+		SerbianLevel:   u.SerbianLevel,
 		SupporterSince: u.SupporterSince,
 	}
 }
@@ -328,6 +328,20 @@ func (s *Server) issueSession(w http.ResponseWriter, r *http.Request, user *stor
 		return
 	}
 	if s.browserSession(r) {
+		if proof := guestDonationToken(r); proof != "" {
+			if items, err := s.store.OwnedGuestDonations(r.Context(), auth.HashToken(proof)); err == nil {
+				for _, d := range items {
+					if d.Status == "succeeded" {
+						if _, err := s.store.ClaimGuestDonation(r.Context(), user.ID, d.ID, auth.HashToken(proof), nil); err != nil && !errors.Is(err, store.ErrGuestDonationProof) {
+							slog.Warn("привязка поддержки при входе", "err", err)
+						}
+					}
+				}
+				if fresh, err := s.store.UserByID(r.Context(), user.ID); err == nil {
+					user = fresh
+				}
+			}
+		}
 		setSessionCookie(w, token, expires)
 		token = "cookie"
 	}

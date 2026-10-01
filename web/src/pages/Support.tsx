@@ -17,6 +17,7 @@ import { Link } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
 import { SUPPORT_SELLER } from './supportSeller';
+import { GuestDonationPanel } from '../components/GuestDonationPanel';
 
 const PRESETS = [200, 500, 1000] as const;
 const MIN_AMOUNT = 50;
@@ -94,6 +95,7 @@ export function Support() {
 
         <Reveal delay={0.1}>
           <DonationForm />
+          <GuestDonationPanel />
         </Reveal>
 
         <Reveal delay={0.12}>
@@ -137,6 +139,7 @@ function DonationForm() {
   const [showMessage, setShowMessage] = useState(false);
   const [monthly, setMonthly] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [recoveryEmail,setRecoveryEmail]=useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [availability, setAvailability] = useState<DonationAvailability | null>(null);
@@ -178,6 +181,7 @@ function DonationForm() {
         showMessage,
         monthly,
         monthlyConsent: consent,
+        recoveryEmail:account?undefined:recoveryEmail.trim(),
       });
       window.location.assign(started.confirmationUrl);
     } catch (reason) {
@@ -280,13 +284,18 @@ function DonationForm() {
           <label className="mt-3 flex items-start gap-2.5"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} className="mt-1 size-4 shrink-0 accent-[var(--accent)]" />Согласен на сохранение способа оплаты и ежемесячное списание указанной суммы</label>
         </div>}
 
+        {!account && availability?.guestLinkAvailable && <label className="mt-5 block">
+          <span className="text-sm font-semibold">Почта для привязки на другом устройстве</span>
+          <input type="email" value={recoveryEmail} onChange={event=>setRecoveryEmail(event.target.value)} maxLength={254} placeholder="Необязательно" className="mt-2 w-full rounded-xl border border-[var(--line)] bg-[var(--bg)] px-4 py-3" />
+          <span className="mt-2 block text-xs leading-relaxed text-[var(--text-muted)]">После оплаты пришлём одноразовую ссылку, чтобы привязать поддержку к аккаунту с этой почтой</span>
+        </label>}
         {!account && (
           <p className="mt-4 rounded-xl bg-[var(--bg-sunken)] px-4 py-3 text-sm leading-relaxed text-[var(--text-muted)]">
             <Link to="/login" className="font-semibold text-[var(--accent)] underline underline-offset-2">
               Войди в аккаунт
             </Link>
-           , чтобы значок появился в профиле. Без аккаунта имя всё равно попадёт
-            на страницу друзей.
+           , или оплати гостем и привяжи поддержку после регистрации в этом браузере
+            {availability?.guestLinkAvailable && <> Для другого устройства укажи почту выше</>}
           </p>
         )}
 

@@ -70,6 +70,7 @@ export interface DonationAvailability {
   /** Тестовый магазин: видно только администратору. */
   testMode: boolean;
   monthlyAvailable?: boolean;
+  guestLinkAvailable?: boolean;
 }
 
 export function getDonationAvailability(): Promise<DonationAvailability> {
@@ -85,9 +86,17 @@ export function startDonation(input: {
   showMessage?: boolean;
   monthly?: boolean;
   monthlyConsent?: boolean;
+  recoveryEmail?: string;
 }): Promise<DonationStart> {
-  return request<DonationStart>('/v1/donations', { method: 'POST', body: input, timeoutMs: 40_000 });
+  return request<DonationStart>('/v1/donations', { method: 'POST', body: input, timeoutMs: 40_000, credentials:'include' });
 }
+
+export interface GuestDonation { id:string;status:DonationStatus;amountKopecks:number;hasRecoveryEmail:boolean;emailSent:boolean }
+export async function getGuestDonations():Promise<GuestDonation[]>{
+  return (await request<{items:GuestDonation[]}>('/v1/donations/guest',{credentials:'include'})).items;
+}
+export const claimGuestDonation=(input:{id?:string;token?:string})=>request<{id:string}>('/v1/donations/guest/claim',{method:'POST',body:input,credentials:'include'});
+export const emailGuestDonation=(id:string,email?:string)=>request('/v1/donations/guest/email',{method:'POST',body:{id,email},credentials:'include'});
 
 export function getDonation(id: string): Promise<DonationState> {
   return request<DonationState>(`/v1/donations/${encodeURIComponent(id)}`, { anonymous: true, timeoutMs: 40_000 });

@@ -8,6 +8,7 @@ import { ButtonLink, Card, Spinner } from '../components/ui';
 import { Link, useQuery } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
+import { GuestDonationPanel } from '../components/GuestDonationPanel';
 
 /** Уведомление ЮKassa обычно приходит за секунды, но ждём с запасом. */
 const POLL_INTERVAL = 3000;
@@ -56,7 +57,7 @@ export function SupportThanks() {
     // всего вложенного. Собственный AnimatePresence возвращает их празднику.
     return (
       <AnimatePresence>
-        <Celebrated key="celebrated" state={state} />
+        <Celebrated key="celebrated" state={state} donationId={id} onClaimed={()=>void getDonation(id).then(setState).catch(()=>{})} />
       </AnimatePresence>
     );
   }
@@ -100,7 +101,7 @@ export function SupportThanks() {
   );
 }
 
-function Celebrated({ state }: { state: DonationState }) {
+function Celebrated({ state,donationId,onClaimed }: { state: DonationState;donationId:string;onClaimed:()=>void }) {
   const reduceMotion = useReducedMotion();
   const listed = state.showPublic && state.publicName !== '';
   const left = Math.max(0, state.thresholdKopecks - state.totalKopecks);
@@ -162,10 +163,11 @@ function Celebrated({ state }: { state: DonationState }) {
             <p className="mt-2 text-center text-sm text-[var(--text-muted)]">
               {state.hasAccount
                 ? <>Уже {formatRubles(state.totalKopecks)} из {formatRubles(state.thresholdKopecks)} — осталось {formatRubles(left)}. Суммы складываются.</>
-                : <>Суммы складываются только у платежей из аккаунта. <Link to="/login" className="font-semibold text-[var(--accent)] underline underline-offset-2">Войди</Link> перед следующей поддержкой.</>}
+                : <>Привяжи поддержку к аккаунту, чтобы сумма учлась вместе с другими оплатами</>}
             </p>
           </div>
         )}
+        {!state.hasAccount&&<GuestDonationPanel donationId={donationId} onClaimed={onClaimed} />}
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <Perk
@@ -189,7 +191,7 @@ function Celebrated({ state }: { state: DonationState }) {
             unlocked={state.unlocked && state.hasAccount}
             text={
               !state.hasAccount
-                ? 'Выдаётся аккаунту: войди на сайт перед оплатой.'
+                ? 'Войди или создай аккаунт и привяжи эту поддержку.'
                 : state.unlocked
                   ? 'Уже в твоём профиле, на сайте и в приложении.'
                   : 'Появится в профиле, когда наберётся 200 ₽.'

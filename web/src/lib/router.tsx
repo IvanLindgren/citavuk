@@ -90,7 +90,9 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
     // Кнопки «назад» и «вперёд» меняют адрес мимо navigate — состояние нужно
     // подхватывать из события, иначе интерфейс останется на прежнем экране.
-    window.history.replaceState({...window.history.state,citavukIndex:position.current}, '', currentPath());
+    // Lazy-экран ещё не смонтирован: fragment может содержать одноразовое
+    // подтверждение из письма. Не стираем его до чтения целевым экраном.
+    window.history.replaceState({...window.history.state,citavukIndex:position.current}, '', currentPath()+window.location.hash);
     const onPopState = () => {
       if (restored.current) { restored.current=false; return; }
       const next=window.history.state?.citavukIndex as number|undefined;
