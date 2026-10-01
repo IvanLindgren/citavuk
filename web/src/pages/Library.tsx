@@ -5,6 +5,7 @@ import { DropOverlay } from "../components/DropOverlay";
 import { ClipboardImportButton } from "../components/ClipboardImportButton";
 import { Mascot } from "../components/Mascot";
 import { SyncBadge } from "../components/SyncBadge";
+import { GuestBooksImport } from '../components/GuestBooksImport';
 import { Button, ButtonLink, Card, ErrorNote, Reveal, Spinner } from "../components/ui";
 import {
   deleteBook,
@@ -437,6 +438,7 @@ export function Library() {
           }}
         />
 
+        {account && <GuestBooksImport accountId={account.id} onImported={afterChange} />}
         {error && (
           <div className="mb-6">
             <ErrorNote>{error}</ErrorNote>
@@ -453,8 +455,8 @@ export function Library() {
           <Reveal className="mb-6">
             <Card className="flex flex-wrap items-center justify-between gap-4 p-5">
               <p className="text-sm leading-relaxed text-[var(--text-muted)]">
-                Книги и папки хранятся только в этом браузере. Войдите, чтобы
-                они появились на телефоне и компьютере.
+                Книги пока хранятся в этом браузере После входа выбери их
+                в блоке «Книги из этого браузера», чтобы добавить в свой аккаунт
               </p>
               <ButtonLink to="/login" variant="secondary" size="sm">
                   Войти

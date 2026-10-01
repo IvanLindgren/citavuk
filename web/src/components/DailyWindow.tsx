@@ -30,7 +30,9 @@ import { useAuth } from '../state/auth';
 import { usePromotionSlot } from '../lib/promotion';
 import { useSync } from '../state/sync';
 import { Mascot } from './Mascot';
-import { Button, Card, ErrorNote, Spinner } from './ui';
+import { Button, ButtonLink, Card, ErrorNote, Spinner } from './ui';
+import { useRouter } from '../lib/router';
+import { useSeo } from '../lib/seo';
 
 /**
  * Окно «На каждый день».
@@ -107,6 +109,16 @@ export function DailyButton({ className = '' }: { className?: string }) {
       {open && <DailyPanel onClose={() => setOpen(false)} />}
     </>
   );
+}
+
+export function DailyPage() {
+  useSeo({title:'Слова дня — Читавук',noindex:true});
+  const {account,loading}=useAuth();
+  const {navigate}=useRouter();
+  useEffect(()=>{if(account)rememberSeen();},[account]);
+  if(loading)return <main className="grid min-h-[60dvh] place-items-center"><Spinner /></main>;
+  if(!account)return <main className="mx-auto max-w-xl px-5 py-16"><Card className="p-7"><h1 className="text-3xl">Слова дня</h1><p className="my-5">Войди, чтобы получать слова по своему уровню и сохранять их в словарь</p><ButtonLink to="/login?next=%2Fdaily">Войти</ButtonLink></Card></main>;
+  return <DailyPanel onClose={()=>navigate('/library')} />;
 }
 
 function DailyPanel({ onClose }: { onClose: () => void }) {

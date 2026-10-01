@@ -158,6 +158,15 @@ export function activeStorageName(): string {
   return activeName;
 }
 
+/** Отдельное соединение для выбранных пользователем гостевых книг, без смены аккаунта. */
+export async function openGuestStorage(): Promise<IDBDatabase> {
+  const db=await openNamed(GUEST_DB_NAME);
+  // Это временное соединение не управляет кешем активного хранилища.
+  db.onclose=null;
+  db.onversionchange=()=>db.close();
+  return db;
+}
+
 export async function activateGuestStorage(): Promise<void> {
   if (activeName === GUEST_DB_NAME) return;
   const current = connection;

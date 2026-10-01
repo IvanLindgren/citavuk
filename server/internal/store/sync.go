@@ -33,6 +33,7 @@ type Book struct {
 	SourceKey  string    `json:"sourceKey"`
 	ParaCount  int       `json:"paraCount"`
 	LastPara   int       `json:"lastPara"`
+	LastOffset *int      `json:"lastOffset,omitempty"`
 	ContentSHA string    `json:"contentSha"`
 	LeadImage  string    `json:"leadImage"`
 	Deleted    bool      `json:"deleted"`
@@ -242,19 +243,25 @@ func upsertBook(ctx context.Context, tx pgx.Tx, userID uuid.UUID, b *Book, rev i
 	if b.ID == uuid.Nil {
 		return errors.New("пустой идентификатор")
 	}
+	if b.LastOffset != nil && *b.LastOffset < 0 {
+		return errors.New("отрицательное смещение чтения")
+	}
 	if b.UpdatedAt.IsZero() || b.UpdatedAt.After(time.Now().Add(5*time.Minute)) {
 		b.UpdatedAt = time.Now().UTC()
 	}
 	tag, err := tx.Exec(ctx, `
         INSERT INTO books (id, user_id, title, folder, source_key, para_count, last_para,
-                           content_sha, lead_image, deleted, updated_at, rev)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                           content_sha, lead_image, deleted, updated_at, rev, last_offset)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, coalesce($13::integer,0))
         ON CONFLICT (id) DO UPDATE SET
             title       = EXCLUDED.title,
             folder      = EXCLUDED.folder,
             source_key  = EXCLUDED.source_key,
             para_count  = EXCLUDED.para_count,
             last_para   = EXCLUDED.last_para,
+            last_offset = CASE WHEN $13::integer IS NOT NULL THEN EXCLUDED.last_offset
+                               WHEN books.last_para <> EXCLUDED.last_para THEN 0
+                               ELSE books.last_offset END,
             content_sha = CASE WHEN EXCLUDED.content_sha <> '' THEN EXCLUDED.content_sha
                                ELSE books.content_sha END,
             lead_image  = EXCLUDED.lead_image,
@@ -264,7 +271,7 @@ func upsertBook(ctx context.Context, tx pgx.Tx, userID uuid.UUID, b *Book, rev i
         WHERE books.user_id = EXCLUDED.user_id
           AND (books.updated_at <= EXCLUDED.updated_at OR books.updated_at > now() + interval '5 minutes')`,
 		b.ID, userID, b.Title, b.Folder, b.SourceKey, b.ParaCount, b.LastPara,
-		b.ContentSHA, b.LeadImage, b.Deleted, b.UpdatedAt, rev)
+		b.ContentSHA, b.LeadImage, b.Deleted, b.UpdatedAt, rev, b.LastOffset)
 	if err == nil && tag.RowsAffected() == 0 {
 		_, err = tx.Exec(ctx, `UPDATE books SET rev=$3 WHERE id=$1 AND user_id=$2`, b.ID, userID, rev)
 	}
@@ -566,7 +573,7 @@ func (s *Store) Pull(ctx context.Context, userID uuid.UUID, since int64, limit i
 
 func selectBooks(ctx context.Context, s *Store, userID uuid.UUID, since, upto int64) ([]Book, error) {
 	rows, err := s.Pool.Query(ctx, `
-        SELECT id, title, folder, source_key, para_count, last_para, content_sha,
+        SELECT id, title, folder, source_key, para_count, last_para, last_offset, content_sha,
                lead_image, deleted, updated_at, rev
           FROM books
          WHERE user_id = $1 AND rev > $2 AND rev <= $3
@@ -580,7 +587,7 @@ func selectBooks(ctx context.Context, s *Store, userID uuid.UUID, since, upto in
 	for rows.Next() {
 		var b Book
 		if err := rows.Scan(&b.ID, &b.Title, &b.Folder, &b.SourceKey, &b.ParaCount,
-			&b.LastPara, &b.ContentSHA, &b.LeadImage, &b.Deleted, &b.UpdatedAt, &b.Rev); err != nil {
+			&b.LastPara, &b.LastOffset, &b.ContentSHA, &b.LeadImage, &b.Deleted, &b.UpdatedAt, &b.Rev); err != nil {
 			return nil, err
 		}
 		out = append(out, b)

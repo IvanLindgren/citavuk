@@ -611,6 +611,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: title,
           paragraphs: paragraphs,
           initialParagraph: lastPara,
+          initialOffset: book['last_offset'] as int? ?? 0,
           contentSha: book['content_sha'] as String? ?? '',
           sourceKey: book['filepath'] as String? ?? '',
         ),

@@ -32,6 +32,7 @@ export interface BookMeta {
   paragraphCount: number;
   /** Индекс абзаца, на котором читатель остановился. */
   lastParagraph: number;
+  lastOffset?: number;
   /** Адрес текста; наличие blob на сервере отмечает contentUploaded. */
   contentSha: string;
   /** Локальная отметка успешной выгрузки; старые записи перепроверяются. */
@@ -151,10 +152,10 @@ export async function importParagraphs(
 }
 
 /** Запоминает место остановки. */
-export async function saveProgress(id: string, lastParagraph: number): Promise<void> {
+export async function saveProgress(id: string, lastParagraph: number, lastOffset = 0): Promise<void> {
   const book = await getBook(id);
-  if (!book || book.lastParagraph === lastParagraph) return;
-  await saveMeta({ ...book, lastParagraph, updatedAt: now(), dirty: 1 });
+  if (!book || (book.lastParagraph === lastParagraph && (book.lastOffset??0) === lastOffset)) return;
+  await saveMeta({ ...book, lastParagraph, lastOffset, updatedAt: now(), dirty: 1 });
 }
 
 export async function renameBook(id: string, title: string): Promise<void> {

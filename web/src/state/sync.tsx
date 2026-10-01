@@ -39,6 +39,8 @@ export function SyncProvider({ children }: { children: ReactNode }) {
 
   // Две одновременные синхронизации боролись бы за курсор.
   const running = useRef(false);
+  const queued = useRef(false);
+  const latestSync = useRef<() => Promise<void>>(async()=>{});
 
   const refreshCounters = useCallback(async () => {
     setPending(await pendingCount());
@@ -46,7 +48,8 @@ export function SyncProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const sync = useCallback(async () => {
-    if (running.current || !account) return;
+    if (!account) return;
+    if (running.current) { queued.current = true; return; }
     running.current = true;
     setStatus('running');
     setMessage('Синхронизация…');
@@ -83,8 +86,10 @@ export function SyncProvider({ children }: { children: ReactNode }) {
     } finally {
       running.current = false;
       await refreshCounters();
+      if(queued.current){queued.current=false;queueMicrotask(()=>void latestSync.current());}
     }
   }, [account, refreshCounters]);
+  latestSync.current = sync;
 
   // Первая синхронизация после входа и при открытии сайта с готовой сессией.
   useEffect(() => {

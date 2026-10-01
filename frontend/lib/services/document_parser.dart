@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart' show kIsWeb, visibleForTesting;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, visibleForTesting, defaultTargetPlatform, TargetPlatform;
 import 'package:archive/archive.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -118,9 +119,15 @@ class DocumentParser {
   /// независимы, поэтому раздаём их через одну по номеру — так каждый изолят
   /// сам считает свой набор и главному потоку не нужно открывать документ.
   ///
-  /// Потолок в 8 — из-за памяти: каждый изолят держит свою копию файла и свой
-  /// разобранный документ.
-  static int get _pdfWorkers => cpuCount.clamp(2, 8);
+  /// На телефонах и больших файлах работает один изолят, на десктопе до двух:
+  /// каждый держит свою копию файла и разобранного документа.
+  @visibleForTesting
+  static int pdfWorkerCount(int bytes, int cores, {required bool mobile}) {
+    // Каждый worker заново раскрывает PDF, включая таблицу объектов и шрифты.
+    // На телефоне восемь копий приводили к закрытию приложения системой.
+    if (mobile || bytes >= 8 * 1024 * 1024) return 1;
+    return cores.clamp(1, 2);
+  }
 
   static Future<List<String>> parsePdfWithProgress(
     Uint8List bytes,
@@ -130,7 +137,9 @@ class DocumentParser {
       return _parsePdfCoreWeb(bytes, onProgress); // веб — асинхронный разбор
     }
 
-    final workers = _pdfWorkers;
+    final workers = pdfWorkerCount(bytes.length, cpuCount,
+        mobile: defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
     final progress = List<double>.filled(workers, 0);
     final chunks = await Future.wait([
       for (var i = 0; i < workers; i++)

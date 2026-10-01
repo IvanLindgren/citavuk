@@ -116,7 +116,7 @@ class UserDb {
           path,
           // Версия 5 добавляет локальную медиатеку звуковых файлов,
           // версия 8 — цвет выделения у цитат.
-          version: 8,
+          version: 9,
           onCreate: (db, _) => _create(db),
           onUpgrade: (db, from, to) => _upgrade(db, from, to),
         );
@@ -147,6 +147,7 @@ class UserDb {
         filepath TEXT NOT NULL,
         content TEXT NOT NULL,
         last_para INTEGER DEFAULT 0,
+        last_offset INTEGER NOT NULL DEFAULT 0,
         added_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     ''');
@@ -233,6 +234,9 @@ class UserDb {
     if (from == 6) await _upgradeReaderQuotesForSync(db);
     if (from < 8 && !await _hasColumn(db, 'reader_quotes', 'color')) {
       await db.execute("ALTER TABLE reader_quotes ADD COLUMN color TEXT NOT NULL DEFAULT ''");
+    }
+    if (from < 9 && !await _hasColumn(db, 'books', 'last_offset')) {
+      await db.execute('ALTER TABLE books ADD COLUMN last_offset INTEGER NOT NULL DEFAULT 0');
     }
   }
 
@@ -553,6 +557,7 @@ class UserDb {
           'title',
           'filepath',
           'last_para',
+          'last_offset',
           'folder',
           'para_count',
           'added_at',
@@ -598,9 +603,9 @@ class UserDb {
     return _decodeParagraphs(raw);
   }
 
-  Future<void> updateBookProgress(int bookId, int lastPara) async {
+  Future<void> updateBookProgress(int bookId, int lastPara, {int lastOffset = 0}) async {
     final db = await database;
-    await db.update('books', {'last_para': lastPara},
+    await db.update('books', {'last_para': lastPara, 'last_offset': lastOffset},
         where: 'id = ?', whereArgs: [bookId]);
     await _touchBook(db, bookId);
   }
@@ -616,6 +621,7 @@ class UserDb {
         'content': jsonEncode(paragraphs),
         'para_count': paragraphs.length,
         'last_para': 0,
+        'last_offset': 0,
         'text_missing': 0,
         'content_sha': '',
         'content_pending': 1,

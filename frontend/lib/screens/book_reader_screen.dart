@@ -66,6 +66,7 @@ class BookReaderScreen extends StatefulWidget {
   final String title;
   final List<String> paragraphs;
   final int initialParagraph;
+  final int initialOffset;
   final String contentSha;
   final String sourceKey;
 
@@ -79,6 +80,7 @@ class BookReaderScreen extends StatefulWidget {
     required this.title,
     required this.paragraphs,
     required this.initialParagraph,
+    this.initialOffset = 0,
     this.contentSha = '',
     this.sourceKey = '',
     this.leadImageUrl,
@@ -96,12 +98,14 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   final AudioPlayer _audiobookPlayer = AudioPlayer();
   final List<StreamSubscription<dynamic>> _audiobookSubscriptions = [];
   final List<List<String>> _pages = [];
+  final List<BookPage> _bookPages = [];
   final List<_AudiobookCue> _audiobookCues = [];
 
   /// Индекс первого абзаца каждой страницы. Прогресс сохраняем в АБЗАЦАХ
   /// (last_para), а не в страницах: страница ~1500 символов и зависит от
   /// разбивки, а абзац стабилен — и главная считает процент по para_count.
   final List<int> _pageStartPara = [];
+  final List<int> _pageStartOffset = [];
   final FocusNode _kbFocus = FocusNode();
 
   int _startPage = 0;
@@ -210,7 +214,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     // (Старые сохранения хранили индекс страницы — он меньше либо равен
     // индексу абзаца, поэтому в худшем случае откроемся чуть раньше.)
     final startPage =
-        _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph);
+        _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph, widget.initialOffset);
     _startPage = startPage;
     _visiblePage = startPage;
     _pageController = PageController(initialPage: startPage);
@@ -321,7 +325,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     if (next == _visiblePage) return;
     _visiblePage = next;
     final paragraph = next < _pageStartPara.length ? _pageStartPara[next] : 0;
-    unawaited(UserDb.instance.updateBookProgress(widget.bookId, paragraph));
+    unawaited(UserDb.instance.updateBookProgress(widget.bookId, paragraph,
+        lastOffset: next < _pageStartOffset.length ? _pageStartOffset[next] : 0));
     _selPage = null;
     _selPara = null;
     _selStart = null;
@@ -397,8 +402,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   /// и та же книга должна листаться одинаково на телефоне и в браузере.
   void _chunkParagraphs() {
     for (final page in paginate(widget.paragraphs)) {
+      _bookPages.add(page);
       _pages.add(page.texts);
       _pageStartPara.add(page.start);
+      _pageStartOffset.add(page.offset);
     }
   }
 
@@ -476,9 +483,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   void _showAudiobookCue() {
     if (_audiobookCues.isEmpty) return;
     final cue = _audiobookCues[_audiobookCue];
-    final page = _pageForPara(cue.paragraph);
+    final page = _pageForPara(cue.paragraph, cue.start);
     _jumpTo(page);
-    unawaited(UserDb.instance.updateBookProgress(widget.bookId, cue.paragraph));
+    unawaited(UserDb.instance.updateBookProgress(widget.bookId, cue.paragraph, lastOffset: cue.start));
     if (mounted) setState(() {});
   }
 
@@ -521,11 +528,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   /// Страница, содержащая абзац [para].
-  int _pageForPara(int para) {
-    for (var i = _pageStartPara.length - 1; i >= 0; i--) {
-      if (_pageStartPara[i] <= para) return i;
-    }
-    return 0;
+  int _pageForPara(int para, [int offset = 0]) {
+    return pageForPosition(_bookPages, para, offset: offset);
   }
 
   @override
@@ -1374,7 +1378,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                           widget.bookId,
                                           i < _pageStartPara.length
                                               ? _pageStartPara[i]
-                                              : 0);
+                                              : 0,
+                                          lastOffset: i < _pageStartOffset.length ? _pageStartOffset[i] : 0);
                                       PageTurnSound.instance
                                         ..enabled = settings.pageTurnSound
                                         ..play();

@@ -34,6 +34,8 @@ export interface Page {
    * остановился, — нет.
    */
   start: number;
+  /** UTF-16 смещение начала страницы внутри исходного абзаца. */
+  offset?: number;
 }
 
 /** Собирает страницы примерно равной длины. */
@@ -41,30 +43,39 @@ export function paginate(paragraphs: string[], budget = PAGE_CHARS): Page[] {
   const pages: Page[] = [];
   let texts: string[] = [];
   let start = 0;
+  let offset = 0;
   let filled = 0;
 
   const flush = () => {
     if (texts.length === 0) return;
-    pages.push({ texts, start });
+    pages.push(offset ? { texts, start, offset } : { texts, start });
     texts = [];
     filled = 0;
   };
 
   for (let index = 0; index < paragraphs.length; index++) {
+    let within = 0;
     for (const piece of splitParagraph(paragraphs[index] ?? '', budget)) {
       const weight = pageWeight(piece);
       if (filled > 0 && filled + weight > budget) flush();
       // Страница получает номер абзаца, с которого началась. При разрыве
       // длинного абзаца несколько страниц подряд ссылаются на один и тот же
       // абзац — это верно: прогресс в него и указывает.
-      if (texts.length === 0) start = index;
+      if (texts.length === 0) { start = index; offset = within; }
       texts.push(piece);
       filled += weight;
+      within += piece.length;
     }
   }
   flush();
 
   return pages;
+}
+
+/** Старые закладки без offset открываются у начала абзаца, а не в конце главы. */
+export function pageForPosition(pages: Page[], paragraph: number, offset = 0): number {
+  const found=pages.findLastIndex(p=>p.start<paragraph || (p.start===paragraph && (p.offset??0)<=offset));
+  return Math.max(0,found);
 }
 
 /**

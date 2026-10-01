@@ -122,9 +122,16 @@ export function reflowDocumentWithLayout(pages: LayoutLine[][]): string[] {
     if (lines.length > 0) lines.push('');
     for (let i = 0; i < visible.length; i++) {
       const line = visible[i]!;
-      const indented = line.left > baseLeft + width * INDENT_SHARE;
+      const previous = visible[i - 1];
+      const following = visible[i + 1];
+      // Колонка, сдвинутая иллюстрацией, не становится новой красной строкой
+      // на каждом ряду. Отступ должен быть отдельным от соседних строк.
+      const indented = Boolean(previous && following &&
+        line.left > previous.left + width * INDENT_SHARE &&
+        line.left > following.left + width * INDENT_SHARE);
       const previousShort =
-        i > 0 && visible[i - 1]!.right < maxRight - width * SHORT_TAIL_SHARE;
+        previous && SENTENCE_END.test(normalizeLine(previous.text)) &&
+        previous.right < maxRight - width * SHORT_TAIL_SHARE;
 
       // Пустая строка — это разрыв для reflowLines: дальше он сам решит, как
       // склеивать остальное.

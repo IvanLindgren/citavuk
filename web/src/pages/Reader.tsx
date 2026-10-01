@@ -13,7 +13,7 @@ import { Button, ButtonLink, Spinner } from '../components/ui';
 import { WordReader, type ReaderMark } from '../components/WordReader';
 import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
 import { odysseyRewardUnlocked } from '../events/odyssey';
-import { paginate } from '../lib/pages';
+import { paginate, pageForPosition } from '../lib/pages';
 import { playPageTurn, releasePageTurn } from '../lib/pageTurn';
 import {
   FONT_STACKS,
@@ -210,9 +210,7 @@ export function Reader() {
   // Открываем на том месте, где остановились.
   useEffect(() => {
     if (state.kind !== 'ready' || pageStarts.length === 0) return;
-    const target = pageStarts.findLastIndex(
-      (start) => start <= state.book.lastParagraph,
-    );
+    const target = pageForPosition(pages,state.book.lastParagraph,state.book.lastOffset);
     const next = target < 0 ? 0 : target;
     setPage(next);
     if (settings.flow === 'scroll') {
@@ -246,7 +244,7 @@ export function Reader() {
         playPageTurn(settings.sound);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      void saveProgress(state.book.id, pageStarts[next] ?? 0);
+      void saveProgress(state.book.id, pageStarts[next] ?? 0, pages[next]?.offset ?? 0);
     },
     [pages.length, state, pageStarts, page, settings.flow, settings.sound],
   );
@@ -275,7 +273,7 @@ export function Reader() {
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    void saveProgress(state.book.id, pageStarts[cue.page] ?? 0);
+    void saveProgress(state.book.id, pageStarts[cue.page] ?? 0, pages[cue.page]?.offset ?? 0);
   }, [audiobookCues, pageStarts, settings.flow, settings.audioFollow, state]);
 
   const showCueRef = useRef(showAudiobookCue);
@@ -404,7 +402,7 @@ export function Reader() {
         return;
       }
       setPage(startIndex);
-      void saveProgress(state.book.id, pageStarts[startIndex] ?? 0);
+      void saveProgress(state.book.id, pageStarts[startIndex] ?? 0, pages[startIndex]?.offset ?? 0);
     },
     [page, pageStarts, settings.flow, state],
   );

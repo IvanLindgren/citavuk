@@ -24,7 +24,7 @@ const int pageChars = 1500;
 
 /// Страница книги.
 class BookPage {
-  const BookPage(this.texts, this.start);
+  const BookPage(this.texts, this.start, [this.offset = 0]);
 
   /// Куски текста страницы: целый абзац либо часть длинного абзаца.
   final List<String> texts;
@@ -33,6 +33,18 @@ class BookPage {
   /// абзацах, а не в страницах: разбиение зависит от экрана, а место, где
   /// человек остановился, — нет.
   final int start;
+  /// UTF-16 смещение внутри исходного абзаца.
+  final int offset;
+}
+
+int pageForPosition(List<BookPage> pages, int paragraph, {int offset = 0}) {
+  for (var i = pages.length - 1; i >= 0; i--) {
+    if (pages[i].start < paragraph ||
+        (pages[i].start == paragraph && pages[i].offset <= offset)) {
+      return i;
+    }
+  }
+  return 0;
 }
 
 /// Собирает страницы примерно равной длины.
@@ -40,25 +52,28 @@ List<BookPage> paginate(List<String> paragraphs, {int budget = pageChars}) {
   final pages = <BookPage>[];
   var texts = <String>[];
   var start = 0;
+  var offset = 0;
   var filled = 0;
 
   void flush() {
     if (texts.isEmpty) return;
-    pages.add(BookPage(texts, start));
+    pages.add(BookPage(texts, start, offset));
     texts = <String>[];
     filled = 0;
   }
 
   for (var index = 0; index < paragraphs.length; index++) {
+    var within = 0;
     for (final piece in splitParagraph(paragraphs[index], budget: budget)) {
       final weight = pageWeight(piece);
       if (filled > 0 && filled + weight > budget) flush();
       // Страница получает номер абзаца, с которого началась. При разрыве
       // длинного абзаца несколько страниц подряд ссылаются на один и тот же
       // абзац — это верно: прогресс в него и указывает.
-      if (texts.isEmpty) start = index;
+      if (texts.isEmpty) { start = index; offset = within; }
       texts.add(piece);
       filled += weight;
+      within += piece.length;
     }
   }
   flush();

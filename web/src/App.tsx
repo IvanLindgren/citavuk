@@ -3,7 +3,7 @@ import { lazy, Suspense, useLayoutEffect, type ReactNode } from "react";
 
 import { AppPrompt } from "./components/AppPrompt";
 import { AskDialogHost } from "./components/AskDialog";
-import { DailyWindow } from "./components/DailyWindow";
+import { DailyWindow, DailyPage } from "./components/DailyWindow";
 import {StudyRuntime} from './components/StudyRuntime';
 import { LevelPrompt } from "./components/LevelPrompt";
 import { CommunityAnnouncement } from "./components/CommunityAnnouncement";
@@ -178,6 +178,7 @@ const PersonalLessons = lazy(() => import('./pages/PersonalLessons').then(m => (
 const VideoFeed=lazy(()=>import('./pages/VideoFeed').then(m=>({default:m.VideoFeed})));
 
 const ROUTES: RouteDefinition[] = [
+  { pattern: "/daily", element: <DailyPage /> },
   {pattern:'/vukotok/video',element:<VideoFeed/>},
   { pattern: '/personal', element: <PersonalLessons /> },
   { pattern: "/", element: <Landing /> },
@@ -275,7 +276,7 @@ function AppFrame() {
   const game = pathname === '/padezi';
   // «Говори!»: подвал остаётся, но баннеры и окна не должны перебивать запись.
   const speaking = pathname === '/govori';
-  const quiet = personalLesson || game || speaking;
+  const quiet = personalLesson || game || speaking || pathname === '/daily';
 
   return (
     <div className="flex min-h-dvh flex-col">

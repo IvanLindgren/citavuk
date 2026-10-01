@@ -5,12 +5,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/public_library.dart';
 import '../services/file_save.dart';
 import '../services/public_library_service.dart';
 import '../services/user_db.dart';
+import '../services/sync_service.dart';
 import 'book_reader_screen.dart';
 
 class PublicLibraryScreen extends StatefulWidget {
@@ -48,11 +50,19 @@ class _PublicLibraryScreenState extends State<PublicLibraryScreen> {
       int id;
       List<String> paragraphs;
       int lastParagraph;
+      var lastOffset = 0;
       if (existing.isNotEmpty) {
         final book = existing.first;
         id = book['id'] as int;
         lastParagraph = book['last_para'] as int? ?? 0;
+        lastOffset = book['last_offset'] as int? ?? 0;
         paragraphs = await UserDb.instance.getBookContent(id);
+        if (paragraphs.isEmpty || book['text_missing'] == 1) {
+          if (!mounted) return;
+          final loaded = await context.read<SyncService>().downloadContent(id);
+          if (!loaded) throw Exception('Не удалось скачать текст книги Проверь интернет и синхронизацию');
+          paragraphs = await UserDb.instance.getBookContent(id);
+        }
       } else {
         final text = await PublicLibraryService.loadText(item);
         paragraphs = PublicLibraryService.paragraphs(text);
@@ -69,6 +79,8 @@ class _PublicLibraryScreenState extends State<PublicLibraryScreen> {
             title: item.title,
             paragraphs: paragraphs,
             initialParagraph: lastParagraph,
+            initialOffset: lastOffset,
+            sourceKey: source,
           ),
         ),
       );

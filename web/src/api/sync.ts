@@ -56,6 +56,7 @@ interface RemoteBook {
   sourceKey: string;
   paraCount: number;
   lastPara: number;
+  lastOffset?: number;
   contentSha: string;
   deleted: boolean;
   updatedAt: string;
@@ -126,6 +127,7 @@ function toRemote(book: BookMeta): Record<string, unknown> {
     sourceKey: book.sourceKey,
     paraCount: book.paragraphCount,
     lastPara: book.lastParagraph,
+    lastOffset: book.lastOffset ?? 0,
     contentSha: book.contentUploaded || book.textMissing ? book.contentSha : '',
     deleted: book.deleted === 1,
     updatedAt: new Date(book.updatedAt).toISOString(),
@@ -141,8 +143,9 @@ function parseTime(value: string): number {
 export async function runSync(): Promise<SyncReport> {
   const report: SyncReport = { sent: 0, received: 0, uploaded: 0 };
 
-  report.uploaded = await uploadMissingContent();
   report.sent = await pushChanges();
+  report.uploaded = await uploadMissingContent();
+  report.sent += await pushChanges();
   report.received = await pullChanges();
 
   await setMeta(LAST_SYNC_KEY, Date.now());
@@ -378,6 +381,7 @@ async function applyRemoteBook(remote: RemoteBook): Promise<boolean> {
         folder: remote.folder,
         paragraphCount: remote.paraCount,
         lastParagraph: remote.lastPara,
+        lastOffset: remote.lastOffset ?? 0,
         contentSha: remote.contentSha,
         // Текст качается при открытии книги, а не сейчас.
         textMissing: remote.contentSha !== '',
@@ -404,6 +408,7 @@ async function applyRemoteBook(remote: RemoteBook): Promise<boolean> {
     folder: remote.folder,
     paragraphCount: remote.paraCount,
     lastParagraph: remote.lastPara,
+    lastOffset: remote.lastOffset ?? 0,
     contentSha: remote.contentSha || existing.contentSha,
     textMissing: textChanged ? true : existing.textMissing,
     updatedAt: remoteAt,
@@ -505,13 +510,14 @@ export async function downloadContent(book: BookMeta): Promise<string[] | null> 
 
 /** Число записей, ждущих отправки. */
 export async function pendingCount(): Promise<number> {
-  const [books, vocabulary, reviews, palaces] = await Promise.all([
+  const [books, vocabulary, reviews, palaces, pendingTexts] = await Promise.all([
     dirtyBooks(1000),
     dirtyVocabulary(1000),
     dirtyReviews(1000),
     dirtyPalaces(1000),
+    booksWithLocalText(1000),
   ]);
-  return books.length + vocabulary.length + reviews.length + palaces.length;
+  return new Set([...books,...pendingTexts].map(book=>book.id)).size + vocabulary.length + reviews.length + palaces.length;
 }
 
 export async function lastSyncAt(): Promise<number> {

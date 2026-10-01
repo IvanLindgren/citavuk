@@ -131,9 +131,15 @@ List<String> reflowDocumentWithLayout(List<List<LayoutLine>> pages) {
     for (var i = 0; i < visible.length; i++) {
       final line = visible[i];
       final text = _normalize(line.text);
-      final indented = line.left > baseLeft + width * _indentShare;
-      final previousShort = i > 0 &&
-          visible[i - 1].right < maxRight - width * _shortTailShare;
+      final previous = i > 0 ? visible[i - 1] : null;
+      final following = i + 1 < visible.length ? visible[i + 1] : null;
+      // Сдвинутая картинкой колонка — не отступ каждого нового абзаца.
+      final indented = previous != null && following != null &&
+          line.left > previous.left + width * _indentShare &&
+          line.left > following.left + width * _indentShare;
+      final previousShort = previous != null &&
+          _sentenceEnd.hasMatch(_normalize(previous.text)) &&
+          previous.right < maxRight - width * _shortTailShare;
 
       // Пустая строка — это разрыв для reflowLines: дальше он сам решит, как
       // склеивать остальное.

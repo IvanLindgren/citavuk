@@ -135,6 +135,7 @@ const GROUPS: { title: string; items: Section[] }[] = [
   {
     title: 'Учиться',
     items: [
+      { to: '/daily', label: 'Слова дня', icon: LuCalendarDays },
       { to: '/personal', label: 'Урок дня', icon: LuSparkles },
       {
         to: '/roadmap',
