@@ -7,6 +7,8 @@ export function takeGuestDonationLink():string{
     memory=token;
     try{sessionStorage.setItem(KEY,token);history.replaceState(history.state,'',location.pathname+location.search);}catch{/* После входа можно снова открыть письмо. */}
   }
-  try{return sessionStorage.getItem(KEY)||memory;}catch{return memory;}
+  // Новая ссылка важнее прежней, даже если браузер запретил запись в storage.
+  if(memory)return memory;
+  try{return sessionStorage.getItem(KEY)||'';}catch{return '';}
 }
 export function clearGuestDonationLink(){memory='';try{sessionStorage.removeItem(KEY);}catch{/* Приватное окно. */}history.replaceState(history.state,'',location.pathname+location.search);}

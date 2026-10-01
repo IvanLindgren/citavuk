@@ -21,7 +21,7 @@ try {
      if(path==='/v1/auth/me') {status=signedIn?200:401;body=signedIn?{id:'fixture',email:'friend@example.test',displayName:'Друг',emailVerified:true,serbianLevel:'A2'}:{error:{code:'unauthorized',message:'Войди'}};}
      else if(path==='/v1/donations/availability')body={available:true,testMode:false,guestLinkAvailable:true};
      else if(path==='/v1/donations/guest')body={items:[{id:'fixture-payment',status:'succeeded',amountKopecks:20000,hasRecoveryEmail:true,emailSent:true}]};
-     else if(path==='/v1/donations/fixture-payment')body={status:'succeeded',amountKopecks:20000,publicName:'',showPublic:false,hasAccount:false,totalKopecks:20000,unlocked:false,thresholdKopecks:20000};
+     else if(['/v1/donations/fixture-payment','/v1/donations/legacy-payment'].includes(path))body={status:'succeeded',amountKopecks:20000,publicName:'',showPublic:false,hasAccount:false,totalKopecks:20000,unlocked:false,thresholdKopecks:20000};
      else if(path==='/v1/supporters')body={supporters:[],spotlight:null};
      else if(path==='/v1/donations/guest/claim'){
       const data=JSON.parse(r.postData());assert.equal(data.token,'ctv_'+'a'.repeat(43));assert.equal(u.search,'');attempts++;
@@ -42,6 +42,9 @@ try {
     assert.ok(await page.$('a[href*="login?next="]'));
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
     await page.screenshot({path:`${out}/thanks-${width}.png`,fullPage:true});
+    await page.goto(`${base}/support/thanks?d=legacy-payment`,{waitUntil:'networkidle0'});
+    await page.waitForFunction(()=>document.body.textContent.includes('Если подтверждение не сохранилось'));
+    assert.ok(await page.$('a[href="mailto:deniskornilov12@gmail.com"]'));
    }
    await page.goto(`${base}/support/claim#token=ctv_${'a'.repeat(43)}`,{waitUntil:'networkidle0'});
    await page.waitForFunction(()=>document.body.textContent.includes('Привяжи поддержку Читавука'));

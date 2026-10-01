@@ -8,11 +8,19 @@ export function GuestDonationPanel({donationId,onClaimed}:{donationId?:string;on
   const {account,refreshAccount}=useAuth();
   const [items,setItems]=useState<GuestDonation[]>([]),[busy,setBusy]=useState(''),[error,setError]=useState(''),[note,setNote]=useState('');
   const [email,setEmail]=useState('');
-  useEffect(()=>{let current=true;void getGuestDonations().then(items=>{if(current)setItems(items.filter(d=>d.status==='succeeded'&&(!donationId||d.id===donationId)));}).catch(()=>{});return()=>{current=false;};},[account?.id,donationId]);
+  const [loaded,setLoaded]=useState(false),[claimed,setClaimed]=useState(false);
+  useEffect(()=>{let current=true;setLoaded(false);setClaimed(false);setError('');void getGuestDonations().then(items=>{if(current){setItems(items.filter(d=>d.status==='succeeded'&&(!donationId||d.id===donationId)));setLoaded(true);}}).catch(()=>{if(current&&donationId){setError('Не удалось проверить подтверждение оплаты Попробуй обновить страницу');setLoaded(true);}});return()=>{current=false;};},[account?.id,donationId]);
   const next=donationId?`/support/thanks?d=${donationId}`:'/support';
-  async function claim(id:string){setBusy(id);setError('');try{await claimGuestDonation({id});await refreshAccount();setItems(items=>items.filter(d=>d.id!==id));onClaimed?.();}catch(e){setError(e instanceof ApiError?e.message:'Не удалось привязать поддержку');}finally{setBusy('');}}
+  async function claim(id:string){setBusy(id);setError('');try{await claimGuestDonation({id});setClaimed(true);await refreshAccount();setItems(items=>items.filter(d=>d.id!==id));onClaimed?.();}catch(e){setError(e instanceof ApiError?e.message:'Не удалось привязать поддержку');}finally{setBusy('');}}
   async function send(d:GuestDonation){setBusy(d.id);setError('');try{await emailGuestDonation(d.id,email.trim()||undefined);setNote('Отправим письмо в ближайшие минуты Проверь также папку «Спам»');}catch(e){setError(e instanceof ApiError?e.message:'Не удалось отправить письмо');}finally{setBusy('');}}
-  if(!items.length)return null;
+  if(!items.length){
+    if(!donationId||!loaded)return null;
+    return <Card className="mt-6 p-6 text-left"><h2 className="text-2xl">{claimed?'Поддержка привязана':'Привязать поддержку'}</h2>
+      {claimed?<p role="status" className="mt-3 text-sm">Твой платёж учтён в аккаунте</p>:<><p className="mt-3 text-sm text-[var(--text-muted)]">Открой эту страницу в браузере, где ты оплачивал, или воспользуйся ссылкой из письма</p>
+      <p className="mt-3 text-sm text-[var(--text-muted)]">Если подтверждение не сохранилось, <a href="mailto:deniskornilov12@gmail.com" className="text-[var(--accent)] underline">напиши мне</a> и я помогу привязать оплату</p></>}
+      {error&&<div className="mt-4"><ErrorNote>{error}</ErrorNote></div>}
+    </Card>;
+  }
   return <Card className="mt-6 border-[var(--accent)]/30 p-6 text-left">
     <h2 className="text-2xl">Гостевая поддержка</h2><p className="mt-2 text-sm text-[var(--text-muted)]">Привяжи оплату к аккаунту, чтобы получить статус и суммировать все поддержки</p>
     {error&&<div className="mt-4"><ErrorNote>{error}</ErrorNote></div>}{note&&<p role="status" className="mt-4 text-sm">{note}</p>}
