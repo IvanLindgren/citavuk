@@ -136,6 +136,17 @@ for entry in "${FILES[@]}"; do
     IFS='|' read -r path name _ <<<"$entry"
     echo "  $name"
     put_file "$path" "$REMOTE_DIR/$name.new"
+    expected_sha=$(sha256sum "$path" | awk '{print $1}')
+    actual_sha=$(ssh_run "sha256sum '$REMOTE_DIR/$name.new'" | awk '{print $1}')
+    if [[ "$actual_sha" != "$expected_sha" ]]; then
+        echo "контрольная сумма $name не совпала — прежняя версия остаётся на сайте" >&2
+        exit 1
+    fi
+    # APK доступен сразу после проверки, а не после загрузки всех desktop-архивов.
+    # Версионная ссылка исключает кеш старого файла в браузере Android.
+    if [[ "$name" == "citavuk.apk" ]]; then
+        ssh_run "set -e; cp '$REMOTE_DIR/$name.new' '$REMOTE_DIR/citavuk-$VERSION.apk.new'; chmod 644 '$REMOTE_DIR/citavuk-$VERSION.apk.new'; chown www-data:www-data '$REMOTE_DIR/citavuk-$VERSION.apk.new'; mv '$REMOTE_DIR/citavuk-$VERSION.apk.new' '$REMOTE_DIR/citavuk-$VERSION.apk'; mv '$REMOTE_DIR/$name.new' '$REMOTE_DIR/$name'; chmod 644 '$REMOTE_DIR/$name'"
+    fi
 done
 
 # Переименование поверх — единственный способ не отдать посетителю файл,

@@ -225,7 +225,7 @@ class ApiClient {
       ));
 
     return _send(
-      () async => http.Response.fromStream(await request.send()),
+      () async => http.Response.fromStream(await _client.send(request)),
       timeout: timeout ?? _uploadTimeout,
     );
   }

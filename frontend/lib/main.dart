@@ -3,6 +3,7 @@ import 'games/cases/case_game_screen.dart';
 import 'games/speaking/speaking_screen.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:desktop_webview_window/desktop_webview_window.dart';
 
 import 'package:cross_file/cross_file.dart';
@@ -19,6 +20,7 @@ import 'events/odyssey.dart';
 import 'events/odyssey_content.dart';
 import 'screens/photo_scan_screen.dart';
 import 'services/api_client.dart';
+import 'services/document_import_service.dart';
 import 'services/micro_feed_service.dart';
 import 'services/auth_service.dart';
 import 'services/db_init.dart';

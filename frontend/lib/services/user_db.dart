@@ -40,6 +40,7 @@ class UserDb {
   /// подменять им чужое соединение.
   int _generation = 0;
   int get generation => _generation;
+  String get storageScope => _scope;
 
   /// У каждой учётной записи свой файл. Гостевые данные не отправляются в
   /// аккаунт автоматически: на общем устройстве это раскрыло бы чужую библиотеку.
@@ -518,8 +519,8 @@ class UserDb {
   }
 
   Future<int> insertBook(
-      String title, String filepath, List<String> paragraphs) async {
-    final db = await database;
+      String title, String filepath, List<String> paragraphs, {int? expectedGeneration}) async {
+    final db = await _databaseForGeneration(expectedGeneration);
     return db.insert('books', {
       'title': title,
       'filepath': filepath,

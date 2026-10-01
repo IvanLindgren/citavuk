@@ -319,30 +319,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // сохранить копию в кеш. Для книги на несколько десятков мегабайт это два
     // одновременных снимка файла в памяти, и Android убивал приложение прямо
     // при выборе книги. С путём файл читается один раз и одним куском.
-    final result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: DocumentParser.supportedExtensions,
-      withData: kIsWeb,
-    );
+    final mobile = !kIsWeb && (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS);
+    final generation = UserDb.instance.generation;
+    final FilePickerResult? result;
+    try {
+      result = await FilePicker.pickFiles(
+        type: mobile ? FileType.any : FileType.custom,
+        allowedExtensions: mobile ? null : DocumentParser.supportedExtensions,
+        withData: kIsWeb,
+        withReadStream: !kIsWeb,
+      );
+    } catch (_) {
+      if (mounted) _toast('Не удалось открыть файл Попробуй выбрать его из папки «Загрузки»');
+      return;
+    }
+    if (!mounted || generation != UserDb.instance.generation) return;
     if (result == null || result.files.isEmpty) return;
 
     final file = result.files.first;
-    if (kIsWeb) {
-      final bytes = file.bytes;
-      if (bytes == null) return;
-      await _importBytes(file.name, file.name, bytes);
+    if (!DocumentParser.isSupported(file.name)) {
+      _toast('Выбери PDF, DOCX, FB2, EPUB, DjVu или текстовый файл');
+      return;
+    }
+    if (file.size > DocumentImportService.maxFileBytes) {
+      _toast('Книга больше 48 МБ Выбери файл поменьше');
+      return;
+    }
+    if (kIsWeb || file.path == null) {
+      final Uint8List? bytes;
+      try {
+        bytes = file.bytes ?? (file.readStream == null ? null :
+            await _readPickedStream(file.readStream!));
+      } catch (_) {
+        if (mounted) _toast('Не удалось прочитать книгу Попробуй выбрать её из папки «Загрузки»');
+        return;
+      }
+      if (!mounted || generation != UserDb.instance.generation) return;
+      if (bytes == null) { _toast('Файл недоступен Выбери его из папки «Загрузки»'); return; }
+      await _importBytes(file.name, file.path ?? file.name, bytes);
       return;
     }
 
     final path = file.path;
-    if (path == null) {
-      // Пути нет — остаётся то, что плагин успел прочитать сам.
-      final bytes = file.bytes;
-      if (bytes == null) return;
-      await _importBytes(file.name, file.name, bytes);
-      return;
-    }
-    await _importPath(file.name, path);
+    await _importPath(file.name, path!);
   }
 
   /// Импорт файла по пути: байты читаются здесь и живут в одном экземпляре.
@@ -350,8 +370,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   /// Через XFile, а не dart:io: этот же экран собирается для веба, где dart:io
   /// нет вовсе. XFile — та же обёртка, которой приходят файлы, брошенные в окно.
   Future<void> _importPath(String name, String path) async {
+    final generation = UserDb.instance.generation;
     final Uint8List bytes;
     try {
+      if (await XFile(path).length() > DocumentImportService.maxFileBytes) {
+        throw const FormatException('Книга больше 48 МБ');
+      }
       bytes = await XFile(path).readAsBytes();
     } catch (e) {
       if (!mounted) return;
@@ -359,19 +383,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SnackBar(content: Text('Не удалось прочитать файл: $e')));
       return;
     }
+    if (!mounted || generation != UserDb.instance.generation) return;
     await _importBytes(name, path, bytes);
+  }
+
+  Future<Uint8List> _readPickedStream(Stream<List<int>> stream) async {
+    final chunks = BytesBuilder(copy: false);
+    await for (final chunk in stream) {
+      if (chunks.length + chunk.length > DocumentImportService.maxFileBytes) {
+        throw const FormatException('Книга больше 48 МБ');
+      }
+      chunks.add(chunk);
+    }
+    return chunks.takeBytes();
   }
 
   /// Общий путь импорта: и выбор файла, и перетаскивание в окно.
   Future<void> _importBytes(String name, String path, Uint8List bytes) async {
+    final generation = UserDb.instance.generation;
+    final api = _authService.api.withSessionToken(_authService.api.token ?? '');
     setState(() {
       _isLoading = true;
       _loadProgress = 0.0;
     });
     try {
       var paragraphs =
-          await DocumentParser.parseAny(name, bytes, _onParseProgress);
-      if (!mounted) return;
+          await DocumentImportService(api).parse(name, bytes, _onParseProgress);
+      if (!mounted || generation != UserDb.instance.generation) return;
 
       // Язык определяется до сохранения. Спросить после — значит либо оставить
       // в библиотеке лишнюю книгу на чужом языке, либо удалять и создавать её
@@ -389,7 +427,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         paragraphs = translated;
       }
 
-      final id = await UserDb.instance.insertBook(name, path, paragraphs);
+      if (!mounted || generation != UserDb.instance.generation) return;
+      final id = await UserDb.instance.insertBook(name, path, paragraphs,
+          expectedGeneration: generation);
       _freshBookId = id;
       await _loadBooks();
       if (!mounted) return;
@@ -406,8 +446,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
+        final message = e is ApiException ? e.message : e is FormatException
+            ? e.message : 'Не удалось добавить книгу Попробуй выбрать файл ещё раз';
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Ошибка импорта: $e')));
+            .showSnackBar(SnackBar(content: Text(message)));
       }
     }
   }

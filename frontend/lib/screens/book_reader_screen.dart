@@ -30,6 +30,7 @@ import '../services/interface_sounds.dart';
 import '../services/listening_service.dart';
 import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
+import '../services/reader_audiobook.dart';
 import '../services/api_client.dart';
 import '../models/level.dart';
 import '../services/auth_service.dart';
@@ -99,7 +100,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   final List<StreamSubscription<dynamic>> _audiobookSubscriptions = [];
   final List<List<String>> _pages = [];
   final List<BookPage> _bookPages = [];
-  final List<_AudiobookCue> _audiobookCues = [];
+  final List<ReaderAudioCue> _audiobookCues = [];
 
   /// Индекс первого абзаца каждой страницы. Прогресс сохраняем в АБЗАЦАХ
   /// (last_para), а не в страницах: страница ~1500 символов и зависит от
@@ -121,6 +122,9 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   int _audiobookToken = -1;
   Duration _audiobookDuration = Duration.zero;
   double _audiobookSpeed = 1;
+  int _audiobookRequest = 0;
+  Future<void> _audiobookQueue = Future<void>.value();
+  bool _audiobookLoading = false;
 
   // Состояние выделения (страница/абзац/диапазон токенов).
   int? _selPage;
@@ -217,6 +221,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         _pages.isEmpty ? 0 : _pageForPara(widget.initialParagraph, widget.initialOffset);
     _startPage = startPage;
     _visiblePage = startPage;
+    _audiobookCue = audioCueForPosition(_audiobookCues,
+        widget.initialParagraph, widget.initialOffset);
     _pageController = PageController(initialPage: startPage);
     _continuousPositions.itemPositions.addListener(_onContinuousPositions);
     if (widget.sourceKey.startsWith('share:')) {
@@ -248,7 +254,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         }
       }),
       _audiobookPlayer.onDurationChanged.listen((duration) {
-        _audiobookDuration = duration;
+        if (!_audiobookLoading) _audiobookDuration = duration;
       }),
       _audiobookPlayer.onPositionChanged.listen(_onAudiobookPosition),
       _audiobookPlayer.onPlayerComplete.listen((_) => _nextAudiobookCue()),
@@ -410,25 +416,10 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   void _buildAudiobookCues() {
-    final sentence = RegExp(r'[^.!?…]+[.!?…]*');
-    for (var para = 0; para < widget.paragraphs.length; para++) {
-      final block = parseBookBlock(widget.paragraphs[para]);
-      if (block.kind != BookBlockKind.text) continue;
-      for (final match in sentence.allMatches(block.text)) {
-        final raw = match.group(0) ?? '';
-        final text = raw.trim();
-        if (text.isEmpty) continue;
-        final leading = raw.length - raw.trimLeft().length;
-        _audiobookCues.add(_AudiobookCue(
-          text: text,
-          paragraph: para,
-          start: match.start + leading,
-        ));
-      }
-    }
+    _audiobookCues.addAll(buildReaderAudioCues(widget.paragraphs, _bookPages));
   }
 
-  String get _audiobookKey => 'citavuk_audiobook_${widget.bookId}';
+  String get _audiobookKey => 'citavuk_audiobook_v2_${UserDb.instance.storageScope}_${widget.bookId}_${widget.contentSha}';
 
   Future<void> _restoreAudiobook() async {
     final prefs = await SharedPreferences.getInstance();
@@ -437,14 +428,11 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         prefs.getBool('${_audiobookKey}_enabled') != true) {
       return;
     }
-    final cue = prefs.getInt('${_audiobookKey}_cue') ?? 0;
     final speed = prefs.getDouble('${_audiobookKey}_speed') ?? 1;
     setState(() {
       _audiobookEnabled = true;
-      _audiobookCue = cue.clamp(0, _audiobookCues.length - 1);
       _audiobookSpeed = speed.clamp(0.7, 1.8);
     });
-    if (_audiobookEnabled) _showAudiobookCue();
   }
 
   Future<void> _persistAudiobook() async {
@@ -461,54 +449,73 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       );
       return;
     }
+    final page = context.read<AppSettings>().reader.flow == ReaderFlow.scroll
+        ? _visiblePage : (_pageController.hasClients
+            ? _pageController.page?.round() ?? _visiblePage : _visiblePage);
+    _audiobookCue = audioCueForPage(_audiobookCues, page);
     setState(() => _audiobookEnabled = true);
-    _showAudiobookCue();
-    await _persistAudiobook();
     await _playAudiobookCue(_audiobookCue);
   }
 
   Future<void> _playAudiobookCue(int index) async {
-    if (_audiobookCues.isEmpty) return;
+    if (!mounted || _audiobookCues.isEmpty) return;
+    final request = ++_audiobookRequest;
     _audiobookCue = index.clamp(0, _audiobookCues.length - 1);
     _audiobookToken = -1;
+    _audiobookDuration = Duration.zero;
+    _audiobookLoading = true;
     _showAudiobookCue();
-    await _persistAudiobook();
-    await _audiobookPlayer.stop();
-    await _audiobookPlayer.play(UrlSource(
-      ListeningService.instance.ttsUrl(_audiobookCues[_audiobookCue].text),
-    ));
-    await _audiobookPlayer.setPlaybackRate(_audiobookSpeed);
+    final text = _audiobookCues[_audiobookCue].text;
+    bool current() => mounted && _audiobookEnabled && request == _audiobookRequest;
+    _audiobookQueue = _audiobookQueue.catchError((Object _) {}).then((_) async {
+      if (!current()) return;
+      await _audiobookPlayer.stop();
+      if (!current()) return;
+      await _audiobookPlayer.setSource(UrlSource(ListeningService.instance.ttsUrl(text)));
+      if (!current()) return;
+      await _audiobookPlayer.setPlaybackRate(_audiobookSpeed);
+      if (!current()) return;
+      _audiobookDuration = await _audiobookPlayer.getDuration() ?? Duration.zero;
+      if (!current()) return;
+      _audiobookLoading = false;
+      await _persistAudiobook();
+      if (!current()) return;
+      await _audiobookPlayer.resume();
+    });
+    try { await _audiobookQueue; }
+    catch (_) {
+      if (current()) {
+        _audiobookLoading = false;
+        if (!mounted) return;
+        setState(() => _audiobookPlaying = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Не удалось включить озвучку Попробуй ещё раз')));
+      }
+    }
   }
 
   void _showAudiobookCue() {
     if (_audiobookCues.isEmpty) return;
     final cue = _audiobookCues[_audiobookCue];
-    final page = _pageForPara(cue.paragraph, cue.start);
-    _jumpTo(page);
-    unawaited(UserDb.instance.updateBookProgress(widget.bookId, cue.paragraph, lastOffset: cue.start));
+    _jumpTo(cue.page);
+    unawaited(UserDb.instance.updateBookProgress(widget.bookId,
+        cue.sourceParagraph, lastOffset: cue.sourceOffset));
     if (mounted) setState(() {});
   }
 
   void _onAudiobookPosition(Duration position) {
-    if (!_audiobookEnabled || _audiobookDuration.inMilliseconds <= 0) return;
+    if (!_audiobookEnabled || _audiobookLoading || _audiobookDuration.inMilliseconds <= 0) return;
     final cue = _audiobookCues[_audiobookCue];
     final ratio = (position.inMilliseconds / _audiobookDuration.inMilliseconds)
         .clamp(0.0, 0.999);
-    final char = cue.start + (cue.text.length * ratio).floor();
-    final tokens = SerbianTokenizer.tokenize(widget.paragraphs[cue.paragraph]);
-    var tokenIndex = -1;
-    for (var i = 0; i < tokens.length; i++) {
-      if (tokens[i].isWord && char >= tokens[i].start && char < tokens[i].end) {
-        tokenIndex = i;
-        break;
-      }
-    }
+    final tokenIndex = cue.tokenAt(ratio);
     if (tokenIndex != _audiobookToken && mounted) {
       setState(() => _audiobookToken = tokenIndex);
     }
   }
 
   Future<void> _nextAudiobookCue() async {
+    if (!mounted || !_audiobookEnabled || _audiobookLoading) return;
     if (_audiobookCue + 1 >= _audiobookCues.length) {
       if (mounted) setState(() => _audiobookPlaying = false);
       return;
@@ -517,13 +524,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
   }
 
   Future<void> _closeAudiobook() async {
-    await _audiobookPlayer.stop();
+    _audiobookRequest++;
+    _audiobookLoading = false;
     if (mounted) {
       setState(() {
         _audiobookEnabled = false;
+        _audiobookPlaying = false;
         _audiobookToken = -1;
       });
     }
+    await _audiobookPlayer.stop();
     await _persistAudiobook();
   }
 
@@ -534,6 +544,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
 
   @override
   void dispose() {
+    _audiobookRequest++;
     _quoteSyncService?.removeListener(_onQuoteSync);
     for (final subscription in _audiobookSubscriptions) {
       subscription.cancel();
@@ -1038,7 +1049,8 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                 final globalPara = _pageStartPara[pageIndex] + pIndex;
                 final isAudiobook = _audiobookEnabled &&
                     _audiobookCues.isNotEmpty &&
-                    _audiobookCues[_audiobookCue].paragraph == globalPara &&
+                    _audiobookCues[_audiobookCue].page == pageIndex &&
+                    _audiobookCues[_audiobookCue].paragraph == pIndex &&
                     _audiobookToken >= 0;
                 final block = parseBookBlock(paras[pIndex]);
                 late final Widget body;
@@ -1423,18 +1435,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                                                     final isSel =
                                                         _selPage == pageIndex &&
                                                             _selPara == pIndex;
-                                                    final globalPara =
-                                                        _pageStartPara[
-                                                                pageIndex] +
-                                                            pIndex;
+                                                    final globalPara = _pageStartPara[pageIndex] + pIndex;
                                                     final isAudiobook =
                                                         _audiobookEnabled &&
                                                             _audiobookCues
                                                                 .isNotEmpty &&
+                                                            _audiobookCues[_audiobookCue].page == pageIndex &&
                                                             _audiobookCues[
                                                                         _audiobookCue]
                                                                     .paragraph ==
-                                                                globalPara &&
+                                                                pIndex &&
                                                             _audiobookToken >=
                                                                 0;
                                                     // Картинка и таблица — те же абзацы, но
@@ -1926,18 +1936,6 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
       ),
     );
   }
-}
-
-class _AudiobookCue {
-  const _AudiobookCue({
-    required this.text,
-    required this.paragraph,
-    required this.start,
-  });
-
-  final String text;
-  final int paragraph;
-  final int start;
 }
 
 /// Ширина экрана, с которой разбор слова живёт в боковой панели, а не

@@ -177,9 +177,12 @@ class DocumentParser {
         total: total,
         sendPort: receivePort.sendPort,
       ),
+      onError: receivePort.sendPort,
+      onExit: receivePort.sendPort,
     );
     final completer = Completer<_PageChunk>();
     receivePort.listen((message) {
+      if (completer.isCompleted) return;
       if (message is double) {
         onProgress(message);
       } else if (message is _PageChunk) {
@@ -190,9 +193,12 @@ class DocumentParser {
         completer.completeError(Exception(message));
         receivePort.close();
         isolate.kill();
+      } else if (message == null || message is List) {
+        completer.completeError(const FormatException('Разбор PDF прервался Попробуй добавить книгу ещё раз'));
       }
     });
-    return completer.future;
+    try { return await completer.future.timeout(const Duration(minutes: 10)); }
+    finally { receivePort.close(); isolate.kill(); }
   }
 
   static void _pageWorker(_PageWorkerParams params) {
@@ -231,9 +237,12 @@ class DocumentParser {
     final isolate = await Isolate.spawn(
       _parseDocxIsolateWithPort,
       _IsolateParams(bytes: bytes, sendPort: receivePort.sendPort),
+      onError: receivePort.sendPort,
+      onExit: receivePort.sendPort,
     );
     final completer = Completer<List<String>>();
     receivePort.listen((message) {
+      if (completer.isCompleted) return;
       if (message is double) {
         onProgress(message);
       } else if (message is List<String>) {
@@ -244,9 +253,12 @@ class DocumentParser {
         completer.completeError(Exception(message));
         receivePort.close();
         isolate.kill();
+      } else if (message == null || message is List) {
+        completer.completeError(const FormatException('Разбор DOCX прервался Попробуй добавить книгу ещё раз'));
       }
     });
-    return completer.future;
+    try { return await completer.future.timeout(const Duration(minutes: 10)); }
+    finally { receivePort.close(); isolate.kill(); }
   }
 
   // --- Изолятные обёртки (только нативно) ---
