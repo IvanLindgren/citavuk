@@ -14,6 +14,7 @@ import {
 } from "../api/course";
 import { stripAnswerPunctuation } from "../lib/answerMatch";
 import { activeStorageName } from "../lib/db";
+import { translateData } from "../lib/i18n";
 
 // Старый общий v1 сохраняется как резерв, но не присваивается аккаунту.
 const progressKey = (courseId: string) =>
@@ -32,7 +33,7 @@ export function loadCourse(): Promise<CourseBundle> {
       if (!bundle.courseId || !Array.isArray(bundle.units)) {
         throw new Error("Файл курса повреждён.");
       }
-      return bundle;
+      return translateData("course", bundle);
     });
 
   bundlePromise = loading.catch((error) => {

@@ -1,4 +1,5 @@
 import { request } from './client';
+import { translateResponse } from '../lib/i18n';
 import { utf8ByteOffset } from './translate';
 
 export interface GrammarFact {
@@ -162,8 +163,11 @@ export function analyzeWord(
     body,
     anonymous: true,
     signal,
-  });
+  }).then((result) => translateResponse(result, { keep: SERBIAN_FIELDS, glosses: ['translation'] }));
 }
+
+/** Сербские формы в ответе разбора: перевод интерфейса их не касается. */
+const SERBIAN_FIELDS = ['surface', 'lemma', 'form', 'written', 'sentence', 'text', 'word', 'forms', 'stem', 'ending', 'example', 'serbian'];
 
 /** Один из возможных разборов слова во фразе. */
 export interface SentenceToken {
@@ -217,5 +221,5 @@ export function analyzeSentence(
     body: { sentence },
     anonymous: true,
     signal,
-  });
+  }).then((result) => translateResponse(result, { keep: SERBIAN_FIELDS, glosses: ['translation'] }));
 }

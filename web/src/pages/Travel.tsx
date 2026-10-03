@@ -18,6 +18,7 @@ import {
 import { iconBody, PlaceIcon } from '../travel/icons';
 import { lookupPlace } from '../travel/overpass';
 import type { City, CityPin, Point, TravelBundle } from '../travel/types';
+import { uiLocale } from '../lib/i18n';
 
 /**
  * Путешествие: карта Сербии, на которой можно ткнуть в заведение и узнать, что
@@ -372,7 +373,7 @@ function formatReviewDate(value?: string): string {
   if (!value) return 'недавно';
   const parsed = new Date(`${value}T00:00:00Z`);
   if (Number.isNaN(parsed.getTime())) return value;
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat(uiLocale(), {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

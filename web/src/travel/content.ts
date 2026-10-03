@@ -1,5 +1,6 @@
 import { toLatin } from '../lib/tokenize';
 import type { PlaceContent, PlaceKind, TravelBundle } from './types';
+import { translateData } from '../lib/i18n';
 
 /**
  * Справочник Путешествия: типы мест, города и всё, что в них говорят.
@@ -19,6 +20,7 @@ export function loadTravel(): Promise<TravelBundle> {
       if (!response.ok) throw new Error(`travel bundle ${response.status}`);
       return response.json() as Promise<TravelBundle>;
     })
+    .then((bundle) => translateData('travel', bundle, (key) => key === 'ru' || key === 'hint'))
     .catch((error: unknown) => {
       // Иначе неудачная загрузка запомнилась бы навсегда и раздел не ожил бы
       // даже после возвращения сети.

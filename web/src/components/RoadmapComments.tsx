@@ -10,6 +10,7 @@ import {
 import { useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { Button, ErrorNote, Spinner } from './ui';
+import { uiLocale } from '../lib/i18n';
 
 /**
  * Обсуждение уровня карты.
@@ -155,7 +156,7 @@ function CommentBody({
         <p className="font-semibold">{comment.author}</p>
         <div className="flex items-center gap-3">
           <time className="text-xs text-[var(--text-muted)]" dateTime={comment.createdAt}>
-            {new Date(comment.createdAt).toLocaleDateString('ru')}
+            {new Date(comment.createdAt).toLocaleDateString(uiLocale())}
           </time>
           {canDelete && (
             <button

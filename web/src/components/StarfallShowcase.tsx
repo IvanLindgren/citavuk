@@ -2,6 +2,7 @@ import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSP
 import { LuArrowRight, LuSparkles } from 'react-icons/lu';
 
 import { getSupportShowcase, type SupportShowcase as Showcase } from '../api/donations';
+import { t } from '../lib/i18n';
 import { Link } from '../lib/router';
 import { PERKS, SUPPORTER_THRESHOLD } from '../lib/supportPerks';
 import './starfall.css';
@@ -237,7 +238,7 @@ export function StarfallShowcase() {
 
   const at = (x: number, y: number): CSSProperties => ({ left: `${x}%`, top: `${y}%` });
   const slotAt = (i: number) => { const [x, y] = SLOTS[i] ?? [50, 20]; return at(x, y); };
-  const heading = 'Каждая звезда здесь — друг Читавука';
+  const heading = t('Каждая звезда здесь — друг Читавука');
 
   return (
     <section ref={section} aria-label="Друзья Читавука" className={`px-5 py-10 sm:py-14 ${awake ? 'sf-awake' : ''}`}>

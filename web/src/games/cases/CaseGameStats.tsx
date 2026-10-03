@@ -4,9 +4,10 @@ import { LuKeyboard, LuTrophy } from 'react-icons/lu';
 import { getCaseGameResults, type CaseGameResult } from '../../api/caseGame';
 import { ButtonLink, Card } from '../../components/ui';
 import { scopeTitle, type Scope } from './data';
+import { uiLocale } from '../../lib/i18n';
 
 const LIMIT_LABELS: Record<number, string> = { 60: '1 минута', 300: '5 минут', 900: '15 минут', 0: 'Без конца' };
-const DATE = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short' });
+const DATE = new Intl.DateTimeFormat(uiLocale(), { day: 'numeric', month: 'short' });
 
 function titleOf(scope: string) {
   // В scope последним идёт уровень слов: «case:g:b».

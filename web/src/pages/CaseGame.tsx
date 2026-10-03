@@ -48,6 +48,8 @@ import { acceptStudy } from '../lib/study';
 import { useSeo } from '../lib/seo';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
+import { translateData } from '../lib/i18n';
+import { uiLocale } from '../lib/i18n';
 
 const TITLE = 'Уничтожь эти падежи с Читавуком!';
 // three.js весит полмегабайта: грузится отдельно и заранее, пока выбирают режим.
@@ -97,7 +99,7 @@ function loadData(): Promise<CaseGameData> {
   dataPromise ??= fetch('/games/cases.json').then((response) => {
     if (!response.ok) throw new Error(String(response.status));
     return response.json() as Promise<CaseGameData>;
-  });
+  }).then((data) => translateData('trainer', data));
   dataPromise.catch(() => {
     dataPromise = null;
   });
@@ -218,7 +220,7 @@ function Shell({ children }: { children: ReactNode }) {
 }
 
 function Teaser({ access }: { access: CaseGameAccess }) {
-  const date = new Date(access.publicFrom).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const date = new Date(access.publicFrom).toLocaleDateString(uiLocale(), { day: 'numeric', month: 'long' });
   return (
     <Shell>
       <Card className="mx-auto max-w-2xl p-7 text-center sm:p-10">

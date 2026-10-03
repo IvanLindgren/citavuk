@@ -21,6 +21,7 @@ import {
 } from '../api/admin';
 import { ApiError } from '../api/client';
 import { Button, Card, ErrorNote, Spinner } from './ui';
+import { uiLocale } from '../lib/i18n';
 
 const NUMBER = new Intl.NumberFormat('ru-RU');
 
@@ -763,11 +764,11 @@ function duration(seconds: number): string {
 }
 
 function clock(at: number): string {
-  return new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(at);
+  return new Intl.DateTimeFormat(uiLocale(), { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(at);
 }
 
 function when(value: string): string {
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat(uiLocale(), {
     day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
   }).format(new Date(value));
 }

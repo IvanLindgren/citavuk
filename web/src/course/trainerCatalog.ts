@@ -1,4 +1,5 @@
 import type { CourseBundle, Exercise } from './types';
+import { translateData } from '../lib/i18n';
 
 export type TrainerDomain = 'grammar' | 'reading' | 'writing';
 
@@ -41,7 +42,7 @@ export function loadTrainerCatalog(): Promise<TrainerCatalog> {
       if (catalog.version !== 1 || !Array.isArray(catalog.topics)) {
         throw new Error('Каталог Тренажёрки повреждён.');
       }
-      return catalog;
+      return translateData('trainer', catalog);
     })
     .catch((error) => {
       catalogPromise = null;

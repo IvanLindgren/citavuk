@@ -30,6 +30,7 @@ import {
 } from '../api/microFeed';
 import { WordReader } from './WordReader';
 import { Button, ErrorNote, Spinner } from './ui';
+import { uiLocale } from '../lib/i18n';
 
 type FeedAdminView = 'queue' | 'cards';
 
@@ -205,7 +206,7 @@ export function AdminMicroFeedPanel() {
             {imports.map((input) => (
               <article key={input.id} className="grid gap-4 py-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-[var(--text-muted)]"><span>{input.sourceTitle}</span><span>,</span><span>{input.sourcePublishedAt ? new Date(input.sourcePublishedAt).toLocaleDateString('ru') : 'без даты'}</span></div>
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-[var(--text-muted)]"><span>{input.sourceTitle}</span><span>,</span><span>{input.sourcePublishedAt ? new Date(input.sourcePublishedAt).toLocaleDateString(uiLocale()) : 'без даты'}</span></div>
                   <h3 className="mt-2 text-lg font-semibold">{input.title}</h3>
                   <p className="mt-2 line-clamp-3 text-sm leading-6 text-[var(--text-muted)]">{input.rawText}</p>
                   <a href={input.sourceUrl} target="_blank" rel="noreferrer noopener" className="mt-2 inline-block text-xs text-[var(--accent)] underline">Открыть первоисточник</a>

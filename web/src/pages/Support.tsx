@@ -19,6 +19,7 @@ import { useAuth } from '../state/auth';
 import { PERKS, SUPPORTER_THRESHOLD } from '../lib/supportPerks';
 import { SUPPORT_SELLER } from './supportSeller';
 import { GuestDonationPanel } from '../components/GuestDonationPanel';
+import { uiLocale } from '../lib/i18n';
 
 const PRESETS = [200, 500, 1000] as const;
 const MIN_AMOUNT = 50;
@@ -311,7 +312,7 @@ function MonthlySupport() {
   return <section className="mt-6 border-t border-[var(--line)] pt-5">
     <h3 className="text-xl">Моя ежемесячная поддержка</h3>
     {active.map(s => <div key={s.id} className="mt-4 flex flex-wrap items-center justify-between gap-3">
-      <p>{(s.amountKopecks / 100).toLocaleString('ru-RU')} ₽ в месяц<br /><span className="text-sm text-[var(--text-muted)]">{s.status === 'active' && s.nextChargeAt ? `Следующий платёж: ${new Date(s.nextChargeAt).toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' })}` : s.status === 'pending' ? 'Подключится после подтверждения оплаты' : 'Автоплатёж приостановлен'}</span></p>
+      <p>{(s.amountKopecks / 100).toLocaleString('ru-RU')} ₽ в месяц<br /><span className="text-sm text-[var(--text-muted)]">{s.status === 'active' && s.nextChargeAt ? `Следующий платёж: ${new Date(s.nextChargeAt).toLocaleDateString(uiLocale(), { timeZone: 'Europe/Moscow' })}` : s.status === 'pending' ? 'Подключится после подтверждения оплаты' : 'Автоплатёж приостановлен'}</span></p>
       <Button variant="secondary" size="sm" disabled={!!busy} onClick={() => { setBusy(s.id); setError(''); void cancelSupportSubscription(s.id).then(() => setItems(list => list.filter(x => x.id !== s.id))).catch(() => setError('Не удалось отменить. Попробуй ещё раз.')).finally(() => setBusy('')); }}>{busy === s.id ? 'Отменяю…' : 'Отключить автоплатёж'}</Button>
     </div>)}
     {error && <ErrorNote>{error}</ErrorNote>}
