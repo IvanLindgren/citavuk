@@ -2,542 +2,1017 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://citavuk.ru/</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/vukotok</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/roadmap</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/books</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/public-library</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/trainer</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/padezi</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/govori</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/trainer/translation-duel</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/basta</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/putovanje</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/exams</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/lessons</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/listening</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/audio-files</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/events</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/downloads</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/support</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/supporters</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/about</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/privacy</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/dialogues</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/dialogues/drinkit</loc>
-    <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/math</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/chemistry</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/english</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/french</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/german</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/serbian</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/russian</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/biology</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/physics</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/arts</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/italian</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/hungarian</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/informatics</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/music</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/geography</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/history</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/materials/sociology</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_pismo_1</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_pismo_2</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_bcms</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_pismo_3</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_02</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_03</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_04</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_05</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_06</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_07</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_08</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_09</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_10</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_11</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_12</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_13</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_14</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_15</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_16</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_17</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_18</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_19</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_20</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_21</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_22</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_23</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_24</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_25</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_26</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_27</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_28</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_29</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_30</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_31</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_32</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_33</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_34</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_35</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_36</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_37</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_38</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_39</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_40</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_41</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_42</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_43</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_44</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://citavuk.ru/course/lesson/l_45</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16988481</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16821595</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16597896</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16420342</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16330564</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16240703</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16166004</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-16075056</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-15985056</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-15910090</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-15472952</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-14690862</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-13955549</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-13590777</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-13368597</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-12940961</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-12357386</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-12249931</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-12042442</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-11769146</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-11596364</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-11064196</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-10888284</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-10668923</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-10144705</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-10017941</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-9804382</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-9744496</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-9592871</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-9451984</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-9118458</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8956308</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8918633</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8448913</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8247223</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8101259</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8101253</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/learn-serbian-Buzzsprout-8101251</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-99c591d5-7332-4a3c-b212-76b2cc3f98e7</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-e141f4f3-906b-41ac-9712-41e8c91cbcf4</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-a80ad41d-c1d9-4c17-b068-0ab5bdbc013a</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-aa944acf-cc92-43f8-9038-fe941d2aaf49</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-d36b9ab7-214a-403a-b325-474631f3743e</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-634a2c73-8de6-4a25-adad-f807456479d7</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-e6de43de-6598-4780-ab90-541fe729152a</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-60d3a83a-9fbc-411c-b744-4cd063cf86f4</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-58b7f20a-39b9-4edd-9a33-326fca390ad8</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-9720e576-daf4-431e-bc5f-7aafd038446a</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-0d1092ff-3cad-45ed-9fdc-a3ea45cc9724</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-c67049ca-19c7-49f9-8b13-1607d555da26</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-9cd87287-7528-4ac5-9a9e-e8d35986b7ba</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-7fc9e6ec-6c58-473a-b872-e683e0e74592</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-0374dfeb-186b-4c3c-990b-d741016819ed</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-9d904327-8b0c-4d3d-901a-496869ce7ec5</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-c00a1462-d3cb-4089-b7e7-583da89254fe</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-5d9a3eb4-4690-4111-b09e-82792aa159d9</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-a2aa8786-a89e-4c65-9559-767b5fa5a555</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-060e45ae-3ba1-4cc1-b0af-49282b7a4692</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-caa6c010-a9d7-40a5-bd36-be46fb917ea6</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-27cfc450-6725-44e4-82dc-bc52ad4fae64</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-407ddee2-1e99-4e93-b8ff-efe6f1138827</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-d374ec2a-9107-49b5-aed1-ac6f80c0ff82</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-bbb57ae4-7ce5-4d8d-befb-8e80b08dc78b</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-c21dc829-ff8d-4d71-bbbe-c6805d1e7ad5</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10568767</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10513914</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10485949</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10398245</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10341656</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10253294</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10211604</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10217476</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10138160</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-10141432</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9780598</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9611705</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9600261</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9573165</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9491056</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9448952</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9422129</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9177498</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9322699</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/moze-kafa-Buzzsprout-9170757</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-na-bunaru</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-vlaovici</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-mrtvo-more</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-pokojnikova-zena</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-plac-serbiji</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-bozicna-pecenica</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-gospa-nola</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-bodulica</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-zlatni-jelenak</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-pocetak-bune-protiv-dahija</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-jedna-noc</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-kostana</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-zona-zamfirova</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-necista-krv</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-pop-cira-i-pop-spira</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://citavuk.ru/listening/audiobook-jazavac-pred-sudom</loc>
+    <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 </urlset>

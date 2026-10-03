@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Card, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
-import { useSeo } from '../lib/seo';
+import { SITE_URL, useSeo } from '../lib/seo';
 
 /**
  * О разработчике и об открытом коде.
@@ -29,6 +29,18 @@ export function About() {
     title: 'О разработчике — Читавук',
     description:
       'Кто делает Читавук и зачем: независимый разработчик Денис Корнилов о проекте для изучающих сербский язык. Исходный код открыт.',
+    jsonLd: {
+      '@type': 'ProfilePage',
+      url: `${SITE_URL}/about`,
+      mainEntity: {
+        '@type': 'Person',
+        name: 'Денис Корнилов',
+        jobTitle: 'Разработчик Читавука',
+        url: `${SITE_URL}/about`,
+        sameAs: ['https://github.com/IvanLindgren', 'https://t.me/ivanlindgren', 'https://vk.com/denkorni'],
+        worksFor: { '@id': `${SITE_URL}/#organization` },
+      },
+    },
   });
 
   return (

@@ -15,8 +15,23 @@ Disallow: /auth/
 # Кабинет преподавателя без входа сразу уводит на /login — показывать роботу
 # нечего.
 Disallow: /teachers
+# Личная колода и слова дня видны только со входом.
+Disallow: /personal
+Disallow: /daily
+Disallow: /support/thanks
+Disallow: /support/claim
+# Ссылки-приглашения: у каждой свой адрес, содержимое закрытое.
+Disallow: /shared/
+Disallow: /lesson/link/
+Disallow: /trainer/translation-duel/
+Disallow: /tests/
 
 Sitemap: https://citavuk.ru/sitemap.xml
 # Уроки преподавателей публикуются между выкладками сайта, поэтому их карту
 # отдаёт сервер из базы, а не статический файл сборки.
 Sitemap: https://citavuk.ru/sitemap-lessons.xml
+
+# Краткое описание сайта для нейросетевых поисковиков (llmstxt.org).
+# Отдельных правил для GPTBot, ClaudeBot, PerplexityBot и прочих нет намеренно:
+# они подчиняются общему блоку выше, и закрытые разделы закрыты и для них.
+# llms.txt: https://citavuk.ru/llms.txt

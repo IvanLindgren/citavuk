@@ -16,16 +16,20 @@ robots.txt, и дублировать их здесь было бы против
 
 from __future__ import annotations
 
-import datetime
 import io
 import json
 import os
+import re
+import subprocess
 import sys
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = os.path.dirname(ROOT)
 SITE = "https://citavuk.ru"
 OUT = os.path.join(ROOT, "public", "sitemap.xml")
+# Каталог «Слушания» живёт на сервере: эпизоды добавляются без выкладки сайта.
+AUDIO_LESSONS = "https://api.citavuk.ru/audio/lessons"
 
 # Статические разделы: адрес, приоритет, частота обновления.
 #
@@ -68,13 +72,50 @@ def read_json(path: str):
         return json.load(handle)
 
 
-def main() -> int:
-    today = datetime.date.today().isoformat()
-    urls = list(STATIC)
+def git_date(path: str) -> str | None:
+    """Дата последнего коммита файла — честный lastmod.
 
-    catalog = read_json(os.path.join(ROOT, "src", "materials", "catalog.json"))
+    Сегодняшняя дата на каждой странице при каждой сборке хуже, чем никакой:
+    Google и Яндекс быстро замечают, что lastmod врёт, и перестают его читать.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%cs", "--", path],
+            cwd=REPO, capture_output=True, text=True, timeout=20,
+        ).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return out or None
+
+
+def listening_episodes() -> list[str]:
+    """Эпизоды с расшифровкой: без текста страница — плеер и заголовок."""
+    try:
+        with urllib.request.urlopen(AUDIO_LESSONS, timeout=30) as response:
+            items = json.load(response).get("items") or []
+    except Exception as error:  # noqa: BLE001 — сборка не должна падать из-за API
+        print(f"  каталог «Слушания» недоступен, эпизоды пропущены: {error}")
+        return []
+    ids = []
+    for item in items:
+        episode = str(item.get("id") or "")
+        if not re.fullmatch(r"[A-Za-z0-9._-]+", episode):
+            continue
+        if not (item.get("audio_url") or item.get("external_url")) or not item.get("title"):
+            continue
+        if item.get("transcript_url") or item.get("cues"):
+            ids.append(episode)
+    return ids
+
+
+def main() -> int:
+    urls = [(path, priority, freq, None) for path, priority, freq in STATIC]
+
+    catalog_path = os.path.join(ROOT, "src", "materials", "catalog.json")
+    catalog = read_json(catalog_path)
+    catalog_date = git_date(catalog_path)
     for subject in catalog["subjects"]:
-        urls.append((f"/materials/{subject['id']}", "0.8", "monthly"))
+        urls.append((f"/materials/{subject['id']}", "0.8", "monthly", catalog_date))
 
     # Курс лежит в ассетах приложения — один и тот же файл на оба клиента.
     bundle_path = os.path.join(
@@ -83,6 +124,7 @@ def main() -> int:
     lessons = 0
     if os.path.exists(bundle_path):
         bundle = read_json(bundle_path)
+        bundle_date = git_date(bundle_path)
         # Уроки лежат на третьем уровне: units -> skills -> lessons.
         for unit in bundle.get("units", []):
             for skill in unit.get("skills", []):
@@ -93,18 +135,22 @@ def main() -> int:
                     intro = lesson.get("intro") or {}
                     if not intro.get("text") and not intro.get("blocks"):
                         continue
-                    urls.append((f"/course/lesson/{lesson['id']}", "0.6", "monthly"))
+                    urls.append((f"/course/lesson/{lesson['id']}", "0.6", "monthly", bundle_date))
                     lessons += 1
+
+    episodes = listening_episodes()
+    for episode in episodes:
+        urls.append((f"/listening/{episode}", "0.6", "yearly", None))
 
     out = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
-    for path, priority, freq in urls:
+    for path, priority, freq, lastmod in urls:
+        out += ["  <url>", f"    <loc>{SITE}{path}</loc>"]
+        if lastmod:
+            out.append(f"    <lastmod>{lastmod}</lastmod>")
         out += [
-            "  <url>",
-            f"    <loc>{SITE}{path}</loc>",
-            f"    <lastmod>{today}</lastmod>",
             f"    <changefreq>{freq}</changefreq>",
             f"    <priority>{priority}</priority>",
             "  </url>",
@@ -117,7 +163,8 @@ def main() -> int:
     print(f"Записано: {OUT}")
     print(
         f"  адресов: {len(urls)} "
-        f"(разделов {len(STATIC)}, предметов {len(catalog['subjects'])}, уроков {lessons})"
+        f"(разделов {len(STATIC)}, предметов {len(catalog['subjects'])}, уроков {lessons}, "
+        f"эпизодов {len(episodes)})"
     )
     return 0
 

@@ -24,6 +24,8 @@ vi.mock('../state/sync', () => ({
 }));
 vi.mock('../lib/seo', () => ({
   useSeo: () => undefined,
+  breadcrumbs: () => ({}),
+  SITE_URL: 'https://citavuk.ru',
 }));
 
 const params: { id: string } = { id: 'l_pismo_1' };

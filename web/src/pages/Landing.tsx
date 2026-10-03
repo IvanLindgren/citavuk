@@ -10,7 +10,7 @@ import { ButtonLink, Card, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { StarfallShowcase } from '../components/StarfallShowcase';
-import { useSeo } from '../lib/seo';
+import { SITE_URL, useSeo } from '../lib/seo';
 
 const DocumentImportBox = lazy(() => import('../components/DocumentImportBox').then(m => ({ default: m.DocumentImportBox })));
 const WordReader = lazy(() => import('../components/WordReader').then(m => ({ default: m.WordReader })));
@@ -26,6 +26,31 @@ export function Landing() {
     title: 'Читавук — учить сербский язык через чтение: перевод слова в контексте',
     description:
       'Учи сербский язык чтением и на слух: открой книгу, подкаст или свою аудиозапись и нажми любое слово — Читавук покажет перевод в контексте, разберёт форму и объяснит правило.',
+    jsonLd: [
+      {
+        '@type': 'SoftwareApplication',
+        name: 'Читавук',
+        alternateName: 'Citavuk',
+        applicationCategory: 'EducationalApplication',
+        applicationSubCategory: 'Изучение сербского языка',
+        operatingSystem: 'Web, Android, Windows, Linux',
+        url: `${SITE_URL}/`,
+        downloadUrl: `${SITE_URL}/downloads`,
+        image: `${SITE_URL}/og-image.png`,
+        inLanguage: 'ru-RU',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: FAQ.map(([question, answer]) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
+    ],
   });
 
   const { account, loading } = useAuth();
@@ -39,6 +64,7 @@ export function Landing() {
       <Demo />
       <Features />
       <Sections />
+      <Faq />
       {!loading && !account && <CallToAction />}
     </main>
   );
@@ -379,6 +405,70 @@ function Sections() {
                 </Card>
               </Link>
             </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Частые вопросы. Тот же текст уходит в разметку FAQPage, поэтому ответы
+ * короткие и самодостаточные: их цитируют поисковики и нейросети.
+ */
+const FAQ: Array<[string, string]> = [
+  [
+    'Что такое Читавук?',
+    'Читавук — бесплатный сайт и приложение для изучения сербского языка через чтение и аудирование. Нажимаешь на любое слово в книге, статье, подкасте или своём файле, и Читавук показывает перевод в этом предложении, начальную форму и разбор: падеж, число, род, время. Слова сохраняются в карточки с интервальным повторением. Есть курс грамматики, тренажёры и лента коротких текстов Вукоток.',
+  ],
+  [
+    'Читавук бесплатный?',
+    'Да. Сайт и приложения бесплатны, Читавук живёт на добровольную поддержку читателей. Исходный код открыт по лицензии MIT.',
+  ],
+  [
+    'Чем перевод в Читавуке отличается от обычного словаря?',
+    'Слово переводится вместе со своим предложением, поэтому многозначные слова получают верное значение, а не первое из словаря. Дополнительно показывается разбор формы: падеж, число, род, время — и начальная форма слова.',
+  ],
+  [
+    'Сложно ли выучить сербский русскоговорящему?',
+    'Проще, чем большинство европейских языков. Сербский — славянский язык: много общих корней, похожий вид глагола и почти те же падежи — их семь, к русским добавляется звательный. Пишется он по правилу «пиши, как говоришь», так что чтение даётся с первых недель. Сложнее всего ложные друзья переводчика и музыкальное ударение.',
+  ],
+  [
+    'Латиница или кириллица: какую азбуку учить?',
+    'Обе. В Сербии официальна кириллица, но на улице, в интернете и в книгах одинаково часто встречается латиница, а буквы соответствуют друг другу один к одному. Курс Читавука начинается с обеих азбук, а читалка понимает текст на любой из них.',
+  ],
+  [
+    'Подойдёт ли Читавук новичку?',
+    'Да. Курс грамматики начинается с азбуки и простых фраз, дорожная карта раскладывает слова и темы по уровням от A1 до C2, а Вукоток подбирает короткие тексты по твоему уровню.',
+  ],
+  [
+    'На каких устройствах работает Читавук?',
+    'В браузере на citavuk.ru, а также в приложениях для Android, Windows и Linux. Книги, словарь и прогресс синхронизируются между устройствами через аккаунт.',
+  ],
+  [
+    'Где взять материалы для поступления в сербский вуз?',
+    'В разделе «Материалы» собраны настоящие экзаменационные тесты, решения и пособия с сайтов сербских учреждений и факультетов университетов Белграда, Нови-Сада, Ниша и Крагуеваца.',
+  ],
+];
+
+function Faq() {
+  return (
+    <section className="px-5 pb-16 sm:pb-24">
+      <div className="mx-auto max-w-3xl">
+        <Reveal className="mb-8 text-center">
+          <h2 className="text-3xl sm:text-4xl">Частые вопросы</h2>
+        </Reveal>
+        <div className="space-y-3">
+          {FAQ.map(([question, answer]) => (
+            <Card key={question} className="p-0">
+              <details className="group">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-lg font-semibold [&::-webkit-details-marker]:hidden">
+                  {question}
+                  <span aria-hidden="true" className="text-[var(--accent)] transition-transform duration-200 group-open:rotate-45">+</span>
+                </summary>
+                <p className="px-5 pb-5 leading-relaxed text-[var(--text-muted)]">{answer}</p>
+              </details>
+            </Card>
           ))}
         </div>
       </div>

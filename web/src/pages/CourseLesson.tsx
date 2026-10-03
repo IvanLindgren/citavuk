@@ -53,7 +53,7 @@ import type {
 import { ttsAudioUrl } from '../api/listening';
 import { Button, ButtonLink, SparkleBurst, Spinner } from '../components/ui';
 import { Link, useParams, useRouter } from '../lib/router';
-import { useSeo } from '../lib/seo';
+import { breadcrumbs, SITE_URL, useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
 import {recordStudy} from '../lib/study';
 import { Confetti, CountUp, Shake } from '../components/motion';
@@ -82,13 +82,37 @@ function CourseLessonSession() {
   const [showHint, setShowHint] = useState(false);
   const [error, setError] = useState('');
 
+  const summary = lesson ? lessonSummary(lesson) : '';
+  const unit = lesson && bundle ? bundle.units.find((item) => item.skills.some((skill) => skill.lessons.some((entry) => entry.id === lesson.id))) : undefined;
+  const skill = lesson ? unit?.skills.find((item) => item.lessons.some((entry) => entry.id === lesson.id)) : undefined;
+  // «Вид глагола (продолжение)» встречается дважды — в поиске у урока своё имя темы.
+  const seoName = lesson && skill && /\(продолжение\)/.test(lesson.title) ? skill.title : lesson?.title ?? '';
   useSeo({
     title: lesson
-      ? `${lesson.title} — курс сербской грамматики`
+      ? `${seoName} — курс сербской грамматики`
       : 'Урок курса сербской грамматики — Читавук',
-    description: lesson?.intro?.text
-      ? lesson.intro.text.slice(0, 300)
-      : 'Правило, примеры и упражнения по сербской грамматике с объяснением по-русски.',
+    description: summary || 'Правило, примеры и упражнения по сербской грамматике с объяснением по-русски.',
+    jsonLd: lesson
+      ? [
+          {
+            '@type': 'LearningResource',
+            name: lesson.title,
+            description: summary || undefined,
+            url: `${SITE_URL}/course/lesson/${lesson.id}`,
+            inLanguage: 'ru-RU',
+            about: { '@type': 'Language', name: 'Сербский язык', alternateName: 'sr' },
+            learningResourceType: 'Урок грамматики',
+            isAccessibleForFree: true,
+            isPartOf: { '@type': 'Course', name: 'Курс сербской грамматики', url: `${SITE_URL}/course` },
+            publisher: { '@id': `${SITE_URL}/#organization` },
+          },
+          breadcrumbs([
+            ['Курс сербского', '/course'],
+            ...(unit ? [[unit.title, '/course'] as [string, string]] : []),
+            [lesson.title, `/course/lesson/${lesson.id}`],
+          ]),
+        ]
+      : undefined,
   });
 
   // Ссылка на текущее состояние входа: загрузка урока не должна перезапускаться
@@ -390,6 +414,16 @@ function LessonTheory({ lesson }: { lesson: CourseLessonModel }) {
 }
 
 /** Блоки теории. Старые уроки хранят её одной строкой, новые — списком. */
+/** Первый абзац теории без разметки — описание урока для поисковика. */
+function lessonSummary(lesson: CourseLessonModel): string {
+  const first = introBlocks(lesson).find((block) => (block.kind === 'paragraph' || block.kind === 'tip') && block.text.trim());
+  if (!first || !('text' in first)) return '';
+  const text = first.text.replace(/[*_]/g, '').replace(/\s+/g, ' ').trim();
+  if (text.length <= 170) return text;
+  const cut = text.slice(0, 170);
+  return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+}
+
 function introBlocks(lesson: CourseLessonModel): IntroBlock[] {
   if (lesson.intro?.blocks?.length) return lesson.intro.blocks;
   if (lesson.intro?.text) {

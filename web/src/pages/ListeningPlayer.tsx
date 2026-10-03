@@ -24,6 +24,7 @@ import type { AudioCue, AudioLesson } from '../listening/types';
 import { characterAt, timeAtCharacter } from '../listening/timing';
 import { tokenize, type Token } from '../lib/tokenize';
 import { Link, useParams } from '../lib/router';
+import { breadcrumbs, SITE_URL, useSeo } from '../lib/seo';
 import { LuExternalLink } from 'react-icons/lu';
 
 type LoadState =
@@ -117,6 +118,7 @@ export function ListeningPlayer() {
 
   const lesson = state.kind === 'ready' ? state.lesson : null;
   const isTts = lesson ? !lesson.audio_url : false;
+  useSeo(episodeSeo(id, lesson, state.kind === 'error'));
 
   const scrollToCue = useCallback((index: number) => {
     cueElements.current[index]?.scrollIntoView({
@@ -530,4 +532,52 @@ function SkipPreviousIcon() {
 }
 function SkipNextIcon() {
   return <svg viewBox="0 0 24 24" className="size-5 fill-current"><path d="M16 6h2v12h-2zM6 6l9 6-9 6z" /></svg>;
+}
+
+const KIND_NAME: Record<NonNullable<AudioLesson['kind']>, string> = {
+  podcast: 'подкаст',
+  audiobook: 'аудиокнига',
+  radio: 'радио',
+  tts: 'аудиоурок',
+};
+
+/** Заголовок и разметка эпизода: без них все эпизоды попадали в поиск с заголовком главной. */
+function episodeSeo(id: string, lesson: AudioLesson | null, missing: boolean): Parameters<typeof useSeo>[0] {
+  if (!lesson) {
+    return {
+      title: 'Сербский на слух — Читавук',
+      description: 'Подкаст или аудиокнига на сербском с текстом и переводом каждого слова.',
+      noindex: missing,
+    };
+  }
+  const kind = KIND_NAME[lesson.kind ?? 'podcast'];
+  const minutes = lesson.duration ? Math.max(1, Math.round(lesson.duration / 60)) : 0;
+  const facts = [
+    lesson.cefr ? `уровень ${lesson.cefr}` : '',
+    minutes ? `${minutes} мин` : '',
+    lesson.source_title && lesson.source_title !== lesson.title ? lesson.source_title : '',
+  ].filter(Boolean).join(', ');
+  const url = `${SITE_URL}/listening/${encodeURIComponent(id)}`;
+  const withText = Boolean(lesson.transcript_url || lesson.cues.length);
+  return {
+    title: `${lesson.title} — ${kind} на сербском${withText ? ' с текстом' : ''}`,
+    // Эпизод без текста — плеер и заголовок, искать там нечего.
+    noindex: !withText,
+    description: `${lesson.title}: ${kind} на сербском${facts ? ` (${facts})` : ''}. ${withText ? 'Слушай с синхронным текстом и нажимай на любое слово — Читавук покажет перевод и разбор формы.' : 'Слушай и нажимай на слова, чтобы увидеть перевод и разбор формы.'}`,
+    jsonLd: [
+      {
+        '@type': lesson.kind === 'audiobook' ? 'Audiobook' : lesson.kind === 'podcast' ? 'PodcastEpisode' : 'AudioObject',
+        name: lesson.title,
+        url,
+        inLanguage: 'sr',
+        ...(lesson.duration ? { duration: `PT${Math.round(lesson.duration)}S` } : {}),
+        ...(lesson.source_title ? { publisher: { '@type': 'Organization', name: lesson.source_title, ...(lesson.source_url ? { url: lesson.source_url } : {}) } } : {}),
+        isAccessibleForFree: true,
+      },
+      breadcrumbs([
+        ['Сербский на слух', '/listening'],
+        [lesson.title, `/listening/${encodeURIComponent(id)}`],
+      ]),
+    ],
+  };
 }

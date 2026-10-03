@@ -34,6 +34,27 @@ export interface Seo {
    * каноническим себя, и поисковик делил бы вес страницы надвое.
    */
   canonical?: string;
+  /**
+   * Разметка schema.org для этой страницы. Общая для сайта (WebSite и
+   * Organization) лежит в index.html, здесь — только то, что относится к
+   * странице: курс, урок, эпизод, хлебные крошки.
+   */
+  jsonLd?: object | object[];
+}
+
+export const SITE_URL = SITE;
+
+/** Хлебные крошки: [['Курс', '/course'], ['Падежи', '/course/lesson/l_10']]. */
+export function breadcrumbs(items: Array<[string, string]>): object {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: [['Читавук', '/'] as [string, string], ...items].map(([name, path], index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+      item: SITE + path,
+    })),
+  };
 }
 
 function meta(selector: string, attribute: string, value: string): void {
@@ -57,8 +78,21 @@ function link(rel: string, href: string): void {
   tag.href = href;
 }
 
-export function useSeo({ title, description, noindex = false, canonical }: Seo): void {
+export function useSeo({ title, description, noindex = false, canonical, jsonLd }: Seo): void {
   const { path } = useRouter();
+  const structured = jsonLd ? JSON.stringify({ '@context': 'https://schema.org', '@graph': [jsonLd].flat() }) : '';
+
+  useEffect(() => {
+    // Пререндеренная страница приходит уже с разметкой — не дублируем её.
+    document.head.querySelectorAll('script[data-seo]').forEach((node) => node.remove());
+    if (!structured) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.dataset.seo = '';
+    script.textContent = structured;
+    document.head.append(script);
+    return () => script.remove();
+  }, [structured]);
 
   useEffect(() => {
     document.title = title;
@@ -77,6 +111,11 @@ export function useSeo({ title, description, noindex = false, canonical }: Seo):
     const clean = canonical ?? path.split('?')[0] ?? '/';
     link('canonical', `${SITE}${clean}`);
     meta('meta[property="og:url"]', 'content', `${SITE}${clean}`);
+    // Из index.html альтернативы приходят с адресом главной; оставь их так —
+    // и Google решит, что русская версия любой страницы и есть главная.
+    document.head
+      .querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]')
+      .forEach((tag) => { tag.href = `${SITE}${clean}`; });
 
     meta(
       'meta[name="robots"]',

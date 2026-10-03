@@ -110,16 +110,19 @@ interface SoloStart {
 export function TranslationDuel() {
   const { code = '' } = useParams();
   const [solo, setSolo] = useState<SoloStart | null>(null);
+  // Заголовок на всём разделе: без него лобби дуэли попадало в пререндер с
+  // заголовком главной. Приглашение по коду — личная ссылка, ей в поиске не место.
+  useSeo({
+    title: 'Ты против переводчика — игра с DeepL и Google Translate',
+    description: 'Дуэль переводов с сербского: переведи фразы лучше DeepL или Google Translate, сыграй с другом по коду и попроси ИИ-судью рассудить спор.',
+    noindex: Boolean(code),
+  });
   if (code) return <MultiplayerDuel code={code} />;
   if (!solo) return <MultiplayerDuel onSolo={(level, direction) => setSolo({ level, direction })} />;
   return <SoloTranslationDuel start={solo} onLeave={() => setSolo(null)} />;
 }
 
 function SoloTranslationDuel({ start, onLeave }: { start: SoloStart; onLeave: () => void }) {
-  useSeo({
-    title: 'Ты против переводчика — игра с DeepL и Google Translate',
-    description: 'Переведи сербские фразы лучше DeepL или Google Translate и попроси ИИ-судью рассудить спор.',
-  });
 
   const reduced = useReducedMotion() ?? false;
 

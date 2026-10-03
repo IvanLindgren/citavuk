@@ -16,7 +16,7 @@ export function Dialogues() {
   const [lessons, setLessons] = useState<PublicDialogue[]>([]);
 
   useSeo({
-    title: 'Игровые диалоги на сербском — Читавук',
+    title: 'Диалоги на сербском языке с озвучкой и переводом — Читавук',
     description:
       'Озвученные игровые диалоги на сербском с выбором реплик, переводом слов и синхронизацией прогресса.',
   });

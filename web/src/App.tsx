@@ -28,6 +28,7 @@ import { SyncProvider } from "./state/sync";
 import { ThemeProvider } from "./state/theme";
 import { DuelSearchProvider } from "./state/duelSearch";
 import { DuelSearchNotice } from "./components/DuelSearchNotice";
+import { useSeo } from "./lib/seo";
 
 // Разделы, до которых пользователь доходит не всегда, грузятся отдельно:
 // главная страница не должна тащить с собой код читалки и курса.
@@ -371,6 +372,7 @@ function PageLoader() {
 }
 
 function NotFound() {
+  useSeo({ title: 'Такой страницы нет — Читавук', noindex: true });
   return (
     <main className="flex min-h-[60vh] flex-col items-center justify-center px-5 text-center">
       <img

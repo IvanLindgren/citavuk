@@ -34,7 +34,7 @@ import {
 import { Link, useParams, useQuery, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useSync } from '../state/sync';
-import { useSeo } from '../lib/seo';
+import { breadcrumbs, useSeo } from '../lib/seo';
 
 const KINDS: Array<{ id: DocumentKind; label: string }> = [
   { id: 'test', label: 'Тесты' },
@@ -85,6 +85,10 @@ export function Materials() {
       ? {
           title: `${pageSubject.title}: тесты для поступления в Сербии | Читавук`,
           description: `${pageSubject.count} документов по предмету «${pageSubject.title}»: экзаменационные тесты, решения и пособия с сайтов сербских учреждений и факультетов. Скачать и открыть в читалке с переводом.`,
+          jsonLd: breadcrumbs([
+            ['Материалы для поступления', '/materials'],
+            [pageSubject.title, `/materials/${pageSubject.id}`],
+          ]),
         }
       : {
           title: 'Материалы для поступления в сербские гимназии и вузы | Читавук',

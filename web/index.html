@@ -51,9 +51,9 @@
     <meta name="twitter:image" content="https://citavuk.ru/og-image.png" />
 
     <!--
-      Разметка для поисковиков. Три сущности разом: сам сайт, приложение и
-      краткий FAQ. Она не влияет на текст страницы, но даёт выдаче понять, что
-      это учебный продукт, а не просто набор статей.
+      Разметка для поисковиков, общая для всех страниц: сайт и проект как
+      организация. Приложение и FAQ описаны на главной, курс, уроки и эпизоды —
+      на своих страницах (useSeo → jsonLd).
     -->
     <script type="application/ld+json">
       {
@@ -64,47 +64,20 @@
             "@id": "https://citavuk.ru/#website",
             "url": "https://citavuk.ru/",
             "name": "Читавук",
-            "description": "Сербский через чтение: перевод слова в контексте, разбор формы, карточки повторения.",
-            "inLanguage": "ru-RU"
-          },
-          {
-            "@type": "SoftwareApplication",
-            "name": "Читавук",
-            "applicationCategory": "EducationalApplication",
-            "operatingSystem": "Web, Android, Windows",
-            "url": "https://citavuk.ru/",
-            "downloadUrl": "https://citavuk.ru/downloads",
+            "alternateName": ["Citavuk", "Čitavuk", "Читавук — сербский через чтение"],
+            "description": "Бесплатная читалка и курс для изучения сербского языка: перевод слова в контексте, разбор формы, карточки повторения, аудирование.",
             "inLanguage": "ru-RU",
-            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
+            "publisher": { "@id": "https://citavuk.ru/#organization" }
           },
           {
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Чем перевод в Читавуке отличается от обычного словаря?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Слово переводится вместе со своим предложением, поэтому многозначные слова получают верное значение, а не первое из словаря. Дополнительно показывается разбор формы: падеж, число, род, время."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Нужен ли интернет?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Встроенный словарь на девять тысяч слов покрывает около трёх четвертей обычного текста и работает без сети. Перевод в контексте требует подключения."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Где взять материалы для поступления в сербский вуз?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "В разделе «Материалы» собраны настоящие экзаменационные тесты, решения и пособия с сайтов сербских государственных учреждений и факультетов четырёх университетов: Белграда, Нови-Сада, Ниша и Крагуеваца."
-                }
-              }
-            ]
+            "@type": "Organization",
+            "@id": "https://citavuk.ru/#organization",
+            "name": "Читавук",
+            "alternateName": ["Citavuk", "Čitavuk"],
+            "url": "https://citavuk.ru/",
+            "logo": "https://citavuk.ru/icon-512.png",
+            "founder": { "@type": "Person", "name": "Денис Корнилов", "url": "https://citavuk.ru/about" },
+            "sameAs": ["https://t.me/citavuk", "https://github.com/IvanLindgren/citavuk"]
           }
         ]
       }
@@ -161,7 +134,7 @@
       ни о чём.
     -->
     <noscript>
-      <h1>Читавук: сербский через чтение</h1>
+      <p><strong>Читавук: сербский через чтение</strong></p>
       <p>
         Откройте книгу, новость или экзаменационный тест на сербском и нажмите
         любое слово: Читавук покажет перевод в этом предложении, разберёт
