@@ -129,7 +129,7 @@ function TranscriptSegment({
 
   return <article className={active ? 'active' : undefined}>
     <div className="audio-speaker"><strong>{speaker}</strong><button type="button" onClick={() => onSeek(segment.start)}>{formatTime(segment.start)}</button></div>
-    <p>{aligned.map(({ token, word }, index) => {
+    <p translate="no">{aligned.map(({ token, word }, index) => {
       if (!token.isWord || !word) return <span key={index}>{token.text}</span>;
       const sounding = currentTime >= word.start && currentTime < word.end;
       return <button

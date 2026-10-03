@@ -293,7 +293,7 @@ function WorldLabel({ item, scale }: { item: WorldItem; scale: number }) {
         zIndex: Math.round(item.y) + 3,
       }}
     >
-      <b>{phrase.sr}</b>
+      <b lang="sr">{phrase.sr}</b>
       <i>{phrase.ru}</i>
     </span>
   );

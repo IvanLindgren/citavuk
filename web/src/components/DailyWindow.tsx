@@ -453,7 +453,7 @@ function Progress({ state }: { state: DailyState }) {
                 className="rounded-full bg-[var(--bg-sunken)] px-3 py-1 text-sm"
                 title={`Просрочено на ${word.overdueDays} дн.`}
               >
-                <b>{word.word}</b>{' '}
+                <b lang="sr">{word.word}</b>{' '}
                 <span className="text-[var(--text-muted)]">{word.translation}</span>
               </span>
             ))}
@@ -511,7 +511,7 @@ function WordRow({
     >
       <div className="min-w-0 flex-1">
         <p className="flex flex-wrap items-baseline gap-x-2">
-          <b className="font-display text-lg">{word.lemma}</b>
+          <b lang="sr" className="font-display text-lg">{word.lemma}</b>
           <span className="text-[var(--text-muted)]">{word.translation}</span>
           {word.note && (
             <span className="text-xs text-[var(--text-muted)]">{word.note}</span>

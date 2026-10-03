@@ -32,7 +32,7 @@ export function HintWords({ topic }: { topic: SpeakingTopic }) {
           key={word.sr}
           className="rounded-full border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-1 text-sm"
         >
-          <span className="font-semibold">{word.sr}</span>
+          <span className="font-semibold" lang="sr">{word.sr}</span>
           <span className="text-[var(--text-muted)]"> — {word.ru}</span>
         </li>
       ))}

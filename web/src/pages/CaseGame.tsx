@@ -325,7 +325,7 @@ function Setup({
             {CASES.map((item) => (
               <Chip key={item.key} active={settings.scope === `case:${item.key}`} onClick={() => update({ scope: `case:${item.key}` })}>
                 {item.ru}
-                <span className="font-normal opacity-70">{item.sr}</span>
+                <span lang="sr" className="font-normal opacity-70">{item.sr}</span>
               </Chip>
             ))}
           </Section>
@@ -334,7 +334,7 @@ function Setup({
             {TENSES.map((item) => (
               <Chip key={item.key} active={settings.scope === `tense:${item.key}`} onClick={() => update({ scope: `tense:${item.key}` })}>
                 {item.ru}
-                <span className="font-normal opacity-70">{item.sr}</span>
+                <span lang="sr" className="font-normal opacity-70">{item.sr}</span>
               </Chip>
             ))}
           </Section>
@@ -661,7 +661,7 @@ function Play({
         </p>
         <p className="mt-2 text-[15px] leading-snug text-[#3d332a] sm:text-base">
           Напиши правильную форму {KIND_WORD[task.kind]}{' '}
-          <b className="font-['Courier_Prime',monospace] text-lg">{task.lemma}</b>{' '}
+          <b lang="sr" className="font-['Courier_Prime',monospace] text-lg">{task.lemma}</b>{' '}
           <span className="text-[#6b5a48]">({task.translation})</span>
         </p>
         <p className="mt-1 text-sm font-bold text-[#9e2b25] sm:text-base">

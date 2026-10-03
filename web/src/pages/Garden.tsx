@@ -412,7 +412,7 @@ function TaskBadge({ task }: { task: GardenTask }) {
       <p className="flex items-center gap-2 text-[11px] font-semibold uppercase  text-[#7a5b43]">
         {GARDEN.task.sr}
       </p>
-      <p className="font-display text-base font-bold leading-tight">{phrase.sr}</p>
+      <p lang="sr" className="font-display text-base font-bold leading-tight">{phrase.sr}</p>
       <p className="text-[11px] text-[#6b4d38]">{phrase.ru}</p>
       <p className="mt-1 text-xs tabular-nums">
         {task.done ? `${GARDEN.done.sr}, +${task.reward}` : `${task.progress} / ${task.target}`}

@@ -279,7 +279,7 @@ export function HouseRoom({
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {FRIDGE.map((item) => (
               <li key={item.sr} className="border-2 border-[#b7844e] bg-[#fff0c7] p-2.5">
-                <span className="block font-display font-bold">{item.sr}</span>
+                <span lang="sr" className="block font-display font-bold">{item.sr}</span>
                 <span className="block text-xs text-[#6b4d38]">{item.ru}</span>
               </li>
             ))}

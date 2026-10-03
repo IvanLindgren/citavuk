@@ -183,7 +183,7 @@ function Row({
   return (
     <li className="flex items-start gap-1 rounded-2xl bg-[var(--bg-sunken)] px-4 py-3">
       <div className="min-w-0 flex-1">
-        <p className="font-semibold">{inScript(item.sr, script)}</p>
+        <p lang="sr" className="font-semibold">{inScript(item.sr, script)}</p>
         <p className="text-sm text-[var(--text-muted)]">{item.ru}</p>
       </div>
       <button
@@ -268,8 +268,8 @@ function Dialogue({
               : 'self-start bg-[var(--bg-sunken)]',
           ].join(' ')}
         >
-          <p className="text-xs opacity-70">{inScript(line.speaker, script)}</p>
-          <p className="mt-0.5">{inScript(line.text, script)}</p>
+          <p lang="sr" className="text-xs opacity-70">{inScript(line.speaker, script)}</p>
+          <p lang="sr" className="mt-0.5">{inScript(line.text, script)}</p>
           {!line.mine && (
             <button
               type="button"
