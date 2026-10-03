@@ -40,6 +40,8 @@ class _DiscussionPanelState extends State<_DiscussionPanel> {
   Future<void> _send() async {
     final body = _controller.text.trim();
     if (body.isEmpty) return;
+    if (!await CommentModeration.instance.ensureRules(context)) return;
+    if (!mounted) return;
     setState(() {
       _sending = true;
       _error = '';
@@ -75,6 +77,17 @@ class _DiscussionPanelState extends State<_DiscussionPanel> {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: CommentModeration.instance,
+      builder: (context, _) => _panel(context),
+    );
+  }
+
+  Widget _panel(BuildContext context) {
+    final moderation = CommentModeration.instance;
+    final comments = _comments
+        ?.where((comment) => !moderation.isBlocked(comment.authorId))
+        .toList();
     final signedIn = context.watch<AuthService>().isSignedIn;
     final scheme = Theme.of(context).colorScheme;
     return Card(
@@ -101,15 +114,15 @@ class _DiscussionPanelState extends State<_DiscussionPanel> {
               ],
             ),
             const SizedBox(height: 10),
-            if (_comments == null)
+            if (comments == null)
               const Center(child: CircularProgressIndicator())
-            else if (_comments!.isEmpty)
+            else if (comments.isEmpty)
               Text(
                 'Здесь пока тихо. Напишите первым.',
                 style: TextStyle(color: scheme.onSurfaceVariant),
               )
             else
-              for (final comment in _comments!)
+              for (final comment in comments)
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(comment.author,
@@ -121,7 +134,17 @@ class _DiscussionPanelState extends State<_DiscussionPanel> {
                           onPressed: () => _delete(comment),
                           icon: const Icon(Icons.delete_outline),
                         )
-                      : null,
+                      : IconButton(
+                          tooltip: 'Пожаловаться или скрыть',
+                          onPressed: () => moderation.showActions(
+                            context,
+                            kind: CommentModeration.book,
+                            commentId: comment.id,
+                            authorId: comment.authorId,
+                            authorName: comment.author,
+                          ),
+                          icon: const Icon(Icons.more_horiz),
+                        ),
                 ),
             if (signedIn) ...[
               const SizedBox(height: 10),

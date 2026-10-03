@@ -108,6 +108,35 @@ SDK Google там нет, поэтому приложение открывает
 completion code. Почту существующего аккаунта разрешено связать с OAuth только
 после проверки адреса самим провайдером.
 
+### Вход через Apple (`apple_handlers.go`, `internal/auth/apple.go`)
+
+На iPhone вход нативный: приложение приносит identity token и authorization
+code в `POST /v1/auth/apple`. С сайта и компьютеров — через браузер, как у
+Яндекса: `POST /v1/auth/apple/start` → Apple → `POST /v1/auth/apple/callback`
+(form_post) → одноразовый код → `POST /v1/auth/apple/complete`. На Mac вход тоже
+через браузер: нативному нужно особое разрешение, а с ним DMG без профиля Apple
+не запустится.
+
+Код сразу обменивается на refresh token (`identities.refresh_token`,
+`client_id`, миграция 0060): при удалении аккаунта сервер отзывает доступ
+приложения к Apple ID — без этого Apple отклоняет приложение (5.1.1(v)).
+Почта бывает подменной (`privaterelay.appleid.com`) — это рабочий адрес.
+Имя Apple сообщает только при первом входе и не кладёт в токен.
+
+Пока не заданы `APPLE_TEAM_ID`, `APPLE_SIGNIN_KEY_ID` и ключ, вход выключен:
+`/v1/auth/providers` отдаёт `apple.enabled=false`, кнопки нет ни в приложении,
+ни на сайте. Испорченный ключ сервер не роняет — только журнал.
+
+### Модерация обсуждений (`internal/moderation`, `comment_report_handlers.go`)
+
+App Review 1.2 требует фильтр, жалобы, блокировку автора и правила. Фильтр —
+`moderation.Clean` в трёх обработчиках комментариев (Вукоток, карта пути, общие
+книги): мат и оскорбления на русском, сербском и английском по началу слова.
+Жалоба — `POST /v1/comments/reports` (`kind`: feed / roadmap / book): карточка
+уходит в Telegram-бот жалоб с кнопками «Удалить» и «Оставить», в базе не
+хранится. Блокировка автора — на устройстве, по `userId` комментария. Правила
+приложение показывает перед первым сообщением.
+
 Конфигурация: `GOOGLE_CLIENT_ID_*`, `YANDEX_CLIENT_ID`,
 `YANDEX_CLIENT_SECRET`, `YANDEX_REDIRECT_URI`, `RESEND_API_KEY`,
 `CITAVUK_EMAIL_FROM`, `CITAVUK_WEB_URL`,

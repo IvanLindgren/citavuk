@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/citavuk/server/internal/moderation"
 	"github.com/citavuk/server/internal/roadmap"
 	"github.com/citavuk/server/internal/store"
 )
@@ -315,6 +316,11 @@ func (s *Server) handleAddRoadmapComment(w http.ResponseWriter, r *http.Request)
 			return
 		}
 		parent = &parsed
+	}
+
+	if !moderation.Clean(request.Body) {
+		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, moderation.Reason)
+		return
 	}
 
 	comment, err := s.store.AddRoadmapComment(r.Context(), level, user.ID, parent, request.Body)

@@ -136,6 +136,9 @@ class MicroFeedPreferences {
 class MicroFeedComment {
   final String id;
   final String author;
+
+  /// Автор — по нему скрываются все реплики заблокированного человека.
+  final String authorId;
   final String body;
   final DateTime? createdAt;
 
@@ -145,6 +148,7 @@ class MicroFeedComment {
   const MicroFeedComment({
     required this.id,
     required this.author,
+    this.authorId = '',
     required this.body,
     required this.createdAt,
     required this.mine,
@@ -155,6 +159,7 @@ class MicroFeedComment {
     return MicroFeedComment(
       id: s('id'),
       author: s('author').isEmpty ? 'Читатель' : s('author'),
+      authorId: s('userId'),
       body: s('body'),
       createdAt: DateTime.tryParse(s('createdAt'))?.toLocal(),
       mine: j['mine'] == true,

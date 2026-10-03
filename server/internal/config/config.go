@@ -76,6 +76,16 @@ type Config struct {
 	YandexClientSecret string
 	YandexRedirectURI  string
 
+	// Sign in with Apple. Ключ .p8 приходит файлом (APPLE_SIGNIN_KEY_FILE) или
+	// текстом (APPLE_SIGNIN_KEY, переводы строк записаны как \n). Без команды,
+	// ключа и его номера вход через Apple выключен и кнопка нигде не видна.
+	AppleTeamID      string
+	AppleKeyID       string
+	AppleKey         []byte
+	AppleBundleIDs   []string
+	AppleServicesID  string
+	AppleRedirectURI string
+
 	// ЮKassa принимает поддержку проекта. Без ключей форма оплаты выключена.
 	YooKassaShopID    string
 	YooKassaSecret    string
@@ -337,6 +347,15 @@ func Load(envPath string) (*Config, error) {
 			"YANDEX_REDIRECT_URI",
 			"https://api.citavuk.ru/v1/auth/yandex/callback",
 		),
+		AppleTeamID:     strings.TrimSpace(os.Getenv("APPLE_TEAM_ID")),
+		AppleKeyID:      strings.TrimSpace(os.Getenv("APPLE_SIGNIN_KEY_ID")),
+		AppleKey:        appleKey(),
+		AppleBundleIDs:  splitList(envOr("APPLE_BUNDLE_IDS", "com.srbskiread.srbskiRead")),
+		AppleServicesID: strings.TrimSpace(os.Getenv("APPLE_SERVICES_ID")),
+		AppleRedirectURI: envOr(
+			"APPLE_REDIRECT_URI",
+			"https://api.citavuk.ru/v1/auth/apple/callback",
+		),
 		YooKassaShopID:     firstEnv("YOOKASSA_SHOP_ID", "shopId"),
 		YooKassaSecret:     firstEnv("YOOKASSA_SECRET_KEY", "shopKey"),
 		YooKassaRecurring:  envBool("YOOKASSA_RECURRING_ENABLED", false),
@@ -526,4 +545,19 @@ func splitList(s string) []string {
 		}
 	}
 	return out
+}
+
+// appleKey читает ключ Sign in with Apple из файла или из переменной, где
+// переводы строк записаны как \n: многострочное значение в .env неудобно.
+func appleKey() []byte {
+	if path := strings.TrimSpace(os.Getenv("APPLE_SIGNIN_KEY_FILE")); path != "" {
+		if raw, err := os.ReadFile(path); err == nil {
+			return raw
+		}
+	}
+	key := strings.TrimSpace(os.Getenv("APPLE_SIGNIN_KEY"))
+	if key == "" {
+		return nil
+	}
+	return []byte(strings.ReplaceAll(key, `\n`, "\n"))
 }

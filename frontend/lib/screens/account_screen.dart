@@ -13,10 +13,12 @@ import '../widgets/study_widgets.dart';
 import '../services/api_client.dart';
 import '../services/announcements_controller.dart';
 import '../services/auth_service.dart';
+import '../services/comment_moderation.dart';
 import '../services/profile_service.dart';
 import 'privacy_screen.dart';
 import '../services/desktop_oauth.dart';
 import '../services/sync_service.dart';
+import '../utils/store_policy.dart';
 import '../widgets/google_logo.dart';
 import '../widgets/stove_icon.dart';
 import 'roadmap_screen.dart';
@@ -261,6 +263,20 @@ class _SignedInViewState extends State<_SignedInView> {
                 context,
                 MaterialPageRoute(builder: (_) => const PrivacyScreen()),
               ),
+            ),
+            // Скрытых в обсуждениях авторов можно вернуть: иначе случайное
+            // нажатие было бы навсегда.
+            ListenableBuilder(
+              listenable: CommentModeration.instance,
+              builder: (context, _) {
+                final count = CommentModeration.instance.blockedCount;
+                if (count == 0) return const SizedBox.shrink();
+                return TextButton.icon(
+                  icon: const Icon(Icons.visibility_outlined, size: 18),
+                  label: Text('Показать скрытых авторов ($count)'),
+                  onPressed: CommentModeration.instance.unblockAll,
+                );
+              },
             ),
             TextButton.icon(
               style: TextButton.styleFrom(
@@ -804,6 +820,16 @@ class _AuthFormState extends State<_AuthForm> {
   bool _resent = false;
   String? _error;
   String? _verificationEmail;
+  // Кнопка Apple видна, только когда сервер настроен для этого устройства.
+  bool _apple = false;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthService>().appleSignInAvailable().then((available) {
+      if (mounted && available) setState(() => _apple = true);
+    });
+  }
 
   @override
   void dispose() {
@@ -910,7 +936,10 @@ class _AuthFormState extends State<_AuthForm> {
     // Google и Яндекс доступны там, где приложение умеет провести вход само:
     // на Android через нативный SDK, на Windows и Linux через системный
     // браузер с возвратом на локальный сокет.
+    // В сборке для Mac App Store Google и Яндекса нет: сторонний вход там
+    // требует рядом равноценного входа Apple (правило 4.8).
     final showExternalProviders = !kIsWeb &&
+        !storeBuildForMac &&
         (defaultTargetPlatform == TargetPlatform.android ||
             DesktopOAuth.supported);
 
@@ -1108,7 +1137,7 @@ class _AuthFormState extends State<_AuthForm> {
                           child: CircularProgressIndicator(strokeWidth: 2))
                       : Text(_register ? 'Создать аккаунт' : 'Войти'),
                 ),
-                if (showExternalProviders) ...[
+                if (_apple || showExternalProviders) ...[
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -1124,6 +1153,27 @@ class _AuthFormState extends State<_AuthForm> {
                     ],
                   ),
                   const SizedBox(height: 16),
+                ],
+                if (_apple) ...[
+                  // Чёрная кнопка с логотипом — оформление из правил Apple.
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: externalBusy
+                        ? null
+                        : () => _externalLogin(
+                              context
+                                  .read<AuthService>()
+                                  .loginWithAppleInteractive,
+                            ),
+                    icon: const Icon(Icons.apple, size: 22),
+                    label: const Text('Войти с Apple'),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+                if (showExternalProviders) ...[
                   OutlinedButton.icon(
                     onPressed: externalBusy
                         ? null

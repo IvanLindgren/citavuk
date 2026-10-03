@@ -137,7 +137,7 @@ func TestRedirectOAuthResultTargets(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodGet, "/v1/auth/yandex/callback", nil)
-			s.redirectOAuthResult(w, r, &c.state, "abc", "")
+			s.redirectOAuthResult(w, r, "yandex", &c.state, "abc", "")
 
 			if w.Code != http.StatusSeeOther {
 				t.Fatalf("код ответа %d, ожидался %d", w.Code, http.StatusSeeOther)

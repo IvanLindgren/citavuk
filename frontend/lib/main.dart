@@ -22,6 +22,7 @@ import 'screens/photo_scan_screen.dart';
 import 'services/api_client.dart';
 import 'services/document_import_service.dart';
 import 'services/micro_feed_service.dart';
+import 'services/comment_moderation.dart';
 import 'services/auth_service.dart';
 import 'services/db_init.dart';
 import 'services/photo_scan_service.dart';
@@ -112,6 +113,7 @@ Future<void> main(List<String> args) async {
   StudyService.instance.configure(auth);
   await auth.load();
   MicroFeedService.configure(api: api);
+  CommentModeration.configure(api: api);
   CourseProgressStore.configure(api: api, auth: auth);
   CourseContentLoader.configure(api: api);
   final sync = SyncService(api: api, auth: auth);

@@ -399,3 +399,39 @@ func trunc(s string, maxRunes int) string {
 	}
 	return string(runes[:maxRunes])
 }
+
+// AppleGrant — выданный Apple доступ, который нужно отозвать при удалении аккаунта.
+type AppleGrant struct {
+	ClientID     string
+	RefreshToken string
+}
+
+// SaveIdentityGrant запоминает refresh token провайдера для последующего отзыва.
+func (s *Store) SaveIdentityGrant(ctx context.Context, provider, providerUID, clientID, refreshToken string) error {
+	_, err := s.Pool.Exec(ctx, `
+        UPDATE identities SET refresh_token = $3, client_id = $4
+         WHERE provider = $1 AND provider_uid = $2`,
+		provider, providerUID, refreshToken, clientID)
+	return err
+}
+
+// IdentityGrants возвращает сохранённые доступы провайдера у пользователя.
+func (s *Store) IdentityGrants(ctx context.Context, userID uuid.UUID, provider string) ([]AppleGrant, error) {
+	rows, err := s.Pool.Query(ctx, `
+        SELECT client_id, refresh_token FROM identities
+         WHERE user_id = $1 AND provider = $2
+           AND refresh_token IS NOT NULL AND client_id IS NOT NULL`, userID, provider)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []AppleGrant
+	for rows.Next() {
+		var g AppleGrant
+		if err := rows.Scan(&g.ClientID, &g.RefreshToken); err != nil {
+			return nil, err
+		}
+		out = append(out, g)
+	}
+	return out, rows.Err()
+}

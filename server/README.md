@@ -76,6 +76,11 @@ go test -p 1 ./...
 | `YANDEX_CLIENT_ID` | — | идентификатор OAuth-приложения Яндекса |
 | `YANDEX_CLIENT_SECRET` | — | секрет Яндекса; хранится только на сервере |
 | `YANDEX_REDIRECT_URI` | `https://api.citavuk.ru/v1/auth/yandex/callback` | точный callback из настроек Яндекса |
+| `APPLE_TEAM_ID` | — | Team ID из кабинета разработчика Apple |
+| `APPLE_SIGNIN_KEY_ID`, `APPLE_SIGNIN_KEY_FILE` (или `APPLE_SIGNIN_KEY`) | — | ключ «Sign in with Apple» (.p8); без него вход через Apple выключен |
+| `APPLE_BUNDLE_IDS` | `com.srbskiread.srbskiRead` | приложения с нативным входом через Apple |
+| `APPLE_SERVICES_ID` | — | Services ID входа через Apple с сайта и компьютеров |
+| `APPLE_REDIRECT_URI` | `https://api.citavuk.ru/v1/auth/apple/callback` | Return URL из настроек Services ID |
 | `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY` | — | магазин ЮKassa для поддержки проекта; без них оплата выключена |
 | `RESEND_API_KEY` | — | отправка писем подтверждения |
 | `CITAVUK_EMAIL_FROM` | `Читавук <noreply@citavuk.ru>` | подтверждённый отправитель Resend |

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/citavuk/server/internal/moderation"
 	"github.com/citavuk/server/internal/store"
 	"github.com/google/uuid"
 )
@@ -55,6 +56,11 @@ func (s *Server) handleAddMicroFeedComment(w http.ResponseWriter, r *http.Reques
 	// обрывом чтения.
 	if err := decodeJSON(w, r, &request, 4<<10); err != nil {
 		writeError(w, http.StatusBadRequest, codeBadRequest, "Не удалось прочитать комментарий.")
+		return
+	}
+
+	if !moderation.Clean(request.Body) {
+		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, moderation.Reason)
 		return
 	}
 

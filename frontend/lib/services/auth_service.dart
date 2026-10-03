@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -398,31 +399,12 @@ class AuthService extends ChangeNotifier {
     await _completeYandex(callback);
   }
 
-  Future<Uri> _startYandex({required String returnTarget, Uri? returnUrl}) async {
-    final response = await api.post('/v1/auth/yandex/start', {
-      'returnTarget': returnTarget,
-      if (returnUrl != null) 'returnUrl': returnUrl.toString(),
-      'device': _device(),
-    }) as Map<String, dynamic>;
-    final authorizationUrl =
-        (response['authorizationUrl'] as String? ?? '').trim();
-    if (authorizationUrl.isEmpty) {
-      throw ApiException('Сервер не вернул адрес входа через Яндекс.');
-    }
-    return Uri.parse(authorizationUrl);
-  }
+  Future<Uri> _startYandex({required String returnTarget, Uri? returnUrl}) =>
+      _startOAuth('yandex', 'Яндекс',
+          returnTarget: returnTarget, returnUrl: returnUrl);
 
-  Future<void> _completeYandex(Uri callback) async {
-    final providerError = callback.queryParameters['error'];
-    if (providerError != null && providerError.isNotEmpty) {
-      throw ApiException(providerError);
-    }
-    final code = callback.queryParameters['code'] ?? '';
-    if (code.isEmpty) {
-      throw ApiException('Яндекс не вернул код входа.');
-    }
-    await _authenticate('/v1/auth/yandex/complete', {'code': code});
-  }
+  Future<void> _completeYandex(Uri callback) =>
+      _completeOAuth('yandex', 'Яндекс', callback);
 
   Future<void> resendVerification(String email) async {
     _busy = true;
@@ -435,6 +417,98 @@ class AuthService extends ChangeNotifier {
       _busy = false;
       notifyListeners();
     }
+  }
+
+  /// Есть ли вход через Apple на этом устройстве. На iPhone нужен нативный
+  /// вход, на компьютерах — вход через браузер; пока сервер не настроен,
+  /// кнопку не показываем вовсе.
+  Future<bool> appleSignInAvailable() async {
+    if (kIsWeb) return false;
+    try {
+      final apple =
+          (await _providers())['apple'] as Map<String, dynamic>? ?? const {};
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        return apple['enabled'] == true;
+      }
+      return DesktopOAuth.supported && apple['webEnabled'] == true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Вход через Apple: на iPhone — системное окно Apple ID, на компьютерах —
+  /// браузер с возвратом на локальный сокет, как у Яндекса.
+  Future<void> loginWithAppleInteractive() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {
+      return _loginWithAppleNative();
+    }
+    if (DesktopOAuth.supported) {
+      final callback = await DesktopOAuth.authorize(
+        buildAuthorizationUrl: (uri) => _startOAuth('apple', 'Apple',
+            returnTarget: 'desktop', returnUrl: uri),
+      );
+      return _completeOAuth('apple', 'Apple', callback);
+    }
+    throw ApiException('Вход через Apple на этой системе недоступен.');
+  }
+
+  Future<void> _loginWithAppleNative() async {
+    final AuthorizationCredentialAppleID credential;
+    try {
+      credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) {
+        throw ApiException('Вход через Apple отменён.');
+      }
+      throw ApiException('Apple не подтвердил вход.');
+    }
+    final identityToken = credential.identityToken ?? '';
+    if (identityToken.isEmpty) {
+      throw ApiException('Apple не выдал токен входа.');
+    }
+    await _authenticate('/v1/auth/apple', {
+      'identityToken': identityToken,
+      'authorizationCode': credential.authorizationCode,
+      'givenName': credential.givenName ?? '',
+      'familyName': credential.familyName ?? '',
+      'device': _device(),
+    });
+  }
+
+  Future<Uri> _startOAuth(
+    String provider,
+    String name, {
+    required String returnTarget,
+    Uri? returnUrl,
+  }) async {
+    final response = await api.post('/v1/auth/$provider/start', {
+      'returnTarget': returnTarget,
+      if (returnUrl != null) 'returnUrl': returnUrl.toString(),
+      'device': _device(),
+    }) as Map<String, dynamic>;
+    final authorizationUrl =
+        (response['authorizationUrl'] as String? ?? '').trim();
+    if (authorizationUrl.isEmpty) {
+      throw ApiException('Сервер не вернул адрес входа через $name.');
+    }
+    return Uri.parse(authorizationUrl);
+  }
+
+  Future<void> _completeOAuth(String provider, String name, Uri callback) async {
+    final providerError = callback.queryParameters['error'];
+    if (providerError != null && providerError.isNotEmpty) {
+      throw ApiException(providerError);
+    }
+    final code = callback.queryParameters['code'] ?? '';
+    if (code.isEmpty) {
+      throw ApiException('$name не вернул код входа.');
+    }
+    await _authenticate('/v1/auth/$provider/complete', {'code': code});
   }
 
   Future<Map<String, dynamic>> _providers() {

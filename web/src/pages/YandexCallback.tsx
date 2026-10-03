@@ -6,8 +6,29 @@ import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
 
 export function YandexCallback() {
-  const { navigate } = useRouter();
   const { completeYandex } = useAuth();
+  return <OAuthCallback name="Яндекс" path="/auth/yandex" complete={completeYandex} />;
+}
+
+export function AppleCallback() {
+  const { completeApple } = useAuth();
+  return <OAuthCallback name="Apple" path="/auth/apple" complete={completeApple} />;
+}
+
+/**
+ * Возврат после входа через браузер: сервер прислал одноразовый код, по нему
+ * выдаётся сессия. Одинаково для Яндекса и Apple.
+ */
+function OAuthCallback({
+  name,
+  path,
+  complete,
+}: {
+  name: string;
+  path: string;
+  complete: (code: string) => Promise<void>;
+}) {
+  const { navigate } = useRouter();
   const started = useRef(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,23 +39,23 @@ export function YandexCallback() {
     const providerError = params.get('error');
     const code = params.get('code') ?? '';
     if (providerError || !code) {
-      setError(providerError || 'Яндекс не вернул код входа.');
+      setError(providerError || `${name} не вернул код входа.`);
       return;
     }
 
-    completeYandex(code)
+    complete(code)
       .then(() => {
-        window.history.replaceState(null, '', '/auth/yandex');
+        window.history.replaceState(null, '', path);
         navigate('/library', { replace: true });
       })
       .catch((caught: unknown) => {
         setError(
           caught instanceof ApiError
             ? caught.message
-            : 'Не удалось завершить вход через Яндекс.',
+            : `Не удалось завершить вход через ${name}.`,
         );
       });
-  }, [completeYandex, navigate]);
+  }, [complete, name, navigate, path]);
 
   return (
     <main className="paper-grain relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-5 py-12">
@@ -56,7 +77,7 @@ export function YandexCallback() {
         ) : (
           <>
             <Spinner className="mx-auto size-8" />
-            <h1 className="mt-5 text-3xl">Входим через Яндекс</h1>
+            <h1 className="mt-5 text-3xl">Входим через {name}</h1>
           </>
         )}
       </Card>

@@ -10,10 +10,16 @@ import 'package:flutter/foundation.dart';
 // CITAVUK_DISTRIBUTION=appstore — прячет их, как iPhone.
 const appDistribution =
     String.fromEnvironment('CITAVUK_DISTRIBUTION', defaultValue: 'play');
+/// Сборка для Mac App Store: в ней нет ссылок на оплату и стороннего входа
+/// без равноценного входа Apple.
+bool get storeBuildForMac =>
+    !kIsWeb &&
+    defaultTargetPlatform == TargetPlatform.macOS &&
+    appDistribution == 'appstore';
+
 bool get supportLinksHidden =>
     !kIsWeb &&
     (defaultTargetPlatform == TargetPlatform.iOS ||
-        (defaultTargetPlatform == TargetPlatform.macOS &&
-            appDistribution == 'appstore') ||
+        storeBuildForMac ||
         (defaultTargetPlatform == TargetPlatform.android &&
             appDistribution != 'direct'));

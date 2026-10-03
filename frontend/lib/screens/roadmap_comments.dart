@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/roadmap.dart';
 import '../services/auth_service.dart';
+import '../services/comment_moderation.dart';
 import '../services/roadmap_service.dart';
 
 /// Обсуждение уровня дорожной карты.
@@ -56,6 +57,8 @@ class _RoadmapCommentsScreenState extends State<RoadmapCommentsScreen> {
   Future<void> _send() async {
     final body = _input.text.trim();
     if (body.isEmpty) return;
+    if (!await CommentModeration.instance.ensureRules(context)) return;
+    if (!mounted) return;
     setState(() => _sending = true);
     try {
       final comment = await context
@@ -92,7 +95,17 @@ class _RoadmapCommentsScreenState extends State<RoadmapCommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final comments = _comments;
+    return ListenableBuilder(
+      listenable: CommentModeration.instance,
+      builder: (context, _) => _screen(context),
+    );
+  }
+
+  Widget _screen(BuildContext context) {
+    final moderation = CommentModeration.instance;
+    final comments = _comments
+        ?.where((comment) => !moderation.isBlocked(comment.authorId))
+        .toList();
     final signedIn = context.watch<AuthService>().account != null;
     final roots = (comments ?? []).where((item) => item.parentId.isEmpty).toList();
     final replies = <String, List<RoadmapComment>>{};
@@ -295,6 +308,18 @@ class _Body extends StatelessWidget {
                 tooltip: 'Удалить',
                 icon: const Icon(Icons.delete_outline, size: 18),
                 onPressed: () => onDelete(comment),
+              )
+            else
+              IconButton(
+                tooltip: 'Пожаловаться или скрыть',
+                icon: const Icon(Icons.more_horiz, size: 18),
+                onPressed: () => CommentModeration.instance.showActions(
+                  context,
+                  kind: CommentModeration.roadmap,
+                  commentId: comment.id,
+                  authorId: comment.authorId,
+                  authorName: comment.author,
+                ),
               ),
           ],
         ),

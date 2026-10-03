@@ -58,6 +58,8 @@ interface AuthValue {
   loginWithGoogle: (idToken: string) => Promise<void>;
   startYandex: () => Promise<string>;
   completeYandex: (code: string) => Promise<void>;
+  startApple: () => Promise<string>;
+  completeApple: (code: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
   /**
    * Запомнить уровень сербского на аккаунте.
@@ -189,6 +191,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       completeYandex: (code) =>
         authenticate('/v1/auth/yandex/complete', { code }),
+      startApple: async () => {
+        const response = await request<{ authorizationUrl: string }>(
+          '/v1/auth/apple/start',
+          {
+            method: 'POST',
+            body: { returnTarget: 'web', device: deviceInfo() },
+            anonymous: true,
+          },
+        );
+        return response.authorizationUrl;
+      },
+      completeApple: (code) =>
+        authenticate('/v1/auth/apple/complete', { code }),
       resendVerification: async (email) => {
         await request('/v1/auth/resend-verification', {
           method: 'POST',

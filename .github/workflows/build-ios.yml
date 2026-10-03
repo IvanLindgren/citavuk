@@ -1,10 +1,11 @@
 name: Build iOS
 
-# Сборка iOS без подписи и скриншоты главных экранов в симуляторах.
+# Сборка iOS без подписи, скриншоты главных экранов в симуляторах и, по
+# флажку testflight, подписанная сборка с загрузкой в App Store Connect.
 #
-# Подписывает и отправляет в TestFlight владелец сертификата на своём маке —
-# здесь только проверка, что приложение собирается под устройство, и кадры,
-# по которым видно, не ушло ли что-то под Dynamic Island или полоску «домой».
+# Подпись — ключом App Store Connect API (секреты APPLE_TEAM_ID, ASC_KEY_ID,
+# ASC_ISSUER_ID, ASC_KEY_P8): Xcode сам заводит сертификат и профиль в облаке,
+# свой Mac для выпуска не нужен. Порядок — docs/release.md, «App Store».
 #
 # Только по кнопке: macOS-минуты платные, а на каждый пуш во frontend эта
 # проверка не нужна.
@@ -13,6 +14,10 @@ on:
     inputs:
       screenshots:
         description: Снять экраны в симуляторах после сборки
+        type: boolean
+        default: false
+      testflight:
+        description: Подписать и загрузить в TestFlight (нужны ключи App Store Connect)
         type: boolean
         default: false
 
@@ -193,3 +198,114 @@ jobs:
           name: mac-screenshots
           path: frontend/screenshots/mac
           if-no-files-found: warn
+
+  testflight:
+    if: inputs.testflight
+    runs-on: macos-26
+    timeout-minutes: 90
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ключи на месте
+        run: |
+          missing=""
+          for name in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            [ -n "${!name}" ] || missing="$missing $name"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Нет секретов:$missing — см. docs/release.md, раздел «App Store»"
+            exit 1
+          fi
+          mkdir -p ~/private_keys
+          printf '%s\n' "$ASC_KEY_P8" > ~/private_keys/AuthKey_$ASC_KEY_ID.p8
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Google для iOS
+        working-directory: frontend
+        env:
+          GOOGLE_CLIENT_ID_IOS: ${{ secrets.GOOGLE_CLIENT_ID_IOS }}
+        run: |
+          python3 - <<'PY'
+          import os,re,pathlib
+          client=os.environ['GOOGLE_CLIENT_ID_IOS'].strip()
+          if not re.fullmatch(r'[\w-]+\.apps\.googleusercontent\.com',client):
+              raise SystemExit('Не задан клиент Google для iOS')
+          reverse='.'.join(reversed(client.split('.')))
+          pathlib.Path('ios/Flutter/Google.xcconfig').write_text('GOOGLE_IOS_CLIENT_ID = '+client+'\nGOOGLE_REVERSED_CLIENT_ID = '+reverse+'\n')
+          PY
+
+      - name: Подписанный архив
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$MAPTILER_KEY"
+          # Flutter готовит настройки и dart-define, архив собирает xcodebuild:
+          # только ему можно передать ключ API для автоматической подписи.
+          flutter build ios --release --config-only "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
+            -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath build/ios/signed/Runner.xcarchive archive \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" | tail -40
+
+      - name: Проверить разрешения
+        working-directory: frontend
+        run: |
+          set -euo pipefail
+          APP=build/ios/signed/Runner.xcarchive/Products/Applications/Runner.app
+          codesign -d --entitlements :- "$APP" > entitlements.plist
+          # Без этого разрешения вход через Apple на устройстве не откроется.
+          grep -q com.apple.developer.applesignin entitlements.plist
+
+      - name: Выгрузить и загрузить в App Store Connect
+        working-directory: frontend
+        run: |
+          set -euo pipefail
+          for destination in export upload; do
+            {
+              echo '<?xml version="1.0" encoding="UTF-8"?>'
+              echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'
+              echo '<plist version="1.0"><dict>'
+              echo '<key>method</key><string>app-store-connect</string>'
+              echo "<key>destination</key><string>$destination</string>"
+              echo "<key>teamID</key><string>$APPLE_TEAM_ID</string>"
+              echo '<key>signingStyle</key><string>automatic</string>'
+              echo '<key>uploadSymbols</key><true/>'
+              echo '</dict></plist>'
+            } > ExportOptions.plist
+            xcodebuild -exportArchive -archivePath build/ios/signed/Runner.xcarchive \
+              -exportPath "build/ios/signed/$destination" -exportOptionsPlist ExportOptions.plist \
+              -allowProvisioningUpdates \
+              -authenticationKeyPath ~/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+              -authenticationKeyID "$ASC_KEY_ID" \
+              -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          done
+          ls -la build/ios/signed/export
+
+      - name: Сохранить подписанный IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-ios-appstore
+          if-no-files-found: error
+          path: frontend/build/ios/signed/export/*.ipa

@@ -337,7 +337,52 @@ Job `build` снимает iPhone 6,9″ (1320×2868) и iPad 13″ (2064×2752)
 `CAPTIONS` того же файла.
 
 Сборка для Mac App Store — с `--dart-define=CITAVUK_DISTRIBUTION=appstore`:
-в ней скрыты ссылки на оплату поддержки (правило 3.1.1), как на iPhone.
+в ней скрыты ссылки на оплату поддержки (правило 3.1.1) и вход через Google и
+Яндекс (правило 4.8: сторонний вход требует равноценного входа Apple), как на
+iPhone.
+
+## 6. App Store: вход через Apple, подпись, TestFlight
+
+Свой Mac и iPhone не нужны: подписывает и загружает облачная сборка, вход через
+Apple проверяется на сайте из любого браузера.
+
+**В developer.apple.com** (аккаунт программы разработчиков, роль Admin):
+
+1. Identifiers → App ID `com.srbskiread.srbskiRead`, возможность
+   **Sign In with Apple** включена.
+2. Identifiers → Services ID (например `ru.citavuk.signin`) → Sign In with
+   Apple → Configure: домены `citavuk.ru`, `api.citavuk.ru`; Return URL
+   `https://api.citavuk.ru/v1/auth/apple/callback`.
+3. Keys → новый ключ с Sign In with Apple → файл `.p8` и Key ID. Скачать его
+   можно один раз.
+4. Sign in with Apple for Email Communication: домен и адрес отправителя писем
+   (`CITAVUK_EMAIL_FROM`), иначе письма на подменные адреса Apple не доходят.
+5. App Store Connect → Users and Access → Integrations → App Store Connect API →
+   ключ с ролью **Admin**: Issuer ID, Key ID, файл `.p8`. Admin нужен для
+   облачного сертификата распространения.
+6. App Store Connect → новое приложение с этим bundle id. Поля карточки —
+   `release/appstore/app-store-connect.html`.
+
+**Ключи** вводит владелец сам, в чат и в репозиторий они не попадают:
+
+- GitHub → Settings → Secrets and variables → Actions: `APPLE_TEAM_ID`,
+  `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` (содержимое файла целиком);
+- `.env` сервера: `APPLE_TEAM_ID`, `APPLE_SIGNIN_KEY_ID`,
+  `APPLE_SIGNIN_KEY_FILE` (путь к `.p8` на сервере), `APPLE_SERVICES_ID`, затем
+  перезапуск `citavuk-api`. После этого кнопка «Войти с Apple» появляется на
+  сайте и в приложении.
+
+**Сборка:**
+
+```bash
+gh workflow run build-ios.yml --ref main -f testflight=true
+```
+
+Задание `testflight` собирает архив с автоматической подписью по ключу API,
+проверяет, что в нём есть разрешение Sign in with Apple, сохраняет подписанный
+`.ipa` артефактом `citavuk-ios-appstore` и загружает сборку в App Store Connect.
+Через 10–30 минут она появляется в TestFlight. Номер сборки берётся из
+`pubspec.yaml` (`+62`) и должен расти с каждой загрузкой.
 
 ---
 
