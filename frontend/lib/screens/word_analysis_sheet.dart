@@ -209,7 +209,9 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
     if (lemma.isEmpty) return;
     final request = DefinitionService.instance.lookup(lemma);
     if (!mounted) return;
-    setState(() => _definition = request);
+    setState(() {
+      _definition = request;
+    });
   }
 
   Future<void> _playPronunciation() async {
