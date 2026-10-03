@@ -106,11 +106,13 @@ jobs:
         run: |
           set -euo pipefail
           devices=$(xcrun simctl list devices available -j)
-          # С Dynamic Island — самая новая модель Pro; без выреза и с кнопкой
-          # «домой» — SE: на нём тесно, и по нему видно, что ничего не обрезано.
-          pro=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone [0-9]+ Pro$"))] | last | .udid')
-          se=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone SE"))] | last | .udid')
-          for udid in $pro $se; do
+          # Витрина App Store требует 6,9" (Pro Max, 1320×2868) и 13" iPad
+          # (2064×2752); SE — проверка, что на тесном экране ничего не обрезано.
+          pick() { echo "$devices" | jq -r --arg re "$1" '[.devices[][] | select(.name | test($re))] | last | .udid'; }
+          promax=$(pick '^iPhone [0-9]+ Pro Max$')
+          ipad=$(pick '^iPad Pro 13-inch')
+          se=$(pick '^iPhone SE')
+          for udid in $promax $ipad $se; do
             [ -n "$udid" ] && [ "$udid" != "null" ] || continue
             name=$(echo "$devices" | jq -r --arg u "$udid" '.devices[][] | select(.udid == $u) | .name' | tr ' ' '-')
             echo "::group::$name"
@@ -133,4 +135,46 @@ jobs:
         with:
           name: ios-screenshots
           path: frontend/screenshots
+          if-no-files-found: warn
+
+  mac-screenshots:
+    # Кадры для Mac App Store (2880×1800) снимает сам Flutter, см.
+    # integration_test/mac_store_tour_test.dart.
+    if: inputs.screenshots
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Скриншоты Mac
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          set -euo pipefail
+          flutter test integration_test/mac_store_tour_test.dart -d macos             "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee mac-shots.log
+          dir=$(grep -o 'SHOTS_DIR=.*' mac-shots.log | tail -1 | cut -d= -f2-)
+          mkdir -p screenshots/mac
+          if [ -n "$dir" ] && [ -d "$dir" ]; then cp "$dir"/*.png screenshots/mac/; fi
+          find ~/Library/Containers -path '*citavuk-shots*' -name '*.png' -exec cp {} screenshots/mac/ \; 2>/dev/null || true
+          ls -la screenshots/mac
+
+      - name: Сохранить скриншоты Mac
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-screenshots
+          path: frontend/screenshots/mac
           if-no-files-found: warn
