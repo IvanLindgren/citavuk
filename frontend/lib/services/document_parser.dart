@@ -9,6 +9,7 @@ import 'package:xml/xml.dart' as xml;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 import '../utils/latex_text.dart';
+import 'pdf_images.dart';
 import '../utils/serbian_encoding_fix.dart';
 import '../utils/reflow.dart';
 import 'cpu_count.dart';
@@ -41,7 +42,9 @@ class _PageWorkerParams {
 /// Map: по типу сообщения из порта его отличают от прогресса и ошибки.
 class _PageChunk {
   final Map<int, List<LayoutLine>> pages;
-  const _PageChunk(this.pages);
+  /// Высота каждой строки от верха страницы — по ней встают картинки.
+  final Map<int, List<double>> tops;
+  const _PageChunk(this.pages, [this.tops = const {}]);
 }
 
 /// Извлечение текста из PDF/DOCX с прогрессом.
@@ -129,12 +132,16 @@ class DocumentParser {
     return cores.clamp(1, 2);
   }
 
+  /// [images] — картинки, которые параллельно достаёт сервер (см.
+  /// pdf_images.dart). Их ждут уже после разбора текста: встают они по
+  /// высоте строк, а та известна только здесь.
   static Future<List<String>> parsePdfWithProgress(
     Uint8List bytes,
-    void Function(double progress) onProgress,
-  ) async {
+    void Function(double progress) onProgress, {
+    Future<PdfImages>? images,
+  }) async {
     if (kIsWeb) {
-      return _parsePdfCoreWeb(bytes, onProgress); // веб — асинхронный разбор
+      return _parsePdfCoreWeb(bytes, onProgress, images); // веб — асинхронный разбор
     }
 
     final workers = pdfWorkerCount(bytes.length, cpuCount,
@@ -150,13 +157,18 @@ class DocumentParser {
     ]);
 
     final byPage = <int, List<LayoutLine>>{};
+    final topsByPage = <int, List<double>>{};
     for (final chunk in chunks) {
       byPage.addAll(chunk.pages);
+      topsByPage.addAll(chunk.tops);
     }
     final pageLines = [
       for (var i = 0; i < byPage.length; i++) byPage[i] ?? const <LayoutLine>[],
     ];
-    final paragraphs = _assemble(pageLines);
+    final pageTops = [
+      for (var i = 0; i < byPage.length; i++) topsByPage[i] ?? const <double>[],
+    ];
+    final paragraphs = await _assembleWithImages(pageLines, pageTops, images);
     return paragraphs.isEmpty
         ? ['[Пустой документ или отсутствует текстовый слой]']
         : paragraphs;
@@ -214,11 +226,14 @@ class DocumentParser {
         return;
       }
       final pages = <int, List<LayoutLine>>{};
+      final tops = <int, List<double>>{};
       for (var i = params.index; i < pageCount; i += params.total) {
-        pages[i] = _linesOfPage(extractor, i);
+        final page = _linesOfPage(extractor, i);
+        pages[i] = page.lines;
+        tops[i] = page.tops;
         params.sendPort.send(pages.length / mine);
       }
-      params.sendPort.send(_PageChunk(pages));
+      params.sendPort.send(_PageChunk(pages, tops));
     } catch (e) {
       params.sendPort.send(e.toString());
     } finally {
@@ -275,19 +290,23 @@ class DocumentParser {
 
   // --- Чистая логика (работает и в изоляте, и на вебе) ---
 
-  static List<LayoutLine> _linesOfPage(PdfTextExtractor extractor, int index) {
+  static ({List<LayoutLine> lines, List<double> tops}) _linesOfPage(
+      PdfTextExtractor extractor, int index) {
     final lines = extractor.extractTextLines(
       startPageIndex: index,
       endPageIndex: index,
     );
-    return [
-      for (final line in lines)
-        (
-          text: _joinLine(line),
-          left: line.bounds.left,
-          right: line.bounds.right,
-        ),
-    ];
+    return (
+      lines: [
+        for (final line in lines)
+          (
+            text: _joinLine(line),
+            left: line.bounds.left,
+            right: line.bounds.right,
+          ),
+      ],
+      tops: [for (final line in lines) line.bounds.top],
+    );
   }
 
   static String _joinLine(TextLine line) {
@@ -392,8 +411,8 @@ class DocumentParser {
     return splitLongParagraphs(paragraphs);
   }
 
-  static Future<List<String>> _parsePdfCoreWeb(
-      Uint8List bytes, void Function(double) onProgress) async {
+  static Future<List<String>> _parsePdfCoreWeb(Uint8List bytes,
+      void Function(double) onProgress, [Future<PdfImages>? images]) async {
     final List<String> paragraphs = [];
     PdfDocument? document;
     try {
@@ -404,18 +423,21 @@ class DocumentParser {
       // повторяющуюся на каждой странице, внутри одной страницы от текста не
       // отличить.
       final pageLines = <List<LayoutLine>>[];
+      final pageTops = <List<double>>[];
       for (var i = 0; i < pageCount; i++) {
         // Уступаем поток браузеру каждые 2 страницы, чтобы обновить UI и не зависнуть
         if (i % 2 == 0) {
           await Future.delayed(Duration.zero);
         }
-        pageLines.add(_linesOfPage(extractor, i));
+        final page = _linesOfPage(extractor, i);
+        pageLines.add(page.lines);
+        pageTops.add(page.tops);
         if (pageCount > 0) onProgress((i + 1) / pageCount);
       }
       // Абзацы восстанавливаются из строк, а не берутся как есть: PDF хранит
       // разбиение на строки страницы, а не на абзацы, и без сборки читалка
       // показывала целую страницу одним кирпичом текста.
-      paragraphs.addAll(_assemble(pageLines));
+      paragraphs.addAll(await _assembleWithImages(pageLines, pageTops, images));
     } finally {
       document?.dispose();
     }
@@ -430,6 +452,21 @@ class DocumentParser {
   static List<String> _assemble(List<List<LayoutLine>> pages) {
     final cleaned = cleanLatexLayout(pages);
     return fixSerbianDocument(reflowDocumentWithLayout(cleaned));
+  }
+
+  /// Сборка абзацев с картинками: метки встают между строками по высоте,
+  /// проходят сборку вместе с текстом и потом разрезают абзацы.
+  static Future<List<String>> _assembleWithImages(
+    List<List<LayoutLine>> pages,
+    List<List<double>> tops,
+    Future<PdfImages>? images,
+  ) async {
+    final found = images == null ? PdfImages.empty : await images;
+    if (found.images.isEmpty) return _assemble(pages);
+    return splitPdfImageMarks(
+      _assemble(insertPdfImageMarks(pages, tops, found.images)),
+      found.images,
+    );
   }
 
   static Future<List<String>> _parseDocxCoreWeb(

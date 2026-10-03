@@ -105,4 +105,40 @@ void main() {
       expect(countBookChars(paragraphs), 'Prvi pasus.'.length + 4 + 2);
     });
   });
+
+  // Парные примеры с web/src/lib/blocks.test.ts: абзац, поправленный в
+  // браузере, обязан одинаково открыться в приложении.
+  group('абзац с оформлением', () {
+    const rich = '\u0000citavuk:rich\n[[0,3,"b"],[7,11,"im"]]\nOvo je kuća.';
+
+    test('собирается в постоянном виде', () {
+      expect(
+          richParagraph('Ovo je kuća.', const [
+            TextStyleSpan(7, 11, 'mi'),
+            TextStyleSpan(0, 3, 'b'),
+          ]),
+          rich);
+    });
+
+    test('без оформления остаётся обычной строкой', () {
+      expect(richParagraph('Ovo je kuća.', const [TextStyleSpan(2, 2, 'b')]),
+          'Ovo je kuća.');
+    });
+
+    test('разбирается в текст и отрезки', () {
+      final block = parseBookBlock(rich);
+      expect(block.kind, BookBlockKind.text);
+      expect(block.text, 'Ovo je kuća.');
+      expect(block.spans,
+          const [TextStyleSpan(0, 3, 'b'), TextStyleSpan(7, 11, 'im')]);
+    });
+
+    test('битое оформление не теряет текст', () {
+      final broken = parseBookBlock('\u0000citavuk:rich\n[[0,3\nOvo je kuća.');
+      expect(broken.text, 'Ovo je kuća.');
+      expect(broken.spans, isEmpty);
+      final clipped = parseBookBlock('\u0000citavuk:rich\n[[0,99,"bx"]]\nkratko');
+      expect(clipped.spans, const [TextStyleSpan(0, 6, 'b')]);
+    });
+  });
 }

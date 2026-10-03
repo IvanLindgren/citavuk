@@ -1,0 +1,255 @@
+/* Ночное небо с именами друзей. Цвета взяты с самого арта: синь неба, лунный
+   крем и тёплый свет звёзд, — чтобы сцена не спорила с картинкой. */
+
+.sf-scene {
+  --night: #0b1328;
+  --moon: #f5dc9c;
+  --cream: #fbf0d4;
+  --px: 0;
+  --py: 0;
+  position: relative;
+  background: var(--night);
+}
+.sf-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 700px;
+  width: 100%;
+  overflow: hidden;
+  background: var(--night);
+  isolation: isolate;
+}
+@media (max-width: 767px) {
+  .sf-frame { aspect-ratio: 1 / 1; max-height: none; }
+}
+
+.sf-stage { position: absolute; }
+.sf-layer { position: absolute; inset: 0; }
+.sf-art img { width: 100%; height: 100%; display: block; }
+
+/* Параллакс: арт и слои неба смещаются от курсора на разную глубину. */
+.sf-art { transform: translate3d(calc(var(--px) * -7px), calc(var(--py) * -5px), 0); transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.sf-near { transform: translate3d(calc(var(--px) * 5px), calc(var(--py) * 4px), 0); transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
+.sf-far { transform: translate3d(calc(var(--px) * 12px), calc(var(--py) * 8px), 0); transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1); pointer-events: none; }
+
+/* --- Пробуждение: глаза привыкают к темноте --- */
+
+.sf-art img { transform: scale(1.1); filter: blur(7px) saturate(0.5) brightness(0.55); transform-origin: 62% 55%; }
+.sf-veil { position: absolute; inset: 0; background: var(--night); pointer-events: none; }
+.sf-awake .sf-art img { animation: sf-wake 2.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.sf-awake .sf-veil { animation: sf-fade-out 1.9s ease-out forwards; }
+
+@keyframes sf-wake {
+  to { transform: scale(1); filter: none; }
+}
+@keyframes sf-fade-out {
+  to { opacity: 0; }
+}
+
+/* Луна разгорается и потом медленно дышит. */
+.sf-moon {
+  position: absolute; left: 86%; top: 17%; width: 22%; aspect-ratio: 1;
+  translate: -50% -50%; border-radius: 50%; opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(circle, rgb(245 220 156 / 0.42) 0%, rgb(245 220 156 / 0.14) 32%, transparent 66%);
+}
+.sf-awake .sf-moon { animation: sf-moon-rise 2.4s 0.7s ease-out forwards, sf-moon-breathe 7s 3.1s ease-in-out infinite; }
+@keyframes sf-moon-rise { from { opacity: 0; scale: 0.6; } to { opacity: 1; scale: 1; } }
+@keyframes sf-moon-breathe { 50% { opacity: 0.7; scale: 1.06; } }
+
+/* Нарисованные звёзды оживают одна за другой и начинают мерцать. */
+.sf-spark {
+  --s: 1;
+  position: absolute; width: calc(var(--s) * 2.6%); aspect-ratio: 1; translate: -50% -50%;
+  scale: 0; opacity: 0; mix-blend-mode: screen;
+  background:
+    radial-gradient(circle, rgb(255 246 214 / 0.95) 0 6%, rgb(255 214 140 / 0.35) 14%, transparent 42%),
+    conic-gradient(from 45deg, transparent 0 22%, rgb(255 233 180 / 0.55) 25%, transparent 28% 47%, rgb(255 233 180 / 0.55) 50%, transparent 53% 72%, rgb(255 233 180 / 0.55) 75%, transparent 78% 97%, rgb(255 233 180 / 0.55) 100%);
+  mask: radial-gradient(circle, #000 0 30%, transparent 70%);
+  border-radius: 50%;
+}
+.sf-awake .sf-spark {
+  animation:
+    sf-ignite 1.1s calc(0.9s + var(--i) * 0.11s) cubic-bezier(0.3, 1.6, 0.5, 1) forwards,
+    sf-twinkle var(--tw) calc(2.2s + var(--i) * 0.11s) ease-in-out infinite;
+}
+@keyframes sf-ignite {
+  0% { scale: 0; opacity: 0; rotate: -40deg; }
+  60% { scale: 1.5; opacity: 1; }
+  100% { scale: 1; opacity: 0.85; rotate: 0deg; }
+}
+@keyframes sf-twinkle {
+  0%, 100% { opacity: 0.85; scale: 1; }
+  45% { opacity: 0.35; scale: 0.75; }
+  55% { opacity: 1; scale: 1.15; }
+}
+
+/* Отблеск в глазах Читавука, когда на небе загорается новое имя. */
+.sf-glint {
+  position: absolute; width: 0.9%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle, #fff 0 30%, rgb(255 236 190 / 0.6) 45%, transparent 70%);
+}
+.sf-glint.is-on { animation: sf-glint 1.2s 0.5s ease-out; }
+@keyframes sf-glint {
+  0% { opacity: 0; scale: 0.3; }
+  30% { opacity: 1; scale: 1.3; }
+  100% { opacity: 0; scale: 0.8; }
+}
+
+/* Туман над холмами плывёт, светлячки бродят в траве. */
+.sf-mist {
+  position: absolute; height: 9%; width: 46%; border-radius: 50%; opacity: 0; filter: blur(14px);
+  background: radial-gradient(ellipse, rgb(160 180 225 / 0.22), transparent 70%);
+}
+.sf-mist-a { left: 18%; top: 55%; }
+.sf-mist-b { left: 58%; top: 61%; width: 38%; }
+.sf-awake .sf-mist-a { animation: sf-fade-in 3s 1.4s forwards, sf-drift 46s 1.4s ease-in-out infinite alternate; }
+.sf-awake .sf-mist-b { animation: sf-fade-in 3s 1.8s forwards, sf-drift 38s 1.8s ease-in-out infinite alternate-reverse; }
+@keyframes sf-fade-in { to { opacity: 1; } }
+@keyframes sf-drift { to { translate: 14% 0; } }
+
+.sf-firefly {
+  position: absolute; width: 0.45%; aspect-ratio: 1; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle, #fff3b8 0 35%, rgb(255 220 120 / 0.5) 55%, transparent 75%);
+  box-shadow: 0 0 10px 3px rgb(255 214 110 / 0.35);
+}
+.sf-awake .sf-firefly {
+  animation:
+    sf-firefly-blink calc(3.2s + var(--i) * 0.45s) calc(2.4s + var(--i) * 0.37s) ease-in-out infinite,
+    sf-firefly-wander calc(9s + var(--i) * 1.3s) calc(2.4s + var(--i) * 0.37s) ease-in-out infinite alternate;
+}
+@keyframes sf-firefly-blink { 0%, 100% { opacity: 0; } 40%, 60% { opacity: 0.9; } }
+@keyframes sf-firefly-wander { 33% { translate: 120% -180%; } 66% { translate: -90% -60%; } 100% { translate: 60% -260%; } }
+
+/* --- Падающие звёзды --- */
+
+.sf-anchor { position: absolute; width: 0; height: 0; }
+/* Голова кометы — на её правом конце, хвост тянется вверх-вправо. Двигаем
+   через transform, а не translate: так комета летит вдоль хвоста, а не вбок. */
+.sf-comet {
+  --rot: 150deg;
+  position: absolute; right: 0; top: -1px; width: 22em; height: 2px; opacity: 0;
+  transform-origin: 100% 50%; transform: rotate(var(--rot)) scaleX(0); pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(255 238 196 / 0.15) 40%, rgb(255 246 222 / 0.95));
+  border-radius: 2px;
+  filter: drop-shadow(0 0 4px rgb(255 226 160 / 0.8));
+}
+.sf-name .sf-comet { right: calc(100% - 0.6em); top: 50%; width: 15em; }
+.sf-name.has-streak .sf-comet { animation: sf-streak 1s ease-in forwards; }
+.sf-comet-intro { width: 30em; --rot: 154deg; }
+.sf-awake .sf-comet-intro { animation: sf-streak 1.4s 1.5s ease-in forwards; }
+@keyframes sf-streak {
+  0% { opacity: 0; transform: rotate(var(--rot)) translateX(-80%) scaleX(0.15); }
+  25% { opacity: 1; }
+  70% { opacity: 1; transform: rotate(var(--rot)) translateX(0) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--rot)) translateX(0) scaleX(0.1); }
+}
+
+/* --- Имена --- */
+
+.sf-name {
+  position: absolute; display: inline-flex; align-items: center; gap: 0.45em; translate: -0.35em -50%;
+  font-family: var(--font-display); font-size: clamp(0.82rem, 1.25vw, 1.08rem); white-space: nowrap;
+  color: var(--cream); letter-spacing: 0.01em; opacity: 0;
+  text-shadow: 0 0 10px rgb(255 214 140 / 0.55), 0 0 2px rgb(255 238 200 / 0.8);
+  animation: sf-name-in 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, sf-name-shimmer 4.6s 1.6s ease-in-out infinite;
+}
+.sf-name.has-streak { animation-delay: 0.75s, 2.35s; }
+.sf-name.is-fading { animation: sf-name-out 1.5s ease-in forwards; }
+.sf-name.is-spotlight {
+  font-size: clamp(0.95rem, 1.55vw, 1.3rem); animation-delay: 2.1s, 3.7s;
+  text-shadow: 0 0 14px rgb(255 214 140 / 0.8), 0 0 3px rgb(255 238 200 / 0.9);
+}
+.sf-name-star {
+  display: block; width: 1.7em; height: 1.7em; flex: none; overflow: visible;
+  filter: drop-shadow(0 0 5px rgb(255 214 130 / 0.75)) drop-shadow(0 0 12px rgb(255 200 110 / 0.35));
+  animation: sf-star-bob 3.6s ease-in-out infinite;
+}
+.sf-name.is-spotlight .sf-name-star { width: 2.1em; height: 2.1em; }
+/* Звезда дышит и чуть покачивается, как подвешенная. */
+@keyframes sf-star-bob {
+  0%, 100% { scale: 1; rotate: -6deg; }
+  50% { scale: 0.86; rotate: 8deg; }
+}
+@keyframes sf-name-in {
+  0% { opacity: 0; filter: blur(6px); letter-spacing: 0.3em; }
+  100% { opacity: 1; filter: blur(0); letter-spacing: 0.01em; }
+}
+@keyframes sf-name-shimmer { 50% { opacity: 0.72; } }
+@keyframes sf-name-out {
+  from { opacity: 1; }
+  to { opacity: 0; filter: blur(4px); translate: -0.35em -120%; }
+}
+
+/* --- Текст поверх кроны --- */
+
+.sf-scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgb(8 13 30 / 0.86) 0%, rgb(8 13 30 / 0.62) 30%, rgb(8 13 30 / 0.12) 52%, transparent 62%);
+}
+.sf-copy {
+  position: absolute; left: clamp(1.5rem, 4.5%, 3.5rem); top: 50%; translate: 0 -50%;
+  width: min(36%, 25rem); color: var(--cream);
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sf-copy { position: relative; left: auto; top: auto; translate: none; width: auto; margin-top: -2.5rem; padding: 0 1.5rem 1.8rem; }
+}
+@media (max-width: 767px) {
+  /* На телефоне текст уходит под арт: поверх Читавука он бы его закрыл. */
+  .sf-scrim { background: linear-gradient(0deg, var(--night) 0%, rgb(11 19 40 / 0.6) 16%, transparent 34%); }
+  .sf-copy { position: relative; left: auto; top: auto; translate: none; width: auto; margin-top: -2.5rem; padding: 0 1.25rem 1.6rem; }
+}
+
+.sf-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.6rem, 3.1vw, 2.5rem); line-height: 1.12; color: var(--cream); }
+.sf-title span { display: inline-block; margin-right: 0.26em; opacity: 0; translate: 0 0.5em; }
+.sf-awake .sf-title span { animation: sf-word 0.9s calc(1.1s + var(--i) * 0.07s) cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+@keyframes sf-word { to { opacity: 1; translate: 0 0; } }
+
+.sf-lead, .sf-quote, .sf-actions { opacity: 0; translate: 0 12px; }
+.sf-awake .sf-lead { animation: sf-word 0.9s 1.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.sf-awake .sf-quote { animation: sf-word 0.9s 1.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.sf-awake .sf-actions { animation: sf-word 0.9s 2.1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+
+.sf-lead { margin-top: 0.9rem; font-size: clamp(0.95rem, 1.2vw, 1.05rem); line-height: 1.55; color: rgb(251 240 212 / 0.86); }
+.sf-quote { margin-top: 1rem; padding-left: 0.9rem; border-left: 2px solid rgb(245 220 156 / 0.55); }
+.sf-quote blockquote { font-family: var(--font-display); font-style: italic; line-height: 1.45; overflow-wrap: anywhere; }
+.sf-quote figcaption { margin-top: 0.25rem; font-size: 0.85rem; color: rgb(251 240 212 / 0.7); }
+
+.sf-actions { margin-top: 1.4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.4rem; }
+.sf-cta {
+  display: inline-flex; align-items: center; border-radius: 1rem; padding: 0.8rem 1.35rem; font-weight: 600;
+  background: var(--moon); color: #1a1f33; box-shadow: 0 4px 0 0 #b8954d, 0 10px 30px -8px rgb(245 220 156 / 0.55);
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.sf-cta:hover { background: #fbe7b2; }
+.sf-cta:active { transform: translateY(3px); box-shadow: 0 1px 0 0 #b8954d; }
+.sf-cta:focus-visible, .sf-more:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; }
+.sf-more { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; color: rgb(251 240 212 / 0.85); }
+.sf-more:hover { color: var(--cream); }
+.sf-more svg { transition: translate 0.2s; }
+.sf-more:hover svg { translate: 3px 0; }
+
+/* --- Скриншоты игр под небом --- */
+
+.sf-shots { position: relative; min-height: 22rem; }
+.sf-shot {
+  position: absolute; width: 60%; border-radius: 0.9rem; overflow: hidden; background: var(--bg-raised);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  box-shadow: var(--shadow-lift, 0 18px 40px -18px rgb(0 0 0 / 0.35));
+  transition: translate 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), rotate 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.sf-shot img { display: block; width: 100%; height: auto; }
+.sf-shot figcaption { padding: 0.55rem 0.8rem; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
+.sf-shot-a { left: 0; top: 0; rotate: -3deg; }
+.sf-shot-b { right: 0; bottom: 0; rotate: 2.5deg; }
+.sf-shots:hover .sf-shot-a { rotate: -5deg; translate: -6px -4px; }
+.sf-shots:hover .sf-shot-b { rotate: 4deg; translate: 6px 4px; }
+@media (min-width: 640px) { .sf-shots { min-height: 25rem; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-frame *, .sf-frame *::before, .sf-frame *::after { animation: none !important; transition: none !important; }
+  .sf-art img { transform: none; filter: none; }
+  .sf-veil, .sf-comet { display: none; }
+  .sf-moon, .sf-mist, .sf-title span, .sf-lead, .sf-quote, .sf-actions { opacity: 1; translate: none; }
+  .sf-spark { opacity: 0.85; scale: 1; }
+  .sf-name { opacity: 1; }
+}

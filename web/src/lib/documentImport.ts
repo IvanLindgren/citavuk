@@ -1,7 +1,11 @@
+import type { PDFPageProxy } from 'pdfjs-dist';
+
 import { API_BASE } from '../api/client';
 import { MAX_BOOK_IMAGES, uploadBookImage } from '../api/bookImages';
 import { isBlock, plainParagraphs } from './blocks';
-import { applyImageUrls, htmlToBlocks } from './formats/htmlBlocks';
+import { applyImageUrls, htmlToBlocks, PENDING_IMAGE } from './formats/htmlBlocks';
+import { imageParagraph } from './blocks';
+import { boxKey, imageMark, pageGraphics, renderRegions, splitImageMarks, type PageGraphics, type PdfBox } from './pdfImages';
 import { cleanLatexLayout } from './latexText';
 import { reflowDocumentWithLayout, type LayoutLine } from './reflow';
 import { fixSerbianDocument, fixSerbianText } from './serbianEncodingFix';
@@ -13,6 +17,7 @@ export type ImportStage =
   | 'pdf'
   | 'ebook'
   | 'ocr'
+  | 'images'
   | 'saving';
 
 export interface ImportedDocument {
@@ -24,9 +29,9 @@ export interface ImportedDocument {
   /**
    * Готовые абзацы книги, включая картинки и таблицы.
    *
-   * Заполняются только для размеченных источников — DOCX и HTML. У остальных
-   * форматов разбиение на абзацы делает splitParagraphs из текста, как и
-   * раньше: PDF хранит строки страницы, а не структуру документа, а FB2 и EPUB
+   * Заполняются для размеченных источников — DOCX и HTML — и для PDF, в
+   * котором нашлись картинки. У остальных форматов разбиение на абзацы делает
+   * splitParagraphs из текста, как и раньше: FB2 и EPUB
    * держат картинки отдельными файлами внутри архива, и разбирать их пришлось
    * бы вместе с путями и оглавлением.
    */
@@ -55,6 +60,7 @@ export const IMPORT_STAGE_LABELS: Record<ImportStage, string> = {
   pdf: 'Извлекаем PDF…',
   ebook: 'Разбираем книгу…',
   ocr: 'Распознаём скан…',
+  images: 'Достаём картинки…',
   saving: 'Сохраняем…',
 };
 
@@ -455,12 +461,21 @@ async function extractPdf(
   const pageLines: LayoutLine[][] = [];
   const pages: string[] = [];
   let pagesWithoutText = 0;
+  // Высота каждой строки (y в координатах PDF, растёт вверх) и рисунки
+  // страницы — по ним картинки потом встают между строками.
+  const pageTops: number[][] = [];
+  const pageArt: Array<{ graphics: PageGraphics; area: number }> = [];
+  const { OPS } = pdfjs;
+  const images: Blob[] = [];
+  let paragraphs: string[] | undefined;
 
   try {
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber++) {
       const page = await document.getPage(pageNumber);
       const content = await page.getTextContent();
       const lines: LayoutLine[] = [];
+      const tops: number[] = [];
+      let top = 0;
       let current = '';
       // Границы строки копятся вместе с текстом: по ним дальше видно красную
       // строку и недобранную последнюю строку абзаца.
@@ -475,6 +490,7 @@ async function extractPdf(
             left: Number.isFinite(left) ? left : 0,
             right: Number.isFinite(right) ? right : 0,
           });
+          tops.push(top);
         }
         current = '';
         left = Number.POSITIVE_INFINITY;
@@ -485,6 +501,7 @@ async function extractPdf(
         if (!('str' in item)) continue;
         if (item.str) {
           const x = item.transform?.[4] ?? 0;
+          if (!current.trim()) top = item.transform?.[5] ?? 0;
           left = Math.min(left, x);
           right = Math.max(right, x + (item.width ?? 0));
         }
@@ -499,9 +516,26 @@ async function extractPdf(
 
       const text = cleanExtractedText(lines.map((line) => line.text).join('\n'));
       pageLines.push(lines);
+      pageTops.push(tops);
       pages.push(text);
       if (letterCount(text) < 30) pagesWithoutText++;
+      const [x0, y0, x1, y1] = page.view;
+      pageArt.push({
+        graphics: await pageGraphics(page, OPS as unknown as Record<string, number>).catch(() => ({ images: [], shapes: 0 })),
+        area: Math.abs((x1! - x0!) * (y1! - y0!)),
+      });
       page.cleanup();
+    }
+
+    const plan = planPdfImages(pageLines, pageTops, pageArt, pages);
+    if (plan.count > 0 && !looksScanned(pagesWithoutText, pages, pageLines)) {
+      onStage('images');
+      const blobs = await renderPlannedImages(document, plan);
+      images.push(...blobs);
+      paragraphs = splitImageMarks(
+        assembleParagraphs(plan.lines),
+        (index) => imageParagraph(`${PENDING_IMAGE}${index}`),
+      );
     }
   } finally {
     await loadingTask.destroy();
@@ -511,17 +545,14 @@ async function extractPdf(
   // разбиение на строки страницы, а не на абзацы, и без сборки читалка
   // показывала целую страницу одним кирпичом текста.
   const nativeText = assembleParagraphs(pageLines).join('\n\n');
-  const mostlyScanned =
-    pagesWithoutText > 0 &&
-    (pagesWithoutText >= Math.ceil(pages.length / 2) ||
-      letterCount(nativeText) < Math.max(80, pages.length * 35));
 
-  if (!mostlyScanned) {
-    if (!nativeText) throw new Error('В PDF не нашлось текста.');
+  if (!looksScanned(pagesWithoutText, pages, pageLines)) {
+    if (!nativeText && !paragraphs) throw new Error('В PDF не нашлось текста.');
     return {
       text: nativeText,
       pages: pages.length,
       ocrUsed: false,
+      ...(paragraphs ? { paragraphs, images } : {}),
     };
   }
 
@@ -651,6 +682,129 @@ async function extractWithBrowserOcr(
  */
 function assembleParagraphs(pages: LayoutLine[][]): string[] {
   return fixSerbianDocument(reflowDocumentWithLayout(cleanLatexLayout(pages)));
+}
+
+/**
+ * Скан: страниц без текста много или текста в целом почти нет. Тогда текст
+ * добывается распознаванием, а картинки из такого PDF не достаются вовсе —
+ * каждая страница там сама картинка.
+ */
+function looksScanned(pagesWithoutText: number, pages: string[], pageLines: LayoutLine[][]): boolean {
+  if (pagesWithoutText === 0) return false;
+  const nativeText = assembleParagraphs(pageLines).join('\n\n');
+  return (
+    pagesWithoutText >= Math.ceil(pages.length / 2) ||
+    letterCount(nativeText) < Math.max(80, pages.length * 35)
+  );
+}
+
+interface ImagePlan {
+  /** Строки страниц со вставленными метками картинок. */
+  lines: LayoutLine[][];
+  /** Что рисовать: номер страницы (с 1) и рамка; null — страница целиком. */
+  regions: Array<{ page: number; box: PdfBox | null }>;
+  count: number;
+}
+
+/**
+ * Решает, какие картинки достать и куда их поставить.
+ *
+ * Отбрасывается то, что картинкой для читателя не является: мелочь (значки,
+ * буквицы), подложка на всю страницу под текстом и рисунок, повторяющийся
+ * на многих страницах в одном месте, — логотип или виньетка колонтитула.
+ * Страница почти без текста, но с рисунком или схемой, берётся целиком.
+ */
+function planPdfImages(
+  pageLines: LayoutLine[][],
+  pageTops: number[][],
+  pageArt: Array<{ graphics: PageGraphics; area: number }>,
+  pages: string[],
+): ImagePlan {
+  const seen = new Map<string, number>();
+  for (const { graphics } of pageArt) {
+    for (const key of new Set(graphics.images.map(boxKey))) seen.set(key, (seen.get(key) ?? 0) + 1);
+  }
+  const repeated = (box: PdfBox) => {
+    const count = seen.get(boxKey(box)) ?? 0;
+    return count >= 3 && count >= pageArt.length * 0.25;
+  };
+
+  const regions: ImagePlan['regions'] = [];
+  const lines = pageLines.map((page, index) => {
+    const art = pageArt[index];
+    if (!art || regions.length >= MAX_BOOK_IMAGES) return page;
+    const tops = pageTops[index] ?? [];
+    const lefts = page.map((line) => line.left).sort((a, b) => a - b);
+    const left = lefts[Math.floor(lefts.length / 2)] ?? 0;
+    const mark = (): LayoutLine => {
+      const line = { text: imageMark(regions.length), left, right: left };
+      return line;
+    };
+
+    if (letterCount(pages[index] ?? '') < 30 && (art.graphics.images.length > 0 || art.graphics.shapes > 30)) {
+      const line = mark();
+      regions.push({ page: index + 1, box: null });
+      return [line, ...page];
+    }
+
+    const kept = art.graphics.images
+      .filter((box) => {
+        const area = box.w * box.h;
+        return (
+          Math.min(box.w, box.h) >= 36 &&
+          area >= art.area * 0.015 &&
+          area <= art.area * 0.9 &&
+          !repeated(box)
+        );
+      })
+      .sort((a, b) => b.y + b.h - (a.y + a.h));
+    if (kept.length === 0) return page;
+
+    const out: LayoutLine[] = [];
+    let next = 0;
+    for (let i = 0; i < page.length; i++) {
+      // Картинка встаёт перед первой строкой, что ниже её середины.
+      while (next < kept.length && regions.length < MAX_BOOK_IMAGES && (tops[i] ?? 0) < kept[next]!.y + kept[next]!.h / 2) {
+        out.push(mark());
+        regions.push({ page: index + 1, box: kept[next]! });
+        next++;
+      }
+      out.push(page[i]!);
+    }
+    while (next < kept.length && regions.length < MAX_BOOK_IMAGES) {
+      out.push(mark());
+      regions.push({ page: index + 1, box: kept[next]! });
+      next++;
+    }
+    return out;
+  });
+  return { lines, regions, count: regions.length };
+}
+
+/** Рисует только страницы с картинками, каждую один раз. */
+async function renderPlannedImages(
+  pdf: { getPage(n: number): Promise<PDFPageProxy> },
+  plan: ImagePlan,
+): Promise<Blob[]> {
+  const blobs: Blob[] = plan.regions.map(() => new Blob([]));
+  const byPage = new Map<number, number[]>();
+  plan.regions.forEach((region, index) => {
+    byPage.set(region.page, [...(byPage.get(region.page) ?? []), index]);
+  });
+  for (const [pageNumber, indexes] of byPage) {
+    try {
+      const page = await pdf.getPage(pageNumber);
+      const rendered = await renderRegions(page, indexes.map((i) => plan.regions[i]!.box));
+      rendered.forEach((blob, k) => {
+        // Пустой файл не загрузится, и абзац картинки уйдёт: текст важнее.
+        if (blob) blobs[indexes[k]!] = blob;
+      });
+      page.cleanup();
+    } catch {
+      // Неудача со страницей не срывает импорт: картинки этой страницы пропадут.
+    }
+  }
+  return blobs;
 }
 
 function letterCount(text: string): number {

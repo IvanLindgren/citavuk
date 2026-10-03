@@ -18,13 +18,39 @@
 /// разбор — и вместо иллюстрации читатель увидит строку со служебной меткой.
 library;
 
+import 'dart:convert';
+
 /// Начало любой метки блока. В обычном тексте не встречается.
 const String _marker = '\u0000citavuk:';
 
 const String _imageMarker = '${_marker}image\n';
 const String _tableMarker = '${_marker}table\n';
+const String _richMarker = '${_marker}rich\n';
 
 enum BookBlockKind { text, image, table }
+
+/// Оформление куска абзаца, который читатель поправил сам: b — жирный,
+/// i — курсив, u — подчёркивание, m — маркер. Границы — индексы строки
+/// (UTF-16), те же, что в JavaScript.
+class TextStyleSpan {
+  const TextStyleSpan(this.start, this.end, this.style);
+  final int start;
+  final int end;
+  final String style;
+
+  @override
+  bool operator ==(Object other) =>
+      other is TextStyleSpan &&
+      other.start == start &&
+      other.end == end &&
+      other.style == style;
+
+  @override
+  int get hashCode => Object.hash(start, end, style);
+
+  @override
+  String toString() => '[$start,$end,$style]';
+}
 
 class BookBlock {
   final BookBlockKind kind;
@@ -38,19 +64,24 @@ class BookBlock {
   /// Ряды таблицы. Первый ряд — заголовок.
   final List<List<String>> rows;
 
-  const BookBlock.text(this.text)
+  /// Оформление текста; пусто у обычного абзаца.
+  final List<TextStyleSpan> spans;
+
+  const BookBlock.text(this.text, [this.spans = const []])
       : kind = BookBlockKind.text,
         url = '',
         rows = const [];
 
   const BookBlock.image({required this.url, this.text = ''})
       : kind = BookBlockKind.image,
-        rows = const [];
+        rows = const [],
+        spans = const [];
 
   const BookBlock.table(this.rows)
       : kind = BookBlockKind.table,
         text = '',
-        url = '';
+        url = '',
+        spans = const [];
 
   bool get isText => kind == BookBlockKind.text;
 }
@@ -90,7 +121,65 @@ BookBlock parseBookBlock(String paragraph) {
     return BookBlock.table(rows);
   }
 
+  if (paragraph.startsWith(_richMarker)) {
+    // Абзац с оформлением — тот же текст: разбор по нажатию, перевод, поиск
+    // и озвучка видят только text, а стили лежат отдельно, поэтому смещения
+    // слов не сдвигаются.
+    final body = paragraph.substring(_richMarker.length);
+    final newline = body.indexOf('\n');
+    if (newline < 0) return BookBlock.text(body);
+    final text = body.substring(newline + 1);
+    return BookBlock.text(
+        text, normalizeSpans(_parseSpans(body.substring(0, newline)), text.length));
+  }
+
   return BookBlock.text(paragraph);
+}
+
+List<TextStyleSpan> _parseSpans(String raw) {
+  try {
+    final data = jsonDecode(raw);
+    if (data is! List) return const [];
+    return [
+      for (final item in data)
+        if (item is List &&
+            item.length >= 3 &&
+            item[0] is num &&
+            item[1] is num &&
+            item[2] is String)
+          TextStyleSpan((item[0] as num).toInt(), (item[1] as num).toInt(),
+              item[2] as String),
+    ];
+  } catch (_) {
+    // Битое оформление — не повод терять текст.
+    return const [];
+  }
+}
+
+const _styles = 'bimu';
+
+/// Чистые отрезки: в пределах текста, без пустых, стили в постоянном порядке.
+List<TextStyleSpan> normalizeSpans(List<TextStyleSpan> spans, int length) {
+  final sorted = [...spans]
+    ..sort((a, b) => a.start != b.start ? a.start - b.start : a.end - b.end);
+  final out = <TextStyleSpan>[];
+  for (final span in sorted) {
+    final start = span.start.clamp(0, length);
+    final end = span.end.clamp(start, length);
+    final style = _styles.split('').where(span.style.contains).join();
+    if (end > start && style.isNotEmpty) out.add(TextStyleSpan(start, end, style));
+  }
+  return out;
+}
+
+/// Собирает абзац с оформлением. Без оформления — обычная строка: так абзац
+/// читают и старые версии приложения.
+String richParagraph(String text, List<TextStyleSpan> spans) {
+  final clean = normalizeSpans(spans, text.length);
+  if (clean.isEmpty) return text;
+  return '$_richMarker${jsonEncode([
+        for (final span in clean) [span.start, span.end, span.style]
+      ])}\n$text';
 }
 
 /// Приводит ячейку к виду, пригодному для хранения.

@@ -2,6 +2,29 @@ import 'english_analysis.dart';
 import 'grammar.dart';
 import 'sentence_analysis.dart';
 
+/// Откуда взят перевод «в этом тексте» и где стояло слово.
+///
+/// Место нужно жалобе на перевод: она должна указывать ровно на то
+/// предложение и те границы, что ушли переводчику.
+class ContextTranslationInfo {
+  const ContextTranslationInfo({
+    required this.provider,
+    required this.verified,
+    required this.sentence,
+    required this.start,
+    required this.end,
+  });
+
+  /// deepl, google или citavuk — исправление человека.
+  final String provider;
+  final bool verified;
+  final String sentence;
+
+  /// Границы слова в [sentence], в единицах UTF-16.
+  final int start;
+  final int end;
+}
+
 /// Типизированный результат разбора слова/фразы (онлайн или офлайн).
 class WordAnalysis {
   final String surface;
@@ -31,6 +54,12 @@ class WordAnalysis {
   /// об этом читателю надо: словарной статьи за таким разбором не стоит.
   final bool generated;
 
+  /// Слово нашлось в словаре — своём или серверном. Нет — перевод сделан
+  /// догадкой переводчика, и читателя надо об этом предупредить.
+  final bool inDictionary;
+
+  final ContextTranslationInfo? contextInfo;
+
   const WordAnalysis({
     required this.surface,
     required this.lemma,
@@ -45,6 +74,8 @@ class WordAnalysis {
     this.sentenceAnalysis,
     this.english,
     this.generated = false,
+    this.inDictionary = true,
+    this.contextInfo,
   });
 
   bool get isEnglish => english != null;
@@ -62,6 +93,7 @@ class WordAnalysis {
     SentenceAnalysis? sentenceAnalysis,
     EnglishAnalysis? english,
     bool? generated,
+    ContextTranslationInfo? contextInfo,
   }) =>
       WordAnalysis(
         surface: surface,
@@ -78,6 +110,9 @@ class WordAnalysis {
         sentenceAnalysis: sentenceAnalysis ?? this.sentenceAnalysis,
         english: english ?? this.english,
         generated: generated ?? this.generated,
+        inDictionary: inDictionary,
+        contextInfo:
+            clearContextualTranslation ? null : contextInfo ?? this.contextInfo,
       );
 
   /// Разбирает строку признаков UD ("Case=Nom|Gender=Masc|Number=Sing").
@@ -106,6 +141,7 @@ class WordAnalysis {
       contextualTranslation: j['contextual_translation']?.toString(),
       isOffline: false,
       isPhrase: upos == 'PHRASE',
+      inDictionary: j['known'] != false,
     );
   }
 

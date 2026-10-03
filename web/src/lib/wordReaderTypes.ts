@@ -2,6 +2,6 @@
 export interface ReaderMark {
   start: number;
   end: number;
-  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size' | 'audio' | 'quote';
+  kind: 'strong' | 'emphasis' | 'strike' | 'code' | 'link' | 'font' | 'size' | 'audio' | 'quote' | 'underline' | 'highlight';
   value?: string;
 }

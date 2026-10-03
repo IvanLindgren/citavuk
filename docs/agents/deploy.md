@@ -153,6 +153,21 @@ Space обновляется отдельно файлами `backend/main.py` �
 
 ## Сборка Android
 
+Облачные сборки используют Flutter 3.47.2. `build-apk.yml` принимает
+`android-windows`, чтобы не запускать ненужный Linux; APK получает `direct`,
+AAB — `play`. Windows/Linux требуют `CITAVUK_UPDATE_PUBLIC_KEY` в GitHub Secrets.
+`build-macos.yml` проверяет реальные AOT-бинарники через
+`tools/verify_build_settings.py` (UTF-8 и UTF-16, без вывода значений). На macOS
+проверяется ключ карты: автообновления на этой платформе пока нет, неиспользуемый
+ключ подписи компилятор удаляет.
+
+`build-ios.yml` создаёт `.xcarchive` и `citavuk-ios-unsigned.ipa` без подписи
+Apple. Это не готовый пакет для установки или App Store: требуется подпись
+владельца. `GOOGLE_CLIENT_ID_IOS` задаёт публичный iOS OAuth-клиент; workflow
+формирует `ios/Flutter/Google.xcconfig` и сверяет итоговый `GIDClientID` в приложении.
+Пакеты сохраняются отдельным artifact `citavuk-ios`, скриншоты включаются входом
+`screenshots`. Секреты Apple не требуются для неподписанного архива.
+
 - Android release использует AGP 8.11.1, Gradle 8.14.3 (этого требует Flutter
   3.47) и R8 (`minify` + `shrinkResources`). AGP 9 пока нельзя: он удалил
   `Project.exec`, которым ещё пользуется CargoKit (`super_clipboard`).

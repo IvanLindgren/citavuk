@@ -52,6 +52,14 @@ func (s *Server) handleTranslate(w http.ResponseWriter, r *http.Request) {
 	}
 	source, target := langs(req.Source, req.Target)
 
+	// Одиночное слово могли исправить «для этой формы везде».
+	if word := strings.TrimSpace(req.Text); word != "" && len(strings.Fields(word)) == 1 {
+		if res, ok := s.verifiedTranslation(r.Context(), source, target, word, 0, len(word)); ok {
+			writeJSON(w, http.StatusOK, res)
+			return
+		}
+	}
+
 	res, err := s.translator.Text(r.Context(), req.Text, source, target)
 	if err != nil {
 		writeTranslateError(w, err)
@@ -78,6 +86,12 @@ func (s *Server) handleTranslateInContext(w http.ResponseWriter, r *http.Request
 	source, target := langs(req.Source, req.Target)
 
 	start, end := withSeParticle(req.Sentence, req.Start, req.End, source)
+	if validSpan(req.Sentence, start, end) {
+		if res, ok := s.verifiedTranslation(r.Context(), source, target, req.Sentence, start, end); ok {
+			writeJSON(w, http.StatusOK, res)
+			return
+		}
+	}
 	res, err := s.translator.InContext(r.Context(), req.Sentence, start, end, source, target)
 	if err != nil {
 		writeTranslateError(w, err)

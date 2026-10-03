@@ -9,8 +9,7 @@ import { DeferredSection } from '../components/DeferredSection';
 import { ButtonLink, Card, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
-import { SupportShowcase } from '../components/SupportShowcase';
-import { SupportNewsCard } from '../components/SupportNewsCard';
+import { StarfallShowcase } from '../components/StarfallShowcase';
 import { useSeo } from '../lib/seo';
 
 const DocumentImportBox = lazy(() => import('../components/DocumentImportBox').then(m => ({ default: m.DocumentImportBox })));
@@ -34,7 +33,7 @@ export function Landing() {
   return (
     <main>
       <Hero />
-      <SupportShowcase />
+      <StarfallShowcase />
       <DocumentImport />
       <AudioImportPromo />
       <Demo />
@@ -138,7 +137,6 @@ function Hero() {
           text="Короткие статьи одна за другой. Лента запоминает, что ты дочитываешь, и подбирает похожее."
           action="Листать ленту"
         />
-        <div className="md:col-span-2"><SupportNewsCard /></div>
       </div>
 
       <div className="relative mx-auto mt-12 max-w-3xl text-[var(--accent)] opacity-70">

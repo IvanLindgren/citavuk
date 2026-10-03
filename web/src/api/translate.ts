@@ -19,6 +19,8 @@ export interface TranslationResult {
    * переводит как «собака», а внутри предложения — верно, «дом».
    */
   aligned: boolean;
+  /** Перевод исправлен или подтверждён человеком, а не машиной. */
+  verified?: boolean;
 }
 
 /** Переводит связный фрагмент: фразу, предложение или абзац. */
@@ -113,4 +115,30 @@ export function sentenceWindow(
   }
 
   return { text: text.slice(from, to), start: start - from, end: end - from };
+}
+
+export type FeedbackScope = 'sentence' | 'form';
+
+/**
+ * Жалоба на перевод слова. Границы — те же, что ушли в перевод, и тоже в
+ * единицах UTF-16: в байты их пересчитывает эта функция.
+ */
+export function sendTranslationFeedback(input: {
+  sentence: string;
+  start: number;
+  end: number;
+  shown: string;
+  provider: string;
+  suggestion: string;
+  comment: string;
+  scope: FeedbackScope;
+}): Promise<{ applied: boolean }> {
+  return request<{ applied: boolean }>('/v1/translation-feedback', {
+    method: 'POST',
+    body: {
+      ...input,
+      start: utf8ByteOffset(input.sentence, input.start),
+      end: utf8ByteOffset(input.sentence, input.end),
+    },
+  });
 }

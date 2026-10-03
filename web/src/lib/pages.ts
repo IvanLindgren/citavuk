@@ -1,4 +1,4 @@
-import { parseBlock } from './blocks';
+import { parseBlock, richParagraph } from './blocks';
 
 /**
  * Разбиение книги на страницы.
@@ -64,7 +64,9 @@ export function paginate(paragraphs: string[], budget = PAGE_CHARS): Page[] {
       if (texts.length === 0) { start = index; offset = within; }
       texts.push(piece);
       filled += weight;
-      within += piece.length;
+      // Смещение — по тексту, а не по строке: у абзаца с оформлением в
+      // строке ещё и служебная разметка.
+      within += pieceTextLength(piece);
     }
   }
   flush();
@@ -110,11 +112,45 @@ export function pageWeight(paragraph: string): number {
  * их подряд, и потеря хотя бы пробела была бы порчей книги.
  */
 export function splitParagraph(paragraph: string, budget = PAGE_CHARS): string[] {
+  const block = parseBlock(paragraph);
   // Картинку и таблицу резать нечем и незачем: это цельные объекты.
-  if (parseBlock(paragraph).kind !== 'text') return [paragraph];
-  if (paragraph.length <= budget) return [paragraph];
+  if (block.kind !== 'text') return [paragraph];
+  if (block.text.length <= budget) return [paragraph];
+  if (!block.spans?.length) return balance(atoms(paragraph, budget), budget);
 
-  return balance(atoms(paragraph, budget), budget);
+  // Абзац с оформлением режется по тексту, а каждый кусок получает свои
+  // отрезки стилей: разрезанная строка с разметкой потеряла бы оформление
+  // всех кусков, кроме первого.
+  let at = 0;
+  return balance(atoms(block.text, budget), budget).map((part) => {
+    const from = at;
+    at += part.length;
+    return richParagraph(
+      part,
+      block.spans!
+        .filter((span) => span.end > from && span.start < from + part.length)
+        .map((span) => ({ start: span.start - from, end: span.end - from, style: span.style })),
+    );
+  });
+}
+
+function pieceTextLength(piece: string): number {
+  const block = parseBlock(piece);
+  return block.kind === 'text' ? block.text.length : piece.length;
+}
+
+/**
+ * Какие абзацы книги видны на странице: правка берёт их целиком, даже если
+ * длинный абзац начался на прошлой странице или продолжится на следующей.
+ */
+export function pageParagraphRange(pages: Page[], pageIndex: number, total: number): [number, number] {
+  const page = pages[pageIndex];
+  if (!page) return [0, 0];
+  const next = pages[pageIndex + 1];
+  let end = next ? next.start : total;
+  // Следующая страница продолжает тот же абзац — он и наш.
+  if (next && next.offset) end = next.start + 1;
+  return [page.start, Math.max(page.start + 1, end)];
 }
 
 /**

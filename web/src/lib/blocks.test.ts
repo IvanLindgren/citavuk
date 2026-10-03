@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   countChars,
   imageParagraph,
+  richParagraph,
   isBlock,
   parseBlock,
   plainParagraphs,
@@ -129,5 +130,37 @@ describe('адрес книги с блоками', () => {
     const withPicture = [imageParagraph('https://cdn/a.webp', '')];
     const withOther = [imageParagraph('https://cdn/b.webp', '')];
     expect(await contentSha(withPicture)).not.toBe(await contentSha(withOther));
+  });
+});
+
+// Парные примеры с frontend/test/models/book_block_test.dart: абзац с
+// оформлением, поправленный в браузере, обязан одинаково открыться в приложении.
+describe('абзац с оформлением', () => {
+  const RICH = '\u0000citavuk:rich\n[[0,3,"b"],[7,11,"im"]]\nOvo je kuća.';
+
+  it('собирается в постоянном виде', () => {
+    expect(richParagraph('Ovo je kuća.', [
+      { start: 7, end: 11, style: 'mi' },
+      { start: 0, end: 3, style: 'b' },
+    ])).toBe(RICH);
+  });
+
+  it('без оформления остаётся обычной строкой', () => {
+    expect(richParagraph('Ovo je kuća.', [{ start: 2, end: 2, style: 'b' }])).toBe('Ovo je kuća.');
+  });
+
+  it('разбирается в текст и отрезки', () => {
+    expect(parseBlock(RICH)).toEqual({
+      kind: 'text',
+      text: 'Ovo je kuća.',
+      spans: [{ start: 0, end: 3, style: 'b' }, { start: 7, end: 11, style: 'im' }],
+    });
+  });
+
+  it('битое оформление не теряет текст', () => {
+    expect(parseBlock('\u0000citavuk:rich\n[[0,3\nOvo je kuća.')).toEqual({ kind: 'text', text: 'Ovo je kuća.', spans: [] });
+    expect(parseBlock('\u0000citavuk:rich\n[[0,99,"bx"]]\nkratko')).toEqual({
+      kind: 'text', text: 'kratko', spans: [{ start: 0, end: 6, style: 'b' }],
+    });
   });
 });

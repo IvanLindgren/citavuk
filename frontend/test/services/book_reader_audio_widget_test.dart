@@ -77,7 +77,10 @@ void main() {
         Directory.systemTemp.createTempSync('citavuk-reader-audio-');
     PathProviderPlatform.instance = _Documents(directory.path);
     sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+    // В widget-тесте часы виртуальные: ответ из отдельного SQLite-изолята
+    // может прийти уже после закрытия дерева и оставить таймер ожидания БД.
+    // Сам SQLite остаётся настоящим, но выполняется в текущем изоляте.
+    databaseFactory = databaseFactoryFfiNoIsolate;
     final source = PublicLibraryService.paragraphs(
         File('../web/public/public-library/texts/vodja.txt')
             .readAsStringSync());

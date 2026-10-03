@@ -62,6 +62,8 @@ go test -p 1 ./...
 | `CITAVUK_REDIS_PREFIX` | `citavuk` | пространство ключей в общем Redis |
 | `CITAVUK_REDIS_CACHE_TTL` | `24h` | TTL горячего кеша переводов |
 | `DEEPL_API_KEY` | — | ключ DeepL; суффикс `:fx` означает free-план и другой хост |
+| `TELEGRAM_FEEDBACK_BOT_TOKEN` | — | бот жалоб на перевод с кнопками «Принять»/«Отклонить» |
+| `TELEGRAM_FEEDBACK_CHAT_ID` | — | чат, куда бот пишет и откуда принимает решения |
 | `CITAVUK_ADDR` | `127.0.0.1:8090` | адрес прослушивания |
 | `CITAVUK_UPSTREAM` | HF Space | куда проксировать разбор, новости и аудио |
 | `CITAVUK_UPSTREAM_SECRET` | — | общий с Python секрет для доверенной передачи IP клиента |

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IconType } from 'react-icons';
 import {
   LuBookOpen, LuChartNoAxesColumn, LuCircleAlert, LuGauge, LuGraduationCap,
-  LuHeartHandshake, LuKeyRound, LuLibrary, LuMap, LuMegaphone, LuNewspaper, LuSwords, LuUsers,
+  LuHeartHandshake, LuKeyRound, LuLanguages, LuLibrary, LuMap, LuMegaphone, LuNewspaper, LuSwords, LuUsers,
 } from 'react-icons/lu';
 
 import {
@@ -39,6 +39,7 @@ import { AdminSupporterLibraryPanel } from '../components/AdminSupporterLibraryP
 import { AdminMicroFeedPanel } from '../components/AdminMicroFeedPanel';
 import {AdminVideos} from '../components/AdminVideos';
 import { AdminRoadmapPanel } from '../components/AdminRoadmapPanel';
+import { AdminTranslationsPanel } from '../components/AdminTranslationsPanel';
 import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
@@ -47,7 +48,7 @@ import { uiLocale } from '../lib/i18n';
 type AdminTab =
   | 'overview' | 'keys' | 'live' | 'errors' | 'stats'
   | 'users' | 'teachers' | 'donations'
-  | 'courses' | 'announcements' | 'micro-feed' | 'roadmap' | 'library';
+  | 'courses' | 'announcements' | 'micro-feed' | 'roadmap' | 'library' | 'translations';
 
 /**
  * Разделы собраны в три группы: «Что происходит», «Люди» и «Содержимое».
@@ -80,6 +81,7 @@ const GROUPS: Array<{ title: string; tabs: Array<{ id: AdminTab; label: string; 
     title: 'Содержимое',
     tabs: [
       { id: 'courses', label: 'Курсы', icon: LuBookOpen },
+      { id: 'translations', label: 'Переводы', icon: LuLanguages },
       { id: 'announcements', label: 'Объявления', icon: LuMegaphone },
       { id: 'micro-feed', label: 'Вукоток', icon: LuNewspaper },
       { id: 'roadmap', label: 'Дорожная карта', icon: LuMap },
@@ -95,7 +97,11 @@ const TITLES: Record<AdminTab, string> = Object.fromEntries(
 export function Admin() {
   const { account, loading: authLoading } = useAuth();
   const { navigate } = useRouter();
-  const [tab, setTab] = useState<AdminTab>('overview');
+  // ?tab= — чтобы ссылка из бота жалоб открывала сразу нужный раздел.
+  const [tab, setTab] = useState<AdminTab>(() => {
+    const wanted = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('tab');
+    return wanted && wanted in TITLES ? (wanted as AdminTab) : 'overview';
+  });
 
   useEffect(() => {
     if (!authLoading && !account) navigate('/login');
@@ -173,6 +179,7 @@ export function Admin() {
             {tab === 'micro-feed' && <><AdminVideos/><AdminMicroFeedPanel /></>}
             {tab === 'roadmap' && <AdminRoadmapPanel />}
             {tab === 'library' && <AdminSupporterLibraryPanel />}
+            {tab === 'translations' && <AdminTranslationsPanel />}
           </div>
         </div>
       </div>

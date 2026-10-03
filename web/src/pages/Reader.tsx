@@ -11,9 +11,11 @@ import { ReaderSettingsPanel } from '../components/ReaderSettingsPanel';
 import { ShareBook } from '../components/ShareBook';
 import { Button, ButtonLink, Spinner } from '../components/ui';
 import { WordReader, type ReaderMark } from '../components/WordReader';
-import { getBook, getParagraphs, saveProgress, type BookMeta } from '../lib/books';
+import { getBook, getParagraphs, replaceParagraphs, saveProgress, type BookMeta } from '../lib/books';
 import { odysseyRewardUnlocked } from '../events/odyssey';
-import { paginate, pageForPosition } from '../lib/pages';
+import { paginate, pageForPosition, pageParagraphRange } from '../lib/pages';
+import { PageEditor } from '../components/PageEditor';
+import { LuLock, LuPencilLine } from 'react-icons/lu';
 import { playPageTurn, releasePageTurn } from '../lib/pageTurn';
 import {
   FONT_STACKS,
@@ -69,6 +71,9 @@ export function Reader() {
   const pageRef = useRef(page);
   pageRef.current = page;
   const [panelOpen, setPanelOpen] = useState(false);
+  // Правка страницы — для друзей Читавука; остальным кнопка с замком.
+  const [editing, setEditing] = useState(false);
+  const [lockOpen, setLockOpen] = useState(false);
   const [discussionToken, setDiscussionToken] = useState('');
   const [discussionOpen, setDiscussionOpen] = useState(false);
   // Направление последнего перехода: страница уезжает туда, откуда пришла
@@ -618,6 +623,26 @@ export function Reader() {
               </IconButton>
             </div>
 
+            <button
+              type="button"
+              onClick={() => (account?.supporterSince ? setEditing(true) : setLockOpen((open) => !open))}
+              aria-label="Править страницу"
+              title="Править страницу"
+              className="relative flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] px-3.5 py-2.5 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              {account?.supporterSince
+                ? <LuPencilLine className="size-4" aria-hidden="true" />
+                : <LuLock className="size-4" aria-hidden="true" />}
+              <span className="hidden sm:inline">Править</span>
+            </button>
+            {lockOpen && (
+              <div role="status" className="absolute right-4 top-full z-30 mt-2 max-w-xs rounded-2xl border border-[var(--line)] bg-[var(--bg-raised)] p-4 text-sm shadow-[var(--shadow-lift)]">
+                Править страницы могут друзья Читавука: дописывать слова, выделять,
+                вставлять картинки.{' '}
+                <Link to="/support" className="font-semibold text-[var(--accent)] underline">Как стать другом</Link>
+              </div>
+            )}
+
             <ShareBook
               book={state.book}
               onLinkCopied={(token) => {
@@ -647,6 +672,25 @@ export function Reader() {
           синхронизация), а читать её всё равно начинают отсюда.
         */}
         <BookLevelNotice bookId={state.book.id} paragraphs={paragraphs} />
+
+        {editing && (() => {
+          const [from, to] = pageParagraphRange(pages, page, paragraphs.length);
+          return (
+            <PageEditor
+              paragraphs={paragraphs.slice(from, to)}
+              canUploadImages={Boolean(account)}
+              onCancel={() => setEditing(false)}
+              onSave={async (edited) => {
+                const next = [...paragraphs.slice(0, from), ...edited, ...paragraphs.slice(to)];
+                if (next.length === 0) next.push(' ');
+                const book = await replaceParagraphs(state.book, next);
+                setState({ kind: 'ready', book, paragraphs: next });
+                setEditing(false);
+                void sync();
+              }}
+            />
+          );
+        })()}
 
         {settings.flow === 'scroll' ? (
           <div

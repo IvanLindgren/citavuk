@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../utils/reflow.dart';
 import 'api_client.dart';
 import 'document_parser.dart';
+import 'pdf_images.dart';
 
 typedef LocalDocumentParser = Future<List<String>> Function(
     String name, Uint8List bytes, void Function(double) onProgress);
@@ -30,14 +31,25 @@ class DocumentImportService {
       throw const FormatException('Книга больше 48 МБ Выбери файл поменьше');
     }
     final pdf = name.toLowerCase().endsWith('.pdf');
-    if (!_mobile || !pdf) return _local(name, bytes, progress);
+    if (!pdf) return _local(name, bytes, progress);
+    // С аккаунтом картинки достаёт сервер параллельно с разбором текста;
+    // без аккаунта сохранить их некуда.
+    if (!_mobile) {
+      if (api.token == null) return _local(name, bytes, progress);
+      return DocumentParser.parsePdfWithProgress(bytes, progress,
+          images: fetchPdfImages(api, bytes, name));
+    }
     if (bytes.length > maxServerBytes) {
       throw const FormatException(
           'Для импорта на телефоне выбери PDF до 32 МБ или добавь книгу через браузер');
     }
     progress(0.05);
     try {
-      final result = await api.postFile('/documents/extract',
+      // С аккаунтом — один запрос за текстом и картинками, иначе телефон
+      // заливал бы файл дважды.
+      final withImages = api.token != null;
+      final result = await api.postFile(
+          withImages ? '/v1/books/pdf-import' : '/documents/extract',
           field: 'file',
           bytes: bytes,
           filename: name,
@@ -57,7 +69,8 @@ class DocumentImportService {
         throw const FormatException('В PDF не нашлось текста');
       }
       progress(1);
-      return paragraphs;
+      if (!withImages) return paragraphs;
+      return placePdfImagesByShare(paragraphs, pdfImagesFrom(result));
     } on ApiException catch (error) {
       if ([400, 413, 422].contains(error.status)) rethrow;
       if (bytes.length > maxOfflinePdfBytes) {

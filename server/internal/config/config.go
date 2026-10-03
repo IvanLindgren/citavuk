@@ -41,6 +41,12 @@ type Config struct {
 	// требуют другого хоста API, см. translate.DeepL.
 	DeepLKey string
 
+	// FeedbackBotToken и FeedbackChatID — бот, который присылает жалобы на
+	// перевод с кнопками «Принять» и «Отклонить». Оба пусты — жалобы видны
+	// только в админке.
+	FeedbackBotToken string
+	FeedbackChatID   int64
+
 	// DeepLRunesPerDay — сколько знаков в сутки разрешено отдать DeepL.
 	//
 	// Ограничение частоты считает запросы, а провайдер берёт деньги за знаки:
@@ -345,6 +351,9 @@ func Load(envPath string) (*Config, error) {
 		EmailVerificationTTL: envDuration("CITAVUK_EMAIL_VERIFICATION_TTL", 24*time.Hour),
 		WebRoot:              envOr("CITAVUK_WEB_ROOT", "/var/www/citavuk"),
 	}
+	c.FeedbackBotToken = strings.TrimSpace(os.Getenv("TELEGRAM_FEEDBACK_BOT_TOKEN"))
+	// У групп ID отрицательный, поэтому не envInt: тот минус отбрасывает.
+	c.FeedbackChatID = envInt64("TELEGRAM_FEEDBACK_CHAT_ID")
 
 	if c.DatabaseURL == "" {
 		return nil, errors.New("не задан DATABASE_URL (или DB_URL): сервер не может работать без PostgreSQL")
@@ -457,6 +466,14 @@ func envInt(key string, def int) int {
 	n, err := strconv.Atoi(v)
 	if err != nil || n <= 0 {
 		return def
+	}
+	return n
+}
+
+func envInt64(key string) int64 {
+	n, err := strconv.ParseInt(strings.TrimSpace(os.Getenv(key)), 10, 64)
+	if err != nil {
+		return 0
 	}
 	return n
 }

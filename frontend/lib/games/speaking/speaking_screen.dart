@@ -1,3 +1,4 @@
+import '../../utils/store_policy.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -143,7 +144,11 @@ class _Teaser extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'До $date игра открыта друзьям Читавука — тем, кто поддержал проект на сайте. С $date в неё сможет играть каждый.',
+          supportLinksHidden
+              // Где оплата закрыта, про сайт не говорим: магазин считает это
+              // отсылкой к покупке мимо своего биллинга.
+              ? 'До $date игра открыта друзьям Читавука. С $date в неё сможет играть каждый.'
+              : 'До $date игра открыта друзьям Читавука — тем, кто поддержал проект на сайте. С $date в неё сможет играть каждый.',
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),

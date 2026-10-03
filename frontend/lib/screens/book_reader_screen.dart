@@ -1,3 +1,4 @@
+import '../widgets/translation_feedback.dart';
 import '../widgets/highlight_picker.dart';
 import '../models/highlight_colors.dart';
 import 'dart:async';
@@ -37,6 +38,8 @@ import '../services/auth_service.dart';
 import '../services/level_service.dart';
 import '../services/share_service.dart';
 import '../services/sync_service.dart';
+import '../utils/store_policy.dart';
+import 'page_editor_screen.dart';
 import '../services/user_db.dart';
 import '../state/app_settings.dart';
 import '../utils/pages.dart';
@@ -954,6 +957,73 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
     );
   }
 
+  /// Правка текущей страницы: друзьям Читавука — редактор, остальным —
+  /// объяснение. Без ссылки на оплату там, где магазин её запрещает.
+  Future<void> _editPage() async {
+    final auth = context.read<AuthService>();
+    if (auth.account?.supporterSince == null) {
+      await showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheet) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Правка страниц', style: Theme.of(sheet).textTheme.titleLarge),
+              const SizedBox(height: 8),
+              const Text('Править страницы могут друзья Читавука: дописывать слова, '
+                  'выделять жирным, курсивом и маркером, вставлять картинки.'),
+              if (!supportLinksHidden) ...[
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(sheet).pop();
+                    unawaited(launchUrl(Uri.parse('https://citavuk.ru/support'),
+                        mode: LaunchMode.externalApplication));
+                  },
+                  child: const Text('Как стать другом'),
+                ),
+              ],
+            ]),
+          ),
+        ),
+      );
+      return;
+    }
+
+    final page = _visiblePage.clamp(0, _pageStartPara.isEmpty ? 0 : _pageStartPara.length - 1);
+    final total = widget.paragraphs.length;
+    final from = _pageStartPara.isEmpty ? 0 : _pageStartPara[page];
+    var to = page + 1 < _pageStartPara.length ? _pageStartPara[page + 1] : total;
+    // Следующая страница продолжает тот же абзац — он и наш.
+    if (page + 1 < _pageStartOffset.length && _pageStartOffset[page + 1] > 0) to = _pageStartPara[page + 1] + 1;
+    if (to <= from) to = (from + 1).clamp(0, total);
+
+    final edited = await Navigator.of(context).push<List<String>>(MaterialPageRoute(
+      fullscreenDialog: true,
+      builder: (_) => PageEditorScreen(paragraphs: widget.paragraphs.sublist(from, to)),
+    ));
+    if (edited == null || !mounted) return;
+
+    final next = [...widget.paragraphs.sublist(0, from), ...edited, ...widget.paragraphs.sublist(to)];
+    if (next.isEmpty) return;
+    await UserDb.instance.replaceBookContent(widget.bookId, next, keepPosition: true);
+    if (!mounted) return;
+    if (auth.isSignedIn) unawaited(context.read<SyncService>().sync().catchError((_) => false));
+    // Читалка получает абзацы при открытии, поэтому после правки книга
+    // открывается заново на той же странице.
+    await Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (_) => BookReaderScreen(
+        bookId: widget.bookId,
+        title: widget.title,
+        paragraphs: next,
+        initialParagraph: from,
+        sourceKey: widget.sourceKey,
+        leadImageUrl: widget.leadImageUrl,
+      ),
+    ));
+  }
+
   Future<void> _openShareSheet() async {
     final auth = context.read<AuthService>();
     final syncService = context.read<SyncService>();
@@ -1085,6 +1155,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
                     padding: EdgeInsets.only(bottom: settings.paragraphSpacing),
                     child: ReaderParagraph(
                       text: block.text,
+                      styleSpans: block.spans,
                       settings: settings,
                       textColor: textColor,
                       highlightColor: scheme.primary,
@@ -1259,6 +1330,16 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
               style:
                   const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
           actions: [
+            // Правка страницы — только своих книг: у новости и книги из
+            // публичной библиотеки до сохранения нет своей записи.
+            if (widget.bookId > 0)
+              IconButton(
+                tooltip: 'Править страницу',
+                icon: Icon(context.watch<AuthService>().account?.supporterSince != null
+                    ? Icons.edit_note
+                    : Icons.lock_outline),
+                onPressed: _editPage,
+              ),
             IconButton(
                 tooltip: 'Цитаты',
                 icon: const Icon(Icons.format_underlined),
