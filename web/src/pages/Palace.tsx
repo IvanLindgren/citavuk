@@ -473,7 +473,7 @@ function WordStrip({
           }}
           className="shrink-0 cursor-grab rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-3 py-2 text-left transition-colors hover:border-[var(--accent)] active:cursor-grabbing"
         >
-          <span className="block font-bold">{entry.word}</span>
+          <span lang="sr" className="block font-bold">{entry.word}</span>
           {entry.translation && (
             <span className="block text-xs text-[var(--text-muted)]">
               {entry.translation}

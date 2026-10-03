@@ -399,7 +399,7 @@ function KaraokeCue({
         </svg>
       </button>
 
-      <p className={`font-display text-lg leading-relaxed ${current ? '' : 'text-[var(--text-muted)]'}`}>
+      <p translate="no" className={`font-display text-lg leading-relaxed ${current ? '' : 'text-[var(--text-muted)]'}`}>
         {tokens.map((token, index) => {
           if (!token.isWord) return <span key={index}>{token.text}</span>;
           const active =

@@ -95,7 +95,7 @@ export function Notebook() {
       <ul className="garden-notebook divide-y divide-[#c99b61]">
         {rows.slice(0, 60).map(({ entry, review }) => (
           <li key={entry.id} className="flex items-baseline gap-3 py-2">
-            <span className="font-display text-lg font-bold">{entry.word}</span>
+            <span lang="sr" className="font-display text-lg font-bold">{entry.word}</span>
             <span className="min-w-0 truncate text-sm text-[#6b4d38]">{entry.translation}</span>
             <span className="ml-auto shrink-0 text-xs tabular-nums text-[#7a5b43]">
               {review ? dueLabel(review.dueAt, now) : 'новое'}

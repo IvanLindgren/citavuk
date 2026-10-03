@@ -317,7 +317,10 @@ export function t(text: string): string {
 // Наблюдатель за DOM
 
 const ATTRIBUTES = ['placeholder', 'title', 'aria-label', 'alt', 'aria-description'];
-const SKIP = 'script, style, textarea, [contenteditable=""], [contenteditable="true"], [translate="no"], [data-no-i18n]';
+// Сербский текст (слова читалки, страницы книги) не переводится: «у», «с»,
+// «где», «свет» пишутся так же, как русские ключи словаря.
+const SKIP =
+  'script, style, textarea, [contenteditable=""], [contenteditable="true"], [translate="no"], [data-no-i18n], [data-reader-word], [data-reader-page], :not(html)[lang^="sr"]';
 
 /** То, что записали мы сами: повторно не переводим и не принимаем за правку React. */
 const written = new WeakMap<Node, string>();

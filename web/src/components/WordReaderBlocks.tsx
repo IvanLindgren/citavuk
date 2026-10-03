@@ -110,7 +110,7 @@ export function Paragraph({
     onSelect(token, element.getBoundingClientRect());
   };
   return (
-    <p className={className || 'reader-selectable font-display text-lg leading-relaxed sm:text-xl sm:leading-[1.85]'} style={style}>
+    <p translate="no" className={className || 'reader-selectable font-display text-lg leading-relaxed sm:text-xl sm:leading-[1.85]'} style={style}>
       {tokens.map((token, index) => token.isWord ? (
         <span
           key={index}

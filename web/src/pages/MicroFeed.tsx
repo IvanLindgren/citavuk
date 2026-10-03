@@ -755,7 +755,7 @@ function DifficultWordChip({ word }: { word: DifficultWord }) {
       }`}
     >
       {saved ? <LuCheck className="size-3.5 shrink-0 text-[#9fd89f]" /> : <LuPlus className="size-3.5 shrink-0 text-white/50" />}
-      <span><strong>{word.word}</strong> <span className="text-white/65">{word.translationRu}</span></span>
+      <span><strong lang="sr">{word.word}</strong> <span className="text-white/65">{word.translationRu}</span></span>
       {failed && <span className="text-[#ffb4ae]">не вышло</span>}
     </button>
   );

@@ -1472,7 +1472,7 @@ function DefinitionCard({
       </div>
 
       <div className="overflow-y-auto overscroll-contain px-4 py-3">
-        <ol className="space-y-3">
+        <ol translate="no" className="space-y-3">
           {definition.senses.map((sense, index) => (
             <li key={`${sense.definition}-${index}`} className="text-sm leading-relaxed">
               <span className="font-semibold text-[var(--text-muted)]">
