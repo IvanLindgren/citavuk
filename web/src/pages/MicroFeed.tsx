@@ -38,6 +38,7 @@ import { FeedComments } from '../components/FeedComments';
 import { FeedModeNav } from '../components/FeedModeNav';
 import { FeedLevelPicker } from '../components/FeedLevelPicker';
 import { readFeedLevel, saveFeedLevel, type FeedLevel } from '../lib/feedLevel';
+import { glossLang } from '../lib/i18n';
 import { useAuth } from '../state/auth';
 import { Mascot } from '../components/Mascot';
 import { MicroFeedOnboarding } from '../components/MicroFeedOnboarding';
@@ -721,6 +722,9 @@ function Hashtags({ tags }: { tags: string[] }) {
  */
 function DifficultWordChip({ word }: { word: DifficultWord }) {
   const { sync } = useSync();
+  // Сервер даёт к слову только русское значение: при английском переводе слов
+  // его не показываем и не кладём в словарь.
+  const gloss = glossLang() === 'ru' ? word.translationRu : '';
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
 
@@ -730,7 +734,7 @@ function DifficultWordChip({ word }: { word: DifficultWord }) {
       await saveVocabularyWord({
         word: word.word,
         lemma: word.lemma,
-        translation: word.translationRu,
+        translation: gloss,
         // Произношение — половина пользы от разбора: по написанию сербское
         // ударение и длину гласного не восстановить.
         forms: word.transcription ? { произношение: word.transcription } : {},
@@ -755,7 +759,7 @@ function DifficultWordChip({ word }: { word: DifficultWord }) {
       }`}
     >
       {saved ? <LuCheck className="size-3.5 shrink-0 text-[#9fd89f]" /> : <LuPlus className="size-3.5 shrink-0 text-white/50" />}
-      <span><strong lang="sr">{word.word}</strong> <span className="text-white/65">{word.translationRu}</span></span>
+      <span><strong lang="sr">{word.word}</strong>{gloss && <> <span className="text-white/65">{gloss}</span></>}</span>
       {failed && <span className="text-[#ffb4ae]">не вышло</span>}
     </button>
   );
