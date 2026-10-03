@@ -57,3 +57,6 @@ public/travel/
 # Таблица ударений: собирается scripts/build-stress-marks.py из лексикона
 # сервера, полмегабайта производных данных в репозитории не нужны.
 public/reader/
+
+# Словари перевода собирает scripts/i18n-build.mjs из i18n/*.jsonl.
+src/i18n/*.json

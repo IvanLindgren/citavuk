@@ -45,6 +45,7 @@ import { NotificationBell } from './ServerAnnouncements';
 import { odysseyAvailable } from '../events/odyssey';
 import { useAuth } from '../state/auth';
 import { useTheme } from '../state/theme';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 /**
  * Видео живёт на отдельном сайте. В списке разделов оно помечено внешним,
@@ -312,6 +313,7 @@ export function Header() {
           <span className="mx-0.5 hidden h-6 w-px bg-[var(--line)] sm:block" aria-hidden="true" />
           {/* «Для учителей» и «Видео» уехали в панель «Ещё»: вместе с яркой
               кнопкой уроков они не помещались, и правый край обрезался. */}
+          <LanguageSwitcher />
           <ThemeToggle />
           <NotificationBell />
 

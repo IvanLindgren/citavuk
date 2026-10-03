@@ -1,5 +1,5 @@
 import { useRef, useState, type ClipboardEvent, type KeyboardEvent, type MouseEvent } from 'react';
-import { LuHighlighter, LuImagePlus, LuPlus, LuRemoveFormatting, LuTrash2 } from 'react-icons/lu';
+import { LuBold, LuHighlighter, LuImagePlus, LuItalic, LuPlus, LuRemoveFormatting, LuTrash2, LuUnderline } from 'react-icons/lu';
 
 import { uploadBookImage } from '../api/bookImages';
 import { imageParagraph, parseBlock, richParagraph, type TextSpan } from '../lib/blocks';
@@ -239,9 +239,9 @@ export function PageEditor({
       <header className="flex flex-wrap items-center gap-2 border-b border-[var(--line)] px-4 py-3 sm:px-6">
         <h2 className="mr-auto font-display text-xl">Правка страницы</h2>
         <div className="flex gap-1.5" role="toolbar" aria-label="Оформление выделенного текста">
-          <ToolButton label="Жирный" onPress={() => format('bold')}><b>Ж</b></ToolButton>
-          <ToolButton label="Курсив" onPress={() => format('italic')}><i className="font-display">К</i></ToolButton>
-          <ToolButton label="Подчёркнутый" onPress={() => format('underline')}><u>Ч</u></ToolButton>
+          <ToolButton label="Жирный" onPress={() => format('bold')}><LuBold className="size-4" aria-hidden="true" /></ToolButton>
+          <ToolButton label="Курсив" onPress={() => format('italic')}><LuItalic className="size-4" aria-hidden="true" /></ToolButton>
+          <ToolButton label="Подчёркнутый" onPress={() => format('underline')}><LuUnderline className="size-4" aria-hidden="true" /></ToolButton>
           <ToolButton label="Маркер" onPress={() => format('marker')}><LuHighlighter className="size-4" aria-hidden="true" /></ToolButton>
           <ToolButton label="Убрать оформление" onPress={() => format('clear')}><LuRemoveFormatting className="size-4" aria-hidden="true" /></ToolButton>
         </div>

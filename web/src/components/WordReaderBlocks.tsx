@@ -129,7 +129,7 @@ export function Paragraph({
             'reader-word transition-colors duration-150',
             'hover:bg-gold/35',
             'focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]',
-            selectedStart === token.start ? 'bg-gold/55 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]' : '',
+            selectedStart === token.start ? 'reader-word-picked bg-gold/55 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]' : '',
             cliticStart === token.start ? 'bg-gold/30 text-[var(--text)] shadow-[inset_0_-2px_0_0_var(--accent)]' : '',
           ].join(' ')}
         >

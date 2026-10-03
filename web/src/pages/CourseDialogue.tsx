@@ -21,6 +21,7 @@ import type { CourseBundle, DialogueProgress } from '../course/types';
 import { Link, useParams } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
+import { translateData } from '../lib/i18n';
 
 interface DialogueChoice {
   id: string;
@@ -71,7 +72,7 @@ export function CourseDialogue() {
       fetch(`/course/dialogues/${encodeURIComponent(id)}.json`).then(
         async (response) => {
           if (!response.ok) throw new Error('Диалог не найден.');
-          return (await response.json()) as Dialogue;
+          return translateData('course', (await response.json()) as Dialogue);
         },
       ),
     ])

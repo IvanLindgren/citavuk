@@ -4,8 +4,9 @@ import { getSupporters, type Supporter } from '../api/donations';
 import { ButtonLink, Card, Reveal, Spinner } from '../components/ui';
 import { SupporterPodium } from '../components/SupportShowcase';
 import { useSeo } from '../lib/seo';
+import { uiLocale } from '../lib/i18n';
 
-const DATE = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+const DATE = new Intl.DateTimeFormat(uiLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
 
 export function Supporters() {
   useSeo({

@@ -124,6 +124,14 @@
             (saved !== 'light' &&
               window.matchMedia('(prefers-color-scheme: dark)').matches);
           if (dark) document.documentElement.classList.add('dark');
+          // Не русский интерфейс: страница прячется, пока не загрузится
+          // словарь (см. src/lib/i18n.ts), но не дольше четырёх секунд.
+          var lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('citavuk-lang');
+          if (lang === 'en' || lang === 'sr') {
+            document.documentElement.classList.add('i18n-wait');
+            document.documentElement.lang = lang === 'sr' ? 'sr-Latn' : lang;
+            setTimeout(function () { document.documentElement.classList.remove('i18n-wait'); }, 4000);
+          }
         } catch (e) {
           // localStorage недоступен в приватном режиме — остаётся светлая тема.
         }

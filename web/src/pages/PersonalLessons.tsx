@@ -32,6 +32,7 @@ import { useAuth } from "../state/auth";
 import { PersonalEditor } from "./PersonalEditor";
 import "./personal.css";
 import "./personal-lesson.css";
+import { uiLocale } from "../lib/i18n";
 
 const message = (e: unknown) =>
   e instanceof Error ? e.message : "Не удалось связаться с сервером.";
@@ -148,7 +149,7 @@ function PersonalHome({ level }: { level: string }) {
           >
             {state?.history?.map((h) => (
               <option value={h.id} key={h.id}>
-                {new Date(h.startedAt).toLocaleDateString("ru")} ({h.level})
+                {new Date(h.startedAt).toLocaleDateString(uiLocale())} ({h.level})
               </option>
             ))}
           </select>

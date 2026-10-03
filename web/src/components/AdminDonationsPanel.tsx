@@ -10,6 +10,7 @@ import {
 } from '../api/donations';
 import { Button, ErrorNote, Spinner } from './ui';
 import { donationMessageModeration } from '../lib/donationModeration';
+import { uiLocale } from '../lib/i18n';
 
 const inputClass =
   'min-w-0 rounded-xl border border-[var(--line)] bg-[var(--bg-raised)] px-4 py-3 text-sm outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]';
@@ -19,7 +20,7 @@ function currentMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 }
 
-const DATE_TIME = new Intl.DateTimeFormat('ru-RU', {
+const DATE_TIME = new Intl.DateTimeFormat(uiLocale(), {
   day: 'numeric',
   month: 'short',
   hour: '2-digit',

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { GOOGLE_CLIENT_ID, loadGoogleIdentity } from '../lib/google';
 import { useTheme } from '../state/theme';
+import { uiLang } from '../lib/i18n';
 
 /**
  * Кнопка «Войти через Google».
@@ -56,7 +57,7 @@ export function GoogleButton({
           text,
           logo_alignment: 'center',
           width: 320,
-          locale: 'ru',
+          locale: uiLang() === 'sr' ? 'sr-Latn' : uiLang(),
         });
       })
       .catch((error: Error) => {

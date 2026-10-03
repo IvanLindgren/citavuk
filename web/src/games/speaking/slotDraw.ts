@@ -8,6 +8,7 @@
 import { DISPLAY_FAMILY, PIXEL_FAMILY, WORDMARK_FAMILY } from './slotAssets';
 import type { Particle } from './slotFx';
 import { mod, type ReelId, type SlotLayoutKind } from './slotMath';
+import { t } from '../../lib/i18n';
 
 export interface Rect { x: number; y: number; w: number; h: number }
 export interface Point { x: number; y: number }
@@ -431,9 +432,9 @@ export function drawFront(ctx: CanvasRenderingContext2D, L: SlotLayout) {
   const cy = lip.y + lip.h / 2 + 1;
   // Надпись как в шапке сайта, только отлитая в латуни: тёмная гравировка и светлая кромка.
   ctx.fillStyle = 'rgba(255,248,220,.8)';
-  ctx.fillText('Читавук', cx, cy + 1.6);
+  ctx.fillText(t('Читавук'), cx, cy + 1.6);
   ctx.fillStyle = '#3a2206';
-  ctx.fillText('Читавук', cx, cy);
+  ctx.fillText(t('Читавук'), cx, cy);
 }
 
 /** Стекло поверх барабанов: цилиндрическая тень сверху и снизу, блик, стрелки линии выигрыша. */
@@ -555,7 +556,7 @@ function drawCell(
   ctx.scale(scale, scale);
   ctx.globalAlpha = alpha;
   if (id === 'center') {
-    const fit = fitText(ctx, cell.label, r.w - L.text.pad * 2, pitch - 14, L.text);
+    const fit = fitText(ctx, t(cell.label), r.w - L.text.pad * 2, pitch - 14, L.text);
     ctx.font = `${fit.size}px ${DISPLAY_FONT}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -912,7 +913,9 @@ const tickerBitmaps = new Map<string, TickerBitmap>();
  * Текст в светодиодах: пиксельный шрифт нарисован в сетке 8 × 8, поэтому
  * рендерим его в 8 пикселей высотой, и каждый пиксель становится диодом.
  */
-export function tickerBitmap(text: string): TickerBitmap {
+export function tickerBitmap(source: string): TickerBitmap {
+  // Холст не проходит через перевод страницы — переводим сами.
+  const text = t(source);
   const hit = tickerBitmaps.get(text);
   if (hit) return hit;
   const canvas = document.createElement('canvas');

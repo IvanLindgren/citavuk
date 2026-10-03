@@ -14,3 +14,17 @@ Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
   configurable: true,
   value: () => undefined,
 });
+
+// Появление при прокрутке (framer-motion whileInView) опирается на
+// IntersectionObserver, которого в JSDOM нет.
+class NoopIntersectionObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+}
+if (!('IntersectionObserver' in window)) {
+  Object.assign(globalThis, { IntersectionObserver: NoopIntersectionObserver });
+}
