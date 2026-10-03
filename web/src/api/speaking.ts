@@ -1,5 +1,6 @@
 import { request } from './client';
 import type { Study } from './personal';
+import { translateResponse, uiLang } from '../lib/i18n';
 
 export interface SpeakingAccess {
   open: boolean;
@@ -66,8 +67,21 @@ export function getSpeakingAccess(): Promise<SpeakingAccess> {
   return request<SpeakingAccess>('/v1/games/speaking/access');
 }
 
+/**
+ * Тема и жанр в поле ru — подпись на языке сайта: на сербском сайте это сама
+ * сербская тема, на английском — перевод. Значения слов идут за языком перевода.
+ */
 export function getSpeakingTopics(): Promise<SpeakingCatalog> {
-  return request<SpeakingCatalog>('/v1/games/speaking/topics');
+  return request<SpeakingCatalog>('/v1/games/speaking/topics')
+    .then((catalog) =>
+      uiLang() === 'sr'
+        ? {
+            genres: catalog.genres.map((genre) => ({ ...genre, ru: genre.sr })),
+            topics: catalog.topics.map((topic) => ({ ...topic, ru: topic.sr })),
+          }
+        : catalog,
+    )
+    .then((catalog) => translateResponse(catalog, { keep: ['id', 'genre', 'icon', 'art', 'sr'], glosses: ['ru'] }));
 }
 
 export function reviewSpeaking(input: {

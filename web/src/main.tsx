@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from './App';
 import { installChunkRecovery } from './lib/chunkRecovery';
+import { revealI18n, startI18n } from './lib/i18n';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -11,7 +12,10 @@ if (!container) {
 }
 
 function StartupReady() {
-  useEffect(() => { window.dispatchEvent(new Event('citavuk-ready')); }, []);
+  useEffect(() => {
+    revealI18n();
+    window.dispatchEvent(new Event('citavuk-ready'));
+  }, []);
   return null;
 }
 
@@ -20,10 +24,11 @@ const bootWindow = window as Window & { __citavukMounted?: boolean };
 if (!bootWindow.__citavukMounted) {
   bootWindow.__citavukMounted = true;
   installChunkRecovery();
-  createRoot(container).render(
+  // Словарь нужен до первой отрисовки: иначе страница мигнёт по-русски.
+  void startI18n().catch(() => {}).then(() => createRoot(container).render(
   <StrictMode>
     <App />
     <StartupReady />
   </StrictMode>,
-);
+  ));
 }

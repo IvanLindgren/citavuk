@@ -26,6 +26,8 @@ import { useSync } from "../state/sync";
 import { useSeo } from '../lib/seo';
 import {StudyStats} from '../components/StudyStats';
 import './account.css';
+import { uiLocale } from "../lib/i18n";
+import { t } from "../lib/i18n";
 
 export function Account() {
   const { account } = useAuth();
@@ -104,7 +106,7 @@ function AccountSession() {
                     title="Спасибо за поддержку Читавука"
                   >
                     <LuHeartHandshake className="size-3.5 text-[var(--accent)]" aria-hidden="true" />
-                    Друг Читавука с {new Date(account.supporterSince).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' }).replace(' г.', '')}
+                    Друг Читавука с {new Date(account.supporterSince).toLocaleDateString(uiLocale(), { month: 'long', year: 'numeric' }).replace(' г.', '')}
                   </Link>
                 )}
               </div>
@@ -389,7 +391,7 @@ function AchievementTile({ achievement }: { achievement: ProfileStats['achieveme
         <p className="mt-1 text-sm leading-5 text-[var(--text-muted)]">{achievement.description}</p>
         {achievement.unlockedAt && (
           <time className="mt-2 block text-xs font-semibold text-[var(--text-muted)]">
-            Получено {new Date(achievement.unlockedAt).toLocaleDateString('ru-RU')}
+            Получено {new Date(achievement.unlockedAt).toLocaleDateString(uiLocale())}
           </time>
         )}
       </div>
@@ -399,7 +401,7 @@ function AchievementTile({ achievement }: { achievement: ProfileStats['achieveme
 
 function formatDay(day?: string) {
   if (!day) return '';
-  return new Date(`${day}T00:00:00`).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+  return new Date(`${day}T00:00:00`).toLocaleDateString(uiLocale(), { day: 'numeric', month: 'short' });
 }
 
 /**
@@ -487,7 +489,7 @@ function DeleteAccountPanel() {
       <div className="mt-5 flex flex-wrap gap-3">
         <Button
           onClick={() => void submit()}
-          disabled={busy || confirm.trim().toUpperCase() !== "УДАЛИТЬ"}
+          disabled={busy || !["УДАЛИТЬ", t("УДАЛИТЬ")].includes(confirm.trim().toUpperCase())}
         >
           {busy ? <Spinner /> : "Удалить навсегда"}
         </Button>
@@ -516,7 +518,7 @@ function SyncPanel() {
             {pending > 0
               ? `${pending} ${plural(pending, "запись ждёт", "записи ждут", "записей ждут")} отправки`
               : lastSync > 0
-                ? `Последний раз: ${new Date(lastSync).toLocaleString("ru")}`
+                ? `Последний раз: ${new Date(lastSync).toLocaleString(uiLocale())}`
                 : "Ещё не синхронизировали"}
           </p>
         </div>

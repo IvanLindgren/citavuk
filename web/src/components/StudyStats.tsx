@@ -6,6 +6,7 @@ import { latestStudy, studyMonth } from '../lib/studyCalendar';
 import { plural } from '../lib/books';
 import { Link } from '../lib/router';
 import './study-stats.css';
+import { uiLocale } from '../lib/i18n';
 
 export function StudyStats({ initial }: { initial?: Study }) {
   const [live, setLive] = useState<Study | null>(readStudy);
@@ -25,7 +26,7 @@ export function StudyStats({ initial }: { initial?: Study }) {
   const activeThisMonth = month.days.filter(d => history.get(d) === 'active' && d <= s.today).length;
   const chosen = month.days.includes(selected) ? selected : month.days.includes(s.today) ? s.today : month.days[0]!;
   const status = (day: string) => day > s.today ? 'Этот день ещё впереди' : history.get(day) === 'active' ? 'Занятие засчитано' : history.get(day) === 'frozen' ? 'Серия сохранена заморозкой' : day === s.today ? 'Сегодня можно зажечь огонь' : 'Нет отметки о занятии';
-  const dateLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+  const dateLabel = (date: string) => new Date(`${date}T12:00:00Z`).toLocaleDateString(uiLocale(), { day: 'numeric', month: 'long', timeZone: 'UTC' });
   return <section className="study-journal" aria-label="Серия и календарь занятий">
     <div className={`study-journal-story ${s.todayActive ? 'is-lit' : ''}`}>
       <span className="study-journal-kicker">Твой ритм</span>

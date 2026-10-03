@@ -5,9 +5,11 @@
   "type": "module",
   "description": "Веб-версия Citavuk: чтение на сербском с разбором слов",
   "scripts": {
-    "dev": "npm run prepare:worker && vite",
+    "dev": "npm run i18n && npm run prepare:worker && vite",
     "prepare:course": "node scripts/prepare-course-assets.mjs",
-    "build": "python scripts/build-sitemap.py && python scripts/build-stress-marks.py && npm run prepare:course && npm run prepare:worker && tsc -b && vite build && npm run prerender",
+    "i18n": "node scripts/i18n-build.mjs --strict",
+    "i18n:extract": "node scripts/i18n-extract.mjs",
+    "build": "python scripts/build-sitemap.py && python scripts/build-stress-marks.py && npm run i18n && npm run prepare:course && npm run prepare:worker && tsc -b && vite build && npm run prerender",
     "preview": "vite preview",
     "lint": "tsc -b --noEmit",
     "test": "vitest run",

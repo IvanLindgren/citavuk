@@ -24,6 +24,7 @@ import { useSeo } from '../lib/seo';
 import { acceptStudy } from '../lib/study';
 import { useAuth } from '../state/auth';
 import { useQuery } from '../lib/router';
+import { uiLocale } from '../lib/i18n';
 
 const TITLE = 'Говори или пиши';
 const SETTINGS_KEY = 'citavuk-speaking-settings';
@@ -75,7 +76,7 @@ function Shell({ children }: { children: ReactNode }) {
 }
 
 function Teaser({ access }: { access: SpeakingAccess }) {
-  const date = new Date(access.publicFrom).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const date = new Date(access.publicFrom).toLocaleDateString(uiLocale(), { day: 'numeric', month: 'long' });
   return (
     <Shell>
       <Card className="mx-auto max-w-2xl p-7 text-center sm:p-10">

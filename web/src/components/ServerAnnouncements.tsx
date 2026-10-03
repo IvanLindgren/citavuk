@@ -16,6 +16,7 @@ import type { Announcement, AnnouncementKind } from '../api/announcements';
 import { useAuth } from '../state/auth';
 import { useAnnouncements } from '../state/announcements';
 import { Button, ErrorNote } from './ui';
+import { uiLocale } from '../lib/i18n';
 
 const KIND_META: Record<AnnouncementKind, { label: string; icon: typeof LuBell }> = {
   maintenance: { label: 'Сервис', icon: LuWrench },
@@ -324,7 +325,7 @@ function NotificationCenter({ open }: { open: boolean }) {
               <button key={item.id} type="button" onClick={() => void openNotification(item)}
                 className={`block w-full border-b border-[var(--line)] px-4 py-3 text-left hover:bg-[var(--bg-sunken)] ${item.readAt ? '' : 'bg-[var(--accent)]/5'}`}>
                 <span className="flex items-start gap-2"><span className={`mt-1.5 size-2 shrink-0 rounded-full ${item.readAt ? 'bg-transparent' : 'bg-[var(--accent)]'}`} />
-                  <span><strong className="block text-sm">{item.title}</strong><span className="mt-1 block text-sm text-[var(--text-muted)]">{item.body}</span><time className="mt-1.5 block text-xs text-[var(--text-muted)]">{new Date(item.createdAt).toLocaleString('ru-RU')}</time></span>
+                  <span><strong className="block text-sm">{item.title}</strong><span className="mt-1 block text-sm text-[var(--text-muted)]">{item.body}</span><time className="mt-1.5 block text-xs text-[var(--text-muted)]">{new Date(item.createdAt).toLocaleString(uiLocale())}</time></span>
                 </span>
               </button>
             ))}

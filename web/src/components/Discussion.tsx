@@ -10,6 +10,7 @@ import {
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
+import { uiLocale } from '../lib/i18n';
 
 /**
  * Обсуждение страницы книги — только по-сербски.
@@ -115,7 +116,7 @@ export function Discussion({
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="text-sm font-semibold">{item.author}</span>
                   <span className="shrink-0 text-xs text-[var(--text-muted)]">
-                    {new Date(item.createdAt).toLocaleDateString('ru-RU', {
+                    {new Date(item.createdAt).toLocaleDateString(uiLocale(), {
                       day: 'numeric',
                       month: 'short',
                     })}

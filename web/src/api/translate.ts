@@ -1,4 +1,5 @@
 import { request } from './client';
+import { glossLang } from '../lib/i18n';
 
 export interface TranslationResult {
   /** Перевод запрошенного фрагмента. */
@@ -27,7 +28,7 @@ export function translateText(
 ): Promise<TranslationResult> {
   return request<TranslationResult>('/v1/translate', {
     method: 'POST',
-    body: { text },
+    body: { text, target: glossLang() },
     signal,
   });
 }
@@ -52,6 +53,7 @@ export function translateInContext(
       sentence,
       start: utf8ByteOffset(sentence, start),
       end: utf8ByteOffset(sentence, end),
+      target: glossLang(),
     },
     signal,
   });

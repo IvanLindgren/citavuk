@@ -42,6 +42,7 @@ import { AdminRoadmapPanel } from '../components/AdminRoadmapPanel';
 import type { CourseBundle } from '../course/types';
 import { Link, useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
+import { uiLocale } from '../lib/i18n';
 
 type AdminTab =
   | 'overview' | 'keys' | 'live' | 'errors' | 'stats'
@@ -837,14 +838,14 @@ function PanelLoader() {
 }
 
 function formatDate(value: string) {
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat(uiLocale(), {
     day: '2-digit',
     month: '2-digit',
   }).format(new Date(`${value}T00:00:00`));
 }
 
 function formatDateTime(value: string) {
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat(uiLocale(), {
     day: '2-digit',
     month: 'short',
     hour: '2-digit',

@@ -12,6 +12,7 @@ import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
 import { useFocusTrap, useScrollLock } from '../lib/overlay';
 import { ErrorNote, Spinner } from './ui';
+import { uiLocale } from '../lib/i18n';
 
 /**
  * Обсуждение карточки Вукотока — шторкой поверх ленты.
@@ -255,5 +256,5 @@ export function whenLabel(iso: string, now = Date.now()): string {
   if (hours < 24) return `${hours} ч`;
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days} дн`;
-  return new Date(at).toLocaleDateString('ru', { day: 'numeric', month: 'short' });
+  return new Date(at).toLocaleDateString(uiLocale(), { day: 'numeric', month: 'short' });
 }

@@ -56,6 +56,7 @@ import { Link, useParams, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
 import {recordStudy} from '../lib/study';
+import { Confetti, CountUp, Shake } from '../components/motion';
 
 type Phase = 'intro' | 'exercise' | 'result';
 
@@ -220,13 +221,7 @@ function CourseLessonSession() {
           >
             <CloseIcon />
           </button>
-          <div className="h-3 flex-1 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
-            <motion.div
-              className="h-full rounded-full bg-[var(--accent)]"
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.35 }}
-            />
-          </div>
+          <ProgressBar value={progress} />
           <span className="w-16 text-right text-sm font-bold text-[var(--text-muted)]">
             {phase === 'exercise' ? `${step + 1}/${sessionExercises.length}` : ''}
           </span>
@@ -244,10 +239,10 @@ function CourseLessonSession() {
         {phase === 'exercise' && (
           <motion.section
             key={exercise.id}
-            initial={{ opacity: 0, x: 22 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -18 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, x: 36, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, x: -28, filter: 'blur(3px)' }}
+            transition={{ type: 'spring', stiffness: 260, damping: 28 }}
             className="mx-auto flex min-h-[calc(100dvh-8.5rem)] max-w-3xl flex-col px-5"
           >
             <div className="flex-1 py-8">
@@ -264,13 +259,15 @@ function CourseLessonSession() {
                 </div>
               </div>
 
-              <ExerciseView
-                exercise={exercise}
-                draft={draft}
-                disabled={evaluation !== null}
-                shuffleSeed={sessionSeed}
-                onChange={setDraft}
-              />
+              <Shake trigger={evaluation && !evaluation.correct ? exercise.id : ''} className="stagger-in">
+                <ExerciseView
+                  exercise={exercise}
+                  draft={draft}
+                  disabled={evaluation !== null}
+                  shuffleSeed={sessionSeed}
+                  onChange={setDraft}
+                />
+              </Shake>
 
               {!evaluation && exercise.hint && (
                 <div className="mt-5">
@@ -1372,9 +1369,9 @@ export function Feedback({ result }: { result: Evaluation }) {
   const reduced = useReducedMotion();
   return (
     <motion.div
-      initial={reduced ? false : { opacity: 0, y: 7 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={reduced ? false : { opacity: 0, y: 14, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 420, damping: 24 }}
       role="status"
       className={[
         'relative mt-7 border-l-4 px-5 py-4',
@@ -1384,6 +1381,7 @@ export function Feedback({ result }: { result: Evaluation }) {
       ].join(' ')}
     >
       {result.correct && <SparkleBurst className="left-12 top-7 size-10" />}
+      {result.correct && <Confetti className="left-12 top-8" />}
       <div className="flex items-center gap-3">
         <CourseSprite state={result.correct ? 'correct' : 'incorrect'} size={48} />
         <h2 className="text-xl">{result.correct ? 'Верно' : 'Разберём ошибку'}</h2>
@@ -1417,11 +1415,12 @@ function LessonResult({
     >
       <div className="relative">
         {passed && <SparkleBurst className="left-1/2 top-1/2 size-16" />}
+        {passed && <Confetti count={28} className="left-1/2 top-1/3" />}
         <CourseSprite state="lessonComplete" size={220} />
       </div>
       <h1 className="mt-5 text-3xl">{passed ? 'Урок пройден' : 'Урок завершён'}</h1>
       <p className="mt-3 text-lg text-[var(--text-muted)]">
-        С первой попытки: {firstTryCorrect} из {lesson.exercises.length} ({Math.round(score * 100)}%)
+        С первой попытки: {firstTryCorrect} из {lesson.exercises.length} (<CountUp value={Math.round(score * 100)} suffix="%" />)
       </p>
       {!passed && (
         <p className="mt-3 text-sm text-[var(--text-muted)]">
@@ -1529,5 +1528,31 @@ function CloseIcon() {
     <svg viewBox="0 0 24 24" className="size-6 fill-current" aria-hidden="true">
       <path d="M6.4 5L5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6z" />
     </svg>
+  );
+}
+
+/** Полоса прогресса урока: пружинит к новому значению и пробегает бликом. */
+export function ProgressBar({ value }: { value: number }) {
+  const reduced = useReducedMotion();
+  return (
+    <div className="relative h-3 flex-1 overflow-hidden rounded-full bg-[var(--bg-sunken)]">
+      <motion.div
+        className="relative h-full overflow-hidden rounded-full bg-gradient-to-r from-[var(--accent)] to-[#d9603b]"
+        initial={false}
+        animate={{ width: `${value}%` }}
+        transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 140, damping: 20 }}
+      >
+        {!reduced && (
+          <motion.span
+            key={value}
+            aria-hidden="true"
+            className="absolute inset-y-0 w-10 bg-gradient-to-r from-transparent via-white/60 to-transparent"
+            initial={{ left: '-20%' }}
+            animate={{ left: '110%' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          />
+        )}
+      </motion.div>
+    </div>
   );
 }

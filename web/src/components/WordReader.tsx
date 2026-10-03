@@ -46,6 +46,7 @@ import { MOTION_CARD_S, MOTION_CARD_SHIFT_PX } from '../lib/tokens';
 import type { ReaderMark } from '../lib/wordReaderTypes';
 import { HighlightPicker } from './HighlightPicker';
 import type { QuoteColor } from '../lib/readerQuotes';
+import { WordsReveal } from './motion';
 export {
   bionicSplit,
   companionStart,
@@ -1047,18 +1048,18 @@ function WordCard({
                   label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
                   emphasis
                 >
-                  {result.text || '—'}
+                  <WordsReveal text={result.text || '—'} />
                 </Field>
               ) : (
                 <MascotSays
                   label={kind === 'phrase' ? 'Перевод фразы' : 'В этом предложении'}
                 >
-                  {result.text || '—'}
+                  <WordsReveal text={result.text || '—'} />
                 </MascotSays>
               )}
 
               {result.sentence && (
-                <Field label="Всё предложение">{result.sentence}</Field>
+                <Field label="Всё предложение"><WordsReveal text={result.sentence} delay={0.15} /></Field>
               )}
 
               {/* Признак выравнивания показывается только когда его нет:

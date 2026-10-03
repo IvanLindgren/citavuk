@@ -1,4 +1,5 @@
 import type { Study } from '../api/personal';
+import { uiLocale } from './i18n';
 
 export function studyMonth(today: string, offset = 0) {
   // Календарь следует дате серии с сервера; часы и часовой пояс браузера
@@ -9,7 +10,7 @@ export function studyMonth(today: string, offset = 0) {
   const count = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate();
   return {
     key: first.toISOString().slice(0, 7),
-    label: first.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric', timeZone: 'UTC' }),
+    label: first.toLocaleDateString(uiLocale(), { month: 'long', year: 'numeric', timeZone: 'UTC' }),
     padding: (first.getUTCDay() + 6) % 7,
     days: Array.from({ length: count }, (_, i) => `${first.toISOString().slice(0, 7)}-${String(i + 1).padStart(2, '0')}`),
   };

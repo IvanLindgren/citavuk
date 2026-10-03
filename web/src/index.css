@@ -1213,3 +1213,39 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Пока грузится словарь не русского интерфейса (см. index.html, lib/i18n.ts). */
+html.i18n-wait #root {
+  visibility: hidden;
+}
+
+/* Варианты ответа появляются по очереди (урок, тренажёрка). */
+@media (prefers-reduced-motion: no-preference) {
+  .stagger-in :is(button, label, [role='button']) {
+    animation: stagger-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .stagger-in :is(button, label, [role='button']):nth-child(2) { animation-delay: 0.04s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(3) { animation-delay: 0.08s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(4) { animation-delay: 0.12s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(5) { animation-delay: 0.16s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(6) { animation-delay: 0.2s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(7) { animation-delay: 0.24s; }
+  .stagger-in :is(button, label, [role='button']):nth-child(n + 8) { animation-delay: 0.28s; }
+
+  /* Нажатое слово в читалке отзывается кольцом. */
+  .reader-word.reader-word-picked {
+    animation: word-pop 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+@keyframes word-pop {
+  0% { box-shadow: 0 0 0 0 rgb(212 160 23 / 0.75), inset 0 -2px 0 0 var(--accent); }
+  100% { box-shadow: 0 0 0 9px rgb(212 160 23 / 0), inset 0 -2px 0 0 var(--accent); }
+}
