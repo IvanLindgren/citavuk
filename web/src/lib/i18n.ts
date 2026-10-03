@@ -57,18 +57,53 @@ function isLang(value: unknown): value is Lang {
 
 let cachedLang: Lang | null = null;
 
-/** Язык интерфейса: ?lang= в адресе, затем сохранённый выбор, иначе русский. */
+/**
+ * Часовые пояса, где сайт сам открывается по-английски: США, Канада,
+ * Великобритания, Ирландия, Австралия, Новая Зеландия и крупные страны
+ * Западной Европы. Пояс, а не IP: из России сюда часто ходят через VPN с
+ * европейским адресом. Те же три выражения стоят в index.html — тест сверяет.
+ */
+export const ENGLISH_ZONES =
+  '^(Europe/(London|Dublin|Berlin|Busingen|Paris|Monaco|Rome|Vatican|San_Marino|Malta|Madrid|Andorra|Gibraltar|Lisbon|Amsterdam|Brussels|Luxembourg|Vienna|Zurich|Vaduz|Copenhagen|Stockholm|Oslo|Helsinki)' +
+  '|Atlantic/(Canary|Madeira|Azores|Reykjavik)|Africa/Ceuta' +
+  '|America/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Adak|Boise|Detroit|Juneau|Sitka|Nome|Yakutat|Metlakatla|Menominee|Indiana/.+|Kentucky/.+|North_Dakota/.+' +
+  '|Toronto|Montreal|Vancouver|Edmonton|Winnipeg|Regina|Swift_Current|Halifax|Glace_Bay|Moncton|Goose_Bay|St_Johns|Whitehorse|Dawson|Dawson_Creek|Fort_Nelson|Creston|Yellowknife|Inuvik|Cambridge_Bay|Iqaluit|Rankin_Inlet|Resolute|Atikokan|Nipigon|Thunder_Bay|Rainy_River|Pangnirtung)' +
+  '|Pacific/(Honolulu|Auckland|Chatham)|Australia/.+)$';
+/** Русский в языках браузера — человек и так читает по-русски, где бы ни жил. */
+export const RUSSIAN_READER = '^(ru|uk|be|kk)\\b';
+/** Роботы и пререндер видят русский оригинал, иначе выдача станет английской. */
+export const ROBOT = 'bot|crawl|spider|slurp|lighthouse|headless|prerender';
+
+/** Язык по умолчанию для того, кто ещё ничего не выбирал. */
+export function autoLang(zone: string, languages: readonly string[], agent: string, webdriver: boolean): Lang {
+  if (webdriver || new RegExp(ROBOT, 'i').test(agent)) return 'ru';
+  if (languages.some((tag) => new RegExp(RUSSIAN_READER, 'i').test(tag))) return 'ru';
+  return new RegExp(ENGLISH_ZONES).test(zone) ? 'en' : 'ru';
+}
+
+function browserZone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    return '';
+  }
+}
+
+/** Язык интерфейса: ?lang= в адресе, затем сохранённый выбор, иначе по часовому поясу. */
 export function uiLang(): Lang {
   if (cachedLang) return cachedLang;
   let lang: Lang = 'ru';
   if (typeof window !== 'undefined') {
     const fromUrl = new URLSearchParams(window.location.search).get('lang');
+    const saved = stored(LANG_KEY);
     if (isLang(fromUrl)) {
       lang = fromUrl;
       store(LANG_KEY, fromUrl);
+    } else if (isLang(saved)) {
+      lang = saved;
     } else {
-      const saved = stored(LANG_KEY);
-      if (isLang(saved)) lang = saved;
+      const languages = navigator.languages?.length ? navigator.languages : [navigator.language ?? ''];
+      lang = autoLang(browserZone(), languages, navigator.userAgent, navigator.webdriver === true);
     }
   }
   cachedLang = lang;

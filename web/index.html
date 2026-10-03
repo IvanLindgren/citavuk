@@ -127,6 +127,21 @@
           // Не русский интерфейс: страница прячется, пока не загрузится
           // словарь (см. src/lib/i18n.ts), но не дольше четырёх секунд.
           var lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('citavuk-lang');
+          if (lang !== 'ru' && lang !== 'en' && lang !== 'sr') {
+            // Тот, кто ещё не выбирал, получает язык по часовому поясу —
+            // правило и выражения те же, что в autoLang из src/lib/i18n.ts.
+            var languages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+            var russian = false;
+            for (var i = 0; i < languages.length; i++) {
+              if (new RegExp('^(ru|uk|be|kk)\\b', 'i').test(languages[i])) russian = true;
+            }
+            var zone = '';
+            try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+            var robot = navigator.webdriver === true || new RegExp('bot|crawl|spider|slurp|lighthouse|headless|prerender', 'i').test(navigator.userAgent);
+            if (!robot && !russian && new RegExp('^(Europe/(London|Dublin|Berlin|Busingen|Paris|Monaco|Rome|Vatican|San_Marino|Malta|Madrid|Andorra|Gibraltar|Lisbon|Amsterdam|Brussels|Luxembourg|Vienna|Zurich|Vaduz|Copenhagen|Stockholm|Oslo|Helsinki)|Atlantic/(Canary|Madeira|Azores|Reykjavik)|Africa/Ceuta|America/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Adak|Boise|Detroit|Juneau|Sitka|Nome|Yakutat|Metlakatla|Menominee|Indiana/.+|Kentucky/.+|North_Dakota/.+|Toronto|Montreal|Vancouver|Edmonton|Winnipeg|Regina|Swift_Current|Halifax|Glace_Bay|Moncton|Goose_Bay|St_Johns|Whitehorse|Dawson|Dawson_Creek|Fort_Nelson|Creston|Yellowknife|Inuvik|Cambridge_Bay|Iqaluit|Rankin_Inlet|Resolute|Atikokan|Nipigon|Thunder_Bay|Rainy_River|Pangnirtung)|Pacific/(Honolulu|Auckland|Chatham)|Australia/.+)$').test(zone)) {
+              lang = 'en';
+            }
+          }
           if (lang === 'en' || lang === 'sr') {
             document.documentElement.classList.add('i18n-wait');
             document.documentElement.lang = lang === 'sr' ? 'sr-Latn' : lang;
