@@ -311,6 +311,34 @@ linux/amd64, кладёт его рядом и переименовывает п
 Готовые материалы карточки лежат в `release/play/`: скриншоты, обложка,
 примечания к выпуску. Пересобираются скриптом `python tools/make_store_assets.py`.
 
+## 5. App Store: скриншоты
+
+Публикации в App Store ещё не было. Поля карточки, ответы анкеты
+конфиденциальности и то, что закрыть до отправки (вход через Apple, жалобы
+на комментарии, политика), — в `release/appstore/app-store-connect.html`.
+
+Кадры снимает сам Flutter: `integration_test/layer_tour_test.dart` проходит
+`store_tour.dart` (читалка с карточкой слова, курс, Вукоток, карта, слушание,
+библиотека) и рисует слой сцены в PNG. Снимок simctl между шагами не
+обновлялся, поэтому так. Запуск — в облаке:
+
+```bash
+gh workflow run build-ios.yml --ref <ветка> -f screenshots=true
+```
+
+Job `build` снимает iPhone 6,9″ (1320×2868) и iPad 13″ (2064×2752) в
+симуляторах, `mac-screenshots` — Mac 2880×1800 на macos-14. Кадры забираются
+из папки приложения, пока тест ещё идёт: `flutter test` удаляет приложение
+сразу после прогона. Артефакты — `ios-screenshots` и `mac-screenshots`.
+
+Промо-кадры (подпись, орнамент, рамка, статус-бар 9:41) собирает
+`node tools/appstore_shots/compose.mjs <ios-screenshots> <mac-screenshots> release/appstore`
+— Puppeteer и шрифты берутся из `web/`, нужен `npm ci` в `web/`. Подписи — в
+`CAPTIONS` того же файла.
+
+Сборка для Mac App Store — с `--dart-define=CITAVUK_DISTRIBUTION=appstore`:
+в ней скрыты ссылки на оплату поддержки (правило 3.1.1), как на iPhone.
+
 ---
 
 ## Короткая версия — полный выпуск
