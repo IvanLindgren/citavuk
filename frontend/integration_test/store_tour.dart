@@ -62,6 +62,17 @@ Future<bool> _tapIfPresent(WidgetTester tester, String text) async {
   return true;
 }
 
+/// Объявления сервера (акции, «нас уже 100») временные — на витрине их быть
+/// не должно.
+Future<void> _hideAnnouncements(WidgetTester tester) async {
+  for (var i = 0; i < 5; i++) {
+    final close = find.byTooltip('Скрыть объявление');
+    if (close.evaluate().isEmpty) return;
+    await tester.tap(close.first);
+    await settle(tester, 1);
+  }
+}
+
 Future<void> _tab(WidgetTester tester, String label) async {
   for (final bar in [NavigationBar, NavigationRail]) {
     final target = find.descendant(of: find.byType(bar), matching: find.text(label));
@@ -90,6 +101,8 @@ Future<void> storeTour(WidgetTester tester, Shot shot) async {
     await tester.tap(close.first);
     await settle(tester, 2);
   }
+
+  await _hideAnnouncements(tester);
 
   final bookId = await UserDb.instance.insertBook(sampleTitle, '', sampleText);
   final navigator = tester.state<NavigatorState>(find.byType(Navigator).first);
@@ -124,6 +137,7 @@ Future<void> storeTour(WidgetTester tester, Shot shot) async {
     await settle(tester, 5);
     // Первый вход в Вукоток спрашивает интересы: берём всё подряд.
     if (await _tapIfPresent(tester, 'Показывай всё подряд')) await settle(tester, 8);
+    await _hideAnnouncements(tester);
     await shot(name);
   }
 }
