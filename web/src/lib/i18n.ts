@@ -292,7 +292,9 @@ function lookup(key: string): string | undefined {
     let accidental = false;
     const args = match.slice(1).map((arg) => {
       const translated = lookup(normalize(arg));
-      if (translated !== undefined) return translated;
+      // Пробел на краю подстановки остаётся: «…число.{3}» с « Ниже…» иначе
+      // склеивалось в «singular.Below».
+      if (translated !== undefined) return (/^\s*/.exec(arg)?.[0] ?? '') + translated + (/\s*$/.exec(arg)?.[0] ?? '');
       if (RUSSIAN_ONLY.test(arg)) accidental = true;
       return arg;
     });
