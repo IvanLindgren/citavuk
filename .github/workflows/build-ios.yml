@@ -121,11 +121,20 @@ jobs:
             xcrun simctl status_bar "$udid" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4
             # Кадр рисует сам Flutter (см. layer_tour_test.dart): снимок экрана
             # через simctl между шагами обхода не обновлялся.
+            # flutter test удаляет приложение сразу после прогона, а с ним и
+            # папку кадров, поэтому кадры забираются, пока тест ещё идёт.
+            mkdir -p "screenshots/$name"
+            ( while true; do
+                find ~/Library/Developer/CoreSimulator/Devices/"$udid"/data -path '*citavuk-shots*' -name '*.png' \
+                  -exec cp {} "screenshots/$name/" \; 2>/dev/null || true
+                sleep 2
+              done ) &
+            collector=$!
             flutter test integration_test/layer_tour_test.dart -d "$udid" \
               "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee "shots-$name.log"
-            mkdir -p "screenshots/$name"
+            kill "$collector" 2>/dev/null || true
             find ~/Library/Developer/CoreSimulator/Devices/"$udid"/data -path '*citavuk-shots*' -name '*.png' \
-              -exec cp {} "screenshots/$name/" \;
+              -exec cp {} "screenshots/$name/" \; 2>/dev/null || true
             ls -la "screenshots/$name"
             xcrun simctl shutdown "$udid"
             echo "::endgroup::"
