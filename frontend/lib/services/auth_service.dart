@@ -222,15 +222,13 @@ class AuthService extends ChangeNotifier {
 
   /// Интерактивный вход через Google.
   ///
-  /// На Android работает нативный SDK, на Windows и Linux — системный браузер
-  /// с возвратом на локальный сокет: настольного SDK у Google нет.
+  /// На Android и iPhone работает нативный SDK, на Windows и Linux — системный
+  /// браузер с возвратом на локальный сокет: настольного SDK у Google нет.
   Future<void> loginWithGoogleInteractive() async {
     if (kIsWeb) {
       throw ApiException('В браузере вход выполняется на самом сайте.');
     }
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return _loginWithGoogleOnAndroid();
-    }
+    if (_nativeMobile) return _loginWithGoogleNative();
     if (DesktopOAuth.supported) {
       return _loginWithGoogleOnDesktop();
     }
@@ -239,7 +237,15 @@ class AuthService extends ChangeNotifier {
 
   /// Публичный Web Client ID берётся с API, поэтому его не нужно дублировать в
   /// APK или GitHub Secrets.
-  Future<void> _loginWithGoogleOnAndroid() async {
+  /// Телефон, где вход идёт через системный SDK и окно браузера, а не через
+  /// локальный сокет.
+  bool get _nativeMobile =>
+      defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS;
+
+  /// На iPhone клиент Google берётся из Info.plist (GIDClientID, см.
+  /// ios/Flutter/Google.xcconfig), серверный — с API, как и на Android.
+  Future<void> _loginWithGoogleNative() async {
     final providers = await _providers();
     final google = providers['google'] as Map<String, dynamic>? ?? const {};
     final clientId = (google['serverClientId'] as String? ?? '').trim();
@@ -249,7 +255,16 @@ class AuthService extends ChangeNotifier {
 
     _googleInitialization ??=
         GoogleSignIn.instance.initialize(serverClientId: clientId);
-    await _googleInitialization;
+    try {
+      await _googleInitialization;
+    } catch (e) {
+      // Без GIDClientID в Info.plist iOS-SDK падает ещё на инициализации.
+      _googleInitialization = null;
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        throw ApiException('Вход через Google на iPhone пока не настроен.');
+      }
+      rethrow;
+    }
     if (!GoogleSignIn.instance.supportsAuthenticate()) {
       throw ApiException('Это устройство не поддерживает вход через Google.');
     }
@@ -352,16 +367,16 @@ class AuthService extends ChangeNotifier {
     if (kIsWeb) {
       throw ApiException('В браузере вход выполняется на самом сайте.');
     }
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return _loginWithYandexOnAndroid();
-    }
+    if (_nativeMobile) return _loginWithYandexOnMobile();
     if (DesktopOAuth.supported) {
       return _loginWithYandexOnDesktop();
     }
     throw ApiException('Вход через Яндекс на этой системе недоступен.');
   }
 
-  Future<void> _loginWithYandexOnAndroid() async {
+  /// На iPhone flutter_web_auth_2 открывает системное окно входа, и схему
+  /// citavuk:// оно перехватывает само — регистрировать её в Info.plist не нужно.
+  Future<void> _loginWithYandexOnMobile() async {
     final authorizationUrl = await _startYandex(returnTarget: 'mobile');
     final callback = Uri.parse(
       await FlutterWebAuth2.authenticate(
@@ -548,7 +563,7 @@ class AuthService extends ChangeNotifier {
     } catch (_) {
       // Сеть недоступна — выходим локально.
     }
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    if (!kIsWeb && _nativeMobile) {
       try {
         await GoogleSignIn.instance.signOut();
       } catch (_) {

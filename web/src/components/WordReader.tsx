@@ -17,7 +17,7 @@ import {
   translateText,
   type TranslationResult,
 } from '../api/translate';
-import { parseBlock } from '../lib/blocks';
+import { parseBlock, type TextSpan } from '../lib/blocks';
 import { type BionicLevel } from '../lib/readerSettings';
 import { SentenceAnalysisPanel } from './SentenceAnalysisPanel';
 import { Mascot, type MascotPose } from './Mascot';
@@ -27,6 +27,7 @@ import { type Token } from '../lib/tokenize';
 import { useSync } from '../state/sync';
 import { SparkleBurst, ThinkingDots } from './ui';
 import { TtsVoicePicker } from './TtsVoicePicker';
+import { TranslationConfidence, TranslationFeedback, type FeedbackSpan } from './TranslationFeedback';
 import { HiSpeakerWave, HiStop } from 'react-icons/hi2';
 import { ttsAudioUrl } from '../api/listening';
 import { fetchDefinition, type Definition } from '../api/definition';
@@ -389,7 +390,7 @@ export function WordReader({
               stress={stressTable}
               className={paragraphClassName}
               style={paragraphStyle}
-              marks={paragraphMarks?.[paragraphIndex] ?? []}
+              marks={withSpans(paragraphMarks?.[paragraphIndex], block.spans)}
               selectedStart={
                 selected?.paragraph === paragraphIndex ? selected.token.start : null
               }
@@ -430,6 +431,7 @@ export function WordReader({
             calm={calm}
             onClose={close}
             sourceSentence={lookup.context}
+            feedbackSpan={activePhrase ? null : lookup.span}
             onBack={history.length > 0 ? goBack : undefined}
             onSave={
               result
@@ -468,6 +470,8 @@ export function useWordLookup() {
   const [result, setResult] = useState<TranslationResult | null>(null);
   const [analysis, setAnalysis] = useState<WordAnalysis | null>(null);
   const [context, setContext] = useState('');
+  // Где нажали: жалоба на перевод должна указывать ровно на это место.
+  const [span, setSpan] = useState<FeedbackSpan | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -484,6 +488,7 @@ export function useWordLookup() {
     setResult(null);
     setAnalysis(null);
     setContext('');
+    setSpan(null);
     setError(null);
     setLoading(true);
     return controller;
@@ -495,6 +500,7 @@ export function useWordLookup() {
     setResult(null);
     setAnalysis(null);
     setContext('');
+    setSpan(null);
     setError(null);
     setLoading(false);
   }, []);
@@ -504,6 +510,7 @@ export function useWordLookup() {
       const controller = begin();
       const window = sentenceWindow(text, token.start, token.end);
       setContext(window.text);
+      setSpan({ sentence: window.text, start: window.start, end: window.end });
 
       // Разбор идёт параллельно переводу и своей ошибкой перевод не рушит:
       // словарь знает не каждое слово, а перевод нужен всегда.
@@ -555,7 +562,7 @@ export function useWordLookup() {
     [begin],
   );
 
-  return { result, analysis, context, error, loading, lookupWord, lookupPhrase, reset };
+  return { result, analysis, context, span, error, loading, lookupWord, lookupPhrase, reset };
 }
 
 /**
@@ -578,7 +585,7 @@ export function WordLookupCard({
   onClose: () => void;
 }) {
   const { sync } = useSync();
-  const { result, analysis, context, error, loading, lookupWord, reset } = useWordLookup();
+  const { result, analysis, context, span, error, loading, lookupWord, reset } = useWordLookup();
 
   useEffect(() => {
     void lookupWord(sentence, token);
@@ -596,6 +603,7 @@ export function WordLookupCard({
       loading={loading}
       onClose={onClose}
       sourceSentence={context}
+      feedbackSpan={span}
       onSave={result
         ? (asLemma) => saveFromCard(
             bookId,
@@ -673,6 +681,17 @@ async function saveFromCard(
 function cellTextAt(paragraph: string, cell: number): string {
   const block = parseBlock(paragraph);
   return block.kind === 'table' ? block.rows.flat()[cell] ?? '' : '';
+}
+
+const SPAN_MARKS: Record<string, ReaderMark['kind']> = { b: 'strong', i: 'emphasis', u: 'underline', m: 'highlight' };
+
+/** Оформление, которое читатель сделал сам, — теми же пометками, что у уроков. */
+function withSpans(marks: ReaderMark[] | undefined, spans: TextSpan[] | undefined): ReaderMark[] {
+  if (!spans?.length) return marks ?? [];
+  const own = spans.flatMap((span) =>
+    [...span.style].flatMap((ch) => (SPAN_MARKS[ch] ? [{ start: span.start, end: span.end, kind: SPAN_MARKS[ch]! }] : [])),
+  );
+  return [...(marks ?? []), ...own];
 }
 
 /** Текст обычного абзаца без служебной метки блока. */
@@ -757,6 +776,7 @@ function WordCard({
   onClose,
   onBack,
   sourceSentence,
+  feedbackSpan = null,
   onSave,
 }: {
   word: string;
@@ -774,6 +794,8 @@ function WordCard({
   onBack?: () => void;
   /** Исходное сербское предложение для грамматического разбора. */
   sourceSentence?: string;
+  /** Где нажато слово — для «Неверный перевод?»; у фразы его нет. */
+  feedbackSpan?: FeedbackSpan | null;
   onSave?: (asLemma: boolean) => Promise<SaveResult>;
 }) {
   const reduceMotion = useReducedMotion();
@@ -946,11 +968,7 @@ function WordCard({
                     )}
               </div>
             )}
-            {result?.provider && (
-              <div className="mt-0.5 text-xs text-[var(--text-muted)]">
-                {result.cached ? 'из кеша' : result.provider}
-              </div>
-            )}
+            {kind === 'word' && <TranslationConfidence result={result} analysis={analysis} />}
           </div>
           <div className="flex shrink-0 items-center gap-1">
             {onBack && (
@@ -1069,6 +1087,10 @@ function WordCard({
                   Слово переведено отдельно от фразы — в контексте значение может
                   отличаться.
                 </p>
+              )}
+
+              {kind === 'word' && feedbackSpan && !analysis?.english && (
+                <TranslationFeedback key={`${feedbackSpan.sentence}-${feedbackSpan.start}`} span={feedbackSpan} result={result} />
               )}
 
               {/* Пометка про английский идёт ПОСЛЕ перевода: человек нажал

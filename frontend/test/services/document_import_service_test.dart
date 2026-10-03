@@ -20,13 +20,21 @@ void main() {
         token: 'fixture-token',
         client: MockClient((request) async {
           calls++;
-          expect(request.url.path, '/api/documents/extract');
+          // С аккаунтом текст и картинки приходят одним запросом.
+          expect(request.url.path, '/api/v1/books/pdf-import');
           expect(request.headers['authorization'], 'Bearer fixture-token');
           expect(request.headers['content-type'],
               startsWith('multipart/form-data'));
           expect(request.body, contains('name="file"; filename="test.pdf"'));
           return http.Response(
-              jsonEncode({'text': 'Vuk cita knjigu.\nAlisa vidi zeca.'}), 200);
+              jsonEncode({
+                'text': 'Vuk cita knjigu.\nAlisa vidi zeca.',
+                'images': [
+                  {'page': 1, 'centerY': 700, 'pageHeight': 800, 'url': 'https://cdn/zec.jpg'},
+                ],
+                'imagePages': 1,
+              }),
+              200);
         }));
     final service = DocumentImportService(client, mobile: true,
         localParser: (name, bytes, progress) async {
@@ -36,7 +44,22 @@ void main() {
     final paragraphs = await service.parse(
         'test.pdf', Uint8List.fromList([37, 80, 68, 70]), (_) {});
     expect(paragraphs.join(' '), contains('Alisa vidi zeca.'));
+    expect(paragraphs.join(' '), contains('https://cdn/zec.jpg'));
     expect(calls, 1);
+  });
+
+  test('без аккаунта телефон разбирает PDF по-старому, без картинок', () async {
+    final client = ApiClient(
+        baseUrl: 'https://example.test/api',
+        client: MockClient((request) async {
+          expect(request.url.path, '/api/documents/extract');
+          return http.Response(jsonEncode({'text': 'Vuk cita knjigu.'}), 200);
+        }));
+    final service = DocumentImportService(client, mobile: true,
+        localParser: (name, bytes, progress) async => fail('не должен'));
+    final paragraphs = await service.parse(
+        'test.pdf', Uint8List.fromList([37, 80, 68, 70]), (_) {});
+    expect(paragraphs.join(' '), contains('Vuk cita knjigu.'));
   });
 
   for (final large in [false, true]) {

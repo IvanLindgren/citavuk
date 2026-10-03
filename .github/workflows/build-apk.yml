@@ -13,12 +13,13 @@ on:
           - android
           - windows
           - linux
+          - android-windows
 
 # Версия Flutter должна совпадать с локальной (см. AGENTS.md): проект использует
 # API Flutter 3.27+ (Color.withValues / Color.toARGB32 / CardThemeData), которых
 # нет в 3.24.x — на них и падала сборка.
 env:
-  FLUTTER_VERSION: '3.44.x'
+  FLUTTER_VERSION: '3.47.2'
 
 jobs:
   # Проверки идут один раз на все платформы, а не по разу в каждой сборке.
@@ -77,7 +78,7 @@ jobs:
 
   android:
     needs: checks
-    if: inputs.target == 'all' || inputs.target == 'android'
+    if: inputs.target == 'all' || inputs.target == 'android' || inputs.target == 'android-windows'
     runs-on: ubuntu-latest
 
     steps:
@@ -142,8 +143,8 @@ jobs:
           KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
-          flutter build apk --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
-          flutter build appbundle --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+          flutter build apk --release --dart-define=CITAVUK_DISTRIBUTION=direct "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+          flutter build appbundle --release --dart-define=CITAVUK_DISTRIBUTION=play "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
 
       - name: Ключ карты попал в сборку
         working-directory: ./frontend
@@ -171,7 +172,7 @@ jobs:
 
   windows:
     needs: checks
-    if: inputs.target == 'all' || inputs.target == 'windows'
+    if: inputs.target == 'all' || inputs.target == 'windows' || inputs.target == 'android-windows'
     runs-on: windows-2022
     steps:
       - name: Checkout repository
@@ -243,11 +244,13 @@ jobs:
         working-directory: frontend
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
         run: |
           docker build \
             --file deploy/linux/Dockerfile \
-            --build-arg FLUTTER_VERSION=3.44.0 \
+            --build-arg FLUTTER_VERSION=${{ env.FLUTTER_VERSION }} \
             --build-arg "MAPTILER_KEY=$MAPTILER_KEY" \
+            --build-arg "CITAVUK_UPDATE_PUBLIC_KEY=$CITAVUK_UPDATE_PUBLIC_KEY" \
             --target artifact \
             --output type=local,dest=build \
             .

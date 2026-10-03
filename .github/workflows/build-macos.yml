@@ -1,9 +1,6 @@
 name: Build macOS
 
-# Только по кнопке. Сборка идёт на платном macos-раннере и красит main в
-# красный из-за проверки ключа, которая на этой платформе пока не разобрана
-# (см. задачу про пересборку macOS). Держать её на каждом пуше во frontend
-# значит платить за минуты и терять сигнал: красный main перестают читать.
+# Только по кнопке: сборка Apple использует платные минуты раннера.
 on:
   workflow_dispatch:
 
@@ -24,7 +21,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.44.x'
+          flutter-version: '3.47.2'
           channel: stable
           cache: true
 
@@ -54,30 +51,18 @@ jobs:
         working-directory: frontend
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
-        run: flutter build macos --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
+        run: |
+          test -n "$CITAVUK_UPDATE_PUBLIC_KEY"
+          flutter build macos --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" "--dart-define=CITAVUK_UPDATE_PUBLIC_KEY=$CITAVUK_UPDATE_PUBLIC_KEY"
 
       - name: Ключ карты попал в сборку
         working-directory: frontend
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
         run: |
-          # -R, а не -r: код Dart лежит в App.framework, а тот собран из
-          # симлинков, внутрь которых -r не заходит.
-          #
-          # Результат в переменную, а не через -q: под `set -e` неудачный grep
-          # оборвал бы шаг молча, и вместо объяснения мы получили бы голый
-          # ненулевой код возврата.
-          found=$(grep -aRlF -e "$MAPTILER_KEY" \
-            build/macos/Build/Products/Release/ 2>/dev/null | head -n 3 || true)
-          if [ -n "$found" ]; then
-            echo "ключ на месте:"
-            echo "$found"
-          else
-            echo "::error::В снапшоте macOS нет ключа карты — define потерялся."
-            echo "искали здесь:"
-            find build/macos/Build/Products/Release -maxdepth 5 | head -n 40
-            exit 1
-          fi
+          python3 ../tools/verify_build_settings.py build/macos/Build/Products/Release/Citavuk.app MAPTILER_KEY CITAVUK_UPDATE_PUBLIC_KEY
 
       - name: Package application
         working-directory: frontend

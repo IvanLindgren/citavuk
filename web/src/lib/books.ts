@@ -151,6 +151,30 @@ export async function importParagraphs(
   return meta;
 }
 
+/**
+ * Заменяет текст книги после правки.
+ *
+ * Адрес содержимого считается заново, а запись помечается изменённой:
+ * синхронизация выгрузит новый текст и разнесёт его по устройствам так же,
+ * как новую книгу. Правится личная копия — у книги из публичной библиотеки
+ * это и так своя запись читателя.
+ */
+export async function replaceParagraphs(meta: BookMeta, paragraphs: string[]): Promise<BookMeta> {
+  const next: BookMeta = {
+    ...meta,
+    paragraphCount: paragraphs.length,
+    lastParagraph: Math.min(meta.lastParagraph, Math.max(0, paragraphs.length - 1)),
+    contentSha: await contentSha(paragraphs),
+    contentUploaded: false,
+    contentTooLarge: false,
+    textMissing: false,
+    updatedAt: now(),
+    dirty: 1,
+  };
+  await saveBook(next, paragraphs);
+  return next;
+}
+
 /** Запоминает место остановки. */
 export async function saveProgress(id: string, lastParagraph: number, lastOffset = 0): Promise<void> {
   const book = await getBook(id);

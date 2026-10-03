@@ -1,0 +1,136 @@
+name: Build iOS
+
+# Сборка iOS без подписи и скриншоты главных экранов в симуляторах.
+#
+# Подписывает и отправляет в TestFlight владелец сертификата на своём маке —
+# здесь только проверка, что приложение собирается под устройство, и кадры,
+# по которым видно, не ушло ли что-то под Dynamic Island или полоску «домой».
+#
+# Только по кнопке: macOS-минуты платные, а на каждый пуш во frontend эта
+# проверка не нужна.
+on:
+  workflow_dispatch:
+    inputs:
+      screenshots:
+        description: Снять экраны в симуляторах после сборки
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: citavuk-ios
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # Xcode 26: с ним в симуляторе iOS 26 и Liquid Glass.
+    runs-on: macos-26
+    timeout-minutes: 90
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: frontend
+        run: flutter analyze lib integration_test test_driver
+
+      - name: Google для iOS
+        working-directory: frontend
+        env:
+          GOOGLE_CLIENT_ID_IOS: ${{ secrets.GOOGLE_CLIENT_ID_IOS }}
+        run: |
+          python3 - <<'PY'
+          import os,re,pathlib
+          client=os.environ['GOOGLE_CLIENT_ID_IOS'].strip()
+          if not re.fullmatch(r'[\w-]+\.apps\.googleusercontent\.com',client):
+              raise SystemExit('Не задан клиент Google для iOS')
+          reverse='.'.join(reversed(client.split('.')))
+          pathlib.Path('ios/Flutter/Google.xcconfig').write_text('GOOGLE_IOS_CLIENT_ID = '+client+'\nGOOGLE_REVERSED_CLIENT_ID = '+reverse+'\n')
+          PY
+
+      - name: Build iOS release (без подписи)
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          test -n "$MAPTILER_KEY"
+          flutter build ipa --release --no-codesign "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+
+      - name: Проверить и упаковать iOS
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+          GOOGLE_CLIENT_ID_IOS: ${{ secrets.GOOGLE_CLIENT_ID_IOS }}
+        run: |
+          set -euo pipefail
+          ARCHIVE='build/ios/archive/Runner.xcarchive'
+          APP="$ARCHIVE/Products/Applications/Runner.app"
+          test -d "$APP"
+          python3 ../tools/verify_build_settings.py "$APP" MAPTILER_KEY
+          actual=$(/usr/libexec/PlistBuddy -c 'Print :GIDClientID' "$APP/Info.plist")
+          test "$actual" = "$GOOGLE_CLIENT_ID_IOS"
+          mkdir -p build/ios/unsigned/Payload
+          ditto "$APP" build/ios/unsigned/Payload/Runner.app
+          (cd build/ios/unsigned && zip -qry ../citavuk-ios-unsigned.ipa Payload)
+          ditto -c -k --sequesterRsrc --keepParent "$ARCHIVE" build/ios/citavuk-ios-xcarchive.zip
+          shasum -a 256 build/ios/citavuk-ios-unsigned.ipa build/ios/citavuk-ios-xcarchive.zip > build/ios/sha256sums.txt
+
+      - name: Сохранить пакеты iOS
+        uses: actions/upload-artifact@v4
+        with:
+          name: citavuk-ios
+          if-no-files-found: error
+          path: |
+            frontend/build/ios/citavuk-ios-unsigned.ipa
+            frontend/build/ios/citavuk-ios-xcarchive.zip
+            frontend/build/ios/sha256sums.txt
+
+      - name: Скриншоты в симуляторах
+        if: inputs.screenshots
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          set -euo pipefail
+          devices=$(xcrun simctl list devices available -j)
+          # С Dynamic Island — самая новая модель Pro; без выреза и с кнопкой
+          # «домой» — SE: на нём тесно, и по нему видно, что ничего не обрезано.
+          pro=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone [0-9]+ Pro$"))] | last | .udid')
+          se=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone SE"))] | last | .udid')
+          for udid in $pro $se; do
+            [ -n "$udid" ] && [ "$udid" != "null" ] || continue
+            name=$(echo "$devices" | jq -r --arg u "$udid" '.devices[][] | select(.udid == $u) | .name' | tr ' ' '-')
+            echo "::group::$name"
+            xcrun simctl boot "$udid"
+            xcrun simctl bootstatus "$udid" -b
+            # Ровный статус-бар: 9:41, полная батарея — как на витрине.
+            xcrun simctl status_bar "$udid" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4
+            SCREENSHOT_DIR="$PWD/screenshots/$name" SIMULATOR_UDID="$udid" \
+              flutter drive -d "$udid" \
+                --driver=test_driver/integration_test.dart \
+                --target=integration_test/screenshot_tour_test.dart \
+                "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+            xcrun simctl shutdown "$udid"
+            echo "::endgroup::"
+          done
+
+      - name: Сохранить скриншоты
+        if: always() && inputs.screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-screenshots
+          path: frontend/screenshots
+          if-no-files-found: warn

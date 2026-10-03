@@ -561,6 +561,12 @@ class _WordAnalysisBodyState extends State<WordAnalysisBody> {
                   )
                 else
                   _offlineNotice(scheme),
+                if (usable && !isPhrase && !data.isEnglish) ...[
+                  TranslationConfidence(data: data),
+                  if (data.contextInfo != null)
+                    TranslationFeedbackLink(
+                        info: data.contextInfo!, shown: primaryTranslation),
+                ],
                 if (usable && hasContext) ...[
                   const SizedBox(height: 10),
                   _generalTranslationCard(scheme, gen),

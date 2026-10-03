@@ -23,9 +23,21 @@ const MARKER = '\u0000citavuk:';
 
 const IMAGE_MARKER = `${MARKER}image\n`;
 const TABLE_MARKER = `${MARKER}table\n`;
+const RICH_MARKER = `${MARKER}rich\n`;
+
+/**
+ * Оформление куска абзаца, который читатель поправил сам: b — жирный,
+ * i — курсив, u — подчёркивание, m — маркер. Границы — индексы строки
+ * JavaScript (UTF-16), в Dart те же.
+ */
+export interface TextSpan {
+  start: number;
+  end: number;
+  style: string;
+}
 
 export type Block =
-  | { kind: 'text'; text: string }
+  | { kind: 'text'; text: string; spans?: TextSpan[] }
   | { kind: 'image'; url: string; alt: string }
   | { kind: 'table'; rows: string[][] };
 
@@ -62,7 +74,57 @@ export function parseBlock(paragraph: string): Block {
     return { kind: 'table', rows };
   }
 
+  if (paragraph.startsWith(RICH_MARKER)) {
+    // Абзац с оформлением — тот же текст: всё, что работает со словами
+    // (разбор по нажатию, перевод, поиск, озвучка), видит только text.
+    // Отрезки стилей лежат отдельно, поэтому смещения слов не сдвигаются.
+    const body = paragraph.slice(RICH_MARKER.length);
+    const newline = body.indexOf('\n');
+    if (newline < 0) return { kind: 'text', text: body };
+    const text = body.slice(newline + 1);
+    return { kind: 'text', text, spans: normalizeSpans(parseSpans(body.slice(0, newline)), text.length) };
+  }
+
   return { kind: 'text', text: paragraph };
+}
+
+function parseSpans(raw: string): TextSpan[] {
+  try {
+    const data: unknown = JSON.parse(raw);
+    if (!Array.isArray(data)) return [];
+    return data.flatMap((item) =>
+      Array.isArray(item) && typeof item[0] === 'number' && typeof item[1] === 'number' && typeof item[2] === 'string'
+        ? [{ start: item[0], end: item[1], style: item[2] }]
+        : [],
+    );
+  } catch {
+    // Битое оформление — не повод терять текст.
+    return [];
+  }
+}
+
+const STYLES = 'bimu';
+
+/** Чистые отрезки: в пределах текста, без пустых, стили в постоянном порядке. */
+export function normalizeSpans(spans: TextSpan[], length: number): TextSpan[] {
+  const out: TextSpan[] = [];
+  for (const span of [...spans].sort((a, b) => a.start - b.start || a.end - b.end)) {
+    const start = Math.max(0, Math.min(length, Math.floor(span.start)));
+    const end = Math.max(start, Math.min(length, Math.floor(span.end)));
+    const style = [...STYLES].filter((ch) => span.style.includes(ch)).join('');
+    if (end > start && style) out.push({ start, end, style });
+  }
+  return out;
+}
+
+/**
+ * Собирает абзац с оформлением. Без оформления — обычная строка: так абзац
+ * читают и старые версии приложения.
+ */
+export function richParagraph(text: string, spans: TextSpan[]): string {
+  const clean = normalizeSpans(spans, text.length);
+  if (clean.length === 0) return text;
+  return RICH_MARKER + JSON.stringify(clean.map((span) => [span.start, span.end, span.style])) + '\n' + text;
 }
 
 /** Разбирает всю книгу. */

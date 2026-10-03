@@ -11,7 +11,11 @@ class TranslationResult {
     this.sentence,
     this.provider = '',
     this.aligned = false,
+    this.verified = false,
   });
+
+  /// Перевод исправлен или подтверждён человеком, а не машиной.
+  final bool verified;
 
   /// Перевод запрошенного фрагмента.
   final String text;
@@ -118,6 +122,7 @@ class TranslationClient {
         sentence: (sentence?.isEmpty ?? true) ? null : sentence,
         provider: (data['provider'] as String?) ?? '',
         aligned: data['aligned'] == true,
+        verified: data['verified'] == true,
       );
     } catch (_) {
       return null;

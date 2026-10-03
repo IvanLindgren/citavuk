@@ -37,6 +37,8 @@ const (
 const (
 	ProviderDeepL  = "deepl"
 	ProviderGoogle = "google"
+	// ProviderCitavuk — исправление редактора или принятая жалоба читателя.
+	ProviderCitavuk = "citavuk"
 )
 
 // PickProvider выбирает переводчика под объём документа.

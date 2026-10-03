@@ -1,0 +1,12 @@
+// Вход через Google на iPhone.
+//
+// Нужен отдельный клиент типа iOS в Google Cloud Console с bundle id
+// приложения. Оба значения публичные: они и так видны внутри приложения.
+// Тот же ID надо добавить на сервер в GOOGLE_CLIENT_ID_IOS, иначе сервер
+// не признает токен входа.
+//
+// Пока строки пустые, кнопка Google на iPhone честно отвечает, что вход
+// не настроен, а остальное приложение работает.
+GOOGLE_IOS_CLIENT_ID = 904373058575-7shtuj4p2qsm9tkm6ke1ucu627klk426.apps.googleusercontent.com
+// Тот же ID задом наперёд: com.googleusercontent.apps.<число-хвост>.
+GOOGLE_REVERSED_CLIENT_ID = com.googleusercontent.apps.904373058575-7shtuj4p2qsm9tkm6ke1ucu627klk426

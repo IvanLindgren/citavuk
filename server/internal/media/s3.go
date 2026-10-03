@@ -228,6 +228,31 @@ func (s *Service) Upload(
 	return nil
 }
 
+// StoreBookImage кладёт картинку книги прямо с сервера — для картинок, которые
+// достал сам сервер (из PDF для приложения). Ключ тот же, что у загрузки из
+// браузера: от содержимого. Одна и та же книга, добавленная на сайте и в
+// приложении, получает одинаковые адреса картинок и остаётся одной книгой.
+func (s *Service) StoreBookImage(ctx context.Context, owner uuid.UUID, mimeType string, data []byte) (string, error) {
+	ext, err := imageExtension(mimeType, int64(len(data)))
+	if err != nil {
+		return "", err
+	}
+	digest := sha256.Sum256(data)
+	key := path.Join("books", owner.String(), hex.EncodeToString(digest[:])+"."+ext)
+	if !s.objectExists(ctx, key) {
+		if _, err := s.s3.PutObject(ctx, &awss3.PutObjectInput{
+			Bucket:        aws.String(s.bucket),
+			Key:           aws.String(key),
+			Body:          bytes.NewReader(data),
+			ContentLength: aws.Int64(int64(len(data))),
+			ContentType:   aws.String(mimeType),
+		}); err != nil {
+			return "", fmt.Errorf("S3 upload failed: %w", err)
+		}
+	}
+	return s.publicBase + "/" + key, nil
+}
+
 func (s *Service) objectExists(ctx context.Context, key string) bool {
 	_, err := s.s3.HeadObject(ctx, &awss3.HeadObjectInput{
 		Bucket: aws.String(s.bucket),

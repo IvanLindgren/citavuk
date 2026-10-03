@@ -1,12 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { SupporterPodium, SupportShowcase } from './SupportShowcase';
+import { SupporterPodium } from './SupportShowcase';
+import { StarfallShowcase } from './StarfallShowcase';
 import { RouterProvider } from '../lib/router';
 
 describe('supporter podium', () => {
-  it('shows the approved day-place copy with a line break', () => {
-    const html = renderToStaticMarkup(<RouterProvider><SupportShowcase /></RouterProvider>);
-    expect(html).toContain('Место дня получает самая большая поддержка за предыдущий день по МСК.\nИмя и сумма показываются с разрешения автора, а сообщение, которое он хотел оставить, после проверки.');
+  it('shows the author copy and permanent supporter benefits', () => {
+    const html = renderToStaticMarkup(<RouterProvider><StarfallShowcase /></RouterProvider>);
+    expect(html).toContain('Я делаю Читавук один и хочу, чтобы учить сербский было проще и интереснее');
+    expect(html).toContain('Твоя поддержка помогает оплачивать сервер, перевод и озвучку, исправлять ошибки и выпускать новые возможности');
+    expect(html).toContain('рублей вы навсегда получаете статус друга Читавука');
+    expect(html).not.toContain('Над холмом горят имена');
+    expect(html).not.toContain('Место дня получает');
+    expect(html).not.toContain('одной оплатой или несколькими');
   });
   it('handles zero or one supporter without empty podium places', () => {
     expect(renderToStaticMarkup(<SupporterPodium supporters={[]} />)).not.toContain('<li');

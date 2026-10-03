@@ -104,7 +104,7 @@ class AnalysisRepository {
       try {
         var base = WordAnalysis.fromCacheJson(
             jsonDecode(cachedJson) as Map<String, dynamic>, token);
-        final translations = await Future.wait<String?>([
+        final translations = await Future.wait<Object?>([
           _recoverGeneralTranslation(
             surface: token,
             lemma: base.lemma,
@@ -117,14 +117,16 @@ class AnalysisRepository {
             tokenText: token,
           ),
         ]);
-        final general = translations[0];
-        final contextual = translations[1];
+        final general = translations[0] as String?;
+        final contextResult = translations[1] as _ContextTranslation?;
+        final contextual = contextResult?.text;
         final displayTranslation =
             general ?? contextual ?? '[Перевод временно недоступен]';
         base = base.copyWith(
           translation: displayTranslation,
           contextualTranslation: contextual,
           clearContextualTranslation: contextual == null,
+          contextInfo: contextResult?.info,
           isOffline: general == null && contextual == null,
         );
         if (general != null) {
@@ -162,7 +164,7 @@ class AnalysisRepository {
         // вернуть морфологию, но не суметь сходить к Google. Контекстный
         // перевод идёт через основной Go-сервер всегда, иначе первый тап
         // показывал сохранённую строку «[Перевод недоступен]».
-        final translations = await Future.wait<String?>([
+        final translations = await Future.wait<Object?>([
           _recoverGeneralTranslation(
             surface: token,
             lemma: result.lemma,
@@ -175,14 +177,16 @@ class AnalysisRepository {
             tokenText: token,
           ),
         ]);
-        final general = translations[0];
-        final contextual = translations[1];
+        final general = translations[0] as String?;
+        final contextResult = translations[1] as _ContextTranslation?;
+        final contextual = contextResult?.text;
         final displayTranslation =
             general ?? contextual ?? '[Перевод временно недоступен]';
         result = result.copyWith(
           translation: displayTranslation,
           contextualTranslation: contextual,
           clearContextualTranslation: contextual == null,
+          contextInfo: contextResult?.info,
           isOffline: general == null && contextual == null,
         );
         if (general != null) {
@@ -251,7 +255,7 @@ class AnalysisRepository {
           .getCachedTranslation(parsed.lemma, source: 'en');
       final needGeneral = general == null;
 
-      final results = await Future.wait<String?>([
+      final results = await Future.wait<Object?>([
         needGeneral
             ? _translateOnline(parsed.lemma, source: 'en')
             : Future<String?>.value(general),
@@ -264,8 +268,9 @@ class AnalysisRepository {
         ),
       ]);
 
-      final generalNet = needGeneral ? results[0] : null;
-      final contextual = results[1];
+      final generalNet = needGeneral ? results[0] as String? : null;
+      final contextResult = results[1] as _ContextTranslation?;
+      final contextual = contextResult?.text;
       if (generalNet != null) {
         await UserDb.instance
             .cacheTranslation(parsed.lemma, generalNet, source: 'en');
@@ -278,6 +283,7 @@ class AnalysisRepository {
         upos: parsed.upos,
         translation: general ?? '[Перевод недоступен — нет интернета]',
         contextualTranslation: contextual,
+        contextInfo: contextResult?.info,
         isOffline: generalNet == null && contextual == null,
         english: parsed,
       );
@@ -366,22 +372,23 @@ class AnalysisRepository {
     final wantContext =
         sentence != null && startOffset != null && endOffset != null;
 
-    final results = await Future.wait<String?>([
-      needGeneralOnline
-          ? _translateOnline(lemma)
-          : Future<String?>.value(general),
-      wantContext
-          ? _translateContextualOnline(
-              sentence: sentence,
-              startOffset: startOffset,
-              endOffset: endOffset,
-              tokenText: tokenText,
-            )
-          : Future<String?>.value(null),
-    ]);
+    // Оба запроса стартуют до первого await — идут параллельно.
+    final generalFuture = needGeneralOnline
+        ? _translateOnline(lemma)
+        : Future<String?>.value(general);
+    final contextFuture = wantContext
+        ? _translateContextualOnline(
+            sentence: sentence,
+            startOffset: startOffset,
+            endOffset: endOffset,
+            tokenText: tokenText,
+          )
+        : Future<_ContextTranslation?>.value(null);
+    final generalResult = await generalFuture;
+    final contextResult = await contextFuture;
 
-    final generalNet = needGeneralOnline ? results[0] : null; // из сети
-    final contextual = results[1];
+    final generalNet = needGeneralOnline ? generalResult : null; // из сети
+    final contextual = contextResult?.text;
     if (generalNet != null) {
       // Кэшируем по начальной форме — это словарное значение (см. выше).
       await UserDb.instance.cacheTranslation(lemma, generalNet);
@@ -397,13 +404,16 @@ class AnalysisRepository {
       forms: forms,
       translation: generalFinal ?? '[Перевод недоступен — нет интернета]',
       contextualTranslation: contextual,
+      contextInfo: contextResult?.info,
       isOffline: !online,
       generated: remote?.generated ?? false,
+      // Догадку нейросети словарём не считаем: статьи за ней нет.
+      inDictionary: morph != null || (remote != null && !remote.generated),
     );
   }
 
   /// Прямой контекстный sr→ru перевод через разметку предложения.
-  Future<String?> _translateContextualOnline({
+  Future<_ContextTranslation?> _translateContextualOnline({
     required String sentence,
     required int startOffset,
     required int endOffset,
@@ -431,7 +441,16 @@ class AnalysisRepository {
         source: source,
       );
       if (viaServer != null && viaServer.aligned && viaServer.text.isNotEmpty) {
-        return _usableTranslation(viaServer.text);
+        return _ContextTranslation.of(
+          _usableTranslation(viaServer.text),
+          ContextTranslationInfo(
+            provider: viaServer.provider,
+            verified: viaServer.verified,
+            sentence: w.text,
+            start: w.start,
+            end: w.end,
+          ),
+        );
       }
 
       final tagged =
@@ -445,7 +464,16 @@ class AnalysisRepository {
           final inner = match.group(1)?.trim();
           // Иногда Google теряет тег и переводит «<w>» как слово — отсекаем мусор.
           if (inner != null && inner.isNotEmpty && !inner.contains('<')) {
-            return _usableTranslation(inner);
+            return _ContextTranslation.of(
+              _usableTranslation(inner),
+              ContextTranslationInfo(
+                provider: 'google',
+                verified: false,
+                sentence: w.text,
+                start: w.start,
+                end: w.end,
+              ),
+            );
           }
         }
       }
@@ -1018,4 +1046,15 @@ class AnalysisRepository {
     }
     return forms;
   }
+}
+
+/// Перевод «в этом тексте» вместе с тем, откуда он и где стояло слово.
+class _ContextTranslation {
+  const _ContextTranslation(this.text, this.info);
+
+  static _ContextTranslation? of(String? text, ContextTranslationInfo info) =>
+      text == null ? null : _ContextTranslation(text, info);
+
+  final String text;
+  final ContextTranslationInfo info;
 }

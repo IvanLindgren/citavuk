@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { LuBadgeCheck, LuBookOpen, LuHeart, LuKeyboard, LuLightbulb, LuShieldCheck, LuUsers } from 'react-icons/lu';
+import { LuHeart, LuShieldCheck } from 'react-icons/lu';
 
 import { ApiError } from '../api/client';
 import {
@@ -16,42 +16,13 @@ import { Button, Card, ErrorNote, Reveal } from '../components/ui';
 import { Link } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
+import { PERKS, SUPPORTER_THRESHOLD } from '../lib/supportPerks';
 import { SUPPORT_SELLER } from './supportSeller';
 import { GuestDonationPanel } from '../components/GuestDonationPanel';
 
 const PRESETS = [200, 500, 1000] as const;
 const MIN_AMOUNT = 50;
 const MAX_AMOUNT = 100_000;
-const SUPPORTER_THRESHOLD = 200;
-
-const PERKS = [
-  {
-    icon: LuUsers,
-    title: 'Имя среди друзей Читавука',
-    text: 'На отдельной странице и на главной — если разрешишь его показывать.',
-  },
-  {
-    icon: LuBadgeCheck,
-    title: 'Значок в профиле',
-    text: 'Появляется в аккаунте сразу после оплаты. Суммы складываются: две поддержки по 100 ₽ тоже считаются.',
-  },
-  {
-    icon: LuBookOpen,
-    title: 'Закрытая библиотека',
-    text: 'Книги и подкасты на сербском, которых нет в общей библиотеке. Открываются в читалке со всеми подсказками.',
-  },
-  {
-    icon: LuKeyboard,
-    title: 'Новые игры раньше всех',
-    text: '«Уничтожь эти падежи» — печатная машинка с лапами Читавука: друзьям сразу, остальным с 12 октября.',
-  },
-  {
-    icon: LuLightbulb,
-    title: 'Идея вне очереди',
-    text: 'Напиши, чего не хватает в Читавуке, — рассмотрю первой и честно отвечу, получится ли.',
-  },
-] as const;
-
 export function Support() {
   useSeo({
     title: 'Поддержать Читавук',

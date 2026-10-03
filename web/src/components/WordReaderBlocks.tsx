@@ -161,6 +161,8 @@ function MarkedToken({ text, token, marks }: { text: string; token: Token; marks
       if (mark.kind === 'strong') style.fontWeight = 700;
       if (mark.kind === 'emphasis') style.fontStyle = 'italic';
       if (mark.kind === 'strike') style.textDecoration = 'line-through';
+      if (mark.kind === 'underline') classes.push('underline decoration-2 underline-offset-4');
+      if (mark.kind === 'highlight') classes.push('rounded-sm bg-[var(--highlight,#f6e27a)]/70 px-0.5 text-[var(--text)]');
       if (mark.kind === 'font') style.fontFamily = mark.value === 'sans' ? 'var(--font-sans)' : 'var(--font-display)';
       if (mark.kind === 'size' && mark.value) style.fontSize = `${mark.value}px`;
       if (mark.kind === 'code') classes.push('rounded bg-[var(--bg-sunken)] px-1 py-0.5 font-mono text-[0.9em]');

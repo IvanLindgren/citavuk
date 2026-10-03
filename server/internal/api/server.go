@@ -44,6 +44,7 @@ type Server struct {
 	audioProxy      *httputil.ReverseProxy
 	redis           *rediscache.Redis
 	documentHTTP    *http.Client
+	feedbackBot     *feedbackBot
 	quiz            *quiz.Generator
 	daily           *daily.Generator
 	dailyLessons    singleflight.Group
@@ -137,6 +138,7 @@ func New(
 			WithBudget(translate.NewBudget(cfg.DeepLRunesPerDay)),
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
+		feedbackBot:  newFeedbackBot(cfg.FeedbackBotToken, cfg.FeedbackChatID, st),
 		quiz:         quiz.NewGenerator(cfg.QuizAPIKey, cfg.QuizModel, cfg.QuizURL),
 		daily: daily.NewGenerator(
 			cfg.DailyAIKey, cfg.DailyAIModel, cfg.DailyAIURL,
@@ -251,6 +253,7 @@ func New(
 	go s.runPersonalJobs()
 	go s.runSupportRenewals()
 	go s.runDonationReconciliation()
+	go s.runFeedbackBot()
 
 	return s, nil
 }
@@ -477,6 +480,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/documents/translation/{id}/finish", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleFinishTranslation)))
 	// Картинки из книги. Ключ считается от содержимого, поэтому одна и та же
 	// книга с разных устройств остаётся одной книгой (см. media.BookImagePolicy).
+	mux.HandleFunc("POST /v1/books/media/image", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleUploadBookImageDirect)))
+	// Картинки из PDF для приложения: у него нет отрисовщика PDF.
+	mux.HandleFunc("POST /v1/books/pdf-images", s.requireAuth(s.rateLimitIdentity(s.documentFetchLimit, s.handlePDFImages)))
+	// Телефон: текст и картинки PDF одним запросом, чтобы не заливать файл дважды.
+	mux.HandleFunc("POST /v1/books/pdf-import", s.requireAuth(s.rateLimitIdentity(s.documentFetchLimit, s.handlePDFImport)))
 	mux.HandleFunc("POST /v1/books/media/upload-policy", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleBookImagePolicy)))
 	mux.HandleFunc("PUT /v1/media/upload", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleMediaUpload)))
 
@@ -608,6 +616,12 @@ func (s *Server) Handler() http.Handler {
 	// ограничен жёстче вошедшего — квота DeepL общая на всех.
 	mux.HandleFunc("POST /v1/translate", s.optionalAuth(s.rateLimitTranslate(s.handleTranslate)))
 	mux.HandleFunc("POST /v1/translate/context", s.optionalAuth(s.rateLimitTranslate(s.handleTranslateInContext)))
+	mux.HandleFunc("POST /v1/translation-feedback", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleCreateTranslationFeedback)))
+	mux.HandleFunc("GET /v1/admin/translation-feedback", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminTranslationFeedback)))
+	mux.HandleFunc("POST /v1/admin/translation-feedback/{id}/decision", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminDecideTranslationFeedback)))
+	mux.HandleFunc("GET /v1/admin/translation-editors", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminTranslationEditors)))
+	mux.HandleFunc("POST /v1/admin/translation-editors", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminAddTranslationEditor)))
+	mux.HandleFunc("DELETE /v1/admin/translation-editors/{id}", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminRemoveTranslationEditor)))
 	mux.HandleFunc("POST /v1/translation-game/round", s.optionalAuth(s.rateLimitTranslate(s.handleTranslationGameRound)))
 	mux.HandleFunc("POST /v1/translation-game/judge", s.optionalAuth(s.rateLimitIdentity(s.quizLimit, s.handleTranslationGameJudge)))
 	mux.HandleFunc("GET /v1/translate/usage", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleUsage)))

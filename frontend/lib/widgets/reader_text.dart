@@ -1,3 +1,4 @@
+import '../models/book_block.dart';
 import '../models/highlight_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,10 @@ class ReaderParagraph extends StatefulWidget {
   final Color highlightTextColor;
   /// Выделения абзаца: начало, конец и цвет (пусто — подчёркивание).
   final List<(int, int, String)> quoteRanges;
+
+  /// Оформление, которое читатель сделал сам: b — жирный, i — курсив,
+  /// u — подчёркивание, m — маркер (см. models/book_block.dart).
+  final List<TextStyleSpan> styleSpans;
   final Color? quoteColor;
 
   /// Индексы токенов (включительно), которые надо подсветить — для выделения
@@ -50,6 +55,7 @@ class ReaderParagraph extends StatefulWidget {
     required this.highlightColor,
     required this.highlightTextColor,
     this.quoteRanges = const [],
+    this.styleSpans = const [],
     this.quoteColor,
     required this.onTapWord,
     this.onPhraseSelectionStart,
@@ -142,6 +148,25 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
     return null;
   }
 
+  /// Оформление читателя на слово целиком: в правке выделяют слова, а
+  /// разрезать слово стилями посередине незачем.
+  TextStyle _ownStyle(TextStyle base, Token t) {
+    if (widget.styleSpans.isEmpty) return base;
+    final style = widget.styleSpans
+        .where((span) => t.start < span.end && t.end > span.start)
+        .map((span) => span.style)
+        .join();
+    if (style.isEmpty) return base;
+    return base.copyWith(
+      fontWeight: style.contains('b') ? FontWeight.w700 : null,
+      fontStyle: style.contains('i') ? FontStyle.italic : null,
+      decoration: style.contains('u') ? TextDecoration.underline : null,
+      decorationColor: style.contains('u') ? widget.textColor : null,
+      backgroundColor:
+          style.contains('m') ? const Color(0xB3F6E27A) : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = widget.settings;
@@ -167,14 +192,15 @@ class _ReaderParagraphState extends State<ReaderParagraph> {
           .map((range) => HighlightColors.marker(range.$3))
           .whereType<Color>()
           .firstOrNull;
+      final own = _ownStyle(base, t);
       final quotedStyle = marker != null
-          ? base.copyWith(backgroundColor: marker)
+          ? own.copyWith(backgroundColor: marker)
           : ranges.isNotEmpty
-              ? base.copyWith(
+              ? own.copyWith(
                   decoration: TextDecoration.underline,
                   decorationColor: widget.quoteColor ?? widget.textColor,
                   decorationThickness: 2)
-              : base;
+              : own;
 
       if (!t.isWord) {
         spans.add(TextSpan(

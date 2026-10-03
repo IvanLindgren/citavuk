@@ -613,16 +613,19 @@ class UserDb {
 
   /// Заменяет текст книги новым разбором. Позиция чтения сбрасывается: после
   /// переразбора абзацы делятся иначе, и прежний номер указывал бы не туда.
+  ///
+  /// [keepPosition] — для правки страницы: меняются абзацы текущей страницы,
+  /// всё до неё остаётся на своих местах, и сбрасывать позицию незачем.
   Future<void> replaceBookContent(int bookId, List<String> paragraphs,
-      {int? expectedGeneration}) async {
+      {int? expectedGeneration, bool keepPosition = false}) async {
     final db = await _databaseForGeneration(expectedGeneration);
     await db.update(
       'books',
       {
         'content': jsonEncode(paragraphs),
         'para_count': paragraphs.length,
-        'last_para': 0,
-        'last_offset': 0,
+        if (!keepPosition) 'last_para': 0,
+        if (!keepPosition) 'last_offset': 0,
         'text_missing': 0,
         'content_sha': '',
         'content_pending': 1,

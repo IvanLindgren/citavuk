@@ -73,7 +73,9 @@ List<BookPage> paginate(List<String> paragraphs, {int budget = pageChars}) {
       if (texts.isEmpty) { start = index; offset = within; }
       texts.add(piece);
       filled += weight;
-      within += piece.length;
+      // Смещение — по тексту, а не по строке: у абзаца с оформлением в
+      // строке ещё и служебная разметка.
+      within += _pieceTextLength(piece);
     }
   }
   flush();
@@ -106,11 +108,32 @@ int pageWeight(String paragraph) {
 /// Куски склеиваются обратно в исходный абзац знак в знак: читалка показывает
 /// их подряд, и потеря хотя бы пробела была бы порчей книги.
 List<String> splitParagraph(String paragraph, {int budget = pageChars}) {
+  final block = parseBookBlock(paragraph);
   // Картинку и таблицу резать нечем и незачем: это цельные объекты.
-  if (parseBookBlock(paragraph).kind != BookBlockKind.text) return [paragraph];
-  if (paragraph.length <= budget) return [paragraph];
+  if (block.kind != BookBlockKind.text) return [paragraph];
+  if (block.text.length <= budget) return [paragraph];
+  if (block.spans.isEmpty) return _balance(_atoms(paragraph, budget), budget);
 
-  return _balance(_atoms(paragraph, budget), budget);
+  // Абзац с оформлением режется по тексту, и каждый кусок получает свои
+  // отрезки стилей — так же, как на сайте (web/src/lib/pages.ts).
+  var at = 0;
+  return [
+    for (final part in _balance(_atoms(block.text, budget), budget))
+      () {
+        final from = at;
+        at += part.length;
+        return richParagraph(part, [
+          for (final span in block.spans)
+            if (span.end > from && span.start < from + part.length)
+              TextStyleSpan(span.start - from, span.end - from, span.style),
+        ]);
+      }(),
+  ];
+}
+
+int _pieceTextLength(String piece) {
+  final block = parseBookBlock(piece);
+  return block.kind == BookBlockKind.text ? block.text.length : piece.length;
 }
 
 /// Складывает куски как можно ровнее, не увеличивая их числа.

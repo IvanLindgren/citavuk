@@ -392,7 +392,9 @@ class _TravelScreenState extends State<TravelScreen> {
         Positioned(
           left: 12,
           right: 12,
-          bottom: 12,
+          // На iPhone без кнопки «домой» внизу полоска жеста: подсказка не
+          // должна под неё уходить.
+          bottom: 12 + MediaQuery.paddingOf(context).bottom,
           child: Text(
             _close
                 ? 'Нажми на любое здание — Читавук скажет, что там понадобится.'
