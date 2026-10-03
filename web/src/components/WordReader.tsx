@@ -1476,8 +1476,7 @@ function DefinitionCard({
           {definition.senses.map((sense, index) => (
             <li key={`${sense.definition}-${index}`} className="text-sm leading-relaxed">
               <span className="font-semibold text-[var(--text-muted)]">
-                {sense.number || (definition.senses.length > 1 ? index + 1 : '')}
-                {sense.number || definition.senses.length > 1 ? '. ' : ''}
+                {senseNumber(sense.number, index, definition.senses.length)}
               </span>
               {(sense.domain || sense.register) && (
                 <span className="italic text-[var(--text-muted)]">
@@ -1989,4 +1988,10 @@ function Field({
       </div>
     </div>
   );
+}
+
+/** Номер толкования: словарь присылает его то «1», то «1.» — точка ставится одна. */
+function senseNumber(number: string | undefined, index: number, total: number): string {
+  const value = (number ?? '').replace(/\.+$/, '') || (total > 1 ? String(index + 1) : '');
+  return value ? `${value}. ` : '';
 }
