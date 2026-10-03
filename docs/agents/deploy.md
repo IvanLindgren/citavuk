@@ -155,9 +155,11 @@ Space обновляется отдельно файлами `backend/main.py` �
 
 Облачные сборки используют Flutter 3.47.2. `build-apk.yml` принимает
 `android-windows`, чтобы не запускать ненужный Linux; APK получает `direct`,
-AAB — `play`. Desktop-сборки требуют `CITAVUK_UPDATE_PUBLIC_KEY` в GitHub Secrets.
+AAB — `play`. Windows/Linux требуют `CITAVUK_UPDATE_PUBLIC_KEY` в GitHub Secrets.
 `build-macos.yml` проверяет реальные AOT-бинарники через
-`tools/verify_build_settings.py` (UTF-8 и UTF-16, без вывода значений).
+`tools/verify_build_settings.py` (UTF-8 и UTF-16, без вывода значений). На macOS
+проверяется ключ карты: автообновления на этой платформе пока нет, неиспользуемый
+ключ подписи компилятор удаляет.
 
 `build-ios.yml` создаёт `.xcarchive` и `citavuk-ios-unsigned.ipa` без подписи
 Apple. Это не готовый пакет для установки или App Store: требуется подпись

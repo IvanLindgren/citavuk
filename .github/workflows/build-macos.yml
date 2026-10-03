@@ -51,18 +51,16 @@ jobs:
         working-directory: frontend
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
-          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
-        run: |
-          test -n "$CITAVUK_UPDATE_PUBLIC_KEY"
-          flutter build macos --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" "--dart-define=CITAVUK_UPDATE_PUBLIC_KEY=$CITAVUK_UPDATE_PUBLIC_KEY"
+        run: flutter build macos --release "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
 
       - name: Ключ карты попал в сборку
         working-directory: frontend
         env:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
-          CITAVUK_UPDATE_PUBLIC_KEY: ${{ secrets.CITAVUK_UPDATE_PUBLIC_KEY }}
         run: |
-          python3 ../tools/verify_build_settings.py build/macos/Build/Products/Release/Citavuk.app MAPTILER_KEY CITAVUK_UPDATE_PUBLIC_KEY
+          # Автообновление реализовано только на Windows/Linux. Неиспользуемый
+          # ключ подписи Dart удаляет из macOS при tree shaking.
+          python3 ../tools/verify_build_settings.py build/macos/Build/Products/Release/Citavuk.app MAPTILER_KEY
 
       - name: Package application
         working-directory: frontend
