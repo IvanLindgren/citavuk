@@ -262,6 +262,10 @@ func (b *feedbackBot) handleCallback(ctx context.Context, callbackID, data strin
 		answer("Не из этого чата.")
 		return
 	}
+	if strings.HasPrefix(data, "cr:") {
+		b.handleCommentReportCallback(ctx, data, msg, answer)
+		return
+	}
 	parts := strings.SplitN(data, ":", 3)
 	if len(parts) != 3 || parts[0] != "fb" {
 		answer("")

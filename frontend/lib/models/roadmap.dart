@@ -307,6 +307,9 @@ class RoadmapComment {
   final String id;
   final String parentId;
   final String author;
+
+  /// Автор — по нему скрываются все реплики заблокированного человека.
+  final String authorId;
   final String body;
   final DateTime createdAt;
   final bool mine;
@@ -315,6 +318,7 @@ class RoadmapComment {
     required this.id,
     required this.parentId,
     required this.author,
+    this.authorId = '',
     required this.body,
     required this.createdAt,
     required this.mine,
@@ -324,6 +328,7 @@ class RoadmapComment {
         id: (j['id'] ?? '').toString(),
         parentId: (j['parentId'] ?? '').toString(),
         author: (j['author'] ?? 'Читатель').toString(),
+        authorId: (j['userId'] ?? '').toString(),
         body: (j['body'] ?? '').toString(),
         createdAt:
             DateTime.tryParse((j['createdAt'] ?? '').toString())?.toLocal() ??

@@ -140,6 +140,9 @@ const Privacy = lazy(() =>
 const YandexCallback = lazy(() =>
   import("./pages/YandexCallback").then((m) => ({ default: m.YandexCallback })),
 );
+const AppleCallback = lazy(() =>
+  import("./pages/YandexCallback").then((m) => ({ default: m.AppleCallback })),
+);
 const Events = lazy(() =>
   import("./pages/Events").then((m) => ({ default: m.Events })),
 );
@@ -236,6 +239,7 @@ const ROUTES: RouteDefinition[] = [
   { pattern: "/support/claim", element: <SupportClaim /> },
   { pattern: "/supporters", element: <Supporters /> },
   { pattern: "/auth/yandex", element: <YandexCallback /> },
+  { pattern: "/auth/apple", element: <AppleCallback /> },
   { pattern: "/admin/lessons", element: <AdminLessons /> },
   { pattern: "/admin", element: <Admin /> },
   // Перехватывающий маршрут обязан быть последним.

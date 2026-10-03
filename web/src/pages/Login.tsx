@@ -5,6 +5,7 @@ import { ApiError } from '../api/client';
 import { GoogleButton } from '../components/GoogleButton';
 import { Mascot } from '../components/Mascot';
 import { Button, Card, ErrorNote, Spinner } from '../components/ui';
+import { AppleButton } from '../components/AppleButton';
 import { YandexButton } from '../components/YandexButton';
 import { useRouter } from '../lib/router';
 import { useAuth } from '../state/auth';
@@ -24,6 +25,7 @@ export function Login() {
     register,
     loginWithGoogle,
     startYandex,
+    startApple,
     resendVerification,
     busy,
   } = useAuth();
@@ -230,6 +232,7 @@ export function Login() {
             <span className="h-px flex-1 bg-[var(--line)]" />
           </div>
 
+          <AppleButton onStart={startApple} onError={(message) => setError(message)} />
           <GoogleButton
             text={isRegister ? 'signup_with' : 'signin_with'}
             onCredential={async (idToken) => {

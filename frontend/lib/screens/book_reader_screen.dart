@@ -33,6 +33,7 @@ import '../services/page_turn_sound.dart';
 import '../services/radio_service.dart';
 import '../services/reader_audiobook.dart';
 import '../services/api_client.dart';
+import '../services/comment_moderation.dart';
 import '../models/level.dart';
 import '../services/auth_service.dart';
 import '../services/level_service.dart';

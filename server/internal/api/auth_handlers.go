@@ -396,6 +396,7 @@ func (s *Server) handleDeleteAccount(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	s.revokeAppleGrants(r.Context(), user)
 	if err := s.store.DeleteUser(r.Context(), user.ID); err != nil {
 		slog.Error("удаление аккаунта", "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal,

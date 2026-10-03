@@ -2,7 +2,7 @@ name: srbski_read
 description: "Читавук — сербская читалка с разбором слов, грамматикой и карточками."
 publish_to: 'none'
 
-version: 1.23.0+61
+version: 1.24.0+62
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -46,6 +46,9 @@ dependencies:
   url_launcher: ^6.3.0
   package_info_plus: ^8.0.0
   google_sign_in: ^7.2.0
+  # Вход через Apple на iPhone — системное окно Apple ID. На компьютерах вход
+  # через браузер, как у Яндекса, пакет там не используется.
+  sign_in_with_apple: ^8.2.0
   # Только для Android: там вход идёт через Custom Tabs и схему citavuk://.
   # На Windows пакет непригоден — он закрывает локальный сервер по событию
   # жизненного цикла, см. services/desktop_oauth_io.dart.
@@ -206,7 +209,7 @@ inno_bundle:
   # Версия дублируется намеренно: inno_bundle не читает её из поля version
   # выше. Правишь version — правь и здесь, иначе установщик уедет со старым
   # номером в имени файла и в «Установке и удалении программ».
-  version: 1.23.0
+  version: 1.24.0
   publisher: Denis Kornilov
   languages:
     - english

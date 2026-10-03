@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/micro_feed.dart';
 import '../services/micro_feed_service.dart';
 import '../services/api_client.dart';
+import '../services/comment_moderation.dart';
 
 /// Обсуждение карточки Вукотока.
 ///
@@ -67,6 +68,8 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
   Future<void> _send() async {
     final body = _input.text.trim();
     if (body.isEmpty || _sending) return;
+    if (!await CommentModeration.instance.ensureRules(context)) return;
+    if (!mounted) return;
     setState(() {
       _sending = true;
       _error = '';
@@ -112,7 +115,17 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final items = _items;
+    return ListenableBuilder(
+      listenable: CommentModeration.instance,
+      builder: (context, _) => _sheet(context),
+    );
+  }
+
+  Widget _sheet(BuildContext context) {
+    final moderation = CommentModeration.instance;
+    final items = _items
+        ?.where((comment) => !moderation.isBlocked(comment.authorId))
+        .toList();
     return PopScope(
       // Число реплик уезжает обратно на карточку при любом закрытии — и по
       // кнопке, и жестом «назад».
@@ -173,6 +186,13 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
                             itemBuilder: (_, index) => _CommentTile(
                               comment: items[index],
                               onDelete: () => _delete(items[index]),
+                              onActions: () => moderation.showActions(
+                                context,
+                                kind: CommentModeration.feed,
+                                commentId: items[index].id,
+                                authorId: items[index].authorId,
+                                authorName: items[index].author,
+                              ),
                             ),
                           ),
               ),
@@ -243,10 +263,15 @@ class _VukotokCommentsSheetState extends State<VukotokCommentsSheet> {
 }
 
 class _CommentTile extends StatelessWidget {
-  const _CommentTile({required this.comment, required this.onDelete});
+  const _CommentTile({
+    required this.comment,
+    required this.onDelete,
+    required this.onActions,
+  });
 
   final MicroFeedComment comment;
   final VoidCallback onDelete;
+  final VoidCallback onActions;
 
   @override
   Widget build(BuildContext context) {
@@ -273,6 +298,14 @@ class _CommentTile extends StatelessWidget {
                 icon: const Icon(Icons.delete_outline,
                     size: 18, color: Colors.white38),
                 tooltip: 'Удалить',
+              )
+            else
+              IconButton(
+                onPressed: onActions,
+                visualDensity: VisualDensity.compact,
+                icon: const Icon(Icons.more_horiz,
+                    size: 18, color: Colors.white38),
+                tooltip: 'Пожаловаться или скрыть',
               ),
           ],
         ),

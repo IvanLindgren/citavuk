@@ -34,6 +34,9 @@ type Comment struct {
 	ID        uuid.UUID `json:"id"`
 	Paragraph int       `json:"paragraph"`
 	Author    string    `json:"author"`
+	// UserID нужен приложению, чтобы скрыть все сообщения автора, которого
+	// читатель заблокировал.
+	UserID    uuid.UUID `json:"userId"`
 	Body      string    `json:"body"`
 	CreatedAt time.Time `json:"createdAt"`
 	// Mine отмечает свои сообщения: их можно убрать.
@@ -200,7 +203,7 @@ func (s *Store) Comments(
 	ctx context.Context, token string, paragraph int, viewer uuid.UUID,
 ) ([]Comment, error) {
 	rows, err := s.Pool.Query(ctx, `
-        SELECT id, paragraph, author, body, created_at, user_id = $3
+        SELECT id, paragraph, author, user_id, body, created_at, user_id = $3
           FROM book_comments
          WHERE token = $1 AND paragraph = $2 AND NOT hidden
          ORDER BY created_at
@@ -214,7 +217,7 @@ func (s *Store) Comments(
 	for rows.Next() {
 		var comment Comment
 		if err := rows.Scan(
-			&comment.ID, &comment.Paragraph, &comment.Author,
+			&comment.ID, &comment.Paragraph, &comment.Author, &comment.UserID,
 			&comment.Body, &comment.CreatedAt, &comment.Mine,
 		); err != nil {
 			return nil, err
@@ -259,6 +262,7 @@ func (s *Store) AddComment(
 		ID:        uuid.New(),
 		Paragraph: paragraph,
 		Author:    trunc(author, 120),
+		UserID:    userID,
 		Body:      body,
 		Mine:      true,
 	}

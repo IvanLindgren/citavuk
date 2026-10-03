@@ -45,6 +45,7 @@ type Server struct {
 	redis           *rediscache.Redis
 	documentHTTP    *http.Client
 	feedbackBot     *feedbackBot
+	apple           *auth.Apple
 	quiz            *quiz.Generator
 	daily           *daily.Generator
 	dailyLessons    singleflight.Group
@@ -113,8 +114,23 @@ func New(
 		)
 	}
 
+	apple, err := auth.NewApple(auth.AppleConfig{
+		TeamID:      cfg.AppleTeamID,
+		KeyID:       cfg.AppleKeyID,
+		PrivateKey:  cfg.AppleKey,
+		BundleIDs:   cfg.AppleBundleIDs,
+		ServicesID:  cfg.AppleServicesID,
+		RedirectURI: cfg.AppleRedirectURI,
+	})
+	if err != nil {
+		// Испорченный ключ не должен ронять сервер: вход через Apple просто
+		// выключается, остальные способы входа работают.
+		slog.Warn("Sign in with Apple выключен", "err", err)
+	}
+
 	s := &Server{
 		cfg:    cfg,
+		apple:  apple,
 		store:  st,
 		google: auth.NewGoogleVerifier(cfg.GoogleClientIDs),
 		googleCode: auth.NewGoogleCodeExchanger(
@@ -334,6 +350,10 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/auth/yandex/start", s.rateLimit(s.authLimit, s.handleYandexStart))
 	mux.HandleFunc("GET /v1/auth/yandex/callback", s.rateLimit(s.authLimit, s.handleYandexCallback))
 	mux.HandleFunc("POST /v1/auth/yandex/complete", s.rateLimit(s.authLimit, s.handleYandexComplete))
+	mux.HandleFunc("POST /v1/auth/apple", s.rateLimit(s.authLimit, s.handleAppleLogin))
+	mux.HandleFunc("POST /v1/auth/apple/start", s.rateLimit(s.authLimit, s.handleAppleStart))
+	mux.HandleFunc("POST /v1/auth/apple/callback", s.rateLimit(s.authLimit, s.handleAppleCallback))
+	mux.HandleFunc("POST /v1/auth/apple/complete", s.rateLimit(s.authLimit, s.handleAppleComplete))
 	mux.HandleFunc("POST /v1/auth/verify-email", s.rateLimit(s.authLimit, s.handleVerifyEmail))
 	mux.HandleFunc("POST /v1/auth/resend-verification", s.rateLimit(s.authLimit, s.handleResendVerification))
 	mux.HandleFunc("POST /v1/auth/logout", s.handleLogout)
@@ -530,6 +550,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/micro-feed/{id}/comments", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedComments)))
 	mux.HandleFunc("POST /v1/micro-feed/{id}/comments", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleAddMicroFeedComment)))
 	mux.HandleFunc("DELETE /v1/micro-feed/comments/{commentId}", s.requireAuth(s.rateLimitIdentity(s.generalLimit, s.handleDeleteMicroFeedComment)))
+	mux.HandleFunc("POST /v1/comments/reports", s.optionalAuth(s.rateLimitIdentity(s.authLimit, s.handleReportComment)))
 
 	// Администрирование. Каждый обработчик повторно проверяет серверную роль.
 	mux.HandleFunc("GET /v1/admin/overview", s.requireAdmin(s.rateLimitIdentity(s.generalLimit, s.handleAdminOverview)))
@@ -679,6 +700,10 @@ func (s *Server) handleAuthProviders(w http.ResponseWriter, _ *http.Request) {
 		},
 		"yandex": map[string]bool{
 			"enabled": s.yandex.Enabled(),
+		},
+		"apple": map[string]bool{
+			"enabled":    s.apple.Enabled(),
+			"webEnabled": s.apple.WebEnabled(),
 		},
 		"email": map[string]bool{
 			"enabled": s.mailer.Enabled(),

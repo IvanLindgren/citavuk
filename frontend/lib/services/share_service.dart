@@ -18,6 +18,7 @@ class BookComment {
   const BookComment({
     required this.id,
     required this.author,
+    this.authorId = '',
     required this.body,
     required this.createdAt,
     required this.mine,
@@ -25,6 +26,9 @@ class BookComment {
 
   final String id;
   final String author;
+
+  /// Автор — по нему скрываются все сообщения заблокированного человека.
+  final String authorId;
   final String body;
   final DateTime createdAt;
   final bool mine;
@@ -32,6 +36,7 @@ class BookComment {
   factory BookComment.fromJson(Map<dynamic, dynamic> json) => BookComment(
         id: json['id'] as String? ?? '',
         author: json['author'] as String? ?? 'Читатель',
+        authorId: json['userId'] as String? ?? '',
         body: json['body'] as String? ?? '',
         createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
             DateTime.now(),

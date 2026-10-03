@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/citavuk/server/internal/moderation"
 	"github.com/citavuk/server/internal/serbian"
 	"github.com/citavuk/server/internal/store"
 	"github.com/google/uuid"
@@ -184,6 +185,10 @@ func (s *Server) handleAddComment(w http.ResponseWriter, r *http.Request) {
 		// 422: запрос понятен, но содержимое не годится. Текст ответа человек
 		// увидит целиком — он объясняет, что именно исправить.
 		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, verdict.Reason)
+		return
+	}
+	if !moderation.Clean(body) {
+		writeError(w, http.StatusUnprocessableEntity, codeBadRequest, moderation.Reason)
 		return
 	}
 

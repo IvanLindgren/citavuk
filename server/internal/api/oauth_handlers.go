@@ -127,13 +127,13 @@ func (s *Server) handleYandexCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if providerError := strings.TrimSpace(r.URL.Query().Get("error")); providerError != "" {
-		s.redirectOAuthResult(w, r, state, "", "Вход через Яндекс отменён.")
+		s.redirectOAuthResult(w, r, auth.ProviderYandex, state, "", "Вход через Яндекс отменён.")
 		return
 	}
 	claims, err := s.yandex.Exchange(r.Context(), r.URL.Query().Get("code"))
 	if err != nil {
 		slog.Warn("Яндекс отклонил OAuth callback", "err", err)
-		s.redirectOAuthResult(w, r, state, "",
+		s.redirectOAuthResult(w, r, auth.ProviderYandex, state, "",
 			"Не удалось подтвердить аккаунт Яндекса.")
 		return
 	}
@@ -146,7 +146,7 @@ func (s *Server) handleYandexCallback(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		slog.Error("вход через Яндекс", "err", err)
-		s.redirectOAuthResult(w, r, state, "",
+		s.redirectOAuthResult(w, r, auth.ProviderYandex, state, "",
 			"Не удалось войти через Яндекс.")
 		return
 	}
@@ -163,11 +163,11 @@ func (s *Server) handleYandexCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	if err != nil {
 		slog.Error("создание кода завершения Yandex OAuth", "err", err)
-		s.redirectOAuthResult(w, r, state, "",
+		s.redirectOAuthResult(w, r, auth.ProviderYandex, state, "",
 			"Не удалось завершить вход через Яндекс.")
 		return
 	}
-	s.redirectOAuthResult(w, r, state, completion, "")
+	s.redirectOAuthResult(w, r, auth.ProviderYandex, state, completion, "")
 }
 
 // redirectOAuthResult отправляет браузер обратно в то приложение, которое
@@ -176,13 +176,14 @@ func (s *Server) handleYandexCallback(w http.ResponseWriter, r *http.Request) {
 func (s *Server) redirectOAuthResult(
 	w http.ResponseWriter,
 	r *http.Request,
+	provider string,
 	state *store.OAuthState,
 	code, message string,
 ) {
 	var destination string
 	switch {
 	case state.ReturnTarget == "mobile":
-		destination = "citavuk://auth/yandex"
+		destination = "citavuk://auth/" + provider
 	case state.ReturnTarget == "web" && state.ReturnURL != "":
 		// HTTPS origin и точный путь проверены в handleYandexStart.
 		destination = state.ReturnURL
@@ -190,7 +191,7 @@ func (s *Server) redirectOAuthResult(
 		// Адрес уже проверен при начале входа, см. handleYandexStart.
 		destination = state.ReturnURL
 	default:
-		destination = strings.TrimRight(s.cfg.WebURL, "/") + "/auth/yandex"
+		destination = strings.TrimRight(s.cfg.WebURL, "/") + "/auth/" + provider
 	}
 	target, err := url.Parse(destination)
 	if err != nil {
@@ -210,6 +211,13 @@ func (s *Server) redirectOAuthResult(
 }
 
 func (s *Server) handleYandexComplete(w http.ResponseWriter, r *http.Request) {
+	s.completeOAuth(w, r, "Яндекс")
+}
+
+// completeOAuth выдаёт сессию по одноразовому коду, полученному приложением
+// после возврата из браузера. Код не привязан к провайдеру: его выдаёт наш
+// callback, когда провайдер уже подтвердил аккаунт.
+func (s *Server) completeOAuth(w http.ResponseWriter, r *http.Request, providerName string) {
 	var req yandexCompleteRequest
 	if err := decodeJSON(w, r, &req, 8<<10); err != nil {
 		writeError(w, http.StatusBadRequest, codeBadRequest,
@@ -226,9 +234,9 @@ func (s *Server) handleYandexComplete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
-		slog.Error("завершение Yandex OAuth", "err", err)
+		slog.Error("завершение OAuth", "provider", providerName, "err", err)
 		writeError(w, http.StatusInternalServerError, codeInternal,
-			"Не удалось завершить вход через Яндекс.")
+			"Не удалось завершить вход через "+providerName+".")
 		return
 	}
 	s.issueSession(w, r, completion.User, deviceInfo{
