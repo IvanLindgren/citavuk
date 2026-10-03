@@ -6,10 +6,14 @@ import 'package:flutter/foundation.dart';
 /// на сайте, в приложении работают.
 // APK с сайта собирается с --dart-define=CITAVUK_DISTRIBUTION=direct.
 // В Google Play внешний платёж за цифровые бонусы остаётся закрыт.
+// Mac из DMG с сайта ссылки показывает, сборка для Mac App Store — с
+// CITAVUK_DISTRIBUTION=appstore — прячет их, как iPhone.
 const appDistribution =
     String.fromEnvironment('CITAVUK_DISTRIBUTION', defaultValue: 'play');
 bool get supportLinksHidden =>
     !kIsWeb &&
     (defaultTargetPlatform == TargetPlatform.iOS ||
+        (defaultTargetPlatform == TargetPlatform.macOS &&
+            appDistribution == 'appstore') ||
         (defaultTargetPlatform == TargetPlatform.android &&
             appDistribution != 'direct'));

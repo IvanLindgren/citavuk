@@ -103,9 +103,9 @@ class DefinitionCard extends StatelessWidget {
 
   Widget _sense(ColorScheme scheme, Color muted, DefinitionSense sense,
       int index, bool many) {
-    final number = sense.number.isNotEmpty
-        ? sense.number
-        : (many ? '${index + 1}' : '');
+    // Словарь присылает номер то «1», то «1.»: точку ставим одну.
+    final given = sense.number.replaceFirst(RegExp(r'\.+$'), '');
+    final number = given.isNotEmpty ? given : (many ? '${index + 1}' : '');
     final marks = [sense.domain, sense.register]
         .where((value) => value.isNotEmpty)
         .join(', ');

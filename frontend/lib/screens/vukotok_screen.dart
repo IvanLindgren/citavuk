@@ -1134,7 +1134,9 @@ class _VukotokWordSheetState extends State<VukotokWordSheet> {
       if (!mounted || data.isEnglish || data.isPhrase) return;
       final lemma = data.lemma.trim();
       if (lemma.isEmpty) return;
-      setState(() => _definition = DefinitionService.instance.lookup(lemma));
+      setState(() {
+        _definition = DefinitionService.instance.lookup(lemma);
+      });
     });
     _loadExtras();
   }

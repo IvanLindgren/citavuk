@@ -180,8 +180,10 @@ class _ListeningScreenState extends State<ListeningScreen> {
                                   'Не удалось загрузить записи. Проверь соединение и попробуй ещё раз.'),
                               const SizedBox(height: 12),
                               OutlinedButton.icon(
-                                onPressed: () => setState(() => _lessons =
-                                    ListeningService.instance.getLessons()),
+                                onPressed: () => setState(() {
+                                  _lessons =
+                                      ListeningService.instance.getLessons();
+                                }),
                                 icon: const Icon(Icons.refresh),
                                 label: const Text('Повторить'),
                               ),

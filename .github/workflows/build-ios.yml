@@ -106,11 +106,12 @@ jobs:
         run: |
           set -euo pipefail
           devices=$(xcrun simctl list devices available -j)
-          # С Dynamic Island — самая новая модель Pro; без выреза и с кнопкой
-          # «домой» — SE: на нём тесно, и по нему видно, что ничего не обрезано.
-          pro=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone [0-9]+ Pro$"))] | last | .udid')
-          se=$(echo "$devices" | jq -r '[.devices[][] | select(.name | test("^iPhone SE"))] | last | .udid')
-          for udid in $pro $se; do
+          # Витрина App Store требует 6,9" (Pro Max, 1320×2868) и 13" iPad
+          # (2064×2752).
+          pick() { echo "$devices" | jq -r --arg re "$1" '[.devices[][] | select(.name | test($re))] | last | .udid'; }
+          promax=$(pick '^iPhone [0-9]+ Pro Max$')
+          ipad=$(pick '^iPad Pro 13-inch')
+          for udid in $promax $ipad; do
             [ -n "$udid" ] && [ "$udid" != "null" ] || continue
             name=$(echo "$devices" | jq -r --arg u "$udid" '.devices[][] | select(.udid == $u) | .name' | tr ' ' '-')
             echo "::group::$name"
@@ -118,11 +119,23 @@ jobs:
             xcrun simctl bootstatus "$udid" -b
             # Ровный статус-бар: 9:41, полная батарея — как на витрине.
             xcrun simctl status_bar "$udid" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4
-            SCREENSHOT_DIR="$PWD/screenshots/$name" SIMULATOR_UDID="$udid" \
-              flutter drive -d "$udid" \
-                --driver=test_driver/integration_test.dart \
-                --target=integration_test/screenshot_tour_test.dart \
-                "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+            # Кадр рисует сам Flutter (см. layer_tour_test.dart): снимок экрана
+            # через simctl между шагами обхода не обновлялся.
+            # flutter test удаляет приложение сразу после прогона, а с ним и
+            # папку кадров, поэтому кадры забираются, пока тест ещё идёт.
+            mkdir -p "screenshots/$name"
+            ( while true; do
+                find ~/Library/Developer/CoreSimulator/Devices/"$udid"/data -path '*citavuk-shots*' -name '*.png' \
+                  -exec cp {} "screenshots/$name/" \; 2>/dev/null || true
+                sleep 2
+              done ) &
+            collector=$!
+            flutter test integration_test/layer_tour_test.dart -d "$udid" \
+              "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee "shots-$name.log"
+            kill "$collector" 2>/dev/null || true
+            find ~/Library/Developer/CoreSimulator/Devices/"$udid"/data -path '*citavuk-shots*' -name '*.png' \
+              -exec cp {} "screenshots/$name/" \; 2>/dev/null || true
+            ls -la "screenshots/$name"
             xcrun simctl shutdown "$udid"
             echo "::endgroup::"
           done
@@ -133,4 +146,50 @@ jobs:
         with:
           name: ios-screenshots
           path: frontend/screenshots
+          if-no-files-found: warn
+
+  mac-screenshots:
+    # Кадры для Mac App Store (2880×1800) снимает сам Flutter, см.
+    # integration_test/layer_tour_test.dart.
+    if: inputs.screenshots
+    # Не macos-26: на Xcode 26 не собирается flutter_inappwebview_macos
+    # (Swift 6 и @MainActor). Релизная сборка Mac тоже идёт на macos-14.
+    runs-on: macos-14
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Скриншоты Mac
+        working-directory: frontend
+        env:
+          MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
+        run: |
+          set -euo pipefail
+          flutter test integration_test/layer_tour_test.dart -d macos \
+            --dart-define=SHOT_W=2880 --dart-define=SHOT_H=1800 --dart-define=SHOT_DPR=2 \
+            "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee mac-shots.log
+          dir=$(grep -o 'SHOTS_DIR=.*' mac-shots.log | tail -1 | cut -d= -f2-)
+          mkdir -p screenshots/mac
+          if [ -n "$dir" ] && [ -d "$dir" ]; then cp "$dir"/*.png screenshots/mac/; fi
+          find ~/Library/Containers -path '*citavuk-shots*' -name '*.png' -exec cp {} screenshots/mac/ \; 2>/dev/null || true
+          ls -la screenshots/mac
+
+      - name: Сохранить скриншоты Mac
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-screenshots
+          path: frontend/screenshots/mac
           if-no-files-found: warn
