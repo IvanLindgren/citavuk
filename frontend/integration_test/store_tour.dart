@@ -54,6 +54,14 @@ Future<bool> tapWord(WidgetTester tester, String word) async {
   return false;
 }
 
+Future<bool> _tapIfPresent(WidgetTester tester, String text) async {
+  final target = find.text(text);
+  if (target.evaluate().isEmpty) return false;
+  await tester.tap(target.first);
+  await settle(tester, 2);
+  return true;
+}
+
 Future<void> _tab(WidgetTester tester, String label) async {
   for (final bar in [NavigationBar, NavigationRail]) {
     final target = find.descendant(of: find.byType(bar), matching: find.text(label));
@@ -93,10 +101,12 @@ Future<void> storeTour(WidgetTester tester, Shot shot) async {
       initialParagraph: 0,
     ),
   )));
-  await settle(tester, 5);
+  await settle(tester, 6);
+  // Читалка предлагает включить музыку — для витрины это лишнее окно.
+  await _tapIfPresent(tester, 'Нет, в тишине');
   await shot('02-reader');
   if (await tapWord(tester, 'prijateljima')) {
-    await settle(tester, 8);
+    await settle(tester, 12);
     await shot('01-word');
   }
   navigator.popUntil((route) => route.isFirst);
@@ -112,6 +122,8 @@ Future<void> storeTour(WidgetTester tester, Shot shot) async {
   for (final (label, name) in tabs) {
     await _tab(tester, label);
     await settle(tester, 5);
+    // Первый вход в Вукоток спрашивает интересы: берём всё подряд.
+    if (await _tapIfPresent(tester, 'Показывай всё подряд')) await settle(tester, 8);
     await shot(name);
   }
 }

@@ -107,12 +107,11 @@ jobs:
           set -euo pipefail
           devices=$(xcrun simctl list devices available -j)
           # Витрина App Store требует 6,9" (Pro Max, 1320×2868) и 13" iPad
-          # (2064×2752); SE — проверка, что на тесном экране ничего не обрезано.
+          # (2064×2752).
           pick() { echo "$devices" | jq -r --arg re "$1" '[.devices[][] | select(.name | test($re))] | last | .udid'; }
           promax=$(pick '^iPhone [0-9]+ Pro Max$')
           ipad=$(pick '^iPad Pro 13-inch')
-          se=$(pick '^iPhone SE')
-          for udid in $promax $ipad $se; do
+          for udid in $promax $ipad; do
             [ -n "$udid" ] && [ "$udid" != "null" ] || continue
             name=$(echo "$devices" | jq -r --arg u "$udid" '.devices[][] | select(.udid == $u) | .name' | tr ' ' '-')
             echo "::group::$name"
@@ -120,11 +119,14 @@ jobs:
             xcrun simctl bootstatus "$udid" -b
             # Ровный статус-бар: 9:41, полная батарея — как на витрине.
             xcrun simctl status_bar "$udid" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4
-            SCREENSHOT_DIR="$PWD/screenshots/$name" SIMULATOR_UDID="$udid" \
-              flutter drive -d "$udid" \
-                --driver=test_driver/integration_test.dart \
-                --target=integration_test/screenshot_tour_test.dart \
-                "--dart-define=MAPTILER_KEY=$MAPTILER_KEY"
+            # Кадр рисует сам Flutter (см. layer_tour_test.dart): снимок экрана
+            # через simctl между шагами обхода не обновлялся.
+            flutter test integration_test/layer_tour_test.dart -d "$udid" \
+              "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee "shots-$name.log"
+            mkdir -p "screenshots/$name"
+            find ~/Library/Developer/CoreSimulator/Devices/"$udid"/data -path '*citavuk-shots*' -name '*.png' \
+              -exec cp {} "screenshots/$name/" \;
+            ls -la "screenshots/$name"
             xcrun simctl shutdown "$udid"
             echo "::endgroup::"
           done
@@ -139,7 +141,7 @@ jobs:
 
   mac-screenshots:
     # Кадры для Mac App Store (2880×1800) снимает сам Flutter, см.
-    # integration_test/mac_store_tour_test.dart.
+    # integration_test/layer_tour_test.dart.
     if: inputs.screenshots
     # Не macos-26: на Xcode 26 не собирается flutter_inappwebview_macos
     # (Swift 6 и @MainActor). Релизная сборка Mac тоже идёт на macos-14.
@@ -166,7 +168,9 @@ jobs:
           MAPTILER_KEY: ${{ secrets.MAPTILER_KEY }}
         run: |
           set -euo pipefail
-          flutter test integration_test/mac_store_tour_test.dart -d macos             "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee mac-shots.log
+          flutter test integration_test/layer_tour_test.dart -d macos \
+            --dart-define=SHOT_W=2880 --dart-define=SHOT_H=1800 --dart-define=SHOT_DPR=2 \
+            "--dart-define=MAPTILER_KEY=$MAPTILER_KEY" | tee mac-shots.log
           dir=$(grep -o 'SHOTS_DIR=.*' mac-shots.log | tail -1 | cut -d= -f2-)
           mkdir -p screenshots/mac
           if [ -n "$dir" ] && [ -d "$dir" ]; then cp "$dir"/*.png screenshots/mac/; fi
