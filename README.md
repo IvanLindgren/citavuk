@@ -156,3 +156,7 @@ python tools/make_page_turn.py      # звук перелистывания ст
 
 Правила работы с кодом описаны в `AGENTS.md`, порядок сборки и выкладки —
 в [docs/release.md](docs/release.md).
+
+## Лицензия
+
+Код распространяется по лицензии [MIT](LICENSE).
