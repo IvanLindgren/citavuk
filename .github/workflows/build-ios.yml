@@ -141,7 +141,9 @@ jobs:
     # Кадры для Mac App Store (2880×1800) снимает сам Flutter, см.
     # integration_test/mac_store_tour_test.dart.
     if: inputs.screenshots
-    runs-on: macos-26
+    # Не macos-26: на Xcode 26 не собирается flutter_inappwebview_macos
+    # (Swift 6 и @MainActor). Релизная сборка Mac тоже идёт на macos-14.
+    runs-on: macos-14
     timeout-minutes: 60
     steps:
       - name: Checkout repository
