@@ -8,7 +8,7 @@ import type { CourseBundle, CourseProgress } from '../course/types';
 import { Button, Spinner } from '../components/ui';
 import { Link } from '../lib/router';
 import { useAuth } from '../state/auth';
-import { useSeo } from '../lib/seo';
+import { SITE_URL, useSeo } from '../lib/seo';
 import { useStudy } from '../lib/useStudy';
 import './course-journey.css';
 
@@ -20,7 +20,22 @@ export function Course() {
 function CourseSession() {
   const { account } = useAuth();
   const study = useStudy();
-  useSeo({ title: 'Курс сербского с Читавуком', description: 'От азбуки до причастий: понятные правила, практика и твой маршрут изучения сербского.' });
+  useSeo({
+    title: 'Курс сербского языка бесплатно: грамматика с нуля — Читавук',
+    description: 'Бесплатный онлайн-курс сербского языка от азбуки до причастий: правила по-русски, примеры и упражнения с проверкой. Латиница и кириллица, падежи, времена и вид глагола.',
+    jsonLd: {
+      '@type': 'Course',
+      name: 'Курс сербской грамматики',
+      description: 'Бесплатный онлайн-курс сербского языка от азбуки до причастий: правила по-русски, примеры и упражнения с проверкой.',
+      url: `${SITE_URL}/course`,
+      inLanguage: 'ru-RU',
+      about: { '@type': 'Language', name: 'Сербский язык', alternateName: 'sr' },
+      isAccessibleForFree: true,
+      provider: { '@id': `${SITE_URL}/#organization` },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB', category: 'Free' },
+      hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'Online' },
+    },
+  });
   const [bundle, setBundle] = useState<CourseBundle | null>(null);
   const [progress, setProgress] = useState<CourseProgress | null>(null);
   const [error, setError] = useState('');

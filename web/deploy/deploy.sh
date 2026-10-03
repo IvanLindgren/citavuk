@@ -190,7 +190,24 @@ check_type() {
     echo "  $1 -> $actual"
 }
 
+# Код ответа: неизвестный адрес обязан давать 404, а не копию главной, раздел
+# приложения без пререндера — 200 (см. location @app в nginx-site.conf).
+check_status() {
+    actual=$(ssh_run "curl -s -o /dev/null -w '%{http_code}' -m 15 --resolve citavuk.ru:443:127.0.0.1 https://citavuk.ru$1")
+    if [[ "$actual" != "$2" ]]; then
+        echo "  $1 отвечает $actual, ожидалось $2" >&2
+        return 1
+    fi
+    echo "  $1 -> $actual"
+}
+
 failed=0
+check_status "/" "200" || failed=1
+check_status "/reader/deploy-check" "200" || failed=1
+check_status "/listening/deploy-check" "200" || failed=1
+check_status "/deploy-check-missing-page" "404" || failed=1
+check_type "/deploy-check-missing-page" "text/html" || failed=1
+check_type "/llms.txt" "text/plain" || failed=1
 check_type "/" "text/html" || failed=1
 check_type "/api/v1/auth/providers" "application/json" || failed=1
 check_type "/materials" "text/html" || failed=1
