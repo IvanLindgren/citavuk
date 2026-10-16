@@ -78,3 +78,10 @@ describe('сад: строки и стадии', () => {
     expect(taskPhrase('нет-такого', 1).sr).not.toBe('');
   });
 });
+
+describe('сербские динары', () => {
+  it('после 2–4 и 5+ — динара', async () => {
+    const { srCoinWord } = await import('./strings');
+    expect([1, 21, 2, 4, 5, 11, 50, 111].map(srCoinWord)).toEqual(['динар', 'динар', 'динара', 'динара', 'динара', 'динара', 'динара', 'динара']);
+  });
+});

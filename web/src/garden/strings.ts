@@ -33,6 +33,8 @@ export const GARDEN = {
   nobody: { sr: 'Нема никога', ru: 'никого не нашлось' },
 
   can: { sr: 'Канта за воду', ru: 'лейка' },
+  // В HUD стоит после «3/3»: числительное требует паукал.
+  cans: { sr: 'Канте за воду', ru: 'лейки' },
   fill: { sr: 'Захвати воду', ru: 'набрать воды' },
   riverAwake: { sr: 'Река тече', ru: 'река проснулась' },
   riverDry: { sr: 'Река спава', ru: 'река спит' },
@@ -191,6 +193,12 @@ export function plantImage(species: string, stage?: number): string {
 export function seedOffset(species: string, catalog: readonly { id: string }[]): number {
   const index = catalog.findIndex((item) => item.id === species);
   return index < 0 ? 0 : index;
+}
+
+/** Сербский: 1, 21 динар; остальное, включая 2–4 и 11–14, — динара. */
+export function srCoinWord(count: number): string {
+  const tail = Math.abs(count) % 100;
+  return tail % 10 === 1 && tail !== 11 ? 'динар' : 'динара';
 }
 
 export function coinWord(count: number): string {

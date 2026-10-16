@@ -52,7 +52,7 @@ import {
   stopGardenMusic,
   unlockGardenAudio,
 } from '../garden/audio';
-import { GARDEN, coinWord, plantImage, taskPhrase } from '../garden/strings';
+import { GARDEN, coinWord, plantImage, srCoinWord, taskPhrase } from '../garden/strings';
 import { Link, useRouter } from '../lib/router';
 import { useSeo } from '../lib/seo';
 import { useAuth } from '../state/auth';
@@ -357,13 +357,13 @@ function GardenHud({
         </span>
       </div>
       <div className="garden-game-plaque pointer-events-auto flex items-center gap-2 px-2 py-2 sm:gap-5 sm:px-4">
-        <HudValue icon={<LuCoins />} value={state.coins} label={coinWord(state.coins)} busy={busy} />
+        <HudValue icon={<LuCoins />} value={state.coins} label={srCoinWord(state.coins)} busy={busy} />
         <HudValue icon={<LuFlower2 />} value={state.bloomed} label={GARDEN.bloomed.sr} />
         {/* Вода — главный дефицит дня, поэтому она в HUD рядом с динарами. */}
         <HudValue
           icon={<LuDroplet className={state.water > 0 ? 'text-sky-600' : 'text-[#9c8a7a]'} />}
           value={`${state.water}/${state.waterCap}`}
-          label={GARDEN.can.sr}
+          label={GARDEN.cans.sr}
         />
         <span className="hidden sm:contents">
           <HudValue icon={<LuChartNoAxesColumnIncreasing />} value={`×${state.speed.toFixed(1)}`} label={GARDEN.speed.sr} />
