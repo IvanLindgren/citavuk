@@ -1,0 +1,34 @@
+{
+  "requested": "Ниш",
+  "title": "Ниш",
+  "host": "sr.wikipedia.org",
+  "revision": 31852760,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9D%D0%B8%D1%88",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31852760",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9D%D0%B8%D1%88?action=history",
+  "wikitextSha256": "3b8f4af5e4b44da52e285012681b544a4cc9e5638b5906b655e8ac17174744dc",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 81,
+    "sentences": 13,
+    "longestSentence": 10,
+    "averageSentence": 6.23
+  },
+  "textSha256": "e22402e8cd73ea31caa92b05f35d50f621d28786173f0627bd9117d95b0267f7",
+  "cover": {
+    "file": "Nis_center.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Nis_center.JPG/960px-Nis_center.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nis_center.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Aleksic Ivan",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

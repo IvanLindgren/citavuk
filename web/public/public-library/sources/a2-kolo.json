@@ -1,0 +1,34 @@
+{
+  "requested": "Коло (игра)",
+  "title": "Коло (игра)",
+  "host": "sr.wikipedia.org",
+  "revision": 31797735,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9A%D0%BE%D0%BB%D0%BE_(%D0%B8%D0%B3%D1%80%D0%B0)",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31797735",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9A%D0%BE%D0%BB%D0%BE_(%D0%B8%D0%B3%D1%80%D0%B0)?action=history",
+  "wikitextSha256": "fa713818128302990ef2b9f4949c6d2059762a62133af5f756b50f7c2a548ca9",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 108,
+    "sentences": 12,
+    "longestSentence": 13,
+    "averageSentence": 9.0
+  },
+  "textSha256": "4287c8d235c12bbb1c3b816d00ac6bcf49f5fe5f57ff6718a3f136e5f7bcda52",
+  "cover": {
+    "file": "Ensemble_\"Kolo\"_dancing_folk_dance_of_Gnjilane.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Ensemble_%22Kolo%22_dancing_folk_dance_of_Gnjilane.jpg/960px-Ensemble_%22Kolo%22_dancing_folk_dance_of_Gnjilane.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ensemble_%22Kolo%22_dancing_folk_dance_of_Gnjilane.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Laslovarga",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

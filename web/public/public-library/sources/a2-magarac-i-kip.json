@@ -1,0 +1,36 @@
+{
+  "requested": "Магарац идола носећи",
+  "title": "Магарац идола носећи",
+  "host": "sr.wikisource.org",
+  "revision": 46575,
+  "url": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D0%B3%D0%B0%D1%80%D0%B0%D1%86_%D0%B8%D0%B4%D0%BE%D0%BB%D0%B0_%D0%BD%D0%BE%D1%81%D0%B5%D1%9B%D0%B8",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46575",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D0%B3%D0%B0%D1%80%D0%B0%D1%86_%D0%B8%D0%B4%D0%BE%D0%BB%D0%B0_%D0%BD%D0%BE%D1%81%D0%B5%D1%9B%D0%B8?action=history",
+  "wikitextSha256": "1888e93679bdef0aa7106ca13144cbaddd18d62193f03fe3259bd4eff9a2e421",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 104,
+    "sentences": 11,
+    "longestSentence": 15,
+    "averageSentence": 9.45
+  },
+  "textSha256": "7fa0ef2161d2553fae6547bbef5808afe18fb242af2a6c27f1f9887dbbb9c16f",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

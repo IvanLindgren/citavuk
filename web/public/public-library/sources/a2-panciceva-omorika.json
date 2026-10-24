@@ -1,0 +1,35 @@
+{
+  "requested": "Панчићева оморика",
+  "title": "Панчићева оморика",
+  "host": "sr.wikipedia.org",
+  "revision": 31730205,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BD%D1%87%D0%B8%D1%9B%D0%B5%D0%B2%D0%B0_%D0%BE%D0%BC%D0%BE%D1%80%D0%B8%D0%BA%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31730205",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BD%D1%87%D0%B8%D1%9B%D0%B5%D0%B2%D0%B0_%D0%BE%D0%BC%D0%BE%D1%80%D0%B8%D0%BA%D0%B0?action=history",
+  "wikitextSha256": "fb636d49993b869065a470c7449ede27e9595ca34f13bd5bcfe458843f9c7399",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 113,
+    "sentences": 10,
+    "longestSentence": 18,
+    "averageSentence": 11.3
+  },
+  "textSha256": "4aec5d0249d99dc613d4a52a05d29f625c20ca796e14bec2135ebb0bb966f44a",
+  "cover": {
+    "file": "Nacionalni_park_Tara;_Pančićeva_omorika_na_Bilješkoj_steni.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Nacionalni_park_Tara%3B_Pan%C4%8Di%C4%87eva_omorika_na_Bilje%C5%A1koj_steni.JPG/960px-Nacionalni_park_Tara%3B_Pan%C4%8Di%C4%87eva_omorika_na_Bilje%C5%A1koj_steni.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nacionalni_park_Tara;_Pan%C4%8Di%C4%87eva_omorika_na_Bilje%C5%A1koj_steni.JPG",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Bojana Stulic",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

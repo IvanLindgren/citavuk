@@ -1,0 +1,34 @@
+{
+  "requested": "Нови Сад",
+  "title": "Нови Сад",
+  "host": "sr.wikipedia.org",
+  "revision": 31810360,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B8_%D0%A1%D0%B0%D0%B4",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31810360",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B8_%D0%A1%D0%B0%D0%B4?action=history",
+  "wikitextSha256": "d7107480daff4581ba388df35f825479a0aa8cb3d6b4c1231e09672fc75eef26",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 82,
+    "sentences": 14,
+    "longestSentence": 9,
+    "averageSentence": 5.86
+  },
+  "textSha256": "bc1d4bc423d1ba223f74cfdcc1095e3d84cd486d7898a0f8ee10a7ac37662468",
+  "cover": {
+    "file": "Varadinski_most_u_Novom_Sadu_2022_(cropped).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Varadinski_most_u_Novom_Sadu_2022_%28cropped%29.jpg/960px-Varadinski_most_u_Novom_Sadu_2022_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Varadinski_most_u_Novom_Sadu_2022_(cropped).jpg",
+    "license": "CC0",
+    "author": "Imeao",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

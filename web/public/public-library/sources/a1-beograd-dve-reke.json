@@ -1,0 +1,34 @@
+{
+  "requested": "Београд",
+  "title": "Београд",
+  "host": "sr.wikipedia.org",
+  "revision": 31779451,
+  "url": "https://sr.wikipedia.org/wiki/%D0%91%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D0%B4",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31779451",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%91%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D0%B4?action=history",
+  "wikitextSha256": "cda990e525026a1471ac6d4a6008610c1f17f226e0084b95529a2bec9a9d2005",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 87,
+    "sentences": 14,
+    "longestSentence": 9,
+    "averageSentence": 6.21
+  },
+  "textSha256": "edcbe4ad0994bf6cd45c219bcad58ed0c6877c9aa27f3b319c2c72b838a29c63",
+  "cover": {
+    "file": "Narodna_skupština_-_panoramio_(3).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Narodna_skup%C5%A1tina_-_panoramio_%283%29.jpg/960px-Narodna_skup%C5%A1tina_-_panoramio_%283%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Narodna_skup%C5%A1tina_-_panoramio_(3).jpg",
+    "license": "CC BY 3.0",
+    "author": "Mister No",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

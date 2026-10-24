@@ -1,0 +1,34 @@
+{
+  "requested": "Никола Тесла",
+  "title": "Никола Тесла",
+  "host": "sr.wikipedia.org",
+  "revision": 31750454,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%A2%D0%B5%D1%81%D0%BB%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31750454",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%A2%D0%B5%D1%81%D0%BB%D0%B0?action=history",
+  "wikitextSha256": "3b5fd7ff53254cbf474df3a649da6d7458fe73a6db7b282f570d0d13f051df39",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 107,
+    "sentences": 13,
+    "longestSentence": 13,
+    "averageSentence": 8.23
+  },
+  "textSha256": "8d4ba120d233868c2cdcef4370ead05e7425eaa089a93811b188b539ec9ed70c",
+  "cover": {
+    "file": "Tesla_circa_1890.jpeg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/79/Tesla_circa_1890.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tesla_circa_1890.jpeg",
+    "license": "Public domain",
+    "author": "Napoleon Sarony",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

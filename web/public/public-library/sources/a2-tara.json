@@ -1,0 +1,34 @@
+{
+  "requested": "Тара (планина)",
+  "title": "Тара",
+  "host": "sr.wikipedia.org",
+  "revision": 31827269,
+  "url": "https://sr.wikipedia.org/wiki/%D0%A2%D0%B0%D1%80%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31827269",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%A2%D0%B0%D1%80%D0%B0?action=history",
+  "wikitextSha256": "9be4ef510c7d9923817a1250899801110ef9bde83ac872985e67efd22e4fdc16",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 110,
+    "sentences": 11,
+    "longestSentence": 15,
+    "averageSentence": 10.0
+  },
+  "textSha256": "669779b420dcade810ed1ccd73f3e8ced46d6ed7e6d35de8453882a9372c147b",
+  "cover": {
+    "file": "Tarski_pejzaž,_jezero_Spajići,_Nacionalni_park_Tara.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Tarski_pejza%C5%BE%2C_jezero_Spaji%C4%87i%2C_Nacionalni_park_Tara.jpg/960px-Tarski_pejza%C5%BE%2C_jezero_Spaji%C4%87i%2C_Nacionalni_park_Tara.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tarski_pejza%C5%BE,_jezero_Spaji%C4%87i,_Nacionalni_park_Tara.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Vladimir Mijailović",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

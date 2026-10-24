@@ -1,0 +1,36 @@
+{
+  "requested": "Лисица и лав",
+  "title": "Лисица и лав",
+  "host": "sr.wikisource.org",
+  "revision": 46560,
+  "url": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BB%D0%B0%D0%B2",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46560",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BB%D0%B0%D0%B2?action=history",
+  "wikitextSha256": "c915b7e36bb5ecee0376385847116e455c879c70827199f7f3b52423d1da8cdb",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 112,
+    "sentences": 14,
+    "longestSentence": 15,
+    "averageSentence": 8.0
+  },
+  "textSha256": "44e5292032dd0374d4c97bf866ac76df9b4ef61114b38a9f07db49e4351e1c6c",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

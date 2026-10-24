@@ -1,0 +1,36 @@
+{
+  "requested": "Пас и његова сен",
+  "title": "Пас и његова сен",
+  "host": "sr.wikisource.org",
+  "revision": 46596,
+  "url": "https://sr.wikisource.org/wiki/%D0%9F%D0%B0%D1%81_%D0%B8_%D1%9A%D0%B5%D0%B3%D0%BE%D0%B2%D0%B0_%D1%81%D0%B5%D0%BD",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46596",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9F%D0%B0%D1%81_%D0%B8_%D1%9A%D0%B5%D0%B3%D0%BE%D0%B2%D0%B0_%D1%81%D0%B5%D0%BD?action=history",
+  "wikitextSha256": "4b35c4916ae5af2d07c35680e28f4a5350076eb61b6e09d48ba53c566867882b",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 86,
+    "sentences": 17,
+    "longestSentence": 9,
+    "averageSentence": 5.06
+  },
+  "textSha256": "4a6b1544f8703871dc060bbb8508b5745a2806245d90fd9ea6125858ca5c02b0",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

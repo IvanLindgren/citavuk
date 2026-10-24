@@ -1,0 +1,255 @@
+{
+  "edition": "2026-10-24",
+  "items": [
+    {
+      "id": "a1-lav-i-mis", "title": "Lav i miš", "level": "A1", "source": "Лав и миш", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация басни о большом льве и маленьком помощнике. Простые действия и просьбы.",
+      "body": "Lav spava ispod drveta. Mali miš trči kroz travu. Ne vidi lava i staje mu na nogu. Lav se budi. Hvata miša i kaže: Šta radiš ovde?\n\nMiš se plaši. Kaže: Molim te, pusti me. Ja sam mali. Ne želim da te budim. Lav gleda miša. Onda ga pušta.\n\nPosle nekoliko dana lav je u mreži. Ne može da izađe. Miš čuje njegov glas i dolazi. Svojim malim zubima seče mrežu. Lav je opet slobodan.\n\nHvala ti, kaže lav. Miš je mali, ali je dobar prijatelj."
+    },
+    {
+      "id": "a1-lisica-i-grozdje", "title": "Lisica i grožđe", "level": "A1", "source": "Лисица и грожђе", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о лисе, которая не может достать виноград. Еда, желания и простые оценки.",
+      "body": "Lisica ide putem. Dan je topao, a ona je gladna. Pored puta vidi grožđe. Grožđe je visoko. Lepo je i ima mnogo velikih zrna.\n\nLisica staje ispod grožđa. Želi da jede. Skače jednom, pa još jednom. Ne može da dođe do njega. Skače opet, ali grožđe je i dalje visoko.\n\nSada je umorna. Sedi malo i gleda gore. Onda ustaje i kaže: To grožđe nije dobro. Sigurno je kiselo.\n\nLisica odlazi. Ne zna kakvo je grožđe. Samo ne može da ga uzme."
+    },
+    {
+      "id": "a1-lisica-i-gavran", "title": "Lisica i gavran", "level": "A1", "source": "Лисица и вран (прва басна)", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация басни о вороне и хитрой лисе. Внешность, голос и еда.",
+      "body": "Gavran sedi na drvetu. To je velika crna ptica. U kljunu drži komad mesa. Gladna lisica stoji ispod drveta. Vidi meso i želi da ga uzme.\n\nKaže gavranu: Kako si lep! Imaš divno perje. Sigurno imaš i lep glas. Molim te, pevaj malo.\n\nGavran sluša lisicu. Srećan je. Otvara kljun i počinje da peva. Meso pada na zemlju.\n\nLisica brzo uzima meso. Sada ima ručak. Gavran gleda dole. Nema više mesa. Lisica hvali njegov glas, ali želi samo njegovu hranu."
+    },
+    {
+      "id": "a1-pas-i-reka", "title": "Pas i reka", "level": "A1", "source": "Пас и његова сен", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о собаке и её отражении. Повторение слов о воде, еде и размере.",
+      "body": "Pas ide pored reke. U ustima nosi komad mesa. Srećan je jer ima dobar ručak.\n\nStaje i gleda u vodu. U vodi vidi psa. I taj pas ima meso. Njegov komad izgleda veći. Pas ne zna da u vodi vidi sebe. Misli da je tamo drugi pas.\n\nŽeli i taj veći komad. Otvara usta. Njegovo meso pada u reku. Voda ga nosi dalje.\n\nPas gleda u vodu. Sada ni pas u vodi nema meso. Pas ostaje gladan. Ima jedan ručak, ali želi dva i gubi sve."
+    },
+    {
+      "id": "a1-lav-i-medved", "title": "Lav i medved", "level": "A1", "source": "Лав и медвед", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о двух животных, которые не хотят делиться едой. Диалог и простые эмоции.",
+      "body": "Lav i medved su gladni. U šumi nalaze hranu. Obojica žele ceo komad mesa.\n\nTo je moje, kaže lav. Ne, moje je, kaže medved. Ne žele da dele hranu. Počinju da se tuku.\n\nDugo se bore. Sada su veoma umorni. Leže na zemlji i teško dišu. Hrana je između njih. Ne mogu da ustanu.\n\nDolazi lisica. Vidi lava, medveda i meso. Polako uzima hranu i odlazi.\n\nLav gleda medveda. Medved gleda lava. Njihov ručak je sada kod lisice. Oni su i dalje gladni."
+    },
+    {
+      "id": "a1-komarac-i-vo", "title": "Komarac i vo", "level": "A1", "source": "Комарац и во", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация короткой басни. Контраст большого и маленького, вопросы и ответы.",
+      "body": "Na livadi stoji veliki vo. Jede travu i gleda ispred sebe. Dan je miran.\n\nMali komarac leti oko njegove glave. Sada je umoran i želi da se odmori. Seda volu na rog.\n\nKomarac sedi malo, pa pita: Da li sam ti težak? Mogu da odem.\n\nVo ne okreće glavu. Kaže: Ne, nisi mi težak. Ja te uopšte ne osećam.\n\nKomarac je veoma mali, a vo je velik i snažan. Vo nastavlja da jede. Komarac još malo sedi na rogu, a onda leti dalje."
+    },
+    {
+      "id": "a1-petao-i-kamen", "title": "Petao i sjajni kamen", "level": "A1", "source": "Петао и дpaги камен", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация басни о петухе и драгоценном камне. Еда, поиск и предпочтения.",
+      "body": "Petao traži hranu u dvorištu. Gleda zemlju i pomera male kamenčiće. Glad je velika, a hrane ima malo.\n\nOdjednom vidi nešto lepo. To je mali sjajni kamen. Petao ga uzima u kljun. Kamen je tvrd. Ne može da ga jede.\n\nPetao ga ostavlja na zemlji. Gleda ga i kaže: Ti si veoma lep. Ljudi te možda žele. Ali ja želim hranu.\n\nPored kamena nalazi jedno zrno. Brzo ga jede.\n\nZa petla je danas malo zrno bolje od lepog kamena. Kamen ostaje u dvorištu, a petao opet traži hranu."
+    },
+    {
+      "id": "a1-dva-psa", "title": "Dva psa", "level": "A1", "source": "Два пса", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о двух собаках одного хозяина. Распорядок дня, работа и обучение.",
+      "body": "Jedan čovek ima dva psa. Prvi pas ide s njim u lov. Drugi pas ostaje kod kuće. Čovek uči prvog psa da lovi. Drugog psa ne uči ništa.\n\nUveče čovek daje hranu obojici. Svaki pas dobija isti obrok.\n\nPrvi pas je ljut. Kaže: Ja radim ceo dan. Ti si kod kuće. Zašto imamo istu večeru?\n\nDrugi pas odgovara: Naš čovek tebe uči da radiš. Mene ne uči. Ja ne znam da lovim.\n\nPrvi pas sluša. Njegov drug nije učio isti posao. Samo ljutnja ne može to da promeni."
+    },
+    {
+      "id": "a1-magarac-i-lavlja-koza", "title": "Magarac u lavljoj koži", "level": "A1", "source": "Магарац у лавовој кожи", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о маскировке осла. Описание животных, страх и узнавание.",
+      "body": "Magarac nalazi lavlju kožu. Stavlja je na sebe i ide na livadu. Želi da bude strašan kao lav.\n\nŽivotinje ga vide i beže. Misle da pred njima stoji pravi lav. Magarac je veoma zadovoljan. Sada ga se svi plaše.\n\nDolaze ljudi. Gledaju veliku životinju. Magarac otvara usta i počinje da viče. Njegov glas nije lavlji. To je glas magarca.\n\nLjudi vide i njegove duge uši. Sada znaju ko je ispod kože. Skidaju je s njega. Pred njima opet stoji običan magarac."
+    },
+    {
+      "id": "a1-macak-i-misevi", "title": "Mačak i miševi", "level": "A1", "source": "Мачак и мишеви", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о хитром коте и осторожных мышах. Дом, движение и безопасность.",
+      "body": "U staroj kući živi mnogo miševa. Jednog dana dolazi mačak. Hoda po kući i traži ih. Miševi se plaše.\n\nSada žive visoko, ispod krova. Ne silaze na pod. Mačak ne može da dođe do njih.\n\nMačak ima plan. Leže na pod i ne pomera se. Izgleda kao da je mrtav. Čeka miševe.\n\nJedan mladi miš gleda dole. Želi da siđe. Ali stari miš kaže: Ne idi. Mačak je i dalje opasan.\n\nMiševi ostaju gore. Mačak leži i čeka, ali niko ne dolazi."
+    },
+    {
+      "id": "a1-cvrcak-i-mravi", "title": "Cvrčak i mravi", "level": "A1", "source": "Чврчак и мрави", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация басни о подготовке к зиме. Времена года, музыка и еда.",
+      "body": "Leto je. Cvrčak peva ceo dan. Voli sunce i muziku. Mravi rade. Nose hranu kući i čuvaju je za zimu.\n\nSada je zima. Napolju je hladno. Cvrčak nema hranu. Dolazi do kuće mrava i traži nekoliko zrna.\n\nMravi pitaju: Zašto nemaš ništa za jelo? Šta radiš leti?\n\nCvrčak kaže: Leti pevam. Nemam vremena za drugi posao.\n\nMravi odgovaraju: Mi leti skupljamo hranu. Zato sada imamo šta da jedemo.\n\nCvrčak stoji pred vratima. Muzika mu je draga, ali zimi mu je potrebna i hrana."
+    },
+    {
+      "id": "a1-lavica-i-lisica", "title": "Lavica i lisica", "level": "A1", "source": "Лавица и лисица", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация очень короткой басни. Семья животных, числа и сравнение.",
+      "body": "Lisica dolazi kod lavice. Lavica leži na travi. Pored nje je jedno malo mladunče. To je njeno dete.\n\nLisica gleda mladunče i pita: Imaš samo jedno dete? Ja imam mnogo malih lisica.\n\nLavica mirno gleda lisicu. Nije ljuta. Kaže: Da, imam jedno. Ali moje dete je lav.\n\nMali lav se igra pored majke. Još je mali, ali raste. Jednog dana može da bude velik i snažan.\n\nLisica ćuti. Broji svoju decu, a lavica gleda svog malog lava. Njima nisu važne iste stvari."
+    },
+    {
+      "id": "a1-lisica-i-drvena-glava", "title": "Lisica i drvena glava", "level": "A1", "source": "Лисица и дрвена глава", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о деревянной голове. Части лица, предметы и простые вопросы.",
+      "body": "Lisica ulazi u jednu radnju. U radnji ima mnogo stvari od drveta. Na stolu vidi drvenu glavu.\n\nGlava je veoma lepa. Ima oči, nos i usta. Lisica je gleda sa svih strana. Uzima je i okreće.\n\nPita je: Kako se zoveš? Glava ne odgovara. Lisica pita još nešto, ali opet nema odgovora.\n\nLisica sada razume. To nije prava glava. Nema mozak i ne može da misli.\n\nLepa glava, kaže lisica, ali ništa ne zna. Ostavlja je na stolu i izlazi iz radnje."
+    },
+    {
+      "id": "a1-brat-i-sestra", "title": "Brat i sestra pred ogledalom", "level": "A1", "source": "Брат и сестра", "kind": "Басня", "genre": "Семья",
+      "summary": "Учебная адаптация о брате, сестре и добром отношении друг к другу. Семья и чувства.",
+      "body": "Brat i sestra stoje pred ogledalom. Brat gleda svoje lice. Kaže da je lep. Onda kaže sestri da ona nije lepa.\n\nSestra je tužna. Odlazi kod oca i plače. Otac zove oboje. Sedi pored njih i grli ih.\n\nKaže sinu: Lepo lice nije dovoljno. Važno je i kako govoriš drugima. Ne govori sestri ružne reči.\n\nOnda kaže ćerki: Budi dobra prema ljudima. To je važno.\n\nDeca slušaju oca. Oboje gledaju ogledalo. Otac voli oboje i želi da budu dobri jedno prema drugom."
+    },
+    {
+      "id": "a1-dva-misa", "title": "Gradski i seoski miš", "level": "A1", "source": "Два миша", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о двух мышах. Город и деревня, гости и домашняя еда.",
+      "body": "Jedan miš živi na selu. Njegov prijatelj živi u gradu. Gradski miš dolazi u goste. Na stolu su orasi i malo sira.\n\nGradski miš kaže: Kod mene ima mnogo bolje hrane. Dođi da vidiš.\n\nMiševi odlaze u grad. U velikoj kući ima mesa, sira i druge hrane. Seoski miš gleda i raduje se.\n\nAli dolaze ljudi i psi. Miševi beže. Posle se vraćaju do hrane, pa opet beže.\n\nSeoski miš kaže: Hvala ti, ali ja idem kući. Moja večera je mala. Ipak, kod kuće mogu mirno da jedem."
+    },
+    {
+      "id": "a1-beograd-dve-reke", "title": "Beograd i dve reke", "level": "A1", "source": "Београд", "kind": "Познавательный текст", "genre": "Города",
+      "summary": "Учебная адаптация о Белграде. Город, две реки, прогулка и простое описание места.",
+      "body": "Beograd je glavni grad Srbije. Velik je i ima mnogo ljudi. Kroz grad prolaze dve reke. Jedna se zove Sava, a druga Dunav. U Beogradu Sava ulazi u Dunav.\n\nIznad reka je stara tvrđava. Pored nje je park Kalemegdan. Ljudi tamo šetaju, sede i gledaju reke.\n\nU centru grada ima mnogo ulica, prodavnica i kafića. Knez Mihailova je poznata ulica. Tu ljudi idu peške.\n\nBeograd ima i muzeje, škole i pozorišta. Neko voli centar, a neko mir pored vode. U velikom gradu ima mesta za različite šetnje."
+    },
+    {
+      "id": "a1-novi-sad", "title": "Novi Sad na Dunavu", "level": "A1", "source": "Нови Сад", "kind": "Познавательный текст", "genre": "Города",
+      "summary": "Учебная адаптация о Нови-Саде. Городские места, берег реки и направления.",
+      "body": "Novi Sad je grad u Srbiji. Nalazi se na Dunavu. U gradu ima mnogo škola, muzeja i pozorišta. Tu žive i mnogi studenti.\n\nU centru je veliki trg. Oko trga su stare zgrade. Nedaleko od centra je Dunavski park. Ljudi tamo šetaju i odmaraju se.\n\nPreko reke je Petrovaradinska tvrđava. Sa nje se lepo vidi grad. Na tvrđavi je poznati sat.\n\nPored Dunava ima mesta za šetnju. Ljudi hodaju, trče ili voze bicikl. Novi Sad je dobar grad za dan pored reke."
+    },
+    {
+      "id": "a1-nis", "title": "Niš i Nišava", "level": "A1", "source": "Ниш", "kind": "Познавательный текст", "genre": "Города",
+      "summary": "Учебная адаптация о Нише. Основные сведения о городе и его реке без сложных дат.",
+      "body": "Niš je veliki grad na jugu Srbije. Kroz grad teče reka Nišava. Pored reke su staze za šetnju. Ljudi tu dolaze da se odmore.\n\nU gradu je stara tvrđava. Danas je to i mesto za šetnju. U njoj ima mnogo zelenila. Blizu tvrđave je centar grada.\n\nNiš ima univerzitet. U gradu žive i rade mnogi studenti i nastavnici. Ima i pozorište, muzeje i mnogo prodavnica.\n\nNedaleko od grada je Niška Banja. Niš i njegova okolina imaju mnogo mesta za kratak izlet."
+    },
+    {
+      "id": "a1-subotica", "title": "Boje Subotice", "level": "A1", "source": "Суботица", "kind": "Познавательный текст", "genre": "Города",
+      "summary": "Учебная адаптация о Суботице. Цвета, здания, площадь и расположение города.",
+      "body": "Subotica je grad na severu Srbije. Blizu je granice sa Mađarskom. U gradu se govore različiti jezici.\n\nU centru je velika Gradska kuća. Ima visok toranj. Na njenim zidovima i krovu ima mnogo boja i lepih detalja. Ljudi često staju ispred nje i fotografišu je.\n\nOko centra su trgovi, ulice i stare kuće. U gradu ima i muzeja i pozorišta.\n\nBlizu Subotice je Palićko jezero. Zato posle šetnje po gradu ljudi mogu da odu i do vode. Grad i jezero nisu daleko jedno od drugog."
+    },
+    {
+      "id": "a1-dunav", "title": "Duga reka Dunav", "level": "A1", "source": "Дунав", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о Дунае. Вода, города, страны и путь реки.",
+      "body": "Dunav je velika evropska reka. Njegov put je dug. Počinje u Nemačkoj i završava se u Crnom moru. Prolazi kroz mnogo zemalja.\n\nDunav teče i kroz Srbiju. Na njegovim obalama su Novi Sad i Beograd. U Beogradu u njega ulazi Sava.\n\nPo Dunavu plove veliki i mali brodovi. Neki prevoze ljude, a neki različite stvari. U reci žive ribe. Pored vode su i mnoge ptice.\n\nLjudi dolaze na obalu da šetaju i gledaju reku. Voda stalno ide dalje, od jednog mesta do drugog."
+    },
+    {
+      "id": "a1-palic", "title": "Dan pored Palićkog jezera", "level": "A1", "source": "Палићко језеро", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о Паличском озере. Прогулки, вода и отдых, без совета купаться.",
+      "body": "Palićko jezero je blizu Subotice, na severu Srbije. Jezero je veliko, ali nije duboko. Pored njega ima mesta za šetnju i odmor.\n\nLjudi dolaze do vode s porodicom ili prijateljima. Neko šeta, neko sedi na klupi, a neko fotografiše. Sa obale se vidi mnogo vode i nebo iznad nje.\n\nPored jezera su park i stare zgrade. Tu su i Velika terasa i Ženski štrand. To su poznata mesta na Paliću.\n\nNa jezero ne moraš da dođeš samo leti. I mirna jesenja šetnja može da bude lepa."
+    },
+    {
+      "id": "a1-ajvar", "title": "Paprika u tegli", "level": "A1", "source": "Ајвар", "kind": "Познавательный текст", "genre": "Еда",
+      "summary": "Учебная адаптация об айваре. Овощи, приготовление еды и вкус.",
+      "body": "Ajvar je hrana od paprike. Često je crvene boje. U Srbiji ga mnogi ljudi vole. Jedu ga uz hleb, sir ili drugo jelo.\n\nZa ajvar se paprika prvo peče. Posle toga se čisti. Zatim se seče ili melje i dugo kuva. Dodaju se ulje i so. Neko dodaje i patlidžan.\n\nAjvar može da bude blag ili ljut. Zato je dobro da pitaš kakav je pre jela.\n\nLjudi ga često prave u jesen. Stavljaju ga u tegle i čuvaju za zimu. Tako ukus paprike ostaje u kući i kada napolju zahladni."
+    },
+    {
+      "id": "a1-sarma", "title": "Šta je sarma?", "level": "A1", "source": "Сарма", "kind": "Познавательный текст", "genre": "Еда",
+      "summary": "Учебная адаптация о сарме. Продукты и простое описание знакомого блюда.",
+      "body": "Sarma je poznato jelo u Srbiji i drugim zemljama. Često se pravi od kupusa, mesa i pirinča.\n\nList kupusa je spolja. Unutra su meso i pirinač. Svaki list se pažljivo savija. Male sarme se zatim stavljaju u veliki lonac i dugo kuvaju.\n\nPostoji i sarma bez mesa. U njoj mogu da budu pirinač, luk i drugi sastojci. Sarma se ne pravi svuda na isti način.\n\nLjudi je često jedu za porodični ručak ili praznik. Na stolu je toplo jelo, a oko stola su porodica i gosti."
+    },
+    {
+      "id": "a1-gibanica", "title": "Gibanica sa sirom", "level": "A1", "source": "Гибаница", "kind": "Познавательный текст", "genre": "Еда",
+      "summary": "Учебная адаптация о гибанице. Кухня, основные продукты и последовательность действий.",
+      "body": "Gibanica je vrsta pite. U Srbiji je poznata gibanica sa sirom. Za nju su potrebne kore, sir, jaja i ulje.\n\nKore su tanki listovi testa. Sir i jaja se mešaju u posudi. Kore se stavljaju u tu smesu, a zatim u pleh. Na kraju pleh ide u rernu.\n\nPosle pečenja gibanica je topla. Spolja je rumena, a unutra meka. Seče se na komade.\n\nMože da se jede za doručak ili večeru. Neko uz nju pije jogurt. Postoje različiti recepti, pa svaka kuća ima svoj omiljeni način pripreme."
+    },
+    {
+      "id": "a1-malina", "title": "Mali crveni plod", "level": "A1", "source": "Малина", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о малине. Цвет, вкус, сад и продукты из ягод.",
+      "body": "Malina je mali plod. Najčešće je crvena. Raste na biljci koja ima tanke grane i zeleno lišće.\n\nZrela malina je meka. Ima lep miris. Može da bude slatka ili malo kisela. Ljudi je jedu svežu ili je čuvaju za kasnije.\n\nOd malina se prave sok, džem i različiti kolači. Maline mogu i da se zamrznu. Tako se jedu i kada nije leto.\n\nU Srbiji se gaji mnogo malina. Kada su zrele, beru se pažljivo. Plod je mali i lako se gnječi. Zato ga ne treba jako stiskati."
+    },
+    {
+      "id": "a2-lisica-i-lav", "title": "Tri susreta sa lavom", "level": "A2", "source": "Лисица и лав", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о том, как знакомство уменьшает страх. Прошедшее время и последовательность событий.",
+      "body": "Jedna lisica nikada ranije nije videla lava. Kada ga je prvi put srela u šumi, mnogo se uplašila. Pred njom je bila velika i snažna životinja. Lisica nije čekala da vidi šta lav želi. Brzo je pobegla.\n\nPosle nekog vremena srela ga je ponovo. I ovog puta je osećala strah, ali manji nego ranije. Stala je malo dalje i posmatrala ga. Videla je da lav mirno prolazi.\n\nPri trećem susretu nije pobegla. Prišla mu je i počela da razgovara s njim. Sada joj više nije izgledao potpuno nepoznato.\n\nLav je bio isti, ali su susreti promenili lisicu. Ono što nam je sasvim novo često nas plaši više od onoga što već poznajemo."
+    },
+    {
+      "id": "a2-lisica-i-jarac", "title": "Kako izaći iz bunara?", "level": "A2", "source": "Лисица и јарац", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о лисе и козле в колодце. План действий, направление и последствия решения.",
+      "body": "Lisica i jarac su bili veoma žedni. Sišli su u bunar i napili se vode. Tek tada su pogledali visoke zidove oko sebe. Nisu znali kako da izađu.\n\nJarac se zabrinuo. Lisica mu je rekla da ima rešenje. Trebalo je da se podigne i osloni prednje noge na zid. Ona će se popeti preko njegovih leđa i rogova.\n\nJarac ju je poslušao. Lisica se brzo popela i iskočila napolje. Ali nije pomogla jarcu. Ostala je na ivici bunara i počela da mu se smeje.\n\nJarac je shvatio da je mislio samo na vodu. Pre nego što je sišao, trebalo je da razmisli i o povratku. Lisica je našla izlaz za sebe, ne za oboje."
+    },
+    {
+      "id": "a2-konj-i-konjusar", "title": "Lep izgled nije dovoljan", "level": "A2", "source": "Коњ и коњушар", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о коне и человеке, который должен за ним ухаживать. Забота и реальные потребности.",
+      "body": "Jedan čovek je brinuo o konju. Svakog dana ga je pažljivo prao i češljao. Ljudi su videli čistu životinju i mislili da čovek dobro radi svoj posao.\n\nMeđutim, konj je bio gladan. Čovek je uzimao deo njegove hrane i prodavao ga. Zbog toga je konj dobijao manje nego što mu je bilo potrebno.\n\nJednog dana konj je progovorio: Zašto me toliko pereš i češljaš? To ne može da zameni hranu koju mi uzimaš.\n\nČovek je uređivao ono što drugi mogu da vide. Nije vodio računa o onome što je konju stvarno trebalo. Lepa dlaka nije značila da je životinja sita i zdrava. Konju je bila potrebna prava briga, a ne samo lep izgled."
+    },
+    {
+      "id": "a2-magarac-i-kip", "title": "Kome se ljudi klanjaju?", "level": "A2", "source": "Магарац идола носећи", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о перепутанной похвале. Праздник, толпа и ошибочное предположение.",
+      "body": "Za vreme jednog praznika ljudi su nosili kip kroz grad. Kip je stajao na leđima magarca. Dok je životinja polako hodala ulicom, ljudi su se zaustavljali i klanjali.\n\nMagarac je gledao okupljene ljude i postajao sve zadovoljniji. Pomislio je da svi poštuju baš njega. Nije razumeo da se ljudi klanjaju kipu koji nosi.\n\nOd radosti je počeo da skače. Kip se opasno pomerao, pa su ga ljudi zaustavili i smirili. Nisu želeli da njihov kip padne na zemlju.\n\nTada je magarcu postalo jasno da pažnja nije bila namenjena njemu. Nosio je nešto važno za druge, ali je njihovo poštovanje pogrešno shvatio kao svoju slavu."
+    },
+    {
+      "id": "a2-lav-i-zec", "title": "Lav koji je želeo veći ručak", "level": "A2", "source": "Лав и зец", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о льве, который упустил добычу. Выбор, сравнение и результат.",
+      "body": "Gladni lav je tražio ručak. U travi je ugledao zeca koji je spavao. Mogao je lako da ga uhvati. Približio se polako i već je mislio na obrok.\n\nU tom trenutku, malo dalje, pojavio se jelen. Lav je pogledao zeca, pa jelena. Jelen je bio mnogo veći. Odlučio je da ostavi zeca i potrči za većom životinjom.\n\nAli jelen je bio brz. Pobegao je pre nego što mu se lav približio. Umorni lav se vratio do mesta gde je zec spavao. Ni zeca više nije bilo. Probudio se i pobegao.\n\nLav je ostao bez ručka. Želeo je više nego što je već mogao da ima, a na kraju nije dobio ništa."
+    },
+    {
+      "id": "a2-papagaj-i-macka", "title": "Novi glas u kući", "level": "A2", "source": "Папагал и мачка", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о попугае и кошке. Новый сосед, шум и разные взгляды на одно событие.",
+      "body": "Domaćin je kupio papagaja i doneo ga kući. Ptica je odmah počela glasno da govori i peva. Njegov glas se čuo iz svake sobe.\n\nMačka, koja je dugo živela u toj kući, prišla je kavezu. Začudila se novom gostu. Pitala ga je ko je i zašto pravi toliku buku.\n\nPapagaj joj je rekao da je tek stigao. Mačka se još više začudila. Kada ona glasno mjauče, ljudi je odmah utišavaju. Ovoj novoj ptici, međutim, dozvoljavaju da viče.\n\nPapagaj je odgovorio da ljudi očigledno vole da slušaju njegov glas.\n\nZa mačku je to bila neprijatna buka. Za domaćina je isti zvuk bio zabavan. Nisu svi u kući jednako dočekali novog stanara."
+    },
+    {
+      "id": "a2-putnici-i-topola", "title": "Drvo bez plodova", "level": "A2", "source": "Путници и топола", "kind": "Басня", "genre": "Природа",
+      "summary": "Учебная адаптация о путниках под тополем. Жара, отдых и польза, которую легко не заметить.",
+      "body": "Dva putnika su dugo hodala po velikoj vrućini. Kada su ugledali visoku topolu, odmah su seli u njenu hladovinu. Pod drvetom je bilo prijatnije. Odmorili su se i povratili snagu.\n\nPre nego što su nastavili put, počeli su da razgovaraju o drvetu. Jedan je rekao da je šteta što tako velika topola nema jestive plodove. Drugi se složio da drvo nije korisno.\n\nTada im se topola obratila. Podsetila ih je da ih je upravo ona zaštitila od sunca. Njeno drvo ljudima služi i za grejanje i za gradnju.\n\nPutnici su tražili korist samo u hrani. Zaboravili su hladovinu u kojoj su se malopre tako prijatno odmorili."
+    },
+    {
+      "id": "a2-zecevi-i-lisice", "title": "Neobični saveznici", "level": "A2", "source": "Зецови и лисице", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о зайцах, орлах и лисах. Просьба о помощи и оценка своих сил.",
+      "body": "Zečevi su odlučili da započnu rat protiv orlova. Orlovi su bili snažni i mogli su da lete visoko. Zečevi su razumeli da im je potrebna pomoć. Zato su poslali poruku lisicama.\n\nPozvali su ih da budu njihovi saveznici. Zajedno bi, mislili su, imali više snage. Lisice su saslušale predlog, ali nisu pristale.\n\nOdgovorile su da će pomoći kada zečevi budu ratovali protiv kokošaka. U takvoj borbi bi bar znale da zečevi nešto mogu da urade.\n\nOdgovor je bio podrugljiv, ali jasan. Lisice nisu verovale u zečji plan. Zečevi su izabrali protivnika koji je bio mnogo jači od njih, a nisu prvo razmislili o svojim mogućnostima."
+    },
+    {
+      "id": "a2-ribari", "title": "Teška mreža", "level": "A2", "source": "Рибари", "kind": "Басня", "genre": "Повседневная жизнь",
+      "summary": "Учебная адаптация о рыбаках и преждевременной радости. Работа, ожидания и разочарование.",
+      "body": "Ribari su jednog dana izvlačili mrežu iz reke. Mreža je bila neobično teška. Morali su zajedno da vuku, jer jedan čovek nije mogao sam.\n\nPre nego što su videli šta je unutra, već su počeli da se raduju. Bili su sigurni da imaju mnogo ribe. Razgovarali su o dobrom danu i svojoj velikoj sreći.\n\nKada su konačno izvukli mrežu na obalu, radost je nestala. U njoj nije bila velika količina ribe, nego težak panj. Drvo je još i pocepalo mrežu.\n\nRibari su se naljutili i počeli da se žale. Jedan od njih ih je podsetio da su se malopre previše radovali. Težina mreže im je nešto obećavala, ali nije bila dokaz da su ulovili ribu."
+    },
+    {
+      "id": "a2-lisica-i-krokodil", "title": "Krokodilova velika porodica", "level": "A2", "source": "Лисица и крокодил", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация сатирической басни. Рассказ о семье, хвастовство и игра со значением слова.",
+      "body": "Lisica i krokodil su razgovarali o svojim porodicama. Krokodil je želeo da dokaže da je njegova porodica važnija od svih ostalih. Počeo je da nabraja hrabra dela svojih predaka.\n\nGovorio je dugo i sve glasnije. Bio je veoma ponosan na davnu prošlost. Verovao je da priče o precima dokazuju i njegovu vrednost.\n\nLisica ga je slušala, a zatim pogledala njegovu kožu. Rekla je da se i po koži vidi koliko je star. Tako je prekinula njegovo hvalisanje.\n\nKrokodil je govorio o staroj porodici, a lisica se našalila kao da govori o staroj koži. Nije želela da ocenjuje životinju samo po tome šta su nekada radili njeni preci."
+    },
+    {
+      "id": "a2-hrast-i-trske", "title": "Hrast i trske na vetru", "level": "A2", "source": "Храст и трске", "kind": "Басня", "genre": "Природа",
+      "summary": "Учебная адаптация о дубе и тростнике. Погода, сила и умение уступить.",
+      "body": "Pored reke su rasli veliki hrast i tanke trske. Hrast je imao snažno stablo i široke grane. Trske su bile male i savijale su se i na slabom vetru.\n\nJednog dana počela je oluja. Vetar je postajao sve jači. Hrast je stajao pravo i nije popuštao. Na kraju ga je vetar oborio u reku. Voda ga je ponela pored trske.\n\nHrast ih je začuđeno pitao kako su ostale na mestu. On je bio snažan, a one su izgledale slabo.\n\nTrske su odgovorile da se savijaju kada vetar duva. Ne pokušavaju da ga zaustave. Zato se ne lome. Hrast je pokušao da ostane čvrst po svaku cenu."
+    },
+    {
+      "id": "a2-misevi-i-zvonce", "title": "Ko će staviti zvonce mačku?", "level": "A2", "source": "Мишеви и прапорци", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о мышином собрании. Предложение, обсуждение и разница между планом и действием.",
+      "body": "Miševi su pronašli dva mala zvona. Sastali su se da odluče kako da ih koriste. Najpre su predložili da ih stave svom vođi. On je zahvalio, ali je odbio takvu čast. Mačak bi ga odmah čuo.\n\nPosle razgovora dobili su bolju ideju. Trebalo je staviti zvonce mačku oko vrata. Kada bi krenuo prema njima, čuli bi ga i na vreme pobegli.\n\nSvi su bili zadovoljni predlogom. Ali onda se pojavilo pitanje ko će prići mačku i staviti mu zvonce.\n\nStariji su slali mlađe. Mlađi su odgovarali da tako važan posao pripada starijima. Niko nije želeo da ide. Plan je bio dobar za razgovor, ali niko nije hteo da ga sprovede."
+    },
+    {
+      "id": "a2-medved-i-pcele", "title": "Medved koji se previše naljutio", "level": "A2", "source": "Медвед и пчеле", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о медведе у улья. Причина, гнев и последствия поспешного действия.",
+      "body": "Medved je pronašao košnicu i počeo da jede med. U početku je bio pažljiv. Polako je uzimao hranu i nije mnogo pomerao košnicu.\n\nOnda ga je jedna pčela ubola u njušku. Medved se veoma naljutio. Umesto da se udalji, podigao je košnicu i bacio je na zemlju.\n\nTada su iz nje izletele sve pčele. Više nije imao problem samo s jednom. Letele su mu oko glave, očiju i ušiju. Medved je morao brzo da pobegne.\n\nDok je bežao, shvatio je svoju grešku. Zbog jednog uboda napravio je mnogo veću nevolju. Pokušao je da kazni jednu pčelu, a naljutio je celu košnicu."
+    },
+    {
+      "id": "a2-lisica-i-drvoseca", "title": "Reči i pokreti", "level": "A2", "source": "Лисица и древосечац", "kind": "Басня", "genre": "Повседневная жизнь",
+      "summary": "Учебная адаптация о лисе и дровосеке. Просьба, обещание и противоречие между словами и поступком.",
+      "body": "Lisica je bežala od lovaca. Stigla je do kuće jednog drvoseče i zamolila ga da je sakrije. Čovek joj je dozvolio da uđe.\n\nUbrzo su došli lovci. Pitali su da li je video lisicu. Drvoseča je rekao da nije. Međutim, u isto vreme je prstom pokazivao prema kući u kojoj se ona krila.\n\nLovci nisu razumeli njegov pokret i otišli su dalje. Lisica je sve videla. Kada je izašla, krenula je svojim putem bez zahvalnosti.\n\nČovek se naljutio i pitao zašto mu nije zahvalila. Lisica mu je odgovorila da bi mu zahvalila da je njegova ruka govorila isto što i njegova usta. Rečima joj je pomagao, a pokretom je pokušao da je oda."
+    },
+    {
+      "id": "a2-stari-pas", "title": "Stari pas i lovac", "level": "A2", "source": "Стар пас и ловац", "kind": "Басня", "genre": "Животные",
+      "summary": "Учебная адаптация о старой охотничьей собаке. Возраст, благодарность и сравнение прошлого с настоящим.",
+      "body": "Jedan lovački pas je ostario. Dok je bio mlad, brzo je trčao i dobro lovio. Godinama je verno pratio svog gospodara.\n\nSada više nije imao istu snagu. Zubi su mu oslabili, pa nije mogao dobro da drži ono što uhvati. Trudio se, ali rezultati nisu bili kao ranije.\n\nLovac se zbog toga ljutio i grubo postupao prema njemu. Pas je jednog dana zamolio gospodara da se seti njihove prošlosti.\n\nRekao mu je da i dalje želi da mu pomogne. Njegova volja se nije promenila. Promenilo se samo njegovo telo.\n\nPas je tražio da lovac vidi razliku između starosti i lenjosti. Nije prestao da bude veran zato što više nije mogao da radi kao mlad."
+    },
+    {
+      "id": "a2-tara", "title": "Šetnja kroz šume Tare", "level": "A2", "source": "Тара (планина)", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о горе Тара. Национальный парк, лес, река и бережное отношение к природе.",
+      "body": "Tara se nalazi u zapadnoj Srbiji. Veliki deo ovog planinskog područja je nacionalni park. Tu ima mnogo šuma, a ispod visokih obala teče Drina.\n\nLjudi dolaze na Taru da šetaju, odmore se i provedu vreme u prirodi. Sa nekih vidikovaca mogu da vide reku i planine. Vidikovac je uređeno mesto sa koga se pruža širok pogled.\n\nNa Tari raste i Pančićeva omorika, retko drvo koje se prirodno javlja na malom području. U šumama žive različite životinje, među njima i mrki medved.\n\nPoseta nacionalnom parku nije isto što i šetnja po gradskom parku. Treba pratiti obeležene staze, poštovati pravila i ne ostavljati smeće. Šuma je pre svega dom biljaka i životinja."
+    },
+    {
+      "id": "a2-djavolja-varos", "title": "Kamene kape Đavolje varoši", "level": "A2", "source": "Ђавоља варош", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о необычных земляных столбах. Реальное природное явление без выдачи легенды за факт.",
+      "body": "Na planini Radan, blizu Kuršumlije, nalazi se neobično mesto. Zove se Đavolja varoš, ali to nije pravi grad. Tamo nema ulica punih kuća. Umesto njih stoje visoki zemljani stubovi.\n\nNa vrhu mnogih stubova nalazi se kamen koji liči na kapu. Kiša i voda polako odnose mekšu zemlju. Kamen na vrhu štiti deo zemlje ispod sebe. Tako nastaju neobični oblici.\n\nLjudi su o ovom mestu pričali različite legende. U njima su pokušavali da objasne kako su figure nastale. Naučno objašnjenje je, međutim, povezano s vodom, zemljom i dugim radom prirode.\n\nĐavolja varoš je zaštićeno prirodno dobro. Posetioci dolaze da vide figure, ali ne treba da ih dodiruju niti da se penju na njih."
+    },
+    {
+      "id": "a2-sarganska-osmica", "title": "Voz koji pravi osmicu", "level": "A2", "source": "Шарганска осмица", "kind": "Познавательный текст", "genre": "Путешествия",
+      "summary": "Учебная адаптация о Шарганской восьмёрке. Поезд, горы и причина необычной формы железной дороги.",
+      "body": "Šarganska osmica je poznata turistička pruga u zapadnoj Srbiji, kod Mokre Gore. Nekada je bila deo dužeg železničkog puta. Danas njome putuju ljudi koji žele da upoznaju staru železnicu i planinski kraj.\n\nPruga prolazi kroz tunele i preko mostova. Na jednom delu njen put, gledan odozgo, liči na broj osam. Tako voz može postepeno da savlada razliku u visini. Ne penje se pravo uz strmu planinu, nego pravi krivine.\n\nTuristički voz zove se Nostalgija. Putnici kroz prozor gledaju šumu, brda i stare stanice. Vožnja je deo doživljaja, a ne samo način da se stigne do cilja.\n\nRaspored vožnje zavisi od sezone. Pre putovanja treba potražiti aktuelne informacije o polascima."
+    },
+    {
+      "id": "a2-slava", "title": "Porodični dan koji se zove slava", "level": "A2", "source": "Слава", "kind": "Познавательный текст", "genre": "Традиции",
+      "summary": "Учебная адаптация о славе. Семейный праздник, гости и традиция, без обобщения на всех жителей Сербии.",
+      "body": "Mnoge pravoslavne porodice u Srbiji proslavljaju slavu. To je porodični praznik posvećen određenom svetitelju. Nije isto što i rođendan, pa svi članovi porodice obeležavaju isti dan.\n\nPripreme često počinju ranije. Kuća se sprema, hrana se kuva, a porodica očekuje rođake i prijatelje. Za slavu su važni slavski kolač, sveća i drugi verski običaji.\n\nZa stolom se ljudi sreću, razgovaraju i čestitaju domaćinu. Hrana zavisi i od toga da li slava pada u vreme posta. Zbog toga na različitim slavama nisu uvek ista jela.\n\nObičaji se razlikuju od porodice do porodice. Slava se prenosi kroz generacije i ima posebno mesto u porodičnom životu. Upisana je i na Uneskovu listu nematerijalnog kulturnog nasleđa."
+    },
+    {
+      "id": "a2-kolo", "title": "Ljudi koji igraju zajedno", "level": "A2", "source": "Коло (игра)", "kind": "Познавательный текст", "genre": "Традиции",
+      "summary": "Учебная адаптация о коло. Музыка, танец, общие движения и праздники.",
+      "body": "Kolo je tradicionalna igra u kojoj ljudi igraju zajedno. Najčešće se drže za ruke i kreću u povezanom nizu. Taj niz može da bude krug, polukrug ili drugačiji oblik.\n\nMuzika određuje ritam, a igrači ponavljaju korake. Neka kola su jednostavna i spora, dok druga traže mnogo vežbe. Važno je da igrači prate jedni druge. Niko ne igra sasvim odvojeno od ostalih.\n\nKolo se igra na svadbama, proslavama i nastupima folklornih grupa. Postoje različiti oblici i lokalni načini igranja. Zato naziv kolo ne znači da svuda postoje isti koraci.\n\nOva igra povezuje muziku, kretanje i druženje. Početnik često prvo posmatra, a zatim pokušava da prati iskusnije igrače pored sebe."
+    },
+    {
+      "id": "a2-vuk-karadzic", "title": "Vuk koji je zapisivao reči", "level": "A2", "source": "Вук Стефановић Караџић", "kind": "Биография", "genre": "Язык и культура",
+      "summary": "Учебная адаптация о Вуке Караджиче. Словарь, народная речь и письменность.",
+      "body": "Vuk Stefanović Karadžić bio je važan reformator srpskog jezika i pisma. Rođen je u Tršiću 1787. godine. Mnogo je učio slušajući kako obični ljudi govore.\n\nSakupljao je narodne pesme, priče i poslovice. Zapisivao ih je da ne ostanu samo u sećanju onih koji ih pričaju. Zahvaljujući takvom radu, mnogi usmeni tekstovi dobili su i pisani oblik.\n\nVuk je objavio Srpski rječnik. U njemu su bile reči iz narodnog govora i objašnjenja njihovog značenja. Radio je i na reformi ćirilice i pravopisa.\n\nNjegove ideje nisu odmah prihvatili svi. Ipak, njegov rad je snažno uticao na savremeni srpski jezik. Kada danas učimo srpska slova i čitamo narodne priče, susrećemo deo tog nasleđa."
+    },
+    {
+      "id": "a2-nikola-tesla", "title": "Nikola Tesla i svet ideja", "level": "A2", "source": "Никола Тесла", "kind": "Биография", "genre": "Наука",
+      "summary": "Учебная адаптация о Николе Тесле. Изобретения, электричество и работа исследователя без вымышленных цитат.",
+      "body": "Nikola Tesla bio je srpski pronalazač i inženjer. Rođen je 1856. godine u Smiljanu, na prostoru današnje Hrvatske. Kasnije je najveći deo svog radnog života proveo u Sjedinjenim Američkim Državama.\n\nPosebno je poznat po radu sa naizmeničnom strujom. To je vrsta električne struje koja menja smer. Njegovi pronalasci pomogli su razvoju sistema za proizvodnju i prenos električne energije.\n\nTesla je radio i na drugim idejama. Nisu sve njegove zamisli postale uspešni proizvodi. Istraživanje je tražilo mnogo pokušaja, rada i novca.\n\nDanas njegovo ime nose škole, aerodrom i naučne ustanove. U Beogradu postoji Muzej Nikole Tesle. Njegova priča pokazuje koliko jedna ideja može da utiče na svakodnevni život ljudi."
+    },
+    {
+      "id": "a2-ivo-andric", "title": "Pisac koji je dobio Nobelovu nagradu", "level": "A2", "source": "Иво Андрић", "kind": "Биография", "genre": "Язык и культура",
+      "summary": "Учебная адаптация о жизни Иво Андрича. Писатель, книги и литературная награда, без копирования его произведений.",
+      "body": "Ivo Andrić bio je pisac i diplomata. Rođen je 1892. godine u Dolcu kod Travnika. Detinjstvo i mladost proveo je u Bosni, a kasnije je živeo i radio u različitim gradovima.\n\nU svojim knjigama često je pisao o ljudima, istoriji i životu u Bosni. Jedno od njegovih najpoznatijih dela je roman Na Drini ćuprija. Reč ćuprija znači most. U toj knjizi most povezuje priče o različitim ljudima i vremenima.\n\nAndrić je 1961. godine dobio Nobelovu nagradu za književnost. Njegove knjige prevedene su na mnogo jezika.\n\nDanas se njegova dela čitaju u školama i van njih. Čitalac u njima ne nalazi samo događaje iz prošlosti, nego i pitanja o odnosima među ljudima."
+    },
+    {
+      "id": "a2-pirotski-cilim", "title": "Priča u bojama i šarama", "level": "A2", "source": "Пиротски ћилим", "kind": "Познавательный текст", "genre": "Традиции",
+      "summary": "Учебная адаптация о пиротском ковре. Ручная работа, шерсть, узоры и передача ремесла.",
+      "body": "Pirotski ćilim je poznat proizvod iz Pirota, grada na jugoistoku Srbije. Pravi se od vune i ukrašava različitim šarama. Ćilim može da služi kao prostirka, ali je i primer pažljivog ručnog rada.\n\nNjegove boje su često jake. Crvena se pojavljuje uz druge boje, a šare imaju pravilne oblike. Mnoge od njih imaju i svoja imena. Za izradu jednog ćilima potrebno je vreme, znanje i strpljenje.\n\nVeština tkanja dugo se prenosila s jedne generacije na drugu. Tako nisu sačuvani samo predmeti, nego i način rada.\n\nKada posmatramo ćilim, vidimo gotov crtež. Iza tog crteža stoje mnogi mali pokreti ruku. Zato ćilim govori i o ljudima koji su ga napravili."
+    },
+    {
+      "id": "a2-panciceva-omorika", "title": "Retko drvo pored Drine", "level": "A2", "source": "Панчићева оморика", "kind": "Познавательный текст", "genre": "Природа",
+      "summary": "Учебная адаптация о сербской ели. Редкий вид дерева, учёный и охрана природы.",
+      "body": "Pančićeva omorika je visoko i vitko četinarsko drvo. Ime je dobila po botaničaru Josifu Pančiću. On ju je pronašao na Tari u devetnaestom veku i predstavio nauci.\n\nU prirodi ovo drvo ne raste svuda. Njegova staništa nalaze se uglavnom u malom području oko srednjeg toka Drine, u Srbiji i Bosni i Hercegovini. Stanište je mesto na kome neka biljka ili životinja prirodno živi.\n\nZbog malog područja na kome raste, važno je čuvati i samo drvo i šumu oko njega. Zaštita jedne vrste ne završava se samo zabranom seče. Potrebno je sačuvati uslove u kojima ona može da opstane.\n\nPančićeva omorika se gaji i u drugim zemljama, ali njena prirodna staništa ostaju posebno važna."
+    }
+  ]
+}

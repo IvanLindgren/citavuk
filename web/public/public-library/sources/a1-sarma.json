@@ -1,0 +1,34 @@
+{
+  "requested": "Сарма",
+  "title": "Сарма",
+  "host": "sr.wikipedia.org",
+  "revision": 31820801,
+  "url": "https://sr.wikipedia.org/wiki/%D0%A1%D0%B0%D1%80%D0%BC%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31820801",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%A1%D0%B0%D1%80%D0%BC%D0%B0?action=history",
+  "wikitextSha256": "e86f1f27690b5775497df872aae63e005811e32d46b425c84cdb164771b247f6",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 86,
+    "sentences": 11,
+    "longestSentence": 12,
+    "averageSentence": 7.82
+  },
+  "textSha256": "34eb1d7eab040545a3d535b42e7114dd4d6e645a6be09a2972c27dcfec019d4d",
+  "cover": {
+    "file": "Postna_sarma_(vegetarian_sarma,_Cuisine_of_Serbia).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Postna_sarma_%28vegetarian_sarma%2C_Cuisine_of_Serbia%29.jpg/960px-Postna_sarma_%28vegetarian_sarma%2C_Cuisine_of_Serbia%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Postna_sarma_(vegetarian_sarma,_Cuisine_of_Serbia).jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Petar Milošević",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

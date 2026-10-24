@@ -1,0 +1,34 @@
+{
+  "requested": "Палићко језеро",
+  "title": "Палићко језеро",
+  "host": "sr.wikipedia.org",
+  "revision": 31503160,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BB%D0%B8%D1%9B%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31503160",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BB%D0%B8%D1%9B%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE?action=history",
+  "wikitextSha256": "0f8e50ba2ad015a6ffa6c06a0653069fbeb04ea9c786e77ac9d18dcb6f0caf11",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 86,
+    "sentences": 11,
+    "longestSentence": 10,
+    "averageSentence": 7.82
+  },
+  "textSha256": "d0d234b4978c7fa5812d4e2ab9f9c8d71e22456183447a994db84135158712d4",
+  "cover": {
+    "file": "Palic13.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Palic13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Palic13.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Vukovic Ivan",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

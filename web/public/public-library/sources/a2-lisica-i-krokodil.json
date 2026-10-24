@@ -1,0 +1,36 @@
+{
+  "requested": "Лисица и крокодил",
+  "title": "Лисица и крокодил",
+  "host": "sr.wikisource.org",
+  "revision": 46557,
+  "url": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BA%D1%80%D0%BE%D0%BA%D0%BE%D0%B4%D0%B8%D0%BB",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46557",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BA%D1%80%D0%BE%D0%BA%D0%BE%D0%B4%D0%B8%D0%BB?action=history",
+  "wikitextSha256": "f60a2b9b989150453a4a09242dce803102e719880e61e3010ed21bdca71c9401",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 107,
+    "sentences": 11,
+    "longestSentence": 16,
+    "averageSentence": 9.73
+  },
+  "textSha256": "086c1aea679d039dcb12097e69e858c3b691c6d2e72f633a6e7adc326619d795",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

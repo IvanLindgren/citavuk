@@ -1,0 +1,36 @@
+{
+  "requested": "Два миша",
+  "title": "Два миша",
+  "host": "sr.wikisource.org",
+  "revision": 46502,
+  "url": "https://sr.wikisource.org/wiki/%D0%94%D0%B2%D0%B0_%D0%BC%D0%B8%D1%88%D0%B0",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46502",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%94%D0%B2%D0%B0_%D0%BC%D0%B8%D1%88%D0%B0?action=history",
+  "wikitextSha256": "832b478dbbbb9557702f8d1aee1815b34c825873c0d78fca0342c330fabafffa",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 88,
+    "sentences": 15,
+    "longestSentence": 9,
+    "averageSentence": 5.87
+  },
+  "textSha256": "51f60cb2199d1085725e7b577d407791ca94a67866303cc5275e803f5c400d44",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

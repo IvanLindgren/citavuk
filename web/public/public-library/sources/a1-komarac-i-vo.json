@@ -1,0 +1,36 @@
+{
+  "requested": "Комарац и во",
+  "title": "Комарац и во",
+  "host": "sr.wikisource.org",
+  "revision": 46532,
+  "url": "https://sr.wikisource.org/wiki/%D0%9A%D0%BE%D0%BC%D0%B0%D1%80%D0%B0%D1%86_%D0%B8_%D0%B2%D0%BE",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46532",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9A%D0%BE%D0%BC%D0%B0%D1%80%D0%B0%D1%86_%D0%B8_%D0%B2%D0%BE?action=history",
+  "wikitextSha256": "aa80a205e390c796ebf3465213260a1809afedf63b75bf4db3d16e83a178ec3c",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 83,
+    "sentences": 14,
+    "longestSentence": 10,
+    "averageSentence": 5.93
+  },
+  "textSha256": "b888cd356463317f1b4cee51a3f9a90e62e4f87605f648c4dfd1c59c494a01e4",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

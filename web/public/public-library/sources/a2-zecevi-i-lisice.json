@@ -1,0 +1,36 @@
+{
+  "requested": "Зецови и лисице",
+  "title": "Зецови и лисице",
+  "host": "sr.wikisource.org",
+  "revision": 46520,
+  "url": "https://sr.wikisource.org/wiki/%D0%97%D0%B5%D1%86%D0%BE%D0%B2%D0%B8_%D0%B8_%D0%BB%D0%B8%D1%81%D0%B8%D1%86%D0%B5",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46520",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%97%D0%B5%D1%86%D0%BE%D0%B2%D0%B8_%D0%B8_%D0%BB%D0%B8%D1%81%D0%B8%D1%86%D0%B5?action=history",
+  "wikitextSha256": "86bea68f5151deee55438e43835ef1ab9d5599e1dcafda1082d9d9b8221d5925",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 105,
+    "sentences": 12,
+    "longestSentence": 18,
+    "averageSentence": 8.75
+  },
+  "textSha256": "9b8a96c45cc3eb47412c3be7a8de28096d4ea9a006fc87011b63f22cc3dc1f7b",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

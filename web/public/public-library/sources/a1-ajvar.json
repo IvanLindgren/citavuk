@@ -1,0 +1,34 @@
+{
+  "requested": "Ајвар",
+  "title": "Ајвар",
+  "host": "sr.wikipedia.org",
+  "revision": 31701215,
+  "url": "https://sr.wikipedia.org/wiki/%D0%90%D1%98%D0%B2%D0%B0%D1%80",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31701215",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%90%D1%98%D0%B2%D0%B0%D1%80?action=history",
+  "wikitextSha256": "2984a9d63cc3474d5fe8356329c30b93935f16cd8c2a7f2831d8d44fdf88f833",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 90,
+    "sentences": 14,
+    "longestSentence": 10,
+    "averageSentence": 6.43
+  },
+  "textSha256": "0a990628f4eaa11261a2b8cf21b4effd17438b9ba12eac47d1c28e7f56ceef8d",
+  "cover": {
+    "file": "Ajvar-3.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Ajvar-3.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ajvar-3.png",
+    "license": "CC BY-SA 2.5",
+    "author": "Wikimedia Commons",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

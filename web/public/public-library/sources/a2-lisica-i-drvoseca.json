@@ -1,0 +1,36 @@
+{
+  "requested": "Лисица и древосечац",
+  "title": "Лисица и древосечац",
+  "host": "sr.wikisource.org",
+  "revision": 46555,
+  "url": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%B4%D1%80%D0%B5%D0%B2%D0%BE%D1%81%D0%B5%D1%87%D0%B0%D1%86",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46555",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D0%B8%D1%86%D0%B0_%D0%B8_%D0%B4%D1%80%D0%B5%D0%B2%D0%BE%D1%81%D0%B5%D1%87%D0%B0%D1%86?action=history",
+  "wikitextSha256": "6329cc7d9081a8161e31bc0b68de604bc5456bae7ef94bc30b8698085f315cf8",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 113,
+    "sentences": 13,
+    "longestSentence": 18,
+    "averageSentence": 8.69
+  },
+  "textSha256": "04679d5c7bc2ca4089410d0c7aa4a73f4de0ae141d2fe359a689afa278cf5ede",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "requested": "Слава",
+  "title": "Слава",
+  "host": "sr.wikipedia.org",
+  "revision": 31822946,
+  "url": "https://sr.wikipedia.org/wiki/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31822946",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B0?action=history",
+  "wikitextSha256": "72b8af1e87666fec81be1515f12e28a3fd80e8abae597c4905149986ec4ded0c",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 111,
+    "sentences": 12,
+    "longestSentence": 12,
+    "averageSentence": 9.25
+  },
+  "textSha256": "a48cb20319466eb4b49a9aa9b471cbff8a721de85d854ac093167475e5b0de5f",
+  "cover": {
+    "file": "PA020045.JPG",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/PA020045.JPG/960px-PA020045.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:PA020045.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "No machine-readable author provided. Norwood assumed (based on copyright claims).",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "requested": "Шарганска осмица",
+  "title": "Шарганска осмица",
+  "host": "sr.wikipedia.org",
+  "revision": 31696650,
+  "url": "https://sr.wikipedia.org/wiki/%D0%A8%D0%B0%D1%80%D0%B3%D0%B0%D0%BD%D1%81%D0%BA%D0%B0_%D0%BE%D1%81%D0%BC%D0%B8%D1%86%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31696650",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%A8%D0%B0%D1%80%D0%B3%D0%B0%D0%BD%D1%81%D0%BA%D0%B0_%D0%BE%D1%81%D0%BC%D0%B8%D1%86%D0%B0?action=history",
+  "wikitextSha256": "6c79a4ac0b6b8387688e08fbb7d7631da79791a9ee5ac24253f83a60ace9affc",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 109,
+    "sentences": 12,
+    "longestSentence": 13,
+    "averageSentence": 9.08
+  },
+  "textSha256": "661f1997451756d06b7a833e10135e89b115ba1678fbe19a39473e8122790be1",
+  "cover": {
+    "file": "Sarganska osmica 2.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Sarganska_osmica_2.jpg/960px-Sarganska_osmica_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sarganska_osmica_2.jpg",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "author": "Herbert Ortner, Vienna, Austria",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

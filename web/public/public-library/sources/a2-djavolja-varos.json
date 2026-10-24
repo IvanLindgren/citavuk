@@ -1,0 +1,34 @@
+{
+  "requested": "Ђавоља варош",
+  "title": "Ђавоља варош",
+  "host": "sr.wikipedia.org",
+  "revision": 31768881,
+  "url": "https://sr.wikipedia.org/wiki/%D0%82%D0%B0%D0%B2%D0%BE%D1%99%D0%B0_%D0%B2%D0%B0%D1%80%D0%BE%D1%88",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31768881",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%82%D0%B0%D0%B2%D0%BE%D1%99%D0%B0_%D0%B2%D0%B0%D1%80%D0%BE%D1%88?action=history",
+  "wikitextSha256": "a5481bbf1c4560a015ca07a3289c649f690d9ae3ca9fc0cc905b3bbc0ca36a4b",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 112,
+    "sentences": 13,
+    "longestSentence": 17,
+    "averageSentence": 8.62
+  },
+  "textSha256": "eef9ee7691089a727bd2544ff98cc2ec2847b2357401268cd2a56e8b53fe23b8",
+  "cover": {
+    "file": "Djavolja_varos_3.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Djavolja_varos_3.jpg/960px-Djavolja_varos_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Djavolja_varos_3.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Geologicharka at Serbian Wikipedia",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

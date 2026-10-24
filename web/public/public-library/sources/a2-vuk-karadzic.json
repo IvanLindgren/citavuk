@@ -1,0 +1,34 @@
+{
+  "requested": "Вук Стефановић Караџић",
+  "title": "Вук Стефановић Караџић",
+  "host": "sr.wikipedia.org",
+  "revision": 31841872,
+  "url": "https://sr.wikipedia.org/wiki/%D0%92%D1%83%D0%BA_%D0%A1%D1%82%D0%B5%D1%84%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%9B_%D0%9A%D0%B0%D1%80%D0%B0%D1%9F%D0%B8%D1%9B",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31841872",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%92%D1%83%D0%BA_%D0%A1%D1%82%D0%B5%D1%84%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%9B_%D0%9A%D0%B0%D1%80%D0%B0%D1%9F%D0%B8%D1%9B?action=history",
+  "wikitextSha256": "86efd5886beeed13e3f462406988eb0f3ba1e27769a96b78de132ddbe66cc866",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 109,
+    "sentences": 13,
+    "longestSentence": 13,
+    "averageSentence": 8.38
+  },
+  "textSha256": "8db8c7e377bddea45467f571a89a1b83600d568801d150bb05c01c70e95afd0a",
+  "cover": {
+    "file": "VukKaradzic.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/41/VukKaradzic.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:VukKaradzic.jpg",
+    "license": "Public domain",
+    "author": "Wikimedia Commons",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "requested": "Гибаница",
+  "title": "Гибаница",
+  "host": "sr.wikipedia.org",
+  "revision": 31784251,
+  "url": "https://sr.wikipedia.org/wiki/%D0%93%D0%B8%D0%B1%D0%B0%D0%BD%D0%B8%D1%86%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31784251",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%93%D0%B8%D0%B1%D0%B0%D0%BD%D0%B8%D1%86%D0%B0?action=history",
+  "wikitextSha256": "4d461dc30c9b1a707d036decdbcb58f81413682df86ffe5041981d7a5c7d6af1",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 87,
+    "sentences": 13,
+    "longestSentence": 11,
+    "averageSentence": 6.69
+  },
+  "textSha256": "9bb5fe11223a388f0e65a0f692a780d951f7d9de31f1f5ee55c77e8b399744a9",
+  "cover": {
+    "file": "Gibanica_single_slice_with_full_pie_in_background.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Gibanica_single_slice_with_full_pie_in_background.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gibanica_single_slice_with_full_pie_in_background.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Arousing Appetites",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

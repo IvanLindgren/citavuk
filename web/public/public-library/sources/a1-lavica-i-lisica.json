@@ -1,0 +1,36 @@
+{
+  "requested": "Лавица и лисица",
+  "title": "Лавица и лисица",
+  "host": "sr.wikisource.org",
+  "revision": 46480,
+  "url": "https://sr.wikisource.org/wiki/%D0%9B%D0%B0%D0%B2%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BB%D0%B8%D1%81%D0%B8%D1%86%D0%B0",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46480",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9B%D0%B0%D0%B2%D0%B8%D1%86%D0%B0_%D0%B8_%D0%BB%D0%B8%D1%81%D0%B8%D1%86%D0%B0?action=history",
+  "wikitextSha256": "849d8a6d2c59d4f32e4ce9e62bbabb0d81308214837fc3ef8b756df210e7d1d1",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 82,
+    "sentences": 16,
+    "longestSentence": 9,
+    "averageSentence": 5.12
+  },
+  "textSha256": "b81357536ccd8cc7d9aa782d7d3efc71e4c250c611656f294d403a2d682b29dd",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "requested": "Мачак и мишеви",
+  "title": "Мачак и мишеви",
+  "host": "sr.wikisource.org",
+  "revision": 46582,
+  "url": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D1%87%D0%B0%D0%BA_%D0%B8_%D0%BC%D0%B8%D1%88%D0%B5%D0%B2%D0%B8",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46582",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D1%87%D0%B0%D0%BA_%D0%B8_%D0%BC%D0%B8%D1%88%D0%B5%D0%B2%D0%B8?action=history",
+  "wikitextSha256": "f68f68873d3d32a22bf2eca0e9901c41c304015faba3f99591616b91027ebf02",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 82,
+    "sentences": 17,
+    "longestSentence": 8,
+    "averageSentence": 4.82
+  },
+  "textSha256": "9940db2ac37ca614c40471162c6550d28a16aa4aeab1fae68ac68a62ded13fbc",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

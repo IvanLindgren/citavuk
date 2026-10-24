@@ -396,6 +396,7 @@ def make_cover(book: dict, path: Path) -> dict[str, str]:
 
 
 def main() -> None:
+    from build_beginner_library import build_into_catalog
     texts = OUT / "texts"
     covers = OUT / "covers"
     texts.mkdir(parents=True, exist_ok=True)
@@ -445,11 +446,12 @@ def main() -> None:
             else f"{book['id']}: external collection"
         )
 
+    catalog = build_into_catalog(catalog)
     (OUT / "catalog.json").write_text(
         json.dumps(
             {
                 "version": 2,
-                "generatedAt": "2026-07-30",
+                "generatedAt": "2026-10-24",
                 "items": catalog,
             },
             ensure_ascii=False,

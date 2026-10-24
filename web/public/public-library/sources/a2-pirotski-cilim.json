@@ -1,0 +1,35 @@
+{
+  "requested": "Пиротски ћилим",
+  "title": "Пиротски ћилим",
+  "host": "sr.wikipedia.org",
+  "revision": 31814621,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B8%D1%80%D0%BE%D1%82%D1%81%D0%BA%D0%B8_%D1%9B%D0%B8%D0%BB%D0%B8%D0%BC",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31814621",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9F%D0%B8%D1%80%D0%BE%D1%82%D1%81%D0%BA%D0%B8_%D1%9B%D0%B8%D0%BB%D0%B8%D0%BC?action=history",
+  "wikitextSha256": "ba8f7b8fd74cd22e4a9578ede104b8d7f2a1d5fdbda096e408142c6fcfb81a27",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 108,
+    "sentences": 12,
+    "longestSentence": 13,
+    "averageSentence": 9.0
+  },
+  "textSha256": "7444721ae5b9fcdd0c90fa5cf0a7abc5a9178a4725bc9a92c91c423c481120bb",
+  "cover": {
+    "file": "Pirot_kilim_serbian_rug.png",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Pirot_kilim_serbian_rug.png/960px-Pirot_kilim_serbian_rug.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pirot_kilim_serbian_rug.png",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "author": "Orjen",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

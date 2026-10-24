@@ -1,0 +1,34 @@
+{
+  "requested": "Малина",
+  "title": "Малина",
+  "host": "sr.wikipedia.org",
+  "revision": 31692748,
+  "url": "https://sr.wikipedia.org/wiki/%D0%9C%D0%B0%D0%BB%D0%B8%D0%BD%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31692748",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%9C%D0%B0%D0%BB%D0%B8%D0%BD%D0%B0?action=history",
+  "wikitextSha256": "68f988b9c4b4de05b2f1fc9b41293adcdcdc23e46ed0fdd1f6f79c224a5e05bb",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 87,
+    "sentences": 14,
+    "longestSentence": 10,
+    "averageSentence": 6.21
+  },
+  "textSha256": "cdab7b242769e830a81a978527d11310474d18f279949317921bc98ec7eba070",
+  "cover": {
+    "file": "Raspberries,_fruit_of_four_species.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Raspberries%2C_fruit_of_four_species.jpg/960px-Raspberries%2C_fruit_of_four_species.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raspberries,_fruit_of_four_species.jpg",
+    "license": "Public domain",
+    "author": "Rubus_crataegifolius_02.JPG: Qwert1234\nRubus_rosifolius1.JPG: John Moss\nderivative work: Nadiatalent (talk)",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

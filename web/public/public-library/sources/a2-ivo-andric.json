@@ -1,0 +1,35 @@
+{
+  "requested": "Иво Андрић",
+  "title": "Иво Андрић",
+  "host": "sr.wikipedia.org",
+  "revision": 31841876,
+  "url": "https://sr.wikipedia.org/wiki/%D0%98%D0%B2%D0%BE_%D0%90%D0%BD%D0%B4%D1%80%D0%B8%D1%9B",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31841876",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%98%D0%B2%D0%BE_%D0%90%D0%BD%D0%B4%D1%80%D0%B8%D1%9B?action=history",
+  "wikitextSha256": "60a59fdc08e7e3c40b8509bee671c78ec88745591c1860a989ee71e3f36e9942",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A2",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 109,
+    "sentences": 13,
+    "longestSentence": 16,
+    "averageSentence": 8.38
+  },
+  "textSha256": "cc1f9fd547bf5c472322f206639fa60d5cf1f1ef2ad4d6810584f89ffbb606be",
+  "cover": {
+    "file": "S._Kragujevic,_Ivo_Andric,_1961.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/S._Kragujevic%2C_Ivo_Andric%2C_1961.jpg/960px-S._Kragujevic%2C_Ivo_Andric%2C_1961.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:S._Kragujevic,_Ivo_Andric,_1961.jpg",
+    "license": "CC BY-SA 3.0 rs",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/rs/deed.en",
+    "author": "Stevan Kragujević",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

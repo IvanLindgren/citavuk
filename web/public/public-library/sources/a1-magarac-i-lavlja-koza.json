@@ -1,0 +1,36 @@
+{
+  "requested": "Магарац у лавовој кожи",
+  "title": "Магарац у лавовој кожи",
+  "host": "sr.wikisource.org",
+  "revision": 46577,
+  "url": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D0%B3%D0%B0%D1%80%D0%B0%D1%86_%D1%83_%D0%BB%D0%B0%D0%B2%D0%BE%D0%B2%D0%BE%D1%98_%D0%BA%D0%BE%D0%B6%D0%B8",
+  "revisionUrl": "https://sr.wikisource.org/w/index.php?oldid=46577",
+  "historyUrl": "https://sr.wikisource.org/wiki/%D0%9C%D0%B0%D0%B3%D0%B0%D1%80%D0%B0%D1%86_%D1%83_%D0%BB%D0%B0%D0%B2%D0%BE%D0%B2%D0%BE%D1%98_%D0%BA%D0%BE%D0%B6%D0%B8?action=history",
+  "wikitextSha256": "343f5bce432e902cacdc2246412144747676e2ab3b92f3b2ad2d1e420e62cdf5",
+  "checkedAt": "2026-10-24",
+  "rights": "Езоп и перевод Доситея Обрадовича (умер в 1811), общественное достояние",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 81,
+    "sentences": 16,
+    "longestSentence": 8,
+    "averageSentence": 5.06
+  },
+  "textSha256": "3341e74054efd9239b780f7ee9d47ef9ba74fcdf4c2bc89a49279b2fd4024a03",
+  "cover": {
+    "file": "Aesopnurembergchronicle.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "user:Matanya",
+    "selection": "aesop-portrait",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}

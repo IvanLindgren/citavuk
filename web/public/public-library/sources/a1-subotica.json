@@ -1,0 +1,34 @@
+{
+  "requested": "Суботица",
+  "title": "Суботица",
+  "host": "sr.wikipedia.org",
+  "revision": 31826572,
+  "url": "https://sr.wikipedia.org/wiki/%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0",
+  "revisionUrl": "https://sr.wikipedia.org/w/index.php?oldid=31826572",
+  "historyUrl": "https://sr.wikipedia.org/wiki/%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0?action=history",
+  "wikitextSha256": "f5a53c67e413d3e0285346236a9ecd1dd69c0c52e0ae8b2bf665a848d8527418",
+  "checkedAt": "2026-10-24",
+  "rights": "Авторы сербской Википедии, CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptation": true,
+  "adaptedBy": "Читавук",
+  "adaptationLicense": "CC BY-SA 4.0",
+  "adaptationLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "A1",
+  "levelAssessment": "Редакционная оценка, не сертификация CEFR",
+  "metrics": {
+    "words": 85,
+    "sentences": 12,
+    "longestSentence": 12,
+    "averageSentence": 7.08
+  },
+  "textSha256": "ddfcda722d2dfca69100e90248616f7f79c3f88ebe7fa3f45a241b41d0e0f203",
+  "cover": {
+    "file": "View_of_Subotica_2_(2024).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/View_of_Subotica_2_%282024%29.jpg/960px-View_of_Subotica_2_%282024%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:View_of_Subotica_2_(2024).jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "\n\n\n\n\nThis image was made by Sadko.\n\nPlease credit this with: \"Sadko, Wikipedia\" in the immediate vicinity of the image. \nA message to me would be appreciated as well. \nIf you wish to use, license, or buy the image, please contact me to discuss terms.\nMore of my work can be found in my personal gallery.\n\n",
+    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+  }
+}
