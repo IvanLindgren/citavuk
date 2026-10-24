@@ -25,7 +25,8 @@ def metadata(file):
 
 def main():
     output = OUT / 'covers.json'
-    covers = json.loads(output.read_text(encoding='utf-8')) if output.exists() else {}
+    canonical = ROOT / 'tools/data/public_library_beginner_covers.json'
+    covers = json.loads(canonical.read_text(encoding='utf-8')) if canonical.exists() else {}
     items = json.loads((ROOT / 'tools/data/public_library_beginner.json').read_text(encoding='utf-8'))['items']
     for item in items:
         if item['kind'] == 'Басня' or item['source'] in covers:
@@ -39,11 +40,20 @@ def main():
         output.write_text(json.dumps(covers, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(item['source'] + ': ' + file, flush=True)
         time.sleep(.3)
-    if covers.get('fables', {}).get('selection') != 'aesop-portrait':
-        # Общая авторская обложка без английских стихов на иллюстрации.
-        author = api('sr.wikipedia.org', action='query', prop='pageimages', piprop='name', titles='Езоп')['query']['pages'][0]
-        covers['fables'] = metadata(author['pageimage'])
-        covers['fables']['selection'] = 'aesop-portrait'
+    selected = json.loads((ROOT / 'tools/data/public_library_fable_cover_selection.json').read_text(encoding='utf-8'))
+    fables = {item['id'] for item in items if item['kind'] == 'Басня'}
+    if set(selected) != fables or len({v['file'] for v in selected.values()}) != len(fables):
+        raise ValueError('нужны 30 разных, вручную выбранных иллюстраций')
+    for ident, selection in selected.items():
+        if ident in covers and all(covers[ident].get(k) == v for k, v in selection.items()):
+            continue
+        covers[ident] = metadata(selection['file']) | selection | {
+            'checkedAt': '2026-10-24', 'selection': 'Просмотрено вручную, изображение из Commons, без генерации',
+        }
+        canonical.write_text(json.dumps(covers, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        print(ident + ': ' + covers[ident]['file'], flush=True)
+        time.sleep(.3)
+    covers.pop('fables', None)
     if covers['Шарганска осмица']['file'].endswith('.svg'):
         # Для обложки поезд, а не схема пути с мелкими подписями.
         result = api('commons.wikimedia.org', action='query', generator='search',

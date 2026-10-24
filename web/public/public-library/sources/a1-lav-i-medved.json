@@ -24,13 +24,15 @@
   },
   "textSha256": "b5bcc3ffc0f33985a680e6684325b39aa0f3b694a82f171119b251b25bbc6a54",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Page 107 illustration to Three hundred Aesop's fables (Townshend).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Page_107_illustration_to_Three_hundred_Aesop%27s_fables_%28Townshend%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_107_illustration_to_Three_hundred_Aesop%27s_fables_(Townshend).png",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Harrison Weir",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

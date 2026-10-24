@@ -23,6 +23,24 @@ class BeginnerLibraryTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             library.validate(registry, self.sources, self.covers)
 
+    def test_rejects_repeated_cover(self):
+        covers = copy.deepcopy(self.covers)
+        covers['a1-lisica-i-grozdje'] = covers['a1-lav-i-mis']
+        with self.assertRaisesRegex(ValueError, 'повторная обложка'):
+            library.validate(self.registry, self.sources, covers)
+
+    def test_requires_individual_fable_cover(self):
+        covers = copy.deepcopy(self.covers)
+        del covers['a1-lav-i-mis']
+        with self.assertRaisesRegex(ValueError, 'нет индивидуальной обложки'):
+            library.validate(self.registry, self.sources, covers)
+
+    def test_rejects_invalid_crop(self):
+        covers = copy.deepcopy(self.covers)
+        covers['a1-lav-i-mis']['crop'] = [0, 0, 2, 1]
+        with self.assertRaisesRegex(ValueError, 'неверная область'):
+            library.validate(self.registry, self.sources, covers)
+
     def test_rejects_russian_in_serbian_body(self):
         registry = copy.deepcopy(self.registry)
         registry['items'][0]['body'] += ' перевод'

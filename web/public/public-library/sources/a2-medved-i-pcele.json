@@ -24,13 +24,15 @@
   },
   "textSha256": "caa8e3903706afe929550d54dd32858842915a4e55d75d7f0ba08924bc4b6866",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "file": "Fabel van de beer en de bijen, RP-P-1996-70.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Fabel_van_de_beer_en_de_bijen%2C_RP-P-1996-70.jpg/960px-Fabel_van_de_beer_en_de_bijen%2C_RP-P-1996-70.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fabel_van_de_beer_en_de_bijen,_RP-P-1996-70.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "author": "Rijksmuseum",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

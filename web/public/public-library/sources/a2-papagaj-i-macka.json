@@ -24,13 +24,15 @@
   },
   "textSha256": "c8ddd7905230eb2585b7c03a59d2f81577f42b179395cee9c0518f4c516626e2",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "David de Coninck - Still life with fighting cat and parrot.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/David_de_Coninck_-_Still_life_with_fighting_cat_and_parrot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:David_de_Coninck_-_Still_life_with_fighting_cat_and_parrot.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Attributed to David de Coninck",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

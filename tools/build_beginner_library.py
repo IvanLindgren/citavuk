@@ -41,12 +41,19 @@ def metrics(body):
             'averageSentence': round(sum(map(len, sentences)) / len(sentences), 2)}
 
 
+def cover_for(item, covers):
+    key = item['id'] if item['kind'] == 'Басня' else item['source']
+    if key not in covers:
+        raise ValueError('нет индивидуальной обложки: ' + item['id'])
+    return covers[key]
+
+
 def validate(registry, sources, covers):
     items = registry['items']
     if Counter(b['level'] for b in items) != {'A1': 25, 'A2': 25}:
         raise ValueError('нужно ровно 25 A1 и 25 A2')
     ids, bodies, selected_sources = set(), set(), set()
-    report = []
+    report, used_covers = [], set()
     for item in items:
         ident = item['id']
         if not re.fullmatch(r'a[12]-[a-z0-9-]+', ident) or ident in ids:
@@ -72,9 +79,18 @@ def validate(registry, sources, covers):
         is_fable = item['kind'] == 'Басня'
         if is_fable != (source['host'] == 'sr.wikisource.org'):
             raise ValueError('неверный тип первоисточника: ' + ident)
-        cover = covers['fables' if is_fable else item['source']]
+        cover = cover_for(item, covers)
         if not cover['license'] or not cover['sourceUrl'].startswith('https://commons.wikimedia.org/'):
             raise ValueError('непроверенная обложка: ' + ident)
+        if cover['sourceUrl'] in used_covers:
+            raise ValueError('повторная обложка: ' + ident)
+        used_covers.add(cover['sourceUrl'])
+        if cover.get('fit', 'cover') not in {'cover', 'contain'}:
+            raise ValueError('неизвестный способ кадрирования: ' + ident)
+        crop = cover.get('crop', [0, 0, 1, 1])
+        if (len(crop) != 4 or not all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in crop)
+                or crop[0] >= crop[2] or crop[1] >= crop[3]):
+            raise ValueError('неверная область кадрирования: ' + ident)
         stats = metrics(body)
         lower, upper, longest, average = (70, 125, 19, 10) if item['level'] == 'A1' else (100, 165, 27, 16)
         if not lower <= stats['words'] <= upper or stats['longestSentence'] > longest or stats['averageSentence'] > average:
@@ -104,7 +120,17 @@ def make_cover(cover, path):
                     background = Image.new('RGBA', source.size, '#F3E9D2')
                     background.alpha_composite(source.convert('RGBA'))
                     source = background
-                image = ImageOps.fit(source.convert('RGB'), (720, 1040), Image.Resampling.LANCZOS)
+                crop = cover.get('crop')
+                if crop:
+                    source = source.crop((round(source.width*crop[0]), round(source.height*crop[1]),
+                                          round(source.width*crop[2]), round(source.height*crop[3])))
+                if cover.get('fit') == 'contain':
+                    # Сохраняем всю историческую иллюстрацию, без обрезанных персонажей.
+                    preview = ImageOps.contain(source.convert('RGB'), (660, 940), Image.Resampling.LANCZOS)
+                    image = Image.new('RGB', (720, 1040), '#f5eedb')
+                    image.paste(preview, ((720-preview.width)//2, (1040-preview.height)//2))
+                else:
+                    image = ImageOps.fit(source.convert('RGB'), (720, 1040), Image.Resampling.LANCZOS)
                 image.save(path, 'WEBP', quality=85, method=6)
             return
         except Exception:
@@ -123,8 +149,11 @@ def build_into_catalog(catalog, *, out=PUBLIC):
         ident = item['id']
         source = sources[item['source']]
         fable = item['kind'] == 'Басня'
-        cover = covers['fables' if fable else item['source']]
-        cover_key = ('beginner-fables' if fable else ident) + '-' + hashlib.sha256(cover['url'].encode()).hexdigest()[:8]
+        cover = cover_for(item, covers)
+        fingerprint = cover['url']
+        if cover.get('crop') or cover.get('fit'):
+            fingerprint += json.dumps({k: cover[k] for k in ('crop', 'fit') if k in cover}, sort_keys=True)
+        cover_key = ident + '-' + hashlib.sha256(fingerprint.encode()).hexdigest()[:8]
         make_cover(cover, out / 'covers' / f'{cover_key}.webp')
         credit = ('Ezop. Prema srpskom prevodu Dositeja Obradovića, koji je umro 1811.'
                   if fable else 'Prema tekstu autora srpske Vikipedije.')
@@ -135,7 +164,9 @@ def build_into_catalog(catalog, *, out=PUBLIC):
                           'adaptationLicense': 'CC BY-SA 4.0', 'adaptationLicenseUrl': LICENSE,
                           'level': item['level'], 'levelAssessment': 'Редакционная оценка, не сертификация CEFR',
                           'metrics': metrics(item['body']), 'textSha256': hashlib.sha256(text.encode()).hexdigest(),
-                          'cover': cover | {'changes': 'Кадрирование до 720×1040 и конвертация в WebP'}}
+                          'cover': cover | {'changes': (
+                              'Масштабирование без обрезки персонажей, поля 720×1040 и WebP'
+                              if cover.get('fit') == 'contain' else 'Кадрирование до 720×1040 и конвертация в WebP')}}
         (out / 'sources' / f'{ident}.json').write_text(json.dumps(proof, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         generated.append({k: v for k, v in item.items() if k not in {'body', 'source'}} | {
             'author': 'Езоп, адаптация Читавука' if fable else 'Читавук по материалам сербской Википедии',

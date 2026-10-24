@@ -24,13 +24,14 @@
   },
   "textSha256": "086c1aea679d039dcb12097e69e858c3b691c6d2e72f633a6e7adc326619d795",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
+    "file": "Nile crocodile head.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Nile_crocodile_head.jpg/960px-Nile_crocodile_head.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nile_crocodile_head.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Leigh Bedford",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
     "changes": "Кадрирование до 720×1040 и конвертация в WebP"
   }
 }

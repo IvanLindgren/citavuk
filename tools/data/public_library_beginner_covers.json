@@ -143,13 +143,337 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "author": "Bojana Stulic"
   },
-  "fables": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+  "a1-lav-i-mis": {
+    "file": "The Lion and the Mouse - Project Gutenberg etext 19994.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/96/The_Lion_and_the_Mouse_-_Project_Gutenberg_etext_19994.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Lion_and_the_Mouse_-_Project_Gutenberg_etext_19994.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait"
+    "author": "Wikimedia Commons",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-lisica-i-grozdje": {
+    "file": "The Fox and the Grapes - Project Gutenberg etext 19994.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/The_Fox_and_the_Grapes_-_Project_Gutenberg_etext_19994.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Fox_and_the_Grapes_-_Project_Gutenberg_etext_19994.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Illustration  by Milo Winter.",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-lisica-i-gavran": {
+    "file": "Le corbeau et le renard Choix de fables de La Fontaine illustrées par un groupe des meilleurs artistes de Tokio, sous la direction de P. Barboutau1894.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio%2C_sous_la_direction_de_P._Barboutau1894.jpg/960px-Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio%2C_sous_la_direction_de_P._Barboutau1894.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio,_sous_la_direction_de_P._Barboutau1894.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "\nJean de La Fontaine (1621–1695) ; illustré par Kajita Hanko (梶田半古, 1870–1917), Kanō Tomonobu (狩野友信, 1843–1912), Okakura Shūsui (岡倉秋水, 1867–1950), Kawanabe Kyōsui (河鍋狂翠, 1868–1935), Eda Sadahiko (枝貞彦)",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-pas-i-reka": {
+    "file": "Page 6 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Page_6_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png/960px-Page_6_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_6_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Joseph Jacobs / Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-lav-i-medved": {
+    "file": "Page 107 illustration to Three hundred Aesop's fables (Townshend).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Page_107_illustration_to_Three_hundred_Aesop%27s_fables_%28Townshend%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_107_illustration_to_Three_hundred_Aesop%27s_fables_(Townshend).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Harrison Weir",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-komarac-i-vo": {
+    "file": "Aesops Fables-Rackham-076.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Aesops_Fables-Rackham-076.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesops_Fables-Rackham-076.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Aesop",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-petao-i-kamen": {
+    "file": "Studio of Frans Snyders - The Cock and the Jewel - 2016-21 - Auckland Art Gallery.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg/960px-Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Workshop of Frans Snyders",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-dva-psa": {
+    "file": "British School - Two Dogs, Called ‘Dotterel’ and ‘Defiance’ - 610105 - Attingham Park.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/British_School_-_Two_Dogs%2C_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg/960px-British_School_-_Two_Dogs%2C_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:British_School_-_Two_Dogs,_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "\nanonymous ",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-magarac-i-lavlja-koza": {
+    "file": "Aesops Fables-Rackham-278.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Aesops_Fables-Rackham-278.jpg/960px-Aesops_Fables-Rackham-278.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesops_Fables-Rackham-278.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Aesop",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-macak-i-misevi": {
+    "file": "Page 103 illustration to Three hundred Aesop's fables (Townshend).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Page_103_illustration_to_Three_hundred_Aesop%27s_fables_%28Townshend%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_103_illustration_to_Three_hundred_Aesop%27s_fables_(Townshend).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Harrison Weir",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-cvrcak-i-mravi": {
+    "file": "Gustave Doré, La Cigale et la Fourmi.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Gustave_Dor%C3%A9%2C_La_Cigale_et_la_Fourmi.jpg/960px-Gustave_Dor%C3%A9%2C_La_Cigale_et_la_Fourmi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gustave_Dor%C3%A9,_La_Cigale_et_la_Fourmi.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Gustave Doré",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-lavica-i-lisica": {
+    "file": "Kalahari lions (Panthera leo) female and cub.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Kalahari_lions_%28Panthera_leo%29_female_and_cub.jpg/960px-Kalahari_lions_%28Panthera_leo%29_female_and_cub.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kalahari_lions_(Panthera_leo)_female_and_cub.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Charles J. Sharp",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-lisica-i-drvena-glava": {
+    "file": "Page 53 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Page_53_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png/960px-Page_53_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_53_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Joseph Jacobs / Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-brat-i-sestra": {
+    "file": "Breton Brother and Sister MET DT2566.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Breton_Brother_and_Sister_MET_DT2566.jpg/960px-Breton_Brother_and_Sister_MET_DT2566.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Breton_Brother_and_Sister_MET_DT2566.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "author": "William-Adolphe Bouguereau",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a1-dva-misa": {
+    "file": "Fable-Esope-Rackham 33.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Fable-Esope-Rackham_33.jpg/960px-Fable-Esope-Rackham_33.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fable-Esope-Rackham_33.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Arthur Rackham",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-lisica-i-lav": {
+    "file": "Page 82 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Page_82_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_82_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-lisica-i-jarac": {
+    "file": "Page 192 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/58/Page_192_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_192_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-konj-i-konjusar": {
+    "file": "Page 55 illustration to Three hundred Aesop's fables (Townsend).png",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Page_55_illustration_to_Three_hundred_Aesop%27s_fables_%28Townsend%29.png/960px-Page_55_illustration_to_Three_hundred_Aesop%27s_fables_%28Townsend%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_55_illustration_to_Three_hundred_Aesop%27s_fables_(Townsend).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Harrison Weir",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-magarac-i-kip": {
+    "file": "Page 184 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Page_184_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_184_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-lav-i-zec": {
+    "file": "Lion waiting in Namibia.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/960px-Lion_waiting_in_Namibia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lion_waiting_in_Namibia.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Kevin Pluck",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-papagaj-i-macka": {
+    "file": "David de Coninck - Still life with fighting cat and parrot.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/David_de_Coninck_-_Still_life_with_fighting_cat_and_parrot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:David_de_Coninck_-_Still_life_with_fighting_cat_and_parrot.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Attributed to David de Coninck",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-putnici-i-topola": {
+    "file": "Aesops Fables-Rackham-205.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Aesops_Fables-Rackham-205.jpg/960px-Aesops_Fables-Rackham-205.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesops_Fables-Rackham-205.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Aesop",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-zecevi-i-lisice": {
+    "file": "Fox and two hares LCCN2009630317.tif",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Fox_and_two_hares_LCCN2009630317.tif/lossy-page1-960px-Fox_and_two_hares_LCCN2009630317.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fox_and_two_hares_LCCN2009630317.tif",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Japanese fine prints, pre-1915",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-ribari": {
+    "file": "Goyen 1640-45 Fishermen hauling a Net.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Goyen_1640-45_Fishermen_hauling_a_Net.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Goyen_1640-45_Fishermen_hauling_a_Net.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Jan van Goyen",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-hrast-i-trske": {
+    "file": "Moreau - The Oak and the Reed, 1883.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Moreau_-_The_Oak_and_the_Reed%2C_1883.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Moreau_-_The_Oak_and_the_Reed,_1883.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Gustave Moreau",
+    "fit": "contain",
+    "crop": [
+      0.13,
+      0.15,
+      0.87,
+      0.85
+    ],
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-misevi-i-zvonce": {
+    "file": "Rats hasagawa.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Rats_hasagawa.jpg/960px-Rats_hasagawa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rats_hasagawa.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Kawanabe Kiyosui",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-medved-i-pcele": {
+    "file": "Fabel van de beer en de bijen, RP-P-1996-70.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Fabel_van_de_beer_en_de_bijen%2C_RP-P-1996-70.jpg/960px-Fabel_van_de_beer_en_de_bijen%2C_RP-P-1996-70.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fabel_van_de_beer_en_de_bijen,_RP-P-1996-70.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "author": "Rijksmuseum",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-lisica-i-krokodil": {
+    "file": "Nile crocodile head.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Nile_crocodile_head.jpg/960px-Nile_crocodile_head.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nile_crocodile_head.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Leigh Bedford",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-lisica-i-drvoseca": {
+    "file": "Page 93 illustration to Three hundred Aesop's fables (Townshend).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Page_93_illustration_to_Three_hundred_Aesop%27s_fables_%28Townshend%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_93_illustration_to_Three_hundred_Aesop%27s_fables_(Townshend).png",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Harrison Weir",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
+  },
+  "a2-stari-pas": {
+    "file": "Wenceslas Hollar - The old hound and his master 2.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wenceslas_Hollar_-_The_old_hound_and_his_master_2.jpg/960px-Wenceslas_Hollar_-_The_old_hound_and_his_master_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wenceslas_Hollar_-_The_old_hound_and_his_master_2.jpg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "author": "Wenceslaus Hollar",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации"
   }
 }

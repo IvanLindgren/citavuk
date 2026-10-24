@@ -24,13 +24,15 @@
   },
   "textSha256": "1bc41d37fffe488e9f404e27e5be395abf14932901133c02f79a756629871a7c",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Gustave Doré, La Cigale et la Fourmi.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Gustave_Dor%C3%A9%2C_La_Cigale_et_la_Fourmi.jpg/960px-Gustave_Dor%C3%A9%2C_La_Cigale_et_la_Fourmi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gustave_Dor%C3%A9,_La_Cigale_et_la_Fourmi.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Gustave Doré",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

@@ -24,13 +24,15 @@
   },
   "textSha256": "7d8e1d22ff1b25dc0a67d3e9b3f10240e7939baf09c48911b2755fcb1cc29da4",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "British School - Two Dogs, Called ‘Dotterel’ and ‘Defiance’ - 610105 - Attingham Park.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/British_School_-_Two_Dogs%2C_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg/960px-British_School_-_Two_Dogs%2C_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:British_School_-_Two_Dogs,_Called_%E2%80%98Dotterel%E2%80%99_and_%E2%80%98Defiance%E2%80%99_-_610105_-_Attingham_Park.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "\nanonymous ",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

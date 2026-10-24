@@ -24,13 +24,14 @@
   },
   "textSha256": "b81357536ccd8cc7d9aa782d7d3efc71e4c250c611656f294d403a2d682b29dd",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
+    "file": "Kalahari lions (Panthera leo) female and cub.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Kalahari_lions_%28Panthera_leo%29_female_and_cub.jpg/960px-Kalahari_lions_%28Panthera_leo%29_female_and_cub.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kalahari_lions_(Panthera_leo)_female_and_cub.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Charles J. Sharp",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
     "changes": "Кадрирование до 720×1040 и конвертация в WebP"
   }
 }

@@ -24,13 +24,15 @@
   },
   "textSha256": "548588c94130dac42300ad83be02a6f52c61021a3bc6e7c1a91e5974059ce8a1",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "The Fox and the Grapes - Project Gutenberg etext 19994.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/The_Fox_and_the_Grapes_-_Project_Gutenberg_etext_19994.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Fox_and_the_Grapes_-_Project_Gutenberg_etext_19994.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Illustration  by Milo Winter.",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

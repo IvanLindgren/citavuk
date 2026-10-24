@@ -24,13 +24,15 @@
   },
   "textSha256": "1c9098d157f0ee6868750150bdc32826cc39cef12518577fc3f12ec43456d40d",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Le corbeau et le renard Choix de fables de La Fontaine illustrées par un groupe des meilleurs artistes de Tokio, sous la direction de P. Barboutau1894.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio%2C_sous_la_direction_de_P._Barboutau1894.jpg/960px-Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio%2C_sous_la_direction_de_P._Barboutau1894.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Le_corbeau_et_le_renard_Choix_de_fables_de_La_Fontaine_illustr%C3%A9es_par_un_groupe_des_meilleurs_artistes_de_Tokio,_sous_la_direction_de_P._Barboutau1894.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "\nJean de La Fontaine (1621–1695) ; illustré par Kajita Hanko (梶田半古, 1870–1917), Kanō Tomonobu (狩野友信, 1843–1912), Okakura Shūsui (岡倉秋水, 1867–1950), Kawanabe Kyōsui (河鍋狂翠, 1868–1935), Eda Sadahiko (枝貞彦)",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

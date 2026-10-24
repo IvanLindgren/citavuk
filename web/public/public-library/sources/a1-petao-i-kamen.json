@@ -24,13 +24,15 @@
   },
   "textSha256": "01d74a7776213c452b008c2044a5355792d46b218427190b942787692ffe458c",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Studio of Frans Snyders - The Cock and the Jewel - 2016-21 - Auckland Art Gallery.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg/960px-Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Studio_of_Frans_Snyders_-_The_Cock_and_the_Jewel_-_2016-21_-_Auckland_Art_Gallery.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Workshop of Frans Snyders",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

@@ -24,13 +24,21 @@
   },
   "textSha256": "8f0b5edf786fc76d84c2dc6fc09fe2d8780385e53aa9e5aff7e0b3e38a3c2bf2",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Moreau - The Oak and the Reed, 1883.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Moreau_-_The_Oak_and_the_Reed%2C_1883.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Moreau_-_The_Oak_and_the_Reed,_1883.jpg",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Gustave Moreau",
+    "fit": "contain",
+    "crop": [
+      0.13,
+      0.15,
+      0.87,
+      0.85
+    ],
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

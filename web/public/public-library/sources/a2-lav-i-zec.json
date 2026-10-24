@@ -24,13 +24,14 @@
   },
   "textSha256": "801ea694609d53e0b3ef4c80ee42820dfd380886cb46901170135f5f269e7af3",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
+    "file": "Lion waiting in Namibia.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/960px-Lion_waiting_in_Namibia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lion_waiting_in_Namibia.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Kevin Pluck",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
     "changes": "Кадрирование до 720×1040 и конвертация в WebP"
   }
 }

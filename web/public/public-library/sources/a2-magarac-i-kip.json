@@ -24,13 +24,15 @@
   },
   "textSha256": "7fa0ef2161d2553fae6547bbef5808afe18fb242af2a6c27f1f9887dbbb9c16f",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Page 184 illustration from The Fables of Æsop (Jacobs).png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Page_184_illustration_from_The_Fables_of_%C3%86sop_%28Jacobs%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Page_184_illustration_from_The_Fables_of_%C3%86sop_(Jacobs).png",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Richard Heighway",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }

@@ -24,13 +24,15 @@
   },
   "textSha256": "9b8a96c45cc3eb47412c3be7a8de28096d4ea9a006fc87011b63f22cc3dc1f7b",
   "cover": {
-    "file": "Aesopnurembergchronicle.jpg",
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aesopnurembergchronicle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aesopnurembergchronicle.jpg",
+    "file": "Fox and two hares LCCN2009630317.tif",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Fox_and_two_hares_LCCN2009630317.tif/lossy-page1-960px-Fox_and_two_hares_LCCN2009630317.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fox_and_two_hares_LCCN2009630317.tif",
     "license": "Public domain",
     "licenseUrl": "",
-    "author": "user:Matanya",
-    "selection": "aesop-portrait",
-    "changes": "Кадрирование до 720×1040 и конвертация в WebP"
+    "author": "Japanese fine prints, pre-1915",
+    "fit": "contain",
+    "checkedAt": "2026-10-24",
+    "selection": "Просмотрено вручную, изображение из Commons, без генерации",
+    "changes": "Масштабирование без обрезки персонажей, поля 720×1040 и WebP"
   }
 }
