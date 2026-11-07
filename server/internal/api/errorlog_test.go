@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log/slog"
 	"testing"
 	"time"
@@ -102,3 +104,21 @@ func TestIncidentLoggerPassesThrough(t *testing.T) {
 type discard struct{}
 
 func (discard) Write(p []byte) (int, error) { return len(p), nil }
+
+func TestClientGoneSkipsCanceledRequests(t *testing.T) {
+	canceled := slog.NewRecord(time.Now(), slog.LevelError, "личные уроки", 0)
+	canceled.AddAttrs(slog.Any("err", fmt.Errorf("чтение: %w", context.Canceled)))
+	if !clientGone(canceled) {
+		t.Error("обрыв клиента попал бы в журнал")
+	}
+	text := slog.NewRecord(time.Now(), slog.LevelError, "профиль", 0)
+	text.AddAttrs(slog.String("err", "query: context canceled"))
+	if !clientGone(text) {
+		t.Error("обрыв клиента строкой попал бы в журнал")
+	}
+	real := slog.NewRecord(time.Now(), slog.LevelError, "приём изменений", 0)
+	real.AddAttrs(slog.Any("err", errors.New("invalid byte sequence")))
+	if clientGone(real) {
+		t.Error("настоящая ошибка пропала из журнала")
+	}
+}

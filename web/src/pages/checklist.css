@@ -1,0 +1,842 @@
+/* Чек-лист дня: тетрадный лист, кольцо прогресса, галочки и штамп «Готово». */
+
+@font-face {
+  font-family: 'Prata';
+  src: url('/fonts/Prata-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+.dan {
+  --dan-paper: var(--bg-raised);
+  --dan-ruled: color-mix(in srgb, var(--color-indigo-soft) 16%, transparent);
+  --dan-margin: color-mix(in srgb, var(--accent) 32%, transparent);
+  --dan-ok: var(--success);
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px 16px 56px;
+}
+
+@media (min-width: 640px) {
+  .dan {
+    padding: 40px 24px 72px;
+  }
+}
+
+.dan-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* --- Шапка ---------------------------------------------------------------- */
+
+.dan-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 26px clamp(18px, 4vw, 36px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--color-gold) 26%, transparent), transparent 46%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 52%),
+    var(--dan-paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.dan-hero h1 {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.dan-date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-top: 8px;
+  color: var(--text-muted);
+}
+
+.dan-date span:first-child::first-letter {
+  text-transform: uppercase;
+}
+
+.dan-date-sr {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent);
+}
+
+.dan-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dan-streak svg {
+  color: var(--accent);
+}
+
+@media (max-width: 620px) {
+  .dan-hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .dan-hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .dan-date {
+    justify-content: center;
+  }
+  .dan-ring {
+    order: -1;
+  }
+}
+
+/* Неделя: семь кружков, сегодняшний заполняется по мере дел. */
+.dan-week {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.dan-week li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dan-week-day {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dan-week-dot {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px dashed var(--line);
+  border-radius: 50%;
+  font-size: 15px;
+  color: #fff;
+}
+
+.dan-week li[data-full='true'] .dan-week-dot {
+  border: 0;
+  background: var(--dan-ok);
+}
+
+.dan-week li[data-today='true'] .dan-week-day {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.dan-week li[data-today='true'][data-full='false'] .dan-week-dot {
+  border: 1.5px solid var(--accent);
+  background: conic-gradient(color-mix(in srgb, var(--accent) 55%, transparent) var(--dan-part, 0%), transparent 0);
+}
+
+/* Кольцо: четыре дуги, по одной на дело. */
+.dan-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(170px, 30vw, 210px);
+  aspect-ratio: 1;
+}
+
+.dan-ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.dan-ring-track,
+.dan-ring-fill {
+  fill: none;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+
+.dan-ring-track {
+  stroke: color-mix(in srgb, var(--text) 9%, transparent);
+}
+
+.dan-ring-fill {
+  stroke: var(--accent);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-soft), stroke 0.5s ease;
+}
+
+.dan-ring-fill[data-on='true'] {
+  opacity: 1;
+}
+
+.dan-ring[data-all='true'] .dan-ring-fill {
+  stroke: var(--dan-ok);
+}
+
+.dan-ring-wolf {
+  width: 60%;
+  margin-top: -14px;
+  filter: drop-shadow(0 8px 12px rgb(43 33 24 / 0.18));
+}
+
+.dan-ring-count {
+  position: absolute;
+  bottom: 12%;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--bg);
+  box-shadow: var(--shadow-soft);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dan-ring-count b {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text);
+}
+
+/* --- Лист с делами -------------------------------------------------------- */
+
+.dan-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.dan-task {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  padding: 20px clamp(16px, 3vw, 26px) 22px clamp(14px, 2.6vw, 22px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, transparent 0 calc(clamp(14px, 2.6vw, 22px) + 52px), var(--dan-margin) 0 calc(clamp(14px, 2.6vw, 22px) + 53.5px), transparent 0),
+    repeating-linear-gradient(180deg, transparent 0 31px, var(--dan-ruled) 31px 32px),
+    var(--dan-paper);
+  background-position: 0 0, 0 14px, 0 0;
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.25s ease, transform 0.25s var(--ease-soft);
+}
+
+.dan-task:hover {
+  box-shadow: var(--shadow-lift);
+}
+
+.dan-task[data-done='true'] {
+  background:
+    linear-gradient(90deg, transparent 0 calc(clamp(14px, 2.6vw, 22px) + 52px), color-mix(in srgb, var(--dan-ok) 40%, transparent) 0 calc(clamp(14px, 2.6vw, 22px) + 53.5px), transparent 0),
+    repeating-linear-gradient(180deg, transparent 0 31px, var(--dan-ruled) 31px 32px),
+    color-mix(in srgb, var(--dan-ok) 5%, var(--dan-paper));
+  background-position: 0 0, 0 14px, 0 0;
+}
+
+.dan-check {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-top: -4px;
+  border-radius: 12px;
+  transition: transform 0.15s ease;
+}
+
+.dan-check:active {
+  transform: scale(0.92);
+}
+
+.dan-check svg {
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+}
+
+.dan-check-box {
+  fill: var(--bg);
+  stroke: color-mix(in srgb, var(--text) 30%, transparent);
+  stroke-width: 2;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.dan-check:hover .dan-check-box {
+  stroke: var(--accent);
+}
+
+.dan-check-mark {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  transition: stroke-dashoffset 0.4s var(--ease-soft) 0.08s;
+}
+
+.dan-task[data-done='true'] .dan-check-box {
+  fill: var(--dan-ok);
+  stroke: var(--dan-ok);
+}
+
+.dan-task[data-done='true'] .dan-check-mark {
+  stroke-dashoffset: 0;
+}
+
+.dan-task-body {
+  min-width: 0;
+}
+
+.dan-task-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.dan-task-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 17px;
+}
+
+.dan-task h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Зачёркивание от руки: линия прорисовывается слева направо. */
+.dan-strike {
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 58% / 0 2px;
+  transition: background-size 0.45s var(--ease-soft) 0.15s, color 0.3s ease;
+}
+
+.dan-task[data-done='true'] .dan-strike {
+  background-size: 100% 2px;
+  color: var(--text-muted);
+}
+
+.dan-task-tag {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dan-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 12px;
+  color: var(--text-muted);
+}
+
+.dan-stamp {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  padding: 3px 12px;
+  border: 2.5px double var(--dan-ok);
+  border-radius: 8px;
+  font-family: 'Courier Prime', ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--dan-ok);
+  opacity: 0.9;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.dark .dan-stamp {
+  mix-blend-mode: normal;
+}
+
+.dan-task[data-done='true'] .dan-task-tag {
+  visibility: hidden;
+}
+
+@media (max-width: 520px) {
+  .dan-task {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 31px, var(--dan-ruled) 31px 32px),
+      var(--dan-paper);
+  }
+  .dan-task[data-done='true'] {
+    background:
+      repeating-linear-gradient(180deg, transparent 0 31px, var(--dan-ruled) 31px 32px),
+      color-mix(in srgb, var(--dan-ok) 5%, var(--dan-paper));
+  }
+  .dan-check {
+    position: absolute;
+    top: 14px;
+    right: 12px;
+    margin: 0;
+  }
+  .dan-task-head {
+    padding-right: 48px;
+  }
+  .dan-task-tag {
+    width: 100%;
+    margin-left: 42px;
+  }
+  .dan-stamp {
+    top: auto;
+    bottom: 12px;
+  }
+}
+
+/* --- Содержимое пунктов --------------------------------------------------- */
+
+.dan-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.dan-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.dan-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--accent);
+  transition: gap 0.2s ease;
+}
+
+.dan-meter {
+  display: block;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 9%, transparent);
+}
+
+.dan-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--color-gold));
+  transition: width 0.6s var(--ease-soft);
+}
+
+.dan-lesson {
+  display: grid;
+  gap: 8px;
+  max-width: 560px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  transition: border-color 0.2s ease, transform 0.2s var(--ease-soft);
+}
+
+.dan-lesson:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.dan-lesson:hover .dan-go,
+.dan-read-card:hover .dan-go {
+  gap: 10px;
+}
+
+.dan-lesson-unit {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dan-lesson strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.dan-lesson-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dan-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 12px;
+}
+
+.dan-words li {
+  padding: 4px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  font-family: var(--font-display);
+  font-size: 15px;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.dan-words li[data-learned='true'] {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--dan-ok) 16%, transparent);
+  color: var(--dan-ok);
+}
+
+.dan-words-foot {
+  display: grid;
+  grid-template-columns: minmax(80px, 200px) auto 1fr;
+  align-items: center;
+  gap: 8px 14px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dan-words-foot .dan-link {
+  justify-self: end;
+}
+
+@media (max-width: 520px) {
+  .dan-words-foot {
+    grid-template-columns: 1fr auto;
+  }
+  .dan-words-foot .dan-meter {
+    grid-column: 1 / -1;
+  }
+}
+
+.dan-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dan-chips button {
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.dan-chips button:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.dan-chips button[data-active='true'] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.dan-video {
+  display: grid;
+  gap: 10px;
+  max-width: 640px;
+}
+
+.dan-video .lite-yt {
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.dan-video-meta {
+  display: grid;
+  gap: 2px;
+}
+
+.dan-video-meta strong {
+  font-family: var(--font-display);
+  line-height: 1.3;
+}
+
+.dan-video-meta span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dan-read {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.dan-read-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  text-align: left;
+  transition: border-color 0.2s ease, transform 0.2s var(--ease-soft);
+}
+
+.dan-read-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.dan-read-news {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 13px, rgb(31 24 18 / 0.04) 13px 14px),
+    #fbf5e8;
+  color: #1f1812;
+}
+
+.dark .dan-read-news {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 13px, rgb(239 228 207 / 0.04) 13px 14px),
+    #1d1813;
+  color: #efe4cf;
+}
+
+.dan-read-mast {
+  align-self: stretch;
+  font-family: 'Prata', var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.dan-read-rule {
+  align-self: stretch;
+  height: 4px;
+  border-top: 2px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.7;
+}
+
+.dan-read-text {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.dan-read-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-indigo-soft) 20%, transparent);
+  color: var(--color-indigo-bright);
+  font-size: 18px;
+}
+
+.dan-read-own strong {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+/* --- Финал и подвал ------------------------------------------------------- */
+
+.dan-finale {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 26px;
+  padding: 18px 16px 30px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  border-radius: 28px;
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent 70%), var(--bg-raised);
+  text-align: center;
+}
+
+.dan-finale-wolf {
+  width: 150px;
+}
+
+.dan-finale h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.dan-finale p {
+  color: var(--text-muted);
+}
+
+.dan-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 26px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dan-foot button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.dan-foot button:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* --- Включение ------------------------------------------------------------ */
+
+.dan-intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px clamp(16px, 5vw, 48px) 36px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-gold) 26%, transparent), transparent 55%),
+    repeating-linear-gradient(180deg, transparent 0 31px, var(--dan-ruled) 31px 32px),
+    var(--dan-paper);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.dan-intro-wolf {
+  width: clamp(130px, 26vw, 180px);
+  margin-bottom: 6px;
+}
+
+.dan-intro h1 {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.dan-lead {
+  max-width: 560px;
+  margin-top: 12px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.dan-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.dan-preview li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg);
+  text-align: left;
+}
+
+.dan-preview strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.dan-preview li > span:last-child {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dan-enable {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 14px 28px;
+  border-radius: 18px;
+  background: var(--accent);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 60%, black), var(--shadow-soft);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.dan-enable:hover {
+  background: var(--accent-hover);
+}
+
+.dan-enable:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 60%, black), var(--shadow-soft);
+}
+
+.dan-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dan-check-mark,
+  .dan-strike,
+  .dan-ring-fill,
+  .dan-meter span {
+    transition: none;
+  }
+}

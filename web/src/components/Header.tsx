@@ -21,9 +21,11 @@ import {
   LuLayers,
   LuLock,
   LuLibrary,
+  LuListChecks,
   LuMap,
   LuMapPin,
   LuMenu,
+  LuNewspaper,
   LuNotebookTabs,
   LuScrollText,
   LuSettings,
@@ -130,12 +132,14 @@ const GROUPS: { title: string; items: Section[] }[] = [
       },
       { to: '/friends-library', label: 'Закрытая библиотека', short: 'Закрытая', icon: LuLock, supporters: true },
       { to: '/events', label: 'События', icon: LuCalendarDays, featured: true },
+      { to: '/vesti', label: 'Новости', icon: LuNewspaper, featured: true },
       { to: '/books', label: 'Что почитать', icon: LuNotebookTabs },
     ],
   },
   {
     title: 'Учиться',
     items: [
+      { to: '/dan', label: 'Чек-лист дня', icon: LuListChecks, featured: true },
       { to: '/daily', label: 'Слова дня', icon: LuCalendarDays },
       { to: '/personal', label: 'Урок дня', icon: LuSparkles },
       {

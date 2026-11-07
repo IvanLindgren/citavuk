@@ -297,7 +297,7 @@ cd frontend && flutter test                          # 162 теста
   сербские ответы как ломаный русский и отдавал раунд машине.
 - Победителя каждой пары выбирает пользователь или `/v1/translation-game/judge`.
   Весь раунд уходит одним запросом. Судья по умолчанию —
-  `openai/gpt-6-luna` через Polza AI с низким уровнем
+  `deepseek/deepseek-v4.1-flash-1017` через Polza AI с низким уровнем
   рассуждений; env начинаются с
   `CITAVUK_TRANSLATION_GAME_AI_`, AI-ручка защищена quiz limiter.
 - Оценку просим до трёх раз (`askParsed`): модель изредка отдаёт вместо JSON

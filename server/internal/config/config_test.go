@@ -125,7 +125,8 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 		"CITAVUK_DAILY_AI_MODEL", "CITAVUK_DEFINITION_AI_MODEL",
 		"CITAVUK_FORM_HINT_AI_MODEL", "CITAVUK_FEED_AI_MODEL",
 		"CITAVUK_PHOTO_SCAN_MODEL", "CITAVUK_DEFINITION_AI_REASONING",
-		"CITAVUK_FORM_HINT_AI_REASONING",
+		"CITAVUK_FORM_HINT_AI_REASONING", "CITAVUK_SPEAKING_AI_MODEL",
+		"CITAVUK_TRANSLATE_AI_MODEL",
 	} {
 		t.Setenv(name, "")
 	}
@@ -133,7 +134,7 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	const model = "openai/gpt-6-luna"
+	const model = "deepseek/deepseek-v4.1-flash-1017"
 	for name, got := range map[string]string{
 		"quiz":       cfg.QuizModel,
 		"judge":      cfg.TranslationGameAIModel,
@@ -141,6 +142,9 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 		"definition": cfg.DefinitionAIModel,
 		"form_hint":  cfg.FormHintAIModel,
 		"feed":       cfg.FeedAIModel,
+		"speaking":   cfg.SpeakingAIModel,
+		"photo":      cfg.PhotoScanModel,
+		"translate":  cfg.TranslateAIModel,
 	} {
 		if got != model {
 			t.Errorf("%s model = %q, want %q", name, got, model)
@@ -148,8 +152,5 @@ func TestDefaultTextModelsUseLowReasoningDeepSeek(t *testing.T) {
 	}
 	if cfg.DefinitionAIReasoning != "low" || cfg.FormHintAIReasoning != "low" {
 		t.Errorf("reasoning = %q/%q, want low/low", cfg.DefinitionAIReasoning, cfg.FormHintAIReasoning)
-	}
-	if cfg.PhotoScanModel != "openai/gpt-6-luna" {
-		t.Errorf("photo model changed: %q", cfg.PhotoScanModel)
 	}
 }

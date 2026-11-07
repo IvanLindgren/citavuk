@@ -43,7 +43,7 @@
 `gen_topics.py` и запускай его; тест `TestCatalog` требует 150 тем и по три
 опорных слова.
 
-**Разбор.** Модель — `openai/gpt-6-luna` через Polza, как у всех
+**Разбор.** Модель — `deepseek/deepseek-v4.1-flash-1017` через Polza, как у всех
 текстовых вызовов (`CITAVUK_SPEAKING_AI_*`, ключ по умолчанию общий
 `POLZA_AI_KEY`, `reasoning.effort=low`). Ответ принимается только в проверенном
 виде (`parseReview`): ошибка, у которой `original` нет в тексте ученика,

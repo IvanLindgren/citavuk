@@ -133,6 +133,68 @@ type Changes struct {
 	Quotes     []ReaderQuote `json:"quotes"`
 }
 
+// StripNUL убирает символ U+0000 из всех строк порции.
+//
+// Postgres не хранит NUL ни в text, ни в jsonb, и одна такая буква в слове,
+// скопированном из PDF, роняла весь приём изменений: синхронизация вставала
+// у человека намертво, пока слово не удалить руками. Сам символ невидим и
+// смысла не несёт, поэтому выбрасывается молча.
+func (c *Changes) StripNUL() {
+	for i := range c.Books {
+		b := &c.Books[i]
+		b.Title, b.Folder, b.SourceKey = noNUL(b.Title), noNUL(b.Folder), noNUL(b.SourceKey)
+		b.ContentSHA, b.LeadImage = noNUL(b.ContentSHA), noNUL(b.LeadImage)
+	}
+	for i := range c.Vocabulary {
+		v := &c.Vocabulary[i]
+		v.Word, v.Lemma, v.POS, v.Translation = noNUL(v.Word), noNUL(v.Lemma), noNUL(v.POS), noNUL(v.Translation)
+		v.Forms = noNULAny(v.Forms)
+	}
+	for i := range c.Palaces {
+		p := &c.Palaces[i]
+		p.Name, p.SceneID = noNUL(p.Name), noNUL(p.SceneID)
+		if len(p.Pins) > 0 {
+			pins := make(map[string]PalacePin, len(p.Pins))
+			for key, pin := range p.Pins {
+				pin.Word, pin.Translation, pin.VocabID = noNUL(pin.Word), noNUL(pin.Translation), noNUL(pin.VocabID)
+				pins[noNUL(key)] = pin
+			}
+			p.Pins = pins
+		}
+	}
+	for i := range c.Quotes {
+		q := &c.Quotes[i]
+		q.Text, q.Color = noNUL(q.Text), noNUL(q.Color)
+	}
+}
+
+func noNUL(value string) string {
+	if !strings.Contains(value, "\x00") {
+		return value
+	}
+	return strings.ReplaceAll(value, "\x00", "")
+}
+
+func noNULAny(value any) any {
+	switch v := value.(type) {
+	case string:
+		return noNUL(v)
+	case []any:
+		for i := range v {
+			v[i] = noNULAny(v[i])
+		}
+		return v
+	case map[string]any:
+		out := make(map[string]any, len(v))
+		for key, item := range v {
+			out[noNUL(key)] = noNULAny(item)
+		}
+		return out
+	default:
+		return value
+	}
+}
+
 // Len — общее число записей в порции.
 func (c *Changes) Len() int {
 	return len(c.Books) + len(c.Vocabulary) + len(c.Reviews) + len(c.Palaces) + len(c.Quotes)

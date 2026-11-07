@@ -179,10 +179,14 @@ const Travel = lazy(() =>
 );
 
 const PersonalLessons = lazy(() => import('./pages/PersonalLessons').then(m => ({default:m.PersonalLessons})));
+const News = lazy(() => import('./pages/News').then((m) => ({ default: m.News })));
+const Checklist = lazy(() => import('./pages/Checklist').then((m) => ({ default: m.Checklist })));
 const VideoFeed=lazy(()=>import('./pages/VideoFeed').then(m=>({default:m.VideoFeed})));
 
 const ROUTES: RouteDefinition[] = [
   { pattern: "/daily", element: <DailyPage /> },
+  { pattern: "/dan", element: <Checklist /> },
+  { pattern: "/vesti", element: <News /> },
   {pattern:'/vukotok/video',element:<VideoFeed/>},
   { pattern: '/personal', element: <PersonalLessons /> },
   { pattern: "/", element: <Landing /> },
@@ -281,7 +285,9 @@ function AppFrame() {
   const game = pathname === '/padezi';
   // «Говори!»: подвал остаётся, но баннеры и окна не должны перебивать запись.
   const speaking = pathname === '/govori';
-  const quiet = personalLesson || game || speaking || pathname === '/daily';
+  // Чек-лист и газета сами про «что сделать сегодня»: окно слов дня и баннеры
+  // поверх них только перебивают.
+  const quiet = personalLesson || game || speaking || pathname === '/daily' || pathname === '/dan' || pathname === '/vesti';
 
   return (
     <div className="flex min-h-dvh flex-col">

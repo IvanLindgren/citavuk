@@ -25,6 +25,7 @@ import {
 import { LEVELS, LEVEL_NAMES } from '../api/level';
 import { plainExample } from '../lib/roadmapWords';
 import { saveVocabularyWord } from '../lib/vocabulary';
+import { checklistEnabled } from '../lib/checklist';
 import { useFocusTrap, useScrollLock } from '../lib/overlay';
 import { useAuth } from '../state/auth';
 import { usePromotionSlot } from '../lib/promotion';
@@ -76,7 +77,8 @@ export function DailyWindow() {
   useEffect(() => {
     // Пока уровень не назван, поверх страницы стоит окно уровня (LevelPrompt).
     // Второе окно над ним — это два вопроса разом и ни одного понятного.
-    if (!account?.serbianLevel || seenToday()) return;
+    // С включённым чек-листом слова дня — один из его пунктов, окно не нужно.
+    if (!account?.serbianLevel || seenToday() || checklistEnabled()) return;
     // Окно не выпрыгивает поверх первой же страницы: человек пришёл читать, а
     // не отвечать на вопросы. Пауза — время дойти до места.
     const timer = window.setTimeout(() => setOpen(true), 2500);
@@ -121,7 +123,7 @@ export function DailyPage() {
   return <DailyPanel onClose={()=>navigate('/library')} />;
 }
 
-function DailyPanel({ onClose }: { onClose: () => void }) {
+export function DailyPanel({ onClose }: { onClose: () => void }) {
   const [state, setState] = useState<DailyState | null>(null);
   const [error, setError] = useState('');
   const [tuning, setTuning] = useState(false);

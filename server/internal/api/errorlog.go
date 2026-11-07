@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"strings"
@@ -81,10 +82,30 @@ func (h *IncidentLogger) clone() *IncidentLogger {
 }
 
 func (h *IncidentLogger) Handle(ctx context.Context, record slog.Record) error {
-	if record.Level >= slog.LevelError && h.store != nil {
+	if record.Level >= slog.LevelError && h.store != nil && !clientGone(record) {
 		h.record(record)
 	}
 	return h.inner.Handle(ctx, record)
+}
+
+// clientGone узнаёт запись, вызванную уходом клиента: человек закрыл вкладку
+// или сменил сеть, и запрос оборвался на полпути. Сбоем сервера это не
+// является, а в журнале такие строки заслоняли настоящие ошибки — их приходилось
+// закрывать пачками каждое утро. В обычный лог запись по-прежнему попадает.
+func clientGone(record slog.Record) bool {
+	gone := false
+	record.Attrs(func(attr slog.Attr) bool {
+		if err, ok := attr.Value.Any().(error); ok && errors.Is(err, context.Canceled) {
+			gone = true
+			return false
+		}
+		if text, ok := attr.Value.Any().(string); ok && attr.Key == "err" && strings.HasSuffix(text, context.Canceled.Error()) {
+			gone = true
+			return false
+		}
+		return true
+	})
+	return gone
 }
 
 func (h *IncidentLogger) record(record slog.Record) {

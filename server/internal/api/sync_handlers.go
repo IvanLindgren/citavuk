@@ -53,6 +53,7 @@ func (s *Server) handlePush(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	changes.StripNUL()
 	rev, err := s.store.Push(r.Context(), user.ID, &changes)
 	if errors.Is(err, store.ErrTooManyRecords) {
 		writeError(w, http.StatusRequestEntityTooLarge, codeTooLarge, err.Error())
