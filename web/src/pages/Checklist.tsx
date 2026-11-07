@@ -8,7 +8,6 @@ import {
   LuFlame,
   LuGraduationCap,
   LuLanguages,
-  LuListChecks,
   LuLogIn,
   LuNewspaper,
   LuPenLine,
@@ -75,9 +74,6 @@ function Intro() {
     <main className="dan">
       <section className="dan-intro">
         <Mascot pose="citavuk_zdravo" alt="" className="dan-intro-wolf" float priority pet={false} />
-        <p className="dan-eyebrow">
-          <LuListChecks /> Чек-лист дня
-        </p>
         <h1>Четыре коротких дела — каждый день</h1>
         <p className="dan-lead">
           Урок курса, слова дня, ролик сербского блогера и свежая новость. Читавук сам подбирает, что делать сегодня, а ты
@@ -219,9 +215,6 @@ function Hero({ done, total, history, all, streak }: { done: number; total: numb
   return (
     <section className="dan-hero">
       <div className="dan-hero-text">
-        <p className="dan-eyebrow">
-          <LuListChecks /> Чек-лист дня
-        </p>
         <h1>{all ? 'День засчитан' : HEADLINES[Math.min(done, HEADLINES.length - 1)]}</h1>
         <p className="dan-date">
           <span>{ru}</span>
