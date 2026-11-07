@@ -17,6 +17,7 @@ import (
 	"github.com/citavuk/server/internal/formhint"
 	"github.com/citavuk/server/internal/mailer"
 	"github.com/citavuk/server/internal/media"
+	"github.com/citavuk/server/internal/news"
 	"github.com/citavuk/server/internal/photoscan"
 	"github.com/citavuk/server/internal/podcast"
 	"github.com/citavuk/server/internal/quiz"
@@ -50,6 +51,7 @@ type Server struct {
 	daily           *daily.Generator
 	dailyLessons    singleflight.Group
 	podcasts        *podcast.Service
+	news            *news.Service
 	media           *media.Service
 	microFeed       *feed.Generator
 	translationGame *translationgame.Judge
@@ -151,7 +153,8 @@ func New(
 		// считает запросы, а провайдер берёт деньги за знаки, и без этого
 		// счётчика квота выносилась за девять минут.
 		translator: translate.NewService(deepl, translate.NewGoogle(), translationCache).
-			WithBudget(translate.NewBudget(cfg.DeepLRunesPerDay)),
+			WithBudget(translate.NewBudget(cfg.DeepLRunesPerDay)).
+			WithLLM(translate.NewLLM(cfg.TranslateAIKey, cfg.TranslateAIModel, cfg.TranslateAIURL)),
 		redis:        redisClient,
 		documentHTTP: newDocumentHTTPClient(),
 		feedbackBot:  newFeedbackBot(cfg.FeedbackBotToken, cfg.FeedbackChatID, st),
@@ -169,6 +172,7 @@ func New(
 			cfg.SpeakingAIKey, cfg.SpeakingAIModel, cfg.SpeakingAIURL, cfg.SpeakingAIReasoning,
 		),
 		podcasts: podcast.New(),
+		news:     news.New(),
 		media:    mediaService,
 		yookassa: yookassa.New(cfg.YooKassaShopID, cfg.YooKassaSecret),
 		microFeed: feed.NewGenerator(
@@ -545,6 +549,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("PUT /v1/micro-feed/preferences", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedPreferences)))
 	// Картинка идёт через сервер, а не прямой ссылкой: см. micro_feed_image.go.
 	mux.HandleFunc("GET /v1/micro-feed/{id}/image", s.rateLimit(s.generalLimit, s.handleMicroFeedImage))
+	mux.HandleFunc("GET /v1/news", s.rateLimit(s.generalLimit, s.handleNewsIssue))
+	mux.HandleFunc("GET /v1/news/article", s.rateLimit(s.generalLimit, s.handleNewsArticle))
+	mux.HandleFunc("GET /v1/news/image/{id}", s.rateLimit(s.generalLimit, s.handleNewsImage))
+	mux.HandleFunc("GET /v1/videos/picks", s.rateLimit(s.generalLimit, s.handleVideoPicks))
+	mux.HandleFunc("GET /v1/videos/thumb/{id}", s.rateLimit(s.generalLimit, s.handleVideoThumb))
 	// Обсуждение читают все, пишут только вошедшие: анонимная запись, видимая
 	// всем, — приглашение для спама, а модератор в проекте один.
 	mux.HandleFunc("GET /v1/micro-feed/{id}/comments", s.optionalAuth(s.rateLimitIdentity(s.generalLimit, s.handleMicroFeedComments)))

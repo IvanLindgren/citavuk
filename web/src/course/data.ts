@@ -13,6 +13,7 @@ import {
   putRemoteCourseProgress,
 } from "../api/course";
 import { stripAnswerPunctuation } from "../lib/answerMatch";
+import { markChecklist } from "../lib/checklist";
 import { activeStorageName } from "../lib/db";
 import { translateData } from "../lib/i18n";
 
@@ -188,6 +189,7 @@ export function saveLessonProgress(
   };
   storeProgress(next, Date.now());
   window.dispatchEvent(new CustomEvent("citavuk-course-progress"));
+  if (passed) markChecklist("lesson");
   return next;
 }
 

@@ -50,6 +50,9 @@ type Service struct {
 	words  WordProvider
 	cache  Cache
 	budget *Budget
+	// llm — третий уровень: модель переводит слово вместе с предложением,
+	// когда DeepL и Google оба отказали.
+	llm ContextTranslator
 
 	// cooldownUntil временно запрещает обращаться к ограничившему
 	// провайдеру: получив 429, нет смысла долбить его каждым нажатием —
@@ -100,6 +103,26 @@ func (s *Service) WithBudget(b *Budget) *Service {
 	return s
 }
 
+// ContextTranslator переводит фрагмент вместе с предложением, в котором он
+// стоит. Реализуется запасной моделью (LLM).
+type ContextTranslator interface {
+	TranslateInContext(ctx context.Context, text, sentence, source, target string) (string, string, error)
+	Name() string
+}
+
+// WithLLM подключает запасную модель. nil оставляет сервис без неё.
+func (s *Service) WithLLM(l *LLM) *Service {
+	if s != nil && l != nil {
+		s.llm = l
+	}
+	return s
+}
+
+// hasFallback — есть ли кому переводить, если DeepL откажет.
+func (s *Service) hasFallback() bool {
+	return s.words != nil || s.llm != nil
+}
+
 // Budget отдаёт бюджет для отчёта в админке.
 func (s *Service) Budget() *Budget {
 	if s == nil {
@@ -124,7 +147,7 @@ func (s *Service) refundDeepL(text string) {
 
 // Available сообщает, способен ли сервис хоть что-то перевести.
 func (s *Service) Available() bool {
-	return s != nil && (s.deepl != nil || s.words != nil)
+	return s != nil && (s.deepl != nil || s.words != nil || s.llm != nil)
 }
 
 // Text переводит связный фрагмент: фразу, предложение или абзац.
@@ -155,7 +178,7 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 	// отказ бюджета означал бы «перевода не будет вовсе», а это хуже перерасхода.
 	deeplReady := s.deepl != nil && !s.inCooldown(s.deepl.Name())
 	var deeplErr error
-	if deeplReady && (s.words == nil || s.deeplAllowed(text)) {
+	if deeplReady && (!s.hasFallback() || s.deeplAllowed(text)) {
 		var out []string
 		out, deeplErr = s.deepl.TranslateTexts(ctx, []string{text}, source, target, Options{})
 		if deeplErr == nil && len(out) == 1 && aioutput.Translation(out[0], text, target) {
@@ -166,12 +189,12 @@ func (s *Service) Text(ctx context.Context, text, source, target string) (*Resul
 		if errors.Is(deeplErr, ErrRateLimited) {
 			s.setCooldown(s.deepl.Name())
 		}
-		if deeplErr != nil && s.words == nil {
+		if deeplErr != nil && !s.hasFallback() {
 			return nil, deeplErr
 		}
 	}
 
-	if s.words == nil {
+	if !s.hasFallback() {
 		if deeplErr != nil {
 			return nil, deeplErr
 		}
@@ -210,7 +233,7 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 		return s.word(ctx, word, source, target, wordFallback{})
 	}
 	if s.deepl == nil {
-		return s.word(ctx, word, source, target, wordFallback{})
+		return s.word(ctx, word, source, target, wordFallback{contextHint: sentence})
 	}
 
 	marked, err := MarkWord(sentence, start, end)
@@ -253,7 +276,7 @@ func (s *Service) InContext(ctx context.Context, sentence string, start, end int
 	// Возвращается только действительно зарезервированный бюджет.
 	deeplSkipped := s.inCooldown(s.deepl.Name())
 	spent := false
-	if s.words != nil && !deeplSkipped {
+	if s.hasFallback() && !deeplSkipped {
 		if !s.deeplAllowed(marked) {
 			return s.word(ctx, word, source, target, wordFallback{contextHint: sentence})
 		}
@@ -361,6 +384,9 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 		}
 	}
 	if s.words == nil {
+		if result, ok := s.llmWord(ctx, word, source, target, fb); ok {
+			return result, nil
+		}
 		return nil, ErrNoProvider
 	}
 	var wordsErr error
@@ -380,6 +406,11 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 		case errors.Is(wordsErr, ErrRateLimited):
 			s.setCooldown(s.words.Name())
 		}
+	}
+	// Google отказал или ответил не на том языке — переводит модель, причём
+	// вместе с предложением, если оно известно.
+	if result, ok := s.llmWord(ctx, word, source, target, fb); ok {
+		return result, nil
 	}
 	// Запасной провайдер отказал. Повтор через DeepL — лучше неточный перевод,
 	// чем никакой. Повтор НЕ кэшируется: словарь общий, и перевод одиночного
@@ -407,6 +438,33 @@ func (s *Service) word(ctx context.Context, word, source, target string, fb word
 		return nil, wordsErr
 	}
 	return &Result{Text: strings.TrimSpace(out[0]), Provider: s.deepl.Name()}, nil
+}
+
+// llmWord переводит слово запасной моделью. Ответ кешируется только там, где
+// он не зависит от предложения: перевод слова, выбранный по одному контексту,
+// в общем словаре подменил бы значение для всех остальных текстов.
+func (s *Service) llmWord(ctx context.Context, word, source, target string, fb wordFallback) (*Result, bool) {
+	if s.llm == nil || s.inCooldown(s.llm.Name()) {
+		return nil, false
+	}
+	out, sentence, err := s.llm.TranslateInContext(ctx, word, fb.contextHint, source, target)
+	if err != nil {
+		if errors.Is(err, ErrRateLimited) || errors.Is(err, ErrQuota) {
+			s.setCooldown(s.llm.Name())
+		}
+		return nil, false
+	}
+	if !aioutput.Translation(out, word, target) {
+		return nil, false
+	}
+	result := &Result{Text: out, Provider: s.llm.Name(), Aligned: fb.aligned || fb.contextHint != ""}
+	if fb.contextHint == "" {
+		s.store(ctx, source, target, word, out, s.llm.Name())
+	} else if sentence != "" && aioutput.Translation(sentence, fb.contextHint, target) {
+		result.Sentence = sentence
+		s.store(ctx, source, target, fb.contextHint, sentence, s.llm.Name())
+	}
+	return result, true
 }
 
 func (s *Service) store(ctx context.Context, source, target, text, translation, provider string) {

@@ -168,9 +168,9 @@ def main():
     os.umask(0o077)
     cfg=load_env(args.env)
     key=cfg.get('CITAVUK_FEED_AI_KEY') or cfg.get('POLZA_AI_KEY') or cfg.get('CITAVUK_QUIZ_KEY')
-    model=cfg.get('CITAVUK_FEED_AI_MODEL','openai/gpt-6-luna')
+    model=cfg.get('CITAVUK_FEED_AI_MODEL','deepseek/deepseek-v4.1-flash-1017')
     url=cfg.get('CITAVUK_FEED_AI_URL','https://api.polza.ai/api/v1/chat/completions')
-    if not key or model!='openai/gpt-6-luna': raise SystemExit('expected configured Luna editorial provider')
+    if not key or model!='deepseek/deepseek-v4.1-flash-1017': raise SystemExit('expected configured DeepSeek editorial provider')
     originals=json.loads(args.input.read_text(encoding='utf8'))
     lemma_forms={}
     for path in args.forms:

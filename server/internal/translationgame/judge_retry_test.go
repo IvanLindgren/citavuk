@@ -36,7 +36,7 @@ func TestJudgeRetriesValidJSONInWrongLanguage(t *testing.T) {
 		answerWith(w, goodVerdicts)
 	}))
 	defer server.Close()
-	result, err := NewJudge("key", "openai/gpt-6-luna", server.URL).Evaluate(context.Background(), fiveEntries(), DirectionSrRu)
+	result, err := NewJudge("key", "deepseek/deepseek-v4.1-flash-1017", server.URL).Evaluate(context.Background(), fiveEntries(), DirectionSrRu)
 	if err != nil || calls.Load() != 2 || result.Verdicts[0].Feedback != "Точнее по смыслу." {
 		t.Fatalf("нерусский JSON не заменён корректным ответом: calls=%d err=%v", calls.Load(), err)
 	}

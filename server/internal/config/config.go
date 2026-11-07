@@ -19,6 +19,12 @@ import (
 )
 
 // Config — полный набор настроек сервера.
+// DefaultAIModel — текстовая модель всех ИИ-вызовов через Polza AI: тесты,
+// судья, «Говори!», текст дня, толкования, начальные формы, съёмка, Вукоток и
+// запасной перевод. Модель мультимодальная, поэтому годится и для съёмки.
+// Любой раздел можно перевести на другую модель своей переменной окружения.
+const DefaultAIModel = "deepseek/deepseek-v4.1-flash-1017"
+
 type Config struct {
 	// Addr — адрес прослушивания. На сервере это localhost:порт: наружу
 	// смотрит nginx, который терминирует TLS.
@@ -197,6 +203,13 @@ type Config struct {
 	PhotoScanModel string
 	PhotoScanURL   string
 
+	// TranslateAI* — запасной перевод, когда DeepL исчерпал квоту, а Google
+	// просит подождать. Модель переводит слово вместе с предложением, поэтому
+	// значение выбирается по контексту. Пустой ключ выключает запасной путь.
+	TranslateAIKey   string
+	TranslateAIModel string
+	TranslateAIURL   string
+
 	// FeedAI* prepares moderated micro-reading drafts. Embeddings are kept
 	// separate because chat and vector models may use different providers.
 	FeedAIKey          string
@@ -257,7 +270,7 @@ func Load(envPath string) (*Config, error) {
 		S3SecretKey:        strings.TrimSpace(os.Getenv("S3_SECRET_ACCESS_KEY")),
 		PublicMediaBaseURL: strings.TrimRight(strings.TrimSpace(os.Getenv("PUBLIC_MEDIA_BASE_URL")), "/"),
 		QuizAPIKey:         firstEnv("POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", "openai/gpt-6-luna"),
+		QuizModel:          envOr("CITAVUK_QUIZ_MODEL", DefaultAIModel),
 		QuizURL: envOr(
 			"CITAVUK_QUIZ_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -266,7 +279,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_TRANSLATION_GAME_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		TranslationGameAIModel: envOr(
-			"CITAVUK_TRANSLATION_GAME_AI_MODEL", "openai/gpt-6-luna",
+			"CITAVUK_TRANSLATION_GAME_AI_MODEL", DefaultAIModel,
 		),
 		TranslationGameAIURL: envOr(
 			"CITAVUK_TRANSLATION_GAME_AI_URL",
@@ -276,7 +289,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_SPEAKING_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		SpeakingAIModel: envOr(
-			"CITAVUK_SPEAKING_AI_MODEL", "openai/gpt-6-luna",
+			"CITAVUK_SPEAKING_AI_MODEL", DefaultAIModel,
 		),
 		SpeakingAIURL: envOr(
 			"CITAVUK_SPEAKING_AI_URL",
@@ -286,7 +299,7 @@ func Load(envPath string) (*Config, error) {
 		DailyAIKey: firstEnv(
 			"CITAVUK_DAILY_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
-		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", "openai/gpt-6-luna"),
+		DailyAIModel: envOr("CITAVUK_DAILY_AI_MODEL", DefaultAIModel),
 		DailyAIURL: envOr(
 			"CITAVUK_DAILY_AI_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
@@ -295,7 +308,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_DEFINITION_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		DefinitionAIModel: envOr(
-			"CITAVUK_DEFINITION_AI_MODEL", "openai/gpt-6-luna",
+			"CITAVUK_DEFINITION_AI_MODEL", DefaultAIModel,
 		),
 		DefinitionAIURL: envOr(
 			"CITAVUK_DEFINITION_AI_URL",
@@ -306,7 +319,7 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_FORM_HINT_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		FormHintAIModel: envOr(
-			"CITAVUK_FORM_HINT_AI_MODEL", "openai/gpt-6-luna",
+			"CITAVUK_FORM_HINT_AI_MODEL", DefaultAIModel,
 		),
 		FormHintAIURL: envOr(
 			"CITAVUK_FORM_HINT_AI_URL",
@@ -317,14 +330,22 @@ func Load(envPath string) (*Config, error) {
 			"CITAVUK_PHOTO_SCAN_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
 		),
 		PhotoScanModel: envOr(
-			"CITAVUK_PHOTO_SCAN_MODEL", "openai/gpt-6-luna",
+			"CITAVUK_PHOTO_SCAN_MODEL", DefaultAIModel,
 		),
 		PhotoScanURL: envOr(
 			"CITAVUK_PHOTO_SCAN_URL",
 			"https://api.polza.ai/api/v1/chat/completions",
 		),
+		TranslateAIKey: firstEnv(
+			"CITAVUK_TRANSLATE_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY",
+		),
+		TranslateAIModel: envOr("CITAVUK_TRANSLATE_AI_MODEL", DefaultAIModel),
+		TranslateAIURL: envOr(
+			"CITAVUK_TRANSLATE_AI_URL",
+			"https://api.polza.ai/api/v1/chat/completions",
+		),
 		FeedAIKey:   firstEnv("CITAVUK_FEED_AI_KEY", "POLZA_AI_KEY", "CITAVUK_QUIZ_KEY"),
-		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", "openai/gpt-6-luna"),
+		FeedAIModel: envOr("CITAVUK_FEED_AI_MODEL", DefaultAIModel),
 		FeedAIURL: envOr(
 			"CITAVUK_FEED_AI_URL",
 			"https://polza.ai/api/v1/chat/completions",
